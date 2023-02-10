@@ -28,6 +28,7 @@ describe('<TicketHeaderWrapper/>', () => {
     const minProps: ComponentProps<typeof TicketHeaderWrapper> = {
         hideTicket: jest.fn(),
         handleHistoryToggle: jest.fn(),
+        setStatus: jest.fn(),
     }
     const defaultState = {
         currentUser: fromJS({}),

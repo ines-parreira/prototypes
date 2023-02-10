@@ -13,7 +13,8 @@ import TicketField from './TicketField'
 import css from './TicketFields.less'
 
 function TicketFields() {
-    const ticketId = useAppSelector(getTicket).id
+    const ticketState = useAppSelector(getTicket)
+    const ticketId = ticketState.id
     const ticketFieldState = useAppSelector(getTicketFieldState)
     const {mutate} = useUpdateOrDeleteTicketFieldValue(ticketId)
 

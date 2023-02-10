@@ -1,11 +1,16 @@
 import React, {ComponentProps} from 'react'
 import {act, waitFor, fireEvent} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {fromJS, Map} from 'immutable'
 import moment from 'moment'
 import {createMemoryHistory} from 'history'
 import _noop from 'lodash/noop'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
+import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     flushPromises,
     makeExecuteKeyboardAction,
@@ -23,6 +28,7 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {TicketDetailContainer} from '../TicketDetailContainer'
 import TicketView from '../components/TicketView'
 
+const queryClient = createTestQueryClient()
 jest.useFakeTimers()
 
 jest.mock('services/shortcutManager/shortcutManager')
@@ -46,6 +52,9 @@ jest.mock('services/pendingMessageManager/pendingMessageManager', () => ({
 }))
 
 jest.mock('store/middlewares/segmentTracker')
+
+const mockStore = configureMockStore([thunk])
+const mockedStore = mockStore({})
 
 const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager
@@ -146,7 +155,11 @@ describe('TicketDetailContainer component', () => {
 
     it('should render container for new ticket', () => {
         const {container} = renderWithRouter(
-            <TicketDetailContainer {...minProps} />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
@@ -157,19 +170,33 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should have new ticket title', () => {
-        renderWithRouter(<TicketDetailContainer {...minProps} />, {
-            path: '/foo/:ticketId',
-            route: '/foo/new',
-        })
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/new',
+            }
+        )
 
         expect(document.title).toEqual('New ticket')
     })
 
     it('should fetch customer details from url', () => {
-        renderWithRouter(<TicketDetailContainer {...minProps} />, {
-            path: '/foo/:ticketId',
-            route: '/foo/new?customer=1',
-        })
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/new?customer=1',
+            }
+        )
 
         expect(minProps.fetchCustomer).toBeCalledWith('1')
     })
@@ -182,7 +209,11 @@ describe('TicketDetailContainer component', () => {
         }) as Map<any, any>
 
         const {rerender} = renderWithRouter(
-            <TicketDetailContainer {...minProps} />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new?customer=1',
@@ -190,10 +221,14 @@ describe('TicketDetailContainer component', () => {
         )
 
         rerender(
-            <TicketDetailContainer
-                {...minProps}
-                activeCustomer={activeCustomer}
-            />
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        activeCustomer={activeCustomer}
+                    />
+                </Provider>
+            </QueryClientProvider>
         )
 
         expect(minProps.setCustomer).toBeCalledWith(
@@ -203,23 +238,27 @@ describe('TicketDetailContainer component', () => {
 
     it('should not go to next ticket when setting status closed and history is open', () => {
         const {getByTestId} = renderWithRouter(
-            <TicketDetailContainer
-                {...minProps}
-                currentUser={currentUser}
-                canSendMessage
-                ticket={existingTicket.setIn(
-                    ['_internal', 'displayHistory'],
-                    true
-                )}
-                newMessage={fromJS({
-                    newMessage: {
-                        source: {
-                            to: [],
-                        },
-                    },
-                })}
-                submitTicket={() => Promise.resolve()}
-            />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        currentUser={currentUser}
+                        canSendMessage
+                        ticket={existingTicket.setIn(
+                            ['_internal', 'displayHistory'],
+                            true
+                        )}
+                        newMessage={fromJS({
+                            newMessage: {
+                                source: {
+                                    to: [],
+                                },
+                            },
+                        })}
+                        submitTicket={() => Promise.resolve()}
+                    />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: `/foo/${existingTicket.get('id') as string}`,
@@ -232,23 +271,27 @@ describe('TicketDetailContainer component', () => {
 
     it('should go to next ticket when setting status closed and history is closed', async () => {
         const {getByTestId} = renderWithRouter(
-            <TicketDetailContainer
-                {...minProps}
-                currentUser={currentUser}
-                canSendMessage
-                ticket={existingTicket.setIn(
-                    ['_internal', 'displayHistory'],
-                    false
-                )}
-                newMessage={fromJS({
-                    newMessage: {
-                        source: {
-                            to: [],
-                        },
-                    },
-                })}
-                submitTicket={() => Promise.resolve()}
-            />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        currentUser={currentUser}
+                        canSendMessage
+                        ticket={existingTicket.setIn(
+                            ['_internal', 'displayHistory'],
+                            false
+                        )}
+                        newMessage={fromJS({
+                            newMessage: {
+                                source: {
+                                    to: [],
+                                },
+                            },
+                        })}
+                        submitTicket={() => Promise.resolve()}
+                    />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: `/foo/${existingTicket.get('id') as string}`,
@@ -270,11 +313,18 @@ describe('TicketDetailContainer component', () => {
         history.location.state = {
             receiver: expectedReceiver,
         }
-        renderWithRouter(<TicketDetailContainer {...minProps} />, {
-            path: '/foo/:ticketId',
-            route,
-            history,
-        })
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route,
+                history,
+            }
+        )
 
         expect(minProps.setReceivers).toBeCalledWith(
             {
@@ -294,7 +344,11 @@ describe('TicketDetailContainer component', () => {
             updated_datetime: '2018-12-20',
         }) as Map<any, any>
         const {rerender} = renderWithRouter(
-            <TicketDetailContainer {...minProps} />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new?customer=1',
@@ -302,11 +356,15 @@ describe('TicketDetailContainer component', () => {
         )
 
         rerender(
-            <TicketDetailContainer
-                {...minProps}
-                activeView={activeView}
-                ticket={newTicket}
-            />
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        activeView={activeView}
+                        ticket={newTicket}
+                    />
+                </Provider>
+            </QueryClientProvider>
         )
 
         expect(minProps.updateCursor).toBeCalledWith(
@@ -321,17 +379,28 @@ describe('TicketDetailContainer component', () => {
             activeView,
         }
         const {rerender} = renderWithRouter(
-            <TicketDetailContainer {...props} />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...props} />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new?customer=1',
             }
         )
         rerender(
-            <TicketDetailContainer
-                {...props}
-                ticket={minProps.ticket.set('updated_datetime', moment())}
-            />
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...props}
+                        ticket={minProps.ticket.set(
+                            'updated_datetime',
+                            moment()
+                        )}
+                    />
+                </Provider>
+            </QueryClientProvider>
         )
 
         expect(minProps.updateCursor).not.toHaveBeenCalled()
@@ -342,7 +411,11 @@ describe('TicketDetailContainer component', () => {
             'from no recipients to one recipient',
         () => {
             const {rerender} = renderWithRouter(
-                <TicketDetailContainer {...minProps} />,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/foo/:ticketId',
                     route: '/foo/new',
@@ -350,17 +423,21 @@ describe('TicketDetailContainer component', () => {
             )
 
             rerender(
-                <TicketDetailContainer
-                    {...minProps}
-                    newMessageSource={fromJS({
-                        to: [
-                            {
-                                name: 'foo',
-                                address: 'foo@gorgias.io',
-                            },
-                        ],
-                    })}
-                />
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...minProps}
+                            newMessageSource={fromJS({
+                                to: [
+                                    {
+                                        name: 'foo',
+                                        address: 'foo@gorgias.io',
+                                    },
+                                ],
+                            })}
+                        />
+                    </Provider>
+                </QueryClientProvider>
             )
 
             expect(minProps.findAndSetCustomer).toBeCalledWith('foo@gorgias.io')
@@ -391,7 +468,11 @@ describe('TicketDetailContainer component', () => {
                 newMessage: newMessageState,
             }
             const {rerender} = renderWithRouter(
-                <TicketDetailContainer {...props} />,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer {...props} />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/foo/:ticketId',
                     route: '/foo/new',
@@ -399,17 +480,21 @@ describe('TicketDetailContainer component', () => {
             )
 
             rerender(
-                <TicketDetailContainer
-                    {...props}
-                    newMessageSource={fromJS({
-                        to: [
-                            {
-                                name: 'foo',
-                                address: 'foo@gorgias.io',
-                            },
-                        ],
-                    })}
-                />
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...props}
+                            newMessageSource={fromJS({
+                                to: [
+                                    {
+                                        name: 'foo',
+                                        address: 'foo@gorgias.io',
+                                    },
+                                ],
+                            })}
+                        />
+                    </Provider>
+                </QueryClientProvider>
             )
             expect(minProps.findAndSetCustomer).toBeCalledWith('foo@gorgias.io')
         }
@@ -437,7 +522,11 @@ describe('TicketDetailContainer component', () => {
                 newMessage: newMessageState,
             }
             const {rerender} = renderWithRouter(
-                <TicketDetailContainer {...props} />,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer {...props} />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/foo/:ticketId',
                     route: '/foo/new',
@@ -445,17 +534,21 @@ describe('TicketDetailContainer component', () => {
             )
 
             rerender(
-                <TicketDetailContainer
-                    {...props}
-                    newMessageSource={fromJS({
-                        to: [
-                            {
-                                name: 'foo',
-                                address: 'foo@gorgias.io',
-                            },
-                        ],
-                    })}
-                />
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...props}
+                            newMessageSource={fromJS({
+                                to: [
+                                    {
+                                        name: 'foo',
+                                        address: 'foo@gorgias.io',
+                                    },
+                                ],
+                            })}
+                        />
+                    </Provider>
+                </QueryClientProvider>
             )
 
             expect(minProps.findAndSetCustomer).not.toHaveBeenCalled()
@@ -503,7 +596,11 @@ describe('TicketDetailContainer component', () => {
         }
 
         const {rerender} = renderWithRouter(
-            <TicketDetailContainer {...props} />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...props} />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new?customer=1',
@@ -512,13 +609,17 @@ describe('TicketDetailContainer component', () => {
         expect(minProps.setCustomer).not.toHaveBeenCalled()
 
         rerender(
-            <TicketDetailContainer
-                {...props}
-                ticket={fromJS({
-                    messages: [],
-                    customer,
-                })}
-            />
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...props}
+                        ticket={fromJS({
+                            messages: [],
+                            customer,
+                        })}
+                    />
+                </Provider>
+            </QueryClientProvider>
         )
 
         expect(minProps.setCustomer).toHaveBeenCalledWith(
@@ -552,7 +653,11 @@ describe('TicketDetailContainer component', () => {
             }
 
             const {rerender} = renderWithRouter(
-                <TicketDetailContainer {...props} />,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer {...props} />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/foo/:ticketId',
                     route: '/foo/new',
@@ -560,17 +665,21 @@ describe('TicketDetailContainer component', () => {
             )
 
             rerender(
-                <TicketDetailContainer
-                    {...props}
-                    newMessageSource={fromJS({
-                        cc: [
-                            {
-                                name: 'bar',
-                                address: 'bar@gorgias.io',
-                            },
-                        ],
-                    })}
-                />
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...props}
+                            newMessageSource={fromJS({
+                                cc: [
+                                    {
+                                        name: 'bar',
+                                        address: 'bar@gorgias.io',
+                                    },
+                                ],
+                            })}
+                        />
+                    </Provider>
+                </QueryClientProvider>
             )
 
             expect(minProps.findAndSetCustomer).not.toHaveBeenCalled()
@@ -605,17 +714,25 @@ describe('TicketDetailContainer component', () => {
             }),
         }
         const {rerender} = renderWithRouter(
-            <TicketDetailContainer {...props} />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...props} />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
             }
         )
         rerender(
-            <TicketDetailContainer
-                {...props}
-                newMessageSource={fromJS({to: []})}
-            />
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...props}
+                        newMessageSource={fromJS({to: []})}
+                    />
+                </Provider>
+            </QueryClientProvider>
         )
 
         expect(minProps.setCustomer).toBeCalledWith(null)
@@ -623,21 +740,28 @@ describe('TicketDetailContainer component', () => {
 
     it('should not unset the customer because the ticket is new and the new message is an internal note', () => {
         renderWithRouter(
-            <TicketDetailContainer
-                {...minProps}
-                ticket={fromJS({
-                    messages: [],
-                })}
-                newMessage={fromJS({
-                    newMessage: {
-                        source: {
-                            type: 'internal-note',
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        ticket={fromJS({
+                            messages: [],
+                        })}
+                        newMessage={fromJS({
+                            newMessage: {
+                                source: {
+                                    type: 'internal-note',
+                                    to: [],
+                                },
+                            },
+                        })}
+                        newMessageSource={fromJS({
                             to: [],
-                        },
-                    },
-                })}
-                newMessageSource={fromJS({to: [], type: 'internal-note'})}
-            />,
+                            type: 'internal-note',
+                        })}
+                    />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
@@ -649,12 +773,16 @@ describe('TicketDetailContainer component', () => {
 
     it('should defer sending new message when new message is of type email', async () => {
         const {getByTestId} = renderWithRouter(
-            <TicketDetailContainer
-                {...minProps}
-                ticket={existingTicket}
-                newMessage={newMessageState}
-                canSendMessage
-            />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        ticket={existingTicket}
+                        newMessage={newMessageState}
+                        canSendMessage
+                    />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
@@ -703,12 +831,16 @@ describe('TicketDetailContainer component', () => {
         }
         prepareTicketMessageMock.mockResolvedValue(preparedFacebookData)
         const {getByTestId} = renderWithRouter(
-            <TicketDetailContainer
-                {...minProps}
-                ticket={existingTicket}
-                newMessage={newMessageState}
-                canSendMessage
-            />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        ticket={existingTicket}
+                        newMessage={newMessageState}
+                        canSendMessage
+                    />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
@@ -729,12 +861,16 @@ describe('TicketDetailContainer component', () => {
 
     it('should send a deferred message when sending a new deferred message', async () => {
         const {getByTestId} = renderWithRouter(
-            <TicketDetailContainer
-                {...minProps}
-                ticket={existingTicket}
-                newMessage={newMessageState}
-                canSendMessage
-            />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        ticket={existingTicket}
+                        newMessage={newMessageState}
+                        canSendMessage
+                    />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
@@ -777,14 +913,18 @@ describe('TicketDetailContainer component', () => {
                 ],
             })
             const {getByTestId} = renderWithRouter(
-                <TicketDetailContainer
-                    {...minProps}
-                    currentUser={currentUser}
-                    canSendMessage
-                    ticket={ticket}
-                    submitTicket={submitMock}
-                    sendTicketMessage={submitMock}
-                />,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...minProps}
+                            currentUser={currentUser}
+                            canSendMessage
+                            ticket={ticket}
+                            submitTicket={submitMock}
+                            sendTicketMessage={submitMock}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/foo/:ticketId',
                     history,
@@ -818,12 +958,16 @@ describe('TicketDetailContainer component', () => {
     ])('should not throw %s', async (testName, error) => {
         prepareTicketMessageMock.mockRejectedValue(error)
         const {getByTestId} = renderWithRouter(
-            <TicketDetailContainer
-                {...minProps}
-                ticket={existingTicket}
-                newMessage={newMessageState}
-                canSendMessage
-            />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        ticket={existingTicket}
+                        newMessage={newMessageState}
+                        canSendMessage
+                    />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
@@ -859,10 +1003,17 @@ describe('TicketDetailContainer component', () => {
             const execKeyboardAction =
                 makeExecuteKeyboardAction(shortcutManagerMock)
             const callMock = testSetup()
-            renderWithRouter(<TicketDetailContainer {...minProps} />, {
-                path: '/foo/:ticketId',
-                route: '/foo/1',
-            })
+            renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/1',
+                }
+            )
 
             execKeyboardAction(actionName)
             execKeyboardAction(actionName)
@@ -873,7 +1024,11 @@ describe('TicketDetailContainer component', () => {
 
     it('should track the control / cmd + f combo', () => {
         const {container} = renderWithRouter(
-            <TicketDetailContainer {...minProps} />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
@@ -888,7 +1043,11 @@ describe('TicketDetailContainer component', () => {
 
     it('should not track the control / cmd + f combo if on a new ticket', () => {
         const {container} = renderWithRouter(
-            <TicketDetailContainer {...minProps} />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
@@ -901,7 +1060,14 @@ describe('TicketDetailContainer component', () => {
 
     it('should call ticket submit if can send message', () => {
         renderWithRouter(
-            <TicketDetailContainer {...minProps} canSendMessage={true} />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        canSendMessage={true}
+                    />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
@@ -915,7 +1081,14 @@ describe('TicketDetailContainer component', () => {
 
     it("should not call ticket submit if can't send message", () => {
         renderWithRouter(
-            <TicketDetailContainer {...minProps} canSendMessage={false} />,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        canSendMessage={false}
+                    />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',

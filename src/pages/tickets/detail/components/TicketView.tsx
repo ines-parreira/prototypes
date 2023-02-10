@@ -26,7 +26,7 @@ type OwnProps = {
     hideTicket: () => Promise<void>
     isTicketHidden: boolean
     submit: (params: SubmitArgs) => any
-    setStatus?: (status: string) => any
+    setStatus: (status: string) => any
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -193,6 +193,7 @@ export const TicketViewContainer = ({
                 <TicketHeaderWrapper
                     hideTicket={hideTicket}
                     handleHistoryToggle={handleHistoryToggle}
+                    setStatus={setStatus}
                 />
             )}
 

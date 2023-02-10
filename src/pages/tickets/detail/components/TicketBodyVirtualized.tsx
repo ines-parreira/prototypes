@@ -64,7 +64,7 @@ type HighlightedElements = {
 
 type OwnProps = {
     elements: List<any>
-    setStatus?: (s: string) => void
+    setStatus: (s: string) => void
     customScrollParentRef?: React.RefObject<HTMLDivElement>
     submit: (params: SubmitArgs) => any
     hideTicket: () => Promise<void>
@@ -229,6 +229,7 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
             handleHistoryToggle,
             isShopperTyping,
             shopperName,
+            setStatus,
         } = this.props
 
         return (
@@ -265,6 +266,7 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
                                     key={`ticket-header-${index}`}
                                     hideTicket={hideTicket}
                                     handleHistoryToggle={handleHistoryToggle}
+                                    setStatus={setStatus}
                                 />
                             )
                         } else if (Array.isArray(element)) {

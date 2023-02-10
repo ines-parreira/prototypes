@@ -318,11 +318,6 @@ export const getInTicketSuggestionState = createImmutableSelector(
     }
 )
 
-export const getTicketFieldState = createSelector(
-    getTicket,
-    (state) => state.custom_fields
-)
-
 export const getTicketBodyElements = createSelector(getBody, (body) => {
     const elements = body.toJS() as TicketElement[]
 
@@ -359,3 +354,8 @@ export const getTicketBodyElements = createSelector(getBody, (body) => {
         [] as TicketElement[]
     )
 })
+
+export const getTicketFieldState = createSelector(
+    getTicket,
+    (state) => state.custom_fields
+)

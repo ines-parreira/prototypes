@@ -1268,7 +1268,7 @@ export function submitTicket(
                         return Promise.resolve({resp})
                     }
 
-                    // dispatch for newMessage reducer branch
+                    // dispatch for newMessage and ticket reducer branch
                     dispatch({
                         type: constants.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,
                         resetMessage,

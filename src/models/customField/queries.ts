@@ -12,7 +12,7 @@ import {
     updatePartialCustomField,
 } from 'models/customField/resources'
 
-import {isCustomFieldValueEmpty} from 'business/customFields'
+import {isCustomFieldValueEmpty} from 'utils/customFields'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {updateCustomFieldState} from 'state/ticket/actions'
@@ -33,7 +33,10 @@ export const customFieldDefinitionKeys = {
         [...customFieldDefinitionKeys.details(), id] as const,
 }
 
-export const useGetCustomFieldDefinitions = (params: ListParams) => {
+export const useGetCustomFieldDefinitions = (
+    params: ListParams,
+    overrides?: {enabled: boolean}
+) => {
     const dispatch = useAppDispatch()
     return useQuery({
         staleTime: 60 * 60 * 1000, // 1 hour
@@ -47,6 +50,7 @@ export const useGetCustomFieldDefinitions = (params: ListParams) => {
                 })
             )
         },
+        ...overrides,
     })
 }
 

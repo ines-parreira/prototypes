@@ -22,6 +22,10 @@ import * as ticketConfig from 'config/ticket'
 import {PHONE_EVENTS} from 'constants/event'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {MacroActionName} from 'models/macroAction/types'
+import {
+    CustomFieldState,
+    NormalizedCustomFieldState,
+} from 'models/customField/types'
 import {TicketMessage} from 'models/ticket/types'
 import {renderTemplate} from 'pages/common/utils/template'
 import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
@@ -993,4 +997,17 @@ export const mergeActions = (oldActions: List<any>, newActions: List<any>) => {
         } else actions = actions.push(oldAction)
     })
     return actions
+}
+
+export function normalizeCustomFields(
+    customFields: CustomFieldState[] | undefined
+) {
+    if (!customFields) return {}
+    return customFields.reduce<NormalizedCustomFieldState>(
+        (accumulator, customField) => {
+            accumulator[customField.id] = customField
+            return accumulator
+        },
+        {}
+    )
 }

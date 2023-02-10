@@ -23,7 +23,6 @@ import {
     removeTag,
     setAgent,
     setSpam,
-    setStatus,
     setSubject,
     setTeam,
     setTrashed,
@@ -55,6 +54,7 @@ type Props = {
     ticket: Map<any, any>
     className: string
     hideTicket: () => Promise<void>
+    setStatus: (status: string) => any
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -83,7 +83,8 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
             status === TicketStatusEnum.Closed
                 ? TicketStatusEnum.Open
                 : TicketStatusEnum.Closed
-        return this._setStatus(newStatus)
+
+        this.props.setStatus(newStatus)
     }
 
     _goToNextTicket = () => {
@@ -97,18 +98,6 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         const promise = hideTicket().then(clearTicket)
 
         void goToNextTicket(this.props.ticket.get('id'), promise)
-    }
-
-    _setStatus = (status: string) => {
-        const {notify, setStatus} = this.props
-
-        return setStatus(status, () => {
-            void notify({
-                status: NotificationStatus.Success,
-                message: 'Ticket has been closed',
-            })
-            this._goToNextTicket()
-        })
     }
 
     _toggleTrashConfirmation = (status = !this.state.askTrashConfirmation) => {
@@ -173,12 +162,12 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         shortcutManager.bind('TicketDetailContainer', {
             CLOSE_TICKET: {
                 action: () => {
-                    void this._setStatus(TicketStatusEnum.Closed)
+                    void this.props.setStatus(TicketStatusEnum.Closed)
                 },
             },
             OPEN_TICKET: {
                 action: () => {
-                    void this._setStatus(TicketStatusEnum.Open)
+                    void this.props.setStatus(TicketStatusEnum.Open)
                 },
             },
             DELETE_TICKET: {
@@ -529,7 +518,6 @@ const connector = connect(
         removeTag,
         setAgent,
         setSpam,
-        setStatus,
         setSubject,
         setTeam,
         setTrashed,

@@ -67,6 +67,7 @@ import {
     getSourceTypeOfResponse,
     nestedReplace,
     guessReceiversFromTicket,
+    normalizeCustomFields,
 } from './utils'
 import * as types from './constants'
 
@@ -76,7 +77,10 @@ export const mergeTicket =
         dispatch: StoreDispatch,
         getState: () => RootState
     ): Promise<ReturnType<StoreDispatch>> => {
-        const ticketRecord = fromJS(ticket) as Map<any, any>
+        const ticketRecord = fromJS({
+            ...ticket,
+            custom_fields: normalizeCustomFields(ticket.custom_fields),
+        }) as Map<any, any>
         const state = getState()
         const {ticket: ticketState} = state
 
@@ -421,21 +425,28 @@ export const setStatus =
         dispatch: StoreDispatch,
         getState: () => RootState
     ): Promise<ReturnType<StoreDispatch>> => {
+        const initialStatus = getState().ticket.get('status')
         dispatch({
             type: types.SET_STATUS,
             args: fromJS({status}),
         })
-
-        if (status === 'closed') {
-            // execute callback immediately, do not wait for server answer
-            callback()
-        }
-
         return dispatch(
             ticketPartialUpdate(
                 buildPartialUpdateFromAction('setStatus', getState())
             )
-        )
+        ).then((response) => {
+            if (
+                (response as {type: string})?.type ===
+                types.TICKET_PARTIAL_UPDATE_ERROR
+            ) {
+                dispatch({
+                    type: types.SET_STATUS,
+                    args: fromJS({status: initialStatus}),
+                })
+                return
+            }
+            if (status === 'closed') callback()
+        })
     }
 
 export const setSubject =
@@ -1348,3 +1359,25 @@ export const updateCustomFieldError = (
     type: types.UPDATE_CUSTOM_FIELD_ERROR,
     payload: {id, hasError},
 })
+
+export const setInvalidCustomFieldsToErrored = (
+    erroredCustomFields: CustomFieldState['id'][]
+) => ({
+    type: types.SET_INVALID_CUSTOM_FIELDS_TO_ERRORED,
+    payload: erroredCustomFields,
+})
+
+export function triggerTicketFieldsErrors(
+    erroredCustomFields: CustomFieldState['id'][]
+) {
+    return (dispatch: StoreDispatch) => {
+        void dispatch(setInvalidCustomFieldsToErrored(erroredCustomFields))
+        void dispatch(
+            notify({
+                message:
+                    'This ticket cannot be closed. Please fill the required fields.',
+                status: NotificationStatus.Error,
+            })
+        )
+    }
+}

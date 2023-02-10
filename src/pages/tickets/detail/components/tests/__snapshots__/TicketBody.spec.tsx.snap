@@ -4,6 +4,7 @@ exports[`TicketBody last read message should not pass \`isLastReadMessage\` for 
 <Fragment>
   <TicketHeaderWrapper
     key="ticket-header-0"
+    setStatus={[Function]}
   />
 </Fragment>
 `;
@@ -12,6 +13,7 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
 <Fragment>
   <TicketHeaderWrapper
     key="ticket-header-0"
+    setStatus={[Function]}
   />
   <TicketMessages
     hasCursor={false}
@@ -179,6 +181,7 @@ exports[`TicketBody should display and highlight the messages 1`] = `
 <Fragment>
   <TicketHeaderWrapper
     key="ticket-header-0"
+    setStatus={[Function]}
   />
   <TicketMessages
     hasCursor={false}
@@ -244,6 +247,7 @@ exports[`TicketBody should display and not highlight the messages 1`] = `
 <Fragment>
   <TicketHeaderWrapper
     key="ticket-header-0"
+    setStatus={[Function]}
   />
   <TicketMessages
     hasCursor={false}
@@ -309,6 +313,7 @@ exports[`TicketBody should display audit log events with messages 1`] = `
 <Fragment>
   <TicketHeaderWrapper
     key="ticket-header-0"
+    setStatus={[Function]}
   />
   <TicketMessages
     hasCursor={true}
@@ -389,6 +394,7 @@ exports[`TicketBody should display events with messages 1`] = `
 <Fragment>
   <TicketHeaderWrapper
     key="ticket-header-0"
+    setStatus={[Function]}
   />
   <TicketMessages
     hasCursor={true}
@@ -497,6 +503,7 @@ exports[`TicketBody should display messages 1`] = `
 <Fragment>
   <TicketHeaderWrapper
     key="ticket-header-0"
+    setStatus={[Function]}
   />
   <TicketMessages
     hasCursor={false}
@@ -558,6 +565,7 @@ exports[`TicketBody should display phone events 1`] = `
 <Fragment>
   <TicketHeaderWrapper
     key="ticket-header-0"
+    setStatus={[Function]}
   />
   <PhoneEvent
     event={
@@ -592,6 +600,7 @@ exports[`TicketBody should display rule suggestion in correct order 1`] = `
 <Fragment>
   <TicketHeaderWrapper
     key="ticket-header-0"
+    setStatus={[Function]}
   />
   <TicketMessages
     hasCursor={false}

@@ -3,17 +3,23 @@ import {connect, ConnectedProps} from 'react-redux'
 import {useParams, useLocation} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import {useAsyncFn, useEffectOnce, usePrevious, useKey} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {TicketMessageSourceType, TicketStatus} from 'business/types/ticket'
+import {getInvalidTicketFieldIds} from 'utils/customFields'
 import useSearch from 'hooks/useSearch'
 import {useTitle} from 'hooks/useTitle'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {RootState} from 'state/types'
+import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {notify} from 'state/notifications/actions'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import shortcutManager from 'services/shortcutManager'
 import socketManager from 'services/socketManager/socketManager'
 import {JoinEventType} from 'services/socketManager/types'
-import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     DEPRECATED_getActiveCustomer,
     getCustomersState,
@@ -40,12 +46,15 @@ import {
     goToPrevTicket,
     setCustomer,
     setStatus,
+    triggerTicketFieldsErrors,
 } from 'state/ticket/actions'
 import {updateCursor} from 'state/tickets/actions'
+import {getTicketFieldState} from 'state/ticket/selectors'
 import {getActiveView} from 'state/views/selectors'
 import {isMacOs} from 'utils/platform'
 
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {useGetCustomFieldDefinitions} from 'models/customField/queries'
 import Loader from '../../common/components/Loader/Loader'
 
 import TicketView from './components/TicketView'
@@ -84,7 +93,11 @@ export const TicketDetailContainer = ({
     submitTicket,
     ticket,
     updateCursor,
+    fieldsState,
 }: ConnectedProps<typeof connector>) => {
+    const flags = useFlags()
+    const isTicketFieldsEnabled = flags[FeatureFlagKey.TicketFields]
+    const dispatch = useAppDispatch()
     const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
     const {customer: customerId} = useSearch<{customer?: string}>()
     const ticketIdParamRef = useRef(ticketIdParam)
@@ -101,6 +114,17 @@ export const TicketDetailContainer = ({
     useEffect(() => {
         ticketIdParamRef.current = ticketIdParam
     })
+
+    const {
+        data: {data: fieldDefinitions = []} = {},
+        isLoading: isTicketFieldDefinitionLoading,
+    } = useGetCustomFieldDefinitions(
+        {
+            archived: false,
+            object_type: 'Ticket',
+        },
+        {enabled: isTicketFieldsEnabled}
+    )
 
     const [isTicketHidden, setIsTicketHidden] = useState(false)
 
@@ -248,6 +272,20 @@ export const TicketDetailContainer = ({
             return
         }
 
+        const invalidFields = getInvalidTicketFieldIds({
+            fieldsState,
+            fieldDefinitions,
+        })
+
+        if (
+            !isTicketFieldDefinitionLoading &&
+            status === TicketStatus.Closed &&
+            invalidFields.length
+        ) {
+            dispatch(triggerTicketFieldsErrors(invalidFields))
+            return
+        }
+
         // flush any pending updates from the TicketReplyEditor debouncer
         updateMessageText.flush()
 
@@ -300,7 +338,6 @@ export const TicketDetailContainer = ({
                         e.preventDefault()
                         e.stopImmediatePropagation()
                     }
-
                     void submit({status: TicketStatus.Closed, next: true})
                 },
             },
@@ -477,10 +514,27 @@ export const TicketDetailContainer = ({
     }
 
     const handleStatusChange = (status: string) => {
+        const invalidFields = getInvalidTicketFieldIds({
+            fieldsState,
+            fieldDefinitions,
+        })
+
+        if (
+            !isTicketFieldDefinitionLoading &&
+            status === TicketStatus.Closed &&
+            invalidFields.length
+        ) {
+            dispatch(triggerTicketFieldsErrors(invalidFields))
+            return
+        }
+
         return setStatus(status, () => {
-            if (status !== TicketStatus.Closed) {
-                return
-            }
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Ticket has been closed',
+                })
+            )
             maybeGoToNextTicket()
         })
     }
@@ -509,6 +563,7 @@ const connector = connect(
         newMessage: state.newMessage,
         canSendMessage: canSend(state),
         newMessageSource: getNewMessageSource(state),
+        fieldsState: getTicketFieldState(state),
     }),
     {
         clearTicket,

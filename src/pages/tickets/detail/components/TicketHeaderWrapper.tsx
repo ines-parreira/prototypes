@@ -99,9 +99,14 @@ const CollisionDetection = () => {
 type Props = {
     hideTicket: () => Promise<void>
     handleHistoryToggle: () => void
+    setStatus: (status: string) => any
 }
 
-const TicketHeaderWrapper = ({hideTicket, handleHistoryToggle}: Props) => {
+const TicketHeaderWrapper = ({
+    hideTicket,
+    handleHistoryToggle,
+    setStatus,
+}: Props) => {
     const flags = useFlags()
     // TODO: refactor after Virtualization is rolled out
     const isVirtualizationEnabled =
@@ -147,6 +152,7 @@ const TicketHeaderWrapper = ({hideTicket, handleHistoryToggle}: Props) => {
                     <TicketHeader
                         ticket={ticket}
                         hideTicket={hideTicket}
+                        setStatus={setStatus}
                         className="flex-grow"
                     />
                 </div>

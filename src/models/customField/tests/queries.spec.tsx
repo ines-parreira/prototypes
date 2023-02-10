@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {Provider} from 'react-redux'
 import React from 'react'
+
 import client from 'models/api/resources'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {

@@ -1,12 +1,8 @@
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 
-import {Ticket} from 'models/ticket/types'
 import {TICKET_EVENT_TYPES} from 'models/event/types'
-import {
-    CustomFieldState,
-    NormalizedCustomFieldState,
-} from 'models/customField/types'
+import {CustomFieldState} from 'models/customField/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import * as customerTypes from 'state/customers/constants'
@@ -15,7 +11,13 @@ import ticketReplyCache from 'state/newMessage/ticketReplyCache'
 import {GorgiasAction} from 'state/types'
 import {compare} from 'utils'
 
-import {getPendingMessageIndex, mergeActions, parseTimedelta} from './utils'
+import {Ticket} from 'models/ticket/types'
+import {
+    getPendingMessageIndex,
+    mergeActions,
+    normalizeCustomFields,
+    parseTimedelta,
+} from './utils'
 import * as types from './constants'
 import {
     deduplicateAuditLogEvents,
@@ -150,8 +152,15 @@ export default function reducer(
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS: {
             // Make sure we reset the cache before we send the message
             ticketReplyCache.delete(state.get('id'))
-
-            return state.merge(fromJS(action.resp))
+            const response = action.resp as Ticket
+            return state.mergeDeep(
+                fromJS({
+                    ...response,
+                    custom_fields: normalizeCustomFields(
+                        response.custom_fields
+                    ),
+                })
+            )
         }
 
         case types.FETCH_TICKET_START: {
@@ -160,18 +169,8 @@ export default function reducer(
 
         case types.FETCH_TICKET_SUCCESS: {
             const data = {...action.response}
-            const customFields = (action.response as Ticket).custom_fields
-            if (customFields) {
-                // normalize the data for better render handling
-                data.custom_fields =
-                    customFields.reduce<NormalizedCustomFieldState>(
-                        (accumulator, customField) => {
-                            accumulator[customField.id] = customField
-                            return accumulator
-                        },
-                        {}
-                    )
-            }
+
+            data.custom_fields = normalizeCustomFields(data.custom_fields)
             const newState = state.merge(data as Map<any, any>)
             return newState.setIn(
                 ['_internal', 'loading', 'fetchTicket'],
@@ -465,7 +464,7 @@ export default function reducer(
             const {ticket, messagesDifference} = action
 
             // merge received ticket with current ticket
-            let newState = state.merge(ticket as Map<any, any>)
+            let newState = state.mergeDeep(ticket as Map<any, any>)
 
             // keep the old ticket.customer.external_data
             // if the new ticket.customer doesn't have an external_data key
@@ -760,6 +759,19 @@ export default function reducer(
                 hasError: CustomFieldState['hasError']
             }
             return state.mergeIn(['custom_fields', String(id)], {id, hasError})
+        }
+
+        case types.SET_INVALID_CUSTOM_FIELDS_TO_ERRORED: {
+            const erroredCustomFields =
+                action.payload as CustomFieldState['id'][]
+            let nextState = state
+            erroredCustomFields.forEach((erroredId) => {
+                nextState = nextState.setIn(
+                    ['custom_fields', String(erroredId), 'hasError'],
+                    true
+                )
+            })
+            return nextState
         }
 
         default:
