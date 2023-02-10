@@ -2,43 +2,29 @@ import _noop from 'lodash/noop'
 import _find from 'lodash/find'
 import _throttle from 'lodash/throttle'
 import {dismissNotification} from 'reapop'
-import {EnhancedStore} from '@reduxjs/toolkit'
 
 import refreshIcon from 'assets/img/icons/refresh.svg'
 
-import * as socketEvents from '../../config/socketEvents'
-import {notify} from '../../state/notifications/actions'
-import {store} from '../../init'
-import {devLog} from '../../utils'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from '../../state/notifications/types'
-import {StoreDispatch} from '../../state/types'
+import {store} from 'init'
+import {devLog} from 'utils'
+import * as socketEvents from 'config/socketEvents'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {StoreDispatch} from 'state/types'
 
-import {BROADCAST_CHANNEL_NAME} from './constants.js'
+import {BROADCAST_CHANNEL_NAME} from './constants'
 import {
     fallbackBroadcastChannelAdapter,
     fallbackWorkerAdapter,
-} from './fallbackWorkerAdapter.js'
+} from './fallbackWorkerAdapter'
 import {
     BroadcastChannelEvent,
     ServerMessage,
     MessagePortEvent,
     SocketEventType,
     JoinEventType,
+    WSMessage,
 } from './types'
-
-type WSMessage = {
-    type: BroadcastChannelEvent | MessagePortEvent
-    json: Maybe<ServerMessage>
-}
-
-//$TsFixMe remove on ./fallbackWorkerAdapter.js
-const typeSafeFallbackBroadcastChannelAdapter =
-    fallbackBroadcastChannelAdapter as unknown as BroadcastChannel
-//$TsFixMe remove once init.js is migrated
-const typeSafeReduxStore = store as EnhancedStore
 
 const CONNECTION_TIMEOUT = 10
 
@@ -51,7 +37,7 @@ const currentBrowserSupportsSharedWorker =
 export class SocketManager {
     broadcastChannel = currentBrowserSupportsSharedWorker
         ? new window.BroadcastChannel(BROADCAST_CHANNEL_NAME)
-        : typeSafeFallbackBroadcastChannelAdapter
+        : fallbackBroadcastChannelAdapter
     isConnected = false
     disconnectedNotificationId = '696480246'
     rooms: socketEvents.SendData[] = [] // rooms currently joined
@@ -225,7 +211,7 @@ export class SocketManager {
      * Throttled to prevent a too high frequency of state refresh
      */
     dispatchReduxAction = _throttle((data) => {
-        return typeSafeReduxStore.dispatch(data) as ReturnType<StoreDispatch>
+        return store.dispatch(data) as ReturnType<StoreDispatch>
     }, 100)
 
     /**

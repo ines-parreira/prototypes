@@ -1,12 +1,11 @@
-import io from 'socket.io-client'
+import io, {Socket} from 'socket.io-client'
 
-import {BROADCAST_CHANNEL_EVENTS} from '../constants'
+import {BroadcastChannelEvent, WSMessage} from '../types'
 import {
-    FallbackWorker,
-    fallbackWorkerAdapter,
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
     DISCONNECTED_NOTIFICATION_DELAY,
-} from '../fallbackWorkerAdapter'
+} from '../constants'
+import {FallbackWorker, fallbackWorkerAdapter} from '../fallbackWorkerAdapter'
 
 jest.mock('socket.io-client', () => {
     return () => {
@@ -23,7 +22,7 @@ jest.spyOn(global, 'setTimeout')
 jest.spyOn(global, 'clearTimeout')
 
 describe('FallbackWorker', () => {
-    let fallbackWorker
+    let fallbackWorker: FallbackWorker
 
     const spyFallbackWorker = {
         port: {
@@ -52,7 +51,7 @@ describe('FallbackWorker', () => {
 
                 jest.runOnlyPendingTimers()
 
-                expect(fallbackWorker.socket.connect).toHaveBeenCalledTimes(1)
+                expect(fallbackWorker.socket?.connect).toHaveBeenCalledTimes(1)
                 expect(fallbackWorker.incrementalReconnectBackoff).toEqual(
                     2 * oldBackoff
                 )
@@ -74,7 +73,7 @@ describe('FallbackWorker', () => {
 
             jest.runOnlyPendingTimers()
 
-            expect(fallbackWorker.socket.connect).toHaveBeenCalledTimes(1)
+            expect(fallbackWorker.socket?.connect).toHaveBeenCalledTimes(1)
             expect(fallbackWorker.incrementalReconnectBackoff).toEqual(
                 MAX_INCREMENTAL_RECONNECT_BACKOFF
             )
@@ -93,7 +92,7 @@ describe('FallbackWorker', () => {
             fallbackWorker._onSocketJson(message)
 
             expect(spyFallbackWorker.postMessage).toHaveBeenCalledWith({
-                type: BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE,
+                type: BroadcastChannelEvent.ServerMessage,
                 json: message,
             })
         })
@@ -160,16 +159,16 @@ describe('FallbackWorker', () => {
             fallbackWorker.onConnect()
 
             expect(fallbackWorker.socket).not.toEqual(null)
-            expect(fallbackWorker.socket.on).toHaveBeenCalledTimes(3)
-            expect(fallbackWorker.socket.on).toHaveBeenCalledWith(
+            expect(fallbackWorker.socket?.on).toHaveBeenCalledTimes(3)
+            expect(fallbackWorker.socket?.on).toHaveBeenCalledWith(
                 'json',
                 fallbackWorker._onSocketJson
             )
-            expect(fallbackWorker.socket.on).toHaveBeenCalledWith(
+            expect(fallbackWorker.socket?.on).toHaveBeenCalledWith(
                 'connect',
                 fallbackWorker._onSocketConnect
             )
-            expect(fallbackWorker.socket.on).toHaveBeenCalledWith(
+            expect(fallbackWorker.socket?.on).toHaveBeenCalledWith(
                 'disconnect',
                 fallbackWorker._onSocketDisconnect
             )
@@ -181,19 +180,19 @@ describe('FallbackWorker', () => {
             fallbackWorker.onConnect()
 
             expect(spyFallbackWorker.postMessage).toHaveBeenCalledWith({
-                type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+                type: BroadcastChannelEvent.WsConnected,
             })
         })
     })
 
     describe('onMessage()', () => {
         it('should send a message to the socket because it is defined', () => {
-            fallbackWorker.socket = {send: jest.fn()}
+            fallbackWorker.socket = {send: jest.fn()} as unknown as Socket
             const message = {foo: 'bar'}
 
-            fallbackWorker.onMessage(message)
+            fallbackWorker.onMessage(message as WSMessage)
 
-            expect(fallbackWorker.socket.send).toHaveBeenCalledWith(message)
+            expect(fallbackWorker.socket?.send).toHaveBeenCalledWith(message)
         })
     })
 })

@@ -24,36 +24,41 @@
  * Inspired by https://ayushgp.github.io/scaling-websockets-using-sharedworkers/
  */
 
-import io from 'socket.io-client'
+import io, {Socket} from 'socket.io-client'
 
 import {
-    BROADCAST_CHANNEL_EVENTS,
     BROADCAST_CHANNEL_NAME,
-    MESSAGE_PORT_EVENTS,
+    MAX_INCREMENTAL_RECONNECT_BACKOFF,
+    DISCONNECTED_NOTIFICATION_DELAY,
+    HEALTH_CHECK_INTERVAL,
+    HEALTH_CHECK_RECEIVE_TIMEOUT,
+    HEALTH_CHECK_SEND_INTERVAL,
 } from './constants'
-
-export const SOCKET_EVENTS = Object.freeze({
-    CLIENT_CONNECTED: 'client-connected',
-    CLIENT_DISCONNECTED: 'client-disconnected',
-})
-export const MAX_INCREMENTAL_RECONNECT_BACKOFF = 30
-export const DISCONNECTED_NOTIFICATION_DELAY = 10
-export const HEALTH_CHECK_INTERVAL = 10
-export const HEALTH_CHECK_RECEIVE_TIMEOUT = 5
-export const HEALTH_CHECK_SEND_INTERVAL = 1
+import {
+    WSMessage,
+    MessagePortEvent,
+    BroadcastChannelEvent,
+    SocketEvent,
+} from './types'
 
 export class WebsocketSharedWorker {
-    wsUrl = null
-    socket = null
+    wsUrl: string | null = null
+    socket: Socket | null = null
 
     broadcastChannel = new self.BroadcastChannel(BROADCAST_CHANNEL_NAME)
 
     incrementalReconnectBackoff = 1
-    incrementalReconnectTask = null
+    incrementalReconnectTask: NodeJS.Timeout | null = null
 
-    sendDisconnectedNotificationTask = null
+    sendDisconnectedNotificationTask: NodeJS.Timeout | null = null
 
-    connectedTabs = {}
+    connectedTabs: Record<
+        string,
+        {
+            messagePort: MessagePort
+            lastHealthCheck: number
+        }
+    > = {}
 
     startHealthCheck() {
         setInterval(this.sendHealthCheck, HEALTH_CHECK_SEND_INTERVAL * 1000)
@@ -63,12 +68,12 @@ export class WebsocketSharedWorker {
     sendHealthCheck = () => {
         Object.keys(this.connectedTabs).forEach((clientId) => {
             this.connectedTabs[clientId].messagePort.postMessage({
-                type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
+                type: MessagePortEvent.HealthCheck,
             })
         })
     }
 
-    onHealthCheck = (clientId) => {
+    onHealthCheck = (clientId: string) => {
         if (this.connectedTabs[clientId]) {
             this.connectedTabs[clientId].lastHealthCheck = Date.now()
         }
@@ -81,8 +86,8 @@ export class WebsocketSharedWorker {
                 tab.lastHealthCheck <
                 currentTime - HEALTH_CHECK_RECEIVE_TIMEOUT * 1000
             ) {
-                this.socket.send({
-                    event: SOCKET_EVENTS.CLIENT_DISCONNECTED,
+                this.socket?.send({
+                    event: SocketEvent.ClientDisconnected,
                     clientId,
                 })
                 delete this.connectedTabs[clientId]
@@ -97,7 +102,7 @@ export class WebsocketSharedWorker {
         this.incrementalReconnectTask = setTimeout(() => {
             // eslint-disable-next-line no-console
             console.log('Reconnecting...')
-            this.socket.connect()
+            this.socket?.connect()
 
             this.incrementalReconnectBackoff = Math.min(
                 this.incrementalReconnectBackoff * 2,
@@ -108,9 +113,9 @@ export class WebsocketSharedWorker {
         }, this.incrementalReconnectBackoff * 1000)
     }
 
-    _onSocketJson = (wsMessage) => {
+    _onSocketJson = (wsMessage: WSMessage['json']) => {
         this.broadcastChannel.postMessage({
-            type: BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE,
+            type: BroadcastChannelEvent.ServerMessage,
             json: wsMessage,
         })
     }
@@ -119,7 +124,7 @@ export class WebsocketSharedWorker {
         // eslint-disable-next-line no-console
         console.log('WS connected!')
         this.broadcastChannel.postMessage({
-            type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+            type: BroadcastChannelEvent.WsConnected,
         })
 
         if (this.incrementalReconnectTask) {
@@ -139,7 +144,7 @@ export class WebsocketSharedWorker {
         this.sendDisconnectedNotificationTask = setTimeout(
             () =>
                 this.broadcastChannel.postMessage({
-                    type: BROADCAST_CHANNEL_EVENTS.WS_DISCONNECTED,
+                    type: BroadcastChannelEvent.WsDisconnected,
                 }),
             DISCONNECTED_NOTIFICATION_DELAY * 1000
         )
@@ -161,9 +166,9 @@ export class WebsocketSharedWorker {
      * @param message: the message sent by the newly connected tab
      * @param messagePort: the `MessagePort` associated with the newly connected tab
      */
-    onClientConnected = (message, messagePort) => {
+    onClientConnected = (message: WSMessage, messagePort: MessagePort) => {
         if (!this.socket) {
-            this.wsUrl = message.wsUrl
+            this.wsUrl = message.wsUrl!
             this.socket = io(this.wsUrl, {transports: ['websocket']})
 
             this.socket.on('json', this._onSocketJson)
@@ -171,17 +176,17 @@ export class WebsocketSharedWorker {
             this.socket.on('disconnect', this._onSocketDisconnect)
         } else {
             messagePort.postMessage({
-                type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+                type: BroadcastChannelEvent.WsConnected,
             })
         }
 
-        this.connectedTabs[message.clientId] = {
+        this.connectedTabs[message.clientId!] = {
             messagePort,
             lastHealthCheck: Date.now(),
         }
 
         this.socket.send({
-            event: SOCKET_EVENTS.CLIENT_CONNECTED,
+            event: SocketEvent.ClientConnected,
             clientId: message.clientId,
         })
     }
@@ -192,24 +197,25 @@ export class WebsocketSharedWorker {
      * @param messagePort: the `MessagePort` for which we want to generate a message handler
      * @returns {Function}: the message handler generated
      */
-    onPortMessage = (messagePort) => (messageEvent) => {
-        const message = messageEvent.data
+    onPortMessage =
+        (messagePort: MessagePort) =>
+        (messageEvent: MessageEvent<WSMessage>) => {
+            const message = messageEvent.data
 
-        if (message.type === MESSAGE_PORT_EVENTS.CLIENT_CONNECTED) {
-            this.onClientConnected(message, messagePort)
-        } else if (message.type === MESSAGE_PORT_EVENTS.HEALTH_CHECK) {
-            this.onHealthCheck(message.data)
-        } else if (this.socket) {
-            this.socket.send(message)
+            if (message.type === MessagePortEvent.ClientConnected) {
+                this.onClientConnected(message, messagePort)
+            } else if (message.type === MessagePortEvent.HealthCheck) {
+                this.onHealthCheck(message.data as string)
+            } else if (this.socket) {
+                this.socket.send(message)
+            }
         }
-    }
 
-    onPortConnect = (event) => {
+    onPortConnect = (event: MessageEvent) => {
         event.ports[0].onmessage = this.onPortMessage(event.ports[0])
     }
 }
 
 const worker = new WebsocketSharedWorker()
 worker.startHealthCheck()
-
-self.onconnect = worker.onPortConnect
+;(self as unknown as Record<string, unknown>).onconnect = worker.onPortConnect

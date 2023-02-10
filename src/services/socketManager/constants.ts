@@ -1,0 +1,7 @@
+export const BROADCAST_CHANNEL_NAME = 'WebsocketBroadcastChannel'
+
+export const MAX_INCREMENTAL_RECONNECT_BACKOFF = 30
+export const DISCONNECTED_NOTIFICATION_DELAY = 10
+export const HEALTH_CHECK_INTERVAL = 10
+export const HEALTH_CHECK_RECEIVE_TIMEOUT = 5
+export const HEALTH_CHECK_SEND_INTERVAL = 1

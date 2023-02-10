@@ -1,31 +1,18 @@
 import _find from 'lodash/find'
-import {dismissNotification} from 'reapop'
+import * as reapop from 'reapop'
 
-import * as socketConstants from '../../../config/socketConstants.ts'
-import * as socketEvents from '../../../config/socketEvents.ts'
-import {notify} from '../../../state/notifications/actions.ts'
+import * as socketEvents from 'config/socketEvents'
+import * as actions from 'state/notifications/actions'
+
+import {BROADCAST_CHANNEL_NAME} from '../constants'
 import {
-    BROADCAST_CHANNEL_NAME,
-    BROADCAST_CHANNEL_EVENTS,
-    MESSAGE_PORT_EVENTS,
-} from '../constants'
-import {SocketManager} from '../socketManager.ts'
-
-jest.mock('../../../state/notifications/actions.ts', () => {
-    return {
-        ...jest.requireActual('../../../state/notifications/actions.ts'),
-        notify: jest.fn(),
-    }
-})
-
-jest.mock('reapop', () => {
-    const reapop = jest.requireActual('reapop')
-
-    return {
-        ...reapop,
-        dismissNotification: jest.fn(reapop.dismissNotification),
-    }
-})
+    BroadcastChannelEvent,
+    MessagePortEvent,
+    JoinEventType,
+    SocketEventType,
+    ServerMessage,
+} from '../types'
+import {SocketManager} from '../socketManager'
 
 describe('SocketManager', () => {
     const socketManager = new SocketManager()
@@ -35,6 +22,9 @@ describe('SocketManager', () => {
     const sendToServerSpy = jest.spyOn(socketManager, '_sendToServer')
     const joinRoomSpy = jest.spyOn(socketManager, '_joinRoom')
     const leaveRoomSpy = jest.spyOn(socketManager, '_leaveRoom')
+
+    const notifySpy = jest.spyOn(actions, 'notify')
+    const dismissNotificationSpy = jest.spyOn(reapop, 'dismissNotification')
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -48,7 +38,7 @@ describe('SocketManager', () => {
             expect(socketManager.worker.port.start).toHaveBeenCalledTimes(1)
             expect(socketManager.worker.port.onmessage).not.toEqual(null)
             expect(socketManager.worker.port.postMessage).toHaveBeenCalledWith({
-                type: MESSAGE_PORT_EVENTS.CLIENT_CONNECTED,
+                type: MessagePortEvent.ClientConnected,
                 wsUrl: window.WS_URL,
                 clientId: window.CLIENT_ID,
             })
@@ -57,7 +47,11 @@ describe('SocketManager', () => {
                 window.BroadcastChannel
             )
             expect(
-                socketManager.broadcastChannel.constructorSpy
+                (
+                    socketManager.broadcastChannel as BroadcastChannel & {
+                        constructorSpy: jest.Mock
+                    }
+                ).constructorSpy
             ).toHaveBeenCalledWith(BROADCAST_CHANNEL_NAME)
             expect(
                 socketManager.broadcastChannel.addEventListener
@@ -68,7 +62,7 @@ describe('SocketManager', () => {
     describe('onMessage()', () => {
         it('should call `onConnect` when receiving a `WS_CONNECTED` event', () => {
             socketManager.onMessage({
-                type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+                type: BroadcastChannelEvent.WsConnected,
             })
 
             expect(onConnectSpy).toHaveBeenCalledTimes(1)
@@ -78,7 +72,7 @@ describe('SocketManager', () => {
 
         it('should call `onDisconnect` when receiving a `WS_DISCONNECTED` event', () => {
             socketManager.onMessage({
-                type: BROADCAST_CHANNEL_EVENTS.WS_DISCONNECTED,
+                type: BroadcastChannelEvent.WsDisconnected,
             })
 
             expect(onConnectSpy).not.toHaveBeenCalled()
@@ -88,7 +82,7 @@ describe('SocketManager', () => {
 
         it('should call `onServerMessage` when receiving a `SERVER_MESSAGE` event', () => {
             const message = {
-                type: BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE,
+                type: BroadcastChannelEvent.ServerMessage,
                 json: {foo: 'bar'},
             }
 
@@ -105,7 +99,9 @@ describe('SocketManager', () => {
         it.each([null, {}, {foo: 'bar'}, {event: {foo: 'bar'}}])(
             'should not do anything and not throw an error when passed message is missing some fields',
             (serverMessage) => {
-                socketManager.onServerMessage(serverMessage)
+                socketManager.onServerMessage(
+                    serverMessage as Maybe<ServerMessage>
+                )
             }
         )
 
@@ -114,11 +110,11 @@ describe('SocketManager', () => {
             const serverMessage = {event: {type: eventType}}
 
             const config = _find(socketEvents.receivedEvents, {name: eventType})
-            config.onReceive.call = jest.fn()
+            config!.onReceive.call = jest.fn()
 
-            socketManager.onServerMessage(serverMessage)
+            socketManager.onServerMessage(serverMessage as Maybe<ServerMessage>)
 
-            expect(config.onReceive.call).toHaveBeenCalledWith(
+            expect(config!.onReceive.call).toHaveBeenCalledWith(
                 socketManager,
                 serverMessage
             )
@@ -132,7 +128,7 @@ describe('SocketManager', () => {
             socketManager.onDisconnect()
 
             expect(socketManager.isConnected).toEqual(false)
-            expect(notify.mock.calls).toMatchSnapshot()
+            expect(notifySpy.mock.calls).toMatchSnapshot()
         })
     })
 
@@ -143,44 +139,46 @@ describe('SocketManager', () => {
             socketManager.onConnect()
 
             expect(socketManager.isConnected).toEqual(true)
-            expect(dismissNotification.mock.calls).toMatchSnapshot()
+            expect(dismissNotificationSpy.mock.calls).toMatchSnapshot()
         })
     })
 
     describe('send()', () => {
         it('should call `_sendDataToServer` using the data formatted using the config matching passed `configName`', () => {
-            const configName = socketConstants.TICKET_VIEWED
+            const configName = SocketEventType.TicketViewed
             const config = _find(socketEvents.sendEvents, {name: configName})
             const id = '1'
 
             socketManager.send(configName, id)
 
-            expect(sendToServerSpy).toHaveBeenCalledWith(config.dataToSend(id))
+            expect(sendToServerSpy).toHaveBeenCalledWith(config!.dataToSend(id))
         })
     })
 
     describe('join()', () => {
         it('should call `_sendDataToServer` using the data formatted using the config matching passed `configName`', () => {
-            const configName = 'ticket'
+            const configName = JoinEventType.Ticket
             const config = _find(socketEvents.joinEvents, {name: configName})
             const id = '1'
 
             socketManager.join(configName, id)
 
-            expect(joinRoomSpy).toHaveBeenCalledWith(config.dataToSend(id))
+            expect(joinRoomSpy).toHaveBeenCalledWith(config!.dataToSend(id))
         })
     })
 
     describe('leave()', () => {
         it('should call `_sendDataToServer` using the data formatted using the config matching passed `configName`', () => {
-            const configName = 'ticket'
+            const configName = JoinEventType.Ticket
             const config = _find(socketEvents.joinEvents, {name: configName})
             const id = '1'
 
             socketManager.leave(configName, id)
 
             expect(leaveRoomSpy).toHaveBeenCalledTimes(1)
-            expect(leaveRoomSpy.mock.calls[0][0]).toEqual(config.dataToSend(id))
+            expect(leaveRoomSpy.mock.calls[0][0]).toEqual(
+                config!.dataToSend(id)
+            )
         })
     })
 })

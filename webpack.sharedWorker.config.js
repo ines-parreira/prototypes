@@ -25,7 +25,7 @@ module.exports = () => {
         optimization,
         devtool: 'source-map',
         entry: {
-            sharedWorker: `${srcDir}/services/socketManager/sharedWorker.js`,
+            sharedWorker: `${srcDir}/services/socketManager/sharedWorker.ts`,
         },
         output: {
             path: buildDir,
@@ -36,10 +36,13 @@ module.exports = () => {
         module: {
             rules: [
                 {
-                    test: /\.js$/i,
+                    test: /\.(js|tsx?)$/i,
                     loader: 'babel-loader?cacheDirectory',
                 },
             ],
+        },
+        resolve: {
+            extensions: ['.ts', '.tsx', '.js'],
         },
         plugins: [
             new ManifestPlugin({

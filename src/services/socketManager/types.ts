@@ -21,6 +21,11 @@ export enum MessagePortEvent {
     HealthCheck = 'HEALTH_CHECK',
 }
 
+export enum SocketEvent {
+    ClientConnected = 'client-connected',
+    ClientDisconnected = 'client-disconnected',
+}
+
 export enum SocketEventType {
     AgentActive = 'agent-active',
     AgentInactive = 'agent-inactive',
@@ -337,3 +342,11 @@ export type ServerMessage =
     | TicketTypingActivityShopperStartedEvent
     | WhatsAppOnboardingSucceededEvent
     | WhatsAppOnboardingFailedEvent
+
+export type WSMessage = {
+    type?: BroadcastChannelEvent | MessagePortEvent | SocketEvent
+    wsUrl?: string
+    clientId?: string
+    data?: any
+    json?: Maybe<ServerMessage> | Record<string, unknown>
+}
