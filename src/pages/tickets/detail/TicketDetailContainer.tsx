@@ -282,6 +282,9 @@ export const TicketDetailContainer = ({
             status === TicketStatus.Closed &&
             invalidFields.length
         ) {
+            logEvent(SegmentEvent.CustomFieldTicketValueRequiredMissingError, {
+                ticketId,
+            })
             dispatch(triggerTicketFieldsErrors(invalidFields))
             return
         }
@@ -514,6 +517,12 @@ export const TicketDetailContainer = ({
     }
 
     const handleStatusChange = (status: string) => {
+        if (status === TicketStatus.Closed) {
+            logEvent(SegmentEvent.TicketCloseAction, {
+                ticketId,
+            })
+        }
+
         const invalidFields = getInvalidTicketFieldIds({
             fieldsState,
             fieldDefinitions,
@@ -524,6 +533,9 @@ export const TicketDetailContainer = ({
             status === TicketStatus.Closed &&
             invalidFields.length
         ) {
+            logEvent(SegmentEvent.CustomFieldTicketValueRequiredMissingError, {
+                ticketId,
+            })
             dispatch(triggerTicketFieldsErrors(invalidFields))
             return
         }

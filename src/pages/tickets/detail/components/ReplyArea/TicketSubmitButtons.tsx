@@ -19,6 +19,7 @@ import {hasContentlessAction} from 'state/ticket/selectors'
 import Tooltip from 'pages/common/components/Tooltip'
 import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import css from './TicketSubmitButtons.less'
 
 /* eslint-disable react/jsx-key */
@@ -72,9 +73,15 @@ export function TicketSubmitButtonsContainer({
 
     const handleSubmit = useCallback(
         (status?: TicketStatus, next?: any) => {
+            if (status === TicketStatus.Closed && next === true) {
+                logEvent(SegmentEvent.TicketSendAndCloseButtonClicked, {
+                    ticketId: ticket.get('id'),
+                })
+            }
+
             submit({status, next})
         },
-        [submit]
+        [submit, ticket]
     )
 
     const handleClickHideTips = useCallback(() => {
