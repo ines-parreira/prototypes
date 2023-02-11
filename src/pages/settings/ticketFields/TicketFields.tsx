@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import {Container} from 'reactstrap'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {Link, NavLink, useParams} from 'react-router-dom'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useIsFlagEnabled} from 'hooks/useIsFlagEnabled'
 import useTitle from 'hooks/useTitle'
 import {useGetCustomFieldDefinitions} from 'models/customField/queries'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -23,15 +23,19 @@ export default function TicketFields() {
     const {activeTab} = useParams<{activeTab: TicketFieldsTab | string}>()
     const [activeCursor, setActiveCursor] = useState<Maybe<string>>(null)
     const [archivedCursor, setArchivedCursor] = useState<Maybe<string>>(null)
+    const isTicketFieldsEnabled = useIsFlagEnabled(FeatureFlagKey.TicketFields)
 
     const {
         data: {data: activeFields = [], meta: activeFieldsPaginationMeta} = {},
         isLoading: isLoadingActive,
-    } = useGetCustomFieldDefinitions({
-        archived: false,
-        object_type: 'Ticket',
-        cursor: activeCursor,
-    })
+    } = useGetCustomFieldDefinitions(
+        {
+            archived: false,
+            object_type: 'Ticket',
+            cursor: activeCursor,
+        },
+        {enabled: isTicketFieldsEnabled}
+    )
 
     const {
         data: {
@@ -39,15 +43,17 @@ export default function TicketFields() {
             meta: archivedFieldsPaginationMeta,
         } = {},
         isLoading: isLoadingArchived,
-    } = useGetCustomFieldDefinitions({
-        archived: true,
-        object_type: 'Ticket',
-        cursor: archivedCursor,
-    })
+    } = useGetCustomFieldDefinitions(
+        {
+            archived: true,
+            object_type: 'Ticket',
+            cursor: archivedCursor,
+        },
+        {enabled: isTicketFieldsEnabled}
+    )
 
     // Only show this page if the ticket fields feature flag is on
-    const ticketFieldsEnabled = useFlags()[FeatureFlagKey.TicketFields]
-    if (!ticketFieldsEnabled) {
+    if (!isTicketFieldsEnabled) {
         return null
     }
 

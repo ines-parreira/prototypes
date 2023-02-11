@@ -3,7 +3,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {useParams, useLocation} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import {useAsyncFn, useEffectOnce, usePrevious, useKey} from 'react-use'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {TicketMessageSourceType, TicketStatus} from 'business/types/ticket'
 import {getInvalidTicketFieldIds} from 'utils/customFields'
@@ -53,6 +52,7 @@ import {getTicketFieldState} from 'state/ticket/selectors'
 import {getActiveView} from 'state/views/selectors'
 import {isMacOs} from 'utils/platform'
 
+import {useIsFlagEnabled} from 'hooks/useIsFlagEnabled'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useGetCustomFieldDefinitions} from 'models/customField/queries'
 import Loader from '../../common/components/Loader/Loader'
@@ -95,8 +95,7 @@ export const TicketDetailContainer = ({
     updateCursor,
     fieldsState,
 }: ConnectedProps<typeof connector>) => {
-    const flags = useFlags()
-    const isTicketFieldsEnabled = flags[FeatureFlagKey.TicketFields]
+    const isTicketFieldsEnabled = useIsFlagEnabled(FeatureFlagKey.TicketFields)
     const dispatch = useAppDispatch()
     const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
     const {customer: customerId} = useSearch<{customer?: string}>()
