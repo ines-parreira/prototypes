@@ -228,7 +228,7 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
                                     this.state.highlightedElements
                                 }
                                 index={index}
-                                isLast={index === elements.size - 1}
+                                isLast={index === elements.size}
                                 lastMessageDatetimeAfterMount={
                                     this.lastMessageDatetimeAfterMount
                                 }
