@@ -12,12 +12,14 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import PageHeader from 'pages/common/components/PageHeader'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import {IntegrationType} from 'models/integration/constants'
+import CampaignGenerator from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator/CampaignGenerator'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 
 import css from './GorgiasChatIntegrationCampaigns.less'
 
 type Props = {
     integration: Map<any, any>
+    currentUser: Map<any, any>
 } & ConnectedProps<typeof connector>
 
 export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
@@ -35,7 +37,7 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
     }
 
     render() {
-        const {integration} = this.props
+        const {integration, currentUser} = this.props
 
         const campaigns: List<any> =
             integration.getIn(['meta', 'campaigns']) || fromJS([])
@@ -74,6 +76,11 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                         Use campaigns to prompt visitors of your website to
                         start chatting with your team.
                     </p>
+
+                    <CampaignGenerator
+                        integration={integration}
+                        currentUser={currentUser}
+                    />
 
                     {campaigns.isEmpty() && (
                         <div>

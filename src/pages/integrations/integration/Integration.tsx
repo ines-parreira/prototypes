@@ -459,6 +459,7 @@ export const IntegrationDetail = ({
                     return (
                         <GorgiasChatIntegrationCampaigns
                             integration={integration}
+                            currentUser={currentUser}
                         />
                     )
                 }

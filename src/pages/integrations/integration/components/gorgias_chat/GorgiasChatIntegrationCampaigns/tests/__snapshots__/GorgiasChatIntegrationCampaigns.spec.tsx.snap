@@ -1,5 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<GorgiasChatIntegrationCampaigns/> render() should display infobox to admin 1`] = `
+[
+  [
+    Immutable.Map {
+      "id": 118,
+      "type": "gorgias_chat",
+      "name": "My new chat 3",
+      "meta": Immutable.Map {
+        "campaigns": Immutable.List [],
+      },
+    },
+    {
+      "generate_revenue_campaigns": true,
+    },
+  ],
+]
+`;
+
 exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty state correctly 1`] = `
 <div>
   <div
