@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
 import React, {useCallback, useEffect, useRef} from 'react'
-import FroalaEditorComponent from 'react-froala-wysiwyg'
+import FroalaEditorComponentType from 'react-froala-wysiwyg'
 import bytes from 'bytes'
 
 import {zip} from 'lodash'
@@ -13,6 +13,7 @@ import {NotificationStatus} from '../../../../../../state/notifications/types'
 import {uploadFiles} from '../../../../../../utils'
 
 import {useEditionManager} from '../../../providers/EditionManagerContext'
+import FroalaEditorComponent from './FroalaEditorComponent.js'
 import {FroalaEditor, config} from './froala-config'
 import {Editor} from './types'
 import {
@@ -30,7 +31,7 @@ type Props = {
     onEditorReady: (content: string) => void
 }
 
-type FroalaEditorInstance = FroalaEditorComponent & {
+type FroalaEditorInstance = FroalaEditorComponentType & {
     editor: Editor
     editorInitialized: boolean
 }

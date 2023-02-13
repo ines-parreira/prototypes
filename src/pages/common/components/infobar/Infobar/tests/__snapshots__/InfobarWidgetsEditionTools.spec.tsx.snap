@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`InfobarWidgetsEditionTools component should render widgets edition tools disabled because the widgets are not dirty 1`] = `
-<div>
+<div
+  className="footer"
+>
   <ForwardRef
     className="mr-2"
     isDisabled={true}
@@ -24,7 +26,9 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
 `;
 
 exports[`InfobarWidgetsEditionTools component should render widgets edition tools enabled because the widgets are dirty and not being saved 1`] = `
-<div>
+<div
+  className="footer"
+>
   <ForwardRef
     className="mr-2"
     isDisabled={false}
@@ -47,7 +51,9 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
 `;
 
 exports[`InfobarWidgetsEditionTools component should render widgets edition tools loading and disabled, because the widgets are being saved 1`] = `
-<div>
+<div
+  className="footer"
+>
   <ForwardRef
     className="mr-2"
     isDisabled={false}

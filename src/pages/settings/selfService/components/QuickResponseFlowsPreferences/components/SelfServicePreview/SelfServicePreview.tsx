@@ -1,5 +1,5 @@
 import React, {useMemo, useState, useEffect} from 'react'
-import {useRouteMatch} from 'react-router'
+import {useRouteMatch} from 'react-router-dom'
 import {ButtonGroup, ListGroup, Button} from 'reactstrap'
 
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
