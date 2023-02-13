@@ -4,34 +4,17 @@ import React from 'react'
 import moment, {Moment} from 'moment'
 import {connect, ConnectedProps} from 'react-redux'
 import _debounce from 'lodash/debounce'
-import {fromJS, List, Map} from 'immutable'
+import {List, Map} from 'immutable'
 
 import _xor from 'lodash/xor'
-import {TicketMessage} from 'models/ticket/types'
-import {
-    isTicketAISuggestion,
-    isTicketEvent,
-    isTicketRuleSuggestion,
-    isTicketSatisfactionSurvey,
-} from 'models/ticket/predicates'
 import * as ticketSelectors from 'state/ticket/selectors'
 import shortcutManager from 'services/shortcutManager/index'
 import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
-import {PHONE_EVENTS} from 'constants/event'
+import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
 import {RootState} from 'state/types'
 
-import TicketMessages from './TicketMessages/TicketMessages'
-import SatisfactionSurvey from './SatisfactionSurvey'
-import AuditLogEvent, {contentfulEventTypesValues} from './AuditLogEvent'
-import Event from './Event'
-import PhoneEvent from './PhoneEvent/PhoneEvent'
-import PrivateReplyEvent from './PrivateReplyEvent/PrivateReplyEvent'
-import {PRIVATE_REPLY_ACTIONS} from './PrivateReplyEvent/constants'
-
 import css from './TicketBody.less'
-import RuleSuggestion from './RuleSuggestion/RuleSuggestion'
 import {MessageQuoteContext} from './TicketBodyVirtualized'
-import AISuggestion from './RuleSuggestion/AISuggestion'
 
 // $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration
 type HighlightedElements = {
@@ -130,37 +113,8 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
         }
     }
 
-    _renderMessages(messages: TicketMessage[], index: number) {
-        const {
-            ticket,
-            setStatus,
-            lastReadMessage,
-            lastCustomerMessage = fromJS({}),
-        } = this.props
-
-        const id = `message-${index}`
-        return (
-            <TicketMessages
-                id={id}
-                key={id}
-                messages={messages}
-                ticketId={ticket.get('id')}
-                timezone={this.props.currentUser.get('timezone')}
-                lastMessageDatetimeAfterMount={
-                    this.lastMessageDatetimeAfterMount
-                }
-                setStatus={setStatus}
-                lastReadMessageId={lastReadMessage.get('id')}
-                lastCustomerMessage={lastCustomerMessage}
-                hasCursor={this.state.messageCursor === index}
-                highlightedElements={this.state.highlightedElements}
-                customer={ticket.get('customer')}
-            />
-        )
-    }
-
     render() {
-        const {elements, groupedElements, ticket} = this.props
+        const {elements, groupedElements, setStatus} = this.props
 
         if (elements.size === 0) {
             return null
@@ -174,100 +128,21 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
                 }}
             >
                 <div className={css.wrapper}>
-                    {groupedElements.map((element, index: number) => {
-                        if (Array.isArray(element)) {
-                            return this._renderMessages(element, index)
-                        }
-
-                        const elementMap: Map<any, any> = fromJS(element)
-                        const elementType = elementMap.get('type')
-                        const elementId = elementMap.get('id') as number
-                        const isLast = index === elements.size - 1
-                        const key = `event-${elementId}`
-                        const action_name = elementMap.getIn([
-                            'data',
-                            'action_name',
-                        ])
-
-                        if (isTicketSatisfactionSurvey(element)) {
-                            return (
-                                <SatisfactionSurvey
-                                    key={`survey-${index}`}
-                                    satisfactionSurvey={elementMap}
-                                    customer={ticket.get('customer')}
-                                    isLast={isLast}
-                                />
-                            )
-                        }
-
-                        if (isTicketRuleSuggestion(element))
-                            return (
-                                <RuleSuggestion
-                                    key={`rule-suggestion-${index}`}
-                                    ticket={ticket.toJS()}
-                                    isCollapsed={!isLast}
-                                />
-                            )
-
-                        if (isTicketAISuggestion(element))
-                            return (
-                                <AISuggestion
-                                    key={`ai-suggestion-${index}`}
-                                    ticket={ticket.toJS()}
-                                    isCollapsed={!isLast}
-                                />
-                            )
-
-                        if (isTicketEvent(element)) {
-                            if (
-                                contentfulEventTypesValues.includes(elementType)
-                            ) {
-                                return (
-                                    <AuditLogEvent
-                                        key={key}
-                                        event={elementMap}
-                                        isLast={isLast}
-                                        setHighlightedElements={
-                                            this.setHighlightedElements
-                                        }
-                                    />
-                                )
+                    {groupedElements.map((element, index: number) => (
+                        <TicketBodyElement
+                            key={`element-${index}`}
+                            element={element}
+                            hasCursor={this.state.messageCursor === index}
+                            highlightedElements={this.state.highlightedElements}
+                            index={index}
+                            isLast={index === elements.size - 1}
+                            lastMessageDatetimeAfterMount={
+                                this.lastMessageDatetimeAfterMount
                             }
-
-                            if (PHONE_EVENTS.includes(elementType)) {
-                                return (
-                                    <PhoneEvent
-                                        key={key}
-                                        event={elementMap}
-                                        isLast={isLast}
-                                    />
-                                )
-                            }
-
-                            if (
-                                !!action_name &&
-                                PRIVATE_REPLY_ACTIONS.includes(action_name)
-                            ) {
-                                return (
-                                    <PrivateReplyEvent
-                                        key={key}
-                                        event={elementMap}
-                                        isLast={isLast}
-                                    />
-                                )
-                            }
-
-                            return (
-                                <Event
-                                    key={key}
-                                    event={elementMap}
-                                    isLast={isLast}
-                                />
-                            )
-                        }
-
-                        return null
-                    })}
+                            setHighlightedElements={this.setHighlightedElements}
+                            setStatus={setStatus}
+                        />
+                    ))}
                 </div>
             </MessageQuoteContext.Provider>
         )
@@ -275,11 +150,7 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
 }
 
 const connector = connect((state: RootState) => ({
-    currentUser: state.currentUser,
     groupedElements: ticketSelectors.getTicketBodyElements(state),
-    ticket: state.ticket,
-    lastReadMessage: ticketSelectors.getLastReadMessage(state),
-    lastCustomerMessage: ticketSelectors.getLastCustomerMessage(state),
 }))
 
 export default connector(TicketBodyNonVirtualized)

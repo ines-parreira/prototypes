@@ -1,4 +1,4 @@
-import React, {createContext, ReactNode} from 'react'
+import React, {createContext} from 'react'
 import moment, {Moment} from 'moment'
 import {connect, ConnectedProps} from 'react-redux'
 import _debounce from 'lodash/debounce'
@@ -9,12 +9,7 @@ import _noop from 'lodash/noop'
 import classnames from 'classnames'
 
 import {TicketElement, TicketMessage} from 'models/ticket/types'
-import {
-    isTicketAISuggestion,
-    isTicketEvent,
-    isTicketRuleSuggestion,
-    isTicketSatisfactionSurvey,
-} from 'models/ticket/predicates'
+import {isTicketEvent} from 'models/ticket/predicates'
 import * as ticketSelectors from 'state/ticket/selectors'
 import shortcutManager from 'services/shortcutManager/index'
 import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
@@ -23,20 +18,13 @@ import {RootState} from 'state/types'
 import {getActionByName} from 'config/actions'
 
 import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
+import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
 import TicketHeaderWrapper from 'pages/tickets/detail/components/TicketHeaderWrapper'
-import {reportError} from 'utils/errors'
-import TicketMessages from './TicketMessages/TicketMessages'
-import PhoneEvent from './PhoneEvent/PhoneEvent'
-import PrivateReplyEvent from './PrivateReplyEvent/PrivateReplyEvent'
 import {PRIVATE_REPLY_ACTIONS} from './PrivateReplyEvent/constants'
-import SatisfactionSurvey from './SatisfactionSurvey'
-import AuditLogEvent, {contentfulEventTypesValues} from './AuditLogEvent'
-import Event from './Event'
-import RuleSuggestion from './RuleSuggestion/RuleSuggestion'
+import {contentfulEventTypesValues} from './AuditLogEvent'
 import {ReplyFormWithVirtuosoContext} from './ReplyForm'
 
 import css from './TicketBody.less'
-import AISuggestion from './RuleSuggestion/AISuggestion'
 
 type FakeVirtuosoItems = 'header'
 
@@ -192,44 +180,15 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
         }
     }
 
-    _renderMessages(messages: TicketMessage[], index: number) {
-        const {
-            ticket,
-            setStatus,
-            lastReadMessage,
-            lastCustomerMessage = fromJS({}),
-        } = this.props
-        const id = `message-${index}`
-        return (
-            <TicketMessages
-                id={id}
-                key={id}
-                messages={messages}
-                ticketId={ticket.get('id')}
-                timezone={this.props.currentUser.get('timezone')}
-                lastMessageDatetimeAfterMount={
-                    this.lastMessageDatetimeAfterMount
-                }
-                setStatus={setStatus}
-                lastReadMessageId={lastReadMessage.get('id')}
-                lastCustomerMessage={lastCustomerMessage}
-                hasCursor={this.state.messageCursor === index}
-                highlightedElements={this.state.highlightedElements}
-                customer={ticket.get('customer')}
-            />
-        )
-    }
-
     render() {
         const {
             elements,
-            ticket,
             submit,
             hideTicket,
             handleHistoryToggle,
             isShopperTyping,
-            shopperName,
             setStatus,
+            shopperName,
         } = this.props
 
         return (
@@ -251,117 +210,35 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
                     data={this._getGroupedElements()}
                     className={classnames(css.wrapper, css.isVirtualized)}
                     initialTopMostItemIndex={{index: 'LAST'}}
-                    followOutput={(isAtBottom: boolean) => {
-                        if (isAtBottom) {
-                            return 'smooth'
-                        }
-                        return false
-                    }}
-                    itemContent={(index, element) => {
-                        let itemContent: ReactNode = null
-
-                        if (element === 'header') {
-                            itemContent = (
-                                <TicketHeaderWrapper
-                                    key={`ticket-header-${index}`}
-                                    hideTicket={hideTicket}
-                                    handleHistoryToggle={handleHistoryToggle}
-                                    setStatus={setStatus}
-                                />
-                            )
-                        } else if (Array.isArray(element)) {
-                            itemContent = this._renderMessages(element, index)
-                        } else {
-                            const elementMap: Map<any, any> = fromJS(element)
-                            const elementType = elementMap.get('type')
-                            const elementId = elementMap.get('id') as number
-                            const isLast = index === elements.size
-                            const key = `event-${elementId}`
-                            const action_name = elementMap.getIn([
-                                'data',
-                                'action_name',
-                            ])
-
-                            if (isTicketSatisfactionSurvey(element)) {
-                                itemContent = (
-                                    <SatisfactionSurvey
-                                        key={`survey-${index}`}
-                                        satisfactionSurvey={elementMap}
-                                        customer={ticket.get('customer')}
-                                        isLast={isLast}
-                                    />
-                                )
-                            } else if (isTicketRuleSuggestion(element))
-                                itemContent = (
-                                    <RuleSuggestion
-                                        key={`rule-suggestion-${index}`}
-                                        ticket={ticket.toJS()}
-                                        isCollapsed={!isLast}
-                                    />
-                                )
-                            else if (isTicketAISuggestion(element))
-                                itemContent = (
-                                    <AISuggestion
-                                        key={`ai-suggestion-${index}`}
-                                        ticket={ticket.toJS()}
-                                        isCollapsed={!isLast}
-                                    />
-                                )
-                            else if (isTicketEvent(element)) {
-                                if (
-                                    contentfulEventTypesValues.includes(
-                                        elementType
-                                    )
-                                ) {
-                                    itemContent = (
-                                        <AuditLogEvent
-                                            key={key}
-                                            event={elementMap}
-                                            isLast={isLast}
-                                            setHighlightedElements={
-                                                this.setHighlightedElements
-                                            }
-                                        />
-                                    )
-                                } else if (PHONE_EVENTS.includes(elementType)) {
-                                    itemContent = (
-                                        <PhoneEvent
-                                            key={key}
-                                            event={elementMap}
-                                            isLast={isLast}
-                                        />
-                                    )
-                                } else if (
-                                    !!action_name &&
-                                    PRIVATE_REPLY_ACTIONS.includes(action_name)
-                                ) {
-                                    itemContent = (
-                                        <PrivateReplyEvent
-                                            key={key}
-                                            event={elementMap}
-                                            isLast={isLast}
-                                        />
-                                    )
-                                } else {
-                                    itemContent = (
-                                        <Event
-                                            key={key}
-                                            event={elementMap}
-                                            isLast={isLast}
-                                        />
-                                    )
+                    followOutput={(isAtBottom: boolean) =>
+                        isAtBottom ? 'smooth' : false
+                    }
+                    itemContent={(index, element) =>
+                        element === 'header' ? (
+                            <TicketHeaderWrapper
+                                hideTicket={hideTicket}
+                                handleHistoryToggle={handleHistoryToggle}
+                                setStatus={setStatus}
+                            />
+                        ) : (
+                            <TicketBodyElement
+                                element={element}
+                                hasCursor={this.state.messageCursor === index}
+                                highlightedElements={
+                                    this.state.highlightedElements
                                 }
-                            }
-                        }
-
-                        if (itemContent === null) {
-                            reportError(new Error(`Null ticket element`), {
-                                extra: {element},
-                            })
-                        }
-
-                        return itemContent
-                    }}
+                                index={index}
+                                isLast={index === elements.size - 1}
+                                lastMessageDatetimeAfterMount={
+                                    this.lastMessageDatetimeAfterMount
+                                }
+                                setHighlightedElements={
+                                    this.setHighlightedElements
+                                }
+                                setStatus={setStatus}
+                            />
+                        )
+                    }
                     context={{
                         submit,
                         isShopperTyping,
@@ -377,12 +254,8 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
 }
 
 const connector = connect((state: RootState) => ({
-    currentUser: state.currentUser,
     groupedElements: ticketSelectors.getTicketBodyElements(state),
-    ticket: state.ticket,
-    lastReadMessage: ticketSelectors.getLastReadMessage(state),
     isHistoryDisplayed: ticketSelectors.getDisplayHistory(state),
-    lastCustomerMessage: ticketSelectors.getLastCustomerMessage(state),
 }))
 
 export default connector(TicketBodyVirtualized)

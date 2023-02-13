@@ -1,23 +1,32 @@
-import React, {ComponentProps} from 'react'
-import {shallow, ShallowWrapper} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
-import _omit from 'lodash/omit'
+import React from 'react'
+import {Provider} from 'react-redux'
 import {VirtuosoProps} from 'react-virtuoso'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
-import {message} from 'models/ticket/tests/mocks'
-import {TicketElement, TicketMessage} from 'models/ticket/types'
-import {TICKET_EVENT_TYPES} from 'models/event/types'
-import {TicketBodyVirtualized} from 'pages/tickets/detail/components/TicketBodyVirtualized'
-import TicketMessages from 'pages/tickets/detail/components/TicketMessages/TicketMessages'
-import {TicketChannel} from 'business/types/ticket'
-import {INCOMING_PHONE_CALL, OUTGOING_PHONE_CALL} from 'constants/event'
-import * as ticketPredicates from 'models/ticket/predicates'
-import {reportError} from 'utils/errors'
+import {message as defaultMessage} from 'models/ticket/tests/mocks'
+import TicketBodyVirtualized from 'pages/tickets/detail/components/TicketBodyVirtualized'
+
+const mockStore = configureMockStore([thunk])
+
+jest.mock(
+    'pages/tickets/detail/components/TicketBodyElement',
+    () =>
+        ({index}: {index: number}) =>
+            <p>TicketBodyElement {index}</p>
+)
+
+jest.mock('pages/tickets/detail/components/TicketHeaderWrapper', () => () => (
+    <p>TicketHeaderWrapper</p>
+))
 
 jest.mock('react-virtuoso', () => {
-    function Virtuoso(props: VirtuosoProps<unknown, unknown>) {
+    const {forwardRef} = jest.requireActual('react')
+    //eslint-disable-next-line @typescript-eslint/no-unused-vars
+    function Virtuoso(props: VirtuosoProps<unknown, unknown>, _ref: any) {
         return (
             <>
                 {props.data?.map((value, index) =>
@@ -27,454 +36,34 @@ jest.mock('react-virtuoso', () => {
         )
     }
 
-    return {Virtuoso}
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    return {Virtuoso: forwardRef(Virtuoso)}
 })
 
-jest.spyOn(ticketPredicates, 'isTicketSatisfactionSurvey')
-
-jest.mock('utils/errors')
-const mockReport = reportError as jest.Mock<typeof reportError>
-
 describe('TicketBody', () => {
-    const commonProps = {
-        lastReadMessage: fromJS({
-            id: 1,
-        }),
-        ticket: fromJS({id: 1}),
-        setStatus: _noop,
-        currentUser: fromJS({
-            timezone: 'UTC',
-        }),
-    } as ComponentProps<typeof TicketBodyVirtualized>
-
-    it('should display messages', () => {
-        const component = shallow(
-            <TicketBodyVirtualized
-                {...commonProps}
-                elements={fromJS([
-                    {
-                        ...message,
-                        id: 1,
-                        created_datetime: '2017-07-01T18:00:00',
-                    },
-                ])}
-                groupedElements={[
-                    [
-                        {
-                            ...message,
-                            id: 1,
-                            created_datetime: '2017-07-01T18:00:00',
-                        },
-                    ],
-                ]}
-            />
-        )
-
-        expect(component.dive().dive()).toMatchSnapshot()
-    })
-
-    it('should display events with messages', () => {
-        const component = shallow(
-            <TicketBodyVirtualized
-                {...commonProps}
-                elements={fromJS([
-                    {
-                        ...message,
-                        id: 1,
-                        created_datetime: '2017-07-01T18:00:00',
-                    },
-                    {
-                        ...message,
-                        isMessage: false,
-                        isEvent: true,
-                        created_datetime: '2017-07-01T19:00:00',
-                        data: {
-                            action_name: ShopifyActionType.RefundOrder,
-                        },
-                    },
-                ])}
-                groupedElements={[
-                    [
-                        {
-                            ...message,
-                            id: 1,
-                            created_datetime: '2017-07-01T18:00:00',
-                        },
-                    ],
-                    {
-                        ...message,
-                        isMessage: false,
-                        isEvent: true,
-                        created_datetime: '2017-07-01T19:00:00',
-                        data: {
-                            action_name: ShopifyActionType.RefundOrder,
-                        },
-                    } as TicketElement,
-                ]}
-            />
-        )
-
-        expect(component.dive().dive()).toMatchSnapshot()
-    })
-
-    it('should display phone events', () => {
-        const component = shallow(
-            <TicketBodyVirtualized
-                {...commonProps}
-                elements={fromJS([
-                    {
-                        id: 1,
-                        isMessage: false,
-                        isEvent: true,
-                        created_datetime: '2017-07-01T19:00:00',
-                        type: INCOMING_PHONE_CALL,
-                    },
-                    {
-                        id: 2,
-                        isMessage: false,
-                        isEvent: true,
-                        created_datetime: '2017-07-01T19:05:00',
-                        type: OUTGOING_PHONE_CALL,
-                    },
-                ])}
-                groupedElements={[
-                    {
-                        id: 1,
-                        isMessage: false,
-                        isEvent: true,
-                        created_datetime: '2017-07-01T19:00:00',
-                        type: INCOMING_PHONE_CALL,
-                    } as unknown as TicketElement,
-                    {
-                        id: 2,
-                        isMessage: false,
-                        isEvent: true,
-                        created_datetime: '2017-07-01T19:05:00',
-                        type: OUTGOING_PHONE_CALL,
-                    } as unknown as TicketElement,
-                ]}
-            />
-        )
-
-        expect(component.dive().dive()).toMatchSnapshot()
-    })
-
-    it('should display and highlight the messages', () => {
-        const component = shallow(
-            <TicketBodyVirtualized
-                {...commonProps}
-                elements={fromJS([
-                    {
-                        ...message,
-                        id: 1,
-                        created_datetime: '2017-07-01T18:00:00',
-                    },
-                ])}
-                groupedElements={[
-                    [
-                        {
-                            ...message,
-                            id: 1,
-                            created_datetime: '2017-07-01T18:00:00',
-                        },
-                    ],
-                ]}
-            />
-        )
-        component.setState({highlightedElements: {first: 1}})
-
-        expect(component.dive().dive()).toMatchSnapshot()
-    })
-
-    it('should display and not highlight the messages', () => {
-        const component = shallow(
-            <TicketBodyVirtualized
-                {...commonProps}
-                elements={fromJS([
-                    {
-                        ...message,
-                        id: 1,
-                        created_datetime: '2017-07-01T18:00:00',
-                    },
-                ])}
-                groupedElements={[
-                    [
-                        {
-                            ...message,
-                            id: 1,
-                            created_datetime: '2017-07-01T18:00:00',
-                        },
-                    ],
-                ]}
-            />
-        )
-        component.setState({highlightedElements: {first: 2}})
-
-        expect(component.dive().dive()).toMatchSnapshot()
-    })
-
-    it('should display audit log events with messages', () => {
-        const component = shallow(
-            <TicketBodyVirtualized
-                {...commonProps}
-                elements={fromJS([
-                    {
-                        ...message,
-                        id: 1,
-                        created_datetime: '2017-07-01T18:00:00',
-                    },
-                    {
-                        id: 1,
-                        account_id: 1,
-                        user_id: 1,
-                        object_type: 'Ticket',
-                        object_id: 1,
-                        data: null,
-                        context: 'foo',
-                        type: TICKET_EVENT_TYPES.TicketAssigned,
-                        created_datetime: '2019-11-15 19:00:00.000000',
-                        isEvent: true,
-                    },
-                ])}
-                groupedElements={[
-                    [
-                        {
-                            ...message,
-                            id: 1,
-                            created_datetime: '2017-07-01T18:00:00',
-                        },
-                    ],
-                    {
-                        id: 1,
-                        account_id: 1,
-                        user_id: 1,
-                        object_type: 'Ticket',
-                        object_id: 1,
-                        data: null,
-                        context: 'foo',
-                        type: TICKET_EVENT_TYPES.TicketAssigned,
-                        created_datetime: '2019-11-15 19:00:00.000000',
-                        isEvent: true,
-                    } as unknown as TicketElement,
-                ]}
-            />
-        )
-
-        expect(component.dive().dive()).toMatchSnapshot()
-    })
-
-    describe('last read message', () => {
-        it('should pass `isLastReadMessage` only for the last read message', () => {
-            const component = shallow(
-                <TicketBodyVirtualized
-                    {...commonProps}
-                    elements={fromJS([
-                        {
-                            ...message,
-                            id: 1,
-                            created_datetime: '2017-07-01T18:00:00',
-                        },
-                        {
-                            ...message,
-                            id: 2,
-                            created_datetime: '2017-07-01T19:00:00',
-                        },
-                        {
-                            ...message,
-                            id: undefined,
-                            created_datetime: '2017-07-01T20:00:00',
-                        },
-                    ])}
-                    groupedElements={[
-                        [
-                            {
-                                ...message,
-                                id: 1,
-                                created_datetime: '2017-07-01T18:00:00',
-                            },
-                        ],
-                        [
-                            {
-                                ...message,
-                                id: 2,
-                                created_datetime: '2017-07-01T19:00:00',
-                            },
-                        ],
-                        [
-                            {
-                                ...message,
-                                id: undefined,
-                                created_datetime: '2017-07-01T20:00:00',
-                            },
-                        ],
-                    ]}
-                />
-            )
-
-            expect(component.dive().dive()).toMatchSnapshot()
-        })
-
-        it('should not pass `isLastReadMessage` for a new message', () => {
-            const component = shallow(
-                <TicketBodyVirtualized
-                    {...commonProps}
-                    elements={fromJS([
-                        {
-                            id: undefined,
-                            created_datetime: '2017-07-01T18:00:00',
-                        },
-                    ])}
-                    groupedElements={[
-                        {
-                            id: undefined,
-                            created_datetime: '2017-07-01T18:00:00',
-                        } as TicketElement,
-                    ]}
-                    lastReadMessage={fromJS({
-                        id: undefined,
-                    })}
-                />
-            )
-
-            expect(component.dive().dive()).toMatchSnapshot()
-        })
-    })
-
-    describe('message grouping', () => {
-        const minProps = {..._omit(commonProps, ['lastReadMessage'])}
-
-        const DefaultTicketBody = (props: ComponentProps<any>) => (
-            <TicketBodyVirtualized
-                lastReadMessage={fromJS({
-                    id: undefined,
+    it('should render an element for each given element', () => {
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    ticket: fromJS({
+                        messages: fromJS([defaultMessage, defaultMessage]),
+                    }),
                 })}
-                messageGroupingChannels={[TicketChannel.Chat]}
-                messageGroupingDuration="PT5M"
-                lastCustomerMessage={fromJS({
-                    id: undefined,
-                })}
-                {...props}
-            />
-        )
-
-        const message1: TicketMessage = {
-            ...message,
-            channel: TicketChannel.Chat,
-            created_datetime: '2018-01-01T12:00:00.000Z',
-        }
-
-        const message2: TicketMessage = {
-            ...message1,
-            created_datetime: '2018-01-01T12:01:00.000Z',
-        }
-
-        const findTicketMessages = (
-            component: ShallowWrapper<typeof DefaultTicketBody>
-        ) =>
-            component
-                .find(TicketBodyVirtualized)
-                .dive()
-                .dive()
-                .dive()
-                .find(TicketMessages)
-
-        it('should group messages if they have the same channel, sender, agent and visibility', () => {
-            const component = shallow(
-                <DefaultTicketBody
-                    {...minProps}
-                    elements={fromJS([message1, message2])}
-                    groupedElements={[[message1, message2]]}
+            >
+                <TicketBodyVirtualized
+                    elements={fromJS([])}
+                    handleHistoryToggle={_noop}
+                    hideTicket={() => Promise.resolve()}
+                    isShopperTyping={false}
+                    setStatus={_noop}
+                    shopperName=""
+                    submit={_noop}
                 />
-            )
-            const ticketMessages = findTicketMessages(component)
-            expect(ticketMessages).toHaveLength(1)
-        })
-    })
-
-    it('should alert Sentry if no representation exists for ticket element', () => {
-        jest.spyOn(
-            ticketPredicates,
-            'isTicketSatisfactionSurvey'
-        ).mockReturnValue(false)
-
-        const component = shallow(
-            <TicketBodyVirtualized
-                {...commonProps}
-                elements={fromJS([
-                    {
-                        id: 1,
-                        isSatisfactionSurvey: true,
-                    },
-                ])}
-                groupedElements={[
-                    {
-                        id: 1,
-                        isSatisfactionSurvey: true,
-                    } as TicketElement,
-                ]}
-            />
-        )
-        component.dive().dive()
-        expect(mockReport).toHaveBeenCalled()
-    })
-
-    it('should display rule suggestion in correct order', () => {
-        const component = shallow(
-            <TicketBodyVirtualized
-                {...commonProps}
-                elements={fromJS([
-                    {
-                        ...message,
-                        id: 1,
-                        created_datetime: '2017-07-01T18:00:00',
-                    },
-                    {
-                        id: 1,
-                        slug: 'slug',
-                        actions: [
-                            {
-                                args: [{body_text: 'body_text'}],
-                                name: 'replyToTicket',
-                            },
-                        ],
-                        isRuleSuggestion: true,
-                    },
-                    {
-                        ...message,
-                        id: 2,
-                        created_datetime: '2017-07-01T18:30:00',
-                    },
-                ])}
-                groupedElements={[
-                    [
-                        {
-                            ...message,
-                            id: 1,
-                            created_datetime: '2017-07-01T18:00:00',
-                        },
-                    ],
-                    {
-                        id: 1,
-                        slug: 'slug',
-                        actions: [
-                            {
-                                args: [{body_text: 'body_text'}],
-                                name: 'replyToTicket',
-                            },
-                        ],
-                        isRuleSuggestion: true,
-                    } as unknown as TicketElement,
-                    [
-                        {
-                            ...message,
-                            id: 2,
-                            created_datetime: '2017-07-01T18:30:00',
-                        },
-                    ],
-                ]}
-            />
+            </Provider>
         )
 
-        expect(component.dive().dive()).toMatchSnapshot()
+        expect(getByText('TicketHeaderWrapper')).toBeInTheDocument()
+        expect(getByText('TicketBodyElement 1')).toBeInTheDocument()
+        expect(getByText('TicketBodyElement 2')).toBeInTheDocument()
     })
 })
