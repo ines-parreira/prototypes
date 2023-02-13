@@ -79,7 +79,7 @@ const ReportIssuePolicyView: ComponentType = () => {
                         <h5 className={css.casesTitle}>Order scenarios</h5>
                         <p>
                             Customize order scenarios and the corresponding
-                            options to display to shoppers when reporting order
+                            options to display to customers when reporting order
                             issues. Order scenarios apply in the sequence listed
                             below.
                         </p>

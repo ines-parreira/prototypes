@@ -44,8 +44,8 @@ const FEATURES: FeatureItem[] = [
         iconClassName: 'material-icons-outlined',
         label: (
             <>
-                Provide shoppers with automated answers to common questions with{' '}
-                <b>quick response flows</b>
+                Provide customers with automated answers to common questions
+                with <b>quick response flows</b>
             </>
         ),
     },
@@ -53,7 +53,7 @@ const FEATURES: FeatureItem[] = [
         icon: 'low_priority',
         label: (
             <>
-                Allow shoppers to manage their orders with{' '}
+                Allow customers to manage their orders with{' '}
                 <b>order management flows</b>
             </>
         ),
@@ -62,7 +62,7 @@ const FEATURES: FeatureItem[] = [
         icon: 'article',
         label: (
             <>
-                Automatically answer shopper questions with help center{' '}
+                Automatically answer customer questions with help center{' '}
                 <b>article recommendation</b>
             </>
         ),
@@ -71,7 +71,7 @@ const FEATURES: FeatureItem[] = [
         icon: 'insights',
         label: (
             <>
-                Track shopper interactions and your automation rate with{' '}
+                Track customer interactions and your automation rate with{' '}
                 <b>advanced statistics</b>
             </>
         ),

@@ -15,15 +15,15 @@ const howItWorksText: Record<RuleTemplateRecipeSlugs, string> = {
     [RuleTemplateRecipeSlugs.AutoTagPrimaryCategories]:
         'This rule tags tickets based on their main order-related intents, and positive or negative sentiments detected in ticket content. Use this rule to group tickets with similar intents and streamline reporting.',
     [RuleTemplateRecipeSlugs.AutoTagSubscriptionCancel]:
-        'This rule tags shopper requests to cancel or change subscriptions as urgent. Use this rule to prioritize these requests for prompt support and to gather feedback.',
+        'This rule tags customer requests to cancel or change subscriptions as urgent. Use this rule to prioritize these requests for prompt support and to gather feedback.',
     [RuleTemplateRecipeSlugs.AutoTagVip]:
-        'This rule tags tickets based on how much shoppers have ordered or spent in Shopify. Use this rule to pioritize and target VIP customers to drive retention and satisfaction.',
+        'This rule tags tickets based on how much a customer has ordered or spent in Shopify. Use this rule to pioritize and target VIP customers to drive retention and satisfaction.',
     [RuleTemplateRecipeSlugs.AutoCloseIgGiveaway]:
         'This rule closes replies to Instagram giveaways on your account to save you time and prioritize important tickets. Keep this rule above auto-reply rules on your rules page to prevent irrelevant billable tickets.',
     [RuleTemplateRecipeSlugs.AutoTagBusinessHours]:
         'This rule tags tickets created during and outside business hours. Use this rule to track support performance and monitor support coverage during vs. outside business hours.',
     [RuleTemplateRecipeSlugs.AutoTagPotentialCustomer]:
-        'This rule tags questions and recommendation requests from shoppers with no past orders. Use this rule to proactively identify leads for outreach and promotions.',
+        'This rule tags questions and recommendation requests from customers with no past orders. Use this rule to proactively identify leads for outreach and promotions.',
     [RuleTemplateRecipeSlugs.AutoTagSocialTags]:
         'This rule tags tickets from social channels as questions or leads when the ticket content contains questions or purchase intention. Use this rule to prioritize important requests and organize tickets of similar intent to simplify reporting.',
     [RuleTemplateRecipeSlugs.AutoTagShippingStatus]:

@@ -97,7 +97,7 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
               Contact cards (including contact form) to direct inquiries to one central location;
             </li>
             <li>
-              Google Analytics to get insights about your shoppers behavior;
+              Google Analytics to get insights about your customers behavior;
             </li>
             <li>
               Internal knowledge base to transfer knowledge with your team.

@@ -317,7 +317,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                                         response flows"
                                         description={
                                             isAutomationSettingsRevampEnabled
-                                                ? 'Enable and display up to 6 custom Quick Responses to provide shoppers with automated responses to common questions.'
+                                                ? 'Enable and display up to 6 custom Quick Responses to provide customers with automated responses to common questions.'
                                                 : 'Enable and customize up to 6 quick response flows at a time in Self-service.'
                                         }
                                         buttonText={
@@ -386,8 +386,8 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                         title="Leverage your Help Center to automate tickets"
                                         description={
                                             isAutomationSettingsRevampEnabled
-                                                ? 'Enable Article Recommendation to automatically recommend relevant help center articles to shoppers.'
-                                                : 'Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to shoppers.'
+                                                ? 'Enable Article Recommendation to automatically recommend relevant help center articles to customers.'
+                                                : 'Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to customers.'
                                         }
                                         buttonText={
                                             isAutomationSettingsRevampEnabled

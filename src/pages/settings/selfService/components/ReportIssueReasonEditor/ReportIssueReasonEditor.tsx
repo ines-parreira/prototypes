@@ -509,13 +509,13 @@ const ReportIssueReasonEditor: ComponentType = () => {
                                     onClick={toggleWasItHelpful}
                                 >
                                     <span className={css.helpfulToggleName}>
-                                        Ask shoppers if your response was
+                                        Ask customers if your response was
                                         helpful
                                     </span>
                                     <span
                                         className={css.helpfulToggleSubscript}
                                     >
-                                        A ticket is created only if shoppers
+                                        A ticket is created only if customers
                                         need more help
                                     </span>
                                 </div>

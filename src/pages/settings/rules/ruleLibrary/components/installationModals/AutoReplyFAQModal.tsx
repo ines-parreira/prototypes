@@ -41,9 +41,9 @@ export const AutoReplyFAQModal = ({
                     <div className={defaultModalCss.descriptionBlock}>
                         <h4>How it works</h4>
                         <p>
-                            This rule detects shopper questions in incoming
+                            This rule detects customer questions in incoming
                             emails, replies with relevant articles from your
-                            help center, and closes the ticket. If shoppers
+                            help center, and closes the ticket. If customers
                             reply, the ticket will reopen so you never miss a
                             response.
                         </p>

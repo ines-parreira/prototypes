@@ -136,7 +136,7 @@ const SelfServiceQuickResponseChatIntegrationPreview = ({
                 customerInitialMessages={[
                     quickResponse.title || (
                         <span className={css.titlePlaceholder}>
-                            Button clicked by shopper
+                            Button clicked by customer
                         </span>
                     ),
                 ]}

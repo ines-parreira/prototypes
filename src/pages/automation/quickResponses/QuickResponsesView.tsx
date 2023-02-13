@@ -142,8 +142,8 @@ const QuickResponsesView = () => {
                                 <p className="mb-1">
                                     Display up to {MAX_ACTIVE_QUICK_RESPONSES}{' '}
                                     buttons in your chat widget with common
-                                    questions that shoppers can click for an
-                                    instant response. If a shopper needs more
+                                    questions that customers can click for an
+                                    instant response. If a customer needs more
                                     help, a ticket is created for an agent to
                                     handle.
                                 </p>

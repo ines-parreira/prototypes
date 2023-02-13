@@ -1812,7 +1812,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="description"
             >
-              Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to shoppers.
+              Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to customers.
             </div>
             <button
               class="wrapper fill primary medium"

@@ -611,7 +611,7 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                                             header: 'Track Automation Add-on performance',
                                             description: (
                                                 <div>
-                                                    Monitor automated shopper
+                                                    Monitor automated customer
                                                     interactions, gain insights
                                                     to improve your automation
                                                     rate, and more!

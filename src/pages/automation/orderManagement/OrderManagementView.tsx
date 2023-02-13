@@ -79,7 +79,7 @@ const OrderManagementView = () => {
                     <div>
                         <div className={css.descriptionContainer}>
                             <p className="mb-1">
-                                Allow shoppers to take actions depending on
+                                Allow customers to take actions depending on
                                 their order status from your chat widget and
                                 Help Center.
                             </p>
@@ -100,7 +100,7 @@ const OrderManagementView = () => {
                             }
                             isDisabled={isUpdatePending}
                             title="Track order"
-                            description="Allow shoppers to view order tracking information."
+                            description="Allow customers to view order tracking information."
                             onChange={(isEnabled: boolean) => {
                                 handleOrderManagementFlowUpdate(
                                     'track_order_policy',
@@ -116,7 +116,7 @@ const OrderManagementView = () => {
                             }
                             isDisabled={isUpdatePending}
                             title="Return order"
-                            description="Allow shoppers to request returns based on custom criteria."
+                            description="Allow customers to request returns based on custom criteria."
                             onChange={(isEnabled: boolean) => {
                                 handleOrderManagementFlowUpdate(
                                     'return_order_policy',
@@ -131,7 +131,7 @@ const OrderManagementView = () => {
                             }
                             isDisabled={isUpdatePending}
                             title="Cancel order"
-                            description="Allow shoppers to request order cancellations based on custom criteria."
+                            description="Allow customers to request order cancellations based on custom criteria."
                             onChange={(isEnabled: boolean) => {
                                 handleOrderManagementFlowUpdate(
                                     'cancel_order_policy',
@@ -146,7 +146,7 @@ const OrderManagementView = () => {
                             }
                             isDisabled={isUpdatePending}
                             title="Report order issue"
-                            description="Allow shoppers to report order issues based on custom scenarios."
+                            description="Allow customers to report order issues based on custom scenarios."
                             onChange={(isEnabled: boolean) => {
                                 handleOrderManagementFlowUpdate(
                                     'report_issue_policy',

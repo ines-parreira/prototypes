@@ -11,7 +11,7 @@ const minProps = {
             Customize your help center to look and feel like your brand by
             adding a logo, background image, your brand color and fonts, and
             more! Use your <a href="#">help center’s live URL</a> to redirect
-            shoppers to self-service.
+            customers to self-service.
         </span>
     ),
     preview: <img src={standlonePreview} alt="" />,

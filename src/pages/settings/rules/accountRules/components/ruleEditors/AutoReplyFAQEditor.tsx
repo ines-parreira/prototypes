@@ -120,9 +120,9 @@ export const AutoReplyFAQEditor = ({
     return (
         <div className={classnames(css.container, css.autoReplyFAQ)}>
             <p>
-                This rule detects shopper questions in incoming emails, replies
+                This rule detects customer questions in incoming emails, replies
                 with relevant articles from your help center, and closes the
-                ticket. If shoppers reply, the ticket will reopen so you never
+                ticket. If customers reply, the ticket will reopen so you never
                 miss a response.
             </p>
             {helpCenters.length > 1 && isHelpCenterAvailable && (

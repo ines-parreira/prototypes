@@ -56,7 +56,7 @@ export const AutoReplyReturnEditor = ({
                 <p>
                     This rule detects emails related to return requests,
                     auto-replies with the link to your return portal, and
-                    auto-closes the ticket. If shoppers reply, the ticket will
+                    auto-closes the ticket. If customers reply, the ticket will
                     reopen so you never miss a response.
                 </p>
                 <div className={css.listWrapper}>

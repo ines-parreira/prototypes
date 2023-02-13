@@ -29,7 +29,7 @@ exports[`<Banner /> matches the snapshot 1`] = `
           >
             help center’s live URL
           </a>
-           to redirect shoppers to self-service.
+           to redirect customers to self-service.
         </span>
       </div>
     </div>

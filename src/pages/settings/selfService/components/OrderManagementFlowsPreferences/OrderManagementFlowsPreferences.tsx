@@ -124,7 +124,7 @@ export const OrderManagementFlowsPreferences = () => {
                         <div className="mb-3">
                             <p className={css.preferencesDescription}>
                                 Allow customers to manage their orders directly
-                                from chat and help center. Shoppers can click
+                                from chat and help center. Customers can click
                                 the actions below depending on the status of
                                 their order.{' '}
                                 <a

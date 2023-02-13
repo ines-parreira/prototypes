@@ -44,7 +44,7 @@ export const StandaloneBanner = ({
                         brand by adding a logo, background image, your brand
                         color and fonts, and more! Use your{' '}
                         <a href={url}>Help Center’s live</a> URL to redirect
-                        shoppers to{' '}
+                        customers to{' '}
                         {isAutomationSettingsRevampEnabled
                             ? 'manage their orders'
                             : 'self-service'}

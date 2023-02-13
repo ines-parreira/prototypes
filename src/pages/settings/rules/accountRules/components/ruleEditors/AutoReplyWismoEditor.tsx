@@ -54,8 +54,8 @@ export const AutoReplyWismoEditor = ({
                 <p>
                     This rule detects emails related to order status or
                     tracking, replies with tracking links for the shopper’s last
-                    3 orders, and auto-closes the ticket. If shoppers reply, the
-                    ticket will reopen so you never miss a response.
+                    3 orders, and auto-closes the ticket. If customers reply,
+                    the ticket will reopen so you never miss a response.
                 </p>
                 <div className={css.listWrapper}>
                     <h4>Exclusion email list</h4>

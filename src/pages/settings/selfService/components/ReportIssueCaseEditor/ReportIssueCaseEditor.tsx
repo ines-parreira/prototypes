@@ -403,7 +403,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                             <fieldset className={css.fieldset}>
                                 <legend className={css.legend}>
                                     What options should be displayed to
-                                    shoppers?
+                                    customers?
                                 </legend>
 
                                 <Reasons

@@ -61,7 +61,7 @@ const SelfServicePreviewContainer = <T extends GorgiasChatIntegration>({
 
     return (
         <div className={css.container}>
-            <div className={css.header}>Shopper preview</div>
+            <div className={css.header}>Customer preview</div>
             <SelectField
                 className={css.selectField}
                 value={channel?.id}

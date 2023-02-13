@@ -74,8 +74,8 @@ const QuickResponseResponseMessageContent = ({
         <>
             <div className={css.label}>Response text</div>
             <div className={css.caption}>
-                After shoppers click the quick response, the message below will
-                display.
+                After a customer clicks the quick response, the message below
+                will display.
             </div>
             <ToolbarProvider
                 canAddProductCard

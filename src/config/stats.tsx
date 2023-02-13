@@ -1391,19 +1391,19 @@ export const stats = toImmutable<
                 name: 'chat_self_service_interaction_count',
                 label: 'Self-service interactions via chat',
                 tooltip:
-                    'Number of self-service interactions sent by shopper from your chat widget',
+                    'Number of self-service interactions sent by customers from your chat widget',
             },
             {
                 name: 'chat_self_service_interaction_ratio',
                 label: 'Self-service interactions (% of chat tickets)',
                 tooltip:
-                    'Number of self-service interactions sent by shopper from your chat widget divided by total number of chat interactions you receive',
+                    'Number of self-service interactions sent by customers from your chat widget divided by total number of chat interactions you receive',
             },
             {
                 name: 'help_center_self_service_interaction_count',
                 label: 'Self-service interactions via help center',
                 tooltip:
-                    'Number of self-service interactions sent by shopper from your help center (you can install self-service on your help center from your help center settings)',
+                    'Number of self-service interactions sent by customers from your help center (you can install self-service on your help center from your help center settings)',
             },
             {
                 name: 'automated_interaction_count',
@@ -1427,7 +1427,7 @@ export const stats = toImmutable<
                 name: 'total_self_service_interaction_count',
                 label: 'Total Self-service interactions',
                 tooltip:
-                    'Total number of Self-service interactions started by shoppers.',
+                    'Total number of Self-service interactions started by customers.',
             },
             {
                 name: 'self_service_automation_rate',
@@ -1456,7 +1456,7 @@ export const stats = toImmutable<
             {
                 name: 'total_self_service_interaction_count',
                 label: 'Total Add-on interactions',
-                tooltip: 'Total number of interactions started by shoppers.',
+                tooltip: 'Total number of interactions started by customers.',
             },
             {
                 name: 'self_service_automation_rate',
@@ -1607,7 +1607,7 @@ export const stats = toImmutable<
             'Automation rate':
                 'Number of interactions resolved by Quick Response divided by the total number of times a user views the Quick Response.',
             'Served by an agent after quick response':
-                'If a shopper is not satisfied with the response provided or if there is no response configured for a flow, a ticket is created.',
+                'If a customer is not satisfied with the response provided or if there is no response configured for a flow, a ticket is created.',
         },
         callbacks: {
             cell: ({value}) => {
@@ -1625,7 +1625,7 @@ export const stats = toImmutable<
             'Automation rate':
                 'Number of interactions resolved by Article Recommendation divided by the total number of times a user is recommended an article.',
             'Served by an agent after article rec':
-                'If a shopper is not satisfied with the article and asks for more help, a ticket is created.',
+                'If a customer is not satisfied with the article and asks for more help, a ticket is created.',
         },
         callbacks: {
             cell: ({value}) => {

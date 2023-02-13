@@ -68,7 +68,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
             <p
               class="preferencesDescription"
             >
-              Allow customers to manage their orders directly from chat and help center. Shoppers can click the actions below depending on the status of their order.
+              Allow customers to manage their orders directly from chat and help center. Customers can click the actions below depending on the status of their order.
                
               <a
                 href="https://docs.gorgias.com/self-service/self-service-portal-statuses"
@@ -583,7 +583,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
             <p
               class="preferencesDescription"
             >
-              Allow customers to manage their orders directly from chat and help center. Shoppers can click the actions below depending on the status of their order.
+              Allow customers to manage their orders directly from chat and help center. Customers can click the actions below depending on the status of their order.
                
               <a
                 href="https://docs.gorgias.com/self-service/self-service-portal-statuses"
