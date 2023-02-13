@@ -36,7 +36,6 @@ import {
 import {Language} from 'constants/languages'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import * as integrationSelectors from 'state/integrations/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
@@ -153,7 +152,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     currentUser,
     shopifyIntegrations,
     gorgiasChatIntegrations,
-    currentAccount,
 }: Props & ConnectedProps<typeof connector>) => {
     const [state, setState] = useState<State>(
         _merge(
@@ -198,14 +196,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     shopifyIntegrations.getIn(['0']) as Map<any, any>
                 ).toJS()
 
-                setStoreName(shopifyIntegration.meta?.shop_name)
+                const storeName = shopifyIntegration.meta?.shop_name
+                setStoreName(storeName)
                 setStoreIntegrationId(shopifyIntegration.id)
+                prefillWithStorename(storeName)
             }
-            prefillWithStorename(
-                (currentAccount.get('meta') as Map<any, any>).get(
-                    'company_name'
-                )
-            )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [integration])
@@ -1112,7 +1107,6 @@ const mapStateToProps = (state: RootState) => {
             integrationSelectors.DEPRECATED_getIntegrationsByTypes(
                 IntegrationType.GorgiasChat
             )(state),
-        currentAccount: getCurrentAccountState(state),
     }
 }
 const connector = connect(mapStateToProps)
