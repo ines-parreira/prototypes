@@ -188,7 +188,7 @@ describe('ticket reducers', () => {
                     channel: 'email',
                 },
             ],
-            custom_fields: [],
+            custom_fields: {},
             customer: {
                 id: 1,
                 data: {hello: 'world!'},

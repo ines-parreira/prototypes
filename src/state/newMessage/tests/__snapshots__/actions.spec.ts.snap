@@ -222,7 +222,7 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
           "channel": "email",
           "closed_datetime": null,
           "created_datetime": "2017-07-31T23:07:35.150000+00:00",
-          "custom_fields": [],
+          "custom_fields": {},
           "customer": {
             "channels": [
               {

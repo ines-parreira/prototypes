@@ -1,7 +1,7 @@
 import {
     CustomField,
+    CustomFields,
     CustomFieldState,
-    NormalizedCustomFieldState,
 } from 'models/customField/types'
 
 // this empty check will need to be more elaborate
@@ -26,7 +26,7 @@ export function getInvalidTicketFieldIds({
     fieldsState,
     fieldDefinitions,
 }: {
-    fieldsState: NormalizedCustomFieldState
+    fieldsState: CustomFields
     fieldDefinitions: CustomField[]
 }) {
     const erroredCustomFields: CustomFieldState['id'][] = []

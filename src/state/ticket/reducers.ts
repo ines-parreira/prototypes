@@ -12,12 +12,7 @@ import {GorgiasAction} from 'state/types'
 import {compare} from 'utils'
 
 import {Ticket} from 'models/ticket/types'
-import {
-    getPendingMessageIndex,
-    mergeActions,
-    normalizeCustomFields,
-    parseTimedelta,
-} from './utils'
+import {getPendingMessageIndex, mergeActions, parseTimedelta} from './utils'
 import * as types from './constants'
 import {
     deduplicateAuditLogEvents,
@@ -152,15 +147,7 @@ export default function reducer(
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS: {
             // Make sure we reset the cache before we send the message
             ticketReplyCache.delete(state.get('id'))
-            const response = action.resp as Ticket
-            return state.mergeDeep(
-                fromJS({
-                    ...response,
-                    custom_fields: normalizeCustomFields(
-                        response.custom_fields
-                    ),
-                })
-            )
+            return state.mergeDeep(action.resp as Ticket)
         }
 
         case types.FETCH_TICKET_START: {
@@ -168,10 +155,7 @@ export default function reducer(
         }
 
         case types.FETCH_TICKET_SUCCESS: {
-            const data = {...action.response}
-
-            data.custom_fields = normalizeCustomFields(data.custom_fields)
-            const newState = state.merge(data as Map<any, any>)
+            const newState = state.merge(action.response as Map<any, any>)
             return newState.setIn(
                 ['_internal', 'loading', 'fetchTicket'],
                 false

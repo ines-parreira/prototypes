@@ -111,7 +111,7 @@ export const ticket: Ticket = {
     },
     id: 152,
     last_message_datetime: '2017-07-31T23:07:35.150000+00:00',
-    custom_fields: [],
+    custom_fields: {},
     customer: {
         id: 34,
         email: 'jeanbon@gorgias.io',

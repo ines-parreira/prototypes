@@ -40,10 +40,9 @@ export type CustomFieldState = {
     id: CustomField['id']
     value?: string | number
     hasError?: boolean
-    isRequired?: boolean
 }
 
-export type NormalizedCustomFieldState = {
+export type CustomFields = {
     [id: number]: CustomFieldState | undefined
 }
 

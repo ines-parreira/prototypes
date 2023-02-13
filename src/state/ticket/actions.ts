@@ -67,7 +67,6 @@ import {
     getSourceTypeOfResponse,
     nestedReplace,
     guessReceiversFromTicket,
-    normalizeCustomFields,
 } from './utils'
 import * as types from './constants'
 
@@ -77,10 +76,7 @@ export const mergeTicket =
         dispatch: StoreDispatch,
         getState: () => RootState
     ): Promise<ReturnType<StoreDispatch>> => {
-        const ticketRecord = fromJS({
-            ...ticket,
-            custom_fields: normalizeCustomFields(ticket.custom_fields),
-        }) as Map<any, any>
+        const ticketRecord = fromJS(ticket) as Map<any, any>
         const state = getState()
         const {ticket: ticketState} = state
 

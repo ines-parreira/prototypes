@@ -357,5 +357,5 @@ export const getTicketBodyElements = createSelector(getBody, (body) => {
 
 export const getTicketFieldState = createSelector(
     getTicket,
-    (state) => state.custom_fields
+    (state) => state.custom_fields || {}
 )

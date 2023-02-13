@@ -6,7 +6,7 @@ import {
     TicketStatus,
     TicketVia,
 } from 'business/types/ticket'
-import {CustomFieldState} from 'models/customField/types'
+import {CustomFields} from 'models/customField/types'
 import {FacebookReactionType} from 'constants/integrations/facebook'
 import {ApiCursorPaginationParams, OrderParams} from 'models/api/types'
 import {MacroActionName} from 'models/macroAction/types'
@@ -36,7 +36,7 @@ export type Ticket = {
     status: TicketStatus
     subject: string
     channel: TicketChannel
-    custom_fields?: CustomFieldState[]
+    custom_fields?: CustomFields
     receiver: Actor
     sender: Actor
     tags: unknown[]
