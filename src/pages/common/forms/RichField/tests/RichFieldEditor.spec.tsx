@@ -263,4 +263,17 @@ describe('RichFieldEditor', () => {
             '<p>htmlhttps://www.youtube.com/watch?v=4sLFpe-xbhk</p>'
         )
     })
+
+    it('should render character count if max length is specified', () => {
+        const component = shallow(
+            <RichFieldEditor
+                {...defaultProps}
+                editorKey="editor"
+                editorState={editorState}
+                maxLength={200}
+            />
+        )
+
+        expect(component.find('.maxLength')).toIncludeText('3/200')
+    })
 })

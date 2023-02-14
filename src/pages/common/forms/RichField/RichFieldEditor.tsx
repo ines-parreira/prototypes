@@ -91,6 +91,7 @@ export type Props = {
     placeholder?: string
     canAddVideoPlayer?: boolean
     onInsertVideoAddedFromPastedLink?: () => void
+    maxLength?: number
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
     GrammarlyUsageTrackingProps
@@ -405,6 +406,7 @@ export class RichFieldEditor extends Component<Props, State> {
             emailExtraEnabled,
             ticket,
             header,
+            maxLength,
         } = this.props
         // $TsFixMe remove casting after migrating createMentionPlugin
         const {MentionSuggestions} = this.mentionPlugin as {
@@ -495,6 +497,16 @@ export class RichFieldEditor extends Component<Props, State> {
                         canDropFiles={!!this.props.canDropFiles}
                         {...pluginMethods}
                     />
+                )}
+                {typeof maxLength === 'number' && (
+                    <span className={css.maxLength}>
+                        {
+                            this.props.editorState
+                                .getCurrentContent()
+                                .getPlainText().length
+                        }
+                        /{maxLength}
+                    </span>
                 )}
             </div>
         )
