@@ -35,5 +35,6 @@ export enum FeatureFlagKey {
     SpotlightGlobalSearch = 'spotlight-global-search',
     TicketFields = 'ticket-fields',
     TicketMessagesVirtualization = 'ticket-messages-virtualization',
+    HelpCenterZendeskImportCTA = 'help-center-zendesk-import-cta',
     ChatLauncherCustomization = 'chat-launcher-customization',
 }

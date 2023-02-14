@@ -1,0 +1,512 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MigrationStateModal /> snapshots completed 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-4-desc"
+    aria-labelledby="modal-4-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog small"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper modalHeader"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-4-title"
+            >
+              Migration complete
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper wrapper"
+          id="modal-4-desc"
+        >
+          <div
+            class="wrapper"
+          >
+            <img
+              alt="HelpDocs"
+              class="image"
+              src="test-file-stub"
+            />
+            <i
+              class="arrow material-icons"
+            >
+              arrow_right_alt
+            </i>
+            <img
+              alt="Gorgias"
+              class="image"
+              src="test-file-stub"
+            />
+          </div>
+          <div
+            class="mb-4"
+          />
+          <h3
+            class="text-center"
+          >
+            Migrating from HelpDocs to Gorgias
+          </h3>
+          <div
+            class="mb-4"
+          />
+          <div
+            class="caption"
+          >
+            Completed
+          </div>
+          <div
+            class="mb-1"
+          />
+          <div
+            class="progressLabel"
+          >
+            100
+            % Complete
+          </div>
+          <div
+            class="mb-1"
+          />
+          <div
+            class="progress progress"
+          >
+            <div
+              aria-valuemax="100"
+              aria-valuemin="0"
+              aria-valuenow="100"
+              class="progress-bar"
+              role="progressbar"
+              style="width: 100%;"
+            />
+          </div>
+          <div
+            class="mb-4"
+          />
+          <button
+            class="wrapper w-100 fill primary medium"
+            type="button"
+          >
+            Finish
+          </button>
+          <div
+            class="caption mt-2"
+          >
+            * To see the results, this will refresh the page
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<MigrationStateModal /> snapshots connected 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-1-desc"
+    aria-labelledby="modal-1-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog small"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper modalHeader"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-1-title"
+            >
+              Start migration
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper wrapper"
+          id="modal-1-desc"
+        >
+          <div
+            class="wrapper"
+          >
+            <img
+              alt="HelpDocs"
+              class="image"
+              src="test-file-stub"
+            />
+            <i
+              class="arrow material-icons"
+            >
+              arrow_right_alt
+            </i>
+            <img
+              alt="Gorgias"
+              class="image"
+              src="test-file-stub"
+            />
+          </div>
+          <div
+            class="mb-4"
+          />
+          <h3
+            class="text-center"
+          >
+            Migrate data from HelpDocs to Gorgias
+          </h3>
+          <div
+            class="mb-4"
+          />
+          <div
+            class="checkInfoContainer"
+          >
+            <i
+              class="checkIcon material-icons"
+            >
+              check
+            </i>
+            <div>
+              <h4
+                class="m-0"
+              >
+                Connected accounts
+              </h4>
+              <p>
+                You have connected your accounts to
+                 
+                HelpDocs
+                .
+              </p>
+            </div>
+          </div>
+          <div
+            class="mb-4"
+          />
+          <button
+            class="wrapper w-100 fill primary medium"
+            type="button"
+          >
+            Start migrating
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<MigrationStateModal /> snapshots migration start loading 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-2-desc"
+    aria-labelledby="modal-2-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog small"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper modalHeader"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-2-title"
+            >
+              Start migration
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper wrapper"
+          id="modal-2-desc"
+        >
+          <div
+            class="wrapper"
+          >
+            <img
+              alt="HelpDocs"
+              class="image"
+              src="test-file-stub"
+            />
+            <i
+              class="arrow material-icons"
+            >
+              arrow_right_alt
+            </i>
+            <img
+              alt="Gorgias"
+              class="image"
+              src="test-file-stub"
+            />
+          </div>
+          <div
+            class="mb-4"
+          />
+          <h3
+            class="text-center"
+          >
+            Migrate data from HelpDocs to Gorgias
+          </h3>
+          <div
+            class="mb-4"
+          />
+          <div
+            class="checkInfoContainer"
+          >
+            <i
+              class="checkIcon material-icons"
+            >
+              check
+            </i>
+            <div>
+              <h4
+                class="m-0"
+              >
+                Connected accounts
+              </h4>
+              <p>
+                You have connected your accounts to
+                 
+                HelpDocs
+                .
+              </p>
+            </div>
+          </div>
+          <div
+            class="mb-4"
+          />
+          <button
+            class="wrapper w-100 fill primary medium isDisabled"
+            disabled=""
+            type="button"
+          >
+            <svg
+              class="spinner gloom spinner medium"
+              preserveAspectRatio="xMidYMid meet"
+              role="status"
+              viewBox="0 0 20 20"
+              width="100%"
+            >
+              <circle
+                class="dot"
+                cx="10"
+                cy="10"
+                fill="none"
+                r="6"
+                stroke-width="2"
+              />
+              <circle
+                class="circle"
+                cx="10"
+                cy="10"
+                fill="none"
+                r="6"
+                stroke-width="2"
+              />
+              <span
+                class="sr-only"
+              >
+                Loading...
+              </span>
+            </svg>
+            Start migrating
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<MigrationStateModal /> snapshots progress 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-3-desc"
+    aria-labelledby="modal-3-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog small"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper modalHeader"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-3-title"
+            >
+              Start migration
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper wrapper"
+          id="modal-3-desc"
+        >
+          <div
+            class="wrapper"
+          >
+            <img
+              alt="HelpDocs"
+              class="image"
+              src="test-file-stub"
+            />
+            <i
+              class="arrow material-icons"
+            >
+              arrow_right_alt
+            </i>
+            <img
+              alt="Gorgias"
+              class="image"
+              src="test-file-stub"
+            />
+          </div>
+          <div
+            class="mb-4"
+          />
+          <h3
+            class="text-center"
+          >
+            Migrating from HelpDocs to Gorgias
+          </h3>
+          <div
+            class="mb-4"
+          />
+          <div
+            class="caption"
+          >
+            In progress
+          </div>
+          <div
+            class="mb-1"
+          />
+          <div
+            class="progressLabel"
+          >
+            25
+            % Complete
+          </div>
+          <div
+            class="mb-1"
+          />
+          <div
+            class="progress progress"
+          >
+            <div
+              aria-valuemax="100"
+              aria-valuemin="0"
+              aria-valuenow="25"
+              class="progress-bar progress-bar-animated progress-bar-striped"
+              role="progressbar"
+              style="width: 25%;"
+            />
+          </div>
+          <div
+            class="mb-4"
+          />
+          <button
+            class="wrapper w-100 fill primary medium isDisabled"
+            disabled=""
+            type="button"
+          >
+            <svg
+              class="spinner gloom spinner medium"
+              preserveAspectRatio="xMidYMid meet"
+              role="status"
+              viewBox="0 0 20 20"
+              width="100%"
+            >
+              <circle
+                class="dot"
+                cx="10"
+                cy="10"
+                fill="none"
+                r="6"
+                stroke-width="2"
+              />
+              <circle
+                class="circle"
+                cx="10"
+                cy="10"
+                fill="none"
+                r="6"
+                stroke-width="2"
+              />
+              <span
+                class="sr-only"
+              >
+                Loading...
+              </span>
+            </svg>
+            Loading
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProviderInfo /> should match snapshot 1`] = `
+<div
+  class="wrapper"
+>
+  <img
+    alt="HelpDocs"
+    class="logo"
+    src="test-file-stub"
+  />
+  <div>
+    <div
+      class="title"
+    >
+      HelpDocs
+    </div>
+    <div
+      class="url"
+    >
+      www.helpdocs.io
+    </div>
+  </div>
+</div>
+`;

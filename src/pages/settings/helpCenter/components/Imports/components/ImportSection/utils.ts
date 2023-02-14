@@ -1,16 +1,50 @@
-import {isDevelopment} from '../../../../../../../utils/environment'
-import {HELP_CENTER_BASE_PATH} from '../../../../constants'
+import {Notification, NotificationButton} from 'state/notifications/types'
+import {
+    MigrationSession,
+    MigrationSessionCreate,
+    MigrationSessionStatus,
+} from './types'
 
-export const MAXIMUM_FILE_SIZE_MB = isDevelopment() ? 1 : 10
+// If there's one of this states we can say the migration has started and it is in progress
+export const sessionHasProgressStatus = (
+    session: Pick<MigrationSession, 'status'> | null
+) => {
+    return (
+        [
+            MigrationSessionStatus.Pending,
+            MigrationSessionStatus.Running,
+            MigrationSessionStatus.Started,
+        ] as string[]
+    ).includes(session?.status || '')
+}
 
-export const fileIsTooBig = (file: Pick<File, 'size'>): boolean =>
-    file.size / 1000000 >= MAXIMUM_FILE_SIZE_MB
-
-export const buildCsvColumnMatchingUrl = (
+export const getSessionCreateData = (
     helpCenterId: number,
-    fileUrl: string
-): string => {
-    const encodedFileUrl = encodeURIComponent(fileUrl)
+    providerPayload: Record<string, any>,
+    accessToken: string
+): MigrationSessionCreate => ({
+    migration: {
+        provider: {
+            ...(providerPayload as any), // the fields from here are dynamic so ignoring the type
+        },
+        receiver: {
+            type: 'Gorgias',
+            access_token: accessToken,
+            help_center_id: helpCenterId,
+        },
+    },
+})
 
-    return `${HELP_CENTER_BASE_PATH}/${helpCenterId}/import/csv/column-matching?file_url=${encodedFileUrl}`
+export const longNotificationOptions: Notification = {
+    dismissAfter: 20 * 1000,
+    dismissible: true,
+    showDismissButton: true,
+}
+
+export const notificationRefreshButton: NotificationButton = {
+    name: 'Refresh',
+    primary: true,
+    onClick: () => {
+        window.location.reload()
+    },
 }

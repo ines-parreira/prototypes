@@ -1,0 +1,32 @@
+@import '~css/new/colorTokens';
+@import '~css/typography';
+
+:local {
+    .caption {
+        .caption-regular();
+        color: @classic-neutral-grey-5;
+    }
+
+    .progressLabel {
+        .body-semibold();
+        color: @classic-main-primary;
+    }
+
+    .progress {
+        border-radius: 100px; // full roundness
+        height: 8px;
+        > .progress-bar {
+            border-radius: 100px; // full roundness
+        }
+    }
+
+    .checkInfoContainer {
+        display: flex;
+        gap: 8px;
+    }
+
+    .checkIcon {
+        font-size: 24px;
+        color: @classic-feedback-success;
+    }
+}

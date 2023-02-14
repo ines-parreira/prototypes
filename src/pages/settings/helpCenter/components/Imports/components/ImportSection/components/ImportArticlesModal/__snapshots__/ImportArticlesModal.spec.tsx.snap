@@ -1,0 +1,603 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-3-desc"
+    aria-labelledby="modal-3-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog large"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-3-title"
+            >
+              Import articles
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper"
+          id="modal-3-desc"
+        >
+          <div>
+            <input
+              accept=".csv"
+              data-testid="import-articles-modal-file-upload"
+              style="display: none;"
+              type="file"
+            />
+            <div>
+              <div
+                class="fileSelectedArea"
+              >
+                <div>
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    insert_drive_file
+                  </i>
+                  Imported Articles.csv
+                </div>
+                <div>
+                  <button
+                    class="wrapper fill secondary small"
+                    type="button"
+                  >
+                    Change File
+                  </button>
+                </div>
+              </div>
+            </div>
+            <p
+              class="m-0 mt-2"
+            >
+              <a
+                to="#"
+              >
+                Download this CSV template
+              </a>
+               
+              to automatically match fields.
+            </p>
+          </div>
+        </div>
+        <div
+          class="wrapper modalFooter"
+        >
+          <button
+            class="wrapper fill secondary medium"
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            class="wrapper fill primary medium"
+            type="button"
+          >
+            Import File
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<ImportArticlesModal /> snapshots import in progress 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-4-desc"
+    aria-labelledby="modal-4-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog large"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-4-title"
+            >
+              Import articles
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper"
+          id="modal-4-desc"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="inner"
+              style="min-height: 100px;"
+            >
+              <i
+                class="icon-custom icon-circle-o-notch md-spin"
+                style="font-size: 40px;"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<ImportArticlesModal /> snapshots loading providers 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-5-desc"
+    aria-labelledby="modal-5-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog large"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-5-title"
+            >
+              Import articles
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper"
+          id="modal-5-desc"
+        >
+          <div>
+            <input
+              accept=".csv"
+              data-testid="import-articles-modal-file-upload"
+              style="display: none;"
+              type="file"
+            />
+            <div
+              class="dropAreasContainer"
+            >
+              <div
+                class="fileDropArea"
+                data-testid="import-articles-modal-file-drop-area"
+              >
+                <div>
+                  <i
+                    class="material-icons modalCloudIcon"
+                  >
+                    cloud_upload
+                  </i>
+                  <b
+                    class="dropAreaText"
+                  >
+                    Drop your CSV here, or
+                     
+                    <a
+                      href=""
+                    >
+                      browse
+                    </a>
+                  </b>
+                </div>
+              </div>
+              <div
+                class="fileDropArea disabled"
+              >
+                <span
+                  class="supportedProvidersText"
+                >
+                  Currently supported providers:
+                </span>
+                <div
+                  class="providersLogosContainer"
+                >
+                  <div
+                    class="spinner-border"
+                    role="status"
+                  >
+                    <span
+                      class="sr-only"
+                    >
+                      Loading...
+                    </span>
+                  </div>
+                </div>
+                <b
+                  class="dropAreaText"
+                >
+                  Import from another provider
+                </b>
+              </div>
+            </div>
+            <p
+              class="m-0 mt-2"
+            >
+              <a
+                to="#"
+              >
+                Download this CSV template
+              </a>
+               
+              to automatically match fields.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<ImportArticlesModal /> snapshots migration feature disabled 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-1-desc"
+    aria-labelledby="modal-1-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog large"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-1-title"
+            >
+              Import articles
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper"
+          id="modal-1-desc"
+        >
+          <div>
+            <input
+              accept=".csv"
+              data-testid="import-articles-modal-file-upload"
+              style="display: none;"
+              type="file"
+            />
+            <div
+              class="dropAreasContainer"
+            >
+              <div
+                class="fileDropArea"
+                data-testid="import-articles-modal-file-drop-area"
+              >
+                <div>
+                  <i
+                    class="material-icons modalCloudIcon"
+                  >
+                    cloud_upload
+                  </i>
+                  <b
+                    class="dropAreaText"
+                  >
+                    Drop your CSV here, or
+                     
+                    <a
+                      href=""
+                    >
+                      browse
+                    </a>
+                  </b>
+                </div>
+              </div>
+            </div>
+            <p
+              class="m-0 mt-2"
+            >
+              <a
+                to="#"
+              >
+                Download this CSV template
+              </a>
+               
+              to automatically match fields.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<ImportArticlesModal /> snapshots no file selected 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-2-desc"
+    aria-labelledby="modal-2-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog large"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-2-title"
+            >
+              Import articles
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper"
+          id="modal-2-desc"
+        >
+          <div>
+            <input
+              accept=".csv"
+              data-testid="import-articles-modal-file-upload"
+              style="display: none;"
+              type="file"
+            />
+            <div
+              class="dropAreasContainer"
+            >
+              <div
+                class="fileDropArea"
+                data-testid="import-articles-modal-file-drop-area"
+              >
+                <div>
+                  <i
+                    class="material-icons modalCloudIcon"
+                  >
+                    cloud_upload
+                  </i>
+                  <b
+                    class="dropAreaText"
+                  >
+                    Drop your CSV here, or
+                     
+                    <a
+                      href=""
+                    >
+                      browse
+                    </a>
+                  </b>
+                </div>
+              </div>
+              <div
+                class="fileDropArea"
+              >
+                <span
+                  class="supportedProvidersText"
+                >
+                  Currently supported providers:
+                </span>
+                <div
+                  class="providersLogosContainer"
+                >
+                  <img
+                    alt="HelpDocs"
+                    class="providerLogo"
+                    src="test-file-stub"
+                  />
+                  <img
+                    alt="Zendesk"
+                    class="providerLogo"
+                    src="test-file-stub"
+                  />
+                  <img
+                    alt="Intercom"
+                    class="providerLogo"
+                    src="test-file-stub"
+                  />
+                  <img
+                    alt="Re:amaze"
+                    class="providerLogo"
+                    src="test-file-stub"
+                  />
+                </div>
+                <b
+                  class="dropAreaText"
+                >
+                  Import from another provider
+                </b>
+              </div>
+            </div>
+            <p
+              class="m-0 mt-2"
+            >
+              <a
+                to="#"
+              >
+                Download this CSV template
+              </a>
+               
+              to automatically match fields.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<ImportArticlesModal /> snapshots providers fetching error 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-6-desc"
+    aria-labelledby="modal-6-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog large"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-6-title"
+            >
+              Import articles
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper"
+          id="modal-6-desc"
+        >
+          <div>
+            <input
+              accept=".csv"
+              data-testid="import-articles-modal-file-upload"
+              style="display: none;"
+              type="file"
+            />
+            <div
+              class="dropAreasContainer"
+            >
+              <div
+                class="fileDropArea"
+                data-testid="import-articles-modal-file-drop-area"
+              >
+                <div>
+                  <i
+                    class="material-icons modalCloudIcon"
+                  >
+                    cloud_upload
+                  </i>
+                  <b
+                    class="dropAreaText"
+                  >
+                    Drop your CSV here, or
+                     
+                    <a
+                      href=""
+                    >
+                      browse
+                    </a>
+                  </b>
+                </div>
+              </div>
+            </div>
+            <p
+              class="m-0 mt-2"
+            >
+              <a
+                to="#"
+              >
+                Download this CSV template
+              </a>
+               
+              to automatically match fields.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

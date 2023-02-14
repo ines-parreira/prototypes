@@ -1,0 +1,25 @@
+@import '~css/typography';
+@import '~css/new/colorTokens';
+
+:local {
+    .wrapper {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .logo {
+        width: 32px;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .title {
+        .heading-subsection-semibold();
+        color: 1px solid @classic-neutral-grey-6;
+    }
+
+    .url {
+        .body-regular();
+    }
+}

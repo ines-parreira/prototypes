@@ -1,0 +1,759 @@
+{
+    "components": {
+        "schemas": {
+            "Detail": {
+                "properties": {
+                    "message": {
+                        "title": "Message",
+                        "type": "string"
+                    }
+                },
+                "required": ["message"],
+                "title": "Detail",
+                "type": "object"
+            },
+            "GorgiasHelpCenterReceiver": {
+                "description": "Import a HelpCenter into Gorgias ",
+                "properties": {
+                    "access_token": {
+                        "format": "password",
+                        "title": "Access token",
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "help_center_id": {
+                        "minimum": 1,
+                        "title": "Help Center Id",
+                        "type": "integer"
+                    },
+                    "type": {
+                        "default": "Gorgias",
+                        "enum": ["Gorgias"],
+                        "title": "Type",
+                        "type": "string"
+                    }
+                },
+                "required": ["help_center_id", "access_token"],
+                "title": "GorgiasHelpCenterReceiver",
+                "type": "object"
+            },
+            "HelpCenterMigration": {
+                "description": "Base class for HelpCenter migrations ",
+                "properties": {
+                    "provider": {
+                        "$ref": "#/components/schemas/ZendeskHelpCenterProvider"
+                    },
+                    "receiver": {
+                        "$ref": "#/components/schemas/GorgiasHelpCenterReceiver"
+                    },
+                    "type": {
+                        "default": "HelpCenter",
+                        "enum": ["HelpCenter"],
+                        "title": "Type",
+                        "type": "string"
+                    }
+                },
+                "required": ["provider", "receiver"],
+                "title": "HelpCenterMigration",
+                "type": "object"
+            },
+            "HelpCenterProvider": {
+                "properties": {
+                    "docs_url": {
+                        "title": "Docs Url",
+                        "type": "string"
+                    },
+                    "logo_url": {
+                        "title": "Logo Url",
+                        "type": "string"
+                    },
+                    "properties": {
+                        "items": {
+                            "$ref": "#/components/schemas/PropertySchema"
+                        },
+                        "title": "Properties",
+                        "type": "array"
+                    },
+                    "site_url": {
+                        "title": "Site Url",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string"
+                    },
+                    "type": {
+                        "title": "Type",
+                        "type": "string"
+                    }
+                },
+                "required": ["type"],
+                "title": "HelpCenterProvider",
+                "type": "object"
+            },
+            "HelpCenterProviderList": {
+                "items": {
+                    "$ref": "#/components/schemas/HelpCenterProvider"
+                },
+                "title": "HelpCenterProviderList",
+                "type": "array"
+            },
+            "Message": {
+                "properties": {
+                    "level": {
+                        "enum": ["MESSAGE", "WARNING", "FAILURE"],
+                        "title": "Level",
+                        "type": "string"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string"
+                    }
+                },
+                "required": ["level", "message"],
+                "title": "Message",
+                "type": "object"
+            },
+            "MigrationParams": {
+                "properties": {
+                    "provider": {
+                        "$ref": "#/components/schemas/MigrationProvider"
+                    },
+                    "receiver": {
+                        "$ref": "#/components/schemas/MigrationReceiver"
+                    },
+                    "type": {
+                        "title": "Type",
+                        "type": "string"
+                    }
+                },
+                "required": ["type", "provider", "receiver"],
+                "title": "MigrationParams",
+                "type": "object"
+            },
+            "MigrationProvider": {
+                "properties": {
+                    "meta": {
+                        "$ref": "#/components/schemas/MigrationProviderMeta"
+                    },
+                    "type": {
+                        "title": "Type",
+                        "type": "string"
+                    }
+                },
+                "required": ["type", "meta"],
+                "title": "MigrationProvider",
+                "type": "object"
+            },
+            "MigrationProviderMeta": {
+                "properties": {
+                    "docs_url": {
+                        "title": "Docs Url",
+                        "type": "string"
+                    },
+                    "logo_url": {
+                        "title": "Logo Url",
+                        "type": "string"
+                    },
+                    "site_url": {
+                        "title": "Site Url",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string"
+                    }
+                },
+                "title": "MigrationProviderMeta",
+                "type": "object"
+            },
+            "MigrationReceiver": {
+                "properties": {
+                    "help_center_id": {
+                        "title": "Help Center Id",
+                        "type": "integer"
+                    },
+                    "type": {
+                        "title": "Type",
+                        "type": "string"
+                    }
+                },
+                "required": ["type", "help_center_id"],
+                "title": "MigrationReceiver",
+                "type": "object"
+            },
+            "MigrationResult": {
+                "properties": {
+                    "current": {
+                        "$ref": "#/components/schemas/Segment"
+                    },
+                    "progress": {
+                        "title": "Progress",
+                        "type": "number"
+                    },
+                    "segments": {
+                        "items": {
+                            "$ref": "#/components/schemas/Segment"
+                        },
+                        "title": "Segments",
+                        "type": "array"
+                    },
+                    "status": {
+                        "title": "Status",
+                        "type": "string"
+                    }
+                },
+                "required": ["progress", "segments", "status"],
+                "title": "MigrationResult",
+                "type": "object"
+            },
+            "Process": {
+                "properties": {
+                    "segments": {
+                        "items": {
+                            "$ref": "#/components/schemas/Segment"
+                        },
+                        "title": "Segments",
+                        "type": "array"
+                    }
+                },
+                "title": "Process",
+                "type": "object"
+            },
+            "PropertySchema": {
+                "properties": {
+                    "description": {
+                        "title": "Description",
+                        "type": "string"
+                    },
+                    "format": {
+                        "title": "Format",
+                        "type": "string"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string"
+                    },
+                    "type": {
+                        "title": "Type",
+                        "type": "string"
+                    },
+                    "writeOnly": {
+                        "title": "Writeonly",
+                        "type": "boolean"
+                    }
+                },
+                "required": ["name", "type"],
+                "title": "PropertySchema",
+                "type": "object"
+            },
+            "Segment": {
+                "properties": {
+                    "failures": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "title": "Failures",
+                        "type": "array"
+                    },
+                    "messages": {
+                        "items": {
+                            "$ref": "#/components/schemas/Message"
+                        },
+                        "title": "Messages",
+                        "type": "array"
+                    },
+                    "parent": {
+                        "$ref": "#/components/schemas/Process"
+                    },
+                    "status": {
+                        "default": "PENDING",
+                        "enum": ["PENDING", "STARTED", "SUCCESS", "FAILURE"],
+                        "title": "Status",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string"
+                    },
+                    "warnings": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "title": "Warnings",
+                        "type": "array"
+                    }
+                },
+                "required": ["title"],
+                "title": "Segment",
+                "type": "object"
+            },
+            "Session": {
+                "properties": {
+                    "migration": {
+                        "$ref": "#/components/schemas/HelpCenterMigration"
+                    },
+                    "webhook_url": {
+                        "format": "uri",
+                        "maxLength": 2083,
+                        "minLength": 1,
+                        "title": "Webhook Url",
+                        "type": "string"
+                    }
+                },
+                "required": ["migration"],
+                "title": "Session",
+                "type": "object"
+            },
+            "SessionCreateQueryParams": {
+                "properties": {
+                    "check": {
+                        "default": false,
+                        "title": "Check",
+                        "type": "boolean"
+                    }
+                },
+                "title": "SessionCreateQueryParams",
+                "type": "object"
+            },
+            "SessionListQueryParams": {
+                "properties": {
+                    "help_center_id": {
+                        "title": "Help Center Id",
+                        "type": "integer"
+                    },
+                    "provider_type": {
+                        "title": "Provider Type",
+                        "type": "string"
+                    },
+                    "receiver_type": {
+                        "title": "Receiver Type",
+                        "type": "string"
+                    }
+                },
+                "title": "SessionListQueryParams",
+                "type": "object"
+            },
+            "SessionLong": {
+                "properties": {
+                    "result": {
+                        "$ref": "#/components/schemas/MigrationResult"
+                    },
+                    "session": {
+                        "$ref": "#/components/schemas/SessionParams"
+                    },
+                    "session_id": {
+                        "format": "uuid",
+                        "title": "Session Id",
+                        "type": "string"
+                    },
+                    "status": {
+                        "title": "Status",
+                        "type": "string"
+                    }
+                },
+                "required": ["session", "session_id", "status", "result"],
+                "title": "SessionLong",
+                "type": "object"
+            },
+            "SessionParams": {
+                "properties": {
+                    "migration": {
+                        "$ref": "#/components/schemas/MigrationParams"
+                    },
+                    "webhook_url": {
+                        "title": "Webhook Url",
+                        "type": "string"
+                    }
+                },
+                "required": ["migration"],
+                "title": "SessionParams",
+                "type": "object"
+            },
+            "SessionShort": {
+                "properties": {
+                    "session": {
+                        "$ref": "#/components/schemas/SessionParams"
+                    },
+                    "session_id": {
+                        "format": "uuid",
+                        "title": "Session Id",
+                        "type": "string"
+                    },
+                    "status": {
+                        "title": "Status",
+                        "type": "string"
+                    }
+                },
+                "required": ["session", "session_id", "status"],
+                "title": "SessionShort",
+                "type": "object"
+            },
+            "SessionShortList": {
+                "items": {
+                    "$ref": "#/components/schemas/SessionShort"
+                },
+                "title": "SessionShortList",
+                "type": "array"
+            },
+            "ZendeskHelpCenterProvider": {
+                "description": "Base class for HelpCenter providers ",
+                "properties": {
+                    "api_key": {
+                        "format": "password",
+                        "title": "API Key",
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "email": {
+                        "description": "Your work email",
+                        "format": "email",
+                        "title": "Email",
+                        "type": "string"
+                    },
+                    "subdomain": {
+                        "title": "Subdomain",
+                        "type": "string"
+                    },
+                    "type": {
+                        "default": "Zendesk",
+                        "enum": ["Zendesk"],
+                        "title": "Type",
+                        "type": "string"
+                    }
+                },
+                "required": ["subdomain", "email", "api_key"],
+                "title": "ZendeskHelpCenterProvider",
+                "type": "object"
+            }
+        }
+    },
+    "info": {
+        "title": "Service API Document",
+        "version": "0.1"
+    },
+    "openapi": "3.0.3",
+    "paths": {
+        "/api/help_center/providers": {
+            "get": {
+                "description": "",
+                "operationId": "providerStaticList",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HelpCenterProviderList"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    }
+                },
+                "summary": "provider_static_list <GET>",
+                "tags": []
+            }
+        },
+        "/api/help_center/providers/{provider_type}": {
+            "get": {
+                "description": "",
+                "operationId": "providerStaticRetrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "provider_type",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HelpCenterProvider"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    }
+                },
+                "summary": "provider_static_retrieve <GET>",
+                "tags": []
+            },
+            "post": {
+                "description": "",
+                "operationId": "providerValidate",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "provider_type",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    }
+                },
+                "summary": "provider_validate <POST>",
+                "tags": []
+            }
+        },
+        "/api/sessions": {
+            "get": {
+                "description": "",
+                "operationId": "sessionList",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "help_center_id",
+                        "required": false,
+                        "schema": {
+                            "title": "Help Center Id",
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "receiver_type",
+                        "required": false,
+                        "schema": {
+                            "title": "Receiver Type",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "provider_type",
+                        "required": false,
+                        "schema": {
+                            "title": "Provider Type",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionShortList"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    }
+                },
+                "summary": "session_list <GET>",
+                "tags": []
+            },
+            "post": {
+                "description": "",
+                "operationId": "sessionCreate",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "check",
+                        "required": false,
+                        "schema": {
+                            "default": false,
+                            "title": "Check",
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Session"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionShort"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    }
+                },
+                "summary": "session_create <POST>",
+                "tags": []
+            }
+        },
+        "/api/sessions/{uuid}": {
+            "get": {
+                "description": "",
+                "operationId": "sessionRetrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uuid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionLong"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    }
+                },
+                "summary": "session_retrieve <GET>",
+                "tags": []
+            }
+        },
+        "/debug/echo": {
+            "get": {
+                "description": "",
+                "operationId": "echoView",
+                "parameters": [],
+                "responses": {},
+                "summary": "echo_view <GET>",
+                "tags": []
+            },
+            "post": {
+                "description": "",
+                "operationId": "echoView",
+                "parameters": [],
+                "responses": {},
+                "summary": "echo_view <POST>",
+                "tags": []
+            }
+        },
+        "/debug/error": {
+            "get": {
+                "description": "",
+                "operationId": "errorView",
+                "parameters": [],
+                "responses": {},
+                "summary": "error_view <GET>",
+                "tags": []
+            }
+        },
+        "/health": {
+            "get": {
+                "description": "",
+                "operationId": "health",
+                "parameters": [],
+                "responses": {},
+                "summary": "health <GET>",
+                "tags": []
+            }
+        }
+    },
+    "tags": []
+}

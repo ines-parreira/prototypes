@@ -1,5 +1,6 @@
 import classnames from 'classnames'
 import React, {ComponentType, ReactNode} from 'react'
+import * as ReactDOM from 'react-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {Container} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
@@ -214,14 +215,17 @@ class App extends React.Component<Props> {
                         />
                     </div>
                     <KeyboardHelp />
-                    <NotificationsSystem
-                        theme={notificationsTheme}
-                        notifications={alertNotifications}
-                        dismissNotification={dismissNotification}
-                        components={{
-                            NotificationIcon: GorgiasNotificationIcon,
-                        }}
-                    />
+                    {ReactDOM.createPortal(
+                        <NotificationsSystem
+                            theme={notificationsTheme}
+                            notifications={alertNotifications}
+                            dismissNotification={dismissNotification}
+                            components={{
+                                NotificationIcon: GorgiasNotificationIcon,
+                            }}
+                        />,
+                        document.body
+                    )}
                 </div>
             </ErrorBoundary>
         )

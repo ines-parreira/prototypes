@@ -1,0 +1,25 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .provider {
+        padding: 24px;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid @classic-neutral-grey-3;
+        }
+        &:last-child {
+            border-bottom-left-radius: inherit;
+            border-bottom-right-radius: inherit;
+        }
+
+        cursor: pointer;
+        transition: 0.2s;
+        &:hover {
+            background-color: @classic-neutral-grey-1;
+        }
+
+        &:active {
+            background-color: @classic-neutral-grey-2;
+        }
+    }
+}

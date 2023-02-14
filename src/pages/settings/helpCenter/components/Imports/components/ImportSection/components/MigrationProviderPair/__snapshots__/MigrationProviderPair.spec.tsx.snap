@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MigrationProviderPair /> should match snapshot 1`] = `
+<div
+  class="wrapper"
+>
+  <img
+    alt="HelpDocs"
+    class="image"
+    src="test-file-stub"
+  />
+  <i
+    class="arrow material-icons"
+  >
+    arrow_right_alt
+  </i>
+  <img
+    alt="Intercom"
+    class="image"
+    src="test-file-stub"
+  />
+</div>
+`;

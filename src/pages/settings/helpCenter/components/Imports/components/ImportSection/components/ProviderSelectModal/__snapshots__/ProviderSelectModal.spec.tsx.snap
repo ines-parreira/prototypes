@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProviderSelectModal /> should match snapshot 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-1-desc"
+    aria-labelledby="modal-1-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog small"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper modalHeader"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-1-title"
+            >
+              Select your current product
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="mb-4"
+        />
+        <div
+          class="provider wrapper"
+        >
+          <img
+            alt="HelpDocs"
+            class="logo"
+            src="test-file-stub"
+          />
+          <div>
+            <div
+              class="title"
+            >
+              HelpDocs
+            </div>
+            <div
+              class="url"
+            >
+              www.helpdocs.io
+            </div>
+          </div>
+        </div>
+        <div
+          class="provider wrapper"
+        >
+          <img
+            alt="Zendesk"
+            class="logo"
+            src="test-file-stub"
+          />
+          <div>
+            <div
+              class="title"
+            >
+              Zendesk
+            </div>
+            <div
+              class="url"
+            >
+              https://www.zendesk.com/
+            </div>
+          </div>
+        </div>
+        <div
+          class="provider wrapper"
+        >
+          <img
+            alt="Intercom"
+            class="logo"
+            src="test-file-stub"
+          />
+          <div>
+            <div
+              class="title"
+            >
+              Intercom
+            </div>
+            <div
+              class="url"
+            >
+              https://www.intercom.com/
+            </div>
+          </div>
+        </div>
+        <div
+          class="provider wrapper"
+        >
+          <img
+            alt="Re:amaze"
+            class="logo"
+            src="test-file-stub"
+          />
+          <div>
+            <div
+              class="title"
+            >
+              Re:amaze
+            </div>
+            <div
+              class="url"
+            >
+              https://www.reamaze.com/
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

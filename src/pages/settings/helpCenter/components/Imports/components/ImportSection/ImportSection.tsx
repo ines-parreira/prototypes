@@ -1,56 +1,50 @@
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {useAsyncFn, useSetState} from 'react-use'
+import {Spinner} from 'reactstrap'
+import {ParamType} from 'openapi-client-axios'
+
+import {Map} from 'immutable'
+
 import classnames from 'classnames'
-import React, {ChangeEvent, useRef, useState, useEffect} from 'react'
-import {Link, useHistory} from 'react-router-dom'
-import {Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from 'reactstrap'
-import {useAsyncFn} from 'react-use'
-import {fromJS, Map} from 'immutable'
-import {AxiosError} from 'axios'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import settingsCss from 'pages/settings/settings.less'
-
-import zendeskLogo from 'assets/img/integrations/zendesk.png'
-import helpdocsLogo from 'assets/img/integrations/helpdocs.png'
-import reamazeLogo from 'assets/img/integrations/reamaze.png'
-import intercomLogo from 'assets/img/integrations/intercom.png'
-
 import Button from 'pages/common/components/button/Button'
+import {useMigrationApi} from 'pages/settings/helpCenter/hooks/useMigrationApi'
+import Tooltip from 'pages/common/components/Tooltip'
+import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
-import {uploadFiles} from 'utils'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
-import {saveFileAsDownloaded} from 'utils/file'
-import {HOTSWAP_SDK_URL} from 'config'
 
-import Tooltip from 'pages/common/components/Tooltip'
-import css from './ImportSection.less'
+import useAppDispatch from 'hooks/useAppDispatch'
+
+import {getAccessToken} from 'rest_api/utils'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
-    buildCsvColumnMatchingUrl,
-    fileIsTooBig,
-    MAXIMUM_FILE_SIZE_MB,
+    FetchedMigrationSessionState,
+    FetchedProvidersState,
+    ImportArticlesModalState,
+    MigrationProviderType,
+    MigrationSessionStatus,
+    MigrationStartPayload,
+    MigrationState,
+    MigrationStatus,
+} from './types'
+import {
+    getSessionCreateData,
+    longNotificationOptions,
+    notificationRefreshButton,
+    sessionHasProgressStatus,
 } from './utils'
 
-interface ModalStateNoFileSelected {
-    state: 'NO_FILE_SELECTED'
-}
+import ImportArticlesModal from './components/ImportArticlesModal'
+import ProviderSelectModal from './components/ProviderSelectModal'
+import MigrationCredentialsModal from './components/MigrationCredentialsModal'
+import MigrationStateModal from './components/MigrationStateModal'
 
-interface ModalStateFileSelected {
-    state: 'FILE_SELECTED'
-    file: File
-}
-
-interface ModalStateImporting {
-    state: 'IMPORTING'
-}
-
-type ModalState =
-    | ModalStateNoFileSelected
-    | ModalStateFileSelected
-    | ModalStateImporting
+import css from './ImportSection.less'
 
 type Props = {
     className?: string
@@ -58,7 +52,7 @@ type Props = {
     isButton?: boolean
 }
 
-const SHOW_HOTSWAP_IMPORTS = false
+export const ACTIVE_MIGRATION_UPDATE_TIMEOUT = 3 * 1000
 
 export const ImportSection: React.FC<Props> = ({
     className,
@@ -66,212 +60,340 @@ export const ImportSection: React.FC<Props> = ({
     isButton,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const history = useHistory()
-    const helpCenter = useCurrentHelpCenter()
-    const {client} = useHelpCenterApi()
-    const [modalState, setModalState] = useState<ModalState | null>(null)
-    const hiddenFileInputRef = useRef<HTMLInputElement>(null)
+    const migrationClient = useMigrationApi()
+    const currentHelpCenter = useCurrentHelpCenter()
 
-    useEffect(() => {
-        if (document.querySelector(`script[src="${HOTSWAP_SDK_URL}"]`)) {
-            return
-        }
+    const isMigrationAvailable =
+        !!useFlags()[FeatureFlagKey.HelpCenterZendeskImportCTA]
 
-        const script = document.createElement('script')
-        script.src = HOTSWAP_SDK_URL
-        document.head.appendChild(script)
-    }, [])
+    const [importArticlesModalState, setImportArticlesModalState] =
+        useState<ImportArticlesModalState | null>(null)
+    const [providerSelectModalOpen, setProviderSelectModalOpen] =
+        useState(false)
+    const [selectedProviderType, setSelectedProviderType] =
+        useState<MigrationProviderType>()
+    const [migrationStartPayload, setMigrationStartPayload] =
+        useState<MigrationStartPayload>()
+    const [migrationStateModalOpen, setMigrationStateModalOpen] =
+        useState(false)
 
-    const [
-        {
-            value: hotswapImportProgressState,
-            loading: isHotswapImportProgressRequestLoading,
-        },
-        updateHotswapImportProgressState,
-    ] = useAsyncFn(async () => {
-        if (!helpCenter.hotswap_session_token || !client) {
-            return
-        }
+    // Using ref because we need this value in a promise callback
+    const migrationStateModalOpenRef = useRef(migrationStateModalOpen)
+    migrationStateModalOpenRef.current = migrationStateModalOpen
 
-        const response = await client.getHotswapStatus(helpCenter.id)
-        return response.data.progress
-    }, [client, helpCenter.hotswap_session_token])
+    const [fetchedProviders, setFetchedProviders] =
+        useSetState<FetchedProvidersState>({
+            data: null,
+            isLoading: isMigrationAvailable,
+            isError: false,
+        })
+    /**
+     * The migration session that is currently in progress
+     */
+    const [fetchedMigrationSession, setFetchedMigrationSession] =
+        useSetState<FetchedMigrationSessionState>({
+            data: null,
+            isFirstTimeLoading: isMigrationAvailable,
+        })
 
-    useEffect(() => {
-        if (helpCenter.hotswap_session_token) {
-            void updateHotswapImportProgressState()
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [helpCenter.hotswap_session_token])
+    const isUpdatingActiveMigrationRef = useRef(false)
 
-    if (!client) {
-        return null
-    }
+    const isImportInProgress = sessionHasProgressStatus(
+        fetchedMigrationSession.data
+    )
 
-    const isHotswapImportInProgress =
-        hotswapImportProgressState === 'IN_PROGRESS'
+    const selectedProvider = fetchedProviders.data?.find(
+        (provider) => provider.type === selectedProviderType
+    )
 
-    const handleImport = () => {
-        if (modalState?.state === 'FILE_SELECTED') {
-            const file = modalState.file
+    const canRenderMigrationStateModal =
+        fetchedMigrationSession.data || migrationStartPayload
 
-            setModalState({
-                state: 'IMPORTING',
-            })
+    const [{loading: isMigrationConnectionLoading}, handleMigrationConnect] =
+        useAsyncFn(
+            async (data: Map<string, string>) => {
+                if (!migrationClient || !selectedProviderType) return
 
-            uploadFiles([file]).then(
-                (files) => {
-                    // only one file was uploaded
-                    const fileUrl = files[0].url
-
-                    history.push(
-                        buildCsvColumnMatchingUrl(helpCenter.id, fileUrl)
+                try {
+                    await migrationClient.sessionCreate(
+                        // Check parameter used to just verify validity of credentials
+                        [{name: 'check', value: 'true', in: ParamType.Query}],
+                        getSessionCreateData(
+                            currentHelpCenter.id,
+                            {
+                                type: selectedProviderType,
+                                ...data.toJS(),
+                            },
+                            (await getAccessToken()) || ''
+                        )
                     )
-                },
-                (error: AxiosError) => {
-                    setModalState({
-                        state: 'NO_FILE_SELECTED',
+
+                    setSelectedProviderType(undefined)
+                    setMigrationStateModalOpen(true)
+                    setMigrationStartPayload({
+                        type: selectedProviderType,
+                        ...data.toJS(),
                     })
-
-                    if (error.response?.status === 413) {
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Error,
-                                // in development, the limit is lower than 10MB (1MB) but it is not user-facing
-                                message:
-                                    'Failed to upload file because its size is bigger than 10MB. Try to split it into several smaller files.',
-                            })
-                        )
-                    } else {
-                        const errorMessage = (
-                            fromJS(error.response) as Map<unknown, unknown>
-                        ).getIn(
-                            ['data', 'error', 'msg'],
-                            'Failed to upload file. Please try again later.'
-                        )
-
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Error,
-                                message: errorMessage,
-                            })
-                        )
-                    }
+                } catch (e) {
+                    void dispatch(
+                        notify({
+                            message: `Couldn't connect to provider: ${
+                                selectedProvider?.title || '<unkown>'
+                            }`,
+                            status: NotificationStatus.Error,
+                        })
+                    )
                 }
+            },
+            [migrationClient, selectedProviderType]
+        )
+
+    const [{loading: isMigrationStartLoading}, handleMigrationStart] =
+        useAsyncFn(async () => {
+            if (!migrationClient || !migrationStartPayload) return
+
+            try {
+                const {data: createdSession} =
+                    await migrationClient.sessionCreate(
+                        undefined,
+                        getSessionCreateData(
+                            currentHelpCenter.id,
+                            migrationStartPayload,
+                            (await getAccessToken(true)) || ''
+                        )
+                    )
+
+                if (!('status' in createdSession)) return
+
+                setMigrationStartPayload(undefined)
+                setMigrationStateModalOpen(true)
+                setFetchedMigrationSession({
+                    data: createdSession,
+                })
+            } catch (e) {
+                void dispatch(
+                    notify({
+                        message: `Failed to start migration`,
+                        status: NotificationStatus.Error,
+                    })
+                )
+            }
+        }, [migrationClient, migrationStartPayload])
+
+    useEffect(() => {
+        if (!migrationClient || !isMigrationAvailable) return
+        void (async () => {
+            try {
+                const {data: sessions} = await migrationClient.sessionList([
+                    {
+                        name: 'help_center_id',
+                        value: currentHelpCenter.id,
+                        in: ParamType.Query,
+                    },
+                ])
+                if (!(sessions instanceof Array)) return
+
+                const activeSession = sessions.find((session) =>
+                    sessionHasProgressStatus(session)
+                )
+
+                if (activeSession) {
+                    setFetchedMigrationSession({
+                        isFirstTimeLoading: false,
+                        data: activeSession,
+                    })
+                } else {
+                    setFetchedMigrationSession({
+                        isFirstTimeLoading: false,
+                    })
+                }
+            } catch (e) {
+                setFetchedMigrationSession({
+                    isFirstTimeLoading: false,
+                })
+                void dispatch(
+                    notify({
+                        message:
+                            "We're facing some problems retrieving active migrations",
+                        status: NotificationStatus.Error,
+                        ...longNotificationOptions,
+                    })
+                )
+            }
+        })()
+    }, [
+        currentHelpCenter.id,
+        dispatch,
+        isMigrationAvailable,
+        migrationClient,
+        setFetchedMigrationSession,
+    ])
+
+    const updateActiveMigrationSession = useCallback(async () => {
+        if (!migrationClient || !fetchedMigrationSession.data) return
+
+        let migrationFailed = false
+
+        try {
+            const {data: session} = await migrationClient.sessionRetrieve(
+                fetchedMigrationSession.data.session_id
             )
-        }
-    }
+            if (!('status' in session)) return
 
-    const openFileDialog = () => {
-        hiddenFileInputRef.current?.click()
-    }
+            if (sessionHasProgressStatus(session)) {
+                setFetchedMigrationSession({data: session})
+                return
+            }
 
-    const handleFileDropped = (event: React.DragEvent) => {
-        event.preventDefault()
-
-        // only one file can be imported at a time
-        const file = event.dataTransfer.items[0].getAsFile()
-
-        if (file !== null && file.name.toLocaleLowerCase().endsWith('.csv')) {
-            setModalState({
-                state: 'FILE_SELECTED',
-                file,
-            })
-        }
-    }
-
-    const handleFileChosen = (event: ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files !== null) {
-            setModalState({
-                state: 'FILE_SELECTED',
-                file: event.target.files[0],
-            })
-        }
-    }
-
-    const closeModal = () => setModalState(null)
-
-    const shouldShowModalFooter =
-        modalState?.state === 'FILE_SELECTED' && !fileIsTooBig(modalState?.file)
-
-    const handleAnotherProviderImportClick = async () => {
-        if (!window.Hotswap) {
-            return
+            if (session.status === MigrationSessionStatus.Success) {
+                // Show notification only if state modal is not open
+                if (!migrationStateModalOpenRef.current) {
+                    void dispatch(
+                        notify({
+                            message:
+                                'The migration finished successfully, to see the results refresh the page',
+                            buttons: [notificationRefreshButton],
+                            status: NotificationStatus.Success,
+                        })
+                    )
+                    setFetchedMigrationSession({data: null})
+                } else {
+                    setFetchedMigrationSession({data: session})
+                }
+            } else {
+                migrationFailed = true
+            }
+        } catch {
+            // In case of a server error
+            migrationFailed = true
         }
 
-        closeModal()
-
-        let token = helpCenter.hotswap_session_token
-        if (!token) {
-            const {data} = await client.createHotswapSessionToken(helpCenter.id)
-            token = data.token
-            dispatch(
-                helpCenterUpdated({
-                    ...helpCenter,
-                    hotswap_session_token: token,
+        if (migrationFailed) {
+            void dispatch(
+                notify({
+                    message:
+                        'The migration failed to finish importing all articles, some of them might be missing, to see the results refresh the page',
+                    status: NotificationStatus.Error,
+                    buttons: [notificationRefreshButton],
+                    ...longNotificationOptions,
                 })
             )
+            setFetchedMigrationSession({data: null})
         }
+    }, [
+        dispatch,
+        fetchedMigrationSession.data,
+        migrationClient,
+        setFetchedMigrationSession,
+    ])
 
-        window
-            .Hotswap({
-                token,
-                onClose: () => {
-                    void updateHotswapImportProgressState()
-                },
+    // Periodically update the migration session progress
+    useEffect(() => {
+        if (
+            isUpdatingActiveMigrationRef.current ||
+            !sessionHasProgressStatus(fetchedMigrationSession.data) ||
+            !isMigrationAvailable
+        )
+            return
+
+        isUpdatingActiveMigrationRef.current = true
+        setTimeout(() => {
+            void updateActiveMigrationSession()
+            isUpdatingActiveMigrationRef.current = false
+        }, ACTIVE_MIGRATION_UPDATE_TIMEOUT)
+    }, [
+        fetchedMigrationSession.data,
+        isMigrationAvailable,
+        updateActiveMigrationSession,
+    ])
+
+    const handleMigrationStateModalClose = () => {
+        setMigrationStateModalOpen(false)
+
+        // Canceling the migration before clicking start (if it already started this will have no effect)
+        if (migrationStartPayload) setMigrationStartPayload(undefined)
+
+        // If the session is completed we can forget about it
+        if (fetchedMigrationSession.data?.status === 'SUCCESS')
+            setFetchedMigrationSession({
+                data: null,
+                isFirstTimeLoading: false,
             })
-            .open()
     }
+
+    useEffect(() => {
+        if (!migrationClient || !isMigrationAvailable) return
+
+        void (async () => {
+            try {
+                const {data} = await migrationClient.providerStaticList()
+                if (!(data instanceof Array)) return
+                setFetchedProviders({
+                    data,
+                    isLoading: false,
+                })
+            } catch (e) {
+                setFetchedProviders({
+                    isLoading: false,
+                    isError: true,
+                })
+                void dispatch(
+                    notify({
+                        message:
+                            "We're facing some issues with migration providers, please contact support",
+                        status: NotificationStatus.Error,
+                        ...longNotificationOptions,
+                    })
+                )
+            }
+        })()
+    }, [dispatch, isMigrationAvailable, migrationClient, setFetchedProviders])
+
+    const migrationStateProvider = useMemo(() => {
+        // Feed the provider that was selected for the migration start to the MigrationStateModal
+        if (migrationStartPayload) {
+            return fetchedProviders.data?.find(
+                (provider) => provider.type === migrationStartPayload?.type
+            )
+        }
+        // When the session is in progress or completed feed the provider from the session to the MigrationStateModal
+        if (fetchedMigrationSession.data) {
+            return fetchedMigrationSession.data.session.migration.provider.meta
+        }
+    }, [
+        migrationStartPayload,
+        fetchedMigrationSession.data,
+        fetchedProviders.data,
+    ])
 
     const handleMoreDetailsClick = () => {
-        if (!window.Hotswap || !helpCenter.hotswap_session_token) {
-            return
-        }
-
-        window
-            .Hotswap({
-                token: helpCenter.hotswap_session_token,
-                onClose: () => {
-                    void updateHotswapImportProgressState()
-                },
-            })
-            .open()
+        setMigrationStateModalOpen(true)
     }
 
-    const hotswapDropArea = (
-        <div
-            className={css.fileDropArea}
-            onClick={handleAnotherProviderImportClick}
-        >
-            <span className={css.supportedProvidersText}>
-                Currently supported providers:
-            </span>
-
-            <div className={css.providersLogosContainer}>
-                <img
-                    src={helpdocsLogo}
-                    alt="Helpdocs"
-                    className={css.providerLogo}
-                />
-                <img
-                    src={zendeskLogo}
-                    alt="Zendesk"
-                    className={css.providerLogo}
-                />
-                <img
-                    src={reamazeLogo}
-                    alt="Re:amaze"
-                    className={css.providerLogo}
-                />
-                <img
-                    src={intercomLogo}
-                    alt="Intercom"
-                    className={css.providerLogo}
-                />
-            </div>
-            <b className={css.dropAreaText}>Import from another provider</b>
-        </div>
-    )
+    const migrationStateModalState: MigrationState = useMemo(() => {
+        if (migrationStartPayload) {
+            return {
+                status: MigrationStatus.Connected,
+                onMigrationStart: handleMigrationStart,
+                isMigrationStartLoading,
+            }
+        }
+        if (isImportInProgress) {
+            return {
+                status: MigrationStatus.InProgress,
+                progress: fetchedMigrationSession.data?.result?.progress || 0,
+            }
+        }
+        return {
+            status: MigrationStatus.Completed,
+        }
+    }, [
+        fetchedMigrationSession.data?.result?.progress,
+        handleMigrationStart,
+        isImportInProgress,
+        isMigrationStartLoading,
+        migrationStartPayload,
+    ])
 
     return (
         <>
@@ -280,11 +402,15 @@ export const ImportSection: React.FC<Props> = ({
                     <Button
                         id="import-button"
                         isDisabled={
-                            isHotswapImportProgressRequestLoading || isDisabled
+                            isImportInProgress ||
+                            isDisabled ||
+                            fetchedMigrationSession.isFirstTimeLoading
                         }
                         intent="secondary"
                         onClick={() =>
-                            setModalState({state: 'NO_FILE_SELECTED'})
+                            setImportArticlesModalState({
+                                state: 'NO_FILE_SELECTED',
+                            })
                         }
                         className={css.button}
                     >
@@ -308,8 +434,11 @@ export const ImportSection: React.FC<Props> = ({
                         Center.
                     </p>
 
-                    {isHotswapImportInProgress && (
-                        <div className={css.importInProgressContainer}>
+                    {isImportInProgress && (
+                        <div
+                            data-testid="import-in-progress-info"
+                            className={css.importInProgressContainer}
+                        >
                             <div>
                                 <Spinner
                                     size="sm"
@@ -322,154 +451,98 @@ export const ImportSection: React.FC<Props> = ({
                             <span
                                 onClick={handleMoreDetailsClick}
                                 className={css.moreDetails}
+                                data-testid="import-in-progress-more-details-trigger"
                             >
                                 More Details
                             </span>
                         </div>
                     )}
 
-                    {!isHotswapImportInProgress && (
+                    {!isImportInProgress && (
                         <Button
                             isDisabled={
-                                isHotswapImportProgressRequestLoading ||
-                                isDisabled
+                                // Don't allow to open import modal while checking if there's an active migration session
+                                isDisabled ||
+                                fetchedMigrationSession.isFirstTimeLoading
+                            }
+                            isLoading={
+                                fetchedMigrationSession.isFirstTimeLoading
                             }
                             intent="secondary"
                             onClick={() =>
-                                setModalState({state: 'NO_FILE_SELECTED'})
+                                setImportArticlesModalState({
+                                    state: 'NO_FILE_SELECTED',
+                                })
                             }
                         >
-                            <i className="material-icons mr-2">cloud_upload</i>
-                            Import Articles
+                            {!fetchedMigrationSession.isFirstTimeLoading && (
+                                <i className="material-icons mr-2">
+                                    cloud_upload
+                                </i>
+                            )}
+                            {fetchedMigrationSession.isFirstTimeLoading
+                                ? 'Checking for migrations'
+                                : 'Import Articles'}
                         </Button>
                     )}
                 </section>
             )}
-            <Modal
-                size="lg"
-                isOpen={modalState !== null}
-                onClose={closeModal}
-                centered
-            >
-                <ModalHeader
-                    toggle={
-                        modalState?.state !== 'IMPORTING'
-                            ? closeModal
-                            : undefined
-                    }
-                >
-                    Import articles
-                </ModalHeader>
-                <ModalBody>
-                    {modalState?.state === 'IMPORTING' ? (
-                        <Loader minHeight="100px" />
-                    ) : (
-                        <div>
-                            <input
-                                type="file"
-                                accept=".csv"
-                                ref={hiddenFileInputRef}
-                                style={{display: 'none'}}
-                                onChange={handleFileChosen}
-                            />
 
-                            {modalState?.state === 'FILE_SELECTED' ? (
-                                <div>
-                                    <div className={css.fileSelectedArea}>
-                                        <div>
-                                            <i className="material-icons mr-2">
-                                                insert_drive_file
-                                            </i>
-                                            {modalState.file.name}
-                                        </div>
-
-                                        <div>
-                                            <Button
-                                                intent="secondary"
-                                                size="small"
-                                                onClick={openFileDialog}
-                                            >
-                                                Change File
-                                            </Button>
-                                        </div>
-                                    </div>
-
-                                    {fileIsTooBig(modalState.file) ? (
-                                        <div className="text-danger">
-                                            The size of your file is over{' '}
-                                            {MAXIMUM_FILE_SIZE_MB}MB, please
-                                            select another file.
-                                        </div>
-                                    ) : null}
-                                </div>
-                            ) : (
-                                <div className={css.dropAreasContainer}>
-                                    <div
-                                        className={css.fileDropArea}
-                                        onClick={openFileDialog}
-                                        onDrop={handleFileDropped}
-                                        onDragOver={(e) => e.preventDefault()}
-                                    >
-                                        <i
-                                            className={classnames(
-                                                'material-icons',
-                                                css.modalCloudIcon
-                                            )}
-                                        >
-                                            cloud_upload
-                                        </i>
-
-                                        <b className={css.dropAreaText}>
-                                            Drop your CSV here, or{' '}
-                                            <a
-                                                href=""
-                                                onClick={(ev) => {
-                                                    ev.preventDefault()
-                                                }}
-                                            >
-                                                browse
-                                            </a>
-                                        </b>
-                                    </div>
-
-                                    {SHOW_HOTSWAP_IMPORTS && hotswapDropArea}
-                                </div>
-                            )}
-
-                            <p className="m-0 mt-2">
-                                <Link
-                                    to="#"
-                                    onClick={async (e) => {
-                                        e.preventDefault()
-
-                                        const response =
-                                            await client.generateCsvTemplate({
-                                                help_center_id: helpCenter.id,
-                                            })
-
-                                        saveFileAsDownloaded(
-                                            'template.csv',
-                                            response.data,
-                                            'text/csv'
-                                        )
-                                    }}
-                                >
-                                    Download this CSV template
-                                </Link>{' '}
-                                to automatically match fields.
-                            </p>
-                        </div>
+            <ImportArticlesModal
+                isOpen={importArticlesModalState !== null}
+                onClose={() => setImportArticlesModalState(null)}
+                fetchedProviders={fetchedProviders}
+                modalState={importArticlesModalState}
+                onImportStart={() => {
+                    setImportArticlesModalState({
+                        state: 'IMPORTING',
+                    })
+                }}
+                onFileSelect={(file) => {
+                    setImportArticlesModalState({
+                        state: 'FILE_SELECTED',
+                        file,
+                    })
+                }}
+                onFileRemove={() => {
+                    setImportArticlesModalState({
+                        state: 'NO_FILE_SELECTED',
+                    })
+                }}
+                onMigrationDropAreaClick={() => {
+                    setImportArticlesModalState(null)
+                    setProviderSelectModalOpen(true)
+                }}
+            />
+            {isMigrationAvailable && (
+                <>
+                    {fetchedProviders.data && (
+                        <ProviderSelectModal
+                            isOpen={providerSelectModalOpen}
+                            onClose={() => setProviderSelectModalOpen(false)}
+                            providers={fetchedProviders.data}
+                            onProviderSelect={setSelectedProviderType}
+                        />
                     )}
-                </ModalBody>
-                {shouldShowModalFooter && (
-                    <ModalFooter className={css.modalFooter}>
-                        <Button intent="secondary" onClick={closeModal}>
-                            Cancel
-                        </Button>
-                        <Button onClick={handleImport}>Import File</Button>
-                    </ModalFooter>
-                )}
-            </Modal>
+                    {selectedProvider && (
+                        <MigrationCredentialsModal
+                            isOpen={!!selectedProvider}
+                            onClose={() => setSelectedProviderType(undefined)}
+                            provider={selectedProvider}
+                            onSubmit={handleMigrationConnect}
+                            isLoading={isMigrationConnectionLoading}
+                        />
+                    )}
+                    {canRenderMigrationStateModal && migrationStateProvider && (
+                        <MigrationStateModal
+                            isOpen={migrationStateModalOpen}
+                            onClose={handleMigrationStateModalClose}
+                            provider={migrationStateProvider}
+                            state={migrationStateModalState}
+                        />
+                    )}
+                </>
+            )}
         </>
     )
 }

@@ -1,10 +1,8 @@
 import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
 import memoize from 'memoize-one'
-import {
-    getHelpCenterAuthApiBaseUrl,
-    isProduction,
-    isStaging,
-} from 'utils/environment'
+
+import {isProduction, isStaging} from 'utils/environment'
+import {getAccessToken, getBearerAuthorizationHeader} from 'rest_api/utils'
 
 import OpenAPIDoc from './help-center.openapi.json'
 import {Client} from './client.generated'
@@ -22,7 +20,7 @@ export function getHelpCenterApiBaseUrl(): string {
     return 'http://acme.gorgias.docker:4001'
 }
 
-const api = new OpenAPIClientAxios({
+export const helpCenterAPI = new OpenAPIClientAxios({
     // We prefer having the OpenAPI doc locally rather
     // than fetching it at runtime.
     // Reason: the OpenAPI spec may change and it may mess the client
@@ -34,16 +32,6 @@ const api = new OpenAPIClientAxios({
 })
 
 let agentAbility: AppAbility | undefined
-
-function isValidAccessToken(token: string | null): boolean {
-    if (!token) {
-        return false
-    }
-
-    const {exp} = JSON.parse(atob(token.split('.')[1]))
-    const expirationDate = new Date(exp * 1000)
-    return new Date() < expirationDate
-}
 
 function createAgentAbility(token: string | null) {
     if (!token) return undefined
@@ -65,34 +53,7 @@ function createAgentAbility(token: string | null) {
 async function buildHelpCenterClient(
     setAgentAbility?: (ability: AppAbility | undefined) => void
 ): Promise<Client> {
-    let accessToken: string | null
-    let createAccessTokenPendingRequest: ReturnType<
-        Client['createAccessToken']
-    > | null = null
-
-    const renewAccessToken = async (client: Client): Promise<void> => {
-        // Prevent multiple /auth calls if parallel requests are made
-        if (createAccessTokenPendingRequest) {
-            await createAccessTokenPendingRequest
-            return
-        }
-
-        createAccessTokenPendingRequest = client.createAccessToken(
-            undefined,
-            undefined,
-            {
-                baseURL: getHelpCenterAuthApiBaseUrl(),
-                withCredentials: true,
-            }
-        )
-        const {
-            data: {access_token: tokenFromResponse},
-        } = await createAccessTokenPendingRequest
-        accessToken = tokenFromResponse
-        createAccessTokenPendingRequest = null
-    }
-
-    const client = await api.getClient<Client>()
+    const client = await helpCenterAPI.getClient<Client>()
 
     client.interceptors.request.use(async (config) => {
         // Prevent recursion while doing auth calls
@@ -100,9 +61,7 @@ async function buildHelpCenterClient(
             return config
         }
 
-        if (!isValidAccessToken(accessToken)) {
-            await renewAccessToken(client)
-        }
+        const accessToken = await getAccessToken()
 
         setAgentAbility?.(createAgentAbility(accessToken))
 
@@ -110,7 +69,7 @@ async function buildHelpCenterClient(
             ...config,
             headers: {
                 ...config.headers,
-                authorization: `Bearer ${accessToken || ''}`,
+                authorization: getBearerAuthorizationHeader(accessToken || ''),
             },
         }
     })
