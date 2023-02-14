@@ -12,7 +12,6 @@
     }
 
     .lastInput {
-        margin-left: 20px;
         margin-right: 36px;
     }
 
@@ -21,13 +20,21 @@
         font-size: 16px;
         padding: 8px 0;
         color: @classic-neutral-grey-3;
+    }
 
+    .dragIndicatorActive {
         &:hover {
             cursor: grab;
         }
 
         &:active {
             cursor: grabbing;
+        }
+    }
+
+    .dragIndicatorDisabled {
+        &:hover {
+            cursor: not-allowed;
         }
     }
 

@@ -10,7 +10,7 @@ exports[`<DropdownInputRow/> should render correctly 1`] = `
     class="inputContainer"
   >
     <div
-      class="material-icons dragIndicator"
+      class="material-icons dragIndicator dragIndicatorActive"
       data-testid="dropdown-choice-123-handle"
       draggable="true"
     >
@@ -53,7 +53,7 @@ exports[`<DropdownInputRow/> should render correctly when validation fails 1`] =
     class="inputContainer"
   >
     <div
-      class="material-icons dragIndicator"
+      class="material-icons dragIndicator dragIndicatorActive"
       data-testid="dropdown-choice-123-handle"
       draggable="true"
     >

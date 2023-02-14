@@ -11,7 +11,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       class="inputContainer"
     >
       <div
-        class="material-icons dragIndicator"
+        class="material-icons dragIndicator dragIndicatorActive"
         data-testid="dropdown-choice-1-handle"
         draggable="true"
       >
@@ -51,7 +51,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       class="inputContainer"
     >
       <div
-        class="material-icons dragIndicator"
+        class="material-icons dragIndicator dragIndicatorActive"
         data-testid="dropdown-choice-2-handle"
         draggable="true"
       >
@@ -91,7 +91,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       class="inputContainer"
     >
       <div
-        class="material-icons dragIndicator"
+        class="material-icons dragIndicator dragIndicatorActive"
         data-testid="dropdown-choice-3-handle"
         draggable="true"
       >
@@ -131,6 +131,11 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       class="inputContainer"
     >
       <div
+        class="material-icons dragIndicator dragIndicatorDisabled"
+      >
+        drag_indicator
+      </div>
+      <div
         class="wrapper"
       >
         <input
@@ -169,7 +174,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
       class="inputContainer"
     >
       <div
-        class="material-icons dragIndicator"
+        class="material-icons dragIndicator dragIndicatorActive"
         data-testid="dropdown-choice-1-handle"
         draggable="true"
       >
@@ -214,7 +219,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
       class="inputContainer"
     >
       <div
-        class="material-icons dragIndicator"
+        class="material-icons dragIndicator dragIndicatorActive"
         data-testid="dropdown-choice-2-handle"
         draggable="true"
       >
@@ -254,7 +259,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
       class="inputContainer"
     >
       <div
-        class="material-icons dragIndicator"
+        class="material-icons dragIndicator dragIndicatorActive"
         data-testid="dropdown-choice-3-handle"
         draggable="true"
       >
@@ -299,7 +304,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
       class="inputContainer"
     >
       <div
-        class="material-icons dragIndicator"
+        class="material-icons dragIndicator dragIndicatorActive"
         data-testid="dropdown-choice-4-handle"
         draggable="true"
       >
@@ -338,6 +343,11 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
     <div
       class="inputContainer"
     >
+      <div
+        class="material-icons dragIndicator dragIndicatorDisabled"
+      >
+        drag_indicator
+      </div>
       <div
         class="wrapper"
       >

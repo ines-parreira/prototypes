@@ -1,5 +1,6 @@
 import React, {memo, useEffect} from 'react'
 
+import classnames from 'classnames'
 import IconButton from 'pages/common/components/button/IconButton'
 import TextInput from 'pages/common/forms/input/TextInput'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -50,11 +51,25 @@ export function DropdownInputRow(props: DropdownInputRowProps) {
             style={{opacity: isDragging ? 0.3 : 1}}
         >
             <div className={css.inputContainer}>
-                {!props.isLast && (
+                {!props.isLast ? (
                     <div
                         ref={dragRef as React.RefObject<HTMLDivElement>}
-                        className={'material-icons ' + css.dragIndicator}
+                        className={classnames(
+                            'material-icons',
+                            css.dragIndicator,
+                            css.dragIndicatorActive
+                        )}
                         data-testid={`${props.id}-handle`}
+                    >
+                        drag_indicator
+                    </div>
+                ) : (
+                    <div
+                        className={classnames(
+                            'material-icons',
+                            css.dragIndicator,
+                            css.dragIndicatorDisabled
+                        )}
                     >
                         drag_indicator
                     </div>
