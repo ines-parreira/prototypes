@@ -120,38 +120,6 @@ function GorgiasChatIntegrationInstall({
         }
     }
 
-    const generateFaultyInstallationBannerContent = () => (
-        <>
-            <b>
-                The Chat widget was not loaded on your website in the past 72
-                hours.
-            </b>
-            {isShopifyChat && (
-                <span>
-                    {' '}
-                    Please check your website. If you are using the 1-click
-                    installation, you may try to reinstall again. If you are
-                    using a custom installation method, you may review the
-                    installation.
-                </span>
-            )}
-            {!isShopifyChat && (
-                <span>
-                    {' '}
-                    Please check your website and review the installation.
-                </span>
-            )}
-            {isDisabled && (
-                <span>
-                    <br></br>
-                    Please note that the Chat widget is currently set to be
-                    hidden. You may want to turn off the <b>Hide Chat</b> option
-                    before checking your website.
-                </span>
-            )}
-        </>
-    )
-
     const isLoading = loading.get('updateIntegration') === integration.get('id')
     const hasOrderManagement =
         hasAutomationAddOn || hasLegacyAutomationAddOnFeatures
@@ -183,7 +151,17 @@ function GorgiasChatIntegrationInstall({
                         {!installationStatus.installed && (
                             <div className={css.installationStatusIssue}>
                                 <Alert type={AlertType.Error} icon>
-                                    {generateFaultyInstallationBannerContent()}
+                                    Your chat widget was not seen installed on
+                                    your website in the past 72 hours. Check its
+                                    installation to resolve. (
+                                    <a
+                                        href="https://docs.gorgias.com/en-US/chat-getting-started-81789"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        More information
+                                    </a>
+                                    )
                                 </Alert>
                             </div>
                         )}

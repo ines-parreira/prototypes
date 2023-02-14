@@ -180,8 +180,9 @@ const GorgiasChatIntegrationListRow = ({
                                         }}
                                         target={`chat-status-${integrationId}`}
                                     >
-                                        Chat widget was not loaded on your
-                                        website in the past 72 hours.
+                                        Chat Widget was not seen installed on
+                                        your website in the past 72h. Check its
+                                        installation to resolve.
                                     </Tooltip>
                                 </>
                             )}
