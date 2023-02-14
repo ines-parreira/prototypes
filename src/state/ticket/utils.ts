@@ -33,8 +33,10 @@ import {RootState} from 'state/types'
 import {getActionTemplate, isImmutable, toImmutable} from 'utils'
 import {unescapeQuoteEntities} from 'utils/html'
 
+import {EventType} from 'models/event/types'
 import {getProperty} from './selectors'
 import {EMPTY_SENDER} from './constants'
+import {TicketState} from './types'
 
 export type Receiver = {
     name: string
@@ -993,4 +995,24 @@ export const mergeActions = (oldActions: List<any>, newActions: List<any>) => {
         } else actions = actions.push(oldAction)
     })
     return actions
+}
+
+export const injectAISuggestionEvents = (
+    state: TicketState,
+    results: List<any>
+) => {
+    let newResults = results
+    if (state.getIn(['meta', 'ai_suggestion']))
+        newResults = results.push(
+            fromJS({
+                type: EventType.AISuggestionSuggested,
+                data: {
+                    text: state.getIn(['meta', 'ai_suggestion', 'body_text']),
+                },
+                created_datetime: moment(state.get('created_datetime'))
+                    .add(1, 's')
+                    .toISOString(),
+            })
+        )
+    return newResults
 }

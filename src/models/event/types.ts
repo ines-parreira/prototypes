@@ -59,6 +59,7 @@ export type EventData =
     | TicketTeamAssignedEventData
     | RuleExecutedEventData
     | RuleSuggestionEventData
+    | AISuggestionEventData
     | TicketRuleExecutedEventData
     | TicketMessageSummaryCreatedEventData
     | TicketSubjectUpdatedEventData
@@ -68,6 +69,7 @@ export enum EventType {
     AccountCreated = 'account-created',
     AccountDeactivated = 'account-deactivated',
     AccountUpdated = 'account-updated',
+    AISuggestionSuggested = 'ai-suggestion-suggested',
     CustomerCreated = 'customer-created',
     CustomerDeleted = 'customer-deleted',
     CustomerMerged = 'customer-merged',
@@ -178,6 +180,7 @@ export enum EventSortableProperties {
 
 export const TICKET_EVENT_TYPES = Object.freeze({
     ..._pick(EventType, [
+        'AISuggestionSuggested',
         'RuleSuggestionSuggested',
         'TicketAssigned',
         'TicketClosed',
@@ -225,6 +228,10 @@ export type RuleExecutedEventData = {
 
 export type RuleSuggestionEventData = {
     slug: string
+}
+
+export type AISuggestionEventData = {
+    text: string
 }
 
 export const RULE_ACTIONS_EVENT_TYPES = Object.freeze([

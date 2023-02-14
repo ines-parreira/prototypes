@@ -12,7 +12,12 @@ import {GorgiasAction} from 'state/types'
 import {compare} from 'utils'
 
 import {Ticket} from 'models/ticket/types'
-import {getPendingMessageIndex, mergeActions, parseTimedelta} from './utils'
+import {
+    getPendingMessageIndex,
+    injectAISuggestionEvents,
+    mergeActions,
+    parseTimedelta,
+} from './utils'
 import * as types from './constants'
 import {
     deduplicateAuditLogEvents,
@@ -641,6 +646,8 @@ export default function reducer(
                             results = results.set(index, eventToDisplay)
                         }
                     })
+
+                results = injectAISuggestionEvents(state, results)
 
                 return shouldDeduplicateAuditLogEvents(
                     state.get('created_datetime')

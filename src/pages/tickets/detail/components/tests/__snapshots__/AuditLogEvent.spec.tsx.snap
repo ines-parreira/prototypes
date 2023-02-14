@@ -467,6 +467,59 @@ exports[`<AuditLogEvent/> render() should render when the user ID is missing 1`]
 </div>
 `;
 
+exports[`<AuditLogEvent/> render() should render with event type ai-suggestion-suggested 1`] = `
+<div
+  className="component isVirtualized"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          lightbulb
+        </i>
+      </div>
+      <span>
+        <ActionName>
+          Gorgias AI
+        </ActionName>
+         suggested
+         
+        <span
+          id="ai-suggestion-event-log"
+        >
+          <u>
+            an answer
+          </u>
+        </span>
+         
+        for this ticket
+        <Tooltip
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<div>suggested text</div>",
+            }
+          }
+          placement="top"
+          target="ai-suggestion-event-log"
+        />
+      </span>
+    </div>
+    <Connect(DatetimeLabelContainer)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+    />
+  </div>
+</div>
+`;
+
 exports[`<AuditLogEvent/> render() should render with event type rule-executed 1`] = `
 <div
   className="component isVirtualized"
