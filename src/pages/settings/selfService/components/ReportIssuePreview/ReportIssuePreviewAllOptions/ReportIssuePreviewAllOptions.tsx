@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
-import {useRouteMatch} from 'react-router'
+import {useRouteMatch} from 'react-router-dom'
 
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 import {getIntegrations} from 'state/integrations/selectors'
