@@ -28,18 +28,20 @@ export default function CampaignsStatsFilter({
     )
 
     const campaigns = useMemo(() => {
-        const chatIntegration = chatIntegrations.find((integration) => {
-            const selected = selectedIntegrations || []
-            const linked = integration.meta?.shopify_integration_ids || []
-
-            return selected.some(function (selected_value) {
-                return linked.some(function (linked_value) {
-                    return selected_value === parseInt(linked_value)
-                })
+        return chatIntegrations
+            .filter((integration) => {
+                const selected = selectedIntegrations || []
+                const linked = integration.meta?.shop_integration_id
+                return selected.some(
+                    (selected_value) => selected_value === linked
+                )
             })
-        })
-
-        return chatIntegration ? chatIntegration.meta?.campaigns : []
+            .map((integration) => integration.meta?.campaigns || [])
+            .reduce(
+                (accumulator, currentIntegration) =>
+                    accumulator.concat(currentIntegration),
+                []
+            )
     }, [selectedIntegrations, chatIntegrations])
 
     const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =

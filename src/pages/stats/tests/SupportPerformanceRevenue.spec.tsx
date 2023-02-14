@@ -65,7 +65,7 @@ export const integrationsState = {
                 preferences: {
                     linked_email_integration: 5,
                 },
-                shopify_integration_ids: [516],
+                shop_integration_id: 516,
                 campaigns: [
                     {
                         deactivated_datetime: '2023-01-05T14:55:57.437Z',
@@ -91,6 +91,76 @@ export const integrationsState = {
             created_datetime: '2017-02-07T06:07:43.481450+00:00',
             type: 'gorgias_chat',
             id: 8,
+            description: null,
+            updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+        },
+        {
+            deleted_datetime: null,
+            meta: {
+                preferences: {
+                    linked_email_integration: 5,
+                },
+                shop_integration_id: 516,
+                campaigns: [
+                    {
+                        deactivated_datetime: '2023-01-05T14:55:57.437Z',
+                        id: 'g85a98e1-dc9e-40f1-9828-3b3c9908cacf',
+                        message: {
+                            html: '<div>simple campaign</div>',
+                            text: 'simple campaign',
+                        },
+                        name: 'campaign 2',
+                    },
+                ],
+            },
+            facebook: null,
+            http: null,
+            deactivated_datetime: null,
+            name: 'Another chat integration',
+            user: {
+                id: 2,
+            },
+            uri: '/api/integrations/9/',
+            decoration: null,
+            locked_datetime: null,
+            created_datetime: '2017-02-07T06:07:43.481450+00:00',
+            type: 'gorgias_chat',
+            id: 9,
+            description: null,
+            updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+        },
+        {
+            deleted_datetime: null,
+            meta: {
+                preferences: {
+                    linked_email_integration: 5,
+                },
+                shop_integration_id: 1,
+                campaigns: [
+                    {
+                        deactivated_datetime: '2023-01-05T14:55:57.437Z',
+                        id: 'f85a98e1-dc9e-40f1-9828-3b3c9908cacf',
+                        message: {
+                            html: '<div>simple campaign</div>',
+                            text: 'simple campaign',
+                        },
+                        name: 'campaign 3',
+                    },
+                ],
+            },
+            facebook: null,
+            http: null,
+            deactivated_datetime: null,
+            name: 'Unlinked chat',
+            user: {
+                id: 2,
+            },
+            uri: '/api/integrations/10/',
+            decoration: null,
+            locked_datetime: null,
+            created_datetime: '2017-02-07T06:07:43.481450+00:00',
+            type: 'gorgias_chat',
+            id: 10,
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
         },
