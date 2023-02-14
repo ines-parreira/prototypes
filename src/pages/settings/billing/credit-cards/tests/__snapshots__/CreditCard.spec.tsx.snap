@@ -61,7 +61,7 @@ exports[`CreditCard component should display credit card form 1`] = `
           value=""
         />
         <div
-          className="row mb32"
+          className="row mb16"
         >
           <InputField
             className="inputRow"
@@ -90,6 +90,25 @@ exports[`CreditCard component should display credit card form 1`] = `
             placeholder="693"
             value=""
           />
+        </div>
+        <div
+          className="chargeDisclaimer mb32"
+        >
+          <i
+            className="material-icons-outlined"
+          >
+            info
+          </i>
+          <span>
+            <b>
+              A temporary $1 charge
+            </b>
+             will be applied to new payment methods, and be
+             
+            <b>
+              refunded within 7 days.
+            </b>
+          </span>
         </div>
         <FormGroup
           color="danger"
@@ -293,7 +312,7 @@ exports[`CreditCard component should not render the billing address form when a 
           value=""
         />
         <div
-          className="row mb32"
+          className="row mb16"
         >
           <InputField
             className="inputRow"
@@ -322,6 +341,25 @@ exports[`CreditCard component should not render the billing address form when a 
             placeholder="693"
             value=""
           />
+        </div>
+        <div
+          className="chargeDisclaimer mb32"
+        >
+          <i
+            className="material-icons-outlined"
+          >
+            info
+          </i>
+          <span>
+            <b>
+              A temporary $1 charge
+            </b>
+             will be applied to new payment methods, and be
+             
+            <b>
+              refunded within 7 days.
+            </b>
+          </span>
         </div>
         <FormGroup
           color="danger"
@@ -517,7 +555,7 @@ exports[`CreditCard component should render billing plan card with automation fo
           value=""
         />
         <div
-          className="row mb32"
+          className="row mb16"
         >
           <InputField
             className="inputRow"
@@ -546,6 +584,25 @@ exports[`CreditCard component should render billing plan card with automation fo
             placeholder="693"
             value=""
           />
+        </div>
+        <div
+          className="chargeDisclaimer mb32"
+        >
+          <i
+            className="material-icons-outlined"
+          >
+            info
+          </i>
+          <span>
+            <b>
+              A temporary $1 charge
+            </b>
+             will be applied to new payment methods, and be
+             
+            <b>
+              refunded within 7 days.
+            </b>
+          </span>
         </div>
         <FormGroup
           color="danger"
@@ -758,7 +815,7 @@ exports[`CreditCard component should render billing plan card with automation fo
           value=""
         />
         <div
-          className="row mb32"
+          className="row mb16"
         >
           <InputField
             className="inputRow"
@@ -787,6 +844,25 @@ exports[`CreditCard component should render billing plan card with automation fo
             placeholder="693"
             value=""
           />
+        </div>
+        <div
+          className="chargeDisclaimer mb32"
+        >
+          <i
+            className="material-icons-outlined"
+          >
+            info
+          </i>
+          <span>
+            <b>
+              A temporary $1 charge
+            </b>
+             will be applied to new payment methods, and be
+             
+            <b>
+              refunded within 7 days.
+            </b>
+          </span>
         </div>
         <FormGroup
           color="danger"
@@ -998,7 +1074,7 @@ exports[`CreditCard component should render nothing if loaded, but no current su
           value=""
         />
         <div
-          className="row mb32"
+          className="row mb16"
         >
           <InputField
             className="inputRow"
@@ -1027,6 +1103,25 @@ exports[`CreditCard component should render nothing if loaded, but no current su
             placeholder="693"
             value=""
           />
+        </div>
+        <div
+          className="chargeDisclaimer mb32"
+        >
+          <i
+            className="material-icons-outlined"
+          >
+            info
+          </i>
+          <span>
+            <b>
+              A temporary $1 charge
+            </b>
+             will be applied to new payment methods, and be
+             
+            <b>
+              refunded within 7 days.
+            </b>
+          </span>
         </div>
         <FormGroup
           color="danger"
@@ -1222,7 +1317,7 @@ exports[`CreditCard component should render the billing address form when accoun
           value=""
         />
         <div
-          className="row mb32"
+          className="row mb16"
         >
           <InputField
             className="inputRow"
@@ -1251,6 +1346,25 @@ exports[`CreditCard component should render the billing address form when accoun
             placeholder="693"
             value=""
           />
+        </div>
+        <div
+          className="chargeDisclaimer mb32"
+        >
+          <i
+            className="material-icons-outlined"
+          >
+            info
+          </i>
+          <span>
+            <b>
+              A temporary $1 charge
+            </b>
+             will be applied to new payment methods, and be
+             
+            <b>
+              refunded within 7 days.
+            </b>
+          </span>
         </div>
         <h3
           className="heading-section-semibold"

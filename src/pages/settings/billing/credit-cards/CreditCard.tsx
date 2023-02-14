@@ -489,7 +489,7 @@ export class CreditCardContainer extends Component<Props, State> {
                             <div
                                 className={classnames(
                                     css.row,
-                                    settingsCss.mb32
+                                    settingsCss.mb16
                                 )}
                             >
                                 <InputField
@@ -544,6 +544,19 @@ export class CreditCardContainer extends Component<Props, State> {
                                     }
                                     error={errors.cvc}
                                 />
+                            </div>
+                            <div
+                                className={classnames(
+                                    css.chargeDisclaimer,
+                                    settingsCss.mb32
+                                )}
+                            >
+                                <i className="material-icons-outlined">info</i>
+                                <span>
+                                    <b>A temporary $1 charge</b> will be applied
+                                    to new payment methods, and be{' '}
+                                    <b>refunded within 7 days.</b>
+                                </span>
                             </div>
                             {shouldDisplayBillingAddressForm && (
                                 <>

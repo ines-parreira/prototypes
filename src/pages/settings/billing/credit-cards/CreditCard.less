@@ -1,5 +1,6 @@
 @import '~css/new/mixins';
 @import '~css/new/colorTokens';
+@import (reference) '~css/typography.less';
 
 :local {
     .container {
@@ -56,5 +57,20 @@
 
     .taxDisclaimer {
         margin-top: 12px;
+    }
+
+    .chargeDisclaimer {
+        display: flex;
+        align-items: center;
+        .caption-regular();
+        color: @classic-neutral-grey-5;
+
+        :global(.material-icons) {
+            font-size: 14px;
+        }
+
+        span {
+            margin-left: 10px;
+        }
     }
 }
