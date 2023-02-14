@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MetricContent /> should render the metric content 1`] = `
+<div>
+  <div
+    class="heading-page-semibold"
+  >
+    content
+  </div>
+</div>
+`;
+
+exports[`<MetricContent /> should render the metric content from a value 1`] = `
+<div>
+  <div
+    class="heading-page-semibold"
+  >
+    content
+    <span
+      class="from caption-regular"
+    >
+      from 
+      previous content
+    </span>
+  </div>
+</div>
+`;

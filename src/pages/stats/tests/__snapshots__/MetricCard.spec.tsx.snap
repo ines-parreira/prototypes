@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MetricCard /> should render the card 1`] = `
+<div
+  class="wrapper card"
+>
+  MetricCard
+</div>
+`;

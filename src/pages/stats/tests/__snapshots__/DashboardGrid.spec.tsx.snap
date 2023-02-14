@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DashboardGrid /> should render a grid 1`] = `
+<div>
+  <div
+    class="wrapper"
+  >
+    content
+  </div>
+</div>
+`;

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DashboardSection /> should render the section 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="title"
+  >
+    <div
+      class="titleText heading-page-semibold"
+    >
+      title
+    </div>
+    titleExtra
+  </div>
+  <div
+    class="wrapper"
+  >
+    DashboardSection
+  </div>
+</div>
+`;

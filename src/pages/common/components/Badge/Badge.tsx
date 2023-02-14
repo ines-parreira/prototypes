@@ -22,6 +22,8 @@ export enum ColorType {
     Dark = 'dark',
     Light = 'light',
     Blue = 'blue',
+    LightSuccess = 'light-success',
+    LightError = 'light-error',
 }
 
 const Badge = ({className, children, style, type, ...props}: Props) => {
@@ -32,7 +34,10 @@ const Badge = ({className, children, style, type, ...props}: Props) => {
                 ...(!!type
                     ? {backgroundColor: `var(--background-${type})`}
                     : {}),
-                ...(type === 'light' || type === 'blue'
+                ...(type === 'light' ||
+                type === 'blue' ||
+                type === 'light-success' ||
+                type === 'light-error'
                     ? {color: `var(--text-${type})`}
                     : {}),
                 ...style,

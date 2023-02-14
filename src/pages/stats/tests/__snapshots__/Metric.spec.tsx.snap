@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Metric /> should render the metric 1`] = `
+<div
+  class="wrapper card"
+>
+  <div
+    class="title"
+  >
+    Metric title
+    <div
+      class="wrapper"
+    >
+      <i
+        class="material-icons-outlined icon"
+        id="tooltip-1"
+      >
+        info
+      </i>
+    </div>
+  </div>
+  <div
+    class="heading-page-semibold"
+  >
+    Metric
+  </div>
+</div>
+`;

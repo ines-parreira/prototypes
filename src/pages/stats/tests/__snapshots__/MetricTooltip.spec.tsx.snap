@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MetricTooltip /> should render the metric tooltip 1`] = `
+<div>
+  <div
+    class="wrapper neutral"
+  >
+    <div
+      class="body-semibold title"
+    >
+      Title
+    </div>
+    <div
+      class="body-regular"
+    >
+      content
+    </div>
+  </div>
+</div>
+`;
