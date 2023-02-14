@@ -24,6 +24,7 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import InputField from 'pages/common/forms/input/InputField'
 import {Value} from 'pages/common/forms/SelectField/types'
 
+import RichField from 'pages/common/forms/RichField/RichField'
 import {createTrigger} from '../../utils/createTrigger'
 
 import {useChatPreviewProps} from '../../hooks/useChatPreviewProps'
@@ -98,12 +99,18 @@ export const AdvancedCampaignDetails = memo(
             useState<string>('')
         const [campaignMessageText, setCampaignMessageText] =
             useState<string>('')
+        const [richArea, setRichArea] = useState<RichField | null>(null)
         const chatPreviewProps = useChatPreviewProps(integration)
         const attachments = useAppSelector(getNewMessageAttachments)
 
         const shopifyProducts = useMemo<CampaignProduct[]>(() => {
             return transformAttachmentToProduct(attachments)
         }, [attachments])
+
+        // makes sure editor and preview are in sync on initial load of HTML
+        useEffect(() => {
+            if (richArea) richArea.focusEditor()
+        }, [richArea])
 
         const handleAddTrigger = useCallback(
             (key: CampaignTriggerKey) => {
@@ -434,13 +441,17 @@ export const AdvancedCampaignDetails = memo(
 
                 <GorgiasChatIntegrationPreviewContainer
                     preview={
-                        <CampaignPreview
-                            {...chatPreviewProps}
-                            products={shopifyProducts}
-                            html={sanitizeHtmlDefault(campaignMessageHTML)}
-                            authorName={campaignAgent?.name ?? ``}
-                            authorAvatarUrl={campaignAgent?.avatar_url ?? ''}
-                        />
+                        richArea && (
+                            <CampaignPreview
+                                {...chatPreviewProps}
+                                products={shopifyProducts}
+                                html={sanitizeHtmlDefault(campaignMessageHTML)}
+                                authorName={campaignAgent?.name ?? ``}
+                                authorAvatarUrl={
+                                    campaignAgent?.avatar_url ?? ''
+                                }
+                            />
+                        )
                     }
                 >
                     <div className={css.formWrapper}>
@@ -493,6 +504,7 @@ export const AdvancedCampaignDetails = memo(
                         <h3 className={css.section}>Write your message</h3>
                         {stateInitialized && (
                             <CampaignMessage
+                                richAreaRef={(ref) => setRichArea(ref)}
                                 agents={agents}
                                 attachments={attachments}
                                 html={campaignMessageHTML}

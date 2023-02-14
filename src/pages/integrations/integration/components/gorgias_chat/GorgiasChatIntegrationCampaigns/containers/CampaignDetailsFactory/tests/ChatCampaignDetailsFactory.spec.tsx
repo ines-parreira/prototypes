@@ -24,6 +24,8 @@ jest.mock('utils/launchDarkly')
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
+jest.mock('pages/common/forms/RichField/RichFieldEditor')
+
 describe('<ChatCampaignDetailsFactory />', () => {
     const defaultState = {entities: entitiesInitialState} as RootState
 

@@ -29,6 +29,7 @@ import {VisitCountOperators} from '../../../types/enums/VisitCountOperators.enum
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {} as RootState
 jest.mock('utils/launchDarkly')
+jest.mock('pages/common/forms/RichField/RichFieldEditor')
 
 const agents = [
     {

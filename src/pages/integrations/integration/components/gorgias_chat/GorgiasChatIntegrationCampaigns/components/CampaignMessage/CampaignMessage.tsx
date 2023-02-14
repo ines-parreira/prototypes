@@ -16,11 +16,13 @@ import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketA
 
 import {Option, Value} from 'pages/common/forms/SelectField/types'
 
+import RichField from 'pages/common/forms/RichField/RichField'
 import {useIsAllowedToAddDiscountCode} from '../../hooks/useIsAllowedToAddDiscountCode'
 
 import css from './CampaignMessage.less'
 
 type Props = {
+    richAreaRef: (ref: RichField | null) => void
     agents: User[]
     attachments: List<any>
     html: string
@@ -34,6 +36,7 @@ type Props = {
 
 export const CampaignMessage = memo(
     ({
+        richAreaRef,
         agents,
         attachments,
         html,
@@ -137,6 +140,7 @@ export const CampaignMessage = memo(
                 </div>
                 <div className={css.textEditorWrapper}>
                     <TicketRichField
+                        ref={(ref) => richAreaRef(ref)}
                         value={value}
                         attachments={attachments}
                         allowExternalChanges
