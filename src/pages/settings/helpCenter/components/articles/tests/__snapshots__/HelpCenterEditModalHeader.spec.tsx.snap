@@ -56,17 +56,6 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           </button>
         </div>
         <button
-          aria-label="preview article"
-          class="wrapper wrapper ghost medium ghost secondary medium"
-          type="button"
-        >
-          <i
-            class="material-icons icon"
-          >
-            open_in_new
-          </i>
-        </button>
-        <button
           aria-label="copy url"
           class="wrapper wrapper ghost medium ghost secondary medium"
           type="button"
@@ -234,117 +223,6 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           </button>
         </div>
         <button
-          aria-label="preview article"
-          class="wrapper wrapper ghost medium ghost secondary medium"
-          type="button"
-        >
-          <i
-            class="material-icons icon"
-          >
-            open_in_new
-          </i>
-        </button>
-        <button
-          aria-label="copy url"
-          class="wrapper wrapper ghost medium ghost secondary medium"
-          type="button"
-        >
-          <i
-            class="material-icons icon"
-          >
-            share
-          </i>
-        </button>
-        <button
-          aria-label="close edit modal"
-          class="wrapper wrapper ghost medium ghost secondary medium"
-          type="button"
-        >
-          <i
-            class="material-icons icon"
-          >
-            keyboard_tab
-          </i>
-        </button>
-      </div>
-    </div>
-    <div
-      class="break"
-    />
-    <div
-      class="inlineSettings"
-    />
-  </header>
-</div>
-`;
-
-exports[`<HelpCenterEditModalHeader /> should render a preview article button 1`] = `
-<div>
-  <header
-    class="header"
-  >
-    <div
-      class="headerTopContainer"
-    >
-      <span
-        class="titleInput"
-      >
-        Uncategorized article
-      </span>
-      <div
-        class="headerControls"
-      >
-        <span
-          class="editingState unsaved"
-          id="editingState"
-        >
-          <i
-            class="material-icons icon"
-          >
-            edit
-          </i>
-          UNSAVED
-        </span>
-        <div
-          class="wrapper"
-        >
-          <button
-            class="trigger"
-            data-testid="dropdown-select-trigger"
-          >
-            <span
-              class="label"
-            >
-              <span>
-                <img
-                  alt="fr-FR"
-                  class="flag-emoji"
-                  src="test-file-stub"
-                />
-                <span>
-                  French - France
-                </span>
-              </span>
-            </span>
-            <span
-              class="material-icons"
-            >
-              arrow_drop_down
-            </span>
-          </button>
-        </div>
-        <button
-          aria-label="preview article"
-          class="wrapper wrapper ghost medium ghost secondary medium"
-          type="button"
-        >
-          <i
-            class="material-icons icon"
-          >
-            open_in_new
-          </i>
-        </button>
-        <button
           aria-label="copy url"
           class="wrapper wrapper ghost medium ghost secondary medium"
           type="button"
@@ -437,17 +315,6 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
             </span>
           </button>
         </div>
-        <button
-          aria-label="preview article"
-          class="wrapper wrapper ghost medium ghost secondary medium"
-          type="button"
-        >
-          <i
-            class="material-icons icon"
-          >
-            open_in_new
-          </i>
-        </button>
         <button
           aria-label="copy url"
           class="wrapper wrapper ghost medium ghost secondary medium"

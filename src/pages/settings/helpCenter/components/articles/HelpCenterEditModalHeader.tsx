@@ -25,14 +25,13 @@ import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {getArticleUrl, isExistingArticle} from '../../utils/helpCenter.utils'
 import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 import {ArticleMode} from '../../types/articleMode'
+import {isOneOfParentsUnlisted} from '../HelpCenterCategoryEdit/utils'
+import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import {
     ActionType,
     ArticleLanguageSelect,
     OptionItem,
-} from '../articles/ArticleLanguageSelect'
-import {isOneOfParentsUnlisted} from '../HelpCenterCategoryEdit/utils'
-
-import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
+} from './ArticleLanguageSelect'
 import ArticleCategorySelect from './ArticleCategorySelect'
 
 import css from './HelpCenterEditModalHeader.less'
@@ -108,16 +107,6 @@ export const HelpCenterEditModalHeader = ({
         )
     }, [isParentUnlisted, selectedArticle?.translation.visibility_status])
 
-    const previewUrl = isExistingArticle(selectedArticle)
-        ? getArticleUrl({
-              domain,
-              locale: selectedArticle.translation.locale,
-              slug: selectedArticle.translation.slug,
-              articleId: selectedArticle.id,
-              unlistedId: selectedArticle.translation.article_unlisted_id,
-              isUnlisted,
-          })
-        : undefined
     const getResizeModalButton = () =>
         isFullscreen ? (
             <IconButton
@@ -170,6 +159,19 @@ export const HelpCenterEditModalHeader = ({
         }
         return EditingStateEnum.PUBLISHED
     }, [articleMode.mode])
+
+    const publishedPreviewUrl =
+        editingState === EditingStateEnum.PUBLISHED &&
+        isExistingArticle(selectedArticle)
+            ? getArticleUrl({
+                  domain,
+                  locale: selectedArticle.translation.locale,
+                  slug: selectedArticle.translation.slug,
+                  articleId: selectedArticle.id,
+                  unlistedId: selectedArticle.translation.article_unlisted_id,
+                  isUnlisted,
+              })
+            : undefined
 
     const {isPassingRulesCheck} = useAbilityChecker()
 
@@ -245,10 +247,12 @@ export const HelpCenterEditModalHeader = ({
                         />
                     )}
                     {onResize && getResizeModalButton()}
-                    {previewUrl && (
+                    {publishedPreviewUrl && (
                         <IconButton
                             onClick={() =>
-                                window.open(previewUrl, '_blank')?.focus()
+                                window
+                                    .open(publishedPreviewUrl, '_blank')
+                                    ?.focus()
                             }
                             fillStyle="ghost"
                             intent="secondary"

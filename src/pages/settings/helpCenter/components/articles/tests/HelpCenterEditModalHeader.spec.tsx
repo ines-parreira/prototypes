@@ -133,14 +133,19 @@ describe('<HelpCenterEditModalHeader />', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should render a preview article button', () => {
-        const {container, getByRole} = render(
+    it('should render a `preview article button` when article is published', () => {
+        const propsWithPublishedArticle: HelpCenterEditModalHeaderProps = {
+            ...props,
+            articleMode: {
+                mode: 'unchanged_published',
+                onDelete: mockedOnDelete,
+            },
+        }
+        const {getByRole} = render(
             <Provider store={mockStore(defaultState)}>
-                <HelpCenterEditModalHeader {...props} />
+                <HelpCenterEditModalHeader {...propsWithPublishedArticle} />
             </Provider>
         )
-
-        expect(container).toMatchSnapshot()
 
         const previewBtn = getByRole('button', {name: /preview article/i})
         fireEvent.click(previewBtn)
