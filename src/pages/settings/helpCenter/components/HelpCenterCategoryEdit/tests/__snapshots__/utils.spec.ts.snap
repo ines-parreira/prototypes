@@ -3,6 +3,7 @@
 exports[`eligibleParentCategories() should return an empty array if the category is undefined: return non-root categories in the targeted locale 1`] = `
 [
   {
+    "articleCount": 0,
     "available_locales": [
       "en-US",
       "fr-FR",
@@ -36,6 +37,7 @@ exports[`eligibleParentCategories() should return an empty array if the category
     "updated_datetime": "2022-03-17T12:52:14.243Z",
   },
   {
+    "articleCount": 0,
     "available_locales": [
       "fr-FR",
       "en-US",
@@ -68,6 +70,7 @@ exports[`eligibleParentCategories() should return an empty array if the category
     "updated_datetime": "2022-03-17T12:52:41.853Z",
   },
   {
+    "articleCount": 0,
     "available_locales": [
       "fr-FR",
       "en-US",
@@ -105,6 +108,7 @@ exports[`eligibleParentCategories() should return an empty array if the category
 exports[`eligibleParentCategories() should return the categories including the level 2 node because it is not a children of the provided category: top level and level 1 & level 2 nodes returned 1`] = `
 [
   {
+    "articleCount": 0,
     "available_locales": [
       "en-US",
       "fr-FR",
@@ -138,6 +142,7 @@ exports[`eligibleParentCategories() should return the categories including the l
     "updated_datetime": "2022-03-17T12:52:14.243Z",
   },
   {
+    "articleCount": 0,
     "available_locales": [
       "fr-FR",
       "en-US",
@@ -170,6 +175,7 @@ exports[`eligibleParentCategories() should return the categories including the l
     "updated_datetime": "2022-03-17T12:52:41.853Z",
   },
   {
+    "articleCount": 0,
     "available_locales": [
       "fr-FR",
       "en-US",
@@ -209,6 +215,7 @@ exports[`eligibleParentCategories() should return the categories without the chi
 exports[`eligibleParentCategories() should return the categories without the children of the provided level 1 category: top level and level 1 nodes returned 1`] = `
 [
   {
+    "articleCount": 0,
     "available_locales": [
       "en-US",
       "fr-FR",
@@ -242,6 +249,7 @@ exports[`eligibleParentCategories() should return the categories without the chi
     "updated_datetime": "2022-03-17T12:52:14.243Z",
   },
   {
+    "articleCount": 0,
     "available_locales": [
       "en-US",
     ],

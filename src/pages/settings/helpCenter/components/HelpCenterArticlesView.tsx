@@ -381,7 +381,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                     status: NotificationStatus.Error,
                 })
             )
-            console.error(err)
+            reportError(err as Error)
         }
     }
 
@@ -427,7 +427,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                     status: NotificationStatus.Error,
                 })
             )
-            console.error(err)
+            reportError(err as Error)
         }
     }
 
@@ -451,7 +451,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                     status: NotificationStatus.Error,
                 })
             )
-            console.error(err)
+            reportError(err as Error)
         } finally {
             setSelectedExistingArticleTranslation(null)
             setSelectedArticle(null)
@@ -514,7 +514,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                             status: NotificationStatus.Error,
                         })
                     )
-                    console.error(err)
+                    reportError(err as Error)
                 }
 
                 return
@@ -560,7 +560,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                     status: NotificationStatus.Error,
                 })
             )
-            console.error(err)
+            reportError(err as Error)
         }
     }
 

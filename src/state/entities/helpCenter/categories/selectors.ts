@@ -2,7 +2,10 @@ import {createSelector} from 'reselect'
 
 import {Category, NonRootCategory} from 'models/helpCenter/types'
 
-import {CATEGORY_TREE_MAX_LEVEL} from 'pages/settings/helpCenter/constants'
+import {
+    CATEGORY_TREE_MAX_LEVEL,
+    HELP_CENTER_ROOT_CATEGORY_ID,
+} from 'pages/settings/helpCenter/constants'
 import {getArticles} from '../articles/selectors'
 import {getHelpCenterStore} from '../selectors'
 import {isNonRootCategory} from '.'
@@ -19,6 +22,11 @@ export const getCategoriesById = createSelector(
 
         return categoriesById
     }
+)
+
+export const getRootCategory = createSelector(
+    getCategoriesById,
+    (categoriesById) => categoriesById['0']
 )
 
 export const getCategories = createSelector(
@@ -58,7 +66,7 @@ export const getNonRootCategoriesById = createSelector(
 export const getParentCategories = createSelector(
     getCategoriesById,
     (categories) => {
-        const rootCategory = categories['0']
+        const rootCategory = categories[HELP_CENTER_ROOT_CATEGORY_ID.toString()]
         const categoriesArray: Category[] = []
         const traverseCategories = (category: Category, level: number) => {
             if (!category) {

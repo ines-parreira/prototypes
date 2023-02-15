@@ -60,7 +60,6 @@ import {ConfirmationModal} from '../ConfirmationModal'
 import {SearchEnginePreview} from '../SearchEnginePreview'
 import {CloseModal} from '../articles/CloseModal'
 import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
-import {useArticlesActions} from '../../hooks/useArticlesActions'
 import {eligibleParentCategories, isOneOfParentsUnlisted} from './utils'
 
 import css from './HelpCenterCategoryEdit.less'
@@ -138,8 +137,7 @@ export const HelpCenterCategoryEdit = ({
     const [isParentUnlisted, setIsParentUnlisted] = useState(false)
     const [showNotification, setShowNotification] = useState(false)
 
-    const {getArticleCount} = useArticlesActions()
-    const [articlesCount, setArticlesCount] = useState(0)
+    const articlesCount = category?.articleCount || 0
 
     const localeOptions = useMemo(
         () =>
@@ -229,19 +227,6 @@ export const HelpCenterCategoryEdit = ({
             setIsParentUnlisted(false)
         }
     }, [parentCategory, categories])
-
-    useEffect(() => {
-        async function init() {
-            if (!category?.id) {
-                return
-            }
-            const count = await getArticleCount(category.id)
-
-            setArticlesCount(count)
-        }
-
-        void init()
-    }, [category?.id, getArticleCount])
 
     const handleOnClickAction = (
         action: ActionType,

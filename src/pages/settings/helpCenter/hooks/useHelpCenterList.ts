@@ -12,6 +12,7 @@ import {
 } from 'state/entities/helpCenter/helpCenters'
 import useAppSelector from 'hooks/useAppSelector'
 
+import {reportError} from 'utils/errors'
 import {useHelpCenterApi} from './useHelpCenterApi'
 
 type HelpCenterListHook = {
@@ -69,7 +70,7 @@ export const useHelpCenterList = (
                         status: NotificationStatus.Error,
                     })
                 )
-                console.error(err)
+                reportError(err as Error)
             } finally {
                 setLoading(false)
             }

@@ -2,6 +2,7 @@ import {createReducer} from '@reduxjs/toolkit'
 import _uniq from 'lodash/uniq'
 
 import {getInitialRootCategory} from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
+import {HELP_CENTER_ROOT_CATEGORY_ID} from 'pages/settings/helpCenter/constants'
 import {HelpCenterCategoriesState} from './types'
 
 import {
@@ -13,6 +14,7 @@ import {
     updateCategoryTranslation,
     pushCategorySupportedLocales,
     removeLocaleFromCategory,
+    updateCategoriesArticleCount,
 } from './actions'
 
 export const initialState: HelpCenterCategoriesState = {
@@ -56,6 +58,19 @@ export default createReducer<HelpCenterCategoriesState>(
                 state.categoriesById[
                     payload.category_id.toString()
                 ].translation = payload
+            })
+
+            .addCase(updateCategoriesArticleCount, (state, {payload}) => {
+                payload.forEach(({articleCount, categoryId}) => {
+                    const category =
+                        state.categoriesById[
+                            (
+                                categoryId ?? HELP_CENTER_ROOT_CATEGORY_ID
+                            ).toString()
+                        ]
+
+                    category.articleCount = articleCount
+                })
             })
 
             //   Delete category by id

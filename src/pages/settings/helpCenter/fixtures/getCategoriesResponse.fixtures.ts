@@ -147,4 +147,5 @@ export const getSingleCategoryEnglish: Category = {
         updated_datetime: '2021-06-01T09:46:30.044Z',
         deleted_datetime: null,
     },
+    articleCount: 0,
 }

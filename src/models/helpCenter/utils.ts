@@ -21,13 +21,20 @@ export function createArticleFromDto(
     }
 }
 
-export function flattenCategories(
-    category: CategoryWithLocalTranslation
-): Category[] {
-    const flatTree: Category[] = []
+/**
+ * Given a hierarchical tree, returns a flat array of all nodes in the tree.
+ * The children of each node are replaced with an array of their ids.
+ *
+ * @param tree The root node of the tree
+ */
+export function flattenTree<Tree extends {id: number; children: Tree[]}>(
+    tree: Tree
+): Array<Omit<Tree, 'children'> & {children: number[]}> {
+    const flatTree: Array<Omit<Tree, 'children'> & {children: number[]}> = []
 
-    const parseNode = (node: CategoryWithLocalTranslation) => {
+    const parseNode = (node: Tree) => {
         const {children, ...category} = node
+
         flatTree.push({
             ...category,
             children: children.map((child) => child.id),
@@ -38,8 +45,19 @@ export function flattenCategories(
         })
     }
 
-    parseNode(category)
+    parseNode(tree)
     return flatTree
+}
+
+export function flattenCategories(
+    category: CategoryWithLocalTranslation
+): Category[] {
+    const flattenCategoriesWithLocalTranslation = flattenTree(category)
+
+    return flattenCategoriesWithLocalTranslation.map((category) => ({
+        ...category,
+        articleCount: 0,
+    }))
 }
 
 function assertIsLocaleCode(code: unknown): asserts code is LocaleCode {

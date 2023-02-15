@@ -64,6 +64,8 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 
 describe('<CategoriesTableRow />', () => {
     it('should render null if shouldRenderRowWithoutArticles is false and there are no articles', () => {
+        const rootCategory = getCategoriesFlatSorted[0]
+
         const initialState: DeepPartial<RootState> = {
             entities: {
                 helpCenter: {
@@ -76,7 +78,9 @@ describe('<CategoriesTableRow />', () => {
                         articlesById: {},
                     },
                     categories: {
-                        categoriesById: {},
+                        categoriesById: {
+                            '0': {...rootCategory, articleCount: 0},
+                        },
                     },
                 },
             },
@@ -102,6 +106,8 @@ describe('<CategoriesTableRow />', () => {
     })
 
     it('should render "Uncategorized articles" row when shouldRenderRowWithoutArticles is false but there are some uncategorized articles', async () => {
+        const rootCategory = getCategoriesFlatSorted[0]
+
         const initialState: DeepPartial<RootState> = {
             entities: {
                 helpCenter: {
@@ -114,7 +120,9 @@ describe('<CategoriesTableRow />', () => {
                         articlesById: {},
                     },
                     categories: {
-                        categoriesById: {},
+                        categoriesById: {
+                            '0': {...rootCategory, articleCount: 1},
+                        },
                     },
                 },
             } as any,

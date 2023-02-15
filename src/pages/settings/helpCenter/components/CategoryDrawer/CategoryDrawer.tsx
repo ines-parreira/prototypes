@@ -26,6 +26,7 @@ import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategorie
 import {HelpCenterCategoryEdit} from 'pages/settings/helpCenter/components/HelpCenterCategoryEdit'
 import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
 
+import {reportError} from 'utils/errors'
 import {useSearchContext} from '../../providers/SearchContext'
 
 type Props = {
@@ -140,7 +141,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 })
             )
 
-            console.error(err)
+            reportError(err as Error)
         }
     }
 
@@ -170,7 +171,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 })
             )
 
-            console.error(err)
+            reportError(err as Error)
         }
     }
 
@@ -194,7 +195,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 })
             )
 
-            console.error(err)
+            reportError(err as Error)
         }
     }
 
@@ -223,7 +224,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 })
             )
 
-            console.error(err)
+            reportError(err as Error)
         }
     }
 

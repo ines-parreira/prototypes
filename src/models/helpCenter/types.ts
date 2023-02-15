@@ -60,6 +60,7 @@ export type LocalCategoryTranslation =
 
 export type Category = Omit<CategoryWithLocalTranslation, 'children'> & {
     children: number[]
+    articleCount: number
 }
 
 export type NonRootCategory = Omit<Category, 'translation'> & {

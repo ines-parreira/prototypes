@@ -13,6 +13,7 @@ const categoriesById: Record<string, Category> = {
         translation: null,
         children: [1],
         unlisted_id: 'my-unlisted-id-0',
+        articleCount: 0,
     },
     '28': {
         created_datetime: '2022-03-07T14:46:47.212Z',
@@ -40,6 +41,7 @@ const categoriesById: Record<string, Category> = {
         },
         children: [],
         unlisted_id: 'my-unlisted-id-28',
+        articleCount: 0,
     },
 }
 

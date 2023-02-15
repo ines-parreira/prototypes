@@ -154,3 +154,5 @@ export const CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY =
 
 export const HELP_CENTER_CLOSE_TAB_MODAL_MESSAGE =
     'Do you want to save the changes made in this tab? All changes will be lost if you don’t save them.'
+
+export const HELP_CENTER_ROOT_CATEGORY_ID = 0

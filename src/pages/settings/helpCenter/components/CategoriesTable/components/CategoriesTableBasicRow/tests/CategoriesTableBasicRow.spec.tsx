@@ -12,6 +12,7 @@ import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixt
 
 import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import {CategoriesTableBasicRow} from '../../CategoriesTableBasicRow/CategoriesTableBasicRow'
+import {getCategoriesFlatSorted} from '../../../../../fixtures/getCategoriesTreeFlatSorted.fixtures'
 
 const mockStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
     thunk,
@@ -54,7 +55,8 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
-const initialState: DeepPartial<RootState> = {
+const rootCategory = getCategoriesFlatSorted[0]
+const getInitialState = (rootArticleCount: number): DeepPartial<RootState> => ({
     entities: {
         helpCenter: {
             helpCenters: {
@@ -68,7 +70,9 @@ const initialState: DeepPartial<RootState> = {
                 },
             },
             categories: {
-                categoriesById: {},
+                categoriesById: {
+                    '0': {...rootCategory, articleCount: rootArticleCount},
+                },
             },
         },
     } as any,
@@ -78,7 +82,7 @@ const initialState: DeepPartial<RootState> = {
             currentLanguage: 'en-US',
         },
     } as any,
-}
+})
 
 describe('<CategoriesTableRow />', () => {
     it("should show the 'Load more' button when the meta.item_count is greater than the number of loaded articles", async () => {
@@ -98,7 +102,7 @@ describe('<CategoriesTableRow />', () => {
         })
 
         const {findByText, getByTestId} = render(
-            <ReduxProvider store={mockStore(initialState)}>
+            <ReduxProvider store={mockStore(getInitialState(10))}>
                 <CategoriesTableBasicRow
                     renderArticleList={() => <div />}
                     title="Uncategorized articles"
@@ -133,7 +137,7 @@ describe('<CategoriesTableRow />', () => {
         })
 
         const {findByText, getByTestId, queryByText} = render(
-            <ReduxProvider store={mockStore(initialState)}>
+            <ReduxProvider store={mockStore(getInitialState(1))}>
                 <CategoriesTableBasicRow
                     renderArticleList={() => <div />}
                     title="Uncategorized articles"

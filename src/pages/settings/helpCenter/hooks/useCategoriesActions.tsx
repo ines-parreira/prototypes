@@ -16,6 +16,7 @@ import {
     removeLocaleFromCategory,
     saveCategories,
     savePositions,
+    updateCategoriesArticleCount,
     updateCategoryTranslation as updateCategoryTranslationAction,
 } from 'state/entities/helpCenter/categories'
 import * as articleActions from 'state/entities/helpCenter/articles/actions'
@@ -23,8 +24,10 @@ import {getViewLanguage} from 'state/ui/helpCenter'
 import useAppSelector from 'hooks/useAppSelector'
 import {flattenCategories} from 'models/helpCenter/utils'
 
+import {reportError} from 'utils/errors'
 import {CategoriesPositionsType} from '../components/CategoriesTable'
 import {getCategoriesToUpdate} from '../utils/getCategoriesToUpdate'
+import {HELP_CENTER_ROOT_CATEGORY_ID} from '../constants'
 import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
 
@@ -61,6 +64,46 @@ export const useCategoriesActions = () => {
         [client, helpCenterId]
     )
 
+    /**
+     * Will fetch the articles for the passed parentCategoryId and all of its child categories.
+     */
+    const fetchCategoryArticleCount = useCallback(
+        async (parentCategoryId: number | null, locale: LocaleCode) => {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            try {
+                // Get just one level so that we can calculate the number of articles in child categories
+                const {data} = await client.getCategoryTree({
+                    help_center_id: helpCenterId,
+                    parent_category_id:
+                        parentCategoryId ?? HELP_CENTER_ROOT_CATEGORY_ID,
+                    order_by: 'position',
+                    order_dir: 'asc',
+                    locale,
+
+                    depth: 1,
+                    fields: ['articles'],
+                })
+
+                const flatCategories = flattenCategories(data)
+
+                const categoryArticleCountList = flatCategories.map(
+                    (category) => ({
+                        categoryId: category.id,
+                        articleCount: category.articles?.length ?? 0,
+                    })
+                )
+
+                dispatch(updateCategoriesArticleCount(categoryArticleCountList))
+            } catch (err) {
+                reportError(err as Error)
+            } finally {
+                setIsLoading(false)
+            }
+        },
+        [client, dispatch, helpCenterId]
+    )
+
     const fetchCategories = useCallback(
         async (
             locale: LocaleCode,
@@ -88,12 +131,13 @@ export const useCategoriesActions = () => {
                     })
                 )
             } catch (err) {
-                console.error(err)
+                reportError(err as Error)
             } finally {
                 setIsLoading(false)
+                void fetchCategoryArticleCount(parentCategoryId, locale)
             }
         },
-        [client, dispatch, helpCenterId]
+        [client, dispatch, fetchCategoryArticleCount, helpCenterId]
     )
 
     const createCategory = useCallback(
@@ -121,7 +165,7 @@ export const useCategoriesActions = () => {
                 dispatch(
                     saveCategories({
                         categories: [
-                            {...newCategory, children: []},
+                            {...newCategory, children: [], articleCount: 0},
                             {
                                 ...parentCategory,
                                 children: [
@@ -423,6 +467,7 @@ export const useCategoriesActions = () => {
             updateCategoriesPositions,
             deleteCategoryTranslation,
             deleteCategory,
+            fetchCategoryArticleCount,
         }),
         [
             createCategory,
@@ -434,6 +479,7 @@ export const useCategoriesActions = () => {
             isLoading,
             updateCategoriesPositions,
             updateCategoryTranslation,
+            fetchCategoryArticleCount,
         ]
     )
 }

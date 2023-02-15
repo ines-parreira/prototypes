@@ -10,6 +10,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 
+import {reportError} from 'utils/errors'
 import css from './UpdateToggle.less'
 
 type Props = {
@@ -45,7 +46,7 @@ export const UpdateToggle = ({
                         })
                     )
                 } catch (err) {
-                    console.error(err)
+                    reportError(err as Error)
 
                     void dispatch(
                         notify({

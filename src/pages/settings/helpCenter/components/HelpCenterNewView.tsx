@@ -37,6 +37,7 @@ import {
     isBaseEmailIntegration,
     isGenericEmailIntegration,
 } from 'pages/integrations/integration/components/email/helpers'
+import {reportError} from 'utils/errors'
 import {SubdomainInput} from '../components/SubdomainSection'
 import {
     HELP_CENTER_BASE_PATH,
@@ -281,7 +282,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                 message: 'Failed to create the Help Center',
                 status: NotificationStatus.Error,
             })
-            console.error(err)
+            reportError(err as Error)
         } finally {
             setIsLoading(false)
         }

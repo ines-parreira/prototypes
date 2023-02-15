@@ -15,6 +15,7 @@ import {
     pushCategorySupportedLocales,
     removeLocaleFromCategory,
     saveCategories,
+    updateCategoriesArticleCount,
     updateCategoryTranslation,
     savePositions,
 } from 'state/entities/helpCenter/categories'
@@ -22,6 +23,7 @@ import {getHelpCenterClient} from 'rest_api/help_center_api/index'
 
 import {useCategoriesActions} from '../useCategoriesActions'
 import {useHelpCenterApi} from '../useHelpCenterApi'
+import {HELP_CENTER_ROOT_CATEGORY_ID} from '../../constants'
 
 jest.mock('react-router')
 ;(useParams as jest.MockedFunction<typeof useParams>).mockReturnValue({
@@ -51,6 +53,7 @@ function mockHelpCenterApiClient() {
                     available_locales: [],
                     children: [],
                     articles: [],
+                    articleCount: 0,
                     translation: null,
                 },
             }),
@@ -115,6 +118,10 @@ jest.mock('../useHelpCenterApi', () => {
 jest.mock('state/entities/helpCenter/categories', () => ({
     saveCategories: jest.fn().mockReturnValue({
         type: 'HELPCENTER/CATEGORIES/SAVE_CATEGORIES',
+        payload: {},
+    }),
+    updateCategoriesArticleCount: jest.fn().mockReturnValue({
+        type: 'HELPCENTER/CATEGORIES/UPDATE_CATEGORIES_ARTICLE_COUNT',
         payload: {},
     }),
     savePositions: jest.fn().mockReturnValue({
@@ -202,6 +209,23 @@ const dependencyWrapper: React.ComponentType<any> = ({
 describe('useCategoriesActions', () => {
     afterEach(() => {
         jest.clearAllMocks()
+    })
+
+    describe('fetchCategoryArticleCount', () => {
+        it('calls the listArticles with correct params', async () => {
+            const {result} = renderHook(useCategoriesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.fetchCategoryArticleCount(
+                HELP_CENTER_ROOT_CATEGORY_ID,
+                'en-US'
+            )
+
+            expect(updateCategoriesArticleCount).toHaveBeenLastCalledWith([
+                {articleCount: 0, categoryId: 0},
+            ])
+        })
     })
 
     describe('getCategoryTranslation()', () => {
@@ -384,6 +408,7 @@ describe('useCategoriesActions', () => {
                 categories: [
                     {
                         articles: [],
+                        articleCount: 0,
                         available_locales: [],
                         children: [],
                         created_datetime: '2022-03-07T14:46:47.212Z',

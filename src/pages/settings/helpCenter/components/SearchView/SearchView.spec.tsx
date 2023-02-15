@@ -17,14 +17,6 @@ import {SearchView} from './SearchView'
 
 jest.mock('../../providers/SearchContext')
 
-jest.mock('pages/settings/helpCenter/hooks/useArticlesActions', () => {
-    return {
-        useArticlesActions: () => ({
-            getArticleCount: jest.fn().mockResolvedValue(0),
-        }),
-    }
-})
-
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     const dep: Record<string, unknown> = jest.requireActual(
         'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -68,6 +60,7 @@ const defaultState: Partial<RootState> = {
                         translation: null,
                         children: [1],
                         articles: [],
+                        articleCount: 0,
                     },
                     '28': {
                         created_datetime: '2022-03-07T14:46:47.212Z',
@@ -93,6 +86,7 @@ const defaultState: Partial<RootState> = {
                         },
                         children: [],
                         articles: [],
+                        articleCount: 0,
                     },
                 },
             },

@@ -14,6 +14,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import {reportError} from 'utils/errors'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
@@ -66,7 +67,7 @@ export const HelpCenterAutomationView = (): JSX.Element | null => {
                         })
                     )
 
-                    console.error(err)
+                    reportError(err as Error)
                 }
             }
 

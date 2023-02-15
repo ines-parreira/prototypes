@@ -31,14 +31,6 @@ const defaultState: Partial<RootState> = {
 
 const store = mockStore(defaultState)
 
-jest.mock('pages/settings/helpCenter/hooks/useArticlesActions', () => {
-    return {
-        useArticlesActions: () => ({
-            getArticleCount: jest.fn().mockResolvedValue(0),
-        }),
-    }
-})
-
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 

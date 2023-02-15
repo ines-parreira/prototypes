@@ -261,18 +261,6 @@ describe('useArticlesActions()', () => {
         })
     })
 
-    describe('getArticleCount()', () => {
-        it('returns the article count for uncategorized articles', async () => {
-            const {result} = renderHook(useArticlesActions, {
-                wrapper: dependencyWrapper,
-            })
-
-            const itemCount = await result.current.getArticleCount(null)
-
-            expect(itemCount).toEqual(1)
-        })
-    })
-
     describe('createArticle()', () => {
         it('dispatches saveArticles action for uncategorized article', async () => {
             const {result} = renderHook(useArticlesActions, {

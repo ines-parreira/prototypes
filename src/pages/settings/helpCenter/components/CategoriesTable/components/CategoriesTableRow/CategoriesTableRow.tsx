@@ -8,7 +8,6 @@ import React, {
 } from 'react'
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
-import {usePrevious} from 'react-use'
 import {Badge, Spinner} from 'reactstrap'
 import _noop from 'lodash/noop'
 
@@ -47,6 +46,7 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import {getCategoryDndType} from 'pages/settings/helpCenter/utils/getCategoryDndType'
 import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
 import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
 
 import {useCategoryRowActions} from '../../../../hooks/useCategoryRowActions'
@@ -248,31 +248,30 @@ export const CategoriesTableRow = ({
     const categories = useAppSelector(getCategoriesById)
     const nonNullCategories = useAppSelector(getNonRootCategoriesById)
     const [isOpen, setOpen] = useState(false)
-    const [itemCount, setItemCount] = useState(0)
-    const {isLoading, fetchArticles, getArticleCount} = useArticlesActions()
+    const articlesCount = props.category.articleCount
+    const {isLoading, fetchArticles} = useArticlesActions()
+    const {fetchCategoryArticleCount} = useCategoriesActions()
     const articles = useAppSelector(
         categoryId !== null
             ? getArticlesInCategory(categoryId)
             : getUncategorizedArticles
     )
-    const hasArticles = useMemo(() => itemCount > 0, [itemCount])
+    const hasArticles = useMemo(() => articlesCount > 0, [articlesCount])
     const subcategoriesCount = props.category.children.length
     const hasSubcategories = subcategoriesCount > 0
+    const viewLanguage = useAppSelector(getViewLanguage) ?? 'en-US'
 
     const hasMore = useMemo(
-        () => articles.length < itemCount,
-        [articles, itemCount]
+        () => articles.length < articlesCount,
+        [articles, articlesCount]
     )
-    const prevArticles = usePrevious(articles)
 
     const fetchMore = useCallback(async () => {
         if (hasMore && !isLoading) {
-            const {meta} = await fetchArticles(categoryId, {
+            await fetchArticles(categoryId, {
                 page: Math.floor(articles.length / ARTICLES_PER_PAGE) + 1,
                 per_page: ARTICLES_PER_PAGE,
             })
-
-            setItemCount(meta.item_count)
         }
     }, [articles, categoryId, hasMore, isLoading, fetchArticles])
 
@@ -399,44 +398,6 @@ export const CategoriesTableRow = ({
     }
 
     useEffect(() => {
-        async function init() {
-            const count = await getArticleCount(categoryId)
-
-            setItemCount(count)
-        }
-
-        void init()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    useEffect(() => {
-        async function refetch() {
-            if (typeof prevArticles === 'undefined' || isLoading) return
-
-            // If articles length changed, refresh the list
-            if (prevArticles.length !== articles.length) {
-                // If an article was added, fetch all articles to make sure to
-                // display it; else, refetch as many articles as previously
-                const perPage =
-                    articles.length > prevArticles.length
-                        ? itemCount + 1
-                        : articles.length
-                const params = {
-                    page: 1,
-                    per_page: perPage,
-                }
-
-                const {meta} = await fetchArticles(categoryId, params)
-
-                setItemCount(meta.item_count)
-            }
-        }
-
-        void refetch()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [prevArticles, articles, categoryId, itemCount])
-
-    useEffect(() => {
         // On category open, fetch articles if category has some and no articles
         // are currently displayed
         if (isOpen && hasArticles && articles.length === 0) {
@@ -460,16 +421,29 @@ export const CategoriesTableRow = ({
         ) : (
             <Badge pill color="light" className={css.count}>
                 {hasArticles || hasSubcategories
-                    ? itemCount + subcategoriesCount
+                    ? articlesCount + subcategoriesCount
                     : 'No Published Articles'}
             </Badge>
         )
     const bodyInnerClass = classNames({[css['no-click']]: !hasArticles})
     const handleOnClick = useCallback(() => {
         if (hasArticles || hasSubcategories) {
-            setOpen(!isOpen)
+            const nextIsOpen = !isOpen
+
+            if (nextIsOpen) {
+                void fetchCategoryArticleCount(categoryId, viewLanguage)
+            }
+
+            setOpen(nextIsOpen)
         }
-    }, [hasArticles, hasSubcategories, isOpen])
+    }, [
+        hasArticles,
+        hasSubcategories,
+        isOpen,
+        fetchCategoryArticleCount,
+        categoryId,
+        viewLanguage,
+    ])
 
     const headerCell = (
         <BodyCell

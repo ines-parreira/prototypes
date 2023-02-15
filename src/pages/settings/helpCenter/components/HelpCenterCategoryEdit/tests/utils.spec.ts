@@ -11,6 +11,7 @@ const rootCategory: Category = {
     available_locales: [],
     translation: null,
     children: [47],
+    articleCount: 0,
 }
 
 const topLevelCategory: Category = {
@@ -39,6 +40,7 @@ const topLevelCategory: Category = {
         },
     },
     children: [48, 53],
+    articleCount: 0,
 }
 
 const level1CategoryWithChildren: Category = {
@@ -67,6 +69,7 @@ const level1CategoryWithChildren: Category = {
         },
     },
     children: [49],
+    articleCount: 0,
 }
 
 const level2Category: Category = {
@@ -95,6 +98,7 @@ const level2Category: Category = {
         },
     },
     children: [50],
+    articleCount: 0,
 }
 
 const level1Category: Category = {
@@ -123,6 +127,7 @@ const level1Category: Category = {
         },
     },
     children: [],
+    articleCount: 0,
 }
 const categories: Category[] = [
     rootCategory,

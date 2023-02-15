@@ -134,7 +134,7 @@ describe('<CategoriesViews />', () => {
                     },
                     categories: {
                         categoriesById: {
-                            '0': getInitialRootCategory,
+                            '0': {...getInitialRootCategory, articleCount: 1},
                             1: getSingleCategoryEnglish,
                         },
                     },

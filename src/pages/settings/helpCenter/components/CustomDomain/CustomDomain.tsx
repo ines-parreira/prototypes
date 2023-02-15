@@ -18,6 +18,7 @@ import {
     ConnectionStatus,
     ConnectionStatusProps,
 } from 'pages/common/components/ConnectionStatus'
+import {reportError} from 'utils/errors'
 import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
@@ -73,7 +74,7 @@ export const CustomDomain = () => {
 
                 return null
             } catch (err) {
-                console.error(err)
+                reportError(err as Error)
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
@@ -110,7 +111,7 @@ export const CustomDomain = () => {
 
                 return response.data
             } catch (err) {
-                console.error(err)
+                reportError(err as Error)
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
@@ -141,7 +142,7 @@ export const CustomDomain = () => {
 
                 return response.data
             } catch (err) {
-                console.error(err)
+                reportError(err as Error)
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,

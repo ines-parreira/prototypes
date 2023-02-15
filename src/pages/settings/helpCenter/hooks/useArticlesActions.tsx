@@ -163,43 +163,6 @@ export const useArticlesActions = () => {
         [client, dispatch, helpCenterId]
     )
 
-    const getArticleCount = useCallback(
-        async (categoryId: number | null) => {
-            if (!client) throw new Error('HTTP client not initialized!')
-
-            setIsLoading(true)
-
-            try {
-                const {
-                    data: {meta},
-                } = await (categoryId !== null
-                    ? client.listCategoryArticles({
-                          help_center_id: helpCenterId,
-                          category_id: categoryId,
-                          page: 1,
-                          per_page: 1,
-                          version_status: 'latest_draft',
-                      })
-                    : client.listArticles({
-                          help_center_id: helpCenterId,
-                          has_category: false,
-                          page: 1,
-                          per_page: 1,
-                          version_status: 'latest_draft',
-                      }))
-
-                setIsLoading(false)
-
-                return meta.item_count
-            } catch (err) {
-                setIsLoading(false)
-
-                throw err
-            }
-        },
-        [client, helpCenterId]
-    )
-
     const createArticle = useCallback(
         async (translation: CreateArticleTranslationDto): Promise<Article> => {
             if (!client) throw new Error('HTTP client not initialized!')
@@ -555,7 +518,6 @@ export const useArticlesActions = () => {
             isLoading,
             fetchArticlesByIds,
             fetchArticles,
-            getArticleCount,
             createArticle,
             updateArticle,
             updateArticleTranslation,
@@ -573,7 +535,6 @@ export const useArticlesActions = () => {
             deleteArticleTranslation,
             fetchArticles,
             fetchArticlesByIds,
-            getArticleCount,
             isLoading,
             updateArticle,
             updateArticleTranslation,

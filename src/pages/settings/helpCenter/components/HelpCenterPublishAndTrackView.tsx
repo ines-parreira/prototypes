@@ -20,6 +20,7 @@ import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import InputField from 'pages/common/forms/input/InputField'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import {AlertType} from 'pages/common/components/Alert/Alert'
+import {reportError} from 'utils/errors'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
@@ -139,7 +140,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                         status: NotificationStatus.Error,
                     })
                 )
-                console.error(err)
+                reportError(err as Error)
             }
         },
         [client, dispatch, helpCenterId]

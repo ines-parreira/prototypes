@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {Container} from 'reactstrap'
 import {NavLink} from 'react-router-dom'
 
@@ -16,7 +16,6 @@ import {
 } from 'pages/settings/helpCenter/components/CategoriesTable'
 import {ImportSection} from 'pages/settings/helpCenter/components/Imports/components/ImportSection'
 import {CATEGORIES_PER_PAGE} from 'pages/settings/helpCenter/constants'
-import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
 import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
 import {useHelpCenterCategories} from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
 import settingsCss from 'pages/settings/settings.less'
@@ -27,6 +26,7 @@ import {CategoriesPositionsType} from '../CategoriesTable/CategoriesTable'
 import {useSearchContext} from '../../providers/SearchContext'
 import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 
+import {getRootCategory} from '../../../../../state/entities/helpCenter/categories'
 import css from './CategoriesView.less'
 
 type Props = Pick<CategoriesTableProps, 'renderArticleList'> & {
@@ -42,7 +42,6 @@ export const CategoriesViews = ({
     onCreateCategory,
 }: Props): JSX.Element | null => {
     const actions = useCategoriesActions()
-    const {getArticleCount} = useArticlesActions()
     const uncategorizedArticles = useAppSelector(getUncategorizedArticles)
     const viewLanguage =
         useAppSelector(getViewLanguage) || helpCenter.default_locale
@@ -51,8 +50,6 @@ export const CategoriesViews = ({
         locale: viewLanguage,
     })
     const {isPassingRulesCheck} = useAbilityChecker()
-    const [uncategorizedArticleCount, setUncategorizedArticleCount] =
-        useState(0)
     const {setSearchInput} = useSearchContext()
 
     const handleOnReorder = ({
@@ -70,6 +67,9 @@ export const CategoriesViews = ({
         }
     }
 
+    const uncategorizedArticleCount =
+        useAppSelector(getRootCategory).articleCount
+
     const baseURL = `/app/settings/help-center/${helpCenter.id}`
 
     const showCreateFirst =
@@ -85,17 +85,6 @@ export const CategoriesViews = ({
     const canUpdateCategory = isPassingRulesCheck(({can}) =>
         can('update', 'CategoryEntity')
     )
-
-    useEffect(() => {
-        async function init() {
-            const count = await getArticleCount(null)
-
-            setUncategorizedArticleCount(count)
-        }
-
-        void init()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     if (isLoading && categories.length === 1) {
         return <CategoriesTableSkeleton />

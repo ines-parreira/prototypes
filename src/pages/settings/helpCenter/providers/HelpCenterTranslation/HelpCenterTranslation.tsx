@@ -22,6 +22,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
 import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {reportError} from 'utils/errors'
 
 export type HelpCenterTranslationState = {
     chatApplicationId: number | null
@@ -158,7 +159,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                 })
             )
 
-            console.error(err)
+            reportError(err as Error)
         }
     }, [
         client,

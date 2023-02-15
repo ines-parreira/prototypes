@@ -41,6 +41,7 @@ import {Client, Components} from 'rest_api/help_center_api/client.generated'
 import settingsCss from 'pages/settings/settings.less'
 
 import InputField from 'pages/common/forms/input/InputField'
+import {reportError} from 'utils/errors'
 import {ImageUpload} from '../ImageUpload'
 import {UpdateToggle} from '../UpdateToggle'
 import {FontSelectField} from '../FontSelectField/FontSelectField'
@@ -195,7 +196,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     })
                 )
 
-                console.error(err)
+                reportError(err as Error)
             }
         }
 
@@ -269,7 +270,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     })
                 )
 
-                console.error(err)
+                reportError(err as Error)
             }
         }
 

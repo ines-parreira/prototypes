@@ -6,12 +6,12 @@ import React, {
     useState,
 } from 'react'
 import classNames from 'classnames'
-import {usePrevious} from 'react-use'
 import {Badge, Spinner} from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {Article} from 'models/helpCenter/types'
 import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
+import {getRootCategory} from 'state/entities/helpCenter/categories'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -65,11 +65,12 @@ export const CategoriesTableBasicRow = ({
     shouldRenderRowWithoutArticles = true,
 }: BaseCategoriesTableRowProps): JSX.Element | null => {
     const [isOpen, setOpen] = useState(false)
-    const [itemCount, setItemCount] = useState(0)
-    const {isLoading, fetchArticles, getArticleCount} = useArticlesActions()
+
+    const itemCount = useAppSelector(getRootCategory).articleCount
+
+    const {isLoading, fetchArticles} = useArticlesActions()
     const articles = useAppSelector(getUncategorizedArticles)
     const hasArticles = useMemo(() => itemCount > 0, [itemCount])
-    const prevArticles = usePrevious(articles)
     const hasMore = useMemo(
         () => articles.length < itemCount,
         [articles, itemCount]
@@ -77,14 +78,12 @@ export const CategoriesTableBasicRow = ({
 
     const fetchMore = useCallback(async () => {
         if (hasMore && !isLoading) {
-            const {meta} = await fetchArticles(null, {
+            await fetchArticles(null, {
                 page: Math.floor(articles.length / ARTICLES_PER_PAGE) + 1,
                 per_page: ARTICLES_PER_PAGE,
             })
-
-            setItemCount(meta.item_count)
         }
-    }, [articles, hasMore, isLoading, fetchArticles])
+    }, [hasMore, isLoading, fetchArticles, articles.length])
 
     const onLoadMore = useCallback(
         (e: React.MouseEvent) => {
@@ -134,42 +133,6 @@ export const CategoriesTableBasicRow = ({
             </>
         )
     }
-
-    useEffect(() => {
-        async function init() {
-            const count = await getArticleCount(null)
-
-            setItemCount(count)
-        }
-
-        void init()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    useEffect(() => {
-        async function refetch() {
-            if (typeof prevArticles === 'undefined' || isLoading) return
-
-            // If articles length changed, refresh the list
-            if (prevArticles.length !== articles.length) {
-                // If an article was added, fetch all articles to make sure to
-                // display it; else, refetch as many articles as previously
-                const perPage =
-                    articles.length > prevArticles.length
-                        ? itemCount + 1
-                        : articles.length
-                const params = {
-                    page: 1,
-                    per_page: perPage,
-                }
-                const {meta} = await fetchArticles(null, params)
-
-                setItemCount(meta.item_count)
-            }
-        }
-
-        void refetch()
-    }, [prevArticles, articles, itemCount, isLoading, fetchArticles])
 
     useEffect(() => {
         // On category open, fetch articles if category has some and no articles

@@ -1174,3 +1174,17 @@ export function fixVideoUrlForReactPlayer(url: string) {
     }
     return url
 }
+
+/**
+ * Better typed version of the default `Array.includes` function which allows the value
+ * to be of a different type than the array and to return a type guard instead of a simple boolean.
+ *
+ * It's still type-safe.
+ */
+export function includes<TPossibilities extends TValue, TValue>(
+    possibilities: readonly TPossibilities[],
+    value: TValue
+): value is TPossibilities {
+    // @ts-expect-error - The default `includes` method wants the value to be the exact type as the array
+    return possibilities.includes(value)
+}

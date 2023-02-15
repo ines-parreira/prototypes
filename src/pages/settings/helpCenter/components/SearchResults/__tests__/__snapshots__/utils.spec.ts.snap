@@ -6,6 +6,7 @@ exports[`SearchResults utils searchResultsTreeFromAlgolia returns a result tree 
     {
       "algoliaHits": {},
       "category": {
+        "articleCount": 0,
         "available_locales": [
           "en-US",
         ],

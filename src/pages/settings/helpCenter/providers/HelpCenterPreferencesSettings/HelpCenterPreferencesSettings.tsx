@@ -28,6 +28,7 @@ import {
     getNewHelpCenterTranslation,
     helpCenterSeoMetaFields,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {reportError} from 'utils/errors'
 
 export type HelpCenterPreferencesState = {
     defaultLanguage: LocaleCode
@@ -180,7 +181,7 @@ export const HelpCenterPreferencesSettings = ({
                 })
             )
 
-            console.error(err)
+            reportError(err as Error)
         }
     }
 

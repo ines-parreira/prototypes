@@ -15,6 +15,7 @@ import {getViewLanguage} from 'state/ui/helpCenter'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import settingsCss from 'pages/settings/settings.less'
+import {reportError} from 'utils/errors'
 import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
 import {HELP_CENTER_DEFAULT_LOCALE, SOCIAL_NAVIGATION_LINKS} from '../constants'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
@@ -227,7 +228,7 @@ export const HelpCenterCustomizationView = () => {
                 })
             )
 
-            console.error(err)
+            reportError(err as Error)
         }
     }
 

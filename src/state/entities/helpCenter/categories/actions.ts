@@ -40,6 +40,13 @@ export const updateCategoryTranslation = createAction<CategoryTranslation>(
     CategoryActions.UPDATE_CATEGORY_TRANSLATION
 )
 
+export const updateCategoriesArticleCount = createAction<
+    Array<{
+        categoryId: number | null
+        articleCount: number
+    }>
+>(CategoryActions.UPDATE_CATEGORIES_ARTICLE_COUNT)
+
 export const updateCategoriesOrder = createAction<number[]>(
     CategoryActions.UPDATE_CATEGORIES_ORDER
 )

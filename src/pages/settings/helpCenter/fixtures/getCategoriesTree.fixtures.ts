@@ -270,6 +270,7 @@ export const getSingleCategory: Category = {
         },
     },
     children: [8],
+    articleCount: 0,
 }
 
 export const getInitialRootCategory: Category = {
@@ -282,6 +283,7 @@ export const getInitialRootCategory: Category = {
     available_locales: [],
     children: [],
     translation: null,
+    articleCount: 0,
 }
 
 export const getRootCategory: Category = {
@@ -294,4 +296,5 @@ export const getRootCategory: Category = {
     available_locales: [],
     children: [5, 6, 7],
     translation: null,
+    articleCount: 0,
 }
