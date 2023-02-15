@@ -28,8 +28,10 @@ exports[`<BillingContainer /> should render the billing page 1`] = `
       If you have any questions or if you want to unsubscribe, please contact us at
        
       <a
-        href="mailto:undefined"
-      />
+        href="mailto:billing@gorgias.com"
+      >
+        billing@gorgias.com
+      </a>
        
       or
        

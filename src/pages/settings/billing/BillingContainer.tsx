@@ -23,6 +23,9 @@ import BillingInvoices from './BillingInvoices'
 import BillingPaymentMethod from './BillingPaymentMethod'
 import BillingHelpdeskUsage from './BillingHelpdeskUsage'
 import BillingDetails from './details/BillingDetails'
+
+const BILLING_SUPPORT_EMAIL = 'billing@gorgias.com'
+
 type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
 export class BillingContainer extends Component<Props> {
@@ -63,8 +66,8 @@ export class BillingContainer extends Component<Props> {
                     <p className={css.mb24}>
                         If you have any questions or if you want to unsubscribe,
                         please contact us at{' '}
-                        <a href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}>
-                            {window.GORGIAS_SUPPORT_EMAIL}
+                        <a href={`mailto:${BILLING_SUPPORT_EMAIL}`}>
+                            {BILLING_SUPPORT_EMAIL}
                         </a>{' '}
                         or{' '}
                         <a href="" onClick={openChat}>
