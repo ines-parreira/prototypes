@@ -1,9 +1,10 @@
 const path = require('path')
+const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const srcDir = path.join(__dirname, '../src')
 
-const HASH = process.env.RELEASE ? process.env.RELEASE : '[hash]'
+const HASH = process.env.RELEASE ? process.env.RELEASE : '[contenthash]'
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
 const cssLoaderOptions = {
     sourceMap: true,
@@ -13,7 +14,7 @@ const cssLoaderOptions = {
 }
 const styleBundleFile = __PRODUCTION__
     ? `helpdesk.app.${HASH}.css`
-    : 'helpdesk.app.css'
+    : '[name].css'
 
 module.exports = {
     stories: [`${srcDir}/**/*.stories.@(js|jsx|ts|tsx|mdx)`],
@@ -84,10 +85,14 @@ module.exports = {
             shouldRemoveUndefinedFromOptional: true,
         },
     },
+    core: {
+        builder: 'webpack5',
+    },
     webpackFinal: async (config) => {
         config.module.rules.push({
             test: /\.css$/i,
             use: [
+                MiniCssExtractPlugin.loader,
                 {
                     loader: 'css-loader',
                     options: cssLoaderOptions,
@@ -99,10 +104,6 @@ module.exports = {
             use: [
                 {
                     loader: MiniCssExtractPlugin.loader,
-                    options: {
-                        hmr: !__PRODUCTION__,
-                        reloadAll: false,
-                    },
                 },
                 {
                     loader: 'css-loader',
@@ -116,7 +117,9 @@ module.exports = {
         })
 
         config.resolve = {
+            ...config.resolve,
             alias: {
+                ...config.resolve.alias,
                 css: `${srcDir}/assets/css/`,
             },
             extensions: ['.ts', '.tsx', '.js'],
@@ -128,6 +131,11 @@ module.exports = {
                 filename: styleBundleFile,
             })
         )
+
+        if (!__PRODUCTION__) {
+            // only enable hot in development
+            config.plugins.push(new webpack.HotModuleReplacementPlugin())
+        }
 
         return config
     },
