@@ -74,7 +74,6 @@ import {
     updateLineItemModifiers,
     updateRow,
     upsertCheckoutConsignment,
-    useCanViewBigCommerceV1Features,
 } from './utils'
 import {ShippingAddressesDropdown} from './ShippingAddressesDropdown'
 import {CurrencyPickerDropdown} from './CurrencyPickerDropdown'
@@ -397,15 +396,11 @@ export function OrderModal({
 }: Props) {
     const dispatch = useAppDispatch()
 
-    const canViewBigCommerceV1Features = useCanViewBigCommerceV1Features()
-
     const storeHasMultipleCurrencies = integration.meta.available_currencies
         ? integration.meta.available_currencies.length > 1
         : false
     const [currency, setCurrency] = useState(
-        storeHasMultipleCurrencies && canViewBigCommerceV1Features
-            ? ''
-            : integration.meta.currency
+        storeHasMultipleCurrencies ? '' : integration.meta.currency
     )
     const [isLoading, setIsLoading] = useState(false)
     const [lineItemWithError, setLineItemWithError] =
@@ -620,16 +615,15 @@ export function OrderModal({
                         )}
                     </div>
                     <div className={css.currencyDropdown}>
-                        {canViewBigCommerceV1Features &&
-                            storeHasMultipleCurrencies && (
-                                <CurrencyPickerDropdown
-                                    availableCurrencies={
-                                        integration.meta.available_currencies
-                                    }
-                                    currency={currency}
-                                    setCurrency={setCurrency}
-                                />
-                            )}
+                        {storeHasMultipleCurrencies && (
+                            <CurrencyPickerDropdown
+                                availableCurrencies={
+                                    integration.meta.available_currencies
+                                }
+                                currency={currency}
+                                setCurrency={setCurrency}
+                            />
+                        )}
                     </div>
                     <div>
                         <p className="heading-section-semibold">Products</p>
@@ -638,7 +632,7 @@ export function OrderModal({
                         className={css.relative}
                         id="product-search-input-tooltip"
                     >
-                        {canViewBigCommerceV1Features && !currency && (
+                        {!currency && (
                             <Tooltip target="product-search-input-tooltip">
                                 Set currency to select products.
                             </Tooltip>
@@ -782,7 +776,7 @@ export function OrderModal({
                         shippingAddresses={shippingAddresses}
                         onSelectAddress={onSelectAddress}
                         hasError={!validationStatus.shippingAddress}
-                        isDisabled={!currency && canViewBigCommerceV1Features}
+                        isDisabled={!currency}
                     />
                     <p className="heading-section-semibold">Comments & Notes</p>
                     <div>
@@ -835,10 +829,7 @@ export function OrderModal({
                         intent="primary"
                         tabIndex={0}
                         onClick={handleAddOrder}
-                        isDisabled={
-                            isTotalPriceLoading ||
-                            (canViewBigCommerceV1Features && !currency)
-                        }
+                        isDisabled={isTotalPriceLoading || !currency}
                     >
                         Create order
                     </Button>

@@ -811,8 +811,5 @@ export const exportedForTesting = {
     createCart,
 }
 
-export const useCanViewBigCommerceV1Features = () =>
-    Boolean(useFlags()[FeatureFlagKey.BigCommerceCreateOrderV1])
-
 export const useCanViewBigCommerceCreateOrderModifiers = () =>
     Boolean(useFlags()[FeatureFlagKey.BigcommerceCreateOrderModifiers])

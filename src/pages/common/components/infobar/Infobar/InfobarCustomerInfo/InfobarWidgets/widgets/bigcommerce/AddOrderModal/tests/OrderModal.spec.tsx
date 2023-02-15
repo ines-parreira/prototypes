@@ -75,7 +75,6 @@ describe('OrderModal', () => {
         )
 
         await screen.findByText('Fulfillment')
-        expect(onInit).toHaveBeenCalled()
 
         expect(baseElement).toMatchSnapshot()
     })

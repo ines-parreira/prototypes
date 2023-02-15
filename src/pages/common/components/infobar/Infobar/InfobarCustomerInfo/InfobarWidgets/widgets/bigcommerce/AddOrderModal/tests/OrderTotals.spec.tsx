@@ -9,7 +9,6 @@ import OrderTotals from '../OrderTotals'
 
 jest.mock('../utils', () => ({
     ...jest.requireActual<Record<string, unknown>>('../utils'),
-    useCanViewBigCommerceV1Features: jest.fn(() => true),
 }))
 
 describe('<OrderTotals/>', () => {

@@ -30,7 +30,6 @@ const minProps: ComponentProps<typeof OrderTable> = {
 
 jest.mock('../../../utils', () => ({
     ...jest.requireActual<Record<string, unknown>>('../../../utils'),
-    useCanViewBigCommerceV1Features: jest.fn(() => true),
 }))
 
 describe('<OrderTable/>', () => {

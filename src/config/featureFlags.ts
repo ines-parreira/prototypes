@@ -3,7 +3,6 @@ export enum FeatureFlagKey {
     AnalyticsBetaTesters = 'analytics-beta-testers',
     AutomationSettingsRevamp = 'automation-settings-revamp',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
-    BigCommerceCreateOrderV1 = 'bigcommerce-create-order-v1',
     BigcommerceCreateOrderModifiers = 'bigcommerce-create-order-modifiers',
     ChatEnableTranslationEdit = 'enable-translations-edit',
     ChatNotIntalledStatus = 'chat-not-installed-status',

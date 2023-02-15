@@ -8,11 +8,9 @@ import {
 } from 'fixtures/bigcommerce'
 
 import PriceComponent from '../PriceComponent'
-import {useCanViewBigCommerceV1Features} from '../../../utils'
 
 jest.mock('../../../utils', () => ({
     ...jest.requireActual<Record<string, unknown>>('../../../utils'),
-    useCanViewBigCommerceV1Features: jest.fn(() => true),
 }))
 
 describe('<PriceComponent/>', () => {
@@ -38,24 +36,6 @@ describe('<PriceComponent/>', () => {
         )
 
         expect(screen.queryByRole('button')).toBeInTheDocument()
-    })
-
-    it('does not price as button when feature flag is false', () => {
-        ;(
-            useCanViewBigCommerceV1Features as jest.MockedFunction<
-                typeof useCanViewBigCommerceV1Features
-            >
-        ).mockReturnValueOnce(false)
-
-        render(
-            <PriceComponent
-                lineItem={bigCommerceLineItemFixture()}
-                currencyCode="EUR"
-                handleDiscount={jest.fn()}
-            />
-        )
-
-        expect(screen.queryByRole('button')).not.toBeInTheDocument()
     })
 
     it('show price as button and the discounted price', () => {

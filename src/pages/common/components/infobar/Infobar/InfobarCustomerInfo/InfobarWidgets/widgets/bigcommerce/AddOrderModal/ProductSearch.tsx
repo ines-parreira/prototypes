@@ -12,10 +12,7 @@ import {
 import {bigcommerceDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import {AddCustomProductPopover} from './AddCustomProductPopover'
-import {
-    useCanViewBigCommerceCreateOrderModifiers,
-    useCanViewBigCommerceV1Features,
-} from './utils'
+import {useCanViewBigCommerceCreateOrderModifiers} from './utils'
 
 import css from './OrderModal.less'
 
@@ -33,7 +30,6 @@ export const ProductSearch = ({
     ) => void
     onAddCustomProduct: (customItem: BigCommerceCustomProduct) => void
 }) => {
-    const canViewBigCommerceV1Features = useCanViewBigCommerceV1Features()
     const canViewModifiers = useCanViewBigCommerceCreateOrderModifiers()
 
     const [isPopoverOpen, setPopoverOpen] = useState(false)
@@ -42,34 +38,26 @@ export const ProductSearch = ({
         <div className={css.flex}>
             <ProductSearchInput
                 className={classnames(css.searchInput, {
-                    [css.disabled]: !currency && canViewBigCommerceV1Features,
+                    [css.disabled]: !currency,
                 })}
                 hasError={!validationStatus.products}
                 dataMappers={bigcommerceDataMappers}
                 searchOnFocus={true}
-                renderResultsAppendix={
-                    canViewBigCommerceV1Features
-                        ? ({onMouseOver, onMouseClick}) => (
-                              <DropdownItem
-                                  onMouseOver={onMouseOver}
-                                  onClick={() => {
-                                      onMouseClick()
-                                      setPopoverOpen(true)
-                                  }}
-                                  className={classnames(
-                                      searchInputCss.dropdownItem,
-                                      {
-                                          [searchInputCss.addCustomResultDropdownItem]:
-                                              true,
-                                      }
-                                  )}
-                                  toggle={false}
-                              >
-                                  + Add custom product
-                              </DropdownItem>
-                          )
-                        : undefined
-                }
+                renderResultsAppendix={({onMouseOver, onMouseClick}) => (
+                    <DropdownItem
+                        onMouseOver={onMouseOver}
+                        onClick={() => {
+                            onMouseClick()
+                            setPopoverOpen(true)
+                        }}
+                        className={classnames(searchInputCss.dropdownItem, {
+                            [searchInputCss.addCustomResultDropdownItem]: true,
+                        })}
+                        toggle={false}
+                    >
+                        + Add custom product
+                    </DropdownItem>
+                )}
                 renderResultItemProps={
                     canViewModifiers
                         ? (props) => {
@@ -82,16 +70,14 @@ export const ProductSearch = ({
                 }
                 onVariantClicked={onVariantClicked}
             />
-            {canViewBigCommerceV1Features && (
-                <AddCustomProductPopover
-                    id="bigcommerce-add-custom-product-btn"
-                    currencyCode={currency}
-                    isOpen={isPopoverOpen}
-                    onOpen={() => setPopoverOpen(true)}
-                    onClose={() => setPopoverOpen(false)}
-                    onAddCustomProduct={onAddCustomProduct}
-                />
-            )}
+            <AddCustomProductPopover
+                id="bigcommerce-add-custom-product-btn"
+                currencyCode={currency}
+                isOpen={isPopoverOpen}
+                onOpen={() => setPopoverOpen(true)}
+                onClose={() => setPopoverOpen(false)}
+                onAddCustomProduct={onAddCustomProduct}
+            />
         </div>
     )
 }

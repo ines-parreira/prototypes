@@ -11,7 +11,6 @@ import {BigCommerceCart} from 'models/integration/types'
 import {PopoverContainer} from './components/popover-container/PopoverContainer'
 
 import css from './OrderTotals.less'
-import {useCanViewBigCommerceV1Features} from './utils'
 
 type Props = {
     cart: Maybe<BigCommerceCart>
@@ -51,8 +50,6 @@ export function Coupon({
     onUpdateCoupon,
     onRemoveCoupon,
 }: Props) {
-    const canViewBigCommerceV1Features = useCanViewBigCommerceV1Features()
-
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
@@ -89,10 +86,6 @@ export function Coupon({
     }
 
     const onToggle = () => setIsPopoverOpen((isDropdownOpen) => !isDropdownOpen)
-
-    if (!canViewBigCommerceV1Features) {
-        return null
-    }
 
     return (
         <>

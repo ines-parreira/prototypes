@@ -7,11 +7,6 @@ import userEvent from '@testing-library/user-event'
 import {bigCommerceCartFixture} from 'fixtures/bigcommerce'
 
 import {Discount} from '../Discount'
-import {useCanViewBigCommerceV1Features} from '../utils'
-
-jest.mock('../utils', () => ({
-    useCanViewBigCommerceV1Features: jest.fn(() => true),
-}))
 
 describe('<Discount />', () => {
     it('works as expected', async () => {
@@ -85,26 +80,5 @@ describe('<Discount />', () => {
         // Check that the callback on the "Remove" button is called correctly
         userEvent.click(screen.getByRole('button', {name: /Remove/i}))
         expect(onUpdateDiscountAmountMock).toHaveBeenNthCalledWith(2, 0)
-    })
-
-    it('returns null', () => {
-        ;(
-            useCanViewBigCommerceV1Features as jest.MockedFunction<
-                typeof useCanViewBigCommerceV1Features
-            >
-        ).mockImplementation(() => false)
-
-        const cartFixture = bigCommerceCartFixture()
-        const onUpdateDiscountAmountMock = jest.fn()
-
-        const {container} = render(
-            <Discount
-                cart={cartFixture}
-                currencyCode="EUR"
-                onUpdateDiscountAmount={onUpdateDiscountAmountMock}
-            />
-        )
-
-        expect(container.firstChild).toBe(null)
     })
 })

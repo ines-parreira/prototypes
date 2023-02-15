@@ -12,8 +12,6 @@ import getShopifyMoneySymbol from '../../shopify/shared/helpers'
 
 import {PopoverContainer} from './components/popover-container/PopoverContainer'
 
-import {useCanViewBigCommerceV1Features} from './utils'
-
 import commonCss from './OrderTotals.less'
 import css from './Discount.less'
 
@@ -24,8 +22,6 @@ type Props = {
 }
 
 export function Discount({cart, currencyCode, onUpdateDiscountAmount}: Props) {
-    const canViewBigCommerceV1Features = useCanViewBigCommerceV1Features()
-
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
     const [isUpdatingDiscount, setIsUpdatingDiscount] = useState(false)
@@ -60,10 +56,6 @@ export function Discount({cart, currencyCode, onUpdateDiscountAmount}: Props) {
     const onToggle = () => setIsPopoverOpen((isDropdownOpen) => !isDropdownOpen)
 
     const cartDiscountAmount = cart?.discount_amount ?? 0
-
-    if (!canViewBigCommerceV1Features) {
-        return null
-    }
 
     return (
         <>
