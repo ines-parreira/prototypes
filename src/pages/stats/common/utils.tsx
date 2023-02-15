@@ -2,6 +2,7 @@ import {useContext, useMemo} from 'react'
 import moment, {Moment} from 'moment'
 import _isNumber from 'lodash/isNumber'
 
+import {findKey} from 'lodash'
 import useAppSelector from 'hooks/useAppSelector'
 import {ViewFilter} from 'state/views/types'
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
@@ -13,6 +14,8 @@ import {
 } from 'state/rules/types'
 import {RootState} from 'state/types'
 
+import {TicketChannel} from 'business/types/ticket'
+import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import StatsFiltersContext from '../StatsFiltersContext'
 
 export const comparedPeriodString = (
@@ -197,4 +200,13 @@ export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {
 
         return filters
     }, [periodFilterLeft, tagsState, statsFilters])
+}
+
+export const findChannelNameKey = (
+    channelName: string
+): TicketChannel | undefined => {
+    return findKey(
+        TICKET_CHANNEL_NAMES,
+        (name) => name.toLowerCase() === channelName.toLowerCase()
+    ) as TicketChannel | undefined
 }

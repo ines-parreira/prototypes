@@ -1,6 +1,6 @@
 import React, {ReactNode, useMemo} from 'react'
-import _findKey from 'lodash/findKey'
 
+import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {getTicketViewField, getTicketViewFieldPath} from '../../../config/views'
 import {ViewField} from '../../../models/view/types'
 import {ViewFilter} from '../../../state/views/types'
@@ -11,10 +11,9 @@ import {
     SegmentEvent,
     StatViewLinkClickedStat,
 } from '../../../store/middlewares/segmentTracker'
-import {TICKET_CHANNEL_NAMES} from '../../../state/ticket/constants'
 
 import ViewLink from './ViewLink'
-import {useStatsViewFilters} from './utils'
+import {findChannelNameKey, useStatsViewFilters} from './utils'
 
 type Props = {
     children: ReactNode
@@ -25,10 +24,8 @@ export default function TicketsCreatedPerChannelViewLink({
     children,
     channelName,
 }: Props) {
-    const channel = _findKey(
-        TICKET_CHANNEL_NAMES,
-        (name) => name === channelName
-    )
+    const channel = findChannelNameKey(channelName)
+
     const statsViewFilters = useStatsViewFilters(
         getTicketViewFieldPath(getTicketViewField(ViewField.Created))
     )
@@ -62,7 +59,12 @@ export default function TicketsCreatedPerChannelViewLink({
                 })
             }}
         >
-            <ViewLink viewName={`Channel: ${channelName}`} filters={filters}>
+            <ViewLink
+                viewName={`Channel: ${
+                    TICKET_CHANNEL_NAMES[channel] ?? channelName
+                }`}
+                filters={filters}
+            >
                 {children}
             </ViewLink>
         </span>

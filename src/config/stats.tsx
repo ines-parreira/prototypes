@@ -8,7 +8,12 @@ import {ChartType, Scale, TooltipItem} from 'chart.js'
 import classNames from 'classnames'
 import {defaults} from 'react-chartjs-2'
 
-import {formatDuration, formatNumber} from '../pages/stats/common/utils'
+import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
+import {
+    findChannelNameKey,
+    formatDuration,
+    formatNumber,
+} from '../pages/stats/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
 import {IntentName} from '../models/intent/types'
 import {humanizeString, lightenDarkenColor, toImmutable} from '../utils'
@@ -601,15 +606,28 @@ export const stats = toImmutable<
         callbacks: {
             cell: ({value, axis, line}) => {
                 if (axis.name.toLowerCase() === 'total') {
+                    const channelName = (line.get(0) as Map<any, any>).get(
+                        'value'
+                    ) as string
+
                     return (
                         <TicketsCreatedPerChannelViewLink
-                            channelName={(line.get(0) as Map<any, any>).get(
-                                'value'
-                            )}
+                            channelName={channelName}
                         >
                             {value}
                         </TicketsCreatedPerChannelViewLink>
                     )
+                }
+
+                if (axis.name.toLocaleLowerCase() === 'channel') {
+                    const channelName = (line.get(0) as Map<any, any>).get(
+                        'value'
+                    ) as string
+
+                    const channelNameKey = findChannelNameKey(channelName)
+                    return channelNameKey
+                        ? TICKET_CHANNEL_NAMES[channelNameKey]
+                        : channelName
                 }
 
                 return value

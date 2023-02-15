@@ -11,7 +11,12 @@ import {TicketChannel} from 'business/types/ticket'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {StatsFilters} from 'models/stat/types'
 
-import {formatNumber, formatDuration, useStatsViewFilters} from '../utils'
+import {
+    formatNumber,
+    formatDuration,
+    useStatsViewFilters,
+    findChannelNameKey,
+} from '../utils'
 
 const mockStore = configureMockStore([thunk])
 
@@ -182,6 +187,18 @@ describe('stats components utils', () => {
         ])('should match template for precision %i', (precision, expected) => {
             const duration = 24 * 3600 * 31 + 24 * 3600 + 3600 + 60 + 1
             expect(formatDuration(duration, precision)).toBe(expected)
+        })
+    })
+
+    describe('findChannelNameKey', () => {
+        it('should return the correct channel name key', () => {
+            const key = findChannelNameKey('Facebook Mention')
+            expect(key).toBe(TicketChannel.FacebookMention)
+        })
+
+        it('should return undefined when key is unknown', () => {
+            const key = findChannelNameKey('Something else')
+            expect(key).toBeUndefined()
         })
     })
 })
