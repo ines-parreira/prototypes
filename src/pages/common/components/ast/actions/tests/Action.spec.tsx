@@ -103,6 +103,27 @@ describe('Action', () => {
                 expect(result.length > 0).toBe(true)
             })
         })
+
+        it.each([
+            {
+                body_text: 'body',
+                to: 'email@example.com, '.repeat(16),
+            },
+            {
+                body_text: 'body',
+                to: 'email@example.com, '.repeat(8),
+                cc: 'email@example.com, '.repeat(8),
+            },
+            {
+                body_text: 'body',
+                to: 'email@example.com, '.repeat(5),
+                cc: 'email@example.com, '.repeat(5),
+                bcc: 'email@example.com, '.repeat(6),
+            },
+        ])('should return errors if too many recipients', (email) => {
+            const errors = validateSendEmail(email)
+            expect(errors.length).toBe(1)
+        })
     })
 
     describe('validateTags', () => {

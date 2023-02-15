@@ -88,7 +88,23 @@ export function validateAssignTeam(values: {
 }
 
 export function validateSendEmail(values: Email): Array<string> {
+    const MAX_NUMBER_RECIPIENTS = 15
+
     const errors = []
+
+    const numberOfRecipients = [values.bcc, values.cc, values.to].reduce(
+        (acc, recipients) =>
+            recipients ? recipients.split(',').length + acc : acc,
+        0
+    )
+
+    if (numberOfRecipients > MAX_NUMBER_RECIPIENTS) {
+        errors.push(
+            `Total number of recipients must be less than ${
+                MAX_NUMBER_RECIPIENTS + 1
+            }`
+        )
+    }
 
     if (!values.body_text) {
         errors.push('Body must be filled')
