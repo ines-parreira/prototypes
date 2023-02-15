@@ -1,0 +1,30 @@
+@import '~css/new/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .title {
+        .body-semibold();
+        margin-bottom: @layout-spacing-xxs;
+    }
+
+    .conditionContainer {
+        margin-top: @layout-spacing-s;
+        display: inline-flex;
+        align-items: center;
+        column-gap: @layout-spacing-s;
+        row-gap: @layout-spacing-xxs;
+        flex-wrap: wrap;
+    }
+
+    .conditionLabel {
+        .body-semibold();
+    }
+
+    .conditionSelectInput {
+        width: unset;
+    }
+
+    .conditionNumberInput {
+        width: 63px;
+    }
+}
