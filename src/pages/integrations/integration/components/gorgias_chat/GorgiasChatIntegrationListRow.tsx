@@ -8,7 +8,7 @@ import warningIcon from 'assets/img/icons/warning.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
 import dotWarning from 'assets/img/icons/dot-warning.svg'
 import dotNeutral from 'assets/img/icons/dot-neutral.svg'
-import dotError from 'assets/img/icons/dot-error.svg'
+import dotErrorCross from 'assets/img/icons/dot-error-cross.svg'
 
 import {useGorgiasChatIntegrationStatusData} from 'pages/integrations/integration/hooks/useGorgiasChatIntegrationStatusData'
 import Tooltip from '../../../../common/components/Tooltip'
@@ -122,7 +122,7 @@ const GorgiasChatIntegrationListRow = ({
                                         : chatStatus ===
                                           GorgiasChatStatusEnum.OFFLINE
                                         ? dotWarning
-                                        : dotError
+                                        : dotErrorCross
                                 }
                                 className={css.chatStatusDot}
                             />
@@ -181,8 +181,8 @@ const GorgiasChatIntegrationListRow = ({
                                         target={`chat-status-${integrationId}`}
                                     >
                                         Chat Widget was not seen installed on
-                                        your website in the past 72h. Check its
-                                        installation to resolve.
+                                        your website in the past 72 hours. Check
+                                        its installation to resolve.
                                     </Tooltip>
                                 </>
                             )}

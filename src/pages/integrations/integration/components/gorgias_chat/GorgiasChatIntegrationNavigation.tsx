@@ -4,8 +4,11 @@ import {NavLink} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
+import dotError from 'assets/img/icons/dot-error.svg'
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 import {IntegrationType} from '../../../../../models/integration/types'
+
+import css from './GorgiasChatIntegrationNavigation.less'
 
 type Props = {
     integration: Map<any, any>
@@ -45,7 +48,14 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
                 </NavLink>
             ) : null}
             <NavLink to={`${baseURL}/installation`} exact>
-                {!installationStatus.installed ? '❌ ' : ''}Installation
+                Installation
+                {!installationStatus.installed && (
+                    <img
+                        alt="status icon"
+                        src={dotError}
+                        className={css.redDot}
+                    />
+                )}
             </NavLink>
         </SecondaryNavbar>
     )

@@ -71,7 +71,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
       data-exact="true"
       href="/app/settings/channels/gorgias_chat/2/installation"
     >
-      
       Installation
     </a>
   </nav>
@@ -802,7 +801,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
       data-exact="true"
       href="/app/settings/channels/gorgias_chat/2/installation"
     >
-      
       Installation
     </a>
   </nav>
@@ -1235,7 +1233,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
       data-exact="true"
       href="/app/settings/channels/gorgias_chat/2/installation"
     >
-      
       Installation
     </a>
   </nav>

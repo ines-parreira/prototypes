@@ -153,7 +153,7 @@ function GorgiasChatIntegrationInstall({
                                 <Alert type={AlertType.Error} icon>
                                     Your chat widget was not seen installed on
                                     your website in the past 72 hours. Check its
-                                    installation to resolve. (
+                                    installation to resolve.{' '}
                                     <a
                                         href="https://docs.gorgias.com/en-US/chat-getting-started-81789"
                                         target="_blank"
@@ -161,7 +161,6 @@ function GorgiasChatIntegrationInstall({
                                     >
                                         More information
                                     </a>
-                                    )
                                 </Alert>
                             </div>
                         )}

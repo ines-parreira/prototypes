@@ -50,7 +50,6 @@ exports[`<GorgiasChatIntegrationNavigation /> should render GorgiasChatIntegrati
       data-exact="true"
       href="/app/settings/channels/gorgias_chat/16/installation"
     >
-      
       Installation
     </a>
   </nav>
@@ -107,8 +106,12 @@ exports[`<GorgiasChatIntegrationNavigation /> should render GorgiasChatIntegrati
       data-exact="true"
       href="/app/settings/channels/gorgias_chat/16/installation"
     >
-      ❌ 
       Installation
+      <img
+        alt="status icon"
+        class="redDot"
+        src="test-file-stub"
+      />
     </a>
   </nav>
 </div>
