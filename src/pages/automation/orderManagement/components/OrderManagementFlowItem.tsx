@@ -40,7 +40,12 @@ const OrderManagementFlowItem = ({
     }
 
     return (
-        <div className={css.container} onClick={onClick}>
+        <div
+            className={classnames(css.container, {
+                [css.isClickable]: Boolean(onClick),
+            })}
+            onClick={onClick}
+        >
             <ToggleInput
                 isToggled={isEnabled}
                 isDisabled={isDisabled}

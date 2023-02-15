@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
 import classnames from 'classnames'
 import {Container} from 'reactstrap'
 
@@ -42,6 +42,8 @@ const AutomationSubscriptionAction = () => {
 }
 
 const OrderManagementView = () => {
+    const history = useHistory()
+    const {pathname} = useLocation()
     const {shopName} = useParams<{shopName: string}>()
     const {
         isUpdatePending,
@@ -123,6 +125,9 @@ const OrderManagementView = () => {
                                     isEnabled
                                 )
                             }}
+                            onClick={() => {
+                                history.push(`${pathname}/return`)
+                            }}
                         />
                         <OrderManagementFlowItem
                             isEnabled={
@@ -137,6 +142,9 @@ const OrderManagementView = () => {
                                     'cancel_order_policy',
                                     isEnabled
                                 )
+                            }}
+                            onClick={() => {
+                                history.push(`${pathname}/cancel`)
                             }}
                         />
                         <OrderManagementFlowItem
@@ -155,7 +163,13 @@ const OrderManagementView = () => {
                             }}
                             {...(!hasAutomationAddOn
                                 ? {action: <AutomationSubscriptionAction />}
-                                : {})}
+                                : {
+                                      onClick: () => {
+                                          history.push(
+                                              `${pathname}/report-issue`
+                                          )
+                                      },
+                                  })}
                         />
                     </div>
                 )}
