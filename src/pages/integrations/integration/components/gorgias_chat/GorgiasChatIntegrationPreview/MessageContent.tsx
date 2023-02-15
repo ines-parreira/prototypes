@@ -2,8 +2,14 @@ import classnames from 'classnames'
 import {Map} from 'immutable'
 import React, {Component, ReactNode, Ref} from 'react'
 
+import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+} from 'models/integration/types'
+
 import Avatar from '../../../../../common/components/Avatar/Avatar'
 
+import {AgentDisplayName} from './AgentDisplayName'
 import ArticleAttachment, {
     ArticleAttachmentSchema,
     isArticleAttachment,
@@ -28,6 +34,12 @@ type Props = {
     hideConversationTimestamp?: boolean
     hideMessageTimestamp?: boolean
     enableAgentMessagesAnimations?: boolean
+    chatTitle?: string
+    avatar?: {
+        imageType: GorgiasChatAvatarImageType
+        nameType: GorgiasChatAvatarNameType
+        companyLogoUrl?: string
+    }
 }
 
 const renderAgentMessage = ({
@@ -84,6 +96,8 @@ export default class MessageContent extends Component<Props> {
             hideMessageTimestamp,
             enableAgentMessagesAnimations,
             children,
+            chatTitle,
+            avatar,
         } = this.props
 
         if (!currentUser) {
@@ -114,14 +128,15 @@ export default class MessageContent extends Component<Props> {
                             })}
                         />
                         <div>
-                            <div
+                            <AgentDisplayName
+                                chatTitle={chatTitle}
                                 className={classnames(css.user, {
                                     [css.isAnimated]:
                                         enableAgentMessagesAnimations,
                                 })}
-                            >
-                                {currentUser.get('name')}
-                            </div>
+                                name={currentUser.get('name') as string}
+                                type={avatar?.nameType}
+                            />
 
                             {agentMessages.map((message, index) => (
                                 <div

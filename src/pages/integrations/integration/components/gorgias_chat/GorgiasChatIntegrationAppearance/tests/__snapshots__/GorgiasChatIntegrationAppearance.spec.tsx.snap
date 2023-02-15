@@ -5578,6 +5578,838 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
 </div>
 `;
 
+exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for agent avatar name and image settings 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/channels/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            Acme Chat
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div
+      data-testid="GorgiasChatIntegrationNavigation"
+    />
+    <div
+      class="pageContainer container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="formSection"
+              >
+                <div
+                  class="InputField formGroup required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value="Acme Chat"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class="select dropdown-toggle"
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Intro message
+                </h2>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Introduction text during business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="How can we help?"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Introduction text outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="We'll be back tomorrow"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Colors
+                </h2>
+                <div
+                  class="colorPickersWrapper"
+                >
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="wrapper fill secondary medium"
+                          id="color-picker-42"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="wrapper fill secondary medium"
+                          id="color-picker-42"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Agent avatar
+                </h2>
+                <div
+                  class="avatarInputsWrapper"
+                >
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-name-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Name
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-first-name"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-first-name"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name only
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-first-last-name-initial"
+                      >
+                        <input
+                          class="input"
+                          id="agent-first-last-name-initial"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name, last name initial
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="chat-title"
+                      >
+                        <input
+                          class="input"
+                          id="chat-title"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Use chat title instead of agent name
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-image-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Image
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-picture"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="agent-picture"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Profile picture
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
+                        for="agent-initials"
+                      >
+                        <input
+                          class="input"
+                          id="agent-initials"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Initials
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label isDisabled label"
+                        for="company-logo"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="company-logo"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Logo
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        <a
+                          href="#"
+                        >
+                          Upload a logo
+                        </a>
+                         to enable this option
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Launcher
+                </h2>
+                <div
+                  class="launcherSettingsGrid"
+                >
+                  <div
+                    class="InputField formGroup form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Widget position on page
+                    </label>
+                    <div
+                      class="select dropdown-toggle"
+                    >
+                      <select
+                        class="field form-control"
+                        id="id-input-42"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="positionInputsWrapper"
+                  >
+                    <div>
+                      <label
+                        class="bold"
+                      >
+                        Move left / right
+                        <span
+                          id="move-widget-left-right"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
+                      >
+                        <input
+                          class="input isAlignedRight"
+                          max="200"
+                          min="-20"
+                          step="1"
+                          type="number"
+                          value="0"
+                        />
+                        <span
+                          class="suffix"
+                        >
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+                    <div>
+                      <label
+                        class="bold"
+                      >
+                        Move up / down
+                        <span
+                          id="move-widget-up-down"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
+                      >
+                        <input
+                          class="input isAlignedRight"
+                          max="200"
+                          min="-20"
+                          step="1"
+                          type="number"
+                          value="0"
+                        />
+                        <span
+                          class="suffix"
+                        >
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button
+                  class="wrapper fill primary medium"
+                  type="submit"
+                >
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          class="col"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="container"
+            >
+              <span
+                class="mb-3 group horizontal"
+              >
+                <button
+                  class="wrapper fill primary medium left"
+                  type="button"
+                >
+                  During business hours
+                </button>
+                <button
+                  class="wrapper fill secondary medium right"
+                  type="button"
+                >
+                  Outside business hours
+                </button>
+              </span>
+              <div
+                class="preview previewWithBackground"
+              >
+                <div
+                  class="dialog"
+                >
+                  <div
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    <div
+                      class="agents"
+                    >
+                      <div
+                        class="agent first"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                      <div
+                        class="agent middle"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                        <div
+                          class="onlineMarker"
+                        />
+                      </div>
+                      <div
+                        class="agent last"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="details"
+                      style="color: rgb(255, 255, 255);"
+                    >
+                      <div
+                        class="appName"
+                      >
+                        Acme Chat
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <div
+                        class="conversationTimestamp"
+                      >
+                        June 24
+                      </div>
+                      <div
+                        class="bubble primary firstMessageOfAppUser"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+                      >
+                        Hey there
+                      </div>
+                      <div
+                        class="bubble primary lastMessage"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+                      >
+                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                      </div>
+                      <div
+                        class="messageTimestamp"
+                      >
+                        <span>
+                          6 minutes ago
+                          . 
+                        </span>
+                        <span
+                          class="messageStatus"
+                        >
+                          Delivered
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper"
+                    >
+                      <div
+                        class="component avatar"
+                        style="width: 35px; height: 35px;"
+                      >
+                        <div
+                          class="initials"
+                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        >
+                          <span
+                            style="line-height: 37px;"
+                          >
+                            JD
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="user"
+                        >
+                          John
+                        </div>
+                        <div
+                          class="bubble firstMessageOfAppMaker"
+                        >
+                          Sure, what's your email / order number?
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
+                      <img
+                        alt="powered-by"
+                        src="test-file-stub"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    <div
+                      class="placeholder"
+                    >
+                      Type a message...
+                    </div>
+                    <i
+                      class="icon camera"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="buttonWrapper bottom-right"
+                >
+                  <div
+                    class="launcher"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    <div
+                      class="iconWrapper"
+                    >
+                      <svg
+                        class="icon"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                      >
+                        <clippath
+                          id="bubble-icon"
+                        >
+                          <path
+                            d="m0 0h24v24h-24z"
+                          />
+                        </clippath>
+                        <g
+                          clip-path="url(#bubble-icon)"
+                        >
+                          <path
+                            clip-rule="evenodd"
+                            d="m19.875 21.0548c2.5274-2.2 4.125-5.4409 4.125-9.0548 0-6.62742-5.3726-12-12-12-6.62742 0-12 5.37258-12 12 0 6.6274 5.37258 12 12 12h7.875zm-12.375-7.9298c.62132 0 1.125-.5037 1.125-1.125s-.50368-1.125-1.125-1.125-1.125.5037-1.125 1.125.50368 1.125 1.125 1.125zm4.5 0c.6213 0 1.125-.5037 1.125-1.125s-.5037-1.125-1.125-1.125-1.125.5037-1.125 1.125.5037 1.125 1.125 1.125zm5.625-1.125c0 .6213-.5037 1.125-1.125 1.125s-1.125-.5037-1.125-1.125.5037-1.125 1.125-1.125 1.125.5037 1.125 1.125z"
+                            fill="#FFFFFF"
+                            fill-rule="evenodd"
+                          />
+                        </g>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the createGorgiasChatIntegration with 2nd store name option selected - myStore2  1`] = `
 <div>
   <div

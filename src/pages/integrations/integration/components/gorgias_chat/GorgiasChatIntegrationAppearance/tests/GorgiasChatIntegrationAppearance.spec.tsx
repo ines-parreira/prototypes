@@ -14,6 +14,10 @@ import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
 } from 'constants/integration'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+} from 'models/integration/types'
 
 import {GorgiasChatIntegrationAppearanceComponent} from '../GorgiasChatIntegrationAppearance'
 
@@ -345,20 +349,24 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                     "type": "gorgias_chat",
                     "name": "myTestChat",
                     "decoration": Immutable.Map {
-                      "conversation_color": "#0d87dd",
-                      "main_color": "#0d87dd",
-                      "introduction_text": "How can we help?",
-                      "offline_introduction_text": "We'll be back tomorrow",
                       "avatar_type": "team-members",
-                      "avatar_team_picture_url": undefined,
+                      "launcher": Immutable.Map {
+                        "type": "icon",
+                      },
+                      "conversation_color": "#0d87dd",
                       "position": Immutable.Map {
                         "alignment": "bottom-right",
                         "offsetX": 0,
                         "offsetY": 0,
                       },
-                      "launcher": Immutable.Map {
-                        "type": "icon",
+                      "avatar_team_picture_url": undefined,
+                      "introduction_text": "How can we help?",
+                      "offline_introduction_text": "We'll be back tomorrow",
+                      "avatar": Immutable.Map {
+                        "image_type": "agent-picture",
+                        "name_type": "agent-first-name",
                       },
+                      "main_color": "#0d87dd",
                     },
                     "meta": Immutable.Map {
                       "language": "en-US",
@@ -481,20 +489,24 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                     "type": "gorgias_chat",
                     "name": "myTestChat",
                     "decoration": Immutable.Map {
-                      "conversation_color": "#0d87dd",
-                      "main_color": "#0d87dd",
-                      "introduction_text": "How can we help?",
-                      "offline_introduction_text": "We'll be back tomorrow",
                       "avatar_type": "team-members",
-                      "avatar_team_picture_url": undefined,
+                      "launcher": Immutable.Map {
+                        "type": "icon",
+                      },
+                      "conversation_color": "#0d87dd",
                       "position": Immutable.Map {
                         "alignment": "bottom-right",
                         "offsetX": 0,
                         "offsetY": 0,
                       },
-                      "launcher": Immutable.Map {
-                        "type": "icon",
+                      "avatar_team_picture_url": undefined,
+                      "introduction_text": "How can we help?",
+                      "offline_introduction_text": "We'll be back tomorrow",
+                      "avatar": Immutable.Map {
+                        "image_type": "agent-picture",
+                        "name_type": "agent-first-name",
                       },
+                      "main_color": "#0d87dd",
                     },
                     "meta": Immutable.Map {
                       "shop_name": "myStore1",
@@ -544,6 +556,41 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                     integration={fromJS({})}
                     currentUser={fromJS({})}
                     isUpdate={false}
+                />
+            )
+
+            expect(container).toMatchSnapshot()
+        })
+
+        it('should render inputs for agent avatar name and image settings', () => {
+            mockFlags({
+                [FeatureFlagKey.ChatAgentAvatarCustomization]: true,
+            })
+
+            const {container} = render(
+                <GorgiasChatIntegrationAppearanceComponent
+                    {...minProps}
+                    loading={fromJS({updateIntegration: false})}
+                    integration={fromJS({
+                        id: 1,
+                        name: 'Acme Chat',
+                        type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                        decoration: {
+                            avatar: {
+                                image_type:
+                                    GorgiasChatAvatarImageType.AGENT_PICTURE,
+                                name_type:
+                                    GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+                            },
+                        },
+                        meta: {
+                            language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                        },
+                    })}
+                    currentUser={fromJS({
+                        name: 'John Doe',
+                    })}
+                    isUpdate={true}
                 />
             )
 

@@ -106,3 +106,15 @@ export enum GorgiasChatLauncherType {
     ICON = 'icon',
     ICON_AND_LABEL = 'icon-label',
 }
+
+export enum GorgiasChatAvatarImageType {
+    AGENT_PICTURE = 'agent-picture',
+    AGENT_INITIALS = 'agent-initials',
+    COMPANY_LOGO = 'company-logo',
+}
+
+export enum GorgiasChatAvatarNameType {
+    AGENT_FIRST_NAME = 'agent-first-name',
+    AGENT_FIRST_LAST_NAME_INITIAL = 'agent-first-last-name-initial',
+    CHAT_TITLE = 'chat-title',
+}

@@ -37,6 +37,8 @@ import {Language} from 'constants/languages'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import * as integrationSelectors from 'state/integrations/selectors'
 import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
     GorgiasChatLauncherType,
@@ -89,6 +91,10 @@ export const defaultContent = {
     launcher: {
         type: GorgiasChatLauncherType.ICON,
     },
+    avatar: {
+        imageType: GorgiasChatAvatarImageType.AGENT_PICTURE,
+        nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+    },
 }
 
 const avatarTypeOptions = [
@@ -102,6 +108,47 @@ const avatarTypeOptions = [
         caption:
             "For example, use your company's logo. The image " +
             'needs to be a square of 500kb maximum.',
+    },
+]
+
+const avatarNameTypeOptions = [
+    {
+        value: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+        label: 'First name only',
+    },
+    {
+        value: GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL,
+        label: 'First name, last name initial',
+    },
+    {
+        value: GorgiasChatAvatarNameType.CHAT_TITLE,
+        label: 'Use chat title instead of agent name',
+    },
+]
+
+/**
+ * TODO: third option needs to be generated/modified
+ * depending on the agent avatar image value
+ * Will be done in a follow-up PR with logo upload
+ */
+const avatarImageTypeOptions = [
+    {
+        value: GorgiasChatAvatarImageType.AGENT_PICTURE,
+        label: 'Profile picture',
+    },
+    {
+        value: GorgiasChatAvatarImageType.AGENT_INITIALS,
+        label: 'Initials',
+    },
+    {
+        value: GorgiasChatAvatarImageType.COMPANY_LOGO,
+        label: 'Logo',
+        disabled: true,
+        caption: (
+            <>
+                <a href="#">Upload a logo</a> to enable this option
+            </>
+        ),
     },
 ]
 
@@ -133,6 +180,11 @@ type State = {
     launcher: {
         type: GorgiasChatLauncherType
         label?: string
+    }
+    avatar: {
+        imageType: GorgiasChatAvatarImageType
+        nameType: GorgiasChatAvatarNameType
+        companyLogoUrl?: string
     }
 }
 
@@ -169,6 +221,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         useFlags()[FeatureFlagKey.ChatEnableTranslationEdit]
     const shouldShowLauncherCustomization =
         useFlags()[FeatureFlagKey.ChatLauncherCustomization]
+    const shouldShowAvatarCustomization =
+        useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
 
     const [storeName, setStoreName] = useState(
         integration.getIn(['meta', 'shop_name'], null)
@@ -249,9 +303,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         Language.French
                             ? Language.FrenchFr
                             : integration.getIn(['meta', 'language']),
-                    avatarType:
-                        integration.getIn(['decoration', 'avatar_type']) ||
-                        GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
+                    avatarType: integration.getIn(
+                        ['decoration', 'avatar_type'],
+                        GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT
+                    ),
                     avatarTeamPictureUrl: integration.getIn([
                         'decoration',
                         'avatar_team_picture_url',
@@ -268,6 +323,21 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             fromJS({type: GorgiasChatLauncherType.ICON})
                         )
                         .toJS(),
+                    avatar: {
+                        imageType: integration.getIn(
+                            ['decoration', 'avatar', 'image_type'],
+                            GorgiasChatAvatarImageType.AGENT_PICTURE
+                        ),
+                        nameType: integration.getIn(
+                            ['decoration', 'avatar', 'name_type'],
+                            GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                        ),
+                        companyLogoUrl: integration.getIn([
+                            'decoration',
+                            'avatar',
+                            'company_logo_url',
+                        ]),
+                    },
                 },
                 defaultContent
             )
@@ -307,6 +377,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 avatar_type: state.avatarType,
                 avatar_team_picture_url: state.avatarTeamPictureUrl,
                 position: state.position,
+                avatar: {
+                    image_type: state.avatar.imageType,
+                    name_type: state.avatar.nameType,
+                },
             },
             meta: {
                 language: state.language,
@@ -338,6 +412,17 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         } else if (state.launcher.type === GorgiasChatLauncherType.ICON) {
             form.decoration.launcher = {
                 type: GorgiasChatLauncherType.ICON,
+            }
+        }
+
+        if (
+            state.avatar.imageType ===
+                GorgiasChatAvatarImageType.COMPANY_LOGO &&
+            !!state.avatar.companyLogoUrl
+        ) {
+            form.decoration.avatar = {
+                ...form.decoration.avatar,
+                company_logo_url: state.avatar.companyLogoUrl,
             }
         }
 
@@ -399,6 +484,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         name,
         introductionText,
         offlineIntroductionText,
+        avatar,
         avatarType,
         avatarTeamPictureUrl,
         mainColor,
@@ -517,6 +603,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             attachments: [],
                         },
                     ]}
+                    chatTitle={name}
+                    avatar={state.avatar}
                 />
             </ChatIntegrationPreview>
         </div>
@@ -751,62 +839,119 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         </div>
 
                         {isUpdate && (
-                            <div className={css.formSection}>
-                                <h2 className={css.title}>Chat header</h2>
+                            <>
+                                {shouldShowAvatarCustomization ? (
+                                    <div className={css.formSection}>
+                                        <h2 className={css.title}>
+                                            Agent avatar
+                                        </h2>
 
-                                <RadioFieldSet
-                                    name="type-field"
-                                    className="mb-3"
-                                    options={avatarTypeOptions}
-                                    selectedValue={avatarType}
-                                    onChange={(value) =>
-                                        setState((prevState) => ({
-                                            ...prevState,
-                                            avatarType: value,
-                                        }))
-                                    }
-                                    label="Image"
-                                />
-                                {isTeamPictureAvatarSelected && (
-                                    <div
-                                        key="file-field"
-                                        className="d-flex flex-direction-row mb-2"
-                                    >
-                                        {!!avatarTeamPictureUrl && (
-                                            <img
-                                                className="mr-3"
-                                                style={{
-                                                    maxWidth: '100px',
-                                                }}
-                                                src={avatarTeamPictureUrl}
-                                                alt="Team avatar"
+                                        <div
+                                            className={css.avatarInputsWrapper}
+                                        >
+                                            <RadioFieldSet
+                                                className={css.radioFieldSet}
+                                                label="Name"
+                                                name="avatar-name-type-field"
+                                                options={avatarNameTypeOptions}
+                                                selectedValue={avatar.nameType}
+                                                onChange={(value) =>
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        avatar: {
+                                                            ...prevState.avatar,
+                                                            nameType:
+                                                                value as GorgiasChatAvatarNameType,
+                                                        },
+                                                    }))
+                                                }
                                             />
-                                        )}
-                                        <FileField
-                                            returnFiles={false}
-                                            noPreview={true}
-                                            onChange={(
-                                                avatarTeamPictureUrl: string
-                                            ) =>
+                                            <RadioFieldSet
+                                                className={css.radioFieldSet}
+                                                label="Image"
+                                                name="avatar-image-type-field"
+                                                options={avatarImageTypeOptions}
+                                                selectedValue={avatar.imageType}
+                                                onChange={(value) =>
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        avatar: {
+                                                            ...prevState.avatar,
+                                                            imageType:
+                                                                value as GorgiasChatAvatarImageType,
+                                                        },
+                                                    }))
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className={css.formSection}>
+                                        <h2 className={css.title}>
+                                            Chat header
+                                        </h2>
+
+                                        <RadioFieldSet
+                                            name="type-field"
+                                            className="mb-3"
+                                            options={avatarTypeOptions}
+                                            selectedValue={avatarType}
+                                            onChange={(value) =>
                                                 setState((prevState) => ({
                                                     ...prevState,
-                                                    avatarTeamPictureUrl,
+                                                    avatarType: value,
                                                 }))
                                             }
-                                            uploadType="avatar_team_picture"
-                                            params={{
-                                                ['integration_id']:
-                                                    integration.get('id'),
-                                            }}
-                                            maxSize={500 * 1000}
-                                            required={
-                                                isTeamPictureAvatarSelected &&
-                                                !avatarTeamPictureUrl
-                                            }
+                                            label="Image"
                                         />
+                                        {isTeamPictureAvatarSelected && (
+                                            <div
+                                                key="file-field"
+                                                className="d-flex flex-direction-row mb-2"
+                                            >
+                                                {!!avatarTeamPictureUrl && (
+                                                    <img
+                                                        className="mr-3"
+                                                        style={{
+                                                            maxWidth: '100px',
+                                                        }}
+                                                        src={
+                                                            avatarTeamPictureUrl
+                                                        }
+                                                        alt="Team avatar"
+                                                    />
+                                                )}
+                                                <FileField
+                                                    returnFiles={false}
+                                                    noPreview={true}
+                                                    onChange={(
+                                                        avatarTeamPictureUrl: string
+                                                    ) =>
+                                                        setState(
+                                                            (prevState) => ({
+                                                                ...prevState,
+                                                                avatarTeamPictureUrl,
+                                                            })
+                                                        )
+                                                    }
+                                                    uploadType="avatar_team_picture"
+                                                    params={{
+                                                        ['integration_id']:
+                                                            integration.get(
+                                                                'id'
+                                                            ),
+                                                    }}
+                                                    maxSize={500 * 1000}
+                                                    required={
+                                                        isTeamPictureAvatarSelected &&
+                                                        !avatarTeamPictureUrl
+                                                    }
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 )}
-                            </div>
+                            </>
                         )}
 
                         <div className={css.formSection}>

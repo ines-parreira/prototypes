@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AgentDisplayName /> should render agent first name 1`] = `
+<div>
+  <div
+    class="acme"
+  >
+    John
+  </div>
+</div>
+`;
+
+exports[`<AgentDisplayName /> should render agent first name last name initial 1`] = `
+<div>
+  <div
+    class="acme"
+  >
+    John D.
+  </div>
+</div>
+`;
+
+exports[`<AgentDisplayName /> should render agent first name only if last name is not available 1`] = `
+<div>
+  <div
+    class="acme"
+  >
+    John
+  </div>
+</div>
+`;
+
+exports[`<AgentDisplayName /> should render agent full name as legacy implementation 1`] = `
+<div>
+  <div
+    class="acme"
+  >
+    John Doe
+  </div>
+</div>
+`;
+
+exports[`<AgentDisplayName /> should render agent fullname if chat title is not provided 1`] = `
+<div>
+  <div
+    class="acme"
+  >
+    John Doe
+  </div>
+</div>
+`;
+
+exports[`<AgentDisplayName /> should render chat title 1`] = `
+<div>
+  <div
+    class="acme"
+  >
+    Acme Support
+  </div>
+</div>
+`;
