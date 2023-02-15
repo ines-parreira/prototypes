@@ -22,6 +22,8 @@ jest.mock('pages/tickets/detail/components/TicketHeaderWrapper', () => () => (
     <p>TicketHeaderWrapper</p>
 ))
 
+jest.mock('state/billing/selectors')
+
 jest.mock('react-virtuoso', () => {
     const {forwardRef, Fragment} = jest.requireActual('react')
     //eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -9,7 +9,7 @@ import _noop from 'lodash/noop'
 import classnames from 'classnames'
 
 import {TicketElement, TicketMessage} from 'models/ticket/types'
-import {isTicketEvent} from 'models/ticket/predicates'
+import {isTicketEvent, isTicketRuleSuggestion} from 'models/ticket/predicates'
 import * as ticketSelectors from 'state/ticket/selectors'
 import shortcutManager from 'services/shortcutManager/index'
 import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
@@ -20,8 +20,13 @@ import {getActionByName} from 'config/actions'
 import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
 import TicketHeaderWrapper from 'pages/tickets/detail/components/TicketHeaderWrapper'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {PRIVATE_REPLY_ACTIONS} from './PrivateReplyEvent/constants'
 import {contentfulEventTypesValues} from './AuditLogEvent'
+import {
+    getRuleSuggestionContent,
+    isSuggestionEmpty,
+} from './RuleSuggestion/RuleSuggestion'
 import {ReplyFormWithVirtuosoContext} from './ReplyForm'
 
 import css from './TicketBody.less'
@@ -148,9 +153,15 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
         const groupedElements = this.props.groupedElements.filter((element) => {
             // filtering is applied to remove elements that would result in a null node rendered
             // react-virtuoso yields a warning when a null node is passed because it shouldn't handle zero-sized elements
-            if (Array.isArray(element) || !isTicketEvent(element)) {
-                return true
-            }
+
+            if (Array.isArray(element)) return true
+            if (isTicketRuleSuggestion(element))
+                return !(
+                    isSuggestionEmpty(
+                        getRuleSuggestionContent(this.props.ticket.toJS())
+                    ) || !this.props.hasAutomationAddon
+                )
+            if (!isTicketEvent(element)) return true
 
             const elementMap: Map<any, any> = fromJS(element)
             const actionName = elementMap.getIn(['data', 'action_name'])
@@ -256,6 +267,8 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
 const connector = connect((state: RootState) => ({
     groupedElements: ticketSelectors.getTicketBodyElements(state),
     isHistoryDisplayed: ticketSelectors.getDisplayHistory(state),
+    ticket: state.ticket,
+    hasAutomationAddon: getHasAutomationAddOn(state),
 }))
 
 export default connector(TicketBodyVirtualized)

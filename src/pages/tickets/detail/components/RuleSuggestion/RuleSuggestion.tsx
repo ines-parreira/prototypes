@@ -1,11 +1,9 @@
 import React, {useState} from 'react'
 import _pick from 'lodash/pick'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {fromJS} from 'immutable'
 import {Spinner, Tooltip} from 'reactstrap'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import {ActionStatus, Ticket} from 'models/ticket/types'
 import {actionsConfig} from 'pages/common/components/ast/actions/Action'
@@ -38,10 +36,12 @@ import InTicketSuggestion from './InTicketSuggestion'
 
 import css from './RuleSuggestion.less'
 
+type TicketWithRuleSuggestionData = Ticket & {
+    meta: Record<'rule_suggestion', RuleSuggestionData>
+}
+
 type Props = {
-    ticket: Ticket & {
-        meta: Record<'rule_suggestion', RuleSuggestionData> | null
-    }
+    ticket: TicketWithRuleSuggestionData
     isCollapsed?: boolean
 }
 
@@ -50,20 +50,11 @@ export type RuleSuggestionData = {
     slug: string
 }
 
-export default function RuleSuggestion({ticket, isCollapsed}: Props) {
-    const dispatch = useAppDispatch()
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const ruleSuggestionFeatureFlag = useFlags()[FeatureFlagKey.RuleSuggestion]
-    const recipes = useRuleRecipes()
-    const emailChannels = useAppSelector(getEmailChannels)
-    const currentUser = useAppSelector(getCurrentUser)
-    const [rules, isLoadingRules] = useRules()
-    const [isSending, setIsSending] = useState(false)
-
-    const suggestion = ticket.meta?.['rule_suggestion']
-    if (!suggestion) return null
-
-    const actions = suggestion?.actions
+export const getRuleSuggestionContent = (
+    ticket: TicketWithRuleSuggestionData
+) => {
+    const suggestion = ticket.meta.rule_suggestion
+    const actions = suggestion.actions
         ?.filter((action) => action.name !== RuleActionName.ReplyToTicket)
         .filter((action) =>
             Object.values(MacroActionName).includes(action.name as any)
@@ -79,16 +70,31 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
                 } as MacroAction)
         )
 
-    const text = suggestion?.actions?.find(
+    const text = suggestion.actions?.find(
         (action) => action.name === RuleActionName.ReplyToTicket
     )?.args
 
-    if (
-        !hasAutomationAddOn ||
-        !ruleSuggestionFeatureFlag ||
-        (!actions?.length && !text)
-    )
-        return null
+    return {actions, text}
+}
+
+export const isSuggestionEmpty = ({
+    actions,
+    text,
+}: ReturnType<typeof getRuleSuggestionContent>) => !actions?.length && !text
+
+export default function RuleSuggestion({ticket, isCollapsed}: Props) {
+    const dispatch = useAppDispatch()
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const recipes = useRuleRecipes()
+    const emailChannels = useAppSelector(getEmailChannels)
+    const currentUser = useAppSelector(getCurrentUser)
+    const [rules, isLoadingRules] = useRules()
+    const [isSending, setIsSending] = useState(false)
+
+    const suggestion = ticket.meta.rule_suggestion
+    const {actions, text} = getRuleSuggestionContent(ticket)
+
+    if (!hasAutomationAddOn || isSuggestionEmpty({actions, text})) return null
 
     const channel = getPreferredChannel(
         TicketMessageSourceType.Email,

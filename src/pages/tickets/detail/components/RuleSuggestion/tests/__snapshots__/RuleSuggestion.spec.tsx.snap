@@ -359,11 +359,34 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
 </div>
 `;
 
-exports[`RuleSuggestion should not display RuleSuggestion (feature flag false) 1`] = `<div />`;
-
 exports[`RuleSuggestion should not display RuleSuggestion (no addon) 1`] = `<div />`;
 
-exports[`RuleSuggestion should not display RuleSuggestion (no suggestion) 1`] = `<div />`;
+exports[`RuleSuggestion should return correct value for getRuleSuggestionContent 1`] = `
+{
+  "actions": [
+    {
+      "arguments": {
+        "tags": "auto-close",
+      },
+      "name": "addTags",
+      "status": "pending",
+      "title": "Add tags",
+      "type": "user",
+    },
+  ],
+  "text": {
+    "body_html": "<div>Text coming from rule suggestion</div>",
+    "body_text": "Text coming from rule suggestion",
+  },
+}
+`;
+
+exports[`RuleSuggestion should return correct value for getRuleSuggestionContent 2`] = `
+{
+  "actions": [],
+  "text": undefined,
+}
+`;
 
 exports[`RuleSuggestion should send internal note because no text in suggestion 1`] = `
 [

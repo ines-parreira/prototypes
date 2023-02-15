@@ -28,7 +28,6 @@ export enum FeatureFlagKey {
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueClickTracking = 'revenue-click-tracking',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
-    RuleSuggestion = 'rule-suggestion',
     SelfServiceArticleRecommendation = 'self-service-article-recommendation',
     SelfServiceAutomatedResponseOrderManagement = 'self-service-automated-response-order-management',
     SpotlightGlobalSearch = 'spotlight-global-search',

@@ -5,20 +5,20 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
-import {resetLDMocks, mockFlags} from 'jest-launchdarkly-mock'
 import {useMeasure} from 'react-use'
 import {emailTicket} from 'state/ticket/tests/fixtures'
-import {toJS} from 'utils'
 import {billingState} from 'fixtures/billing'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {sendTicketMessage} from 'state/newMessage/actions'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
 import {emptyManagedRule, emptyRule} from 'fixtures/rule'
 import {UserRole} from 'config/types/user'
-import RuleSuggestion from '../RuleSuggestion'
+import RuleSuggestion, {
+    getRuleSuggestionContent,
+    isSuggestionEmpty,
+} from '../RuleSuggestion'
 
 jest.mock('state/newMessage/actions.ts')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
@@ -82,8 +82,6 @@ const minProps = {
 describe('RuleSuggestion', () => {
     beforeEach(() => {
         ;(sendTicketMessage as jest.Mock).mockReset()
-        resetLDMocks()
-        mockFlags({[FeatureFlagKey.RuleSuggestion]: true})
         jest.useFakeTimers()
     })
 
@@ -100,31 +98,11 @@ describe('RuleSuggestion', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should not display RuleSuggestion (feature flag false)', () => {
-        mockFlags({[FeatureFlagKey.RuleSuggestion]: false})
-
-        const {container} = render(
-            <Provider store={mockStore(store)}>
-                <RuleSuggestion {...minProps} />
-            </Provider>
-        )
-        expect(container).toMatchSnapshot()
-    })
-
     it('should not display RuleSuggestion (no addon)', () => {
         const noAddonStore = {...store, currentAccount: fromJS({...account})}
         const {container} = render(
             <Provider store={mockStore(noAddonStore)}>
                 <RuleSuggestion {...minProps} />
-            </Provider>
-        )
-        expect(container).toMatchSnapshot()
-    })
-
-    it('should not display RuleSuggestion (no suggestion)', () => {
-        const {container} = render(
-            <Provider store={mockStore(store)}>
-                <RuleSuggestion ticket={toJS(emailTicket)} />
             </Provider>
         )
         expect(container).toMatchSnapshot()
@@ -253,5 +231,16 @@ describe('RuleSuggestion', () => {
         const activate = screen.queryByText('Activate')
         expect(install).toBeNull()
         expect(activate).toBeNull()
+    })
+
+    it('should return correct value for getRuleSuggestionContent', () => {
+        expect(getRuleSuggestionContent(ticket)).toMatchSnapshot()
+        expect(isSuggestionEmpty(getRuleSuggestionContent(ticket))).toBe(false)
+        const noAction = {
+            ...emailTicket.toJS(),
+            meta: {rule_suggestion: {actions: []}},
+        }
+        expect(getRuleSuggestionContent(noAction)).toMatchSnapshot()
+        expect(isSuggestionEmpty(getRuleSuggestionContent(noAction))).toBe(true)
     })
 })
