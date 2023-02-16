@@ -1162,6 +1162,11 @@ export function extractGorgiasVideoDivFromHtmlContent(html: string): {
     }
 }
 
+export function extractUrlsFromString(string: string) {
+    const urlPattern = new RegExp('https?://[^\\s/$.?#].[^\\s]*', 'ig')
+    return string.match(urlPattern)
+}
+
 /**
  * Adapt video URL to fix some issues found with the lib ReactPlayer.
  *

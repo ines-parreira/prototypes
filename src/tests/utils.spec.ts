@@ -959,6 +959,20 @@ describe('global utils', () => {
         })
     })
 
+    describe('extractUrlsFromString()', () => {
+        it('should extract all urls', () => {
+            const youtubeUrl = 'https://www.youtube.com/watch?v=4sLFpe-xbhk'
+            const vimeoUrl = 'https://vimeo.com/1231231231'
+
+            const string = `first video ${youtubeUrl}\nsecond video ${vimeoUrl}`
+
+            expect(utils.extractUrlsFromString(string)).toEqual([
+                youtubeUrl,
+                vimeoUrl,
+            ])
+        })
+    })
+
     describe('fixVideoUrlForReactPlayer()', () => {
         it('should properly extract', () => {
             const dataset: {

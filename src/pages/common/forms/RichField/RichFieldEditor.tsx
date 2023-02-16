@@ -7,6 +7,7 @@ import 'draft-js/dist/Draft.css'
 import {Map, List} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
+import _uniq from 'lodash/uniq'
 import ReactPlayer from 'react-player'
 import React, {
     ReactNode,
@@ -17,6 +18,7 @@ import React, {
     Component,
 } from 'react'
 
+import {extractUrlsFromString} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {addVideo} from 'pages/common/draftjs/plugins/utils'
@@ -319,8 +321,7 @@ export class RichFieldEditor extends Component<Props, State> {
         // Automatically inject a video player at the bottom when content pasted is a video link. When applicable.
         newEditorState = this._insertExtraVideoOnPastedTextIfApplicable(
             newEditorState,
-            text,
-            html
+            text
         )
 
         this.handleChildChange(newEditorState)
@@ -332,22 +333,24 @@ export class RichFieldEditor extends Component<Props, State> {
 
     _insertExtraVideoOnPastedTextIfApplicable = (
         editorState: EditorState,
-        text: string,
-        html: string | undefined
+        text: string
     ): EditorState => {
         let newEditorState = editorState
 
-        if (
-            this.chatVideoSharingExtraLDFlag &&
-            this.props.canAddVideoPlayer &&
-            text &&
-            !html &&
-            ReactPlayer.canPlay(text)
-        ) {
-            newEditorState = focusToTheEndOfContent(newEditorState)
-            newEditorState = addVideo(newEditorState, text)
+        if (this.chatVideoSharingExtraLDFlag && this.props.canAddVideoPlayer) {
+            const urls =
+                _uniq(
+                    extractUrlsFromString(text)?.filter((url) =>
+                        ReactPlayer.canPlay(url)
+                    )
+                ) || []
 
-            this.props.onInsertVideoAddedFromPastedLink?.()
+            urls.forEach((url) => {
+                newEditorState = focusToTheEndOfContent(newEditorState)
+                newEditorState = addVideo(newEditorState, url)
+            })
+
+            urls.length && this.props.onInsertVideoAddedFromPastedLink?.()
         }
 
         return newEditorState
