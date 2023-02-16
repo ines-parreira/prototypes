@@ -1,4 +1,4 @@
-import React, {SyntheticEvent, useEffect, useState, useRef} from 'react'
+import React, {SyntheticEvent, useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
@@ -62,7 +62,6 @@ import ChatLauncher from 'pages/integrations/integration/components/gorgias_chat
 import {FeatureFlagKey} from 'config/featureFlags'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
 
-import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
 
 import css from './GorgiasChatIntegrationAppearance.less'
@@ -541,12 +540,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         'reply',
     ])
 
-    const launcherCustomizationRef = useRef<HTMLDivElement>(null)
-    const [isChatOpenInPreview, setIsChatOpenInPreview] = useState(true)
-    useOnClickOutside(launcherCustomizationRef, () => {
-        setIsChatOpenInPreview(true)
-    })
-
     const chatPreview = (
         <div className={css.container}>
             <Group className="mb-3">
@@ -587,7 +580,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 autoResponderEnabled={autoResponderEnabled}
                 autoResponderReply={autoResponderReply}
                 launcher={state.launcher}
-                isOpen={isChatOpenInPreview}
             >
                 <MessageContentPreview
                     conversationColor={conversationColor}
@@ -958,7 +950,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             <h2 className={css.title}>Launcher</h2>
 
                             {shouldShowLauncherCustomization && (
-                                <div ref={launcherCustomizationRef}>
+                                <div>
                                     <div className={css.launcherTypes}>
                                         <PreviewRadioButton
                                             isSelected={
@@ -992,7 +984,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                         type: GorgiasChatLauncherType.ICON,
                                                     },
                                                 }))
-                                                setIsChatOpenInPreview(false)
                                             }}
                                         />
 
@@ -1031,7 +1022,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                         label: launcherLabel,
                                                     },
                                                 }))
-                                                setIsChatOpenInPreview(false)
                                             }}
                                         />
                                     </div>
@@ -1056,9 +1046,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                             label: value,
                                                         },
                                                     }))
-                                                    setIsChatOpenInPreview(
-                                                        false
-                                                    )
                                                 }}
                                                 isRequired
                                                 maxLength={20}
