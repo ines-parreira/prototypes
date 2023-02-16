@@ -6,7 +6,6 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import axios from 'axios'
 import produce, {Draft} from 'immer'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -29,6 +28,7 @@ import {
     helpCenterSeoMetaFields,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {reportError} from 'utils/errors'
+import {getGenericMessageFromError} from '../../utils'
 
 export type HelpCenterPreferencesState = {
     defaultLanguage: LocaleCode
@@ -169,10 +169,7 @@ export const HelpCenterPreferencesSettings = ({
                 })
             )
         } catch (err) {
-            const errorMessage =
-                axios.isAxiosError(err) && err.response?.status === 400
-                    ? ': some fields are empty or invalid.'
-                    : ', please try again later.'
+            const errorMessage = getGenericMessageFromError(err)
 
             void dispatch(
                 notify({

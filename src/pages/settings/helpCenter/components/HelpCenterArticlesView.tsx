@@ -1,5 +1,4 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
-import axios from 'axios'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 import {usePrevious} from 'react-use'
@@ -50,6 +49,7 @@ import {
     SegmentEvent,
 } from '../../../../store/middlewares/segmentTracker'
 import {getCurrentUser} from '../../../../state/currentUser/selectors'
+import {getGenericMessageFromError} from '../utils'
 import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 import {CloseModal} from './articles/CloseModal'
 import {DiscardChangesModal} from './articles/DiscardChangesModal'
@@ -370,10 +370,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 })
             )
         } catch (err) {
-            const errorMessage =
-                axios.isAxiosError(err) && err.response?.status === 400
-                    ? 'some fields are empty or invalid.'
-                    : 'please try again later.'
+            const errorMessage = getGenericMessageFromError(err)
 
             void dispatch(
                 notify({
@@ -416,10 +413,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 })
             )
         } catch (err) {
-            const errorMessage =
-                axios.isAxiosError(err) && err.response?.status === 400
-                    ? 'some fields are empty or invalid.'
-                    : 'please try again later.'
+            const errorMessage = getGenericMessageFromError(err)
 
             void dispatch(
                 notify({

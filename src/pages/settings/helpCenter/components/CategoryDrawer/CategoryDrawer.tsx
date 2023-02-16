@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react'
-import axios from 'axios'
 import {useAsyncFn} from 'react-use'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -28,6 +27,7 @@ import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
 
 import {reportError} from 'utils/errors'
 import {useSearchContext} from '../../providers/SearchContext'
+import {getGenericMessageFromError} from '../../utils'
 
 type Props = {
     helpCenter: HelpCenter
@@ -129,10 +129,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
             closeModal()
             setSearchInput('')
         } catch (err) {
-            const errorMessage =
-                axios.isAxiosError(err) && err.response?.status === 400
-                    ? 'some fields are empty or invalid.'
-                    : 'please try again later.'
+            const errorMessage = getGenericMessageFromError(err)
 
             void dispatch(
                 notify({
@@ -159,10 +156,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
             closeModal()
             setSearchInput('')
         } catch (err) {
-            const errorMessage =
-                axios.isAxiosError(err) && err.response?.status === 400
-                    ? 'some fields are empty or invalid.'
-                    : 'please try again later.'
+            const errorMessage = getGenericMessageFromError(err)
 
             void dispatch(
                 notify({

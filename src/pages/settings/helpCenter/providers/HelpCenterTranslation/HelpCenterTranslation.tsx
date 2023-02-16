@@ -1,4 +1,3 @@
-import axios from 'axios'
 import produce, {Draft} from 'immer'
 import React, {
     createContext,
@@ -23,6 +22,7 @@ import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
 import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {reportError} from 'utils/errors'
+import {getGenericMessageFromError} from '../../utils'
 
 export type HelpCenterTranslationState = {
     chatApplicationId: number | null
@@ -147,10 +147,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                 })
             )
         } catch (err) {
-            const errorMessage =
-                axios.isAxiosError(err) && err.response?.status === 400
-                    ? ': some fields are empty or invalid.'
-                    : ', please try again later.'
+            const errorMessage = getGenericMessageFromError(err)
 
             void dispatch(
                 notify({
