@@ -10,10 +10,11 @@ import thunk from 'redux-thunk'
 import {createBrowserHistory} from 'history'
 import MockAdapter from 'axios-mock-adapter'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import client from 'models/api/resources'
-import {flushPromises, renderWithRouter} from 'utils/testing'
+import {assumeMock, flushPromises, renderWithRouter} from 'utils/testing'
 import {ticket} from 'fixtures/ticket'
 import history from 'pages/history'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -40,6 +41,9 @@ jest.mock(
 jest.spyOn(ReactDOM, 'createPortal').mockImplementation(
     (element) => element as ReactPortal
 )
+
+jest.mock('store/middlewares/segmentTracker')
+const logEventMock = assumeMock(logEvent)
 
 const mockStore = configureMockStore([thunk])
 
@@ -113,15 +117,7 @@ describe('<SpotlightModal/>', () => {
         expect(searchInput).toEqual(document.activeElement)
     })
 
-    it('should not navigate to advanced search on keypress when modal is closed', async () => {
-        renderWithRouter(<WrappedSpotlightModal {...minProps} isOpen={false} />)
-        await act(flushPromises)
-        await userEvent.type(document.body, '{shift}{enter}')
-
-        expect(history.push).not.toHaveBeenCalled()
-    })
-
-    it('should navigate to customer advanced search on click when modal is opened', async () => {
+    it('should navigate to customer advanced search on click when modal is opened and log event', async () => {
         const {getByText} = renderWithRouter(
             <WrappedSpotlightModal {...minProps} />
         )
@@ -132,9 +128,12 @@ describe('<SpotlightModal/>', () => {
         expect(history.push).toHaveBeenCalledWith({
             pathname: '/app/customers/search',
         })
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.GlobalSearchAdvancedButtonClick
+        )
     })
 
-    it('should navigate to tickets advanced search on click when modal is opened on a ticket tab', async () => {
+    it('should navigate to tickets advanced search on click when modal is opened on a ticket tab and log event', async () => {
         const {getByText} = renderWithRouter(
             <WrappedSpotlightModal {...minProps} />
         )
@@ -160,7 +159,15 @@ describe('<SpotlightModal/>', () => {
         expect(mockCloseModal).toHaveBeenCalled()
     })
 
-    it('should navigate to customers advanced search on keypress when modal is opened', async () => {
+    it('should not navigate to advanced search on keypress when modal is closed', async () => {
+        renderWithRouter(<WrappedSpotlightModal {...minProps} isOpen={false} />)
+        await act(flushPromises)
+        await userEvent.type(document.body, '{shift}{enter}')
+
+        expect(history.push).not.toHaveBeenCalled()
+    })
+
+    it('should navigate to customers advanced search on keypress when modal is opened and log event', async () => {
         renderWithRouter(<WrappedSpotlightModal {...minProps} />)
         await act(flushPromises)
         await userEvent.type(document.body, '{shift}{enter}')
@@ -168,6 +175,9 @@ describe('<SpotlightModal/>', () => {
         expect(history.push).toHaveBeenCalledWith({
             pathname: '/app/customers/search',
         })
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.GlobalSearchAdvancedShortcut
+        )
     })
 
     it('should navigate to tickets advanced search on keypress when modal is opened on a ticket tab ', async () => {
@@ -584,5 +594,24 @@ describe('<SpotlightModal/>', () => {
         rerender(<WrappedSpotlightModal {...minProps} />)
 
         expect(mockCloseModal).toHaveBeenCalled()
+    })
+
+    it('should log event on tab switch', async () => {
+        const {getByText} = renderWithRouter(
+            <WrappedSpotlightModal {...minProps} />
+        )
+        await act(flushPromises)
+
+        const ticketsTab = getByText('Tickets')
+        const customersTab = getByText('Customers')
+
+        ticketsTab.parentElement!.focus()
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.GlobalSearchTicketTabClick
+        )
+        customersTab.parentElement!.focus()
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.GlobalSearchCustomerTabClick
+        )
     })
 })

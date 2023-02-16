@@ -15,6 +15,7 @@ import _isEmpty from 'lodash/isEmpty'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import axios, {CancelToken} from 'axios'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -106,6 +107,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 action: () => {
                     if (isOpen) {
                         goToAdvancedSearch()
+                        logEvent(SegmentEvent.GlobalSearchAdvancedShortcut)
                     }
                 },
             },
@@ -270,8 +272,10 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const handleTabChange = (tab: Tabs) => {
         if (tab === Tabs.Customers) {
             setSearchItemsType(ViewType.CustomerList)
+            logEvent(SegmentEvent.GlobalSearchCustomerTabClick)
         } else if (tab === Tabs.Tickets) {
             setSearchItemsType(ViewType.TicketList)
+            logEvent(SegmentEvent.GlobalSearchTicketTabClick)
         }
     }
 
@@ -397,7 +401,10 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                     intent="secondary"
                     fillStyle="ghost"
                     size="small"
-                    onClick={goToAdvancedSearch}
+                    onClick={() => {
+                        goToAdvancedSearch()
+                        logEvent(SegmentEvent.GlobalSearchAdvancedButtonClick)
+                    }}
                 >
                     <span>Advanced Search</span>
                     <ShortcutIcon className={css.shortcut}>⇧</ShortcutIcon>

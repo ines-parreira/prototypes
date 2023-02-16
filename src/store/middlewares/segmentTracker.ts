@@ -244,6 +244,10 @@ export enum SegmentEvent {
     TicketSendAndCloseButtonClicked = 'ticket/send-and-close-button-clicked',
     GlobalSearchOpenButtonClick = 'search-open-button-click',
     GlobalSearchOpenShortcut = 'search-open-shortcut',
+    GlobalSearchAdvancedButtonClick = 'search-advanced-button-click',
+    GlobalSearchAdvancedShortcut = 'search-advanced-shortcut',
+    GlobalSearchTicketTabClick = 'ticket-tab-click',
+    GlobalSearchCustomerTabClick = 'customer-tab-click',
 }
 
 export enum StatViewLinkClickedStat {
