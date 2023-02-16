@@ -479,7 +479,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         const enableGmailSendingHelp = (
             <div>
                 Outbound emails will be sent through Gmail and appear in Gmail’s
-                “Sent” folder. Make sure to verify your domain before enabling
+                “Sent” folder. Make sure to verify your domain before disabling
                 this option.{' '}
                 <a
                     href="https://docs.gorgias.com/email-integrations/spf-dkim-support"
