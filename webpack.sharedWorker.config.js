@@ -42,6 +42,7 @@ module.exports = () => {
             rules: [
                 {
                     test: /\.(js|tsx?)$/i,
+                    exclude: /node_modules/,
                     use: [{loader: 'babel-loader?cacheDirectory'}],
                 },
             ],

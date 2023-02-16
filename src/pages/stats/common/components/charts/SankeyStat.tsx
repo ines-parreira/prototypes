@@ -8,7 +8,7 @@ import {
 import {Map} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _merge from 'lodash/merge'
-import ChartComponent from 'react-chartjs-2'
+import {Chart} from 'react-chartjs-2'
 
 import {chartMaxHeight} from '../../../../../config/stats'
 
@@ -64,7 +64,7 @@ export function SankeyStat({data, config, legend}: Props) {
                     There is no data for this period.
                 </div>
             ) : (
-                <ChartComponent
+                <Chart
                     type={'sankey'}
                     data={sankeyData}
                     height={chartMaxHeight}
