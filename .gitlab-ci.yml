@@ -141,16 +141,13 @@ Build production:
     - .deploy
     - .staging_env
 
-Deploy STG us-east1-86cc:
+Deploy staging:
   extends: .deploy staging
-  variables:
-    CONTEXT: gorgias-helpdesk-staging-us-east1-86cc
-  <<: *gitlab_environment
-
-Deploy STG us-east4-a5a0:
-  extends: .deploy staging
-  variables:
-    CONTEXT: gorgias-helpdesk-staging-us-east4-a5a0
+  parallel:
+    matrix:
+      - CONTEXT:
+        - gorgias-helpdesk-staging-us-east1-86cc
+        - gorgias-helpdesk-staging-us-east4-a5a0
   <<: *gitlab_environment
 
 .deploy production:
@@ -160,52 +157,20 @@ Deploy STG us-east4-a5a0:
     - .deploy
     - .production_env
 
-Deploy PRD us-east1-2607:
+Deploy production:
   extends: .deploy production
-  variables:
-    CONTEXT: gorgias-helpdesk-production-us-east1-2607
-  <<: *gitlab_environment
-
-Deploy PRD us-east4-65cd:
-  extends: .deploy production
-  variables:
-    CONTEXT: gorgias-helpdesk-production-us-east4-65cd
-  <<: *gitlab_environment
-
-Deploy PRD us-east4-5f09:
-  extends: .deploy production
-  variables:
-    CONTEXT: gorgias-helpdesk-production-us-east4-5f09
-  <<: *gitlab_environment
-
-Deploy PRD us-central1-d8ff:
-  extends: .deploy production
-  variables:
-    CONTEXT: gorgias-helpdesk-production-us-central1-d8ff
-  <<: *gitlab_environment
-
-Deploy PRD europe-west1-c511:
-  extends: .deploy production
-  variables:
-    CONTEXT: gorgias-helpdesk-production-europe-west1-c511
-  <<: *gitlab_environment
-
-Deploy PRD europe-west3-86c1:
-  extends: .deploy production
-  variables:
-    CONTEXT: gorgias-helpdesk-production-europe-west3-86c1
-  <<: *gitlab_environment
-
-Deploy PRD aus-southeast1-fcb9:
-  extends: .deploy production
-  variables:
-    CONTEXT: gorgias-helpdesk-production-aus-southeast1-fcb9
-  <<: *gitlab_environment
-
-Deploy PRD us-east1-635c:
-  extends: .deploy production
-  variables:
-    CONTEXT: gorgias-main-us-east1-635c
+  parallel:
+    matrix:
+      - CONTEXT:
+          - gorgias-helpdesk-production-aus-southeast1-fcb9
+          - gorgias-helpdesk-production-europe-west1-c511
+          - gorgias-helpdesk-production-europe-west3-86c1
+          - gorgias-helpdesk-production-us-central1-c433
+          - gorgias-helpdesk-production-us-central1-d8ff
+          - gorgias-helpdesk-production-us-east1-2607
+          - gorgias-helpdesk-production-us-east4-5f09
+          - gorgias-helpdesk-production-us-east4-65cd
+          - gorgias-main-us-east1-635c
   <<: *gitlab_environment
 
 Deploy preview:
@@ -244,6 +209,7 @@ Force deploy production:
       gorgias-helpdesk-production-us-east1-2607
       gorgias-helpdesk-production-us-east4-65cd
       gorgias-helpdesk-production-us-east4-5f09
+      gorgias-helpdesk-production-us-central1-c433
       gorgias-helpdesk-production-us-central1-d8ff
       gorgias-helpdesk-production-europe-west1-c511
       gorgias-helpdesk-production-europe-west3-86c1
