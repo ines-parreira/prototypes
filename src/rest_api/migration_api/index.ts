@@ -15,7 +15,7 @@ function getMigrationApiBaseUrl() {
         return 'https://migration.gorgias.com'
     }
 
-    return 'http://acme.gorgias.docker:8000'
+    return 'http://acme.gorgias.docker:8001'
 }
 
 export const migrationAPI = new OpenAPIClientAxios({

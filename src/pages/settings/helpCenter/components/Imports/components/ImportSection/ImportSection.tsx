@@ -202,6 +202,12 @@ export const ImportSection: React.FC<Props> = ({
                         isFirstTimeLoading: false,
                         data: activeSession,
                     })
+                    void dispatch(
+                        notify({
+                            message:
+                                "There is a running help center migration in the background, you'll not be able to start a new one until it finishes",
+                        })
+                    )
                 } else {
                     setFetchedMigrationSession({
                         isFirstTimeLoading: false,
@@ -307,11 +313,45 @@ export const ImportSection: React.FC<Props> = ({
         updateActiveMigrationSession,
     ])
 
+    const migrationStateModalState: MigrationState = useMemo(() => {
+        if (migrationStartPayload) {
+            return {
+                status: MigrationStatus.Connected,
+                onMigrationStart: handleMigrationStart,
+                isMigrationStartLoading,
+            }
+        }
+        if (isImportInProgress) {
+            return {
+                status: MigrationStatus.InProgress,
+                progress: fetchedMigrationSession.data?.result?.progress || 0,
+            }
+        }
+        return {
+            status: MigrationStatus.Completed,
+        }
+    }, [
+        fetchedMigrationSession.data?.result?.progress,
+        handleMigrationStart,
+        isImportInProgress,
+        isMigrationStartLoading,
+        migrationStartPayload,
+    ])
+
     const handleMigrationStateModalClose = () => {
         setMigrationStateModalOpen(false)
 
         // Canceling the migration before clicking start (if it already started this will have no effect)
         if (migrationStartPayload) setMigrationStartPayload(undefined)
+
+        if (migrationStateModalState.status === MigrationStatus.InProgress) {
+            void dispatch(
+                notify({
+                    message:
+                        "The migration is still going in the background, you'll get notified if it finishes while you have the page open",
+                })
+            )
+        }
 
         // If the session is completed we can forget about it
         if (fetchedMigrationSession.data?.status === 'SUCCESS')
@@ -369,31 +409,6 @@ export const ImportSection: React.FC<Props> = ({
     const handleMoreDetailsClick = () => {
         setMigrationStateModalOpen(true)
     }
-
-    const migrationStateModalState: MigrationState = useMemo(() => {
-        if (migrationStartPayload) {
-            return {
-                status: MigrationStatus.Connected,
-                onMigrationStart: handleMigrationStart,
-                isMigrationStartLoading,
-            }
-        }
-        if (isImportInProgress) {
-            return {
-                status: MigrationStatus.InProgress,
-                progress: fetchedMigrationSession.data?.result?.progress || 0,
-            }
-        }
-        return {
-            status: MigrationStatus.Completed,
-        }
-    }, [
-        fetchedMigrationSession.data?.result?.progress,
-        handleMigrationStart,
-        isImportInProgress,
-        isMigrationStartLoading,
-        migrationStartPayload,
-    ])
 
     return (
         <>
