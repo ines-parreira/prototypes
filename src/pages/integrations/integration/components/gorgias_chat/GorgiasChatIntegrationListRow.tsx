@@ -182,7 +182,8 @@ const GorgiasChatIntegrationListRow = ({
                                     >
                                         Chat Widget was not seen installed on
                                         your website in the past 72 hours. Check
-                                        its installation to resolve.
+                                        its installation and your website to
+                                        resolve.
                                     </Tooltip>
                                 </>
                             )}
