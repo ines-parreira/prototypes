@@ -193,17 +193,6 @@ export enum SelfServiceOrderStatusEnum {
     PROCESSING_FULFILLMENT = 'processing_fulfillment',
 }
 
-export const ReturnsDropdownOptionsList = [
-    {
-        value: FilterKeyEnum.ORDER_CREATED_AT,
-        label: 'Order created',
-    },
-    {
-        value: FilterKeyEnum.ORDER_DELIVERED_AT,
-        label: 'Order delivered',
-    },
-]
-
 export enum ReportIssueReasons {
     REASON_NOT_HAPPY = 'reasonNotHappy',
     REASON_VERY_HAPPY = 'reasonVeryHappy',

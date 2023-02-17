@@ -33,9 +33,9 @@ import {
     FilterOperatorEnum,
     ReturnAction,
     ReturnActionType,
-    ReturnsDropdownOptionsList,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
+import {ReturnsDropdownOptionsList} from 'models/selfServiceConfiguration/constants'
 import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
 import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import useAppDispatch from 'hooks/useAppDispatch'

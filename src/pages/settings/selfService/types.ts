@@ -1,20 +1,5 @@
 import {SelfServiceOrderStatusEnum} from '../../../models/selfServiceConfiguration/types'
 
-export const CancellationsDropdownOptionsList = [
-    {
-        value: SelfServiceOrderStatusEnum.PROCESSING_FULFILLMENT,
-        label: 'Processing Fulfillment',
-    },
-    {
-        value: SelfServiceOrderStatusEnum.UNFULFILLED,
-        label: 'Unfulfilled',
-    },
-    {
-        value: SelfServiceOrderStatusEnum.PENDING_DELIVERY,
-        label: 'Pending Delivery',
-    },
-]
-
 export const CancellationsOptionToEligibilityStatuses: {
     [key: string]: SelfServiceOrderStatusEnum[]
 } = {

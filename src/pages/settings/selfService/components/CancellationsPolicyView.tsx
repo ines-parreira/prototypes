@@ -25,10 +25,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import Loader from 'pages/common/components/Loader/Loader'
 import Tooltip from 'pages/common/components/Tooltip'
 import {getCancellationOptionFromEligibilityStatuses} from 'pages/settings/selfService/utils/getCancellationOptionFromEligibilityStatuses'
-import {
-    CancellationsDropdownOptionsList,
-    CancellationsOptionToEligibilityStatuses,
-} from 'pages/settings/selfService/types'
+import {CancellationsOptionToEligibilityStatuses} from 'pages/settings/selfService/types'
 import {
     AUTOMATED_RESPONSE,
     FilterKeyEnum,
@@ -36,6 +33,7 @@ import {
     SelfServiceConfigurationFilter,
     SelfServiceOrderStatusEnum,
 } from 'models/selfServiceConfiguration/types'
+import {CancellationsDropdownOptionsList} from 'models/selfServiceConfiguration/constants'
 import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
 import useAppDispatch from 'hooks/useAppDispatch'

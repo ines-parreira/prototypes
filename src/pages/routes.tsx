@@ -121,6 +121,7 @@ import {RevenueAddonApiClientProvider} from './settings/revenue/hooks/useRevenue
 import {ClickTrackingSettingsView} from './settings/revenue/components/ClickTrackingSettingsView'
 import OrderManagementViewContainer from './automation/orderManagement/OrderManagementViewContainer'
 import ReturnOrderFlowViewContainer from './automation/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
+import CancelOrderFlowViewContainer from './automation/orderManagement/cancelOrder/CancelOrderFlowViewContainer'
 import QuickResponsesViewContainer from './automation/quickResponses/QuickResponsesViewContainer'
 import PageHeader from './common/components/PageHeader'
 import HeaderTitle from './common/components/HeaderTitle'
@@ -1376,6 +1377,17 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: memoizedWithUserRoleRequired(
                         ReturnOrderFlowViewContainer,
+                        AGENT_ROLE
+                    ),
+                    navbar: AutomationNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/shopify/:shopName/order-management/cancel`}
+                exact
+                render={appRender({
+                    content: memoizedWithUserRoleRequired(
+                        CancelOrderFlowViewContainer,
                         AGENT_ROLE
                     ),
                     navbar: AutomationNavbar,

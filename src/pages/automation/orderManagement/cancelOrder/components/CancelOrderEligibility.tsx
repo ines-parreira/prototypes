@@ -1,11 +1,12 @@
 import React, {useRef, useState} from 'react'
+import _isEqual from 'lodash/isEqual'
 
 import {
+    FilterKeyEnum,
     FilterOperatorEnum,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
-import {ReturnsDropdownOptionsList} from 'models/selfServiceConfiguration/constants'
-import NumberInput from 'pages/common/forms/input/NumberInput'
+import {CancellationsDropdownOptionsList} from 'models/selfServiceConfiguration/constants'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
@@ -14,53 +15,47 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import IconButton from 'pages/common/components/button/IconButton'
 
-import css from './ReturnOrderEligibility.less'
+import css from './CancelOrderEligibility.less'
 
 type Props = {
     eligibility?: SelfServiceConfigurationFilter
     onChange: (eligibility?: SelfServiceConfigurationFilter) => void
 }
 
-const ReturnOrderEligibility = ({eligibility, onChange}: Props) => {
+const CancelOrderEligibility = ({eligibility, onChange}: Props) => {
     const [isConditionSelectOpen, setIsConditionSelectOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
 
-    const handleKeyChange = (nextValue: string) => {
+    const handleValueChange = (nextValue: string[]) => {
         onChange({
-            value: '1',
-            operator: FilterOperatorEnum.LESS_THAN,
-            ...eligibility,
-            key: nextValue,
-        })
-    }
-    const handleValueChange = (nextValue?: number) => {
-        onChange({
-            ...(eligibility as SelfServiceConfigurationFilter),
-            value: nextValue?.toString(10) ?? '1',
+            key: FilterKeyEnum.GORGIAS_ORDER_STATUS,
+            value: nextValue,
+            operator: FilterOperatorEnum.ONE_OF,
         })
     }
     const handleDelete = () => {
         onChange()
     }
 
-    const value = ReturnsDropdownOptionsList.find(
-        (option) => option.value === eligibility?.key
-    )?.label
+    const option = CancellationsDropdownOptionsList.find((option) =>
+        _isEqual(option.statuses, eligibility?.value)
+    )
 
     return (
         <>
             <div className={css.title}>Eligibility window</div>
             <div>
-                Customers can request a return when an order meets the following
-                criteria:
+                Customers can request a cancellation when an order meets the
+                following criteria:
             </div>
             <div className={css.conditionContainer}>
+                <span className={css.conditionLabel}>Order status is</span>
                 <SelectInputBox
                     className={css.conditionSelectInput}
-                    placeholder="Select condition"
+                    placeholder="Select status"
                     floating={floatingRef}
-                    label={value}
+                    label={option?.label}
                     onToggle={setIsConditionSelectOpen}
                     ref={targetRef}
                 >
@@ -71,10 +66,10 @@ const ReturnOrderEligibility = ({eligibility, onChange}: Props) => {
                                 onToggle={() => context!.onBlur()}
                                 ref={floatingRef}
                                 target={targetRef}
-                                value={eligibility?.key}
+                                value={option?.value}
                             >
                                 <DropdownBody>
-                                    {ReturnsDropdownOptionsList.map(
+                                    {CancellationsDropdownOptionsList.map(
                                         (option) => (
                                             <DropdownItem
                                                 key={option.value}
@@ -82,7 +77,11 @@ const ReturnOrderEligibility = ({eligibility, onChange}: Props) => {
                                                     label: option.label,
                                                     value: option.value,
                                                 }}
-                                                onClick={handleKeyChange}
+                                                onClick={() => {
+                                                    handleValueChange(
+                                                        option.statuses
+                                                    )
+                                                }}
                                                 shouldCloseOnSelect
                                                 autoFocus
                                             />
@@ -94,30 +93,18 @@ const ReturnOrderEligibility = ({eligibility, onChange}: Props) => {
                     </SelectInputBoxContext.Consumer>
                 </SelectInputBox>
                 {eligibility && (
-                    <>
-                        <span className={css.conditionLabel}>less than</span>
-                        <NumberInput
-                            className={css.conditionNumberInput}
-                            value={
-                                parseInt(eligibility.value as string, 10) || 1
-                            }
-                            onChange={handleValueChange}
-                            min={1}
-                        />
-                        <span className={css.conditionLabel}>day(s) ago</span>
-                        <IconButton
-                            fillStyle="ghost"
-                            intent="destructive"
-                            size="small"
-                            onClick={handleDelete}
-                        >
-                            clear
-                        </IconButton>
-                    </>
+                    <IconButton
+                        fillStyle="ghost"
+                        intent="destructive"
+                        size="small"
+                        onClick={handleDelete}
+                    >
+                        clear
+                    </IconButton>
                 )}
             </div>
         </>
     )
 }
 
-export default ReturnOrderEligibility
+export default CancelOrderEligibility
