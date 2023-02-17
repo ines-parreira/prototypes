@@ -35,7 +35,10 @@ import {
     ReturnActionType,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
-import {ReturnsDropdownOptionsList} from 'models/selfServiceConfiguration/constants'
+import {
+    ReturnsDropdownOptionsList,
+    AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH,
+} from 'models/selfServiceConfiguration/constants'
 import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
 import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -61,7 +64,6 @@ import {convertToHTML} from 'utils/editor'
 import {useConfigurationData} from '../hooks'
 import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
 import BackButton from '../BackButton'
-import {MAX_AUTOMATED_RESPONSE_LENGTH} from '../../constants'
 import FlowSelfServicePreview from '../FlowSelfServicePreview'
 import {ReturnActionSelectField} from './components/ReturnActionSelectField'
 import {NewReturnIntegrationModal} from './components/NewReturnIntegrationModal'
@@ -315,7 +317,8 @@ export const ReturnsPolicyView = () => {
         }))
 
         if (
-            content.getPlainText().length > MAX_AUTOMATED_RESPONSE_LENGTH &&
+            content.getPlainText().length >
+                AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH &&
             !isResponseTooLong
         ) {
             void dispatch(
@@ -328,7 +331,8 @@ export const ReturnsPolicyView = () => {
         }
 
         setIsResponseTooLong(
-            content.getPlainText().length > MAX_AUTOMATED_RESPONSE_LENGTH
+            content.getPlainText().length >
+                AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH
                 ? true
                 : false
         )
@@ -578,7 +582,7 @@ export const ReturnsPolicyView = () => {
                                                                     ?.text
                                                                     ?.length ??
                                                                 0
-                                                            }/${MAX_AUTOMATED_RESPONSE_LENGTH} characters`}
+                                                            }/${AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH} characters`}
                                                         </FormText>
                                                         <TicketAttachments
                                                             removable

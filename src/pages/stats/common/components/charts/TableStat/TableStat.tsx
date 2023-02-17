@@ -11,10 +11,10 @@ import classnames from 'classnames'
 import expandDown from 'assets/img/infobar/expand-down.svg'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'
 
-import {REASONS_DROPDOWN_OPTIONS} from 'pages/settings/selfService/components/ReportIssueCaseEditor/constants'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import {Integration} from 'models/integration/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import {

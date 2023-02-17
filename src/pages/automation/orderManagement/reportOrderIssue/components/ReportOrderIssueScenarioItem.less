@@ -1,0 +1,39 @@
+@import '~css/new/layout.less';
+@import '~css/new/colorTokens.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        border-bottom: 1px solid @classic-neutral-grey-3;
+        cursor: pointer;
+
+        &:hover {
+            background-color: @classic-neutral-grey-2;
+        }
+    }
+
+    .dragHandle {
+        padding: 18px 4px 18px 24px;
+        color: @classic-neutral-grey-3;
+
+        &.isDraggable {
+            cursor: grab;
+        }
+    }
+
+    .title {
+        .body-semibold();
+        padding-left: 12px;
+        padding-right: @layout-spacing-s;
+    }
+
+    .description {
+        .body-regular();
+        padding: 18px @layout-spacing-s 18px 0;
+    }
+
+    .arrowRight {
+        color: @classic-main-primary;
+        padding-right: @layout-spacing-m;
+    }
+}

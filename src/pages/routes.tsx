@@ -122,6 +122,8 @@ import {ClickTrackingSettingsView} from './settings/revenue/components/ClickTrac
 import OrderManagementViewContainer from './automation/orderManagement/OrderManagementViewContainer'
 import ReturnOrderFlowViewContainer from './automation/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
 import CancelOrderFlowViewContainer from './automation/orderManagement/cancelOrder/CancelOrderFlowViewContainer'
+import ReportOrderIssueFlowViewContainer from './automation/orderManagement/reportOrderIssue/ReportOrderIssueFlowViewContainer'
+import EditReportOrderIssueFlowScenarioViewContainer from './automation/orderManagement/reportOrderIssue/EditReportOrderIssueFlowScenarioViewContainer'
 import QuickResponsesViewContainer from './automation/quickResponses/QuickResponsesViewContainer'
 import PageHeader from './common/components/PageHeader'
 import HeaderTitle from './common/components/HeaderTitle'
@@ -1388,6 +1390,28 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: memoizedWithUserRoleRequired(
                         CancelOrderFlowViewContainer,
+                        AGENT_ROLE
+                    ),
+                    navbar: AutomationNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/shopify/:shopName/order-management/report-issue`}
+                exact
+                render={appRender({
+                    content: memoizedWithUserRoleRequired(
+                        ReportOrderIssueFlowViewContainer,
+                        AGENT_ROLE
+                    ),
+                    navbar: AutomationNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`}
+                exact
+                render={appRender({
+                    content: memoizedWithUserRoleRequired(
+                        EditReportOrderIssueFlowScenarioViewContainer,
                         AGENT_ROLE
                     ),
                     navbar: AutomationNavbar,

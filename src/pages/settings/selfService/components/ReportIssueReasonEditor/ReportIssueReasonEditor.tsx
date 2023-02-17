@@ -47,10 +47,12 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import {
+    SELECTABLE_REASONS_DROPDOWN_OPTIONS,
+    AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH,
+} from 'models/selfServiceConfiguration/constants'
 
-import {MAX_AUTOMATED_RESPONSE_LENGTH} from '../../constants'
 import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
-import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from '../ReportIssueCaseEditor/constants'
 import ReportIssuePreview, {
     ReportIssuePreviewMode,
 } from '../ReportIssuePreview/ReportIssuePreview'
@@ -246,7 +248,8 @@ const ReportIssueReasonEditor: ComponentType = () => {
         setReasonAction(updatedResponse)
 
         if (
-            content.getPlainText().length > MAX_AUTOMATED_RESPONSE_LENGTH &&
+            content.getPlainText().length >
+                AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH &&
             !isResponseTooLong
         ) {
             void dispatch(
@@ -259,7 +262,8 @@ const ReportIssueReasonEditor: ComponentType = () => {
         }
 
         setIsResponseTooLong(
-            content.getPlainText().length > MAX_AUTOMATED_RESPONSE_LENGTH
+            content.getPlainText().length >
+                AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH
         )
     }
 
@@ -488,7 +492,7 @@ const ReportIssueReasonEditor: ComponentType = () => {
                                     {`${
                                         reasonAction.responseMessageContent.text
                                             .length ?? 0
-                                    }/${MAX_AUTOMATED_RESPONSE_LENGTH} characters`}
+                                    }/${AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH} characters`}
                                 </FormText>
                                 <TicketAttachments
                                     removable

@@ -5,10 +5,9 @@ import {Link, useRouteMatch} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
-
+import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 import {useReorderDnD, Callbacks} from 'pages/common/hooks/useReorderDnD'
 
-import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from '../constants'
 import css from './DraggableReason.less'
 
 interface ReportIssueCaseProps {

@@ -68,10 +68,15 @@ export enum JsonLogicOperator {
     IS_ONE_OF = 'in',
 }
 
-export type JsonLogicRuleOverVariable<T = ReportIssueVariable> = {
-    [JsonLogicOperator.EQUALS]?: [{var: T}, null]
-    [JsonLogicOperator.IS_ONE_OF]?: [{var: T}, string[]]
-}
+export type JsonLogicRuleOverVariable<T = ReportIssueVariable> =
+    | {
+          [JsonLogicOperator.EQUALS]: [{var: T}, null]
+          [JsonLogicOperator.IS_ONE_OF]?: never
+      }
+    | {
+          [JsonLogicOperator.EQUALS]?: never
+          [JsonLogicOperator.IS_ONE_OF]: [{var: T}, string[]]
+      }
 
 export type JsonLogicOrBlock = {
     or: JsonLogicRuleOverVariable[]

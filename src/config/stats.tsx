@@ -20,10 +20,10 @@ import StatCurrentDate from '../pages/stats/common/components/StatCurrentDate'
 import TicketsClosedPerAgentViewLink from '../pages/stats/common/TicketsClosedPerAgentViewLink'
 import TicketsCreatedPerTagViewLink from '../pages/stats/common/TicketsCreatedPerTagViewLink'
 import TicketsCreatedPerChannelViewLink from '../pages/stats/common/TicketsCreatedPerChannelViewLink'
-import {REASONS_DROPDOWN_OPTIONS} from '../pages/settings/selfService/components/ReportIssueCaseEditor/constants'
 import {AutomationStatsSelfServiceMetric} from '../pages/stats/AutomationStatsSelfServiceMetric'
 import {SelectableOption} from '../pages/common/forms/SelectField/types'
 import {ReportIssueReasons} from '../models/selfServiceConfiguration/types'
+import {REASONS_DROPDOWN_OPTIONS} from '../models/selfServiceConfiguration/constants'
 
 import css from './stats.less'
 

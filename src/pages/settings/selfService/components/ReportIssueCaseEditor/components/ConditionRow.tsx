@@ -16,7 +16,7 @@ import {
     FULFILLMENT_STATUSES_OPTIONS,
     ORDER_STATUSES_OPTIONS,
     SHIPMENT_STATUSES_OPTIONS,
-} from '../constants'
+} from '../../../../../../models/selfServiceConfiguration/constants'
 
 import {parseJsonLogicRule} from './utils'
 import css from './ConditionRow.less'

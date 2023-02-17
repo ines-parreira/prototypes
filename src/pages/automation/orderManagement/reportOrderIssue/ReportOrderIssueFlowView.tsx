@@ -1,0 +1,81 @@
+import React from 'react'
+import {Link, useParams} from 'react-router-dom'
+import classnames from 'classnames'
+import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+
+import PageHeader from 'pages/common/components/PageHeader'
+import Loader from 'pages/common/components/Loader/Loader'
+
+import ReportOrderIssueScenarioList from './components/ReportOrderIssueScenarioList'
+import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
+
+import css from './ReportOrderIssueFlowView.less'
+
+const ReportOrderIssueFlowView = () => {
+    const {shopName} = useParams<{shopName: string}>()
+    const {scenarios, selfServiceConfiguration, handleScenariosUpdate} =
+        useReportOrderIssueFlowScenarios(shopName)
+
+    return (
+        <div className="full-width">
+            <PageHeader
+                title={
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/automation/shopify/${shopName}/order-management`}
+                            >
+                                Order management
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            Report order issue
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                }
+            />
+            <Container
+                fluid
+                className={classnames({
+                    [css.container]: Boolean(selfServiceConfiguration),
+                })}
+            >
+                {!selfServiceConfiguration ? (
+                    <Loader />
+                ) : (
+                    <div>
+                        <div className={css.descriptionContainer}>
+                            <p className="mb-1">
+                                Customize scenarios and the corresponding
+                                options customers can select when reporting
+                                order issues.
+                            </p>
+                            <a
+                                href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                <i className="material-icons mr-2">menu_book</i>
+                                How to Customize The Report Order Issue Flow
+                            </a>
+                        </div>
+
+                        <div className={css.captionContainer}>
+                            <i className="material-icons md-2">
+                                arrow_downward
+                            </i>
+                            <span>Scenarios apply in the order below</span>
+                        </div>
+
+                        <ReportOrderIssueScenarioList
+                            items={scenarios}
+                            onReorder={handleScenariosUpdate}
+                        />
+                    </div>
+                )}
+            </Container>
+        </div>
+    )
+}
+
+export default ReportOrderIssueFlowView

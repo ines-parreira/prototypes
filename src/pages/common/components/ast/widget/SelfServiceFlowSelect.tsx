@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react'
 import {fromJS, List} from 'immutable'
 
+import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
+
 import {fetchSelfServiceConfigurations} from '../../../../../models/selfServiceConfiguration/resources'
-import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from '../../../../settings/selfService/components/ReportIssueCaseEditor/constants'
 import useAppSelector from '../../../../../hooks/useAppSelector'
 
 import {getSelfServiceConfigurations} from '../../../../../state/entities/selfServiceConfigurations/selectors'

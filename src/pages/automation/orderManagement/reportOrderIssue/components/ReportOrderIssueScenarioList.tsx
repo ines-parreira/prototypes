@@ -1,0 +1,67 @@
+import React, {useMemo, useState} from 'react'
+import _uniqueId from 'lodash/uniqueId'
+import _isEqual from 'lodash/isEqual'
+
+import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
+
+import ReportOrderIssueScenarioItem from './ReportOrderIssueScenarioItem'
+
+type Props = {
+    items: SelfServiceReportIssueCase[]
+    onReorder: (items: SelfServiceReportIssueCase[]) => void
+}
+
+const ReportOrderIssueScenarioList = ({items, onReorder}: Props) => {
+    const itemsWithId = useMemo(
+        () => items.map((item) => ({...item, id: _uniqueId()})),
+        [items]
+    )
+
+    const [dirtyItemsWithId, setDirtyItemsWithId] = useState(itemsWithId)
+
+    const handleMove = (dragIndex: number, hoverIndex: number) => {
+        const nextDirtyItemsWithId = [...dirtyItemsWithId]
+        const dirtyItemWithId = nextDirtyItemsWithId[dragIndex]
+
+        if (!dirtyItemWithId) {
+            return
+        }
+
+        nextDirtyItemsWithId.splice(dragIndex, 1)
+        nextDirtyItemsWithId.splice(hoverIndex, 0, dirtyItemWithId)
+
+        setDirtyItemsWithId(nextDirtyItemsWithId)
+    }
+    const handleDrop = () => {
+        if (!_isEqual(dirtyItemsWithId, itemsWithId)) {
+            onReorder(
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                dirtyItemsWithId.map(({id, ...dirtyItem}) => dirtyItem)
+            )
+        }
+    }
+    const handleCancel = () => {
+        setDirtyItemsWithId(itemsWithId)
+    }
+
+    return (
+        <table>
+            <tbody>
+                {dirtyItemsWithId.map(({id, ...item}, index) => (
+                    <ReportOrderIssueScenarioItem
+                        key={id}
+                        id={id}
+                        position={index}
+                        onMove={handleMove}
+                        onDrop={handleDrop}
+                        onCancel={handleCancel}
+                        isDraggable={index !== dirtyItemsWithId.length - 1}
+                        item={item}
+                    />
+                ))}
+            </tbody>
+        </table>
+    )
+}
+
+export default ReportOrderIssueScenarioList

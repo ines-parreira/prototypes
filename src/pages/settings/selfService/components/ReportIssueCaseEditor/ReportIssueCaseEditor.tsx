@@ -40,6 +40,7 @@ import ChatIntegrationPreview from 'pages/integrations/integration/components/go
 import {getIntegrations} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 
 import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
 import BackButton from '../BackButton'
@@ -48,7 +49,6 @@ import ReportIssuePreviewAllOptions from '../ReportIssuePreview/ReportIssuePrevi
 import Reasons from './components/Reasons'
 import Conditions from './components/Conditions'
 import css from './ReportIssueCaseEditor.less'
-import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from './constants'
 
 type ErrorFormState = {
     [key in keyof SelfServiceReportIssueCase]?: string
