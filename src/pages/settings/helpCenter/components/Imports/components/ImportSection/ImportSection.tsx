@@ -205,7 +205,7 @@ export const ImportSection: React.FC<Props> = ({
                     void dispatch(
                         notify({
                             message:
-                                "There is a running help center migration in the background, you'll not be able to start a new one until it finishes",
+                                'There is an ongoing migration in the background, you can start a new one once it is finished',
                         })
                     )
                 } else {
@@ -348,7 +348,7 @@ export const ImportSection: React.FC<Props> = ({
             void dispatch(
                 notify({
                     message:
-                        "The migration is still going in the background, you'll get notified if it finishes while you have the page open",
+                        'The migration has started, you’ll get notified on this page once it is finished',
                 })
             )
         }
