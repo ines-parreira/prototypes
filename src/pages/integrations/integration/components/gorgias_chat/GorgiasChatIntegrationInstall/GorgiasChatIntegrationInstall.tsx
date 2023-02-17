@@ -155,7 +155,7 @@ function GorgiasChatIntegrationInstall({
                                     your website in the past 72 hours. Check its
                                     installation and your website to resolve.{' '}
                                     <a
-                                        href="https://docs.gorgias.com/en-US/chat-getting-started-81789"
+                                        href="https://docs.gorgias.com/en-US/chat-getting-started-81789#installation-monitoring"
                                         target="_blank"
                                         rel="noreferrer"
                                     >
