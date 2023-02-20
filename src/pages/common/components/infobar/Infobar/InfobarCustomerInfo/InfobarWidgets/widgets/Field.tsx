@@ -1,29 +1,30 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {SyntheticEvent} from 'react'
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 import {Popover, PopoverBody} from 'reactstrap'
+import {Map} from 'immutable'
 
+import {displayValue} from 'pages/common/components/infobar/utils'
+import {WidgetsActionsType} from 'pages/common/components/infobar/Infobar/Infobar'
+import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import FieldEdit from './forms/FieldEdit'
 import css from './Field.less'
 
-import {displayValue} from 'pages/common/components/infobar/utils.tsx'
+type Props = {
+    editing?: Editing
+    value: (string | number | boolean | Record<string, unknown>)[] | unknown
+    type: string
+    isEditing: boolean
+    isParentList: boolean
+    widget: Map<string, unknown>
+    template: Map<string, unknown>
+}
 
-export default class Field extends React.Component {
-    static propTypes = {
-        editing: PropTypes.object,
-        value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number,
-            PropTypes.bool,
-            PropTypes.object,
-        ]).isRequired,
-        type: PropTypes.string.isRequired,
-        widget: PropTypes.object.isRequired,
-        template: PropTypes.object.isRequired,
-        isEditing: PropTypes.bool.isRequired,
-        isParentList: PropTypes.bool.isRequired,
-    }
+export default class Field extends React.Component<
+    Props,
+    {displayPopup: boolean}
+> {
+    uniqueId: string
 
     static defaultProps = {
         isEditing: false,
@@ -34,13 +35,13 @@ export default class Field extends React.Component {
         displayPopup: false,
     }
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props)
 
         this.uniqueId = _uniqueId('field-widget-')
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         const {isEditing, editing, template} = nextProps
 
         if (editing) {
@@ -55,22 +56,24 @@ export default class Field extends React.Component {
         }
     }
 
-    _startWidgetEdition = (e) => {
+    _startWidgetEdition = (e: SyntheticEvent) => {
         const {editing, template} = this.props
 
         e.stopPropagation()
         if (editing) {
-            editing.actions.startWidgetEdition(template.get('templatePath', ''))
+            editing.actions.startWidgetEdition(
+                template.get('templatePath', '') as string
+            )
         }
     }
 
-    _deleteField = (e) => {
+    _deleteField = (e: SyntheticEvent) => {
         const {editing, template} = this.props
 
         e.stopPropagation()
         if (editing) {
-            const ap = template.get('absolutePath')
-            const tp = template.get('templatePath')
+            const ap = template.get('absolutePath') as string[]
+            const tp = template.get('templatePath') as string
             editing.actions.removeEditedWidget(tp, ap)
         }
     }
@@ -106,7 +109,7 @@ export default class Field extends React.Component {
     }
 
     _togglePopup = () => {
-        return this.props.editing.actions.stopWidgetEdition()
+        return this.props.editing?.actions?.stopWidgetEdition()
     }
 
     /**
@@ -132,7 +135,7 @@ export default class Field extends React.Component {
                 <PopoverBody>
                     <FieldEdit
                         template={template}
-                        actions={editing.actions}
+                        actions={editing.actions as WidgetsActionsType}
                         widget={widget}
                     />
                 </PopoverBody>

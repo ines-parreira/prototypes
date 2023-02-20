@@ -1,48 +1,59 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {fromJS} from 'immutable'
+import React, {ElementType, SyntheticEvent, ComponentProps} from 'react'
+import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 import {Popover, PopoverBody} from 'reactstrap'
 
-import InfobarWidget from '../InfobarWidget'
+import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import {renderTemplate} from 'pages/common/utils/template'
+import {renderInfobarTemplate} from 'pages/common/utils/infobar'
 
-import {StaticField} from './StaticField'
-
-import WidgetEdit from './forms/WidgetEdit.tsx'
-import css from './Card.less'
-import CustomActions from './customActions/index.ts'
-
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper.tsx'
-import {renderTemplate} from 'pages/common/utils/template.ts'
-import {renderInfobarTemplate} from 'pages/common/utils/infobar.tsx'
-
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {
+    IntegrationContext,
+    IntegrationContextType,
+} from 'providers/infobar/IntegrationContext'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     HTTP_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {getWidgetName} from 'state/widgets/predicates'
+import {WidgetType} from 'state/widgets/types'
 import {CardHeaderIcon} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/CardHeaderIcon'
+import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import InfobarWidget from '../InfobarWidget'
+import WidgetEdit from './forms/WidgetEdit'
+import {StaticField} from './StaticField'
+import CustomActions from './customActions'
 
-export default class Card extends React.Component {
-    static propTypes = {
-        AfterTitle: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-        BeforeContent: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-        AfterContent: PropTypes.func,
-        TitleWrapper: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-        Wrapper: PropTypes.func,
+import css from './Card.less'
 
-        editing: PropTypes.object,
-        source: PropTypes.object.isRequired,
-        widget: PropTypes.object.isRequired,
-        template: PropTypes.object.isRequired,
-        isEditing: PropTypes.bool.isRequired,
-        isParentList: PropTypes.bool.isRequired,
-        parent: PropTypes.object,
-        open: PropTypes.bool,
-        removeBorderTop: PropTypes.bool,
+type Props = {
+    AfterTitle?: ElementType
+    BeforeContent?: ElementType
+    AfterContent?: ElementType
+    TitleWrapper?: ElementType
+    Wrapper?: ElementType
+
+    editing?: Editing
+    parent?: Map<any, any>
+    source?: Map<string, unknown>
+    widget: Map<string, unknown>
+    template: Map<unknown, unknown>
+
+    isEditing: boolean
+    isParentList: boolean
+    open: boolean
+    removeBorderTop: boolean
+}
+
+export default class Card extends React.Component<
+    Props,
+    {
+        displayPopup: boolean
+        open: boolean
     }
+> {
+    uniqueId: string
 
     static defaultProps = {
         AfterTitle: null,
@@ -57,7 +68,7 @@ export default class Card extends React.Component {
 
     static contextType = IntegrationContext
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props)
 
         this.uniqueId = _uniqueId('card-widget-')
@@ -68,14 +79,14 @@ export default class Card extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         const {parent, isParentList, isEditing, template, editing} = nextProps
 
         if (isEditing) {
             const tp = isParentList
-                ? parent.get('templatePath', '')
+                ? parent?.get('templatePath', '')
                 : template.get('templatePath', '')
-            const currentlyEditedWidgetPath = editing.state.getIn(
+            const currentlyEditedWidgetPath = editing?.state.getIn(
                 ['_internal', 'currentlyEditedWidgetPath'],
                 ''
             )
@@ -89,11 +100,11 @@ export default class Card extends React.Component {
         })
     }
 
-    deleteCard = (e) => {
+    deleteCard = (e: SyntheticEvent) => {
         const {template, editing} = this.props
 
-        const ap = template.get('absolutePath')
-        const tp = template.get('templatePath')
+        const ap = template.get('absolutePath') as string[]
+        const tp = template.get('templatePath') as string
 
         e.stopPropagation()
         if (editing) {
@@ -101,22 +112,22 @@ export default class Card extends React.Component {
         }
     }
 
-    deleteList = (e) => {
+    deleteList = (e: SyntheticEvent) => {
         const {parent, template, editing} = this.props
 
         e.stopPropagation()
         if (editing) {
-            const ap = parent.get('absolutePath')
-            const tp = template.get('templatePath')
+            const ap = parent?.get('absolutePath') as string[]
+            const tp = template.get('templatePath') as string
             editing.actions.removeEditedWidget(tp, ap)
         }
     }
 
-    startWidgetEdition = (e) => {
+    startWidgetEdition = (e: SyntheticEvent) => {
         const {parent, isParentList, template, editing} = this.props
 
         const templatePath = isParentList
-            ? parent.get('templatePath', '')
+            ? parent?.get('templatePath', '')
             : template.get('templatePath', '')
 
         e.stopPropagation()
@@ -127,7 +138,7 @@ export default class Card extends React.Component {
     }
 
     togglePopup = () => {
-        return this.props.editing.actions.stopWidgetEdition()
+        return this.props.editing?.actions.stopWidgetEdition()
     }
 
     /**
@@ -152,11 +163,15 @@ export default class Card extends React.Component {
             >
                 <PopoverBody>
                     <WidgetEdit
-                        {...this.props}
-                        widgetType={this.props.widget.get('type')}
-                        isRootWidget={isRootWidget(
-                            template.get('templatePath')
-                        )}
+                        {...(this.props as unknown as ComponentProps<
+                            typeof WidgetEdit
+                        >)}
+                        widgetType={this.props.widget.get('type') as WidgetType}
+                        isRootWidget={
+                            isRootWidget(
+                                template.get('templatePath') as string
+                            ) as unknown as boolean
+                        }
                     />
                 </PopoverBody>
             </Popover>
@@ -166,10 +181,10 @@ export default class Card extends React.Component {
     getWidgetTitle() {
         const {source, widget, template} = this.props
 
-        const widgetType = widget.get('type')
-        const widgetAppId = widget.get('app_id')
+        const widgetType = widget.get('type') as WidgetType
+        const widgetAppId = widget.get('app_id') as Maybe<string>
 
-        let title = template.get('title', '')
+        let title = template.get('title', '') as string
 
         if (
             !title &&
@@ -181,15 +196,21 @@ export default class Card extends React.Component {
                 source: fromJS(source),
                 widgetType,
                 widgetAppId,
-                templatePath: template.get('absolutePath'),
-                integration: this.context.integration.toJS(),
+                templatePath: template.get('absolutePath') as string[],
+                integration: (
+                    this.context as IntegrationContextType
+                ).integration.toJS(),
             })
         }
 
         return title
     }
 
-    renderTitle = (template, source, isEditing) => {
+    renderTitle = (
+        template: Map<unknown, unknown>,
+        source: Record<string, Maybe<string>>,
+        isEditing: boolean
+    ) => {
         const title = this.getWidgetTitle()
         const link = template.getIn(['meta', 'link'])
         const pictureUrl = template.getIn(['meta', 'pictureUrl'], '')
@@ -244,19 +265,22 @@ export default class Card extends React.Component {
         return content
     }
 
-    shouldDisplayCardWidgetHeader(template, isEditing) {
+    shouldDisplayCardWidgetHeader(
+        template: Map<unknown, unknown>,
+        isEditing: boolean
+    ) {
         const templateTitle = this.getWidgetTitle()
         const onlyContent = !template.getIn(['meta', 'displayCard'], true)
-        const hasColor = template.getIn(['meta', 'color'], '')
-        const hasPicture = template.getIn(['meta', 'pictureUrl'], '')
+        const hasColor = template.getIn(['meta', 'color'], '') as string
+        const hasPicture = template.getIn(['meta', 'pictureUrl'], '') as string
         const templateCustomLinks = template.getIn(
             ['meta', 'custom', 'links'],
             fromJS({})
-        )
+        ) as Map<string, unknown>
         const templateCustomButtons = template.getIn(
             ['meta', 'custom', 'buttons'],
             fromJS({})
-        )
+        ) as Map<string, unknown>
 
         return (
             ((templateTitle ||
@@ -286,9 +310,11 @@ export default class Card extends React.Component {
         } = this.props
 
         const ap = template.get('absolutePath')
-        const tp = template.get('templatePath')
+        const tp = template.get('templatePath') as string
 
-        const childWidgets = template.get('widgets', fromJS([]))
+        const childWidgets = template.get('widgets', fromJS([])) as List<
+            Map<string, unknown>
+        >
 
         // display content (or at least space under card title) if we are in edition mode or if there is data to display
         const shouldDisplayCardContent = editing || !childWidgets.isEmpty()
@@ -297,7 +323,7 @@ export default class Card extends React.Component {
         const isExpandable = !isEditing && shouldDisplayCardContent
         // keep the unscoped class here to have drag and drop greying feature
         const className = classnames(css.widgetCard, 'widget-card', {
-            'can-drop': editing && editing.canDrop(ap),
+            'can-drop': editing && editing.canDrop(ap as string),
             draggable: !isParentList,
             [css.closed]: !this.state.open && !isEditing,
             [css.onlyContent]: !isEditing && onlyContent,
@@ -379,15 +405,17 @@ export default class Card extends React.Component {
                                 )}
                                 {this.renderTitle(
                                     template,
-                                    source.toJS(),
+                                    source?.toJS(),
                                     isEditing
                                 )}
                             </div>
                             {this.renderPopover()}
-                            {isRootWidget(template.get('templatePath')) && (
+                            {isRootWidget(
+                                template.get('templatePath') as string
+                            ) && (
                                 <CustomActions
-                                    template={template}
-                                    source={source}
+                                    template={template as Map<string, unknown>}
+                                    source={source as Map<string, unknown>}
                                     isEditing={isEditing}
                                 />
                             )}
@@ -405,14 +433,14 @@ export default class Card extends React.Component {
                         )}
                     >
                         {!!BeforeContent && <BeforeContent {...this.props} />}
-                        {source.isEmpty() ? (
+                        {source?.isEmpty() ? (
                             <StaticField>No data</StaticField>
                         ) : (
                             shouldDisplayCardContent && (
                                 <DragWrapper
                                     sort
                                     group={{
-                                        name: ap.join('.'),
+                                        name: (ap as string[]).join('.'),
                                         pull: false,
                                         put: true,
                                     }}
@@ -421,12 +449,12 @@ export default class Card extends React.Component {
                                     watchDrop
                                 >
                                     {childWidgets.map((w, i) => {
-                                        const passedTemplate = w.set(
+                                        const passedTemplate = w?.set(
                                             'templatePath',
-                                            `${tp}.widgets.${i}`
-                                        )
+                                            `${tp}.widgets.${i as number}`
+                                        ) as Map<string, unknown>
 
-                                        const type = w.get('type')
+                                        const type = w?.get('type')
                                         // find first non-text widget,
                                         // to auto-expand.
                                         if (
@@ -450,9 +478,11 @@ export default class Card extends React.Component {
                                         }
                                         return (
                                             <InfobarWidget
-                                                key={`${passedTemplate.get(
-                                                    'path'
-                                                )}-${i}`}
+                                                key={`${
+                                                    passedTemplate.get(
+                                                        'path'
+                                                    ) as string
+                                                }-${i as number}`}
                                                 source={source}
                                                 parent={template}
                                                 widget={widget}
@@ -486,7 +516,7 @@ export default class Card extends React.Component {
     }
 }
 
-function isRootWidget(templatePath) {
+function isRootWidget(templatePath: string) {
     return (
         templatePath.match(/.template.widgets.(\d+)$/) ||
         templatePath.match(/.template.widgets.(\d+).widgets.0$/)

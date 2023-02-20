@@ -1,15 +1,15 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStore} from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 
-import pollingManager from '../pollingManager.ts'
+import pollingManager from '../pollingManager'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
 describe('services', () => {
     describe('pollingManager', () => {
-        let store
-        let spy
+        let store: MockStore
+        let spy: jest.Mock
 
         beforeEach(() => {
             jest.useFakeTimers()

@@ -3,7 +3,7 @@
 exports[`macro actions deleteMacro should dispatch a notify action on success 1`] = `
 [
   {
-    "payload": 1,
+    "payload": "1",
     "type": "DELETE_MACRO",
   },
 ]

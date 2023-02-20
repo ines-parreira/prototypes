@@ -1,12 +1,13 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import {Placeholder} from '../Placeholder.tsx'
+import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import {Placeholder} from '../Placeholder'
 
 describe('PlaceholderWidget component', () => {
     const integrationId = 1
-    const minProps = {
+    const minProps: ComponentProps<typeof Placeholder> = {
         source: fromJS({}),
         template: fromJS({
             path: ['ticket', 'customer', 'integrations', integrationId],
@@ -17,10 +18,11 @@ describe('PlaceholderWidget component', () => {
         }),
         editing: {
             actions: {
-                removeEditedWidget: () => {},
+                removeEditedWidget: jest.fn(),
             },
-        },
+        } as unknown as Editing,
         integration: null,
+        dispatch: jest.fn(),
     }
 
     it('should display the integration type if the widget is not for an HTTP integration', () => {

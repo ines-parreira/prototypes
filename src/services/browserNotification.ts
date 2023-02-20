@@ -30,8 +30,8 @@ class BrowserNotification {
     }: {
         title?: unknown
         body?: unknown
-        ticketId?: number | string
-        playSoundNotification?: boolean
+        ticketId?: number | string | null
+        playSoundNotification?: boolean | null
         requireInteraction?: boolean
     } = {}) => {
         if (

@@ -2,19 +2,18 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStore} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import Customer from '../Customer'
-
-import {IntegrationContext} from 'providers/infobar/IntegrationContext.ts'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
 import {IntegrationType} from 'models/integration/constants'
+import Customer from '../Customer'
 
 const AfterTitle = Customer().AfterTitle
 
 describe('<TitleWrapper/>', () => {
-    let store
+    let store: MockStore
     const mockStore = configureMockStore([thunk])
 
     const integrationId = 1

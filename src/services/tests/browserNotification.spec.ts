@@ -1,6 +1,6 @@
 import PushJS from 'push.js'
 
-import browserNotification from '../browserNotification.ts'
+import browserNotification from '../browserNotification'
 
 describe('services', () => {
     describe('browserNotification', () => {
@@ -47,7 +47,9 @@ describe('services', () => {
                     requireInteraction: true,
                 })
 
-                expect(PushJS.getAll()).toMatchSnapshot()
+                expect(
+                    (PushJS as unknown as {getAll: () => any[]}).getAll()
+                ).toMatchSnapshot()
             })
 
             it('should create a browser notification with default values (empty)', () => {
@@ -56,7 +58,9 @@ describe('services', () => {
                     'play'
                 )
                 browserNotification.newMessage()
-                expect(PushJS.getAll()).toMatchSnapshot()
+                expect(
+                    (PushJS as unknown as {getAll: () => any[]}).getAll()
+                ).toMatchSnapshot()
                 expect(spy).toHaveBeenCalled()
             })
 
@@ -70,7 +74,9 @@ describe('services', () => {
                     body: null,
                     ticketId: null,
                 })
-                expect(PushJS.getAll()).toMatchSnapshot()
+                expect(
+                    (PushJS as unknown as {getAll: () => any[]}).getAll()
+                ).toMatchSnapshot()
                 expect(spy).toHaveBeenCalled()
             })
 
@@ -83,7 +89,9 @@ describe('services', () => {
                     title: '',
                     body: '',
                 })
-                expect(PushJS.getAll()).toMatchSnapshot()
+                expect(
+                    (PushJS as unknown as {getAll: () => any[]}).getAll()
+                ).toMatchSnapshot()
                 expect(spy).toHaveBeenCalled()
             })
 
@@ -96,7 +104,9 @@ describe('services', () => {
                     title: 1234,
                     body: 1234,
                 })
-                expect(PushJS.getAll()).toMatchSnapshot()
+                expect(
+                    (PushJS as unknown as {getAll: () => any[]}).getAll()
+                ).toMatchSnapshot()
                 expect(spy).toHaveBeenCalled()
             })
 
@@ -110,7 +120,9 @@ describe('services', () => {
                     body: 'body',
                     ticketId: 12,
                 })
-                expect(PushJS.getAll()).toMatchSnapshot()
+                expect(
+                    (PushJS as unknown as {getAll: () => any[]}).getAll()
+                ).toMatchSnapshot()
                 expect(spy).toHaveBeenCalled()
             })
 
@@ -120,7 +132,7 @@ describe('services', () => {
                     'play'
                 )
 
-                spy.mockRejectedValueOnce()
+                spy.mockImplementationOnce(() => Promise.reject())
 
                 browserNotification.newMessage({
                     title: 'title',
@@ -129,7 +141,9 @@ describe('services', () => {
                 })
 
                 setImmediate(() => {
-                    expect(PushJS.getAll()).toMatchSnapshot()
+                    expect(
+                        (PushJS as unknown as {getAll: () => any[]}).getAll()
+                    ).toMatchSnapshot()
                     done()
                 })
                 expect(spy).toHaveBeenCalled()
@@ -152,7 +166,9 @@ describe('services', () => {
                     ticketId: 123,
                 })
 
-                expect(PushJS.getAll()).toMatchSnapshot()
+                expect(
+                    (PushJS as unknown as {getAll: () => any[]}).getAll()
+                ).toMatchSnapshot()
                 expect(spy).toHaveBeenCalledTimes(1)
             })
         })
@@ -175,7 +191,9 @@ describe('services', () => {
                     ticketId: 123,
                 })
 
-                expect(PushJS.getAll()).toMatchSnapshot()
+                expect(
+                    (PushJS as unknown as {getAll: () => any[]}).getAll()
+                ).toMatchSnapshot()
                 expect(spy).toHaveBeenCalledTimes(1)
             })
         })

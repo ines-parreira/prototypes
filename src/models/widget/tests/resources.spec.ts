@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {shopifyWidget} from 'fixtures/widgets.js'
+import {shopifyWidget} from 'fixtures/widgets'
 import client from 'models/api/resources'
 
 import {fetchWidgets} from '../resources'

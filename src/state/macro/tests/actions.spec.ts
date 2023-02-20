@@ -1,24 +1,25 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
+import {fromJS, Map} from 'immutable'
+import axios from 'axios'
 
-import * as actions from '../actions.ts'
-import * as constants from '../constants.ts'
-
-import client from 'models/api/resources.ts'
+import {StoreDispatch} from 'state/types'
+import client from 'models/api/resources'
+import * as actions from '../actions'
+import * as constants from '../constants'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 jest.mock('../../notifications/actions.ts', () => {
     return {
-        notify: jest.fn(() => (args) => args),
+        notify: jest.fn(() => (args: unknown) => args),
     }
 })
 
 describe('macro actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<unknown, StoreDispatch>
+    let mockServer: MockAdapter
 
     beforeEach(() => {
         store = mockStore()
@@ -36,21 +37,28 @@ describe('macro actions', () => {
                 },
             })
 
-            return store.dispatch(actions.fetchAllMacros()).then((res) => {
-                expect(res).toEqual(fromJS(macros))
-                expect(store.getActions()).toEqual([
-                    {
-                        type: constants.UPSERT_MACROS,
-                        payload: fromJS(macros),
-                    },
-                ])
-            })
+            return store
+                .dispatch(
+                    actions.fetchAllMacros({}, axios.CancelToken.source().token)
+                )
+                .then((res) => {
+                    expect(res).toEqual(fromJS(macros))
+                    expect(store.getActions()).toEqual([
+                        {
+                            type: constants.UPSERT_MACROS,
+                            payload: fromJS(macros),
+                        },
+                    ])
+                })
         })
     })
 
     describe('createMacro', () => {
         it('should return created macro and dispatch UPSERT_MACRO action on success', async () => {
-            const macro = fromJS({id: 1, name: 'Pizza Pepperoni'})
+            const macro: Map<string, unknown> = fromJS({
+                id: 1,
+                name: 'Pizza Pepperoni',
+            })
             mockServer.onPost('/api/macros/').reply(200, macro.toJS())
             const res = await store.dispatch(actions.createMacro(macro))
             expect(res).toEqual(macro.toJS())
@@ -63,7 +71,10 @@ describe('macro actions', () => {
 
     describe('updateMacro', () => {
         it('should return updated macro and dispatch UPSERT_MACRO action on success', async () => {
-            const macro = fromJS({id: 1, name: 'Pizza Pepperoni'})
+            const macro: Map<string, unknown> = fromJS({
+                id: 1,
+                name: 'Pizza Pepperoni',
+            })
             mockServer.onPut('/api/macros/1/').reply(200, macro.toJS())
             const res = await store.dispatch(actions.updateMacro(macro))
             expect(res).toEqual(macro.toJS())
@@ -79,16 +90,16 @@ describe('macro actions', () => {
             mockServer.onDelete('/api/macros/1/').reply(200)
 
             return store
-                .dispatch(actions.deleteMacro(1))
+                .dispatch(actions.deleteMacro('1'))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('should dispatch DELETE_MACRO action on success', async () => {
             mockServer.onDelete('/api/macros/1/').reply(200)
-            await store.dispatch(actions.deleteMacro(1))
+            await store.dispatch(actions.deleteMacro('1'))
             expect(store.getActions()[0]).toEqual({
                 type: constants.DELETE_MACRO,
-                payload: 1,
+                payload: '1',
             })
         })
 
@@ -96,14 +107,17 @@ describe('macro actions', () => {
             mockServer.onDelete('/api/integrations/1/').reply(400)
 
             return store
-                .dispatch(actions.deleteMacro(1))
+                .dispatch(actions.deleteMacro('1'))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
 
     describe('getMacro', () => {
         it('should return macro and dispatch UPSERT_MACRO action on success', async () => {
-            const macro = fromJS({id: 1, name: 'Pizza Pepperoni'})
+            const macro: Map<string, unknown> = fromJS({
+                id: 1,
+                name: 'Pizza Pepperoni',
+            })
             mockServer.onGet('/api/macros/1').reply(200, macro.toJS())
             const res = await store.dispatch(actions.getMacro('1'))
             expect(res).toEqual(macro)
@@ -120,7 +134,7 @@ describe('macro actions', () => {
         })
 
         it('should not make API call', async () => {
-            let spy = jest.spyOn(client, 'get')
+            const spy = jest.spyOn(client, 'get')
             const res = await store.dispatch(actions.getMacro(''))
             expect(res).toBeUndefined()
             expect(spy).toHaveBeenCalledTimes(0)

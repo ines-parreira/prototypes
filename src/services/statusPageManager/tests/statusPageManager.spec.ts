@@ -1,8 +1,10 @@
-import {dismissNotification} from 'reapop'
 import moment from 'moment'
 import {fromJS} from 'immutable'
+import * as reapop from 'reapop'
 
-import statusPageManager from '../statusPageManager.ts'
+import * as actions from 'state/notifications/actions'
+import {IntegrationType} from 'models/integration/constants'
+import statusPageManager from '../statusPageManager'
 import {
     HELPDESK_GROUP_IDS,
     MAINTENANCE_STATUSES,
@@ -11,31 +13,16 @@ import {
     CLUSTER_GROUP_ID,
     DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
     DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
-} from '../constants.ts'
-import {ComponentStatus, IncidentImpact} from '../types.ts'
+} from '../constants'
+import {
+    ComponentStatus,
+    IncidentImpact,
+    StatusPageIncidentsResponseData,
+    StatusPageScheduledMaintenanceResponseData,
+} from '../types'
 
-import {notify} from 'state/notifications/actions.ts'
-import {IntegrationType} from 'models/integration/constants.ts'
-
-jest.mock('state/notifications/actions.ts', () => {
-    const notificationActions = jest.requireActual(
-        'state/notifications/actions.ts'
-    )
-
-    return {
-        ...notificationActions,
-        notify: jest.fn(notificationActions.notify),
-    }
-})
-
-jest.mock('reapop', () => {
-    const reapop = jest.requireActual('reapop')
-
-    return {
-        ...reapop,
-        dismissNotification: jest.fn(reapop.dismissNotification),
-    }
-})
+const notifySpy = jest.spyOn(actions, 'notify')
+const dismissNotificationSpy = jest.spyOn(reapop, 'dismissNotification')
 
 describe('statusPageManager', () => {
     beforeEach(() => {
@@ -51,7 +38,9 @@ describe('statusPageManager', () => {
             'should throw an error if data is `%s`',
             (data) => {
                 expect(() => {
-                    statusPageManager.processIncidents(data)
+                    statusPageManager.processIncidents(
+                        data as StatusPageIncidentsResponseData
+                    )
                 }).toThrow()
             }
         )
@@ -91,11 +80,15 @@ describe('statusPageManager', () => {
                     },
                 ],
             }
-            statusPageManager.processIncidents(args)
-            statusPageManager.processIncidents(args)
+            statusPageManager.processIncidents(
+                args as StatusPageIncidentsResponseData
+            )
+            statusPageManager.processIncidents(
+                args as StatusPageIncidentsResponseData
+            )
 
-            expect(dismissNotification).toHaveBeenCalledTimes(1)
-            expect(dismissNotification).toBeCalledWith(
+            expect(dismissNotificationSpy).toHaveBeenCalledTimes(1)
+            expect(dismissNotificationSpy).toBeCalledWith(
                 `${INCIDENTS_NOTIFICATION_ID}-incident-id`
             )
         })
@@ -138,8 +131,8 @@ describe('statusPageManager', () => {
                         ],
                     },
                 ],
-            })
-            expect(notify.mock.calls).toMatchSnapshot()
+            } as StatusPageIncidentsResponseData)
+            expect(notifySpy.mock.calls).toMatchSnapshot()
         })
 
         it('should dispatch as many notifications as there are incidents', () => {
@@ -181,8 +174,8 @@ describe('statusPageManager', () => {
                         ],
                     },
                 ],
-            })
-            expect(notify.mock.calls).toMatchSnapshot()
+            } as StatusPageIncidentsResponseData)
+            expect(notifySpy.mock.calls).toMatchSnapshot()
         })
 
         it('should not dispatch notification if its incident id is present in localStorage', () => {
@@ -214,9 +207,9 @@ describe('statusPageManager', () => {
                         ],
                     },
                 ],
-            })
+            } as StatusPageIncidentsResponseData)
 
-            expect(notify).not.toHaveBeenCalled()
+            expect(notifySpy).not.toHaveBeenCalled()
         })
 
         it('should dispatch notification if its incident id is not stored in localStorage', () => {
@@ -243,9 +236,9 @@ describe('statusPageManager', () => {
                         ],
                     },
                 ],
-            })
+            } as StatusPageIncidentsResponseData)
 
-            expect(notify.mock.calls).toMatchSnapshot()
+            expect(notifySpy.mock.calls).toMatchSnapshot()
         })
 
         describe('cluster filtering', () => {
@@ -276,8 +269,8 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                })
-                expect(notify).not.toHaveBeenCalled()
+                } as StatusPageIncidentsResponseData)
+                expect(notifySpy).not.toHaveBeenCalled()
             })
 
             it('should notify if matches the cluster', () => {
@@ -307,8 +300,8 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                })
-                expect(notify.mock.calls).toMatchSnapshot()
+                } as StatusPageIncidentsResponseData)
+                expect(notifySpy.mock.calls).toMatchSnapshot()
             })
 
             it('should notify if matches the second cluster', () => {
@@ -343,16 +336,16 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                })
-                expect(notify.mock.calls).toMatchSnapshot()
+                } as StatusPageIncidentsResponseData)
+                expect(notifySpy.mock.calls).toMatchSnapshot()
             })
         })
 
         describe('integration filtering', () => {
             it('should not notify if integration type does not match', () => {
-                statusPageManager.activeIntegrationsTypes = fromJS([
-                    IntegrationType.Gmail,
-                ])
+                ;(
+                    statusPageManager as unknown as Record<string, unknown>
+                ).activeIntegrationsTypes = fromJS([IntegrationType.Gmail])
                 statusPageManager.processIncidents({
                     page: {
                         url: 'https://status.gorgias.com/',
@@ -372,12 +365,14 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                })
-                expect(notify).not.toHaveBeenCalled()
+                } as StatusPageIncidentsResponseData)
+                expect(notifySpy).not.toHaveBeenCalled()
             })
 
             it('should notify active integrations', () => {
-                statusPageManager.activeIntegrationsTypes = fromJS([
+                ;(
+                    statusPageManager as unknown as Record<string, unknown>
+                ).activeIntegrationsTypes = fromJS([
                     IntegrationType.Gmail,
                     IntegrationType.Facebook,
                 ])
@@ -407,8 +402,8 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                })
-                expect(notify.mock.calls).toMatchSnapshot()
+                } as StatusPageIncidentsResponseData)
+                expect(notifySpy.mock.calls).toMatchSnapshot()
             })
         })
     })
@@ -418,7 +413,9 @@ describe('statusPageManager', () => {
             'should throw an error if data is `%s`',
             (data) => {
                 expect(() => {
-                    statusPageManager.processScheduledMaintenances(data)
+                    statusPageManager.processScheduledMaintenances(
+                        data as StatusPageScheduledMaintenanceResponseData
+                    )
                 }).toThrow()
             }
         )
@@ -450,12 +447,12 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                })
-                expect(dismissNotification).toHaveBeenCalledTimes(1)
-                expect(dismissNotification).toBeCalledWith(
+                } as unknown as StatusPageScheduledMaintenanceResponseData)
+                expect(dismissNotificationSpy).toHaveBeenCalledTimes(1)
+                expect(dismissNotificationSpy).toBeCalledWith(
                     MAINTENANCE_NOTIFICATION_ID
                 )
-                expect(notify.mock.calls).toMatchSnapshot()
+                expect(notifySpy.mock.calls).toMatchSnapshot()
             }
         )
 
@@ -487,8 +484,8 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                })
-                expect(notify).not.toHaveBeenCalled()
+                } as StatusPageScheduledMaintenanceResponseData)
+                expect(notifySpy).not.toHaveBeenCalled()
             })
 
             it('should notify if matches the cluster', () => {
@@ -518,8 +515,8 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                })
-                expect(notify.mock.calls).toMatchSnapshot()
+                } as StatusPageScheduledMaintenanceResponseData)
+                expect(notifySpy.mock.calls).toMatchSnapshot()
             })
 
             it('should notify if matches the second cluster', () => {
@@ -554,8 +551,8 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                })
-                expect(notify.mock.calls).toMatchSnapshot()
+                } as StatusPageScheduledMaintenanceResponseData)
+                expect(notifySpy.mock.calls).toMatchSnapshot()
             })
 
             it('should redisplay banner for a hidden maintenance once it is in progress', () => {
@@ -592,8 +589,8 @@ describe('statusPageManager', () => {
                             ],
                         },
                     ],
-                })
-                expect(notify.mock.calls).toMatchSnapshot()
+                } as StatusPageScheduledMaintenanceResponseData)
+                expect(notifySpy.mock.calls).toMatchSnapshot()
             })
         })
     })

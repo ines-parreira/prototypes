@@ -1,16 +1,17 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStore} from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 
-import userActivityManager from '../userActivityManager.ts'
-import socketManager from '../socketManager'
-import * as socketConstants from '../../config/socketConstants.ts'
+import * as socketConstants from '../../config/socketConstants'
+import userActivityManager from '../userActivityManager'
+import socketManager from '../socketManager/socketManager'
+
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
 describe('services', () => {
     describe('userActivityManager', () => {
-        let store
+        let store: MockStore
 
         it('should dispatch TOGGLE_ACTIVE_STATUS and send AGENT_INACTIVE_EVENT', (done) => {
             // mark the current user as inactive

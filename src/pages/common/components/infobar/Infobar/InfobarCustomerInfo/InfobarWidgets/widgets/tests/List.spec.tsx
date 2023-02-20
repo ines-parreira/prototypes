@@ -1,19 +1,26 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 
-import * as widgetsFixtures from '../../../../../../../../../fixtures/widgets'
-import * as ticketFixtures from '../../../../../../../../../fixtures/ticket.ts'
+import * as widgetsFixtures from 'fixtures/widgets'
+import * as ticketFixtures from 'fixtures/ticket'
 
-import List from '../List'
+import ListInfobarWidget from '../List'
 
 describe('Infobar::Widgets::List', () => {
     const source = fromJS(
-        ticketFixtures.ticket.customer.integrations['5'].orders
+        (
+            ticketFixtures.ticket.customer.integrations as Record<
+                string,
+                {orders: unknown}
+            >
+        )['5'].orders
+    ) as List<Map<string, unknown>>
+
+    const widget = fromJS(widgetsFixtures.shopifyWidget) as Map<string, unknown>
+    const template = (
+        widget.getIn(['template', 'widgets', 1]) as Map<string, unknown>
     )
-    const widget = fromJS(widgetsFixtures.shopifyWidget)
-    const template = widget
-        .getIn(['template', 'widgets', 1])
         .set('templatePath', '0.template.widgets.1')
         .set('absolutePath', [
             'ticket',
@@ -23,10 +30,9 @@ describe('Infobar::Widgets::List', () => {
             'orders',
         ])
 
-    const minProps = {
+    const minProps: ComponentProps<typeof ListInfobarWidget> = {
         isEditing: false,
         isParentList: false,
-        open: false,
         source,
         widget,
         template,
@@ -39,13 +45,13 @@ describe('Infobar::Widgets::List', () => {
 
     describe('do not display show more button', () => {
         it('higher limit config than source size', () => {
-            const component = shallow(<List {...minProps} />)
+            const component = shallow(<ListInfobarWidget {...minProps} />)
             expect(component.find('.footer').exists()).toBe(false)
         })
 
         it('no limit config', () => {
             const component = shallow(
-                <List
+                <ListInfobarWidget
                     {...minProps}
                     template={template.removeIn(['meta', 'limit'])}
                 />
@@ -57,7 +63,7 @@ describe('Infobar::Widgets::List', () => {
     describe('display show more button', () => {
         it('shorter limit config than source size', () => {
             const component = shallow(
-                <List
+                <ListInfobarWidget
                     {...minProps}
                     template={template.setIn(['meta', 'limit'], 1)}
                 />

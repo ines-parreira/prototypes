@@ -1,8 +1,8 @@
-import * as utils from '../utils.ts'
+import * as utils from '../utils'
 
 describe('Services common utils', () => {
-    function DOMExceptionMock(code, name, message) {
-        const codeToNames = {
+    function DOMExceptionMock(code?: number, name?: string, message?: string) {
+        const codeToNames: Record<number, string> = {
             1: 'INDEX_SIZE_ERR',
             3: 'HIERARCHY_REQUEST_ERR',
             4: 'WRONG_DOCUMENT_ERR',
@@ -25,13 +25,13 @@ describe('Services common utils', () => {
             24: 'INVALID_NODE_TYPE_ERR',
             25: 'DATA_CLONE_ERR',
         }
-        let newException
+        let newException: unknown
         try {
             document.querySelectorAll('div:foo')
         } catch (e) {
             newException = Object.create(Object.getPrototypeOf(e))
         }
-        let nameFromCode = codeToNames[code]
+        const nameFromCode = codeToNames[code!]
 
         Object.defineProperty(newException, 'name', {
             value: name || nameFromCode,
@@ -43,7 +43,7 @@ describe('Services common utils', () => {
     }
 
     describe('is editable', () => {
-        let input
+        let input: HTMLInputElement
         beforeEach(() => {
             input = document.createElement('input')
         })
@@ -104,7 +104,7 @@ describe('Services common utils', () => {
                     window.localStorage,
                     'setItem'
                 ).mockImplementationOnce(() => {
-                    throw new DOMExceptionMock(code, name)
+                    throw DOMExceptionMock(code, name)
                 })
 
                 expect(utils.isLocalStorageAvailable()).toBe(true)
@@ -137,7 +137,7 @@ describe('Services common utils', () => {
             'should not throw the quota exceeded exception with code %i and name %s',
             (code, name) => {
                 const fn = () => {
-                    throw new DOMExceptionMock(code, name)
+                    throw DOMExceptionMock(code, name)
                 }
 
                 expect(() => {

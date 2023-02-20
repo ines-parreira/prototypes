@@ -21,8 +21,8 @@ import {
 
 import ListWidget from './widgets/List'
 import Wrapper from './widgets/Wrapper'
-import Card from './widgets/Card.js'
-import Field from './widgets/Field.js'
+import Card from './widgets/Card'
+import Field from './widgets/Field'
 
 import http from './widgets/http'
 import magento2 from './widgets/magento2'

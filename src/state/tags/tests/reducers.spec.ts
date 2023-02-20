@@ -2,8 +2,11 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {fromJS} from 'immutable'
 
-import reducer, {initialState} from '../reducers.ts'
-import * as types from '../constants.ts'
+import {GorgiasAction} from 'state/types'
+import {Tag} from 'models/tag/types'
+
+import reducer, {initialState} from '../reducers'
+import * as types from '../constants'
 
 describe('tags reducers', () => {
     // Simulates current tags in state
@@ -23,7 +26,9 @@ describe('tags reducers', () => {
     })
 
     it('initial state', () => {
-        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+        expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
+            initialState
+        )
     })
 
     it('fetch tag list', () => {
@@ -54,7 +59,7 @@ describe('tags reducers', () => {
         expect(
             reducer(initialState.mergeDeep({items: currentFakeTags}), {
                 type: types.SELECT_TAG,
-                tag: {id: 1},
+                tag: {id: 1} as Tag,
             }).toJS()
         ).toMatchSnapshot()
     })
@@ -63,7 +68,7 @@ describe('tags reducers', () => {
         expect(
             reducer(initialState.mergeDeep({items: currentFakeTags}), {
                 type: types.SELECT_TAG_ALL,
-                tags: [{id: 1}, {id: 2}],
+                tags: [{id: 1}, {id: 2}] as Tag[],
             }).toJS()
         ).toMatchSnapshot()
     })
@@ -72,7 +77,7 @@ describe('tags reducers', () => {
         expect(
             reducer(initialState.mergeDeep({items: currentFakeTags}), {
                 type: types.EDIT_TAG,
-                tag: {id: 1},
+                tag: {id: 1} as Tag,
             }).toJS()
         ).toMatchSnapshot()
     })
@@ -81,7 +86,7 @@ describe('tags reducers', () => {
         expect(
             reducer(initialState.mergeDeep({items: currentFakeTags}), {
                 type: types.EDIT_TAG_CANCEL,
-                tag: {id: 1},
+                tag: {id: 1} as Tag,
             }).toJS()
         ).toMatchSnapshot()
     })
@@ -91,7 +96,7 @@ describe('tags reducers', () => {
         expect(
             reducer(initialState.mergeDeep({items: currentFakeTags}), {
                 type: types.SAVE_TAG,
-                tag: {id: 1, name: 'edited_name'},
+                tag: {id: 1, name: 'edited_name'} as Tag,
             }).toJS()
         ).toMatchSnapshot()
     })
@@ -108,7 +113,7 @@ describe('tags reducers', () => {
         expect(
             reducer(initialState, {
                 type: types.CREATE_TAG_SUCCESS,
-                tag: {id: 1, foo: 'bar'},
+                tag: {id: 1, foo: 'bar'} as Tag & {foo: string},
             }).toJS()
         ).toMatchSnapshot()
 
@@ -131,25 +136,27 @@ describe('tags reducers', () => {
 
     it('reset meta of tags', () => {
         expect(
-            reducer(
-                initialState.mergeDeep({
-                    items: currentFakeTags,
-                    meta: fromJS({
-                        2: {
-                            selected: true,
-                        },
-                        5: {
-                            selected: true,
-                        },
-                        15: {
-                            selected: false,
-                        },
+            (
+                reducer(
+                    initialState.mergeDeep({
+                        items: currentFakeTags,
+                        meta: fromJS({
+                            2: {
+                                selected: true,
+                            },
+                            5: {
+                                selected: true,
+                            },
+                            15: {
+                                selected: false,
+                            },
+                        }),
                     }),
-                }),
-                {
-                    type: types.RESET_META,
-                }
-            ).toJS().meta
+                    {
+                        type: types.RESET_META,
+                    }
+                ).toJS() as Record<string, unknown>
+            ).meta
         ).toEqual({})
     })
 })
