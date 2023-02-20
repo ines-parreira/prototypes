@@ -20,6 +20,13 @@ export enum OutboundVerificationType {
     Domain = 'domain',
 }
 
+export enum EmailMigrationStatus {
+    Enabled = 'enabled',
+    Pending = 'pending',
+    Completed = 'completed',
+    Missed = 'missed',
+}
+
 export type EmailIntegration = IntegrationBase & {
     type: IntegrationType.Email
     meta: EmailIntegrationMeta
@@ -64,6 +71,12 @@ export type EmailDomain = {
 export type EmailSignature = {
     text: string
     html: string
+}
+
+export type EmailMigrationBannerStatus = {
+    status: EmailMigrationStatus | null
+    started_at: string | null
+    due_at: string | null
 }
 
 export const isEmailIntegration = createTypeGuard<

@@ -5,6 +5,7 @@ import {ThunkDispatch} from 'redux-thunk'
 import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
 import {
     EmailDomain,
+    EmailMigrationBannerStatus,
     GorgiasChatStatusEnum,
     Integration,
     IntegrationType,
@@ -104,6 +105,7 @@ export type GorgiasAction = {
     defaultShippingLine?: string
     integration?: Integration | Map<any, any>
     emailDomain?: EmailDomain | Map<any, any>
+    emailMigrationBannerStatus?: EmailMigrationBannerStatus
     response?: Record<string, any>
     integrationId?: number
     appId?: string

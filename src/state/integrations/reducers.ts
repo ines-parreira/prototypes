@@ -291,6 +291,12 @@ export default function reducer(
                 .setIn(['state', 'loading', 'chatStatus', action.id], false)
                 .setIn(['state', 'error', 'chatStatus', action.id], true)
 
+        case constants.SET_EMAIL_PROVIDER_MIGRATION_BANNER_STATUS:
+            return state.set(
+                'emailMigrationBannerStatus',
+                fromJS(action.emailMigrationBannerStatus)
+            )
+
         default:
             return state
     }

@@ -604,3 +604,8 @@ export const getIsChatIntegrationStatusError = (id: number) =>
         getIntegrationsState,
         (state) => !!state.state?.error?.chatStatus?.[id]
     )
+
+export const getEmailMigrationStatus = createSelector(
+    getIntegrationsState,
+    (state) => state?.emailMigrationBannerStatus
+)

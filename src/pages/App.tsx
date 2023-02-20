@@ -39,6 +39,7 @@ import PhoneIntegrationBar from './common/components/PhoneIntegrationBar/PhoneIn
 import IconButton from './common/components/button/IconButton'
 import Button from './common/components/button/Button'
 import Spotlight from './common/components/Spotlight/Spotlight'
+import EmailMigrationBanner from './common/components/EmailMigrationBanner/EmailMigrationBanner'
 
 type Props = {
     infobarOnMobile?: boolean
@@ -144,6 +145,7 @@ class App extends React.Component<Props> {
             <ErrorBoundary>
                 <div className={classnames(css.page)}>
                     <BannerNotifications notifications={bannerNotifications} />
+                    <EmailMigrationBanner />
 
                     <div id="app-root" className={css.app}>
                         <Spotlight>{Navbar && <Navbar />}</Spotlight>
