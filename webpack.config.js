@@ -7,6 +7,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const {WebpackManifestPlugin} = require('webpack-manifest-plugin')
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 const pkg = require('./package.json')
 
@@ -32,9 +33,16 @@ const vendorsBundleFile = __PRODUCTION__
 const mode = __PRODUCTION__ ? 'production' : 'development'
 const devtool = __PRODUCTION__ ? 'source-map' : 'cheap-module-source-map'
 const devServer = {
-    static: [{directory: buildDir}, {directory: srcDir}],
+    static: [
+        {directory: buildDir},
+        {
+            directory: path.join(__dirname, 'src', 'assets'),
+            publicPath: '//assets',
+        },
+    ],
     client: {
-        logging: 'error',
+        logging: 'info',
+        webSocketURL: 'ws://0.0.0.0:8080/ws',
     },
     host: '0.0.0.0',
     /**
@@ -158,7 +166,17 @@ module.exports = (env = {}) => {
                 {
                     test: /\.(js|tsx?)$/i,
                     exclude: /node_modules/,
-                    use: [{loader: 'babel-loader?cacheDirectory'}],
+                    use: [
+                        {
+                            loader: 'babel-loader?cacheDirectory',
+                            options: {
+                                plugins: [
+                                    !__PRODUCTION__ &&
+                                        require.resolve('react-refresh/babel'),
+                                ].filter(Boolean),
+                            },
+                        },
+                    ],
                 },
                 {
                     test: /\.css$/i,
@@ -233,7 +251,8 @@ module.exports = (env = {}) => {
                 GORGIAS_ASSETS_URL: 'http://localhost:8080/',
             }),
             new NodePolyfillPlugin(),
-        ],
+            !__PRODUCTION__ && new ReactRefreshWebpackPlugin(),
+        ].filter(Boolean),
         resolve: {
             alias: {
                 ...aliasOptions,

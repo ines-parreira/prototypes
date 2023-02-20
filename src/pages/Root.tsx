@@ -2,7 +2,6 @@ import {createDragDropManager} from 'dnd-core'
 import {LDClient} from 'launchdarkly-js-client-sdk'
 import {LDProvider} from 'launchdarkly-react-client-sdk'
 import React, {Component} from 'react'
-import {hot} from 'react-hot-loader'
 import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
 import {DndProvider} from 'react-dnd'
@@ -72,4 +71,4 @@ class Root extends Component<Props, State> {
     }
 }
 
-export default hot(module)(Root)
+export default Root

@@ -1,4 +1,3 @@
-import 'react-hot-loader'
 import React from 'react'
 import {render} from 'react-dom'
 
@@ -11,8 +10,4 @@ const container = document.getElementById('App')
 
 if (container) {
     render(<Root store={store} />, container)
-}
-
-if (module.hot) {
-    module.hot.accept()
 }
