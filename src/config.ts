@@ -283,7 +283,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         type: IntegrationType.WhatsApp,
         title: 'WhatsApp',
         description: 'Chat with customers using a WhatsApp Business account.',
-        categories: [Category.SOCIAL],
+        categories: [Category.FEATURED, Category.SOCIAL],
         privacyPolicy: 'https://www.whatsapp.com/legal/privacy-policy/?lang=en',
         longDescription:
             "<p>Connect a WhatsApp Business account to your customer support number to chat with customers anywhere in the world. Tickets will automatically generate in Gorgias to keep your workflow seamless.</p><p><strong>With WhatsApp, you’ll be able to:</strong></p><ul><li>Match the customer's number with their Shopify profile to get full context of their purchase history</li><li>Share and receive text, audio, video and PDF files from customers</li><li>Prioritize conversations based on the 24-hour time frame to respond, visible on each ticket</li></ul>",
