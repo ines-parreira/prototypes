@@ -1,10 +1,11 @@
 import React from 'react'
-import {Link, useParams} from 'react-router-dom'
+import {Link, useHistory, useParams} from 'react-router-dom'
 import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
+import Button from 'pages/common/components/button/Button'
 
 import ReportOrderIssueScenarioList from './components/ReportOrderIssueScenarioList'
 import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
@@ -12,9 +13,16 @@ import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowSce
 import css from './ReportOrderIssueFlowView.less'
 
 const ReportOrderIssueFlowView = () => {
+    const history = useHistory()
     const {shopName} = useParams<{shopName: string}>()
     const {scenarios, selfServiceConfiguration, handleScenariosUpdate} =
         useReportOrderIssueFlowScenarios(shopName)
+
+    const handleCreateScenarioClick = () => {
+        history.push(
+            `/app/automation/shopify/${shopName}/order-management/report-issue/new`
+        )
+    }
 
     return (
         <div className="full-width">
@@ -33,7 +41,11 @@ const ReportOrderIssueFlowView = () => {
                         </BreadcrumbItem>
                     </Breadcrumb>
                 }
-            />
+            >
+                <Button onClick={handleCreateScenarioClick}>
+                    Create Scenario
+                </Button>
+            </PageHeader>
             <Container
                 fluid
                 className={classnames({

@@ -123,6 +123,7 @@ import OrderManagementViewContainer from './automation/orderManagement/OrderMana
 import ReturnOrderFlowViewContainer from './automation/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
 import CancelOrderFlowViewContainer from './automation/orderManagement/cancelOrder/CancelOrderFlowViewContainer'
 import ReportOrderIssueFlowViewContainer from './automation/orderManagement/reportOrderIssue/ReportOrderIssueFlowViewContainer'
+import CreateReportOrderIssueFlowScenarioViewContainer from './automation/orderManagement/reportOrderIssue/CreateReportOrderIssueFlowScenarioViewContainer'
 import EditReportOrderIssueFlowScenarioViewContainer from './automation/orderManagement/reportOrderIssue/EditReportOrderIssueFlowScenarioViewContainer'
 import QuickResponsesViewContainer from './automation/quickResponses/QuickResponsesViewContainer'
 import PageHeader from './common/components/PageHeader'
@@ -1401,6 +1402,17 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: memoizedWithUserRoleRequired(
                         ReportOrderIssueFlowViewContainer,
+                        AGENT_ROLE
+                    ),
+                    navbar: AutomationNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/shopify/:shopName/order-management/report-issue/new`}
+                exact
+                render={appRender({
+                    content: memoizedWithUserRoleRequired(
+                        CreateReportOrderIssueFlowScenarioViewContainer,
                         AGENT_ROLE
                     ),
                     navbar: AutomationNavbar,

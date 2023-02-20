@@ -1,6 +1,7 @@
 import {
     AUTOMATED_RESPONSE,
     ReportIssueCaseReasonAction,
+    SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
 
 export const SCENARIO_NAME_MAX_LENGTH = 20
@@ -14,4 +15,10 @@ export const SCENARIO_REASON_DEFAULT_ACTION: ReportIssueCaseReasonAction = {
         text: '',
     },
     showHelpfulPrompt: false,
+}
+export const DEFAULT_SCENARIO: SelfServiceReportIssueCase = {
+    title: '',
+    description: '',
+    conditions: {and: []},
+    reasons: [],
 }

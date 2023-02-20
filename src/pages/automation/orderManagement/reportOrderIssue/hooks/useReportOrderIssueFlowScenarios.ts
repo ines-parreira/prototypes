@@ -1,10 +1,13 @@
 import {useCallback, useMemo} from 'react'
+import {useAsyncFn} from 'react-use'
+import {useHistory} from 'react-router-dom'
 
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {IntegrationType} from 'models/integration/constants'
 import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
 
 const useReportOrderIssueFlowScenarios = (shopName: string) => {
+    const history = useHistory()
     const {
         isFetchPending,
         isUpdatePending,
@@ -12,6 +15,10 @@ const useReportOrderIssueFlowScenarios = (shopName: string) => {
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
 
+    const scenarios = useMemo(
+        () => selfServiceConfiguration?.report_issue_policy?.cases ?? [],
+        [selfServiceConfiguration?.report_issue_policy?.cases]
+    )
     const handleScenariosUpdate = useCallback(
         (
             scenarios: SelfServiceReportIssueCase[],
@@ -34,17 +41,28 @@ const useReportOrderIssueFlowScenarios = (shopName: string) => {
         },
         [selfServiceConfiguration, handleSelfServiceConfigurationUpdate]
     )
-    const scenarios = useMemo(
-        () => selfServiceConfiguration?.report_issue_policy?.cases ?? [],
-        [selfServiceConfiguration?.report_issue_policy?.cases]
+    const [{loading: isCreatePending}, handleScenarioCreate] = useAsyncFn(
+        async (scenario: SelfServiceReportIssueCase) => {
+            await handleScenariosUpdate([scenario, ...scenarios], {
+                success: 'Successfully created',
+                error: 'Failed to create',
+            })
+
+            history.push(
+                `/app/automation/shopify/${shopName}/order-management/report-issue`
+            )
+        },
+        [scenarios, handleScenariosUpdate, history, shopName]
     )
 
     return {
         isFetchPending,
         isUpdatePending,
+        isCreatePending,
         scenarios,
         selfServiceConfiguration,
         handleScenariosUpdate,
+        handleScenarioCreate,
     }
 }
 
