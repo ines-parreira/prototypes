@@ -12,6 +12,7 @@ import {
     CategoryScale,
     Tooltip,
     Legend,
+    Filler,
 } from 'chart.js'
 import {SankeyController, Flow} from 'chartjs-chart-sankey'
 
@@ -290,7 +291,8 @@ export function initApp({datadog, sentry}: InitAppParams) {
         LinearScale,
         CategoryScale,
         SankeyController,
-        Flow
+        Flow,
+        Filler
     )
 
     return store
