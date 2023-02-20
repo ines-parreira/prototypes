@@ -1,0 +1,21 @@
+@import '~css/new/layout.less';
+@import '~css/new/colorTokens.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .title {
+        .body-semibold();
+        margin-top: @layout-spacing-s;
+        margin-bottom: @layout-spacing-xxs;
+    }
+
+    .description {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .richField {
+        &.hasError {
+            border-color: @classic-feedback-error;
+        }
+    }
+}
