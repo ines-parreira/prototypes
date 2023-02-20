@@ -264,11 +264,14 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
     <div
       class="headerTopContainer"
     >
-      <div>
+      <div
+        class="titleContainer"
+      >
         <input
           class="titleInput"
           maxlength="250"
           placeholder="Title"
+          title="Uncategorized article"
           type="text"
           value="Uncategorized article"
         />

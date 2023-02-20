@@ -200,8 +200,9 @@ export const HelpCenterEditModalHeader = ({
         <header className={css.header}>
             <div className={css.headerTopContainer}>
                 {onTitleChange ? (
-                    <div>
+                    <div className={css.titleContainer}>
                         <input
+                            title={title}
                             type="text"
                             value={title}
                             placeholder="Title"
