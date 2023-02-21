@@ -1,5 +1,4 @@
 const path = require('path')
-const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const srcDir = path.join(__dirname, '../src')
@@ -49,7 +48,6 @@ module.exports = {
             '@babel/plugin-proposal-optional-chaining',
             '@babel/plugin-proposal-class-properties',
             '@babel/plugin-proposal-export-default-from',
-            'react-hot-loader/babel',
         ],
         overrides: [
             {
@@ -131,11 +129,6 @@ module.exports = {
                 filename: styleBundleFile,
             })
         )
-
-        if (!__PRODUCTION__) {
-            // only enable hot in development
-            config.plugins.push(new webpack.HotModuleReplacementPlugin())
-        }
 
         return config
     },
