@@ -3,8 +3,6 @@ import {sortBy, reverse} from 'lodash'
 import {useDeepCompareEffect} from 'react-use'
 import {Container} from 'reactstrap'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {OrderDirection} from 'models/api/types'
 import {
     PhoneIntegration,
@@ -208,19 +206,12 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
 }
 
 function AddButton({type}: Pick<Props, 'type'>) {
-    const useNewWAOnboardingFlow =
-        useFlags()[FeatureFlagKey.NewWhatsAppOnboarding]
-
     const openOnboardingPage = (type: IntegrationType) => {
         if (type === IntegrationType.WhatsApp) {
-            if (useNewWAOnboardingFlow) {
-                window.open(
-                    window.GORGIAS_STATE.integrations.authentication.whatsapp
-                        ?.redirect_uri ?? ''
-                )
-            } else {
-                window.location.href = '/app/settings/integrations/whatsapp/new'
-            }
+            window.open(
+                window.GORGIAS_STATE.integrations.authentication.whatsapp
+                    ?.redirect_uri ?? ''
+            )
             return
         }
 
