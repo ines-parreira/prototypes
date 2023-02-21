@@ -15,7 +15,6 @@ import axios, {AxiosError} from 'axios'
 import {Map} from 'immutable'
 
 import {DISCOUNT_TYPE, DISCOUNT_CHOICES} from 'models/discountCodes/constants'
-import {OnSubmitButton} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import Button from 'pages/common/components/button/Button'
 import Errors from 'pages/common/forms/Errors'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -24,11 +23,12 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import client from 'models/api/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {DiscountCode} from 'models/discountCodes/types'
 import {PreviewRadioButton} from '../PreviewRadioButton'
 
 type Props = {
     integration: Map<string, string>
-    onSubmit: OnSubmitButton
+    onSubmit: (data: DiscountCode) => void
     onClose: () => void
 }
 

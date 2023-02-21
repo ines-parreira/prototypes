@@ -20,6 +20,9 @@ import {useModalManager} from 'hooks/useModalManager'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import client from 'models/api/resources'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import css from './DiscountCodeResults.less'
 
 type OwnProps = {
@@ -39,6 +42,7 @@ export default function DiscountCodeResults({
     const dispatch = useAppDispatch()
     const [filter, setFilter] = useState('')
     const [discountCodes, setDiscountResults] = useState<DiscountCode[]>([])
+    const currentAccount = useAppSelector(getCurrentAccountState)
 
     const shopifyScope = useMemo<string[]>(() => {
         const scope = integration.getIn(['oauth', 'scope']) as List<string>
@@ -91,11 +95,20 @@ export default function DiscountCodeResults({
     }, [discountModal])
 
     const handleSubmitModal = useCallback(
-        (data) => {
+        (data: DiscountCode) => {
             discountModal.closeModal(DISCOUNT_MODAL_NAME)
             setDiscountResults([data, ...discountCodes])
+
+            logEvent(SegmentEvent.InsertDiscountCodeCreated, {
+                account_domain: currentAccount?.get('domain'),
+                discount: {
+                    id: data.id,
+                    code: data.code,
+                    title: data.title,
+                },
+            })
         },
-        [discountCodes, discountModal]
+        [discountCodes, discountModal, currentAccount]
     )
 
     useDebounce(handleFetchResults, 300, [filter])

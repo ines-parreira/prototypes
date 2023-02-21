@@ -110,6 +110,7 @@ export enum SegmentEvent {
     InsertVideoAddedFromPastedLink = 'insert-video-from-pasted-link/added',
     InsertDiscountCodeOpen = 'insert-discount-code/open',
     InsertDiscountCodeAdded = 'insert-discount-code/added',
+    InsertDiscountCodeCreated = 'insert-discount-code/created',
     ShopifyCancelOrderCancel = 'shopify/cancel-order/cancel',
     ShopifyCancelOrderOpen = 'shopify/cancel-order/open',
     ShopifyCreateOrderCancel = 'shopify/create-order/cancel',
