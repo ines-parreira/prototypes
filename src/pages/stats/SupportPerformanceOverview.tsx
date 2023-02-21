@@ -1,4 +1,5 @@
-import React, {useMemo} from 'react'
+import React, {ComponentProps, useMemo} from 'react'
+import {useLocalStorage} from 'react-use'
 
 import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
@@ -16,12 +17,57 @@ import {
     getStatsFilters,
     getStatsMessagingIntegrations,
 } from 'state/stats/selectors'
+import blueStar from 'assets/img/icons/blue-star.svg'
+
+import DashboardSection from './DashboardSection'
+import DashboardGridCell from './DashboardGridCell'
+import Metric from './Metric'
+import TrendBadge from './TrendBadge'
+import MetricTooltip from './MetricTooltip'
+import TipsToggle from './TipsToggle'
+import css from './SupportPerformanceOverview.less'
+
+export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
+
+type MetricMock = {
+    value: string
+    trend: string
+    trendType: ComponentProps<typeof TrendBadge>['type']
+}
+
+const customerSatisfactionMock: MetricMock = {
+    value: '2.24',
+    trend: '1.2',
+    trendType: 'up',
+}
+
+const firstResponseTimeMock: MetricMock = {
+    value: '5m24s',
+    trend: '21s',
+    trendType: 'down',
+}
+
+const resolutionTimeMock: MetricMock = {
+    value: '1h22m',
+    trend: '2m',
+    trendType: 'up',
+}
+
+const messagesPerTicketMock: MetricMock = {
+    value: '2',
+    trend: '6',
+    trendType: 'down',
+}
 
 export default function SupportPerformanceOverview() {
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const statsFilters = useAppSelector(getStatsFilters)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
+    )
+    const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
+        STATS_TIPS_VISIBILITY_KEY,
+        true
     )
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
@@ -78,7 +124,122 @@ export default function SupportPerformanceOverview() {
                 )
             }
         >
-            SupportPerformanceOverview
+            <DashboardSection
+                title="Customer experience"
+                titleExtra={
+                    <TipsToggle
+                        isVisible={!!areTipsVisible}
+                        onClick={() => setAreTipsVisible(!areTipsVisible)}
+                    />
+                }
+            >
+                <DashboardGridCell size={3}>
+                    <Metric
+                        title="Customer satisfaction"
+                        hint="Average CSAT score for tickets which received a survey during the period"
+                        trendBadge={
+                            <TrendBadge
+                                type={customerSatisfactionMock.trendType}
+                            >
+                                {customerSatisfactionMock.trend}
+                            </TrendBadge>
+                        }
+                        tooltip={
+                            areTipsVisible && (
+                                <MetricTooltip
+                                    type="error"
+                                    title="Poor performance: 4.3"
+                                >
+                                    Tip: you're not often using macros, using
+                                    them could help you decrease Resolution
+                                    Time.
+                                </MetricTooltip>
+                            )
+                        }
+                    >
+                        <div className={css.customerSatisfactionContent}>
+                            {customerSatisfactionMock.value}{' '}
+                            <img
+                                className={css.customerSatisfactionStar}
+                                src={blueStar}
+                                alt="Blue star"
+                            />
+                        </div>
+                    </Metric>
+                </DashboardGridCell>
+                <DashboardGridCell size={3}>
+                    <Metric
+                        title="First response time"
+                        hint="Median time between 1st customer message and 1st human agent response"
+                        trendBadge={
+                            <TrendBadge type={firstResponseTimeMock.trendType}>
+                                {firstResponseTimeMock.trend}
+                            </TrendBadge>
+                        }
+                        tooltip={
+                            areTipsVisible && (
+                                <MetricTooltip
+                                    type="neutral"
+                                    title="Neutral: 5m"
+                                >
+                                    Tip: Sending cute animal GIFs can boost the
+                                    mood in a conversation
+                                </MetricTooltip>
+                            )
+                        }
+                    >
+                        {firstResponseTimeMock.value}
+                    </Metric>
+                </DashboardGridCell>
+                <DashboardGridCell size={3}>
+                    <Metric
+                        title="Resolution time"
+                        hint="Median time between the 1st customer message and the last time the ticket was closed"
+                        trendBadge={
+                            <TrendBadge type={resolutionTimeMock.trendType}>
+                                {resolutionTimeMock.trend}
+                            </TrendBadge>
+                        }
+                        tooltip={
+                            areTipsVisible && (
+                                <MetricTooltip
+                                    type="light-error"
+                                    title="Underperforming: 48m"
+                                >
+                                    Tip: you're not often using macros, using
+                                    them could help you decrease Resolution
+                                    Time.
+                                </MetricTooltip>
+                            )
+                        }
+                    >
+                        {resolutionTimeMock.value}
+                    </Metric>
+                </DashboardGridCell>
+                <DashboardGridCell size={3}>
+                    <Metric
+                        title="Messages per ticket"
+                        hint="Average number of messages exchanged per closed ticket"
+                        trendBadge={
+                            <TrendBadge type={messagesPerTicketMock.trendType}>
+                                {messagesPerTicketMock.trend}
+                            </TrendBadge>
+                        }
+                        tooltip={
+                            areTipsVisible && (
+                                <MetricTooltip
+                                    type="light-success"
+                                    title="Overperforming: 9"
+                                >
+                                    You're doing great, keep up the good work!
+                                </MetricTooltip>
+                            )
+                        }
+                    >
+                        {messagesPerTicketMock.value}
+                    </Metric>
+                </DashboardGridCell>
+            </DashboardSection>
         </StatsPage>
     )
 }

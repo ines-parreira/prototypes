@@ -831,7 +831,256 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
     <div
       class="statsContainer container-fluid"
     >
-      SupportPerformanceOverview
+      <div
+        class="wrapper"
+      >
+        <div
+          class="title"
+        >
+          <div
+            class="titleText heading-page-semibold"
+          >
+            Customer experience
+          </div>
+          <button
+            class="wrapper ghost primary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                visibility_off
+              </i>
+              Hide tips
+            </span>
+          </button>
+        </div>
+        <div
+          class="wrapper"
+        >
+          <div
+            style="grid-column: span 3 / span 3;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                Customer satisfaction
+                <div
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-35"
+                  >
+                    info
+                  </i>
+                </div>
+                <div
+                  class="badge trend"
+                >
+                  <i
+                    class="material-icons trendIcon"
+                  >
+                    trending_up
+                  </i>
+                  1.2
+                </div>
+              </div>
+              <div
+                class="heading-page-semibold"
+              >
+                <div
+                  class="customerSatisfactionContent"
+                >
+                  2.24
+                   
+                  <img
+                    alt="Blue star"
+                    class="customerSatisfactionStar"
+                    src="test-file-stub"
+                  />
+                </div>
+              </div>
+              <div
+                class="wrapper error"
+              >
+                <div
+                  class="body-semibold title"
+                >
+                  Poor performance: 4.3
+                </div>
+                <div
+                  class="body-regular"
+                >
+                  Tip: you're not often using macros, using them could help you decrease Resolution Time.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="grid-column: span 3 / span 3;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                First response time
+                <div
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-36"
+                  >
+                    info
+                  </i>
+                </div>
+                <div
+                  class="badge trend"
+                >
+                  <i
+                    class="material-icons trendIcon"
+                  >
+                    trending_down
+                  </i>
+                  21s
+                </div>
+              </div>
+              <div
+                class="heading-page-semibold"
+              >
+                5m24s
+              </div>
+              <div
+                class="wrapper neutral"
+              >
+                <div
+                  class="body-semibold title"
+                >
+                  Neutral: 5m
+                </div>
+                <div
+                  class="body-regular"
+                >
+                  Tip: Sending cute animal GIFs can boost the mood in a conversation
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="grid-column: span 3 / span 3;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                Resolution time
+                <div
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-37"
+                  >
+                    info
+                  </i>
+                </div>
+                <div
+                  class="badge trend"
+                >
+                  <i
+                    class="material-icons trendIcon"
+                  >
+                    trending_up
+                  </i>
+                  2m
+                </div>
+              </div>
+              <div
+                class="heading-page-semibold"
+              >
+                1h22m
+              </div>
+              <div
+                class="wrapper light-error"
+              >
+                <div
+                  class="body-semibold title"
+                >
+                  Underperforming: 48m
+                </div>
+                <div
+                  class="body-regular"
+                >
+                  Tip: you're not often using macros, using them could help you decrease Resolution Time.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="grid-column: span 3 / span 3;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                Messages per ticket
+                <div
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-38"
+                  >
+                    info
+                  </i>
+                </div>
+                <div
+                  class="badge trend"
+                >
+                  <i
+                    class="material-icons trendIcon"
+                  >
+                    trending_down
+                  </i>
+                  6
+                </div>
+              </div>
+              <div
+                class="heading-page-semibold"
+              >
+                2
+              </div>
+              <div
+                class="wrapper light-success"
+              >
+                <div
+                  class="body-semibold title"
+                >
+                  Overperforming: 9
+                </div>
+                <div
+                  class="body-regular"
+                >
+                  You're doing great, keep up the good work!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

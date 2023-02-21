@@ -3,7 +3,7 @@ import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {render} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
@@ -14,7 +14,9 @@ import {StatsFilters} from 'models/stat/types'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {RootState, StoreDispatch} from 'state/types'
 
-import SupportPerformanceOverview from '../SupportPerformanceOverview'
+import SupportPerformanceOverview, {
+    STATS_TIPS_VISIBILITY_KEY,
+} from '../SupportPerformanceOverview'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -49,6 +51,10 @@ describe('<SupportPerformanceOverview />', () => {
         }),
     } as RootState
 
+    beforeEach(() => {
+        localStorage.clear()
+    })
+
     it('should render the page', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
@@ -57,5 +63,45 @@ describe('<SupportPerformanceOverview />', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should show tips by default', () => {
+        const {queryAllByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceOverview />
+            </Provider>
+        )
+
+        expect(queryAllByText(/^Tip:/)).not.toHaveLength(0)
+    })
+
+    it('should show tips and save the value to local storage on show tips button click', () => {
+        localStorage.setItem(STATS_TIPS_VISIBILITY_KEY, 'false')
+
+        const {getByText, queryAllByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceOverview />
+            </Provider>
+        )
+
+        fireEvent.click(getByText(/Show tips/))
+
+        expect(queryAllByText(/^Tip:/)).not.toHaveLength(0)
+        expect(localStorage.getItem(STATS_TIPS_VISIBILITY_KEY)).toBe('true')
+    })
+
+    it('should hide tips and save the value to local storage on hide tips button click ', () => {
+        localStorage.setItem(STATS_TIPS_VISIBILITY_KEY, 'true')
+
+        const {getByText, queryAllByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceOverview />
+            </Provider>
+        )
+
+        fireEvent.click(getByText(/Hide tips/))
+
+        expect(queryAllByText(/^Tip:/)).toHaveLength(0)
+        expect(localStorage.getItem(STATS_TIPS_VISIBILITY_KEY)).toBe('false')
     })
 })

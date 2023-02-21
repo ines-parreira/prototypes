@@ -279,7 +279,7 @@ export const integrationsState = {
             locked_datetime: null,
             created_datetime: '2017-02-07T06:07:43.481450+00:00',
             type: 'email',
-            id: 12,
+            id: 13,
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
             smooch: null,

@@ -371,7 +371,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         "description": null,
         "facebook": null,
         "http": null,
-        "id": 12,
+        "id": 13,
         "locked_datetime": null,
         "mappings": [],
         "meta": {
