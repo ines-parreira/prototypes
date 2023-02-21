@@ -11,6 +11,7 @@ import React, {
 import classnames from 'classnames'
 
 import produce from 'immer'
+import {Row} from 'reactstrap'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
@@ -20,6 +21,7 @@ import Label from 'pages/common/forms/Label/Label'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import {
+    AddressType,
     BigCommerceActionType,
     BigCommerceCart,
     BigCommerceCartLineItem,
@@ -43,7 +45,6 @@ import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import {getCustomerAddresses} from 'state/infobarActions/bigcommerce/createOrder/selectors'
-import Tip from 'pages/common/components/tip/Tip'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
@@ -55,6 +56,7 @@ import {
     updateBigCommerceCoupon,
 } from 'models/integration/resources/bigcommerce'
 import Tooltip from 'pages/common/components/Tooltip'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import OrderTable from './components/order-table/OrderTable'
 import OrderTotals from './OrderTotals'
 import {
@@ -403,6 +405,7 @@ export function OrderModal({
         storeHasMultipleCurrencies ? '' : integration.meta.currency
     )
     const [isLoading, setIsLoading] = useState(false)
+    const [isDraftOrder, setIsDraftOrder] = useState(true)
     const [lineItemWithError, setLineItemWithError] =
         useState<BigCommerceCreateOrderErrorType>({
             id: '',
@@ -483,13 +486,14 @@ export function OrderModal({
             return
         }
 
-        bigcommerceCreateOrder(
+        void bigcommerceCreateOrder(
             dispatch,
             integration,
             customerId?.toString(),
             cart,
             note,
-            comment
+            comment,
+            isDraftOrder
         )
 
         handleCancel('create-order', false)
@@ -589,18 +593,28 @@ export function OrderModal({
             >
                 <div className={css.formBody}>
                     <div className={css.alerts}>
-                        <Tip
-                            actionLabel="✕"
-                            icon={true}
-                            storageKey="infobar-bigcommerce-create-order-tip"
-                            className={css.tip}
-                        >
-                            <span>
-                                Create an order with status{' '}
-                                <strong>Paid</strong> and{' '}
-                                <strong>Awaiting Fulfillment</strong>.
-                            </span>
-                        </Tip>
+                        <div>
+                            <Row className="mb-3">
+                                <PreviewRadioButton
+                                    className={css.previewRadioButtonsWrapper}
+                                    value={AddressType.Personal}
+                                    isSelected={isDraftOrder}
+                                    label="Draft order"
+                                    caption="Generate unique cart URL valid for up to 30 days."
+                                    onClick={() => setIsDraftOrder(true)}
+                                />
+                            </Row>
+                            <Row className="mb-3">
+                                <PreviewRadioButton
+                                    className={css.previewRadioButtonsWrapper}
+                                    value={AddressType.Company}
+                                    isSelected={!isDraftOrder}
+                                    label="Paid order"
+                                    onClick={() => setIsDraftOrder(false)}
+                                    caption="Create paid order with Awaiting Fulfillment status."
+                                />
+                            </Row>
+                        </div>
                         {!!lineItemWithError.message && (
                             <Alert
                                 type={
@@ -828,10 +842,12 @@ export function OrderModal({
                     <Button
                         intent="primary"
                         tabIndex={0}
-                        onClick={handleAddOrder}
+                        onClick={() => void handleAddOrder()}
                         isDisabled={isTotalPriceLoading || !currency}
                     >
-                        Create order
+                        {isDraftOrder
+                            ? 'Create Draft Order'
+                            : 'Create Paid Order'}
                     </Button>
                 </div>
             </ModalFooter>

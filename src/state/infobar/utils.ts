@@ -17,6 +17,7 @@ export type ActionDataPayload =
           instagram_direct_message_reply?: string
           bigcommerce_checkout_id?: Maybe<string>
           bigcommerce_order_payload?: Maybe<Record<string, any>>
+          bigcommerce_draft_order_url?: Maybe<string>
           from_ticket_message_id?: number
       }
     | ActionPayload

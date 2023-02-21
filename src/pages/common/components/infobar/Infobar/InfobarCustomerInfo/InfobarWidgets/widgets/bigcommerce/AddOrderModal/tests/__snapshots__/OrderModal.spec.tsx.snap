@@ -47,46 +47,68 @@ exports[`OrderModal should render 1`] = `
             <div
               class="alerts"
             >
-              <div
-                class="alert info tip"
-              >
+              <div>
                 <div
-                  class="iconContainer"
+                  class="mb-3 row"
                 >
-                  <img
-                    alt="icon"
-                    src="test-file-stub"
-                  />
+                  <div
+                    aria-checked="true"
+                    aria-label="Draft order"
+                    class="wrapper selected previewRadioButtonsWrapper"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    <div>
+                      <label
+                        class="label label"
+                        for="personal"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="personal"
+                          tabindex="-1"
+                          type="radio"
+                        />
+                        Draft order
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        Generate unique cart URL valid for up to 30 days.
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div
-                  class="content"
+                  class="mb-3 row"
                 >
-                  <span
-                    class="label"
-                  >
-                    <span>
-                      Create an order with status
-                       
-                      <strong>
-                        Paid
-                      </strong>
-                       and
-                       
-                      <strong>
-                        Awaiting Fulfillment
-                      </strong>
-                      .
-                    </span>
-                  </span>
                   <div
-                    class="customActions"
+                    aria-checked="false"
+                    aria-label="Paid order"
+                    class="wrapper previewRadioButtonsWrapper"
+                    role="radio"
+                    tabindex="0"
                   >
-                    <a
-                      class="actionLink"
-                      to="#"
-                    >
-                      ✕
-                    </a>
+                    <div>
+                      <label
+                        class="label label"
+                        for="company"
+                      >
+                        <input
+                          class="input"
+                          id="company"
+                          tabindex="-1"
+                          type="radio"
+                        />
+                        Paid order
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        Create paid order with Awaiting Fulfillment status.
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -335,7 +357,7 @@ exports[`OrderModal should render 1`] = `
               tabindex="0"
               type="button"
             >
-              Create order
+              Create Draft Order
             </button>
           </div>
         </div>

@@ -185,6 +185,10 @@ export type BigCommerceNestedCheckout = {
     data: BigCommerceCheckout
 }
 
+export type BigCommerceCartRedirect = {
+    data: string
+}
+
 export type BigCommerceProduct = {
     id: number
     sku: string

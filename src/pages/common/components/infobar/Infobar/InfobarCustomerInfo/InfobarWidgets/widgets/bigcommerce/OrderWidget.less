@@ -1,0 +1,26 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        display: flex;
+        max-width: 100%;
+    }
+
+    .draftOrderUrl {
+        text-overflow: ellipsis;
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 90%;
+    }
+
+    .icon {
+        cursor: pointer;
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+
+    .checkIcon {
+        color: @light-feedback-success;
+    }
+}

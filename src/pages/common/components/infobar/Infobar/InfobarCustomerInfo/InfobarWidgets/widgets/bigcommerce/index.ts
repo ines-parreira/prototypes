@@ -26,6 +26,13 @@ const bigcommerce = (args: {
     }
 
     if (
+        path.match(/integrations\.\d+\.draft_orders\.\[]$/) &&
+        templatePath.match(/\d+\.template\.widgets\.\d+\.widgets\.\d+$/)
+    ) {
+        return OrderWidget()
+    }
+
+    if (
         path.match(/integrations\.\d+\.orders\.\[]\.bc_order_shipments\.\[]$/)
     ) {
         return Shipping()

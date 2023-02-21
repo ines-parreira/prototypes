@@ -12,6 +12,7 @@ import {
     BigCommerceNestedCart,
     BigCommerceProduct,
     BigCommerceErrorMessage,
+    BigCommerceCartRedirect,
 } from '../types'
 export type OptionSelection = {option_id: number; option_value: number}
 
@@ -463,6 +464,31 @@ export async function deleteBigCommerceCoupon({
             coupon_code: couponCode,
         },
     })
+
+    return response.data.data
+}
+
+export async function getBigCommerceDraftOrderUrl({
+    integrationId,
+    cartId,
+    customerId,
+}: {
+    integrationId: number
+    cartId: string
+    customerId?: number
+}): Promise<string> {
+    const url = '/integrations/bigcommerce/order/cart/redirect/'
+    const response = await client.post<BigCommerceCartRedirect>(
+        url,
+        {},
+        {
+            params: {
+                integration_id: integrationId,
+                cart_id: cartId,
+                update_customer_data: customerId,
+            },
+        }
+    )
 
     return response.data.data
 }

@@ -1,4 +1,5 @@
 import {ShopifyActionType} from '../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import {BigCommerceActionType} from '../models/integration/types'
 
 export const INFOBAR_CUSTOM_BUTTON_ACTION_NAME = 'customHttpAction'
 
@@ -62,6 +63,11 @@ export const actions = [
         name: ShopifyActionType.EditShippingAddress,
         label: 'Edit Shipping address ',
         objectType: 'address',
+    },
+    {
+        name: BigCommerceActionType.CreateOrder,
+        label: 'Create Order',
+        objectType: 'order',
     },
     {
         name: 'rechargeCancelSubscription',

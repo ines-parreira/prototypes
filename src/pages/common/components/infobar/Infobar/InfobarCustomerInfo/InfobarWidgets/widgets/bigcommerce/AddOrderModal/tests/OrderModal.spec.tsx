@@ -129,7 +129,9 @@ describe('OrderModalConnected', () => {
     it('renders when `isOpen` is `true` and IntegrationContext has value', () => {
         renderSubject({orderModalProps: {...defaultProps, isOpen: true}})
 
-        expect(screen.getByRole('button', {name: /Create order/i})).toBeTruthy()
+        expect(
+            screen.getByRole('button', {name: /Create draft order/i})
+        ).toBeTruthy()
     })
 
     it('`Create order` button does not send a create BigCommerce order action', () => {
@@ -139,7 +141,7 @@ describe('OrderModalConnected', () => {
         )
         renderSubject({orderModalProps: {...defaultProps, isOpen: true}})
 
-        screen.getByRole('button', {name: /Create order/i}).click()
+        screen.getByRole('button', {name: /Create draft order/i}).click()
 
         expect(bigcommerceCreateOrderSpy).toHaveBeenCalledTimes(0)
     })
@@ -167,7 +169,7 @@ describe('OrderModalConnected', () => {
         ).mockReturnValue(true)
         renderSubject({orderModalProps: {...defaultProps, isOpen: true}})
 
-        screen.getByRole('button', {name: /Create order/i}).click()
+        screen.getByRole('button', {name: /Create draft order/i}).click()
 
         expect(bigcommerceCreateOrderSpy).toHaveBeenCalled()
     })

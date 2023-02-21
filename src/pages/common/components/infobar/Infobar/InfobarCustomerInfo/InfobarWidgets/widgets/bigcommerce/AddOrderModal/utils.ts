@@ -13,6 +13,7 @@ import {
     EditBigCommerceLineItemError,
     editBigCommerceLineItemModifiers,
     getBigCommerceCheckout,
+    getBigCommerceDraftOrderUrl,
     OptionSelection,
     ProductModifiersChangedError,
     removeBigCommerceLineItem,
@@ -40,6 +41,7 @@ import {
 import {StoreDispatch} from 'state/types'
 import {executeAction} from 'state/infobar/actions'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {ActionDataPayload} from 'state/infobar/utils'
 
 export const isBigCommerceCartLineItem = (
     lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
@@ -781,28 +783,47 @@ export function checkCheckoutValidity({
  * Note: The BigCommerce cart ID and checkout ID are the same.
  * @url https://developer.bigcommerce.com/api-reference/07d6082e99052-get-a-checkout
  */
-export function bigcommerceCreateOrder(
+export async function bigcommerceCreateOrder(
     dispatch: StoreDispatch,
     integration: BigCommerceIntegration,
     customerId: Maybe<string>,
     cart: Maybe<BigCommerceCart>,
     note: string,
-    comment: string
+    comment: string,
+    isDraftOrder: boolean
 ) {
+    if (!cart || !cart.id) {
+        return
+    }
+
+    const payload: ActionDataPayload = {
+        bigcommerce_checkout_id: cart?.id,
+        bigcommerce_order_payload: {
+            status_id: isDraftOrder
+                ? OrderStatusIDType.incomplete
+                : OrderStatusIDType.awaiting_fulfillment,
+            staff_notes: note,
+            customer_message: comment,
+            payment_method: isDraftOrder
+                ? OrderPaymentMethodType.credit_card
+                : OrderPaymentMethodType.manual,
+        },
+    }
+    if (isDraftOrder) {
+        payload.bigcommerce_draft_order_url = await getBigCommerceDraftOrderUrl(
+            {
+                integrationId: integration.id,
+                cartId: cart.id,
+            }
+        )
+    }
+
     dispatch(
         executeAction({
             actionName: BigCommerceActionType.CreateOrder,
             integrationId: integration.id,
             customerId: customerId?.toString(),
-            payload: {
-                bigcommerce_checkout_id: cart?.id,
-                bigcommerce_order_payload: {
-                    status_id: OrderStatusIDType.awaiting_fulfillment,
-                    staff_notes: note,
-                    customer_message: comment,
-                    payment_method: OrderPaymentMethodType.manual,
-                },
-            },
+            payload: payload,
         })
     )
 }

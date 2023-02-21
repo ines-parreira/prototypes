@@ -1,39 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`OrderWidget <AfterTitle/> should match snapshot 1`] = `
-<div>
-  <div
-    class="widgetField staticWidgetField"
-  >
-    <span
-      class="widgetFieldLabel"
-    >
-      Created
-      :
-       
-    </span>
-    <span
-      class="widgetFieldValue"
-    />
-  </div>
-  <div
-    class="widgetField staticWidgetField"
-  >
-    <span
-      class="widgetFieldLabel"
-    >
-      Total
-      :
-       
-    </span>
-    <span
-      class="widgetFieldValue"
-    >
-      —
-    </span>
-  </div>
-</div>
-`;
+exports[`OrderWidget <AfterTitle/> should match snapshot 1`] = `<div />`;
 
 exports[`OrderWidget <AfterTitle/> should not render because no integration id was provided 1`] = `<div />`;
 

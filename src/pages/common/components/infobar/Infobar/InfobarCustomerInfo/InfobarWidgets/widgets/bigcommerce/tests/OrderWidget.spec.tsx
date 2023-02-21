@@ -33,7 +33,13 @@ describe('OrderWidget', () => {
         })
 
         it('should not render because no integration id was provided', () => {
-            const {container} = render(<AfterTitle {...minProps} />)
+            const {container} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <AfterTitle {...minProps} isEditing />
+                    </IntegrationContext.Provider>
+                </Provider>
+            )
 
             expect(container).toMatchSnapshot()
         })
