@@ -322,32 +322,28 @@ const ChatIntegrationPreview = (props: Props) => {
                                     : offlineIntroductionText
                             )}
                         </div>
-                        {!isOnline &&
-                            renderWithAnimationIfEnabled(
-                                <div className={css.replyTime}>
-                                    {ClockIcon}
-                                    {translatedTexts.backLabelBackAt.replace(
-                                        '{time}',
-                                        moment()
-                                            .hour(9)
-                                            .minutes(0)
-                                            .locale(language)
-                                            .format('LT')
-                                    )}
-                                </div>,
-                                'vertical'
-                            )}
+                        {!isOnline && (
+                            <div className={css.replyTime}>
+                                {ClockIcon}
+                                {translatedTexts.backLabelBackAt.replace(
+                                    '{time}',
+                                    moment()
+                                        .hour(9)
+                                        .minutes(0)
+                                        .locale(language)
+                                        .format('LT')
+                                )}
+                            </div>
+                        )}
                         {isOnline &&
                             autoResponderEnabled &&
                             autoResponderReply &&
                             autoResponderReply !==
-                                GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC &&
-                            renderWithAnimationIfEnabled(
+                                GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC && (
                                 <div className={css.replyTime}>
                                     {ClockIcon}
                                     {getTypicalResponseText()}
-                                </div>,
-                                'vertical'
+                                </div>
                             )}
                     </div>
                 </div>

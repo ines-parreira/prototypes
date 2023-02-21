@@ -1,12 +1,12 @@
 import React from 'react'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
-import css from './HelpCenterOrderManagementFlow.less'
+import trackIcon from 'assets/img/self-service/track.svg'
+import returnIcon from 'assets/img/self-service/return.svg'
+import cancelIcon from 'assets/img/self-service/cancel.svg'
+import reportIssueIcon from 'assets/img/self-service/report-issue.svg'
 
-import cancelIcon from './icons/cancel.svg'
-import reportIssueIcon from './icons/report-issue.svg'
-import returnIcon from './icons/return.svg'
-import trackIcon from './icons/track.svg'
+import css from './HelpCenterOrderManagementFlow.less'
 
 type Props = {
     sspTexts: {[key: string]: string}

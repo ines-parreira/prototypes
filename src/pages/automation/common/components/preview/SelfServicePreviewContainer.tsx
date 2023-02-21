@@ -1,7 +1,6 @@
-import React, {ReactNode, useEffect, useRef, useState} from 'react'
+import React, {ReactNode, useEffect, useMemo, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import SelectInputBox, {
@@ -11,29 +10,38 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SourceIcon from 'pages/common/components/SourceIcon'
+import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceChannels'
 
 import css from './SelfServicePreviewContainer.less'
 
-type Props<T extends GorgiasChatIntegration> = {
-    channels: T[]
-    alertActionMessage: string
-    alertActionHref: string
-    alertMessage: ReactNode
-    children: (channel: T) => ReactNode
+type Props = {
+    channels: SelfServiceChannel[]
+    alert: {
+        message: ReactNode
+        action?: {message: string; href: string}
+    }
+    children: (channel: SelfServiceChannel) => void
 }
 
-const SelfServicePreviewContainer = <T extends GorgiasChatIntegration>({
-    channels,
-    alertActionMessage,
-    alertActionHref,
-    alertMessage,
-    children,
-}: Props<T>) => {
+const SelfServicePreviewContainer = ({channels, alert, children}: Props) => {
     const history = useHistory()
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
     const [isSelectOpen, setIsSelectOpen] = useState(false)
-    const [channel, setChannel] = useState<T | undefined>(channels[0])
+    const [channel, setChannel] = useState<SelfServiceChannel | undefined>(
+        channels[0]
+    )
+
+    const options = useMemo(
+        () =>
+            channels.map((channel) => ({
+                type: channel.type,
+                value: `${channel.type}:${channel.value.id}`,
+                label: channel.value.name,
+                channel,
+            })),
+        [channels]
+    )
 
     useEffect(() => {
         if (!channel || !channels.includes(channel)) {
@@ -41,12 +49,14 @@ const SelfServicePreviewContainer = <T extends GorgiasChatIntegration>({
         }
     }, [channel, channels])
 
-    const handleChange = (nextValue: number) => {
-        setChannel(channels.find((channel) => channel.id === nextValue))
+    const handleChange = (nextValue: string) => {
+        setChannel(
+            options.find((option) => option.value === nextValue)?.channel
+        )
     }
-    const handleAlertActionClick = () => {
-        history.push(alertActionHref)
-    }
+
+    const alertAction = alert.action
+    const value = channel ? `${channel.type}:${channel.value.id}` : undefined
 
     return (
         <div className={css.container}>
@@ -55,13 +65,13 @@ const SelfServicePreviewContainer = <T extends GorgiasChatIntegration>({
                 className={css.selectInput}
                 placeholder="Channel"
                 floating={floatingRef}
-                label={channel?.name}
+                label={channel?.value?.name}
                 onToggle={setIsSelectOpen}
                 ref={targetRef}
                 prefix={
                     channel && (
                         <SourceIcon
-                            type={IntegrationType.GorgiasChat}
+                            type={channel.type}
                             className={css.selectInputIcon}
                         />
                     )
@@ -75,25 +85,22 @@ const SelfServicePreviewContainer = <T extends GorgiasChatIntegration>({
                             onToggle={() => context!.onBlur()}
                             ref={floatingRef}
                             target={targetRef}
-                            value={channel?.id}
+                            value={value}
                         >
                             <DropdownBody>
-                                {channels.map((channel) => (
+                                {options.map((option) => (
                                     <DropdownItem
-                                        key={channel.id}
-                                        option={{
-                                            label: channel.name,
-                                            value: channel.id,
-                                        }}
+                                        key={option.value}
+                                        option={option}
                                         onClick={handleChange}
                                         shouldCloseOnSelect
                                         autoFocus
                                     >
                                         <SourceIcon
-                                            type={IntegrationType.GorgiasChat}
+                                            type={option.type}
                                             className={css.dropdownItemIcon}
                                         />
-                                        {channel.name}
+                                        {option.label}
                                     </DropdownItem>
                                 ))}
                             </DropdownBody>
@@ -109,16 +116,20 @@ const SelfServicePreviewContainer = <T extends GorgiasChatIntegration>({
                     type={AlertType.Warning}
                     icon
                     customActions={
-                        <Button
-                            fillStyle="ghost"
-                            size="small"
-                            onClick={handleAlertActionClick}
-                        >
-                            {alertActionMessage}
-                        </Button>
+                        alertAction && (
+                            <Button
+                                fillStyle="ghost"
+                                size="small"
+                                onClick={() => {
+                                    history.push(alertAction.href)
+                                }}
+                            >
+                                {alertAction.message}
+                            </Button>
+                        )
                     }
                 >
-                    {alertMessage}
+                    {alert.message}
                 </Alert>
             )}
         </div>

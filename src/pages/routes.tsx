@@ -132,6 +132,7 @@ import SelfServiceStatsPageTitle from './stats/self-service/SelfServiceStatsPage
 import SelfServiceStatsPageDescription from './stats/self-service/SelfServiceStatsPageDescription'
 import {HELP_URL} from './stats/self-service/constants'
 import SelfServiceStatsPagePaywallCustomCta from './stats/self-service/SelfServiceStatsPagePaywallCustomCta'
+import SelfServiceHelpCentersProvider from './automation/common/providers/SelfServiceHelpCentersProvider'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1363,17 +1364,21 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                     navbar: AutomationNavbar,
                 })}
             />
-            <Route
-                path={`${path}/shopify/:shopName/order-management`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        OrderManagementViewContainer,
-                        AGENT_ROLE
-                    ),
-                    navbar: AutomationNavbar,
-                })}
-            />
+            <HelpCenterApiClientProvider>
+                <SelfServiceHelpCentersProvider>
+                    <Route
+                        path={`${path}/shopify/:shopName/order-management`}
+                        exact
+                        render={appRender({
+                            content: memoizedWithUserRoleRequired(
+                                OrderManagementViewContainer,
+                                AGENT_ROLE
+                            ),
+                            navbar: AutomationNavbar,
+                        })}
+                    />
+                </SelfServiceHelpCentersProvider>
+            </HelpCenterApiClientProvider>
             <Route
                 path={`${path}/shopify/:shopName/order-management/return`}
                 exact

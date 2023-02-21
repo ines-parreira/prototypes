@@ -116,7 +116,7 @@ const sourceTypeToIcon = (
             icon.name = 'yotpo-review-private-comment'
             break
         case TicketChannel.HelpCenter:
-            icon.name = 'help'
+            icon.name = 'live_help'
             break
         case TicketChannel.WhatsApp:
         case TicketMessageSourceType.WhatsAppMessage:

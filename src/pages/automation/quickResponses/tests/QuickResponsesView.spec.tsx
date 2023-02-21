@@ -11,9 +11,10 @@ import {getLDClient} from 'utils/launchDarkly'
 import {RootState, StoreDispatch} from 'state/types'
 import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
-import useSelfServiceChatIntegrations from 'pages/automation/common/hooks/useSelfServiceChatIntegrations'
+import useSelfServiceChatChannels from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import {GorgiasChatIntegration} from 'models/integration/types'
 import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
+import {TicketChannel} from 'business/types/ticket'
 import {MAX_ACTIVE_QUICK_RESPONSES} from '../constants'
 
 import QuickResponsesView from '../QuickResponsesView'
@@ -21,7 +22,7 @@ import QuickResponsesView from '../QuickResponsesView'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 jest.mock('pages/automation/common/hooks/useSelfServiceConfiguration')
-jest.mock('pages/automation/common/hooks/useSelfServiceChatIntegrations')
+jest.mock('pages/automation/common/hooks/useSelfServiceChatChannels')
 jest.mock('utils/launchDarkly')
 
 const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
@@ -31,9 +32,9 @@ const useSelfServiceConfigurationMock =
     useSelfServiceConfiguration as jest.MockedFunction<
         typeof useSelfServiceConfiguration
     >
-const useSelfServiceChatIntegrationsMock =
-    useSelfServiceChatIntegrations as jest.MockedFunction<
-        typeof useSelfServiceChatIntegrations
+const useSelfServiceChatChannelsMock =
+    useSelfServiceChatChannels as jest.MockedFunction<
+        typeof useSelfServiceChatChannels
     >
 
 allFlagsMock.mockReturnValue({})
@@ -51,15 +52,18 @@ describe('<QuickResponsesView />', () => {
     }
 
     beforeEach(() => {
-        useSelfServiceChatIntegrationsMock.mockReturnValue([
+        useSelfServiceChatChannelsMock.mockReturnValue([
             {
-                id: 1,
-                name: 'sfbibcycles chat',
-                meta: {},
-                decoration: {
-                    main_color: GORGIAS_CHAT_DEFAULT_COLOR,
-                },
-            } as GorgiasChatIntegration,
+                type: TicketChannel.Chat,
+                value: {
+                    id: 1,
+                    name: 'sfbibcycles chat',
+                    meta: {},
+                    decoration: {
+                        main_color: GORGIAS_CHAT_DEFAULT_COLOR,
+                    },
+                } as GorgiasChatIntegration,
+            },
         ])
         window.HTMLElement.prototype.scrollTo = jest.fn()
     })

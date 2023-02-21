@@ -11,14 +11,12 @@ import Loader from 'pages/common/components/Loader/Loader'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
-import useSelfServiceChatIntegrations from 'pages/automation/common/hooks/useSelfServiceChatIntegrations'
-import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
-import SelfServiceChatIntegrationPreview from 'pages/automation/common/components/preview/SelfServiceChatIntegrationPreview'
-import SelfServiceQuickResponseChatIntegrationPreview from 'pages/automation/common/components/preview/SelfServiceQuickResponseChatIntegrationPreview'
+import useSelfServiceChatChannels from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 
 import QuickResponsesAccordionCaption from './components/QuickResponsesAccordionCaption'
 import QuickResponsesAccordion from './components/QuickResponsesAccordion'
 import useQuickResponses from './hooks/useQuickResponses'
+import QuickResponsesPreview from './QuickResponsesPreview'
 import QuickResponsesViewContext, {
     QuickResponsesViewContextType,
 } from './QuickResponsesViewContext'
@@ -41,7 +39,7 @@ const QuickResponsesView = () => {
         handleQuickResponsesUpdate,
         handleQuickResponsesDelete,
     } = useQuickResponses(shopType, shopName)
-    const chatIntegrations = useSelfServiceChatIntegrations(shopType, shopName)
+    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyQuickResponses, setDirtyQuickResponses] =
@@ -215,33 +213,15 @@ const QuickResponsesView = () => {
                                 }
                             />
                         </div>
-                        <SelfServicePreviewContainer
-                            channels={chatIntegrations}
-                            alertActionMessage="Go to chat settings"
-                            alertActionHref="/app/settings/channels/gorgias_chat"
-                            alertMessage="Connect a chat to your store to use this feature."
-                        >
-                            {(channel) =>
-                                expandedQuickResponse ? (
-                                    <SelfServiceQuickResponseChatIntegrationPreview
-                                        integration={channel}
-                                        quickResponse={expandedQuickResponse}
-                                    />
-                                ) : (
-                                    <SelfServiceChatIntegrationPreview
-                                        integration={channel}
-                                        selfServiceConfiguration={{
-                                            ...selfServiceConfiguration,
-                                            quick_response_policies:
-                                                dirtyQuickResponses,
-                                        }}
-                                        highlightedQuickResponseId={
-                                            hoveredQuickResponseId
-                                        }
-                                    />
-                                )
-                            }
-                        </SelfServicePreviewContainer>
+                        <QuickResponsesPreview
+                            channels={chatChannels}
+                            selfServiceConfiguration={{
+                                ...selfServiceConfiguration,
+                                quick_response_policies: dirtyQuickResponses,
+                            }}
+                            expandedQuickResponse={expandedQuickResponse}
+                            hoveredQuickResponseId={hoveredQuickResponseId}
+                        />
                     </QuickResponsesViewContext.Provider>
                 )}
             </Container>

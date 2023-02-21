@@ -3,10 +3,16 @@ import {useMemo} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType, GorgiasChatIntegration} from 'models/integration/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
+import {TicketChannel} from 'business/types/ticket'
 
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 
-const useSelfServiceChatIntegrations = (shopType: string, shopName: string) => {
+export type SelfServiceChatChannel = {
+    type: TicketChannel.Chat
+    value: GorgiasChatIntegration
+}
+
+const useSelfServiceChatChannels = (shopType: string, shopName: string) => {
     const getChatIntegrations = useMemo(
         () =>
             getIntegrationsByType<GorgiasChatIntegration>(
@@ -18,15 +24,20 @@ const useSelfServiceChatIntegrations = (shopType: string, shopName: string) => {
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
     const storeIntegrationId = storeIntegration?.id
 
-    return useMemo(
+    return useMemo<SelfServiceChatChannel[]>(
         () =>
-            chatIntegrations.filter(
-                (chatIntegration) =>
-                    chatIntegration.meta.shop_integration_id ===
-                    storeIntegrationId
-            ),
+            chatIntegrations
+                .filter(
+                    (integration) =>
+                        integration.meta.shop_integration_id ===
+                        storeIntegrationId
+                )
+                .map((integration) => ({
+                    type: TicketChannel.Chat,
+                    value: integration,
+                })),
         [chatIntegrations, storeIntegrationId]
     )
 }
 
-export default useSelfServiceChatIntegrations
+export default useSelfServiceChatChannels

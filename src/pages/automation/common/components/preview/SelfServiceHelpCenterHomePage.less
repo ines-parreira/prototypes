@@ -1,0 +1,40 @@
+@import '~css/new/layout.less';
+@import '~css/new/colorTokens.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        background-color: @classic-neutral-grey-0;
+        margin-top: 11px;
+        color: @modern-neutral-grey-6;
+        flex: 1;
+    }
+
+    .title {
+        .heading-page-semibold();
+        padding: @layout-spacing-m;
+        border-bottom: 1px solid @modern-neutral-grey-3;
+    }
+
+    .itemsContainer {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m;
+        row-gap: @layout-spacing-s;
+    }
+
+    .item {
+        .heading-subsection-semibold();
+        display: flex;
+        align-items: center;
+        column-gap: @layout-spacing-s;
+        border: 1px solid @modern-neutral-grey-3;
+        border-radius: 8px;
+        padding: @layout-spacing-s;
+        text-transform: capitalize;
+
+        &.isHighlighted {
+            border-color: @modern-main-primary;
+        }
+    }
+}

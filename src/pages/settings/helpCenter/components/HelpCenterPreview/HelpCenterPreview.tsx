@@ -10,12 +10,8 @@ type Props = {
 const HelpCenterPreview = ({children, name}: Props) => {
     return (
         <div className={css.container}>
-            <div className={css.topBar}>
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <h2 className={css.titleBar}>{name}</h2>
+            <div className={css.topBar} />
+            <div className={css.titleBar}>{name}</div>
             {children}
         </div>
     )

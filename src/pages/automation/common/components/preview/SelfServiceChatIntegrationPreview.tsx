@@ -1,50 +1,22 @@
-import React from 'react'
-import classnames from 'classnames'
+import React, {memo} from 'react'
+import {Route, useLocation} from 'react-router-dom'
 
-import {
-    QuickResponsePolicy,
-    SelfServiceConfiguration,
-} from 'models/selfServiceConfiguration/types'
 import {GorgiasChatIntegration} from 'models/integration/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
-import Button from 'pages/common/components/button/Button'
-import gorgiasChatSendMessageIcon from 'assets/img/integrations/gorgias-chat-send-message-icon.svg'
-import Collapse from 'pages/common/components/Collapse/Collapse'
 
-import css from './SelfServiceChatIntegrationPreview.less'
+import SelfServiceChatIntegrationHomePage from './SelfServiceChatIntegrationHomePage'
+import SelfServiceChatIntegrationQuickResponsePage from './SelfServiceChatIntegrationQuickResponsePage'
+import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 
 type Props = {
     integration: GorgiasChatIntegration
-    selfServiceConfiguration: SelfServiceConfiguration
-    highlightedQuickResponseId?: QuickResponsePolicy['id'] | null
 }
 
-const ChevronRightIcon = () => (
-    <i className={classnames('material-icons', css.chevronRightIcon)}>
-        chevron_right
-    </i>
-)
+const SelfServiceChatIntegrationPreview = (props: Props) => {
+    const {integration} = props
+    const location = useLocation()
 
-const SelfServiceChatIntegrationPreview = ({
-    integration,
-    selfServiceConfiguration,
-    highlightedQuickResponseId,
-}: Props) => {
     const {decoration, meta} = integration
-
-    const sspTexts = GORGIAS_CHAT_SSP_TEXTS[meta.language || 'en-US']
-
-    const quickResponses =
-        selfServiceConfiguration.quick_response_policies.filter(
-            (quickResponse) => !quickResponse.deactivated_datetime
-        )
-    const canTrackOrders = selfServiceConfiguration.track_order_policy.enabled
-    const canManageOrders =
-        canTrackOrders ||
-        selfServiceConfiguration.report_issue_policy.enabled ||
-        selfServiceConfiguration.cancel_order_policy.enabled ||
-        selfServiceConfiguration.return_order_policy.enabled
 
     return (
         <ChatIntegrationPreview
@@ -56,56 +28,26 @@ const SelfServiceChatIntegrationPreview = ({
             isOnline
             language={meta.language}
             renderFooter={false}
-            renderPoweredBy={false}
+            renderPoweredBy={
+                location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.HOME
+            }
+            autoResponderEnabled={meta.preferences?.auto_responder?.enabled}
+            autoResponderReply={meta.preferences?.auto_responder?.reply}
             hideButton
+            showGoBackButton={
+                location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.HOME
+            }
             enableAnimations
             showBackground={false}
         >
-            <div className={css.contentContainer}>
-                <Collapse isOpen={quickResponses.length > 0} memoizeOnExit>
-                    <div className={css.listGroup}>
-                        <div className={css.listGroupItemHeading}>
-                            {sspTexts.quickResponses}
-                        </div>
-                        {quickResponses.map((quickResponse) => (
-                            <div
-                                key={quickResponse.id}
-                                className={classnames(css.listGroupItem, {
-                                    [css.isHighlighted]:
-                                        quickResponse.id ===
-                                        highlightedQuickResponseId,
-                                })}
-                            >
-                                {quickResponse.title}
-                                <ChevronRightIcon />
-                            </div>
-                        ))}
-                    </div>
-                </Collapse>
-                {canManageOrders && (
-                    <div className={css.listGroup}>
-                        <div className={css.listGroupItemHeading}>
-                            {canTrackOrders
-                                ? sspTexts.trackAndManageMyOrders
-                                : sspTexts.manageMyOrders}
-                            <ChevronRightIcon />
-                        </div>
-                    </div>
-                )}
-            </div>
-            <div className={css.footer}>
-                {sspTexts.needHelp}
-                <Button>
-                    <img
-                        className={css.sendMessageIcon}
-                        src={gorgiasChatSendMessageIcon}
-                        alt="send message icon"
-                    />
-                    {sspTexts.sendUsAMessage}
-                </Button>
-            </div>
+            <Route path={SELF_SERVICE_PREVIEW_ROUTES.HOME} exact>
+                <SelfServiceChatIntegrationHomePage {...props} />
+            </Route>
+            <Route path={SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE} exact>
+                <SelfServiceChatIntegrationQuickResponsePage {...props} />
+            </Route>
         </ChatIntegrationPreview>
     )
 }
 
-export default SelfServiceChatIntegrationPreview
+export default memo(SelfServiceChatIntegrationPreview)

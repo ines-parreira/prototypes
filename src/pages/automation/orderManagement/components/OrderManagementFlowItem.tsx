@@ -13,6 +13,8 @@ type Props = {
     action?: ReactNode
     onChange: (isEnabled: boolean) => void
     onClick?: () => void
+    onMouseEnter?: () => void
+    onMouseLeave?: () => void
 }
 
 const DEFAULT_ACTION = (
@@ -29,6 +31,8 @@ const OrderManagementFlowItem = ({
     action = DEFAULT_ACTION,
     onChange,
     onClick,
+    onMouseEnter,
+    onMouseLeave,
 }: Props) => {
     const handleChange = (
         nextValue: boolean,
@@ -45,6 +49,8 @@ const OrderManagementFlowItem = ({
                 [css.isClickable]: Boolean(onClick),
             })}
             onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
         >
             <ToggleInput
                 isToggled={isEnabled}
