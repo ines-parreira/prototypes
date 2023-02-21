@@ -9,6 +9,7 @@ type Props = {
     minHeight: string
     size: string
     className?: string
+    'data-testid'?: string
 }
 
 export default class Loader extends Component<Props> {
@@ -19,10 +20,20 @@ export default class Loader extends Component<Props> {
     }
 
     render() {
-        const {message, inline, minHeight, className, size} = this.props
+        const {
+            message,
+            inline,
+            minHeight,
+            className,
+            size,
+            'data-testid': dataTestId,
+        } = this.props
 
         return (
-            <div className={classnames(css.container, className)}>
+            <div
+                className={classnames(css.container, className)}
+                data-testid={dataTestId}
+            >
                 <div className={css.inner} style={{minHeight}}>
                     <i
                         className="icon-custom icon-circle-o-notch md-spin"

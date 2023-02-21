@@ -116,6 +116,7 @@ import WhatsAppIntegration from './components/whatsapp/WhatsAppIntegration'
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
 import GorgiasTranslateText from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
+import EmailMigration from './components/email/EmailMigration/EmailMigration'
 
 export enum Tab {
     EmailForwarding = 'forwarding',
@@ -159,6 +160,7 @@ export const IntegrationDetail = ({
         'onboard',
         'setup',
         'about',
+        'migration',
     ].includes(integrationId)
 
     const isUpdate = useMemo(
@@ -735,6 +737,10 @@ export const IntegrationDetail = ({
             if (!!integrationId) {
                 if (integrationId === 'setup') {
                     return <OutlookIntegrationSetup loading={loading} />
+                }
+
+                if (integrationId === 'migration') {
+                    return <EmailMigration />
                 }
 
                 if (isUpdate) {
