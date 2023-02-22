@@ -63,6 +63,7 @@ describe('getCountryFromPhoneNumber()', () => {
         ['+1 234 567 8910', 'US'],
         ['+33 2 34 56 78 91', 'FR'],
         ['+352 79 1234', 'LU'],
+        ['+1 844-307-6830', 'US'],
     ])('should infer country from full valid numbers', (number, country) => {
         expect(getCountryFromPhoneNumber(number)).toEqual(country)
     })

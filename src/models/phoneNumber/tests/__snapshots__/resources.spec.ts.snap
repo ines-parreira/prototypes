@@ -7,6 +7,7 @@ exports[`capabilities limitations fetchPhoneCapabilities should resolve with a m
       "mms": false,
       "sms": false,
       "voice": true,
+      "whatsapp": true,
     },
   },
   "CA": {
@@ -14,11 +15,13 @@ exports[`capabilities limitations fetchPhoneCapabilities should resolve with a m
       "mms": true,
       "sms": true,
       "voice": true,
+      "whatsapp": true,
     },
     "TollFree": {
       "mms": true,
       "sms": true,
       "voice": true,
+      "whatsapp": true,
     },
   },
   "GB": {
@@ -26,16 +29,19 @@ exports[`capabilities limitations fetchPhoneCapabilities should resolve with a m
       "mms": false,
       "sms": true,
       "voice": true,
+      "whatsapp": true,
     },
     "Mobile": {
       "mms": false,
       "sms": true,
       "voice": true,
+      "whatsapp": true,
     },
     "National": {
       "mms": false,
       "sms": true,
       "voice": true,
+      "whatsapp": true,
     },
   },
   "US": {
@@ -43,11 +49,13 @@ exports[`capabilities limitations fetchPhoneCapabilities should resolve with a m
       "mms": true,
       "sms": true,
       "voice": true,
+      "whatsapp": true,
     },
     "TollFree": {
       "mms": true,
       "sms": true,
       "voice": true,
+      "whatsapp": true,
     },
   },
 }
@@ -59,6 +67,7 @@ exports[`phone numbers resources createPhoneNumber should resolve with a new Pho
     "mms": true,
     "sms": true,
     "voice": true,
+    "whatsapp": true,
   },
   "created_datetime": "2021-12-01T18:00:00.000000+00:00",
   "deleted_datetime": null,
@@ -67,13 +76,14 @@ exports[`phone numbers resources createPhoneNumber should resolve with a new Pho
   "meta": {
     "area_code": 415,
     "country": "US",
-    "emoji": "👍",
+    "emoji": null,
     "friendly_name": "+1 415 111 2222",
     "state": "CA",
     "type": "Local",
   },
   "name": "A Phone Number",
   "phone_number": "+14151112222",
+  "phone_number_id": 1,
   "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
 }
 `;
@@ -125,6 +135,7 @@ exports[`phone numbers resources fetchPhoneNumbers should resolve with a PhoneNu
         "mms": true,
         "sms": true,
         "voice": true,
+        "whatsapp": true,
       },
       "created_datetime": "2021-12-01T18:00:00.000000+00:00",
       "deleted_datetime": null,
@@ -133,13 +144,14 @@ exports[`phone numbers resources fetchPhoneNumbers should resolve with a PhoneNu
       "meta": {
         "area_code": 415,
         "country": "US",
-        "emoji": "👍",
+        "emoji": null,
         "friendly_name": "+1 415 111 2222",
         "state": "CA",
         "type": "Local",
       },
       "name": "A Phone Number",
       "phone_number": "+14151112222",
+      "phone_number_id": 1,
       "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
     },
     {
@@ -147,6 +159,7 @@ exports[`phone numbers resources fetchPhoneNumbers should resolve with a PhoneNu
         "mms": true,
         "sms": true,
         "voice": true,
+        "whatsapp": true,
       },
       "created_datetime": "2021-12-01T18:00:00.000000+00:00",
       "deleted_datetime": null,
@@ -155,12 +168,13 @@ exports[`phone numbers resources fetchPhoneNumbers should resolve with a PhoneNu
       "meta": {
         "area_code": 813,
         "country": "CA",
-        "emoji": "👍",
+        "emoji": null,
         "friendly_name": "+1 813 111 2223",
         "type": "TollFree",
       },
       "name": "Another Phone Number",
       "phone_number": "+14151112223",
+      "phone_number_id": 2,
       "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
     },
     {
@@ -177,6 +191,7 @@ exports[`phone numbers resources fetchPhoneNumbers should resolve with a PhoneNu
         "mms": false,
         "sms": false,
         "voice": true,
+        "whatsapp": true,
       },
       "created_datetime": "2021-12-01T18:00:00.000000+00:00",
       "deleted_datetime": null,
@@ -185,12 +200,13 @@ exports[`phone numbers resources fetchPhoneNumbers should resolve with a PhoneNu
       "meta": {
         "area_code": 7,
         "country": "GB",
-        "emoji": "👍",
+        "emoji": null,
         "friendly_name": "+44 7123 456789",
         "type": "Mobile",
       },
       "name": "Intl. Phone Number",
       "phone_number": "+14151112223",
+      "phone_number_id": 3,
       "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
     },
   ],
@@ -206,6 +222,7 @@ exports[`phone numbers resources updatePhoneNumber should resolve with the updat
     "mms": true,
     "sms": true,
     "voice": true,
+    "whatsapp": true,
   },
   "created_datetime": "2021-12-01T18:00:00.000000+00:00",
   "deleted_datetime": null,
@@ -214,13 +231,14 @@ exports[`phone numbers resources updatePhoneNumber should resolve with the updat
   "meta": {
     "area_code": 415,
     "country": "US",
-    "emoji": "👍",
+    "emoji": null,
     "friendly_name": "+1 415 111 2222",
     "state": "CA",
     "type": "Local",
   },
   "name": "A Phone Number",
   "phone_number": "+14151112222",
+  "phone_number_id": 1,
   "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
 }
 `;
@@ -236,7 +254,7 @@ exports[`phone numbers resources updatePhoneNumber should resolve with the updat
   "post": [],
   "put": [
     {
-      "data": "{"id":1,"name":"A Phone Number","phone_number":"+14151112222","created_datetime":"2021-12-01T18:00:00.000000+00:00","updated_datetime":"2021-12-01T18:00:00.000000+00:00","deleted_datetime":null,"meta":{"type":"Local","emoji":"👍","friendly_name":"+1 415 111 2222","state":"CA","country":"US","area_code":415},"integrations":[],"capabilities":{"sms":true,"voice":true,"mms":true}}",
+      "data": "{"id":1,"name":"A Phone Number","phone_number":"+14151112222","phone_number_id":1,"created_datetime":"2021-12-01T18:00:00.000000+00:00","updated_datetime":"2021-12-01T18:00:00.000000+00:00","deleted_datetime":null,"meta":{"emoji":null,"type":"Local","friendly_name":"+1 415 111 2222","state":"CA","country":"US","area_code":415},"integrations":[],"capabilities":{"sms":true,"voice":true,"mms":true,"whatsapp":true}}",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

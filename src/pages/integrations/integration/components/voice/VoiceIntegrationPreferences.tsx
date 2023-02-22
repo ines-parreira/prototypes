@@ -11,7 +11,7 @@ import {
     PhoneRingingBehaviour,
     isPhoneIntegration,
 } from 'models/integration/types'
-import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
+import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import CheckBox from 'pages/common/forms/CheckBox'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
@@ -49,8 +49,8 @@ export default function VoiceIntegrationPreferences({
             ringing_behaviour: PhoneRingingBehaviour.RoundRobin,
         }
     )
-    const phoneNumberId = integration?.meta?.twilio_phone_number_id
-    const phoneNumber = useAppSelector(getPhoneNumber(phoneNumberId))
+    const phoneNumberId = integration?.meta?.phone_number_id
+    const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
     const dispatch = useAppDispatch()
 
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
@@ -134,7 +134,7 @@ export default function VoiceIntegrationPreferences({
                                     </Col>
                                     <Col lg={4} className={css.appLink}>
                                         <Link
-                                            to={`/app/settings/phone-numbers/${integration.meta.twilio_phone_number_id}`}
+                                            to={`/app/settings/phone-numbers/${integration.meta.phone_number_id}`}
                                         >
                                             Manage Phone Number
                                         </Link>

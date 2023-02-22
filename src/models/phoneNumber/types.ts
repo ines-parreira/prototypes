@@ -7,6 +7,7 @@ export type OldPhoneNumber = {
     id: number
     name: string
     phone_number: string
+    phone_number_id: number
     address?: AddressInformation
     created_datetime: string
     updated_datetime: string
@@ -20,9 +21,8 @@ export type NewPhoneNumber = {
     id: number
     name: string
     phone_number: string
-    phone_number_friendly: Maybe<string>
-    twilio_phone_number: TwilioPhoneNumberMeta
-    whatsapp_phone_number: WhatsAppPhoneNumberMeta
+    phone_number_friendly: string
+    connections: PhoneConnection[]
     created_datetime: string
     updated_datetime: string
     deleted_datetime: Maybe<string>
@@ -32,19 +32,36 @@ export type NewPhoneNumber = {
 
 export type TwilioPhoneNumberMeta = {
     type: PhoneType
-    country: PhoneCountry
-    state?: Maybe<string>
-    area_code: number
-}
-
-export type WhatsAppPhoneNumberMeta = {
-    routing: {
-        phone_number: string
+    address: {
+        country: PhoneCountry
+        state?: Maybe<string>
+        area_code: number
     }
 }
 
+export enum PhoneConnectionType {
+    WhatsApp = 'whatsapp',
+    Twilio = 'twilio',
+}
+
+export type PhoneConnection = WhatsAppPhoneConnection | TwilioPhoneConnection
+
+export type WhatsAppPhoneConnection = {
+    type: PhoneConnectionType.WhatsApp
+    meta: WhatsAppPhoneNumberMeta
+}
+
+export type TwilioPhoneConnection = {
+    type: PhoneConnectionType.Twilio
+    meta: TwilioPhoneNumberMeta
+}
+
+export type WhatsAppPhoneNumberMeta = {
+    waba_phone_number_id: string
+}
+
 export type PhoneNumberMeta = {
-    emoji?: Maybe<string>
+    emoji: Maybe<string>
     country: PhoneCountry
     friendly_name: string
     type: PhoneType
@@ -56,6 +73,7 @@ export type PhoneCapabilities = {
     mms: boolean
     sms: boolean
     voice: boolean
+    whatsapp: boolean
 }
 
 export type AddressInformation = {

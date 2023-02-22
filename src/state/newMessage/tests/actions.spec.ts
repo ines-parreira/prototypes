@@ -19,7 +19,7 @@ import {initialState as ticketInitialState} from 'state/ticket/reducers'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {integrationsState} from 'fixtures/integrations'
-import {phoneNumbers} from 'fixtures/phoneNumber'
+import {phoneNumbers} from 'fixtures/newPhoneNumber'
 import {PhoneNumber} from 'models/phoneNumber/types'
 import * as integrationSelectors from 'state/integrations/selectors'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
@@ -64,7 +64,7 @@ type MockedRootState = {
     newMessage?: Map<any, any>
     currentUser?: Map<any, any>
     entities?: {
-        phoneNumbers: Record<number, PhoneNumber>
+        newPhoneNumbers: Record<number, PhoneNumber>
     }
 }
 
@@ -487,7 +487,7 @@ describe('actions', () => {
 
                 store = mockStore({
                     integrations: fromJS(integrationsState),
-                    entities: {phoneNumbers},
+                    entities: {newPhoneNumbers: phoneNumbers},
                     ticket: fromJS({
                         events: [
                             {

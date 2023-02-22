@@ -14,15 +14,15 @@ import {useAsyncFn} from 'react-use'
 import Clipboard from 'clipboard'
 import classnames from 'classnames'
 
-import {PhoneNumber, PhoneCountry} from 'models/phoneNumber/types'
+import {PhoneCountry, NewPhoneNumber} from 'models/phoneNumber/types'
 import {
-    updatePhoneNumber,
-    deletePhoneNumber,
+    updateNewPhoneNumber,
+    deleteNewPhoneNumber,
 } from 'models/phoneNumber/resources'
 import {GorgiasApiError} from 'models/api/types'
 import {
-    phoneNumberUpdated,
-    phoneNumberDeleted,
+    newPhoneNumberUpdated,
+    newPhoneNumberDeleted,
 } from 'state/entities/phoneNumbers/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -31,10 +31,16 @@ import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
-import {hasCapability, isOldPhoneNumber} from 'pages/phoneNumbers/utils'
+import {
+    countryCode,
+    hasCapability,
+    isNewPhoneNumber,
+    isTwilioConnection,
+} from 'pages/phoneNumbers/utils'
 import history from 'pages/history'
 import {errorToChildren} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
+import SourceIcon from 'pages/common/components/SourceIcon'
 
 import css from './PhoneNumberDetails.less'
 
@@ -42,7 +48,7 @@ import rawCountries from './options/countries.json'
 import rawStates from './options/states.json'
 
 type Props = {
-    phoneNumber: PhoneNumber
+    phoneNumber: NewPhoneNumber
 }
 
 type States = {
@@ -56,24 +62,25 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
     const dispatch = useAppDispatch()
     const [name, setName] = useState(phoneNumber.name)
 
+    const twilioConnection = phoneNumber.connections.find(isTwilioConnection)
+
+    const numberCountryCode = countryCode(phoneNumber)
     const state =
-        isOldPhoneNumber(phoneNumber) &&
-        phoneNumber.meta?.country === PhoneCountry.US
-            ? states[phoneNumber.meta.country].find(
-                  (c) => c.value === phoneNumber.meta.state
+        !!twilioConnection && numberCountryCode === PhoneCountry.US
+            ? states[numberCountryCode].find(
+                  (c) => c.value === twilioConnection.meta.address.state
               )?.label || ''
             : ''
     const [isPhoneNumberCopied, setIsPhoneNumberCopied] = useState(false)
-    const countryName =
-        isOldPhoneNumber(phoneNumber) && phoneNumber.meta.country
-            ? countries.find((c) => c.value === phoneNumber.meta.country)
-                  ?.label ?? phoneNumber.meta.country
-            : ''
+    const countryName = numberCountryCode
+        ? countries.find((c) => c.value === numberCountryCode)?.label ??
+          numberCountryCode
+        : ''
 
     const [{loading: isDeletePending}, handleDelete] = useAsyncFn(async () => {
         try {
-            await deletePhoneNumber(phoneNumber.id)
-            dispatch(phoneNumberDeleted(phoneNumber.id))
+            await deleteNewPhoneNumber(phoneNumber.id)
+            dispatch(newPhoneNumberDeleted(phoneNumber.id))
             void dispatch(
                 notify({
                     message: 'Successfully deleted phone number',
@@ -93,11 +100,14 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
         }
     }, [phoneNumber])
 
-    const VoiceIntegration = phoneNumber.integrations.find(
+    const voiceIntegration = phoneNumber.integrations.find(
         (integration) => integration.type === IntegrationType.Phone
     )
-    const smsApp = phoneNumber.integrations.find(
+    const smsIntegration = phoneNumber.integrations.find(
         (integration) => integration.type === IntegrationType.Sms
+    )
+    const whatsAppIntegration = phoneNumber.integrations.find(
+        (integration) => integration.type === IntegrationType.WhatsApp
     )
 
     useEffect(() => {
@@ -119,16 +129,16 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
         async (event: React.FormEvent) => {
             event.preventDefault()
-            if (!isOldPhoneNumber(phoneNumber)) {
+            if (!isNewPhoneNumber(phoneNumber)) {
                 return
             }
 
             try {
-                const res = await updatePhoneNumber({...phoneNumber, name})
+                const res = await updateNewPhoneNumber({...phoneNumber, name})
                 if (!res) {
                     return
                 }
-                dispatch(phoneNumberUpdated(res))
+                dispatch(newPhoneNumberUpdated(res))
                 void dispatch(
                     notify({
                         message: 'Successfully updated phone number',
@@ -147,7 +157,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
         [phoneNumber, name, dispatch]
     )
 
-    if (!isOldPhoneNumber(phoneNumber)) {
+    if (!isNewPhoneNumber(phoneNumber)) {
         return null
     }
 
@@ -175,7 +185,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                             <Input
                                 id="phone-number"
                                 type="text"
-                                value={phoneNumber.meta?.friendly_name}
+                                value={phoneNumber.phone_number_friendly}
                                 readOnly
                             />
                             <InputGroupAddon addonType="append">
@@ -198,85 +208,103 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                     </FormGroup>
                 </Col>
             </Row>
-            <Row>
-                <Col lg={3} className="pr-lg-0 pr-md-3">
-                    <FormGroup>
-                        <Label className="control-label">Country</Label>
-                        <Input value={countryName as string} readOnly />
-                    </FormGroup>
-                </Col>
-                <Col lg={3} className="pr-lg-0 pr-md-3">
-                    <FormGroup>
-                        <Label className="control-label">Type</Label>
-                        <Input value={phoneNumber.meta?.type} readOnly />
-                    </FormGroup>
-                </Col>
-            </Row>
-            <Row>
-                {state && (
-                    <Col lg={3} className="pr-lg-0 pr-md-3">
-                        <FormGroup>
-                            <Label className="control-label">State</Label>
-                            <Input value={state as string} readOnly />
-                        </FormGroup>
-                    </Col>
-                )}
-                <Col lg={3} className="pr-lg-0 pr-md-3">
-                    <FormGroup>
-                        <Label className="control-label">Area Code</Label>
-                        <Input value={phoneNumber.meta?.area_code} readOnly />
-                    </FormGroup>
-                </Col>
-            </Row>
+            {twilioConnection && (
+                <>
+                    <Row>
+                        <Col lg={3} className="pr-lg-0 pr-md-3">
+                            <FormGroup>
+                                <Label className="control-label">Country</Label>
+                                <Input value={countryName as string} readOnly />
+                            </FormGroup>
+                        </Col>
+                        <Col lg={3} className="pr-lg-0 pr-md-3">
+                            <FormGroup>
+                                <Label className="control-label">Type</Label>
+                                <Input
+                                    value={twilioConnection.meta?.type}
+                                    readOnly
+                                />
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        {state && (
+                            <Col lg={3} className="pr-lg-0 pr-md-3">
+                                <FormGroup>
+                                    <Label className="control-label">
+                                        State
+                                    </Label>
+                                    <Input value={state as string} readOnly />
+                                </FormGroup>
+                            </Col>
+                        )}
+                        <Col lg={3} className="pr-lg-0 pr-md-3">
+                            <FormGroup>
+                                <Label className="control-label">
+                                    Area Code
+                                </Label>
+                                <Input
+                                    value={
+                                        twilioConnection.meta?.address.area_code
+                                    }
+                                    readOnly
+                                />
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                </>
+            )}
             <Row className="mt-4">
                 <Col lg={6} className="pr-lg-0 pr-md-3">
                     <h4 className="mb-3">Connected integrations</h4>
-                    <Row
-                        className={classnames(
-                            css.appRow,
-                            'border-bottom',
-                            'ml-1',
-                            'mr-1',
-                            {
-                                [css.disabledApp]:
-                                    !VoiceIntegration ||
-                                    !hasCapability(
-                                        phoneNumber,
-                                        IntegrationType.Phone
-                                    ),
-                            }
-                        )}
-                    >
-                        <Col lg={8}>
-                            <i className="material-icons md-2 align-middle mr-3">
-                                phone
-                            </i>
-                            <strong>Voice</strong>
-                        </Col>
-                        <Col lg={4} className={css.appLink}>
-                            {VoiceIntegration && (
-                                <Link
-                                    to={`/app/settings/channels/phone/${VoiceIntegration.id}/preferences`}
-                                >
-                                    Manage Integration
-                                </Link>
+                    {hasCapability(phoneNumber, IntegrationType.Phone) && (
+                        <Row
+                            className={classnames(
+                                css.appRow,
+                                'border-bottom',
+                                'ml-1',
+                                'mr-1',
+                                {
+                                    [css.disabledApp]:
+                                        !voiceIntegration ||
+                                        !hasCapability(
+                                            phoneNumber,
+                                            IntegrationType.Phone
+                                        ),
+                                }
                             )}
-                            {!VoiceIntegration &&
-                                hasCapability(
-                                    phoneNumber,
-                                    IntegrationType.Phone
-                                ) && (
+                        >
+                            <Col lg={8}>
+                                <i className="material-icons md-2 align-middle mr-3">
+                                    phone
+                                </i>
+                                <strong>Voice</strong>
+                            </Col>
+                            <Col lg={4} className={css.appLink}>
+                                {voiceIntegration && (
                                     <Link
-                                        to={`/app/settings/channels/phone/new?phoneNumberId=${phoneNumber.id}`}
+                                        to={`/app/settings/channels/phone/${voiceIntegration.id}/preferences`}
                                     >
-                                        <i className="material-icons md-2 align-middle mr-2">
-                                            add
-                                        </i>
-                                        Add Integration
+                                        Manage Integration
                                     </Link>
                                 )}
-                        </Col>
-                    </Row>
+                                {!voiceIntegration &&
+                                    hasCapability(
+                                        phoneNumber,
+                                        IntegrationType.Phone
+                                    ) && (
+                                        <Link
+                                            to={`/app/settings/channels/phone/new?phoneNumberId=${phoneNumber.id}`}
+                                        >
+                                            <i className="material-icons md-2 align-middle mr-2">
+                                                add
+                                            </i>
+                                            Add Integration
+                                        </Link>
+                                    )}
+                            </Col>
+                        </Row>
+                    )}
                     {hasCapability(phoneNumber, IntegrationType.Sms) && (
                         <Row
                             className={classnames(
@@ -287,7 +315,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                 'mr-1',
                                 {
                                     [css.disabledApp]:
-                                        !smsApp ||
+                                        !smsIntegration ||
                                         !hasCapability(
                                             phoneNumber,
                                             IntegrationType.Sms
@@ -302,9 +330,9 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                 <strong>SMS</strong>
                             </Col>
                             <Col lg={4} className={css.appLink}>
-                                {smsApp ? (
+                                {smsIntegration ? (
                                     <Link
-                                        to={`/app/settings/channels/sms/${smsApp.id}/preferences`}
+                                        to={`/app/settings/channels/sms/${smsIntegration.id}/preferences`}
                                     >
                                         Manage Integration
                                     </Link>
@@ -317,6 +345,55 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                         </i>
                                         Add Integration
                                     </Link>
+                                )}
+                            </Col>
+                        </Row>
+                    )}
+                    {hasCapability(phoneNumber, IntegrationType.WhatsApp) && (
+                        <Row
+                            className={classnames(
+                                css.appRow,
+                                'border-bottom',
+                                'py-3',
+                                'ml-1',
+                                'mr-1',
+                                {
+                                    [css.disabledApp]:
+                                        !whatsAppIntegration ||
+                                        !hasCapability(
+                                            phoneNumber,
+                                            IntegrationType.WhatsApp
+                                        ),
+                                }
+                            )}
+                        >
+                            <Col lg={8}>
+                                <SourceIcon
+                                    type={IntegrationType.WhatsApp}
+                                    className="md-2 align-middle mr-3"
+                                />
+                                <strong>WhatsApp</strong>
+                            </Col>
+                            <Col lg={4} className={css.appLink}>
+                                {whatsAppIntegration ? (
+                                    <Link
+                                        to={`/app/settings/integrations/whatsapp/${whatsAppIntegration.id}/preferences`}
+                                    >
+                                        Manage Integration
+                                    </Link>
+                                ) : (
+                                    <a
+                                        href={
+                                            window.GORGIAS_STATE.integrations
+                                                .authentication.whatsapp
+                                                ?.redirect_uri ?? ''
+                                        }
+                                    >
+                                        <i className="material-icons md-2 align-middle mr-2">
+                                            add
+                                        </i>
+                                        Add Integration
+                                    </a>
                                 )}
                             </Col>
                         </Row>

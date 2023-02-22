@@ -11,4 +11,7 @@ export const getNewPhoneNumbers = (state: RootState): NewPhoneNumbersState =>
     state.entities?.newPhoneNumbers || {}
 
 export const getPhoneNumber = (id: number) =>
-    createSelector(getPhoneNumbers, (phoneNumbers) => phoneNumbers[id])
+    createSelector(getNewPhoneNumbers, (phoneNumbers) => phoneNumbers[id])
+
+export const getNewPhoneNumber = (id: number) =>
+    createSelector(getNewPhoneNumbers, (phoneNumbers) => phoneNumbers[id])

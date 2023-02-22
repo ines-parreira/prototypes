@@ -9,11 +9,14 @@ import {
     AddressType,
     PhoneCountry,
     PhoneType,
-    OldPhoneNumber,
+    NewPhoneNumber,
 } from 'models/phoneNumber/types'
-import {createPhoneNumber} from 'models/phoneNumber/resources'
+import {
+    createPhoneNumber,
+    fetchNewPhoneNumber,
+} from 'models/phoneNumber/resources'
 import {GorgiasApiError} from 'models/api/types'
-import {phoneNumberCreated} from 'state/entities/phoneNumbers/actions'
+import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import Button from 'pages/common/components/button/Button'
@@ -33,7 +36,7 @@ import {shouldValidateAddress} from './utils'
 type Props = {
     isOpen: boolean
     onClose: () => void
-    onCreate: (phoneNumber: OldPhoneNumber) => void
+    onCreate: (phoneNumber: NewPhoneNumber) => void
 }
 
 enum Step {
@@ -67,10 +70,14 @@ export default function PhoneNumberCreateModalForm({
                     name,
                     meta,
                     address,
-                } as Partial<OldPhoneNumber>
+                } as Partial<NewPhoneNumber>
 
-                const phoneNumber = await createPhoneNumber(payload)
-                dispatch(phoneNumberCreated(phoneNumber))
+                const oldPhoneNumber = await createPhoneNumber(payload)
+                const phoneNumber = await fetchNewPhoneNumber(
+                    oldPhoneNumber.phone_number_id
+                )
+                dispatch(newPhoneNumberFetched(phoneNumber))
+
                 void dispatch(
                     notify({
                         message: 'Phone number created successfully.',

@@ -1,19 +1,23 @@
 import React, {useCallback, useState} from 'react'
 import CountryFlag from 'react-country-flag'
 
-import {OldPhoneNumber} from 'models/phoneNumber/types'
-import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {NewPhoneNumber} from 'models/phoneNumber/types'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {IntegrationType} from 'models/integration/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import SelectFieldDropdownAction from 'pages/common/forms/SelectField/SelectFieldDropdownAction'
 import PhoneNumberCreateModalForm from 'pages/phoneNumbers/PhoneNumberCreateModalForm'
 import useAppSelector from 'hooks/useAppSelector'
-import {hasCapability, isOldPhoneNumber} from 'pages/phoneNumbers/utils'
+import {
+    countryCode,
+    hasCapability,
+    isNewPhoneNumber,
+} from 'pages/phoneNumbers/utils'
 
 type Props = {
-    value: Maybe<OldPhoneNumber> | '_new'
-    onChange: (phoneNumber: OldPhoneNumber) => void
-    onCreate: (phoneNumber: OldPhoneNumber) => void
+    value: Maybe<NewPhoneNumber> | '_new'
+    onChange: (phoneNumber: NewPhoneNumber) => void
+    onCreate: (phoneNumber: NewPhoneNumber) => void
     integrationType?: IntegrationType.Phone | IntegrationType.Sms
 }
 
@@ -23,7 +27,7 @@ function PhoneNumberSelectField({
     onCreate,
     integrationType,
 }: Props): JSX.Element {
-    const phoneNumbers = useAppSelector(getPhoneNumbers)
+    const phoneNumbers = useAppSelector(getNewPhoneNumbers)
 
     const [isCreateFormVisible, setIsCreateFormVisible] = useState(
         value === '_new'
@@ -35,7 +39,7 @@ function PhoneNumberSelectField({
                 setIsCreateFormVisible(true)
             } else if (typeof value === 'number') {
                 const number = phoneNumbers[value]
-                if (number && isOldPhoneNumber(number)) {
+                if (number && isNewPhoneNumber(number)) {
                     onChange(number)
                 }
             }
@@ -45,7 +49,7 @@ function PhoneNumberSelectField({
 
     const availableNumbers = Object.values(phoneNumbers)
         .filter((phoneNumber) => {
-            return isOldPhoneNumber(phoneNumber)
+            return isNewPhoneNumber(phoneNumber)
         })
         .filter((phoneNumber) => {
             const existingIntegration = phoneNumber.integrations.find(
@@ -70,8 +74,8 @@ function PhoneNumberSelectField({
             ),
         },
         ...availableNumbers.map((phoneNumber) => {
-            const {name} = phoneNumber
-            const {country, friendly_name} = phoneNumber.meta
+            const {name, phone_number_friendly} = phoneNumber
+            const country = countryCode(phoneNumber)
             return {
                 value: phoneNumber.id,
                 label: (
@@ -85,10 +89,10 @@ function PhoneNumberSelectField({
                                 countryCode={country}
                             />
                         )}{' '}
-                        {name} - {country} ({friendly_name})
+                        {name} - {country} ({phone_number_friendly})
                     </>
                 ),
-                text: `${name} ${country} ${friendly_name}`,
+                text: [name, country, phone_number_friendly].join(' '),
             }
         }),
     ]

@@ -3,16 +3,16 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from 'state/types'
-import {OldPhoneNumber} from 'models/phoneNumber/types'
+import {NewPhoneNumber} from 'models/phoneNumber/types'
 import {IntegrationType} from 'models/integration/types'
-import {phoneNumbers} from 'fixtures/phoneNumber'
+import {phoneNumbers} from 'fixtures/newPhoneNumber'
 
 import PhoneNumberSelectField from '../PhoneNumberSelectField'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
-        phoneNumbers: phoneNumbers.reduce(
+        newPhoneNumbers: phoneNumbers.reduce(
             (acc, number) => ({...acc, [number.id]: number}),
             {}
         ),
@@ -20,9 +20,9 @@ const store = mockStore({
 } as RootState)
 
 describe('<PhoneNumberSelectField/>', () => {
-    const onCreate: jest.MockedFunction<(value: OldPhoneNumber) => void> =
+    const onCreate: jest.MockedFunction<(value: NewPhoneNumber) => void> =
         jest.fn()
-    const onChange: jest.MockedFunction<(value: OldPhoneNumber) => void> =
+    const onChange: jest.MockedFunction<(value: NewPhoneNumber) => void> =
         jest.fn()
 
     describe('render()', () => {
@@ -56,13 +56,13 @@ describe('<PhoneNumberSelectField/>', () => {
             const existingIntegration = {type: IntegrationType.Sms}
             const store = mockStore({
                 entities: {
-                    phoneNumbers: phoneNumbers.reduce(
+                    newPhoneNumbers: phoneNumbers.reduce(
                         (acc, number) => ({
                             ...acc,
                             [number.id]: {
                                 ...number,
                                 integrations:
-                                    number.meta.friendly_name ===
+                                    number.phone_number_friendly ===
                                     '+1 415 111 2222'
                                         ? []
                                         : [existingIntegration],
@@ -91,7 +91,7 @@ describe('<PhoneNumberSelectField/>', () => {
         it("should hide phone numbers that have don't have the matching capability", () => {
             const store = mockStore({
                 entities: {
-                    phoneNumbers: phoneNumbers.reduce(
+                    newPhoneNumbers: phoneNumbers.reduce(
                         (acc, number) => ({
                             ...acc,
                             [number.id]: number,

@@ -25,7 +25,7 @@ export type PhoneIntegrationMeta = {
     type: string
     state?: string
     area_code: string
-    twilio_phone_number_id: number
+    phone_number_id: number
     preferences: PhoneIntegrationPreferences
     greeting_message: VoiceMessage
     voicemail: PhoneIntegrationVoicemailSettings

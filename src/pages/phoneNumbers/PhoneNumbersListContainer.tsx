@@ -4,9 +4,9 @@ import {Container, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 import {isEmpty} from 'lodash'
 
-import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
-import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
-import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {fetchNewPhoneNumbers} from 'models/phoneNumber/resources'
+import {newPhoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -22,13 +22,13 @@ import PhoneNumbersList from './PhoneNumbersList'
 
 export function PhoneNumbersListContainer() {
     const dispatch = useAppDispatch()
-    const phoneNumbers = useAppSelector(getPhoneNumbers)
+    const phoneNumbers = useAppSelector(getNewPhoneNumbers)
     const [{loading: isLoading}, handleFetchPhoneNumbers] = useAsyncFn(
         async () => {
             try {
-                const numbers = await fetchPhoneNumbers()
+                const numbers = await fetchNewPhoneNumbers()
                 if (numbers) {
-                    dispatch(phoneNumbersFetched(numbers.data))
+                    dispatch(newPhoneNumbersFetched(numbers.data))
                 }
             } catch (error) {
                 void dispatch(

@@ -3,6 +3,7 @@ import {phoneNumbers} from 'fixtures/phoneNumber'
 import {
     NewPhoneNumber,
     OldPhoneNumber,
+    PhoneConnectionType,
     PhoneCountry,
     PhoneType,
 } from 'models/phoneNumber/types'
@@ -20,9 +21,8 @@ describe('isNewPhoneNumber()', () => {
     it('returns true if the number is of the new structure', () => {
         expect(
             isNewPhoneNumber({
-                whatsapp_phone_number: {},
-                twilio_phone_number: {},
-            } as NewPhoneNumber)
+                connections: [],
+            } as unknown as NewPhoneNumber)
         ).toBe(true)
     })
 
@@ -39,12 +39,12 @@ describe('isWhatsAppNumber()', () => {
     it('returns true if the number has whatsapp meta', () => {
         expect(
             isWhatsAppNumber({
-                whatsapp_phone_number: {
-                    routing: {
-                        phone_number: '123',
+                connections: [
+                    {
+                        type: PhoneConnectionType.WhatsApp,
+                        meta: {},
                     },
-                },
-                twilio_phone_number: {},
+                ],
             } as NewPhoneNumber)
         ).toBe(true)
     })
@@ -52,9 +52,8 @@ describe('isWhatsAppNumber()', () => {
     it('returns false if the number does not have whatsapp meta', () => {
         expect(
             isWhatsAppNumber({
-                whatsapp_phone_number: {},
-                twilio_phone_number: {},
-            } as NewPhoneNumber)
+                connections: [],
+            } as unknown as NewPhoneNumber)
         ).toBe(false)
     })
 })
@@ -63,10 +62,14 @@ describe('isTwilioNumber()', () => {
     it('returns true if the number has twilio meta', () => {
         expect(
             isTwilioNumber({
-                whatsapp_phone_number: {},
-                twilio_phone_number: {
-                    type: PhoneType.Local,
-                },
+                connections: [
+                    {
+                        type: PhoneConnectionType.Twilio,
+                        meta: {
+                            type: PhoneType.Local,
+                        },
+                    },
+                ],
             } as NewPhoneNumber)
         ).toBe(true)
     })
@@ -74,9 +77,8 @@ describe('isTwilioNumber()', () => {
     it('returns false if the number does not have twilio meta', () => {
         expect(
             isTwilioNumber({
-                whatsapp_phone_number: {},
-                twilio_phone_number: {},
-            } as NewPhoneNumber)
+                connections: [],
+            } as unknown as NewPhoneNumber)
         ).toBe(false)
     })
 })
@@ -104,13 +106,13 @@ describe('countryCode()', () => {
     it("infers the country from the number if it's a whatsapp number", () => {
         expect(
             countryCode({
-                phone_number: '+1 234 567 8910',
-                whatsapp_phone_number: {
-                    routing: {
-                        phone_number: '+1 234 567 8910',
+                phone_number: '+12345678910',
+                connections: [
+                    {
+                        type: PhoneConnectionType.WhatsApp,
+                        meta: {},
                     },
-                },
-                twilio_phone_number: {},
+                ],
             } as NewPhoneNumber)
         ).toEqual('US')
     })
@@ -118,10 +120,16 @@ describe('countryCode()', () => {
     it("returns the country provided by the backend if it's a (new format) twilio number", () => {
         expect(
             countryCode({
-                twilio_phone_number: {
-                    country: PhoneCountry.US,
-                },
-                whatsapp_phone_number: {},
+                connections: [
+                    {
+                        type: PhoneConnectionType.Twilio,
+                        meta: {
+                            address: {
+                                country: PhoneCountry.US,
+                            },
+                        },
+                    },
+                ],
             } as NewPhoneNumber)
         ).toEqual(PhoneCountry.US)
     })
@@ -152,9 +160,8 @@ describe('friendlyName()', () => {
         expect(
             friendlyName({
                 phone_number_friendly: '+123',
-                whatsapp_phone_number: {},
-                twilio_phone_number: {},
-            } as NewPhoneNumber)
+                connections: [],
+            } as unknown as NewPhoneNumber)
         ).toEqual('+123')
     })
 })

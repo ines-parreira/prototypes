@@ -13,8 +13,11 @@ import {
     PhoneCountry,
     PhoneType,
 } from 'models/phoneNumber/types'
-import {createPhoneNumber} from 'models/phoneNumber/resources'
-import {phoneNumberCreated} from 'state/entities/phoneNumbers/actions'
+import {
+    createPhoneNumber,
+    fetchNewPhoneNumber,
+} from 'models/phoneNumber/resources'
+import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import Button from 'pages/common/components/button/Button'
@@ -51,8 +54,11 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                     address,
                 } as Partial<PhoneNumber>
 
-                const phoneNumber = await createPhoneNumber(payload)
-                dispatch(phoneNumberCreated(phoneNumber))
+                const oldPhoneNumber = await createPhoneNumber(payload)
+                const phoneNumber = await fetchNewPhoneNumber(
+                    oldPhoneNumber.phone_number_id
+                )
+                dispatch(newPhoneNumberFetched(phoneNumber))
                 void dispatch(
                     notify({
                         message: 'Phone number created successfully.',

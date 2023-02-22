@@ -36,7 +36,7 @@ import {initDatadogLogger, initDatadogRum} from 'utils/datadog'
 import {initializeNewReleaseHandler} from 'models/api/resources'
 import {Tag} from 'models/tag/types'
 import {View} from 'models/view/types'
-import {PhoneNumber} from 'models/phoneNumber/types'
+import {NewPhoneNumber, OldPhoneNumber} from 'models/phoneNumber/types'
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from 'constants/integration'
 import {initLaunchDarkly} from 'utils/launchDarkly'
 import {getEnvironment, isProduction, isStaging} from 'utils/environment'
@@ -93,7 +93,7 @@ export const toInitialStoreState = (initialState: GorgiasInitialState) => {
     )
 
     const phoneNumbers = initialState.phoneNumbers?.reduce(
-        (acc: {[key: number]: PhoneNumber}, phoneNumber) => {
+        (acc: {[key: number]: OldPhoneNumber}, phoneNumber) => {
             acc[phoneNumber.id] = phoneNumber
             return acc
         },
@@ -101,11 +101,21 @@ export const toInitialStoreState = (initialState: GorgiasInitialState) => {
     )
     delete nextState.phoneNumbers
 
+    const newPhoneNumbers = initialState.newPhoneNumbers?.reduce(
+        (acc: {[key: number]: NewPhoneNumber}, phoneNumber) => {
+            acc[phoneNumber.id] = phoneNumber
+            return acc
+        },
+        {}
+    )
+    delete nextState.newPhoneNumbers
+
     nextState.entities = {
         sections,
         tags,
         views,
         phoneNumbers,
+        newPhoneNumbers,
     }
 
     return nextState as InitialRootState

@@ -2,9 +2,9 @@ import React, {useCallback} from 'react'
 import {DropdownItem} from 'reactstrap'
 import parsePhoneNumber from 'libphonenumber-js'
 
-import {OldPhoneNumber} from 'models/phoneNumber/types'
+import {NewPhoneNumber} from 'models/phoneNumber/types'
 import {SmsIntegration} from 'models/integration/types'
-import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
@@ -22,10 +22,10 @@ const SmsIntegrationsDropdownList = ({
     customerId,
     integrations,
 }: Props) => {
-    const phoneNumbers = useAppSelector(getPhoneNumbers)
+    const phoneNumbers = useAppSelector(getNewPhoneNumbers)
     const toAddress = parsePhoneNumber(address)?.format('E.164') || ''
     const onClick = useCallback(
-        (integration: SmsIntegration, phoneNumber: OldPhoneNumber) => {
+        (integration: SmsIntegration, phoneNumber: NewPhoneNumber) => {
             history.push(`/app/ticket/new?customer=${customerId}`, {
                 source: TicketMessageSourceType.Sms,
                 sender: phoneNumber.phone_number,
@@ -46,7 +46,7 @@ const SmsIntegrationsDropdownList = ({
             {integrations.map((integration) => {
                 const emoji = integration.meta.emoji
                 const phoneNumber =
-                    phoneNumbers[integration.meta.twilio_phone_number_id]
+                    phoneNumbers[integration.meta.phone_number_id]
                 if (!phoneNumber) {
                     return null
                 }
@@ -57,7 +57,7 @@ const SmsIntegrationsDropdownList = ({
                         onClick={() => onClick(integration, phoneNumber)}
                     >
                         {emoji} {emoji && ' '}
-                        {integration.name} ({phoneNumber.meta.friendly_name})
+                        {integration.name} ({phoneNumber.phone_number_friendly})
                     </DropdownItem>
                 )
             })}

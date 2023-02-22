@@ -10,13 +10,13 @@ import {IntegrationType} from 'models/integration/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState} from 'state/twilio/reducers'
 import {mockDevice} from 'tests/twilioMocks'
-import {phoneNumbers as phoneNumberFixtures} from 'fixtures/phoneNumber'
+import {phoneNumbers as phoneNumberFixtures} from 'fixtures/newPhoneNumber'
 import history from 'pages/history'
 
 import ClickablePhoneNumber from '../ClickablePhoneNumber'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-const phoneNumbers = phoneNumberFixtures.reduce(
+const newPhoneNumbers = phoneNumberFixtures.reduce(
     (acc, number) => ({...acc, [number.id]: number}),
     {}
 )
@@ -34,7 +34,7 @@ describe('<ClickablePhoneNumber/>', () => {
             name: `My Phone Integration ${id}`,
             meta: {
                 emoji: '',
-                twilio_phone_number_id: id,
+                phone_number_id: id,
             },
         }
     }
@@ -68,7 +68,7 @@ describe('<ClickablePhoneNumber/>', () => {
                     integrations,
                 }),
                 entities: {
-                    phoneNumbers,
+                    newPhoneNumbers,
                 },
             } as RootState)
 
@@ -96,7 +96,7 @@ describe('<ClickablePhoneNumber/>', () => {
                     integrations,
                 }),
                 entities: {
-                    phoneNumbers,
+                    newPhoneNumbers,
                 },
             } as RootState)
 
@@ -127,7 +127,7 @@ describe('<ClickablePhoneNumber/>', () => {
                     integrations,
                 }),
                 entities: {
-                    phoneNumbers,
+                    newPhoneNumbers,
                 },
             } as RootState)
 
@@ -164,7 +164,7 @@ describe('<ClickablePhoneNumber/>', () => {
                 ],
             }),
             entities: {
-                phoneNumbers,
+                newPhoneNumbers,
             },
         } as RootState)
 
@@ -198,7 +198,7 @@ describe('<ClickablePhoneNumber/>', () => {
                 ],
             }),
             entities: {
-                phoneNumbers,
+                newPhoneNumbers,
             },
         } as RootState)
 

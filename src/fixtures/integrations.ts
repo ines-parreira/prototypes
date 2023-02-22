@@ -326,7 +326,7 @@ export const integrationsState = {
                     voicemail_outside_business_hours: true,
                 },
                 state: 'CA',
-                twilio_phone_number_id: 1,
+                phone_number_id: 1,
                 type: 'Local',
                 voicemail: {
                     allow_to_leave_voicemail: true,

@@ -46,7 +46,7 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
               id="phone-number"
               readonly=""
               type="text"
-              value="+44 7123 456789"
+              value="+1 4151 11 2223"
             />
             <div
               class="input-group-append"
@@ -87,7 +87,7 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
             class="form-control"
             readonly=""
             type="text"
-            value="United Kingdom"
+            value="Canada"
           />
         </div>
       </div>
@@ -130,7 +130,7 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
             class="form-control"
             readonly=""
             type="text"
-            value="7"
+            value="813"
           />
         </div>
       </div>
@@ -166,6 +166,34 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
           >
             <a
               to="/app/settings/channels/phone/new?phoneNumberId=3"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
+        </div>
+        <div
+          class="appRow border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
+          >
+            <i
+              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+            />
+            <strong>
+              WhatsApp
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              href=""
             >
               <i
                 class="material-icons md-2 align-middle mr-2"
@@ -418,6 +446,34 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
             </a>
           </div>
         </div>
+        <div
+          class="appRow border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
+          >
+            <i
+              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+            />
+            <strong>
+              WhatsApp
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              href=""
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -645,6 +701,34 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
           >
             <a
               to="/app/settings/channels/sms/new?phoneNumberId=2"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
+        </div>
+        <div
+          class="appRow border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
+          >
+            <i
+              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+            />
+            <strong>
+              WhatsApp
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              href=""
             >
               <i
                 class="material-icons md-2 align-middle mr-2"
@@ -887,6 +971,34 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
           >
             <a
               to="/app/settings/channels/sms/new?phoneNumberId=2"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
+        </div>
+        <div
+          class="appRow border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
+          >
+            <i
+              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+            />
+            <strong>
+              WhatsApp
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              href=""
             >
               <i
                 class="material-icons md-2 align-middle mr-2"
@@ -1157,6 +1269,34 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
             </a>
           </div>
         </div>
+        <div
+          class="appRow border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
+          >
+            <i
+              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+            />
+            <strong>
+              WhatsApp
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              href=""
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -1239,7 +1379,7 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
               id="phone-number"
               readonly=""
               type="text"
-              value="+44 7123 456789"
+              value="+1 4151 11 2223"
             />
             <div
               class="input-group-append"
@@ -1280,7 +1420,7 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
             class="form-control"
             readonly=""
             type="text"
-            value="United Kingdom"
+            value="Canada"
           />
         </div>
       </div>
@@ -1323,7 +1463,7 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
             class="form-control"
             readonly=""
             type="text"
-            value="7"
+            value="813"
           />
         </div>
       </div>
@@ -1359,6 +1499,34 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
           >
             <a
               to="/app/settings/channels/phone/new?phoneNumberId=3"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
+        </div>
+        <div
+          class="appRow border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
+          >
+            <i
+              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+            />
+            <strong>
+              WhatsApp
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              href=""
             >
               <i
                 class="material-icons md-2 align-middle mr-2"
@@ -1601,6 +1769,34 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
           >
             <a
               to="/app/settings/channels/sms/new?phoneNumberId=2"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
+        </div>
+        <div
+          class="appRow border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
+          >
+            <i
+              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+            />
+            <strong>
+              WhatsApp
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              href=""
             >
               <i
                 class="material-icons md-2 align-middle mr-2"

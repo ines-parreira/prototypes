@@ -2,10 +2,10 @@ import React, {useEffect, useCallback, useState} from 'react'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
-import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {IntegrationType} from 'models/integration/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {OldPhoneNumber} from 'models/phoneNumber/types'
+import {NewPhoneNumber} from 'models/phoneNumber/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import Button from 'pages/common/components/button/Button'
@@ -24,9 +24,9 @@ function SmsIntegrationCreate({
     selectedPhoneNumberId,
     pricingLink,
 }: Props): JSX.Element {
-    const phoneNumbers = useAppSelector(getPhoneNumbers)
+    const phoneNumbers = useAppSelector(getNewPhoneNumbers)
     const [title, setTitle] = useState('')
-    const [phoneNumber, setPhoneNumber] = useState<Maybe<OldPhoneNumber>>(null)
+    const [phoneNumber, setPhoneNumber] = useState<Maybe<NewPhoneNumber>>(null)
     const [emoji, setEmoji] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useAppDispatch()
@@ -57,7 +57,7 @@ function SmsIntegrationCreate({
                 name: title,
                 meta: {
                     emoji,
-                    twilio_phone_number_id: phoneNumber?.id,
+                    phone_number_id: phoneNumber?.id,
                 },
             })
 

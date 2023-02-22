@@ -19,16 +19,6 @@ export const fetchPhoneNumbers = async (
     return res.data
 }
 
-export const fetchNewPhoneNumbers = async (
-    cancelToken?: CancelToken
-): Promise<ApiListResponsePagination<NewPhoneNumber[]>> => {
-    const res = await client.get<ApiListResponsePagination<NewPhoneNumber[]>>(
-        '/integrations/phone/phone-numbers-new/',
-        {cancelToken}
-    )
-    return res.data
-}
-
 export const fetchPhoneNumber = async (id: number): Promise<OldPhoneNumber> => {
     const res = await client.get<OldPhoneNumber>(
         `/api/integrations/phone/phone-numbers/${id}/`
@@ -65,4 +55,47 @@ export const fetchPhoneCapabilities = async () => {
         '/api/phone-numbers/capabilities-limitations/'
     )
     return res.data
+}
+
+export const fetchNewPhoneNumbers = async (
+    cancelToken?: CancelToken
+): Promise<ApiListResponsePagination<NewPhoneNumber[]>> => {
+    const res = await client.get<ApiListResponsePagination<NewPhoneNumber[]>>(
+        '/integrations/phone/phone-numbers-new/',
+        {cancelToken}
+    )
+    return res.data
+}
+
+export const fetchNewPhoneNumber = async (
+    id: number
+): Promise<NewPhoneNumber> => {
+    const res = await client.get<NewPhoneNumber>(
+        `/integrations/phone/phone-numbers-new/${id}/`
+    )
+    return res.data
+}
+
+export const createNewPhoneNumber = async (
+    phoneNumber: Partial<NewPhoneNumber>
+): Promise<NewPhoneNumber> => {
+    const res = await client.post<NewPhoneNumber>(
+        '/integrations/phone/twilio/register-number/',
+        phoneNumber
+    )
+    return res.data
+}
+
+export const updateNewPhoneNumber = async (
+    phoneNumber: NewPhoneNumber
+): Promise<NewPhoneNumber> => {
+    const res = await client.put<NewPhoneNumber>(
+        `/integrations/phone/phone-numbers-new/${phoneNumber.id}/`,
+        phoneNumber
+    )
+    return res.data
+}
+
+export const deleteNewPhoneNumber = async (id: number): Promise<void> => {
+    await client.delete(`/integrations/phone/phone-numbers-new/${id}/`)
 }

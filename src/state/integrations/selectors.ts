@@ -16,7 +16,7 @@ import {MESSAGING_INTEGRATION_TYPES} from 'models/integration/constants'
 import {compare} from 'utils'
 import {RootState} from 'state/types'
 import {getCurrentUserState} from 'state/currentUser/selectors'
-import {getPhoneNumbers as getPhoneNumbersState} from 'state/entities/phoneNumbers/selectors'
+import {getNewPhoneNumbers as getNewPhoneNumbersState} from 'state/entities/phoneNumbers/selectors'
 import {nestedReplace} from 'state/ticket/utils'
 import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
 
@@ -319,15 +319,12 @@ export const makeGetPhoneChannels = (
 ) =>
     createSelector(
         DEPRECATED_getIntegrationsByTypes([type]),
-        getPhoneNumbersState,
+        getNewPhoneNumbersState,
         (integrations, phoneNumbers) => {
             return integrations.map((integration: Map<any, any>) => {
                 const phoneNumber =
                     phoneNumbers[
-                        integration.getIn([
-                            'meta',
-                            'twilio_phone_number_id',
-                        ]) as number
+                        integration.getIn(['meta', 'phone_number_id']) as number
                     ]
 
                 return fromJS({

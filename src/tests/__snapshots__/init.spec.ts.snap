@@ -1303,6 +1303,7 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
     "updated_datetime": "2016-12-22T19:36:12.489432+00:00",
   },
   "entities": {
+    "newPhoneNumbers": {},
     "phoneNumbers": {},
     "sections": {
       "1": {

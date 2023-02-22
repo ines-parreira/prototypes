@@ -9,15 +9,11 @@ import {
     IntegrationType,
     SmsIntegration,
     WhatsAppIntegration,
-    isWhatsAppIntegration,
 } from 'models/integration/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
 import {getIntegrationConfig} from 'state/integrations/helpers'
 import {getIntegrationsByType} from 'state/integrations/selectors'
-import {
-    getNewPhoneNumbers,
-    getPhoneNumbers,
-} from 'state/entities/phoneNumbers/selectors'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -51,8 +47,7 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
         >(type)
     )
 
-    const phoneNumbers = useAppSelector(getPhoneNumbers)
-    const newPhoneNumbers = useAppSelector(getNewPhoneNumbers)
+    const phoneNumbers = useAppSelector(getNewPhoneNumbers)
     const rows: Row[] = useMemo(
         () =>
             integrations.reduce(
@@ -63,10 +58,8 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                         | SmsIntegration
                         | WhatsAppIntegration
                 ) => {
-                    // TODO(@anddon): remove this once the new API for phone is available
-                    const phoneNumber = isWhatsAppIntegration(integration)
-                        ? newPhoneNumbers[integration.meta.phone_number_id]
-                        : phoneNumbers[integration.meta?.twilio_phone_number_id]
+                    const phoneNumber =
+                        phoneNumbers[integration.meta?.phone_number_id]
                     return [
                         ...rows,
                         {
@@ -77,7 +70,7 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                 },
                 []
             ),
-        [integrations, phoneNumbers, newPhoneNumbers]
+        [integrations, phoneNumbers]
     )
 
     const [orderBy, setOrderBy] = useState<string>('integration.id')
@@ -133,10 +126,10 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                         title="Phone Number"
                         direction={orderDirection}
                         isOrderedBy={
-                            orderBy === 'phoneNumber.meta.friendly_name'
+                            orderBy === 'phoneNumber.phone_number_friendly'
                         }
                         onClick={() =>
-                            setSortOptions('phoneNumber.meta.friendly_name')
+                            setSortOptions('phoneNumber.phone_number_friendly')
                         }
                     />
                     <HeaderCell />

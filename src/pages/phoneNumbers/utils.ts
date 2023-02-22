@@ -1,4 +1,4 @@
-import {has, isEmpty} from 'lodash'
+import {has} from 'lodash'
 import {CountryCode} from 'libphonenumber-js'
 import {
     PhoneNumber,
@@ -6,6 +6,10 @@ import {
     PhoneCapabilities,
     NewPhoneNumber,
     OldPhoneNumber,
+    PhoneConnectionType,
+    PhoneConnection,
+    TwilioPhoneConnection,
+    WhatsAppPhoneConnection,
 } from 'models/phoneNumber/types'
 
 import {IntegrationType} from 'models/integration/types'
@@ -13,11 +17,12 @@ import rawCountries from 'pages/phoneNumbers/options/countries.json'
 import {getCountryFromPhoneNumber} from 'pages/common/forms/PhoneNumberInput/utils'
 
 const CAPABILITY_KEY: Record<
-    IntegrationType.Sms | IntegrationType.Phone,
+    IntegrationType.Sms | IntegrationType.Phone | IntegrationType.WhatsApp,
     keyof PhoneCapabilities
 > = {
     [IntegrationType.Sms]: 'sms',
     [IntegrationType.Phone]: 'voice',
+    [IntegrationType.WhatsApp]: 'whatsapp',
 }
 
 export function shouldValidateAddress(country: PhoneCountry): boolean {
@@ -35,20 +40,21 @@ export function countryName(country: PhoneCountry): string {
 
 export function hasCapability(
     phoneNumber: PhoneNumber,
-    integrationType: IntegrationType.Sms | IntegrationType.Phone
+    integrationType:
+        | IntegrationType.Sms
+        | IntegrationType.Phone
+        | IntegrationType.WhatsApp
 ): boolean {
     return !!phoneNumber.capabilities[CAPABILITY_KEY[integrationType]]
 }
 
-export function countryCode(
-    number: PhoneNumber | NewPhoneNumber
-): Maybe<CountryCode> {
-    if (isWhatsAppNumber(number)) {
-        return getCountryFromPhoneNumber(number.phone_number)
+export function countryCode(number: PhoneNumber): Maybe<CountryCode> {
+    if (isTwilioNumber(number)) {
+        return number.connections.find(isTwilioConnection)?.meta.address.country
     }
 
-    if (isTwilioNumber(number)) {
-        return number.twilio_phone_number?.country
+    if (isWhatsAppNumber(number)) {
+        return getCountryFromPhoneNumber(number.phone_number)
     }
 
     if (isOldPhoneNumber(number)) {
@@ -56,35 +62,47 @@ export function countryCode(
     }
 }
 
-export function friendlyName(phoneNumber: PhoneNumber | NewPhoneNumber) {
+export function friendlyName(phoneNumber: PhoneNumber) {
     return isNewPhoneNumber(phoneNumber)
         ? phoneNumber.phone_number_friendly
         : phoneNumber.meta.friendly_name
 }
 
 export function isNewPhoneNumber(
-    number: PhoneNumber | NewPhoneNumber
+    number: PhoneNumber
 ): number is NewPhoneNumber {
-    return (
-        has(number, 'whatsapp_phone_number') &&
-        has(number, 'twilio_phone_number')
-    )
+    return has(number, 'connections')
 }
 
 export function isOldPhoneNumber(
-    number: PhoneNumber | NewPhoneNumber
+    number: PhoneNumber
 ): number is OldPhoneNumber {
     return !isNewPhoneNumber(number)
 }
 
 export function isWhatsAppNumber(
-    number: PhoneNumber | NewPhoneNumber
+    number: PhoneNumber
 ): number is NewPhoneNumber {
-    return isNewPhoneNumber(number) && !isEmpty(number.whatsapp_phone_number)
+    return (
+        isNewPhoneNumber(number) &&
+        number.connections.some(isWhatsAppConnection)
+    )
 }
 
-export function isTwilioNumber(
-    number: PhoneNumber | NewPhoneNumber
-): number is NewPhoneNumber {
-    return isNewPhoneNumber(number) && !isEmpty(number.twilio_phone_number)
+export function isTwilioNumber(number: PhoneNumber): number is NewPhoneNumber {
+    return (
+        isNewPhoneNumber(number) && number.connections.some(isTwilioConnection)
+    )
+}
+
+export function isTwilioConnection(
+    connection: PhoneConnection
+): connection is TwilioPhoneConnection {
+    return connection.type === PhoneConnectionType.Twilio
+}
+
+export function isWhatsAppConnection(
+    connection: PhoneConnection
+): connection is WhatsAppPhoneConnection {
+    return connection.type === PhoneConnectionType.WhatsApp
 }

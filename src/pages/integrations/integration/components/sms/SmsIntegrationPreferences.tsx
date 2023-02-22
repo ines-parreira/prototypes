@@ -6,7 +6,7 @@ import {useAsyncFn} from 'react-use'
 import classnames from 'classnames'
 
 import {SmsIntegration, isSmsIntegration} from 'models/integration/types'
-import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
+import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -32,8 +32,8 @@ export default function SmsIntegrationPreferences({
     const [isInitialized, setIsInitialized] = useState(false)
     const [title, setTitle] = useState('')
     const [emoji, setEmoji] = useState<string | null>(null)
-    const phoneNumberId = integration?.meta?.twilio_phone_number_id
-    const phoneNumber = useAppSelector(getPhoneNumber(phoneNumberId))
+    const phoneNumberId = integration?.meta?.phone_number_id
+    const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
 
     const dispatch = useAppDispatch()
 
@@ -47,7 +47,7 @@ export default function SmsIntegrationPreferences({
                         name: title,
                         meta: {
                             emoji,
-                            twilio_phone_number_id: phoneNumberId,
+                            phone_number_id: phoneNumberId,
                         },
                     })
                 )
@@ -122,7 +122,7 @@ export default function SmsIntegrationPreferences({
                                     </Col>
                                     <Col lg={4} className={css.appLink}>
                                         <Link
-                                            to={`/app/settings/phone-numbers/${integration.meta.twilio_phone_number_id}`}
+                                            to={`/app/settings/phone-numbers/${integration.meta.phone_number_id}`}
                                         >
                                             Manage Phone Number
                                         </Link>

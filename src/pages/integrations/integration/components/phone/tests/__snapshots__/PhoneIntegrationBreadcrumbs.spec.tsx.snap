@@ -25,9 +25,7 @@ exports[`<PhoneIntegrationBreadcrumbs/> render() should render for SMS integrati
       My Phone Integration
       <small
         class="text-muted ml-2"
-      >
-        +1 415 111 2222
-      </small>
+      />
     </li>
   </ol>
 </nav>
@@ -58,9 +56,7 @@ exports[`<PhoneIntegrationBreadcrumbs/> render() should render for voice integra
       My Phone Integration
       <small
         class="text-muted ml-2"
-      >
-        +1 415 111 2222
-      </small>
+      />
     </li>
   </ol>
 </nav>

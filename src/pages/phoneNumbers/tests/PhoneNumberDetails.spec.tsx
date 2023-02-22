@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
-import {phoneNumbers} from 'fixtures/phoneNumber'
+import {phoneNumbers} from 'fixtures/newPhoneNumber'
 import {RootState, StoreDispatch} from 'state/types'
 import {IntegrationType} from 'models/integration/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
@@ -14,7 +14,7 @@ import PhoneNumberDetails from '../PhoneNumberDetails'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
-        phoneNumbers: phoneNumbers.reduce(
+        newPhoneNumbers: phoneNumbers.reduce(
             (acc, number) => ({...acc, [number.id]: number}),
             {}
         ),
@@ -98,7 +98,7 @@ describe('<PhoneNumberDetails/>', () => {
             )
 
             expect(queryAllByText('Manage Integration').length).toBe(1)
-            expect(queryAllByText('Add Integration').length).toBe(1)
+            expect(queryAllByText('Add Integration').length).toBe(2)
             expect(container).toMatchSnapshot()
         })
 
@@ -122,7 +122,7 @@ describe('<PhoneNumberDetails/>', () => {
             )
 
             expect(queryAllByText('Manage Integration').length).toBe(0)
-            expect(queryAllByText('Add Integration').length).toBe(2)
+            expect(queryAllByText('Add Integration').length).toBe(3)
             expect(container).toMatchSnapshot()
         })
 
@@ -148,7 +148,7 @@ describe('<PhoneNumberDetails/>', () => {
             expect(phoneNumber.capabilities.sms).toBe(false)
             expect(queryAllByText('SMS').length).toBe(0)
             expect(queryAllByText('Manage Integration').length).toBe(0)
-            expect(queryAllByText('Add Integration').length).toBe(1)
+            expect(queryAllByText('Add Integration').length).toBe(2)
             expect(container).toMatchSnapshot()
         })
     })

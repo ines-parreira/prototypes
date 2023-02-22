@@ -6,14 +6,14 @@ import configureMockStore from 'redux-mock-store'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {phoneNumbers} from 'fixtures/phoneNumber'
+import {phoneNumbers} from 'fixtures/newPhoneNumber'
 
 import VoiceIntegrationCreate from '../VoiceIntegrationCreate'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
-        phoneNumbers: phoneNumbers.reduce(
+        newPhoneNumbers: phoneNumbers.reduce(
             (acc, number) => ({...acc, [number.id]: number}),
             {}
         ),
@@ -34,7 +34,7 @@ const submittedPayload = {
     meta: {
         emoji: null,
         function: 'standard',
-        twilio_phone_number_id: 1,
+        phone_number_id: 1,
         preferences: {
             record_inbound_calls: false,
             voicemail_outside_business_hours: true,

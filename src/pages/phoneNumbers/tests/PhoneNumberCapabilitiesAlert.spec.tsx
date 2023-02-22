@@ -14,6 +14,7 @@ describe('<PhoneNumberCapabilitiesAlert/>', () => {
                 sms: true,
                 mms: true,
                 voice: true,
+                whatsapp: true,
             })
             const {container} = render(
                 <PhoneNumberCapabilitiesAlert
@@ -33,6 +34,7 @@ describe('<PhoneNumberCapabilitiesAlert/>', () => {
                 sms: false,
                 mms: false,
                 voice: true,
+                whatsapp: true,
             })
             const {container} = render(
                 <PhoneNumberCapabilitiesAlert

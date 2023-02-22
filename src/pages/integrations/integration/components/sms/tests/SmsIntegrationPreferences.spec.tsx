@@ -14,7 +14,7 @@ import SmsIntegrationPreferences from '../SmsIntegrationPreferences'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
-        phoneNumbers: phoneNumbers.reduce(
+        newPhoneNumbers: phoneNumbers.reduce(
             (acc, number) => ({...acc, [number.id]: number}),
             {}
         ),
@@ -27,7 +27,7 @@ const integration = {
     name: 'My new SMS Integration',
     meta: {
         emoji: '',
-        twilio_phone_number_id: 1,
+        phone_number_id: 1,
     },
 } as SmsIntegration
 
@@ -60,7 +60,7 @@ describe('<SmsIntegrationPreferences/>', () => {
                 name: 'My updated SMS integration',
                 meta: {
                     emoji: '',
-                    twilio_phone_number_id: 1,
+                    phone_number_id: 1,
                 },
             })
 

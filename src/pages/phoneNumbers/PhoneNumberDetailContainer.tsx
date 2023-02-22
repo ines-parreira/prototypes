@@ -1,25 +1,53 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
-import {get} from 'lodash'
+import {Link, useParams} from 'react-router-dom'
 import ReactCountryFlag from 'react-country-flag'
 
-import {RootState} from 'state/types'
-import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
+import {fetchNewPhoneNumber} from 'models/phoneNumber/resources'
+import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'
+import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import PageHeader from 'pages/common/components/PageHeader'
 import PhoneNumberDetails from 'pages/phoneNumbers/PhoneNumberDetails'
+import useAppSelector from 'hooks/useAppSelector'
+import useAppDispatch from 'hooks/useAppDispatch'
 
 import css from 'pages/settings/settings.less'
-import {isNewPhoneNumber} from './utils'
 
-export function PhoneNumberDetailContainer({
-    phoneNumber,
-}: ConnectedProps<typeof connector>) {
-    if (isNewPhoneNumber(phoneNumber)) {
+import {countryCode, isNewPhoneNumber} from './utils'
+
+export function PhoneNumberDetailContainer() {
+    const {phoneNumberId} = useParams<{phoneNumberId: string}>()
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        const fetchPhoneNumber = async () => {
+            const phoneNumber = await fetchNewPhoneNumber(
+                parseInt(phoneNumberId)
+            )
+            dispatch(newPhoneNumberFetched(phoneNumber))
+        }
+
+        if (!phoneNumberId) {
+            return
+        }
+
+        void fetchPhoneNumber()
+    }, [dispatch, phoneNumberId])
+
+    const phoneNumber = useAppSelector((state) => {
+        if (phoneNumberId) {
+            return getNewPhoneNumber(parseInt(phoneNumberId))(state)
+        }
+
+        return
+    })
+
+    if (!phoneNumber || !isNewPhoneNumber(phoneNumber)) {
         return null
     }
+
+    const phoneCountry = countryCode(phoneNumber)
 
     return (
         <div className="full-width">
@@ -33,14 +61,16 @@ export function PhoneNumberDetailContainer({
                         </BreadcrumbItem>
                         {phoneNumber && (
                             <BreadcrumbItem active>
-                                <ReactCountryFlag
-                                    countryCode={phoneNumber.meta?.country}
-                                />
+                                {phoneCountry && (
+                                    <ReactCountryFlag
+                                        countryCode={phoneCountry}
+                                    />
+                                )}
                                 &nbsp;
                                 {phoneNumber.name}
                                 &nbsp;
                                 <small className="text-muted ml-2">
-                                    {phoneNumber.meta?.friendly_name}
+                                    {phoneNumber.phone_number_friendly}
                                 </small>
                             </BreadcrumbItem>
                         )}
@@ -56,12 +86,4 @@ export function PhoneNumberDetailContainer({
     )
 }
 
-const connector = connect((state: RootState, ownProps: RouteComponentProps) => {
-    return {
-        phoneNumber: getPhoneNumber(
-            get(ownProps.match.params, 'phoneNumberId')
-        )(state),
-    }
-})
-
-export default withRouter(connector(PhoneNumberDetailContainer))
+export default PhoneNumberDetailContainer

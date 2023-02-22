@@ -49,7 +49,7 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
             area_code: '880',
             function: PhoneFunction.Standard,
             country: PhoneCountry.US,
-            twilio_phone_number_id: 1,
+            phone_number_id: 1,
             preferences: {
                 record_inbound_calls: false,
                 record_outbound_calls: false,

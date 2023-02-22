@@ -40,27 +40,7 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
             <span
               class="title"
             >
-              Type
-            </span>
-            <i
-              class="material-icons md-1 directionIcon"
-            >
-              arrow_drop_down
-            </i>
-          </div>
-        </div>
-      </td>
-      <td
-        class="wrapper is-clickable normal"
-      >
-        <div
-          class="content"
-        >
-          <div>
-            <span
-              class="title"
-            >
-              Integrations
+              Connected Apps
             </span>
             <i
               class="material-icons md-1 directionIcon"
@@ -108,20 +88,6 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
               +1 415 111 2222
             </span>
           </div>
-        </div>
-      </td>
-      <td
-        class="wrapper small"
-      >
-        <div
-          class="cellContent"
-        >
-          <span
-            class="badge-tag badge badge-secondary"
-            style="color: rgb(128, 136, 214);"
-          >
-            Local
-          </span>
         </div>
       </td>
       <td
@@ -182,20 +148,6 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
         </div>
       </td>
       <td
-        class="wrapper small"
-      >
-        <div
-          class="cellContent"
-        >
-          <span
-            class="badge-tag badge badge-secondary"
-            style="color: rgb(128, 136, 214);"
-          >
-            Toll Free
-          </span>
-        </div>
-      </td>
-      <td
         class="wrapper normal"
       >
         <div
@@ -239,7 +191,7 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
                 role="img"
                 style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
               >
-                🇬🇧
+                🇨🇦
               </span>
             </div>
             <strong>
@@ -247,23 +199,9 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
             </strong>
              
             <span>
-              +44 7123 456789
+              +1 4151 11 2223
             </span>
           </div>
-        </div>
-      </td>
-      <td
-        class="wrapper small"
-      >
-        <div
-          class="cellContent"
-        >
-          <span
-            class="badge-tag badge badge-secondary"
-            style="color: rgb(128, 136, 214);"
-          >
-            Mobile
-          </span>
         </div>
       </td>
       <td
@@ -335,27 +273,7 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             <span
               class="title"
             >
-              Type
-            </span>
-            <i
-              class="material-icons md-1 directionIcon"
-            >
-              arrow_drop_up
-            </i>
-          </div>
-        </div>
-      </td>
-      <td
-        class="wrapper is-clickable normal"
-      >
-        <div
-          class="content"
-        >
-          <div>
-            <span
-              class="title"
-            >
-              Integrations
+              Connected Apps
             </span>
             <i
               class="material-icons md-1 directionIcon"
@@ -392,7 +310,7 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
                 role="img"
                 style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
               >
-                🇬🇧
+                🇨🇦
               </span>
             </div>
             <strong>
@@ -400,23 +318,9 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             </strong>
              
             <span>
-              +44 7123 456789
+              +1 4151 11 2223
             </span>
           </div>
-        </div>
-      </td>
-      <td
-        class="wrapper small"
-      >
-        <div
-          class="cellContent"
-        >
-          <span
-            class="badge-tag badge badge-secondary"
-            style="color: rgb(128, 136, 214);"
-          >
-            Mobile
-          </span>
         </div>
       </td>
       <td
@@ -477,20 +381,6 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
         </div>
       </td>
       <td
-        class="wrapper small"
-      >
-        <div
-          class="cellContent"
-        >
-          <span
-            class="badge-tag badge badge-secondary"
-            style="color: rgb(128, 136, 214);"
-          >
-            Toll Free
-          </span>
-        </div>
-      </td>
-      <td
         class="wrapper normal"
       >
         <div
@@ -545,20 +435,6 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
               +1 415 111 2222
             </span>
           </div>
-        </div>
-      </td>
-      <td
-        class="wrapper small"
-      >
-        <div
-          class="cellContent"
-        >
-          <span
-            class="badge-tag badge badge-secondary"
-            style="color: rgb(128, 136, 214);"
-          >
-            Local
-          </span>
         </div>
       </td>
       <td

@@ -224,7 +224,7 @@ describe('integrations selectors', () => {
                         type: 'phone',
                         name: 'John Doe',
                         meta: {
-                            twilio_phone_number_id: 1,
+                            phone_number_id: 1,
                         },
                     },
                     {
@@ -232,7 +232,7 @@ describe('integrations selectors', () => {
                         type: 'sms',
                         name: 'John Doe',
                         meta: {
-                            twilio_phone_number_id: 1,
+                            phone_number_id: 1,
                         },
                     },
                     {
@@ -248,7 +248,7 @@ describe('integrations selectors', () => {
                 ],
             }),
             entities: {
-                phoneNumbers: {
+                newPhoneNumbers: {
                     1: {
                         phone_number: '+123456789',
                     },

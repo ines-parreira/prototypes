@@ -6,14 +6,14 @@ import configureMockStore from 'redux-mock-store'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {phoneNumbers} from 'fixtures/phoneNumber'
+import {phoneNumbers} from 'fixtures/newPhoneNumber'
 
 import SmsIntegrationCreate from '../SmsIntegrationCreate'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
-        phoneNumbers: phoneNumbers.reduce(
+        newPhoneNumbers: phoneNumbers.reduce(
             (acc, number) => ({...acc, [number.id]: number}),
             {}
         ),
@@ -52,7 +52,7 @@ describe('<SmsIntegrationCreate/>', () => {
                 name: 'My SMS integration',
                 meta: {
                     emoji: null,
-                    twilio_phone_number_id: 1,
+                    phone_number_id: 1,
                 },
             })
 
@@ -79,7 +79,7 @@ describe('<SmsIntegrationCreate/>', () => {
                 name: 'A Phone Number - SMS',
                 meta: {
                     emoji: null,
-                    twilio_phone_number_id: 1,
+                    phone_number_id: 1,
                 },
             })
 

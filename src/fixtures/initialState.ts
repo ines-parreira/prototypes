@@ -177,4 +177,5 @@ export const initialState: GorgiasInitialState = {
         },
     },
     phoneNumbers: [],
+    newPhoneNumbers: [],
 }

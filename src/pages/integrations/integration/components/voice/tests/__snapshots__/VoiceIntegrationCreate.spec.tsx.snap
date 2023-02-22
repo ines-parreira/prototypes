@@ -196,14 +196,14 @@ exports[`<VoiceIntegrationCreate/> render() should prefill the title field using
                       role="img"
                       style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
                     >
-                      🇬🇧
+                      🇨🇦
                     </span>
                      
                     Intl. Phone Number
                      - 
-                    GB
+                    CA
                      (
-                    +44 7123 456789
+                    +1 4151 11 2223
                     )
                   </span>
                 </button>
@@ -513,14 +513,14 @@ exports[`<VoiceIntegrationCreate/> render() should render 1`] = `
                       role="img"
                       style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
                     >
-                      🇬🇧
+                      🇨🇦
                     </span>
                      
                     Intl. Phone Number
                      - 
-                    GB
+                    CA
                      (
-                    +44 7123 456789
+                    +1 4151 11 2223
                     )
                   </span>
                 </button>
@@ -800,14 +800,14 @@ exports[`<VoiceIntegrationCreate/> render() should submit a valid payload with t
                       role="img"
                       style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
                     >
-                      🇬🇧
+                      🇨🇦
                     </span>
                      
                     Intl. Phone Number
                      - 
-                    GB
+                    CA
                      (
-                    +44 7123 456789
+                    +1 4151 11 2223
                     )
                   </span>
                 </button>

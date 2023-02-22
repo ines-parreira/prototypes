@@ -28,6 +28,10 @@ function getLinkTargetTabName(item: Item) {
             case IntegrationType.BigCommerce: {
                 return 'connections'
             }
+
+            case IntegrationType.WhatsApp: {
+                return 'integrations'
+            }
         }
     }
     return null

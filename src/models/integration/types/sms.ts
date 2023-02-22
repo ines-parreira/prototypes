@@ -14,7 +14,7 @@ export type SmsIntegration = IntegrationBase & {
 
 export type SmsIntegrationMeta = {
     emoji: string
-    twilio_phone_number_id: number
+    phone_number_id: number
 }
 
 export const isSmsIntegration = createTypeGuard<

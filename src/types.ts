@@ -8,11 +8,7 @@ import {
     IntegrationExtra,
     Integration,
 } from 'models/integration/types'
-import {
-    NewPhoneNumber,
-    OldPhoneNumber,
-    PhoneNumber,
-} from 'models/phoneNumber/types'
+import {NewPhoneNumber, OldPhoneNumber} from 'models/phoneNumber/types'
 import {Section} from 'models/section/types'
 import {View} from 'models/view/types'
 import {Tag} from 'models/tag/types'
@@ -87,7 +83,8 @@ export type GorgiasInitialState = {
     viewSections: {
         [key: string]: Section
     }
-    phoneNumbers: PhoneNumber[]
+    phoneNumbers: OldPhoneNumber[]
+    newPhoneNumbers: NewPhoneNumber[]
 }
 
 export type InitialRootState = {

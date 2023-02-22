@@ -7,9 +7,8 @@ import {
     IntegrationType,
     SmsIntegration,
     WhatsAppIntegration,
-    isWhatsAppIntegration,
 } from 'models/integration/types'
-import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
+import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {friendlyName} from 'pages/phoneNumbers/utils'
 
@@ -25,12 +24,8 @@ export default function PhoneIntegrationBreadcrumbs({
     const {integrationId} = useParams<{integrationId: string}>()
     const phoneNumber = useAppSelector((state) => {
         if (integration) {
-            // TODO(@anddon): remove this once the new API for phone is available
-            const phoneNumberId = isWhatsAppIntegration(integration)
-                ? integration.meta.phone_number_id
-                : integration.meta?.twilio_phone_number_id
-
-            return getPhoneNumber(phoneNumberId)(state)
+            const phoneNumberId = integration.meta?.phone_number_id
+            return getNewPhoneNumber(phoneNumberId)(state)
         }
         return null
     })

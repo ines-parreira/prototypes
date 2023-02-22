@@ -1,10 +1,10 @@
 import React, {useEffect, useState, useCallback} from 'react'
-import {sortBy, reverse, startCase} from 'lodash'
+import {sortBy, reverse} from 'lodash'
 
 import {OrderDirection} from 'models/api/types'
-import {OldPhoneNumber, PhoneNumber} from 'models/phoneNumber/types'
+import {NewPhoneNumber, PhoneNumber} from 'models/phoneNumber/types'
 import {IntegrationType} from 'models/integration/types'
-import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import history from 'pages/history'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -14,21 +14,21 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
-import {TagLabel} from 'pages/common/utils/labels'
+import SourceIcon from 'pages/common/components/SourceIcon'
 import useAppSelector from 'hooks/useAppSelector'
 
 import PhoneNumberTitle from './PhoneNumberTitle'
 import css from './PhoneNumbersList.less'
 
 export function PhoneNumbersList(): JSX.Element | null {
-    const phoneNumbers = useAppSelector(getPhoneNumbers)
+    const phoneNumbers = useAppSelector(getNewPhoneNumbers)
 
     const [orderBy, setOrderBy] = useState<string>('id')
     const [orderDirection, setOrderDirection] = useState<OrderDirection>(
         OrderDirection.Desc
     )
     const [sortedPhoneNumbers, setSortedPhoneNumbers] = useState<
-        OldPhoneNumber[]
+        NewPhoneNumber[]
     >(Object.values(phoneNumbers))
 
     useEffect(() => {
@@ -79,13 +79,7 @@ export function PhoneNumbersList(): JSX.Element | null {
                     onClick={() => setSortOptions('name')}
                 />
                 <HeaderCellProperty
-                    title="Type"
-                    direction={orderDirection}
-                    isOrderedBy={orderBy === 'meta.type'}
-                    onClick={() => setSortOptions('meta.type')}
-                />
-                <HeaderCellProperty
-                    title="Integrations"
+                    title="Connected Apps"
                     direction={orderDirection}
                     isOrderedBy={orderBy === 'integrations'}
                     onClick={() => setSortOptions('integrations')}
@@ -108,44 +102,33 @@ export function PhoneNumbersList(): JSX.Element | null {
                                     withRoundFlag
                                 />
                             </BodyCell>
-                            <BodyCell size="small">
-                                <TagLabel>
-                                    {startCase(phoneNumber.meta.type)}
-                                </TagLabel>
-                            </BodyCell>
                             <BodyCell>
                                 {hasIntegration(
                                     phoneNumber,
                                     IntegrationType.Phone
                                 ) && (
-                                    <i
-                                        className="material-icons md-2 align-middle mr-3"
-                                        title="Voice"
-                                    >
-                                        phone
-                                    </i>
+                                    <SourceIcon
+                                        type={IntegrationType.Phone}
+                                        className="md-2 mr-2"
+                                    />
                                 )}
                                 {hasIntegration(
                                     phoneNumber,
                                     IntegrationType.Sms
                                 ) && (
-                                    <i
-                                        className="material-icons md-2 align-middle mr-3"
-                                        title="SMS"
-                                    >
-                                        sms
-                                    </i>
+                                    <SourceIcon
+                                        type={IntegrationType.Sms}
+                                        className="md-2 mr-2"
+                                    />
                                 )}
                                 {hasIntegration(
                                     phoneNumber,
                                     IntegrationType.WhatsApp
                                 ) && (
-                                    <i
-                                        className="material-icons md-2 align-middle mr-3"
-                                        title="SMS"
-                                    >
-                                        sms
-                                    </i>
+                                    <SourceIcon
+                                        type={IntegrationType.WhatsApp}
+                                        className="md-2 mr-2"
+                                    />
                                 )}
                             </BodyCell>
                             <BodyCell>
