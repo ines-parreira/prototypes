@@ -13,6 +13,7 @@ import * as migrationBannerHook from 'pages/common/components/EmailMigrationBann
 import StartMigration from '../EmailMigration/StartMigration'
 
 jest.mock('models/integration/resources/email')
+jest.mock('hooks/useAppSelector')
 
 const mockFetchMigrationStatus = jest.fn()
 jest.spyOn(migrationBannerHook, 'default').mockImplementation(

@@ -1,0 +1,46 @@
+@import '~css/new/colorTokens';
+@import '~css/new/layout';
+
+:local {
+    .pagination {
+        color: @classic-neutral-grey-5;
+        font-weight: 500;
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+        gap: @layout-spacing-xs;
+    }
+
+    .pageLink {
+        padding: 6px 12px;
+        border-radius: 4px;
+        min-width: 32px;
+
+        &:hover {
+            background-color: @classic-neutral-grey-2;
+        }
+    }
+
+    .pageItem {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+
+        &.disabled {
+            cursor: initial;
+        }
+
+        &.disabled a {
+            color: @classic-neutral-grey-4;
+        }
+
+        &.disabled .pageLink {
+            background: none;
+        }
+
+        &.active .pageLink {
+            background-color: @classic-neutral-grey-3;
+            color: @classic-neutral-grey-6;
+        }
+    }
+}

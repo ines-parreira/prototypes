@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
 import ReactPaginate from 'react-paginate'
 import _omit from 'lodash/omit'
+import classNames from 'classnames'
+
+import css from './Pagination.less'
 
 type Props = {
     onChange: (nextPage: number) => void
@@ -54,16 +57,17 @@ export default class Pagination extends Component<Props> {
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={2}
                 onPageChange={this._handlePageClick}
-                containerClassName={`pagination ${className || ''}`}
-                breakClassName={'page-item'}
-                breakLabel={<a className="page-link">...</a>}
-                pageClassName={'page-item'}
-                pageLinkClassName={'page-link'}
-                previousClassName={'page-item'}
-                previousLinkClassName={'page-link'}
-                nextClassName={'page-item'}
-                nextLinkClassName={'page-link'}
-                activeClassName={'active'}
+                breakLabel={<a className={css.pageLink}>...</a>}
+                containerClassName={classNames(css.pagination, className)}
+                breakClassName={css.pageItem}
+                pageClassName={css.pageItem}
+                pageLinkClassName={css.pageLink}
+                previousClassName={css.pageItem}
+                previousLinkClassName={css.pageLink}
+                nextClassName={css.pageItem}
+                nextLinkClassName={css.pageLink}
+                activeClassName={css.active}
+                disabledClassName={css.disabled}
                 disableInitialCallback={true}
                 forcePage={forcePage}
                 {..._omit(properties, 'currentPage')}
