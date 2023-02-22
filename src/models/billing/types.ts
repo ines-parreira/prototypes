@@ -40,6 +40,7 @@ export type Product<
 type BasePrice = {
     amount: number
     currency: string
+    internal_id: string
     interval: PlanInterval
     legacy_id: string
     name: string

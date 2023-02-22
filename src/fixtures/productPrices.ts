@@ -216,6 +216,7 @@ export const basicMonthlyHelpdeskPrice: HelpdeskPrice = {
     interval: PlanInterval.Month,
     is_legacy: false,
     legacy_id: 'basic-monthly-usd-4',
+    internal_id: 'basic-monthly-usd-4',
     limits: {
         messages: {
             default: 100,
@@ -250,6 +251,7 @@ export const basicYearlyHelpdeskPrice: HelpdeskPrice = {
     interval: PlanInterval.Year,
     is_legacy: false,
     legacy_id: 'basic-yearly-usd-4',
+    internal_id: 'basic-yearly-usd-4',
     limits: {
         messages: {
             default: 100,
@@ -284,6 +286,7 @@ export const proMonthlyHelpdeskPrice: HelpdeskPrice = {
     interval: PlanInterval.Month,
     is_legacy: false,
     legacy_id: 'pro-monthly-usd-4',
+    internal_id: 'pro-monthly-usd-4',
     limits: {
         messages: {
             default: 100,
@@ -318,6 +321,7 @@ export const proYearlyHelpdeskPrice: HelpdeskPrice = {
     interval: PlanInterval.Year,
     is_legacy: false,
     legacy_id: 'pro-yearly-usd-4',
+    internal_id: 'pro-yearly-usd-4',
     limits: {
         messages: {
             default: 100,
@@ -352,6 +356,7 @@ export const advancedMonthlyHelpdeskPrice: HelpdeskPrice = {
     interval: PlanInterval.Month,
     is_legacy: false,
     legacy_id: 'advanced-monthly-usd-4',
+    internal_id: 'advanced-monthly-usd-4',
     limits: {
         messages: {
             default: 100,
@@ -386,6 +391,7 @@ export const advancedYearlyHelpdeskPrice: HelpdeskPrice = {
     interval: PlanInterval.Year,
     is_legacy: false,
     legacy_id: 'advanced-yearly-usd-4',
+    internal_id: 'advanced-yearly-usd-4',
     limits: {
         messages: {
             default: 100,
@@ -419,6 +425,7 @@ export const basicMonthlyAutomationPrice: AutomationPrice = {
     features: automationPriceFeatures,
     interval: PlanInterval.Month,
     legacy_id: 'basic-automation-full-price-monthly-usd-4',
+    internal_id: 'aut-addon-basic-full-price-monthly-usd-4',
     name: 'Basic',
     order: 2,
     product_id: 'prod_LsHD5xmSqoFBBs',
@@ -435,6 +442,7 @@ export const basicYearlyAutomationPrice: AutomationPrice = {
     features: automationPriceFeatures,
     interval: PlanInterval.Year,
     legacy_id: 'basic-automation-full-price-yearly-usd-4',
+    internal_id: 'aut-addon-basic-full-price-yearly-usd-4',
     name: 'Basic',
     order: 2,
     product_id: 'prod_LsHD5xmSqoFBBs',
@@ -451,6 +459,7 @@ export const proMonthlyAutomationPrice: AutomationPrice = {
     features: automationPriceFeatures,
     interval: PlanInterval.Month,
     legacy_id: 'pro-automation-full-price-monthly-usd-4',
+    internal_id: 'aut-addon-pro-full-price-monthly-usd-4',
     name: 'Pro',
     order: 3,
     product_id: 'prod_LsHD5xmSqoFBBs',
@@ -467,6 +476,7 @@ export const proYearlyAutomationPrice: AutomationPrice = {
     features: automationPriceFeatures,
     interval: PlanInterval.Year,
     legacy_id: 'pro-automation-full-price-yearly-usd-4',
+    internal_id: 'aut-addon-pro-full-price-yearly-usd-4',
     name: 'Pro',
     order: 3,
     product_id: 'prod_LsHD5xmSqoFBBs',
@@ -483,6 +493,7 @@ export const advancedMonthlyAutomationPrice: AutomationPrice = {
     features: automationPriceFeatures,
     interval: PlanInterval.Month,
     legacy_id: 'advanced-automation-full-price-monthly-usd-4',
+    internal_id: 'aut-addon-advanced-full-price-monthly-usd-4',
     name: 'Advanced',
     order: 4,
     product_id: 'prod_LsHD5xmSqoFBBs',
@@ -499,6 +510,7 @@ export const advancedYearlyAutomationPrice: AutomationPrice = {
     features: automationPriceFeatures,
     interval: PlanInterval.Year,
     legacy_id: 'advanced-automation-full-price-yearly-usd-4',
+    internal_id: 'aut-addon-advanced-full-price-yearly-usd-4',
     name: 'Advanced',
     order: 4,
     product_id: 'prod_LsHD5xmSqoFBBs',
@@ -517,6 +529,7 @@ export const legacyBasicHelpdeskPrice: HelpdeskPrice = {
     interval: PlanInterval.Month,
     is_legacy: true,
     legacy_id: 'basic-usd-1',
+    internal_id: 'basic-usd-1',
     limits: {
         messages: {
             default: 100,
@@ -549,6 +562,7 @@ export const legacyBasicAutomationPrice: AutomationPrice = {
     features: automationPriceFeatures,
     interval: PlanInterval.Month,
     legacy_id: 'basic-automation-usd-1',
+    internal_id: 'basic-automation-usd-1',
     name: 'Basic Plan',
     product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBlbI9qXomtXqSvvtgyZ1z',
@@ -566,6 +580,7 @@ export const customHelpdeskPrice: HelpdeskPrice = {
     interval: PlanInterval.Month,
     is_legacy: false,
     legacy_id: 'custom-monthly-usd-4-1',
+    internal_id: 'custom-monthly-usd-4-1',
     limits: {
         messages: {
             default: 100,
@@ -598,6 +613,7 @@ export const customAutomationPrice: AutomationPrice = {
     features: automationPriceFeatures,
     interval: PlanInterval.Month,
     legacy_id: 'custom-automation-full-price-monthly-usd-4-1',
+    internal_id: 'aut-addon-custom-full-price-monthly-usd-4-1',
     name: 'Custom',
     product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBjiI9qXomtXqSvQBcRw5V',
@@ -612,6 +628,7 @@ export const basicDiscountedAutomationPrice: AutomationPrice = {
     currency: 'usd',
     interval: PlanInterval.Month,
     legacy_id: 'basic-automation-monthly-usd-4',
+    internal_id: 'aut-addon-basic-monthly-usd-4',
     name: 'Basic',
     order: 2,
     product_id: 'prod_LsHD5xmSqoFBBs',
@@ -629,6 +646,7 @@ export const starterHelpdeskPrice: HelpdeskPrice = {
     interval: PlanInterval.Month,
     is_legacy: false,
     legacy_id: 'starter-monthly-usd-4',
+    internal_id: 'starter-monthly-usd-4',
     limits: {
         messages: {
             default: 100,
@@ -656,8 +674,9 @@ export const voicePrice0: VoicePrice = {
     amount: 0,
     currency: 'usd',
     included_tickets: 0,
+    internal_id: 'voc-addon-00-monthly-usd-4',
     interval: PlanInterval.Month,
-    name: 'Voice Addon Free Monthly',
+    name: 'Voice Addon Trial Monthly',
     price_id: 'price_1LkClqI9qXomtXqSlgYCG6Wm',
     product_id: 'prod_MT6fyh00TCFRGZ',
     voice_extra_ticket_cost: 2.4,
@@ -667,6 +686,7 @@ export const voicePrice1: VoicePrice = {
     amount: 175,
     currency: 'usd',
     included_tickets: 250,
+    internal_id: 'voc-addon-04-monthly-usd-4',
     interval: PlanInterval.Month,
     name: 'Voice Addon 250 Monthly',
     price_id: 'price_1LkAzlI9qXomtXqSxOOrhzcU',
@@ -678,6 +698,7 @@ const voicePrice2: VoicePrice = {
     amount: 1750,
     currency: 'usd',
     included_tickets: 7500,
+    internal_id: 'voc-addon-10-monthly-usd-4',
     interval: PlanInterval.Month,
     name: 'Voice Addon 7500 Monthly',
     price_id: 'price_1LkB44I9qXomtXqS4aF9ibna',
@@ -689,6 +710,7 @@ export const smsPrice1: SMSPrice = {
     amount: 90,
     currency: 'usd',
     included_tickets: 150,
+    internal_id: 'sms-addon-03-monthly-usd-4',
     interval: PlanInterval.Month,
     name: 'SMS Addon 150 Monthly',
     price_id: 'price_1LkBzKI9qXomtXqSEXrSV8o4',
@@ -700,6 +722,7 @@ const smsPrice2: SMSPrice = {
     amount: 5768,
     currency: 'usd',
     included_tickets: 15000,
+    internal_id: 'sms-addon-12-monthly-usd-4',
     interval: PlanInterval.Month,
     name: 'SMS Addon 15000 Monthly',
     price_id: 'price_1LkBzLI9qXomtXqSgzXlOnP4',
@@ -711,8 +734,9 @@ export const smsPrice0: SMSPrice = {
     amount: 0,
     currency: 'usd',
     included_tickets: 0,
+    internal_id: 'sms-addon-00-monthly-usd-4',
     interval: PlanInterval.Month,
-    name: 'SMS Addon Free Monthly',
+    name: 'SMS Addon Trial Monthly',
     price_id: 'price_1M6V7uI9qXomtXqSpsoVQWUw',
     product_id: 'prod_MT8Fzk7vmcT73m',
     sms_extra_ticket_cost: 1.6,
