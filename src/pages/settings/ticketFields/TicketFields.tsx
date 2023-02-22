@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {Container} from 'reactstrap'
 
 import {Link, NavLink, useParams} from 'react-router-dom'
+import {useDebounce} from 'react-use'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useIsFlagEnabled} from 'hooks/useIsFlagEnabled'
 import useTitle from 'hooks/useTitle'
@@ -14,6 +15,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Search from 'pages/common/components/Search'
 import css from './TicketFields.less'
 
 type TicketFieldsTab = 'active' | 'archived'
@@ -25,6 +27,10 @@ export default function TicketFields() {
     const [archivedCursor, setArchivedCursor] = useState<Maybe<string>>(null)
     const isTicketFieldsEnabled = useIsFlagEnabled(FeatureFlagKey.TicketFields)
 
+    const [search, setSearch] = useState('')
+    const [debouncedSearch, setDebouncedSearch] = useState('')
+    useDebounce(() => setDebouncedSearch(search), 1000, [search])
+
     const {
         data: {data: activeFields = [], meta: activeFieldsPaginationMeta} = {},
         isLoading: isLoadingActive,
@@ -33,6 +39,7 @@ export default function TicketFields() {
             archived: false,
             object_type: 'Ticket',
             cursor: activeCursor,
+            search: debouncedSearch,
         },
         {enabled: isTicketFieldsEnabled}
     )
@@ -48,6 +55,7 @@ export default function TicketFields() {
             archived: true,
             object_type: 'Ticket',
             cursor: archivedCursor,
+            search: debouncedSearch,
         },
         {enabled: isTicketFieldsEnabled}
     )
@@ -68,6 +76,7 @@ export default function TicketFields() {
     const hasArchivedFields = archivedFields.length > 0
 
     const hasTicketFields = hasActiveFields || hasArchivedFields
+    const shouldDisplayListingPage = hasTicketFields || debouncedSearch
     const isLoading = isLoadingActive || isLoadingArchived
 
     const createFieldButton =
@@ -84,10 +93,23 @@ export default function TicketFields() {
             <div className={css.pageHeaderContainer}>
                 <PageHeader title="Ticket Fields">
                     <div className={css.headerContainer}>
-                        {hasTicketFields && createFieldButton}
+                        {shouldDisplayListingPage && (
+                            <>
+                                <Search
+                                    id="custom-fields-search"
+                                    name="custom-fields-search"
+                                    bindKey
+                                    forcedQuery={search}
+                                    onChange={setSearch}
+                                    placeholder="Search ticket fields..."
+                                    className="mr-2"
+                                />
+                                {createFieldButton}
+                            </>
+                        )}
                     </div>
                 </PageHeader>
-                {hasTicketFields && (
+                {shouldDisplayListingPage && (
                     <SecondaryNavbar>
                         <NavLink to="/app/settings/ticket-fields/active" exact>
                             Active
@@ -106,7 +128,7 @@ export default function TicketFields() {
                 <Loader minHeight="60px" />
             ) : (
                 <>
-                    {!hasTicketFields ? (
+                    {!shouldDisplayListingPage ? (
                         <div className={css.emptyViewContainer}>
                             <h2 className={css.emptyViewContainerHeader}>
                                 Get started with Ticket Fields
@@ -118,65 +140,67 @@ export default function TicketFields() {
                             {createFieldButton}
                         </div>
                     ) : (
-                        hasTicketFields && (
-                            <Container fluid className="p-0">
-                                {(activeTab === 'active' && !hasActiveFields) ||
-                                (activeTab === 'archived' &&
-                                    !hasArchivedFields) ? (
-                                    <div className={css.emptyListTextWrapper}>
-                                        You don't have any{' '}
-                                        {activeTab === 'active'
-                                            ? 'active'
-                                            : 'archived'}{' '}
-                                        ticket fields at the moment
-                                    </div>
-                                ) : (
-                                    <>
-                                        {activeTab === 'active' &&
-                                            activeFields.length >= 4 && (
-                                                <Alert
-                                                    type={AlertType.Info}
-                                                    icon
-                                                    className="m-4"
-                                                >
-                                                    You can only have 4 active
-                                                    fields at a time. Please
-                                                    archive some fields before
-                                                    creating a new one.
-                                                </Alert>
-                                            )}
-                                        <List ticketFields={ticketFields} />
-                                        <Navigation
-                                            className={css.navigation}
-                                            hasNextItems={
-                                                !!paginationMeta?.next_cursor
-                                            }
-                                            hasPrevItems={
-                                                !!paginationMeta?.prev_cursor
-                                            }
-                                            fetchPrevItems={() => {
-                                                activeTab === 'active'
-                                                    ? setActiveCursor(
-                                                          paginationMeta?.prev_cursor
-                                                      )
-                                                    : setArchivedCursor(
-                                                          paginationMeta?.prev_cursor
-                                                      )
-                                            }}
-                                            fetchNextItems={() => {
-                                                activeTab === 'active'
-                                                    ? setActiveCursor(
-                                                          paginationMeta?.next_cursor
-                                                      )
-                                                    : setArchivedCursor(
-                                                          paginationMeta?.next_cursor
-                                                      )
-                                            }}
-                                        />
-                                    </>
-                                )}
-                            </Container>
-                        )
+                        <Container fluid className="p-0">
+                            {debouncedSearch && !hasActiveFields ? (
+                                <div className={css.emptyListTextWrapper}>
+                                    No results found.
+                                </div>
+                            ) : (activeTab === 'active' && !hasActiveFields) ||
+                              (activeTab === 'archived' &&
+                                  !hasArchivedFields) ? (
+                                <div className={css.emptyListTextWrapper}>
+                                    You don't have any{' '}
+                                    {activeTab === 'active'
+                                        ? 'active'
+                                        : 'archived'}{' '}
+                                    ticket fields at the moment
+                                </div>
+                            ) : (
+                                <>
+                                    {activeTab === 'active' &&
+                                        activeFields.length >= 4 && (
+                                            <Alert
+                                                type={AlertType.Info}
+                                                icon
+                                                className="m-4"
+                                            >
+                                                You can only have 4 active
+                                                fields at a time. Please archive
+                                                some fields before creating a
+                                                new one.
+                                            </Alert>
+                                        )}
+                                    <List ticketFields={ticketFields} />
+                                    <Navigation
+                                        className={css.navigation}
+                                        hasNextItems={
+                                            !!paginationMeta?.next_cursor
+                                        }
+                                        hasPrevItems={
+                                            !!paginationMeta?.prev_cursor
+                                        }
+                                        fetchPrevItems={() => {
+                                            activeTab === 'active'
+                                                ? setActiveCursor(
+                                                      paginationMeta?.prev_cursor
+                                                  )
+                                                : setArchivedCursor(
+                                                      paginationMeta?.prev_cursor
+                                                  )
+                                        }}
+                                        fetchNextItems={() => {
+                                            activeTab === 'active'
+                                                ? setActiveCursor(
+                                                      paginationMeta?.next_cursor
+                                                  )
+                                                : setArchivedCursor(
+                                                      paginationMeta?.next_cursor
+                                                  )
+                                        }}
+                                    />
+                                </>
+                            )}
+                        </Container>
                     )}
                 </>
             )}

@@ -19,6 +19,31 @@ exports[`<TicketFields/> account has the feature flag should render active ticke
         <div
           class="headerContainer"
         >
+          <div
+            class="component mr-2"
+          >
+            <div
+              class="wrapper input"
+            >
+              <span
+                class="prefix"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  search
+                </i>
+              </span>
+              <input
+                class="input"
+                id="custom-fields-search"
+                name="custom-fields-search"
+                placeholder="Search ticket fields..."
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
           <a
             to="/app/settings/ticket-fields/add"
           >
@@ -82,6 +107,31 @@ exports[`<TicketFields/> account has the feature flag should render archived tic
         <div
           class="headerContainer"
         >
+          <div
+            class="component mr-2"
+          >
+            <div
+              class="wrapper input"
+            >
+              <span
+                class="prefix"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  search
+                </i>
+              </span>
+              <input
+                class="input"
+                id="custom-fields-search"
+                name="custom-fields-search"
+                placeholder="Search ticket fields..."
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
           <a
             to="/app/settings/ticket-fields/add"
           >
@@ -147,6 +197,7 @@ exports[`<TicketFields/> account has the feature flag should render get started 
         />
       </div>
     </div>
+    
   </div>
   <div
     class="emptyViewContainer"
@@ -194,6 +245,31 @@ exports[`<TicketFields/> account has the feature flag should render no active ti
         <div
           class="headerContainer"
         >
+          <div
+            class="component mr-2"
+          >
+            <div
+              class="wrapper input"
+            >
+              <span
+                class="prefix"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  search
+                </i>
+              </span>
+              <input
+                class="input"
+                id="custom-fields-search"
+                name="custom-fields-search"
+                placeholder="Search ticket fields..."
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
           <a
             to="/app/settings/ticket-fields/add"
           >
@@ -263,6 +339,31 @@ exports[`<TicketFields/> account has the feature flag should render no archived 
         <div
           class="headerContainer"
         >
+          <div
+            class="component mr-2"
+          >
+            <div
+              class="wrapper input"
+            >
+              <span
+                class="prefix"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  search
+                </i>
+              </span>
+              <input
+                class="input"
+                id="custom-fields-search"
+                name="custom-fields-search"
+                placeholder="Search ticket fields..."
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
           <a
             to="/app/settings/ticket-fields/add"
           >
@@ -308,6 +409,96 @@ exports[`<TicketFields/> account has the feature flag should render no archived 
       archived
        
       ticket fields at the moment
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TicketFields/> account has the feature flag should render no results found 1`] = `
+<div
+  class="full-width overflow-auto pageContainer"
+>
+  <div
+    class="pageHeaderContainer"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Ticket Fields
+      </h1>
+      <div>
+        <div
+          class="headerContainer"
+        >
+          <div
+            class="component mr-2"
+          >
+            <div
+              class="wrapper isFocused input"
+            >
+              <span
+                class="prefix"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  search
+                </i>
+              </span>
+              <input
+                class="input"
+                id="custom-fields-search"
+                name="custom-fields-search"
+                placeholder="Search ticket fields..."
+                type="text"
+                value="foo"
+              />
+            </div>
+          </div>
+          <a
+            to="/app/settings/ticket-fields/add"
+          >
+            <button
+              class="wrapper fill primary medium"
+              type="button"
+            >
+              Create Field
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/ticket-fields/active"
+      >
+        Active
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/ticket-fields/archived"
+      >
+        Archived
+      </a>
+    </nav>
+  </div>
+  <div
+    class="p-0 container-fluid"
+  >
+    <div
+      class="emptyListTextWrapper"
+    >
+      No results found.
     </div>
   </div>
 </div>

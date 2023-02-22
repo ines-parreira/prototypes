@@ -8,6 +8,7 @@ import {CustomField, CustomFieldInput, CustomFieldState} from './types'
 export type ListParams = ApiCursorPaginationParams & {
     archived: boolean
     object_type: CustomFieldInput['object_type']
+    search?: string
 }
 
 export async function getCustomFields(
