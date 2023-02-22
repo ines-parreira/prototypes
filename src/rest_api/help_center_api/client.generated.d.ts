@@ -424,14 +424,6 @@ declare namespace Components {
       size: number;
       url: string;
     }
-    export interface ContactFormDto {
-      card_enabled: boolean;
-      helpdesk_integration_email: string | null;
-      helpdesk_integration_id: number | null;
-      subject_lines: {
-        [name: string]: SubjectLineDto;
-      };
-    }
     export interface ContactInfo {
       email: {
         deactivated_datetime: string | null;
@@ -1011,6 +1003,14 @@ declare namespace Components {
       translations?: HelpCenterTranslationDto[];
       redirects?: RedirectDto[];
     }
+    export interface HelpCenterContactFormDto {
+      card_enabled: boolean;
+      helpdesk_integration_email: string | null;
+      helpdesk_integration_id: number | null;
+      subject_lines: {
+        [name: string]: SubjectLineDto;
+      };
+    }
     export interface HelpCenterDto {
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
@@ -1340,7 +1340,7 @@ declare namespace Components {
       allow_other: boolean;
       options: string[];
     }
-    export interface SubmitContactFormDto {
+    export interface SubmitHelpCenterContactFormDto {
       full_name: string;
       email: string;
       subject: string;
@@ -1462,14 +1462,6 @@ declare namespace Components {
        */
       visibility_status?: "PUBLIC" | "UNLISTED";
     }
-    export interface UpdateContactFormDto {
-      card_enabled?: boolean;
-      helpdesk_integration_email: string | null;
-      helpdesk_integration_id: number | null;
-      subject_lines?: {
-        [name: string]: SubjectLineDto;
-      };
-    }
     export interface UpdateContactFormIntegrationDto {
       /**
        * The account id whose help centers should be deleted
@@ -1539,6 +1531,14 @@ declare namespace Components {
        * false
        */
       custom_footer_deactivated?: boolean;
+    }
+    export interface UpdateHelpCenterContactFormDto {
+      card_enabled?: boolean;
+      helpdesk_integration_email: string | null;
+      helpdesk_integration_id: number | null;
+      subject_lines?: {
+        [name: string]: SubjectLineDto;
+      };
     }
     export interface UpdateHelpCenterDto {
       /**
@@ -2504,7 +2504,7 @@ declare namespace Paths {
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
     }
-    export type RequestBody = Components.Schemas.SubmitContactFormDto;
+    export type RequestBody = Components.Schemas.SubmitHelpCenterContactFormDto;
   }
   namespace SetArticlesPositionsInCategory {
     namespace Parameters {

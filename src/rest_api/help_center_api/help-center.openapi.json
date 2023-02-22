@@ -302,7 +302,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/SubmitContactFormDto"
+                                "$ref": "#/components/schemas/SubmitHelpCenterContactFormDto"
                             }
                         }
                     }
@@ -3231,7 +3231,7 @@
                 },
                 "required": ["allow_other", "options"]
             },
-            "UpdateContactFormDto": {
+            "UpdateHelpCenterContactFormDto": {
                 "type": "object",
                 "properties": {
                     "card_enabled": {"type": "boolean"},
@@ -3320,7 +3320,7 @@
                         "description": "Contains the integration email and id which will be used to create tickets from the contact form.",
                         "allOf": [
                             {
-                                "$ref": "#/components/schemas/UpdateContactFormDto"
+                                "$ref": "#/components/schemas/UpdateHelpCenterContactFormDto"
                             }
                         ]
                     },
@@ -3333,7 +3333,7 @@
                 },
                 "required": ["name", "default_locale"]
             },
-            "ContactFormDto": {
+            "HelpCenterContactFormDto": {
                 "type": "object",
                 "properties": {
                     "card_enabled": {"type": "boolean"},
@@ -3463,7 +3463,9 @@
                     "contact_form": {
                         "nullable": true,
                         "allOf": [
-                            {"$ref": "#/components/schemas/ContactFormDto"}
+                            {
+                                "$ref": "#/components/schemas/HelpCenterContactFormDto"
+                            }
                         ]
                     }
                 },
@@ -3501,7 +3503,7 @@
                 },
                 "required": ["filename", "size", "url"]
             },
-            "SubmitContactFormDto": {
+            "SubmitHelpCenterContactFormDto": {
                 "type": "object",
                 "properties": {
                     "full_name": {"type": "string"},
@@ -3892,7 +3894,9 @@
                     "contact_form": {
                         "nullable": true,
                         "allOf": [
-                            {"$ref": "#/components/schemas/ContactFormDto"}
+                            {
+                                "$ref": "#/components/schemas/HelpCenterContactFormDto"
+                            }
                         ]
                     },
                     "translations": {
@@ -4015,7 +4019,7 @@
                         "description": "Contains the integration email and id which will be used to create tickets from the contact form.",
                         "allOf": [
                             {
-                                "$ref": "#/components/schemas/UpdateContactFormDto"
+                                "$ref": "#/components/schemas/UpdateHelpCenterContactFormDto"
                             }
                         ]
                     },
