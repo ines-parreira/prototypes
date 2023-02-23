@@ -207,6 +207,29 @@ describe('new message reducer', () => {
         ).toEqualImmutable(expected)
     })
 
+    it('should return newState with a reset inserted discounts', () => {
+        const expected = initialState.mergeDeep({
+            state: {
+                inserted_discounts: fromJS([]),
+            },
+        })
+
+        const action = {
+            type: types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,
+            resp: {},
+        }
+
+        expect(
+            reducer(
+                initialState.setIn(
+                    ['state', 'inserted_discounts'],
+                    fromJS([{code: 'FREETHINGY'}])
+                ),
+                action
+            )
+        ).toEqualImmutable(expected)
+    })
+
     it('should set source facebook', () => {
         const expected = initialState
             .setIn(['newMessage', 'channel'], 'facebook')
@@ -536,6 +559,78 @@ describe('new message reducer', () => {
                 )
             ).toMatchSnapshot()
         })
+
+        it('should restore inserted_discounts from context', () => {
+            const discounts = fromJS([
+                {
+                    id: 5,
+                    code: 'FREEBIE',
+                    title: 'Freebie title',
+                    summary: 'Freebie discount',
+                    shareable_url: 'https://acme.gorgias.io/freebie',
+                },
+            ])
+
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                args: fromJS({
+                    contentState: ContentState.createFromText('Hello'),
+                }),
+            }
+            addCacheSpy.mockImplementation(
+                (context: responseUtils.MessageContext) => {
+                    return {
+                        ...context,
+                        inserted_discounts: discounts,
+                    }
+                }
+            )
+            expect(
+                reducer(
+                    initialState.setIn(
+                        ['state', 'inserted_discounts'],
+                        fromJS([])
+                    ),
+                    action
+                )
+            ).toMatchSnapshot()
+        })
+
+        it('should not restore inserted_discounts from context if value is null', () => {
+            const discounts = fromJS([
+                {
+                    id: 4,
+                    code: 'FREEBIE',
+                    title: 'Freebie title',
+                    summary: 'Freebie discount',
+                    shareable_url: 'https://acme.gorgias.io/freebie',
+                },
+            ])
+
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                args: fromJS({
+                    contentState: ContentState.createFromText('Hello'),
+                }),
+            }
+            addCacheSpy.mockImplementation(
+                (context: responseUtils.MessageContext) => {
+                    return {
+                        ...context,
+                        inserted_discounts: null,
+                    }
+                }
+            )
+            expect(
+                reducer(
+                    initialState.setIn(
+                        ['state', 'inserted_discounts'],
+                        discounts
+                    ),
+                    action
+                )
+            ).toMatchSnapshot()
+        })
     })
 
     describe('NEW_MESSAGE_SET_RECEIVERS action', () => {
@@ -722,6 +817,7 @@ describe('new message reducer', () => {
                 emailExtraAdded: true,
                 dirty: true,
                 cacheAdded: true,
+                inserted_discounts: [],
             }
         }
 
@@ -771,6 +867,61 @@ describe('new message reducer', () => {
                     ]) as Map<any, any>
                 ).toJS()
             ).toMatchSnapshot()
+        })
+    })
+
+    describe('SET_NEW_MESSAGE_DISCOUNT_CODE', () => {
+        it('should append to discount codes', () => {
+            const discount = {
+                id: 1,
+                title: 'Code 1',
+                summary: 'Very good discount coupon',
+                code: 'code_1',
+                shareable_url: 'https://test.iooo',
+            }
+
+            const action = {
+                type: types.SET_NEW_MESSAGE_DISCOUNT_CODE,
+                discountCode: discount,
+            }
+
+            expect(
+                reducer(initialState, action).getIn([
+                    'state',
+                    'inserted_discounts',
+                ]) as Map<any, any>
+            ).toMatchSnapshot()
+        })
+
+        it('should allow only unique codes', () => {
+            const discount = {
+                id: 1,
+                title: 'Code 1',
+                summary: 'Very existing discount coupon',
+                code: 'code_1',
+                shareable_url: 'https://test.iooo',
+            }
+            const stateWithDiscounts = initialState.mergeDeep({
+                state: {
+                    inserted_discounts: [discount],
+                },
+            })
+
+            const expected = stateWithDiscounts.getIn([
+                'state',
+                'inserted_discounts',
+            ]) as Map<any, any>
+
+            const action = {
+                type: types.SET_NEW_MESSAGE_DISCOUNT_CODE,
+                discountCode: discount,
+            }
+            expect(
+                reducer(stateWithDiscounts, action).getIn([
+                    'state',
+                    'inserted_discounts',
+                ]) as Map<any, any>
+            ).toEqual(expected)
         })
     })
 })

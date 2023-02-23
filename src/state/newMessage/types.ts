@@ -5,6 +5,7 @@ import {TicketMessageSourceType} from 'business/types/ticket'
 import {Macro} from 'models/macro/types'
 import {MacroAction} from 'models/macroAction/types'
 import {Attachment} from 'types'
+import {DiscountCode} from 'models/discountCodes/types'
 
 export enum ReceiverProperty {
     To = 'to',
@@ -41,6 +42,7 @@ export type NewMessage = {
     actions?: List<Map<any, any>>
     public?: boolean
     macros: {id: number}[]
+    meta?: Record<string, unknown>
 }
 
 export type ReplyAreaState = {
@@ -53,6 +55,7 @@ export type ReplyAreaState = {
     selectionState: SelectionState | null
     appliedMacro: Map<any, any> | null
     firstNewMessage: boolean
+    inserted_discounts: DiscountCode[]
 }
 
 export type Ticket = {

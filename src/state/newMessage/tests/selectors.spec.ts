@@ -269,4 +269,28 @@ describe('new message selectors', () => {
             })
         })
     })
+
+    describe('getNewMessageDiscountCodes()', () => {
+        it('should return discount codes inserted to a new message', () => {
+            const discounts = fromJS([
+                {
+                    id: 42,
+                    code: 'ANSWER',
+                    title: 'Most important question',
+                    summary: 'Not helpful',
+                    shareable_url: 'https://acme.gorgias.io/42',
+                },
+            ])
+
+            state.newMessage = state.newMessage.setIn(
+                ['state', 'inserted_discounts'],
+                discounts
+            )
+            expect(selectors.getNewMessageDiscountCodes(state)).toBe(discounts)
+        })
+
+        it('should return empty array for the initial state', () => {
+            expect(selectors.getNewMessageDiscountCodes(state)).toBe(fromJS([]))
+        })
+    })
 })

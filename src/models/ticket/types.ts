@@ -228,6 +228,7 @@ export type Meta = {
     product?: ProductDetails
     rule_suggestion_slug?: string
     ai_suggestion?: boolean
+    discount_codes?: string[]
 }
 
 export type FacebookPrivateReply = {

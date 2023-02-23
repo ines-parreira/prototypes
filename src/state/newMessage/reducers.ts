@@ -7,6 +7,7 @@ import _omit from 'lodash/omit'
 import _forOwn from 'lodash/forOwn'
 import _get from 'lodash/get'
 
+import {DiscountCode} from 'models/discountCodes/types'
 import {
     getSourceTypeOfResponse,
     getChannelFromSourceType,
@@ -75,6 +76,7 @@ const initialReplyAreaState: ReplyAreaState = {
     selectionState: null,
     appliedMacro: null,
     firstNewMessage: true,
+    inserted_discounts: [],
 }
 
 export const initialState: NewMessageState = fromJS({
@@ -102,6 +104,7 @@ const resetContentState = (state: Map<any, any>): NewMessageState => {
         })
         .setIn(['state', 'contentState'], ContentState.createFromText(''))
         .setIn(['state', 'selectionState'], null)
+        .setIn(['state', 'inserted_discounts'], fromJS([]))
 }
 
 export default function reducer(
@@ -430,6 +433,12 @@ export default function reducer(
                 dirty = true
             }
 
+            // only update discounts if there's a valid value
+            let insertedDiscounts = state.getIn(['state', 'inserted_discounts'])
+            if (context.inserted_discounts) {
+                insertedDiscounts = context.inserted_discounts
+            }
+
             return (
                 context.state
                     .update('newMessage', (newMessage: Map<any, any>) => {
@@ -447,6 +456,7 @@ export default function reducer(
                             forceUpdate: !!context.forceUpdate,
                             cacheAdded: !!context.cacheAdded,
                             emailExtraAdded: !!context.emailExtraAdded,
+                            inserted_discounts: insertedDiscounts,
                         },
                     })
                     // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
@@ -590,6 +600,37 @@ export default function reducer(
                 .setIn(['newMessage', 'attachments'], attachments)
                 .setIn(['newMessage', 'channel'], channel)
                 .setIn(['newMessage', 'source', 'type'], sourceType)
+        }
+
+        case types.SET_NEW_MESSAGE_DISCOUNT_CODE: {
+            const discountCode = (action.discountCode as DiscountCode) || []
+            const currentDiscountCodes =
+                (state.getIn(['state', 'inserted_discounts']) as List<any>) ||
+                fromJS([])
+
+            if (
+                currentDiscountCodes.find(
+                    (discount: Map<any, any>) =>
+                        discount.get('id') === discountCode.id
+                )
+            ) {
+                return state
+            }
+
+            const newState = state.setIn(
+                ['state', 'inserted_discounts'],
+                currentDiscountCodes.push(fromJS(discountCode))
+            )
+
+            // persist discount codes in cache in case agent leaves the ticket
+            ticketReplyCache.set(action.ticketId as string, {
+                inserted_discounts: newState.getIn([
+                    'state',
+                    'inserted_discounts',
+                ]),
+            })
+
+            return newState
         }
 
         default:

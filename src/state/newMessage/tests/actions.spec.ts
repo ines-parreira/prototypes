@@ -55,6 +55,8 @@ import {
     setSubjectAction,
 } from 'fixtures/macro'
 
+import * as segmentTracker from 'store/middlewares/segmentTracker'
+import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getReplyAreaStateSnapshot} from './testUtils'
 
 type MockedRootState = {
@@ -1018,6 +1020,9 @@ describe('actions', () => {
             let addEmailExtraContentSpy: jest.SpyInstance<
                 ReturnType<typeof emailExtraUtils.addEmailExtraContent>
             >
+            let logEventSpy: jest.SpyInstance<
+                ReturnType<typeof segmentTracker.logEvent>
+            >
             const currentUser = fromJS({
                 id: 1,
                 name: 'Steve',
@@ -1046,15 +1051,31 @@ describe('actions', () => {
             const emailExtraContentState = convertFromHTML(
                 '<div>Extra <strong>content</strong></div>'
             )
+            const discount_code_1 = {
+                id: 3,
+                code: 'DISCO',
+                title: 'Completely Irrelevant',
+                summary: 'Good discount',
+                shareable_url: 'https://acme.gorgias.io/sth',
+            }
+            const discount_code_2 = {
+                id: 4,
+                code: 'FREEBIE',
+                title: 'Freebie title',
+                summary: 'Freebie discount',
+                shareable_url: 'https://acme.gorgias.io/freebie',
+            }
 
             beforeEach(() => {
                 addEmailExtraContentSpy = jest
                     .spyOn(emailExtraUtils, 'addEmailExtraContent')
                     .mockImplementation(() => emailExtraContentState)
+                logEventSpy = jest.spyOn(segmentTracker, 'logEvent')
             })
 
             afterEach(() => {
                 addEmailExtraContentSpy.mockRestore()
+                logEventSpy.mockRestore()
             })
 
             it('should add email extra to the message when source type is email', () => {
@@ -1158,6 +1179,164 @@ describe('actions', () => {
                     currentUser
                 )
                 expect(data?.newMessage).toMatchSnapshot()
+            })
+
+            it('should add discount codes to meta', () => {
+                const {dispatch, getState} = mockStore({
+                    ...storeState,
+                    newMessage: storeState.newMessage
+                        ?.setIn(
+                            ['newMessage', 'body_text'],
+                            'Your discount code is DISCO'
+                        )
+                        .setIn(
+                            ['state', 'inserted_discounts'],
+                            fromJS([discount_code_1])
+                        )
+                        .setIn(['state', 'emailExtraAdded'], true),
+                })
+
+                const {ticket, newMessage} = getState() as RootState
+                data = actions.prepareTicketDataToSend(
+                    dispatch,
+                    getState as () => RootState,
+                    ticket.set('subject', 'Foo subject'),
+                    newMessage,
+                    '',
+                    fromJS([]),
+                    currentUser
+                )
+                expect(data?.newMessage).toMatchSnapshot()
+                expect(logEventSpy).toHaveBeenCalledWith(
+                    SegmentEvent.InsertDiscountCodeAdded,
+                    expect.objectContaining({
+                        discount: {
+                            id: 3,
+                            code: 'DISCO',
+                            title: 'Completely Irrelevant',
+                        },
+                    })
+                )
+            })
+
+            it('should add discount codes to meta only if in message body', () => {
+                const discountCodes = [discount_code_1, discount_code_2]
+
+                const {dispatch, getState} = mockStore({
+                    ...storeState,
+                    newMessage: storeState.newMessage
+                        ?.setIn(
+                            ['newMessage', 'body_text'],
+                            'Only FREEBIE in body text'
+                        )
+                        .setIn(
+                            ['state', 'inserted_discounts'],
+                            fromJS(discountCodes)
+                        )
+                        .setIn(['state', 'emailExtraAdded'], true),
+                })
+
+                const {ticket, newMessage} = getState() as RootState
+                data = actions.prepareTicketDataToSend(
+                    dispatch,
+                    getState as () => RootState,
+                    ticket.set('subject', 'Foo subject'),
+                    newMessage,
+                    '',
+                    fromJS([]),
+                    currentUser
+                )
+                expect(data?.newMessage).toMatchSnapshot()
+                expect(logEventSpy).toHaveBeenCalledWith(
+                    SegmentEvent.InsertDiscountCodeAdded,
+                    expect.objectContaining({
+                        discount: {
+                            id: 4,
+                            code: 'FREEBIE',
+                            title: 'Freebie title',
+                        },
+                    })
+                )
+            })
+
+            it('should not add discount codes to meta if discount in old messages', () => {
+                const discountCodes = [discount_code_1]
+
+                const {dispatch, getState} = mockStore({
+                    ...storeState,
+                    newMessage: storeState.newMessage
+                        ?.setIn(
+                            ['newMessage', 'body_text'],
+                            // only the old message matches the discount code
+                            'Current message ends here. On Thu, Feb 16, 2023, at 02:43 PM, Acme Support <somemail> wrote: old FREEBIE discount'
+                        )
+                        .setIn(
+                            ['newMessage', 'stripped_text'],
+
+                            'Current message ends here.'
+                        )
+                        .setIn(
+                            ['state', 'inserted_discounts'],
+                            fromJS(discountCodes)
+                        )
+                        .setIn(['state', 'emailExtraAdded'], true),
+                    ticket: storeState.ticket?.setIn(
+                        ['channel'],
+                        TicketChannel.Email
+                    ),
+                })
+
+                const {ticket, newMessage} = getState() as RootState
+                data = actions.prepareTicketDataToSend(
+                    dispatch,
+                    getState as () => RootState,
+                    ticket.set('subject', 'Foo subject'),
+                    newMessage,
+                    '',
+                    fromJS([]),
+                    currentUser
+                )
+                expect(data?.newMessage).toMatchSnapshot()
+                expect(logEventSpy).not.toBeCalled()
+            })
+
+            it('should not add discount codes to meta if discount in old messages and agent expands mail', () => {
+                const discountCodes = [discount_code_1]
+
+                const {dispatch, getState} = mockStore({
+                    ...storeState,
+                    newMessage: storeState.newMessage
+                        ?.setIn(
+                            ['newMessage', 'body_text'],
+                            'Current message ends here. On Thu, Feb 16, 2023, at 02:43 PM, Acme Support <somemail> wrote: old FREEBIE discount'
+                        )
+                        .setIn(
+                            ['newMessage', 'body_html'],
+                            'Current message ends here. On Thu, Feb 16, 2023, at 02:43 PM, Acme Support <a>somemail</a>&gt; wrote: old FREEBIE discount'
+                        )
+                        .setIn(
+                            ['state', 'inserted_discounts'],
+                            fromJS(discountCodes)
+                        )
+                        .setIn(['state', 'emailExtraAdded'], true),
+                    ticket: storeState.ticket?.setIn(
+                        ['channel'],
+                        TicketChannel.Email
+                    ),
+                })
+
+                const {ticket, newMessage} = getState() as RootState
+                data = actions.prepareTicketDataToSend(
+                    dispatch,
+                    getState as () => RootState,
+                    ticket,
+                    newMessage,
+                    '',
+                    fromJS([]),
+                    currentUser
+                )
+                expect(data?.newMessage).toMatchSnapshot()
+                expect(logEventSpy).not.toBeCalled()
             })
         })
 

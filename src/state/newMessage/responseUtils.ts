@@ -5,6 +5,7 @@ import _pick from 'lodash/pick'
 import _take from 'lodash/take'
 import _takeRight from 'lodash/takeRight'
 
+import {DiscountCode} from 'models/discountCodes/types'
 import {TicketMessageSourceType} from '../../business/types/ticket'
 import {isRichType} from '../../config/ticket'
 import {renderTemplate} from '../../pages/common/utils/template'
@@ -43,6 +44,7 @@ export type MessageContext = {
     cacheAdded?: boolean
     selectionState?: SelectionState
     sourceType?: string
+    inserted_discounts?: DiscountCode[] | null
 }
 
 export const getSourceTypeCache = (
@@ -130,6 +132,10 @@ const getCache = (context: MessageContext): MessageContext => {
         if (topRankMacroState && !topRankMacroState.isEmpty()) {
             context.topRankMacroState = fromJS(topRankMacroState)
         }
+        context.inserted_discounts = cachedContent.get(
+            'inserted_discounts',
+            fromJS([])
+        )
     }
 
     return context

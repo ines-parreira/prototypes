@@ -1,6 +1,7 @@
 import {fromJS, Map} from 'immutable'
 import {RawDraftContentState, SelectionState} from 'draft-js'
 
+import {DiscountCode} from 'models/discountCodes/types'
 import {tryLocalStorage} from '../../services/common/utils'
 
 export interface TopRankMacroState {
@@ -19,6 +20,7 @@ export type RawCachedTicket = {
     sourceType: string | null
     emailExtraAdded: boolean
     topRankMacroState?: TopRankMacroState | null
+    inserted_discounts?: DiscountCode[] | null
 }
 
 const defaultRawCachedTicket: RawCachedTicket = {
@@ -28,6 +30,7 @@ const defaultRawCachedTicket: RawCachedTicket = {
     sourceType: null,
     emailExtraAdded: false,
     topRankMacroState: null,
+    inserted_discounts: null,
 }
 
 const defaultCachedTicket: Map<any, any> = fromJS(defaultRawCachedTicket)

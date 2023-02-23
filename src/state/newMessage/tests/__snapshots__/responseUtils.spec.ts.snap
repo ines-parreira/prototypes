@@ -22,6 +22,7 @@ should be good now",
   "emailExtraAdded": false,
   "forceFocus": true,
   "forceUpdate": true,
+  "inserted_discounts": Immutable.List [],
   "selectionState": {
     "anchorBlockText": "Foo bar baz",
     "anchorOffset": 11,
@@ -33,6 +34,7 @@ should be good now",
   "state": Immutable.Map {
     "state": Immutable.Map {
       "selectionState": null,
+      "inserted_discounts": Immutable.List [],
       "emailExtraAdded": false,
       "forceFocus": false,
       "appliedMacro": null,
@@ -99,6 +101,7 @@ should be good now",
   "state": Immutable.Map {
     "state": Immutable.Map {
       "selectionState": null,
+      "inserted_discounts": Immutable.List [],
       "emailExtraAdded": false,
       "forceFocus": false,
       "appliedMacro": null,
@@ -163,6 +166,7 @@ should be good now",
   "emailExtraAdded": false,
   "forceFocus": true,
   "forceUpdate": true,
+  "inserted_discounts": Immutable.List [],
   "selectionState": {
     "anchorBlockText": "Foo bar baz",
     "anchorOffset": "1",
@@ -174,6 +178,7 @@ should be good now",
   "state": Immutable.Map {
     "state": Immutable.Map {
       "selectionState": null,
+      "inserted_discounts": Immutable.List [],
       "emailExtraAdded": false,
       "forceFocus": false,
       "appliedMacro": null,
@@ -238,6 +243,7 @@ should be good now",
   "emailExtraAdded": false,
   "forceFocus": true,
   "forceUpdate": true,
+  "inserted_discounts": Immutable.List [],
   "selectionState": {
     "anchorBlockText": "Foo bar baz",
     "anchorOffset": "1",
@@ -249,6 +255,7 @@ should be good now",
   "state": Immutable.Map {
     "state": Immutable.Map {
       "selectionState": null,
+      "inserted_discounts": Immutable.List [],
       "emailExtraAdded": false,
       "forceFocus": false,
       "appliedMacro": null,
@@ -315,6 +322,7 @@ should be good now",
   "state": Immutable.Map {
     "state": Immutable.Map {
       "selectionState": null,
+      "inserted_discounts": Immutable.List [],
       "emailExtraAdded": false,
       "forceFocus": false,
       "appliedMacro": null,

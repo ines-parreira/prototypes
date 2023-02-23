@@ -228,3 +228,10 @@ export const getNewMessageSignature = (state: RootState): Map<any, any> => {
         sourceFrom.get('address')
     )(state)
 }
+
+export const getNewMessageDiscountCodes = createImmutableSelector(
+    getNewMessageState,
+    (state) =>
+        (state.getIn(['state', 'inserted_discounts']) as List<any>) ||
+        fromJS([])
+)

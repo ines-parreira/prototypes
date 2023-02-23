@@ -1873,6 +1873,50 @@ exports[`actions new message prepare() other types 4`] = `
 ]
 `;
 
+exports[`actions new message prepareTicketDataToSend() should add discount codes to meta 1`] = `
+{
+  "actions": Immutable.List [],
+  "body_text": "Your discount code is DISCO",
+  "meta": {
+    "discount_codes": [
+      "DISCO",
+    ],
+  },
+  "sender": Immutable.Map {
+    "id": 1,
+    "name": "Steve",
+  },
+  "source": {
+    "from": {
+      "address": "support@acme.gorgias.io",
+    },
+    "type": "email",
+  },
+}
+`;
+
+exports[`actions new message prepareTicketDataToSend() should add discount codes to meta only if in message body 1`] = `
+{
+  "actions": Immutable.List [],
+  "body_text": "Only FREEBIE in body text",
+  "meta": {
+    "discount_codes": [
+      "FREEBIE",
+    ],
+  },
+  "sender": Immutable.Map {
+    "id": 1,
+    "name": "Steve",
+  },
+  "source": {
+    "from": {
+      "address": "support@acme.gorgias.io",
+    },
+    "type": "email",
+  },
+}
+`;
+
 exports[`actions new message prepareTicketDataToSend() should add email extra to the message when source type is email 1`] = `
 [
   [
@@ -2093,6 +2137,42 @@ exports[`actions new message prepareTicketDataToSend() should add email extra to
 }
 `;
 
+exports[`actions new message prepareTicketDataToSend() should not add discount codes to meta if discount in old messages 1`] = `
+{
+  "actions": Immutable.List [],
+  "body_text": "Current message ends here. On Thu, Feb 16, 2023, at 02:43 PM, Acme Support <somemail> wrote: old FREEBIE discount",
+  "sender": Immutable.Map {
+    "id": 1,
+    "name": "Steve",
+  },
+  "source": {
+    "from": {
+      "address": "support@acme.gorgias.io",
+    },
+    "type": "email",
+  },
+  "stripped_text": "Current message ends here.",
+}
+`;
+
+exports[`actions new message prepareTicketDataToSend() should not add discount codes to meta if discount in old messages and agent expands mail 1`] = `
+{
+  "actions": Immutable.List [],
+  "body_html": "Current message ends here. On Thu, Feb 16, 2023, at 02:43 PM, Acme Support <a>somemail</a>&gt; wrote: old FREEBIE discount",
+  "body_text": "Current message ends here. On Thu, Feb 16, 2023, at 02:43 PM, Acme Support <somemail> wrote: old FREEBIE discount",
+  "sender": Immutable.Map {
+    "id": 1,
+    "name": "Steve",
+  },
+  "source": {
+    "from": {
+      "address": "support@acme.gorgias.io",
+    },
+    "type": "email",
+  },
+}
+`;
+
 exports[`actions new message prepareTicketDataToSend() should not add email extra to the message when source type is not email 1`] = `
 {
   "actions": Immutable.List [],
@@ -2208,6 +2288,7 @@ exports[`actions new message prepareTicketMessage should prepare next new messag
   "firstNewMessage": true,
   "forceFocus": false,
   "forceUpdate": false,
+  "inserted_discounts": [],
 }
 `;
 

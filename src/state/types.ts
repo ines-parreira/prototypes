@@ -15,6 +15,7 @@ import {Tag} from 'models/tag/types'
 import {Customer} from 'models/customer/types'
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import {InTicketSuggestionState} from 'state/entities/rules/types'
+import {DiscountCode} from 'models/discountCodes/types'
 import {BillingContact} from './billing/types'
 import {AccountSetting} from './currentAccount/types'
 import {MacrosAction} from './entities/macros/types'
@@ -185,6 +186,7 @@ export type GorgiasAction = {
     externalData?: CustomerExternalData
     chatStatus?: GorgiasChatStatusEnum
     hasError?: boolean
+    discountCode?: DiscountCode
 }
 
 export type CurrentUser = Map<any, any>

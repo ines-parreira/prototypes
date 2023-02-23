@@ -82,6 +82,7 @@ exports[`new message reducer NEW_MESSAGE_RESET_FROM_MESSAGE should remove email 
     "firstNewMessage": true,
     "forceFocus": true,
     "forceUpdate": true,
+    "inserted_discounts": [],
     "selectionState": {
       "anchorKey": "someRandomKey",
       "anchorOffset": 0,
@@ -201,6 +202,7 @@ exports[`new message reducer NEW_MESSAGE_RESET_FROM_MESSAGE should reset the sta
     "firstNewMessage": true,
     "forceFocus": true,
     "forceUpdate": true,
+    "inserted_discounts": [],
     "selectionState": {
       "anchorKey": "someRandomKey",
       "anchorOffset": 0,
@@ -220,6 +222,18 @@ exports[`new message reducer NEW_MESSAGE_SET_SOURCE_EXTRA should set source extr
 }
 `;
 
+exports[`new message reducer SET_NEW_MESSAGE_DISCOUNT_CODE should append to discount codes 1`] = `
+Immutable.List [
+  Immutable.Map {
+    "id": 1,
+    "title": "Code 1",
+    "summary": "Very good discount coupon",
+    "code": "code_1",
+    "shareable_url": "https://test.iooo",
+  },
+]
+`;
+
 exports[`new message reducer SET_RESPONSE_TEXT action should add cache 1`] = `
 {
   "action": {
@@ -234,10 +248,12 @@ exports[`new message reducer SET_RESPONSE_TEXT action should add cache 1`] = `
   "emailExtraAdded": false,
   "forceFocus": undefined,
   "forceUpdate": undefined,
+  "inserted_discounts": null,
   "sourceType": "email",
   "state": Immutable.Map {
     "state": Immutable.Map {
       "selectionState": null,
+      "inserted_discounts": Immutable.List [],
       "emailExtraAdded": false,
       "forceFocus": false,
       "appliedMacro": null,
@@ -281,10 +297,243 @@ exports[`new message reducer SET_RESPONSE_TEXT action should add cache 1`] = `
 }
 `;
 
+exports[`new message reducer SET_RESPONSE_TEXT action should not restore inserted_discounts from context if value is null 1`] = `
+Immutable.Map {
+  "state": Immutable.Map {
+    "selectionState": null,
+    "inserted_discounts": Immutable.List [
+      Immutable.Map {
+        "id": 4,
+        "code": "FREEBIE",
+        "title": "Freebie title",
+        "summary": "Freebie discount",
+        "shareable_url": "https://acme.gorgias.io/freebie",
+      },
+    ],
+    "emailExtraAdded": false,
+    "forceFocus": false,
+    "appliedMacro": null,
+    "dirty": true,
+    "forceUpdate": false,
+    "firstNewMessage": true,
+    "contentState": Immutable.Record {
+      "entityMap": {
+        "__add": [Function],
+        "__create": [Function],
+        "__get": [Function],
+        "__getLastCreatedEntityKey": [Function],
+        "__mergeData": [Function],
+        "__replaceData": [Function],
+        "add": [Function],
+        "create": [Function],
+        "get": [Function],
+        "getLastCreatedEntityKey": [Function],
+        "mergeData": [Function],
+        "replaceData": [Function],
+      },
+      "blockMap": Immutable.OrderedMap {
+        "someRandomKey": Immutable.Record {
+          "key": "someRandomKey",
+          "type": "unstyled",
+          "text": "Hello",
+          "characterList": Immutable.List [
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+          ],
+          "depth": 0,
+          "data": Immutable.Map {},
+        },
+      },
+      "selectionBefore": Immutable.Record {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 0,
+        "focusKey": "someRandomKey",
+        "focusOffset": 0,
+        "isBackward": false,
+        "hasFocus": false,
+      },
+      "selectionAfter": Immutable.Record {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 0,
+        "focusKey": "someRandomKey",
+        "focusOffset": 0,
+        "isBackward": false,
+        "hasFocus": false,
+      },
+    },
+    "cacheAdded": false,
+  },
+  "_internal": Immutable.Map {
+    "loading": Immutable.Map {
+      "addAttachment": false,
+      "submitMessage": false,
+    },
+  },
+  "newMessage": Immutable.Map {
+    "channel": "email",
+    "mention_ids": Immutable.List [],
+    "macros": Immutable.List [],
+    "body_html": "<div>Hello</div>",
+    "public": true,
+    "body_text": "Hello",
+    "subject": "",
+    "via": "helpdesk",
+    "from_agent": true,
+    "attachments": Immutable.List [],
+    "sender": null,
+    "source": Immutable.Map {
+      "type": "email",
+      "from": Immutable.Map {},
+      "to": Immutable.List [],
+      "cc": Immutable.List [],
+      "bcc": Immutable.List [],
+      "extra": Immutable.Map {
+        "include_thread": false,
+      },
+    },
+  },
+}
+`;
+
 exports[`new message reducer SET_RESPONSE_TEXT action should restore emailExtraAdded from context 1`] = `
 Immutable.Map {
   "state": Immutable.Map {
     "selectionState": null,
+    "inserted_discounts": Immutable.List [],
+    "emailExtraAdded": false,
+    "forceFocus": false,
+    "appliedMacro": null,
+    "dirty": true,
+    "forceUpdate": false,
+    "firstNewMessage": true,
+    "contentState": Immutable.Record {
+      "entityMap": {
+        "__add": [Function],
+        "__create": [Function],
+        "__get": [Function],
+        "__getLastCreatedEntityKey": [Function],
+        "__mergeData": [Function],
+        "__replaceData": [Function],
+        "add": [Function],
+        "create": [Function],
+        "get": [Function],
+        "getLastCreatedEntityKey": [Function],
+        "mergeData": [Function],
+        "replaceData": [Function],
+      },
+      "blockMap": Immutable.OrderedMap {
+        "someRandomKey": Immutable.Record {
+          "key": "someRandomKey",
+          "type": "unstyled",
+          "text": "Hello",
+          "characterList": Immutable.List [
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+            Immutable.Record {
+              "style": Immutable.OrderedSet [],
+              "entity": null,
+            },
+          ],
+          "depth": 0,
+          "data": Immutable.Map {},
+        },
+      },
+      "selectionBefore": Immutable.Record {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 0,
+        "focusKey": "someRandomKey",
+        "focusOffset": 0,
+        "isBackward": false,
+        "hasFocus": false,
+      },
+      "selectionAfter": Immutable.Record {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 0,
+        "focusKey": "someRandomKey",
+        "focusOffset": 0,
+        "isBackward": false,
+        "hasFocus": false,
+      },
+    },
+    "cacheAdded": false,
+  },
+  "_internal": Immutable.Map {
+    "loading": Immutable.Map {
+      "addAttachment": false,
+      "submitMessage": false,
+    },
+  },
+  "newMessage": Immutable.Map {
+    "channel": "email",
+    "mention_ids": Immutable.List [],
+    "macros": Immutable.List [],
+    "body_html": "<div>Hello</div>",
+    "public": true,
+    "body_text": "Hello",
+    "subject": "",
+    "via": "helpdesk",
+    "from_agent": true,
+    "attachments": Immutable.List [],
+    "sender": null,
+    "source": Immutable.Map {
+      "type": "email",
+      "from": Immutable.Map {},
+      "to": Immutable.List [],
+      "cc": Immutable.List [],
+      "bcc": Immutable.List [],
+      "extra": Immutable.Map {
+        "include_thread": false,
+      },
+    },
+  },
+}
+`;
+
+exports[`new message reducer SET_RESPONSE_TEXT action should restore inserted_discounts from context 1`] = `
+Immutable.Map {
+  "state": Immutable.Map {
+    "selectionState": null,
+    "inserted_discounts": Immutable.List [
+      Immutable.Map {
+        "id": 5,
+        "code": "FREEBIE",
+        "title": "Freebie title",
+        "summary": "Freebie discount",
+        "shareable_url": "https://acme.gorgias.io/freebie",
+      },
+    ],
     "emailExtraAdded": false,
     "forceFocus": false,
     "appliedMacro": null,
@@ -392,6 +641,7 @@ exports[`new message reducer SET_RESPONSE_TEXT action should return remove strip
 Immutable.Map {
   "state": Immutable.Map {
     "selectionState": null,
+    "inserted_discounts": Immutable.List [],
     "emailExtraAdded": false,
     "forceFocus": false,
     "appliedMacro": null,
@@ -478,6 +728,7 @@ exports[`new message reducer SET_RESPONSE_TEXT action should set emailExtraAdded
 Immutable.Map {
   "state": Immutable.Map {
     "selectionState": null,
+    "inserted_discounts": Immutable.List [],
     "emailExtraAdded": false,
     "forceFocus": false,
     "appliedMacro": null,
@@ -564,6 +815,7 @@ exports[`new message reducer SET_RESPONSE_TEXT action should update content stat
 Immutable.Map {
   "state": Immutable.Map {
     "selectionState": null,
+    "inserted_discounts": Immutable.List [],
     "emailExtraAdded": false,
     "forceFocus": false,
     "appliedMacro": null,
@@ -650,6 +902,7 @@ exports[`new message reducer should handle NEW_MESSAGE_SET_SUBJECT 1`] = `
 Immutable.Map {
   "state": Immutable.Map {
     "selectionState": null,
+    "inserted_discounts": Immutable.List [],
     "emailExtraAdded": false,
     "forceFocus": false,
     "appliedMacro": null,

@@ -18,7 +18,10 @@ import {
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {TicketChannel} from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {addProductCardAttachment} from 'state/newMessage/actions'
+import {
+    addProductCardAttachment,
+    addNewMessageDiscountCode,
+} from 'state/newMessage/actions'
 import {canAddVideoPlayer} from 'utils'
 
 import RichField, {Props as RichFieldProps} from './RichField'
@@ -76,12 +79,12 @@ const TicketRichField = forwardRef<RichField, Props>(
                     })
                 },
                 onInsertDiscountCodeAdded: (discount) => {
-                    logEvent(SegmentEvent.InsertDiscountCodeAdded, {
-                        account_id: currentAccount?.get('domain'),
-                        channel: newMessageChannel,
-                        discount_id: discount.id,
-                        ticket: ticket?.get('id') || 'new',
-                    })
+                    dispatch(
+                        addNewMessageDiscountCode(
+                            ticket?.get('id') || 'new',
+                            discount
+                        )
+                    )
                 },
                 canAddProductCard:
                     !disableProductCards &&

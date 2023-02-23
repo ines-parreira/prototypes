@@ -6,6 +6,7 @@ import _assign from 'lodash/assign'
 import _pick from 'lodash/pick'
 import _throttle from 'lodash/throttle'
 import _omit from 'lodash/omit'
+import _split from 'lodash/split'
 import axios, {AxiosError, CancelToken} from 'axios'
 
 import * as ticketConstants from 'state/ticket/constants'
@@ -62,6 +63,8 @@ import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/compon
 import {MacroActionName, MacroActionType} from 'models/macroAction/types'
 import {isBaseEmailAddress} from 'pages/integrations/integration/components/email/helpers'
 import {FullTicketStateWithoutImmutable} from 'state/ticket/types'
+import {DiscountCode} from 'models/discountCodes/types'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
 import * as constants from './constants'
@@ -422,6 +425,15 @@ export const setSourceExtra = (extra: Record<string, unknown>) => ({
 export const setMeta = (meta: Record<string, unknown>) => ({
     type: constants.NEW_MESSAGE_SET_META,
     meta,
+})
+
+export const addNewMessageDiscountCode = (
+    ticketId: string,
+    discountCode: DiscountCode
+) => ({
+    type: constants.SET_NEW_MESSAGE_DISCOUNT_CODE,
+    discountCode,
+    ticketId,
 })
 
 /**
@@ -826,6 +838,17 @@ export function prepareTicketDataToSend(
                     )
             ) as List<Map<any, any>>
         }
+
+        const discountCodes = prepareNewMessageDiscountCodes(
+            state,
+            ticket.id,
+            newMessage,
+            ticket.channel
+        )
+        if (discountCodes?.length) {
+            newMessage.meta = newMessage.meta || {}
+            newMessage.meta.discount_codes = discountCodes
+        }
     }
 
     return {
@@ -837,6 +860,60 @@ export function prepareTicketDataToSend(
         ]) as FullTicketStateWithoutImmutable,
         newMessage,
     }
+}
+
+export const prepareNewMessageDiscountCodes = (
+    state: RootState,
+    ticketId: number,
+    newMessage: NewMessage,
+    channel: string
+): string[] => {
+    const discountCodes = selectors.getNewMessageDiscountCodes(state)
+    if (!discountCodes || discountCodes.isEmpty()) return []
+
+    let currentMessage = newMessage.body_text
+    // email channel can have previous messages with old discount codes attached
+    if (channel === TicketChannel.Email) {
+        if (newMessage.stripped_text) {
+            // stripped text is without previous messages
+            currentMessage = newMessage.stripped_text
+        } else {
+            // if agent modifies previous messages, there's no stripped text
+            // there's a risk of having old discount codes present
+            // only delimiter which is likely to be present unless deleted by agent
+            const delimiter = '</a>&gt; wrote:'
+            currentMessage = _split(newMessage.body_html, delimiter, 2)[0]
+        }
+    }
+
+    // only select discount codes which were not removed from the message text
+    const confirmedDiscountCodes = discountCodes.filter(
+        (discountCode: Map<any, any>) => {
+            return currentMessage.includes(discountCode.get('code'))
+        }
+    )
+    if (confirmedDiscountCodes?.isEmpty()) return []
+
+    const currentAccount = getCurrentAccountState(state)
+    confirmedDiscountCodes.forEach((discountCode: Map<any, any>) => {
+        logEvent(SegmentEvent.InsertDiscountCodeAdded, {
+            account_id: currentAccount?.get('domain'),
+            channel: newMessage.channel,
+            discount: {
+                id: discountCode.get('id'),
+                code: discountCode.get('code'),
+                title: discountCode.get('title'),
+            },
+            ticket: ticketId || 'new',
+        })
+    })
+
+    return confirmedDiscountCodes
+        .map(
+            (discountCode: Map<any, any>) => discountCode.get('code') as string
+        )
+        .flatten()
+        .toArray() as string[]
 }
 
 export const formatAction = (

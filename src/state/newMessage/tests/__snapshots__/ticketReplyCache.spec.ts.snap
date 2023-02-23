@@ -8,5 +8,6 @@ Immutable.Map {
   "sourceType": null,
   "emailExtraAdded": false,
   "topRankMacroState": null,
+  "inserted_discounts": null,
 }
 `;
