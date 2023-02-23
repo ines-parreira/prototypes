@@ -31,6 +31,11 @@ import MyIntegrations from './integrations/Store/Mine'
 import PhoneNumbersListContainer from './phoneNumbers/PhoneNumbersListContainer'
 import PhoneNumberCreateContainer from './phoneNumbers/PhoneNumberCreateContainer'
 import PhoneNumberDetailContainer from './phoneNumbers/PhoneNumberDetailContainer'
+import ContactFormStartView from './settings/contactForm/components/ContactFormStartView'
+import {
+    CONTACT_FORM_ABOUT_PATH,
+    CONTACT_FORM_FORMS_PATH,
+} from './settings/contactForm/constants'
 import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
@@ -650,6 +655,8 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
 export function SettingsRoutes({match: {path}}: RouteComponentProps) {
     const isAutomationSettingsRevampEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
+    const isDecoupleContactFormEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.DecoupleContactForm]
     const satisfactionPaywallConfig = {
         [AccountFeature.SatisfactionSurveys]: {
             ...defaultPaywallConfigs[AccountFeature.SatisfactionSurveys],
@@ -691,6 +698,12 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                     render={HelpCenterSettingsRoutes}
                 />
             )}
+            {isDecoupleContactFormEnabled ? (
+                <Route
+                    path={`${path}/contact-form`}
+                    render={ContactFormSettingsRoutes}
+                />
+            ) : null}
             <MaybeDeprecatedRoute
                 path={`${path}/macros`}
                 render={(props) => <MacrosSettingsRoutes {...props} />}
@@ -995,6 +1008,28 @@ export function PhoneNumbersSettingsRoutes({
                     navbar: SettingsNavbar,
                 })}
             />
+        </Switch>
+    )
+}
+
+export function ContactFormSettingsRoutes({
+    match: {path},
+}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={[
+                    path,
+                    `${path}${CONTACT_FORM_ABOUT_PATH}`,
+                    `${path}${CONTACT_FORM_FORMS_PATH}`,
+                ]}
+                exact
+                render={appRender({
+                    content: ContactFormStartView,
+                    navbar: SettingsNavbar,
+                })}
+            />
+            <Route render={() => <Redirect to={path} />} />
         </Switch>
     )
 }

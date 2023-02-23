@@ -1,3 +1,4 @@
+import {flatMap} from 'lodash'
 import React from 'react'
 import classnames from 'classnames'
 import {Link, useLocation} from 'react-router-dom'
@@ -18,6 +19,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import Navbar from 'pages/common/components/Navbar'
+import {CONTACT_FORM_PAGE_TITLE} from '../contactForm/constants'
 import {buildPasswordAnd2FaText} from '../yourProfile/twoFactorAuthentication/utils'
 
 type CategoryLink = {
@@ -63,6 +65,11 @@ const CATEGORIES: Category[] = [
             {
                 to: 'help-center',
                 text: 'Help Center',
+            },
+            {
+                requiredRole: ADMIN_ROLE,
+                to: 'contact-form',
+                text: CONTACT_FORM_PAGE_TITLE,
             },
         ],
     },
@@ -228,28 +235,36 @@ const SettingsNavbar = () => {
     const featureFlags = useFlags()
     const isAutomationSettingsRevampEnabled: boolean | undefined =
         featureFlags[FeatureFlagKey.AutomationSettingsRevamp]
+    const isDecoupleContactFormEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.DecoupleContactForm]
 
-    const getCategories = () => {
-        if (isAutomationSettingsRevampEnabled) {
-            const automationIndex = CATEGORIES.findIndex(
-                (category) => category.name === 'Automation'
-            )
-
-            if (automationIndex !== -1) {
-                const categories = [...CATEGORIES]
-
-                categories.splice(automationIndex, 1)
-
-                return categories
+    const categoriesInUse = React.useMemo<Category[]>(() => {
+        return flatMap(CATEGORIES, (category) => {
+            if (
+                isAutomationSettingsRevampEnabled &&
+                category.name === 'Automation'
+            ) {
+                return []
             }
-        }
 
-        return CATEGORIES
-    }
+            if (!isDecoupleContactFormEnabled && category.name === 'Channels') {
+                return [
+                    {
+                        ...category,
+                        links: category.links.filter(
+                            ({text}) => text !== CONTACT_FORM_PAGE_TITLE
+                        ),
+                    },
+                ]
+            }
+
+            return [category]
+        })
+    }, [isAutomationSettingsRevampEnabled, isDecoupleContactFormEnabled])
 
     return (
         <Navbar activeContent="settings">
-            {getCategories().map(({name, icon, links}, index) => {
+            {categoriesInUse.map(({name, icon, links}, index) => {
                 const displayedLinks = links
                     .filter((link) => !link.isHidden)
                     .map(({to, text, requiredRole, requiredFeatureFlag}) => {

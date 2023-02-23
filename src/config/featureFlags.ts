@@ -35,4 +35,5 @@ export enum FeatureFlagKey {
     HelpCenterZendeskImportCTA = 'help-center-zendesk-import-cta',
     ChatLauncherCustomization = 'chat-launcher-customization',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
+    DecoupleContactForm = 'decouple-contact-form',
 }
