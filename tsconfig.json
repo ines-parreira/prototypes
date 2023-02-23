@@ -11,8 +11,6 @@
         "jsx": "react",
         "allowSyntheticDefaultImports": true,
         "noUnusedLocals": false,
-        "allowJs": true,
-        "checkJs": false,
         "strict": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
@@ -30,5 +28,5 @@
             "@types/css-font-loading-module"
         ]
     },
-    "include": ["**/*.ts", "**/*.d.ts", "**/*.tsx"]
+    "include": [".eslintrc.js", "**/*.ts", "**/*.d.ts", "**/*.tsx"]
 }

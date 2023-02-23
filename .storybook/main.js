@@ -36,7 +36,13 @@ module.exports = {
                 },
             ],
             '@babel/react',
-            '@babel/flow',
+            [
+                '@babel/typescript',
+                {
+                    allExtensions: true,
+                    isTSX: true,
+                },
+            ],
         ],
         plugins: [
             [
@@ -48,31 +54,6 @@ module.exports = {
             '@babel/plugin-proposal-optional-chaining',
             '@babel/plugin-proposal-class-properties',
             '@babel/plugin-proposal-export-default-from',
-        ],
-        overrides: [
-            {
-                test: ['**/*.ts', '**/*.tsx'],
-                presets: [
-                    [
-                        '@babel/env',
-                        {
-                            targets: {
-                                browsers: ['last 2 versions', 'safari >= 7'],
-                            },
-                            useBuiltIns: 'usage',
-                            loose: true,
-                        },
-                    ],
-                    '@babel/react',
-                    [
-                        '@babel/typescript',
-                        {
-                            allExtensions: true,
-                            isTSX: true,
-                        },
-                    ],
-                ],
-            },
         ],
     },
     typescript: {

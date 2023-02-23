@@ -15,7 +15,7 @@ PR).
 
 ## Table of contents
 
--   [Migration from Js to Ts](#migration-from-js-to-ts)
+-   [Migration to Ts](#migration-from-js-to-ts)
 -   [Don't use Enzyme in new code](#migration-from-enzyme-to-react-testing-library)
 -   [Use Redux Toolkit to write actions and reducers](#use-redux-toolkit-to-write-actions-and-reducers)
 -   [Separate UI and Entity reducers](#separate-ui-and-entity-reducers)
@@ -24,22 +24,18 @@ PR).
 -   [Don't use relative parent imports](#dont-use-relative-parent-imports)
 -   [Union Types vs Enums](#union-types-vs-enums)
 
-## Migration from Js to Ts
+## Migration to Ts
 
-Even though we completed the Flow to TS migration, the app still contains plain JavaScript files.
-We are aiming to migrate them to TypeScript as it is a better tool.
+We are aiming to migrate to TypeScript as it is a better tool.
 
 > You can find more info on this in the [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-1.html)
-
-The general approach to migrating a file is:
+> The general approach to migrating a file is:
 
 1. If the file can benefit from some exported types, write the declarations in a `types.ts` file.
 
     - A new type should be named as `type Foo`.
 
-2. Change the file extension from `.js` to either `.ts` or `.tsx` if the file contains JSX.
-
-3. Make adjustments:
+2. Make adjustments:
 
 -   Add missing parameters in function definitions such as `(Type) => void` becoming `(foo: Type) => void`.
 -   Avoid `Maybe<T>` types as they are a remnant of the Flow to TypeScript migration, and whenever you have the occasion, try redefining `Maybe<T>` types.
@@ -52,14 +48,11 @@ import Foo from 'foo'
 import type {FooType} from 'foo'
 ```
 
-4.  TSC will most likely find some errors you'll have to fix. You can look for these by running `yarn types`.
+3.  TSC will most likely find some errors you'll have to fix. You can look for these by running `yarn types`.
 
 #### Extra notes
 
 -   Some types brought by dependencies have to be defined through `@types` deps (eg `yarn add -D @types/react`).
--   TypeScript assumes that an unspecified extension is either `.ts` or `.tsx`, for importing a JavaScript file you'll need to use `.js` extension explicitly.
--   Inversely, when importing TypeScript files in JavaScript we should explicitly add the extension `.ts` or `.tsx`.
--   When importing some TypeScript from any JavaScript files, import from the path to the direct export instead of `index.ts` files. Otherwise the typechecker won't be able to infer the imported types.
 -   We are referencing constants with `const Object.freeze()`, thanks to TypeScript we are able to define `enum` properly.
 
 ```
@@ -88,7 +81,6 @@ type Props = {
     prop2: U
     prop3: V
 }
-
 static defaultProps: Pick<Props, 'prop1' | 'prop2'>
 ```
 
@@ -215,12 +207,12 @@ Good use case:
 
 ```ts
 export enum Channel {
-  Chat = 'chat',
-  Email = 'email'
+    Chat = 'chat',
+    Email = 'email',
 }
 
 export type TicketMessage = {
-  channel: Channel
+    channel: Channel
 }
 ```
 
