@@ -55,7 +55,7 @@ export default function PriceComponent({
     const buttonRef = useRef<HTMLButtonElement>(null)
 
     const fullPrice = originalLineItem.list_price
-    const discountedPrice = lineItem.list_price
+    const discountedPrice = Math.round(lineItem.list_price * 100) / 100
 
     const onPopoverToggle = () =>
         setIsPopoverOpen((isDropdownOpen) => !isDropdownOpen)
