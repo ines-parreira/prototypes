@@ -20,7 +20,6 @@ import history from 'pages/history'
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {ViewType} from 'models/view/types'
-import {SEARCH_ENDPOINT} from 'models/search/resources'
 
 import {initialState} from '../reducers'
 import * as actions from '../actions'
@@ -998,49 +997,28 @@ describe('ticket actions', () => {
     })
 
     describe('findAndSetCustomer()', () => {
-        it('should not set the customer because we did not find any customer with this email address', () => {
-            mockServer.onPost(SEARCH_ENDPOINT).reply(200, {data: []})
+        it('should not set the customer because we did not find any customer with this id', async () => {
+            mockServer.onGet('/api/customers/1').reply(404, {message: 'error'})
             store = mockStore({
                 ticket: initialState,
             })
 
-            return store
-                .dispatch(actions.findAndSetCustomer('foo@gorgias.io'))
-                .then(() => {
-                    expect(store.getActions()).toEqual([])
-                })
+            return store.dispatch(actions.findAndSetCustomer(1)).then(() => {
+                expect(store.getActions()).toEqual([])
+            })
         })
 
-        it('should not set the customer because we found too many customers matching this email address', () => {
-            mockServer
-                .onPost(SEARCH_ENDPOINT)
-                .reply(200, {data: [{user: {id: 1}}, {user: {id: 2}}]})
+        it('should set the customer because there is a customer matching this id', async () => {
+            mockServer.onGet('/api/customers/1').reply(200, {
+                data: {id: 1, name: 'foo', email: 'foo@gorgias.io'},
+            })
             store = mockStore({
                 ticket: initialState,
             })
 
-            return store
-                .dispatch(actions.findAndSetCustomer('foo@gorgias.io'))
-                .then(() => {
-                    expect(store.getActions()).toEqual([])
-                })
-        })
-
-        it('should set the customer because there is exactly one customer matching this email address', () => {
-            mockServer
-                .onPost(SEARCH_ENDPOINT)
-                .reply(200, {data: [{user: {id: 1}}]})
-                .onGet('/api/customers/1/')
-                .reply(200, {id: 1, name: 'foo', email: 'foo@gorgias.io'})
-            store = mockStore({
-                ticket: initialState,
+            return store.dispatch(actions.findAndSetCustomer(1)).then(() => {
+                expect(store.getActions()).toMatchSnapshot()
             })
-
-            return store
-                .dispatch(actions.findAndSetCustomer('foo@gorgias.io'))
-                .then(() => {
-                    expect(store.getActions()).toMatchSnapshot()
-                })
         })
     })
 

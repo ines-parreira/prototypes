@@ -410,6 +410,7 @@ describe('TicketDetailContainer component', () => {
         'should try to set the first recipient as customer because this ticket is new and the recipients have changed ' +
             'from no recipients to one recipient',
         () => {
+            const id = 80
             const {rerender} = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockedStore}>
@@ -432,6 +433,7 @@ describe('TicketDetailContainer component', () => {
                                     {
                                         name: 'foo',
                                         address: 'foo@gorgias.io',
+                                        id,
                                     },
                                 ],
                             })}
@@ -440,7 +442,7 @@ describe('TicketDetailContainer component', () => {
                 </QueryClientProvider>
             )
 
-            expect(minProps.findAndSetCustomer).toBeCalledWith('foo@gorgias.io')
+            expect(minProps.findAndSetCustomer).toBeCalledWith(id)
         }
     )
 
@@ -448,6 +450,7 @@ describe('TicketDetailContainer component', () => {
         'should try to set the first recipient as customer because this ticket is new and the recipients have changed ' +
             'from multiple recipients to one recipient',
         () => {
+            const id = 80
             const props = {
                 ...minProps,
                 newMessageSource: fromJS({
@@ -489,6 +492,7 @@ describe('TicketDetailContainer component', () => {
                                     {
                                         name: 'foo',
                                         address: 'foo@gorgias.io',
+                                        id,
                                     },
                                 ],
                             })}
@@ -496,7 +500,7 @@ describe('TicketDetailContainer component', () => {
                     </Provider>
                 </QueryClientProvider>
             )
-            expect(minProps.findAndSetCustomer).toBeCalledWith('foo@gorgias.io')
+            expect(minProps.findAndSetCustomer).toBeCalledWith(id)
         }
     )
 
