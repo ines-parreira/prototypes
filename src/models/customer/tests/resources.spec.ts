@@ -6,11 +6,11 @@ import {customer} from 'fixtures/customer'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {Customer} from 'models/customer/types'
 
-import {getCustomer, searchCustomers} from '../resources'
+import {searchCustomers} from '../resources'
 
 const mockedServer = new MockAdapter(client)
 
-describe('Customer resources', () => {
+describe('ticket resources', () => {
     describe('searchCustomers', () => {
         const defaultData: ApiListResponseCursorPagination<Customer[]> = {
             data: [customer],
@@ -68,35 +68,6 @@ describe('Customer resources', () => {
                 search: '',
                 cancelToken: source.token,
             })
-
-            await expect(res).rejects.toBeInstanceOf(axios.Cancel)
-        })
-    })
-
-    describe('getCustomer', () => {
-        const defaultData = {
-            data: customer,
-            uri: `/api/customers/${customer.id}`,
-        }
-
-        beforeEach(() => {
-            mockedServer.reset()
-            mockedServer
-                .onGet(`/api/customers/${customer.id}`)
-                .reply(201, defaultData)
-        })
-
-        it('should resolve with the customer data on success', async () => {
-            const res = await getCustomer(customer.id)
-
-            expect(res.data).toEqual(defaultData)
-        })
-
-        it('should cancel the request on cancel token cancel', async () => {
-            const source = axios.CancelToken.source()
-            source.cancel()
-
-            const res = getCustomer(customer.id, source.token)
 
             await expect(res).rejects.toBeInstanceOf(axios.Cancel)
         })

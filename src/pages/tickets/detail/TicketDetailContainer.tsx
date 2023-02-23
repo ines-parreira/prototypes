@@ -448,11 +448,8 @@ export const TicketDetailContainer = ({
                     }
                 })
             }
-            if (typeof recipient.get('id') === 'undefined') {
-                shouldSetCustomer = false
-            }
             if (shouldSetCustomer) {
-                void findAndSetCustomer(recipient.get('id'))
+                void findAndSetCustomer(recipient.get('address'))
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

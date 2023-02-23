@@ -395,7 +395,6 @@ export function receiversStateFromValue(
 
     return Object.entries(newValue).reduce((acc, [key, receivers]) => {
         acc[key as keyof Receivers] = receivers.map((receiver) => ({
-            id: receiver.id,
             name: receiver.name || '',
             address: receiver.value || '',
         }))
