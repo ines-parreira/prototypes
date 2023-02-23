@@ -9,6 +9,7 @@ import {EmailMigrationStatus} from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import StartMigration from './StartMigration'
 import MigrationInProgress from './MigrationInProgress'
+import MigrationComplete from './MigrationComplete'
 
 export default function EmailMigration() {
     const migrationStatus = useAppSelector(getEmailMigrationStatus)
@@ -38,7 +39,7 @@ export default function EmailMigration() {
                 <MigrationInProgress />
             )}
             {migrationStatus.status === EmailMigrationStatus.Completed && (
-                <div data-testid="migration-complete"></div>
+                <MigrationComplete />
             )}
         </div>
     )

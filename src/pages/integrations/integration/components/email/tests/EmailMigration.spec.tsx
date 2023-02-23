@@ -16,6 +16,10 @@ jest.mock('react-router-dom', () => {
     } as Record<string, unknown>
 })
 
+jest.mock('../EmailMigration/StartMigrationIntegrationsTable', () => () => (
+    <div data-testid="integrations-table" />
+))
+
 describe('EmailMigration', () => {
     const renderComponent = (
         migrationBannerStatus: EmailMigrationBannerStatus | null

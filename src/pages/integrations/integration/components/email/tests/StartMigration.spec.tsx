@@ -20,6 +20,10 @@ jest.spyOn(migrationBannerHook, 'default').mockImplementation(
     () => mockFetchMigrationStatus
 )
 
+jest.mock('../EmailMigration/StartMigrationIntegrationsTable', () => () => (
+    <div data-testid="integrations-table" />
+))
+
 describe('StartMigration', () => {
     const renderComponent = () =>
         render(
@@ -37,5 +41,10 @@ describe('StartMigration', () => {
             expect(resources.startEmailMigration).toHaveBeenCalled()
             expect(mockFetchMigrationStatus).toHaveBeenCalled()
         })
+    })
+
+    it('should display integrations table', () => {
+        renderComponent()
+        expect(screen.getByTestId('integrations-table')).toBeVisible()
     })
 })

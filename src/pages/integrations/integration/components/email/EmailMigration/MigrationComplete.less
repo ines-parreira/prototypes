@@ -1,0 +1,49 @@
+@import '~css/new/colorTokens';
+@import '~css/new/layout';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        background-color: @classic-neutral-grey-1;
+        text-align: center;
+    }
+
+    .migrationCompleteIcon {
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .checkIcon {
+        font-size: 17px;
+        color: @classic-feedback-success;
+    }
+
+    .heading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: @layout-spacing-l 0 @layout-spacing-m;
+        gap: @layout-spacing-xs;
+    }
+
+    h1 {
+        margin: 0;
+    }
+
+    .description {
+        color: @classic-neutral-grey-5;
+        margin-bottom: @layout-spacing-xl;
+
+        p {
+            margin-bottom: @layout-spacing-xs;
+        }
+
+        p:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+}
