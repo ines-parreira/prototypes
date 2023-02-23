@@ -194,8 +194,8 @@ exports[`<SpotlightModal/> should fetch tickets on enter keypress from the old s
 
 exports[`<SpotlightModal/> should render the fetched result set with SpotlightRow for Customers tab 1`] = `
 <div
-  aria-describedby="modal-53-desc"
-  aria-labelledby="modal-53-title"
+  aria-describedby="modal-57-desc"
+  aria-labelledby="modal-57-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -223,8 +223,8 @@ exports[`<SpotlightModal/> should render the fetched result set with SpotlightRo
           </span>
           <input
             class="input"
-            id="input-text-54"
-            name="input-text-54"
+            id="input-text-58"
+            name="input-text-58"
             placeholder="Search..."
             type="text"
             value="foo"
@@ -265,7 +265,7 @@ exports[`<SpotlightModal/> should render the fetched result set with SpotlightRo
       </div>
       <div
         class="wrapper scrollable modalBody"
-        id="modal-53-desc"
+        id="modal-57-desc"
       >
         <div>
           <div>
@@ -302,8 +302,8 @@ exports[`<SpotlightModal/> should render the fetched result set with SpotlightRo
 
 exports[`<SpotlightModal/> should render the fetched result set with SpotlightRow for Tickets tab 1`] = `
 <div
-  aria-describedby="modal-51-desc"
-  aria-labelledby="modal-51-title"
+  aria-describedby="modal-55-desc"
+  aria-labelledby="modal-55-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -331,8 +331,8 @@ exports[`<SpotlightModal/> should render the fetched result set with SpotlightRo
           </span>
           <input
             class="input"
-            id="input-text-52"
-            name="input-text-52"
+            id="input-text-56"
+            name="input-text-56"
             placeholder="Search..."
             type="text"
             value="foo"
@@ -373,7 +373,7 @@ exports[`<SpotlightModal/> should render the fetched result set with SpotlightRo
       </div>
       <div
         class="wrapper scrollable modalBody"
-        id="modal-51-desc"
+        id="modal-55-desc"
       >
         <div>
           <div>
@@ -506,10 +506,10 @@ exports[`<SpotlightModal/> should render with customer tab as default 1`] = `
 </div>
 `;
 
-exports[`<SpotlightModal/> should reset search after closing 1`] = `
+exports[`<SpotlightModal/> should reset search after closing and end previous searchRank scenario 1`] = `
 <div
-  aria-describedby="modal-55-desc"
-  aria-labelledby="modal-55-title"
+  aria-describedby="modal-59-desc"
+  aria-labelledby="modal-59-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -537,8 +537,8 @@ exports[`<SpotlightModal/> should reset search after closing 1`] = `
           </span>
           <input
             class="input"
-            id="input-text-56"
-            name="input-text-56"
+            id="input-text-60"
+            name="input-text-60"
             placeholder="Search..."
             type="text"
             value=""
@@ -704,8 +704,8 @@ exports[`<SpotlightModal/> should set tickets tab on click 1`] = `
 
 exports[`<SpotlightModal/> should show SpotlightLoader component while results are fetched 1`] = `
 <div
-  aria-describedby="modal-43-desc"
-  aria-labelledby="modal-43-title"
+  aria-describedby="modal-47-desc"
+  aria-labelledby="modal-47-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -733,8 +733,8 @@ exports[`<SpotlightModal/> should show SpotlightLoader component while results a
           </span>
           <input
             class="input"
-            id="input-text-44"
-            name="input-text-44"
+            id="input-text-48"
+            name="input-text-48"
             placeholder="Search..."
             type="text"
             value="foo"
@@ -775,7 +775,7 @@ exports[`<SpotlightModal/> should show SpotlightLoader component while results a
       </div>
       <div
         class="wrapper scrollable modalBody"
-        id="modal-43-desc"
+        id="modal-47-desc"
       >
         <div>
           SpotlightLoader
@@ -810,8 +810,8 @@ exports[`<SpotlightModal/> should show SpotlightLoader component while results a
 
 exports[`<SpotlightModal/> should show SpotlightNoResults component when no results are available  1`] = `
 <div
-  aria-describedby="modal-45-desc"
-  aria-labelledby="modal-45-title"
+  aria-describedby="modal-49-desc"
+  aria-labelledby="modal-49-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -839,8 +839,8 @@ exports[`<SpotlightModal/> should show SpotlightNoResults component when no resu
           </span>
           <input
             class="input"
-            id="input-text-46"
-            name="input-text-46"
+            id="input-text-50"
+            name="input-text-50"
             placeholder="Search..."
             type="text"
             value="foo"
@@ -881,7 +881,7 @@ exports[`<SpotlightModal/> should show SpotlightNoResults component when no resu
       </div>
       <div
         class="wrapper scrollable modalBody"
-        id="modal-45-desc"
+        id="modal-49-desc"
       >
         <div
           class="wrapper"

@@ -11,6 +11,8 @@ export enum SearchRankSource {
     CustomerChannelEmail = 'customer_channel_email',
     CustomerChannelPhone = 'customer_channel_phone',
     TicketsView = 'tickets_view',
+    SpotlightCustomer = 'spotlight_customer',
+    SpotlightTicket = 'spotlight_ticket',
 }
 
 export type SearchRankRequest = {

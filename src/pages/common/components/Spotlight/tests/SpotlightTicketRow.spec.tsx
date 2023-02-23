@@ -25,6 +25,8 @@ describe('<SpotlightTicketRow/>', () => {
     const defaultProps: ComponentProps<typeof SpotlightTicketRow> = {
         item: ticket,
         onCloseModal: jest.fn(),
+        id: 1,
+        index: 1,
     }
 
     afterEach(() => {

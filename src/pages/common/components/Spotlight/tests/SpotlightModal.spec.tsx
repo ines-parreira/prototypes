@@ -19,6 +19,9 @@ import {ticket} from 'fixtures/ticket'
 import history from 'pages/history'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {customer} from 'fixtures/customer'
+import useSearchRankScenario from 'hooks/useSearchRankScenario'
+import {mockSearchRank} from 'fixtures/searchRank'
+import {SearchEngine} from 'models/search/types'
 
 import SpotlightModal from '../SpotlightModal'
 
@@ -44,6 +47,14 @@ jest.spyOn(ReactDOM, 'createPortal').mockImplementation(
 
 jest.mock('store/middlewares/segmentTracker')
 const logEventMock = assumeMock(logEvent)
+
+jest.mock('hooks/useSearchRankScenario')
+;(
+    useSearchRankScenario as jest.MockedFunction<typeof useSearchRankScenario>
+).mockImplementation(() => mockSearchRank)
+
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 const mockStore = configureMockStore([thunk])
 
@@ -428,6 +439,35 @@ describe('<SpotlightModal/>', () => {
         expect(mockServer.history.post).toMatchSnapshot()
     })
 
+    it('should end previous searchRank scenario and register a new one on enter keypress', async () => {
+        mockServer.onPost().reply(200, {data: ['foo']})
+        jest.useFakeTimers()
+
+        const {getByPlaceholderText} = renderWithRouter(
+            <WrappedSpotlightModal {...minProps} />
+        )
+        await act(flushPromises)
+
+        const searchInput = getByPlaceholderText('Search...')
+
+        await userEvent.type(searchInput, 'foo')
+        jest.runOnlyPendingTimers()
+        await userEvent.type(searchInput, '{enter}')
+        expect(mockSearchRank.endScenario).toHaveBeenCalled()
+        expect(mockSearchRank.registerResultsRequest).toHaveBeenCalledWith(
+            expect.objectContaining({
+                query: 'foo',
+            })
+        )
+        await act(flushPromises)
+        expect(mockSearchRank.registerResultsResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                numberOfResults: 1,
+                searchEngine: SearchEngine.ES,
+            })
+        )
+    })
+
     it('should fetch customers on enter keypress from the old search endpoint ', async () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ElasticsearchCustomerSearch]: false,
@@ -446,6 +486,32 @@ describe('<SpotlightModal/>', () => {
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
         expect(mockServer.history.put).toMatchSnapshot()
+    })
+
+    it('register a new searchRank scenario with PG as searchEngine enter keypress from the old search endpoint', async () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.ElasticsearchCustomerSearch]: false,
+        }))
+        mockServer.onPut().reply(200, {data: ['foo']})
+        jest.useFakeTimers()
+
+        const {getByPlaceholderText} = renderWithRouter(
+            <WrappedSpotlightModal {...minProps} />
+        )
+        await act(flushPromises)
+
+        const searchInput = getByPlaceholderText('Search...')
+
+        await userEvent.type(searchInput, 'foo')
+        jest.runOnlyPendingTimers()
+        await userEvent.type(searchInput, '{enter}')
+        await act(flushPromises)
+        expect(mockSearchRank.registerResultsResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                numberOfResults: 1,
+                searchEngine: SearchEngine.PG,
+            })
+        )
     })
 
     it('should show SpotlightLoader component while results are fetched', async () => {
@@ -486,7 +552,8 @@ describe('<SpotlightModal/>', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should notify when an error occurs', async () => {
+    it('should notify when an error occurs and register searchRank scenario', async () => {
+        mockServer.onPost().reply(503, {message: 'error'})
         jest.useFakeTimers()
 
         const {rerender, getByPlaceholderText} = renderWithRouter(
@@ -506,6 +573,15 @@ describe('<SpotlightModal/>', () => {
             message: 'Failed to fetch search results',
             status: NotificationStatus.Error,
         })
+        await act(flushPromises)
+        jest.runAllTimers()
+
+        expect(mockSearchRank.registerResultsResponse).toHaveBeenCalledWith(
+            expect.objectContaining({
+                numberOfResults: 0,
+                searchEngine: undefined,
+            })
+        )
     })
 
     it('should cancel previous request when tab is switched and not notify on cancellation error', async () => {
@@ -560,7 +636,7 @@ describe('<SpotlightModal/>', () => {
         }
     )
 
-    it('should reset search after closing', async () => {
+    it('should reset search after closing and end previous searchRank scenario', async () => {
         jest.useFakeTimers()
 
         const {rerender, getByPlaceholderText, container} = renderWithRouter(
@@ -578,6 +654,7 @@ describe('<SpotlightModal/>', () => {
 
         rerender(<WrappedSpotlightModal {...minProps} isOpen={false} />)
         rerender(<WrappedSpotlightModal {...minProps} isOpen={true} />)
+        expect(mockSearchRank.endScenario).toHaveBeenCalled()
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -613,5 +690,20 @@ describe('<SpotlightModal/>', () => {
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.GlobalSearchCustomerTabClick
         )
+    })
+
+    it('should end previous searchRank scenario on tab switch', async () => {
+        const {getByText} = renderWithRouter(
+            <WrappedSpotlightModal {...minProps} />
+        )
+        await act(flushPromises)
+
+        const ticketsTab = getByText('Tickets')
+        const customersTab = getByText('Customers')
+
+        ticketsTab.parentElement!.focus()
+        expect(mockSearchRank.endScenario).toHaveBeenCalledTimes(1)
+        customersTab.parentElement!.focus()
+        expect(mockSearchRank.endScenario).toHaveBeenCalledTimes(2)
     })
 })

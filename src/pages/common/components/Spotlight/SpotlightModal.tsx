@@ -16,6 +16,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import axios, {CancelToken} from 'axios'
 
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -38,6 +39,10 @@ import {NotificationStatus} from 'state/notifications/types'
 import {Customer} from 'models/customer/types'
 import history from 'pages/history'
 import {searchCustomers} from 'models/customer/resources'
+import useSearchRankScenario, {
+    SearchRankSource,
+} from 'hooks/useSearchRankScenario'
+import {SearchEngine} from 'models/search/types'
 
 import SpotlightScrollArea from './SpotlightScrollArea'
 import SpotlightLoader from './SpotlightLoader'
@@ -61,6 +66,11 @@ const navigatorTabs = [
     {label: 'Tickets', value: Tabs.Tickets},
 ]
 
+const searchRankScenarioSource = {
+    [ViewType.CustomerList]: SearchRankSource.SpotlightCustomer,
+    [ViewType.TicketList]: SearchRankSource.SpotlightTicket,
+}
+
 const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const {pathname} = useLocation()
     const dispatch = useAppDispatch()
@@ -82,6 +92,10 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         ViewType.CustomerList
     )
     const previousSearchItemsType = usePrevious(searchItemsType)
+
+    const searchRank = useSearchRankScenario(
+        searchRankScenarioSource[searchItemsType]
+    )
 
     const goToAdvancedSearch = useCallback(() => {
         onCloseModal()
@@ -151,12 +165,19 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         setSearchItemsType(ViewType.CustomerList)
         setLastSearchQueries({customers: '', tickets: ''})
         cancelSearch()
+        searchRank.endScenario()
     }
 
     const createFetchSearchItems = useCallback(
         (cancelToken: CancelToken) =>
             async (searchTerm: string, viewType: ViewType) => {
+                searchRank.endScenario()
+                searchRank.registerResultsRequest({
+                    query: searchTerm,
+                    requestTime: Date.now(),
+                })
                 let promise
+                let searchEngine = SearchEngine.PG
 
                 if (
                     isESTicketSearchEnabled &&
@@ -167,6 +188,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                         filters: '',
                         cancelToken,
                     })
+                    searchEngine = SearchEngine.ES
                 } else if (
                     isESCustomerSearchEnabled &&
                     viewType === ViewType.CustomerList
@@ -176,6 +198,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                         cancelToken,
                         orderBy: '_score:desc',
                     })
+                    searchEngine = SearchEngine.ES
                 } else {
                     const url = `/api/views/${0}/items/`
                     promise = client.put<
@@ -191,6 +214,11 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
 
                 try {
                     const {data} = await promise
+                    searchRank.registerResultsResponse({
+                        responseTime: Date.now(),
+                        numberOfResults: data.data.length,
+                        searchEngine,
+                    })
                     if (viewType === ViewType.TicketList) {
                         setLastSearchQueries({
                             ...lastSearchQueries,
@@ -212,10 +240,16 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                                 status: NotificationStatus.Error,
                             })
                         )
+                        searchRank.registerResultsResponse({
+                            responseTime: Date.now(),
+                            numberOfResults: 0,
+                            searchEngine: undefined,
+                        })
                     }
                 }
             },
         [
+            searchRank,
             dispatch,
             isESCustomerSearchEnabled,
             isESTicketSearchEnabled,
@@ -270,6 +304,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     }
 
     const handleTabChange = (tab: Tabs) => {
+        searchRank.endScenario()
         if (tab === Tabs.Customers) {
             setSearchItemsType(ViewType.CustomerList)
             logEvent(SegmentEvent.GlobalSearchCustomerTabClick)
@@ -369,23 +404,32 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                                 />
                             ) : (
                                 <SpotlightScrollArea>
-                                    {searchItemsType === ViewType.TicketList &&
-                                        tickets.map((ticket) => (
-                                            <SpotlightTicketRow
-                                                key={ticket.id}
-                                                item={ticket}
-                                                onCloseModal={onCloseModal}
-                                            />
-                                        ))}
-                                    {searchItemsType ===
-                                        ViewType.CustomerList &&
-                                        customers.map((customer) => (
-                                            <SpotlightCustomerRow
-                                                key={customer.id}
-                                                item={customer}
-                                                onCloseModal={onCloseModal}
-                                            />
-                                        ))}
+                                    <SearchRankScenarioContext.Provider
+                                        value={searchRank}
+                                    >
+                                        {searchItemsType ===
+                                            ViewType.TicketList &&
+                                            tickets.map((ticket, index) => (
+                                                <SpotlightTicketRow
+                                                    key={ticket.id}
+                                                    item={ticket}
+                                                    onCloseModal={onCloseModal}
+                                                    id={ticket.id}
+                                                    index={index}
+                                                />
+                                            ))}
+                                        {searchItemsType ===
+                                            ViewType.CustomerList &&
+                                            customers.map((customer, index) => (
+                                                <SpotlightCustomerRow
+                                                    key={customer.id}
+                                                    item={customer}
+                                                    onCloseModal={onCloseModal}
+                                                    id={customer.id}
+                                                    index={index}
+                                                />
+                                            ))}
+                                    </SearchRankScenarioContext.Provider>
                                 </SpotlightScrollArea>
                             )}
                         </>

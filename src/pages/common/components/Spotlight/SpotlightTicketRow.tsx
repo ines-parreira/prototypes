@@ -16,11 +16,17 @@ import css from './SpotlightTicketRow.less'
 const SpotlightTicketRow = ({
     item,
     onCloseModal,
+    id,
+    index,
 }: {
     item: Ticket
     onCloseModal: () => void
+    id: number
+    index: number
 }) => (
     <SpotlightRow
+        id={id}
+        index={index}
         icon={
             <SpotlightTicketIcon
                 channel={item.channel}

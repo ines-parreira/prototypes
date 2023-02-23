@@ -3,8 +3,10 @@ import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import * as platform from 'utils/platform'
+import {mockSearchRank} from 'fixtures/searchRank'
 
 import SpotlightRow from '../SpotlightRow'
+import SearchRankScenarioContext from '../../SearchRankScenarioProvider/SearchRankScenarioContext'
 
 describe('<SpotlightRow/>', () => {
     const mockOnClose = jest.fn()
@@ -13,6 +15,8 @@ describe('<SpotlightRow/>', () => {
         info: 'And this is the info!',
         link: '/app/foo',
         onCloseModal: mockOnClose,
+        id: 1,
+        index: 1,
     }
 
     beforeEach(() => {
@@ -34,6 +38,19 @@ describe('<SpotlightRow/>', () => {
             <SpotlightRow {...minProps} shrinkInfo={true} />
         )
         expect(container).toMatchSnapshot()
+    })
+
+    it('should register search rank scenario event when user clicks on the row', () => {
+        const {container} = render(
+            <SearchRankScenarioContext.Provider value={mockSearchRank}>
+                <SpotlightRow {...minProps} />
+            </SearchRankScenarioContext.Provider>
+        )
+        userEvent.click(container.firstChild! as Element)
+        expect(mockSearchRank.registerResultSelection).toHaveBeenCalledWith({
+            id: 1,
+            index: 1,
+        })
     })
 
     it('should close modal on click if user is not pressing on ctrl / cmd', () => {

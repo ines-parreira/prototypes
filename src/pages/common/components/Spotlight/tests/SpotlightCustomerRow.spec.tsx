@@ -9,6 +9,8 @@ describe('<SpotlightCustomerRow/>', () => {
     const defaultProps: ComponentProps<typeof SpotlightCustomerRow> = {
         item: customer,
         onCloseModal: jest.fn(),
+        id: 1,
+        index: 1,
     }
 
     it('should render render customer information', () => {

@@ -9,9 +9,13 @@ import css from './SpotlightCustomerRow.less'
 const SpotlightCustomerRow = ({
     item,
     onCloseModal,
+    id,
+    index,
 }: {
     item: Customer
     onCloseModal: () => void
+    id: number
+    index: number
 }) => {
     const phoneNumber = item.channels.find(
         (channel) => channel.type === TicketChannel.Phone
@@ -19,6 +23,8 @@ const SpotlightCustomerRow = ({
 
     return (
         <SpotlightRow
+            id={id}
+            index={index}
             title={item.name || `Customer #${item.id}`}
             info={
                 <SpotlightCustomerInfo email={item.email} phone={phoneNumber} />

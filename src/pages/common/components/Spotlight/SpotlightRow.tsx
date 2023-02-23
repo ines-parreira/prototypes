@@ -1,7 +1,8 @@
-import React, {ReactNode, MouseEvent} from 'react'
+import React, {ReactNode, MouseEvent, useContext} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import {isMacOs} from 'utils/platform'
 
 import css from './SpotlightRow.less'
@@ -13,6 +14,8 @@ type SpotlightRowProps = {
     link: string
     onCloseModal: () => void
     shrinkInfo?: boolean
+    id: number
+    index: number
 }
 
 const SpotlightRow = ({
@@ -22,8 +25,13 @@ const SpotlightRow = ({
     icon,
     onCloseModal,
     shrinkInfo = false,
+    id,
+    index,
 }: SpotlightRowProps) => {
+    const searchRank = useContext(SearchRankScenarioContext)
+
     const handleClick = (e: MouseEvent) => {
+        searchRank?.registerResultSelection({id, index})
         if (isMacOs ? !e.metaKey : !e.ctrlKey) {
             onCloseModal()
         }
