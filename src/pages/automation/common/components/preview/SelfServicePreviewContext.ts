@@ -11,6 +11,7 @@ export type SelfServicePreviewContextType = {
     quickResponse?: QuickResponsePolicy
     hoveredQuickResponseId?: Maybe<QuickResponsePolicy['id']>
     hoveredOrderManagementFlow?: Maybe<PolicyKey>
+    orderManagementFlow?: PolicyKey
 }
 
 const SelfServicePreviewContext = createContext<

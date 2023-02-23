@@ -1,13 +1,19 @@
 @import '~css/new/layout.less';
 @import '~css/new/colorTokens.less';
 @import (reference) '~css/typography.less';
+@import (reference) '~css/new/util.less';
 
 :local {
     .container {
-        background-color: @classic-neutral-grey-0;
-        margin-top: 11px;
+        background-color: @modern-neutral-grey-0;
         color: @modern-neutral-grey-6;
         flex: 1;
+
+        &:not(.isInitialEntry) {
+            :global {
+                animation: fadeIn 0.3s ease-in;
+            }
+        }
     }
 
     .title {

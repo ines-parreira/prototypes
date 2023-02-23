@@ -1,0 +1,20 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/colorTokens.less';
+
+:local {
+    .container {
+        .heading-subsection-semibold();
+        color: @classic-neutral-grey-6;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px @layout-spacing-s;
+        box-shadow: 1px 1px 8px rgba(22, 22, 22, 0.24);
+        border-radius: 4px 4px 0 0;
+    }
+
+    .icon {
+        margin-right: @layout-spacing-xxs;
+    }
+}

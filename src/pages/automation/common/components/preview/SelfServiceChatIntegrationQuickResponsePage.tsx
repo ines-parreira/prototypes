@@ -119,7 +119,7 @@ const SelfServiceChatIntegrationQuickResponsePage = ({integration}: Props) => {
     return (
         <MessageContent
             key={quickResponse?.id}
-            className={css.contentContainer}
+            className={css.container}
             innerRef={ref}
             conversationColor={decoration.conversation_color}
             currentUser={currentUser}

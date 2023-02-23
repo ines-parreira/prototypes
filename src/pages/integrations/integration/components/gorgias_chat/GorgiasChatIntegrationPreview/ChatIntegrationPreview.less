@@ -1,15 +1,7 @@
 @import '~css/new/colorTokens';
+@import (reference) '~css/new/util.less';
 
 :local {
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-        100% {
-            opacity: 1;
-        }
-    }
-
     @primary: #479af5;
     @lighterGrey: #f8f9fa;
     @lightGrey: #ededed;
@@ -75,7 +67,6 @@
             display: flex;
             padding: 16px;
             z-index: 1; // necessary so that the box-shadow is above the content
-            min-height: 72px;
             align-items: center;
         }
 

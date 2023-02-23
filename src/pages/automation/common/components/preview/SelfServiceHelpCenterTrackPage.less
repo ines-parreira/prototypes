@@ -1,0 +1,259 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/colorTokens.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/util.less';
+
+:local {
+    .container {
+        background-color: @modern-neutral-grey-0;
+        color: @modern-neutral-grey-6;
+        flex: 1;
+        overflow: auto;
+        pointer-events: initial;
+
+        :global {
+            animation: fadeIn 0.3s ease-in;
+        }
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        padding: @layout-spacing-m;
+        gap: @layout-spacing-xs;
+        border-bottom: 1px dashed @modern-neutral-grey-3;
+    }
+
+    .orderNumber {
+        .heading-section-semibold();
+    }
+
+    .orderDate {
+        .heading-subsection-regular();
+        color: @modern-neutral-grey-4;
+    }
+
+    .etaWithTimelineContainer {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m;
+        gap: @layout-spacing-m;
+    }
+
+    .etaContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
+    .etaCaption {
+        .body-medium();
+        color: @modern-neutral-grey-4;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
+
+    .eta {
+        .heading-section-semibold();
+        display: flex;
+        align-items: center;
+    }
+
+    .etaIcon {
+        color: @modern-neutral-grey-5;
+        margin-left: @layout-spacing-xs;
+        font-size: 16px;
+        width: 16px;
+    }
+
+    .timelineContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+    }
+
+    .timelineItems {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .timelineItem {
+        display: flex;
+        align-items: stretch;
+        gap: @layout-spacing-s;
+    }
+
+    .timeline {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .timelineDot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin: @layout-spacing-xs 6px 6px;
+        background-color: @modern-main-primary;
+        z-index: 1;
+
+        &.isCurrent {
+            width: 16px;
+            height: 16px;
+            margin: 6px 2px 2px;
+            border: 3px solid @modern-neutral-grey-0;
+            box-shadow: 0 2px 4px rgba(22, 22, 22, 0.16);
+        }
+
+        &.isUpcoming {
+            background-color: @modern-neutral-grey-3;
+        }
+    }
+
+    .timelineLine {
+        width: 1px;
+        position: absolute;
+        height: 100%;
+        margin-top: @layout-spacing-xs;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: @modern-neutral-grey-3;
+
+        &.isCompleted {
+            background-color: @modern-main-primary;
+        }
+    }
+
+    .timelineItemContent {
+        display: flex;
+        flex-direction: column;
+        padding: 0 0 @layout-spacing-m;
+        gap: 12px;
+    }
+
+    .timelineItemStatus {
+        .heading-subsection-semibold();
+
+        &.isCurrent {
+            .heading-section-semibold();
+        }
+
+        &.isUpcoming {
+            color: @modern-neutral-grey-4;
+        }
+    }
+
+    .timelineItemTimestamp {
+        .body-regular();
+        color: @modern-neutral-grey-4;
+        margin-top: @layout-spacing-xs;
+    }
+
+    .timelineItemDescription {
+        .heading-subsection-regular();
+        color: @modern-neutral-grey-5;
+    }
+
+    .timelineLastUpdated {
+        .body-regular();
+        color: @modern-neutral-grey-4;
+    }
+
+    .separator {
+        border-top: 1px solid @modern-neutral-grey-3;
+    }
+
+    .shippingContainer {
+        .heading-subsection-regular();
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m;
+        gap: @layout-spacing-m;
+    }
+
+    .shippingHeader {
+        .heading-section-semibold();
+    }
+
+    .shippingAddressContainer {
+        display: flex;
+        flex-direction: column;
+        color: @modern-neutral-grey-5;
+        gap: @layout-spacing-xxs;
+    }
+
+    .shippingCarrier {
+        display: flex;
+        gap: @layout-spacing-s;
+    }
+
+    .shippingCarrierLogo {
+        border-radius: 4px;
+    }
+
+    .shippingCarrierContent {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+    }
+
+    .shippingCarrierTitle {
+        .heading-subsection-semibold();
+    }
+
+    .shippingCarrierSubtitle {
+        color: @modern-neutral-grey-5;
+    }
+
+    .shippingCarrierTrackingNumber {
+        color: @modern-main-primary;
+    }
+
+    .fulfillmentContainer {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m;
+        gap: @layout-spacing-m;
+    }
+
+    .fulfillmentTitle {
+        .heading-section-semibold();
+    }
+
+    .lineItems {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .lineItem {
+        display: flex;
+        gap: @layout-spacing-s;
+    }
+
+    .lineItemThumbnail {
+        border-radius: 2px;
+    }
+
+    .lineItemDescription {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-xxs 0;
+        gap: @layout-spacing-xxs;
+    }
+
+    .lineItemName {
+        .heading-subsection-semibold();
+    }
+
+    .lineItemPrice {
+        color: @modern-neutral-grey-5;
+        margin-right: @layout-spacing-xs;
+    }
+
+    .lineItemQuantity {
+        color: @modern-neutral-grey-4;
+    }
+}

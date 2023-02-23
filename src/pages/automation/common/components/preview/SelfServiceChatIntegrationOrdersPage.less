@@ -1,0 +1,139 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/colorTokens.less';
+@import (reference) '~css/new/util.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        :global {
+            animation: fadeIn 0.3s ease-in;
+        }
+    }
+
+    .contentContainer {
+        .body-regular();
+        overflow: auto;
+        flex: 1;
+        pointer-events: initial;
+        display: flex;
+        flex-direction: column;
+        color: @classic-neutral-grey-6;
+        padding: @layout-spacing-m 10px 0 10px;
+        background-color: @classic-neutral-grey-2;
+    }
+
+    .title {
+        .heading-subsection-semibold();
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .orderContainer {
+        background-color: @classic-neutral-grey-0;
+        box-shadow: 0 1px 4px rgba(22, 22, 22, 0.24);
+        border-radius: 4px;
+    }
+
+    .orderHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px @layout-spacing-xs;
+        gap: @layout-spacing-xxs;
+        border-bottom: 1px dashed @classic-neutral-grey-3;
+    }
+
+    .orderDetails {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+        flex: 1;
+    }
+
+    .orderNumber {
+        .body-semibold();
+    }
+
+    .orderDate {
+        .caption-regular();
+        color: #9fa9b9;
+    }
+
+    .orderTotalPrice {
+        color: @classic-neutral-grey-5;
+        margin-left: auto;
+    }
+
+    .collapseIcon {
+        padding: 0 9px;
+        color: @classic-neutral-grey-3;
+    }
+
+    .fulfillment {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-xs;
+        gap: @layout-spacing-s;
+    }
+
+    .fulfillmentStatus {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .actions {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .flowButton {
+        &.isHovered {
+            border-color: @classic-neutral-grey-3;
+            box-shadow: 0 1px 2px fade(@modern-neutral-grey-6, 16%);
+        }
+
+        &.isActive {
+            border-color: @classic-neutral-grey-4;
+            box-shadow: inset 0 1px 2px fade(@modern-neutral-grey-6, 16%);
+        }
+    }
+
+    .fulfillmentLineItems {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
+    .lineItem {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-s;
+    }
+
+    .thumbnail {
+        border-radius: 2px;
+    }
+
+    .lineItemDescription {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+    }
+
+    .lineItemName {
+        .body-semibold();
+    }
+
+    .lineItemPrice {
+        color: @classic-neutral-grey-5;
+        margin-right: @layout-spacing-xxs;
+    }
+
+    .lineItemQuantity {
+        color: #9fa9b9;
+    }
+}

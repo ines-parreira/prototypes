@@ -1,8 +1,21 @@
 @import '~css/new/layout.less';
 @import '~css/new/colorTokens.less';
 @import (reference) '~css/typography.less';
+@import (reference) '~css/new/util.less';
 
 :local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        &:not(.isInitialEntry) {
+            :global {
+                animation: fadeIn 0.3s ease-in;
+            }
+        }
+    }
+
     .contentContainer {
         overflow: auto;
         flex: 1;
@@ -52,20 +65,5 @@
     .chevronRightIcon {
         font-size: 20px;
         color: @classic-neutral-grey-4;
-    }
-
-    .footer {
-        .heading-subsection-semibold();
-        color: @classic-neutral-grey-6;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px @layout-spacing-s;
-        box-shadow: 1px 1px 8px rgba(22, 22, 22, 0.24);
-        border-radius: 4px 4px 0 0;
-    }
-
-    .sendMessageIcon {
-        margin-right: @layout-spacing-xxs;
     }
 }

@@ -1,0 +1,22 @@
+@import (reference) '~css/new/util.less';
+
+:local {
+    .container {
+        position: relative;
+    }
+
+    .pointer {
+        position: absolute;
+        top: 75%;
+        left: 55%;
+        transition: left 0.2s linear;
+
+        &.isAlignedToRight {
+            left: 70%;
+        }
+
+        :global {
+            animation: fadeIn 0.1s ease-in;
+        }
+    }
+}

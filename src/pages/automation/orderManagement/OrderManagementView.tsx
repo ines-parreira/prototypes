@@ -1,10 +1,13 @@
-import React, {useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {useHistory, useLocation, useParams} from 'react-router-dom'
 import classnames from 'classnames'
 import {Container} from 'reactstrap'
+import {createMemoryHistory} from 'history'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
@@ -13,9 +16,12 @@ import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfSe
 import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
 import {IntegrationType} from 'models/integration/constants'
 import {PolicyKey} from 'models/selfServiceConfiguration/types'
+import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
+import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
+import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
+import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
 
 import OrderManagementFlowItem from './components/OrderManagementFlowItem'
-import OrderManagementPreview from './OrderManagementPreview'
 
 import css from './OrderManagementView.less'
 
@@ -54,9 +60,31 @@ const OrderManagementView = () => {
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
+    const previewHistory = useMemo(
+        () => createMemoryHistory(),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [selfServiceConfiguration?.id]
+    )
 
     const [hoveredOrderManagementFlow, setHoveredOrderManagementFlow] =
         useState<PolicyKey>()
+    const [isTrackOrderPreviewPlaying, setIsTrackOrderPreviewPlaying] =
+        useState(false)
+
+    useEffect(() => {
+        const unregister = previewHistory.listen((location) => {
+            if (location.pathname === SELF_SERVICE_PREVIEW_ROUTES.HOME) {
+                setIsTrackOrderPreviewPlaying(false)
+            } else {
+                setIsTrackOrderPreviewPlaying(true)
+            }
+        })
+
+        return () => {
+            setIsTrackOrderPreviewPlaying(false)
+            unregister()
+        }
+    }, [previewHistory])
 
     const handleOrderManagementFlowUpdate = (
         flow: PolicyKey,
@@ -73,6 +101,9 @@ const OrderManagementView = () => {
     }
     const handleFlowItemMouseLeave = () => {
         setHoveredOrderManagementFlow(undefined)
+    }
+    const handleTrackOrderPreviewClick = () => {
+        previewHistory.push(SELF_SERVICE_PREVIEW_ROUTES.ORDERS)
     }
 
     return (
@@ -121,7 +152,31 @@ const OrderManagementView = () => {
                                         isEnabled
                                     )
                                 }}
-                                action={null}
+                                action={
+                                    <Button
+                                        fillStyle="ghost"
+                                        onClick={handleTrackOrderPreviewClick}
+                                        isDisabled={
+                                            !selfServiceConfiguration
+                                                .track_order_policy.enabled
+                                        }
+                                    >
+                                        <ButtonIconLabel
+                                            icon={
+                                                isTrackOrderPreviewPlaying
+                                                    ? 'motion_photos_on'
+                                                    : 'play_circle_filled'
+                                            }
+                                            iconClassName={
+                                                isTrackOrderPreviewPlaying
+                                                    ? 'md-spin'
+                                                    : ''
+                                            }
+                                        >
+                                            Preview
+                                        </ButtonIconLabel>
+                                    </Button>
+                                }
                                 onMouseEnter={() => {
                                     setHoveredOrderManagementFlow(
                                         'track_order_policy'
@@ -208,13 +263,29 @@ const OrderManagementView = () => {
                                       })}
                             />
                         </div>
-                        <OrderManagementPreview
+                        <SelfServicePreviewContainer
                             channels={channels}
-                            selfServiceConfiguration={selfServiceConfiguration}
-                            hoveredOrderManagementFlow={
-                                hoveredOrderManagementFlow
-                            }
-                        />
+                            alert={{
+                                message:
+                                    'Connect a chat or help center to your store to use this feature.',
+                            }}
+                        >
+                            {(channel) => (
+                                <SelfServicePreviewContext.Provider
+                                    value={{
+                                        selfServiceConfiguration,
+                                        hoveredOrderManagementFlow,
+                                        orderManagementFlow:
+                                            'track_order_policy',
+                                    }}
+                                >
+                                    <SelfServicePreview
+                                        channel={channel}
+                                        history={previewHistory}
+                                    />
+                                </SelfServicePreviewContext.Provider>
+                            )}
+                        </SelfServicePreviewContainer>
                     </>
                 )}
             </Container>

@@ -6,6 +6,8 @@ import ChatIntegrationPreview from 'pages/integrations/integration/components/go
 
 import SelfServiceChatIntegrationHomePage from './SelfServiceChatIntegrationHomePage'
 import SelfServiceChatIntegrationQuickResponsePage from './SelfServiceChatIntegrationQuickResponsePage'
+import SelfServiceChatIntegrationTrackPage from './SelfServiceChatIntegrationTrackPage'
+import SelfServiceChatIntegrationOrdersPage from './SelfServiceChatIntegrationOrdersPage'
 import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 
 type Props = {
@@ -29,7 +31,7 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
             language={meta.language}
             renderFooter={false}
             renderPoweredBy={
-                location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.HOME
+                location.pathname === SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE
             }
             autoResponderEnabled={meta.preferences?.auto_responder?.enabled}
             autoResponderReply={meta.preferences?.auto_responder?.reply}
@@ -40,12 +42,20 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
             enableAnimations
             showBackground={false}
         >
-            <Route path={SELF_SERVICE_PREVIEW_ROUTES.HOME} exact>
-                <SelfServiceChatIntegrationHomePage {...props} />
-            </Route>
-            <Route path={SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE} exact>
-                <SelfServiceChatIntegrationQuickResponsePage {...props} />
-            </Route>
+            <React.Fragment key={location.key}>
+                <Route path={SELF_SERVICE_PREVIEW_ROUTES.HOME} exact>
+                    <SelfServiceChatIntegrationHomePage {...props} />
+                </Route>
+                <Route path={SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE} exact>
+                    <SelfServiceChatIntegrationQuickResponsePage {...props} />
+                </Route>
+                <Route path={SELF_SERVICE_PREVIEW_ROUTES.ORDERS} exact>
+                    <SelfServiceChatIntegrationOrdersPage {...props} />
+                </Route>
+                <Route path={SELF_SERVICE_PREVIEW_ROUTES.TRACK} exact>
+                    <SelfServiceChatIntegrationTrackPage {...props} />
+                </Route>
+            </React.Fragment>
         </ChatIntegrationPreview>
     )
 }

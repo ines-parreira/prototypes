@@ -1,7 +1,8 @@
 import React, {ReactNode} from 'react'
 import classnames from 'classnames'
+import {useHistory} from 'react-router-dom'
 
-import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
+import {HELP_CENTER_TEXTS} from 'config/helpCenter'
 import {HelpCenter} from 'models/helpCenter/types'
 import trackIcon from 'assets/img/self-service/track.svg'
 import returnIcon from 'assets/img/self-service/return.svg'
@@ -38,14 +39,22 @@ type Props = {
 }
 
 const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
+    const history = useHistory()
     const {selfServiceConfiguration, hoveredOrderManagementFlow} =
         useSelfServicePreviewContext()
 
-    const sspTexts = GORGIAS_CHAT_SSP_TEXTS[helpCenter.default_locale]
+    const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
+    const isInitialEntry = history.length === 1
 
     return (
-        <div className={css.container}>
-            <div className={css.title}>{sspTexts.manageYourOrders}</div>
+        <div
+            className={classnames(css.container, {
+                [css.isInitialEntry]: isInitialEntry,
+            })}
+        >
+            <div className={css.title}>
+                {helpCenterTexts.homepageManageOrdersTitle}
+            </div>
             <div className={css.itemsContainer}>
                 {selfServiceConfiguration.track_order_policy.enabled && (
                     <OrderManagementFlowItem
@@ -54,7 +63,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                             hoveredOrderManagementFlow === 'track_order_policy'
                         }
                     >
-                        {sspTexts.track}
+                        {helpCenterTexts.orderFlowTrack}
                     </OrderManagementFlowItem>
                 )}
                 {selfServiceConfiguration.return_order_policy.enabled && (
@@ -64,7 +73,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                             hoveredOrderManagementFlow === 'return_order_policy'
                         }
                     >
-                        {sspTexts.return}
+                        {helpCenterTexts.orderFlowReturn}
                     </OrderManagementFlowItem>
                 )}
                 {selfServiceConfiguration.cancel_order_policy.enabled && (
@@ -74,7 +83,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                             hoveredOrderManagementFlow === 'cancel_order_policy'
                         }
                     >
-                        {sspTexts.cancel}
+                        {helpCenterTexts.orderFlowCancel}
                     </OrderManagementFlowItem>
                 )}
                 {selfServiceConfiguration.report_issue_policy.enabled && (
@@ -84,7 +93,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                             hoveredOrderManagementFlow === 'report_issue_policy'
                         }
                     >
-                        {sspTexts.reportIssue}
+                        {helpCenterTexts.orderFlowReport}
                     </OrderManagementFlowItem>
                 )}
             </div>

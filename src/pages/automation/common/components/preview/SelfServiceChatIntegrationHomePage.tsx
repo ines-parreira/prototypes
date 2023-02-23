@@ -1,12 +1,12 @@
 import React from 'react'
 import classnames from 'classnames'
+import {useHistory} from 'react-router-dom'
 
 import Collapse from 'pages/common/components/Collapse/Collapse'
-import Button from 'pages/common/components/button/Button'
-import gorgiasChatSendMessageIcon from 'assets/img/integrations/gorgias-chat-send-message-icon.svg'
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 import {GorgiasChatIntegration} from 'models/integration/types'
 
+import SelfServiceChatIntegrationFooter from './components/SelfServiceChatIntegrationFooter'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 import css from './SelfServiceChatIntegrationHomePage.less'
@@ -22,15 +22,15 @@ type Props = {
 }
 
 const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
+    const history = useHistory()
     const {
         selfServiceConfiguration,
         hoveredQuickResponseId,
         hoveredOrderManagementFlow,
     } = useSelfServicePreviewContext()
 
-    const {meta} = integration
-
-    const sspTexts = GORGIAS_CHAT_SSP_TEXTS[meta.language || 'en-US']
+    const sspTexts =
+        GORGIAS_CHAT_SSP_TEXTS[integration.meta.language || 'en-US']
 
     const quickResponses =
         selfServiceConfiguration.quick_response_policies.filter(
@@ -42,9 +42,14 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
         selfServiceConfiguration.report_issue_policy.enabled ||
         selfServiceConfiguration.cancel_order_policy.enabled ||
         selfServiceConfiguration.return_order_policy.enabled
+    const isInitialEntry = history.length === 1
 
     return (
-        <>
+        <div
+            className={classnames(css.container, {
+                [css.isInitialEntry]: isInitialEntry,
+            })}
+        >
             <div className={css.contentContainer}>
                 <Collapse isOpen={quickResponses.length > 0} memoizeOnExit>
                     <div className={css.listGroup}>
@@ -83,18 +88,8 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
                     </div>
                 </Collapse>
             </div>
-            <div className={css.footer}>
-                {sspTexts.needHelp}
-                <Button>
-                    <img
-                        className={css.sendMessageIcon}
-                        src={gorgiasChatSendMessageIcon}
-                        alt="send message icon"
-                    />
-                    {sspTexts.sendUsAMessage}
-                </Button>
-            </div>
-        </>
+            <SelfServiceChatIntegrationFooter sspTexts={sspTexts} />
+        </div>
     )
 }
 

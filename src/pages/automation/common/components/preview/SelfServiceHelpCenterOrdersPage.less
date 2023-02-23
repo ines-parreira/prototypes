@@ -1,0 +1,117 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/colorTokens.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/util.less';
+
+:local {
+    .container {
+        background-color: @modern-neutral-grey-0;
+        color: @modern-neutral-grey-6;
+
+        :global {
+            animation: fadeIn 0.3s ease-in;
+        }
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m @layout-spacing-s;
+        gap: @layout-spacing-xs;
+        border-bottom: 1px solid @modern-neutral-grey-3;
+    }
+
+    .orderNumber {
+        .heading-section-semibold();
+    }
+
+    .orderDate {
+        .heading-subsection-regular();
+        color: @modern-neutral-grey-4;
+    }
+
+    .summaryLabel {
+        .heading-section-semibold();
+        padding: @layout-spacing-m @layout-spacing-s 0;
+    }
+
+    .fulfillmentContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: @layout-spacing-m @layout-spacing-s;
+        gap: @layout-spacing-m;
+        border-bottom: 1px solid @modern-neutral-grey-3;
+    }
+
+    .fulfillmentStatus {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .actions {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .badge {
+        .body-medium();
+        align-self: flex-start;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
+
+    .actionButton {
+        padding: 6px @layout-spacing-s;
+        background-color: rgba(22, 22, 22, 0.08);
+        border-radius: 4px;
+        font-size: @layout-spacing-s;
+        font-weight: 500;
+        line-height: 20px;
+        transition: background-color 0.2s linear;
+
+        &.isHovered {
+            background-color: rgba(22, 22, 22, 0.16);
+        }
+
+        &.isActive {
+            background-color: rgba(22, 22, 22, 0.2);
+        }
+    }
+
+    .lineItems {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .lineItem {
+        display: flex;
+        gap: @layout-spacing-s;
+    }
+
+    .lineItemThumbnail {
+        border-radius: 2px;
+    }
+
+    .lineItemDescription {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-xxs 0;
+        gap: @layout-spacing-xxs;
+    }
+
+    .lineItemName {
+        .heading-subsection-semibold();
+    }
+
+    .lineItemPrice {
+        color: @modern-neutral-grey-5;
+        margin-right: @layout-spacing-xs;
+    }
+
+    .lineItemQuantity {
+        color: @modern-neutral-grey-4;
+    }
+}

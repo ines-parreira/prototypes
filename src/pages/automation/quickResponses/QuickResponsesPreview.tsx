@@ -34,9 +34,9 @@ const QuickResponsesPreview = ({
 
     useEffect(() => {
         if (hasExpandedQuickResponse) {
-            history.push(SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE)
+            history.replace(SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE)
         } else {
-            history.push(SELF_SERVICE_PREVIEW_ROUTES.HOME)
+            history.replace(SELF_SERVICE_PREVIEW_ROUTES.HOME)
         }
     }, [history, hasExpandedQuickResponse])
 
