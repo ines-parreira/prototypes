@@ -5,6 +5,16 @@
     .container {
         padding: @layout-spacing-m;
         background-color: @classic-neutral-grey-1;
+
+        ul {
+            margin-block-start: 0;
+            margin-block-end: 0;
+            padding-inline-start: 0;
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            gap: @layout-spacing-m;
+        }
     }
 
     .providerIcon {
@@ -36,15 +46,5 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-    }
-
-    ul {
-        margin-block-start: 0;
-        margin-block-end: 0;
-        padding-inline-start: 0;
-        margin-bottom: 0;
-        display: flex;
-        flex-direction: column;
-        gap: @layout-spacing-m;
     }
 }
