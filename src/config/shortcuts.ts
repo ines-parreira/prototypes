@@ -34,6 +34,12 @@ const shortcuts: Record<string, KeyMap> = {
                 key: 'shift+enter',
                 description: 'Go to advanced search',
             },
+            EXIT_SEARCH: {
+                // the action is handled internally by the Modal component
+                // this is only a placeholder to show the shortcut in the KeyboardHelp menu
+                key: 'esc',
+                description: 'Exit search',
+            },
         },
     },
     View: {
@@ -129,6 +135,7 @@ const shortcuts: Record<string, KeyMap> = {
             },
         },
     },
+    // TODO: remove after SpotlightGlobalSearch feature flag is removed
     Search: {
         description: 'Search',
         actions: {

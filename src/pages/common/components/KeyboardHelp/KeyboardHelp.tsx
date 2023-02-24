@@ -69,8 +69,9 @@ export default class KeyboardHelp extends Component<
                         const actions = component.actions
 
                         if (
-                            !isSpotlightEnabled &&
-                            componentName === 'SpotlightModal'
+                            (!isSpotlightEnabled &&
+                                componentName === 'SpotlightModal') ||
+                            (isSpotlightEnabled && componentName === 'Search')
                         ) {
                             return null
                         }
