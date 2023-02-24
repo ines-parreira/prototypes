@@ -58,13 +58,14 @@ describe('EmailMigration', () => {
         {status: EmailMigrationStatus.Enabled, testid: 'migration-not-started'},
         {status: EmailMigrationStatus.Pending, testid: 'migration-pending'},
         {status: EmailMigrationStatus.Completed, testid: 'migration-complete'},
-    ])('Displays correct step based on the status', (state) => {
+    ])('Displays correct step based on the status', async (state) => {
         renderComponent({
             status: state.status,
             due_at: '',
             started_at: '',
         })
 
+        await screen.findByTestId(state.testid)
         expect(screen.getByTestId(state.testid)).toBeVisible()
     })
 })

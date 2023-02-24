@@ -6,7 +6,7 @@ import {EmailProvider, IntegrationType} from '../constants'
 
 import {IntegrationBase} from './base'
 
-import type {Integration} from './'
+import type {GmailIntegration, Integration, OutlookIntegration} from './'
 
 export enum OutboundVerificationStatusValue {
     Unverified = 'unverified',
@@ -77,6 +77,21 @@ export type EmailMigrationBannerStatus = {
     status: EmailMigrationStatus | null
     started_at: string | null
     due_at: string | null
+}
+
+export enum MigrationStatus {
+    Initiated = 'INITIATED',
+    InboundPending = 'INBOUND_PENDING',
+    InboundPartialSuccess = 'INBOUND_PARTIAL_SUCCESS',
+    InboundSuccess = 'INBOUND_SUCCESS',
+    InboundFailed = 'INBOUND_FAILED',
+    InboundCriticalFailure = 'INBOUND_CRITICAL_FAILURE',
+}
+
+export type EmailMigration = {
+    integration: EmailIntegration | GmailIntegration | OutlookIntegration
+    status: MigrationStatus
+    last_verification_email_sent_at: string
 }
 
 export const isEmailIntegration = createTypeGuard<
