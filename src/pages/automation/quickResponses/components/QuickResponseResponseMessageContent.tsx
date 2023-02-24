@@ -1,6 +1,6 @@
 import React from 'react'
 import {EditorState} from 'draft-js'
-import {List, fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 import classnames from 'classnames'
 
 import RichField from 'pages/common/forms/RichField/RichField'
@@ -13,8 +13,8 @@ import {toImmutable} from 'utils'
 
 import {usePropagateError} from '../QuickResponsesViewContext'
 import {
-    QUICK_RESPONSE_RESPONSE_MESSAGE_TEXT_MAX_LENGTH,
     QUICK_RESPONSE_RESPONSE_MESSAGE_HTML_MAX_LENGTH,
+    QUICK_RESPONSE_RESPONSE_MESSAGE_TEXT_MAX_LENGTH,
 } from '../constants'
 
 import css from './QuickResponseResponseMessageContent.less'
@@ -88,6 +88,7 @@ const QuickResponseResponseMessageContent = ({
                     className={classnames(css.richField, {
                         [css.hasError]: hasError,
                     })}
+                    maxLength={QUICK_RESPONSE_RESPONSE_MESSAGE_TEXT_MAX_LENGTH}
                 />
                 <TicketAttachments
                     className={css.attachments}

@@ -59,8 +59,7 @@ const ReportOrderIssueScenarioReasonAction = ({value, onChange}: Props) => {
                 className={classnames(css.richField, {
                     [css.hasError]: hasError,
                 })}
-                // TODO: add once https://linear.app/gorgias/issue/AUTSS-2439 is merged
-                // maxLength={AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH}
+                maxLength={AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH}
             />
             <ToggleInput
                 className={css.showHelpfulPromptToggleInput}
