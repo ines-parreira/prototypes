@@ -8,6 +8,7 @@ export const SELF_SERVICE_PREVIEW_ROUTES = {
     QUICK_RESPONSE: '/quick-response',
     ORDERS: '/orders',
     TRACK: '/track',
+    CANCEL: '/cancel',
 }
 
 export const ETA_DATE = moment([2022, 11, 18, 9])

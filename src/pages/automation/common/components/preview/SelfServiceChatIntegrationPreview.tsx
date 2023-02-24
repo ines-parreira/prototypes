@@ -8,6 +8,7 @@ import SelfServiceChatIntegrationHomePage from './SelfServiceChatIntegrationHome
 import SelfServiceChatIntegrationQuickResponsePage from './SelfServiceChatIntegrationQuickResponsePage'
 import SelfServiceChatIntegrationTrackPage from './SelfServiceChatIntegrationTrackPage'
 import SelfServiceChatIntegrationOrdersPage from './SelfServiceChatIntegrationOrdersPage'
+import SelfServiceChatIntegrationCancelPage from './SelfServiceChatIntegrationCancelPage'
 import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 
 type Props = {
@@ -29,7 +30,9 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
             avatarTeamPictureUrl={decoration.avatar_team_picture_url}
             isOnline
             language={meta.language}
-            renderFooter={false}
+            renderFooter={
+                location.pathname === SELF_SERVICE_PREVIEW_ROUTES.CANCEL
+            }
             renderPoweredBy={
                 location.pathname === SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE
             }
@@ -39,7 +42,9 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
             showGoBackButton={
                 location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.HOME
             }
-            enableAnimations
+            enableAnimations={
+                location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.CANCEL
+            }
             showBackground={false}
         >
             <React.Fragment key={location.key}>
@@ -54,6 +59,9 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 </Route>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.TRACK} exact>
                     <SelfServiceChatIntegrationTrackPage {...props} />
+                </Route>
+                <Route path={SELF_SERVICE_PREVIEW_ROUTES.CANCEL} exact>
+                    <SelfServiceChatIntegrationCancelPage {...props} />
                 </Route>
             </React.Fragment>
         </ChatIntegrationPreview>

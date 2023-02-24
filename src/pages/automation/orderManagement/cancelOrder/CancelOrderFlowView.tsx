@@ -17,9 +17,11 @@ import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
+import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
 
 import CancelOrderEligibility from './components/CancelOrderEligibility'
 import CancelOrderResponseMessageContent from './components/CancelOrderResponseMessageContent'
+import CancelOrderFlowPreview from './CancelOrderFlowPreview'
 import CancelOrderFlowViewContext, {
     CancelOrderFlowViewContextType,
 } from './CancelOrderFlowViewContext'
@@ -35,6 +37,7 @@ const CancelOrderFlowView = () => {
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
 
     const cancelOrderFlow = selfServiceConfiguration?.cancel_order_policy
 
@@ -133,10 +136,12 @@ const CancelOrderFlowView = () => {
             <Container
                 fluid
                 className={classnames({
-                    [css.container]: Boolean(selfServiceConfiguration),
+                    [css.container]: Boolean(
+                        selfServiceConfiguration && dirtyCancelOrderFlow
+                    ),
                 })}
             >
-                {!selfServiceConfiguration ? (
+                {!selfServiceConfiguration || !dirtyCancelOrderFlow ? (
                     <Loader />
                 ) : (
                     <CancelOrderFlowViewContext.Provider
@@ -162,14 +167,14 @@ const CancelOrderFlowView = () => {
 
                             <CancelOrderEligibility
                                 eligibility={
-                                    dirtyCancelOrderFlow?.eligibilities[0]
+                                    dirtyCancelOrderFlow.eligibilities[0]
                                 }
                                 onChange={handleEligibilityChange}
                             />
                             {hasAutomationAddOn && (
                                 <CancelOrderResponseMessageContent
                                     responseMessageContent={
-                                        dirtyCancelOrderFlow?.action
+                                        dirtyCancelOrderFlow.action
                                             ?.response_message_content ??
                                         DEFAULT_RESPONSE_MESSAGE_CONTENT
                                     }
@@ -210,6 +215,14 @@ const CancelOrderFlowView = () => {
                                 }
                             />
                         </div>
+                        <CancelOrderFlowPreview
+                            channels={channels}
+                            selfServiceConfiguration={selfServiceConfiguration}
+                            responseMessageContent={
+                                dirtyCancelOrderFlow.action
+                                    ?.response_message_content
+                            }
+                        />
                     </CancelOrderFlowViewContext.Provider>
                 )}
             </Container>

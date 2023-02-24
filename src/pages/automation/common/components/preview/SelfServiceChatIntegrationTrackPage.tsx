@@ -74,7 +74,7 @@ const SelfServiceChatIntegrationTrackPage = ({integration}: Props) => {
                                     {sspTexts.checkpointOrderPlaced}
                                 </div>
                                 <div className={css.timelineItemTimestamp}>
-                                    {orderPlacedDate.format('L - HH:mm a')}
+                                    {orderPlacedDate.format('L - hh:mm a')}
                                 </div>
                             </div>
                         </div>
@@ -95,7 +95,7 @@ const SelfServiceChatIntegrationTrackPage = ({integration}: Props) => {
                                     {sspTexts.checkpointInfoReceived}
                                 </div>
                                 <div className={css.timelineItemTimestamp}>
-                                    {infoReceivedDate.format('L - HH:mm a')} |
+                                    {infoReceivedDate.format('L - hh:mm a')} |
                                     New York, USA
                                 </div>
                             </div>
@@ -122,7 +122,7 @@ const SelfServiceChatIntegrationTrackPage = ({integration}: Props) => {
                                     {sspTexts.checkpointInTransit}
                                 </div>
                                 <div className={css.timelineItemTimestamp}>
-                                    {inTransitDate.format('L - HH:mm a')} |
+                                    {inTransitDate.format('L - hh:mm a')} |
                                     Dallas, USA
                                 </div>
                             </div>

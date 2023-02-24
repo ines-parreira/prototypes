@@ -3,6 +3,7 @@ import {createContext, useContext} from 'react'
 import {
     PolicyKey,
     QuickResponsePolicy,
+    ResponseMessageContent,
     SelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/types'
 
@@ -12,6 +13,7 @@ export type SelfServicePreviewContextType = {
     hoveredQuickResponseId?: Maybe<QuickResponsePolicy['id']>
     hoveredOrderManagementFlow?: Maybe<PolicyKey>
     orderManagementFlow?: PolicyKey
+    automatedResponseMessageContent?: ResponseMessageContent
 }
 
 const SelfServicePreviewContext = createContext<

@@ -1399,76 +1399,91 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                     navbar: AutomationNavbar,
                 })}
             />
-            <HelpCenterApiClientProvider>
-                <SelfServiceHelpCentersProvider>
-                    <Route
-                        path={`${path}/shopify/:shopName/order-management`}
-                        exact
-                        render={appRender({
-                            content: memoizedWithUserRoleRequired(
-                                OrderManagementViewContainer,
-                                AGENT_ROLE
-                            ),
-                            navbar: AutomationNavbar,
-                        })}
-                    />
-                </SelfServiceHelpCentersProvider>
-            </HelpCenterApiClientProvider>
             <Route
-                path={`${path}/shopify/:shopName/order-management/return`}
+                path={[
+                    `${path}/shopify/:shopName/order-management`,
+                    `${path}/shopify/:shopName/order-management/return`,
+                    `${path}/shopify/:shopName/order-management/cancel`,
+                    `${path}/shopify/:shopName/order-management/cancel`,
+                    `${path}/shopify/:shopName/order-management/report-issue`,
+                    `${path}/shopify/:shopName/order-management/report-issue/new`,
+                    `${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`,
+                ]}
                 exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        ReturnOrderFlowViewContainer,
-                        AGENT_ROLE
-                    ),
-                    navbar: AutomationNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/shopify/:shopName/order-management/cancel`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        CancelOrderFlowViewContainer,
-                        AGENT_ROLE
-                    ),
-                    navbar: AutomationNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/shopify/:shopName/order-management/report-issue`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        ReportOrderIssueFlowViewContainer,
-                        AGENT_ROLE
-                    ),
-                    navbar: AutomationNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/shopify/:shopName/order-management/report-issue/new`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        CreateReportOrderIssueFlowScenarioViewContainer,
-                        AGENT_ROLE
-                    ),
-                    navbar: AutomationNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        EditReportOrderIssueFlowScenarioViewContainer,
-                        AGENT_ROLE
-                    ),
-                    navbar: AutomationNavbar,
-                })}
-            />
+            >
+                <HelpCenterApiClientProvider>
+                    <SelfServiceHelpCentersProvider>
+                        <Switch>
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management`}
+                                exact
+                                render={appRender({
+                                    content: memoizedWithUserRoleRequired(
+                                        OrderManagementViewContainer,
+                                        AGENT_ROLE
+                                    ),
+                                    navbar: AutomationNavbar,
+                                })}
+                            />
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management/return`}
+                                exact
+                                render={appRender({
+                                    content: memoizedWithUserRoleRequired(
+                                        ReturnOrderFlowViewContainer,
+                                        AGENT_ROLE
+                                    ),
+                                    navbar: AutomationNavbar,
+                                })}
+                            />
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management/cancel`}
+                                exact
+                                render={appRender({
+                                    content: memoizedWithUserRoleRequired(
+                                        CancelOrderFlowViewContainer,
+                                        AGENT_ROLE
+                                    ),
+                                    navbar: AutomationNavbar,
+                                })}
+                            />
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management/report-issue`}
+                                exact
+                                render={appRender({
+                                    content: memoizedWithUserRoleRequired(
+                                        ReportOrderIssueFlowViewContainer,
+                                        AGENT_ROLE
+                                    ),
+                                    navbar: AutomationNavbar,
+                                })}
+                            />
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management/report-issue/new`}
+                                exact
+                                render={appRender({
+                                    content: memoizedWithUserRoleRequired(
+                                        CreateReportOrderIssueFlowScenarioViewContainer,
+                                        AGENT_ROLE
+                                    ),
+                                    navbar: AutomationNavbar,
+                                })}
+                            />
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`}
+                                exact
+                                render={appRender({
+                                    content: memoizedWithUserRoleRequired(
+                                        EditReportOrderIssueFlowScenarioViewContainer,
+                                        AGENT_ROLE
+                                    ),
+                                    navbar: AutomationNavbar,
+                                })}
+                            />
+                        </Switch>
+                    </SelfServiceHelpCentersProvider>
+                </HelpCenterApiClientProvider>
+            </Route>
             <Route
                 path={`${path}/quick-responses`}
                 exact

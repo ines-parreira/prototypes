@@ -7,6 +7,7 @@ import HelpCenterPreview from 'pages/settings/helpCenter/components/HelpCenterPr
 import SelfServiceHelpCenterHomePage from './SelfServiceHelpCenterHomePage'
 import SelfServiceHelpCenterOrdersPage from './SelfServiceHelpCenterOrdersPage'
 import SelfServiceHelpCenterTrackPage from './SelfServiceHelpCenterTrackPage'
+import SelfServiceHelpCenterCancelPage from './SelfServiceHelpCenterCancelPage'
 import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 
 type Props = {
@@ -28,6 +29,9 @@ const SelfServiceHelpCenterPreview = (props: Props) => {
                 </Route>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.TRACK} exact>
                     <SelfServiceHelpCenterTrackPage {...props} />
+                </Route>
+                <Route path={SELF_SERVICE_PREVIEW_ROUTES.CANCEL} exact>
+                    <SelfServiceHelpCenterCancelPage {...props} />
                 </Route>
             </React.Fragment>
         </HelpCenterPreview>

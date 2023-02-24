@@ -1,0 +1,124 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/colorTokens.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/typographyTokens.less';
+
+:local {
+    .container {
+        background-color: @modern-neutral-grey-0;
+        color: @modern-neutral-grey-6;
+        overflow: auto;
+        pointer-events: initial;
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0 @layout-spacing-m;
+        padding: @layout-spacing-m 0;
+        gap: @layout-spacing-m;
+        border-bottom: 1px dashed @modern-neutral-grey-3;
+    }
+
+    .checkCircleIcon {
+        color: @modern-feedback-success;
+        font-size: 40px;
+    }
+
+    .titleWithDescriptionContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: @layout-spacing-xs;
+    }
+
+    .title {
+        font-size: @heading-section-medium-font-size;
+        font-weight: @heading-section-medium-font-weight;
+        letter-spacing: @heading-section-medium-letter-spacing;
+        line-height: @heading-section-medium-line-height;
+    }
+
+    .automatedResponse {
+        .heading-subsection-regular();
+        color: @modern-neutral-grey-5;
+        text-align: center;
+    }
+
+    .description {
+        .heading-subsection-regular();
+        color: @modern-neutral-grey-5;
+    }
+
+    .summaryContainer {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m;
+        gap: @layout-spacing-m;
+    }
+
+    .summaryTitle {
+        .heading-section-semibold();
+    }
+
+    .summaryContent {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+
+    .orderDetails {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
+    .orderDetailsTitle {
+        .heading-subsection-semibold();
+    }
+
+    .orderDetailsDescription {
+        .heading-subsection-regular();
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+        color: @modern-neutral-grey-5;
+    }
+
+    .fulfillmentLineItems {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .lineItem {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+    }
+
+    .thumbnail {
+        border-radius: 2px;
+    }
+
+    .lineItemDescription {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+    }
+
+    .lineItemName {
+        .body-semibold();
+    }
+
+    .lineItemPrice {
+        color: @classic-neutral-grey-5;
+        margin-right: @layout-spacing-xxs;
+    }
+
+    .lineItemQuantity {
+        color: #9fa9b9;
+    }
+}
