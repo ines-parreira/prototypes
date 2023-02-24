@@ -74,4 +74,7 @@ export const roleRestrictionConfigs: Record<
     [PageSection.Api]: {
         pageHeader: SectionPageHeader.Api,
     },
+    [PageSection.CreditShopifyBillingIntegration]: {
+        pageHeader: SectionPageHeader.CreditShopifyBillingIntegration,
+    },
 }

@@ -120,6 +120,7 @@ import AutomationMacros from './stats/AutomationMacros'
 import AutomationIntents from './stats/AutomationIntents'
 import SelfServiceStatsPage from './stats/self-service/SelfServiceStatsPage'
 import TwilioSubaccountStatusForm from './tasks/detail/TwilioSubaccountStatusForm'
+import CreditShopifyBillingIntegration from './tasks/detail/CreditShopifyBillingIntegration'
 import EditTicketField from './settings/ticketFields/EditTicketField'
 import MaybeDeprecatedRoute from './common/components/MaybeDeprecatedRoute'
 import {RevenueAddonApiClientProvider} from './settings/revenue/hooks/useRevenueAddonApi'
@@ -1770,6 +1771,20 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                     navbar: SettingsNavbar,
                 })}
             />
+            {window.USER_IMPERSONATED && (
+                <Route
+                    path={`${path}/credit-shopify-billing-integration`}
+                    exact
+                    render={appRender({
+                        content: memoizedWithUserRoleRequired(
+                            CreditShopifyBillingIntegration,
+                            ADMIN_ROLE,
+                            PageSection.CreditShopifyBillingIntegration
+                        ),
+                        navbar: SettingsNavbar,
+                    })}
+                />
+            )}
         </Switch>
     )
 }

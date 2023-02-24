@@ -1,4 +1,4 @@
-import React, {FormEvent} from 'react'
+import React, {FormEvent, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Form, FormGroup, Container, Label, Input} from 'reactstrap'
 import classnames from 'classnames'
@@ -27,8 +27,8 @@ type Errors = {
 }
 
 const ImportPhoneNumber = ({notify}: Props) => {
-    const [formData, setFormData] = React.useState<Map<any, any>>(fromJS({}))
-    const [isLoading, setIsLoading] = React.useState(false)
+    const [formData, setFormData] = useState<Map<any, any>>(fromJS({}))
+    const [isLoading, setIsLoading] = useState(false)
 
     const onSubmit = async (event: FormEvent) => {
         event.preventDefault()

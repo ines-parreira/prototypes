@@ -3,7 +3,9 @@ import {createBrowserHistory} from 'history'
 import {act} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import {fromJS} from 'immutable'
 
+import {user} from 'fixtures/users'
 import {logPageChange} from 'store/middlewares/segmentTracker'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 
@@ -24,6 +26,10 @@ describe('<Routes/>', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockHistory.replace('/app')
+    })
+
+    afterEach(() => {
+        window.USER_IMPERSONATED = null
     })
 
     it('should not log page change via segment on initial render', () => {
@@ -54,5 +60,40 @@ describe('<Routes/>', () => {
         act(() => mockHistory.push('/app/stats/live-overview'))
 
         expect(logPageMock).toHaveBeenCalledTimes(1)
+    })
+
+    it.only('should make Shopify route available for impersonated admin users', () => {
+        window.USER_IMPERSONATED = true
+
+        const {container} = renderWithRouter(
+            <Provider store={mockStore({currentUser: fromJS(user)})}>
+                <Routes />
+            </Provider>,
+            {
+                history: mockHistory,
+            }
+        )
+
+        act(() =>
+            mockHistory.push(
+                '/app/admin/tasks/credit-shopify-billing-integration'
+            )
+        )
+
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should not make Shopify route available for non-impersonated users', () => {
+        const {container} = renderWithRouter(<Routes />, {
+            history: mockHistory,
+        })
+
+        act(() =>
+            mockHistory.push(
+                '/app/admin/tasks/credit-shopify-billing-integration'
+            )
+        )
+
+        expect(container).toMatchSnapshot()
     })
 })

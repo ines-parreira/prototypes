@@ -20,6 +20,7 @@ export enum PageSection {
     ImportData = 'import-data',
     ImportPhoneNumber = 'import-phone-number',
     TwilioSubaccountStatus = 'twilio-subaccount-status',
+    CreditShopifyBillingIntegration = 'credit-shopify-billing-integration',
 }
 
 export enum SectionPageHeader {
@@ -44,4 +45,5 @@ export enum SectionPageHeader {
     ImportData = 'Import data',
     ImportPhoneNumber = 'Import phone number',
     TwilioSubaccountStatus = 'Twilio Subaccount Status',
+    CreditShopifyBillingIntegration = 'Credit Shopify billing integration',
 }
