@@ -13,6 +13,11 @@ export type GorgiasChatIntegration = IntegrationBase & {
     meta: GorgiasChatIntegrationMeta
     decoration: IntegrationDecoration & {
         position: GorgiasChatPosition
+        avatar?: {
+            company_logo_url?: string
+            image_type: GorgiasChatAvatarImageType
+            name_type: GorgiasChatAvatarNameType
+        }
     }
 }
 
@@ -117,4 +122,10 @@ export enum GorgiasChatAvatarNameType {
     AGENT_FIRST_NAME = 'agent-first-name',
     AGENT_FIRST_LAST_NAME_INITIAL = 'agent-first-last-name-initial',
     CHAT_TITLE = 'chat-title',
+}
+
+export type GorgiasChatAvatarSettings = {
+    imageType: GorgiasChatAvatarImageType
+    nameType: GorgiasChatAvatarNameType
+    companyLogoUrl?: string
 }

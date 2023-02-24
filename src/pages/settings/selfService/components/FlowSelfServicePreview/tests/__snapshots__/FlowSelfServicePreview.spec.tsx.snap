@@ -36,7 +36,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
             class="agents"
           >
             <div
-              class="agent first"
+              class="agent hasIcon first"
               style="border-color: #0d87dd;"
             >
               <i
@@ -46,7 +46,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
               </i>
             </div>
             <div
-              class="agent middle"
+              class="agent hasIcon middle"
               style="border-color: #0d87dd;"
             >
               <i
@@ -59,7 +59,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
               />
             </div>
             <div
-              class="agent last"
+              class="agent hasIcon last"
               style="border-color: #0d87dd;"
             >
               <i
@@ -219,7 +219,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page with the merge
             class="agents"
           >
             <div
-              class="agent first"
+              class="agent hasIcon first"
               style="border-color: #0d87dd;"
             >
               <i
@@ -229,7 +229,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page with the merge
               </i>
             </div>
             <div
-              class="agent middle"
+              class="agent hasIcon middle"
               style="border-color: #0d87dd;"
             >
               <i
@@ -242,7 +242,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page with the merge
               />
             </div>
             <div
-              class="agent last"
+              class="agent hasIcon last"
               style="border-color: #0d87dd;"
             >
               <i
@@ -367,7 +367,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
             class="agents"
           >
             <div
-              class="agent first"
+              class="agent hasIcon first"
               style="border-color: #0d87dd;"
             >
               <i
@@ -377,7 +377,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
               </i>
             </div>
             <div
-              class="agent middle"
+              class="agent hasIcon middle"
               style="border-color: #0d87dd;"
             >
               <i
@@ -390,7 +390,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
               />
             </div>
             <div
-              class="agent last"
+              class="agent hasIcon last"
               style="border-color: #0d87dd;"
             >
               <i
@@ -551,7 +551,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer wit
             class="agents"
           >
             <div
-              class="agent first"
+              class="agent hasIcon first"
               style="border-color: #0d87dd;"
             >
               <i
@@ -561,7 +561,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer wit
               </i>
             </div>
             <div
-              class="agent middle"
+              class="agent hasIcon middle"
               style="border-color: #0d87dd;"
             >
               <i
@@ -574,7 +574,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer wit
               />
             </div>
             <div
-              class="agent last"
+              class="agent hasIcon last"
               style="border-color: #0d87dd;"
             >
               <i
@@ -722,7 +722,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page without answer 
             class="agents"
           >
             <div
-              class="agent first"
+              class="agent hasIcon first"
               style="border-color: #0d87dd;"
             >
               <i
@@ -732,7 +732,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page without answer 
               </i>
             </div>
             <div
-              class="agent middle"
+              class="agent hasIcon middle"
               style="border-color: #0d87dd;"
             >
               <i
@@ -745,7 +745,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page without answer 
               />
             </div>
             <div
-              class="agent last"
+              class="agent hasIcon last"
               style="border-color: #0d87dd;"
             >
               <i

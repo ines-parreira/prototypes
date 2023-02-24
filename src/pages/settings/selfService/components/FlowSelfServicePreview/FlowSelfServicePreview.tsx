@@ -8,9 +8,8 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 import {getIntegrations} from 'state/integrations/selectors'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import MessageContentPreview, {
-    AgentMessages,
-} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
+import MessageContentPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
+import {AgentMessage} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
 import useAppSelector from 'hooks/useAppSelector'
 import {RootState} from 'state/types'
 
@@ -84,7 +83,7 @@ const FlowSelfServicePreview = ({
     const shouldDisplayRegularConversation =
         responseMessage.get('text') === '' && newMessageAttachments.size === 0
 
-    const agentMessages: AgentMessages = [
+    const agentMessages: AgentMessage[] = [
         {
             content: responseMessage.get('html') as string,
             isHtml: true,

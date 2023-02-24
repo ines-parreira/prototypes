@@ -37,6 +37,7 @@ import {Language} from 'constants/languages'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import * as integrationSelectors from 'state/integrations/selectors'
 import {
+    GorgiasChatAvatarSettings,
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatPosition,
@@ -56,7 +57,6 @@ import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import GorgiasChatIntegrationNavigation from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import MessageContentPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import ChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatLauncher'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -68,6 +68,9 @@ import css from './GorgiasChatIntegrationAppearance.less'
 import {StoreNameDropdown} from './StoreNameDropdown'
 import {StoreRadioButton} from './StoreRadioButton'
 import {CustomizeToneOfVoiceBlock} from './components/CustomizeToneOfVoiceBlock'
+import ImageField from './components/ImageField'
+import UploadLogoCaption from './components/UploadLogoCaption'
+import AppearanceMessages from './components/AppearanceMessages'
 
 export enum PositionAxis {
     AXIS_X = 'axis-x',
@@ -125,32 +128,6 @@ const avatarNameTypeOptions = [
     },
 ]
 
-/**
- * TODO: third option needs to be generated/modified
- * depending on the agent avatar image value
- * Will be done in a follow-up PR with logo upload
- */
-const avatarImageTypeOptions = [
-    {
-        value: GorgiasChatAvatarImageType.AGENT_PICTURE,
-        label: 'Profile picture',
-    },
-    {
-        value: GorgiasChatAvatarImageType.AGENT_INITIALS,
-        label: 'Initials',
-    },
-    {
-        value: GorgiasChatAvatarImageType.COMPANY_LOGO,
-        label: 'Logo',
-        disabled: true,
-        caption: (
-            <>
-                <a href="#">Upload a logo</a> to enable this option
-            </>
-        ),
-    },
-]
-
 type Props = {
     integration: Map<any, any>
     isUpdate: boolean
@@ -180,11 +157,7 @@ type State = {
         type: GorgiasChatLauncherType
         label?: string
     }
-    avatar: {
-        imageType: GorgiasChatAvatarImageType
-        nameType: GorgiasChatAvatarNameType
-        companyLogoUrl?: string
-    }
+    avatar: GorgiasChatAvatarSettings
 }
 
 type SubmitForm = {
@@ -568,6 +541,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             </Group>
             <ChatIntegrationPreview
                 name={name}
+                avatar={avatar}
                 avatarType={avatarType}
                 avatarTeamPictureUrl={avatarTeamPictureUrl}
                 introductionText={introductionText}
@@ -581,20 +555,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 autoResponderReply={autoResponderReply}
                 launcher={state.launcher}
             >
-                <MessageContentPreview
-                    conversationColor={conversationColor}
+                <AppearanceMessages
                     currentUser={currentUser}
-                    customerInitialMessages={[
-                        'Hey there',
-                        "I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.",
-                    ]}
-                    agentMessages={[
-                        {
-                            content: "Sure, what's your email / order number?",
-                            isHtml: false,
-                            attachments: [],
-                        },
-                    ]}
+                    conversationColor={conversationColor}
                     chatTitle={name}
                     avatar={state.avatar}
                 />
@@ -606,6 +569,41 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         'label' in state.launcher
             ? state.launcher.label
             : GORGIAS_CHAT_WIDGET_TEXTS[state.language].chatWithUs
+
+    const onCompanyLogoUrlChange = (companyLogoUrl?: string) => {
+        setState((prevState) => ({
+            ...prevState,
+            avatar: {
+                ...prevState.avatar,
+                imageType:
+                    !companyLogoUrl &&
+                    prevState.avatar.imageType ===
+                        GorgiasChatAvatarImageType.COMPANY_LOGO
+                        ? GorgiasChatAvatarImageType.AGENT_PICTURE
+                        : prevState.avatar.imageType,
+                companyLogoUrl,
+            },
+        }))
+    }
+
+    const avatarImageTypeOptions = [
+        {
+            value: GorgiasChatAvatarImageType.AGENT_PICTURE,
+            label: 'Profile picture',
+        },
+        {
+            value: GorgiasChatAvatarImageType.AGENT_INITIALS,
+            label: 'Initials',
+        },
+        {
+            value: GorgiasChatAvatarImageType.COMPANY_LOGO,
+            label: 'Logo',
+            disabled: !avatar.companyLogoUrl,
+            caption: !avatar.companyLogoUrl && (
+                <UploadLogoCaption onConfirm={onCompanyLogoUrlChange} />
+            ),
+        },
+    ]
 
     return (
         <div className="full-width">
@@ -835,6 +833,20 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 {shouldShowAvatarCustomization ? (
                                     <div className={css.formSection}>
                                         <h2 className={css.title}>
+                                            Company logo
+                                        </h2>
+                                        <ImageField
+                                            isDiscardable={true}
+                                            onChange={onCompanyLogoUrlChange}
+                                            url={avatar.companyLogoUrl}
+                                            maxSize={500 * 1000}
+                                        />
+                                        <h2
+                                            className={classNames(
+                                                css.title,
+                                                'mt-5'
+                                            )}
+                                        >
                                             Agent avatar
                                         </h2>
 

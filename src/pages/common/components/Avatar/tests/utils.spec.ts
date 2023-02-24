@@ -1,4 +1,4 @@
-import {getAvatar, getAvatarFromCache} from '../utils'
+import {getInitials, getAvatar, getAvatarFromCache} from '../utils'
 import {mockImageOnload} from '../../../../../tests/utils'
 
 describe('Avatar utils', () => {
@@ -11,6 +11,17 @@ describe('Avatar utils', () => {
     })
 
     mockImageOnload()
+
+    describe('getInitials()', () => {
+        it.each([
+            ['J', 'John'],
+            ['JD', 'John Doe'],
+            ['JG', 'John Gorgeous Doe'],
+        ])("should return '%i' initials for '%i'", (result, name) => {
+            expect(getInitials(name)).toBe(result)
+        })
+    })
+
     describe('fetch avatar', () => {
         it('should return empty with no params', async () => {
             const res = await getAvatar()

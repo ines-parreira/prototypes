@@ -584,7 +584,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                     className="agents"
                                   >
                                     <div
-                                      className="agent first"
+                                      className="agent hasIcon first"
                                       key="first"
                                       style={
                                         {
@@ -599,7 +599,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                       </i>
                                     </div>
                                     <div
-                                      className="agent middle"
+                                      className="agent hasIcon middle"
                                       key="middle"
                                       style={
                                         {
@@ -617,7 +617,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                       />
                                     </div>
                                     <div
-                                      className="agent last"
+                                      className="agent hasIcon last"
                                       key="last"
                                       style={
                                         {
@@ -1457,7 +1457,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                     className="agents"
                                   >
                                     <div
-                                      className="agent first"
+                                      className="agent hasIcon first"
                                       key="first"
                                       style={
                                         {
@@ -1472,7 +1472,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                       </i>
                                     </div>
                                     <div
-                                      className="agent middle"
+                                      className="agent hasIcon middle"
                                       key="middle"
                                       style={
                                         {
@@ -1490,7 +1490,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                       />
                                     </div>
                                     <div
-                                      className="agent last"
+                                      className="agent hasIcon last"
                                       key="last"
                                       style={
                                         {

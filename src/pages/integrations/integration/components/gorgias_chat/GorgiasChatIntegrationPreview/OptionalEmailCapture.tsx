@@ -1,15 +1,8 @@
 import React, {Component} from 'react'
-import classnames from 'classnames'
-
-import {assetsUrl} from 'utils'
-import {
-    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_TEXTS,
-} from '../../../../../../config/integrations/gorgias_chat'
 
 import css from './ChatIntegrationPreview.less'
 import CustomerInitialMessages from './CustomerInitialMessages'
-import {getTextColorBasedOnBackground} from './color-utils'
+import EmailCaptureMessage from './EmailCaptureMessage'
 
 type Props = {
     conversationColor: string
@@ -21,12 +14,6 @@ export default class OptionalEmailCapture extends Component<Props> {
     render() {
         const {conversationColor, name, language} = this.props
 
-        const translatedTexts =
-            GORGIAS_CHAT_WIDGET_TEXTS[
-                language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
-            ]
-        const contrastColor = getTextColorBasedOnBackground(conversationColor)
-
         return (
             <div className={css.content}>
                 <CustomerInitialMessages
@@ -34,53 +21,11 @@ export default class OptionalEmailCapture extends Component<Props> {
                     messages={['hi']}
                 />
 
-                <div className={css.appMakerMessageWrapper}>
-                    <div className={classnames(css.avatar, css.robotLogo)}>
-                        <img
-                            src={assetsUrl('/img/icons/robot-icon.svg')}
-                            alt="Robot icon"
-                        />
-                    </div>
-                    <div>
-                        <div className={css.user}>{name}</div>
-
-                        <div
-                            className={classnames(
-                                css.bubble,
-                                css.firstMessageOfAppMaker,
-                                'mb-2'
-                            )}
-                        >
-                            {translatedTexts.emailCaptureOnlineTriggerText}
-                        </div>
-
-                        <div className={css.optionalEmailCapture}>
-                            <div className={css.inputLabel}>
-                                {translatedTexts.emailCaptureInputLabel}
-                            </div>
-                            <div className={css.inputWrapper}>
-                                <input
-                                    className="input"
-                                    placeholder={
-                                        translatedTexts.emailCapturePlaceholder
-                                    }
-                                    type="email"
-                                    readOnly
-                                />
-                                <button
-                                    style={{backgroundColor: conversationColor}}
-                                >
-                                    <i
-                                        className="material-icons"
-                                        style={{color: contrastColor}}
-                                    >
-                                        chevron_right
-                                    </i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <EmailCaptureMessage
+                    conversationColor={conversationColor}
+                    name={name}
+                    language={language}
+                />
             </div>
         )
     }

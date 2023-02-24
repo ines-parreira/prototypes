@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 
 import Tooltip from '../Tooltip'
-import {getAvatar, getAvatarFromCache} from './utils'
+import {getInitials, getAvatar, getAvatarFromCache} from './utils'
 import css from './Avatar.less'
 
 type Props = {
@@ -94,22 +94,6 @@ export default class Avatar extends Component<Props, State> {
         })
     }
 
-    _getInitials = (name: string | null) => {
-        if (!name) {
-            return ''
-        }
-
-        const splitName = name.split(' ').filter((text) => text.length > 0)
-
-        if (splitName.length > 1) {
-            return `${splitName[0][0]}${splitName[1][0]}`
-        } else if (splitName.length) {
-            return splitName[0][0]
-        }
-
-        return ''
-    }
-
     render() {
         const {
             name,
@@ -147,7 +131,7 @@ export default class Avatar extends Component<Props, State> {
                     }}
                 >
                     <span style={{lineHeight: `${+size + 2}px`}}>
-                        {this._getInitials(name)}
+                        {getInitials(name)}
                     </span>
                 </div>
 

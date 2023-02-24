@@ -1,11 +1,28 @@
 import React from 'react'
 import classnames from 'classnames'
+import {List, Map} from 'immutable'
+
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+
+import {getAgents} from 'state/agents/selectors'
+
+import useAppSelector from 'hooks/useAppSelector'
+
+import {
+    GorgiasChatAvatarSettings,
+    GorgiasChatAvatarImageType,
+} from 'models/integration/types'
+
+import {getInitials} from 'pages/common/components/Avatar/utils'
 
 import {GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE} from '../../../../../../config/integrations/gorgias_chat'
 
 import css from './ChatIntegrationPreview.less'
 
 type Props = {
+    avatar?: GorgiasChatAvatarSettings
     avatarTeamPictureUrl?: string | null
     avatarType?: string
     isOnline: boolean
@@ -15,7 +32,13 @@ type Props = {
 }
 
 const ChatIntegrationAvatar = (props: Props) => {
+    const hasAvatarCustomization =
+        useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
+
+    const agents = useAppSelector(getAgents) as List<Map<any, any>>
+
     const {
+        avatar,
         avatarType,
         avatarTeamPictureUrl,
         isOnline,
@@ -50,18 +73,68 @@ const ChatIntegrationAvatar = (props: Props) => {
         )
     }
 
+    if (!hasAvatarCustomization || !avatar) {
+        return (
+            <div className={css.agents}>
+                {['first', 'middle', 'last'].map((position) => (
+                    <div
+                        className={classnames(
+                            css.agent,
+                            css.hasIcon,
+                            css[position]
+                        )}
+                        key={position}
+                        style={{
+                            borderColor: isOnline ? mainColor : offlineColor,
+                        }}
+                    >
+                        <i className="material-icons">person</i>
+                        {position === 'middle' && statusMarker}
+                    </div>
+                ))}
+            </div>
+        )
+    }
+
+    const positions =
+        agents.size < 3 ||
+        avatar.imageType === GorgiasChatAvatarImageType.COMPANY_LOGO
+            ? ['middle']
+            : ['first', 'middle', 'last']
+
     return (
         <div className={css.agents}>
-            {['first', 'middle', 'last'].map((position) => (
-                <div
-                    className={classnames(css.agent, css[position])}
-                    key={position}
-                    style={{borderColor: isOnline ? mainColor : offlineColor}}
-                >
-                    <i className="material-icons">person</i>
-                    {position === 'middle' && statusMarker}
-                </div>
-            ))}
+            {positions.map((position, index) => {
+                const agent = agents.get(index)
+
+                const profilePictureUrl: string | undefined =
+                    avatar.imageType ===
+                    GorgiasChatAvatarImageType.AGENT_INITIALS
+                        ? undefined
+                        : avatar.imageType ===
+                          GorgiasChatAvatarImageType.AGENT_PICTURE
+                        ? agent.getIn(['meta', 'profile_picture_url'])
+                        : avatar.companyLogoUrl
+
+                return (
+                    <div
+                        className={classnames(css.agent, css[position], {
+                            [css.hasPicture]: !!profilePictureUrl,
+                            [css.single]: positions.length === 1,
+                        })}
+                        key={position}
+                        style={{
+                            borderColor: isOnline ? mainColor : offlineColor,
+                            backgroundImage:
+                                profilePictureUrl &&
+                                `url(${profilePictureUrl})`,
+                        }}
+                    >
+                        {getInitials(agent.get('name'))}
+                        {position === 'middle' && statusMarker}
+                    </div>
+                )
+            })}
         </div>
     )
 }

@@ -9,9 +9,8 @@ import {ResponseMessageContent} from 'models/selfServiceConfiguration/types'
 import {getIntegrations} from 'state/integrations/selectors'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import MessageContentPreview, {
-    AgentMessages,
-} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
+import MessageContentPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
+import {AgentMessage} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
 import useAppSelector from 'hooks/useAppSelector'
 import {RootState} from 'state/types'
 
@@ -68,7 +67,7 @@ const ReportIssuePreview = ({
         return null
     }
 
-    const agentMessages: AgentMessages = automatedResponse?.text
+    const agentMessages: AgentMessage[] = automatedResponse?.text
         ? [
               {
                   content: automatedResponse.html,

@@ -125,6 +125,12 @@
                 }
             }
 
+            .automatedTimestamp {
+                margin-top: 10px;
+                color: @classic-neutral-grey-4;
+                font-size: 12px;
+            }
+
             &.quick-replies-content {
                 padding: 0 20px;
                 flex-shrink: 0;
@@ -180,27 +186,58 @@
         .agent {
             position: relative;
             margin-right: -20px;
+            padding: 0 2px;
 
             height: 40px;
             width: 40px;
 
             border-radius: 100px;
-            background: white;
+            background-color: @classic-neutral-grey-2;
+            color: @classic-neutral-grey-4;
+            background-size: cover;
+            background-position: center;
+
             display: flex;
             align-items: center;
             justify-content: center;
 
-            font-size: 19px;
+            font-size: 12px;
+            font-weight: 600;
 
             border-style: solid;
             border-width: 3px;
+
+            &.hasIcon {
+                font-size: 19px;
+                background-color: @classic-neutral-grey-0;
+                color: @textColor;
+
+                &.first,
+                &.last {
+                    font-size: 13px;
+                }
+            }
+
+            &:not(.hasIcon) {
+                &.first {
+                    justify-content: flex-start;
+                }
+
+                &.last {
+                    justify-content: flex-end;
+                }
+            }
+
+            &.hasPicture {
+                color: transparent;
+            }
 
             &.first,
             &.last {
                 width: 32px;
                 height: 32px;
                 z-index: 1;
-                font-size: 13px;
+                font-size: 10px;
 
                 .onlineMarker,
                 .offlineMarker {
@@ -214,7 +251,8 @@
                 z-index: 2;
             }
 
-            &.last {
+            &.last,
+            &.single {
                 margin-right: 0;
             }
         }

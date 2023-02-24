@@ -3,9 +3,8 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import MessageContent, {
-    AgentMessages,
-} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
+import MessageContent from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
+import {AgentMessage} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
 import {toJS} from 'utils'
 import {GorgiasChatIntegration} from 'models/integration/types'
 
@@ -88,8 +87,8 @@ const SelfServiceChatIntegrationQuickResponsePage = ({integration}: Props) => {
         }
     }, [previewStep])
 
-    const agentMessages = useMemo<AgentMessages>(() => {
-        const agentMessages: AgentMessages = []
+    const agentMessages = useMemo<AgentMessage[]>(() => {
+        const agentMessages: AgentMessage[] = []
 
         if (!quickResponse) {
             return agentMessages

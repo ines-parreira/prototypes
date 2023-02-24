@@ -37,6 +37,7 @@ export type Props = {
     type?: InputType
     accept?: string
     onClick?: () => void
+    onUploadStatusChange?: (isUploading: boolean) => void
 } & ConnectedProps<typeof connector> &
     InputFieldProps<string | string[]>
 
@@ -79,6 +80,12 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
         return files.reduce((sum, file) => sum + (file.size || 0), 0)
     }
 
+    _onUploadStatusChange = (isUploading: boolean) => {
+        this.props.onUploadStatusChange &&
+            this.props.onUploadStatusChange(isUploading)
+        this.setState({isUploading})
+    }
+
     handleOnChange = (event: {
         target: {
             files: FileList
@@ -96,7 +103,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
             })
         }
 
-        this.setState({isUploading: true})
+        this._onUploadStatusChange(true)
 
         let isSvg = false
 
@@ -112,7 +119,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
                 status: NotificationStatus.Warning,
                 message: 'Uploading SVGs is not allowed.',
             })
-            this.setState({isUploading: false})
+            this._onUploadStatusChange(false)
             return
         }
 
@@ -121,7 +128,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
             ...this.props.params,
         }).then(
             (files) => {
-                this.setState({isUploading: false})
+                this._onUploadStatusChange(false)
 
                 // if we want to return files, return them otherwise return urls only
                 if (this.props.returnFiles && this.props.onChange) {
@@ -147,7 +154,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
                 }
             },
             (error) => {
-                this.setState({isUploading: false})
+                this._onUploadStatusChange(false)
                 const errorMessage = (
                     fromJS((error as AxiosError).response) as Map<any, any>
                 ).getIn(['data', 'error', 'msg'], DEFAULT_ERROR)
@@ -176,7 +183,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
         }
     }
 
-    _handleButtonClick = () => {
+    handleButtonClick = () => {
         this.inputRef.current?.click()
     }
 
@@ -200,7 +207,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
                 <Button
                     intent="secondary"
                     isDisabled={disabled}
-                    onClick={this._handleButtonClick}
+                    onClick={this.handleButtonClick}
                 >
                     {isUploading ? (
                         <span>
@@ -237,6 +244,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
                         'label',
                         'noPreview',
                         'onChange',
+                        'onUploadStatusChange',
                         'placeholder',
                         'className',
                         'returnFiles',
@@ -252,6 +260,6 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
     }
 }
 
-const connector = connect(null, {notify})
+const connector = connect(null, {notify}, null, {forwardRef: true})
 
 export default connector(FileFieldContainer)

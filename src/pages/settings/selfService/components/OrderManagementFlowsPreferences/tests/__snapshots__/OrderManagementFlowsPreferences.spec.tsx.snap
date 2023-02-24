@@ -402,7 +402,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                       class="agents"
                     >
                       <div
-                        class="agent first"
+                        class="agent hasIcon first"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -412,7 +412,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                         </i>
                       </div>
                       <div
-                        class="agent middle"
+                        class="agent hasIcon middle"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -425,7 +425,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                         />
                       </div>
                       <div
-                        class="agent last"
+                        class="agent hasIcon last"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -917,7 +917,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                       class="agents"
                     >
                       <div
-                        class="agent first"
+                        class="agent hasIcon first"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -927,7 +927,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                         </i>
                       </div>
                       <div
-                        class="agent middle"
+                        class="agent hasIcon middle"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -940,7 +940,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                         />
                       </div>
                       <div
-                        class="agent last"
+                        class="agent hasIcon last"
                         style="border-color: #0d87dd;"
                       >
                         <i

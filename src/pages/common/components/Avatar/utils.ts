@@ -5,6 +5,22 @@ type avatarParamsType = {
     size?: number
 }
 
+export function getInitials(name: string | null): string {
+    if (!name) {
+        return ''
+    }
+
+    const splitName = name.split(' ').filter((text) => text.length > 0)
+
+    if (splitName.length > 1) {
+        return `${splitName[0][0]}${splitName[1][0]}`
+    } else if (splitName.length) {
+        return splitName[0][0]
+    }
+
+    return ''
+}
+
 function getGravatarUrl(email = ''): Promise<string> {
     return new Promise((resolve, reject) => {
         const gravatarUrl = `https://www.gravatar.com/avatar/${md5(

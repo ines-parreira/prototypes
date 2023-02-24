@@ -888,7 +888,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                     class="agents"
                   >
                     <div
-                      class="agent first"
+                      class="agent hasIcon first"
                       style="border-color: #0d87dd;"
                     >
                       <i
@@ -898,7 +898,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                       </i>
                     </div>
                     <div
-                      class="agent middle"
+                      class="agent hasIcon middle"
                       style="border-color: #0d87dd;"
                     >
                       <i
@@ -911,7 +911,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                       />
                     </div>
                     <div
-                      class="agent last"
+                      class="agent hasIcon last"
                       style="border-color: #0d87dd;"
                     >
                       <i

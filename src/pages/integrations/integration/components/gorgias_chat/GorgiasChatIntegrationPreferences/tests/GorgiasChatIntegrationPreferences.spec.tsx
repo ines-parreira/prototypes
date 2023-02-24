@@ -1,8 +1,11 @@
 import React, {ComponentProps, SyntheticEvent} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import {mount, shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 import _noop from 'lodash/noop'
 
+import {user} from 'fixtures/users'
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
@@ -17,6 +20,7 @@ import {
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
 import {SPANISH_LANGUAGE} from 'constants/languages'
 import {getLDClient} from 'utils/launchDarkly'
+import {RootState, StoreDispatch} from 'state/types'
 
 import {
     GorgiasChatIntegrationPreferencesComponent,
@@ -24,6 +28,14 @@ import {
     PREVIEW_EMAIL_CAPTURE,
     PREVIEW_LIVE_CHAT_AVAILABILITY,
 } from '../GorgiasChatIntegrationPreferences'
+
+const mockStore = configureMockStore<RootState, StoreDispatch>()
+
+const defaultState = {
+    agents: fromJS({
+        all: [user],
+    }),
+} as unknown as RootState
 
 jest.mock('utils/launchDarkly')
 
@@ -427,7 +439,14 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             })
 
             const component = mount<GorgiasChatIntegrationPreferencesComponent>(
-                <GorgiasChatIntegrationPreferencesComponent {...minProps} />
+                <GorgiasChatIntegrationPreferencesComponent {...minProps} />,
+                {
+                    wrappingComponent: ({children}) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
             )
 
             const submitPreferencesSpy = jest.spyOn(

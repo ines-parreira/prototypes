@@ -658,7 +658,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="agents"
                     >
                       <div
-                        class="agent first"
+                        class="agent hasIcon first"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -668,7 +668,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         </i>
                       </div>
                       <div
-                        class="agent middle"
+                        class="agent hasIcon middle"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -681,7 +681,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         />
                       </div>
                       <div
-                        class="agent last"
+                        class="agent hasIcon last"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -717,29 +717,66 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         June 24
                       </div>
                       <div
-                        class="bubble primary firstMessageOfAppUser"
+                        class="bubble primary firstMessageOfAppUser lastMessage"
                         style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
-                        Hey there
+                        Hi, what's my order status?
                       </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper my-3"
+                    >
                       <div
-                        class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+                        class="avatar robotLogo"
                       >
-                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                        <img
+                          alt="Robot icon"
+                          src="/assets/img/icons/robot-icon.svg"
+                        />
                       </div>
-                      <div
-                        class="messageTimestamp"
-                      >
-                        <span>
-                          6 minutes ago
-                          . 
-                        </span>
-                        <span
-                          class="messageStatus"
+                      <div>
+                        <div
+                          class="user"
+                        />
+                        <div
+                          class="bubble firstMessageOfAppMaker mb-2"
                         >
-                          Delivered
-                        </span>
+                          Leave us your email and we will reply soon.
+                        </div>
+                        <div
+                          class="optionalEmailCapture"
+                        >
+                          <div
+                            class="inputLabel"
+                          >
+                            Get notified by email
+                          </div>
+                          <div
+                            class="inputWrapper"
+                          >
+                            <input
+                              class="input"
+                              placeholder="your@email.com"
+                              readonly=""
+                              type="email"
+                            />
+                            <button
+                              style="background-color: rgb(13, 135, 221);"
+                            >
+                              <i
+                                class="material-icons"
+                                style="color: rgb(255, 255, 255);"
+                              >
+                                chevron_right
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          class="automatedTimestamp"
+                        >
+                          Automated · Just Now
+                        </div>
                       </div>
                     </div>
                     <div
@@ -765,7 +802,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <div
                           class="bubble firstMessageOfAppMaker"
                         >
-                          Sure, what's your email / order number?
+                          Hello! I'll check it for you, what's your order number?
                         </div>
                       </div>
                     </div>
@@ -1464,7 +1501,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="agents"
                     >
                       <div
-                        class="agent first"
+                        class="agent hasIcon first"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -1474,7 +1511,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         </i>
                       </div>
                       <div
-                        class="agent middle"
+                        class="agent hasIcon middle"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -1487,7 +1524,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         />
                       </div>
                       <div
-                        class="agent last"
+                        class="agent hasIcon last"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -1523,29 +1560,68 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         June 24
                       </div>
                       <div
-                        class="bubble primary firstMessageOfAppUser"
+                        class="bubble primary firstMessageOfAppUser lastMessage"
                         style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
-                        Hey there
+                        Hi, what's my order status?
                       </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper my-3"
+                    >
                       <div
-                        class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+                        class="avatar robotLogo"
                       >
-                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                        <img
+                          alt="Robot icon"
+                          src="/assets/img/icons/robot-icon.svg"
+                        />
                       </div>
-                      <div
-                        class="messageTimestamp"
-                      >
-                        <span>
-                          6 minutes ago
-                          . 
-                        </span>
-                        <span
-                          class="messageStatus"
+                      <div>
+                        <div
+                          class="user"
                         >
-                          Delivered
-                        </span>
+                          hellochatintegration
+                        </div>
+                        <div
+                          class="bubble firstMessageOfAppMaker mb-2"
+                        >
+                          Leave us your email and we will reply soon.
+                        </div>
+                        <div
+                          class="optionalEmailCapture"
+                        >
+                          <div
+                            class="inputLabel"
+                          >
+                            Get notified by email
+                          </div>
+                          <div
+                            class="inputWrapper"
+                          >
+                            <input
+                              class="input"
+                              placeholder="your@email.com"
+                              readonly=""
+                              type="email"
+                            />
+                            <button
+                              style="background-color: rgb(13, 135, 221);"
+                            >
+                              <i
+                                class="material-icons"
+                                style="color: rgb(255, 255, 255);"
+                              >
+                                chevron_right
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          class="automatedTimestamp"
+                        >
+                          Automated · Just Now
+                        </div>
                       </div>
                     </div>
                     <div
@@ -1571,7 +1647,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <div
                           class="bubble firstMessageOfAppMaker"
                         >
-                          Sure, what's your email / order number?
+                          Hello! I'll check it for you, what's your order number?
                         </div>
                       </div>
                     </div>
@@ -2240,7 +2316,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="agents"
                     >
                       <div
-                        class="agent first"
+                        class="agent hasIcon first"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -2250,7 +2326,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         </i>
                       </div>
                       <div
-                        class="agent middle"
+                        class="agent hasIcon middle"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -2263,7 +2339,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         />
                       </div>
                       <div
-                        class="agent last"
+                        class="agent hasIcon last"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -2299,29 +2375,68 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         June 24
                       </div>
                       <div
-                        class="bubble primary firstMessageOfAppUser"
+                        class="bubble primary firstMessageOfAppUser lastMessage"
                         style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
-                        Hey there
+                        Hi, what's my order status?
                       </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper my-3"
+                    >
                       <div
-                        class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+                        class="avatar robotLogo"
                       >
-                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                        <img
+                          alt="Robot icon"
+                          src="/assets/img/icons/robot-icon.svg"
+                        />
                       </div>
-                      <div
-                        class="messageTimestamp"
-                      >
-                        <span>
-                          6 minutes ago
-                          . 
-                        </span>
-                        <span
-                          class="messageStatus"
+                      <div>
+                        <div
+                          class="user"
                         >
-                          Delivered
-                        </span>
+                          hellochatintegration
+                        </div>
+                        <div
+                          class="bubble firstMessageOfAppMaker mb-2"
+                        >
+                          Leave us your email and we will reply soon.
+                        </div>
+                        <div
+                          class="optionalEmailCapture"
+                        >
+                          <div
+                            class="inputLabel"
+                          >
+                            Get notified by email
+                          </div>
+                          <div
+                            class="inputWrapper"
+                          >
+                            <input
+                              class="input"
+                              placeholder="your@email.com"
+                              readonly=""
+                              type="email"
+                            />
+                            <button
+                              style="background-color: rgb(13, 135, 221);"
+                            >
+                              <i
+                                class="material-icons"
+                                style="color: rgb(255, 255, 255);"
+                              >
+                                chevron_right
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          class="automatedTimestamp"
+                        >
+                          Automated · Just Now
+                        </div>
                       </div>
                     </div>
                     <div
@@ -2347,7 +2462,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <div
                           class="bubble firstMessageOfAppMaker"
                         >
-                          Sure, what's your email / order number?
+                          Hello! I'll check it for you, what's your order number?
                         </div>
                       </div>
                     </div>
@@ -3024,7 +3139,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="agents"
                     >
                       <div
-                        class="agent first"
+                        class="agent hasIcon first"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -3034,7 +3149,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         </i>
                       </div>
                       <div
-                        class="agent middle"
+                        class="agent hasIcon middle"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -3047,7 +3162,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         />
                       </div>
                       <div
-                        class="agent last"
+                        class="agent hasIcon last"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -3083,29 +3198,68 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         June 24
                       </div>
                       <div
-                        class="bubble primary firstMessageOfAppUser"
+                        class="bubble primary firstMessageOfAppUser lastMessage"
                         style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
-                        Hey there
+                        Hi, what's my order status?
                       </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper my-3"
+                    >
                       <div
-                        class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+                        class="avatar robotLogo"
                       >
-                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                        <img
+                          alt="Robot icon"
+                          src="/assets/img/icons/robot-icon.svg"
+                        />
                       </div>
-                      <div
-                        class="messageTimestamp"
-                      >
-                        <span>
-                          6 minutes ago
-                          . 
-                        </span>
-                        <span
-                          class="messageStatus"
+                      <div>
+                        <div
+                          class="user"
                         >
-                          Delivered
-                        </span>
+                          hellochatintegration
+                        </div>
+                        <div
+                          class="bubble firstMessageOfAppMaker mb-2"
+                        >
+                          Leave us your email and we will reply soon.
+                        </div>
+                        <div
+                          class="optionalEmailCapture"
+                        >
+                          <div
+                            class="inputLabel"
+                          >
+                            Get notified by email
+                          </div>
+                          <div
+                            class="inputWrapper"
+                          >
+                            <input
+                              class="input"
+                              placeholder="your@email.com"
+                              readonly=""
+                              type="email"
+                            />
+                            <button
+                              style="background-color: rgb(13, 135, 221);"
+                            >
+                              <i
+                                class="material-icons"
+                                style="color: rgb(255, 255, 255);"
+                              >
+                                chevron_right
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          class="automatedTimestamp"
+                        >
+                          Automated · Just Now
+                        </div>
                       </div>
                     </div>
                     <div
@@ -3131,7 +3285,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         <div
                           class="bubble firstMessageOfAppMaker"
                         >
-                          Sure, what's your email / order number?
+                          Hello! I'll check it for you, what's your order number?
                         </div>
                       </div>
                     </div>
@@ -3800,7 +3954,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="agents"
                     >
                       <div
-                        class="agent first"
+                        class="agent hasIcon first"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -3810,7 +3964,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         </i>
                       </div>
                       <div
-                        class="agent middle"
+                        class="agent hasIcon middle"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -3823,7 +3977,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         />
                       </div>
                       <div
-                        class="agent last"
+                        class="agent hasIcon last"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -3859,29 +4013,68 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         June 24
                       </div>
                       <div
-                        class="bubble primary firstMessageOfAppUser"
+                        class="bubble primary firstMessageOfAppUser lastMessage"
                         style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
-                        Hey there
+                        Hi, what's my order status?
                       </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper my-3"
+                    >
                       <div
-                        class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+                        class="avatar robotLogo"
                       >
-                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                        <img
+                          alt="Robot icon"
+                          src="/assets/img/icons/robot-icon.svg"
+                        />
                       </div>
-                      <div
-                        class="messageTimestamp"
-                      >
-                        <span>
-                          6 minutes ago
-                          . 
-                        </span>
-                        <span
-                          class="messageStatus"
+                      <div>
+                        <div
+                          class="user"
                         >
-                          Delivered
-                        </span>
+                          hellochatintegration
+                        </div>
+                        <div
+                          class="bubble firstMessageOfAppMaker mb-2"
+                        >
+                          Leave us your email and we will reply soon.
+                        </div>
+                        <div
+                          class="optionalEmailCapture"
+                        >
+                          <div
+                            class="inputLabel"
+                          >
+                            Get notified by email
+                          </div>
+                          <div
+                            class="inputWrapper"
+                          >
+                            <input
+                              class="input"
+                              placeholder="your@email.com"
+                              readonly=""
+                              type="email"
+                            />
+                            <button
+                              style="background-color: rgb(13, 135, 221);"
+                            >
+                              <i
+                                class="material-icons"
+                                style="color: rgb(255, 255, 255);"
+                              >
+                                chevron_right
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          class="automatedTimestamp"
+                        >
+                          Automated · Just Now
+                        </div>
                       </div>
                     </div>
                     <div
@@ -3907,7 +4100,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         <div
                           class="bubble firstMessageOfAppMaker"
                         >
-                          Sure, what's your email / order number?
+                          Hello! I'll check it for you, what's your order number?
                         </div>
                       </div>
                     </div>
@@ -4628,29 +4821,68 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         June 24
                       </div>
                       <div
-                        class="bubble primary firstMessageOfAppUser"
+                        class="bubble primary firstMessageOfAppUser lastMessage"
                         style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
-                        Hey there
+                        Hi, what's my order status?
                       </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper my-3"
+                    >
                       <div
-                        class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+                        class="avatar robotLogo"
                       >
-                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                        <img
+                          alt="Robot icon"
+                          src="/assets/img/icons/robot-icon.svg"
+                        />
                       </div>
-                      <div
-                        class="messageTimestamp"
-                      >
-                        <span>
-                          6 minutes ago
-                          . 
-                        </span>
-                        <span
-                          class="messageStatus"
+                      <div>
+                        <div
+                          class="user"
                         >
-                          Delivered
-                        </span>
+                          hellochatintegration
+                        </div>
+                        <div
+                          class="bubble firstMessageOfAppMaker mb-2"
+                        >
+                          Leave us your email and we will reply soon.
+                        </div>
+                        <div
+                          class="optionalEmailCapture"
+                        >
+                          <div
+                            class="inputLabel"
+                          >
+                            Get notified by email
+                          </div>
+                          <div
+                            class="inputWrapper"
+                          >
+                            <input
+                              class="input"
+                              placeholder="your@email.com"
+                              readonly=""
+                              type="email"
+                            />
+                            <button
+                              style="background-color: rgb(13, 135, 221);"
+                            >
+                              <i
+                                class="material-icons"
+                                style="color: rgb(255, 255, 255);"
+                              >
+                                chevron_right
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          class="automatedTimestamp"
+                        >
+                          Automated · Just Now
+                        </div>
                       </div>
                     </div>
                     <div
@@ -4676,7 +4908,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         <div
                           class="bubble firstMessageOfAppMaker"
                         >
-                          Sure, what's your email / order number?
+                          Hello! I'll check it for you, what's your order number?
                         </div>
                       </div>
                     </div>
@@ -5391,7 +5623,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       class="agents"
                     >
                       <div
-                        class="agent first"
+                        class="agent hasIcon first"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -5401,7 +5633,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         </i>
                       </div>
                       <div
-                        class="agent middle"
+                        class="agent hasIcon middle"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -5414,7 +5646,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         />
                       </div>
                       <div
-                        class="agent last"
+                        class="agent hasIcon last"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -5450,29 +5682,68 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         June 24
                       </div>
                       <div
-                        class="bubble primary firstMessageOfAppUser"
+                        class="bubble primary firstMessageOfAppUser lastMessage"
                         style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
-                        Hey there
+                        Hi, what's my order status?
                       </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper my-3"
+                    >
                       <div
-                        class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+                        class="avatar robotLogo"
                       >
-                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                        <img
+                          alt="Robot icon"
+                          src="/assets/img/icons/robot-icon.svg"
+                        />
                       </div>
-                      <div
-                        class="messageTimestamp"
-                      >
-                        <span>
-                          6 minutes ago
-                          . 
-                        </span>
-                        <span
-                          class="messageStatus"
+                      <div>
+                        <div
+                          class="user"
                         >
-                          Delivered
-                        </span>
+                          MY ONLY SHOPIFY STORE Support
+                        </div>
+                        <div
+                          class="bubble firstMessageOfAppMaker mb-2"
+                        >
+                          Leave us your email and we will reply soon.
+                        </div>
+                        <div
+                          class="optionalEmailCapture"
+                        >
+                          <div
+                            class="inputLabel"
+                          >
+                            Get notified by email
+                          </div>
+                          <div
+                            class="inputWrapper"
+                          >
+                            <input
+                              class="input"
+                              placeholder="your@email.com"
+                              readonly=""
+                              type="email"
+                            />
+                            <button
+                              style="background-color: rgb(13, 135, 221);"
+                            >
+                              <i
+                                class="material-icons"
+                                style="color: rgb(255, 255, 255);"
+                              >
+                                chevron_right
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          class="automatedTimestamp"
+                        >
+                          Automated · Just Now
+                        </div>
                       </div>
                     </div>
                     <div
@@ -5498,7 +5769,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         <div
                           class="bubble firstMessageOfAppMaker"
                         >
-                          Sure, what's your email / order number?
+                          Hello! I'll check it for you, what's your order number?
                         </div>
                       </div>
                     </div>
@@ -5861,6 +6132,53 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                 <h2
                   class="title"
                 >
+                  Company logo
+                </h2>
+                <div
+                  class="imagePreviewWrapper"
+                >
+                  <div
+                    class="imagePreview mb-3"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      image
+                    </i>
+                  </div>
+                </div>
+                <a
+                  class="mb-3"
+                  href="#"
+                >
+                  <b>
+                    Upload
+                     image
+                  </b>
+                </a>
+                <span
+                  class="imageInfo"
+                >
+                  <span
+                    class="ml-1"
+                  >
+                     – 
+                  </span>
+                  <span>
+                    Recommended size 100 x 100 px. Max 500 KB.
+                  </span>
+                </span>
+                <div
+                  class="d-none"
+                >
+                  <div>
+                    FileField component is required ? 
+                    false
+                  </div>
+                </div>
+                <h2
+                  class="title mt-5"
+                >
                   Agent avatar
                 </h2>
                 <div
@@ -5991,7 +6309,8 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         >
                           Upload a logo
                         </a>
-                         to enable this option
+                         
+                        to enable this option
                       </div>
                     </div>
                   </fieldset>
@@ -6219,37 +6538,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="agents"
                     >
                       <div
-                        class="agent first"
-                        style="border-color: #0d87dd;"
+                        class="agent middle hasPicture single"
+                        style="border-color: #0d87dd; background-image: url(https://config.gorgias.io/production/picture);"
                       >
-                        <i
-                          class="material-icons"
-                        >
-                          person
-                        </i>
-                      </div>
-                      <div
-                        class="agent middle"
-                        style="border-color: #0d87dd;"
-                      >
-                        <i
-                          class="material-icons"
-                        >
-                          person
-                        </i>
+                        AP
                         <div
                           class="onlineMarker"
                         />
-                      </div>
-                      <div
-                        class="agent last"
-                        style="border-color: #0d87dd;"
-                      >
-                        <i
-                          class="material-icons"
-                        >
-                          person
-                        </i>
                       </div>
                     </div>
                     <div
@@ -6278,29 +6573,68 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         June 24
                       </div>
                       <div
-                        class="bubble primary firstMessageOfAppUser"
+                        class="bubble primary firstMessageOfAppUser lastMessage"
                         style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
-                        Hey there
+                        Hi, what's my order status?
                       </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper my-3"
+                    >
                       <div
-                        class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+                        class="avatar robotLogo"
                       >
-                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                        <img
+                          alt="Robot icon"
+                          src="/assets/img/icons/robot-icon.svg"
+                        />
                       </div>
-                      <div
-                        class="messageTimestamp"
-                      >
-                        <span>
-                          6 minutes ago
-                          . 
-                        </span>
-                        <span
-                          class="messageStatus"
+                      <div>
+                        <div
+                          class="user"
                         >
-                          Delivered
-                        </span>
+                          Acme Chat
+                        </div>
+                        <div
+                          class="bubble firstMessageOfAppMaker mb-2"
+                        >
+                          Leave us your email and we will reply soon.
+                        </div>
+                        <div
+                          class="optionalEmailCapture"
+                        >
+                          <div
+                            class="inputLabel"
+                          >
+                            Get notified by email
+                          </div>
+                          <div
+                            class="inputWrapper"
+                          >
+                            <input
+                              class="input"
+                              placeholder="your@email.com"
+                              readonly=""
+                              type="email"
+                            />
+                            <button
+                              style="background-color: rgb(13, 135, 221);"
+                            >
+                              <i
+                                class="material-icons"
+                                style="color: rgb(255, 255, 255);"
+                              >
+                                chevron_right
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          class="automatedTimestamp"
+                        >
+                          Automated · Just Now
+                        </div>
                       </div>
                     </div>
                     <div
@@ -6330,7 +6664,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         <div
                           class="bubble firstMessageOfAppMaker"
                         >
-                          Sure, what's your email / order number?
+                          Hello! I'll check it for you, what's your order number?
                         </div>
                       </div>
                     </div>
@@ -7105,7 +7439,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="agents"
                     >
                       <div
-                        class="agent first"
+                        class="agent hasIcon first"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -7115,7 +7449,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         </i>
                       </div>
                       <div
-                        class="agent middle"
+                        class="agent hasIcon middle"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -7128,7 +7462,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         />
                       </div>
                       <div
-                        class="agent last"
+                        class="agent hasIcon last"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -7164,29 +7498,66 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         June 24
                       </div>
                       <div
-                        class="bubble primary firstMessageOfAppUser"
+                        class="bubble primary firstMessageOfAppUser lastMessage"
                         style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
-                        Hey there
+                        Hi, what's my order status?
                       </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper my-3"
+                    >
                       <div
-                        class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+                        class="avatar robotLogo"
                       >
-                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                        <img
+                          alt="Robot icon"
+                          src="/assets/img/icons/robot-icon.svg"
+                        />
                       </div>
-                      <div
-                        class="messageTimestamp"
-                      >
-                        <span>
-                          6 minutes ago
-                          . 
-                        </span>
-                        <span
-                          class="messageStatus"
+                      <div>
+                        <div
+                          class="user"
+                        />
+                        <div
+                          class="bubble firstMessageOfAppMaker mb-2"
                         >
-                          Delivered
-                        </span>
+                          Leave us your email and we will reply soon.
+                        </div>
+                        <div
+                          class="optionalEmailCapture"
+                        >
+                          <div
+                            class="inputLabel"
+                          >
+                            Get notified by email
+                          </div>
+                          <div
+                            class="inputWrapper"
+                          >
+                            <input
+                              class="input"
+                              placeholder="your@email.com"
+                              readonly=""
+                              type="email"
+                            />
+                            <button
+                              style="background-color: rgb(13, 135, 221);"
+                            >
+                              <i
+                                class="material-icons"
+                                style="color: rgb(255, 255, 255);"
+                              >
+                                chevron_right
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          class="automatedTimestamp"
+                        >
+                          Automated · Just Now
+                        </div>
                       </div>
                     </div>
                     <div
@@ -7212,7 +7583,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         <div
                           class="bubble firstMessageOfAppMaker"
                         >
-                          Sure, what's your email / order number?
+                          Hello! I'll check it for you, what's your order number?
                         </div>
                       </div>
                     </div>
@@ -7881,7 +8252,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="agents"
                     >
                       <div
-                        class="agent first"
+                        class="agent hasIcon first"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -7891,7 +8262,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         </i>
                       </div>
                       <div
-                        class="agent middle"
+                        class="agent hasIcon middle"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -7904,7 +8275,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         />
                       </div>
                       <div
-                        class="agent last"
+                        class="agent hasIcon last"
                         style="border-color: #0d87dd;"
                       >
                         <i
@@ -7940,29 +8311,68 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         June 24
                       </div>
                       <div
-                        class="bubble primary firstMessageOfAppUser"
+                        class="bubble primary firstMessageOfAppUser lastMessage"
                         style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
-                        Hey there
+                        Hi, what's my order status?
                       </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper my-3"
+                    >
                       <div
-                        class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+                        class="avatar robotLogo"
                       >
-                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                        <img
+                          alt="Robot icon"
+                          src="/assets/img/icons/robot-icon.svg"
+                        />
                       </div>
-                      <div
-                        class="messageTimestamp"
-                      >
-                        <span>
-                          6 minutes ago
-                          . 
-                        </span>
-                        <span
-                          class="messageStatus"
+                      <div>
+                        <div
+                          class="user"
                         >
-                          Delivered
-                        </span>
+                          myChat1
+                        </div>
+                        <div
+                          class="bubble firstMessageOfAppMaker mb-2"
+                        >
+                          Leave us your email and we will reply soon.
+                        </div>
+                        <div
+                          class="optionalEmailCapture"
+                        >
+                          <div
+                            class="inputLabel"
+                          >
+                            Get notified by email
+                          </div>
+                          <div
+                            class="inputWrapper"
+                          >
+                            <input
+                              class="input"
+                              placeholder="your@email.com"
+                              readonly=""
+                              type="email"
+                            />
+                            <button
+                              style="background-color: rgb(13, 135, 221);"
+                            >
+                              <i
+                                class="material-icons"
+                                style="color: rgb(255, 255, 255);"
+                              >
+                                chevron_right
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          class="automatedTimestamp"
+                        >
+                          Automated · Just Now
+                        </div>
                       </div>
                     </div>
                     <div
@@ -7988,7 +8398,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         <div
                           class="bubble firstMessageOfAppMaker"
                         >
-                          Sure, what's your email / order number?
+                          Hello! I'll check it for you, what's your order number?
                         </div>
                       </div>
                     </div>

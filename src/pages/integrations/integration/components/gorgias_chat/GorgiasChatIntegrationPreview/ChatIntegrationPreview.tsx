@@ -19,6 +19,7 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {
+    GorgiasChatAvatarSettings,
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
     GorgiasChatLauncherType,
@@ -37,6 +38,7 @@ type Props = {
     offlineIntroductionText?: string
     headerText?: string
     mainColor: string
+    avatar?: GorgiasChatAvatarSettings
     avatarType?: string
     avatarTeamPictureUrl?: string | null
     isOnline: boolean
@@ -65,6 +67,7 @@ const ChatIntegrationPreview = (props: Props) => {
         name,
         introductionText,
         offlineIntroductionText,
+        avatar,
         avatarType,
         avatarTeamPictureUrl,
         mainColor,
@@ -303,6 +306,7 @@ const ChatIntegrationPreview = (props: Props) => {
                             'horizontal'
                         )}
                     <ChatIntegrationAvatar
+                        avatar={avatar}
                         avatarType={avatarType}
                         avatarTeamPictureUrl={avatarTeamPictureUrl}
                         isOnline={isOnline}
