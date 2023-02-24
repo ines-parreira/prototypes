@@ -6,7 +6,6 @@ import {noop} from 'lodash'
 
 import {fireEvent, render, screen} from '@testing-library/react'
 
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {RootState, StoreDispatch} from 'state/types'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
@@ -14,8 +13,6 @@ import {initialState as categoriesState} from 'state/entities/helpCenter/categor
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
-
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {FetchedProvidersState} from '../../types'
 import {migrationProviders} from '../../fixtures/migration-providers'
@@ -77,20 +74,8 @@ const renderWithStore = (element: React.ReactElement) =>
     })
 
 describe('<ImportArticlesModal />', () => {
-    beforeEach(() => {
-        resetLDMocks()
-        // Test with feature flag defaulted to true
-        mockFlags({
-            [FeatureFlagKey.HelpCenterZendeskImportCTA]: true,
-        })
-    })
-
     describe('snapshots', () => {
         test('migration feature disabled', () => {
-            resetLDMocks()
-            mockFlags({
-                [FeatureFlagKey.HelpCenterZendeskImportCTA]: false,
-            })
             const {baseElement} = renderWithStore(
                 <ImportArticlesModal
                     isOpen
@@ -106,6 +91,7 @@ describe('<ImportArticlesModal />', () => {
                     onFileRemove={noop}
                     onFileSelect={noop}
                     onImportStart={noop}
+                    isMigrationAvailable={false}
                     onMigrationDropAreaClick={noop}
                 />
             )
@@ -123,6 +109,7 @@ describe('<ImportArticlesModal />', () => {
                     onFileRemove={noop}
                     onFileSelect={noop}
                     onImportStart={noop}
+                    isMigrationAvailable
                     onMigrationDropAreaClick={noop}
                 />
             )
@@ -141,6 +128,7 @@ describe('<ImportArticlesModal />', () => {
                     onFileRemove={noop}
                     onFileSelect={noop}
                     onImportStart={noop}
+                    isMigrationAvailable
                     onMigrationDropAreaClick={noop}
                 />
             )
@@ -158,6 +146,7 @@ describe('<ImportArticlesModal />', () => {
                     onFileRemove={noop}
                     onFileSelect={noop}
                     onImportStart={noop}
+                    isMigrationAvailable
                     onMigrationDropAreaClick={noop}
                 />
             )
@@ -179,6 +168,7 @@ describe('<ImportArticlesModal />', () => {
                     onFileRemove={noop}
                     onFileSelect={noop}
                     onImportStart={noop}
+                    isMigrationAvailable
                     onMigrationDropAreaClick={noop}
                 />
             )
@@ -200,6 +190,7 @@ describe('<ImportArticlesModal />', () => {
                     onFileRemove={noop}
                     onFileSelect={noop}
                     onImportStart={noop}
+                    isMigrationAvailable
                     onMigrationDropAreaClick={noop}
                 />
             )
@@ -221,6 +212,7 @@ describe('<ImportArticlesModal />', () => {
                     onFileRemove={noop}
                     onFileSelect={fileSelectHandler}
                     onImportStart={noop}
+                    isMigrationAvailable
                     onMigrationDropAreaClick={noop}
                 />
             )
@@ -271,6 +263,7 @@ describe('<ImportArticlesModal />', () => {
                     onFileRemove={noop}
                     onFileSelect={noop}
                     onImportStart={noop}
+                    isMigrationAvailable
                     onMigrationDropAreaClick={dropAreaClickHandler}
                 />
             )
@@ -294,6 +287,7 @@ describe('<ImportArticlesModal />', () => {
                     onFileRemove={noop}
                     onFileSelect={noop}
                     onImportStart={importStartHandler}
+                    isMigrationAvailable
                     onMigrationDropAreaClick={noop}
                 />
             )

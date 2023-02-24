@@ -1,8 +1,6 @@
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useState} from 'react'
 import {Spinner} from 'reactstrap'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {FetchedProvidersState} from '../../../../types'
 
@@ -13,6 +11,7 @@ type Props = {
     onFileDrop: React.DragEventHandler<HTMLDivElement>
     fetchedProviders: FetchedProvidersState
     onMigrationDropAreaClick: () => void
+    isMigrationAvailable: boolean
 }
 
 const DropAreas: React.FC<Props> = ({
@@ -20,10 +19,8 @@ const DropAreas: React.FC<Props> = ({
     onUploadCSVClick,
     onFileDrop,
     onMigrationDropAreaClick,
+    isMigrationAvailable,
 }) => {
-    const isMigrationAvailable =
-        !!useFlags()[FeatureFlagKey.HelpCenterZendeskImportCTA]
-
     const [dragOver, setDragOver] = useState(false)
 
     const migrationDropAreaDisabled = fetchedProviders.isLoading

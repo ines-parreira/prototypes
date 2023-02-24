@@ -2,7 +2,11 @@ import zendeskLogo from 'assets/img/integrations/zendesk.png'
 import helpdocsLogo from 'assets/img/integrations/helpdocs.png'
 import reamazeLogo from 'assets/img/integrations/reamaze.png'
 import intercomLogo from 'assets/img/integrations/intercom.png'
-import {MigrationProvider, MigrationProviderField} from '../types'
+import {
+    HelpCenterMigrationConfig,
+    MigrationProvider,
+    MigrationProviderField,
+} from '../types'
 
 const properties: MigrationProviderField[] = [
     {
@@ -55,3 +59,10 @@ export const migrationProviders: MigrationProvider[] = [
         properties,
     },
 ]
+
+export const migrationConfigProviders: string[] = migrationProviders.map(
+    (provider) => provider.type
+)
+export const helpCenterMigrationConfig: HelpCenterMigrationConfig = {
+    providers: migrationConfigProviders,
+}

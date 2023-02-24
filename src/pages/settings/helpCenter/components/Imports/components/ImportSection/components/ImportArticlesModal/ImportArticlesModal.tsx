@@ -42,6 +42,7 @@ type Props = {
 
     fetchedProviders: FetchedProvidersState
 
+    isMigrationAvailable: boolean
     onMigrationDropAreaClick: () => void
 }
 
@@ -56,6 +57,7 @@ const ImportArticlesModal: React.FC<Props> = ({
 
     fetchedProviders,
 
+    isMigrationAvailable,
     onMigrationDropAreaClick,
 }) => {
     const history = useHistory()
@@ -172,6 +174,7 @@ const ImportArticlesModal: React.FC<Props> = ({
                             />
                         ) : (
                             <DropAreas
+                                isMigrationAvailable={isMigrationAvailable}
                                 fetchedProviders={fetchedProviders}
                                 onFileDrop={handleFileDropped}
                                 onUploadCSVClick={openFileDialog}

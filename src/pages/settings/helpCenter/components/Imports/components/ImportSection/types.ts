@@ -86,3 +86,7 @@ export type MigrationSession = Components.Schemas.SessionShort &
     Partial<Pick<Components.Schemas.SessionLong, 'result'>>
 
 export type MigrationSessionCreate = Paths.SessionCreate.RequestBody
+
+export interface HelpCenterMigrationConfig {
+    providers: MigrationProviderType[]
+}

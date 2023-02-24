@@ -25,6 +25,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {
     FetchedMigrationSessionState,
     FetchedProvidersState,
+    HelpCenterMigrationConfig,
     ImportArticlesModalState,
     MigrationProviderType,
     MigrationSessionStatus,
@@ -63,8 +64,18 @@ export const ImportSection: React.FC<Props> = ({
     const migrationClient = useMigrationApi()
     const currentHelpCenter = useCurrentHelpCenter()
 
-    const isMigrationAvailable =
-        !!useFlags()[FeatureFlagKey.HelpCenterZendeskImportCTA]
+    const _migrationConfig = useFlags()[
+        FeatureFlagKey.HelpCenterMigrationConfig
+    ] as HelpCenterMigrationConfig
+    const migrationConfigProviders = useMemo(
+        () => _migrationConfig?.providers || [], // in case of invalid value
+        [_migrationConfig]
+    )
+
+    // Using as state in case no providers from API match the ones from the feature flag
+    const [isMigrationAvailable, setIsMigrationAvailable] = useState(
+        !!migrationConfigProviders.length
+    )
 
     const [importArticlesModalState, setImportArticlesModalState] =
         useState<ImportArticlesModalState | null>(null)
@@ -366,12 +377,25 @@ export const ImportSection: React.FC<Props> = ({
 
         void (async () => {
             try {
-                const {data} = await migrationClient.providerStaticList()
-                if (!(data instanceof Array)) return
-                setFetchedProviders({
-                    data,
-                    isLoading: false,
-                })
+                const {data: allProviders} =
+                    await migrationClient.providerStaticList()
+                if (!(allProviders instanceof Array)) return
+
+                const availableProviders = allProviders.filter((provider) =>
+                    migrationConfigProviders.includes(provider.type)
+                )
+                if (availableProviders.length) {
+                    setFetchedProviders({
+                        data: availableProviders,
+                        isLoading: false,
+                    })
+                } else {
+                    setFetchedProviders({
+                        data: null,
+                        isLoading: false,
+                    })
+                    setIsMigrationAvailable(false)
+                }
             } catch (e) {
                 setFetchedProviders({
                     isLoading: false,
@@ -387,7 +411,13 @@ export const ImportSection: React.FC<Props> = ({
                 )
             }
         })()
-    }, [dispatch, isMigrationAvailable, migrationClient, setFetchedProviders])
+    }, [
+        dispatch,
+        isMigrationAvailable,
+        migrationClient,
+        setFetchedProviders,
+        migrationConfigProviders,
+    ])
 
     const migrationStateProvider = useMemo(() => {
         // Feed the provider that was selected for the migration start to the MigrationStateModal
@@ -504,6 +534,7 @@ export const ImportSection: React.FC<Props> = ({
             )}
 
             <ImportArticlesModal
+                isMigrationAvailable={isMigrationAvailable}
                 isOpen={importArticlesModalState !== null}
                 onClose={() => setImportArticlesModalState(null)}
                 fetchedProviders={fetchedProviders}
