@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
 import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
@@ -8,11 +8,21 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {IntegrationType} from 'models/integration/constants'
-import {SelfServiceConfigurationFilter} from 'models/selfServiceConfiguration/types'
+import {
+    ReturnAction,
+    SelfServiceConfigurationFilter,
+} from 'models/selfServiceConfiguration/types'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import useAppSelector from 'hooks/useAppSelector'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
 
 import ReturnOrderEligibility from './components/ReturnOrderEligibility'
+import ReturnOrderAction from './components/ReturnOrderAction'
+import ReturnOrderFlowViewContext, {
+    ReturnOrderFlowViewContextType,
+} from './ReturnOrderFlowViewContext'
+import {DEFAULT_RETURN_ACTION} from './constants'
 
 import css from './ReturnOrderFlowView.less'
 
@@ -20,18 +30,44 @@ const ReturnOrderFlowView = () => {
     const {shopName} = useParams<{shopName: string}>()
     const {
         isUpdatePending,
+        storeIntegration,
         selfServiceConfiguration,
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     const returnOrderFlow = selfServiceConfiguration?.return_order_policy
 
+    const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyReturnOrderFlow, setDirtyReturnOrderFlow] =
         useState(returnOrderFlow)
 
     useEffect(() => {
         setDirtyReturnOrderFlow(returnOrderFlow)
     }, [returnOrderFlow])
+
+    const hasError = Object.keys(errors).length > 0
+    const returnOrderFlowViewContext: ReturnOrderFlowViewContextType = useMemo(
+        () => ({
+            storeIntegrationName: storeIntegration?.name ?? '',
+            setError: (path, hasError) => {
+                setErrors((prevErrors) => {
+                    const nextErrors = {...prevErrors}
+
+                    if (hasError) {
+                        nextErrors[path] = true
+                    } else {
+                        delete nextErrors[path]
+                    }
+
+                    return _isEqual(prevErrors, nextErrors)
+                        ? prevErrors
+                        : nextErrors
+                })
+            },
+        }),
+        [storeIntegration?.name]
+    )
 
     const handleEligibilityChange = (
         eligibility?: SelfServiceConfigurationFilter
@@ -44,6 +80,13 @@ const ReturnOrderFlowView = () => {
             ...dirtyReturnOrderFlow,
             eligibilities: eligibility ? [eligibility] : [],
         })
+    }
+    const handleActionChange = (action: ReturnAction) => {
+        if (!dirtyReturnOrderFlow) {
+            return
+        }
+
+        setDirtyReturnOrderFlow({...dirtyReturnOrderFlow, action})
     }
     const handleSubmit = () => {
         if (!selfServiceConfiguration || !dirtyReturnOrderFlow) {
@@ -89,51 +132,75 @@ const ReturnOrderFlowView = () => {
                 {!selfServiceConfiguration ? (
                     <Loader />
                 ) : (
-                    <div>
-                        <div className={css.descriptionContainer}>
-                            <p className="mb-1">
-                                Allow customers to request a return if an order
-                                has been delivered.
-                            </p>
-                            <a
-                                href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                <i className="material-icons mr-2">menu_book</i>
-                                Learn About Order Statuses In Gorgias
-                            </a>
-                        </div>
+                    <ReturnOrderFlowViewContext.Provider
+                        value={returnOrderFlowViewContext}
+                    >
+                        <div>
+                            <div className={css.descriptionContainer}>
+                                <p className="mb-1">
+                                    Allow customers to request a return if an
+                                    order has been delivered.
+                                </p>
+                                <a
+                                    href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                >
+                                    <i className="material-icons mr-2">
+                                        menu_book
+                                    </i>
+                                    Learn About Order Statuses In Gorgias
+                                </a>
+                            </div>
 
-                        <ReturnOrderEligibility
-                            eligibility={dirtyReturnOrderFlow?.eligibilities[0]}
-                            onChange={handleEligibilityChange}
-                        />
+                            <ReturnOrderEligibility
+                                eligibility={
+                                    dirtyReturnOrderFlow?.eligibilities[0]
+                                }
+                                onChange={handleEligibilityChange}
+                            />
+                            {hasAutomationAddOn && (
+                                <ReturnOrderAction
+                                    action={
+                                        dirtyReturnOrderFlow?.action ??
+                                        DEFAULT_RETURN_ACTION
+                                    }
+                                    onChange={handleActionChange}
+                                />
+                            )}
 
-                        <div className={css.submitAndCancelButtonsContainer}>
-                            <Button
-                                isDisabled={
-                                    !isReturnOrderFlowDirty || isUpdatePending
-                                }
-                                onClick={handleSubmit}
+                            <div
+                                className={css.submitAndCancelButtonsContainer}
                             >
-                                Save changes
-                            </Button>
-                            <Button
-                                isDisabled={
-                                    !isReturnOrderFlowDirty || isUpdatePending
+                                <Button
+                                    isDisabled={
+                                        !isReturnOrderFlowDirty ||
+                                        isUpdatePending ||
+                                        hasError
+                                    }
+                                    onClick={handleSubmit}
+                                >
+                                    Save changes
+                                </Button>
+                                <Button
+                                    isDisabled={
+                                        !isReturnOrderFlowDirty ||
+                                        isUpdatePending
+                                    }
+                                    onClick={handleCancel}
+                                    intent="secondary"
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
+                            <UnsavedChangesPrompt
+                                onSave={handleSubmit}
+                                when={
+                                    isReturnOrderFlowDirty && !isUpdatePending
                                 }
-                                onClick={handleCancel}
-                                intent="secondary"
-                            >
-                                Cancel
-                            </Button>
+                            />
                         </div>
-                        <UnsavedChangesPrompt
-                            onSave={handleSubmit}
-                            when={isReturnOrderFlowDirty && !isUpdatePending}
-                        />
-                    </div>
+                    </ReturnOrderFlowViewContext.Provider>
                 )}
             </Container>
         </div>

@@ -107,6 +107,7 @@ const useSelfServiceConfiguration = (shopType: string, shopName: string) => {
     return {
         isFetchPending,
         isUpdatePending,
+        storeIntegration,
         selfServiceConfiguration,
         handleSelfServiceConfigurationUpdate,
     }

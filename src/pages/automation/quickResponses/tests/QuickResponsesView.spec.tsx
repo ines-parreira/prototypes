@@ -76,6 +76,7 @@ describe('<QuickResponsesView />', () => {
         useSelfServiceConfigurationMock.mockReturnValue({
             isFetchPending: true,
             isUpdatePending: false,
+            storeIntegration: undefined,
             selfServiceConfiguration: undefined,
             handleSelfServiceConfigurationUpdate: jest.fn(),
         })
@@ -93,6 +94,7 @@ describe('<QuickResponsesView />', () => {
         useSelfServiceConfigurationMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
+            storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [quickResponse1],
@@ -116,6 +118,7 @@ describe('<QuickResponsesView />', () => {
         useSelfServiceConfigurationMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
+            storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [quickResponse1],
@@ -162,6 +165,7 @@ describe('<QuickResponsesView />', () => {
         useSelfServiceConfigurationMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
+            storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [quickResponse1],
@@ -212,6 +216,7 @@ describe('<QuickResponsesView />', () => {
         useSelfServiceConfigurationMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
+            storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [quickResponse1, quickResponse2],
@@ -257,6 +262,7 @@ describe('<QuickResponsesView />', () => {
         useSelfServiceConfigurationMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
+            storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [],
@@ -313,6 +319,7 @@ describe('<QuickResponsesView />', () => {
         useSelfServiceConfigurationMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
+            storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [quickResponse1],
@@ -350,6 +357,7 @@ describe('<QuickResponsesView />', () => {
         useSelfServiceConfigurationMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
+            storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [
