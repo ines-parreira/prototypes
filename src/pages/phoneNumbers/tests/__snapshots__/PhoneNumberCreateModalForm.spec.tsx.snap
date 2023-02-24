@@ -332,6 +332,35 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
                 class="col"
               >
                 <div
+                  class="alert warning mt-3 mb-4"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      MMS and SMS
+                       
+                      are
+                       not currently compatible with 
+                      local
+                       numbers from
+                       
+                      Australia
+                      .
+                    </span>
+                  </div>
+                </div>
+                <div
                   class="form-group"
                 >
                   <div>

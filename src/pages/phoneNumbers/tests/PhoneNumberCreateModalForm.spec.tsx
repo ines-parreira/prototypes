@@ -4,11 +4,17 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from 'state/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
+import * as apiCalls from 'models/phoneNumber/resources'
+import {capabilities as capabilitiesFixtures} from 'fixtures/phoneNumber'
 
 import PhoneNumberCreateModalForm from '../PhoneNumberCreateModalForm'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({})
+
+jest.spyOn(apiCalls, 'fetchPhoneCapabilities').mockReturnValue(
+    new Promise((resolve) => resolve(capabilitiesFixtures))
+)
 
 describe('<PhoneNumberCreateModalForm/>', () => {
     const onCreate: jest.MockedFunction<(value: PhoneNumber) => void> =
