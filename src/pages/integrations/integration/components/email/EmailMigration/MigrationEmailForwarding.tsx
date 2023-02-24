@@ -11,6 +11,7 @@ import {getForwardingEmailAddress} from 'state/integrations/selectors'
 import EmailForwardingTable from './EmailForwardingTable'
 
 import css from './MigrationEmailForwarding.less'
+import MigrationTutorialList from './MigrationTutorialList'
 
 type Props = {
     migrations: EmailMigration[]
@@ -64,7 +65,7 @@ export default function MigrationEmailForwarding({migrations}: Props) {
                 </div>
             </Col>
             <Col>
-                <div>TUTORIALS HERE</div>
+                <MigrationTutorialList />
             </Col>
         </div>
     )
