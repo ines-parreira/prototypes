@@ -8,6 +8,8 @@ export const SELF_SERVICE_PREVIEW_ROUTES = {
     QUICK_RESPONSE: '/quick-response',
     ORDERS: '/orders',
     TRACK: '/track',
+    RETURN: '/return',
+    RETURN_PORTAL: '/return-portal',
     CANCEL: '/cancel',
 }
 

@@ -9,6 +9,8 @@ import SelfServiceChatIntegrationQuickResponsePage from './SelfServiceChatIntegr
 import SelfServiceChatIntegrationTrackPage from './SelfServiceChatIntegrationTrackPage'
 import SelfServiceChatIntegrationOrdersPage from './SelfServiceChatIntegrationOrdersPage'
 import SelfServiceChatIntegrationCancelPage from './SelfServiceChatIntegrationCancelPage'
+import SelfServiceChatIntegrationReturnPage from './SelfServiceChatIntegrationReturnPage'
+import SelfServiceChatIntegrationReturnPortalPage from './SelfServiceChatIntegrationReturnPortalPage'
 import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 
 type Props = {
@@ -31,7 +33,8 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
             isOnline
             language={meta.language}
             renderFooter={
-                location.pathname === SELF_SERVICE_PREVIEW_ROUTES.CANCEL
+                location.pathname === SELF_SERVICE_PREVIEW_ROUTES.CANCEL ||
+                location.pathname === SELF_SERVICE_PREVIEW_ROUTES.RETURN
             }
             renderPoweredBy={
                 location.pathname === SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE
@@ -43,7 +46,9 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.HOME
             }
             enableAnimations={
-                location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.CANCEL
+                location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.CANCEL &&
+                location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.RETURN &&
+                location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.RETURN_PORTAL
             }
             showBackground={false}
         >
@@ -59,6 +64,12 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 </Route>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.TRACK} exact>
                     <SelfServiceChatIntegrationTrackPage {...props} />
+                </Route>
+                <Route path={SELF_SERVICE_PREVIEW_ROUTES.RETURN} exact>
+                    <SelfServiceChatIntegrationReturnPage {...props} />
+                </Route>
+                <Route path={SELF_SERVICE_PREVIEW_ROUTES.RETURN_PORTAL} exact>
+                    <SelfServiceChatIntegrationReturnPortalPage {...props} />
                 </Route>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.CANCEL} exact>
                     <SelfServiceChatIntegrationCancelPage {...props} />

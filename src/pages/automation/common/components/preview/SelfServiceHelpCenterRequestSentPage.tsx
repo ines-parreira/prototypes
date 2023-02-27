@@ -8,17 +8,27 @@ import useOrderDates from './hooks/useOrderDates'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 import {LINE_ITEMS} from './constants'
 
-import css from './SelfServiceHelpCenterCancelPage.less'
+import css from './SelfServiceHelpCenterRequestSentPage.less'
 
 type Props = {
     helpCenter: HelpCenter
 }
 
-const SelfServiceHelpCenterCancelPage = ({helpCenter}: Props) => {
+const SelfServiceHelpCenterRequestSentPage = ({helpCenter}: Props) => {
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
 
-    const {automatedResponseMessageContent} = useSelfServicePreviewContext()
+    const {orderManagementFlow, automatedResponseMessageContent} =
+        useSelfServicePreviewContext()
     const {orderPlacedDate} = useOrderDates(helpCenter.default_locale)
+
+    const getTotalAmountLabel = () => {
+        switch (orderManagementFlow) {
+            case 'return_order_policy':
+                return helpCenterTexts.totalReturnedAmountLabel
+            case 'cancel_order_policy':
+                return helpCenterTexts.totalCanceledAmountLabel
+        }
+    }
 
     return (
         <div className={css.container}>
@@ -62,8 +72,7 @@ const SelfServiceHelpCenterCancelPage = ({helpCenter}: Props) => {
                         </div>
                         <div className={css.orderDetailsDescription}>
                             <div>
-                                {helpCenterTexts.totalCanceledAmountLabel}{' '}
-                                <b>$20.00</b>
+                                {getTotalAmountLabel()} <b>$20.00</b>
                             </div>
                             <div>
                                 {helpCenterTexts.orderCreatedLabel}{' '}
@@ -105,4 +114,4 @@ const SelfServiceHelpCenterCancelPage = ({helpCenter}: Props) => {
     )
 }
 
-export default SelfServiceHelpCenterCancelPage
+export default SelfServiceHelpCenterRequestSentPage

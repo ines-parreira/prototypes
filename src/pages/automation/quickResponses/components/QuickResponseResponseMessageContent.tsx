@@ -10,6 +10,7 @@ import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvide
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {toImmutable} from 'utils'
+import {trimHTML} from 'utils/html'
 
 import {usePropagateError} from '../QuickResponsesViewContext'
 import {
@@ -45,17 +46,13 @@ const QuickResponseResponseMessageContent = ({
     const handleTextChange = (editorState: EditorState) => {
         const content = editorState.getCurrentContent()
         const text = content.getPlainText()
+        const html = convertToHTML(content)
 
-        // Trigger a change only when a plain text value has changed. This is needed because the default value of the
-        // html content is an empty string, but draft-js translates it to <div><br></div>, which then creates a false positive
-        // that there is a change to save.
-        if (text !== responseMessageContent.text) {
-            onChange({
-                ...responseMessageContent,
-                html: convertToHTML(content),
-                text,
-            })
-        }
+        onChange({
+            ...responseMessageContent,
+            html: text.length ? html : trimHTML(html),
+            text,
+        })
     }
     const handleAddAttachment = (attachment: ProductCardAttachment) => {
         onChange({

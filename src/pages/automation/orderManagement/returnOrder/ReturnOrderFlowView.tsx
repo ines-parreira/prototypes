@@ -16,9 +16,11 @@ import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
+import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
 
 import ReturnOrderEligibility from './components/ReturnOrderEligibility'
 import ReturnOrderAction from './components/ReturnOrderAction'
+import ReturnOrderFlowPreview from './ReturnOrderFlowPreview'
 import ReturnOrderFlowViewContext, {
     ReturnOrderFlowViewContextType,
 } from './ReturnOrderFlowViewContext'
@@ -35,6 +37,7 @@ const ReturnOrderFlowView = () => {
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
 
     const returnOrderFlow = selfServiceConfiguration?.return_order_policy
 
@@ -106,6 +109,8 @@ const ReturnOrderFlowView = () => {
         dirtyReturnOrderFlow,
         returnOrderFlow
     )
+    const dirtyReturnAction =
+        dirtyReturnOrderFlow?.action ?? DEFAULT_RETURN_ACTION
 
     return (
         <div className="full-width">
@@ -126,10 +131,12 @@ const ReturnOrderFlowView = () => {
             <Container
                 fluid
                 className={classnames({
-                    [css.container]: Boolean(selfServiceConfiguration),
+                    [css.container]: Boolean(
+                        selfServiceConfiguration && dirtyReturnOrderFlow
+                    ),
                 })}
             >
-                {!selfServiceConfiguration ? (
+                {!selfServiceConfiguration || !dirtyReturnOrderFlow ? (
                     <Loader />
                 ) : (
                     <ReturnOrderFlowViewContext.Provider
@@ -161,10 +168,7 @@ const ReturnOrderFlowView = () => {
                             />
                             {hasAutomationAddOn && (
                                 <ReturnOrderAction
-                                    action={
-                                        dirtyReturnOrderFlow?.action ??
-                                        DEFAULT_RETURN_ACTION
-                                    }
+                                    action={dirtyReturnAction}
                                     onChange={handleActionChange}
                                 />
                             )}
@@ -200,6 +204,11 @@ const ReturnOrderFlowView = () => {
                                 }
                             />
                         </div>
+                        <ReturnOrderFlowPreview
+                            channels={channels}
+                            selfServiceConfiguration={selfServiceConfiguration}
+                            returnAction={dirtyReturnAction}
+                        />
                     </ReturnOrderFlowViewContext.Provider>
                 )}
             </Container>

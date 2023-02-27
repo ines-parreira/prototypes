@@ -13,7 +13,7 @@ type Props = {
     integration: GorgiasChatIntegration
 }
 
-const SelfServiceChatIntegrationCancelPage = ({integration}: Props) => {
+const SelfServiceChatIntegrationReturnPage = ({integration}: Props) => {
     const currentUser = useAppSelector(getCurrentUser)
 
     const language = integration.meta.language || 'en-US'
@@ -24,19 +24,17 @@ const SelfServiceChatIntegrationCancelPage = ({integration}: Props) => {
 
     const templatedMessage = (
         <>
-            <b>{sspTexts.cancelMessageDescription}:</b>
+            <b>{sspTexts.iWouldLikeToReturnTheFollowingItems}:</b>
             <div>&nbsp;</div>
             <div>
                 {sspTexts.orderNumber}: <b>#3089</b>
             </div>
             <div>
-                {sspTexts.fulfillment}: <b>#3089-F1</b>
+                {sspTexts.itemsRequestedForReturn}:{' '}
+                <b>1x Graphic T-Shirt, 1x Chain Bracelet</b>
             </div>
             <div>
-                {sspTexts.itemNames}: <b>Graphic T-Shirt, Chain Bracelet</b>
-            </div>
-            <div>
-                {sspTexts.trackingUrl}: <b>jsjs.tracking.com</b>
+                {sspTexts.total}: <b>$20.00</b>
             </div>
             <div>
                 {sspTexts.orderCreated}:{' '}
@@ -69,4 +67,4 @@ const SelfServiceChatIntegrationCancelPage = ({integration}: Props) => {
     )
 }
 
-export default SelfServiceChatIntegrationCancelPage
+export default SelfServiceChatIntegrationReturnPage

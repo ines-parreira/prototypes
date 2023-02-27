@@ -1,0 +1,39 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/colorTokens.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        background-color: @modern-neutral-grey-0;
+        color: @modern-neutral-grey-6;
+        overflow: auto;
+        pointer-events: initial;
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m @layout-spacing-s;
+        gap: @layout-spacing-xs;
+        border-bottom: 1px solid @modern-neutral-grey-3;
+    }
+
+    .orderNumber {
+        .heading-section-semibold();
+    }
+
+    .orderDate {
+        .heading-subsection-regular();
+        color: @modern-neutral-grey-4;
+    }
+
+    .returnPortal {
+        .heading-subsection-semibold();
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 90px @layout-spacing-m;
+        gap: @layout-spacing-m;
+    }
+}

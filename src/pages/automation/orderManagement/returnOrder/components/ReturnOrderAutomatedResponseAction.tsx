@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {convertToHTML} from 'utils/editor'
 import {ResponseMessageContent} from 'models/selfServiceConfiguration/types'
+import {trimHTML} from 'utils/html'
 
 import {AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH} from '../../constants'
 import {usePropagateError} from '../ReturnOrderFlowViewContext'
@@ -29,14 +30,13 @@ const ReturnOrderAutomatedResponseAction = ({
     const handleChange = (editorState: EditorState) => {
         const content = editorState.getCurrentContent()
         const text = content.getPlainText()
+        const html = convertToHTML(content)
 
-        if (text !== responseMessageContent.text) {
-            onChange({
-                ...responseMessageContent,
-                html: convertToHTML(content),
-                text,
-            })
-        }
+        onChange({
+            ...responseMessageContent,
+            html: text.length ? html : trimHTML(html),
+            text,
+        })
     }
 
     return (
