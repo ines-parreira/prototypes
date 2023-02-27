@@ -38,7 +38,7 @@ const OrderManagementFlowItem = ({
         nextValue: boolean,
         event: MouseEvent<HTMLLabelElement>
     ) => {
-        event.preventDefault()
+        event.stopPropagation()
 
         onChange(nextValue)
     }

@@ -214,7 +214,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           <a
             class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/self-service/shopify/gorgiastest/preferences/order-management"
+            href="/app/automation/shopify/gorgiastest/order-management"
           >
             Order management
           </a>
@@ -517,7 +517,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           <a
             class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/self-service/shopify/gorgiastest/preferences/order-management"
+            href="/app/automation/shopify/gorgiastest/order-management"
           >
             Order management
           </a>
@@ -1069,7 +1069,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           <a
             class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/self-service/shopify/gorgiastest/preferences/order-management"
+            href="/app/automation/shopify/gorgiastest/order-management"
           >
             Order management
           </a>
@@ -1372,7 +1372,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           <a
             class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/self-service/shopify/gorgiastest/preferences/order-management"
+            href="/app/automation/shopify/gorgiastest/order-management"
           >
             Order management
           </a>

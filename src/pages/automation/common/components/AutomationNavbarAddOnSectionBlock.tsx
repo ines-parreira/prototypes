@@ -57,7 +57,7 @@ const AutomationNavbarAddOnSectionBlock = ({
             )}
             {shopType === 'shopify' && (
                 <NavbarLink
-                    to={`/app/automation/self-service/shopify/${shopName}/preferences/order-management`}
+                    to={`/app/automation/shopify/${shopName}/order-management`}
                     isNested
                 >
                     Order management
