@@ -51,7 +51,7 @@ export default function MigrationEmailForwarding({migrations}: Props) {
                     </Button>
                 </InputGroup>
 
-                <div className="mt-5">
+                <div className="my-5">
                     The emails below do not have forwarding set up yet. Once you
                     set up email forwarding, verify forwarding for each address
                     to proceed.

@@ -1,0 +1,29 @@
+@import '~css/new/colorTokens';
+@import '~css/new/layout';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+
+        &.small {
+            font-size: 12px;
+        }
+    }
+
+    .icon {
+        &.pending {
+            color: @classic-feedback-warning;
+        }
+
+        &.failed,
+        &.unverified {
+            color: @classic-feedback-error;
+        }
+
+        &.success {
+            color: @classic-feedback-success;
+        }
+    }
+}

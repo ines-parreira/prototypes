@@ -1,5 +1,8 @@
 import classNames from 'classnames'
 import React from 'react'
+import EmailVerificationStatusLabel, {
+    EmailVerificationStatus,
+} from '../../EmailVerificationStatusLabel'
 
 import css from './VerificationCardFooter.less'
 
@@ -36,49 +39,14 @@ export default function VerificationCardFooter({
                 <div>{label}</div>
             </div>
             {showStatus && (
-                <div className={css.verifiedStatus}>
-                    {isVerified ? (
-                        <>
-                            <i
-                                className={classNames(
-                                    'material-icons',
-                                    css.icon,
-                                    css.statusIcon,
-                                    css.success
-                                )}
-                            >
-                                check_circle
-                            </i>
-                            <div data-testid="verification-status-value">
-                                Verified
-                            </div>
-                            <i
-                                className={classNames(
-                                    'material-icons',
-                                    css.arrowIcon
-                                )}
-                            >
-                                chevron_right
-                            </i>
-                        </>
-                    ) : (
-                        <>
-                            <i
-                                className={classNames(
-                                    'material-icons',
-                                    css.icon,
-                                    css.statusIcon,
-                                    css.error
-                                )}
-                            >
-                                close
-                            </i>
-                            <div data-testid="verification-status-value">
-                                Not verified
-                            </div>
-                        </>
-                    )}
-                </div>
+                <EmailVerificationStatusLabel
+                    status={
+                        isVerified
+                            ? EmailVerificationStatus.Success
+                            : EmailVerificationStatus.Unverified
+                    }
+                    size="small"
+                />
             )}
         </div>
     )

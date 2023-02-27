@@ -88,7 +88,7 @@ describe('EmailVerification', () => {
                 }),
             })
             expect(
-                screen.getAllByTestId('verification-status-value')[0].innerHTML
+                screen.getAllByTestId('verification-status-label')[0].innerHTML
             ).toBe('Not verified')
             expect(
                 screen.getByRole('button', {
@@ -111,7 +111,7 @@ describe('EmailVerification', () => {
             })
 
             expect(
-                screen.getAllByTestId('verification-status-value')[0].innerHTML
+                screen.getAllByTestId('verification-status-label')[0].innerHTML
             ).toBe('Verified')
             expect(
                 screen.queryByRole('button', {
@@ -144,7 +144,7 @@ describe('EmailVerification', () => {
                     'verification-status-footer'
                 )[1]
                 const status = within(singleSenderCard).queryByTestId(
-                    'verification-status-value'
+                    'verification-status-label'
                 )
 
                 expect(status).toBeFalsy()
@@ -174,7 +174,7 @@ describe('EmailVerification', () => {
             })
 
             expect(
-                screen.getAllByTestId('verification-status-value')[1].innerHTML
+                screen.getAllByTestId('verification-status-label')[1].innerHTML
             ).toBe('Verified')
             expect(
                 screen.queryByRole('button', {
@@ -201,7 +201,7 @@ describe('EmailVerification', () => {
                     }),
                 })
                 expect(
-                    screen.getAllByTestId('verification-status-value')[1]
+                    screen.getAllByTestId('verification-status-label')[1]
                         .innerHTML
                 ).toBe('Not verified')
                 expect(

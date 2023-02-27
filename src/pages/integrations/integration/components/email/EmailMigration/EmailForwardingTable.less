@@ -1,0 +1,41 @@
+@import '~css/new/colorTokens';
+@import '~css/new/layout';
+
+:local {
+    .container {
+        width: 100%;
+        margin-bottom: @layout-spacing-xl;
+    }
+
+    .table {
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .ctaHeader {
+        min-width: 120px;
+    }
+
+    .address {
+        color: @classic-neutral-grey-6;
+        font-weight: 600;
+        max-width: 250px;
+        word-break: break-all;
+
+        &.failed {
+            color: @classic-feedback-error;
+        }
+    }
+
+    .deleteButton {
+        width: 24px;
+        height: 24px;
+    }
+
+    .cta {
+        justify-content: flex-end;
+    }
+
+    .emptyState {
+        color: @classic-neutral-grey-4;
+    }
+}
