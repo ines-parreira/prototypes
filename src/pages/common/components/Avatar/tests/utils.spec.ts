@@ -14,12 +14,16 @@ describe('Avatar utils', () => {
 
     describe('getInitials()', () => {
         it.each([
-            ['J', 'John'],
-            ['JD', 'John Doe'],
-            ['JG', 'John Gorgeous Doe'],
-        ])("should return '%i' initials for '%i'", (result, name) => {
-            expect(getInitials(name)).toBe(result)
-        })
+            ['J', 'John', false],
+            ['JD', 'John Doe', false],
+            ['JG', 'John Gorgeous Doe', false],
+            ['J', 'John Doe', true],
+        ])(
+            "should return '%s' initials for '%s'",
+            (result, name, useFirstInitialOnly) => {
+                expect(getInitials(name, useFirstInitialOnly)).toBe(result)
+            }
+        )
     })
 
     describe('fetch avatar', () => {

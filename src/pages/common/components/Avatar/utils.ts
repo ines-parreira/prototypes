@@ -5,17 +5,20 @@ type avatarParamsType = {
     size?: number
 }
 
-export function getInitials(name: string | null): string {
+export function getInitials(
+    name: string | null,
+    useFirstInitialOnly?: boolean
+): string {
     if (!name) {
         return ''
     }
 
     const splitName = name.split(' ').filter((text) => text.length > 0)
 
-    if (splitName.length > 1) {
-        return `${splitName[0][0]}${splitName[1][0]}`
-    } else if (splitName.length) {
+    if (splitName.length === 1 || (useFirstInitialOnly && splitName.length)) {
         return splitName[0][0]
+    } else if (splitName.length > 1) {
+        return `${splitName[0][0]}${splitName[1][0]}`
     }
 
     return ''

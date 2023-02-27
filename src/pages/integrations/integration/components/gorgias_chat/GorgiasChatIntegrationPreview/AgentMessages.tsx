@@ -1,9 +1,13 @@
 import React from 'react'
 import {Map} from 'immutable'
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
     GorgiasChatAvatarSettings,
 } from 'models/integration/types'
 
@@ -80,19 +84,31 @@ const AgentMessages: React.FC<Props> = ({
     chatTitle,
     avatar,
 }) => {
+    const hasAvatarCustomization =
+        useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
+
     return (
         <div className={css.appMakerMessageWrapper}>
             <Avatar
                 email={currentUser.get('email')}
-                name={currentUser.get('name')}
+                name={
+                    avatar?.nameType === GorgiasChatAvatarNameType.CHAT_TITLE
+                        ? chatTitle
+                        : currentUser.get('name')
+                }
+                showFirstInitialOnly={
+                    avatar?.nameType ===
+                    GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                }
                 url={
+                    !hasAvatarCustomization ||
                     avatar?.imageType ===
-                    GorgiasChatAvatarImageType.AGENT_INITIALS
-                        ? undefined
+                        GorgiasChatAvatarImageType.AGENT_PICTURE
+                        ? currentUser.getIn(['meta', 'profile_picture_url'])
                         : avatar?.imageType ===
                           GorgiasChatAvatarImageType.COMPANY_LOGO
                         ? avatar.companyLogoUrl
-                        : currentUser.getIn(['meta', 'profile_picture_url'])
+                        : undefined
                 }
                 size={35}
                 className={classnames(css.avatar, {

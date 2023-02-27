@@ -17,6 +17,7 @@ type Props = {
     badgeBorderColor?: string
     withTooltip?: boolean
     tooltipText?: string
+    showFirstInitialOnly?: boolean
 }
 
 type State = {
@@ -104,6 +105,7 @@ export default class Avatar extends Component<Props, State> {
             badgeBorderColor,
             withTooltip = false,
             tooltipText = '',
+            showFirstInitialOnly = false,
         } = this.props
 
         return (
@@ -131,7 +133,7 @@ export default class Avatar extends Component<Props, State> {
                     }}
                 >
                     <span style={{lineHeight: `${+size + 2}px`}}>
-                        {getInitials(name)}
+                        {getInitials(name, showFirstInitialOnly)}
                     </span>
                 </div>
 

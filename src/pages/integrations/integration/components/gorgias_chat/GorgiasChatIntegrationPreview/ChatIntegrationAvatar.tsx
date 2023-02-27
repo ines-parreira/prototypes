@@ -13,6 +13,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {
     GorgiasChatAvatarSettings,
     GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
 } from 'models/integration/types'
 
 import {getInitials} from 'pages/common/components/Avatar/utils'
@@ -56,24 +57,26 @@ const ChatIntegrationAvatar = (props: Props) => {
         />
     )
 
-    if (
-        avatarType === GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE &&
-        !!avatarTeamPictureUrl
-    ) {
-        return (
-            <div className={css['team-picture-wrapper']}>
-                <div
-                    className={classnames(css['team-picture'])}
-                    style={{borderColor: isOnline ? mainColor : offlineColor}}
-                >
-                    <img src={avatarTeamPictureUrl} alt="Team" />
-                    {statusMarker}
+    if (!hasAvatarCustomization) {
+        if (
+            avatarType === GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE &&
+            !!avatarTeamPictureUrl
+        ) {
+            return (
+                <div className={css['team-picture-wrapper']}>
+                    <div
+                        className={classnames(css['team-picture'])}
+                        style={{
+                            borderColor: isOnline ? mainColor : offlineColor,
+                        }}
+                    >
+                        <img src={avatarTeamPictureUrl} alt="Team" />
+                        {statusMarker}
+                    </div>
                 </div>
-            </div>
-        )
-    }
+            )
+        }
 
-    if (!hasAvatarCustomization || !avatar) {
         return (
             <div className={css.agents}>
                 {['first', 'middle', 'last'].map((position) => (
@@ -98,9 +101,12 @@ const ChatIntegrationAvatar = (props: Props) => {
 
     const positions =
         agents.size < 3 ||
-        avatar.imageType === GorgiasChatAvatarImageType.COMPANY_LOGO
+        avatar?.imageType === GorgiasChatAvatarImageType.COMPANY_LOGO
             ? ['middle']
             : ['first', 'middle', 'last']
+
+    const useFirstInitialOnly =
+        avatar?.nameType === GorgiasChatAvatarNameType.AGENT_FIRST_NAME
 
     return (
         <div className={css.agents}>
@@ -108,13 +114,13 @@ const ChatIntegrationAvatar = (props: Props) => {
                 const agent = agents.get(index)
 
                 const profilePictureUrl: string | undefined =
-                    avatar.imageType ===
+                    avatar?.imageType ===
                     GorgiasChatAvatarImageType.AGENT_INITIALS
                         ? undefined
-                        : avatar.imageType ===
+                        : avatar?.imageType ===
                           GorgiasChatAvatarImageType.AGENT_PICTURE
                         ? agent.getIn(['meta', 'profile_picture_url'])
-                        : avatar.companyLogoUrl
+                        : avatar?.companyLogoUrl
 
                 return (
                     <div
@@ -130,7 +136,7 @@ const ChatIntegrationAvatar = (props: Props) => {
                                 `url(${profilePictureUrl})`,
                         }}
                     >
-                        {getInitials(agent.get('name'))}
+                        {getInitials(agent.get('name'), useFirstInitialOnly)}
                         {position === 'middle' && statusMarker}
                     </div>
                 )

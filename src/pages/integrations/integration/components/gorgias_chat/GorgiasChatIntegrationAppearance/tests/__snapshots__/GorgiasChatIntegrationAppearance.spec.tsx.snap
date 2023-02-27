@@ -6541,7 +6541,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         class="agent middle hasPicture single"
                         style="border-color: #0d87dd; background-image: url(https://config.gorgias.io/production/picture);"
                       >
-                        AP
+                        A
                         <div
                           class="onlineMarker"
                         />
@@ -6651,7 +6651,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                           <span
                             style="line-height: 37px;"
                           >
-                            JD
+                            J
                           </span>
                         </div>
                       </div>
