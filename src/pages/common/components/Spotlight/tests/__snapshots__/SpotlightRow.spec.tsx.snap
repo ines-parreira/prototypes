@@ -1,5 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<SpotlightRow/> should highlight the row 1`] = `
+<div>
+  <a
+    class="container selected"
+    to="/app/foo"
+  >
+    <span
+      class="title"
+    >
+      This is the title
+    </span>
+    <div
+      class="separator"
+    />
+    <span
+      class="info"
+    >
+      And this is the info!
+    </span>
+    <div
+      class="wrapper arrowIcon"
+    >
+      ↩
+    </div>
+  </a>
+</div>
+`;
+
 exports[`<SpotlightRow/> should render with icon 1`] = `
 <div>
   <a

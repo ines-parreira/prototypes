@@ -15,4 +15,14 @@ describe('<ShortcutIcon />', () => {
 
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    it('should render a ghost icon', () => {
+        const {container} = render(
+            <ShortcutIcon fillStyle="ghost" type="dark">
+                ⌘
+            </ShortcutIcon>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
 })

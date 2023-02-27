@@ -70,7 +70,8 @@
     }
 
     .footer {
-        justify-content: flex-end;
+        display: flex;
+        justify-content: space-between;
         padding: 8px 16px;
         background-color: @classic-neutral-grey-0;
         border-top: 1px solid @classic-neutral-grey-3;
@@ -80,12 +81,28 @@
         }
     }
 
-    .shortcut {
+    .advancedShortcut {
         &:first-of-type {
             margin-left: 8px;
         }
         &:not(:first-of-type) {
             margin-left: 2px;
+        }
+    }
+
+    .navigationShortcutWrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    .navigationShortcut {
+        height: unset;
+
+        &:not(:last-of-type) {
+            margin-right: 12px;
+        }
+        &:not(:first-of-type) {
+            margin-left: 12px;
         }
     }
 }

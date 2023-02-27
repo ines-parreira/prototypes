@@ -78,4 +78,11 @@ describe('<SpotlightRow/>', () => {
         userEvent.click(container.firstChild! as Element, {metaKey: true})
         expect(mockOnClose).not.toHaveBeenCalled()
     })
+
+    it('should highlight the row', () => {
+        const {container} = render(
+            <SpotlightRow {...minProps} selected={true} />
+        )
+        expect(container).toMatchSnapshot()
+    })
 })

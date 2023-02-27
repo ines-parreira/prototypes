@@ -8,6 +8,14 @@ exports[`<ShortcutIcon /> should render a dark icon 1`] = `
 </div>
 `;
 
+exports[`<ShortcutIcon /> should render a ghost icon 1`] = `
+<div
+  class="wrapper"
+>
+  ⌘
+</div>
+`;
+
 exports[`<ShortcutIcon /> should render an icon 1`] = `
 <div
   class="wrapper classic"

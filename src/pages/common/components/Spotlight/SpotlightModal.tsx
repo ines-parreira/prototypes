@@ -1,5 +1,6 @@
 import React, {
     KeyboardEvent,
+    MouseEvent,
     useCallback,
     useEffect,
     useLayoutEffect,
@@ -43,7 +44,9 @@ import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
 import {SearchEngine} from 'models/search/types'
+import {isMacOs} from 'utils/platform'
 
+import {useSelectedIndex} from './hooks'
 import SpotlightScrollArea from './SpotlightScrollArea'
 import SpotlightLoader from './SpotlightLoader'
 import SpotlightNoResults from './SpotlightNoResults'
@@ -62,8 +65,8 @@ enum Tabs {
 }
 
 const navigatorTabs = [
-    {label: 'Customers', value: Tabs.Customers},
     {label: 'Tickets', value: Tabs.Tickets},
+    {label: 'Customers', value: Tabs.Customers},
 ]
 
 const searchRankScenarioSource = {
@@ -74,6 +77,7 @@ const searchRankScenarioSource = {
 const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const {pathname} = useLocation()
     const dispatch = useAppDispatch()
+    const scrollAreaRef = useRef<HTMLDivElement>(null)
     const spotlightSearchInputRef = useRef<HTMLInputElement>(null)
     const isESTicketSearchEnabled =
         useFlags()[FeatureFlagKey.ElasticsearchTicketSearch]
@@ -89,12 +93,57 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const [tickets, setTickets] = useState<Ticket[]>([])
     const [customers, setCustomers] = useState<Customer[]>([])
     const [searchItemsType, setSearchItemsType] = useState<ViewType>(
-        ViewType.CustomerList
+        ViewType.TicketList
     )
     const previousSearchItemsType = usePrevious(searchItemsType)
 
     const searchRank = useSearchRankScenario(
         searchRankScenarioSource[searchItemsType]
+    )
+
+    const maxIndex = useMemo(
+        () =>
+            searchItemsType === ViewType.CustomerList
+                ? customers.length - 1
+                : tickets.length - 1,
+        [customers, searchItemsType, tickets]
+    )
+
+    const {
+        index: selectedIndex,
+        next: nextIndex,
+        previous: previousIndex,
+        reset: resetSelectedIndex,
+        setIndex: setSelectedIndex,
+    } = useSelectedIndex(maxIndex)
+    useEffect(resetSelectedIndex, [resetSelectedIndex, searchItemsType])
+
+    useEffect(() => {
+        const scrollArea = scrollAreaRef.current
+        if (!scrollArea) return
+
+        const selectedNode = scrollArea.children[selectedIndex]
+        if (!selectedNode) return
+
+        selectedNode.scrollIntoView({block: 'nearest'})
+    }, [selectedIndex])
+
+    const selectedItem = useMemo(
+        () =>
+            searchItemsType === ViewType.CustomerList
+                ? customers[selectedIndex]
+                : tickets[selectedIndex],
+        [customers, searchItemsType, selectedIndex, tickets]
+    )
+
+    const selectedItemUrl = useMemo(
+        () =>
+            !selectedItem
+                ? undefined
+                : searchItemsType === ViewType.CustomerList
+                ? `/app/customer/${selectedItem.id}`
+                : `/app/ticket/${selectedItem.id}`,
+        [searchItemsType, selectedItem]
     )
 
     const goToAdvancedSearch = useCallback(() => {
@@ -166,6 +215,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         setLastSearchQueries({customers: '', tickets: ''})
         cancelSearch()
         searchRank.endScenario()
+        resetSelectedIndex()
     }
 
     const createFetchSearchItems = useCallback(
@@ -286,20 +336,38 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
             setCustomers([])
         }
         setSearchQuery(query)
+        resetSelectedIndex()
     }
 
     const handleKeyDown = async (event: KeyboardEvent) => {
-        if (
-            event.key === 'Enter' &&
-            searchQuery &&
-            ((searchItemsType === ViewType.CustomerList &&
-                lastSearchQueries.customers !== searchQuery) ||
-                (searchItemsType === ViewType.TicketList &&
-                    lastSearchQueries.tickets !== searchQuery) ||
-                !hasSearched)
-        ) {
-            await delayedFetchSearchItems(searchQuery, searchItemsType)
-            setHasSearched(true)
+        if (event.key === 'ArrowUp') {
+            event.preventDefault()
+            previousIndex()
+        } else if (event.key === 'ArrowDown') {
+            event.preventDefault()
+            nextIndex()
+        } else if (event.key === 'Enter') {
+            if (selectedItemUrl) {
+                if ((isMacOs && event.metaKey) || (!isMacOs && event.ctrlKey)) {
+                    window.open(selectedItemUrl, '_blank', 'noopener')
+                    return
+                }
+
+                history.push(selectedItemUrl)
+                return
+            }
+
+            if (
+                searchQuery &&
+                ((searchItemsType === ViewType.CustomerList &&
+                    lastSearchQueries.customers !== searchQuery) ||
+                    (searchItemsType === ViewType.TicketList &&
+                        lastSearchQueries.tickets !== searchQuery) ||
+                    !hasSearched)
+            ) {
+                await delayedFetchSearchItems(searchQuery, searchItemsType)
+                setHasSearched(true)
+            }
         }
     }
 
@@ -312,6 +380,8 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
             setSearchItemsType(ViewType.TicketList)
             logEvent(SegmentEvent.GlobalSearchTicketTabClick)
         }
+
+        spotlightSearchInputRef.current?.focus()
     }
 
     const activeTab: string = useMemo(() => {
@@ -363,6 +433,23 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         lastSearchQueries,
     ])
 
+    const handleHover = useCallback(
+        (e: MouseEvent) => {
+            const scrollArea = scrollAreaRef.current
+            if (!scrollArea) return
+
+            const index = Array.prototype.indexOf.call(
+                scrollArea.children,
+                e.target
+            )
+            if (index === -1) return
+
+            setSelectedIndex(index)
+            spotlightSearchInputRef.current?.focus()
+        },
+        [setSelectedIndex]
+    )
+
     return (
         <Modal
             isOpen={isOpen}
@@ -403,7 +490,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                                     handleAdvancedSearch={goToAdvancedSearch}
                                 />
                             ) : (
-                                <SpotlightScrollArea>
+                                <SpotlightScrollArea ref={scrollAreaRef}>
                                     <SearchRankScenarioContext.Provider
                                         value={searchRank}
                                     >
@@ -414,8 +501,12 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                                                     key={ticket.id}
                                                     item={ticket}
                                                     onCloseModal={onCloseModal}
+                                                    onHover={handleHover}
                                                     id={ticket.id}
                                                     index={index}
+                                                    selected={
+                                                        index === selectedIndex
+                                                    }
                                                 />
                                             ))}
                                         {searchItemsType ===
@@ -425,8 +516,12 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                                                     key={customer.id}
                                                     item={customer}
                                                     onCloseModal={onCloseModal}
+                                                    onHover={handleHover}
                                                     id={customer.id}
                                                     index={index}
+                                                    selected={
+                                                        index === selectedIndex
+                                                    }
                                                 />
                                             ))}
                                     </SearchRankScenarioContext.Provider>
@@ -441,6 +536,26 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                     [css.cleanSearchFooter]: !hasSearched && !isLoading,
                 })}
             >
+                <div className={css.navigationShortcutWrapper}>
+                    <ShortcutIcon
+                        fillStyle="ghost"
+                        className={css.navigationShortcut}
+                    >
+                        ↑↓ Select
+                    </ShortcutIcon>
+                    <ShortcutIcon
+                        fillStyle="ghost"
+                        className={css.navigationShortcut}
+                    >
+                        ↩ Open
+                    </ShortcutIcon>
+                    <ShortcutIcon
+                        fillStyle="ghost"
+                        className={css.navigationShortcut}
+                    >
+                        {`${isMacOs ? '⌘' : 'ctrl'} + ↩ Open in a new tab`}
+                    </ShortcutIcon>
+                </div>
                 <Button
                     intent="secondary"
                     fillStyle="ghost"
@@ -451,8 +566,12 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                     }}
                 >
                     <span>Advanced Search</span>
-                    <ShortcutIcon className={css.shortcut}>⇧</ShortcutIcon>
-                    <ShortcutIcon className={css.shortcut}>↩</ShortcutIcon>
+                    <ShortcutIcon className={css.advancedShortcut}>
+                        ⇧
+                    </ShortcutIcon>
+                    <ShortcutIcon className={css.advancedShortcut}>
+                        ↩
+                    </ShortcutIcon>
                 </Button>
             </ModalFooter>
         </Modal>

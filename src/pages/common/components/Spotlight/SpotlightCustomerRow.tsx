@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 
 import {TicketChannel} from 'business/types/ticket'
 import {Customer} from 'models/customer/types'
@@ -11,11 +11,15 @@ const SpotlightCustomerRow = ({
     onCloseModal,
     id,
     index,
+    onHover,
+    selected,
 }: {
     item: Customer
     onCloseModal: () => void
     id: number
     index: number
+    onHover?: ComponentProps<typeof SpotlightRow>['onHover']
+    selected?: boolean
 }) => {
     const phoneNumber = item.channels.find(
         (channel) => channel.type === TicketChannel.Phone
@@ -31,6 +35,8 @@ const SpotlightCustomerRow = ({
             }
             link={`/app/customer/${item.id}`}
             onCloseModal={onCloseModal}
+            onHover={onHover}
+            selected={selected}
             shrinkInfo
         />
     )

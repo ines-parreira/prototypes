@@ -3,8 +3,7 @@
 
 :local {
     .wrapper {
-        .caption-allcaps();
-
+        .caption-regular();
         align-items: center;
         border-radius: 2px;
         display: flex;
@@ -12,13 +11,16 @@
         height: 18px;
         padding: 2px 4px;
         width: fit-content;
+        color: @classic-neutral-grey-4;
 
         &.classic {
+            .caption-allcaps();
             background-color: @classic-neutral-grey-3;
             color: @classic-neutral-grey-5;
         }
 
         &.dark {
+            .caption-allcaps();
             background-color: @modern-neutral-grey-5;
             color: @classic-neutral-grey-2;
         }

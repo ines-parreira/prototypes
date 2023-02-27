@@ -10,7 +10,7 @@
         color: unset;
         border-radius: 4px;
 
-        &:hover {
+        &.selected {
             color: unset;
             background-color: @classic-neutral-grey-1;
         }
@@ -54,5 +54,9 @@
         &.shrink {
             flex-shrink: 1;
         }
+    }
+
+    .arrowIcon:not(:first-of-type) {
+        margin-left: auto;
     }
 }
