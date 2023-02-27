@@ -7,10 +7,27 @@
         margin-bottom: @layout-spacing-xl;
     }
 
-    .table {
-        margin-bottom: @layout-spacing-m;
-        border: 1px solid @classic-neutral-grey-3;
+    .tableAndHeading {
         background-color: @classic-neutral-grey-0;
+        border: 1px solid @classic-neutral-grey-3;
+        margin-bottom: @layout-spacing-m;
+        border-bottom: none;
+    }
+
+    .subtitle {
+        margin: @layout-spacing-m;
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+
+        h2 {
+            font-size: 16px;
+            margin: 0;
+        }
+    }
+
+    .table {
+        margin-bottom: 0;
     }
 
     .address {

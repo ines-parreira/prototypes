@@ -9,9 +9,9 @@ import {EmailMigration} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getForwardingEmailAddress} from 'state/integrations/selectors'
 import EmailForwardingTable from './EmailForwardingTable'
+import MigrationTutorialList from './MigrationTutorialList'
 
 import css from './MigrationEmailForwarding.less'
-import MigrationTutorialList from './MigrationTutorialList'
 
 type Props = {
     migrations: EmailMigration[]

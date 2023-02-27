@@ -42,12 +42,8 @@ const integrations = [
 describe('StartMigrationIntegrationsTable', () => {
     const renderComponent = (integrations: any = []) =>
         render(
-            <Provider
-                store={mockStore({
-                    integrations: fromJS({integrations}),
-                } as any)}
-            >
-                <StartMigrationIntegrationsTable />
+            <Provider store={mockStore({} as any)}>
+                <StartMigrationIntegrationsTable integrations={integrations} />
             </Provider>
         )
 
@@ -74,5 +70,10 @@ describe('StartMigrationIntegrationsTable', () => {
         expect(actions.deleteIntegration).toHaveBeenCalledWith(
             fromJS(integrations[0])
         )
+    })
+
+    it('should display empty state row', () => {
+        renderComponent([])
+        expect(screen.getByTestId('empty-row')).toBeVisible()
     })
 })

@@ -28,6 +28,7 @@ describe('EmailMigration', () => {
             <Provider
                 store={mockStore({
                     integrations: fromJS({
+                        integrations: [],
                         emailMigrationBannerStatus: migrationBannerStatus,
                     }),
                 } as any)}

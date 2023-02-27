@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {AxiosError} from 'axios'
+import {useHistory, useLocation} from 'react-router-dom'
 import {startEmailMigration} from 'models/integration/resources/email'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
@@ -8,8 +9,16 @@ import {NotificationStatus} from 'state/notifications/types'
 import Button from 'pages/common/components/button/Button'
 import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import useAppSelector from 'hooks/useAppSelector'
-import {getEmailMigrationStatus} from 'state/integrations/selectors'
-import {stringToDatetime} from 'utils/date'
+import {
+    getAreIntegrationsLoading,
+    getEmailMigrationStatus,
+    getIntegrationsByTypes,
+} from 'state/integrations/selectors'
+import {getMoment, stringToDatetime} from 'utils/date'
+import Loader from 'pages/common/components/Loader/Loader'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import {EmailIntegration} from 'models/integration/types'
+import {isBaseEmailIntegration} from '../helpers'
 import StartMigrationIntegrationsTable from './StartMigrationIntegrationsTable'
 
 import css from './StartMigration.less'
@@ -17,9 +26,19 @@ import css from './StartMigration.less'
 export default function StartMigration() {
     const [emailMigrationStarted, setEmailMigrationStarted] = useState(false)
     const migrationStatus = useAppSelector(getEmailMigrationStatus)
+    const isLoading = useAppSelector(getAreIntegrationsLoading)
     const fetchMigrationStatus = useMigrationBannerStatus()
+    const allEmailIntegrations = useAppSelector(
+        getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
+    ) as EmailIntegration[]
+    const history = useHistory()
+    const location = useLocation()
 
     const dispatch = useAppDispatch()
+
+    const displayedIntegrations = allEmailIntegrations.filter(
+        (integration) => !isBaseEmailIntegration(integration)
+    )
 
     const [{loading}, startMigration] = useAsyncFn(async () => {
         try {
@@ -46,15 +65,31 @@ export default function StartMigration() {
         }
     }, [emailMigrationStarted, fetchMigrationStatus])
 
-    const formattedDueDate = stringToDatetime(
-        migrationStatus?.due_at ?? ''
-    )?.format('dddd, MMM D, YYYY')
+    const dueDateMoment = stringToDatetime(migrationStatus?.due_at ?? '')
+    const formattedDueDate = dueDateMoment?.format('dddd, MMM D, YYYY')
+    const isPastDueDate = getMoment().isSameOrAfter(dueDateMoment)
+
+    const handleMigrateLater = () => {
+        if (location.key) {
+            history.goBack()
+        } else {
+            history.push('/app/settings/channels/email')
+        }
+    }
+
+    const hasIntegrationsToMigrate = !!displayedIntegrations.length
+
+    if (isLoading) return <Loader />
 
     return (
         <div className={css.container} data-testid="migration-not-started">
             <div className={css.content}>
                 {formattedDueDate && (
-                    <h1>Migrate your emails by {formattedDueDate}</h1>
+                    <h1>
+                        {isPastDueDate
+                            ? 'Migrate your emails or risk deactivation'
+                            : `Migrate your emails by ${formattedDueDate}`}
+                    </h1>
                 )}
                 <div className={css.description}>
                     <p>
@@ -72,21 +107,25 @@ export default function StartMigration() {
                     </p>
                 </div>
 
-                <StartMigrationIntegrationsTable />
+                <StartMigrationIntegrationsTable
+                    integrations={displayedIntegrations}
+                />
 
                 <div className={css.buttonsWrapper}>
                     <Button onClick={startMigration} isLoading={loading}>
-                        Start migration
+                        {hasIntegrationsToMigrate
+                            ? 'Start migration'
+                            : 'Complete migration'}
                     </Button>
-                    <Button
-                        onClick={() => {
-                            // TODO
-                        }}
-                        fillStyle="ghost"
-                        intent="secondary"
-                    >
-                        Migrate later
-                    </Button>
+                    {hasIntegrationsToMigrate && (
+                        <Button
+                            onClick={handleMigrateLater}
+                            fillStyle="ghost"
+                            intent="secondary"
+                        >
+                            Migrate later
+                        </Button>
+                    )}
                 </div>
             </div>
         </div>
