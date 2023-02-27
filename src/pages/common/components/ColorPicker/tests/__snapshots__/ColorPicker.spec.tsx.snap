@@ -20,7 +20,7 @@ exports[`<ColorPicker /> should display popup on button click with default color
   </div>
   <div>
     <div
-      class="fade"
+      class="fade show"
     >
       <div
         class="popover show bs-popover-auto"

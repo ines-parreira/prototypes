@@ -10,6 +10,11 @@ const minProps = {
 describe('<ColorPicker />', () => {
     beforeEach(() => {
         minProps.onChange.mockReset()
+        jest.useFakeTimers()
+    })
+
+    afterEach(() => {
+        jest.clearAllTimers()
     })
 
     it('should render with minimal props', () => {
@@ -43,6 +48,7 @@ describe('<ColorPicker />', () => {
         )
         fireEvent.click(screen.getByRole('button'))
         await screen.findByRole('textbox')
+        jest.advanceTimersByTime(300)
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should display popup on button click with provided colors', () => {
