@@ -286,6 +286,7 @@ export const bigCommerceProductFixture = (): BigCommerceProduct => ({
     options: [],
     variants: [bigCommerceVariantFixture()],
     calculated_price: 78,
+    availability: 'available',
     modifiers: [
         {
             id: 163,

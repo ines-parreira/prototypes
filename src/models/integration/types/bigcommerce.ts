@@ -201,6 +201,7 @@ export type BigCommerceProduct = {
     modifiers?: BigCommerceProductModifiers[]
     variants: BigCommerceProductVariant[]
     calculated_price: number
+    availability: 'available' | 'disabled'
 }
 
 export interface BigCommerceProductModifiersBase<
@@ -386,13 +387,124 @@ export enum OrderPaymentMethodType {
     manual = 'Manual',
 }
 
-export type BigCommerceCreateOrderErrorType = {
-    id?: Maybe<number | string>
-    message?: Maybe<string>
-    type?: 'error' | 'warning'
+// Errors
+
+// Errors treated in the Create Order Modal
+export interface BigCommerceErrorList {
+    global: Maybe<string> // Global Error => display a generic error message in a separate popup & close the modal
+    modal: Map<string, string | null> // Modal Errors => display the errors at the top of the modal
+    lineItem: Map<string, string | null> // Line Item Errors => display the errors at the Line Item level
+    component: Map<string, string | null> // Component Errors => display the errors at the component level
 }
 
-export enum BigCommerceErrorMessage {
-    defaultError = 'Insufficient inventory. Please adjust product quantity.',
-    customLineItemCannotBeUpdatedError = 'The custom item cannot be updated via the API at this time. To update your cart, add a new updated custom item or delete the outdated one.',
+export class BigCommerceGeneralError extends Error {
+    public message: string
+    public status: Maybe<number>
+
+    constructor(message: string, status: Maybe<number> = null) {
+        super()
+        this.message = message
+        this.status = status
+    }
 }
+
+export enum BigCommerceGeneralErrorMessage {
+    rateLimitingError = 'The operation cannot be completed. You have too many queued requests at the moment. Please wait a moment and try again.',
+    defaultError = 'An unexpected error occurred. Please try again later.',
+}
+
+export class ProductModifiersChangedError extends Error {
+    public product: BigCommerceProduct
+
+    constructor(product: BigCommerceProduct) {
+        super()
+        this.product = product
+    }
+}
+
+export class BigCommerceLineItemError extends Error {
+    public message: string
+
+    constructor(message: string) {
+        super()
+        this.message = message
+    }
+}
+
+export enum BigCommerceLineItemErrorMessage {
+    defaultAddLineItemError = 'Product could not be added to cart.',
+    defaultUpdateLineItemError = 'Product could not be updated.',
+    defaultAddDiscountLineItemError = 'Product discount could not be applied.',
+    defaultRemoveDiscountLineItemError = 'Product discount could not be removed.',
+    defaultRemoveLineItemError = 'Product could not be removed from cart.',
+    onlyOfflineAvailabilityError = 'Product cannot be purchased in the online store.',
+    insufficientInventoryError = 'Insufficient inventory. Please adjust product quantity.',
+    invalidQuantityError = 'Invalid quantity selected. Please adjust product quantity.',
+}
+
+export class BigCommerceCouponError extends Error {
+    public message: string
+
+    constructor(message: string) {
+        super()
+        this.message = message
+    }
+}
+
+export enum BigCommerceCouponErrorMessage {
+    defaultCouponError = 'An error occurred while processing your action.',
+    defaultCurrencyError = 'Coupon cannot be applied. Coupons only apply to default currency.',
+    minAmountOrderError = 'Coupon cannot be applied. Your order does not meet the minimum total for this coupon code to be applied.',
+    invalidCodeError = 'Coupon cannot be applied. The coupon code you entered is not valid.',
+    disabledCodeError = 'Coupon cannot be applied. The coupon code you entered has been disabled.',
+    expiredCodeError = 'Coupon cannot be applied. The coupon code you entered expired.',
+    usageLimitExceededError = 'Coupon cannot be applied. The coupon code you entered has reached usage limit.',
+    invalidConditionError = "Coupon cannot be applied. The coupon code you entered couldn't be applied to any items in your order.",
+}
+
+export type BigCommerceCartErrorResponse = {
+    error?: {
+        data?: {
+            cart?: Maybe<BigCommerceCart>
+            updated_product?: Maybe<BigCommerceProduct>
+        }
+        msg?: Maybe<string>
+    }
+}
+
+export type BigCommerceCartResponse =
+    | {
+          cart?: Maybe<BigCommerceCart>
+      }
+    | BigCommerceCartErrorResponse
+
+export type BigCommerceNestedCartResponse =
+    | {
+          data?: {
+              cart?: Maybe<BigCommerceCart>
+          }
+      }
+    | BigCommerceCartErrorResponse
+
+export type BigCommerceCheckoutErrorResponse = {
+    error?: {
+        data?: {
+            checkout?: Maybe<BigCommerceCheckout>
+        }
+        msg?: Maybe<string>
+    }
+}
+
+export type BigCommerceCheckoutResponse =
+    | {
+          checkout?: Maybe<BigCommerceCheckout>
+      }
+    | BigCommerceCheckoutErrorResponse
+
+export type BigCommerceNestedCheckoutResponse =
+    | {
+          data?: {
+              checkout?: Maybe<BigCommerceCheckout>
+          }
+      }
+    | BigCommerceCheckoutErrorResponse

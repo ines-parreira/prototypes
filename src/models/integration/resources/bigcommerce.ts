@@ -1,3 +1,4 @@
+import {AxiosError} from 'axios'
 import client from 'models/api/resources'
 
 import {
@@ -7,11 +8,20 @@ import {
     BigCommerceCheckout,
     BigCommerceCreateConsignmentPayload,
     BigCommerceUpsertConsignmentPayload,
-    BigCommerceNestedCheckout,
     BigCommerceCustomProduct,
-    BigCommerceNestedCart,
-    BigCommerceProduct,
-    BigCommerceErrorMessage,
+    BigCommerceGeneralErrorMessage,
+    BigCommerceCartResponse,
+    BigCommerceNestedCartResponse,
+    BigCommerceCheckoutResponse,
+    BigCommerceNestedCheckoutResponse,
+    BigCommerceCouponErrorMessage,
+    BigCommerceCouponError,
+    BigCommerceGeneralError,
+    BigCommerceLineItemErrorMessage,
+    ProductModifiersChangedError,
+    BigCommerceLineItemError,
+    BigCommerceCartErrorResponse,
+    BigCommerceCheckoutErrorResponse,
     BigCommerceCartRedirect,
 } from '../types'
 export type OptionSelection = {option_id: number; option_value: number}
@@ -31,14 +41,36 @@ export async function createBigCommerceCart(
         },
     }
 
-    const response = await client.post<BigCommerceCart>(url, payload, {
-        params: {
-            integration_id: integrationId,
-        },
-    })
+    return await client
+        .post<BigCommerceCartResponse>(url, payload, {
+            params: {
+                integration_id: integrationId,
+            },
+        })
+        .then((response) => {
+            if (!('cart' in response.data) || !response.data.cart) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.defaultError
+                )
+            }
 
-    return response.data
+            return response.data.cart
+        })
+        .catch((error) => {
+            const {response} = error as AxiosError<BigCommerceCartErrorResponse>
+
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
+
+            throw new BigCommerceGeneralError(
+                BigCommerceGeneralErrorMessage.defaultError
+            )
+        })
 }
+
 export async function deleteBigCommerceCart(
     integrationId: number,
     cartId: Maybe<string>
@@ -62,57 +94,37 @@ export async function addBigCommerceCheckoutBillingAddress(
 ): Promise<BigCommerceCheckout> {
     const url = '/integrations/bigcommerce/order/billing-address/'
 
-    const response = await client.post<BigCommerceCheckout>(url, payload, {
-        params: {
-            integration_id: integrationId,
-            cart_id: cartId,
-        },
-    })
+    return await client
+        .post<BigCommerceCheckoutResponse>(url, payload, {
+            params: {
+                integration_id: integrationId,
+                cart_id: cartId,
+            },
+        })
+        .then((response) => {
+            if (!('checkout' in response.data) || !response.data.checkout) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.defaultError
+                )
+            }
 
-    return response.data
+            return response.data.checkout
+        })
+        .catch((error) => {
+            const {response} =
+                error as AxiosError<BigCommerceCheckoutErrorResponse>
+
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
+
+            throw new BigCommerceGeneralError(
+                BigCommerceGeneralErrorMessage.defaultError
+            )
+        })
 }
-
-export type AddLineItemResponse =
-    | {
-          cart: BigCommerceCart
-      }
-    | {
-          error?: {
-              data: {
-                  cart: Record<string, unknown>
-                  updated_product?: BigCommerceProduct
-              }
-              msg?: string
-          }
-      }
-
-export class ProductModifiersChangedError extends Error {
-    public product: BigCommerceProduct
-    constructor(product: BigCommerceProduct) {
-        super()
-        this.product = product
-    }
-}
-
-export class AddLineItemError extends Error {
-    public message: string
-
-    constructor(message: string) {
-        super()
-        this.message = message
-    }
-}
-
-/**
- * Below RegExp works on a line like this
- * "[BIGCOMMERCE][update_line_item_from_cart] BigCommerce API has returned an error: (422): You can only purchase a maximum of 10 of the whatsupp33 per order."
- *
- * Captured "message" will be " You can only purchase a maximum of 10 of the whatsupp33 per order."
- *
- * Need to change TS target to use RegExp named capturing groups :(
- */
-const bigCommerceAddEditLineItemErrorRegExp =
-    /BigCommerce API has returned an error: \((?<code>[0-9]{3})\):(?<message>.*)/i
 
 export async function addBigCommerceLineItem({
     integrationId,
@@ -148,60 +160,69 @@ export async function addBigCommerceLineItem({
               ],
           } // Line Item
 
-    const {data} = await client.post<AddLineItemResponse>(url, payload, {
-        params: {
-            integration_id: integrationId,
-            cart_id: cartId,
-        },
-        validateStatus: (status) => status < 500,
-    })
+    return await client
+        .post<BigCommerceCartResponse>(url, payload, {
+            params: {
+                integration_id: integrationId,
+                cart_id: cartId,
+            },
+        })
+        .then((response) => {
+            if (!('cart' in response.data) || !response.data.cart) {
+                throw new BigCommerceLineItemError(
+                    BigCommerceLineItemErrorMessage.defaultAddLineItemError
+                )
+            }
 
-    if ('error' in data && data.error?.data?.updated_product) {
-        throw new ProductModifiersChangedError(data.error.data.updated_product)
-    }
+            return response.data.cart
+        })
+        .catch((error) => {
+            const {response} = error as AxiosError<BigCommerceCartErrorResponse>
 
-    if ('error' in data && data.error?.msg) {
-        const regexpMatch = bigCommerceAddEditLineItemErrorRegExp.exec(
-            data.error?.msg
-        )
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
 
-        throw new AddLineItemError(
-            regexpMatch
-                ? regexpMatch[2].trim()
-                : BigCommerceErrorMessage.defaultError
-        )
-    }
+            if (
+                response?.data?.error?.data?.updated_product &&
+                response.data.error.data.updated_product.availability ===
+                    'available'
+            ) {
+                // To prevent this case (availability = 'disabled'):
+                // Purchasability -> This product cannot be purchased in my online store
+                throw new ProductModifiersChangedError(
+                    response.data.error.data.updated_product
+                )
+            }
 
-    if (!('cart' in data)) {
-        throw new AddLineItemError(BigCommerceErrorMessage.defaultError)
-    }
+            if (
+                response?.data.error?.data?.updated_product &&
+                response.data.error.data.updated_product.availability ===
+                    'disabled'
+            ) {
+                // Purchasability -> This product cannot be purchased in my online store
+                throw new BigCommerceLineItemError(
+                    BigCommerceLineItemErrorMessage.onlyOfflineAvailabilityError
+                )
+            }
 
-    return data.cart
-}
+            if (response?.data?.error?.msg) {
+                throw new BigCommerceLineItemError(
+                    Object.values(BigCommerceLineItemErrorMessage)?.includes(
+                        response.data.error
+                            .msg as BigCommerceLineItemErrorMessage
+                    )
+                        ? response.data.error.msg
+                        : BigCommerceLineItemErrorMessage.defaultAddLineItemError
+                )
+            }
 
-export type EditLineItemResponse =
-    | {
-          data: {
-              cart: BigCommerceCart
-          }
-      }
-    | {
-          error?: {
-              data: {
-                  cart: Record<string, unknown>
-                  // updated_product?: BigCommerceProduct
-              }
-              msg?: string
-          }
-      }
-
-export class EditBigCommerceLineItemError extends Error {
-    public message: string
-
-    constructor(message: string) {
-        super()
-        this.message = message
-    }
+            throw new BigCommerceLineItemError(
+                BigCommerceLineItemErrorMessage.defaultAddLineItemError
+            )
+        })
 }
 
 export async function editBigCommerceLineItem({
@@ -210,12 +231,14 @@ export async function editBigCommerceLineItem({
     lineItem,
     quantity,
     listPrice,
+    defaultError = BigCommerceLineItemErrorMessage.defaultUpdateLineItemError,
 }: {
     integrationId: number
     cartId: string
     lineItem: BigCommerceCartLineItem
     quantity: number
     listPrice?: number
+    defaultError?: BigCommerceLineItemErrorMessage
 }): Promise<BigCommerceCart> {
     // Updates an existing, single line item in the Cart. Custom items cannot be updated via API.
 
@@ -230,34 +253,48 @@ export async function editBigCommerceLineItem({
         },
     }
 
-    const {data} = await client.put<EditLineItemResponse>(url, payload, {
-        params: {
-            integration_id: integrationId,
-            line_item_id: lineItem.id,
-            cart_id: cartId,
-        },
-        validateStatus: (status) => status < 500,
-    })
+    return await client
+        .put<BigCommerceNestedCartResponse>(url, payload, {
+            params: {
+                integration_id: integrationId,
+                line_item_id: lineItem.id,
+                cart_id: cartId,
+            },
+        })
+        .then((response) => {
+            if (
+                !('data' in response.data) ||
+                !response.data.data ||
+                !('cart' in response.data.data) ||
+                !response.data.data.cart
+            ) {
+                throw new BigCommerceLineItemError(defaultError)
+            }
 
-    if ('error' in data && data.error?.msg) {
-        const regexpMatch = bigCommerceAddEditLineItemErrorRegExp.exec(
-            data.error.msg
-        )
+            return response.data.data.cart
+        })
+        .catch((error) => {
+            const {response} = error as AxiosError<BigCommerceCartErrorResponse>
 
-        throw new EditBigCommerceLineItemError(
-            regexpMatch
-                ? regexpMatch[2].trim()
-                : BigCommerceErrorMessage.defaultError
-        )
-    }
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
 
-    if (!('data' in data)) {
-        throw new EditBigCommerceLineItemError(
-            BigCommerceErrorMessage.defaultError
-        )
-    }
+            if (response?.data?.error?.msg) {
+                throw new BigCommerceLineItemError(
+                    Object.values(BigCommerceLineItemErrorMessage)?.includes(
+                        response.data.error
+                            .msg as BigCommerceLineItemErrorMessage
+                    )
+                        ? response.data.error.msg
+                        : defaultError
+                )
+            }
 
-    return data.data.cart
+            throw new BigCommerceLineItemError(defaultError)
+        })
 }
 
 export async function editBigCommerceLineItemModifiers({
@@ -273,7 +310,7 @@ export async function editBigCommerceLineItemModifiers({
     quantity: number
     optionSelections: OptionSelection[]
 }): Promise<BigCommerceCart> {
-    const url = '/integrations/bigcommerce/order/line-item/modifiers'
+    const url = '/integrations/bigcommerce/order/line-item/modifiers/'
 
     const payload = {
         product_id: lineItem.product_id,
@@ -283,34 +320,52 @@ export async function editBigCommerceLineItemModifiers({
         list_price: lineItem.list_price,
     }
 
-    const {data} = await client.put<EditLineItemResponse>(url, payload, {
-        params: {
-            integration_id: integrationId,
-            line_item_id: lineItem.id,
-            cart_id: cartId,
-        },
-        validateStatus: (status) => status < 500,
-    })
+    return await client
+        .put<BigCommerceNestedCartResponse>(url, payload, {
+            params: {
+                integration_id: integrationId,
+                line_item_id: lineItem.id,
+                cart_id: cartId,
+            },
+        })
+        .then((response) => {
+            if (
+                !('data' in response.data) ||
+                !response.data.data ||
+                !('cart' in response.data.data) ||
+                !response.data.data.cart
+            ) {
+                throw new BigCommerceLineItemError(
+                    BigCommerceLineItemErrorMessage.defaultUpdateLineItemError
+                )
+            }
 
-    if ('error' in data && data.error?.msg) {
-        const regexpMatch = bigCommerceAddEditLineItemErrorRegExp.exec(
-            data.error.msg
-        )
+            return response.data.data.cart
+        })
+        .catch((error) => {
+            const {response} = error as AxiosError<BigCommerceCartErrorResponse>
 
-        throw new EditBigCommerceLineItemError(
-            regexpMatch
-                ? regexpMatch[2].trim()
-                : BigCommerceErrorMessage.defaultError
-        )
-    }
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
 
-    if (!('data' in data)) {
-        throw new EditBigCommerceLineItemError(
-            BigCommerceErrorMessage.defaultError
-        )
-    }
+            if (response?.data?.error?.msg) {
+                throw new BigCommerceLineItemError(
+                    Object.values(BigCommerceLineItemErrorMessage)?.includes(
+                        response.data.error
+                            .msg as BigCommerceLineItemErrorMessage
+                    )
+                        ? response.data.error.msg
+                        : BigCommerceLineItemErrorMessage.defaultUpdateLineItemError
+                )
+            }
 
-    return data.data.cart
+            throw new BigCommerceLineItemError(
+                BigCommerceLineItemErrorMessage.defaultUpdateLineItemError
+            )
+        })
 }
 
 export async function removeBigCommerceLineItem(
@@ -322,15 +377,41 @@ export async function removeBigCommerceLineItem(
 
     const url = '/integrations/bigcommerce/order/line-item/delete/'
 
-    const response = await client.get<BigCommerceNestedCart>(url, {
-        params: {
-            integration_id: integrationId,
-            cart_id: cartId,
-            line_item_id: lineItemId,
-        },
-    })
+    return await client
+        .get<BigCommerceNestedCartResponse>(url, {
+            params: {
+                integration_id: integrationId,
+                cart_id: cartId,
+                line_item_id: lineItemId,
+            },
+        })
+        .then((result) => {
+            if (
+                !('data' in result.data) ||
+                !result.data.data ||
+                !('cart' in result.data.data) ||
+                !result.data.data.cart
+            ) {
+                throw new BigCommerceLineItemError(
+                    BigCommerceLineItemErrorMessage.defaultRemoveLineItemError
+                )
+            }
 
-    return response.data.data
+            return result.data.data.cart
+        })
+        .catch((error) => {
+            const {response} = error as AxiosError<BigCommerceCartErrorResponse>
+
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
+
+            throw new BigCommerceLineItemError(
+                BigCommerceLineItemErrorMessage.defaultRemoveLineItemError
+            )
+        })
 }
 
 export async function createBigCommerceCheckoutConsignment({
@@ -344,14 +425,36 @@ export async function createBigCommerceCheckoutConsignment({
 }): Promise<BigCommerceCheckout> {
     const url = '/integrations/bigcommerce/order/checkout-consignment/'
 
-    const response = await client.post<BigCommerceCheckout>(url, payload, {
-        params: {
-            integration_id: integrationId,
-            checkout_id: cartId,
-        },
-    })
+    return await client
+        .post<BigCommerceCheckoutResponse>(url, payload, {
+            params: {
+                integration_id: integrationId,
+                checkout_id: cartId,
+            },
+        })
+        .then((response) => {
+            if (!('checkout' in response.data) || !response.data.checkout) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.defaultError
+                )
+            }
 
-    return response.data
+            return response.data.checkout
+        })
+        .catch((error) => {
+            const {response} =
+                error as AxiosError<BigCommerceCheckoutErrorResponse>
+
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
+
+            throw new BigCommerceGeneralError(
+                BigCommerceGeneralErrorMessage.defaultError
+            )
+        })
 }
 
 export async function updateBigCommerceCheckoutConsignment({
@@ -367,15 +470,44 @@ export async function updateBigCommerceCheckoutConsignment({
 }): Promise<BigCommerceCheckout> {
     const url = '/integrations/bigcommerce/order/checkout-consignment/'
 
-    const response = await client.put<BigCommerceNestedCheckout>(url, payload, {
-        params: {
-            integration_id: integrationId,
-            checkout_id: cartId,
-            consignment_id: consignmentId,
-        },
-    })
+    return await client
+        .put<BigCommerceNestedCheckoutResponse>(url, payload, {
+            params: {
+                integration_id: integrationId,
+                checkout_id: cartId,
+                consignment_id: consignmentId,
+            },
+        })
+        .then((response) => {
+            if (
+                !('data' in response.data) ||
+                !response.data.data ||
+                !('checkout' in response.data.data) ||
+                !response.data.data.checkout
+            ) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.defaultError,
+                    response.status
+                )
+            }
 
-    return response.data.data
+            return response.data.data.checkout
+        })
+        .catch((error) => {
+            const {response} =
+                error as AxiosError<BigCommerceCheckoutErrorResponse>
+
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
+
+            throw new BigCommerceGeneralError(
+                BigCommerceGeneralErrorMessage.defaultError,
+                response?.status
+            )
+        })
 }
 
 export async function getBigCommerceCheckout({
@@ -387,14 +519,41 @@ export async function getBigCommerceCheckout({
 }): Promise<BigCommerceCheckout> {
     const url = '/integrations/bigcommerce/order/checkout/'
 
-    const response = await client.get<BigCommerceNestedCheckout>(url, {
-        params: {
-            integration_id: integrationId,
-            checkout_id: checkoutId,
-        },
-    })
+    return await client
+        .get<BigCommerceNestedCheckoutResponse>(url, {
+            params: {
+                integration_id: integrationId,
+                checkout_id: checkoutId,
+            },
+        })
+        .then((response) => {
+            if (
+                !('data' in response.data) ||
+                !response.data.data ||
+                !('checkout' in response.data.data) ||
+                !response.data.data.checkout
+            ) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.defaultError
+                )
+            }
 
-    return response.data.data
+            return response.data.data.checkout
+        })
+        .catch((error) => {
+            const {response} =
+                error as AxiosError<BigCommerceCheckoutErrorResponse>
+
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
+
+            throw new BigCommerceGeneralError(
+                BigCommerceGeneralErrorMessage.defaultError
+            )
+        })
 }
 
 export async function updateBigCommerceCheckoutDiscount({
@@ -410,14 +569,36 @@ export async function updateBigCommerceCheckoutDiscount({
 
     const payload = [{discounted_amount: discountAmount, name: 'Manual'}]
 
-    const response = await client.post<BigCommerceCheckout>(url, payload, {
-        params: {
-            integration_id: integrationId,
-            checkout_id: checkoutId,
-        },
-    })
+    return await client
+        .post<BigCommerceCheckoutResponse>(url, payload, {
+            params: {
+                integration_id: integrationId,
+                checkout_id: checkoutId,
+            },
+        })
+        .then((response) => {
+            if (!('checkout' in response.data) || !response.data.checkout) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.defaultError
+                )
+            }
 
-    return response.data
+            return response.data.checkout
+        })
+        .catch((error) => {
+            const {response} =
+                error as AxiosError<BigCommerceCheckoutErrorResponse>
+
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
+
+            throw new BigCommerceGeneralError(
+                BigCommerceGeneralErrorMessage.defaultError
+            )
+        })
 }
 
 export async function updateBigCommerceCoupon({
@@ -433,14 +614,46 @@ export async function updateBigCommerceCoupon({
 
     const payload = {coupon_code: couponCode}
 
-    const response = await client.post<BigCommerceCheckout>(url, payload, {
-        params: {
-            integration_id: integrationId,
-            checkout_id: checkoutId,
-        },
-    })
+    return await client
+        .post<BigCommerceCheckoutResponse>(url, payload, {
+            params: {
+                integration_id: integrationId,
+                checkout_id: checkoutId,
+            },
+        })
+        .then((response) => {
+            if (!('checkout' in response.data) || !response.data.checkout) {
+                throw new BigCommerceCouponError(
+                    BigCommerceCouponErrorMessage.defaultCouponError
+                )
+            }
 
-    return response.data
+            return response.data.checkout
+        })
+        .catch((error) => {
+            const {response} =
+                error as AxiosError<BigCommerceCheckoutErrorResponse>
+
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
+
+            if (response?.data?.error?.msg) {
+                throw new BigCommerceCouponError(
+                    Object.values(BigCommerceCouponErrorMessage)?.includes(
+                        response.data.error.msg as BigCommerceCouponErrorMessage
+                    )
+                        ? response.data.error.msg
+                        : BigCommerceCouponErrorMessage.defaultCouponError
+                )
+            }
+
+            throw new BigCommerceCouponError(
+                BigCommerceCouponErrorMessage.defaultCouponError
+            )
+        })
 }
 
 export async function deleteBigCommerceCoupon({
@@ -457,15 +670,52 @@ export async function deleteBigCommerceCoupon({
     /**
      * Using `get` here instead of `delete` because this is the way our backend is, sorry
      */
-    const response = await client.get<BigCommerceNestedCheckout>(url, {
-        params: {
-            integration_id: integrationId,
-            checkout_id: checkoutId,
-            coupon_code: couponCode,
-        },
-    })
+    return await client
+        .get<BigCommerceNestedCheckoutResponse>(url, {
+            params: {
+                integration_id: integrationId,
+                checkout_id: checkoutId,
+                coupon_code: couponCode,
+            },
+        })
+        .then((response) => {
+            if (
+                !('data' in response.data) ||
+                !response.data.data ||
+                !('checkout' in response.data.data) ||
+                !response.data.data.checkout
+            ) {
+                throw new BigCommerceCouponError(
+                    BigCommerceCouponErrorMessage.defaultCouponError
+                )
+            }
 
-    return response.data.data
+            return response.data.data.checkout
+        })
+        .catch((error) => {
+            const {response} =
+                error as AxiosError<BigCommerceCheckoutErrorResponse>
+
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
+
+            if (response?.data?.error?.msg) {
+                throw new BigCommerceCouponError(
+                    Object.values(BigCommerceCouponErrorMessage)?.includes(
+                        response.data.error.msg as BigCommerceCouponErrorMessage
+                    )
+                        ? response.data.error.msg
+                        : BigCommerceCouponErrorMessage.defaultCouponError
+                )
+            }
+
+            throw new BigCommerceCouponError(
+                BigCommerceCouponErrorMessage.defaultCouponError
+            )
+        })
 }
 
 export async function getBigCommerceDraftOrderUrl({

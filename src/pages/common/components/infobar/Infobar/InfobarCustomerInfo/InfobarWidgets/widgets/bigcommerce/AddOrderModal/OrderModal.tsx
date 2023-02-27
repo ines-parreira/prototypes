@@ -16,28 +16,29 @@ import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-
 import Label from 'pages/common/forms/Label/Label'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import {
     AddressType,
+    BigCommerceErrorList,
     BigCommerceActionType,
     BigCommerceCart,
     BigCommerceCartLineItem,
     BigCommerceCheckout,
-    BigCommerceCreateOrderErrorType,
     BigCommerceCustomCartLineItem,
     BigCommerceCustomer,
     BigCommerceCustomerAddress,
     BigCommerceCustomProduct,
-    BigCommerceErrorMessage,
+    BigCommerceGeneralError,
+    BigCommerceGeneralErrorMessage,
     BigCommerceIntegration,
     BigCommerceProduct,
     BigCommerceProductsListType,
     BigCommerceProductVariant,
     CreateOrderValidationResult,
     IntegrationType,
+    ProductModifiersChangedError,
 } from 'models/integration/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
@@ -51,7 +52,6 @@ import {CustomerContext} from 'providers/infobar/CustomerContext'
 import {
     deleteBigCommerceCoupon,
     OptionSelection,
-    ProductModifiersChangedError,
     updateBigCommerceCheckoutDiscount,
     updateBigCommerceCoupon,
 } from 'models/integration/resources/bigcommerce'
@@ -84,6 +84,7 @@ import css from './OrderModal.less'
 import {ProductSearch} from './ProductSearch'
 import {useAddModifiersPopover} from './components/modifiers-popover/hooks'
 import {modifierValuesToOptionSelections} from './components/modifiers-popover/utils'
+import GeneralErrorPopupModal from './GeneralErrorPopupModal'
 
 type Props = {
     integration: BigCommerceIntegration
@@ -201,6 +202,13 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
     const [checkout, setCheckout] = useState<Maybe<BigCommerceCheckout>>(null)
     const [isTotalPriceLoading, setIsTotalPriceLoading] = useState(false)
     const consignment = checkout?.consignments[0] ?? null
+    // Errors
+    const [errors, setErrors] = useState<BigCommerceErrorList>({
+        global: null, // Global Error => display a generic error message in a separate popup & close the modal
+        modal: new Map(), // Modal Errors => display the errors at the top of the modal
+        lineItem: new Map(), // Line Item Errors => display the errors at the Line Item level
+        component: new Map(), // Component Errors => display the errors at the component level
+    })
 
     const updateConsignment = async ({
         cart,
@@ -211,20 +219,29 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
     }) => {
         try {
             setIsTotalPriceLoading(true)
-            const checkout = await upsertCheckoutConsignment({
+
+            const newCheckout = await upsertCheckoutConsignment({
                 integrationId,
                 cart,
                 shippingAddress: address,
                 consignmentId: consignment?.id,
             })
 
-            if (!checkout) {
+            if (!newCheckout) {
                 return
             }
 
-            setCheckout(checkout)
+            setCheckout(newCheckout)
         } catch (error) {
-            console.error(error)
+            // Error Handling
+            logErrors(
+                'global',
+                error instanceof BigCommerceGeneralError
+                    ? error.message
+                    : BigCommerceGeneralErrorMessage.defaultError
+            )
+            // Rethrow the error for callback consumer
+            throw error
         } finally {
             setIsTotalPriceLoading(false)
         }
@@ -248,30 +265,54 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         })
 
         if (newCart && shippingAddress) {
-            void updateConsignment({cart: newCart, address: shippingAddress})
+            void updateConsignment({
+                cart: newCart,
+                address: shippingAddress,
+            })
         }
     }
 
     const onSelectAddress = async (
         newSelectedAddress: BigCommerceCustomerAddress
     ) => {
-        setShippingAddress(newSelectedAddress)
-
         if (cart) {
             setIsTotalPriceLoading(true)
-            const checkout = await addCheckoutBillingAddress({
-                integrationId,
-                selectedAddress: newSelectedAddress,
-                cart,
-            })
 
-            void updateConsignment({
-                cart: checkout.cart,
-                address: newSelectedAddress,
-            })
+            try {
+                const checkout = await addCheckoutBillingAddress({
+                    integrationId,
+                    selectedAddress: newSelectedAddress,
+                    cart,
+                })
 
-            setCheckout(checkout)
-            setIsTotalPriceLoading(false)
+                setShippingAddress(newSelectedAddress)
+                setCheckout(checkout)
+
+                await updateConsignment({
+                    cart: checkout.cart,
+                    address: newSelectedAddress,
+                })
+
+                // Error Handling
+                logErrors('component', null, 'onSelectAddress')
+            } catch (error) {
+                // Error Handling
+                if (
+                    error instanceof BigCommerceGeneralError &&
+                    error.message ===
+                        BigCommerceGeneralErrorMessage.rateLimitingError
+                ) {
+                    logErrors('global', error.message)
+                } else {
+                    logErrors(
+                        'component',
+                        BigCommerceGeneralErrorMessage.defaultError,
+                        'onSelectAddress'
+                    )
+                }
+            } finally {
+                setIsTotalPriceLoading(false)
+            }
         }
     }
 
@@ -282,18 +323,27 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
             return
         }
 
+        setIsTotalPriceLoading(true)
+
         try {
-            setIsTotalPriceLoading(true)
-            const checkout = await updateCheckoutConsignmentShippingMethod({
+            const newCheckout = await updateCheckoutConsignmentShippingMethod({
                 cart,
                 shippingMethodId: selectedShippingMethodId,
                 consignmentId: consignment.id,
                 integrationId,
             })
 
-            setCheckout(checkout)
+            setCheckout(newCheckout)
         } catch (error) {
-            console.error(error)
+            // Error Handling
+            logErrors(
+                'global',
+                error instanceof BigCommerceGeneralError
+                    ? error.message
+                    : BigCommerceGeneralErrorMessage.defaultError
+            )
+            // Rethrow the error for callback consumer
+            throw error
         } finally {
             setIsTotalPriceLoading(false)
         }
@@ -304,17 +354,36 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
             return
         }
 
+        setIsTotalPriceLoading(true)
+
         try {
-            setIsTotalPriceLoading(true)
-            const checkout = await updateBigCommerceCheckoutDiscount({
+            const newCheckout = await updateBigCommerceCheckoutDiscount({
                 integrationId,
                 checkoutId: cart.id,
                 discountAmount,
             })
 
-            setCheckout(checkout)
+            setCheckout(newCheckout)
+
+            // Error Handling
+            logErrors('component', null, 'onUpdateDiscountAmount')
         } catch (error) {
-            console.error(error)
+            // Error Handling
+            if (
+                error instanceof BigCommerceGeneralError &&
+                error.message ===
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+            ) {
+                logErrors('global', error.message)
+            } else {
+                logErrors(
+                    'component',
+                    BigCommerceGeneralErrorMessage.defaultError,
+                    'onUpdateDiscountAmount'
+                )
+            }
+            // Rethrow the error for callback consumer
+            throw error
         } finally {
             setIsTotalPriceLoading(false)
         }
@@ -325,19 +394,26 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
             return
         }
 
-        try {
-            setIsTotalPriceLoading(true)
+        setIsTotalPriceLoading(true)
 
-            const checkout = await updateBigCommerceCoupon({
+        try {
+            const newCheckout = await updateBigCommerceCoupon({
                 integrationId,
                 checkoutId: cart.id,
                 couponCode: couponCode,
             })
 
-            setCheckout(checkout)
+            setCheckout(newCheckout)
         } catch (error) {
-            console.error(error)
-            // rethrowing it for callback consumer
+            // Error Handling
+            if (
+                error instanceof BigCommerceGeneralError &&
+                error.message ===
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+            ) {
+                logErrors('global', error.message)
+            }
+            // Rethrow the error for callback consumer
             throw error
         } finally {
             setIsTotalPriceLoading(false)
@@ -349,9 +425,9 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
             return
         }
 
-        try {
-            setIsTotalPriceLoading(true)
+        setIsTotalPriceLoading(true)
 
+        try {
             const newCheckout = await deleteBigCommerceCoupon({
                 integrationId,
                 checkoutId: checkout.id,
@@ -360,8 +436,15 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
 
             setCheckout(newCheckout)
         } catch (error) {
-            console.error(error)
-            // rethrowing it for callback consumer
+            // Error Handling
+            if (
+                error instanceof BigCommerceGeneralError &&
+                error.message ===
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+            ) {
+                logErrors('global', error.message)
+            }
+            // Rethrow the error for callback consumer
             throw error
         } finally {
             setIsTotalPriceLoading(false)
@@ -372,6 +455,31 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         () => getTotals({checkout, cart: checkout?.cart ?? cart}),
         [cart, checkout]
     )
+
+    function logErrors(
+        errorLevel:
+            | 'global' // Global Error => display a generic error message in a separate popup & close the modal
+            | 'modal' // Modal Errors => display the errors at the top of the modal
+            | 'lineItem' // Line Item Errors => display the errors at the Line Item level
+            | 'component', // Component Errors => display the errors at the component level
+        errorMessage: string | null,
+        errorKey?: string
+    ) {
+        const copyErrors = Object.assign({}, errors)
+
+        if (errorLevel === 'global') {
+            copyErrors.global = errorMessage
+        } else {
+            if (copyErrors[errorLevel] === undefined) {
+                copyErrors[errorLevel] = new Map()
+            }
+            if (errorKey != null) {
+                copyErrors[errorLevel]?.set(errorKey, errorMessage)
+            }
+        }
+
+        setErrors(copyErrors)
+    }
 
     return {
         cart: checkout ? checkout.cart : cart,
@@ -386,6 +494,8 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         onUpdateDiscountAmount,
         onUpdateCoupon,
         onRemoveCoupon,
+        errors,
+        logErrors,
     }
 }
 
@@ -406,12 +516,6 @@ export function OrderModal({
     )
     const [isLoading, setIsLoading] = useState(false)
     const [isDraftOrder, setIsDraftOrder] = useState(true)
-    const [lineItemWithError, setLineItemWithError] =
-        useState<BigCommerceCreateOrderErrorType>({
-            id: '',
-            message: '',
-            type: 'error',
-        })
 
     const [products, setProducts] = useState<BigCommerceProductsListType>(
         new Map()
@@ -430,6 +534,8 @@ export function OrderModal({
         onUpdateDiscountAmount,
         onUpdateCoupon,
         onRemoveCoupon,
+        errors,
+        logErrors,
     } = useCheckout({
         integrationId: integration.id,
     })
@@ -500,15 +606,32 @@ export function OrderModal({
     }
 
     useEffect(() => {
-        if (data.customer && currency) {
-            void onInit({
-                customer: data.customer,
-                integrationId: integration.id,
-                currency,
-                setIsLoading,
-                setCart,
-            })
+        async function createCart() {
+            if (data.customer && currency) {
+                try {
+                    await onInit({
+                        customer: data.customer,
+                        integrationId: integration.id,
+                        currency,
+                        setIsLoading,
+                        setCart,
+                    })
+                } catch (error) {
+                    // Error Handling
+                    logErrors(
+                        'global',
+                        error instanceof BigCommerceGeneralError
+                            ? error.message
+                            : BigCommerceGeneralErrorMessage.defaultError
+                    )
+                } finally {
+                    setIsLoading(false)
+                }
+            }
         }
+
+        createCart().catch(console.error)
+
         shortcutManager.pause()
 
         return () => {
@@ -528,7 +651,7 @@ export function OrderModal({
             setIsLoading,
             setCart,
             setProducts,
-            setLineItemWithError,
+            logErrors,
         })
 
     const handleAddRow = async (props: {
@@ -548,7 +671,7 @@ export function OrderModal({
             setIsLoading,
             setCart,
             setProducts,
-            setLineItemWithError,
+            logErrors,
         })
     }
 
@@ -578,280 +701,325 @@ export function OrderModal({
     )
 
     return (
-        <Modal
-            isOpen
-            isScrollable
-            isClosable={false}
-            onClose={() => handleCancel('header')}
-            size="medium"
-        >
-            <ModalHeader title="Create order" forceCloseButton />
-            <div
-                className={css.scrollable}
-                ref={setReference}
-                {...getReferenceProps()}
+        <>
+            <Modal
+                isOpen
+                isScrollable
+                isClosable={false}
+                onClose={() => handleCancel('header')}
+                size="medium"
             >
-                <div className={css.formBody}>
-                    <div className={css.alerts}>
-                        <div>
-                            <Row className="mb-3">
-                                <PreviewRadioButton
-                                    className={css.previewRadioButtonsWrapper}
-                                    value={AddressType.Personal}
-                                    isSelected={isDraftOrder}
-                                    label="Draft order"
-                                    caption="Generate unique cart URL valid for up to 30 days."
-                                    onClick={() => setIsDraftOrder(true)}
-                                />
-                            </Row>
-                            <Row className="mb-3">
-                                <PreviewRadioButton
-                                    className={css.previewRadioButtonsWrapper}
-                                    value={AddressType.Company}
-                                    isSelected={!isDraftOrder}
-                                    label="Paid order"
-                                    onClick={() => setIsDraftOrder(false)}
-                                    caption="Create paid order with Awaiting Fulfillment status."
-                                />
-                            </Row>
+                <ModalHeader title="Create order" forceCloseButton />
+                <div
+                    className={css.scrollable}
+                    ref={setReference}
+                    {...getReferenceProps()}
+                >
+                    <div className={css.formBody}>
+                        <div className={css.alerts}>
+                            <div>
+                                <Row className="mb-3">
+                                    <PreviewRadioButton
+                                        className={
+                                            css.previewRadioButtonsWrapper
+                                        }
+                                        value={AddressType.Personal}
+                                        isSelected={isDraftOrder}
+                                        label="Draft order"
+                                        caption="Generate unique cart URL valid for up to 30 days."
+                                        onClick={() => setIsDraftOrder(true)}
+                                    />
+                                </Row>
+                                <Row className="mb-3">
+                                    <PreviewRadioButton
+                                        className={
+                                            css.previewRadioButtonsWrapper
+                                        }
+                                        value={AddressType.Company}
+                                        isSelected={!isDraftOrder}
+                                        label="Paid order"
+                                        onClick={() => setIsDraftOrder(false)}
+                                        caption="Create paid order with Awaiting Fulfillment status."
+                                    />
+                                </Row>
+                            </div>
+                            {/*Modal errors*/}
+                            {errors.modal.keys() &&
+                                Array.from(errors.modal.keys()).map((key) => {
+                                    return (
+                                        errors.modal.get(key) && (
+                                            <Alert
+                                                key={key}
+                                                className="mt-1"
+                                                type={AlertType.Error}
+                                                icon={true}
+                                                onClose={() => {
+                                                    logErrors(
+                                                        'modal',
+                                                        null,
+                                                        key
+                                                    )
+                                                }}
+                                            >
+                                                <div
+                                                    dangerouslySetInnerHTML={{
+                                                        __html:
+                                                            errors.modal.get(
+                                                                key
+                                                            ) || '',
+                                                    }}
+                                                />
+                                            </Alert>
+                                        )
+                                    )
+                                })}
                         </div>
-                        {!!lineItemWithError.message && (
-                            <Alert
-                                type={
-                                    lineItemWithError.type === 'warning'
-                                        ? AlertType.Warning
-                                        : AlertType.Error
-                                }
-                                icon={true}
-                            >
-                                {lineItemWithError.message}
-                            </Alert>
-                        )}
-                    </div>
-                    <div className={css.currencyDropdown}>
-                        {storeHasMultipleCurrencies && (
-                            <CurrencyPickerDropdown
-                                availableCurrencies={
-                                    integration.meta.available_currencies
-                                }
+                        <div className={css.currencyDropdown}>
+                            {storeHasMultipleCurrencies && (
+                                <CurrencyPickerDropdown
+                                    availableCurrencies={
+                                        integration.meta.available_currencies
+                                    }
+                                    currency={currency}
+                                    setCurrency={setCurrency}
+                                />
+                            )}
+                        </div>
+                        <div>
+                            <p className="heading-section-semibold">Products</p>
+                        </div>
+                        <div
+                            className={css.relative}
+                            id="product-search-input-tooltip"
+                        >
+                            {!currency && (
+                                <Tooltip target="product-search-input-tooltip">
+                                    Set currency to select products.
+                                </Tooltip>
+                            )}
+                            <ProductSearch
+                                // Evict the search result after new product is added
+                                key={Array.from(products.values()).pop()?.id}
                                 currency={currency}
-                                setCurrency={setCurrency}
-                            />
-                        )}
-                    </div>
-                    <div>
-                        <p className="heading-section-semibold">Products</p>
-                    </div>
-                    <div
-                        className={css.relative}
-                        id="product-search-input-tooltip"
-                    >
-                        {!currency && (
-                            <Tooltip target="product-search-input-tooltip">
-                                Set currency to select products.
-                            </Tooltip>
-                        )}
-                        <ProductSearch
-                            // Evict the search result after new product is added
-                            key={Array.from(products.values()).pop()?.id}
-                            currency={currency}
-                            validationStatus={validationStatus}
-                            onAddCustomProduct={handleAddCustomProduct}
-                            onVariantClicked={async (item, variant) => {
-                                if (
-                                    maybeOpenModifierPopover({
-                                        product: item.data,
-                                        variant,
-                                    })
-                                ) {
-                                    // If modifier popover opened - do not proceed further
-                                    return
-                                }
-
-                                try {
-                                    await handleAddRow({
-                                        product: item.data,
-                                        variant,
-                                    })
-                                } catch (error) {
+                                validationStatus={validationStatus}
+                                onAddCustomProduct={handleAddCustomProduct}
+                                onVariantClicked={async (item, variant) => {
                                     if (
-                                        error instanceof
-                                        ProductModifiersChangedError
+                                        maybeOpenModifierPopover({
+                                            product: item.data,
+                                            variant,
+                                        })
                                     ) {
-                                        setLineItemWithError({
-                                            id: null,
-                                            message:
-                                                BigCommerceErrorMessage.defaultError,
+                                        // If modifier popover opened - do not proceed further
+                                        return
+                                    }
+
+                                    try {
+                                        await handleAddRow({
+                                            product: item.data,
+                                            variant,
+                                        })
+                                    } catch (error) {
+                                        if (
+                                            error instanceof
+                                            ProductModifiersChangedError
+                                        ) {
+                                            maybeOpenModifierPopover({
+                                                product: error.product,
+                                                variant,
+                                            })
+                                        }
+                                    }
+                                }}
+                            />
+                            {validationStatus?.products === false && (
+                                <p
+                                    className={classnames(
+                                        css.caption,
+                                        css.hasError
+                                    )}
+                                >
+                                    Select at least one product.
+                                </p>
+                            )}
+                            {!hasItemsInCart && (
+                                <p className={css.searchbarInfo}>
+                                    This order is currently empty. Add products
+                                    using the search above.
+                                </p>
+                            )}
+                            {integration.meta && hasItemsInCart && (
+                                <OrderTable
+                                    storeHash={integration.meta.store_hash}
+                                    currencyCode={currency}
+                                    lineItems={lineItems}
+                                    products={products}
+                                    lineItemsWithErrors={errors.lineItem}
+                                    onLineItemDiscount={async (
+                                        index,
+                                        listPrice,
+                                        action: 'add' | 'remove'
+                                    ) =>
+                                        await setLineItemDiscount({
+                                            integrationId: integration.id,
+                                            index,
+                                            setIsLoading,
+                                            cart,
+                                            setCart,
+                                            listPrice,
+                                            action,
+                                            logErrors,
                                         })
                                     }
-                                }
-                            }}
-                        />
-                        {validationStatus?.products === false && (
-                            <p
-                                className={classnames(
-                                    css.caption,
-                                    css.hasError
-                                )}
-                            >
-                                Select at least one product.
-                            </p>
-                        )}
-                        {!hasItemsInCart && (
-                            <p className={css.searchbarInfo}>
-                                This order is currently empty. Add products
-                                using the search above.
-                            </p>
-                        )}
-                        {integration.meta && hasItemsInCart && (
-                            <OrderTable
-                                storeHash={integration.meta.store_hash}
-                                currencyCode={currency}
-                                lineItems={lineItems}
-                                products={products}
-                                lineItemWithError={lineItemWithError}
-                                onLineItemDiscount={(index, listPrice) =>
-                                    setLineItemDiscount({
-                                        integrationId: integration.id,
-                                        index,
-                                        setIsLoading,
-                                        cart,
-                                        setCart,
-                                        setLineItemWithError,
-                                        listPrice,
-                                    })
-                                }
-                                onLineItemUpdate={async (index, quantity) =>
-                                    await updateRow({
-                                        integrationId: integration.id,
-                                        index,
-                                        quantity,
-                                        setIsLoading,
-                                        cart,
-                                        setCart,
-                                        lineItemWithError,
-                                        setLineItemWithError,
-                                    })
-                                }
-                                onLineItemModifiersUpdate={async ({
-                                    index,
-                                    quantity,
-                                    optionSelections,
-                                }) =>
-                                    await updateLineItemModifiers({
-                                        integrationId: integration.id,
+                                    onLineItemUpdate={async (index, quantity) =>
+                                        await updateRow({
+                                            integrationId: integration.id,
+                                            index,
+                                            quantity,
+                                            setIsLoading,
+                                            cart,
+                                            setCart,
+                                            logErrors,
+                                        })
+                                    }
+                                    onLineItemModifiersUpdate={async ({
                                         index,
                                         quantity,
                                         optionSelections,
-                                        setIsLoading,
-                                        cart,
-                                        setCart,
-                                        setLineItemWithError,
-                                    })
+                                    }) =>
+                                        await updateLineItemModifiers({
+                                            integrationId: integration.id,
+                                            index,
+                                            quantity,
+                                            optionSelections,
+                                            setIsLoading,
+                                            cart,
+                                            setCart,
+                                            logErrors,
+                                        })
+                                    }
+                                    onLineItemDelete={(index) => {
+                                        void removeRow({
+                                            integrationId: integration.id,
+                                            index,
+                                            setIsLoading,
+                                            cart,
+                                            setCart,
+                                            logErrors,
+                                        })
+                                    }}
+                                />
+                            )}
+                            {isLoading && (
+                                <div className={css.loader}>
+                                    <Loader minHeight={'50px'} />
+                                </div>
+                            )}
+                        </div>
+                        {hasItemsInCart && currency && (
+                            <OrderTotals
+                                checkout={checkout}
+                                cart={cart}
+                                consignment={consignment}
+                                totals={totals}
+                                hasShippingAddress={Boolean(shippingAddress)}
+                                onUpdateConsignmentShippingMethod={
+                                    onUpdateConsignmentShippingMethod
                                 }
-                                onLineItemDelete={(index) => {
-                                    void removeRow({
-                                        integrationId: integration.id,
-                                        index,
-                                        setIsLoading,
-                                        cart,
-                                        setCart,
-                                        setLineItemWithError,
-                                    })
-                                }}
+                                onUpdateDiscountAmount={onUpdateDiscountAmount}
+                                onUpdateCoupon={onUpdateCoupon}
+                                onRemoveCoupon={onRemoveCoupon}
+                                hasError={!validationStatus.checkout}
+                                isTotalPriceLoading={isTotalPriceLoading}
+                                currencyCode={currency}
                             />
                         )}
-                        {isLoading && (
-                            <div className={css.loader}>
-                                <Loader minHeight={'50px'} />
-                            </div>
-                        )}
-                    </div>
-                    {hasItemsInCart && currency && (
-                        <OrderTotals
-                            checkout={checkout}
-                            cart={cart}
-                            consignment={consignment}
-                            totals={totals}
-                            hasShippingAddress={Boolean(shippingAddress)}
-                            onUpdateConsignmentShippingMethod={
-                                onUpdateConsignmentShippingMethod
+                        <ShippingAddressesDropdown
+                            shippingAddress={shippingAddress}
+                            shippingAddresses={shippingAddresses}
+                            onSelectAddress={onSelectAddress}
+                            hasError={
+                                !validationStatus.shippingAddress ||
+                                !!errors.component.get('onSelectAddress')
                             }
-                            onUpdateDiscountAmount={onUpdateDiscountAmount}
-                            onUpdateCoupon={onUpdateCoupon}
-                            onRemoveCoupon={onRemoveCoupon}
-                            hasError={!validationStatus.checkout}
-                            isTotalPriceLoading={isTotalPriceLoading}
-                            currencyCode={currency}
+                            errorMessage={
+                                errors.component.get('onSelectAddress') || ''
+                            }
+                            isDisabled={!currency}
                         />
-                    )}
-                    <ShippingAddressesDropdown
-                        shippingAddress={shippingAddress}
-                        shippingAddresses={shippingAddresses}
-                        onSelectAddress={onSelectAddress}
-                        hasError={!validationStatus.shippingAddress}
-                        isDisabled={!currency}
-                    />
-                    <p className="heading-section-semibold">Comments & Notes</p>
-                    <div>
-                        <Label className={css.label} htmlFor="comment">
-                            Comment
-                        </Label>
-                        <textarea
-                            rows={1}
-                            className="form-control"
-                            placeholder="Add comment..."
-                            value={comment}
-                            onChange={onUpdateComment}
-                            id="comment"
-                            aria-describedby="comment-desc"
-                        />
-                        <p className={css.caption} id="comment-desc">
-                            Visible to customer
+                        <p className="heading-section-semibold">
+                            Comments & Notes
                         </p>
+                        <div>
+                            <Label className={css.label} htmlFor="comment">
+                                Comment
+                            </Label>
+                            <textarea
+                                rows={1}
+                                className="form-control"
+                                placeholder="Add comment..."
+                                value={comment}
+                                onChange={onUpdateComment}
+                                id="comment"
+                                aria-describedby="comment-desc"
+                            />
+                            <p className={css.caption} id="comment-desc">
+                                Visible to customer
+                            </p>
+                        </div>
+                        <div>
+                            <Label className={css.label} htmlFor="note">
+                                Staff note
+                            </Label>
+                            <textarea
+                                rows={1}
+                                className={classnames('form-control')}
+                                placeholder="Add note..."
+                                value={note}
+                                onChange={onUpdateNote}
+                                id="note"
+                                aria-describedby="note-desc"
+                            />
+                            <p className={css.caption} id="note-desc">
+                                Not visible to customer
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <Label className={css.label} htmlFor="note">
-                            Staff note
-                        </Label>
-                        <textarea
-                            rows={1}
-                            className={classnames('form-control')}
-                            placeholder="Add note..."
-                            value={note}
-                            onChange={onUpdateNote}
-                            id="note"
-                            aria-describedby="note-desc"
-                        />
-                        <p className={css.caption} id="note-desc">
-                            Not visible to customer
-                        </p>
+                    {modifiersPopover}
+                </div>
+                <ModalFooter className={css.wrapper}>
+                    <div className={css.actions}>
+                        <Button
+                            tabIndex={0}
+                            intent="secondary"
+                            onClick={() => handleCancel('footer')}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            intent="primary"
+                            tabIndex={0}
+                            onClick={() => void handleAddOrder()}
+                            isDisabled={isTotalPriceLoading || !currency}
+                        >
+                            {isDraftOrder
+                                ? 'Create Draft Order'
+                                : 'Create Paid Order'}
+                        </Button>
                     </div>
-                </div>
-                {modifiersPopover}
-            </div>
-            <ModalFooter className={css.wrapper}>
-                <div className={css.actions}>
-                    <Button
-                        tabIndex={0}
-                        intent="secondary"
-                        onClick={() => handleCancel('footer')}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        intent="primary"
-                        tabIndex={0}
-                        onClick={() => void handleAddOrder()}
-                        isDisabled={isTotalPriceLoading || !currency}
-                    >
-                        {isDraftOrder
-                            ? 'Create Draft Order'
-                            : 'Create Paid Order'}
-                    </Button>
-                </div>
-            </ModalFooter>
-        </Modal>
+                </ModalFooter>
+            </Modal>
+            {errors.global && (
+                <GeneralErrorPopupModal
+                    isOpen={true}
+                    errorMessage={errors.global}
+                    onClose={() => {
+                        logErrors('global', null)
+                        handleCancel('error')
+                    }}
+                />
+            )}
+        </>
     )
 }
 

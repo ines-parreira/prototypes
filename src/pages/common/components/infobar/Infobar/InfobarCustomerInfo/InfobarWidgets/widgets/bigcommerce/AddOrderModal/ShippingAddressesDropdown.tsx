@@ -23,6 +23,7 @@ type Props = {
     onSelectAddress: (
         selectedAddress: BigCommerceCustomerAddress
     ) => Promise<void>
+    errorMessage?: string
     hasError?: boolean
     isDisabled?: boolean
 }
@@ -31,6 +32,7 @@ export function ShippingAddressesDropdown({
     shippingAddress,
     shippingAddresses,
     onSelectAddress,
+    errorMessage = 'Please fill out this field.',
     hasError = false,
     isDisabled = false,
 }: Props) {
@@ -154,7 +156,7 @@ export function ShippingAddressesDropdown({
                 })}
             >
                 {hasError
-                    ? 'Please fill out this field.'
+                    ? errorMessage
                     : 'Same address will be used for billing address.'}
             </p>
         </div>

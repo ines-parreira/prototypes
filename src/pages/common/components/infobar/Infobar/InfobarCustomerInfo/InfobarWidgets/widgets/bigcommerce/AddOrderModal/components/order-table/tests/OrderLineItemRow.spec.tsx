@@ -173,6 +173,6 @@ describe('<OrderLineItemRow/>', () => {
 
         userEvent.click(screen.getByRole('button', {name: /Apply/i}))
 
-        expect(onLineItemDiscountMock).toHaveBeenCalledWith(0, 73)
+        expect(onLineItemDiscountMock).toHaveBeenCalledWith(0, 73, 'add')
     })
 })

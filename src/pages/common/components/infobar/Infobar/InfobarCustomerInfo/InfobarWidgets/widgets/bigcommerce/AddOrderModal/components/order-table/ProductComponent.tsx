@@ -8,12 +8,13 @@ import {
     BigCommerceProductVariant,
 } from 'models/integration/types'
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
-import {ProductStockQuantity} from '../../ProductStockQuantity'
+import errorIcon from 'assets/img/icons/error.svg'
 import {
     isBigCommerceCartLineItem,
     isBigCommerceProduct,
     useCanViewBigCommerceCreateOrderModifiers,
-} from '../../utils'
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/utils'
+import {ProductStockQuantity} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/ProductStockQuantity'
 import css from './OrderLineItemRow.less'
 
 type Props = {
@@ -21,6 +22,7 @@ type Props = {
     lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
     storeHash: string
     onOpenModifiers: () => void
+    errorMessage?: Maybe<string>
 }
 const StockNotAvailable = () => <span className="text-muted">N/A</span>
 
@@ -92,6 +94,7 @@ export default function ProductComponent({
     lineItem,
     storeHash,
     onOpenModifiers,
+    errorMessage,
 }: Props) {
     const sku = lineItem.sku
     const renderImage = () => {
@@ -201,6 +204,12 @@ export default function ProductComponent({
                     product={product}
                     onOpenModifiers={onOpenModifiers}
                 />
+                {errorMessage && (
+                    <div className={`mt-2 ${css.errorRow}`}>
+                        <img src={errorIcon} alt="icon" />
+                        <span className="ml-3">{errorMessage}</span>
+                    </div>
+                )}
             </div>
         </td>
     )

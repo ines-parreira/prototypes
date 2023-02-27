@@ -2,14 +2,13 @@ import React from 'react'
 import {Table} from 'reactstrap'
 
 import {
-    BigCommerceCreateOrderErrorType,
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
     BigCommerceProductsListType,
 } from 'models/integration/types'
 
 import {OptionSelection} from 'models/integration/resources/bigcommerce'
-import {isBigCommerceCartLineItem} from '../../utils'
+import {computeLineItemErrorKey, isBigCommerceCartLineItem} from '../../utils'
 
 import OrderLineItemRow from './OrderLineItemRow'
 import css from './OrderTable.less'
@@ -19,8 +18,12 @@ type Props = {
     currencyCode: string | undefined
     lineItems: Array<BigCommerceCartLineItem | BigCommerceCustomCartLineItem>
     products?: BigCommerceProductsListType
-    lineItemWithError?: BigCommerceCreateOrderErrorType
-    onLineItemDiscount: (index: number, newPrice: number) => void
+    lineItemsWithErrors?: Map<string, string | null>
+    onLineItemDiscount: (
+        index: number,
+        newPrice: number,
+        action: 'add' | 'remove'
+    ) => void
     onLineItemDelete: (index: number) => void
     onLineItemUpdate: (
         index: number,
@@ -58,7 +61,7 @@ function getOrderLineItemInfo(
 export default function OrderTable({
     lineItems = [],
     products = new Map(),
-    lineItemWithError = {id: null, message: ''},
+    lineItemsWithErrors = new Map(),
     storeHash,
     currencyCode,
     onLineItemUpdate,
@@ -85,7 +88,10 @@ export default function OrderTable({
                     </tr>
                 )}
                 {lineItems.map((lineItem, index) => {
-                    const hasError = lineItemWithError.id === lineItem.id
+                    const lineItemErrorMessage = lineItemsWithErrors?.get(
+                        computeLineItemErrorKey({lineItem: lineItem})
+                    )
+                    const hasError = !!lineItemErrorMessage
 
                     const {uid, product} = getOrderLineItemInfo(
                         lineItem,
@@ -107,6 +113,7 @@ export default function OrderTable({
                             onChangeModifiers={onLineItemModifiersUpdate}
                             onLineItemDiscount={onLineItemDiscount}
                             hasError={hasError}
+                            errorMessage={lineItemErrorMessage}
                         />
                     )
                 })}

@@ -58,9 +58,13 @@ export const useShippingMethods = ({
                 if (hasAvailableSelectedShippingMethod) {
                     setIsUpdatingConsignment(true)
 
-                    await onUpdateConsignmentShippingMethod(
-                        selectedShippingMethod.id
-                    )
+                    try {
+                        await onUpdateConsignmentShippingMethod(
+                            selectedShippingMethod.id
+                        )
+                    } catch (error) {
+                        console.error(error)
+                    }
 
                     return setIsUpdatingConsignment(false)
                 }
@@ -76,13 +80,18 @@ export const useShippingMethods = ({
                 // based on type and description
                 if (similarShippingOptions.length === 1) {
                     setIsUpdatingConsignment(true)
-
-                    await onUpdateConsignmentShippingMethod(
-                        similarShippingOptions[0].id
-                    )
-
-                    setIsUpdatingConsignment(false)
-                    return setSelectedShippingMethod(similarShippingOptions[0])
+                    try {
+                        await onUpdateConsignmentShippingMethod(
+                            similarShippingOptions[0].id
+                        )
+                        return setSelectedShippingMethod(
+                            similarShippingOptions[0]
+                        )
+                    } catch (error) {
+                        console.error(error)
+                    } finally {
+                        setIsUpdatingConsignment(false)
+                    }
                 }
 
                 return setSelectedShippingMethod(null)

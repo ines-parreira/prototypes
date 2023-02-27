@@ -1,42 +1,41 @@
 import _debounce from 'lodash/debounce'
-import axios from 'axios'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
     addBigCommerceCheckoutBillingAddress,
     addBigCommerceLineItem,
-    AddLineItemError,
     createBigCommerceCart,
     createBigCommerceCheckoutConsignment,
     deleteBigCommerceCart,
     editBigCommerceLineItem,
-    EditBigCommerceLineItemError,
     editBigCommerceLineItemModifiers,
     getBigCommerceCheckout,
     getBigCommerceDraftOrderUrl,
     OptionSelection,
-    ProductModifiersChangedError,
     removeBigCommerceLineItem,
     updateBigCommerceCheckoutConsignment,
 } from 'models/integration/resources/bigcommerce'
 import {
+    BigCommerceActionType,
     BigCommerceCart,
     BigCommerceCartLineItem,
-    BigCommerceCustomCartLineItem,
-    BigCommerceCustomerAddress,
-    BigCommerceCustomer,
-    BigCommerceProduct,
-    BigCommerceProductVariant,
     BigCommerceCheckout,
-    BigCommerceIntegration,
-    BigCommerceActionType,
-    OrderStatusIDType,
-    OrderPaymentMethodType,
-    BigCommerceTaxCheckout,
+    BigCommerceCustomCartLineItem,
+    BigCommerceCustomer,
+    BigCommerceCustomerAddress,
     BigCommerceCustomProduct,
-    BigCommerceErrorMessage,
-    BigCommerceCreateOrderErrorType,
+    BigCommerceGeneralError,
+    BigCommerceGeneralErrorMessage,
+    BigCommerceIntegration,
+    BigCommerceLineItemError,
+    BigCommerceLineItemErrorMessage,
+    BigCommerceProduct,
     BigCommerceProductsListType,
+    BigCommerceProductVariant,
+    BigCommerceTaxCheckout,
+    OrderPaymentMethodType,
+    OrderStatusIDType,
+    ProductModifiersChangedError,
 } from 'models/integration/types'
 import {StoreDispatch} from 'state/types'
 import {executeAction} from 'state/infobar/actions'
@@ -174,7 +173,7 @@ export const addCustomLineItem = async ({
     setIsLoading,
     setCart,
     setProducts,
-    setLineItemWithError,
+    logErrors,
 }: {
     integrationId: number
     customProduct: BigCommerceCustomProduct
@@ -183,7 +182,11 @@ export const addCustomLineItem = async ({
     setIsLoading: (state: boolean) => void
     setCart: (cart: BigCommerceCart) => void
     setProducts: (products: BigCommerceProductsListType) => void
-    setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
+    logErrors: (
+        errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
+        errorMessage: string | null,
+        errorKey?: string | undefined
+    ) => void
 }) => {
     if (!cart?.id) {
         return
@@ -200,6 +203,7 @@ export const addCustomLineItem = async ({
 
         const newCustomProduct = newCart.line_items.custom_items.find(
             (item) =>
+                // Custom Line Items are identified by unique (name, list_price)
                 item.name === customProduct.name &&
                 item.list_price === customProduct.list_price
         )
@@ -216,19 +220,39 @@ export const addCustomLineItem = async ({
 
         setProducts(newProducts)
         setCart(newCart)
-        setLineItemWithError({id: null, message: ''})
 
         logAddProduct({integrationId, cart: newCart, product: newCustomProduct})
-    } catch (error) {
-        const message =
-            error instanceof AddLineItemError
-                ? error.message
-                : BigCommerceErrorMessage.defaultError
 
-        setLineItemWithError({
-            id: null,
-            message,
-        })
+        // Error Handling
+        logErrors(
+            'modal',
+            null,
+            computeLineItemErrorKey({product: customProduct})
+        )
+        logErrors(
+            'lineItem',
+            null,
+            computeLineItemErrorKey({product: customProduct})
+        )
+    } catch (error) {
+        // Error Handling
+        if (
+            error instanceof BigCommerceGeneralError &&
+            error.message === BigCommerceGeneralErrorMessage.rateLimitingError
+        ) {
+            logErrors('global', error.message)
+        } else {
+            logErrors(
+                'modal',
+                computeLineItemErrorMessage(
+                    error,
+                    computeLineItemName(customProduct),
+                    BigCommerceLineItemErrorMessage.defaultAddLineItemError,
+                    true
+                ),
+                computeLineItemErrorKey({product: customProduct})
+            )
+        }
     } finally {
         setIsLoading(false)
     }
@@ -244,7 +268,7 @@ export const addLineItem = async ({
     setIsLoading,
     setCart,
     setProducts,
-    setLineItemWithError,
+    logErrors,
 }: {
     integrationId: number
     product: BigCommerceProduct
@@ -255,7 +279,11 @@ export const addLineItem = async ({
     setIsLoading: (state: boolean) => void
     setCart: (cart: BigCommerceCart) => void
     setProducts: (products: BigCommerceProductsListType) => void
-    setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
+    logErrors: (
+        errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
+        errorMessage: string | null,
+        errorKey?: string | undefined
+    ) => void
 }) => {
     if (!cart?.id) {
         return
@@ -280,32 +308,164 @@ export const addLineItem = async ({
 
         setProducts(newProducts)
         setCart(newCart)
-        setLineItemWithError({id: null, message: ''})
 
         logAddProduct({integrationId, cart: newCart, product, variant})
+
+        // Error Handling
+        logErrors(
+            'modal',
+            null,
+            computeLineItemErrorKey({product: product, variant: variant})
+        )
+        logErrors(
+            'lineItem',
+            null,
+            computeLineItemErrorKey({product: product, variant: variant})
+        )
     } catch (error) {
-        // Bubble  `ProductModifiersChangedError` up, instead of calling `setLineItemWithError`
+        // Bubble up `ProductModifiersChangedError`
         if (error instanceof ProductModifiersChangedError) {
             throw error
         }
-
-        const lineItems = cart.line_items.physical_items.concat(
-            cart.line_items.digital_items
-        )
-        const lineItem = lineItems.find(
-            (l) => l.product_id === product.id && l.variant_id === variant.id
-        )
-
-        setLineItemWithError({
-            id: lineItem ? lineItem.id : null,
-            message:
-                error instanceof AddLineItemError
-                    ? error.message
-                    : BigCommerceErrorMessage.defaultError,
-        })
+        // Error Handling
+        if (
+            error instanceof BigCommerceGeneralError &&
+            error.message === BigCommerceGeneralErrorMessage.rateLimitingError
+        ) {
+            logErrors('global', error.message)
+        } else {
+            logErrors(
+                'modal',
+                computeLineItemErrorMessage(
+                    error,
+                    computeLineItemName(product),
+                    BigCommerceLineItemErrorMessage.defaultAddLineItemError,
+                    true
+                ),
+                computeLineItemErrorKey({product: product, variant: variant})
+            )
+        }
     } finally {
         setIsLoading(false)
     }
+}
+
+function computeLineItemCustomErrorMessage(
+    errorMessage: string,
+    productName: string,
+    addStyling = false
+): string {
+    const product = addStyling ? `<b>${productName}</b>` : productName
+
+    if (
+        errorMessage.includes(
+            BigCommerceLineItemErrorMessage.defaultAddLineItemError
+        )
+    ) {
+        return `${product} could not be added to cart.`
+    } else if (
+        errorMessage.includes(
+            BigCommerceLineItemErrorMessage.defaultUpdateLineItemError
+        )
+    ) {
+        return `${product} could not be updated.`
+    } else if (
+        errorMessage.includes(
+            BigCommerceLineItemErrorMessage.defaultAddDiscountLineItemError
+        )
+    ) {
+        return `Discount could not be applied for ${product}.`
+    } else if (
+        errorMessage.includes(
+            BigCommerceLineItemErrorMessage.defaultRemoveDiscountLineItemError
+        )
+    ) {
+        return `Discount could not be removed for ${product}.`
+    } else if (
+        errorMessage.includes(
+            BigCommerceLineItemErrorMessage.defaultRemoveLineItemError
+        )
+    ) {
+        return `${product} could not be removed from cart.`
+    } else if (
+        errorMessage.includes(
+            BigCommerceLineItemErrorMessage.onlyOfflineAvailabilityError
+        )
+    ) {
+        return `${product} cannot be purchased in the online store.`
+    } else if (
+        errorMessage.includes(
+            BigCommerceLineItemErrorMessage.insufficientInventoryError
+        )
+    ) {
+        return `Insufficient inventory for ${product}. Please adjust product quantity.`
+    } else if (
+        errorMessage.includes(
+            BigCommerceLineItemErrorMessage.invalidQuantityError
+        )
+    ) {
+        return `Invalid quantity selected for ${product}. Please adjust product quantity.`
+    }
+
+    return errorMessage
+}
+
+function computeLineItemName(
+    lineItem:
+        | BigCommerceCartLineItem
+        | BigCommerceCustomCartLineItem
+        | BigCommerceProduct
+        | BigCommerceCustomProduct
+) {
+    return lineItem.name
+}
+
+function computeLineItemErrorMessage(
+    error: Maybe<
+        | BigCommerceGeneralErrorMessage
+        | ProductModifiersChangedError
+        | BigCommerceLineItemError
+        | any
+    >,
+    productName: string,
+    defaultError: string,
+    addStyling = false
+): string {
+    return error instanceof BigCommerceLineItemError
+        ? computeLineItemCustomErrorMessage(
+              error.message,
+              productName,
+              addStyling
+          )
+        : defaultError.startsWith('Product')
+        ? defaultError.substring(defaultError.indexOf(' ') + 1)
+        : defaultError
+}
+
+export const computeLineItemErrorKey = ({
+    lineItem,
+    product,
+    variant,
+}: {
+    lineItem?: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
+    product?: BigCommerceProduct | BigCommerceCustomProduct
+    variant?: BigCommerceProductVariant
+}): string => {
+    if (lineItem) {
+        return isBigCommerceCartLineItem(lineItem)
+            ? `${lineItem.product_id}_${lineItem.variant_id}` // Line Item
+            : `${lineItem.name}_${lineItem.list_price}` // Custom Line Item
+    }
+    if (product && variant && isBigCommerceProduct(product)) {
+        // Product
+        return `${product.id}_${variant?.id}`
+    }
+    if (product && !variant && !isBigCommerceProduct(product)) {
+        // Custom Product
+        return `${product.name}_${product?.list_price}`
+    }
+
+    return ''
 }
 
 export const removeRow = async ({
@@ -314,40 +474,74 @@ export const removeRow = async ({
     setIsLoading,
     cart,
     setCart,
-    setLineItemWithError,
+    logErrors,
 }: {
     integrationId: number
     index: number
     setIsLoading: (state: boolean) => void
     cart: Maybe<BigCommerceCart>
     setCart: (cart: BigCommerceCart) => void
-    setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
+    logErrors: (
+        errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
+        errorMessage: string | null,
+        errorKey?: string | undefined
+    ) => void
 }) => {
-    setIsLoading(true)
     if (!cart) {
         return
     }
+
+    setIsLoading(true)
+
     const lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem = [
         ...cart.line_items.physical_items,
         ...cart.line_items.digital_items,
         ...cart.line_items.custom_items,
     ][index]
 
-    const newCart = await removeBigCommerceLineItem(
-        integrationId,
-        cart.id,
-        lineItem.id
-    )
-    setIsLoading(false)
-    setCart(newCart)
+    try {
+        const newCart = await removeBigCommerceLineItem(
+            integrationId,
+            cart.id,
+            lineItem.id
+        )
 
-    const eventName = SegmentEvent.BigCommerceCreateOrderRemoveRow
-    logEvent(eventName, {
-        integrationId: integrationId,
-        index: index,
-        newCart: newCart,
-    })
-    setLineItemWithError({id: null, message: ''})
+        setCart(newCart)
+
+        logEvent(SegmentEvent.BigCommerceCreateOrderRemoveRow, {
+            integrationId: integrationId,
+            index: index,
+            newCart: newCart,
+        })
+
+        // Error Handling
+        logErrors('modal', null, computeLineItemErrorKey({lineItem: lineItem}))
+        logErrors(
+            'lineItem',
+            null,
+            computeLineItemErrorKey({lineItem: lineItem})
+        )
+    } catch (error) {
+        // Error Handling
+        if (
+            error instanceof BigCommerceGeneralError &&
+            error.message === BigCommerceGeneralErrorMessage.rateLimitingError
+        ) {
+            logErrors('global', error.message)
+        } else {
+            logErrors(
+                'lineItem',
+                computeLineItemErrorMessage(
+                    error,
+                    computeLineItemName(lineItem),
+                    BigCommerceLineItemErrorMessage.defaultRemoveLineItemError
+                ),
+                computeLineItemErrorKey({lineItem: lineItem})
+            )
+        }
+    } finally {
+        setIsLoading(false)
+    }
 }
 
 export const updateRow = async ({
@@ -357,8 +551,7 @@ export const updateRow = async ({
     setIsLoading,
     cart,
     setCart,
-    lineItemWithError,
-    setLineItemWithError,
+    logErrors,
 }: {
     integrationId: number
     index: number
@@ -366,8 +559,11 @@ export const updateRow = async ({
     setIsLoading: (state: boolean) => void
     cart: Maybe<BigCommerceCart>
     setCart: (cart: BigCommerceCart) => void
-    lineItemWithError?: BigCommerceCreateOrderErrorType
-    setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
+    logErrors: (
+        errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
+        errorMessage: string | null,
+        errorKey?: string | undefined
+    ) => void
 }) => {
     if (!cart) {
         return
@@ -384,21 +580,6 @@ export const updateRow = async ({
     try {
         if (!isBigCommerceCartLineItem(lineItem)) {
             // Custom Line Item - cannot be updated via API
-            if (
-                lineItem.quantity === quantity &&
-                lineItemWithError &&
-                lineItemWithError.message
-            ) {
-                setLineItemWithError({id: null, message: ''})
-                return
-            }
-
-            setLineItemWithError({
-                id: lineItem.id,
-                message:
-                    BigCommerceErrorMessage.customLineItemCannotBeUpdatedError,
-                type: 'warning',
-            })
             return
         }
 
@@ -417,17 +598,31 @@ export const updateRow = async ({
             quantity,
             newCart,
         })
-        setLineItemWithError({id: null, message: ''})
-    } catch (error) {
-        setLineItemWithError({
-            id: lineItem.id,
-            message:
-                error instanceof EditBigCommerceLineItemError
-                    ? error.message
-                    : BigCommerceErrorMessage.defaultError,
-        })
 
-        // Rethrow the error on purpose here
+        // Error Handling
+        logErrors('modal', null, computeLineItemErrorKey({lineItem: lineItem}))
+        logErrors(
+            'lineItem',
+            null,
+            computeLineItemErrorKey({lineItem: lineItem})
+        )
+    } catch (error) {
+        // Error Handling
+        if (
+            error instanceof BigCommerceGeneralError &&
+            error.message === BigCommerceGeneralErrorMessage.rateLimitingError
+        ) {
+            logErrors('global', error.message)
+        } else {
+            logErrors(
+                'lineItem',
+                error instanceof BigCommerceLineItemError
+                    ? error.message
+                    : BigCommerceLineItemErrorMessage.defaultUpdateLineItemError,
+                computeLineItemErrorKey({lineItem: lineItem})
+            )
+        }
+        // Rethrow the error for callback consumer
         throw error
     } finally {
         setIsLoading(false)
@@ -442,7 +637,7 @@ export const updateLineItemModifiers = async ({
     setIsLoading,
     cart,
     setCart,
-    setLineItemWithError,
+    logErrors,
 }: {
     integrationId: number
     index: number
@@ -451,7 +646,11 @@ export const updateLineItemModifiers = async ({
     setIsLoading: (state: boolean) => void
     cart: Maybe<BigCommerceCart>
     setCart: (cart: BigCommerceCart) => void
-    setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
+    logErrors: (
+        errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
+        errorMessage: string | null,
+        errorKey?: string | undefined
+    ) => void
 }) => {
     if (!cart) {
         return
@@ -467,6 +666,7 @@ export const updateLineItemModifiers = async ({
 
     try {
         if (!isBigCommerceCartLineItem(lineItem)) {
+            // Custom Line Item - cannot be updated via API
             return
         }
 
@@ -480,16 +680,30 @@ export const updateLineItemModifiers = async ({
 
         setCart(newCart)
 
-        setLineItemWithError({id: null, message: ''})
+        // Error Handling
+        logErrors('modal', null, computeLineItemErrorKey({lineItem: lineItem}))
+        logErrors(
+            'lineItem',
+            null,
+            computeLineItemErrorKey({lineItem: lineItem})
+        )
     } catch (error) {
-        setLineItemWithError({
-            id: lineItem.id,
-            message:
-                error instanceof EditBigCommerceLineItemError
+        // Error Handling
+        if (
+            error instanceof BigCommerceGeneralError &&
+            error.message === BigCommerceGeneralErrorMessage.rateLimitingError
+        ) {
+            logErrors('global', error.message)
+        } else {
+            logErrors(
+                'lineItem',
+                error instanceof BigCommerceLineItemError
                     ? error.message
-                    : BigCommerceErrorMessage.defaultError,
-        })
-
+                    : BigCommerceLineItemErrorMessage.defaultUpdateLineItemError,
+                computeLineItemErrorKey({lineItem: lineItem})
+            )
+        }
+        // Rethrow the error for callback consumer
         throw error
     } finally {
         setIsLoading(false)
@@ -502,22 +716,28 @@ export const setLineItemDiscount = async ({
     setIsLoading,
     cart,
     setCart,
-    setLineItemWithError,
     listPrice,
+    action = 'add',
+    logErrors,
 }: {
     integrationId: number
     index: number
     setIsLoading: (state: boolean) => void
     cart: Maybe<BigCommerceCart>
     setCart: (cart: BigCommerceCart) => void
-    setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
     listPrice: number
+    action: 'add' | 'remove'
+    logErrors: (
+        errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
+        errorMessage: string | null,
+        errorKey?: string | undefined
+    ) => void
 }) => {
-    setIsLoading(true)
-
     if (!cart) {
         return
     }
+
+    setIsLoading(true)
 
     const lineItem = [
         ...cart.line_items.physical_items,
@@ -531,6 +751,10 @@ export const setLineItemDiscount = async ({
             lineItem,
             quantity: lineItem.quantity,
             listPrice: listPrice,
+            defaultError:
+                action === 'add'
+                    ? BigCommerceLineItemErrorMessage.defaultAddDiscountLineItemError
+                    : BigCommerceLineItemErrorMessage.defaultRemoveDiscountLineItemError,
         })
 
         setCart(newCart)
@@ -542,12 +766,34 @@ export const setLineItemDiscount = async ({
             newCart,
         })
 
-        setLineItemWithError({id: null, message: ''})
+        // Error Handling
+        logErrors(
+            'lineItem',
+            null,
+            computeLineItemErrorKey({lineItem: lineItem})
+        )
     } catch (error) {
-        setLineItemWithError({
-            id: lineItem.id,
-            message: BigCommerceErrorMessage.defaultError,
-        })
+        // Error Handling
+        if (
+            error instanceof BigCommerceGeneralError &&
+            error.message === BigCommerceGeneralErrorMessage.rateLimitingError
+        ) {
+            logErrors('global', error.message)
+        } else {
+            logErrors(
+                'lineItem',
+                computeLineItemErrorMessage(
+                    error,
+                    computeLineItemName(lineItem),
+                    action === 'add'
+                        ? BigCommerceLineItemErrorMessage.defaultAddDiscountLineItemError
+                        : BigCommerceLineItemErrorMessage.defaultRemoveDiscountLineItemError
+                ),
+                computeLineItemErrorKey({lineItem: lineItem})
+            )
+        }
+        // Rethrow the error for callback consumer
+        throw error
     } finally {
         setIsLoading(false)
     }
@@ -690,7 +936,7 @@ export async function upsertCheckoutConsignment({
             payload: singleConsignmentPayload,
         })
     } catch (error) {
-        if (axios.isAxiosError(error) && error.response?.status === 404) {
+        if (error instanceof BigCommerceGeneralError && error.status === 404) {
             return await getBigCommerceCheckout({
                 integrationId,
                 checkoutId: cart.id,

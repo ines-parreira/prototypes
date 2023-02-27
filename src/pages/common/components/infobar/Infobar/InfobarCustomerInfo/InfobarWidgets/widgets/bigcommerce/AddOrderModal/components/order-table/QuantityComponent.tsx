@@ -11,6 +11,7 @@ type Props = {
     onDelete: (index: number) => void
     index: number
     hasError: boolean
+    readOnly?: boolean
 }
 export function QuantityComponent({
     quantity,
@@ -19,6 +20,7 @@ export function QuantityComponent({
     onDelete,
     index,
     hasError,
+    readOnly = false,
 }: Props) {
     const min = 1
     const tooltipId = `tooltip-${index}`
@@ -38,6 +40,7 @@ export function QuantityComponent({
                     hasError={hasError}
                     onFocus={handleOnClick}
                     onClick={handleOnClick}
+                    readOnly={readOnly}
                 />
                 {removable && (
                     <span>

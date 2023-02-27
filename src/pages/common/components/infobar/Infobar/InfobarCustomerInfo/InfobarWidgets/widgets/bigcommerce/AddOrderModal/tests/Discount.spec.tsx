@@ -45,11 +45,11 @@ describe('<Discount />', () => {
         expect(onUpdateDiscountAmountMock).toHaveBeenNthCalledWith(1, 5.55)
 
         // Popover gets closed
-        expect(
-            screen.queryByRole('button', {name: /Apply/i})
-        ).not.toBeInTheDocument()
-
-        expect(screen.getByRole('status')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', {name: /Apply/i})
+            ).not.toBeInTheDocument()
+        })
 
         rerender(
             <Discount
@@ -61,7 +61,6 @@ describe('<Discount />', () => {
             />
         )
 
-        expect(await screen.findByRole('status')).not.toBeInTheDocument()
         expect(baseElement).toMatchSnapshot('discount set')
 
         userEvent.click(screen.getByRole('button', {name: /Add discount/i}))

@@ -6,7 +6,11 @@ import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomer
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import Label from 'pages/common/forms/Label/Label'
 
-import {BigCommerceCart} from 'models/integration/types'
+import {
+    BigCommerceCart,
+    BigCommerceGeneralError,
+    BigCommerceGeneralErrorMessage,
+} from 'models/integration/types'
 import Spinner from 'pages/common/components/Spinner'
 import getShopifyMoneySymbol from '../../shopify/shared/helpers'
 
@@ -29,31 +33,66 @@ export function Discount({cart, currencyCode, onUpdateDiscountAmount}: Props) {
     const [discountAmount, setDiscountAmount] = useState<number | undefined>(
         cart?.discount_amount
     )
+    const [error, setError] = useState<string | null>(null)
 
-    const onClose = () => setIsPopoverOpen(false)
+    const onClose = () => {
+        setError(null)
+        setIsPopoverOpen(false)
+    }
 
     const onApply = async () => {
         if (typeof discountAmount === 'undefined') {
             return
         }
 
-        onClose()
-
         setIsUpdatingDiscount(true)
-        await onUpdateDiscountAmount(discountAmount)
-        setIsUpdatingDiscount(false)
+
+        try {
+            await onUpdateDiscountAmount(discountAmount)
+            onClose()
+        } catch (error) {
+            if (
+                error instanceof BigCommerceGeneralError &&
+                error.message ===
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+            ) {
+                onClose()
+            } else {
+                setError(BigCommerceGeneralErrorMessage.defaultError)
+            }
+        } finally {
+            setIsUpdatingDiscount(false)
+        }
     }
 
     const onRemove = async () => {
-        onClose()
-
         setIsUpdatingDiscount(true)
-        await onUpdateDiscountAmount(0)
-        setDiscountAmount(0)
-        setIsUpdatingDiscount(false)
+
+        try {
+            await onUpdateDiscountAmount(0)
+            onClose()
+            setDiscountAmount(0)
+        } catch (error) {
+            if (
+                error instanceof BigCommerceGeneralError &&
+                error.message ===
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+            ) {
+                onClose()
+            } else {
+                setError(BigCommerceGeneralErrorMessage.defaultError)
+            }
+        } finally {
+            setIsUpdatingDiscount(false)
+        }
     }
 
-    const onToggle = () => setIsPopoverOpen((isDropdownOpen) => !isDropdownOpen)
+    const onToggle = () => {
+        if (isPopoverOpen) {
+            setError(null)
+        }
+        setIsPopoverOpen((isDropdownOpen) => !isDropdownOpen)
+    }
 
     const cartDiscountAmount = cart?.discount_amount ?? 0
 
@@ -92,7 +131,7 @@ export function Discount({cart, currencyCode, onUpdateDiscountAmount}: Props) {
                 onToggle={onToggle}
                 target={buttonRef}
                 body={
-                    <div>
+                    <div className={css.discountContainer}>
                         <Label htmlFor="discount-amount" className={css.label}>
                             Discount amount
                         </Label>
@@ -109,7 +148,13 @@ export function Discount({cart, currencyCode, onUpdateDiscountAmount}: Props) {
                             hasControls={false}
                             step={0.01}
                             id="discount-amount"
+                            hasError={!!error}
                         />
+                        {error && (
+                            <div className={`mt-1 ${css.errorMessage}`}>
+                                {error}
+                            </div>
+                        )}
                     </div>
                 }
                 footer={

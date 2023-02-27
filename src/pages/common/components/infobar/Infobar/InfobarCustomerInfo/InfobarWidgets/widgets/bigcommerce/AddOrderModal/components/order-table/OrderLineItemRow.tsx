@@ -34,7 +34,12 @@ type Props = {
     }) => Promise<void>
 
     hasError: boolean
-    onLineItemDiscount: (index: number, discountAmount: number) => void
+    errorMessage?: Maybe<string>
+    onLineItemDiscount: (
+        index: number,
+        discountAmount: number,
+        action: 'add' | 'remove'
+    ) => void
 }
 
 export default function OrderLineItemRow({
@@ -48,6 +53,7 @@ export default function OrderLineItemRow({
     onChange,
     onChangeModifiers,
     hasError,
+    errorMessage,
     onLineItemDiscount,
 }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -113,8 +119,8 @@ export default function OrderLineItemRow({
         })
     }
 
-    const handleDiscount = (newPrice: number) => {
-        onLineItemDiscount(index, newPrice)
+    const handleDiscount = (newPrice: number, action: 'add' | 'remove') => {
+        onLineItemDiscount(index, newPrice, action)
     }
 
     const [quantity, setQuantity] = useState<number>(1)
@@ -130,6 +136,7 @@ export default function OrderLineItemRow({
                 lineItem={lineItem}
                 storeHash={storeHash}
                 onOpenModifiers={handleOpenEditModifiers}
+                errorMessage={errorMessage}
             />
             <PriceComponent
                 lineItem={lineItem}
@@ -143,6 +150,7 @@ export default function OrderLineItemRow({
                 onDelete={onDelete}
                 removable={removable}
                 hasError={hasError}
+                readOnly={!isBigCommerceCartLineItem(lineItem)}
             />
             <TotalPriceComponent
                 currencyCode={currencyCode}

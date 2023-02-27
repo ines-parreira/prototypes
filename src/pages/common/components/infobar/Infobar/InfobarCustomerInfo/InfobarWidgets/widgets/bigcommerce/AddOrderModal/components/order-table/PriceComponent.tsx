@@ -20,7 +20,7 @@ import css from './OrderLineItemRow.less'
 type Props = {
     lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
     currencyCode: Maybe<string>
-    handleDiscount: (newPrice: number) => void
+    handleDiscount: (newPrice: number, action: 'add' | 'remove') => void
 }
 
 const Amount = ({
@@ -103,9 +103,7 @@ export default function PriceComponent({
                 target={buttonRef}
                 body={
                     <div className={css.priceComponentPopover}>
-                        <Label htmlFor="discount-amount" className={css.label}>
-                            Discount amount
-                        </Label>
+                        <Label htmlFor="discount-amount">Discount amount</Label>
                         <NumberInput
                             id="discount-amount"
                             value={discountAmount}
@@ -135,9 +133,14 @@ export default function PriceComponent({
                             <Button
                                 intent="destructive"
                                 onClick={() => {
-                                    handleDiscount(fullPrice)
-                                    setDiscountAmount(0)
-                                    setIsPopoverOpen(false)
+                                    try {
+                                        handleDiscount(fullPrice, 'remove')
+                                        setDiscountAmount(0)
+                                    } catch (error) {
+                                        console.error(error)
+                                    } finally {
+                                        setIsPopoverOpen(false)
+                                    }
                                 }}
                             >
                                 Remove
@@ -152,12 +155,18 @@ export default function PriceComponent({
                         )}
                         <Button
                             onClick={() => {
-                                handleDiscount(
-                                    discountAmount
-                                        ? fullPrice - discountAmount
-                                        : fullPrice
-                                )
-                                setIsPopoverOpen(false)
+                                try {
+                                    handleDiscount(
+                                        discountAmount
+                                            ? fullPrice - discountAmount
+                                            : fullPrice,
+                                        'add'
+                                    )
+                                } catch (error) {
+                                    console.error(error)
+                                } finally {
+                                    setIsPopoverOpen(false)
+                                }
                             }}
                             isDisabled={hasError}
                         >

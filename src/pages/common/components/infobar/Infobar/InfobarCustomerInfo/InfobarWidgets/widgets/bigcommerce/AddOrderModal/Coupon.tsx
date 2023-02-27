@@ -6,7 +6,13 @@ import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomer
 import InputField from 'pages/common/forms/input/InputField'
 import Spinner from 'pages/common/components/Spinner'
 
-import {BigCommerceCart} from 'models/integration/types'
+import {
+    BigCommerceCart,
+    BigCommerceCouponError,
+    BigCommerceCouponErrorMessage,
+    BigCommerceGeneralErrorMessage,
+    BigCommerceGeneralError,
+} from 'models/integration/types'
 
 import {PopoverContainer} from './components/popover-container/PopoverContainer'
 
@@ -62,7 +68,10 @@ export function Coupon({
         code: appliedCoupon?.code ?? '',
     })
 
-    const onClose = () => setIsPopoverOpen(false)
+    const onClose = () => {
+        dispatch({type: 'SET_ERROR', error: ''})
+        setIsPopoverOpen(false)
+    }
 
     const onApply = async () => {
         dispatch({type: 'SET_LOADING', loading: true})
@@ -70,22 +79,59 @@ export function Coupon({
         try {
             await onUpdateCoupon(state.code)
             onClose()
-            dispatch({type: 'SET_LOADING', loading: false})
         } catch (error) {
-            dispatch({type: 'SET_ERROR', error: 'Code is not valid.'})
+            if (
+                error instanceof BigCommerceGeneralError &&
+                error.message ===
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+            ) {
+                onClose()
+            } else {
+                error instanceof BigCommerceCouponError
+                    ? dispatch({type: 'SET_ERROR', error: error.message})
+                    : dispatch({
+                          type: 'SET_ERROR',
+                          error: BigCommerceCouponErrorMessage.defaultCouponError,
+                      })
+            }
+        } finally {
+            dispatch({type: 'SET_LOADING', loading: false})
         }
     }
 
     const onRemove = async () => {
-        onClose()
-
         dispatch({type: 'SET_LOADING', loading: true})
-        await onRemoveCoupon()
-        dispatch({type: 'SET_CODE', code: ''})
-        dispatch({type: 'SET_LOADING', loading: false})
+
+        try {
+            await onRemoveCoupon()
+            dispatch({type: 'SET_CODE', code: ''})
+            onClose()
+        } catch (error) {
+            if (
+                error instanceof BigCommerceGeneralError &&
+                error.message ===
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+            ) {
+                onClose()
+            } else {
+                error instanceof BigCommerceCouponError
+                    ? dispatch({type: 'SET_ERROR', error: error.message})
+                    : dispatch({
+                          type: 'SET_ERROR',
+                          error: BigCommerceCouponErrorMessage.defaultCouponError,
+                      })
+            }
+        } finally {
+            dispatch({type: 'SET_LOADING', loading: false})
+        }
     }
 
-    const onToggle = () => setIsPopoverOpen((isDropdownOpen) => !isDropdownOpen)
+    const onToggle = () => {
+        if (isPopoverOpen) {
+            dispatch({type: 'SET_ERROR', error: ''})
+        }
+        setIsPopoverOpen((isDropdownOpen) => !isDropdownOpen)
+    }
 
     return (
         <>
@@ -130,6 +176,7 @@ export function Coupon({
                 target={buttonRef}
                 body={
                     <InputField
+                        className={css.couponContainer}
                         label="Coupon code"
                         value={state.code}
                         onChange={(code) => dispatch({type: 'SET_CODE', code})}
