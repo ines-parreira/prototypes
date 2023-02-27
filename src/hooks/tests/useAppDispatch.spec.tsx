@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react'
-import {renderHook} from 'react-hooks-testing-library'
+import {renderHook} from '@testing-library/react-hooks'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'

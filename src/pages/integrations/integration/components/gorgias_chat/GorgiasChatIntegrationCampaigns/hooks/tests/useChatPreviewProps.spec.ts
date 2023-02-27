@@ -1,5 +1,5 @@
 import {fromJS} from 'immutable'
-import {renderHook} from 'react-hooks-testing-library'
+import {renderHook} from '@testing-library/react-hooks'
 
 import {SPANISH_LANGUAGE} from 'constants/languages'
 

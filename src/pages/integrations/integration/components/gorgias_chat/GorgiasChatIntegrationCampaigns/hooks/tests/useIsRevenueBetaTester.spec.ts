@@ -1,4 +1,4 @@
-import {renderHook} from 'react-hooks-testing-library'
+import {renderHook} from '@testing-library/react-hooks'
 
 import LD from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'

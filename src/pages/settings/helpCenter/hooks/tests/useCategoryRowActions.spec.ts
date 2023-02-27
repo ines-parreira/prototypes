@@ -1,4 +1,4 @@
-import {renderHook} from 'react-hooks-testing-library'
+import {renderHook} from '@testing-library/react-hooks'
 import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 import {useCategoryRowActions} from '../useCategoryRowActions'

@@ -1,7 +1,7 @@
 import React from 'react'
 import {fireEvent, render, findByTestId, waitFor} from '@testing-library/react'
 import {Call} from '@twilio/voice-sdk'
-import {act} from 'react-hooks-testing-library'
+import {act} from '@testing-library/react-hooks'
 
 import {mockIncomingCall} from '../../../../../../../tests/twilioMocks'
 import DialPad from '../DialPad'

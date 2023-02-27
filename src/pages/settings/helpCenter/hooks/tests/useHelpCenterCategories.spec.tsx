@@ -2,9 +2,10 @@ import React from 'react'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {renderHook} from 'react-hooks-testing-library'
+import {renderHook} from '@testing-library/react-hooks'
 import configureMockStore from 'redux-mock-store'
 
+import {waitFor} from '@testing-library/react'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
@@ -50,15 +51,16 @@ describe('useHelpCenterCategories', () => {
     })
 
     it('finishes loading once the requests are done', async () => {
-        const {result, waitForNextUpdate} = renderHook(
+        const {result} = renderHook(
             () => useHelpCenterCategories({locale: 'en-US'}),
             {
                 wrapper: dependencyWrapper,
             }
         )
         expect(result.current.isLoading).toBeTruthy()
-        await waitForNextUpdate()
-        expect(result.current.isLoading).toBeFalsy()
+        await waitFor(() => {
+            expect(result.current.isLoading).toBeFalsy()
+        })
     })
 
     it('uses the getCategories selector', () => {

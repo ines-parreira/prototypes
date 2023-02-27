@@ -60,7 +60,7 @@ describe('<StoreAdminUrlInput />', () => {
             await userEvent.type(screen.getByRole('textbox'), input)
 
             expect(
-                (screen.getByRole('textbox') as HTMLInputElement).validity
+                screen.getByRole<HTMLInputElement>('textbox').validity
                     .patternMismatch
             ).toBe(result)
         }

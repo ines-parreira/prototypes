@@ -1,5 +1,5 @@
 import React, {ComponentType} from 'react'
-import {renderHook} from 'react-hooks-testing-library'
+import {renderHook} from '@testing-library/react-hooks'
 
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
@@ -9,7 +9,7 @@ import useSearchRankScenarioContext from '../useSearchRankScenarioContext'
 describe('useSearchRankScenario', () => {
     it('should throw when used outside the provider', () => {
         const {result} = renderHook(() => useSearchRankScenarioContext())
-        expect(result.error.message).toBe(
+        expect(result.error?.message).toBe(
             'useSearchRankContext should be used inside SearchRankScenarioProvider'
         )
     })

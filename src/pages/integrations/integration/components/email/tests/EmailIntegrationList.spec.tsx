@@ -26,6 +26,7 @@ describe('<EmailIntegrationList/>', () => {
             },
         }
     }
+
     function getGmailIntegration(id: number, sendingEnabled: boolean) {
         return {
             id,
@@ -58,7 +59,11 @@ describe('<EmailIntegrationList/>', () => {
                 <Provider store={store}>
                     <EmailIntegrationList {...commonProps} />
                 </Provider>,
-                {wrapper: MemoryRouter}
+                {
+                    wrapper: ({children}) => (
+                        <MemoryRouter>{children}</MemoryRouter>
+                    ),
+                }
             )
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
@@ -75,7 +80,12 @@ describe('<EmailIntegrationList/>', () => {
                         integrations={fromJS([])}
                     />
                 </Provider>,
-                {wrapper: MemoryRouter}
+
+                {
+                    wrapper: ({children}) => (
+                        <MemoryRouter>{children}</MemoryRouter>
+                    ),
+                }
             )
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
@@ -105,7 +115,12 @@ describe('<EmailIntegrationList/>', () => {
                 <Provider store={store}>
                     <EmailIntegrationList {...commonProps} />
                 </Provider>,
-                {wrapper: MemoryRouter}
+
+                {
+                    wrapper: ({children}) => (
+                        <MemoryRouter>{children}</MemoryRouter>
+                    ),
+                }
             )
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
@@ -122,7 +137,12 @@ describe('<EmailIntegrationList/>', () => {
                         integrations={fromJS([getGmailIntegration(1, false)])}
                     />
                 </Provider>,
-                {wrapper: MemoryRouter}
+
+                {
+                    wrapper: ({children}) => (
+                        <MemoryRouter>{children}</MemoryRouter>
+                    ),
+                }
             )
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
@@ -139,7 +159,12 @@ describe('<EmailIntegrationList/>', () => {
                         integrations={fromJS([getGmailIntegration(1, true)])}
                     />
                 </Provider>,
-                {wrapper: MemoryRouter}
+
+                {
+                    wrapper: ({children}) => (
+                        <MemoryRouter>{children}</MemoryRouter>
+                    ),
+                }
             )
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 

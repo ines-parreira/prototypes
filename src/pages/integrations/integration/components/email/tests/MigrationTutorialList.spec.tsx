@@ -18,11 +18,9 @@ describe('MigrationTutorialList', () => {
     it('should display link to help docs for other providers', () => {
         renderComponent()
         expect(
-            (
-                screen.getByRole('link', {
-                    name: /other providers/i,
-                }) as HTMLAnchorElement
-            ).href
+            screen.getByRole<HTMLAnchorElement>('link', {
+                name: /other providers/i,
+            }).href
         ).toBe('https://docs.gorgias.com/en-US/other-provider-81758')
     })
 
@@ -57,12 +55,15 @@ describe('MigrationTutorialList', () => {
         },
     ])('should display link to provider settings and docs', (provider) => {
         renderComponent()
-        const helpDocsLink = screen.getByRole('link', {
+        const helpDocsLink = screen.getByRole<HTMLAnchorElement>('link', {
             name: `menu_book ${provider.name} Help Docs`,
-        }) as HTMLAnchorElement
-        const providerSettingsLink = screen.getByRole('link', {
-            name: provider.providerSettingsText,
-        }) as HTMLAnchorElement
+        })
+        const providerSettingsLink = screen.getByRole<HTMLAnchorElement>(
+            'link',
+            {
+                name: provider.providerSettingsText,
+            }
+        )
         expect(helpDocsLink.href).toBe(provider.docsUrl)
         expect(providerSettingsLink.href).toBe(provider.providerSettingsUrl)
     })

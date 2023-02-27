@@ -1,5 +1,5 @@
 import React from 'react'
-import {renderHook} from 'react-hooks-testing-library'
+import {renderHook} from '@testing-library/react-hooks'
 import {Map, fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'

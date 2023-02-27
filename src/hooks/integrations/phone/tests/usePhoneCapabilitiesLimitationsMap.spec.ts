@@ -1,4 +1,4 @@
-import {renderHook} from 'react-hooks-testing-library'
+import {renderHook} from '@testing-library/react-hooks'
 import {waitFor} from '@testing-library/react'
 import * as apiCalls from 'models/phoneNumber/resources'
 

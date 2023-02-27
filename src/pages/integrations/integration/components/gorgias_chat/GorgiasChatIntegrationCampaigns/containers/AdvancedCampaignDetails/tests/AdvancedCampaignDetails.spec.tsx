@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 
 import {render, within, screen, fireEvent} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {act} from 'react-hooks-testing-library'
+import {act} from '@testing-library/react-hooks'
 import {mockFlags} from 'jest-launchdarkly-mock'
 
 import configureMockStore from 'redux-mock-store'

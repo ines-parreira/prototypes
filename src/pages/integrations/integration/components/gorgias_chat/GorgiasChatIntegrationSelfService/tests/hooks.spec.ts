@@ -1,6 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
-import {renderHook} from 'react-hooks-testing-library'
+import {renderHook} from '@testing-library/react-hooks'
 
+import {waitFor} from '@testing-library/react'
 import {useChatHelpCenterConfiguration} from '../hooks'
 import client from '../../../../../../../models/api/resources'
 
@@ -31,35 +32,35 @@ describe('useChatHelpCenterConfiguration()', () => {
     })
 
     it('should return the chat help center configuration if chat application id provided', async () => {
-        const {result, waitForNextUpdate} = renderHook(() => {
+        const {result} = renderHook(() => {
             return useChatHelpCenterConfiguration(1)
         })
 
-        await waitForNextUpdate()
-
-        expect(result.current.chatHelpCenterConfiguration).toStrictEqual(
-            mockChatHelpCenterConfiguration
-        )
+        await waitFor(() => {
+            expect(result.current.chatHelpCenterConfiguration).toStrictEqual(
+                mockChatHelpCenterConfiguration
+            )
+        })
     })
 
     it('should return null if there was an error fetching chat help center configuration', async () => {
         let chatApplicationId = 1
 
-        const {result, rerender, waitForNextUpdate} = renderHook(() => {
+        const {result, rerender} = renderHook(() => {
             return useChatHelpCenterConfiguration(chatApplicationId)
         })
 
-        await waitForNextUpdate()
-
-        expect(result.current.chatHelpCenterConfiguration).toStrictEqual(
-            mockChatHelpCenterConfiguration
-        )
+        await waitFor(() => {
+            expect(result.current.chatHelpCenterConfiguration).toStrictEqual(
+                mockChatHelpCenterConfiguration
+            )
+        })
 
         chatApplicationId = 2
         rerender()
 
-        await waitForNextUpdate()
-
-        expect(result.current.chatHelpCenterConfiguration).toBeNull()
+        await waitFor(() => {
+            expect(result.current.chatHelpCenterConfiguration).toBeNull()
+        })
     })
 })

@@ -1,7 +1,7 @@
 import React, {ComponentType} from 'react'
 import _keyBy from 'lodash/keyBy'
 import {Provider} from 'react-redux'
-import {act, renderHook} from 'react-hooks-testing-library'
+import {act, renderHook} from '@testing-library/react-hooks'
 import configureMockStore from 'redux-mock-store'
 import {createStore} from 'redux'
 

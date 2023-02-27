@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 
 import {render, screen, waitFor} from '@testing-library/react'
-import {renderHook, act} from 'react-hooks-testing-library'
+import {renderHook, act} from '@testing-library/react-hooks'
 import userEvent from '@testing-library/user-event'
 
 import MockAdapter from 'axios-mock-adapter'

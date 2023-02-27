@@ -2,9 +2,10 @@ import React from 'react'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {renderHook} from 'react-hooks-testing-library'
+import {renderHook} from '@testing-library/react-hooks'
 import configureMockStore from 'redux-mock-store'
 
+import {waitFor} from '@testing-library/react'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {
@@ -63,7 +64,7 @@ describe('useHelpCenterList', () => {
     })
 
     it('finishes loading once the requests are done', async () => {
-        const {result, waitForNextUpdate} = renderHook(
+        const {result} = renderHook(
             () =>
                 useHelpCenterList({
                     per_page: 5,
@@ -74,13 +75,14 @@ describe('useHelpCenterList', () => {
         )
         expect(result.current.isLoading).toBeTruthy()
         expect(result.current.hasMore).toEqual(true)
-        await waitForNextUpdate()
-        expect(result.current.isLoading).toBeFalsy()
-        expect(result.current.hasMore).toEqual(false)
+        await waitFor(() => {
+            expect(result.current.isLoading).toBeFalsy()
+            expect(result.current.hasMore).toEqual(false)
+        })
     })
 
     it('saves the help centers once they are fetched', async () => {
-        const {waitForNextUpdate} = renderHook(
+        renderHook(
             () =>
                 useHelpCenterList({
                     per_page: 5,
@@ -89,8 +91,9 @@ describe('useHelpCenterList', () => {
                 wrapper: dependencyWrapper,
             }
         )
-        await waitForNextUpdate()
-        expect(helpCentersFetched).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(helpCentersFetched).toHaveBeenCalled()
+        })
     })
 
     it('uses the getHelpCenters selector', () => {

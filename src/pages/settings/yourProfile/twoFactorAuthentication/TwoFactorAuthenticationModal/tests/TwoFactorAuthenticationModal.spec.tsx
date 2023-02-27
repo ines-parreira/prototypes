@@ -68,9 +68,9 @@ const validateInput = async (baseElement: HTMLElement) => {
     let continueButton = screen.getByText(/Continue/)
     fireEvent.click(continueButton)
 
-    const inputField = screen.getByPlaceholderText(
+    const inputField = screen.getByPlaceholderText<HTMLInputElement>(
         'Enter 6-digit verification code from app'
-    ) as HTMLInputElement
+    )
     fireEvent.change(inputField, {target: {value: '123456'}})
 
     // Try to navigate to step 3 in order to trigger validation
@@ -86,9 +86,9 @@ const handleInputValidationFailed = async (baseElement: HTMLElement) => {
         'error banner and continue button disabled'
     )
 
-    const inputField = screen.getByPlaceholderText(
+    const inputField = screen.getByPlaceholderText<HTMLInputElement>(
         'Enter 6-digit verification code from app'
-    ) as HTMLInputElement
+    )
     fireEvent.change(inputField, {target: {value: '123457'}})
 
     await waitFor(() => {

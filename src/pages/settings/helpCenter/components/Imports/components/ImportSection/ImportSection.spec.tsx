@@ -26,7 +26,7 @@ import {
     helpCenterMigrationConfig,
     migrationProviders,
 } from './fixtures/migration-providers'
-import ImportSection from './ImportSection'
+import ImportSection, {ACTIVE_MIGRATION_UPDATE_TIMEOUT} from './ImportSection'
 import {sessionHasProgressStatus} from './utils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -82,6 +82,8 @@ const activeMigration = migrationSessions.find((session) =>
 )!
 
 jest.mock('pages/settings/helpCenter/hooks/useMigrationApi')
+
+jest.useFakeTimers()
 
 describe('<ImportSection />', () => {
     let mockAPI: MockAdapter
@@ -159,14 +161,6 @@ describe('<ImportSection />', () => {
                 status: 'SUCCESS',
             })
 
-        // Using jest.useFakeTimers() didn't work out for this case
-
-        const setTimeoutSpy = jest.spyOn(window, 'setTimeout')
-        setTimeoutSpy.mockImplementation((clb: () => void) => {
-            clb()
-            return {} as NodeJS.Timeout
-        })
-
         renderWithStore(<ImportSection />)
 
         const importArticlesButton = await waitFor(() =>
@@ -203,6 +197,7 @@ describe('<ImportSection />', () => {
             )
         )
         expect(progressElement).not.toBeNull()
+        jest.advanceTimersByTime(ACTIVE_MIGRATION_UPDATE_TIMEOUT)
 
         // Should become 100% after the first update
         const fullProgressElement = await waitFor(() =>

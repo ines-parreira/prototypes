@@ -1,4 +1,4 @@
-import {act, renderHook} from 'react-hooks-testing-library'
+import {act, renderHook} from '@testing-library/react-hooks'
 
 import useDelayedAsyncFn from '../useDelayedAsyncFn'
 
@@ -41,10 +41,13 @@ describe('useDelayedAsyncFn hook', () => {
         expect(result.current[0].loading).toBe(false)
         act(() => {
             void result.current[1]()
+            jest.advanceTimersByTime(100)
         })
-        jest.advanceTimersByTime(100)
         await waitForNextUpdate()
-        jest.advanceTimersByTime(100)
+        act(() => {
+            jest.advanceTimersByTime(100)
+        })
+
         expect(result.current[0].loading).toBe(false)
     })
 
@@ -55,13 +58,13 @@ describe('useDelayedAsyncFn hook', () => {
 
         act(() => {
             void result.current[1]()
+            jest.advanceTimersByTime(50)
         })
-        jest.advanceTimersByTime(50)
         expect(result.current[0].loading).toBe(false)
         act(() => {
             void result.current[1]()
+            jest.advanceTimersByTime(50)
         })
-        jest.advanceTimersByTime(50)
         expect(result.current[0].loading).toBe(false)
     })
 })

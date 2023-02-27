@@ -1,5 +1,5 @@
 import {Map} from 'immutable'
-import {renderHook} from 'react-hooks-testing-library'
+import {renderHook} from '@testing-library/react-hooks'
 import * as segmentTracker from 'store/middlewares/segmentTracker'
 
 import useIntegrationPageViewLogEvent from '../useIntegrationPageViewLogEvent'

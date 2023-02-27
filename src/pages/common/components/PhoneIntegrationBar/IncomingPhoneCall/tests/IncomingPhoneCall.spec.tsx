@@ -19,13 +19,18 @@ jest.mock('@twilio/voice-sdk')
 describe('<IncomingPhoneCall/>', () => {
     let store: MockStoreEnhanced
     let history: History
-    let wrapper: React.ComponentType
     const integrationId = 1
     const ticketId = 2
     const mockedServer = new MockAdapter(client)
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
+
+    const wrapper = (props: {children?: React.ReactNode}) => (
+        <Router history={history}>
+            <Provider store={store}>{props.children}</Provider>
+        </Router>
+    )
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -47,12 +52,6 @@ describe('<IncomingPhoneCall/>', () => {
                 ],
             }),
         })
-
-        wrapper = (props: {children?: React.ReactNode}) => (
-            <Router history={history}>
-                <Provider store={store}>{props.children}</Provider>
-            </Router>
-        )
     })
 
     it('should render', () => {

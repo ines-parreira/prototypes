@@ -1,5 +1,5 @@
 import React from 'react'
-import {act, screen, waitFor} from '@testing-library/react'
+import {screen, waitFor} from '@testing-library/react'
 import LD from 'launchdarkly-react-client-sdk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -14,7 +14,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {user} from 'fixtures/users'
 import client from 'models/api/resources'
-import {flushPromises, renderWithRouter} from 'utils/testing'
+import {renderWithRouter} from 'utils/testing'
 import {CustomField} from 'models/customField/types'
 import {customField} from 'fixtures/customField'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
@@ -193,11 +193,7 @@ describe('<TicketFields/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
-        // TODO: fix this test when this was addressed: https://github.com/TanStack/query/issues/4655#issuecomment-1438957991
-        // using `jest.useFakeTimers()` breaks react-query unless you are not mocking setTimeout
-        // but we need to mock the setTimeout because it is being used by useDebounce
-        // and we need to advance it for testing te debounced input
-        it.skip('should render no results found', async () => {
+        it('should render no results found', async () => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
                 [FeatureFlagKey.TicketFields]: true,
             }))
@@ -238,7 +234,6 @@ describe('<TicketFields/>', () => {
             )
 
             jest.runAllTimers()
-            await act(flushPromises)
 
             await waitFor(() => {
                 expect(screen.getByTestId('ticket-fields-list')).toBeDefined()
@@ -251,7 +246,6 @@ describe('<TicketFields/>', () => {
             await userEvent.type(searchInput, 'foo')
 
             jest.runAllTimers()
-            await act(flushPromises)
 
             await waitFor(() => {
                 expect(screen.getByText(/No results found./)).toBeDefined()

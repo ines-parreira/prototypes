@@ -57,9 +57,7 @@ describe('<HelpCenterTable />', () => {
             <HelpCenterTable {...props} list={[firstHelpCenter]} />
         )
 
-        const duplicateButton = component.getByRole('button', {
-            name: 'Duplicate Help Center',
-        })
+        const duplicateButton = component.getByTitle(/Duplicate Help Center/)
 
         fireEvent.click(duplicateButton)
 
@@ -73,9 +71,7 @@ describe('<HelpCenterTable />', () => {
             <HelpCenterTable {...props} list={[firstHelpCenter]} />
         )
 
-        const deleteButton = component.getByRole('button', {
-            name: 'Delete Help Center',
-        })
+        const deleteButton = component.getByTitle(/Delete Help Center/)
 
         fireEvent.click(deleteButton)
 

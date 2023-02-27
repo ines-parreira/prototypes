@@ -247,9 +247,9 @@ describe('<ChatApplication />', () => {
         screen.getByText(
             'The selected chat integration is using a different Help Center for article recommendations.'
         )
-        const chatIntegrationLink = screen.getByText(
+        const chatIntegrationLink = screen.getByText<HTMLAnchorElement>(
             'Go To Chat Settings'
-        ) as HTMLAnchorElement
+        )
         expect(chatIntegrationLink.getAttribute('to')).toStrictEqual(
             '/app/settings/channels/gorgias_chat/10/automation'
         )

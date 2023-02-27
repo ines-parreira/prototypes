@@ -3,7 +3,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import _keyBy from 'lodash/keyBy'
-import {renderHook} from 'react-hooks-testing-library'
+import {renderHook} from '@testing-library/react-hooks'
 
 import {tags} from 'fixtures/tag'
 import {RootState} from 'state/types'
