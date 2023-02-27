@@ -9,7 +9,9 @@ import * as actions from 'state/integrations/actions'
 import ManualIntegrationForm from '../ManualIntegrationForm'
 
 jest.spyOn(actions, 'deleteIntegration')
-jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
+jest.spyOn(actions, 'updateOrCreateIntegrationRequest').mockImplementation(
+    () => () => Promise.resolve({})
+)
 const deleteIntegration = actions.deleteIntegration as jest.Mock
 const updateOrCreateIntegrationRequest =
     actions.updateOrCreateIntegrationRequest as jest.Mock
