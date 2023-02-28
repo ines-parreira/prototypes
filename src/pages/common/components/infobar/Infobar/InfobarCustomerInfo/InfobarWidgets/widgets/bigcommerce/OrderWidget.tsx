@@ -64,6 +64,7 @@ async function generateDraftOrderUrl({
         })
     )
     setDraftOrderUrl(draftOrderUrl)
+    copy(draftOrderUrl)
     setIsRefreshCooldown(true)
     setTimeout(() => {
         setIsRefreshCooldown(false)

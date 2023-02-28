@@ -21,6 +21,7 @@ exports[`<ShippingAddressesDropdown/> should display \`No results\` when shippin
       </abbr>
     </label>
     <div
+      class="dropdown"
       id="shipping-address-dropdown"
     >
       <div
@@ -74,6 +75,7 @@ exports[`<ShippingAddressesDropdown/> snapshot renders the selected shipping add
       </abbr>
     </label>
     <div
+      class="dropdown"
       id="shipping-address-dropdown"
     >
       <div

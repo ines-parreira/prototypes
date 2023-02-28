@@ -46,7 +46,7 @@ export function ShippingAddressesDropdown({
             <Label className={cssOrderModal.label} isRequired>
                 Shipping address
             </Label>
-            <div id={SHIPPING_ADDRESS_DROPDOWN_ID}>
+            <div id={SHIPPING_ADDRESS_DROPDOWN_ID} className={css.dropdown}>
                 <SelectInputBox
                     className={classnames({
                         [cssOrderModal.disabled]: isDisabled,

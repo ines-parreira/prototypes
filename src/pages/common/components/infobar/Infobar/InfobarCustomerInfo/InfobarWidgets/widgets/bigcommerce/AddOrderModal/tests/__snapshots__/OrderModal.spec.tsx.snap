@@ -260,6 +260,7 @@ exports[`OrderModal should render 1`] = `
                 </abbr>
               </label>
               <div
+                class="dropdown"
                 id="shipping-address-dropdown"
               >
                 <div
