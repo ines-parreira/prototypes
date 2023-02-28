@@ -4,7 +4,7 @@ import _trim from 'lodash/trim'
 
 import ReactPlayer from 'react-player'
 
-import {MessageQuoteContext} from 'pages/tickets/detail/components/TicketBodyVirtualized'
+import MessageQuoteContext from 'pages/tickets/detail/components/MessageQuoteContext'
 import Ellipsis from 'pages/common/components/Ellipsis'
 import {linkifyHtml, linkifyString, sanitizeHtmlDefault} from 'utils/html'
 import {extractGorgiasVideoDivFromHtmlContent, proxifyImages} from 'utils'

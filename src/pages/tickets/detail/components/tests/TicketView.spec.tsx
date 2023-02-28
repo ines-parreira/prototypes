@@ -6,9 +6,7 @@ import LD from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketViewContainer} from '../TicketView'
 
-jest.mock('../TicketBodyVirtualized', () => () => (
-    <div>TicketBodyVirtualized</div>
-))
+jest.mock('../TicketBody', () => () => <div>TicketBody</div>)
 jest.mock('../TicketBodyNonVirtualized', () => () => (
     <div>TicketBodyNonVirtualized</div>
 ))

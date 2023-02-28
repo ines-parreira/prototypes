@@ -14,7 +14,7 @@ import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement
 import {RootState} from 'state/types'
 
 import css from './TicketBody.less'
-import {MessageQuoteContext} from './TicketBodyVirtualized'
+import MessageQuoteContext from './MessageQuoteContext'
 
 // $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration
 type HighlightedElements = {

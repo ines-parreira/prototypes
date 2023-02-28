@@ -11,7 +11,7 @@ import {displayHistoryOnNextPage, toggleHistory} from 'state/ticket/actions'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCustomersState} from 'state/customers/selectors'
 import {getBody, getDisplayHistory} from 'state/ticket/selectors'
-import TicketBodyVirtualized from 'pages/tickets/detail/components/TicketBodyVirtualized'
+import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import TicketBodyNonVirtualized from 'pages/tickets/detail/components/TicketBodyNonVirtualized'
 import {FeatureFlagKey} from 'config/featureFlags'
 import TicketHeaderWrapper from 'pages/tickets/detail/components/TicketHeaderWrapper'
@@ -206,7 +206,7 @@ export const TicketViewContainer = ({
                 tabIndex={1}
             >
                 {isVirtualizationEnabled ? (
-                    <TicketBodyVirtualized
+                    <TicketBody
                         elements={ticketBody}
                         setStatus={setStatus}
                         customScrollParentRef={pageRef}

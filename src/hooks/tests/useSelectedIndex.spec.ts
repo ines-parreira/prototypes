@@ -20,8 +20,28 @@ describe('useSelectedIndex', () => {
         expect(result.current.index).toBe(1)
     })
 
-    it('should go back to 0 if the max is reached', () => {
+    it('should stay at max if the max is reached and looping is not enabled', () => {
         const {result} = renderHook(() => useSelectedIndex(2))
+
+        act(() => {
+            result.current.next()
+        })
+        act(() => {
+            result.current.next()
+        })
+        act(() => {
+            result.current.next()
+        })
+        expect(result.current.index).toBe(2)
+
+        act(() => {
+            result.current.next()
+        })
+        expect(result.current.index).toBe(2)
+    })
+
+    it('should go back to 0 if the max is reached while looping is enabled', () => {
+        const {result} = renderHook(() => useSelectedIndex(2, {loop: true}))
 
         act(() => {
             result.current.next()
@@ -55,8 +75,22 @@ describe('useSelectedIndex', () => {
         expect(result.current.index).toBe(0)
     })
 
-    it('should go to max when 0 is reached', () => {
+    it('should stay at 0 if 0 is reached while looping is not enabled', () => {
         const {result} = renderHook(() => useSelectedIndex(2))
+
+        act(() => {
+            result.current.next()
+        })
+        expect(result.current.index).toBe(0)
+
+        act(() => {
+            result.current.previous()
+        })
+        expect(result.current.index).toBe(0)
+    })
+
+    it('should go to max when 0 is reached while looping is enabled', () => {
+        const {result} = renderHook(() => useSelectedIndex(2, {loop: true}))
 
         act(() => {
             result.current.next()

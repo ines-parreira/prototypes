@@ -9,7 +9,7 @@ exports[`<TicketView /> should have the hidden classes 1`] = `
     tabindex="1"
   >
     <div>
-      TicketBodyVirtualized
+      TicketBody
     </div>
   </div>
 </div>
@@ -24,7 +24,7 @@ exports[`<TicketView /> should not have the hidden classes 1`] = `
     tabindex="1"
   >
     <div>
-      TicketBodyVirtualized
+      TicketBody
     </div>
   </div>
 </div>

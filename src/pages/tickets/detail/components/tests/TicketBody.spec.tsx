@@ -8,8 +8,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {message as defaultMessage} from 'models/ticket/tests/mocks'
+import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
-import TicketBodyVirtualized from 'pages/tickets/detail/components/TicketBodyVirtualized'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
@@ -59,7 +59,7 @@ describe('TicketBody', () => {
                     }),
                 })}
             >
-                <TicketBodyVirtualized
+                <TicketBody
                     elements={fromJS([])}
                     handleHistoryToggle={_noop}
                     hideTicket={() => Promise.resolve()}
@@ -85,7 +85,7 @@ describe('TicketBody', () => {
                     }),
                 })}
             >
-                <TicketBodyVirtualized
+                <TicketBody
                     elements={fromJS([defaultMessage, defaultMessage])}
                     handleHistoryToggle={_noop}
                     hideTicket={() => Promise.resolve()}

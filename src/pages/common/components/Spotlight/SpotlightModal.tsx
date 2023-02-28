@@ -16,6 +16,7 @@ import _isEmpty from 'lodash/isEmpty'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import axios, {CancelToken} from 'axios'
 
+import useSelectedIndex from 'hooks/useSelectedIndex'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import Button from 'pages/common/components/button/Button'
@@ -46,7 +47,6 @@ import useSearchRankScenario, {
 import {SearchEngine} from 'models/search/types'
 import {isMacOs} from 'utils/platform'
 
-import {useSelectedIndex} from './hooks'
 import SpotlightScrollArea from './SpotlightScrollArea'
 import SpotlightLoader from './SpotlightLoader'
 import SpotlightNoResults from './SpotlightNoResults'
@@ -115,7 +115,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         previous: previousIndex,
         reset: resetSelectedIndex,
         setIndex: setSelectedIndex,
-    } = useSelectedIndex(maxIndex)
+    } = useSelectedIndex(maxIndex, {loop: true})
     useEffect(resetSelectedIndex, [resetSelectedIndex, searchItemsType])
 
     useEffect(() => {
