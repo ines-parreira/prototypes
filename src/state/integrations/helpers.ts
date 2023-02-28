@@ -106,16 +106,16 @@ export const computeChatIntegrationStatus = (
     isBusinessHours: boolean,
     installationStatus: InstallationStatus
 ): GorgiasChatStatusEnum | null => {
-    if (!!chat.get('deactivated_datetime')) {
-        return GorgiasChatStatusEnum.HIDDEN
-    }
-
     const chatNotIntalledStatusFlag: boolean | undefined =
         getLDClient().allFlags()[FeatureFlagKey.ChatNotIntalledStatus] as
             | boolean
             | undefined
     if (chatNotIntalledStatusFlag && !installationStatus.installed) {
         return GorgiasChatStatusEnum.NOT_INSTALLED
+    }
+
+    if (!!chat.get('deactivated_datetime')) {
+        return GorgiasChatStatusEnum.HIDDEN
     }
 
     const isHideOutsideBusinessHoursEnabled = !!chat.getIn(

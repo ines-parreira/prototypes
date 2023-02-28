@@ -176,6 +176,27 @@ describe('integrations helpers', () => {
                 })
             ).toEqual(GorgiasChatStatusEnum.NOT_INSTALLED)
         })
+
+        it('should return `not-installed` status when installationStatus report uninstalled (when chat is hidden)', () => {
+            const integrationState = fromJS({
+                created_datetime: '2022-11-21T11:07:43.481450+00:00',
+                deactivated_datetime: '2022-11-22T11:07:43.481450+00:00',
+                meta: {
+                    preferences: {
+                        hide_outside_business_hours: false,
+                        live_chat_availability:
+                            GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+                    },
+                },
+            })
+
+            expect(
+                helpers.computeChatIntegrationStatus(integrationState, true, {
+                    ...neutralInstallationStatus,
+                    installed: false,
+                })
+            ).toEqual(GorgiasChatStatusEnum.NOT_INSTALLED)
+        })
     })
 
     describe('isAccountDuringBusinessHours()', () => {
