@@ -387,11 +387,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             }
         }
 
-        if (
-            state.avatar.imageType ===
-                GorgiasChatAvatarImageType.COMPANY_LOGO &&
-            !!state.avatar.companyLogoUrl
-        ) {
+        if (!!state.avatar.companyLogoUrl) {
             form.decoration.avatar = {
                 ...form.decoration.avatar,
                 company_logo_url: state.avatar.companyLogoUrl,
