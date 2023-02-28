@@ -8,8 +8,10 @@
         background-color: @modern-neutral-grey-0;
         color: @modern-neutral-grey-6;
 
-        :global {
-            animation: fadeIn 0.3s ease-in;
+        &:not(.isInitialEntry) {
+            :global {
+                animation: fadeIn 0.3s ease-in;
+            }
         }
     }
 

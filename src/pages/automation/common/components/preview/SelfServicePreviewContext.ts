@@ -12,6 +12,7 @@ export type SelfServicePreviewContextType = {
     quickResponse?: QuickResponsePolicy
     hoveredQuickResponseId?: Maybe<QuickResponsePolicy['id']>
     hoveredOrderManagementFlow?: Maybe<PolicyKey>
+    hasHoveredReportOrderIssueScenario?: boolean
     orderManagementFlow?: PolicyKey
     automatedResponseMessageContent?: ResponseMessageContent
 }

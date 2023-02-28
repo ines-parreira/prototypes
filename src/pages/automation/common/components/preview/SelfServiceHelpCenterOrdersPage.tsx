@@ -1,5 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
+import {useHistory} from 'react-router-dom'
+
 import {HelpCenter} from 'models/helpCenter/types'
 import {HELP_CENTER_TEXTS} from 'config/helpCenter'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
@@ -17,14 +19,21 @@ type Props = {
 }
 
 const SelfServiceHelpCenterOrdersPage = ({helpCenter}: Props) => {
-    const {orderManagementFlow} = useSelfServicePreviewContext()
+    const {orderManagementFlow, hasHoveredReportOrderIssueScenario} =
+        useSelfServicePreviewContext()
     const {previewStep} = useOrdersPagePreview()
     const {orderPlacedDate} = useOrderDates(helpCenter.default_locale)
 
+    const history = useHistory()
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
+    const isInitialEntry = history.length === 1
 
     return (
-        <div className={css.container}>
+        <div
+            className={classnames(css.container, {
+                [css.isInitialEntry]: isInitialEntry,
+            })}
+        >
             <div className={css.header}>
                 <div className={css.orderNumber}>
                     {helpCenterTexts.orderNumber.replace(
@@ -48,31 +57,65 @@ const SelfServiceHelpCenterOrdersPage = ({helpCenter}: Props) => {
                     )}
                     <div className={css.actions}>
                         {orderManagementFlow === 'track_order_policy' && (
-                            <MousePointer
-                                isHovering={previewStep > PreviewStep.INITIAL}
-                                isAlignedToRight={
-                                    previewStep > PreviewStep.TRACK_HOVER
-                                }
-                            >
-                                <div
-                                    className={classnames(css.actionButton, {
-                                        [css.isHovered]:
-                                            previewStep ===
-                                                PreviewStep.TRACK_HOVER ||
-                                            previewStep ===
-                                                PreviewStep.TRACK_HOVERING,
-                                        [css.isActive]:
-                                            previewStep ===
-                                            PreviewStep.TRACK_CLICK,
-                                    })}
+                            <>
+                                <MousePointer
+                                    isHovering={
+                                        previewStep > PreviewStep.INITIAL
+                                    }
+                                    isAlignedToRight={
+                                        previewStep > PreviewStep.TRACK_HOVER
+                                    }
                                 >
+                                    <div
+                                        className={classnames(
+                                            css.actionButton,
+                                            {
+                                                [css.isHovered]:
+                                                    previewStep ===
+                                                        PreviewStep.TRACK_HOVER ||
+                                                    previewStep ===
+                                                        PreviewStep.TRACK_HOVERING,
+                                                [css.isActive]:
+                                                    previewStep ===
+                                                    PreviewStep.TRACK_CLICK,
+                                            }
+                                        )}
+                                    >
+                                        {helpCenterTexts.orderFlowTrack}
+                                    </div>
+                                </MousePointer>
+                                <div className={css.actionButton}>
+                                    {helpCenterTexts.orderFlowReport}
+                                </div>
+                            </>
+                        )}
+                        {orderManagementFlow === 'report_issue_policy' && (
+                            <>
+                                <div className={css.actionButton}>
                                     {helpCenterTexts.orderFlowTrack}
                                 </div>
-                            </MousePointer>
+                                <MousePointer
+                                    isHovering={
+                                        hasHoveredReportOrderIssueScenario
+                                    }
+                                    isAlignedToRight={
+                                        hasHoveredReportOrderIssueScenario
+                                    }
+                                >
+                                    <div
+                                        className={classnames(
+                                            css.actionButton,
+                                            {
+                                                [css.isActive]:
+                                                    hasHoveredReportOrderIssueScenario,
+                                            }
+                                        )}
+                                    >
+                                        {helpCenterTexts.orderFlowReport}
+                                    </div>
+                                </MousePointer>
+                            </>
                         )}
-                        <div className={css.actionButton}>
-                            {helpCenterTexts.orderFlowReport}
-                        </div>
                     </div>
                 </div>
                 <div className={css.lineItems}>

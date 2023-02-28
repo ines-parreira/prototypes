@@ -9,8 +9,10 @@
         flex-direction: column;
         flex: 1;
 
-        :global {
-            animation: fadeIn 0.3s ease-in;
+        &:not(.isInitialEntry) {
+            :global {
+                animation: fadeIn 0.3s ease-in;
+            }
         }
     }
 

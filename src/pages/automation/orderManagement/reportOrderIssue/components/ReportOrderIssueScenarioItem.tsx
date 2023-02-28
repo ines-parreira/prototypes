@@ -13,6 +13,8 @@ type Props = {
     onMove: (dragIndex: number, hoverIndex: number) => void
     onDrop: () => void
     onCancel: () => void
+    onMouseEnter: () => void
+    onMouseLeave: () => void
     isDraggable: boolean
     item: SelfServiceReportIssueCase
 }
@@ -27,6 +29,8 @@ const ReportOrderIssueScenarioItem = ({
     onMove,
     onDrop,
     onCancel,
+    onMouseEnter,
+    onMouseLeave,
     isDraggable,
     item,
 }: Props) => {
@@ -48,6 +52,8 @@ const ReportOrderIssueScenarioItem = ({
         <tr
             className={css.container}
             onClick={handleClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
             {...(isDraggable
                 ? {
                       ref: dropRef as RefObject<HTMLTableRowElement>,

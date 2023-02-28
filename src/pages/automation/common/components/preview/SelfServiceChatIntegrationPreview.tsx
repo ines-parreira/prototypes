@@ -1,5 +1,5 @@
 import React, {memo} from 'react'
-import {Route, useLocation} from 'react-router-dom'
+import {Route, useHistory, useLocation} from 'react-router-dom'
 
 import {GorgiasChatIntegration} from 'models/integration/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
@@ -19,9 +19,12 @@ type Props = {
 
 const SelfServiceChatIntegrationPreview = (props: Props) => {
     const {integration} = props
+    const history = useHistory()
     const location = useLocation()
 
     const {decoration, meta} = integration
+
+    const isInitialEntry = history.length === 1
 
     return (
         <ChatIntegrationPreview
@@ -46,9 +49,8 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.HOME
             }
             enableAnimations={
-                location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.CANCEL &&
-                location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.RETURN &&
-                location.pathname !== SELF_SERVICE_PREVIEW_ROUTES.RETURN_PORTAL
+                !isInitialEntry ||
+                location.pathname === SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE
             }
             showBackground={false}
         >

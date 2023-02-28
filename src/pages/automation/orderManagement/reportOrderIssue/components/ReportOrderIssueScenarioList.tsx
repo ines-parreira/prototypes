@@ -8,10 +8,15 @@ import ReportOrderIssueScenarioItem from './ReportOrderIssueScenarioItem'
 
 type Props = {
     items: SelfServiceReportIssueCase[]
+    onHasHoveredItemChange: (hasHoveredItem: boolean) => void
     onReorder: (items: SelfServiceReportIssueCase[]) => void
 }
 
-const ReportOrderIssueScenarioList = ({items, onReorder}: Props) => {
+const ReportOrderIssueScenarioList = ({
+    items,
+    onHasHoveredItemChange,
+    onReorder,
+}: Props) => {
     const itemsWithId = useMemo(
         () => items.map((item) => ({...item, id: _uniqueId()})),
         [items]
@@ -43,6 +48,12 @@ const ReportOrderIssueScenarioList = ({items, onReorder}: Props) => {
     const handleCancel = () => {
         setDirtyItemsWithId(itemsWithId)
     }
+    const handleMouseEnter = () => {
+        onHasHoveredItemChange(true)
+    }
+    const handleMouseLeave = () => {
+        onHasHoveredItemChange(false)
+    }
 
     return (
         <table>
@@ -55,6 +66,8 @@ const ReportOrderIssueScenarioList = ({items, onReorder}: Props) => {
                         onMove={handleMove}
                         onDrop={handleDrop}
                         onCancel={handleCancel}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
                         isDraggable={index !== dirtyItemsWithId.length - 1}
                         item={item}
                     />

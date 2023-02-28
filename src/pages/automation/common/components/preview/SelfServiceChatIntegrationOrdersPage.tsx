@@ -1,5 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
+import {useHistory} from 'react-router-dom'
 
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 import {GorgiasChatIntegration} from 'models/integration/types'
@@ -20,16 +21,23 @@ type Props = {
 }
 
 const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
-    const {orderManagementFlow} = useSelfServicePreviewContext()
+    const {orderManagementFlow, hasHoveredReportOrderIssueScenario} =
+        useSelfServicePreviewContext()
     const {previewStep} = useOrdersPagePreview()
 
+    const history = useHistory()
     const language = integration.meta.language || 'en-US'
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
+    const isInitialEntry = history.length === 1
 
     const {orderPlacedDate} = useOrderDates(language)
 
     return (
-        <div className={css.container}>
+        <div
+            className={classnames(css.container, {
+                [css.isInitialEntry]: isInitialEntry,
+            })}
+        >
             <div className={css.contentContainer}>
                 <div className={css.title}>{sspTexts.yourOrders}</div>
                 <div className={css.orderContainer}>
@@ -57,39 +65,72 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                             <div className={css.actions}>
                                 {orderManagementFlow ===
                                     'track_order_policy' && (
-                                    <MousePointer
-                                        isHovering={
-                                            previewStep > PreviewStep.INITIAL
-                                        }
-                                        isAlignedToRight={
-                                            previewStep >
-                                            PreviewStep.TRACK_HOVER
-                                        }
-                                    >
-                                        <Button
-                                            size="small"
-                                            intent="secondary"
-                                            className={classnames(
-                                                css.flowButton,
-                                                {
-                                                    [css.isHovered]:
-                                                        previewStep ===
-                                                            PreviewStep.TRACK_HOVER ||
-                                                        previewStep ===
-                                                            PreviewStep.TRACK_HOVERING,
-                                                    [css.isActive]:
-                                                        previewStep ===
-                                                        PreviewStep.TRACK_CLICK,
-                                                }
-                                            )}
+                                    <>
+                                        <MousePointer
+                                            isHovering={
+                                                previewStep >
+                                                PreviewStep.INITIAL
+                                            }
+                                            isAlignedToRight={
+                                                previewStep >
+                                                PreviewStep.TRACK_HOVER
+                                            }
                                         >
+                                            <Button
+                                                size="small"
+                                                intent="secondary"
+                                                className={classnames(
+                                                    css.flowButton,
+                                                    {
+                                                        [css.isHovered]:
+                                                            previewStep ===
+                                                                PreviewStep.TRACK_HOVER ||
+                                                            previewStep ===
+                                                                PreviewStep.TRACK_HOVERING,
+                                                        [css.isActive]:
+                                                            previewStep ===
+                                                            PreviewStep.TRACK_CLICK,
+                                                    }
+                                                )}
+                                            >
+                                                {sspTexts.track}
+                                            </Button>
+                                        </MousePointer>
+                                        <Button size="small" intent="secondary">
+                                            {sspTexts.reportIssue}
+                                        </Button>
+                                    </>
+                                )}
+                                {orderManagementFlow ===
+                                    'report_issue_policy' && (
+                                    <>
+                                        <Button size="small" intent="secondary">
                                             {sspTexts.track}
                                         </Button>
-                                    </MousePointer>
+                                        <MousePointer
+                                            isHovering={
+                                                hasHoveredReportOrderIssueScenario
+                                            }
+                                            isAlignedToRight={
+                                                hasHoveredReportOrderIssueScenario
+                                            }
+                                        >
+                                            <Button
+                                                size="small"
+                                                intent="secondary"
+                                                className={classnames(
+                                                    css.flowButton,
+                                                    {
+                                                        [css.isActive]:
+                                                            hasHoveredReportOrderIssueScenario,
+                                                    }
+                                                )}
+                                            >
+                                                {sspTexts.reportIssue}
+                                            </Button>
+                                        </MousePointer>
+                                    </>
                                 )}
-                                <Button size="small" intent="secondary">
-                                    {sspTexts.reportIssue}
-                                </Button>
                             </div>
                             {orderManagementFlow === 'track_order_policy' && (
                                 <Badge type={ColorType.LightSuccess}>
