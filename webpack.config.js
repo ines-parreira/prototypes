@@ -11,10 +11,10 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 
 const pkg = require('./package.json')
 
-const __PRODUCTION__ = process.env.NODE_ENV === 'production'
-const HASH = process.env.RELEASE ? process.env.RELEASE : '[contenthash]'
+const {NODE_ENV, RELEASE, GORGIAS_ASSETS_URL} = process.env
 
-const ASSETS_URL = process.env.GORGIAS_ASSETS_URL ?? ''
+const __PRODUCTION__ = NODE_ENV === 'production'
+const HASH = RELEASE || '[contenthash]'
 
 const BUNDLE_PUBLIC_PATH = 'http://acme.gorgias.docker:8080/'
 
@@ -37,7 +37,7 @@ const devServer = {
         {directory: buildDir},
         {
             directory: path.join(__dirname, 'src', 'assets'),
-            publicPath: '//assets',
+            publicPath: '/assets',
         },
     ],
     client: {
@@ -84,13 +84,20 @@ const cssLoaderOptions = {
         ? '[hash:base64]'
         : '[name]--[local]--[hash:base64:5]',
 }
+
+let urlLoaderName = '[path][name].[ext]'
+if (GORGIAS_ASSETS_URL) {
+    const url = new URL(GORGIAS_ASSETS_URL)
+    url.pathname = path.join(url.pathname, urlLoaderName)
+    urlLoaderName = url.toString()
+}
 const urlLoader = {
     loader: 'url-loader',
     options: {
         limit: 5000,
         fallback: 'file-loader',
         emitFile: false,
-        name: `${ASSETS_URL}/[path][name].[ext]`,
+        name: urlLoaderName,
         context: 'src/',
     },
 }
