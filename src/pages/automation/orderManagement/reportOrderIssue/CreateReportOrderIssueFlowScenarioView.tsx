@@ -7,14 +7,20 @@ import _isEqual from 'lodash/isEqual'
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
 import Button from 'pages/common/components/button/Button'
-import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
+import {
+    ReportIssueCaseReason,
+    SelfServiceReportIssueCase,
+} from 'models/selfServiceConfiguration/types'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
+import {IntegrationType} from 'models/integration/constants'
 
 import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
 import ReportOrderIssueScenarioFormContext, {
     ReportOrderIssueScenarioFormContextType,
 } from './components/ReportOrderIssueScenarioFormContext'
+import ReportOrderIssueFlowScenarioPreview from './ReportOrderIssueFlowScenarioPreview'
 import {DEFAULT_SCENARIO} from './constants'
 
 import css from './CreateReportOrderIssueFlowScenarioView.less'
@@ -23,10 +29,17 @@ const CreateReportOrderIssueFlowScenarioView = () => {
     const {shopName} = useParams<{shopName: string}>()
     const {isCreatePending, selfServiceConfiguration, handleScenarioCreate} =
         useReportOrderIssueFlowScenarios(shopName)
+    const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [scenario, setScenario] =
         useState<SelfServiceReportIssueCase>(DEFAULT_SCENARIO)
+    const [expandedReasonKey, setExpandedReasonKey] = useState<
+        ReportIssueCaseReason['reasonKey'] | null
+    >(null)
+    const [hoveredReasonKey, setHoveredReasonKey] = useState<
+        ReportIssueCaseReason['reasonKey'] | null
+    >(null)
 
     const hasError = Object.keys(errors).length > 0
     const reportOrderIssueScenarioFormContext: ReportOrderIssueScenarioFormContextType =
@@ -93,37 +106,50 @@ const CreateReportOrderIssueFlowScenarioView = () => {
                 {!selfServiceConfiguration ? (
                     <Loader />
                 ) : (
-                    <div>
-                        <ReportOrderIssueScenarioFormContext.Provider
-                            value={reportOrderIssueScenarioFormContext}
-                        >
-                            <ReportOrderIssueScenarioForm
-                                value={scenario}
-                                isFallback={false}
-                                onPreviewChange={setScenario}
-                                onChange={setScenario}
-                            />
-                            <div className={css.buttonsContainer}>
-                                <Button
-                                    isDisabled={isCreatePending || hasError}
-                                    onClick={handleSubmit}
-                                >
-                                    Create scenario
-                                </Button>
-                                <Button
-                                    isDisabled={isCreatePending}
-                                    onClick={handleCancel}
-                                    intent="secondary"
-                                >
-                                    Cancel
-                                </Button>
-                            </div>
-                            <UnsavedChangesPrompt
-                                onSave={handleSubmit}
-                                when={!hasError && !isCreatePending}
-                            />
-                        </ReportOrderIssueScenarioFormContext.Provider>
-                    </div>
+                    <>
+                        <div>
+                            <ReportOrderIssueScenarioFormContext.Provider
+                                value={reportOrderIssueScenarioFormContext}
+                            >
+                                <ReportOrderIssueScenarioForm
+                                    value={scenario}
+                                    expandedReason={expandedReasonKey}
+                                    onExpandedReasonChange={
+                                        setExpandedReasonKey
+                                    }
+                                    onHoveredReasonChange={setHoveredReasonKey}
+                                    isFallback={false}
+                                    onPreviewChange={setScenario}
+                                    onChange={setScenario}
+                                />
+                                <div className={css.buttonsContainer}>
+                                    <Button
+                                        isDisabled={isCreatePending || hasError}
+                                        onClick={handleSubmit}
+                                    >
+                                        Create scenario
+                                    </Button>
+                                    <Button
+                                        isDisabled={isCreatePending}
+                                        onClick={handleCancel}
+                                        intent="secondary"
+                                    >
+                                        Cancel
+                                    </Button>
+                                </div>
+                                <UnsavedChangesPrompt
+                                    onSave={handleSubmit}
+                                    when={!hasError && !isCreatePending}
+                                />
+                            </ReportOrderIssueScenarioFormContext.Provider>
+                        </div>
+                        <ReportOrderIssueFlowScenarioPreview
+                            channels={channels}
+                            reasons={scenario.reasons}
+                            expandedReasonKey={expandedReasonKey}
+                            hoveredReasonKey={hoveredReasonKey}
+                        />
+                    </>
                 )}
             </Container>
         </div>

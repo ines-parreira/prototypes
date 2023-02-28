@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 
 import InputField from 'pages/common/forms/input/InputField'
 import Label from 'pages/common/forms/Label/Label'
@@ -19,6 +19,13 @@ import css from './ReportOrderIssueScenarioForm.less'
 
 type Props = {
     value: SelfServiceReportIssueCase
+    expandedReason: ReportIssueCaseReason['reasonKey'] | null
+    onExpandedReasonChange: (
+        expandedReason: ReportIssueCaseReason['reasonKey'] | null
+    ) => void
+    onHoveredReasonChange: (
+        hoveredReason: ReportIssueCaseReason['reasonKey'] | null
+    ) => void
     isFallback: boolean
     onPreviewChange: (nextValue: SelfServiceReportIssueCase) => void
     onChange: (nextValue: SelfServiceReportIssueCase) => void
@@ -26,14 +33,13 @@ type Props = {
 
 const ReportOrderIssueScenarioForm = ({
     value,
+    expandedReason,
+    onExpandedReasonChange,
+    onHoveredReasonChange,
     isFallback,
     onPreviewChange,
     onChange,
 }: Props) => {
-    const [expandedReasonKey, setExpandedReasonKey] = useState<
-        ReportIssueCaseReason['reasonKey'] | null
-    >(null)
-
     const titleHasError =
         !value.title.length || value.title.length > SCENARIO_NAME_MAX_LENGTH
     const descriptionHasError =
@@ -103,8 +109,9 @@ const ReportOrderIssueScenarioForm = ({
                 <Label isRequired>Issue options</Label>
                 <ReportOrderIssueScenarioReasons
                     items={value.reasons}
-                    expandedItem={expandedReasonKey}
-                    onExpandedItemChange={setExpandedReasonKey}
+                    expandedItem={expandedReason}
+                    onExpandedItemChange={onExpandedReasonChange}
+                    onHoveredItemChange={onHoveredReasonChange}
                     onPreviewChange={handleReasonsPreviewChange}
                     onChange={handleReasonsChange}
                 />

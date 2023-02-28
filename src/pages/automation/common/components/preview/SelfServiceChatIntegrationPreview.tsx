@@ -11,6 +11,9 @@ import SelfServiceChatIntegrationOrdersPage from './SelfServiceChatIntegrationOr
 import SelfServiceChatIntegrationCancelPage from './SelfServiceChatIntegrationCancelPage'
 import SelfServiceChatIntegrationReturnPage from './SelfServiceChatIntegrationReturnPage'
 import SelfServiceChatIntegrationReturnPortalPage from './SelfServiceChatIntegrationReturnPortalPage'
+import SelfServiceChatIntegrationReportIssueReasonsPage from './SelfServiceChatIntegrationReportIssueReasonsPage'
+import SelfServiceChatIntegrationReportIssuePage from './SelfServiceChatIntegrationReportIssuePage'
+import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 
 type Props = {
@@ -22,6 +25,7 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
     const history = useHistory()
     const location = useLocation()
 
+    const {reportOrderIssueReason} = useSelfServicePreviewContext()
     const {decoration, meta} = integration
 
     const isInitialEntry = history.length === 1
@@ -37,7 +41,10 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
             language={meta.language}
             renderFooter={
                 location.pathname === SELF_SERVICE_PREVIEW_ROUTES.CANCEL ||
-                location.pathname === SELF_SERVICE_PREVIEW_ROUTES.RETURN
+                location.pathname === SELF_SERVICE_PREVIEW_ROUTES.RETURN ||
+                (location.pathname ===
+                    SELF_SERVICE_PREVIEW_ROUTES.REPORT_ISSUE &&
+                    !reportOrderIssueReason?.action?.showHelpfulPrompt)
             }
             renderPoweredBy={
                 location.pathname === SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE
@@ -75,6 +82,17 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 </Route>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.CANCEL} exact>
                     <SelfServiceChatIntegrationCancelPage {...props} />
+                </Route>
+                <Route
+                    path={SELF_SERVICE_PREVIEW_ROUTES.REPORT_ISSUE_REASONS}
+                    exact
+                >
+                    <SelfServiceChatIntegrationReportIssueReasonsPage
+                        {...props}
+                    />
+                </Route>
+                <Route path={SELF_SERVICE_PREVIEW_ROUTES.REPORT_ISSUE} exact>
+                    <SelfServiceChatIntegrationReportIssuePage {...props} />
                 </Route>
             </React.Fragment>
         </ChatIntegrationPreview>

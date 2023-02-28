@@ -211,13 +211,14 @@ const CancelOrderFlowView = () => {
                             <UnsavedChangesPrompt
                                 onSave={handleSubmit}
                                 when={
-                                    isCancelOrderFlowDirty && !isUpdatePending
+                                    isCancelOrderFlowDirty &&
+                                    !isUpdatePending &&
+                                    !hasError
                                 }
                             />
                         </div>
                         <CancelOrderFlowPreview
                             channels={channels}
-                            selfServiceConfiguration={selfServiceConfiguration}
                             responseMessageContent={
                                 dirtyCancelOrderFlow.action
                                     ?.response_message_content

@@ -209,7 +209,9 @@ const QuickResponsesView = () => {
                             <UnsavedChangesPrompt
                                 onSave={handleSubmit}
                                 when={
-                                    areQuickResponsesDirty && !isUpdatePending
+                                    areQuickResponsesDirty &&
+                                    !isUpdatePending &&
+                                    !hasError
                                 }
                             />
                         </div>

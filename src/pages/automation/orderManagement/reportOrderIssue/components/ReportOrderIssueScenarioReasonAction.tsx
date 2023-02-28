@@ -7,6 +7,7 @@ import {AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH} from 'models/selfServiceConf
 import RichField from 'pages/common/forms/RichField/RichField'
 import {convertToHTML} from 'utils/editor'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import {trimHTML} from 'utils/html'
 
 import {usePropagateError} from './ReportOrderIssueScenarioFormContext'
 
@@ -27,19 +28,16 @@ const ReportOrderIssueScenarioReasonAction = ({value, onChange}: Props) => {
     const handleResponseMessageContentChange = (editorState: EditorState) => {
         const content = editorState.getCurrentContent()
         const text = content.getPlainText()
+        const html = convertToHTML(content)
 
-        if (text !== value.responseMessageContent.text) {
-            onChange({
-                ...value,
-                responseMessageContent: {
-                    html: convertToHTML(content),
-                    text,
-                },
-                showHelpfulPrompt: text.length
-                    ? value.showHelpfulPrompt
-                    : false,
-            })
-        }
+        onChange({
+            ...value,
+            responseMessageContent: {
+                html: text.length ? html : trimHTML(html),
+                text,
+            },
+            showHelpfulPrompt: text.length ? value.showHelpfulPrompt : false,
+        })
     }
     const handleShowHelpfulPromptChange = (nextShowHelpfulPrompt: boolean) => {
         onChange({...value, showHelpfulPrompt: nextShowHelpfulPrompt})

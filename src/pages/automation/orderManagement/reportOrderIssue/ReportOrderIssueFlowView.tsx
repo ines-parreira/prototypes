@@ -95,7 +95,6 @@ const ReportOrderIssueFlowView = () => {
                         </div>
                         <ReportOrderIssueFlowPreview
                             channels={channels}
-                            selfServiceConfiguration={selfServiceConfiguration}
                             hasHoveredScenario={hasHoveredScenario}
                         />
                     </>

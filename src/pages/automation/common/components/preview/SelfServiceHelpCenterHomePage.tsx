@@ -56,7 +56,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                 {helpCenterTexts.homepageManageOrdersTitle}
             </div>
             <div className={css.itemsContainer}>
-                {selfServiceConfiguration.track_order_policy.enabled && (
+                {selfServiceConfiguration?.track_order_policy.enabled && (
                     <OrderManagementFlowItem
                         icon={trackIcon}
                         isHighlighted={
@@ -66,7 +66,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                         {helpCenterTexts.orderFlowTrack}
                     </OrderManagementFlowItem>
                 )}
-                {selfServiceConfiguration.return_order_policy.enabled && (
+                {selfServiceConfiguration?.return_order_policy.enabled && (
                     <OrderManagementFlowItem
                         icon={returnIcon}
                         isHighlighted={
@@ -76,7 +76,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                         {helpCenterTexts.orderFlowReturn}
                     </OrderManagementFlowItem>
                 )}
-                {selfServiceConfiguration.cancel_order_policy.enabled && (
+                {selfServiceConfiguration?.cancel_order_policy.enabled && (
                     <OrderManagementFlowItem
                         icon={cancelIcon}
                         isHighlighted={
@@ -86,7 +86,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                         {helpCenterTexts.orderFlowCancel}
                     </OrderManagementFlowItem>
                 )}
-                {selfServiceConfiguration.report_issue_policy.enabled && (
+                {selfServiceConfiguration?.report_issue_policy.enabled && (
                     <OrderManagementFlowItem
                         icon={reportIssueIcon}
                         isHighlighted={

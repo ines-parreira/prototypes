@@ -200,13 +200,14 @@ const ReturnOrderFlowView = () => {
                             <UnsavedChangesPrompt
                                 onSave={handleSubmit}
                                 when={
-                                    isReturnOrderFlowDirty && !isUpdatePending
+                                    isReturnOrderFlowDirty &&
+                                    !isUpdatePending &&
+                                    !hasError
                                 }
                             />
                         </div>
                         <ReturnOrderFlowPreview
                             channels={channels}
-                            selfServiceConfiguration={selfServiceConfiguration}
                             returnAction={dirtyReturnAction}
                         />
                     </ReturnOrderFlowViewContext.Provider>

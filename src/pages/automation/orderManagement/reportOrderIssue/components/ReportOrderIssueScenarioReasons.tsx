@@ -26,6 +26,9 @@ type Props = {
     onExpandedItemChange: (
         expandedItem: ReportIssueCaseReason['reasonKey'] | null
     ) => void
+    onHoveredItemChange: (
+        expandedItem: ReportIssueCaseReason['reasonKey'] | null
+    ) => void
     onPreviewChange: (items: ReportIssueCaseReason[]) => void
     onChange: (items: ReportIssueCaseReason[]) => void
 }
@@ -34,6 +37,7 @@ const ReportOrderIssueScenarioReasons = ({
     items,
     expandedItem,
     onExpandedItemChange,
+    onHoveredItemChange,
     onPreviewChange,
     onChange,
 }: Props) => {
@@ -99,6 +103,7 @@ const ReportOrderIssueScenarioReasons = ({
                     onReorder={handleReorder}
                     expandedItem={expandedItem}
                     onChange={onExpandedItemChange}
+                    onHoveredItemChange={onHoveredItemChange}
                     isDisabled={isUpdatePending || hasError}
                 >
                     {items.map((item) => (

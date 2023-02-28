@@ -9,6 +9,8 @@ import SelfServiceHelpCenterOrdersPage from './SelfServiceHelpCenterOrdersPage'
 import SelfServiceHelpCenterTrackPage from './SelfServiceHelpCenterTrackPage'
 import SelfServiceHelpCenterRequestSentPage from './SelfServiceHelpCenterRequestSentPage'
 import SelfServiceHelpCenterReturnPortalPage from './SelfServiceHelpCenterReturnPortalPage'
+import SelfServiceHelpCenterReportIssueReasonsPage from './SelfServiceHelpCenterReportIssueReasonsPage'
+import SelfServiceHelpCenterReportIssuePage from './SelfServiceHelpCenterReportIssuePage'
 import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 
 type Props = {
@@ -39,6 +41,15 @@ const SelfServiceHelpCenterPreview = (props: Props) => {
                 </Route>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.CANCEL} exact>
                     <SelfServiceHelpCenterRequestSentPage {...props} />
+                </Route>
+                <Route
+                    path={SELF_SERVICE_PREVIEW_ROUTES.REPORT_ISSUE_REASONS}
+                    exact
+                >
+                    <SelfServiceHelpCenterReportIssueReasonsPage {...props} />
+                </Route>
+                <Route path={SELF_SERVICE_PREVIEW_ROUTES.REPORT_ISSUE} exact>
+                    <SelfServiceHelpCenterReportIssuePage {...props} />
                 </Route>
             </React.Fragment>
         </HelpCenterPreview>

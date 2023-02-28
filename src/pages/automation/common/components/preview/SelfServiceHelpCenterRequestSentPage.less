@@ -45,6 +45,7 @@
         .heading-subsection-regular();
         color: @modern-neutral-grey-5;
         text-align: center;
+        overflow-wrap: anywhere;
     }
 
     .description {
@@ -80,6 +81,24 @@
     }
 
     .orderDetailsDescription {
+        .heading-subsection-regular();
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+        color: @modern-neutral-grey-5;
+    }
+
+    .issueReported {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
+    .issueReportedTitle {
+        .heading-subsection-semibold();
+    }
+
+    .issueReportedDescription {
         .heading-subsection-regular();
         display: flex;
         flex-direction: column;

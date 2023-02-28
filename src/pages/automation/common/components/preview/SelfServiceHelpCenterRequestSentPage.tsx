@@ -17,8 +17,11 @@ type Props = {
 const SelfServiceHelpCenterRequestSentPage = ({helpCenter}: Props) => {
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
 
-    const {orderManagementFlow, automatedResponseMessageContent} =
-        useSelfServicePreviewContext()
+    const {
+        orderManagementFlow,
+        automatedResponseMessageContent,
+        reportOrderIssueReason,
+    } = useSelfServicePreviewContext()
     const {orderPlacedDate} = useOrderDates(helpCenter.default_locale)
 
     const getTotalAmountLabel = () => {
@@ -27,6 +30,8 @@ const SelfServiceHelpCenterRequestSentPage = ({helpCenter}: Props) => {
                 return helpCenterTexts.totalReturnedAmountLabel
             case 'cancel_order_policy':
                 return helpCenterTexts.totalCanceledAmountLabel
+            case 'report_issue_policy':
+                return helpCenterTexts.totalAmountLabel
         }
     }
 
@@ -84,6 +89,20 @@ const SelfServiceHelpCenterRequestSentPage = ({helpCenter}: Props) => {
                             </div>
                         </div>
                     </div>
+                    {reportOrderIssueReason && (
+                        <div className={css.issueReported}>
+                            <div className={css.issueReportedTitle}>
+                                {helpCenterTexts.completedFlowReportedIssue}
+                            </div>
+                            <div className={css.issueReportedDescription}>
+                                {
+                                    helpCenterTexts[
+                                        reportOrderIssueReason.reasonKey
+                                    ]
+                                }
+                            </div>
+                        </div>
+                    )}
                     <div className={css.fulfillmentLineItems}>
                         {LINE_ITEMS.map((item) => (
                             <div key={item.name} className={css.lineItem}>

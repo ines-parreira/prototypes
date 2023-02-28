@@ -1,0 +1,55 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/colorTokens.less';
+
+:local {
+    .container {
+        background-color: @modern-neutral-grey-0;
+        color: @modern-neutral-grey-6;
+        overflow: auto;
+        pointer-events: initial;
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m @layout-spacing-s;
+        gap: @layout-spacing-xs;
+        border-bottom: 1px solid @modern-neutral-grey-3;
+    }
+
+    .title {
+        .heading-section-semibold();
+    }
+
+    .description {
+        .heading-subsection-regular();
+        color: @modern-neutral-grey-4;
+    }
+
+    .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: @layout-spacing-s;
+        gap: @layout-spacing-s;
+        border-bottom: 1px solid @modern-neutral-grey-3;
+
+        &.isPlaceholder {
+            color: @modern-neutral-grey-4;
+        }
+
+        &.isHovered {
+            background-color: @modern-neutral-grey-1;
+        }
+    }
+
+    .chevronRightIcon {
+        font-size: 20px;
+        color: @modern-neutral-grey-4;
+
+        &.isHovered {
+            color: @modern-neutral-grey-5;
+        }
+    }
+}

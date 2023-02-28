@@ -1,10 +1,7 @@
 import React, {useMemo} from 'react'
 import {createMemoryHistory} from 'history'
 
-import {
-    ResponseMessageContent,
-    SelfServiceConfiguration,
-} from 'models/selfServiceConfiguration/types'
+import {ResponseMessageContent} from 'models/selfServiceConfiguration/types'
 import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
 import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
@@ -13,15 +10,10 @@ import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/pr
 
 type Props = {
     channels: SelfServiceChannel[]
-    selfServiceConfiguration: SelfServiceConfiguration
     responseMessageContent?: ResponseMessageContent
 }
 
-const CancelOrderFlowPreview = ({
-    channels,
-    selfServiceConfiguration,
-    responseMessageContent,
-}: Props) => {
+const CancelOrderFlowPreview = ({channels, responseMessageContent}: Props) => {
     const history = useMemo(
         () =>
             createMemoryHistory({
@@ -41,7 +33,6 @@ const CancelOrderFlowPreview = ({
             {(channel) => (
                 <SelfServicePreviewContext.Provider
                     value={{
-                        selfServiceConfiguration,
                         orderManagementFlow: 'cancel_order_policy',
                         automatedResponseMessageContent: responseMessageContent,
                     }}

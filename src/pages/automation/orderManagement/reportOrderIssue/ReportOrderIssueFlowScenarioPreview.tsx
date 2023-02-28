@@ -1,32 +1,37 @@
 import React, {useMemo} from 'react'
 import {createMemoryHistory} from 'history'
 
-import {
-    ReturnAction,
-    ReturnActionType,
-} from 'models/selfServiceConfiguration/types'
 import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
 import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
 import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceChannels'
 import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
+import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
 
 type Props = {
     channels: SelfServiceChannel[]
-    returnAction: ReturnAction
+    reasons: ReportIssueCaseReason[]
+    expandedReasonKey: ReportIssueCaseReason['reasonKey'] | null
+    hoveredReasonKey: ReportIssueCaseReason['reasonKey'] | null
 }
 
-const ReturnOrderFlowPreview = ({channels, returnAction}: Props) => {
+const ReportOrderIssueFlowScenarioPreview = ({
+    channels,
+    reasons,
+    expandedReasonKey,
+    hoveredReasonKey,
+}: Props) => {
     const history = useMemo(
         () =>
             createMemoryHistory({
                 initialEntries: [
-                    returnAction.type === ReturnActionType.AutomatedResponse
-                        ? SELF_SERVICE_PREVIEW_ROUTES.RETURN
-                        : SELF_SERVICE_PREVIEW_ROUTES.RETURN_PORTAL,
+                    SELF_SERVICE_PREVIEW_ROUTES.REPORT_ISSUE_REASONS,
                 ],
             }),
-        [returnAction.type]
+        []
+    )
+    const expandedReason = reasons.find(
+        (reason) => reason.reasonKey === expandedReasonKey
     )
 
     return (
@@ -40,12 +45,14 @@ const ReturnOrderFlowPreview = ({channels, returnAction}: Props) => {
             {(channel) => (
                 <SelfServicePreviewContext.Provider
                     value={{
-                        orderManagementFlow: 'return_order_policy',
+                        orderManagementFlow: 'report_issue_policy',
+                        reportOrderIssueReasons: reasons.map(
+                            (reason) => reason.reasonKey
+                        ),
+                        reportOrderIssueReason: expandedReason,
+                        hoveredReportOrderIssueReason: hoveredReasonKey,
                         automatedResponseMessageContent:
-                            returnAction.type ===
-                            ReturnActionType.AutomatedResponse
-                                ? returnAction.response_message_content
-                                : undefined,
+                            expandedReason?.action?.responseMessageContent,
                     }}
                 >
                     <SelfServicePreview channel={channel} history={history} />
@@ -55,4 +62,4 @@ const ReturnOrderFlowPreview = ({channels, returnAction}: Props) => {
     )
 }
 
-export default ReturnOrderFlowPreview
+export default ReportOrderIssueFlowScenarioPreview

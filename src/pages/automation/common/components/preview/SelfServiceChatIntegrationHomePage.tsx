@@ -33,15 +33,15 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
         GORGIAS_CHAT_SSP_TEXTS[integration.meta.language || 'en-US']
 
     const quickResponses =
-        selfServiceConfiguration.quick_response_policies.filter(
+        selfServiceConfiguration?.quick_response_policies.filter(
             (quickResponse) => !quickResponse.deactivated_datetime
-        )
-    const canTrackOrders = selfServiceConfiguration.track_order_policy.enabled
+        ) ?? []
+    const canTrackOrders = selfServiceConfiguration?.track_order_policy.enabled
     const canManageOrders =
         canTrackOrders ||
-        selfServiceConfiguration.report_issue_policy.enabled ||
-        selfServiceConfiguration.cancel_order_policy.enabled ||
-        selfServiceConfiguration.return_order_policy.enabled
+        selfServiceConfiguration?.report_issue_policy.enabled ||
+        selfServiceConfiguration?.cancel_order_policy.enabled ||
+        selfServiceConfiguration?.return_order_policy.enabled
     const isInitialEntry = history.length === 1
 
     return (

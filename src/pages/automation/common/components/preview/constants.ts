@@ -11,6 +11,8 @@ export const SELF_SERVICE_PREVIEW_ROUTES = {
     RETURN: '/return',
     RETURN_PORTAL: '/return-portal',
     CANCEL: '/cancel',
+    REPORT_ISSUE_REASONS: '/report-issue-reasons',
+    REPORT_ISSUE: '/report-issue',
 }
 
 export const ETA_DATE = moment([2022, 11, 18, 9])
