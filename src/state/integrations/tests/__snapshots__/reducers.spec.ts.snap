@@ -35,6 +35,9 @@ Immutable.Map {
       "chatStatus": Immutable.Map {},
     },
   },
+  "migrations": Immutable.Map {
+    "email": Immutable.List [],
+  },
   "extra": Immutable.Map {
     "facebook": Immutable.Map {
       "onboardingIntegrations": Immutable.Map {
@@ -80,6 +83,9 @@ Immutable.Map {
         1: true,
       },
     },
+  },
+  "migrations": Immutable.Map {
+    "email": Immutable.List [],
   },
   "extra": Immutable.Map {
     "facebook": Immutable.Map {
@@ -127,6 +133,9 @@ Immutable.Map {
       },
     },
   },
+  "migrations": Immutable.Map {
+    "email": Immutable.List [],
+  },
   "extra": Immutable.Map {
     "facebook": Immutable.Map {
       "onboardingIntegrations": Immutable.Map {
@@ -173,6 +182,9 @@ Immutable.Map {
     "error": Immutable.Map {
       "chatStatus": Immutable.Map {},
     },
+  },
+  "migrations": Immutable.Map {
+    "email": Immutable.List [],
   },
   "extra": Immutable.Map {
     "facebook": Immutable.Map {
@@ -231,6 +243,9 @@ Immutable.Map {
     "error": Immutable.Map {
       "chatStatus": Immutable.Map {},
     },
+  },
+  "migrations": Immutable.Map {
+    "email": Immutable.List [],
   },
   "extra": Immutable.Map {
     "facebook": Immutable.Map {

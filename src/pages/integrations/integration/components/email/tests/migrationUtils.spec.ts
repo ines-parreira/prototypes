@@ -1,9 +1,7 @@
 import {EmailMigration, MigrationStatus} from 'models/integration/types'
-import * as dateUtils from 'utils/date'
 import {
     computeMigrationInboundVerificationStatus,
     getInboundUnverifiedMigrations,
-    isLastVerificationEmailJustSent,
 } from '../EmailMigration/utils'
 import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
 
@@ -25,7 +23,6 @@ describe('migration utils', () => {
             const partiallyVerifiedMigration = {
                 status: MigrationStatus.InboundPartialSuccess,
                 integration: {meta: {address: 'third@gorgias.com'}} as any,
-                last_verification_email_sent_at: '',
             }
 
             const migrations = [
@@ -80,25 +77,6 @@ describe('migration utils', () => {
                     status,
                 } as any)
             ).toBe(EmailVerificationStatus.Success)
-        })
-    })
-
-    describe('isLastVerificationEmailJustSent', () => {
-        jest.spyOn(dateUtils, 'getMoment').mockImplementation((): any =>
-            dateUtils.stringToDatetime('2023-01-10T00:10')
-        )
-
-        it.each(['2023-01-10T00:05', '2023-01-10T00:08'])(
-            'should return false when the last email was sent more than 2 minutes ago',
-            (timestamp) => {
-                expect(isLastVerificationEmailJustSent(timestamp)).toBeFalsy()
-            }
-        )
-
-        it('should return true when the last email was sent less than 2 minutes ago', () => {
-            expect(
-                isLastVerificationEmailJustSent('2023-01-10T00:09')
-            ).toBeTruthy()
         })
     })
 })

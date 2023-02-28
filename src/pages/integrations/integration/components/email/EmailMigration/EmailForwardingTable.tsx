@@ -9,7 +9,6 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import Pagination from 'pages/common/components/Pagination'
-import {emailMigrations as mockMigrations} from 'fixtures/emailMigration'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import EmailVerificationStatusLabel, {
     EmailVerificationStatus,
@@ -27,8 +26,7 @@ type Props = {
 export default function EmailForwardingTable({migrations}: Props) {
     const {page, pageCount, paginatedItems, onPageChange} =
         useClientSidePagination({
-            // TODO remove mockMigrations
-            items: mockMigrations ?? migrations,
+            items: migrations,
             itemsPerPage: 5,
         })
 

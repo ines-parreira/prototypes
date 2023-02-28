@@ -606,3 +606,8 @@ export const getEmailMigrationStatus = createSelector(
     getIntegrationsState,
     (state) => state?.emailMigrationBannerStatus
 )
+
+export const getEmailMigrations = createSelector(
+    getIntegrationsState,
+    (state) => state?.migrations?.email ?? []
+)

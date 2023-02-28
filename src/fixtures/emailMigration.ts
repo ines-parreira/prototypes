@@ -1,5 +1,4 @@
 import {EmailMigration, MigrationStatus} from 'models/integration/types'
-import {getMomentNow} from 'utils/date'
 
 export const emailMigrations = [
     {
@@ -10,7 +9,6 @@ export const emailMigrations = [
             },
         },
         status: MigrationStatus.Initiated,
-        last_verification_email_sent_at: '',
     },
     {
         integration: {
@@ -20,7 +18,6 @@ export const emailMigrations = [
             },
         },
         status: MigrationStatus.InboundPending,
-        last_verification_email_sent_at: getMomentNow(),
     },
     {
         integration: {
@@ -30,7 +27,6 @@ export const emailMigrations = [
             },
         },
         status: MigrationStatus.InboundSuccess,
-        last_verification_email_sent_at: '',
     },
     {
         integration: {
@@ -40,7 +36,6 @@ export const emailMigrations = [
             },
         },
         status: MigrationStatus.InboundFailed,
-        last_verification_email_sent_at: '',
     },
     {
         integration: {
@@ -50,7 +45,6 @@ export const emailMigrations = [
             },
         },
         status: MigrationStatus.InboundCriticalFailure,
-        last_verification_email_sent_at: '',
     },
     {
         integration: {
@@ -60,7 +54,6 @@ export const emailMigrations = [
             },
         },
         status: MigrationStatus.InboundCriticalFailure,
-        last_verification_email_sent_at: '',
     },
     {
         integration: {
@@ -70,6 +63,5 @@ export const emailMigrations = [
             },
         },
         status: MigrationStatus.InboundCriticalFailure,
-        last_verification_email_sent_at: '',
     },
 ] as unknown as EmailMigration[]

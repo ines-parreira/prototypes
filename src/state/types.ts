@@ -5,10 +5,12 @@ import {ThunkDispatch} from 'redux-thunk'
 import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
 import {
     EmailDomain,
+    EmailMigration,
     EmailMigrationBannerStatus,
     GorgiasChatStatusEnum,
     Integration,
     IntegrationType,
+    MigrationStatus,
 } from 'models/integration/types'
 import {PaginationMeta, OrderDirection} from 'models/api/types'
 import {Tag} from 'models/tag/types'
@@ -107,6 +109,8 @@ export type GorgiasAction = {
     integration?: Integration | Map<any, any>
     emailDomain?: EmailDomain | Map<any, any>
     emailMigrationBannerStatus?: EmailMigrationBannerStatus
+    emailMigrations?: EmailMigration[]
+    emailMigrationVerificationStatus?: MigrationStatus
     response?: Record<string, any>
     integrationId?: number
     appId?: string

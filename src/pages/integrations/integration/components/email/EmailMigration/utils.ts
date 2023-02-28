@@ -1,5 +1,4 @@
 import {EmailMigration, MigrationStatus} from 'models/integration/types'
-import {getMoment, stringToDatetime} from 'utils/date'
 import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
 
 export const computeMigrationInboundVerificationStatus = (
@@ -33,13 +32,4 @@ export const getInboundUnverifiedMigrations = (
             computeMigrationInboundVerificationStatus(migration) !==
             EmailVerificationStatus.Success
     )
-}
-
-export const isLastVerificationEmailJustSent = (
-    lastEmailTimestamp: string
-): boolean => {
-    const now = getMoment()
-    const lastEmailMoment = stringToDatetime(lastEmailTimestamp)
-
-    return now.diff(lastEmailMoment, 'minutes') < 2
 }

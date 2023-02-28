@@ -8,7 +8,9 @@ import {NotificationStatus} from 'state/notifications/types'
 import settingsCss from 'pages/settings/settings.less'
 import {fetchMigrations} from 'models/integration/resources/email'
 import Loader from 'pages/common/components/Loader/Loader'
-import {EmailMigration} from 'models/integration/types'
+import {SET_EMAIL_PROVIDER_MIGRATIONS} from 'state/integrations/constants'
+import useAppSelector from 'hooks/useAppSelector'
+import {getEmailMigrations} from 'state/integrations/selectors'
 import MigrationEmailForwarding from './MigrationEmailForwarding'
 import {getInboundUnverifiedMigrations} from './utils'
 
@@ -19,7 +21,7 @@ enum VerificationStep {
 
 export default function MigrationInProgress() {
     const [currentStep, setCurrentStep] = useState<VerificationStep>()
-    const [migrations, setMigrations] = useState<EmailMigration[]>([])
+    const migrations = useAppSelector(getEmailMigrations)
 
     const dispatch = useAppDispatch()
 
@@ -29,13 +31,16 @@ export default function MigrationInProgress() {
     const [{loading}, loadMigrations] = useAsyncFn(async () => {
         try {
             const response = await fetchMigrations()
-            setMigrations(response.data)
+            dispatch({
+                type: SET_EMAIL_PROVIDER_MIGRATIONS,
+                emailMigrations: response.data,
+            })
         } catch (error) {
             const {response} = error as AxiosError<{error: {msg: string}}>
             const errorMsg =
                 response && response.data.error
                     ? response.data.error.msg
-                    : 'Failed to start migration'
+                    : 'Failed to fetch migrations'
             void dispatch(
                 notify({
                     message: errorMsg,

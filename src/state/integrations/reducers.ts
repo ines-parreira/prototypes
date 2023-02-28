@@ -1,7 +1,11 @@
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 
-import {Integration, IntegrationType} from 'models/integration/types'
+import {
+    EmailMigration,
+    Integration,
+    IntegrationType,
+} from 'models/integration/types'
 import {GorgiasAction} from 'state/types'
 
 import * as constants from './constants'
@@ -25,6 +29,9 @@ export const initialState: IntegrationsImmutableState = fromJS({
         error: {
             chatStatus: {},
         },
+    },
+    migrations: {
+        email: [],
     },
 
     extra: {
@@ -296,7 +303,28 @@ export default function reducer(
                 'emailMigrationBannerStatus',
                 fromJS(action.emailMigrationBannerStatus)
             )
+        case constants.SET_EMAIL_PROVIDER_MIGRATIONS:
+            return state.setIn(
+                ['migrations', 'email'],
+                fromJS(action.emailMigrations)
+            )
 
+        case constants.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS: {
+            const migrations = (
+                state.getIn(['migrations', 'email']) as Map<any, any>
+            ).toJS() as EmailMigration[]
+
+            const newMigrations = migrations.map((migration) =>
+                migration.integration.id === action.integrationId
+                    ? {
+                          ...migration,
+                          status: action.emailMigrationVerificationStatus,
+                      }
+                    : migration
+            )
+
+            return state.setIn(['migrations', 'email'], fromJS(newMigrations))
+        }
         default:
             return state
     }

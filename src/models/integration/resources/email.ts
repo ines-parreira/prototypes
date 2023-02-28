@@ -7,31 +7,22 @@ export const startEmailMigration = async () => {
 }
 
 export const fetchMigrations = async () => {
-    // TODO
-    return new Promise<{data: EmailMigration[]}>((res) => {
-        res({
-            data: [
-                {
-                    integration: {
-                        id: 1,
-                        meta: {
-                            address: 'support@customer.com',
-                            verified: true,
-                            outbound_verification_status: {},
-                        },
-                    },
-                    status: 'initiated',
-                    last_verification_email_sent_at: '',
-                },
-            ] as unknown as EmailMigration[],
-        })
-    })
-    // await client.get<any>('/integrations/email/migration/integrations')
+    const response = await client.get<{data: EmailMigration[]}>(
+        '/integrations/email/migration/integrations'
+    )
+    return response.data
 }
 
 export const fetchEmailMigrationBannerStatus = async () => {
     const response = await client.get<EmailMigrationBannerStatus>(
         '/integrations/email/migration'
+    )
+    return response.data
+}
+
+export const verifyMigrationIntegration = async (id: number) => {
+    const response = await client.post<EmailMigration>(
+        `/integrations/email/${id}/migration/verify`
     )
     return response.data
 }

@@ -7,6 +7,7 @@ import {
     IntegrationAuthentication,
     IntegrationType,
     EmailMigrationBannerStatus,
+    EmailMigration,
 } from '../../models/integration/types'
 
 export type IntegrationsImmutableState = Map<any, any>
@@ -36,6 +37,9 @@ export type IntegrationsState = {
     }
     emailDomain?: EmailDomain
     emailMigrationBannerStatus?: EmailMigrationBannerStatus
+    migrations?: {
+        email?: EmailMigration[]
+    }
 }
 
 export type IntegrationListItem = Pick<

@@ -1,5 +1,6 @@
 import React from 'react'
 import {Col} from 'reactstrap'
+import {useHistory} from 'react-router-dom'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import useClipboard from 'pages/common/hooks/useClipboard'
@@ -20,6 +21,7 @@ type Props = {
 export default function MigrationEmailForwarding({migrations}: Props) {
     const forwardingEmailAddress = useAppSelector(getForwardingEmailAddress)
     const {copyButtonText} = useClipboard('#copy-email-address')
+    const history = useHistory()
 
     return (
         <div
@@ -58,10 +60,15 @@ export default function MigrationEmailForwarding({migrations}: Props) {
                 </div>
                 <EmailForwardingTable migrations={migrations} />
                 <div className={css.navigationButtonsWrapper}>
-                    <Button intent="secondary">Cancel</Button>
-                    <Button intent="secondary" isDisabled>
-                        Next
+                    <Button
+                        fillStyle="ghost"
+                        onClick={() => {
+                            history.push('/app/settings/channels/email')
+                        }}
+                    >
+                        Finish later
                     </Button>
+                    <Button isDisabled>Next</Button>
                 </div>
             </Col>
             <Col>

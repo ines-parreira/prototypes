@@ -1,38 +1,70 @@
-import {cleanup, render, screen} from '@testing-library/react'
+import {
+    cleanup,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react'
 import React from 'react'
+import {Provider} from 'react-redux'
+import MockAdapter from 'axios-mock-adapter'
+import {mockStore} from 'utils/testing'
+import client from 'models/api/resources'
+import {MigrationStatus} from 'models/integration/types'
+import {UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS} from 'state/integrations/constants'
 import EmailForwardingButton from '../EmailMigration/EmailForwardingButton'
 import * as utils from '../EmailMigration/utils'
 import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
 
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+
+const serverMock = new MockAdapter(client)
 const computeStatusSpy = jest.spyOn(
     utils,
     'computeMigrationInboundVerificationStatus'
 )
-const lastSentDateSpy = jest.spyOn(utils, 'isLastVerificationEmailJustSent')
+
+const mockMigration = {integration: {id: 1}}
 
 describe('EmailForwardingButton', () => {
-    const renderComponent = (migration = {}) =>
-        render(<EmailForwardingButton migration={migration as any} />)
+    const renderComponent = (migration = mockMigration) =>
+        render(
+            <Provider store={mockStore({} as any)}>
+                <EmailForwardingButton migration={migration as any} />
+            </Provider>
+        )
 
     afterEach(cleanup)
 
-    it('renders the "Verify forwarding" button if the migration is unverified', () => {
+    it('Unverified status - "Verify forwarding" button', () => {
         computeStatusSpy.mockReturnValue(EmailVerificationStatus.Unverified)
         renderComponent()
         expect(screen.getByText('Verify forwarding')).toBeInTheDocument()
     })
 
-    it('renders the "Verifying" button if the last verification email was just sent', () => {
-        computeStatusSpy.mockReturnValue(EmailVerificationStatus.Pending)
-        lastSentDateSpy.mockReturnValue(true)
-        renderComponent()
-        expect(screen.getByText('Verifying')).toBeInTheDocument()
-    })
+    it.each`
+        status                                | buttonText
+        ${EmailVerificationStatus.Unverified} | ${'Verify forwarding'}
+        ${EmailVerificationStatus.Failed}     | ${'Retry verification'}
+    `(
+        'Should display "$buttonText" when status is "$status" and call verify',
+        async ({status, buttonText}) => {
+            computeStatusSpy.mockReturnValue(status)
+            serverMock
+                .onPost(`/integrations/email/1/migration/verify`)
+                .reply(200, {status: MigrationStatus.InboundPending})
+            renderComponent()
 
-    it('renders the "Retry verification" button if the migration is pending and the last verification email was not just sent', () => {
-        computeStatusSpy.mockReturnValue(EmailVerificationStatus.Pending)
-        lastSentDateSpy.mockReturnValue(false)
-        renderComponent()
-        expect(screen.getByText('Retry verification')).toBeInTheDocument()
-    })
+            fireEvent.click(screen.getByText(buttonText))
+            await waitFor(() =>
+                expect(mockedDispatch).toHaveBeenCalledWith({
+                    type: UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
+                    integrationId: 1,
+                    emailMigrationVerificationStatus:
+                        MigrationStatus.InboundPending,
+                })
+            )
+        }
+    )
 })

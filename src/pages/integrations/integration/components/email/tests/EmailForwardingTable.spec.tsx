@@ -14,7 +14,6 @@ const mockMigrations = [
             },
         },
         status: MigrationStatus.Initiated,
-        last_verification_email_sent_at: '',
     },
     {
         integration: {
@@ -24,7 +23,6 @@ const mockMigrations = [
             },
         },
         status: MigrationStatus.InboundPartialSuccess,
-        last_verification_email_sent_at: '',
     },
 ] as unknown as EmailMigration[]
 
