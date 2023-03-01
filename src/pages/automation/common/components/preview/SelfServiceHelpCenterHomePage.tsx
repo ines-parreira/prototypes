@@ -63,7 +63,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                             hoveredOrderManagementFlow === 'track_order_policy'
                         }
                     >
-                        {helpCenterTexts.orderFlowTrack}
+                        {helpCenterTexts.manageOrdersLabelTrackOrder}
                     </OrderManagementFlowItem>
                 )}
                 {selfServiceConfiguration?.return_order_policy.enabled && (
@@ -73,7 +73,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                             hoveredOrderManagementFlow === 'return_order_policy'
                         }
                     >
-                        {helpCenterTexts.orderFlowReturn}
+                        {helpCenterTexts.manageOrdersLabelReturnOrder}
                     </OrderManagementFlowItem>
                 )}
                 {selfServiceConfiguration?.cancel_order_policy.enabled && (
@@ -83,7 +83,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                             hoveredOrderManagementFlow === 'cancel_order_policy'
                         }
                     >
-                        {helpCenterTexts.orderFlowCancel}
+                        {helpCenterTexts.manageOrdersLabelCancelOrder}
                     </OrderManagementFlowItem>
                 )}
                 {selfServiceConfiguration?.report_issue_policy.enabled && (
@@ -93,7 +93,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                             hoveredOrderManagementFlow === 'report_issue_policy'
                         }
                     >
-                        {helpCenterTexts.orderFlowReport}
+                        {helpCenterTexts.manageOrdersLabelReportIssue}
                     </OrderManagementFlowItem>
                 )}
             </div>
