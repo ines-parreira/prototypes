@@ -88,10 +88,10 @@ const SelfServiceChatIntegrationReportIssuePage = ({integration}: Props) => {
                         setPreviewStep(PreviewStep.REPLIES)
                     }, DELAY_BETWEEN_STEPS)
             }
-        } else {
+        } else if (hasResponseMessageText) {
             setPreviewStep(PreviewStep.RESPONSE)
         }
-    }, [previewStep, showHelpfulPrompt])
+    }, [previewStep, showHelpfulPrompt, hasResponseMessageText])
     useEffect(() => {
         if (ref.current) {
             ref.current.scrollTo({
