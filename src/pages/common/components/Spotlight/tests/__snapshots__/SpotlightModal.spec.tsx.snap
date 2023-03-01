@@ -673,7 +673,7 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
           class="tabContainer"
         >
           <div
-            class="tab"
+            class="tab activeTab"
             tabindex="1"
           >
             <span
@@ -683,7 +683,7 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
             </span>
           </div>
           <div
-            class="tab activeTab"
+            class="tab"
             tabindex="2"
           >
             <span

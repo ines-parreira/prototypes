@@ -211,7 +211,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         !_isEmpty(tickets) && setTickets([])
         !_isEmpty(customers) && setCustomers([])
         hasSearched && setHasSearched(false)
-        setSearchItemsType(ViewType.CustomerList)
+        setSearchItemsType(ViewType.TicketList)
         setLastSearchQueries({customers: '', tickets: ''})
         cancelSearch()
         searchRank.endScenario()
