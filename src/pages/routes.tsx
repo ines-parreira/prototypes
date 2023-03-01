@@ -31,10 +31,12 @@ import MyIntegrations from './integrations/Store/Mine'
 import PhoneNumbersListContainer from './phoneNumbers/PhoneNumbersListContainer'
 import PhoneNumberCreateContainer from './phoneNumbers/PhoneNumberCreateContainer'
 import PhoneNumberDetailContainer from './phoneNumbers/PhoneNumberDetailContainer'
+import ContactFormCreateView from './settings/contactForm/components/ContactFormCreateView'
 import ContactFormStartView from './settings/contactForm/components/ContactFormStartView'
 import {
-    CONTACT_FORM_ABOUT_PATH,
-    CONTACT_FORM_FORMS_PATH,
+    CONTACT_FORM_ABOUT_ROUTE,
+    CONTACT_FORM_CREATE_PATH,
+    CONTACT_FORM_FORMS_ROUTE,
 } from './settings/contactForm/constants'
 import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
@@ -1019,14 +1021,22 @@ export function ContactFormSettingsRoutes({
     return (
         <Switch>
             <Route
+                exact
                 path={[
                     path,
-                    `${path}${CONTACT_FORM_ABOUT_PATH}`,
-                    `${path}${CONTACT_FORM_FORMS_PATH}`,
+                    `${path}${CONTACT_FORM_ABOUT_ROUTE}`,
+                    `${path}${CONTACT_FORM_FORMS_ROUTE}`,
                 ]}
-                exact
                 render={appRender({
                     content: ContactFormStartView,
+                    navbar: SettingsNavbar,
+                })}
+            />
+            <Route
+                exact
+                path={CONTACT_FORM_CREATE_PATH}
+                render={appRender({
+                    content: ContactFormCreateView,
                     navbar: SettingsNavbar,
                 })}
             />

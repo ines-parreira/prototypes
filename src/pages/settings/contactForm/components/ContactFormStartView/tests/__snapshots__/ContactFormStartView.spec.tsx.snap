@@ -1,0 +1,286 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ContactFormStartView /> \`About\` section should display description 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Contact Form
+      </h1>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/contact-form/about"
+      >
+        About
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/contact-form/forms"
+      >
+        Forms
+      </a>
+    </nav>
+    <header
+      class="hero"
+    >
+      
+      <i
+        class="icon material-icons-outlined"
+      >
+        wysiwyg
+      </i>
+      <div>
+        <h1
+          class="heroHeading"
+        >
+          Contact Form
+        </h1>
+        <p
+          class="heroDescription"
+        >
+          Create, customize, and embed a contact form to any page on your website.
+        </p>
+        <div
+          class="heroMeta"
+        >
+          <span
+            class="by"
+          >
+            by
+             
+            <a
+              href="https://gorgias.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Gorgias
+            </a>
+          </span>
+        </div>
+      </div>
+    </header>
+    <main
+      class="main"
+    >
+      <section
+        class="longDescription"
+      >
+        <h2
+          class="categoryTitle"
+        >
+          About
+        </h2>
+        <div>
+          <p>
+            Contact Form is a streamlined way for shoppers to submit support requests while on your website. You can customize the subject lines and allow shoppers to attach files to their tickets. Once you set up Contact Form, you can embed it on your Gorgias Help Center or any page of your website via HTML (no-code solution coming soon).
+          </p>
+           
+          <p>
+            Gorgias Contact Form is a much better alternative than your default form or email links on your website.
+          </p>
+           
+          <h2>
+            With a Contact Form, you’ll be able to:
+          </h2>
+          <ul>
+            <li>
+              <b>
+                Reduce spam
+              </b>
+               by replacing the email links on your website with Contact Form
+            </li>
+            <li>
+              <b>
+                Solve tickets faster
+              </b>
+               by collecting relevant information from your shoppers upfront
+            </li>
+            <li>
+              <b>
+                Automate support actions
+              </b>
+               by setting up rules & macros for tickets submitted via Contact Form
+            </li>
+          </ul>
+        </div>
+        <ul
+          class="screenshotList"
+        >
+          <li
+            class="screenshotListItem"
+          >
+            <img
+              alt="Screenshot number 1 of things this app allows you to do in Gorgias"
+              class="screenshot"
+              src="/assets/img/integrations/screenshots/contactform-1.png"
+            />
+          </li>
+        </ul>
+      </section>
+      <div
+        class="infoCard card"
+      >
+        <div
+          class="card-body"
+        >
+          <div
+            class="connectWrapper"
+          >
+            <a
+              class="connectButtonWrapper"
+              href="http://localhost/app/settings/contact-form/new?account=undefined"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <button
+                class="wrapper actionButton fill primary medium"
+                type="button"
+              >
+                Create Contact Form
+              </button>
+            </a>
+          </div>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Pricing
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              Free
+            </li>
+          </ul>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Resources
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              <a
+                class="actionLink"
+                href="https://docs.gorgias.com/en-US/help-center---contact-form-117132"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons-outlined actionIcon actionIconBigger"
+                >
+                  description
+                </i>
+                Documentation
+              </a>
+            </li>
+            
+          </ul>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Support
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              <a
+                class="actionLink"
+                href="mailto:support@gorgias.com"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons actionIcon"
+                >
+                  mail
+                </i>
+                support@gorgias.com
+              </a>
+            </li>
+            
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+  ,
+</div>
+`;
+
+exports[`<ContactFormStartView /> \`Forms\` section should render ManageContactForms component empty state 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Contact Form
+      </h1>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/contact-form/about"
+      >
+        About
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/contact-form/forms"
+      >
+        Forms
+      </a>
+    </nav>
+    <div
+      class="pageContainer container-fluid"
+    >
+      <p>
+        You have no contact forms at the moment.
+      </p>
+      <button
+        class="wrapper fill primary medium"
+        type="button"
+      >
+        <div
+          class="createNewButton"
+        >
+          <i
+            class="material-icons mr-2"
+          >
+            add
+          </i>
+          Create Form
+        </div>
+      </button>
+    </div>
+  </div>
+  ,
+</div>
+`;
