@@ -4,8 +4,8 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {assumeMock, renderWithRouter} from '../../../../../../utils/testing'
+import {RootState, StoreDispatch} from 'state/types'
+import {assumeMock, renderWithRouter} from 'utils/testing'
 import {HELP_CENTER_BASE_PATH} from '../../../../helpCenter/constants'
 import {
     CONTACT_FORM_ABOUT_PATH,

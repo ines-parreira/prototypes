@@ -1,8 +1,8 @@
 import React from 'react'
 import {NavLink, Redirect, Route, Switch} from 'react-router-dom'
-import PageHeader from '../../../../common/components/PageHeader'
-import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
-import Detail from '../../../../integrations/components/Detail'
+import PageHeader from 'pages/common/components/PageHeader'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import Detail from 'pages/integrations/components/Detail'
 import {
     CONTACT_FORM_ABOUT_PATH,
     CONTACT_FORM_CREATE_PATH,

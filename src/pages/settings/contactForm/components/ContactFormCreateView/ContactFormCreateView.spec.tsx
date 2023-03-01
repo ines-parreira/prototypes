@@ -1,0 +1,76 @@
+import {fireEvent, screen} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {account} from 'fixtures/account'
+import {integrationsState} from 'fixtures/integrations'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
+import {SupportedLocalesProvider} from '../../../helpCenter/providers/SupportedLocales'
+import ContactFormCreateView from './ContactFormCreateView'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+describe('<ContactFormCreateView />', () => {
+    const defaultState: Partial<RootState> = {
+        integrations: fromJS(integrationsState),
+        currentAccount: fromJS(account),
+    }
+
+    const renderView = ({state}: {state: Partial<RootState>}) => {
+        return renderWithRouter(
+            <Provider store={mockStore(state)}>
+                <SupportedLocalesProvider>
+                    <ContactFormCreateView />,
+                </SupportedLocalesProvider>
+            </Provider>
+        )
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should use subdomain as default form name', async () => {
+        renderView({state: defaultState})
+
+        const EXPECTED_DOMAIN: string =
+            defaultState.currentAccount?.get('domain')
+
+        const nameInput = await screen.findByTestId('name')
+        expect(nameInput.getAttribute('value')).toEqual(
+            `${EXPECTED_DOMAIN} Contact Form`
+        )
+    })
+
+    it('should hide alert after alert is acknowledged', async () => {
+        renderView({state: defaultState})
+        const AlertRegEx = /The default Gorgias email is selected\. Make sure/
+
+        await screen.findByText(AlertRegEx)
+        fireEvent.click(screen.getByLabelText('Close Icon'))
+
+        await expect(screen.findByText(AlertRegEx)).rejects.toThrow(
+            /Unable to find/
+        )
+    })
+
+    describe('Submit form', () => {
+        it('should have an error message if form name is one character long', async () => {
+            renderView({state: defaultState})
+
+            const nameInput = await screen.findByTestId('name')
+            const submitButton = screen.getByRole('button', {
+                name: /Create Contact Form/,
+            })
+
+            fireEvent.change(nameInput, {target: {value: 'X'}})
+            expect(nameInput.getAttribute('value')).toEqual('X')
+            expect(submitButton.className).toMatch(/disabled/i)
+
+            screen.getByText(/Name should be at least 2 characters long/i)
+        })
+    })
+})

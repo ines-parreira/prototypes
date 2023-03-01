@@ -34,9 +34,11 @@ import PhoneNumberDetailContainer from './phoneNumbers/PhoneNumberDetailContaine
 import ContactFormCreateView from './settings/contactForm/components/ContactFormCreateView'
 import ContactFormStartView from './settings/contactForm/components/ContactFormStartView'
 import {
-    CONTACT_FORM_ABOUT_ROUTE,
+    CONTACT_FORM_ABOUT_PATH,
+    CONTACT_FORM_BASE_PATH,
     CONTACT_FORM_CREATE_PATH,
-    CONTACT_FORM_FORMS_ROUTE,
+    CONTACT_FORM_FORMS_PATH,
+    CONTACT_FORM_SETTINGS_PATH,
 } from './settings/contactForm/constants'
 import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
@@ -1019,29 +1021,41 @@ export function ContactFormSettingsRoutes({
     match: {path},
 }: RouteComponentProps) {
     return (
-        <Switch>
-            <Route
-                exact
-                path={[
-                    path,
-                    `${path}${CONTACT_FORM_ABOUT_ROUTE}`,
-                    `${path}${CONTACT_FORM_FORMS_ROUTE}`,
-                ]}
-                render={appRender({
-                    content: ContactFormStartView,
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                exact
-                path={CONTACT_FORM_CREATE_PATH}
-                render={appRender({
-                    content: ContactFormCreateView,
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route render={() => <Redirect to={path} />} />
-        </Switch>
+        <HelpCenterApiClientProvider>
+            <SupportedLocalesProvider>
+                <Switch>
+                    <Route
+                        exact
+                        path={[
+                            CONTACT_FORM_BASE_PATH,
+                            CONTACT_FORM_ABOUT_PATH,
+                            CONTACT_FORM_FORMS_PATH,
+                        ]}
+                        render={appRender({
+                            content: ContactFormStartView,
+                            navbar: SettingsNavbar,
+                        })}
+                    />
+                    <Route
+                        exact
+                        path={CONTACT_FORM_CREATE_PATH}
+                        render={appRender({
+                            content: ContactFormCreateView,
+                            navbar: SettingsNavbar,
+                        })}
+                    />
+                    <Route
+                        exact
+                        path={CONTACT_FORM_SETTINGS_PATH}
+                        render={appRender({
+                            content: () => <div>InProgress</div>,
+                            navbar: SettingsNavbar,
+                        })}
+                    />
+                    <Route render={() => <Redirect to={path} />} />
+                </Switch>
+            </SupportedLocalesProvider>
+        </HelpCenterApiClientProvider>
     )
 }
 

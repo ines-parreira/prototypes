@@ -1,8 +1,8 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 import {Container} from 'reactstrap'
-import Button from '../../../../common/components/button/Button'
-import css from '../../../helpCenter/components/HelpCenterStartView/HelpCenterStartView.less'
+import Button from 'pages/common/components/button/Button'
+import css from 'pages/settings/helpCenter/components/HelpCenterStartView/HelpCenterStartView.less'
 import settingsCss from '../../../settings.less'
 import {CONTACT_FORM_CREATE_PATH} from '../../constants'
 
