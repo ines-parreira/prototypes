@@ -1,9 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<MetricCard /> should render the card 1`] = `
+exports[`<MetricCard /> should render the metric card 1`] = `
 <div
   class="wrapper card"
 >
+  <div
+    class="title"
+  >
+    Metric title
+    <div
+      class="wrapper"
+    >
+      <i
+        class="material-icons-outlined icon"
+        id="tooltip-1"
+      >
+        info
+      </i>
+    </div>
+  </div>
   MetricCard
 </div>
 `;

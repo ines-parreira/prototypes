@@ -19,9 +19,10 @@ import {
 } from 'state/stats/selectors'
 import blueStar from 'assets/img/icons/blue-star.svg'
 
+import BigNumberMetric from './BigNumberMetric'
 import DashboardSection from './DashboardSection'
 import DashboardGridCell from './DashboardGridCell'
-import Metric from './Metric'
+import MetricCard from './MetricCard'
 import TrendBadge from './TrendBadge'
 import MetricTooltip from './MetricTooltip'
 import TipsToggle from './TipsToggle'
@@ -134,7 +135,7 @@ export default function SupportPerformanceOverview() {
                 }
             >
                 <DashboardGridCell size={3}>
-                    <Metric
+                    <MetricCard
                         title="Customer satisfaction"
                         hint="Average CSAT score for tickets which received a survey during the period"
                         trendBadge={
@@ -157,18 +158,18 @@ export default function SupportPerformanceOverview() {
                             )
                         }
                     >
-                        <div className={css.customerSatisfactionContent}>
+                        <BigNumberMetric>
                             {customerSatisfactionMock.value}{' '}
                             <img
                                 className={css.customerSatisfactionStar}
                                 src={blueStar}
                                 alt="Blue star"
                             />
-                        </div>
-                    </Metric>
+                        </BigNumberMetric>
+                    </MetricCard>
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
-                    <Metric
+                    <MetricCard
                         title="First response time"
                         hint="Median time between 1st customer message and 1st human agent response"
                         trendBadge={
@@ -188,11 +189,13 @@ export default function SupportPerformanceOverview() {
                             )
                         }
                     >
-                        {firstResponseTimeMock.value}
-                    </Metric>
+                        <BigNumberMetric>
+                            {firstResponseTimeMock.value}
+                        </BigNumberMetric>
+                    </MetricCard>
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
-                    <Metric
+                    <MetricCard
                         title="Resolution time"
                         hint="Median time between the 1st customer message and the last time the ticket was closed"
                         trendBadge={
@@ -213,11 +216,13 @@ export default function SupportPerformanceOverview() {
                             )
                         }
                     >
-                        {resolutionTimeMock.value}
-                    </Metric>
+                        <BigNumberMetric>
+                            {resolutionTimeMock.value}
+                        </BigNumberMetric>
+                    </MetricCard>
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
-                    <Metric
+                    <MetricCard
                         title="Messages per ticket"
                         hint="Average number of messages exchanged per closed ticket"
                         trendBadge={
@@ -236,8 +241,10 @@ export default function SupportPerformanceOverview() {
                             )
                         }
                     >
-                        {messagesPerTicketMock.value}
-                    </Metric>
+                        <BigNumberMetric>
+                            {messagesPerTicketMock.value}
+                        </BigNumberMetric>
+                    </MetricCard>
                 </DashboardGridCell>
             </DashboardSection>
         </StatsPage>

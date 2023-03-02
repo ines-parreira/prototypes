@@ -893,19 +893,15 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 </div>
               </div>
               <div
-                class="heading-page-semibold"
+                class="wrapper heading-page-semibold"
               >
-                <div
-                  class="customerSatisfactionContent"
-                >
-                  2.24
-                   
-                  <img
-                    alt="Blue star"
-                    class="customerSatisfactionStar"
-                    src="test-file-stub"
-                  />
-                </div>
+                2.24
+                 
+                <img
+                  alt="Blue star"
+                  class="customerSatisfactionStar"
+                  src="test-file-stub"
+                />
               </div>
               <div
                 class="wrapper error"
@@ -955,7 +951,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 </div>
               </div>
               <div
-                class="heading-page-semibold"
+                class="wrapper heading-page-semibold"
               >
                 5m24s
               </div>
@@ -1007,7 +1003,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 </div>
               </div>
               <div
-                class="heading-page-semibold"
+                class="wrapper heading-page-semibold"
               >
                 1h22m
               </div>
@@ -1059,7 +1055,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 </div>
               </div>
               <div
-                class="heading-page-semibold"
+                class="wrapper heading-page-semibold"
               >
                 2
               </div>

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BigNumberMetric /> should render the number metric 1`] = `
+<div>
+  <div
+    class="wrapper heading-page-semibold"
+  >
+    content
+  </div>
+</div>
+`;
+
+exports[`<BigNumberMetric /> should render the number metric content from a value 1`] = `
+<div>
+  <div
+    class="wrapper heading-page-semibold"
+  >
+    content
+    <span
+      class="from caption-regular"
+    >
+      from 
+      previous content
+    </span>
+  </div>
+</div>
+`;

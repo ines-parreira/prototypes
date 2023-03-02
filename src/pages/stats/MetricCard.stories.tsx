@@ -2,8 +2,8 @@ import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
 import MetricCard from './MetricCard'
-import DashboardSection from './DashboardSection'
-import DashboardGridCell from './DashboardGridCell'
+import MetricTooltip from './MetricTooltip'
+import TrendBadge from './TrendBadge'
 
 const storyConfig: Meta = {
     title: 'Stats/MetricCard',
@@ -16,35 +16,16 @@ const Template: Story<ComponentProps<typeof MetricCard>> = (props) => (
 
 const defaultProps: ComponentProps<typeof MetricCard> = {
     className: '',
-    children: 'Card content',
+    children: 'Value',
+    hint: "I'm a hint",
+    title: 'First response time',
+    tooltip: (
+        <MetricTooltip title="Tooltip title">Tooltip content</MetricTooltip>
+    ),
+    trendBadge: <TrendBadge type="up">5%</TrendBadge>,
 }
 
 export const Default = Template.bind({})
 Default.args = defaultProps
-
-const GridTemplate: Story = () => (
-    <DashboardSection title="">
-        <DashboardGridCell size={6}>
-            <MetricCard {...defaultProps} />
-        </DashboardGridCell>
-        <DashboardGridCell size={3}>
-            <MetricCard {...defaultProps} />
-        </DashboardGridCell>
-        <DashboardGridCell size={3}>
-            <MetricCard {...defaultProps} />
-        </DashboardGridCell>
-        <DashboardGridCell size={4}>
-            <MetricCard {...defaultProps} />
-        </DashboardGridCell>
-        <DashboardGridCell size={8}>
-            <MetricCard {...defaultProps} />
-        </DashboardGridCell>
-        <DashboardGridCell size={6}>
-            <MetricCard {...defaultProps} />
-        </DashboardGridCell>
-    </DashboardSection>
-)
-
-export const InGrid = GridTemplate.bind({})
 
 export default storyConfig

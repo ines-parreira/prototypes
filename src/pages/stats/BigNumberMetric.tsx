@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 
-import css from './MetricContent.less'
+import css from './BigNumberMetric.less'
 
 type Props = {
     children: ReactNode
@@ -9,9 +9,15 @@ type Props = {
     from?: ReactNode
 }
 
-export default function MetricContent({children, className, from}: Props) {
+export default function BigNumberMetric({children, className, from}: Props) {
     return (
-        <div className={classnames(className, 'heading-page-semibold')}>
+        <div
+            className={classnames(
+                className,
+                css.wrapper,
+                'heading-page-semibold'
+            )}
+        >
             {children}
 
             {from && (
