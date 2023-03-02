@@ -1,6 +1,6 @@
 import type {User} from 'config/types/user'
 import {HttpMethod} from 'models/api/types'
-import type {Team} from 'state/teams/types'
+import type {Team} from 'models/team/types'
 
 export enum MacroActionName {
     AddAttachments = 'addAttachments',

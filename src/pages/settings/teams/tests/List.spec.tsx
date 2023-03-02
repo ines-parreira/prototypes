@@ -33,9 +33,10 @@ describe('<TeamList />', () => {
         })
     })
     it('should render with data', async () => {
-        mockServer
-            .onGet('/api/teams/')
-            .reply(200, {data: teams, meta: {current_page: 1}})
+        mockServer.onGet('/api/teams/').reply(200, {
+            data: teams,
+            meta: {next_cursor: null, prev_cursor: null},
+        })
 
         const {container, getByText} = render(
             <Provider store={store}>

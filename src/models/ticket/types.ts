@@ -8,12 +8,12 @@ import {
 } from 'business/types/ticket'
 import {CustomFields} from 'models/customField/types'
 import {FacebookReactionType} from 'constants/integrations/facebook'
-import {ApiCursorPaginationParams, OrderParams} from 'models/api/types'
+import {ApiPaginationParams, OrderParams} from 'models/api/types'
 import {MacroActionName} from 'models/macroAction/types'
 
 import {Event} from '../event/types'
 
-export type TicketSearchOptions = ApiCursorPaginationParams &
+export type TicketSearchOptions = ApiPaginationParams &
     OrderParams<TicketSearchSortableProperties> & {
         search: string
         filters?: string

@@ -1,19 +1,18 @@
 import React, {Component, SyntheticEvent} from 'react'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
-import {Map} from 'immutable'
 
-import CheckBox from 'pages/common/forms/CheckBox'
+import {Member} from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import IconButton from 'pages/common/components/button/IconButton'
+import CheckBox from 'pages/common/forms/CheckBox'
 import {RoleLabel} from 'pages/common/utils/labels'
-import {toJS} from '../../../../utils'
 
 import css from './Row.less'
 
 type Props = {
-    member: Map<any, any>
+    member: Member
     isAccountOwner: boolean
     deleteTeamMember: () => Promise<void>
     select: (memberId: number) => void
@@ -40,7 +39,7 @@ export default class Row extends Component<Props, State> {
     render() {
         const {member, isAccountOwner, select, isSelected} = this.props
         const isDeleting = this.state.isDeleting
-        const editLink = `/app/settings/users/${member.get('id') as number}`
+        const editLink = `/app/settings/users/${member.id}`
         return (
             <Link to={editLink} className={css.component}>
                 <span className="d-flex align-items-center">
@@ -48,22 +47,22 @@ export default class Row extends Component<Props, State> {
                         className="mr-4"
                         isChecked={isSelected}
                         onClick={(event) => event.stopPropagation()}
-                        onChange={() => select(member.get('id'))}
+                        onChange={() => select(member.id)}
                     />
                     <Avatar
-                        name={member.get('name')}
-                        url={member.getIn(['meta', 'profile_picture_url'])}
+                        name={member.name}
+                        url={member.meta?.profile_picture_url}
                         size={36}
                         className={classnames(css.avatar, 'd-none d-md-block')}
                     />
                     <span className={css.meta}>
-                        <p className={css.name}>{member.get('name')}</p>
+                        <p className={css.name}>{member.name}</p>
                         <p className={classnames(css.email, 'text-faded')}>
-                            {member.get('email')}
+                            {member.email}
                         </p>
                     </span>
                     <span className={css.role}>
-                        <RoleLabel role={toJS(member.get('role'))} />
+                        {member.role && <RoleLabel role={member.role} />}
                         {isAccountOwner && (
                             <Badge type={ColorType.Dark}>Account Owner</Badge>
                         )}

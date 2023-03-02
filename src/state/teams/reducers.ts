@@ -1,9 +1,10 @@
 import {fromJS} from 'immutable'
 
-import {GorgiasAction} from '../types'
+import {Team} from 'models/team/types'
+import {GorgiasAction} from 'state/types'
 
 import * as constants from './constants'
-import {TeamsState, Team} from './types'
+import {TeamsState} from './types'
 
 export const initialState: TeamsState = fromJS({
     all: {},
@@ -26,6 +27,22 @@ export default function reducer(
                 'all',
                 (action.payload as number).toString(),
             ])
+        case constants.FETCH_TEAMS_SUCCESS: {
+            const teams = (action.payload as Team[]).reduce(
+                (teams, team) => ({
+                    ...teams,
+                    [team.id]: team,
+                }),
+                {}
+            )
+            return state.mergeIn(['all', fromJS(teams)])
+        }
+        case constants.FETCH_TEAM_MEMBERS_SUCCESS: {
+            return state.setIn(
+                ['all', (action.payload as Team).id.toString(), 'members'],
+                fromJS((action.payload as Team).members)
+            )
+        }
         default:
             return state
     }

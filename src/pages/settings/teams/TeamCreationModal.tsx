@@ -8,12 +8,13 @@ import React, {
     useState,
 } from 'react'
 import {useAsyncFn, useList, usePrevious} from 'react-use'
-import {AnyAction} from 'redux'
 import {EmojiData, BaseEmoji, emojiIndex} from 'emoji-mart'
-import {fromJS, Map} from 'immutable'
+import {Map} from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {createTeam} from 'models/team/resources'
+import {Team} from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Button from 'pages/common/components/button/Button'
 import Dropdown, {
@@ -28,7 +29,10 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
-import Wizard, {WizardContext} from 'pages/common/components/wizard/Wizard'
+import Wizard, {
+    WizardContext,
+    WizardContextState,
+} from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import InputField from 'pages/common/forms/input/InputField'
 import InputGroup from 'pages/common/forms/input/InputGroup'
@@ -38,8 +42,9 @@ import SelectInputBox, {
 import TextInput from 'pages/common/forms/input/TextInput'
 import Label from 'pages/common/forms/Label/Label'
 import {getAgents} from 'state/agents/selectors'
-import {createTeam} from 'state/teams/actions'
-import {Team} from 'state/teams/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {FETCH_TEAM_SUCCESS} from 'state/teams/constants'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import css from './TeamCreationModal.less'
@@ -48,7 +53,7 @@ import RuleCreationModalContent from './RuleCreationModalContent'
 type Props = {
     isOpen: boolean
     onClose: () => void
-    onTeamCreated?: (team: Team) => void
+    onTeamCreated?: () => void
 }
 
 const steps = ['teamCreation', 'ruleCreation']
@@ -129,27 +134,41 @@ export default function TeamCreationModal({
     const [{loading: isSubmitting}, submitTeam] = useAsyncFn(
         async (event: FormEvent, setActiveStep: (nextStep: string) => void) => {
             event.preventDefault()
-            const res = (await dispatch(
-                createTeam(
-                    fromJS({
-                        name,
-                        description,
-                        decoration: {
-                            ...(!!emoji ? {emoji} : {}),
-                        },
-                        members: memberIds.map((memberId) => ({id: memberId})),
+
+            try {
+                const res = await createTeam({
+                    name,
+                    description,
+                    decoration: {
+                        ...(!!emoji ? {emoji} : {}),
+                    },
+                    members: memberIds.map((memberId) => ({id: memberId})),
+                })
+
+                dispatch({
+                    type: FETCH_TEAM_SUCCESS,
+                    payload: res,
+                })
+
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: 'Team created',
                     })
                 )
-            )) as AnyAction
 
-            if (!res.error) {
-                const createdTeam: Team = (
-                    res as unknown as Map<any, any>
-                ).toJS()
-                setTeam(createdTeam)
+                setTeam(res)
                 resetForm()
                 setActiveStep('ruleCreation')
-                onTeamCreated && onTeamCreated(createdTeam)
+                onTeamCreated?.()
+            } catch (error) {
+                void dispatch(
+                    notify({
+                        message:
+                            'Failed to create team. Please refresh the page and try again.',
+                        status: NotificationStatus.Error,
+                    })
+                )
             }
         },
         [description, emoji, memberIds, name, resetForm]
@@ -174,18 +193,25 @@ export default function TeamCreationModal({
         [agents]
     )
 
-    return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <div ref={ref}>
-                <Wizard steps={steps}>
-                    <WizardStep name="teamCreation">
-                        <WizardContext.Consumer>
-                            {(context) => {
-                                if (!context) {
-                                    return
-                                }
+    const handleOnClose = useCallback(
+        (setActiveStep: WizardContextState['setActiveStep']) => () => {
+            onClose()
+            setActiveStep('teamCreation')
+        },
+        [onClose]
+    )
 
-                                return (
+    return (
+        <Wizard steps={steps}>
+            <WizardContext.Consumer>
+                {(context) =>
+                    context ? (
+                        <Modal
+                            isOpen={isOpen}
+                            onClose={handleOnClose(context.setActiveStep)}
+                        >
+                            <div ref={ref}>
+                                <WizardStep name="teamCreation">
                                     <form
                                         onSubmit={handleTeamCreationSubmit(
                                             context.setActiveStep
@@ -336,21 +362,23 @@ export default function TeamCreationModal({
                                             </Button>
                                         </ModalActionsFooter>
                                     </form>
-                                )
-                            }}
-                        </WizardContext.Consumer>
-                    </WizardStep>
-                    <WizardStep name="ruleCreation">
-                        {!!team && (
-                            <RuleCreationModalContent
-                                team={team}
-                                onClose={onClose}
-                            />
-                        )}
-                    </WizardStep>
-                </Wizard>
-            </div>
-        </Modal>
+                                </WizardStep>
+                                <WizardStep name="ruleCreation">
+                                    {!!team && (
+                                        <RuleCreationModalContent
+                                            team={team}
+                                            onClose={handleOnClose(
+                                                context.setActiveStep
+                                            )}
+                                        />
+                                    )}
+                                </WizardStep>
+                            </div>
+                        </Modal>
+                    ) : null
+                }
+            </WizardContext.Consumer>
+        </Wizard>
     )
 }
 

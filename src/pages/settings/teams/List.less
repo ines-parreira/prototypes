@@ -1,15 +1,23 @@
 @import '~css/new/colorTokens';
 
 :local .component {
+    display: flex;
+    flex-direction: column;
+
     .list {
+        margin-bottom: 1em;
         margin-left: -24px;
         margin-right: -24px;
-        margin-bottom: 1em;
+    }
+
+    .listContainer {
+        height: 100%;
+        width: 100%;
     }
 
     .listHeader {
-        display: flex;
         border-bottom: 1px solid @classic-neutral-grey-3;
+        display: flex;
     }
 
     .pagination {
@@ -20,6 +28,11 @@
             padding-left: 0.7em;
             padding-right: 0.7em;
         }
+    }
+
+    .navigation {
+        margin-bottom: 16px;
+        margin-left: 16px;
     }
 }
 

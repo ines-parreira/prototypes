@@ -1,7 +1,6 @@
 import React, {Component, SyntheticEvent} from 'react'
 import {Emoji, EmojiData} from 'emoji-mart'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, Map} from 'immutable'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -17,6 +16,9 @@ import {
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 
+import {GorgiasApiError} from 'models/api/types'
+import {deleteTeam, fetchTeam, updateTeam} from 'models/team/resources'
+import {Team} from 'models/team/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -28,7 +30,13 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import InputField from 'pages/common/forms/input/InputField'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
-import {deleteTeam, fetchTeam, updateTeam} from 'state/teams/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {
+    deleteTeamSuccess,
+    fetchTeamSuccess,
+    updateTeamSuccess,
+} from 'state/teams/actions'
 
 import css from './Form.less'
 
@@ -37,7 +45,7 @@ type OwnProps = RouteComponentProps<{id: string}>
 type Props = OwnProps & ConnectedProps<typeof connector>
 
 type State = {
-    team: Map<any, any>
+    team?: Team
     isFetching: boolean
     isSubmitting: boolean
     isEmojiPickerOpen: boolean
@@ -45,7 +53,6 @@ type State = {
 
 export class FormContainer extends Component<Props, State> {
     state: State = {
-        team: fromJS({}),
         isFetching: false,
         isSubmitting: false,
         isEmojiPickerOpen: false,
@@ -55,34 +62,66 @@ export class FormContainer extends Component<Props, State> {
         void this._fetchTeam(this.props.teamId)
     }
 
-    _fetchTeam = (id: number) => {
+    _fetchTeam = async (id: number) => {
         this.setState({isFetching: true})
-        return this.props.fetchTeam(id).then((resp) => {
+
+        try {
+            const res = await fetchTeam(id)
+
             this.setState({
-                isFetching: false,
-                team: resp as Map<any, any>,
+                team: res,
             })
-        })
+            this.props.fetchTeamSuccess(res)
+        } catch (error) {
+            void this.props.notify({
+                message: (error as GorgiasApiError).response.data.error.msg,
+                status: NotificationStatus.Error,
+            })
+        } finally {
+            this.setState({isFetching: false})
+        }
     }
 
-    _onSubmit = (e: SyntheticEvent) => {
+    _onSubmit = async (e: SyntheticEvent) => {
         e.preventDefault()
         this.setState({isSubmitting: true})
         const team = this.state.team
 
-        return this.props.updateTeam(team).then(() => {
-            this.setState({isSubmitting: false})
-        })
+        if (!!team) {
+            try {
+                await updateTeam(team)
+                this.props.updateTeamSuccess(team)
+            } catch (error) {
+                const {response} = error as GorgiasApiError
+
+                void this.props.notify({
+                    message: response.data.error.msg,
+                    status: NotificationStatus.Error,
+                })
+            } finally {
+                this.setState({isSubmitting: false})
+            }
+        }
     }
 
-    _delete = () => {
-        return this.props
-            .deleteTeam(this.state.team.get('id'))
-            .then((success) => {
-                if (success) {
-                    history.push('/app/settings/teams')
-                }
-            })
+    _delete = async () => {
+        const team = this.state.team
+
+        if (!!team) {
+            try {
+                await deleteTeam(team.id)
+
+                history.push('/app/settings/teams')
+                this.props.deleteTeamSuccess(team.id)
+            } catch (error) {
+                const {response} = error as GorgiasApiError
+
+                void this.props.notify({
+                    message: response.data.error.msg,
+                    status: NotificationStatus.Error,
+                })
+            }
+        }
     }
 
     _toggleEmojiPicker = () => {
@@ -96,8 +135,8 @@ export class FormContainer extends Component<Props, State> {
             return <Loader />
         }
 
-        const team = this.state.team || fromJS({})
-        const emoji = team.getIn(['decoration', 'emoji']) as Map<any, any>
+        const team = this.state.team
+        const emoji = team?.decoration?.emoji
 
         return (
             <div className="full-width">
@@ -110,7 +149,7 @@ export class FormContainer extends Component<Props, State> {
                                 </NavLink>
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
-                                Edit {team.get('name') as string}
+                                Edit {team?.name}
                             </BreadcrumbItem>
                         </Breadcrumb>
                     }
@@ -118,17 +157,12 @@ export class FormContainer extends Component<Props, State> {
 
                 <SecondaryNavbar>
                     <NavLink
-                        to={`/app/settings/teams/${
-                            team.get('id') as number
-                        }/members`}
+                        to={`/app/settings/teams/${team?.id || ''}/members`}
                         exact
                     >
                         Team members
                     </NavLink>
-                    <NavLink
-                        to={`/app/settings/teams/${team.get('id') as number}`}
-                        exact
-                    >
+                    <NavLink to={`/app/settings/teams/${team?.id || ''}`} exact>
                         Settings
                     </NavLink>
                 </SecondaryNavbar>
@@ -145,10 +179,14 @@ export class FormContainer extends Component<Props, State> {
                                         name="name"
                                         label="Name"
                                         placeholder="Awesome team"
-                                        value={team.get('name') || ''}
+                                        value={team?.name || ''}
                                         onChange={(value) =>
+                                            !!team &&
                                             this.setState({
-                                                team: team.set('name', value),
+                                                team: {
+                                                    ...team,
+                                                    name: value,
+                                                },
                                             })
                                         }
                                         isRequired
@@ -186,7 +224,7 @@ export class FormContainer extends Component<Props, State> {
                                                             }
                                                         >
                                                             <Emoji
-                                                                emoji={emoji.toJS()}
+                                                                emoji={emoji}
                                                                 size={16}
                                                             />
                                                         </div>
@@ -196,19 +234,19 @@ export class FormContainer extends Component<Props, State> {
                                                     'Add icon'
                                                 )}
                                             </Button>
-                                            {emoji && (
+                                            {!!emoji && !!team && (
                                                 <IconButton
                                                     className={css.removeEmoji}
                                                     intent="secondary"
                                                     onClick={() =>
                                                         this.setState({
-                                                            team: team.setIn(
-                                                                [
-                                                                    'decoration',
-                                                                    'emoji',
-                                                                ],
-                                                                null
-                                                            ),
+                                                            team: {
+                                                                ...team,
+                                                                decoration: {
+                                                                    ...team.decoration,
+                                                                    emoji: undefined,
+                                                                },
+                                                            },
                                                         })
                                                     }
                                                 >
@@ -233,15 +271,17 @@ export class FormContainer extends Component<Props, State> {
                                                     onClick={(
                                                         emoji: EmojiData
                                                     ) => {
-                                                        this.setState({
-                                                            team: team.setIn(
-                                                                [
-                                                                    'decoration',
-                                                                    'emoji',
-                                                                ],
-                                                                fromJS(emoji)
-                                                            ),
-                                                        })
+                                                        !!team &&
+                                                            this.setState({
+                                                                team: {
+                                                                    ...team,
+                                                                    decoration:
+                                                                        {
+                                                                            ...team.decoration,
+                                                                            emoji,
+                                                                        },
+                                                                },
+                                                            })
                                                         this._toggleEmojiPicker()
                                                     }}
                                                 />
@@ -254,13 +294,14 @@ export class FormContainer extends Component<Props, State> {
                                     name="description"
                                     label="Description"
                                     placeholder="Works on making things awesome!"
-                                    value={team.get('description') || ''}
+                                    value={team?.description || ''}
                                     onChange={(value) =>
+                                        !!team &&
                                         this.setState({
-                                            team: team.set(
-                                                'description',
-                                                value
-                                            ),
+                                            team: {
+                                                ...team,
+                                                description: value,
+                                            },
                                         })
                                     }
                                 />
@@ -301,15 +342,14 @@ export class FormContainer extends Component<Props, State> {
 }
 
 const connector = connect(
-    (state, ownProps: OwnProps) => {
-        return {
-            teamId: parseInt(ownProps.match.params.id),
-        }
-    },
+    (state, ownProps: OwnProps) => ({
+        teamId: parseInt(ownProps.match.params.id),
+    }),
     {
-        deleteTeam,
-        fetchTeam,
-        updateTeam,
+        deleteTeamSuccess,
+        fetchTeamSuccess,
+        notify,
+        updateTeamSuccess,
     }
 )
 

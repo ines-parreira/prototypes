@@ -1,7 +1,7 @@
 import {CancelToken} from 'axios'
 
 import {Order} from 'constants/integrations/types/shopify'
-import {ApiCursorPaginationParams, OrderParams} from 'models/api/types'
+import {ApiPaginationParams, OrderParams} from 'models/api/types'
 import {CustomerChannel} from 'models/customerChannel/types'
 import {IntegrationType} from 'models/integration/types'
 import {Subscription} from 'state/billing/types'
@@ -60,7 +60,7 @@ export enum CustomerSortableProperties {
     Score = '_score',
 }
 
-export type CustomerSearchOptions = ApiCursorPaginationParams &
+export type CustomerSearchOptions = ApiPaginationParams &
     OrderParams<CustomerSortableProperties> & {
         search: string
         cancelToken?: CancelToken

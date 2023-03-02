@@ -10,10 +10,10 @@ import {
 } from 'models/integration/types'
 import {NewPhoneNumber, OldPhoneNumber} from 'models/phoneNumber/types'
 import {Section} from 'models/section/types'
-import {View} from 'models/view/types'
 import {Tag} from 'models/tag/types'
+import {Team} from 'models/team/types'
+import {View} from 'models/view/types'
 import {Account} from 'state/currentAccount/types'
-import {Team} from 'state/teams/types'
 import {BillingProducts} from 'state/billing/types'
 
 export type Attachment = {

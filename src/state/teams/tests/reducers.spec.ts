@@ -1,7 +1,8 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import {GorgiasAction} from '../../types'
+import {GorgiasAction} from 'state/types'
+
 import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
 

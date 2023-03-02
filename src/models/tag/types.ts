@@ -1,5 +1,5 @@
 import {
-    ApiCursorPaginationParams,
+    ApiPaginationParams,
     MetaSortOptions,
     OrderParams,
 } from 'models/api/types'
@@ -30,8 +30,7 @@ export enum TagSortableProperties {
     Usage = 'usage',
 }
 
-export type FetchTagsOptions = ApiCursorPaginationParams &
+export type FetchTagsOptions = ApiPaginationParams &
     OrderParams<TagSortableProperties | MetaSortOptions> & {
-        page?: number
         search?: string
     }

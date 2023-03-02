@@ -1,11 +1,11 @@
 import client from 'models/api/resources'
 import {
-    ApiCursorPaginationParams,
+    ApiPaginationParams,
     ApiListResponseCursorPagination,
 } from 'models/api/types'
 import {CustomField, CustomFieldInput, CustomFieldState} from './types'
 
-export type ListParams = ApiCursorPaginationParams & {
+export type ListParams = ApiPaginationParams & {
     archived: boolean
     object_type: CustomFieldInput['object_type']
     search?: string

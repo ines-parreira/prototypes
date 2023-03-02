@@ -1,7 +1,8 @@
 import esprima from 'esprima'
-import {HttpMethod} from 'models/api/types'
+
 import type {User} from 'config/types/user'
-import type {Team} from 'state/teams/types'
+import {HttpMethod} from 'models/api/types'
+import type {Team} from 'models/team/types'
 
 import {
     AnyManagedRuleSettings,

@@ -2,175 +2,245 @@ import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Breadcrumb, BreadcrumbItem, Col, Container} from 'reactstrap'
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
-import {fromJS, List, Map, Set} from 'immutable'
+import {Set} from 'immutable'
 import classnames from 'classnames'
 
-import CheckBox from 'pages/common/forms/CheckBox'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import PageHeader from '../../../common/components/PageHeader'
-import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
+import {CursorDirection, OrderDirection} from 'models/api/types'
 import {
     addTeamMember,
     deleteTeamMember,
-    deleteTeamMemberList,
+    deleteTeamMembers,
     fetchTeam,
-    fetchTeamMembersPagination,
-} from '../../../../state/teams/actions'
-import Pagination from '../../../common/components/Pagination'
-import Loader from '../../../common/components/Loader/Loader'
-import Search from '../../../common/components/Search'
-import {RootState} from '../../../../state/types'
-import settingsCss from '../../settings.less'
-import css from '../List.less'
+    fetchTeamMembers,
+} from 'models/team/resources'
+import {
+    FetchTeamMembersOptions,
+    Member,
+    Team,
+    TeamSortableProperties,
+} from 'models/team/types'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Loader from 'pages/common/components/Loader/Loader'
+import Navigation from 'pages/common/components/Navigation/Navigation'
+import PageHeader from 'pages/common/components/PageHeader'
+import Search from 'pages/common/components/Search'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import CheckBox from 'pages/common/forms/CheckBox'
+import settingsCss from 'pages/settings/settings.less'
+import css from 'pages/settings/teams/List.less'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {
+    fetchTeamMembersSuccess,
+    deleteTeamSuccess,
+    fetchTeamSuccess,
+    updateTeamSuccess,
+} from 'state/teams/actions'
+import {RootState} from 'state/types'
 
 import AddMember from './AddMember'
-import UserRow from './Row'
+import Row from './Row'
 
 type Props = ConnectedProps<typeof connector> &
     RouteComponentProps<{id: string}>
 
 type State = {
-    team: Map<any, any>
-    members: List<any>
-    pagination: Map<any, any>
-    selection: Set<any>
-    isFetching: boolean
+    cursor?: string
     isDeleting: boolean
+    isFetching: boolean
+    members: Member[]
+    meta?: {
+        prev_cursor: string | null
+        next_cursor: string | null
+    }
     search: string
+    selection: Set<number>
+    team?: Team
 }
 
 export class MembersListContainer extends Component<Props, State> {
     state: State = {
-        team: fromJS({}),
-        members: fromJS([]),
-        pagination: fromJS({}),
-        selection: Set(),
-        isFetching: false,
         isDeleting: false,
+        isFetching: false,
+        members: [],
         search: '',
+        selection: Set(),
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.setState({isFetching: true})
-        void this._fetchTeam().then(() => this._fetchPage(1))
+        await this.fetchTeam()
+        await this.fetchPage()
     }
 
-    _fetchTeam = (): Promise<void> => {
-        return this.props
-            .fetchTeam(parseInt(this.props.match.params.id))
-            .then((team) => {
-                this.setState({team: team as Map<any, any>})
+    fetchTeam = async (): Promise<void> => {
+        try {
+            const res = await fetchTeam(parseInt(this.props.match.params.id))
+            this.setState({team: res})
+            this.props.fetchTeamSuccess(res)
+        } catch (error) {
+            void this.props.notify({
+                message:
+                    'Failed to fetch team. Please refresh the page and try again.',
+                status: NotificationStatus.Error,
             })
+        }
     }
 
-    _fetchTeamMembers = (page = 1): Promise<void> => {
-        const {team, search} = this.state
-        return (
-            this.props.fetchTeamMembersPagination(
-                team.get('id'),
-                page,
-                search
-            ) as Promise<Map<any, any>>
-        ).then((resp) => {
-            const members = resp.get('data') as List<any>
-            const memberIds = Set(
-                members.map((member: Map<any, any>) => {
-                    return member.get('id') as number
-                })
-            )
-            this.setState((state) => ({
-                pagination: resp.get('meta'),
-                members,
-                // prune selection on refetch
-                selection: state.selection.intersect(memberIds),
-            }))
+    fetchTeamMembers = async (
+        params?: Partial<FetchTeamMembersOptions>
+    ): Promise<void> => {
+        const {search} = this.state
+        const id = parseInt(this.props.match.params.id)
+
+        const res = await fetchTeamMembers({
+            id,
+            orderBy: `${TeamSortableProperties.Name}:${OrderDirection.Asc}`,
+            search,
+            ...params,
+        })
+
+        const members = res.data.data
+        const memberIds = Set(members.map((member) => member.id))
+
+        this.setState((state) => ({
+            cursor: params?.cursor || undefined,
+            meta: res.data.meta,
+            members,
+            // prune selection on refetch
+            selection: state.selection.intersect(memberIds),
+        }))
+        this.props.fetchTeamMembersSuccess({
+            id,
+            members,
         })
     }
 
-    _fetchPage = (page = 1) => {
+    fetchPage = (direction?: CursorDirection) => {
+        const {meta, search} = this.state
+        const params: FetchTeamMembersOptions = {
+            id: parseInt(this.props.match.params.id),
+            cursor: null,
+            orderBy: `${TeamSortableProperties.Name}:${OrderDirection.Asc}`,
+            search,
+        }
+
+        if (direction === CursorDirection.PrevCursor && meta?.prev_cursor) {
+            params.cursor = meta?.prev_cursor
+        } else if (
+            direction === CursorDirection.NextCursor &&
+            meta?.next_cursor
+        ) {
+            params.cursor = meta?.next_cursor
+        }
+
         this.setState({isFetching: true})
-        return this._fetchTeamMembers(page).finally(() => {
+        return this.fetchTeamMembers(params).finally(() => {
             this.setState({isFetching: false})
         })
     }
 
-    _onSearch = (search: string) => {
-        this.setState({search})
-        return this._fetchTeamMembers(1)
+    onSearch = (search: string) => {
+        this.setState({search}, () => void this.fetchTeamMembers())
     }
 
-    _addTeamMember = (userId: number) => {
-        const currentPage = this.state.pagination.get('page') || 1
-        const teamId = this.state.team.get('id')
-        return this.props.addTeamMember(teamId, userId).then(() => {
-            void this._fetchTeam()
-            return this._fetchTeamMembers(currentPage)
-        })
+    addTeamMember = async (userId: number) => {
+        const teamId = this.state.team?.id
+
+        if (teamId) {
+            try {
+                await addTeamMember(teamId, userId)
+                await this.fetchTeamMembers()
+                await this.fetchTeam()
+
+                void this.props.notify({
+                    status: NotificationStatus.Success,
+                    message: 'Team member added',
+                })
+            } catch (error) {
+                void this.props.notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Failed to add team member. Please refresh the page and try again.',
+                })
+            }
+        }
     }
 
-    _deleteTeamMember = (memberId: number) => {
-        const currentPage = this.state.pagination.get('page') || 1
-        const teamId = this.state.team.get('id')
-        return this.props.deleteTeamMember(teamId, memberId).then(() => {
-            void this._fetchTeam()
-            // if last agent on page was deleted,
-            // reload the previous page.
-            const page =
-                this.state.members.size === 1 && currentPage > 1
-                    ? currentPage - 1
-                    : currentPage
-            return this._fetchTeamMembers(page)
-        })
+    deleteTeamMember = async (memberId: number) => {
+        const {cursor, members, meta, team} = this.state
+
+        if (team?.id) {
+            try {
+                await deleteTeamMember(team.id, memberId)
+                const newCursor =
+                    !meta?.next_cursor && meta?.prev_cursor
+                        ? members.length === 1
+                            ? meta?.prev_cursor
+                            : cursor
+                        : undefined
+
+                await this.fetchTeamMembers({cursor: newCursor})
+                await this.fetchTeam()
+
+                void this.props.notify({
+                    status: NotificationStatus.Success,
+                    message: 'Team member removed',
+                })
+            } catch (error) {
+                void this.props.notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Failed to remove team member. Please refresh the page and try again.',
+                })
+            }
+        }
     }
 
-    _deleteTeamMemberSelection = () => {
-        this.setState({isDeleting: true})
-        const selection = this.state.selection
-        const currentPage = this.state.pagination.get('page') || 1
-        const teamId = this.state.team.get('id')
-        return this.props
-            .deleteTeamMemberList(teamId, selection)
-            .then(() => {
-                void this._fetchTeam()
-                // if last agents on page were deleted,
-                // reload the previous page.
-                const page =
-                    selection.size >= this.state.members.size && currentPage > 1
-                        ? currentPage - 1
-                        : currentPage
-                return this._fetchTeamMembers(page)
-            })
-            .finally(() => {
-                this.setState({isDeleting: false})
-            })
+    deleteTeamMemberSelection = async () => {
+        const {cursor, members, meta, team} = this.state
+
+        if (team?.id) {
+            this.setState({isDeleting: true})
+            const selection = this.state.selection
+
+            await deleteTeamMembers(team.id, selection)
+
+            const allMemberIds = Set(members.map((member) => member.id))
+            const isAllSelected = !allMemberIds.subtract(selection).size
+
+            const newCursor =
+                !meta?.next_cursor && meta?.prev_cursor
+                    ? isAllSelected
+                        ? meta?.prev_cursor
+                        : cursor
+                    : undefined
+
+            await this.fetchTeamMembers({cursor: newCursor})
+            await this.fetchTeam()
+
+            this.setState({isDeleting: false})
+        }
     }
 
-    _toggleTeamMemberSelection = (memberId: number) => {
+    toggleTeamMemberSelection = (memberId: number) => {
+        const {selection} = this.state
+
         this.setState({
-            selection: this.state.selection.includes(memberId)
-                ? this.state.selection.delete(memberId)
-                : this.state.selection.add(memberId),
+            selection: selection.includes(memberId)
+                ? selection.delete(memberId)
+                : selection.add(memberId),
         })
     }
 
     render() {
-        if (this.state.isFetching) {
-            return <Loader />
-        }
-
         const {accountOwnerId} = this.props
-        const {pagination, members, team, isDeleting} = this.state
-        const pageCount = pagination.get('nb_pages') || 1
-        const currentPage = pagination.get('page') || 1
+        const {isDeleting, isFetching, members, meta, selection, search, team} =
+            this.state
 
-        const teamId = team.get('id') as number
-        const allMemberIds = Set(
-            members.map((member: Map<any, any>) => {
-                return member.get('id') as number
-            })
-        )
-        const isAllSelected = !allMemberIds.subtract(this.state.selection).size
+        const allMemberIds = Set(members.map((member) => member.id))
+        const isAllSelected = !allMemberIds.subtract(selection).size
 
         return (
             <div className={classnames(css.component, 'full-width')}>
@@ -183,7 +253,7 @@ export class MembersListContainer extends Component<Props, State> {
                                 </NavLink>
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
-                                Members of {team.get('name')}
+                                Members of {team?.name}
                             </BreadcrumbItem>
                         </Breadcrumb>
                     }
@@ -191,29 +261,36 @@ export class MembersListContainer extends Component<Props, State> {
                     <div className="d-flex">
                         <Search
                             bindKey
-                            forcedQuery={this.state.search}
-                            onChange={this._onSearch}
+                            forcedQuery={search}
+                            onChange={this.onSearch}
                             placeholder="Search team members..."
                             searchDebounceTime={300}
                             className="mr-2"
                         />
-                        <AddMember
-                            team={team}
-                            addTeamMember={this._addTeamMember}
-                        />
+                        {!!team && (
+                            <AddMember
+                                team={team}
+                                addTeamMember={this.addTeamMember}
+                            />
+                        )}
                     </div>
                 </PageHeader>
 
                 <SecondaryNavbar>
-                    <NavLink to={`/app/settings/teams/${teamId}/members`} exact>
+                    <NavLink
+                        to={`/app/settings/teams/${team?.id || ''}/members`}
+                        exact
+                    >
                         Team members
                     </NavLink>
-                    <NavLink to={`/app/settings/teams/${teamId}`} exact>
+                    <NavLink to={`/app/settings/teams/${team?.id || ''}`} exact>
                         Settings
                     </NavLink>
                 </SecondaryNavbar>
-                {members.size > 0 ? (
-                    <>
+                {isFetching ? (
+                    <Loader />
+                ) : members.length > 0 ? (
+                    <div className={css.listContainer}>
                         <div className={css.listHeader}>
                             <Col sm={4} className={settingsCss.py24}>
                                 <div className="d-flex align-items-center mb-2 mt-3">
@@ -230,9 +307,7 @@ export class MembersListContainer extends Component<Props, State> {
                                     />
                                     <Button
                                         intent="secondary"
-                                        onClick={
-                                            this._deleteTeamMemberSelection
-                                        }
+                                        onClick={this.deleteTeamMemberSelection}
                                         isLoading={isDeleting}
                                         isDisabled={!this.state.selection.size}
                                     >
@@ -252,20 +327,20 @@ export class MembersListContainer extends Component<Props, State> {
                             )}
                         >
                             <div className={css.list}>
-                                {members.map((member: Map<any, any>) => {
-                                    const memberId = member.get('id')
+                                {members.map((member) => {
+                                    const memberId = member.id
                                     return (
-                                        <UserRow
+                                        <Row
                                             key={memberId}
                                             member={member}
                                             isAccountOwner={
                                                 memberId === accountOwnerId
                                             }
                                             deleteTeamMember={() =>
-                                                this._deleteTeamMember(memberId)
+                                                this.deleteTeamMember(memberId)
                                             }
                                             select={
-                                                this._toggleTeamMemberSelection
+                                                this.toggleTeamMemberSelection
                                             }
                                             isSelected={this.state.selection.includes(
                                                 memberId
@@ -274,27 +349,34 @@ export class MembersListContainer extends Component<Props, State> {
                                     )
                                 })}
                             </div>
-                            <Pagination
-                                pageCount={pageCount}
-                                currentPage={currentPage}
-                                onChange={this._fetchPage}
-                                className={classnames(
-                                    css.pagination,
-                                    'pagination-transparent'
-                                )}
+                            <Navigation
+                                className={css.navigation}
+                                hasNextItems={!!meta?.next_cursor}
+                                hasPrevItems={!!meta?.prev_cursor}
+                                fetchNextItems={() =>
+                                    this.fetchPage(CursorDirection.NextCursor)
+                                }
+                                fetchPrevItems={() =>
+                                    this.fetchPage(CursorDirection.PrevCursor)
+                                }
                             />
                         </Container>
-                    </>
+                    </div>
                 ) : (
-                    <Container fluid className={settingsCss.pageContainer}>
-                        {!this.state.search.length ? (
+                    <Container
+                        fluid
+                        className={classnames(
+                            settingsCss.pageContainer,
+                            css.listContainer
+                        )}
+                    >
+                        {!search.length ? (
                             <p className="text-center">
                                 Start adding users to this team
                             </p>
                         ) : (
                             <p className="text-center">
-                                No user matching "{this.state.search}" in this
-                                team.
+                                No user matching "{search}" in this team.
                             </p>
                         )}
                     </Container>
@@ -305,17 +387,15 @@ export class MembersListContainer extends Component<Props, State> {
 }
 
 const connector = connect(
-    (state: RootState) => {
-        return {
-            accountOwnerId: state.currentAccount.get('user_id'),
-        }
-    },
+    (state: RootState) => ({
+        accountOwnerId: state.currentAccount.get('user_id'),
+    }),
     {
-        addTeamMember,
-        deleteTeamMember,
-        deleteTeamMemberList,
-        fetchTeam,
-        fetchTeamMembersPagination,
+        fetchTeamMembersSuccess,
+        deleteTeamSuccess,
+        fetchTeamSuccess,
+        notify,
+        updateTeamSuccess,
     }
 )
 

@@ -5,7 +5,7 @@ import {fromJS, List} from 'immutable'
 import {AddMemberContainer} from '../AddMember'
 
 const minProps = {
-    team: fromJS({
+    team: {
         id: 1,
         uri: '/api/teams/1/',
         name: 'test',
@@ -20,7 +20,7 @@ const minProps = {
             },
         ],
         created_datetime: '2021-05-06T16:19:31.936074+00:00',
-    }),
+    },
     users: fromJS([
         {
             lastname: 'Support',

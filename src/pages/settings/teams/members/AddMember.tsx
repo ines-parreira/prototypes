@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
-import {List, Map} from 'immutable'
+import {Map} from 'immutable'
 import classnames from 'classnames'
 
+import {Team} from 'models/team/types'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {AgentLabel} from 'pages/common/utils/labels'
@@ -13,7 +14,7 @@ import {RootState} from 'state/types'
 import css from './AddMember.less'
 
 type Props = {
-    team: Map<any, any>
+    team: Team
     addTeamMember: (userId: number) => Promise<unknown>
 } & ConnectedProps<typeof connector>
 
@@ -45,9 +46,7 @@ export class AddMemberContainer extends Component<Props, State> {
         const {team, users} = this.props
         const isLoading = this.state.isLoading
         const search = this.state.search.trim().toLowerCase()
-        const teamMemberIds = (team.get('members', []) as List<any>).map(
-            (member: Map<any, any>) => member.get('id') as number
-        )
+        const teamMemberIds = team.members.map((member) => member.id)
         const availableUsers = users.filter((user: Map<any, any>) => {
             return (
                 (((user.get('name') as string) || '')

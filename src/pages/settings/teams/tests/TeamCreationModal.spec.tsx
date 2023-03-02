@@ -3,11 +3,12 @@ import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {createTeam} from 'state/teams/actions'
+import {createTeam} from 'models/team/resources'
 import {RootState, StoreDispatch} from 'state/types'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
 import TeamCreationModal from '../TeamCreationModal'
 
 const minProps = {
@@ -16,7 +17,7 @@ const minProps = {
     onTeamCreated: jest.fn(),
 } as unknown as ComponentProps<typeof TeamCreationModal>
 
-jest.mock('state/teams/actions', () => ({
+jest.mock('models/team/resources', () => ({
     createTeam: jest.fn(() => () => Promise.resolve({})),
 }))
 
@@ -81,9 +82,7 @@ describe('<TeamCreationModal />', () => {
             decoration: {},
             members: [{id: 1}],
         }
-        ;(createTeam as jest.Mock).mockImplementation(
-            () => () => fromJS(nextTeam) as Map<any, any>
-        )
+        ;(createTeam as jest.Mock).mockImplementation(() => () => nextTeam)
         const store = mockStore({
             agents: fromJS({
                 all: [{id: 1, name: 'foo bar'}],
@@ -108,9 +107,9 @@ describe('<TeamCreationModal />', () => {
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.TeamWizardCreatedTeam
         )
-        expect(createTeam).toHaveBeenCalledWith(fromJS(nextTeam))
+        expect(createTeam).toHaveBeenCalledWith(nextTeam)
         await waitFor(() => {
-            expect(minProps.onTeamCreated).toHaveBeenNthCalledWith(1, nextTeam)
+            expect(minProps.onTeamCreated).toHaveBeenNthCalledWith(1)
         })
     })
 

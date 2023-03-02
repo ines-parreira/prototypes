@@ -13,7 +13,7 @@ type Props = {
     steps: string[]
 }
 
-type WizardContextState = {
+export type WizardContextState = {
     activeStep: string
     activeStepIndex: number
     nextStep: string | undefined

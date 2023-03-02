@@ -1,5 +1,5 @@
 import {MacroAction} from 'models/macroAction/types'
-import {ApiCursorPaginationParams, OrderParams} from 'models/api/types'
+import {ApiPaginationParams, OrderParams} from 'models/api/types'
 
 export type Macro = MacroDraft & {
     category: string | null
@@ -29,7 +29,7 @@ export enum MacroSortableProperties {
 }
 
 export type FetchMacrosOptions = OrderParams<MacroSortableProperties> &
-    ApiCursorPaginationParams & {
+    ApiPaginationParams & {
         messageId?: number
         search?: string
         ticketId?: number

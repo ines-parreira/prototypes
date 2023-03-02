@@ -1,11 +1,12 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
+
+import {UserRole} from 'config/types/user'
 
 import Row from '../Row'
 
 const minProps = {
-    member: fromJS({
+    member: {
         lastname: 'Support',
         meta: {},
         active: true,
@@ -20,10 +21,10 @@ const minProps = {
         email: 'hello@acme.gorgias.io',
         role: {
             id: 7,
-            name: 'admin',
+            name: UserRole.Admin,
         },
         updated_datetime: '2021-05-06T16:11:10.990319+00:00',
-    }) as Map<any, any>,
+    },
     isAccountOwner: false,
     deleteTeamMember: jest.fn(),
     select: jest.fn(),

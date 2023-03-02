@@ -1,51 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`team actions addTeamMember() fails 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 500],
-    "reason": "Failed to add team member #10 to team #1. Please try again.",
-    "type": "ADD_TEAM_MEMBER_ERROR",
-  },
-]
-`;
-
-exports[`team actions createTeam() fails 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 500],
-    "reason": "Failed to create team. Please try again.",
-    "type": "CREATE_TEAM_ERROR",
-  },
-]
-`;
-
-exports[`team actions createTeam() works 1`] = `
-[
-  {
-    "payload": {
-      "decoration": {},
-      "id": 1,
-      "members": [],
-      "name": "My Team",
-    },
-    "type": "CREATE_TEAM_SUCCESS",
-  },
-]
-`;
-
-exports[`team actions deleteTeam() fails 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 500],
-    "reason": "Failed to delete team #1. Please try again.",
-    "type": "DELETE_TEAM_ERROR",
-    "verbose": true,
-  },
-]
-`;
-
-exports[`team actions deleteTeam() works 1`] = `
+exports[`teams actions deleteTeamSuccess should return an action to delete a team 1`] = `
 [
   {
     "payload": 1,
@@ -54,83 +9,73 @@ exports[`team actions deleteTeam() works 1`] = `
 ]
 `;
 
-exports[`team actions deleteTeamMember() fails 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 500],
-    "reason": "Failed to delete team member #10. Please try again.",
-    "type": "DELETE_TEAM_MEMBER_ERROR",
-  },
-]
-`;
-
-exports[`team actions deleteTeamMemberList() fails 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 500],
-    "reason": "Failed to delete team members. Please try again.",
-    "type": "DELETE_TEAM_MEMBER_LIST_ERROR",
-  },
-]
-`;
-
-exports[`team actions fetchTeam() fails 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 500],
-    "reason": "Failed to fetch team #1. Please refresh the page and try again.",
-    "type": "FETCH_TEAM_ERROR",
-  },
-]
-`;
-
-exports[`team actions fetchTeam() works 1`] = `
+exports[`teams actions fetchTeamMembersSuccess should return an action to fetch team members 1`] = `
 [
   {
     "payload": {
-      "data": "test",
+      "id": 33,
+      "members": [
+        {
+          "email": "foo@gorgias.com",
+          "id": 182267,
+          "meta": {
+            "name_set_via": "agent",
+          },
+          "name": "Foo",
+        },
+      ],
+    },
+    "type": "FETCH_TEAM_MEMBERS_SUCCESS",
+  },
+]
+`;
+
+exports[`teams actions fetchTeamSuccess should return an action to fetch a team 1`] = `
+[
+  {
+    "payload": {
+      "created_datetime": "2021-10-28T13:59:55.322780+00:00",
+      "decoration": {},
+      "description": null,
+      "id": 33,
+      "members": [
+        {
+          "email": "foo@gorgias.com",
+          "id": 182267,
+          "meta": {
+            "name_set_via": "agent",
+          },
+          "name": "Foo",
+        },
+      ],
+      "name": "Foo",
+      "uri": "/api/teams/33/",
     },
     "type": "FETCH_TEAM_SUCCESS",
   },
 ]
 `;
 
-exports[`team actions fetchTeamMembersPagination() fails 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 500],
-    "reason": "Failed to fetch team members. Please refresh the page and try again.",
-    "type": "FETCH_TEAM_MEMBERS_PAGINATION_ERROR",
-  },
-]
-`;
-
-exports[`team actions fetchTeamsPagination() fails 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 500],
-    "reason": "Failed to fetch teams. Please refresh the page and try again.",
-    "type": "FETCH_TEAMS_PAGINATION_ERROR",
-  },
-]
-`;
-
-exports[`team actions updateTeam() fails 1`] = `
-[
-  {
-    "error": [Error: Request failed with status code 500],
-    "reason": "Failed to update team #1. Please try again.",
-    "type": "UPDATE_TEAM_ERROR",
-  },
-]
-`;
-
-exports[`team actions updateTeam() works 1`] = `
+exports[`teams actions updateTeamSuccess should return an action to update a team 1`] = `
 [
   {
     "payload": {
-      "id": 1,
-      "name": "My Team",
+      "created_datetime": "2021-10-28T13:59:55.322780+00:00",
+      "decoration": {},
+      "description": null,
+      "id": 33,
+      "members": [
+        {
+          "email": "foo@gorgias.com",
+          "id": 182267,
+          "meta": {
+            "name_set_via": "agent",
+          },
+          "name": "Foo",
+        },
+      ],
+      "name": "Foo",
+      "uri": "/api/teams/33/",
     },
     "type": "UPDATE_TEAM_SUCCESS",
   },

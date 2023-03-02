@@ -1,5 +1,5 @@
 import {UserRole} from 'config/types/user'
-import {ApiCursorPaginationParams, OrderParams} from 'models/api/types'
+import {ApiPaginationParams, OrderParams} from 'models/api/types'
 
 export enum AgentSortableProperties {
     CreatedDatetimeAsc = 'created_datetime:asc',
@@ -13,7 +13,7 @@ export enum AgentsRelationshipsParam {
 }
 
 export type FetchAgentsOptions = Omit<
-    ApiCursorPaginationParams,
+    ApiPaginationParams,
     'orderBy' | 'orderDir'
 > &
     OrderParams<AgentSortableProperties> & {

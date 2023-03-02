@@ -50,16 +50,11 @@ export enum MetaSortOptions {
     Relevance = 'relevance',
 }
 
-export type ApiCursorPaginationParams = {
+export type ApiPaginationParams = {
     limit?: number
     cursor?: string | null
     orderBy?: string
     orderDir?: OrderDirection
-}
-
-export type ApiPaginationParams = ApiCursorPaginationParams & {
-    per_page?: number
-    page?: number
 }
 
 export type GorgiasApiError<T = unknown> = Omit<AxiosError, 'response'> &
