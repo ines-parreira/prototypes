@@ -65,6 +65,8 @@ import {isBaseEmailAddress} from 'pages/integrations/integration/components/emai
 import {FullTicketStateWithoutImmutable} from 'state/ticket/types'
 import {DiscountCode} from 'models/discountCodes/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
+import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
 import * as constants from './constants'
@@ -841,7 +843,7 @@ export function prepareTicketDataToSend(
 
         const discountCodes = prepareNewMessageDiscountCodes(
             state,
-            ticket.id,
+            ticket,
             newMessage,
             ticket.channel
         )
@@ -864,7 +866,7 @@ export function prepareTicketDataToSend(
 
 export const prepareNewMessageDiscountCodes = (
     state: RootState,
-    ticketId: number,
+    ticket: FullTicketStateWithoutImmutable,
     newMessage: NewMessage,
     channel: string
 ): string[] => {
@@ -895,16 +897,22 @@ export const prepareNewMessageDiscountCodes = (
     if (confirmedDiscountCodes?.isEmpty()) return []
 
     const currentAccount = getCurrentAccountState(state)
+    const customerData = getAllCustomerIdsFromTicket(
+        fromJS(ticket),
+        (integration) =>
+            integration.get('__integration_type__') === SHOPIFY_INTEGRATION_TYPE
+    )
     confirmedDiscountCodes.forEach((discountCode: Map<any, any>) => {
         logEvent(SegmentEvent.InsertDiscountCodeAdded, {
-            account_id: currentAccount?.get('domain'),
+            account_domain: currentAccount?.get('domain'),
             channel: newMessage.channel,
             discount: {
                 id: discountCode.get('id'),
                 code: discountCode.get('code'),
                 title: discountCode.get('title'),
             },
-            ticket: ticketId || 'new',
+            ticket: ticket.id || 'new',
+            customer: customerData,
         })
     })
 

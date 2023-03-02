@@ -220,3 +220,39 @@ export function deduplicateAuditLogEvents(events: List<any>) {
 
     return fromJS(results) as List<any>
 }
+
+/**
+ * Extracts the customer ids from a ticket.
+ * Parses the optionally filtered integrations for customer ids from integrations (e.g. Shopify).
+ * Returns object with Gorgias customer ID and all integration customer IDs found.
+ */
+export const getAllCustomerIdsFromTicket = (
+    ticket: Map<any, any>,
+    integrationFilterFn: ((integration: Map<any, any>) => boolean) | null = null
+) => {
+    const gorgiasId = ticket.getIn(['customer', 'id'], null)
+    let integrations: Map<number, any> = ticket?.getIn(
+        ['customer', 'integrations'],
+        fromJS({})
+    )
+
+    if (integrationFilterFn) {
+        integrations = integrations.filter(integrationFilterFn) as Map<
+            number,
+            any
+        >
+    }
+
+    const customerIds: any[] = []
+    integrations.forEach((value: Map<any, any>, key: any) => {
+        customerIds.push({
+            id: key,
+            customer_id: value.getIn(['customer', 'id'], null),
+        })
+    })
+
+    return {
+        gorgias_id: gorgiasId,
+        integrations: customerIds,
+    }
+}

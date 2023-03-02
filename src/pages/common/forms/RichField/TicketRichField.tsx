@@ -24,6 +24,8 @@ import {
 } from 'state/newMessage/actions'
 import {canAddVideoPlayer} from 'utils'
 
+import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
 import RichField, {Props as RichFieldProps} from './RichField'
 
 type Props = {disableProductCards?: boolean} & RichFieldProps
@@ -72,10 +74,18 @@ const TicketRichField = forwardRef<RichField, Props>(
                         newMessageChannel
                     ),
                 onInsertDiscountCodeOpen: () => {
+                    const customerData = getAllCustomerIdsFromTicket(
+                        ticket,
+                        (integration) =>
+                            integration.get('__integration_type__') ===
+                            SHOPIFY_INTEGRATION_TYPE
+                    )
+
                     logEvent(SegmentEvent.InsertDiscountCodeOpen, {
-                        account_id: currentAccount?.get('domain'),
+                        account_domain: currentAccount?.get('domain'),
                         channel: newMessageChannel,
                         ticket: ticket?.get('id') || 'new',
+                        customer: customerData,
                     })
                 },
                 onInsertDiscountCodeAdded: (discount) => {

@@ -3,9 +3,14 @@ import moment from 'moment'
 
 import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
 import {TICKET_EVENT_TYPES} from 'models/event/types'
+import {
+    MAGENTO2_INTEGRATION_TYPE,
+    SHOPIFY_INTEGRATION_TYPE,
+} from 'constants/integration'
 
 import {
     deduplicateAuditLogEvents,
+    getAllCustomerIdsFromTicket,
     shouldDeduplicateAuditLogEvents,
 } from '../helpers'
 
@@ -785,6 +790,111 @@ describe('ticket helpers', () => {
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(events)
                 })
+            })
+        })
+    })
+
+    describe('getAllCustomerIdsFromTicket()', () => {
+        const shop_integration_1 = {
+            42: {
+                customer: {
+                    id: 142,
+                },
+                __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+            },
+        }
+
+        const shop_integration_2 = {
+            43: {
+                customer: {
+                    id: 143,
+                },
+                __integration_type__: MAGENTO2_INTEGRATION_TYPE,
+            },
+        }
+
+        const shop_integration_3 = {
+            44: {
+                customer: {
+                    id: 144,
+                },
+                __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+            },
+        }
+
+        it('should return structure with empty values on empty ticket', () => {
+            const ticket = fromJS({})
+            expect(getAllCustomerIdsFromTicket(ticket)).toEqual({
+                gorgias_id: null,
+                integrations: [],
+            })
+        })
+
+        it('should return all customer ids', () => {
+            const ticket = fromJS({
+                customer: {
+                    id: 1,
+                    integrations: {
+                        ...shop_integration_1,
+                        ...shop_integration_2,
+                        ...shop_integration_3,
+                    },
+                },
+            })
+            expect(getAllCustomerIdsFromTicket(ticket)).toEqual({
+                gorgias_id: 1,
+                integrations: [
+                    {id: '42', customer_id: 142},
+                    {id: '43', customer_id: 143},
+                    {id: '44', customer_id: 144},
+                ],
+            })
+        })
+
+        it('should return all customer ids from matching integrations', () => {
+            const ticket = fromJS({
+                customer: {
+                    id: 1,
+                    integrations: {
+                        ...shop_integration_1,
+                        ...shop_integration_2,
+                        ...shop_integration_3,
+                    },
+                },
+            })
+
+            const filterFn = (integration: Immutable.Map<any, any>) =>
+                integration.get('__integration_type__') ===
+                SHOPIFY_INTEGRATION_TYPE
+
+            expect(getAllCustomerIdsFromTicket(ticket, filterFn)).toEqual({
+                gorgias_id: 1,
+                integrations: [
+                    {id: '42', customer_id: 142},
+                    {id: '44', customer_id: 144},
+                ],
+            })
+        })
+
+        it('should return all customer ids and null for missing ids', () => {
+            const ticket = fromJS({
+                customer: {
+                    id: 1,
+                    integrations: {
+                        ...shop_integration_1,
+                        ...shop_integration_2,
+                        ...{45: {customer: {some_key: 'some_val'}}},
+                    },
+                },
+            })
+
+            expect(getAllCustomerIdsFromTicket(ticket)).toEqual({
+                gorgias_id: 1,
+                integrations: [
+                    {id: '42', customer_id: 142},
+                    {id: '43', customer_id: 143},
+                    {id: '45', customer_id: null},
+                ],
             })
         })
     })

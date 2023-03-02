@@ -23,6 +23,10 @@ import client from 'models/api/resources'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getTicketState} from 'state/ticket/selectors'
+import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
+import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+
 import css from './DiscountCodeResults.less'
 
 type OwnProps = {
@@ -43,6 +47,7 @@ export default function DiscountCodeResults({
     const [filter, setFilter] = useState('')
     const [discountCodes, setDiscountResults] = useState<DiscountCode[]>([])
     const currentAccount = useAppSelector(getCurrentAccountState)
+    const ticket = useAppSelector(getTicketState)
 
     const shopifyScope = useMemo<string[]>(() => {
         const scope = integration.getIn(['oauth', 'scope']) as List<string>
@@ -99,6 +104,12 @@ export default function DiscountCodeResults({
             discountModal.closeModal(DISCOUNT_MODAL_NAME)
             setDiscountResults([data, ...discountCodes])
 
+            const customerData = getAllCustomerIdsFromTicket(
+                ticket,
+                (integration) =>
+                    integration.get('__integration_type__') ===
+                    SHOPIFY_INTEGRATION_TYPE
+            )
             logEvent(SegmentEvent.InsertDiscountCodeCreated, {
                 account_domain: currentAccount?.get('domain'),
                 discount: {
@@ -106,9 +117,10 @@ export default function DiscountCodeResults({
                     code: data.code,
                     title: data.title,
                 },
+                customer: customerData,
             })
         },
-        [discountCodes, discountModal, currentAccount]
+        [discountCodes, discountModal, currentAccount, ticket]
     )
 
     useDebounce(handleFetchResults, 300, [filter])

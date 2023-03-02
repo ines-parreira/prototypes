@@ -57,6 +57,7 @@ import {
 
 import * as segmentTracker from 'store/middlewares/segmentTracker'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
+import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import {getReplyAreaStateSnapshot} from './testUtils'
 
 type MockedRootState = {
@@ -1194,6 +1195,28 @@ describe('actions', () => {
                             fromJS([discount_code_1])
                         )
                         .setIn(['state', 'emailExtraAdded'], true),
+                    ticket: storeState.ticket?.set(
+                        'customer',
+                        fromJS({
+                            id: 12,
+                            integrations: {
+                                123: {
+                                    customer: {id: 34},
+                                    __integration_type__:
+                                        SHOPIFY_INTEGRATION_TYPE,
+                                },
+                                456: {
+                                    customer: {id: 56},
+                                    __integration_type__: 'whatever',
+                                },
+                                789: {
+                                    customer: {id: 78},
+                                    __integration_type__:
+                                        SHOPIFY_INTEGRATION_TYPE,
+                                },
+                            },
+                        })
+                    ),
                 })
 
                 const {ticket, newMessage} = getState() as RootState
@@ -1210,6 +1233,13 @@ describe('actions', () => {
                 expect(logEventSpy).toHaveBeenCalledWith(
                     SegmentEvent.InsertDiscountCodeAdded,
                     expect.objectContaining({
+                        customer: {
+                            gorgias_id: 12,
+                            integrations: [
+                                {customer_id: 34, id: '123'},
+                                {customer_id: 78, id: '789'},
+                            ],
+                        },
                         discount: {
                             id: 3,
                             code: 'DISCO',
