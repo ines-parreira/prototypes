@@ -337,8 +337,8 @@ export const AdvancedCampaignDetails = memo(
         }
 
         const isCampaignValid =
-            campaignName !== '' &&
-            campaignMessageText !== '' &&
+            !!campaignName &&
+            !!campaignMessageText &&
             Object.keys(triggers).length !== 0
 
         useEffect(() => {

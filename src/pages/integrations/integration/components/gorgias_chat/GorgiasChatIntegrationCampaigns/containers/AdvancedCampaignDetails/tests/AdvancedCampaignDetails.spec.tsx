@@ -1,7 +1,13 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 
-import {render, within, screen, fireEvent} from '@testing-library/react'
+import {
+    render,
+    within,
+    screen,
+    fireEvent,
+    RenderResult,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {act} from '@testing-library/react-hooks'
 import {mockFlags} from 'jest-launchdarkly-mock'
@@ -122,6 +128,7 @@ describe('<AdvancedCampaignDetails />', () => {
     })
 
     describe('Creating a campaign as regular merchant', () => {
+        let component: RenderResult
         beforeEach(() => {
             jest.spyOn(
                 betaTesterHook,
@@ -132,7 +139,7 @@ describe('<AdvancedCampaignDetails />', () => {
                 'useIsHeadlessShopifyStore'
             ).mockImplementation(() => false)
 
-            render(
+            component = render(
                 <Provider store={mockStore(defaultState)}>
                     <AdvancedCampaignDetails
                         isRevenueBetaTester={false}
@@ -152,7 +159,63 @@ describe('<AdvancedCampaignDetails />', () => {
             screen.getByText('Create & activate')
         })
 
-        it('disables the "Create & Activate" button if the form is empty', () => {
+        it('disables the "Create & Activate" button if the form is not valid', () => {
+            // ========
+            // Assert empty form
+            // ========
+            expect(
+                screen.getByText('Create & activate').hasAttribute('disabled')
+            ).toBeTruthy()
+
+            // ========
+            // Assert missing campaign name but with message
+            // ========
+            component.rerender(
+                <Provider store={mockStore(defaultState)}>
+                    <AdvancedCampaignDetails
+                        isRevenueBetaTester={false}
+                        id="new"
+                        campaign={{
+                            ...regularMerchantCampaign,
+                            name: '',
+                        }}
+                        agents={agents as User[]}
+                        integration={shopifyChatIntegration}
+                        createCampaign={jest.fn()}
+                        updateCampaign={jest.fn()}
+                        deleteCampaign={jest.fn()}
+                    />
+                </Provider>
+            )
+
+            expect(
+                screen.getByText('Create & activate').hasAttribute('disabled')
+            ).toBeTruthy()
+
+            // ========
+            // Assert missing campaign message but with name
+            // ========
+            component.rerender(
+                <Provider store={mockStore(defaultState)}>
+                    <AdvancedCampaignDetails
+                        isRevenueBetaTester={false}
+                        id="new"
+                        campaign={{
+                            ...regularMerchantCampaign,
+                            message: {
+                                html: '',
+                                text: '',
+                            },
+                        }}
+                        agents={agents as User[]}
+                        integration={shopifyChatIntegration}
+                        createCampaign={jest.fn()}
+                        updateCampaign={jest.fn()}
+                        deleteCampaign={jest.fn()}
+                    />
+                </Provider>
+            )
+
             expect(
                 screen.getByText('Create & activate').hasAttribute('disabled')
             ).toBeTruthy()
