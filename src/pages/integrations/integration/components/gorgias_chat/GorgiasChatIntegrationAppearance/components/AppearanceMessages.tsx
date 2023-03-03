@@ -14,6 +14,7 @@ type Props = {
     conversationColor: string
     chatTitle: string
     avatar?: GorgiasChatAvatarSettings
+    language?: string
 }
 
 const AppearanceMessages: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const AppearanceMessages: React.FC<Props> = ({
     conversationColor,
     chatTitle,
     avatar,
+    language,
 }) => (
     <div className={css.content}>
         <CustomerInitialMessages
@@ -33,6 +35,7 @@ const AppearanceMessages: React.FC<Props> = ({
             conversationColor={conversationColor}
             name={chatTitle}
             hideMessageTimestamp={false}
+            language={language}
         />
         <AgentMessages
             currentUser={currentUser}

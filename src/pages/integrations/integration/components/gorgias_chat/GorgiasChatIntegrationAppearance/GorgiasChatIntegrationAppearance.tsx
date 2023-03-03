@@ -564,6 +564,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     conversationColor={conversationColor}
                     chatTitle={name}
                     avatar={state.avatar}
+                    language={language}
                 />
             </ChatIntegrationPreview>
         </div>
