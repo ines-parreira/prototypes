@@ -99,6 +99,7 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
             exceptions: [],
         },
         quick_response_policies: [],
+        article_recommendation_help_center_id: null,
     }
 
     type state = Parameters<typeof mockStore>[0]

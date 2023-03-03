@@ -26,6 +26,7 @@ describe('selfServiceConfigurations reducer', () => {
             expect(newState).toMatchInlineSnapshot(`
                 {
                   "1": {
+                    "article_recommendation_help_center_id": null,
                     "cancel_order_policy": {
                       "eligibilities": [],
                       "enabled": true,
@@ -65,6 +66,7 @@ describe('selfServiceConfigurations reducer', () => {
             expect(newState).toMatchInlineSnapshot(`
                 {
                   "1": {
+                    "article_recommendation_help_center_id": null,
                     "cancel_order_policy": {
                       "eligibilities": [],
                       "enabled": true,
@@ -107,6 +109,7 @@ describe('selfServiceConfigurations reducer', () => {
             expect(newState).toMatchInlineSnapshot(`
                 {
                   "1": {
+                    "article_recommendation_help_center_id": null,
                     "cancel_order_policy": {
                       "eligibilities": [],
                       "enabled": true,
@@ -133,6 +136,7 @@ describe('selfServiceConfigurations reducer', () => {
                     "updated_datetime": "2021-02-07T09:07:46.097905+00:00",
                   },
                   "2": {
+                    "article_recommendation_help_center_id": null,
                     "cancel_order_policy": {
                       "eligibilities": [],
                       "enabled": true,

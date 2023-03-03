@@ -55,6 +55,7 @@ const createSelfServiceConfigurationFixtures = (
                 },
             },
         ],
+        article_recommendation_help_center_id: null,
     }))
 }
 

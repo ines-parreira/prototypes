@@ -145,6 +145,7 @@ export type SelfServiceConfiguration = {
     cancel_order_policy: SelfServiceConfigurationCancelOrderPolicy
     return_order_policy: SelfServiceConfigurationReturnOrderPolicy
     quick_response_policies: QuickResponsePolicy[]
+    article_recommendation_help_center_id: Maybe<number>
 }
 
 // cf. comment on SelfServiceReportIssueCase_DEPRECATED

@@ -218,6 +218,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           >
             Order management
           </a>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
+            href="/app/automation/shopify/gorgiastest/article-recommendation"
+          >
+            Article recommendation
+          </a>
           <div
             class="section d-flex align-items-center flex-grow"
           >
@@ -256,6 +263,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
           >
             Quick responses
+          </a>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
+            href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
+          >
+            Article recommendation
           </a>
         </div>
       </div>
@@ -521,6 +535,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           >
             Order management
           </a>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
+            href="/app/automation/shopify/gorgiastest/article-recommendation"
+          >
+            Article recommendation
+          </a>
           <div
             class="section d-flex align-items-center flex-grow"
           >
@@ -564,6 +585,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             >
               lock
             </i>
+          </a>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
+            href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
+          >
+            Article recommendation
           </a>
         </div>
       </div>
@@ -1073,6 +1101,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           >
             Order management
           </a>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
+            href="/app/automation/shopify/gorgiastest/article-recommendation"
+          >
+            Article recommendation
+          </a>
           <div
             class="section d-flex align-items-center flex-grow"
           >
@@ -1111,6 +1146,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
           >
             Quick responses
+          </a>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
+            href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
+          >
+            Article recommendation
           </a>
         </div>
       </div>
@@ -1376,6 +1418,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           >
             Order management
           </a>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
+            href="/app/automation/shopify/gorgiastest/article-recommendation"
+          >
+            Article recommendation
+          </a>
           <div
             class="section d-flex align-items-center flex-grow"
           >
@@ -1419,6 +1468,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             >
               lock
             </i>
+          </a>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
+            href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
+          >
+            Article recommendation
           </a>
         </div>
       </div>

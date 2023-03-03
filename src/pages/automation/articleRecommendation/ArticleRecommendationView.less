@@ -1,0 +1,40 @@
+@import '~css/new/layout.less';
+@import '~css/new/mixins.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        padding: @layout-spacing-m;
+
+        @media @desktops {
+            display: grid;
+            grid-template-columns: 1fr 452px;
+            column-gap: @layout-spacing-m;
+        }
+    }
+
+    .descriptionContainer {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .submitAndCancelButtonsContainer {
+        display: flex;
+        column-gap: 12px;
+        margin-top: @layout-spacing-xl;
+    }
+
+    .selectorTitle {
+        .body-semibold();
+        margin-top: @layout-spacing-s;
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .alert {
+        margin-top: @layout-spacing-m;
+    }
+
+    .warning {
+        margin-top: @layout-spacing-m;
+        margin-bottom: @layout-spacing-xs;
+    }
+}

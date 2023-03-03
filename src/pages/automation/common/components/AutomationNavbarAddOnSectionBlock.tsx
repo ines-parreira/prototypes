@@ -56,13 +56,21 @@ const AutomationNavbarAddOnSectionBlock = ({
                 </AutomationNavbarAddOnPaywallNavbarLink>
             )}
             {shopType === 'shopify' && (
-                <NavbarLink
-                    to={`/app/automation/shopify/${shopName}/order-management`}
-                    isNested
-                >
-                    Order management
-                </NavbarLink>
+                <>
+                    <NavbarLink
+                        to={`/app/automation/shopify/${shopName}/order-management`}
+                        isNested
+                    >
+                        Order management
+                    </NavbarLink>
+                </>
             )}
+            <NavbarLink
+                to={`/app/automation/${shopType}/${shopName}/article-recommendation`}
+                isNested
+            >
+                Article recommendation
+            </NavbarLink>
         </NavbarSectionBlock>
     )
 }

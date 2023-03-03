@@ -73,6 +73,7 @@ const createSelfServiceConfigurationFixtures = (
             exceptions: [],
         },
         quick_response_policies: [],
+        article_recommendation_help_center_id: null,
     }))
 }
 
@@ -198,6 +199,7 @@ describe('<OrderManagementFlowsPreferences/>', () => {
                 .toMatchInlineSnapshot(`
                 [
                   {
+                    "article_recommendation_help_center_id": null,
                     "cancel_order_policy": {
                       "eligibilities": [],
                       "enabled": true,

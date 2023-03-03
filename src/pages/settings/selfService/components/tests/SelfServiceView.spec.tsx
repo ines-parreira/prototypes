@@ -64,6 +64,7 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
             exceptions: [],
         },
         quick_response_policies: [],
+        article_recommendation_help_center_id: null,
     }))
 }
 

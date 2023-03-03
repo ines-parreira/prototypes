@@ -135,6 +135,7 @@ import CancelOrderFlowViewContainer from './automation/orderManagement/cancelOrd
 import ReportOrderIssueFlowViewContainer from './automation/orderManagement/reportOrderIssue/ReportOrderIssueFlowViewContainer'
 import CreateReportOrderIssueFlowScenarioViewContainer from './automation/orderManagement/reportOrderIssue/CreateReportOrderIssueFlowScenarioViewContainer'
 import EditReportOrderIssueFlowScenarioViewContainer from './automation/orderManagement/reportOrderIssue/EditReportOrderIssueFlowScenarioViewContainer'
+import ArticleRecommendationViewContainer from './automation/articleRecommendation/ArticleRecommendationViewContainer'
 import QuickResponsesViewContainer from './automation/quickResponses/QuickResponsesViewContainer'
 import PageHeader from './common/components/PageHeader'
 import HeaderTitle from './common/components/HeaderTitle'
@@ -1361,82 +1362,82 @@ export function RulesSettingsRoute({
 
 export function AutomationRoutes({match: {path}}: RouteComponentProps) {
     return (
-        <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    children: (
-                        <CanduContent
-                            containerId="candu-automation"
-                            title="Overview"
+        <HelpCenterApiClientProvider>
+            <Switch>
+                <Route
+                    path={`${path}/`}
+                    exact
+                    render={appRender({
+                        children: (
+                            <CanduContent
+                                containerId="candu-automation"
+                                title="Overview"
+                            />
+                        ),
+                        navbar: AutomationNavbar,
+                    })}
+                />
+                <Route
+                    path={`${path}/macros`}
+                    render={(props) => (
+                        <MacrosSettingsRoutes
+                            {...props}
+                            navbar={AutomationNavbar}
+                            isReadonlyForAll
                         />
-                    ),
-                    navbar: AutomationNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/macros`}
-                render={(props) => (
-                    <MacrosSettingsRoutes
-                        {...props}
-                        navbar={AutomationNavbar}
-                        isReadonlyForAll
-                    />
-                )}
-            />
-            <Route
-                path={`${path}/rules`}
-                render={(props) => (
-                    <RulesSettingsRoute
-                        {...props}
-                        navbar={AutomationNavbar}
-                        isReadonlyForAll
-                    />
-                )}
-            />
-            <Route
-                path={`${path}/ticket-assignment`}
-                exact
-                render={appRender({
-                    content: TicketAssignment,
-                    navbar: AutomationNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/self-service`}
-                render={(props) => (
-                    <SelfServiceSettingsRoutes
-                        {...props}
-                        navbar={AutomationNavbar}
-                        isDeprecated
-                    />
-                )}
-            />
-            <Route
-                path={`${path}/:shopType/:shopName/quick-responses`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        QuickResponsesViewContainer,
-                        AGENT_ROLE
-                    ),
-                    navbar: AutomationNavbar,
-                })}
-            />
-            <Route
-                path={[
-                    `${path}/shopify/:shopName/order-management`,
-                    `${path}/shopify/:shopName/order-management/return`,
-                    `${path}/shopify/:shopName/order-management/cancel`,
-                    `${path}/shopify/:shopName/order-management/cancel`,
-                    `${path}/shopify/:shopName/order-management/report-issue`,
-                    `${path}/shopify/:shopName/order-management/report-issue/new`,
-                    `${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`,
-                ]}
-                exact
-            >
-                <HelpCenterApiClientProvider>
+                    )}
+                />
+                <Route
+                    path={`${path}/rules`}
+                    render={(props) => (
+                        <RulesSettingsRoute
+                            {...props}
+                            navbar={AutomationNavbar}
+                            isReadonlyForAll
+                        />
+                    )}
+                />
+                <Route
+                    path={`${path}/ticket-assignment`}
+                    exact
+                    render={appRender({
+                        content: TicketAssignment,
+                        navbar: AutomationNavbar,
+                    })}
+                />
+                <Route
+                    path={`${path}/self-service`}
+                    render={(props) => (
+                        <SelfServiceSettingsRoutes
+                            {...props}
+                            navbar={AutomationNavbar}
+                            isDeprecated
+                        />
+                    )}
+                />
+                <Route
+                    path={`${path}/:shopType/:shopName/quick-responses`}
+                    exact
+                    render={appRender({
+                        content: memoizedWithUserRoleRequired(
+                            QuickResponsesViewContainer,
+                            AGENT_ROLE
+                        ),
+                        navbar: AutomationNavbar,
+                    })}
+                />
+                <Route
+                    path={[
+                        `${path}/shopify/:shopName/order-management`,
+                        `${path}/shopify/:shopName/order-management/return`,
+                        `${path}/shopify/:shopName/order-management/cancel`,
+                        `${path}/shopify/:shopName/order-management/cancel`,
+                        `${path}/shopify/:shopName/order-management/report-issue`,
+                        `${path}/shopify/:shopName/order-management/report-issue/new`,
+                        `${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`,
+                    ]}
+                    exact
+                >
                     <SelfServiceHelpCentersProvider>
                         <Switch>
                             <Route
@@ -1507,48 +1508,59 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                             />
                         </Switch>
                     </SelfServiceHelpCentersProvider>
-                </HelpCenterApiClientProvider>
-            </Route>
-            <Route
-                path={`${path}/quick-responses`}
-                exact
-                render={appRender({
-                    children: (
-                        <CanduContent
-                            containerId="candu-quick-responses"
-                            title="Quick responses"
-                        />
-                    ),
-                    navbar: AutomationNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/order-management`}
-                exact
-                render={appRender({
-                    children: (
-                        <CanduContent
-                            containerId="candu-order-management"
-                            title="Order management"
-                        />
-                    ),
-                    navbar: AutomationNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/article-recommendation`}
-                exact
-                render={appRender({
-                    children: (
-                        <CanduContent
-                            containerId="candu-article-recommendation"
-                            title="Article recommendation"
-                        />
-                    ),
-                    navbar: AutomationNavbar,
-                })}
-            />
-        </Switch>
+                </Route>
+                <Route
+                    path={`${path}/:shopType/:shopName/article-recommendation`}
+                    exact
+                    render={appRender({
+                        content: memoizedWithUserRoleRequired(
+                            ArticleRecommendationViewContainer,
+                            AGENT_ROLE
+                        ),
+                        navbar: AutomationNavbar,
+                    })}
+                />
+                <Route
+                    path={`${path}/quick-responses`}
+                    exact
+                    render={appRender({
+                        children: (
+                            <CanduContent
+                                containerId="candu-quick-responses"
+                                title="Quick responses"
+                            />
+                        ),
+                        navbar: AutomationNavbar,
+                    })}
+                />
+                <Route
+                    path={`${path}/order-management`}
+                    exact
+                    render={appRender({
+                        children: (
+                            <CanduContent
+                                containerId="candu-order-management"
+                                title="Order management"
+                            />
+                        ),
+                        navbar: AutomationNavbar,
+                    })}
+                />
+                <Route
+                    path={`${path}/article-recommendation`}
+                    exact
+                    render={appRender({
+                        children: (
+                            <CanduContent
+                                containerId="candu-article-recommendation"
+                                title="Article recommendation"
+                            />
+                        ),
+                        navbar: AutomationNavbar,
+                    })}
+                />
+            </Switch>
+        </HelpCenterApiClientProvider>
     )
 }
 

@@ -28,6 +28,7 @@ export const selfServiceConfiguration1: SelfServiceConfiguration = {
         exceptions: [],
     },
     quick_response_policies: [],
+    article_recommendation_help_center_id: null,
 }
 
 export const selfServiceConfiguration2: SelfServiceConfiguration = {
@@ -55,6 +56,7 @@ export const selfServiceConfiguration2: SelfServiceConfiguration = {
         exceptions: [],
     },
     quick_response_policies: [],
+    article_recommendation_help_center_id: null,
 }
 
 export const selfServiceState = {

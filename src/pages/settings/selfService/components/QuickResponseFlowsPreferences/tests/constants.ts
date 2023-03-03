@@ -115,6 +115,7 @@ export const defaultState = {
                         id: '7',
                     },
                 ],
+                article_recommendation_help_center_id: null,
             },
         },
     },

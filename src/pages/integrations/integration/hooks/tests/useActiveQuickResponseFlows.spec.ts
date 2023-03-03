@@ -54,6 +54,7 @@ const selfServiceConfigurationFixture: SelfServiceConfiguration = {
             },
         },
     ],
+    article_recommendation_help_center_id: null,
 }
 
 describe('useActiveQuickResponseFlows()', () => {
