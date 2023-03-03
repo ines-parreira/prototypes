@@ -13,6 +13,8 @@ Please respect those decisions while making your code contributions but
 also, feel free to post your ideas for improvements (in the form of a
 PR).
 
+If you have any questions, don't hesitate to ask on the dedicated Slack channel: [#pe-engineering-frontend](https://gorgias.slack.com/archives/C018CHV1D3P).
+
 ## Table of contents
 
 -   [Migration to Ts](#migration-from-js-to-ts)
@@ -23,6 +25,7 @@ PR).
 -   [Migration to Functional Components](#migration-to-functional-components)
 -   [Don't use relative parent imports](#dont-use-relative-parent-imports)
 -   [Union Types vs Enums](#union-types-vs-enums)
+-   [Use components from the UI Kit](#use-components-from-the-ui-kit)
 
 ## Migration to Ts
 
@@ -317,3 +320,15 @@ export default function List() {
     )
 }
 ```
+
+## Use components from the UI Kit
+
+We highly recommend that you switch to using the Gorgias UI Kit instead of `reactstrap` components. 
+
+In order to get the most out of the UI Kit, we suggest that you refer to the Storybook, which provides an up-to-date list of all available components:
+
+```sh
+yarn storybook
+```
+
+To view the detailed design of the components, you can access [the Figma file](https://www.figma.com/file/YhYdgxN5wYb0stROdCHnX0/%F0%9F%92%8E-%5BLibrary%5D-UI-Kit-Helpdesk?node-id=0%3A1&t=ZKENUMfTFSorpcV7-0) where all the design elements are available.
