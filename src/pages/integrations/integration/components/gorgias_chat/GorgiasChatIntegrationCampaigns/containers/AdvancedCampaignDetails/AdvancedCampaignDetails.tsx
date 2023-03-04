@@ -409,6 +409,7 @@ export const AdvancedCampaignDetails = memo(
                                     featured_image: attachment.url,
                                     variant_name:
                                         attachment.extra?.variant_name,
+                                    position: attachment.extra?.position,
                                 },
                             }
                         }

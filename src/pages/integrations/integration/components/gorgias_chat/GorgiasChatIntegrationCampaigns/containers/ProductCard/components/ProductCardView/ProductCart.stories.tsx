@@ -3,11 +3,11 @@ import {Meta, Story} from '@storybook/react'
 
 import {FRAME_WIDTH} from '../../../../constants/visuals'
 
-import {ProductCard} from './ProductCard'
+import {ProductCardView} from './ProductCardView'
 
 const storyConfig: Meta = {
     title: 'Data Display/Chat Campaigns/Product Card',
-    component: ProductCard,
+    component: ProductCardView,
     argTypes: {
         color: {
             control: {
@@ -16,19 +16,20 @@ const storyConfig: Meta = {
         },
     },
     args: {
-        color: '#0097ff',
+        bgColor: '#0097ff',
         currency: 'USD',
         image: 'https://cdn.mos.cms.futurecdn.net/gPvyaz76tASn87RCGuSdDc.jpg',
         price: 1234.43,
         title: 'MacBook Air with M1 chip',
+        onClickEdit: () => null,
     },
     decorators: [
         (storyFn) => <div style={{width: FRAME_WIDTH}}>{storyFn()}</div>,
     ],
 }
 
-const Template: Story<ComponentProps<typeof ProductCard>> = (props) => (
-    <ProductCard {...props} />
+const Template: Story<ComponentProps<typeof ProductCardView>> = (props) => (
+    <ProductCardView {...props} />
 )
 
 export const Primary = Template.bind({})

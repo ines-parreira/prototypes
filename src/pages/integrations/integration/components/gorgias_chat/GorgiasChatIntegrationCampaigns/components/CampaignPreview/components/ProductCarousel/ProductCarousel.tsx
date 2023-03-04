@@ -3,11 +3,11 @@ import classnames from 'classnames'
 
 import {DEFAULT_CAROUSEL_CONFIGURATION} from '../../../../constants/visuals'
 
+import {ProductCard} from '../../../../containers/ProductCard'
+
 import {useIsHeadlessShopifyStore} from '../../../../hooks/useIsHeadlessShopifyStore'
 
 import {CampaignProduct} from '../../../../types/CampaignProduct'
-
-import {ProductCard} from '../ProductCard'
 
 import css from './ProductCarousel.less'
 
@@ -102,6 +102,8 @@ export const ProductCarousel = ({
                                 currency={product.currency}
                                 image={product.featured_image}
                                 price={product.price}
+                                position={product.position}
+                                productId={product.id}
                                 title={product.title}
                                 isHeadlessStore={isHeadlessStore}
                             />

@@ -1,0 +1,45 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .details {
+        height: 88px;
+
+        display: flex;
+
+        flex-direction: column;
+    }
+
+    .controls {
+        height: 40px;
+        margin-bottom: 16px;
+    }
+
+    .btnGroup {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .baseButton {
+        height: 32px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0;
+        padding: 0 12px;
+        border: none;
+        border-radius: 4px;
+
+        color: @classic-neutral-grey-0;
+
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+
+        cursor: pointer;
+
+        transition: background-color 300ms ease;
+    }
+}

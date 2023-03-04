@@ -8,6 +8,8 @@ import _forOwn from 'lodash/forOwn'
 import _get from 'lodash/get'
 
 import {DiscountCode} from 'models/discountCodes/types'
+import {AttachmentPosition} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/types/CampaignAttachment'
+
 import {
     getSourceTypeOfResponse,
     getChannelFromSourceType,
@@ -163,6 +165,31 @@ export default function reducer(
                     ).delete(action.index as number)
                 )
                 .setIn(['state', 'dirty'], true)
+        }
+
+        case types.UPDATE_CAMPAIGN_PRODUCT_POSITION: {
+            const {productId, position} = action.payload as {
+                productId: number
+                position: AttachmentPosition
+            }
+            const attachments: List<Map<any, any>> = state.getIn([
+                'newMessage',
+                'attachments',
+            ])
+            const currentAttachmentIndex = attachments.findIndex((item) => {
+                if (item) {
+                    return item.getIn(['extra', 'product_id']) === productId
+                }
+                return false
+            })
+
+            return state.setIn(
+                ['newMessage', 'attachments'],
+                attachments.setIn(
+                    [currentAttachmentIndex, 'extra', 'position'],
+                    position
+                )
+            )
         }
 
         case types.NEW_MESSAGE_RECORD_MACRO: {

@@ -1,4 +1,6 @@
 import {List} from 'immutable'
+
+import {AttachmentPosition} from '../types/CampaignAttachment'
 import {CampaignProduct} from '../types/CampaignProduct'
 
 type AttachmentImmutable = {
@@ -14,6 +16,7 @@ type AttachmentImmutable = {
         product_link: string
         currency: string
         featured_image: string
+        position?: AttachmentPosition
     }
 }
 
@@ -27,6 +30,7 @@ export function transformAttachmentToProduct(attachments: List<any>) {
             currency: attachment.extra?.currency,
             featured_image: attachment.extra?.featured_image,
             variant_name: attachment.extra?.variant_name,
+            position: attachment.extra?.position,
         }
     }) as CampaignProduct[]
 }

@@ -22,6 +22,7 @@ export function transformProductToAttachment(
                 context.campaignName
             ),
             variant_name: product?.variant_name,
+            position: product?.position,
         },
     }
 }

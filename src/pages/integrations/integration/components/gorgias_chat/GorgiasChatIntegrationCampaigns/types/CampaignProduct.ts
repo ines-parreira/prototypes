@@ -1,3 +1,5 @@
+import {AttachmentPosition} from './CampaignAttachment'
+
 export interface CampaignProduct {
     id: number
     title: string
@@ -6,4 +8,5 @@ export interface CampaignProduct {
     currency?: string
     featured_image?: string
     variant_name?: string
+    position?: AttachmentPosition
 }

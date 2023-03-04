@@ -1,4 +1,5 @@
 import {CampaignAuthor} from './CampaignAgent'
+import {CampaignAttachment} from './CampaignAttachment'
 import {CampaignTrigger} from './CampaignTrigger'
 
 export interface ChatCampaign {
@@ -12,18 +13,6 @@ export interface ChatCampaign {
         text: string
     }
     name: string
-    attachments?: Array<{
-        url?: string
-        name: string
-        contentType: string
-        size: number
-        extra: object & {
-            price: number
-            currency?: string
-            product_link: string
-            product_id: number
-            variant_name?: string
-        }
-    }>
+    attachments?: CampaignAttachment[]
     triggers: CampaignTrigger[]
 }

@@ -59,6 +59,7 @@ import {search} from 'models/search/resources'
 import {CustomerChannel} from 'models/customerChannel/types'
 import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/shopify'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import {AttachmentPosition} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/types/CampaignAttachment'
 
 import {MacroActionName, MacroActionType} from 'models/macroAction/types'
 import {isBaseEmailAddress} from 'pages/integrations/integration/components/email/helpers'
@@ -206,6 +207,11 @@ export const deleteAttachment = (index: number) => ({
     type: constants.NEW_MESSAGE_DELETE_ATTACHMENT,
     index,
 })
+
+export const updateCampaignProductPosition = createAction<{
+    productId: number
+    position: AttachmentPosition
+}>(constants.UPDATE_CAMPAIGN_PRODUCT_POSITION)
 
 const _throttledIsTyping = _throttle(
     (ticketId: string) => {
