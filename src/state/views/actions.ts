@@ -417,6 +417,10 @@ export function fetchViewItems(
 
         await launchDarklyClient.waitForInitialization()
 
+        const enforceTicketsOnES = launchDarklyClient.variation(
+            FeatureFlagKey.EnforceTicketsOnES
+        )
+
         if (
             launchDarklyClient.variation(
                 FeatureFlagKey.ElasticsearchTicketSearch
@@ -458,22 +462,30 @@ export function fetchViewItems(
         } else if (isDirty) {
             // when a view is dirty, just send the whole view data rather than just the id
             // this will allow us to test a view before submitting it to the DB
-            promise = client.put<ApiListResponsePagination<Ticket[]>>(
-                url,
-                {
-                    view: activeView
-                        .delete('dirty')
-                        .delete('editMode')
-                        .delete('allItemsSelected')
-                        .delete('filters_ast')
-                        .toJS(),
-                },
-                options
-            )
+            promise = enforceTicketsOnES
+                ? searchTickets({
+                      search: (activeView.get('search') as string) || '',
+                      filters: activeView.get('filters') as string,
+                      cancelToken,
+                  })
+                : client.put<ApiListResponsePagination<Ticket[]>>(
+                      url,
+                      {
+                          view: activeView
+                              .delete('dirty')
+                              .delete('editMode')
+                              .delete('allItemsSelected')
+                              .delete('filters_ast')
+                              .toJS(),
+                      },
+                      options
+                  )
         } else {
             promise = client.get<ApiListResponsePagination<Ticket[]>>(
                 url,
-                options
+                enforceTicketsOnES
+                    ? {...options, headers: {'x-gorgias-search-engine': 'ES'}}
+                    : options
             )
         }
 

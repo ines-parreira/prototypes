@@ -451,6 +451,30 @@ describe('actions', () => {
                 })
         })
 
+        it('should use the elasticsearch endpoint when the feature flag is enabled while the view is dirty', () => {
+            variationMock.mockImplementation(
+                (name: FeatureFlagKey) =>
+                    name === FeatureFlagKey.EnforceTicketsOnES
+            )
+
+            const store = mockStore({
+                views: fromJS({
+                    active: {
+                        ...view,
+                        dirty: true,
+                        editMode: false,
+                    },
+                }),
+            })
+
+            return store.dispatch(actions.fetchViewItems()).then(() => {
+                expect(searchTicketsMock).toHaveBeenCalledWith({
+                    filters: "eq(ticket.channel, 'chat')",
+                    search: '',
+                })
+            })
+        })
+
         it('should pass the view because it is dirty', () => {
             const store = mockStore({
                 views: fromJS({

@@ -1,6 +1,9 @@
 import {AxiosError} from 'axios'
 import {Map} from 'immutable'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {searchTickets as modelSearchTickets} from 'models/ticket/resources'
+import {getLDClient} from 'utils/launchDarkly'
 import {StoreDispatch} from '../types'
 import {notify} from '../notifications/actions'
 import {createErrorNotification} from '../utils'
@@ -24,7 +27,9 @@ export function searchTickets(
     direction: Maybe<string> = null,
     navigation: Map<any, any>
 ) {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+    return async (
+        dispatch: StoreDispatch
+    ): Promise<ReturnType<StoreDispatch>> => {
         const view = defaultMergeTicketsView(
             sourceTicketId,
             searchQuery,
@@ -40,26 +45,38 @@ export function searchTickets(
             }
         }
 
-        return client
-            .put<ApiListResponsePagination<Ticket[]>>(
+        let promise
+
+        const launchDarklyClient = getLDClient()
+        await launchDarklyClient.waitForInitialization()
+
+        if (
+            launchDarklyClient.variation(
+                FeatureFlagKey.ElasticsearchTicketSearch
+            )
+        ) {
+            promise = modelSearchTickets({
+                search: (view.get('search') as string) || '',
+                filters: view.get('filters') as string,
+                limit: LIMIT,
+            })
+        } else {
+            promise = client.put<ApiListResponsePagination<Ticket[]>>(
                 url,
                 {view},
                 {params: {limit: LIMIT}}
             )
-            .then(
-                (data) => {
-                    return Promise.resolve(data.data)
-                },
-                (error) => {
-                    dispatch(
-                        createErrorNotification(
-                            error,
-                            'Failed to search tickets.'
-                        )
-                    )
-                    return Promise.reject(error)
-                }
+        }
+
+        try {
+            const resp = await promise
+            return resp.data
+        } catch (error) {
+            dispatch(
+                createErrorNotification(error, 'Failed to search tickets.')
             )
+            throw error
+        }
     }
 }
 
