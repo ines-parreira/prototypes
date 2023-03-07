@@ -1,5 +1,8 @@
+import {createImageFetchMock} from 'tests/utils'
+
 import {getInitials, getAvatar, getAvatarFromCache} from '../utils'
-import {mockImageOnload} from '../../../../../tests/utils'
+
+const imageFetchMock = createImageFetchMock()
 
 describe('Avatar utils', () => {
     const email = 'alex@gorgias.io'
@@ -8,9 +11,12 @@ describe('Avatar utils', () => {
 
     beforeEach(() => {
         expect.assertions(1)
+        imageFetchMock.mock(jest.fn().mockResolvedValue(undefined))
     })
 
-    mockImageOnload()
+    afterEach(() => {
+        imageFetchMock.resetMock()
+    })
 
     describe('getInitials()', () => {
         it.each([
@@ -38,6 +44,7 @@ describe('Avatar utils', () => {
         })
 
         it('should return `null` because the email is invalid', async () => {
+            imageFetchMock.mock(jest.fn().mockRejectedValue(undefined))
             const res = await getAvatar({email: 'invalidEmail@'})
             expect(res).toEqual(null)
         })
@@ -56,6 +63,7 @@ describe('Avatar utils', () => {
         })
 
         it('should return `null` from cache because there is no avatar for this email`', async () => {
+            imageFetchMock.mock(jest.fn().mockRejectedValue(undefined))
             const invalidEmail = '12e12e12e@'
             await getAvatar({email: invalidEmail})
             expect(getAvatarFromCache(invalidEmail, 50)).toBeNull()

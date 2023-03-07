@@ -1,13 +1,23 @@
 import React from 'react'
 import {shallow, mount} from 'enzyme'
 
-import {mockImageOnload} from '../../../../../tests/utils'
+import {assumeMock} from 'utils/testing'
+import {getAvatarFromCache, getAvatar, getInitials} from '../utils'
 
-import {getAvatar} from '../utils'
 import Avatar from '../Avatar'
 
+jest.mock('../utils')
+const getAvatarMock = assumeMock(getAvatar)
+const getAvatarFromCacheMock = assumeMock(getAvatarFromCache)
+const getInitialsMock = assumeMock(getInitials)
+
+const gravatarUrl =
+    'https://www.gravatar.com/avatar/b0603c6a6734698e0b93b1350c6c8286?d=404&s=50'
+
 describe('Avatar component', () => {
-    mockImageOnload()
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
 
     it('should render default with no props', () => {
         const component = shallow(<Avatar />)
@@ -20,6 +30,7 @@ describe('Avatar component', () => {
     })
 
     it('should render only the initials', () => {
+        getInitialsMock.mockReturnValue('MC')
         const component = shallow(<Avatar name="Marie Curie" />)
         expect(component).toMatchSnapshot()
     })
@@ -30,22 +41,22 @@ describe('Avatar component', () => {
     })
 
     it('should render avatar from cache', () => {
-        return getAvatar({email: 'alex@gorgias.io'}).then(() => {
-            const component = shallow(<Avatar email="alex@gorgias.io" />)
-            return expect(component).toMatchSnapshot()
-        })
+        getAvatarFromCacheMock.mockReturnValue(gravatarUrl)
+        const component = shallow(<Avatar email="alex@gorgias.io" />)
+        return expect(component).toMatchSnapshot()
     })
 
-    it('should render image in visible container', async () => {
+    it('should render image in visible container', () => {
         // preload the image so the component can fetch it from the cache
-        await getAvatar({email: 'alex@gorgias.io'})
+        getAvatarMock.mockResolvedValue(gravatarUrl)
         const component = mount(<Avatar email="alex@gorgias.io" />)
+        component.setState({imageUrl: gravatarUrl})
         expect(component).toMatchSnapshot()
     })
 
-    it('should not render image in invisible container', async () => {
-        // preload the image so the component can fetch it from the cache
-        await getAvatar({email: 'alex@gorgias.io'})
+    it('should not render image in invisible container', () => {
+        // preload the image so the component can fetch it from t he cache
+        getAvatarMock.mockResolvedValue(gravatarUrl)
         const container = document.createElement('div')
         document.body.appendChild(container)
         container.style.display = 'none'

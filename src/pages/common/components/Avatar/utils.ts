@@ -1,6 +1,6 @@
 import md5 from 'md5'
 
-type avatarParamsType = {
+export type AvatarParamsType = {
     email?: string
     size?: number
 }
@@ -53,7 +53,7 @@ export function getAvatarFromCache(email: string, size: number): Maybe<string> {
 export function getAvatar({
     email = '',
     size = 50,
-}: avatarParamsType = {}): Promise<Maybe<string>> {
+}: AvatarParamsType = {}): Promise<Maybe<string>> {
     const mail = cleanEmail(email)
     if (!mail) {
         return Promise.resolve(null)
