@@ -1,4 +1,7 @@
 import React, {ReactNode, useMemo} from 'react'
+import classnames from 'classnames'
+
+import css from './DashboardGridCell.less'
 
 type Props = {
     children: ReactNode
@@ -19,7 +22,7 @@ export default function DashboardGridCell({
     )
 
     return (
-        <div className={className} style={style}>
+        <div className={classnames(className, css.cell)} style={style}>
             {children}
         </div>
     )

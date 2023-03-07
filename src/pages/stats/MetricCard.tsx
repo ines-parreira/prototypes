@@ -30,12 +30,12 @@ export default function MetricCard({
 
                 {hint && <IconTooltip>{hint}</IconTooltip>}
 
-                {trendBadge}
+                <div className={css.trendBadge}>{trendBadge}</div>
             </div>
 
             {children}
 
-            {tooltip}
+            {tooltip && <div className={css.tooltip}>{tooltip}</div>}
         </Card>
     )
 }

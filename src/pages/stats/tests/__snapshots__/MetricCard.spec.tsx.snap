@@ -18,6 +18,9 @@ exports[`<MetricCard /> should render the metric card 1`] = `
         info
       </i>
     </div>
+    <div
+      class="trendBadge"
+    />
   </div>
   MetricCard
 </div>

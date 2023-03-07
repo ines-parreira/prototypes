@@ -1,33 +1,27 @@
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-
 import css from './TrendBadge.less'
 
 type Props = {
     children: ReactNode
     className?: string
-    type?: 'up' | 'down' | 'flat'
+    direction?: 'up' | 'down' | 'flat'
+    color?: 'positive' | 'negative' | 'neutral'
 }
 
-export default function TrendBadge({children, className, type = 'up'}: Props) {
+export default function TrendBadge({
+    children,
+    className,
+    direction = 'up',
+    color = 'positive',
+}: Props) {
     return (
-        <Badge
-            className={classnames(css.trend, className)}
-            type={
-                type === 'up'
-                    ? ColorType.LightSuccess
-                    : type === 'down'
-                    ? ColorType.LightError
-                    : ColorType.Light
-            }
-        >
+        <div className={classnames(css.trend, css[color], className)}>
             <i className={classnames('material-icons', css.trendIcon)}>
-                {`trending_${type}`}
+                {`trending_${direction}`}
             </i>
-
             {children}
-        </Badge>
+        </div>
     )
 }

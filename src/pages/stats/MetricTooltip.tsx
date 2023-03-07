@@ -7,14 +7,7 @@ type Props = {
     children: ReactNode
     className?: string
     title: ReactNode
-    type?:
-        | 'neutral'
-        | 'error'
-        | 'success'
-        | 'light-info'
-        | 'light-error'
-        | 'light-warning'
-        | 'light-success'
+    type?: 'neutral' | 'error' | 'success' | 'light-error' | 'light-success'
 }
 
 export default function MetricTooltip({

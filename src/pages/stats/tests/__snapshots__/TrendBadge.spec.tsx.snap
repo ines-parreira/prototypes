@@ -3,7 +3,7 @@
 exports[`<TrendBadge /> should render the badge 1`] = `
 <div>
   <div
-    class="badge trend"
+    class="trend positive"
   >
     <i
       class="material-icons trendIcon"

@@ -1,6 +1,32 @@
+@import '~css/new/colorTokens';
+@import '~css/new/typographyTokens';
+
 :local {
     .trend {
-        margin-left: auto;
+        border-radius: 100px;
+        display: inline-flex;
+        padding: 0 8px;
+        height: 18px;
+        align-items: center;
+        font-size: @caption-all-caps-font-size;
+        font-weight: @caption-all-caps-font-weight;
+        letter-spacing: @caption-all-caps-letter-spacing;
+        line-height: @caption-all-caps-line-height;
+    }
+
+    .neutral {
+        background-color: @classic-neutral-grey-1;
+        color: @classic-neutral-grey-5;
+    }
+
+    .positive {
+        background-color: @classic-main-primary-0;
+        color: @classic-main-primary-4;
+    }
+
+    .negative {
+        background-color: @classic-accessory-red-bg;
+        color: @dark-feedback-error-0;
     }
 
     .trendIcon {

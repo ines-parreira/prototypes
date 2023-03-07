@@ -3,6 +3,7 @@
 exports[`<DashboardGridCell /> should render a cell 1`] = `
 <div>
   <div
+    class="cell"
     style="grid-column: span 12 / span 12;"
   >
     content

@@ -32,32 +32,37 @@ export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 
 type MetricMock = {
     value: string
-    trend: string
-    trendType: ComponentProps<typeof TrendBadge>['type']
+    trendValue: string
+    trendDirection: ComponentProps<typeof TrendBadge>['direction']
+    trendColor: ComponentProps<typeof TrendBadge>['color']
 }
 
 const customerSatisfactionMock: MetricMock = {
     value: '2.24',
-    trend: '1.2',
-    trendType: 'up',
+    trendValue: '1.2',
+    trendDirection: 'up',
+    trendColor: 'positive',
 }
 
 const firstResponseTimeMock: MetricMock = {
     value: '5m24s',
-    trend: '21s',
-    trendType: 'down',
+    trendValue: '21s',
+    trendDirection: 'down',
+    trendColor: 'positive',
 }
 
 const resolutionTimeMock: MetricMock = {
     value: '1h22m',
-    trend: '2m',
-    trendType: 'up',
+    trendValue: '2m',
+    trendDirection: 'up',
+    trendColor: 'negative',
 }
 
 const messagesPerTicketMock: MetricMock = {
-    value: '2',
-    trend: '6',
-    trendType: 'down',
+    value: '6',
+    trendValue: '2',
+    trendDirection: 'down',
+    trendColor: 'positive',
 }
 
 export default function SupportPerformanceOverview() {
@@ -140,9 +145,12 @@ export default function SupportPerformanceOverview() {
                         hint="Average CSAT score for tickets which received a survey during the period"
                         trendBadge={
                             <TrendBadge
-                                type={customerSatisfactionMock.trendType}
+                                direction={
+                                    customerSatisfactionMock.trendDirection
+                                }
+                                color={customerSatisfactionMock.trendColor}
                             >
-                                {customerSatisfactionMock.trend}
+                                {customerSatisfactionMock.trendValue}
                             </TrendBadge>
                         }
                         tooltip={
@@ -173,8 +181,11 @@ export default function SupportPerformanceOverview() {
                         title="First response time"
                         hint="Median time between 1st customer message and 1st human agent response"
                         trendBadge={
-                            <TrendBadge type={firstResponseTimeMock.trendType}>
-                                {firstResponseTimeMock.trend}
+                            <TrendBadge
+                                direction={firstResponseTimeMock.trendDirection}
+                                color={firstResponseTimeMock.trendColor}
+                            >
+                                {firstResponseTimeMock.trendValue}
                             </TrendBadge>
                         }
                         tooltip={
@@ -199,8 +210,11 @@ export default function SupportPerformanceOverview() {
                         title="Resolution time"
                         hint="Median time between the 1st customer message and the last time the ticket was closed"
                         trendBadge={
-                            <TrendBadge type={resolutionTimeMock.trendType}>
-                                {resolutionTimeMock.trend}
+                            <TrendBadge
+                                direction={resolutionTimeMock.trendDirection}
+                                color={resolutionTimeMock.trendColor}
+                            >
+                                {resolutionTimeMock.trendValue}
                             </TrendBadge>
                         }
                         tooltip={
@@ -226,8 +240,11 @@ export default function SupportPerformanceOverview() {
                         title="Messages per ticket"
                         hint="Average number of messages exchanged per closed ticket"
                         trendBadge={
-                            <TrendBadge type={messagesPerTicketMock.trendType}>
-                                {messagesPerTicketMock.trend}
+                            <TrendBadge
+                                direction={messagesPerTicketMock.trendDirection}
+                                color={messagesPerTicketMock.trendColor}
+                            >
+                                {messagesPerTicketMock.trendValue}
                             </TrendBadge>
                         }
                         tooltip={
