@@ -245,11 +245,14 @@ export function textToHTML(text: string): string {
 export function trimHTML(html: string): string {
     const {body} = parseHtml(html.trim())
 
-    while (body.lastChild?.textContent?.trim().length === 0) {
-        body.lastChild.remove()
-    }
-    while (body.firstChild?.textContent?.trim().length === 0) {
-        body.firstChild.remove()
-    }
+    const shouldTrim = (node: Element | null) =>
+        node &&
+        (node.tagName.toLowerCase() === 'br' ||
+            (node.tagName.toLowerCase() === 'div' &&
+                node.textContent?.trim().length === 0))
+
+    while (shouldTrim(body.lastElementChild)) body.lastElementChild!.remove()
+    while (shouldTrim(body.firstElementChild)) body.firstElementChild!.remove()
+
     return body.innerHTML
 }
