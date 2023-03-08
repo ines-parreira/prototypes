@@ -65,29 +65,26 @@ describe('<PhoneIntegrationBar/>', () => {
         })
     })
 
-    it('should render ringing call bar because there is an incoming call', () => {
+    it('should render ringing call bar because there is an incoming call', async () => {
         const device = mockDevice() as Device
         const call = mockIncomingCall() as Call
-
         store = mockStore({
             twilio: {...initialState, device, call, isRinging: true},
         })
-
         const {findByTestId} = render(
             <Provider store={store}>
                 <PhoneIntegrationBar />
             </Provider>
         )
-
-        expect(findByTestId('incoming-phone-call')).toBeTruthy()
+        expect(await findByTestId('incoming-phone-call')).toBeTruthy()
     })
 
-    it('should render outgoing call bar because there is an outgoing call', () => {
+    it('should render outgoing call bar because there is an outgoing call', async () => {
         const device = mockDevice() as Device
         const call = mockOutgoingCall() as Call
 
         store = mockStore({
-            twilio: {...initialState, device, call, isRinging: true},
+            twilio: {...initialState, device, call, isDialing: true},
         })
 
         const {findByTestId} = render(
@@ -96,10 +93,10 @@ describe('<PhoneIntegrationBar/>', () => {
             </Provider>
         )
 
-        expect(findByTestId('outgoing-phone-call')).toBeTruthy()
+        expect(await findByTestId('outgoing-phone-call')).toBeTruthy()
     })
 
-    it('should render ongoing call bar because there is an ongoing call', () => {
+    it('should render ongoing call bar because there is an ongoing call', async () => {
         const device = mockDevice() as Device
         const call = mockIncomingCall() as Call
 
@@ -113,6 +110,6 @@ describe('<PhoneIntegrationBar/>', () => {
             </Provider>
         )
 
-        expect(findByTestId('ongoing-phone-call')).toBeTruthy()
+        expect(await findByTestId('ongoing-phone-call')).toBeTruthy()
     })
 })

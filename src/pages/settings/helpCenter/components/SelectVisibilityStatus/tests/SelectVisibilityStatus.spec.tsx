@@ -28,7 +28,7 @@ describe('<SelectVisibilityStatus />', () => {
         expect(onChange).toHaveBeenLastCalledWith('UNLISTED')
     })
 
-    it('should show the notification popup', () => {
+    it('should show the notification popup', async () => {
         const {findByText, getByText} = render(
             <SelectVisibilityStatus
                 status="PUBLIC"
@@ -40,7 +40,7 @@ describe('<SelectVisibilityStatus />', () => {
             />
         )
 
-        expect(findByText(/Got it/)).toBeTruthy()
+        expect(await findByText(/Got it/)).toBeTruthy()
 
         fireEvent.click(getByText(/Got it/))
 

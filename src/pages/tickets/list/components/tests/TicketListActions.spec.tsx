@@ -1046,7 +1046,7 @@ describe('TicketListActions component', () => {
         fireEvent.change(getByPlaceholderText(/Search tags/i), {
             target: {value: 'Foo'},
         })
-        await waitFor(() => expect(findByText(/Create/i)).toBeTruthy())
+        expect(await findByText(/Create/i)).toBeTruthy()
     })
 
     it('should prevent tag creation for low-level agents', async () => {
@@ -1067,8 +1067,7 @@ describe('TicketListActions component', () => {
         fireEvent.change(getByPlaceholderText(/Search tags/i), {
             target: {value: 'Foo'},
         })
-        await waitFor(() =>
-            expect(findByText(/Couldn't find the tag: Foo/i)).toBeTruthy()
-        )
+
+        expect(await findByText(/Couldn't find the tag: Foo/i)).toBeTruthy()
     })
 })

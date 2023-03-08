@@ -33,7 +33,7 @@ describe('<IntentsFeedbackDropdown/>', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should hide the dropdown on mouse leave', () => {
+    it('should hide the dropdown on mouse leave', async () => {
         const {getByRole, findByRole} = render(
             <IntentsFeedbackDropdown
                 {...minProps}
@@ -44,6 +44,6 @@ describe('<IntentsFeedbackDropdown/>', () => {
         fireEvent.click(getByRole('button'))
         fireEvent.mouseLeave(getByRole('button'))
 
-        expect(findByRole('menu', {hidden: true})).not.toBe(null)
+        expect(await findByRole('menu', {hidden: true})).not.toBe(null)
     })
 })
