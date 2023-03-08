@@ -13,6 +13,7 @@ import SelfServiceChatIntegrationReturnPage from './SelfServiceChatIntegrationRe
 import SelfServiceChatIntegrationReturnPortalPage from './SelfServiceChatIntegrationReturnPortalPage'
 import SelfServiceChatIntegrationReportIssueReasonsPage from './SelfServiceChatIntegrationReportIssueReasonsPage'
 import SelfServiceChatIntegrationReportIssuePage from './SelfServiceChatIntegrationReportIssuePage'
+import SelfServiceChatIntegrationArticleRecommendationPage from './SelfServiceChatIntegrationArticleRecommendationPage'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 
@@ -93,6 +94,14 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 </Route>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.REPORT_ISSUE} exact>
                     <SelfServiceChatIntegrationReportIssuePage {...props} />
+                </Route>
+                <Route
+                    path={SELF_SERVICE_PREVIEW_ROUTES.ARTICLE_RECOMMENDATION}
+                    exact
+                >
+                    <SelfServiceChatIntegrationArticleRecommendationPage
+                        {...props}
+                    />
                 </Route>
             </React.Fragment>
         </ChatIntegrationPreview>

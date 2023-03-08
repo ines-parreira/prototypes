@@ -1,0 +1,28 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/util.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .repliesContainer {
+        display: flex;
+        flex-direction: column;
+        row-gap: @layout-spacing-xs;
+        justify-content: flex-end;
+        align-items: flex-end;
+        margin-top: auto;
+        padding-top: @layout-spacing-m;
+    }
+
+    .reply {
+        .body-medium();
+        padding: 6px 16px;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+    }
+}

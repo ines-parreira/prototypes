@@ -18,6 +18,43 @@ import useSelfServiceConfiguration from '../common/hooks/useSelfServiceConfigura
 
 import css from './ArticleRecommendationView.less'
 import ArticleRecommendationHelpCenter from './components/ArticleRecommendationHelpCenter'
+import ArticleRecommendationPreview from './components/ArticleRecommendationPreview'
+
+const NoHelpCenterAlert = () => (
+    <Alert
+        className={css.warning}
+        icon
+        type={AlertType.Warning}
+        customActions={
+            <Link to={`/app/settings/help-center`}>Create Help Center</Link>
+        }
+    >
+        Create a help center and add articles to use this feature.
+    </Alert>
+)
+
+const ManyHelpCentersAlert = () => (
+    <Alert className={css.warning} icon type={AlertType.Warning}>
+        You have more than one Help Center. Make sure the desired Help Center is
+        selected below.
+    </Alert>
+)
+
+const ConnectedChannelsInfoAlert = ({
+    shopName,
+    shopType,
+}: {
+    shopName: string
+    shopType: string
+}) => (
+    <Alert className={css.alert} icon>
+        Control where customers receive article recommendations in{' '}
+        <Link to={`/app/automation/${shopType}/${shopName}/connected-channels`}>
+            connected channels
+        </Link>
+        .
+    </Alert>
+)
 
 const ArticleRecommendationView = () => {
     const {shopType, shopName} = useParams<{
@@ -78,99 +115,88 @@ const ArticleRecommendationView = () => {
             <Container
                 fluid
                 className={classnames({
-                    [css.container]: Boolean(selfServiceConfiguration),
+                    [css.container]: !isLoading,
                 })}
             >
                 {isLoading ? (
                     <Loader />
                 ) : (
-                    <div>
-                        <div className={css.descriptionContainer}>
-                            <p className="mb-1">
-                                Automatically send a Help Center article in
-                                response customer questions in chat, if a
-                                relevant article exists. If a customer requests
-                                more help, a ticket will be created for an agent
-                                to handle.
-                            </p>
-                            <a
-                                href="https://docs.gorgias.com/en-US/help-center---article-recommendations-in-chat-89341"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                <i className="material-icons mr-2">menu_book</i>
-                                Learn About Article Recommendation in Chat
-                            </a>
-                        </div>
-
-                        {availableHelpCenters.length === 0 && (
-                            <Alert
-                                className={css.warning}
-                                icon
-                                type={AlertType.Warning}
-                                customActions={
-                                    <Link to={`/app/settings/help-center`}>
-                                        Create Help Center
-                                    </Link>
-                                }
-                            >
-                                Create a help center and add articles to use
-                                this feature.
-                            </Alert>
-                        )}
-
-                        {availableHelpCenters.length > 1 && (
-                            <Alert
-                                className={css.warning}
-                                icon
-                                type={AlertType.Warning}
-                            >
-                                You have more than one Help Center. Make sure
-                                the desired Help Center is selected below.
-                            </Alert>
-                        )}
-
-                        <Label className={css.selectorTitle}>Help Center</Label>
-
-                        <ArticleRecommendationHelpCenter
-                            helpCenter={helpCenter}
-                            setHelpCenterId={setHelpCenterId}
-                            availableHelpCenters={availableHelpCenters}
-                        />
-
-                        {helpCenter && (
-                            <Alert className={css.alert} icon>
-                                Control where customers receive article
-                                recommendations in{' '}
-                                <Link
-                                    to={`/app/automation/${shopType}/${shopName}/connected-channels`}
+                    <>
+                        <div>
+                            <div className={css.descriptionContainer}>
+                                <p className="mb-1">
+                                    Automatically send a Help Center article in
+                                    response customer questions in chat, if a
+                                    relevant article exists. If a customer
+                                    requests more help, a ticket will be created
+                                    for an agent to handle.
+                                </p>
+                                <a
+                                    href="https://docs.gorgias.com/en-US/help-center---article-recommendations-in-chat-89341"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
                                 >
-                                    connected channels
-                                </Link>
-                                .
-                            </Alert>
-                        )}
+                                    <i className="material-icons mr-2">
+                                        menu_book
+                                    </i>
+                                    Learn About Article Recommendation in Chat
+                                </a>
+                            </div>
 
-                        <div className={css.submitAndCancelButtonsContainer}>
-                            <Button
-                                isDisabled={!isDirty || isUpdatePending}
-                                onClick={handleSubmit}
+                            {availableHelpCenters.length === 0 && (
+                                <NoHelpCenterAlert />
+                            )}
+
+                            {availableHelpCenters.length > 1 && (
+                                <ManyHelpCentersAlert />
+                            )}
+
+                            <Label className={css.selectorTitle}>
+                                Help Center
+                            </Label>
+
+                            <ArticleRecommendationHelpCenter
+                                helpCenter={helpCenter}
+                                setHelpCenterId={setHelpCenterId}
+                                availableHelpCenters={availableHelpCenters}
+                            />
+
+                            {helpCenter && (
+                                <ConnectedChannelsInfoAlert
+                                    shopName={shopName}
+                                    shopType={shopType}
+                                />
+                            )}
+
+                            <div
+                                className={css.submitAndCancelButtonsContainer}
                             >
-                                Save changes
-                            </Button>
-                            <Button
-                                isDisabled={!isDirty || isUpdatePending}
-                                onClick={handleCancel}
-                                intent="secondary"
-                            >
-                                Cancel
-                            </Button>
+                                <Button
+                                    isDisabled={!isDirty || isUpdatePending}
+                                    onClick={handleSubmit}
+                                >
+                                    Save changes
+                                </Button>
+                                <Button
+                                    isDisabled={!isDirty || isUpdatePending}
+                                    onClick={handleCancel}
+                                    intent="secondary"
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
+                            <UnsavedChangesPrompt
+                                onSave={handleSubmit}
+                                when={isDirty && !isUpdatePending}
+                            />
                         </div>
-                        <UnsavedChangesPrompt
-                            onSave={handleSubmit}
-                            when={isDirty && !isUpdatePending}
+
+                        <ArticleRecommendationPreview
+                            shopName={shopName}
+                            shopType={shopType}
+                            helpCenter={helpCenter}
                         />
-                    </div>
+                    </>
                 )}
             </Container>
         </div>

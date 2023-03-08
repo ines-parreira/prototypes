@@ -16,7 +16,7 @@ import css from './SelfServicePreviewContainer.less'
 
 type Props = {
     channels: SelfServiceChannel[]
-    alert: {
+    alert?: {
         message: ReactNode
         action?: {message: string; href: string}
     }
@@ -55,7 +55,7 @@ const SelfServicePreviewContainer = ({channels, alert, children}: Props) => {
         )
     }
 
-    const alertAction = alert.action
+    const alertAction = alert?.action
     const value = channel ? `${channel.type}:${channel.value.id}` : undefined
 
     return (
@@ -68,6 +68,7 @@ const SelfServicePreviewContainer = ({channels, alert, children}: Props) => {
                 label={channel?.value?.name}
                 onToggle={setIsSelectOpen}
                 ref={targetRef}
+                isDisabled={!channels.length}
                 prefix={
                     channel && (
                         <SourceIcon
@@ -108,30 +109,30 @@ const SelfServicePreviewContainer = ({channels, alert, children}: Props) => {
                     )}
                 </SelectInputBoxContext.Consumer>
             </SelectInputBox>
-            {channel ? (
-                children(channel)
-            ) : (
-                <Alert
-                    className={css.alert}
-                    type={AlertType.Warning}
-                    icon
-                    customActions={
-                        alertAction && (
-                            <Button
-                                fillStyle="ghost"
-                                size="small"
-                                onClick={() => {
-                                    history.push(alertAction.href)
-                                }}
-                            >
-                                {alertAction.message}
-                            </Button>
-                        )
-                    }
-                >
-                    {alert.message}
-                </Alert>
-            )}
+            {channel
+                ? children(channel)
+                : alert && (
+                      <Alert
+                          className={css.alert}
+                          type={AlertType.Warning}
+                          icon
+                          customActions={
+                              alertAction && (
+                                  <Button
+                                      fillStyle="ghost"
+                                      size="small"
+                                      onClick={() => {
+                                          history.push(alertAction.href)
+                                      }}
+                                  >
+                                      {alertAction.message}
+                                  </Button>
+                              )
+                          }
+                      >
+                          {alert.message}
+                      </Alert>
+                  )}
         </div>
     )
 }
