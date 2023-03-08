@@ -243,14 +243,14 @@ exports[`OrderModal should render 1`] = `
             </div>
             <div>
               <p
-                class="heading-section-semibold mt-4"
+                class="modalSection"
               >
-                Fulfillment
+                Address
               </p>
               <label
                 class="label label"
               >
-                Shipping address
+                Billing address
                 <abbr
                   aria-label="required"
                   class="abbr"
@@ -261,7 +261,7 @@ exports[`OrderModal should render 1`] = `
               </label>
               <div
                 class="dropdown"
-                id="shipping-address-dropdown"
+                id="billing-address-dropdown"
               >
                 <div
                   class="wrapper disabled"
@@ -284,14 +284,26 @@ exports[`OrderModal should render 1`] = `
                   </div>
                 </div>
               </div>
-              <p
-                class="caption"
+              <div
+                class="mt-3 mb-3"
               >
-                Same address will be used for billing address.
-              </p>
+                <label
+                  class="label label"
+                  for="checkbox-3"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    id="checkbox-3"
+                    name="checkbox-3"
+                    type="checkbox"
+                  />
+                  Shipping address is same as billing address
+                </label>
+              </div>
             </div>
             <p
-              class="heading-section-semibold"
+              class="modalSection"
             >
               Comments & Notes
             </p>

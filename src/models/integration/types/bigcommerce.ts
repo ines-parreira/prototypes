@@ -10,6 +10,7 @@ export type BigCommerceIntegration = IntegrationBase & {
 
 export type CreateOrderValidationResult = {
     products: boolean
+    billingAddress: boolean
     shippingAddress: boolean
     checkout: boolean
 }

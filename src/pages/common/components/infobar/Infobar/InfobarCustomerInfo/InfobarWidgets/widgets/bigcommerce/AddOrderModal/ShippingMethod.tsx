@@ -97,14 +97,23 @@ export const useShippingMethods = ({
                 return setSelectedShippingMethod(null)
             }
 
-            if (
-                selectedShippingMethod &&
-                consignment.selected_shipping_option.id !==
+            if (selectedShippingMethod) {
+                if (
+                    consignment.selected_shipping_option.id !==
                     selectedShippingMethod?.id
-            ) {
-                void onUpdateConsignmentShippingMethod(
-                    selectedShippingMethod.id
-                )
+                ) {
+                    void onUpdateConsignmentShippingMethod(
+                        selectedShippingMethod.id
+                    )
+                } else if (
+                    consignment.selected_shipping_option.id ===
+                        selectedShippingMethod?.id &&
+                    !consignment.available_shipping_options.find(
+                        ({id}) => id === selectedShippingMethod.id
+                    )
+                ) {
+                    return setSelectedShippingMethod(null)
+                }
             }
         }
 

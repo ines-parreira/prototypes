@@ -8,7 +8,7 @@ import SelectInputBox, {
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import css from './ShippingAddressesDropdown.less'
+import css from './AddressesDropdown.less'
 import cssOrderModal from './OrderModal.less'
 
 type Props = {

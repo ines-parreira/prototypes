@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ShippingAddressesDropdown/> should display \`No results\` when shippingAddresses = [] & snapshot should render \`Select from address book...\` 1`] = `
+<div>
+  <label
+    class="label label"
+  >
+    Shipping address
+    <abbr
+      aria-label="required"
+      class="abbr"
+      title="required"
+    >
+      *
+    </abbr>
+  </label>
+  <div
+    class="dropdown"
+    id="shipping-address-dropdown"
+  >
+    <div
+      class="wrapper"
+      role="listbox"
+      tabindex="0"
+    >
+      <div
+        class="inputWrapper isFocused"
+      >
+        <div
+          class="input isGreyed"
+        >
+          Select from address book...
+        </div>
+        <i
+          class="affix suffix toggle material-icons"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ShippingAddressesDropdown/> snapshot renders the selected shipping address instead of \`Select from address book...\` 1`] = `
+<div>
+  <label
+    class="label label"
+  >
+    Shipping address
+    <abbr
+      aria-label="required"
+      class="abbr"
+      title="required"
+    >
+      *
+    </abbr>
+  </label>
+  <div
+    class="dropdown"
+    id="shipping-address-dropdown"
+  >
+    <div
+      class="wrapper"
+      role="listbox"
+      tabindex="0"
+    >
+      <div
+        class="inputWrapper"
+      >
+        <div
+          class="input"
+        >
+          A Test 2, Random Street 19, 507051 Paris, Paris, FR, France
+        </div>
+        <i
+          class="affix suffix toggle material-icons"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+  </div>
+</div>
+`;

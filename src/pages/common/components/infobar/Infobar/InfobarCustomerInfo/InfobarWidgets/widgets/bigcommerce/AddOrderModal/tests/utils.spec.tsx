@@ -58,7 +58,7 @@ describe('utils', () => {
     const setIsLoading = jest.fn()
     const setCart = jest.fn()
     const setProducts = jest.fn()
-    const logErrors = jest.fn()
+    const setModalErrors = jest.fn()
 
     describe('onInit', () => {
         it('should init the order modal', async () => {
@@ -128,7 +128,7 @@ describe('utils', () => {
                 setIsLoading: setIsLoadingMock,
                 setCart: setCartMock,
                 setProducts: setProductsMock,
-                logErrors,
+                setModalErrors,
             })
 
             expect(setIsLoadingMock).toHaveBeenCalledTimes(2)
@@ -164,7 +164,7 @@ describe('utils', () => {
                     setIsLoading: setIsLoadingMock,
                     setCart: setCartMock,
                     setProducts: setProductsMock,
-                    logErrors,
+                    setModalErrors,
                 })
             ).rejects.toThrow(ProductModifiersChangedError)
 
@@ -182,7 +182,7 @@ describe('utils', () => {
             })
 
             const setIsLoadingMock = jest.fn()
-            const logErrorsMock = jest.fn()
+            const setModalErrorsMock = jest.fn()
 
             await addLineItem({
                 integrationId: integrationId,
@@ -193,11 +193,11 @@ describe('utils', () => {
                 setCart,
                 products,
                 setProducts,
-                logErrors: logErrorsMock,
+                setModalErrors: setModalErrorsMock,
             })
 
             expect(setIsLoadingMock).toHaveBeenCalledTimes(2)
-            expect(logErrorsMock).toHaveBeenCalledWith(
+            expect(setModalErrorsMock).toHaveBeenCalledWith(
                 'modal',
                 `Invalid quantity selected for <b>${product.name}</b>. Please adjust product quantity.`,
                 `${product.id}_${variant?.id}`
@@ -211,7 +211,7 @@ describe('utils', () => {
 
             const setIsLoadingMock = jest.fn()
             const setCartMock = jest.fn()
-            const logErrorsMock = jest.fn()
+            const setModalErrorsMock = jest.fn()
 
             await removeRow({
                 integrationId,
@@ -219,12 +219,12 @@ describe('utils', () => {
                 cart,
                 setIsLoading: setIsLoadingMock,
                 setCart: setCartMock,
-                logErrors: logErrorsMock,
+                setModalErrors: setModalErrorsMock,
             })
 
             expect(setIsLoadingMock).toHaveBeenCalled()
             expect(setCartMock).toHaveBeenCalled()
-            expect(logErrorsMock).toHaveBeenCalled()
+            expect(setModalErrorsMock).toHaveBeenCalled()
         })
     })
 
@@ -236,7 +236,7 @@ describe('utils', () => {
             cart,
             setIsLoading,
             setCart,
-            logErrors,
+            setModalErrors,
         }
 
         it('should update a row from the cart', async () => {
@@ -263,18 +263,18 @@ describe('utils', () => {
             apiMock.onAny().reply(422)
 
             const setIsLoadingMock = jest.fn()
-            const logErrorsMock = jest.fn()
+            const setModalErrorsMock = jest.fn()
 
             await expect(() =>
                 updateRow({
                     ...defaultProps,
                     setIsLoading: setIsLoadingMock,
-                    logErrors: logErrorsMock,
+                    setModalErrors: setModalErrorsMock,
                 })
             ).rejects.toThrow()
 
             expect(setIsLoadingMock).toHaveBeenCalled()
-            expect(logErrorsMock).toHaveBeenCalled()
+            expect(setModalErrorsMock).toHaveBeenCalled()
         })
 
         it('should set an error because error field was returned', async () => {
@@ -287,13 +287,13 @@ describe('utils', () => {
             })
 
             const setIsLoadingMock = jest.fn()
-            const logErrorsMock = jest.fn()
+            const setModalErrorsMock = jest.fn()
 
             await expect(() =>
                 updateRow({
                     ...defaultProps,
                     setIsLoading: setIsLoadingMock,
-                    logErrors: logErrorsMock,
+                    setModalErrors: setModalErrorsMock,
                 })
             ).rejects.toThrow(
                 new BigCommerceLineItemError(
@@ -302,7 +302,7 @@ describe('utils', () => {
             )
 
             expect(setIsLoadingMock).toHaveBeenCalled()
-            expect(logErrorsMock).toHaveBeenCalled()
+            expect(setModalErrorsMock).toHaveBeenCalled()
         })
     })
 
@@ -315,7 +315,7 @@ describe('utils', () => {
             cart,
             setIsLoading,
             setCart,
-            logErrors,
+            setModalErrors,
         }
 
         it('should update line item modifiers', async () => {
@@ -348,13 +348,13 @@ describe('utils', () => {
             })
 
             const setIsLoadingMock = jest.fn()
-            const logErrorsMock = jest.fn()
+            const setModalErrorsMock = jest.fn()
 
             await expect(() =>
                 updateLineItemModifiers({
                     ...defaultProps,
                     setIsLoading: setIsLoadingMock,
-                    logErrors: logErrorsMock,
+                    setModalErrors: setModalErrorsMock,
                 })
             ).rejects.toThrow(
                 new BigCommerceLineItemError('Product could not be updated.')

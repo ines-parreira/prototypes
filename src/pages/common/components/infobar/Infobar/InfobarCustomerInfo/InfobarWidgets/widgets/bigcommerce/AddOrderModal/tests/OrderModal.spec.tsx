@@ -30,7 +30,7 @@ import {
     upsertCheckoutConsignment,
     onInit,
     checkProductsValidity,
-    checkShippingAddressValidity,
+    checkAddressValidity,
     checkCheckoutValidity,
 } from '../utils'
 import * as utils from '../utils'
@@ -53,7 +53,7 @@ describe('OrderModal', () => {
             customer: bigCommerceCustomerFixture(),
         },
         integration: bigCommerceIntegrationFixture(),
-        shippingAddresses: bigCommerceShippingAddressesFixture,
+        availableAddresses: bigCommerceShippingAddressesFixture,
         onClose: jest.fn(),
     }
 
@@ -74,7 +74,7 @@ describe('OrderModal', () => {
             </Provider>
         )
 
-        await screen.findByText('Fulfillment')
+        await screen.findByText('Address')
 
         expect(baseElement).toMatchSnapshot()
     })
@@ -158,8 +158,8 @@ describe('OrderModalConnected', () => {
             >
         ).mockReturnValue(true)
         ;(
-            checkShippingAddressValidity as jest.MockedFunction<
-                typeof checkShippingAddressValidity
+            checkAddressValidity as jest.MockedFunction<
+                typeof checkAddressValidity
             >
         ).mockReturnValue(true)
         ;(
@@ -197,6 +197,7 @@ describe('useCheckout', () => {
         expect(result.current).toMatchObject({
             cart: null,
             consignment: null,
+            billingAddress: null,
             shippingAddress: null,
             totals: {
                 subTotal: 0,
@@ -212,6 +213,7 @@ describe('useCheckout', () => {
         expect(result.current).toMatchObject({
             cart: cartMock,
             consignment: null,
+            billingAddress: null,
             shippingAddress: null,
             totals: {
                 subTotal: 78,
@@ -221,7 +223,7 @@ describe('useCheckout', () => {
             },
         })
 
-        // Select shipping address
+        // Select billing address
         ;(
             addCheckoutBillingAddress as jest.MockedFunction<
                 typeof addCheckoutBillingAddress
@@ -239,7 +241,8 @@ describe('useCheckout', () => {
 
         act(() => {
             void result.current.onSelectAddress(
-                bigCommerceShippingAddressesFixture[0]
+                bigCommerceShippingAddressesFixture[0],
+                'billing'
             )
         })
 

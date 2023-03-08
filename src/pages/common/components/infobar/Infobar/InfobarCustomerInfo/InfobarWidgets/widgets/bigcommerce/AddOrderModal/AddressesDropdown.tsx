@@ -11,27 +11,31 @@ import {BigCommerceCustomerAddress} from 'models/integration/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import {buildAddressComponent, getOneLineAddress} from './utils'
 
-import css from './ShippingAddressesDropdown.less'
+import css from './AddressesDropdown.less'
 import cssOrderModal from './OrderModal.less'
 
+const BILLING_ADDRESS_DROPDOWN_ID = 'billing-address-dropdown'
 const SHIPPING_ADDRESS_DROPDOWN_ID = 'shipping-address-dropdown'
 
 type Props = {
     className?: string
-    shippingAddress: Maybe<BigCommerceCustomerAddress>
-    shippingAddresses: BigCommerceCustomerAddress[]
+    selectedAddress: Maybe<BigCommerceCustomerAddress>
+    availableAddresses: BigCommerceCustomerAddress[]
     onSelectAddress: (
-        selectedAddress: BigCommerceCustomerAddress
+        selectedAddress: BigCommerceCustomerAddress,
+        addressType: 'billing' | 'shipping'
     ) => Promise<void>
+    addressType: 'billing' | 'shipping'
     errorMessage?: string
     hasError?: boolean
     isDisabled?: boolean
 }
 
-export function ShippingAddressesDropdown({
-    shippingAddress,
-    shippingAddresses,
+export function AddressesDropdown({
+    selectedAddress,
+    availableAddresses,
     onSelectAddress,
+    addressType,
     errorMessage = 'Please fill out this field.',
     hasError = false,
     isDisabled = false,
@@ -41,12 +45,20 @@ export function ShippingAddressesDropdown({
     const [isSelectOpen, setIsSelectOpen] = useState(false)
 
     return (
-        <div>
-            <p className="heading-section-semibold mt-4">Fulfillment</p>
+        <>
             <Label className={cssOrderModal.label} isRequired>
-                Shipping address
+                {addressType === 'billing'
+                    ? 'Billing address'
+                    : 'Shipping address'}
             </Label>
-            <div id={SHIPPING_ADDRESS_DROPDOWN_ID} className={css.dropdown}>
+            <div
+                id={
+                    addressType === 'billing'
+                        ? BILLING_ADDRESS_DROPDOWN_ID
+                        : SHIPPING_ADDRESS_DROPDOWN_ID
+                }
+                className={css.dropdown}
+            >
                 <SelectInputBox
                     className={classnames({
                         [cssOrderModal.disabled]: isDisabled,
@@ -56,7 +68,7 @@ export function ShippingAddressesDropdown({
                     floating={floatingSelectRef}
                     onToggle={setIsSelectOpen}
                     placeholder={'Select from address book...'}
-                    label={getOneLineAddress({addressObj: shippingAddress})}
+                    label={getOneLineAddress({addressObj: selectedAddress})}
                 >
                     <SelectInputBoxContext.Consumer>
                         {(context) => (
@@ -68,7 +80,7 @@ export function ShippingAddressesDropdown({
                                 contained
                             >
                                 <DropdownBody className={css.addressDropDown}>
-                                    {!shippingAddresses?.length ? (
+                                    {!availableAddresses?.length ? (
                                         <DropdownItem
                                             option={{
                                                 label: 'No results',
@@ -78,7 +90,7 @@ export function ShippingAddressesDropdown({
                                         />
                                     ) : (
                                         <>
-                                            {shippingAddresses.map(
+                                            {availableAddresses.map(
                                                 (address, index) => (
                                                     <DropdownItem
                                                         key={index}
@@ -93,7 +105,8 @@ export function ShippingAddressesDropdown({
                                                         }}
                                                         onClick={() => {
                                                             void onSelectAddress(
-                                                                address
+                                                                address,
+                                                                addressType
                                                             )
                                                         }}
                                                     >
@@ -146,19 +159,25 @@ export function ShippingAddressesDropdown({
                 </SelectInputBox>
             </div>
             {isDisabled && (
-                <Tooltip target={SHIPPING_ADDRESS_DROPDOWN_ID}>
+                <Tooltip
+                    target={
+                        addressType === 'billing'
+                            ? BILLING_ADDRESS_DROPDOWN_ID
+                            : SHIPPING_ADDRESS_DROPDOWN_ID
+                    }
+                >
                     Set currency to select the address.
                 </Tooltip>
             )}
-            <p
-                className={classnames(cssOrderModal.caption, {
-                    [cssOrderModal.hasError]: hasError,
-                })}
-            >
-                {hasError
-                    ? errorMessage
-                    : 'Same address will be used for billing address.'}
-            </p>
-        </div>
+            {hasError && (
+                <p
+                    className={classnames(cssOrderModal.caption, {
+                        [cssOrderModal.hasError]: hasError,
+                    })}
+                >
+                    {errorMessage}
+                </p>
+            )}
+        </>
     )
 }

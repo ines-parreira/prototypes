@@ -173,7 +173,7 @@ export const addCustomLineItem = async ({
     setIsLoading,
     setCart,
     setProducts,
-    logErrors,
+    setModalErrors,
 }: {
     integrationId: number
     customProduct: BigCommerceCustomProduct
@@ -182,7 +182,7 @@ export const addCustomLineItem = async ({
     setIsLoading: (state: boolean) => void
     setCart: (cart: BigCommerceCart) => void
     setProducts: (products: BigCommerceProductsListType) => void
-    logErrors: (
+    setModalErrors: (
         errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
         errorMessage: string | null,
         errorKey?: string | undefined
@@ -224,12 +224,12 @@ export const addCustomLineItem = async ({
         logAddProduct({integrationId, cart: newCart, product: newCustomProduct})
 
         // Error Handling
-        logErrors(
+        setModalErrors(
             'modal',
             null,
             computeLineItemErrorKey({product: customProduct})
         )
-        logErrors(
+        setModalErrors(
             'lineItem',
             null,
             computeLineItemErrorKey({product: customProduct})
@@ -240,9 +240,9 @@ export const addCustomLineItem = async ({
             error instanceof BigCommerceGeneralError &&
             error.message === BigCommerceGeneralErrorMessage.rateLimitingError
         ) {
-            logErrors('global', error.message)
+            setModalErrors('global', error.message)
         } else {
-            logErrors(
+            setModalErrors(
                 'modal',
                 computeLineItemErrorMessage(
                     error,
@@ -268,7 +268,7 @@ export const addLineItem = async ({
     setIsLoading,
     setCart,
     setProducts,
-    logErrors,
+    setModalErrors,
 }: {
     integrationId: number
     product: BigCommerceProduct
@@ -279,7 +279,7 @@ export const addLineItem = async ({
     setIsLoading: (state: boolean) => void
     setCart: (cart: BigCommerceCart) => void
     setProducts: (products: BigCommerceProductsListType) => void
-    logErrors: (
+    setModalErrors: (
         errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
         errorMessage: string | null,
         errorKey?: string | undefined
@@ -312,12 +312,12 @@ export const addLineItem = async ({
         logAddProduct({integrationId, cart: newCart, product, variant})
 
         // Error Handling
-        logErrors(
+        setModalErrors(
             'modal',
             null,
             computeLineItemErrorKey({product: product, variant: variant})
         )
-        logErrors(
+        setModalErrors(
             'lineItem',
             null,
             computeLineItemErrorKey({product: product, variant: variant})
@@ -332,9 +332,9 @@ export const addLineItem = async ({
             error instanceof BigCommerceGeneralError &&
             error.message === BigCommerceGeneralErrorMessage.rateLimitingError
         ) {
-            logErrors('global', error.message)
+            setModalErrors('global', error.message)
         } else {
-            logErrors(
+            setModalErrors(
                 'modal',
                 computeLineItemErrorMessage(
                     error,
@@ -474,14 +474,14 @@ export const removeRow = async ({
     setIsLoading,
     cart,
     setCart,
-    logErrors,
+    setModalErrors,
 }: {
     integrationId: number
     index: number
     setIsLoading: (state: boolean) => void
     cart: Maybe<BigCommerceCart>
     setCart: (cart: BigCommerceCart) => void
-    logErrors: (
+    setModalErrors: (
         errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
         errorMessage: string | null,
         errorKey?: string | undefined
@@ -515,8 +515,12 @@ export const removeRow = async ({
         })
 
         // Error Handling
-        logErrors('modal', null, computeLineItemErrorKey({lineItem: lineItem}))
-        logErrors(
+        setModalErrors(
+            'modal',
+            null,
+            computeLineItemErrorKey({lineItem: lineItem})
+        )
+        setModalErrors(
             'lineItem',
             null,
             computeLineItemErrorKey({lineItem: lineItem})
@@ -527,9 +531,9 @@ export const removeRow = async ({
             error instanceof BigCommerceGeneralError &&
             error.message === BigCommerceGeneralErrorMessage.rateLimitingError
         ) {
-            logErrors('global', error.message)
+            setModalErrors('global', error.message)
         } else {
-            logErrors(
+            setModalErrors(
                 'lineItem',
                 computeLineItemErrorMessage(
                     error,
@@ -551,7 +555,7 @@ export const updateRow = async ({
     setIsLoading,
     cart,
     setCart,
-    logErrors,
+    setModalErrors,
 }: {
     integrationId: number
     index: number
@@ -559,7 +563,7 @@ export const updateRow = async ({
     setIsLoading: (state: boolean) => void
     cart: Maybe<BigCommerceCart>
     setCart: (cart: BigCommerceCart) => void
-    logErrors: (
+    setModalErrors: (
         errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
         errorMessage: string | null,
         errorKey?: string | undefined
@@ -600,8 +604,12 @@ export const updateRow = async ({
         })
 
         // Error Handling
-        logErrors('modal', null, computeLineItemErrorKey({lineItem: lineItem}))
-        logErrors(
+        setModalErrors(
+            'modal',
+            null,
+            computeLineItemErrorKey({lineItem: lineItem})
+        )
+        setModalErrors(
             'lineItem',
             null,
             computeLineItemErrorKey({lineItem: lineItem})
@@ -612,9 +620,9 @@ export const updateRow = async ({
             error instanceof BigCommerceGeneralError &&
             error.message === BigCommerceGeneralErrorMessage.rateLimitingError
         ) {
-            logErrors('global', error.message)
+            setModalErrors('global', error.message)
         } else {
-            logErrors(
+            setModalErrors(
                 'lineItem',
                 error instanceof BigCommerceLineItemError
                     ? error.message
@@ -637,7 +645,7 @@ export const updateLineItemModifiers = async ({
     setIsLoading,
     cart,
     setCart,
-    logErrors,
+    setModalErrors,
 }: {
     integrationId: number
     index: number
@@ -646,7 +654,7 @@ export const updateLineItemModifiers = async ({
     setIsLoading: (state: boolean) => void
     cart: Maybe<BigCommerceCart>
     setCart: (cart: BigCommerceCart) => void
-    logErrors: (
+    setModalErrors: (
         errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
         errorMessage: string | null,
         errorKey?: string | undefined
@@ -681,8 +689,12 @@ export const updateLineItemModifiers = async ({
         setCart(newCart)
 
         // Error Handling
-        logErrors('modal', null, computeLineItemErrorKey({lineItem: lineItem}))
-        logErrors(
+        setModalErrors(
+            'modal',
+            null,
+            computeLineItemErrorKey({lineItem: lineItem})
+        )
+        setModalErrors(
             'lineItem',
             null,
             computeLineItemErrorKey({lineItem: lineItem})
@@ -693,9 +705,9 @@ export const updateLineItemModifiers = async ({
             error instanceof BigCommerceGeneralError &&
             error.message === BigCommerceGeneralErrorMessage.rateLimitingError
         ) {
-            logErrors('global', error.message)
+            setModalErrors('global', error.message)
         } else {
-            logErrors(
+            setModalErrors(
                 'lineItem',
                 error instanceof BigCommerceLineItemError
                     ? error.message
@@ -718,7 +730,7 @@ export const setLineItemDiscount = async ({
     setCart,
     listPrice,
     action = 'add',
-    logErrors,
+    setModalErrors,
 }: {
     integrationId: number
     index: number
@@ -727,7 +739,7 @@ export const setLineItemDiscount = async ({
     setCart: (cart: BigCommerceCart) => void
     listPrice: number
     action: 'add' | 'remove'
-    logErrors: (
+    setModalErrors: (
         errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
         errorMessage: string | null,
         errorKey?: string | undefined
@@ -767,7 +779,7 @@ export const setLineItemDiscount = async ({
         })
 
         // Error Handling
-        logErrors(
+        setModalErrors(
             'lineItem',
             null,
             computeLineItemErrorKey({lineItem: lineItem})
@@ -778,9 +790,9 @@ export const setLineItemDiscount = async ({
             error instanceof BigCommerceGeneralError &&
             error.message === BigCommerceGeneralErrorMessage.rateLimitingError
         ) {
-            logErrors('global', error.message)
+            setModalErrors('global', error.message)
         } else {
-            logErrors(
+            setModalErrors(
                 'lineItem',
                 computeLineItemErrorMessage(
                     error,
@@ -978,10 +990,10 @@ export function checkProductsValidity(
     return !!products?.size
 }
 
-export function checkShippingAddressValidity(
-    shippingAddress: Maybe<BigCommerceCustomerAddress>
+export function checkAddressValidity(
+    address: Maybe<BigCommerceCustomerAddress>
 ) {
-    return !!(shippingAddress?.email && shippingAddress?.country_code)
+    return !!(address?.email && address?.country_code)
 }
 
 export function checkCheckoutValidity({
@@ -1020,7 +1032,11 @@ export function checkCheckoutValidity({
         checkout.consignments[0].line_item_ids?.length &&
         checkout.consignments[0].address?.email &&
         checkout.consignments[0].address?.country_code &&
-        checkout.consignments[0].selected_shipping_option
+        checkout.consignments[0].selected_shipping_option &&
+        checkout.consignments[0].available_shipping_options.find(
+            ({id}) =>
+                id === checkout.consignments[0].selected_shipping_option?.id
+        )
     )
 }
 

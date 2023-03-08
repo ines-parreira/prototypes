@@ -8,7 +8,7 @@ import * as utils from 'pages/common/components/infobar/Infobar/InfobarCustomerI
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {integrationsState} from 'fixtures/integrations'
 import {bigCommerceShippingAddressesFixture} from 'fixtures/bigcommerce'
-import {ShippingAddressesDropdown} from '../ShippingAddressesDropdown'
+import {AddressesDropdown} from '../AddressesDropdown'
 
 const integrationContextValue = {integration: fromJS({}), integrationId: 1}
 
@@ -21,23 +21,26 @@ const defaultState = {
 const mockStore = configureMockStore([thunk])
 const store = mockStore(defaultState)
 
-type Props = ComponentProps<typeof ShippingAddressesDropdown>
+type Props = ComponentProps<typeof AddressesDropdown>
 
 const emptyProps: Props = {
-    shippingAddress: null,
-    shippingAddresses: [],
+    addressType: 'shipping',
+    selectedAddress: null,
+    availableAddresses: [],
     onSelectAddress: jest.fn(),
 }
 
 const shippingAddressesProps: Props = {
-    shippingAddress: null,
-    shippingAddresses: bigCommerceShippingAddressesFixture,
+    addressType: 'shipping',
+    selectedAddress: null,
+    availableAddresses: bigCommerceShippingAddressesFixture,
     onSelectAddress: jest.fn(),
 }
 
 const selectedShippingAddressProps: Props = {
-    shippingAddress: bigCommerceShippingAddressesFixture[1],
-    shippingAddresses: bigCommerceShippingAddressesFixture,
+    addressType: 'shipping',
+    selectedAddress: bigCommerceShippingAddressesFixture[1],
+    availableAddresses: bigCommerceShippingAddressesFixture,
     onSelectAddress: jest.fn(),
 }
 
@@ -50,7 +53,7 @@ describe('<ShippingAddressesDropdown/>', () => {
         const {container, getByText} = render(
             <Provider store={store}>
                 <IntegrationContext.Provider value={integrationContextValue}>
-                    <ShippingAddressesDropdown {...emptyProps} />
+                    <AddressesDropdown {...emptyProps} />
                 </IntegrationContext.Provider>
             </Provider>
         )
@@ -66,7 +69,7 @@ describe('<ShippingAddressesDropdown/>', () => {
         const {getByText} = render(
             <Provider store={store}>
                 <IntegrationContext.Provider value={integrationContextValue}>
-                    <ShippingAddressesDropdown {...shippingAddressesProps} />
+                    <AddressesDropdown {...shippingAddressesProps} />
                 </IntegrationContext.Provider>
             </Provider>
         )
@@ -82,9 +85,7 @@ describe('<ShippingAddressesDropdown/>', () => {
         const {container} = render(
             <Provider store={store}>
                 <IntegrationContext.Provider value={integrationContextValue}>
-                    <ShippingAddressesDropdown
-                        {...selectedShippingAddressProps}
-                    />
+                    <AddressesDropdown {...selectedShippingAddressProps} />
                 </IntegrationContext.Provider>
             </Provider>
         )
@@ -98,7 +99,7 @@ describe('<ShippingAddressesDropdown/>', () => {
         const {getByText} = render(
             <Provider store={store}>
                 <IntegrationContext.Provider value={integrationContextValue}>
-                    <ShippingAddressesDropdown
+                    <AddressesDropdown
                         {...shippingAddressesProps}
                         onSelectAddress={onSelectAddress}
                     />
@@ -111,7 +112,8 @@ describe('<ShippingAddressesDropdown/>', () => {
         fireEvent.click(getByText(/.*507051.*/))
 
         expect(onSelectAddress).toHaveBeenCalledWith(
-            bigCommerceShippingAddressesFixture[1]
+            bigCommerceShippingAddressesFixture[1],
+            'shipping'
         )
     })
 })

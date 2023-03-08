@@ -57,6 +57,7 @@ import {
 } from 'models/integration/resources/bigcommerce'
 import Tooltip from 'pages/common/components/Tooltip'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import CheckBox from 'pages/common/forms/CheckBox'
 import OrderTable from './components/order-table/OrderTable'
 import OrderTotals from './OrderTotals'
 import {
@@ -66,7 +67,7 @@ import {
     bigcommerceCreateOrder,
     checkCheckoutValidity,
     checkProductsValidity,
-    checkShippingAddressValidity,
+    checkAddressValidity,
     onCancel,
     onInit,
     onReset,
@@ -77,7 +78,7 @@ import {
     updateRow,
     upsertCheckoutConsignment,
 } from './utils'
-import {ShippingAddressesDropdown} from './ShippingAddressesDropdown'
+import {AddressesDropdown} from './AddressesDropdown'
 import {CurrencyPickerDropdown} from './CurrencyPickerDropdown'
 
 import css from './OrderModal.less'
@@ -89,16 +90,18 @@ import GeneralErrorPopupModal from './GeneralErrorPopupModal'
 type Props = {
     integration: BigCommerceIntegration
     customerId?: Maybe<number>
-    shippingAddresses: BigCommerceCustomerAddress[]
+    availableAddresses: BigCommerceCustomerAddress[]
 } & ConnectedProps
 
 const useValidationStatus = ({
     products,
+    billingAddress,
     shippingAddress,
     checkout,
     cart,
 }: {
     products: Maybe<BigCommerceProductsListType>
+    billingAddress: Maybe<BigCommerceCustomerAddress>
     shippingAddress: Maybe<BigCommerceCustomerAddress>
     checkout: Maybe<BigCommerceCheckout>
     cart: Maybe<BigCommerceCart>
@@ -111,6 +114,7 @@ const useValidationStatus = ({
     const [validationStatus, setValidationStatus] =
         useState<CreateOrderValidationResult>({
             products: true,
+            billingAddress: true,
             shippingAddress: true,
             checkout: true,
         })
@@ -133,7 +137,8 @@ const useValidationStatus = ({
 
             const validationResult = {
                 products: checkProductsValidity(products),
-                shippingAddress: checkShippingAddressValidity(shippingAddress),
+                billingAddress: checkAddressValidity(billingAddress),
+                shippingAddress: checkAddressValidity(shippingAddress),
                 checkout: checkCheckoutValidity({checkout, cart}),
             }
 
@@ -141,10 +146,17 @@ const useValidationStatus = ({
 
             return validationResult
         },
-        [cart, checkout, onSubmitValidationDone, products, shippingAddress]
+        [
+            cart,
+            checkout,
+            onSubmitValidationDone,
+            products,
+            billingAddress,
+            shippingAddress,
+        ]
     )
 
-    // performValidations will change identity every time `checkout`, `product` or `shippingAddress` is updated
+    // performValidations will change identity every time `checkout`, `product`, `billingAddress` or `shippingAddress` is updated
     useEffect(() => {
         performValidations()
     }, [performValidations])
@@ -196,12 +208,16 @@ const getTotals = ({
 }
 
 export const useCheckout = ({integrationId}: {integrationId: number}) => {
+    const [billingAddress, setBillingAddress] =
+        useState<Maybe<BigCommerceCustomerAddress>>(null)
     const [shippingAddress, setShippingAddress] =
         useState<Maybe<BigCommerceCustomerAddress>>(null)
     const [cart, setCart] = useState<Maybe<BigCommerceCart>>(null)
     const [checkout, setCheckout] = useState<Maybe<BigCommerceCheckout>>(null)
     const [isTotalPriceLoading, setIsTotalPriceLoading] = useState(false)
     const consignment = checkout?.consignments[0] ?? null
+    const [hasDifferentShippingAddress, setHasDifferentShippingAddress] =
+        useState(false)
     // Errors
     const [errors, setErrors] = useState<BigCommerceErrorList>({
         global: null, // Global Error => display a generic error message in a separate popup & close the modal
@@ -234,7 +250,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
             setCheckout(newCheckout)
         } catch (error) {
             // Error Handling
-            logErrors(
+            setModalErrors(
                 'global',
                 error instanceof BigCommerceGeneralError
                     ? error.message
@@ -273,28 +289,49 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
     }
 
     const onSelectAddress = async (
-        newSelectedAddress: BigCommerceCustomerAddress
+        newSelectedAddress: BigCommerceCustomerAddress,
+        addressType: 'billing' | 'shipping'
     ) => {
         if (cart) {
             setIsTotalPriceLoading(true)
 
             try {
-                const checkout = await addCheckoutBillingAddress({
-                    integrationId,
-                    selectedAddress: newSelectedAddress,
-                    cart,
-                })
+                if (addressType === 'billing') {
+                    const newCheckout = await addCheckoutBillingAddress({
+                        integrationId,
+                        selectedAddress: newSelectedAddress,
+                        cart,
+                    })
 
-                setShippingAddress(newSelectedAddress)
-                setCheckout(checkout)
+                    setBillingAddress(newSelectedAddress)
+                    setCheckout(newCheckout)
 
-                await updateConsignment({
-                    cart: checkout.cart,
-                    address: newSelectedAddress,
-                })
+                    if (!hasDifferentShippingAddress) {
+                        // Billing address === Shipping address
+                        await updateConsignment({
+                            cart: newCheckout.cart,
+                            address: newSelectedAddress,
+                        })
+
+                        setShippingAddress(newSelectedAddress)
+                    }
+                } else {
+                    await updateConsignment({
+                        cart: cart,
+                        address: newSelectedAddress,
+                    })
+
+                    setShippingAddress(newSelectedAddress)
+                }
 
                 // Error Handling
-                logErrors('component', null, 'onSelectAddress')
+                setModalErrors(
+                    'component',
+                    null,
+                    addressType === 'billing'
+                        ? 'onSelectBillingAddress'
+                        : 'onSelectShippingAddress'
+                )
             } catch (error) {
                 // Error Handling
                 if (
@@ -302,12 +339,14 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
                     error.message ===
                         BigCommerceGeneralErrorMessage.rateLimitingError
                 ) {
-                    logErrors('global', error.message)
+                    setModalErrors('global', error.message)
                 } else {
-                    logErrors(
+                    setModalErrors(
                         'component',
                         BigCommerceGeneralErrorMessage.defaultError,
-                        'onSelectAddress'
+                        addressType === 'billing'
+                            ? 'onSelectBillingAddress'
+                            : 'onSelectShippingAddress'
                     )
                 }
             } finally {
@@ -336,7 +375,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
             setCheckout(newCheckout)
         } catch (error) {
             // Error Handling
-            logErrors(
+            setModalErrors(
                 'global',
                 error instanceof BigCommerceGeneralError
                     ? error.message
@@ -366,7 +405,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
             setCheckout(newCheckout)
 
             // Error Handling
-            logErrors('component', null, 'onUpdateDiscountAmount')
+            setModalErrors('component', null, 'onUpdateDiscountAmount')
         } catch (error) {
             // Error Handling
             if (
@@ -374,9 +413,9 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
                 error.message ===
                     BigCommerceGeneralErrorMessage.rateLimitingError
             ) {
-                logErrors('global', error.message)
+                setModalErrors('global', error.message)
             } else {
-                logErrors(
+                setModalErrors(
                     'component',
                     BigCommerceGeneralErrorMessage.defaultError,
                     'onUpdateDiscountAmount'
@@ -411,7 +450,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
                 error.message ===
                     BigCommerceGeneralErrorMessage.rateLimitingError
             ) {
-                logErrors('global', error.message)
+                setModalErrors('global', error.message)
             }
             // Rethrow the error for callback consumer
             throw error
@@ -442,7 +481,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
                 error.message ===
                     BigCommerceGeneralErrorMessage.rateLimitingError
             ) {
-                logErrors('global', error.message)
+                setModalErrors('global', error.message)
             }
             // Rethrow the error for callback consumer
             throw error
@@ -456,7 +495,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         [cart, checkout]
     )
 
-    function logErrors(
+    function setModalErrors(
         errorLevel:
             | 'global' // Global Error => display a generic error message in a separate popup & close the modal
             | 'modal' // Modal Errors => display the errors at the top of the modal
@@ -486,23 +525,27 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         checkout,
         consignment,
         totals,
+        billingAddress,
         shippingAddress,
+        setShippingAddress,
+        onSelectAddress,
+        hasDifferentShippingAddress,
+        setHasDifferentShippingAddress,
         isTotalPriceLoading,
         setCart: setCartExposed,
-        onSelectAddress,
         onUpdateConsignmentShippingMethod,
         onUpdateDiscountAmount,
         onUpdateCoupon,
         onRemoveCoupon,
         errors,
-        logErrors,
+        setModalErrors,
     }
 }
 
 export function OrderModal({
     integration,
     customerId,
-    shippingAddresses,
+    availableAddresses,
     data = {actionName: null, customer: null},
     onClose,
 }: Props) {
@@ -526,22 +569,27 @@ export function OrderModal({
         checkout,
         consignment,
         totals,
+        billingAddress,
         shippingAddress,
+        setShippingAddress,
+        onSelectAddress,
+        hasDifferentShippingAddress,
+        setHasDifferentShippingAddress,
         isTotalPriceLoading,
         setCart,
-        onSelectAddress,
         onUpdateConsignmentShippingMethod,
         onUpdateDiscountAmount,
         onUpdateCoupon,
         onRemoveCoupon,
         errors,
-        logErrors,
+        setModalErrors,
     } = useCheckout({
         integrationId: integration.id,
     })
 
     const {validationStatus, performValidations} = useValidationStatus({
         products,
+        billingAddress,
         shippingAddress,
         checkout,
         cart,
@@ -618,7 +666,7 @@ export function OrderModal({
                     })
                 } catch (error) {
                     // Error Handling
-                    logErrors(
+                    setModalErrors(
                         'global',
                         error instanceof BigCommerceGeneralError
                             ? error.message
@@ -642,6 +690,20 @@ export function OrderModal({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency])
 
+    useEffect(
+        () => {
+            if (hasDifferentShippingAddress) {
+                // Billing address !== Shipping address
+                setShippingAddress(null)
+            }
+            if (billingAddress && !hasDifferentShippingAddress) {
+                // Billing address === Shipping address
+                void onSelectAddress(billingAddress, 'billing')
+            }
+        }, // eslint-disable-next-line react-hooks/exhaustive-deps
+        [hasDifferentShippingAddress]
+    )
+
     const handleAddCustomProduct = (customProduct: BigCommerceCustomProduct) =>
         void addCustomLineItem({
             integrationId: integration.id,
@@ -651,7 +713,7 @@ export function OrderModal({
             setIsLoading,
             setCart,
             setProducts,
-            logErrors,
+            setModalErrors,
         })
 
     const handleAddRow = async (props: {
@@ -671,7 +733,7 @@ export function OrderModal({
             setIsLoading,
             setCart,
             setProducts,
-            logErrors,
+            setModalErrors,
         })
     }
 
@@ -754,7 +816,7 @@ export function OrderModal({
                                                 type={AlertType.Error}
                                                 icon={true}
                                                 onClose={() => {
-                                                    logErrors(
+                                                    setModalErrors(
                                                         'modal',
                                                         null,
                                                         key
@@ -868,7 +930,7 @@ export function OrderModal({
                                             setCart,
                                             listPrice,
                                             action,
-                                            logErrors,
+                                            setModalErrors,
                                         })
                                     }
                                     onLineItemUpdate={async (index, quantity) =>
@@ -879,7 +941,7 @@ export function OrderModal({
                                             setIsLoading,
                                             cart,
                                             setCart,
-                                            logErrors,
+                                            setModalErrors,
                                         })
                                     }
                                     onLineItemModifiersUpdate={async ({
@@ -895,7 +957,7 @@ export function OrderModal({
                                             setIsLoading,
                                             cart,
                                             setCart,
-                                            logErrors,
+                                            setModalErrors,
                                         })
                                     }
                                     onLineItemDelete={(index) => {
@@ -905,7 +967,7 @@ export function OrderModal({
                                             setIsLoading,
                                             cart,
                                             setCart,
-                                            logErrors,
+                                            setModalErrors,
                                         })
                                     }}
                                 />
@@ -934,22 +996,61 @@ export function OrderModal({
                                 currencyCode={currency}
                             />
                         )}
-                        <ShippingAddressesDropdown
-                            shippingAddress={shippingAddress}
-                            shippingAddresses={shippingAddresses}
-                            onSelectAddress={onSelectAddress}
-                            hasError={
-                                !validationStatus.shippingAddress ||
-                                !!errors.component.get('onSelectAddress')
-                            }
-                            errorMessage={
-                                errors.component.get('onSelectAddress') || ''
-                            }
-                            isDisabled={!currency}
-                        />
-                        <p className="heading-section-semibold">
-                            Comments & Notes
-                        </p>
+                        <div>
+                            <p className={css.modalSection}>Address</p>
+                            <AddressesDropdown
+                                selectedAddress={billingAddress}
+                                availableAddresses={availableAddresses}
+                                onSelectAddress={onSelectAddress}
+                                addressType="billing"
+                                hasError={
+                                    !validationStatus.billingAddress ||
+                                    !!errors.component.get(
+                                        'onSelectBillingAddress'
+                                    )
+                                }
+                                errorMessage={
+                                    errors.component.get(
+                                        'onSelectBillingAddress'
+                                    ) || ''
+                                }
+                                isDisabled={!currency}
+                            />
+                            <CheckBox
+                                isChecked={!hasDifferentShippingAddress}
+                                className="mt-3 mb-3"
+                                onChange={() => {
+                                    if (!isTotalPriceLoading) {
+                                        setHasDifferentShippingAddress(
+                                            !hasDifferentShippingAddress
+                                        )
+                                    }
+                                }}
+                            >
+                                Shipping address is same as billing address
+                            </CheckBox>
+                            {hasDifferentShippingAddress && (
+                                <AddressesDropdown
+                                    selectedAddress={shippingAddress}
+                                    availableAddresses={availableAddresses}
+                                    onSelectAddress={onSelectAddress}
+                                    addressType="shipping"
+                                    hasError={
+                                        !validationStatus.shippingAddress ||
+                                        !!errors.component.get(
+                                            'onSelectShippingAddress'
+                                        )
+                                    }
+                                    errorMessage={
+                                        errors.component.get(
+                                            'onSelectShippingAddress'
+                                        ) || ''
+                                    }
+                                    isDisabled={!currency}
+                                />
+                            )}
+                        </div>
+                        <p className={css.modalSection}>Comments & Notes</p>
                         <div>
                             <Label className={css.label} htmlFor="comment">
                                 Comment
@@ -1014,7 +1115,7 @@ export function OrderModal({
                     isOpen={true}
                     errorMessage={errors.global}
                     onClose={() => {
-                        logErrors('global', null)
+                        setModalErrors('global', null)
                         handleCancel('error')
                     }}
                 />
@@ -1046,7 +1147,7 @@ export default function OrderModalRenderWrapper(props: ConnectedProps) {
         [integrations, integrationId]
     )
 
-    const shippingAddresses: BigCommerceCustomerAddress[] = useAppSelector(
+    const availableAddresses: BigCommerceCustomerAddress[] = useAppSelector(
         getCustomerAddresses(integrationId)
     )
 
@@ -1059,7 +1160,7 @@ export default function OrderModalRenderWrapper(props: ConnectedProps) {
             {...props}
             integration={integration as BigCommerceIntegration}
             customerId={customerId}
-            shippingAddresses={shippingAddresses}
+            availableAddresses={availableAddresses}
         />
     )
 }
