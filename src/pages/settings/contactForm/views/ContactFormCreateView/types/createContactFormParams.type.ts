@@ -1,4 +1,4 @@
-import {LocaleCode} from '../../../../../models/helpCenter/types'
+import {LocaleCode} from 'models/helpCenter/types'
 
 export type CreateContactFormParams = {
     name: string

@@ -80,6 +80,8 @@ const renderComponent = (
         <DefaultProviders>
             <DndProvider backend={HTML5Backend}>
                 <SubjectLines
+                    title="Edit the subject of the contact form"
+                    description="Here is a default list of subject lines. If there is no subject added, user can freely type any subject."
                     subjectLines={subjectLines}
                     setIsDirty={setIsDirty}
                     currentLocale="en-US"

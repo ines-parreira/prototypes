@@ -1,0 +1,63 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .cardHeader {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: @classic-neutral-grey-0;
+        border-bottom: none;
+        h3 {
+            font-size: 16px;
+            line-height: 24px;
+        }
+        p {
+            margin: 0;
+        }
+        button,
+        button:hover,
+        button:focus:not(:focus-visible),
+        button:active {
+            border: none;
+            background-color: transparent;
+            outline: none;
+        }
+        button:focus-visible {
+            outline: 2px solid @classic-neutral-grey-6;
+        }
+        i {
+            color: @classic-neutral-grey-4;
+            font-size: 25px;
+        }
+    }
+
+    .cardBody {
+        padding: 0 20px 5px 20px;
+    }
+
+    .wrapper {
+        > div:not(:last-child),
+        > h4 {
+            margin-bottom: 24px;
+        }
+    }
+
+    .instruction {
+        display: flex;
+        align-items: center;
+
+        .instruction-number {
+            width: 24px;
+            font-weight: bold;
+            color: @classic-neutral-grey-0;
+            border-radius: 50%;
+            background-color: @classic-neutral-grey-6;
+            margin-right: 15px;
+            margin-bottom: 0;
+            text-align: center;
+            font-size: 14px;
+            padding: 2px;
+        }
+    }
+}

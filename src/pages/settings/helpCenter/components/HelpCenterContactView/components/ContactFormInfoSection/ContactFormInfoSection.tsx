@@ -278,6 +278,8 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                         translationsLoaded &&
                         contactForm.subject_lines && (
                             <SubjectLines
+                                title="Edit the subject of the contact form"
+                                description="Here is a default list of subject lines. If there is no subject added, user can freely type any subject."
                                 subjectLines={contactForm.subject_lines}
                                 currentLocale={viewLanguage}
                                 updateContactForm={updateContactForm}

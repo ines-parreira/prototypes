@@ -3,6 +3,8 @@ import React, {useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm.fixture'
+import EmailIntegrationInputSection from 'pages/settings/contactForm/components/EmailIntegrationInputSection'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import {validLocaleCode} from 'models/helpCenter/utils'
@@ -25,14 +27,16 @@ import * as integrationsSelectors from 'state/integrations/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
-import settingsCss from '../../../settings.less'
+import settingsCss from 'pages/settings/settings.less'
 import {
+    CONTACT_FORM_APPEARANCE_PATH,
     CONTACT_FORM_BASE_PATH,
     CONTACT_FORM_DEFAULT_LOCALE,
-    CONTACT_FORM_SETTINGS_PATH,
-} from '../../constants'
-import css from './ContactFormCreateView.less'
-import {CreateContactFormParams} from './ContactFormCreateView.types'
+} from 'pages/settings/contactForm/constants'
+import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+import {CreateContactFormParams} from 'pages/settings/contactForm/views/ContactFormCreateView/types/createContactFormParams.type'
+import {ContactFormIntegration} from 'models/contactForm/types'
+import contactFormCss from '../../contactForm.less'
 
 const emailIntegrationsSelector = integrationsSelectors.getIntegrationsByTypes(
     EMAIL_INTEGRATION_TYPES
@@ -66,8 +70,13 @@ const ContactFormCreateView = ({
         })
 
     const navigateToStartView = () => history.push(CONTACT_FORM_BASE_PATH)
-    const navigateToContactFormAppearance = () =>
-        history.push(CONTACT_FORM_SETTINGS_PATH)
+    const navigateToContactFormAppearance = (contactFormId: number) =>
+        history.push(
+            insertContactFormIdParam(
+                CONTACT_FORM_APPEARANCE_PATH,
+                contactFormId
+            )
+        )
 
     const onInfoClose = () => setIsAlertAcknowledged(true)
 
@@ -78,18 +87,12 @@ const ContactFormCreateView = ({
         }))
     }
 
-    const onChangeEmail = (integrationId: Value) => {
-        const selectedIntegration = emailIntegrations.find(
-            (integration) => integration.id === integrationId
-        )
-
-        if (!selectedIntegration) return
-
+    const onChangeEmailIntegration = (integration: ContactFormIntegration) => {
         setNewContactForm((prev) => ({
             ...prev,
             email_integration: {
-                id: selectedIntegration.id,
-                email: selectedIntegration.meta.address,
+                id: integration.id,
+                email: integration.meta.address,
             },
         }))
     }
@@ -104,7 +107,7 @@ const ContactFormCreateView = ({
     const onSubmit = () => {
         setIsLoading(true)
         try {
-            navigateToContactFormAppearance()
+            navigateToContactFormAppearance(ContactFormFixture.id)
             void notify({
                 message: 'Contact Form successfully created',
                 status: NotificationStatus.Success,
@@ -126,13 +129,6 @@ const ContactFormCreateView = ({
             value: code,
         }))
     }, [locales])
-
-    const emailOptions = useMemo(() => {
-        return emailIntegrations.map((integration) => ({
-            label: `${integration.name} ` + `<${integration.meta.address}>`,
-            value: integration.id,
-        }))
-    }, [emailIntegrations])
 
     const nameError = useMemo(() => {
         return (
@@ -169,12 +165,14 @@ const ContactFormCreateView = ({
             <Container fluid className={settingsCss.pageContainer}>
                 <div
                     className={classnames(
-                        css.container,
+                        contactFormCss.sectionContainer,
                         settingsCss.contentWrapper
                     )}
                 >
                     <section>
-                        <Label isRequired>Contact form name</Label>
+                        <Label className={contactFormCss.mbXxs} isRequired>
+                            Contact form name
+                        </Label>
                         <InputField
                             isRequired
                             data-testid="name"
@@ -201,24 +199,18 @@ const ContactFormCreateView = ({
                         </section>
                     )}
 
-                    <section>
-                        <Label isRequired htmlFor="email-select">
-                            Select email that will receive form submissions
-                        </Label>
-                        <SelectField
-                            required
-                            fullWidth
-                            id="email-select"
-                            placeholder="Select an email integration"
-                            value={newContactForm.email_integration.id}
-                            options={emailOptions}
-                            onChange={onChangeEmail}
-                            icon="email"
-                        />
-                    </section>
+                    <EmailIntegrationInputSection
+                        isRequiredShown
+                        onChange={onChangeEmailIntegration}
+                        integration={newContactForm.email_integration}
+                    />
 
                     <section>
-                        <Label isRequired htmlFor="locale-select">
+                        <Label
+                            className={contactFormCss.mbXxs}
+                            isRequired
+                            htmlFor="locale-select"
+                        >
                             Select form language
                         </Label>
                         <SelectField
@@ -231,7 +223,7 @@ const ContactFormCreateView = ({
                         />
                     </section>
 
-                    <div className={css.bottomButtons}>
+                    <div className={contactFormCss.mtXl}>
                         <Button
                             isDisabled={!isCreateButtonEnabled}
                             onClick={onSubmit}
@@ -239,7 +231,7 @@ const ContactFormCreateView = ({
                             Create Contact Form
                         </Button>
                         <Button
-                            className={css.cancelButton}
+                            className={contactFormCss.mlXs}
                             intent="secondary"
                             onClick={navigateToStartView}
                         >

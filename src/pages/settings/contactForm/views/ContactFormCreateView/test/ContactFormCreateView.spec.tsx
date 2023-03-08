@@ -8,8 +8,8 @@ import {account} from 'fixtures/account'
 import {integrationsState} from 'fixtures/integrations'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
-import {SupportedLocalesProvider} from '../../../helpCenter/providers/SupportedLocales'
-import ContactFormCreateView from './ContactFormCreateView'
+import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormCreateView/ContactFormCreateView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -31,6 +31,11 @@ describe('<ContactFormCreateView />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+    })
+
+    it('should preserve valid classnames to have proper distances between sections', () => {
+        const {container} = renderView({state: defaultState})
+        expect(container).toMatchSnapshot()
     })
 
     it('should use subdomain as default form name', async () => {

@@ -8,11 +8,16 @@ import {
     CONTACT_FORM_CREATE_PATH,
     CONTACT_FORM_FORMS_PATH,
     CONTACT_FORM_PAGE_TITLE,
-} from '../../constants'
-import {useContactFormList} from '../hooks/useContactFormList'
-import ManageContactForms from '../ManageContactForms'
-import {ManageContactFormsProps} from '../ManageContactForms/ManageContactForms'
-import {CONTACT_FORM_APP_DETAIL} from './constants'
+} from 'pages/settings/contactForm/constants'
+import {useContactFormList} from 'pages/settings/contactForm/hooks/useContactFormList'
+import ManageContactForms from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms'
+import {ManageContactFormsProps} from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms/ManageContactForms'
+import {CONTACT_FORM_APP_DETAIL} from 'pages/settings/contactForm/views/ContactFormStartView/constants'
+
+const navLinks = {
+    About: CONTACT_FORM_ABOUT_PATH,
+    Forms: CONTACT_FORM_FORMS_PATH,
+}
 
 const ContactFormStartView: React.FC = () => {
     const {contactForms = [], isLoading} = useContactFormList()
@@ -29,12 +34,11 @@ const ContactFormStartView: React.FC = () => {
         <div className="full-width">
             <PageHeader title={CONTACT_FORM_PAGE_TITLE} />
             <SecondaryNavbar>
-                <NavLink exact to={CONTACT_FORM_ABOUT_PATH}>
-                    About
-                </NavLink>
-                <NavLink exact to={CONTACT_FORM_FORMS_PATH}>
-                    Forms
-                </NavLink>
+                {Object.entries(navLinks).map(([name, to]) => (
+                    <NavLink exact key={name} to={to}>
+                        {name}
+                    </NavLink>
+                ))}
             </SecondaryNavbar>
             <Switch>
                 <Route exact path={CONTACT_FORM_ABOUT_PATH}>

@@ -6,17 +6,17 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock, renderWithRouter} from 'utils/testing'
-import {HELP_CENTER_BASE_PATH} from '../../../../helpCenter/constants'
+import {HELP_CENTER_BASE_PATH} from 'pages/settings/helpCenter/constants'
 import {
     CONTACT_FORM_ABOUT_PATH,
     CONTACT_FORM_CREATE_PATH,
     CONTACT_FORM_FORMS_PATH,
-} from '../../../constants'
-import {useContactFormList} from '../../hooks/useContactFormList'
-import {CONTACT_FORM_APP_DETAIL} from '../constants'
-import ContactFormStartView from '../ContactFormStartView'
+} from 'pages/settings/contactForm/constants'
+import {useContactFormList} from 'pages/settings/contactForm/hooks/useContactFormList'
+import {CONTACT_FORM_APP_DETAIL} from 'pages/settings/contactForm/views/ContactFormStartView/constants'
+import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView/ContactFormStartView'
 
-jest.mock('../../hooks/useContactFormList')
+jest.mock('../../../hooks/useContactFormList')
 const mockedUseHelpCenterList = assumeMock(useContactFormList)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

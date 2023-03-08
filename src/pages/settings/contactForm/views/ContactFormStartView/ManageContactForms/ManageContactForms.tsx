@@ -3,8 +3,8 @@ import {useHistory} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import Button from 'pages/common/components/button/Button'
 import css from 'pages/settings/helpCenter/components/HelpCenterStartView/HelpCenterStartView.less'
-import settingsCss from '../../../settings.less'
-import {CONTACT_FORM_CREATE_PATH} from '../../constants'
+import settingsCss from 'pages/settings/settings.less'
+import {CONTACT_FORM_CREATE_PATH} from 'pages/settings/contactForm/constants'
 
 export type ManageContactFormsProps = {
     contactForms: any[]

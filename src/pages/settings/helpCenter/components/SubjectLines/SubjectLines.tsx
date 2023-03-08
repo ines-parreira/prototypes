@@ -18,6 +18,8 @@ import {
 import css from './SubjectLines.less'
 
 type SubjectLinesProps = {
+    title: string
+    description: string
     subjectLines: ContactForm['subject_lines']
     currentLocale: LocaleCode
     updateContactForm: React.Dispatch<React.SetStateAction<UpdateContactForm>>
@@ -25,6 +27,8 @@ type SubjectLinesProps = {
 }
 
 const SubjectLines = ({
+    title,
+    description,
     currentLocale,
     subjectLines,
     updateContactForm,
@@ -142,13 +146,8 @@ const SubjectLines = ({
 
     return (
         <div className={css.wrapper}>
-            <div className={css.title}>
-                Edit the subject of the contact form
-            </div>
-            <div className={css.description}>
-                Here is a default list of subject lines. If there is no subject
-                added, user can freely type any subject.
-            </div>
+            <div className={css.title}>{title}</div>
+            <div className={css.description}>{description}</div>
             {subjectLinesWithId.length > 0 && (
                 <CheckBox
                     isChecked={subjectLines[currentLocale]?.allow_other}

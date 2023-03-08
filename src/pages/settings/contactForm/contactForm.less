@@ -1,0 +1,50 @@
+@import '~css/new/layout.less';
+
+:local {
+    .iconButton {
+        i {
+            font-size: 18px;
+            margin-right: 4px;
+        }
+    }
+
+    .sectionContainer {
+        & > section:not(:last-child) {
+            margin-bottom: @layout-spacing-l;
+        }
+    }
+
+    .sectionTitle {
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 28px;
+    }
+
+    .mbXxs {
+        margin-bottom: @layout-spacing-xxs;
+    }
+
+    .mbXs {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .mbS {
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .mbL {
+        margin-bottom: @layout-spacing-l;
+    }
+
+    .mbM {
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .mtXl {
+        margin-top: @layout-spacing-xl;
+    }
+
+    .mlXs {
+        margin-left: @layout-spacing-xs;
+    }
+}

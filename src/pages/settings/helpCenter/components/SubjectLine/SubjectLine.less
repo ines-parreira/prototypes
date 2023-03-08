@@ -1,22 +1,28 @@
 @import '~css/new/colorTokens';
+@import '~css/new/layout';
 
 :local {
     .wrapper {
         display: flex;
         gap: 4px;
         align-items: center;
-        margin-bottom: 16px;
+
+        & i {
+            font-size: 20px;
+        }
+
+        &:not(:last-child) {
+            margin-bottom: @layout-spacing-s;
+        }
     }
 
     .deleteIcon {
         color: @classic-feedback-error;
-        font-size: 20px;
         cursor: pointer;
     }
 
     .dragIndicator {
         color: @classic-neutral-grey-3;
-        font-size: 20px;
         cursor: move;
     }
 }

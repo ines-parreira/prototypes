@@ -1,10 +1,7 @@
-import {IntegrationType} from '../../../../../models/integration/constants'
-import {
-    AppDetail,
-    PricingPlan,
-} from '../../../../../models/integration/types/app'
-import {assetsUrl} from '../../../../../utils'
-import {CONTACT_FORM_PAGE_TITLE} from '../../constants'
+import {IntegrationType} from 'models/integration/constants'
+import {AppDetail, PricingPlan} from 'models/integration/types/app'
+import {assetsUrl} from 'utils'
+import {CONTACT_FORM_PAGE_TITLE} from 'pages/settings/contactForm/constants'
 
 export const CONTACT_FORM_APP_DETAIL: AppDetail = {
     type: IntegrationType.App,

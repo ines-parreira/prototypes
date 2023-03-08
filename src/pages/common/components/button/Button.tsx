@@ -12,7 +12,7 @@ import ButtonSpinner from './ButtonSpinner'
 
 export type {ButtonIntent, ButtonSize} from './BaseButton'
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> &
+export type Props = ButtonHTMLAttributes<HTMLButtonElement> &
     Omit<ComponentProps<typeof BaseButton>, 'children'>
 
 const Button = forwardRef<HTMLButtonElement, Props>(function (

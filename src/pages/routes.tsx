@@ -31,8 +31,9 @@ import MyIntegrations from './integrations/Store/Mine'
 import PhoneNumbersListContainer from './phoneNumbers/PhoneNumbersListContainer'
 import PhoneNumberCreateContainer from './phoneNumbers/PhoneNumberCreateContainer'
 import PhoneNumberDetailContainer from './phoneNumbers/PhoneNumberDetailContainer'
-import ContactFormCreateView from './settings/contactForm/components/ContactFormCreateView'
-import ContactFormStartView from './settings/contactForm/components/ContactFormStartView'
+import ContactFormCreateView from './settings/contactForm/views/ContactFormCreateView'
+import ContactFormSettingsView from './settings/contactForm/views/ContactFormSettingsView'
+import ContactFormStartView from './settings/contactForm/views/ContactFormStartView'
 import {
     CONTACT_FORM_ABOUT_PATH,
     CONTACT_FORM_BASE_PATH,
@@ -1018,9 +1019,7 @@ export function PhoneNumbersSettingsRoutes({
     )
 }
 
-export function ContactFormSettingsRoutes({
-    match: {path},
-}: RouteComponentProps) {
+export function ContactFormSettingsRoutes() {
     return (
         <HelpCenterApiClientProvider>
             <SupportedLocalesProvider>
@@ -1046,14 +1045,12 @@ export function ContactFormSettingsRoutes({
                         })}
                     />
                     <Route
-                        exact
                         path={CONTACT_FORM_SETTINGS_PATH}
                         render={appRender({
-                            content: () => <div>InProgress</div>,
+                            content: ContactFormSettingsView,
                             navbar: SettingsNavbar,
                         })}
                     />
-                    <Route render={() => <Redirect to={path} />} />
                 </Switch>
             </SupportedLocalesProvider>
         </HelpCenterApiClientProvider>
