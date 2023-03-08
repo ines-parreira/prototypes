@@ -3,7 +3,9 @@ import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from 'state/types'
-import {phoneNumbers} from 'fixtures/phoneNumber'
+import {phoneNumbers, capabilities} from 'fixtures/phoneNumber'
+import {fetchPhoneCapabilities} from 'models/phoneNumber/resources'
+import {assumeMock} from 'utils/testing'
 
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
 
@@ -17,7 +19,14 @@ const store = mockStore({
     },
 } as RootState)
 
+jest.mock('models/phoneNumber/resources')
+
 describe('<PhoneNumberCreateForm/>', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+        assumeMock(fetchPhoneCapabilities).mockResolvedValue(capabilities)
+    })
+
     describe('render()', () => {
         it('should render', () => {
             const {container} = render(
