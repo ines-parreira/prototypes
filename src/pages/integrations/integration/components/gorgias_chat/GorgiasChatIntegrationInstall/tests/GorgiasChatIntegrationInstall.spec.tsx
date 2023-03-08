@@ -78,7 +78,6 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
             activateIntegration: jest.fn(),
             deactivateIntegration: jest.fn(),
         },
-        loading: fromJS({}),
         notify: jest.fn(),
     }
 

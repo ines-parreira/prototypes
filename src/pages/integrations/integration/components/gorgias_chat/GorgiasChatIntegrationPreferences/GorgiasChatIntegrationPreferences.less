@@ -2,6 +2,11 @@
 @import '../GorgiasChatIntegrationForm.less';
 
 :local {
+    .toggleInfo {
+        position: relative;
+        top: -1px;
+    }
+
     .tooltip {
         left: -9px !important;
         margin-bottom: 5px;
@@ -36,14 +41,6 @@
             font-weight: 400;
             color: @classic-neutral-grey-4;
             margin-bottom: 0;
-        }
-
-        .dynamicTimeTooltip {
-            color: @classic-neutral-grey-4;
-
-            &:hover {
-                color: @classic-neutral-grey-5;
-            }
         }
     }
 }

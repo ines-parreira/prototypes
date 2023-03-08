@@ -447,9 +447,10 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
       </div>
     </div>
     <OptionalEmailCapture
+      chatTitle="My little chat integration"
       conversationColor="#456789"
+      currentUser={Immutable.Map {}}
       language="en-US"
-      name="My little chat integration"
     />
     <PoweredByGorgias
       translatedTexts={

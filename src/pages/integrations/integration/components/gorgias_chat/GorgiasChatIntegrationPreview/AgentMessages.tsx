@@ -90,7 +90,6 @@ const AgentMessages: React.FC<Props> = ({
     return (
         <div className={css.appMakerMessageWrapper}>
             <Avatar
-                email={currentUser.get('email')}
                 name={
                     avatar?.nameType === GorgiasChatAvatarNameType.CHAT_TITLE
                         ? chatTitle

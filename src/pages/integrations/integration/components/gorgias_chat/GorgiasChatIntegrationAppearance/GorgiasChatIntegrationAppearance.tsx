@@ -59,6 +59,7 @@ import GorgiasChatIntegrationNavigation from 'pages/integrations/integration/com
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import ChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatLauncher'
+import OptionalEmailCapture from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/OptionalEmailCapture'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
 
@@ -71,7 +72,6 @@ import {StoreRadioButton} from './StoreRadioButton'
 import {CustomizeToneOfVoiceBlock} from './components/CustomizeToneOfVoiceBlock'
 import ImageField from './components/ImageField'
 import UploadLogoCaption from './components/UploadLogoCaption'
-import AppearanceMessages from './components/AppearanceMessages'
 
 export enum PositionAxis {
     AXIS_X = 'axis-x',
@@ -559,7 +559,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 launcher={state.launcher}
                 isOpen={isChatOpenInPreview}
             >
-                <AppearanceMessages
+                <OptionalEmailCapture
                     currentUser={currentUser}
                     conversationColor={conversationColor}
                     chatTitle={name}

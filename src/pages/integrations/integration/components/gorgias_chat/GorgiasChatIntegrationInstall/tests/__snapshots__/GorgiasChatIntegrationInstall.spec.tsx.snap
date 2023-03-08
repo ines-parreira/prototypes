@@ -474,7 +474,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                       >
                         <pre
                           class="code"
-                          id="code-snippet-4"
+                          id="code-snippet-3"
                         >
                           &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                         </pre>
@@ -561,7 +561,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                       >
                         <pre
                           class="code"
-                          id="code-snippet-5"
+                          id="code-snippet-4"
                         >
                           &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                         </pre>
@@ -684,46 +684,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
         </div>
         <div
           class="installationOptions"
-        >
-          <div
-            class="formGroup d-flex"
-          >
-            <div>
-              <label
-                aria-label="Hide chat"
-                class="label label"
-                for="toggle-button-6"
-                role="switch"
-              >
-                <input
-                  aria-label="Hide chat"
-                  class="input"
-                  disabled=""
-                  id="toggle-button-6"
-                  name="toggle-button-6"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-              </label>
-            </div>
-            <div
-              class="ml-2"
-            >
-              <b>
-                Hide Chat
-              </b>
-               
-              <i
-                class="material-icons-outlined"
-                id="hide-chat-help"
-              >
-                error_outline
-              </i>
-            </div>
-          </div>
-        </div>
+        />
       </div>
     </div>
   </div>
@@ -985,7 +946,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                       >
                         <pre
                           class="code"
-                          id="code-snippet-7"
+                          id="code-snippet-5"
                         >
                           &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                         </pre>
@@ -1108,46 +1069,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
         </div>
         <div
           class="installationOptions"
-        >
-          <div
-            class="formGroup d-flex"
-          >
-            <div>
-              <label
-                aria-label="Hide chat"
-                class="label label"
-                for="toggle-button-8"
-                role="switch"
-              >
-                <input
-                  aria-label="Hide chat"
-                  class="input"
-                  disabled=""
-                  id="toggle-button-8"
-                  name="toggle-button-8"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-              </label>
-            </div>
-            <div
-              class="ml-2"
-            >
-              <b>
-                Hide Chat
-              </b>
-               
-              <i
-                class="material-icons-outlined"
-                id="hide-chat-help"
-              >
-                error_outline
-              </i>
-            </div>
-          </div>
-        </div>
+        />
       </div>
     </div>
   </div>
@@ -1708,46 +1630,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
         </div>
         <div
           class="installationOptions"
-        >
-          <div
-            class="formGroup d-flex"
-          >
-            <div>
-              <label
-                aria-label="Hide chat"
-                class="label label"
-                for="toggle-button-3"
-                role="switch"
-              >
-                <input
-                  aria-label="Hide chat"
-                  class="input"
-                  disabled=""
-                  id="toggle-button-3"
-                  name="toggle-button-3"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-              </label>
-            </div>
-            <div
-              class="ml-2"
-            >
-              <b>
-                Hide Chat
-              </b>
-               
-              <i
-                class="material-icons-outlined"
-                id="hide-chat-help"
-              >
-                error_outline
-              </i>
-            </div>
-          </div>
-        </div>
+        />
       </div>
     </div>
   </div>

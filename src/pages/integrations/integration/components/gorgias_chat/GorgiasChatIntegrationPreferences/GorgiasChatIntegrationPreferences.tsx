@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
+import moment from 'moment'
 import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
 import {fromJS, Map} from 'immutable'
@@ -10,6 +11,11 @@ import classnames from 'classnames'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {IntegrationType} from 'models/integration/constants'
+import {
+    GorgiasChatAvatarSettings,
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+} from 'models/integration/types'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -54,12 +60,10 @@ const emailCaptureOptions = [
     {
         value: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
         label: 'Optional',
-        caption: 'Maximizes conversation volume',
     },
     {
         value: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
-        label: 'Always required',
-        caption: 'Reduces conversation volume by around 30%',
+        label: 'Required',
     },
 ]
 
@@ -96,12 +100,14 @@ const SHOW_CHAT_CONVERSATIONS_SECTION = false
 
 type Props = {
     integration: Map<any, any>
+    currentUser: Map<any, any>
 } & ConnectedProps<typeof connector>
 
 type State = {
     autoResponderEnabled: boolean
     autoResponderReply: string
     emailCaptureEnforcement: string
+    hide: boolean
     hideOnMobile: boolean
     hideOutsideBusinessHours: boolean
     isInitialized: boolean
@@ -110,6 +116,7 @@ type State = {
     linkedEmailIntegration: number | null
     offlineModeEnabledDatetime: Date | null
     liveChatAvailability: string
+    avatar: GorgiasChatAvatarSettings | undefined
     avatarType: string
     avatarTeamPictureUrl: string | null
 }
@@ -127,6 +134,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         autoResponderReply: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
         emailCaptureEnforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
         linkedEmailIntegration: null,
+        hide: false,
         hideOnMobile: false,
         hideOutsideBusinessHours: false,
         isInitialized: false,
@@ -135,6 +143,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         offlineModeEnabledDatetime: null,
         liveChatAvailability:
             GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+        avatar: undefined,
         avatarType: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
         avatarTeamPictureUrl: null,
     }
@@ -171,6 +180,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             'reply',
                         ]) || GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
                     emailCaptureEnforcement: emailCaptureEnforcement,
+                    hide: !!integration.get('deactivated_datetime'),
                     hideOnMobile: integration.getIn([
                         'meta',
                         'preferences',
@@ -196,6 +206,21 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'preferences',
                         'live_chat_availability',
                     ]),
+                    avatar: {
+                        imageType: integration.getIn(
+                            ['decoration', 'avatar', 'image_type'],
+                            GorgiasChatAvatarImageType.AGENT_PICTURE
+                        ),
+                        nameType: integration.getIn(
+                            ['decoration', 'avatar', 'name_type'],
+                            GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                        ),
+                        companyLogoUrl: integration.getIn([
+                            'decoration',
+                            'avatar',
+                            'company_logo_url',
+                        ]),
+                    },
                     avatarType:
                         integration.getIn(['decoration', 'avatar_type']) ||
                         GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
@@ -239,6 +264,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         this.setState({
             autoResponderReply: value,
             preview: PREVIEW_AUTO_RESPONDER,
+        })
+    }
+
+    _setHide = (value: boolean) => {
+        this.setState({
+            hide: value,
         })
     }
 
@@ -299,6 +330,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             meta: existingMeta.mergeDeep({
                 preferences: preferences,
             }),
+            deactivated_datetime: this.state.hide
+                ? integration.get('deactivated_datetime') ?? moment().format()
+                : null,
         })
 
         await updateOrCreateIntegration(payload)
@@ -316,6 +350,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             autoResponderEnabled,
             autoResponderReply,
             emailCaptureEnforcement,
+            hide,
             hideOnMobile,
             hideOutsideBusinessHours,
             isUpdating,
@@ -323,10 +358,15 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             linkedEmailIntegration,
             offlineModeEnabledDatetime,
             liveChatAvailability,
+            avatar,
             avatarType,
             avatarTeamPictureUrl,
         } = this.state
-        const {integration, emailIntegrations: integrations} = this.props
+        const {
+            integration,
+            currentUser,
+            emailIntegrations: integrations,
+        } = this.props
         const emailIntegrations = integrations.filter(isGenericEmailIntegration)
 
         const conversationColor = integration.getIn(
@@ -371,8 +411,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         ) {
             previewChildren = (
                 <OptionalEmailCapturePreview
+                    currentUser={currentUser}
                     conversationColor={conversationColor}
-                    name={integration.get('name')}
+                    chatTitle={integration.get('name')}
+                    avatar={avatar}
                     language={language}
                 />
             )
@@ -391,6 +433,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 name={integration.get('name')}
                 avatarType={avatarType}
                 avatarTeamPictureUrl={avatarTeamPictureUrl}
+                avatar={avatar}
                 introductionText={integration.getIn([
                     'decoration',
                     'introduction_text',
@@ -420,10 +463,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 value: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
                 label: (
                     <div>
-                        Dynamic wait time (recommended){' '}
+                        Dynamic wait time (recommended)
                         <span
-                            className={css.dynamicTimeTooltip}
                             id="dynamic-wait-time-option"
+                            className={css.tooltipIcon}
                         >
                             <i className="material-icons">info_outline</i>
                         </span>
@@ -432,8 +475,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             target={'dynamic-wait-time-option'}
                             autohide={false}
                         >
-                            Calculated based on your team's first response time
-                            of last 10 live chat tickets.{' '}
+                            Calculated based on your team's recent live chat
+                            response times.{' '}
                             <a
                                 href="https://docs.gorgias.com/en-US/109858-dc67e62b040a4649aed68bdce7ffa4f5"
                                 target="_blank"
@@ -459,11 +502,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             },
             {
                 value: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
-                label: 'Thanks for reaching out! We typically reply in a few minutes',
+                label: 'In a few minutes',
             },
             {
                 value: CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-                label: 'Thanks for reaching out! We typically reply in a few hours',
+                label: 'In a few hours',
             },
         ]
 
@@ -493,39 +536,184 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>
                     <Form onSubmit={this._submitPreferences}>
                         <div>
-                            <div className={classnames(css.formSection)}>
-                                <h4 className={css.title}>
-                                    Email prompt
-                                    <i
-                                        id="email-prompt-help"
+                            <div className={css.formSection}>
+                                <h4 className={classnames(css.title, 'mb-1')}>
+                                    Live chat
+                                </h4>
+                                <div>
+                                    <p className="mb-4">
+                                        Choose when customers can send live chat
+                                        messages to your team during{' '}
+                                        <Link to="/app/settings/business-hours">
+                                            business hours
+                                        </Link>
+                                        .
+                                    </p>
+                                    <RadioFieldSet
                                         className={classnames(
-                                            'material-icons-outlined',
-                                            css.tooltipIcon
+                                            'mb-3',
+                                            css.radioFieldSet
                                         )}
-                                    >
-                                        info
-                                    </i>
-                                    <Tooltip
-                                        autohide={false}
-                                        delay={100}
-                                        target="email-prompt-help"
-                                        placement="top-start"
-                                        popperClassName={css.tooltip}
-                                        innerClassName={css['tooltip-inner']}
-                                        arrowClassName={css['tooltip-arrow']}
-                                    >
-                                        You can change the email prompt message
-                                        by adjusting the chat default text
-                                        values.{' '}
+                                        options={liveChatAvailabilityOptions}
+                                        selectedValue={liveChatAvailability}
+                                        onChange={this._setLiveChatAvailability}
+                                    />
+                                    <p className="mb-3">
+                                        Automation Add-on features are always
+                                        available, if enabled. When live chat is
+                                        unavailable, customers can message your
+                                        team with{' '}
                                         <a
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            href="https://docs.gorgias.com/en-US/chat-getting-started-81789#change-email-promptmessage"
+                                            href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
                                         >
-                                            Read more
-                                        </a>
-                                    </Tooltip>
+                                            contact form
+                                        </a>{' '}
+                                        to receive an email response. Live chat
+                                        is always unavailable outside business
+                                        hours.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className={css.formSection}>
+                                <h4 className={css.title}>
+                                    Visibility options
                                 </h4>
+
+                                <div
+                                    className={classnames(
+                                        css.formGroup,
+                                        'd-flex'
+                                    )}
+                                >
+                                    <ToggleInput
+                                        onClick={this._setHide}
+                                        isToggled={hide}
+                                        aria-label="Hide chat"
+                                    />
+                                    <div
+                                        className={classnames(
+                                            css.toggleInfo,
+                                            'ml-1'
+                                        )}
+                                    >
+                                        <b>Hide chat</b>
+                                        <span
+                                            id="hide-chat-help"
+                                            className={css.tooltipIcon}
+                                        >
+                                            <i className="material-icons-outlined">
+                                                error_outline
+                                            </i>
+                                        </span>
+                                        <Tooltip
+                                            autohide={false}
+                                            delay={100}
+                                            target="hide-chat-help"
+                                            placement="top-start"
+                                            style={{textAlign: 'left'}}
+                                        >
+                                            <div className="mb-3">
+                                                Hiding chat removes the widget
+                                                from your website, but doesn't
+                                                uninstall it.
+                                            </div>
+                                            If you're getting too many live chat
+                                            messages, you can change your live
+                                            chat settings above.
+                                        </Tooltip>
+                                        <div className="form-text text-muted">
+                                            Remove widget from your website
+                                            without uninstalling it
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    className={classnames(
+                                        css.formGroup,
+                                        'd-flex'
+                                    )}
+                                >
+                                    <ToggleInput
+                                        onClick={
+                                            this._setHideOutsideBusinessHours
+                                        }
+                                        isToggled={hideOutsideBusinessHours}
+                                    />
+
+                                    <div
+                                        className={classnames(
+                                            css.toggleInfo,
+                                            'ml-1'
+                                        )}
+                                    >
+                                        <b>Hide outside of business hours</b>
+                                        <span
+                                            id="hide-outside-business-hours-help"
+                                            className={css.tooltipIcon}
+                                        >
+                                            <i className="material-icons-outlined">
+                                                info
+                                            </i>
+                                        </span>
+                                        <Tooltip
+                                            target="hide-outside-business-hours-help"
+                                            placement="top-start"
+                                            popperClassName={css.tooltip}
+                                            innerClassName={
+                                                css['tooltip-inner']
+                                            }
+                                            arrowClassName={
+                                                css['tooltip-arrow']
+                                            }
+                                        >
+                                            Customers with active conversations
+                                            will be notified 30 minutes before
+                                            the chat is hidden.
+                                        </Tooltip>
+
+                                        <div className="form-text text-muted">
+                                            Remove widget from your website
+                                            after business hours
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    className={classnames(
+                                        css.formGroup,
+                                        'd-flex'
+                                    )}
+                                >
+                                    <ToggleInput
+                                        onClick={this._setHideOnMobile}
+                                        isToggled={hideOnMobile}
+                                    />
+
+                                    <div
+                                        className={classnames(
+                                            css.toggleInfo,
+                                            'ml-1'
+                                        )}
+                                    >
+                                        <b>Hide on mobile</b>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={classnames(css.formSection)}>
+                                <h4 className={classnames(css.title, 'mb-1')}>
+                                    Email capture
+                                </h4>
+                                <p className="mb-4">
+                                    Collecting customer emails helps grow your
+                                    email list and send follow-up messages.
+                                    However, only around 30% of customers will
+                                    send a message if they must provide an
+                                    email.
+                                </p>
                                 <RadioFieldSet
                                     options={emailCaptureOptions}
                                     selectedValue={emailCaptureEnforcement}
@@ -577,131 +765,17 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             )}
 
                             <div className={css.formSection}>
-                                <h4 className={css.title}>Live chat</h4>
+                                <h4 className={classnames(css.title, 'mb-3')}>
+                                    Autoresponder
+                                </h4>
 
-                                <div>
-                                    <p className="mb-3">
-                                        Choose when customers can send live chat
-                                        messages to your team during{' '}
-                                        <Link to="/app/settings/business-hours">
-                                            Business hours
-                                        </Link>
-                                        .
-                                    </p>
-                                    <RadioFieldSet
-                                        className={classnames(
-                                            'mb-3',
-                                            css.radioFieldSet
-                                        )}
-                                        options={liveChatAvailabilityOptions}
-                                        selectedValue={liveChatAvailability}
-                                        onChange={this._setLiveChatAvailability}
-                                    />
-                                    <p className="mb-3">
-                                        Automation Add-On features are always
-                                        available, if enabled. When live chat is
-                                        unavailable, customers can message your
-                                        team with{' '}
-                                        <a
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
-                                        >
-                                            contact form
-                                        </a>{' '}
-                                        to receive an email response. Live chat
-                                        is always unavailable outside business
-                                        hours.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className={css.formSection}>
-                                <h4 className={css.title}>Hide chat</h4>
-                                <div
-                                    className={classnames(
-                                        css.formGroup,
-                                        'd-flex'
-                                    )}
-                                >
-                                    <ToggleInput
-                                        onClick={
-                                            this._setHideOutsideBusinessHours
-                                        }
-                                        isToggled={hideOutsideBusinessHours}
-                                    />
-
-                                    <div className="ml-2">
-                                        <b>
-                                            Hide chat outside of business hours
-                                        </b>
-                                        <i
-                                            id="hide-outside-business-hours-help"
-                                            className={classnames(
-                                                'material-icons-outlined',
-                                                css.tooltipIcon
-                                            )}
-                                        >
-                                            info
-                                        </i>
-                                        <Tooltip
-                                            target="hide-outside-business-hours-help"
-                                            placement="top-start"
-                                            popperClassName={css.tooltip}
-                                            innerClassName={
-                                                css['tooltip-inner']
-                                            }
-                                            arrowClassName={
-                                                css['tooltip-arrow']
-                                            }
-                                        >
-                                            Your customers will be notified in
-                                            the chat 30 min before the end of
-                                            your business hours. For customers
-                                            with no active conversations, the
-                                            chat will be hidden immediately. For
-                                            customers with an active
-                                            conversation, the chat icon will be
-                                            hidden 5 min after being closed.
-                                        </Tooltip>
-
-                                        <div className="form-text text-muted">
-                                            Chat will be removed from your
-                                            website after business hours
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    className={classnames(
-                                        css.formGroup,
-                                        'd-flex'
-                                    )}
-                                >
-                                    <ToggleInput
-                                        onClick={this._setHideOnMobile}
-                                        isToggled={hideOnMobile}
-                                    />
-
-                                    <div className="ml-2">
-                                        <b>Hide chat on mobile</b>
-                                        <div className="form-text text-muted">
-                                            Remove chat from your website when
-                                            customers access via mobile devices
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className={css.formSection}>
-                                <h4 className={css.title}>Auto-responder</h4>
-
-                                <div className="mb-3 d-flex align-items-center">
+                                <div className="mb-4 d-flex align-items-center">
                                     <ToggleInput
                                         onClick={this._setAutoResponderEnabled}
                                         isToggled={autoResponderEnabled}
                                     />
-                                    <div className="ml-2">
-                                        <b>Enable auto-responder</b>
+                                    <div className="ml-1">
+                                        <b>Enable autoresponder</b>
                                     </div>
                                 </div>
 
@@ -713,11 +787,13 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     >
                                         During{' '}
                                         <Link to="/app/settings/business-hours">
-                                            Business hours
+                                            business hours
                                         </Link>
-                                        , tell customers how fast they can
-                                        expect a response with an automated
-                                        message:
+                                        , let customers know how fast they can
+                                        expect a response with an autoresponder.
+                                        A message is sent in new chat tickets
+                                        after 30 seconds without replies from an
+                                        agent.
                                     </p>
                                     <RadioFieldSet
                                         className={classnames(
@@ -729,41 +805,28 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         onChange={this._setAutoResponderReply}
                                         isDisabled={!autoResponderEnabled}
                                     />
-                                    <p
-                                        className={classnames({
-                                            'text-faded': !autoResponderEnabled,
-                                        })}
-                                    >
-                                        Outside{' '}
-                                        <Link to="/app/settings/business-hours">
-                                            Business hours
-                                        </Link>
-                                        , Gorgias will automatically tell
-                                        customers when they can expect a
-                                        response.
-                                    </p>
                                 </div>
                             </div>
 
                             <div className={css.formSection}>
-                                <h4 className={css.title}>
-                                    Associated email integration
+                                <h4 className={classnames(css.title, 'mb-1')}>
+                                    Forward chat replies to customer emails
                                 </h4>
 
                                 <p className="mb-3">
-                                    If a customer doesn't see your responses on
-                                    a chat for 1 hour, Gorgias will
-                                    automatically deliver these messages via
-                                    email.
-                                    <br />
-                                    Satisfaction surveys for chat tickets are
-                                    also sent over email.
+                                    When customers don't see your live chat
+                                    response after an hour, Gorgias will
+                                    automatically send your message to the
+                                    customer's email address (if available).
+                                    Customers also receive satisfaction surveys
+                                    for chat tickets via email.
                                 </p>
                                 <Label
                                     className="control-label"
                                     for="linkedEmailIntegration"
                                 >
-                                    Email integration used to send these emails
+                                    Select which email address sends these
+                                    messages
                                 </Label>
                                 <SelectField
                                     placeholder="Select an email integration"

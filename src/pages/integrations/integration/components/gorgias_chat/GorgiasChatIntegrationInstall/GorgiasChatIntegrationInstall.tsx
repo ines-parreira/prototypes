@@ -3,21 +3,14 @@ import {connect} from 'react-redux'
 import {List, Map, fromJS} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
-import classnames from 'classnames'
 
 import {
     getHasAutomationAddOn,
     getHasLegacyAutomationAddOnFeatures,
 } from 'state/billing/selectors'
-import {
-    deleteIntegration,
-    activateIntegration,
-    deactivateIntegration,
-} from 'state/integrations/actions'
+import {deleteIntegration} from 'state/integrations/actions'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import Tooltip from 'pages/common/components/Tooltip'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
 import {ChatInstallationStatusState} from 'state/entities/chatInstallationStatus'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -44,11 +37,8 @@ type OwnProps = {
     actions: {
         updateOrCreateIntegration: any
         deleteIntegration: typeof deleteIntegration
-        activateIntegration: typeof activateIntegration
-        deactivateIntegration: typeof deactivateIntegration
     }
     isUpdate: boolean
-    loading: Map<any, any>
     installationStatus: ChatInstallationStatusState
 }
 
@@ -80,7 +70,6 @@ function GorgiasChatIntegrationInstall({
     hasAutomationAddOn,
     hasLegacyAutomationAddOnFeatures,
     isUpdate,
-    loading,
     installationStatus,
 }: OwnProps & ReturnType<typeof mapStateToProps>) {
     // During the chat creation, the user associated this chat to a shopify store.
@@ -108,19 +97,6 @@ function GorgiasChatIntegrationInstall({
 
     const isShopifyChat = isAssociatedToShopifyStore || hasShopifyInstallation
 
-    const isDisabled = integration.get('deactivated_datetime')
-
-    const integrationId = integration.get('id') as number
-
-    const toggleActivationState = () => {
-        if (isDisabled) {
-            actions.activateIntegration(integrationId)
-        } else {
-            actions.deactivateIntegration(integrationId)
-        }
-    }
-
-    const isLoading = loading.get('updateIntegration') === integration.get('id')
     const hasOrderManagement =
         hasAutomationAddOn || hasLegacyAutomationAddOnFeatures
 
@@ -199,46 +175,6 @@ function GorgiasChatIntegrationInstall({
                             integrationId={integration.get('id')}
                         />
                         <div className={css.installationOptions}>
-                            <div
-                                className={classnames(css.formGroup, 'd-flex')}
-                            >
-                                <ToggleInput
-                                    onClick={() => toggleActivationState()}
-                                    isToggled={isDisabled}
-                                    isLoading={isLoading}
-                                    isDisabled={isLoading}
-                                    aria-label="Hide chat"
-                                />
-                                <div className="ml-2">
-                                    <b>Hide Chat</b>{' '}
-                                    <i
-                                        id="hide-chat-help"
-                                        className="material-icons-outlined"
-                                    >
-                                        error_outline
-                                    </i>
-                                    <Tooltip
-                                        autohide={false}
-                                        delay={100}
-                                        target="hide-chat-help"
-                                        placement="top-start"
-                                        style={{textAlign: 'left'}}
-                                    >
-                                        Turning this on will remove the widget
-                                        from your website but won't uninstall
-                                        it. <br /> <br />
-                                        If you are looking to reduce chat ticket
-                                        volume, we recommend you set your chat
-                                        as <b>Always offline</b> in the{' '}
-                                        <Link
-                                            to={`/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/preferences`}
-                                        >
-                                            Preferences
-                                        </Link>{' '}
-                                        tab.
-                                    </Tooltip>
-                                </div>
-                            </div>
                             {isUpdate && (
                                 <ConfirmButton
                                     className=""

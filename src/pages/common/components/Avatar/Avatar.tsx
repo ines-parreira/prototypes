@@ -84,15 +84,17 @@ export default class Avatar extends Component<Props, State> {
             return
         }
 
-        void getAvatar({
-            email: this.props.email,
-            size: this.props.size,
-        }).then((imageUrl: Maybe<string>) => {
-            // Still need to do it here in case the component is unmounted while the promise is pending
-            if (this.isMounted) {
-                this.setState({imageUrl})
-            }
-        })
+        if (this.props.email) {
+            void getAvatar({
+                email: this.props.email,
+                size: this.props.size,
+            }).then((imageUrl: Maybe<string>) => {
+                // Still need to do it here in case the component is unmounted while the promise is pending
+                if (this.isMounted) {
+                    this.setState({imageUrl})
+                }
+            })
+        }
     }
 
     render() {

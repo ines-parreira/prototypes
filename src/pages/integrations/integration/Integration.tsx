@@ -419,7 +419,6 @@ export const IntegrationDetail = ({
                             actions={actions}
                             integration={integration}
                             isUpdate={isUpdate}
-                            loading={loading}
                         />
                     )
                 }
@@ -427,6 +426,7 @@ export const IntegrationDetail = ({
                 if (extra === Tab.Preferences) {
                     return (
                         <GorgiasChatIntegrationPreferences
+                            currentUser={currentUser}
                             integration={integration}
                         />
                     )

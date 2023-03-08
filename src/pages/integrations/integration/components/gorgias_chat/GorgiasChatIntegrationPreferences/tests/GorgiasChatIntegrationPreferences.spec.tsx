@@ -53,6 +53,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         integration: fromJS({}),
         emailIntegrations: [],
         updateOrCreateIntegration: jest.fn(),
+        currentUser: fromJS({}),
     }
 
     describe('componentDidMount()', () => {
@@ -250,6 +251,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         <GorgiasChatIntegrationPreferencesComponent
                             updateOrCreateIntegration={jest.fn()}
                             integration={integration}
+                            currentUser={fromJS({})}
                         />
                     )
 
@@ -429,7 +431,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
     describe('_submitPreferences()', () => {
         it('should be called when the form is submitted', () => {
             ;[
-                'email-prompt-help',
+                'hide-chat-help',
                 'hide-outside-business-hours-help',
                 'dynamic-wait-time-option',
             ].forEach((tooltipId) => {

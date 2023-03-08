@@ -97,8 +97,9 @@ describe('<ChatIntegrationPreview/>', () => {
                 <ChatIntegrationPreview {...minProps}>
                     <OptionalEmailCapture
                         conversationColor={conversationColor}
-                        name="My little chat integration"
+                        chatTitle="My little chat integration"
                         language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                        currentUser={fromJS({})}
                     />
                 </ChatIntegrationPreview>
             )

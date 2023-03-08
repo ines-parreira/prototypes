@@ -1,4 +1,5 @@
 @import '~css/new/colorTokens';
+@import '~css/new/layout.less';
 @import (reference) '~css/new/util.less';
 
 :local {
@@ -6,7 +7,6 @@
     @lighterGrey: #f8f9fa;
     @lightGrey: #ededed;
     @grey: #c3c8d0;
-    @medium-grey: rgba(44, 66, 103, 0.46);
     @active-bluegreen: #06d79c;
     @offlineColor: #a1a9b6;
     @textColor: #545454;
@@ -105,10 +105,10 @@
             pointer-events: initial;
 
             .conversationTimestamp {
-                color: @medium-grey;
-                font-size: 12px;
-                margin-bottom: 15px;
-                margin-top: 25px;
+                color: @classic-neutral-grey-4;
+                font-size: 11px;
+                font-weight: 600;
+                margin-bottom: @layout-spacing-m;
                 text-transform: uppercase;
                 text-align: center;
             }
