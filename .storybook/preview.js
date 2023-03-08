@@ -2,6 +2,21 @@ require('@storybook/addon-console')
 
 require('assets/css/main.less')
 
+import {
+    BarElement,
+    BarController,
+    Chart,
+    LineController,
+    LineElement,
+    PointElement,
+    Tooltip,
+    Legend,
+    LinearScale,
+    CategoryScale,
+    Filler,
+} from 'chart.js'
+import {SankeyController, Flow} from 'chartjs-chart-sankey'
+
 export const parameters = {
     chromatic: {disableSnapshot: true},
     options: {
@@ -37,3 +52,18 @@ export const parameters = {
         ],
     },
 }
+
+Chart.register(
+    BarController,
+    BarElement,
+    LineController,
+    LineElement,
+    PointElement,
+    Tooltip,
+    Legend,
+    LinearScale,
+    CategoryScale,
+    SankeyController,
+    Flow,
+    Filler
+)
