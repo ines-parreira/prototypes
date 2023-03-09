@@ -29,6 +29,8 @@ import {SingleSenderVerificationsState} from './singleSenderVerification/types'
 import singleSenderVerifications from './singleSenderVerification/reducer'
 import {ChatInstallationStatusState} from './chatInstallationStatus/types'
 import chatInstallationStatus from './chatInstallationStatus/reducer'
+import chatsApplicationAutomationSettings from './chatsApplicationAutomationSettings/reducer'
+import {ChatsApplicationAutomationSettingsState} from './chatsApplicationAutomationSettings/types'
 
 const entitiesReducers = combineReducers<{
     macros: MacrosState
@@ -46,6 +48,7 @@ const entitiesReducers = combineReducers<{
     singleSenderVerifications: SingleSenderVerificationsState
     ruleRecipes: RuleRecipesState
     auditLogEvents: AuditLogEventsState
+    chatsApplicationAutomationSettings: ChatsApplicationAutomationSettingsState
 }>({
     macros,
     rules,
@@ -62,6 +65,7 @@ const entitiesReducers = combineReducers<{
     newPhoneNumbers,
     singleSenderVerifications,
     auditLogEvents,
+    chatsApplicationAutomationSettings,
 })
 
 export default entitiesReducers

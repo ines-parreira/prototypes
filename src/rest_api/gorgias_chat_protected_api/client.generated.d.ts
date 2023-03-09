@@ -6,6 +6,20 @@ import {
 } from 'openapi-client-axios'
 
 declare namespace Paths {
+    namespace GetApplicationAutomationSettings {
+        export interface HeaderParameters {
+            'Content-Type'?: Parameters.ContentType
+            Authorization?: Parameters.Authorization
+        }
+        namespace Parameters {
+            export type ApplicationId = string
+            export type Authorization = string
+            export type ContentType = string
+        }
+        export interface PathParameters {
+            applicationId: Parameters.ApplicationId
+        }
+    }
     namespace GetApplicationTexts {
         export interface HeaderParameters {
             'Content-Type'?: Parameters.ContentType
@@ -49,6 +63,20 @@ declare namespace Paths {
         }
     }
     namespace UpdateApplicationTexts {
+        export interface HeaderParameters {
+            'Content-Type'?: Parameters.ContentType
+            Authorization?: Parameters.Authorization
+        }
+        namespace Parameters {
+            export type ApplicationId = string
+            export type Authorization = string
+            export type ContentType = string
+        }
+        export interface PathParameters {
+            applicationId: Parameters.ApplicationId
+        }
+    }
+    namespace UpsertApplicationAutomationSettings {
         export interface HeaderParameters {
             'Content-Type'?: Parameters.ContentType
             Authorization?: Parameters.Authorization
@@ -109,6 +137,28 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<any>
+    /**
+     * getApplicationAutomationSettings - GET application automation settings
+     */
+    'getApplicationAutomationSettings'(
+        parameters?: Parameters<
+            Paths.GetApplicationAutomationSettings.PathParameters &
+                Paths.GetApplicationAutomationSettings.HeaderParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<any>
+    /**
+     * upsertApplicationAutomationSettings - Upsert application automation settings
+     */
+    'upsertApplicationAutomationSettings'(
+        parameters?: Parameters<
+            Paths.UpsertApplicationAutomationSettings.PathParameters &
+                Paths.UpsertApplicationAutomationSettings.HeaderParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<any>
 }
 
 export interface PathsDictionary {
@@ -157,6 +207,30 @@ export interface PathsDictionary {
             parameters?: Parameters<
                 Paths.GetTranslations.QueryParameters &
                     Paths.GetTranslations.HeaderParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<any>
+    }
+    ['/applications/{applicationId}/automation-settings']: {
+        /**
+         * upsertApplicationAutomationSettings - Upsert application automation settings
+         */
+        'put'(
+            parameters?: Parameters<
+                Paths.UpsertApplicationAutomationSettings.PathParameters &
+                    Paths.UpsertApplicationAutomationSettings.HeaderParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<any>
+        /**
+         * getApplicationAutomationSettings - GET application automation settings
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetApplicationAutomationSettings.PathParameters &
+                    Paths.GetApplicationAutomationSettings.HeaderParameters
             > | null,
             data?: any,
             config?: AxiosRequestConfig

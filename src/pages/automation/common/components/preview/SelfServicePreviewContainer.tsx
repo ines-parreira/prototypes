@@ -12,25 +12,40 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceChannels'
 
+import {SelfServiceChatChannel} from '../../hooks/useSelfServiceChatChannels'
+import {SelfServiceHelpCenterChannel} from '../../hooks/useSelfServiceHelpCenterChannels'
+
 import css from './SelfServicePreviewContainer.less'
 
-type Props = {
-    channels: SelfServiceChannel[]
+type Props<
+    Channel extends
+        | SelfServiceChannel
+        | SelfServiceChatChannel
+        | SelfServiceHelpCenterChannel
+> = {
+    channels: Channel[]
     alert?: {
         message: ReactNode
         action?: {message: string; href: string}
     }
-    children: (channel: SelfServiceChannel) => void
+    children: (channel: Channel) => void
 }
 
-const SelfServicePreviewContainer = ({channels, alert, children}: Props) => {
+const SelfServicePreviewContainer = <
+    Channel extends
+        | SelfServiceChannel
+        | SelfServiceChatChannel
+        | SelfServiceHelpCenterChannel
+>({
+    channels,
+    alert,
+    children,
+}: Props<Channel>) => {
     const history = useHistory()
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
     const [isSelectOpen, setIsSelectOpen] = useState(false)
-    const [channel, setChannel] = useState<SelfServiceChannel | undefined>(
-        channels[0]
-    )
+    const [channel, setChannel] = useState<Channel | undefined>(channels[0])
 
     const options = useMemo(
         () =>

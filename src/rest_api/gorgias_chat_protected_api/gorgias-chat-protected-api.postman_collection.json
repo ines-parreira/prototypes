@@ -143,6 +143,72 @@
           }
         },
         "response": []
+      },
+      {
+        "name": "Upsert application automation settings",
+        "request": {
+            "method": "PUT",
+            "header": [
+                {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                },
+                {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                }
+            ],
+            "body": {
+                "mode": "raw",
+                "raw": "{\n    \"articleRecommendation\": {\n        \"enabled\": true\n    },\n    \"orderManagement\": {\n        \"enabled\": true\n    },\n    \"quickResponses\": {\n        \"enabled\": true\n    }\n}"
+            },
+            "url": {
+                "raw": "{{baseURL}}/applications/{{applicationId}}/automation-settings",
+                "host": [
+                    "{{baseURL}}"
+                ],
+                "path": [
+                    "applications",
+                    "{{applicationId}}",
+                    "automation-settings"
+                ]
+            }
+        },
+        "response": []
+      },
+      {
+          "name": "GET application automation settings",
+          "request": {
+              "method": "GET",
+              "header": [
+                  {
+                      "key": "Content-Type",
+                      "name": "Content-Type",
+                      "value": "application/json",
+                      "type": "text"
+                  },
+                  {
+                      "key": "Authorization",
+                      "value": "Bearer {{accessToken}}",
+                      "type": "text"
+                  }
+              ],
+              "url": {
+                  "raw": "{{baseURL}}/applications/{{applicationId}}/automation-settings",
+                  "host": [
+                      "{{baseURL}}"
+                  ],
+                  "path": [
+                      "applications",
+                      "{{applicationId}}",
+                      "automation-settings"
+                  ]
+              }
+          },
+          "response": []
       }
     ]
 }

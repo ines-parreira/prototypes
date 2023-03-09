@@ -183,6 +183,100 @@
                     }
                 }
             }
+        },
+        "/applications/{applicationId}/automation-settings": {
+            "put": {
+                "tags": [
+                    "gorgias-chat-api"
+                ],
+                "summary": "Upsert application automation settings",
+                "operationId": "upsertApplicationAutomationSettings",
+                "requestBody": {
+                    "content": {
+                        "*/*": {
+                            "schema": {
+                                "type": "string",
+                                "example": "\"{\\n    \\\"articleRecommendation\\\": {\\n        \\\"enabled\\\": true\\n    },\\n    \\\"orderManagement\\\": {\\n        \\\"enabled\\\": true\\n    },\\n    \\\"quickResponses\\\": {\\n        \\\"enabled\\\": true\\n    }\\n}\""
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Bearer {{accessToken}}"
+                    },
+                    {
+                        "name": "applicationId",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "gorgias-chat-api"
+                ],
+                "summary": "GET application automation settings",
+                "operationId": "getApplicationAutomationSettings",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Bearer {{accessToken}}"
+                    },
+                    {
+                        "name": "applicationId",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
         }
     }
 }

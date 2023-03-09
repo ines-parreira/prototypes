@@ -18,4 +18,5 @@ export const entitiesInitialState: RootState['entities'] = {
     singleSenderVerifications: {},
     phoneNumbers: {},
     newPhoneNumbers: {},
+    chatsApplicationAutomationSettings: {},
 }

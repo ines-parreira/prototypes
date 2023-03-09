@@ -1,4 +1,5 @@
 import React, {useMemo} from 'react'
+import {Link} from 'react-router-dom'
 
 import {createMemoryHistory} from 'history'
 
@@ -7,7 +8,13 @@ import SelfServicePreview from 'pages/automation/common/components/preview/SelfS
 import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
 import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
-import useSelfServiceChatChannels from '../../common/hooks/useSelfServiceChatChannels'
+import useSelfServiceChatChannels, {
+    SelfServiceChatChannel,
+} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
+import useApplicationAutomationSettings from 'pages/automation/common/hooks/useApplicationAutomationSettings'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+
+import css from './ArticleRecommendationPreview.less'
 
 interface Props {
     shopName: string
@@ -21,6 +28,19 @@ const ArticleRecommendationPreview = ({
     helpCenter,
 }: Props) => {
     const chatIntegrations = useSelfServiceChatChannels(shopType, shopName)
+    const chatApplicationsIds = useMemo(
+        () =>
+            chatIntegrations
+                .map((v) => v.value.meta.app_id)
+                .filter(
+                    (appId: string | undefined): appId is string =>
+                        appId !== undefined
+                ),
+        [chatIntegrations]
+    )
+
+    const {applicationsAutomationSettings} =
+        useApplicationAutomationSettings(chatApplicationsIds)
 
     const history = useMemo(
         () =>
@@ -33,7 +53,7 @@ const ArticleRecommendationPreview = ({
     )
 
     return (
-        <SelfServicePreviewContainer
+        <SelfServicePreviewContainer<SelfServiceChatChannel>
             channels={helpCenter !== undefined ? chatIntegrations : []}
             alert={
                 helpCenter && {
@@ -46,16 +66,42 @@ const ArticleRecommendationPreview = ({
                 }
             }
         >
-            {(channel) =>
-                helpCenter && (
-                    <SelfServicePreviewContext.Provider value={{}}>
-                        <SelfServicePreview
-                            channel={channel}
-                            history={history}
-                        />
-                    </SelfServicePreviewContext.Provider>
+            {(channel) => {
+                const applicationId = channel.value.meta.app_id
+                const articleRecommendationDisabled =
+                    applicationsAutomationSettings[applicationId ?? '']
+                        ?.articleRecommendation.enabled === false
+
+                if (articleRecommendationDisabled) {
+                    return (
+                        <Alert
+                            className={css.alert}
+                            type={AlertType.Warning}
+                            icon
+                        >
+                            This feature is currently disabled on this channel.
+                            Manage this setting in{' '}
+                            <Link
+                                to={`/app/automation/${shopType}/${shopName}/connected-channels`}
+                            >
+                                Connected Channels
+                            </Link>
+                            .
+                        </Alert>
+                    )
+                }
+
+                return (
+                    helpCenter && (
+                        <SelfServicePreviewContext.Provider value={{}}>
+                            <SelfServicePreview
+                                channel={channel}
+                                history={history}
+                            />
+                        </SelfServicePreviewContext.Provider>
+                    )
                 )
-            }
+            }}
         </SelfServicePreviewContainer>
     )
 }
