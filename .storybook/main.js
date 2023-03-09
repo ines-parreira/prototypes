@@ -103,6 +103,13 @@ module.exports = {
             },
             extensions: ['.ts', '.tsx', '.js'],
             modules: ['node_modules', srcDir],
+            fallback: {
+                https: require.resolve('https-browserify'),
+                http: require.resolve('stream-http'),
+                crypto: require.resolve('crypto-browserify'),
+                stream: require.resolve('stream-browserify'),
+                path: require.resolve('path-browserify'),
+            },
         }
 
         config.plugins.push(
