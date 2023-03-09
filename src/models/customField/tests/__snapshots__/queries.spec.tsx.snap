@@ -103,3 +103,27 @@ exports[`queries.spec.tsx useUpdateCustomFieldStatus successful query hook 1`] =
   "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
 }
 `;
+
+exports[`queries.spec.tsx useUpdateCustomFields successful query hook 1`] = `
+{
+  "data": [
+    {
+      "created_datetime": "2022-01-02T03:04:05.123456+00:00",
+      "deactivated_datetime": null,
+      "definition": {
+        "data_type": "text",
+        "input_settings": {
+          "input_type": "input",
+          "placeholder": "Test placeholder",
+        },
+      },
+      "id": 123,
+      "label": "Test field",
+      "object_type": "Ticket",
+      "priority": 123,
+      "required": false,
+      "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
+    },
+  ],
+}
+`;

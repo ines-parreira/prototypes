@@ -234,6 +234,67 @@ exports[`custom field resources updateCustomField should resolve with an updated
 }
 `;
 
+exports[`custom field resources updateCustomFields should resolve with a list of updated CustomFields on success 1`] = `
+{
+  "data": [
+    {
+      "created_datetime": "2022-01-02T03:04:05.123456+00:00",
+      "deactivated_datetime": null,
+      "definition": {
+        "data_type": "text",
+        "input_settings": {
+          "input_type": "input",
+          "placeholder": "Test placeholder",
+        },
+      },
+      "id": 123,
+      "label": "Test field",
+      "object_type": "Ticket",
+      "priority": 123,
+      "required": false,
+      "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
+    },
+  ],
+}
+`;
+
+exports[`custom field resources updateCustomFields should resolve with a list of updated CustomFields on success 2`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
+      "data": "[{"id":123,"priority":999}]",
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "url": "/api/custom-fields/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+}
+`;
+
 exports[`custom field resources updatePartialCustomField should resolve with an updated CustomField on success 1`] = `
 {
   "created_datetime": "2022-01-02T03:04:05.123456+00:00",

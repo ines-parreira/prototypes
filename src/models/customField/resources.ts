@@ -3,7 +3,12 @@ import {
     ApiPaginationParams,
     ApiListResponseCursorPagination,
 } from 'models/api/types'
-import {CustomField, CustomFieldInput, CustomFieldState} from './types'
+import {
+    CustomField,
+    CustomFieldInput,
+    CustomFieldState,
+    PartialCustomFieldWithId,
+} from './types'
 
 export type ListParams = ApiPaginationParams & {
     archived: boolean
@@ -40,6 +45,16 @@ export async function updateCustomField(
 ): Promise<CustomField> {
     const response = await client.put<CustomField>(
         `/api/custom-fields/${id}`,
+        data
+    )
+    return response.data
+}
+
+export async function updateCustomFields(
+    data: PartialCustomFieldWithId[]
+): Promise<CustomField[]> {
+    const response = await client.put<CustomField[]>(
+        `/api/custom-fields/`,
         data
     )
     return response.data

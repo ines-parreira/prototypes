@@ -1,17 +1,29 @@
 @import '~css/new/colorTokens';
 
+// this is outside of `:local` because the ReactSortable doesn't work with local class names
+.draggable {
+    .drag-handle {
+        width: 22px;
+        text-align: center;
+    }
+
+    &.chosen,
+    &.ghost {
+        .drag-handle {
+            cursor: grabbing;
+        }
+    }
+
+    &:not(.chosen) {
+        .drag-handle {
+            cursor: grab;
+        }
+    }
+}
+
 :local {
     .row {
         border-bottom: 1px solid @classic-neutral-grey-3;
-
-        .middleColumn {
-            cursor: pointer;
-        }
-
-        .middleColumnContent {
-            display: flex;
-            align-items: center;
-        }
 
         &:hover {
             background: @classic-neutral-grey-1;

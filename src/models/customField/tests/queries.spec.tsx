@@ -15,10 +15,12 @@ import {
     useGetCustomFieldDefinition,
     useGetCustomFieldDefinitions,
     useUpdateCustomField,
+    useUpdateCustomFields,
     useUpdateCustomFieldStatus,
 } from 'models/customField/queries'
 import {customField, customFieldInput} from 'fixtures/customField'
 import {NotificationStatus} from 'state/notifications/types'
+import {ListParams} from 'models/customField/resources'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = createTestQueryClient()
@@ -284,6 +286,102 @@ describe('queries.spec.tsx', () => {
                 expect(result.current.isError).toBe(true)
                 expect(result.current.error).toBeDefined()
                 expect(invalidateQueriesSpy).toHaveBeenCalledTimes(0)
+                expect(mockStore.getActions()).toMatchObject([
+                    {
+                        payload: {
+                            message: 'foo error',
+                            status: NotificationStatus.Error,
+                        },
+                    },
+                ])
+            })
+
+            invalidateQueriesSpy.mockRestore()
+        })
+    })
+
+    describe('useUpdateCustomFields', () => {
+        it('successful query hook', async () => {
+            const mockStore = configureMockStore([thunk])()
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries'
+            )
+            const activeParams: ListParams = {
+                archived: false,
+                object_type: 'Ticket',
+            }
+            mockedServer
+                .onPut('/api/custom-fields/')
+                .reply(200, {data: [customField]})
+            const {result} = renderHook(
+                () => useUpdateCustomFields(activeParams),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+
+            act(() => {
+                result.current.mutate([
+                    {
+                        id: customField.id,
+                        priority: 999,
+                    },
+                ])
+            })
+
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+                expect(result.current.data).toMatchSnapshot()
+                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                    queryKey: customFieldDefinitionKeys.list(activeParams),
+                })
+            })
+
+            invalidateQueriesSpy.mockRestore()
+        })
+
+        it('failure query hook', async () => {
+            const mockStore = configureMockStore([thunk])()
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries'
+            )
+            mockedServer.onPut('/api/custom-fields/').reply(400, {
+                error: {msg: 'foo error'},
+            })
+            const {result} = renderHook(
+                () =>
+                    useUpdateCustomFields({
+                        archived: false,
+                        object_type: 'Ticket',
+                    }),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+
+            act(() => {
+                result.current.mutate([
+                    {
+                        id: customField.id,
+                        priority: 999,
+                    },
+                ])
+            })
+
+            await waitFor(() => {
+                expect(result.current.isError).toBe(true)
+                expect(result.current.error).toBeDefined()
+                expect(invalidateQueriesSpy).toHaveBeenCalledTimes(1)
                 expect(mockStore.getActions()).toMatchObject([
                     {
                         payload: {

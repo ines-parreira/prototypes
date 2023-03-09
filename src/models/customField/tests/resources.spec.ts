@@ -8,6 +8,7 @@ import {
     getCustomField,
     getCustomFields,
     updateCustomField,
+    updateCustomFields,
     updatePartialCustomField,
 } from '../resources'
 
@@ -97,6 +98,37 @@ describe('custom field resources', () => {
                 .reply(503, {message: 'error'})
             return expect(
                 updateCustomField(123, customFieldInput)
+            ).rejects.toEqual(new Error('Request failed with status code 503'))
+        })
+    })
+
+    describe('updateCustomFields', () => {
+        it('should resolve with a list of updated CustomFields on success', async () => {
+            mockedServer
+                .onPut('/api/custom-fields/')
+                .reply(200, {data: [customField]})
+            const res = await updateCustomFields([
+                {
+                    id: customField.id,
+                    priority: 999,
+                },
+            ])
+
+            expect(res).toMatchSnapshot()
+            expect(mockedServer.history).toMatchSnapshot()
+        })
+
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onPut('/api/custom-fields/')
+                .reply(503, {message: 'error'})
+            return expect(
+                updateCustomFields([
+                    {
+                        id: customField.id,
+                        priority: 999,
+                    },
+                ])
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })

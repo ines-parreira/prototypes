@@ -6,7 +6,10 @@ import {useDebounce} from 'react-use'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useIsFlagEnabled} from 'hooks/useIsFlagEnabled'
 import useTitle from 'hooks/useTitle'
-import {useGetCustomFieldDefinitions} from 'models/customField/queries'
+import {
+    useGetCustomFieldDefinitions,
+    useUpdateCustomFields,
+} from 'models/customField/queries'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import List from 'pages/settings/ticketFields/components/List'
@@ -16,6 +19,7 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Search from 'pages/common/components/Search'
+import {ListParams} from 'models/customField/resources'
 import css from './TicketFields.less'
 
 type TicketFieldsTab = 'active' | 'archived'
@@ -31,18 +35,21 @@ export default function TicketFields() {
     const [debouncedSearch, setDebouncedSearch] = useState('')
     useDebounce(() => setDebouncedSearch(search), 1000, [search])
 
+    const activeParams: ListParams = {
+        archived: false,
+        object_type: 'Ticket',
+        cursor: activeCursor,
+        search: debouncedSearch,
+    }
     const {
         data: {data: activeFields = [], meta: activeFieldsPaginationMeta} = {},
         isLoading: isLoadingActive,
-    } = useGetCustomFieldDefinitions(
-        {
-            archived: false,
-            object_type: 'Ticket',
-            cursor: activeCursor,
-            search: debouncedSearch,
-        },
-        {enabled: isTicketFieldsEnabled}
-    )
+    } = useGetCustomFieldDefinitions(activeParams, {
+        enabled: isTicketFieldsEnabled,
+    })
+
+    const {mutate: mutateCustomFieldsPriority} =
+        useUpdateCustomFields(activeParams)
 
     const {
         data: {
@@ -170,7 +177,14 @@ export default function TicketFields() {
                                                 new one.
                                             </Alert>
                                         )}
-                                    <List ticketFields={ticketFields} />
+                                    <List
+                                        ticketFields={ticketFields}
+                                        canReorder={
+                                            !debouncedSearch &&
+                                            activeTab !== 'archived'
+                                        }
+                                        onReorder={mutateCustomFieldsPriority}
+                                    />
                                     <Navigation
                                         className={css.navigation}
                                         hasNextItems={

@@ -36,6 +36,9 @@ export interface CustomField extends CustomFieldInput {
     deactivated_datetime: string | null
 }
 
+export type PartialCustomFieldWithId = Partial<CustomField> &
+    Pick<CustomField, 'id'>
+
 export type CustomFieldState = {
     id: CustomField['id']
     value?: string | number

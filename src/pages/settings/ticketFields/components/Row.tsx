@@ -5,14 +5,15 @@ import {CustomField} from 'models/customField/types'
 import {useUpdateCustomFieldStatus} from 'models/customField/queries'
 import IconButton from 'pages/common/components/button/IconButton'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import css from 'pages/settings/ticketFields/components/Row.less'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import ArchiveConfirmationModal from 'pages/settings/ticketFields/components/ArchiveConfirmationModal'
+import css from './Row.less'
 
 export type Props = {
     ticketField: CustomField
+    canReorder: boolean
 }
-export default function Row({ticketField}: Props) {
+export default function Row({ticketField, canReorder}: Props) {
     const {mutate, isLoading} = useUpdateCustomFieldStatus(ticketField.id)
 
     const link = `/app/settings/ticket-fields/${ticketField.id}/edit`
@@ -22,15 +23,22 @@ export default function Row({ticketField}: Props) {
         <tr
             id={ticketField.id.toString()}
             key={ticketField.id}
+            data-id={ticketField.id} // dragging info
             className={classnames('draggable', css.row)}
         >
+            {canReorder && !ticketField.deactivated_datetime && (
+                <td
+                    className="smallest align-middle"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <i className={'material-icons text-faded drag-handle'}>
+                        drag_indicator
+                    </i>
+                </td>
+            )}
             <td
-                className={classnames(
-                    'link-full-td',
-                    'align-middle',
-                    css['middle-column']
-                )}
-                id={`ticket-field-name-${ticketField.id}`}
+                className={classnames('link-full-td align-middle')}
+                id={`ticket-field-label-${ticketField.id}`}
             >
                 <Link to={link}>
                     <div>

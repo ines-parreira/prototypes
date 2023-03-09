@@ -8,6 +8,7 @@ import {
     getCustomFields,
     ListParams,
     updateCustomField,
+    updateCustomFields,
     updateCustomFieldValue,
     updatePartialCustomField,
 } from 'models/customField/resources'
@@ -17,8 +18,16 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {updateCustomFieldState} from 'state/ticket/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {GorgiasApiError} from 'models/api/types'
-import {CustomFieldInput, CustomFieldState} from 'models/customField/types'
+import {
+    ApiListResponseCursorPagination,
+    GorgiasApiError,
+} from 'models/api/types'
+import {
+    CustomField,
+    CustomFieldInput,
+    CustomFieldState,
+    PartialCustomFieldWithId,
+} from 'models/customField/types'
 import {errorToChildren} from 'utils'
 
 export const customFieldDefinitionKeys = {
@@ -126,6 +135,70 @@ export const useUpdateCustomField = (id: number) => {
                     status: NotificationStatus.Error,
                 })
             )
+        },
+    })
+}
+
+export const useUpdateCustomFields = (params: ListParams) => {
+    const dispatch = useAppDispatch()
+    const queryClient = useQueryClient()
+    const queryKey = customFieldDefinitionKeys.list(params)
+
+    return useMutation({
+        mutationFn: (data: PartialCustomFieldWithId[]) =>
+            updateCustomFields(data),
+        onMutate: async (data: PartialCustomFieldWithId[]) => {
+            // Cancel any outgoing re-fetches
+            // (so they don't overwrite our optimistic update)
+            await queryClient.cancelQueries({queryKey})
+
+            // Optimistically update to the new value
+            queryClient.setQueryData<
+                Partial<ApiListResponseCursorPagination<CustomField[]>>
+            >(queryKey, (oldQueryData) => {
+                const newData = oldQueryData?.data
+                    ?.map((customField) => {
+                        const updatedCustomField = data.find(
+                            (partialCustomFieldWithId) =>
+                                partialCustomFieldWithId.id === customField.id
+                        )
+
+                        if (updatedCustomField) {
+                            return {
+                                ...customField,
+                                ...updatedCustomField,
+                            }
+                        }
+
+                        return customField
+                    })
+                    // in case we update priorities of custom fields then they won't be sorted anymore,
+                    // so we need to sort them back
+                    .sort(
+                        (customFieldA, customFieldB) =>
+                            customFieldB.priority - customFieldA.priority
+                    )
+
+                return {
+                    ...oldQueryData,
+                    data: newData,
+                }
+            })
+        },
+        onError: (error: GorgiasApiError) => {
+            void dispatch(
+                notify({
+                    title: error.response.data.error.msg,
+                    message: errorToChildren(error) || undefined,
+                    allowHTML: true,
+                    status: NotificationStatus.Error,
+                })
+            )
+        },
+        onSettled: () => {
+            void queryClient.invalidateQueries({
+                queryKey,
+            })
         },
     })
 }

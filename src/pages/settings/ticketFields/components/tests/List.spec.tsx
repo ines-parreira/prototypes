@@ -14,13 +14,18 @@ jest.mock('../Row', () => (props: Props) => {
 })
 
 describe('<List />', () => {
-    it('should render correctly', () => {
-        const props = {
-            ticketFields: [customField],
-            onFieldChange: jest.fn(),
-        }
+    it.each([true, false])(
+        'should render correctly based on active tab',
+        (canReorder) => {
+            const props = {
+                ticketFields: [customField],
+                canReorder: canReorder,
+                onFieldChange: jest.fn(),
+                onReorder: jest.fn(),
+            }
 
-        const {container} = render(<List {...props} />)
-        expect(container.firstChild).toMatchSnapshot()
-    })
+            const {container} = render(<List {...props} />)
+            expect(container.firstChild).toMatchSnapshot()
+        }
+    )
 })

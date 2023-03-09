@@ -27,67 +27,79 @@ describe('<Row />', () => {
         await queryClient.invalidateQueries()
     })
 
-    it('should render correctly active field', () => {
-        const props = {
-            ticketField: customField,
+    it.each([true, false])(
+        'should render correctly active field',
+        (canReorder) => {
+            const props = {
+                ticketField: customField,
+                canReorder,
+            }
+
+            const {container} = render(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore({})}>
+                        <table>
+                            <tbody>
+                                <Row {...props} />
+                            </tbody>
+                        </table>
+                    </Provider>
+                </QueryClientProvider>
+            )
+            expect(container.firstChild).toMatchSnapshot()
         }
+    )
 
-        const {container} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore({})}>
-                    <table>
-                        <tbody>
-                            <Row {...props} />
-                        </tbody>
-                    </table>
-                </Provider>
-            </QueryClientProvider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
+    it.each([true, false])(
+        'should render correctly active required field',
+        (canReorder) => {
+            const props = {
+                ticketField: {
+                    ...customField,
+                    required: true,
+                },
+                canReorder,
+            }
 
-    it('should render correctly active required field', () => {
-        const props = {
-            ticketField: {
-                ...customField,
-                required: true,
-            },
+            const {container} = render(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore({})}>
+                        <table>
+                            <tbody>
+                                <Row {...props} />
+                            </tbody>
+                        </table>
+                    </Provider>{' '}
+                </QueryClientProvider>
+            )
+            expect(container.firstChild).toMatchSnapshot()
         }
+    )
 
-        const {container} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore({})}>
-                    <table>
-                        <tbody>
-                            <Row {...props} />
-                        </tbody>
-                    </table>
-                </Provider>{' '}
-            </QueryClientProvider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
+    it.each([true, false])(
+        'should render correctly archived required field',
+        (canReorder) => {
+            const props = {
+                ticketField: {
+                    ...customField,
+                    required: true,
+                    deactivated_datetime: '2022-01-02T03:04:05.123456+00:00',
+                },
+                canReorder,
+            }
 
-    it('should render correctly archived required field', () => {
-        const props = {
-            ticketField: {
-                ...customField,
-                required: true,
-                deactivated_datetime: '2022-01-02T03:04:05.123456+00:00',
-            },
+            const {container} = render(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore({})}>
+                        <table>
+                            <tbody>
+                                <Row {...props} />
+                            </tbody>
+                        </table>
+                    </Provider>{' '}
+                </QueryClientProvider>
+            )
+            expect(container.firstChild).toMatchSnapshot()
         }
-
-        const {container} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore({})}>
-                    <table>
-                        <tbody>
-                            <Row {...props} />
-                        </tbody>
-                    </table>
-                </Provider>{' '}
-            </QueryClientProvider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
+    )
 })
