@@ -10,7 +10,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {entitiesInitialState} from 'fixtures/entities'
-import * as revenueBetaHook from '../../../hooks/useIsRevenueBetaTester'
+import * as revenueBetaHook from 'pages/common/hooks/useIsRevenueBetaTester'
 
 import {ChatCampaignDetailsFactory} from '../ChatCampaignDetailsFactory'
 

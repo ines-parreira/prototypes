@@ -15,7 +15,7 @@ import {
     updateCampaign,
 } from 'state/campaigns/actions'
 
-import {useIsRevenueBetaTester} from '../../hooks/useIsRevenueBetaTester'
+import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
 
 import {ChatCampaign} from '../../types/Campaign'
 

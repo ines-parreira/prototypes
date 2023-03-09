@@ -1,8 +1,8 @@
 import React, {useMemo} from 'react'
 
-import {useTriggers} from '../../containers/TriggersProvider'
+import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
 
-import {useIsRevenueBetaTester} from '../../hooks/useIsRevenueBetaTester'
+import {useTriggers} from '../../containers/TriggersProvider'
 
 import {isAllowedToUpdateTrigger} from '../../utils/isAllowedToUpdateTrigger'
 

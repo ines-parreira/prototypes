@@ -115,6 +115,7 @@ import SupportPerformanceChannels from './stats/SupportPerformanceChannels'
 import SupportPerformanceAgents from './stats/SupportPerformanceAgents'
 import SupportPerformanceSatisfaction from './stats/SupportPerformanceSatisfaction'
 import SupportPerformanceRevenue from './stats/SupportPerformanceRevenue'
+import RevenueCampaignsStats from './stats/revenue/CampaignsStats'
 import SupportPerformanceOverview from './stats/SupportPerformanceOverview'
 import DEPRECATED_SupportPerformanceOverview from './stats/DEPRECATED_SupportPerformanceOverview'
 import SupportPerformanceWeeklyTicketLoad from './stats/SupportPerformanceWeeklyTicketLoad'
@@ -566,6 +567,14 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                     path={`${path}/revenue`}
                     render={appRender({
                         content: SupportPerformanceRevenue,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
+                <Route
+                    exact
+                    path={`${path}/revenue/campaigns`}
+                    render={appRender({
+                        content: RevenueCampaignsStats,
                         navbar: StatsNavbarContainer,
                     })}
                 />

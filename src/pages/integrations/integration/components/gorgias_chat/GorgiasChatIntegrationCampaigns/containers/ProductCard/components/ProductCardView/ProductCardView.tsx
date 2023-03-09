@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
-import {useIsRevenueBetaTester} from '../../../../hooks/useIsRevenueBetaTester'
+import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
 
 import {AttachmentPosition} from '../../../../types/CampaignAttachment'
 

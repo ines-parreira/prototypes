@@ -21,7 +21,7 @@ import {getLDClient} from 'utils/launchDarkly'
 
 import {RootState, StoreDispatch} from 'state/types'
 
-import * as betaTesterHook from '../../../hooks/useIsRevenueBetaTester'
+import * as betaTesterHook from 'pages/common/hooks/useIsRevenueBetaTester'
 import * as shopifyHeadlessHook from '../../../hooks/useIsHeadlessShopifyStore'
 
 import {ChatCampaign} from '../../../types/Campaign'

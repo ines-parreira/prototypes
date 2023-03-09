@@ -12,6 +12,7 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
+import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
 
 import css from './StatsNavbarView.less'
 
@@ -30,6 +31,10 @@ export default function StatsNavbarView() {
         setIsAutomationSubscriptionModal,
     ] = useState(false)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const isRevenueSubscriber = useIsRevenueBetaTester()
+    const hasAttributionModel = Boolean(
+        useFlags()[FeatureFlagKey.RevenueAttributionModel]
+    )
 
     return (
         <>
@@ -93,12 +98,14 @@ export default function StatsNavbarView() {
                     >
                         Satisfaction
                     </NavbarLink>
-                    <NavbarLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/revenue"
-                    >
-                        Revenue
-                    </NavbarLink>
+                    {!(isRevenueSubscriber && hasAttributionModel) && (
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/revenue"
+                        >
+                            Revenue
+                        </NavbarLink>
+                    )}
                 </div>
             </NavbarBlock>
             <NavbarBlock icon="bolt" title="Automations">
@@ -162,6 +169,22 @@ export default function StatsNavbarView() {
                     )}
                 </div>
             </NavbarBlock>
+            {isRevenueSubscriber && hasAttributionModel && (
+                <NavbarBlock icon="attach_money" title="Revenue">
+                    <NavbarLink
+                        {...COMMON_NAV_LINK_PROPS}
+                        to="/app/stats/revenue"
+                    >
+                        Overview
+                    </NavbarLink>
+                    <NavbarLink
+                        {...COMMON_NAV_LINK_PROPS}
+                        to="/app/stats/revenue/campaigns"
+                    >
+                        Campaigns
+                    </NavbarLink>
+                </NavbarBlock>
+            )}
         </>
     )
 }

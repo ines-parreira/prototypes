@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
 import * as actions from 'state/integrations/actions'
-import * as betaTesterHook from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/hooks/useIsRevenueBetaTester'
+import * as betaTesterHook from 'pages/common/hooks/useIsRevenueBetaTester'
 import {CAMPAIGN_INFO_BOX_STORAGE_KEY} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator'
 import GorgiasChatIntegrationCampaigns, {
     GorgiasChatIntegrationCampaignsComponent,
