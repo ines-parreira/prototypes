@@ -51,7 +51,15 @@ export default function FieldForm(props: FieldFormProps) {
     const [archiveModalVisible, setArchiveModalVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [isFormValid, setIsFormValid] = useState(false)
-    const [form, setForm] = useState(props.field)
+    const [form, setForm] = useState(
+        pick(props.field, [
+            'object_type',
+            'label',
+            'description',
+            'required',
+            'definition',
+        ])
+    )
 
     // Use an effect since useRef() does not notify when the value is set
     useEffect(() => {

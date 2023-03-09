@@ -11,7 +11,7 @@ exports[`<EditFieldForm/> should create custom field if the save button is click
   "post": [],
   "put": [
     {
-      "data": "{"object_type":"Ticket","label":"Updated name","priority":123,"required":false,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Test placeholder"}},"id":123,"created_datetime":"2022-01-02T03:04:05.123456+00:00","updated_datetime":"2022-01-02T03:04:05.123456+00:00","deactivated_datetime":null}",
+      "data": "{"object_type":"Ticket","label":"Updated name","required":false,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Test placeholder"}}}",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

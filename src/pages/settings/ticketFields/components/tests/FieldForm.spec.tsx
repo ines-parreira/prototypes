@@ -1,4 +1,6 @@
 import React from 'react'
+import {omit} from 'lodash'
+
 import {render} from '@testing-library/react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
@@ -162,7 +164,9 @@ describe('<FieldForm/>', () => {
         saveButton.click()
 
         expect(props.onSubmit).toHaveBeenCalledTimes(1)
-        expect(props.onSubmit).toHaveBeenCalledWith(customFieldInput)
+        expect(props.onSubmit).toHaveBeenCalledWith(
+            omit(customFieldInput, ['priority'])
+        )
     })
 
     it('should call onCancel if the cancel button is clicked', async () => {
