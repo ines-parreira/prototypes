@@ -89,12 +89,24 @@ const AutomationNavbarAddOnSectionBlock = ({
                     </NavbarLink>
                 </>
             )}
-            <NavbarLink
-                to={`/app/automation/${shopType}/${shopName}/article-recommendation`}
-                isNested
-            >
-                Article recommendation
-            </NavbarLink>
+            {hasAutomationAddOn ? (
+                <NavbarLink
+                    to={`/app/automation/${shopType}/${shopName}/article-recommendation`}
+                    isNested
+                >
+                    Article recommendation
+                </NavbarLink>
+            ) : (
+                <AutomationNavbarAddOnPaywallNavbarLink
+                    to="/app/automation/article-recommendation"
+                    onSubscribeToAutomationAddOnClick={
+                        onSubscribeToAutomationAddOnClick
+                    }
+                    isNested
+                >
+                    Article recommendation
+                </AutomationNavbarAddOnPaywallNavbarLink>
+            )}
         </NavbarSectionBlock>
     )
 }

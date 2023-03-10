@@ -106,7 +106,7 @@ const CurrentHelpCenter: React.FC = () => {
         }
     }, [helpCenter, viewLanguage, helpCenterId, dispatch])
 
-    if (!helpCenter) {
+    if (!helpCenter || !client) {
         return (
             <Container fluid className={settingsCss.pageContainer}>
                 <Loader />

@@ -1,13 +1,12 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {Container} from 'reactstrap'
-import {Link, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import classnames from 'classnames'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Label from 'pages/common/forms/Label/Label'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
@@ -19,42 +18,13 @@ import useSelfServiceConfiguration from '../common/hooks/useSelfServiceConfigura
 import css from './ArticleRecommendationView.less'
 import ArticleRecommendationHelpCenter from './components/ArticleRecommendationHelpCenter'
 import ArticleRecommendationPreview from './components/ArticleRecommendationPreview'
-
-const NoHelpCenterAlert = () => (
-    <Alert
-        className={css.warning}
-        icon
-        type={AlertType.Warning}
-        customActions={
-            <Link to={`/app/settings/help-center`}>Create Help Center</Link>
-        }
-    >
-        Create a help center and add articles to use this feature.
-    </Alert>
-)
-
-const ManyHelpCentersAlert = () => (
-    <Alert className={css.warning} icon type={AlertType.Warning}>
-        You have more than one Help Center. Make sure the desired Help Center is
-        selected below.
-    </Alert>
-)
-
-const ConnectedChannelsInfoAlert = ({
-    shopName,
-    shopType,
-}: {
-    shopName: string
-    shopType: string
-}) => (
-    <Alert className={css.alert} icon>
-        Control where customers receive article recommendations in{' '}
-        <Link to={`/app/automation/${shopType}/${shopName}/connected-channels`}>
-            connected channels
-        </Link>
-        .
-    </Alert>
-)
+import {
+    ConnectedChannelsInfoAlert,
+    EmptyHelpCenterAlert,
+    ManyHelpCentersAlert,
+    NoHelpCenterAlert,
+} from './components/ArticleRecommendationAlerts'
+import {useHelpCenterPublishedArticlesCount} from './hooks/useHelpCenterPublishedArticlesCount'
 
 const ArticleRecommendationView = () => {
     const {shopType, shopName} = useParams<{
@@ -76,6 +46,9 @@ const ArticleRecommendationView = () => {
 
     const [helpCenterId, setHelpCenterId] = useState<Maybe<number>>(undefined)
 
+    const helpCenterArticlesCount =
+        useHelpCenterPublishedArticlesCount(helpCenterId)
+
     useEffect(
         () =>
             setHelpCenterId(
@@ -94,6 +67,8 @@ const ArticleRecommendationView = () => {
     const isDirty =
         helpCenterId !==
         selfServiceConfiguration?.article_recommendation_help_center_id
+
+    const helpCenterEmpty = helpCenterArticlesCount === 0
 
     const handleSubmit = () => {
         if (selfServiceConfiguration) {
@@ -147,8 +122,13 @@ const ArticleRecommendationView = () => {
                                 <NoHelpCenterAlert />
                             )}
 
-                            {availableHelpCenters.length > 1 && (
-                                <ManyHelpCentersAlert />
+                            {availableHelpCenters.length > 1 &&
+                                !helpCenterEmpty && <ManyHelpCentersAlert />}
+
+                            {helpCenterId && helpCenterEmpty && (
+                                <EmptyHelpCenterAlert
+                                    helpCenterId={helpCenterId}
+                                />
                             )}
 
                             <Label className={css.selectorTitle}>

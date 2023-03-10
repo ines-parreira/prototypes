@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
 
 import {createMemoryHistory} from 'history'
 
@@ -12,9 +11,8 @@ import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
 } from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationAutomationSettings from 'pages/automation/common/hooks/useApplicationAutomationSettings'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
-import css from './ArticleRecommendationPreview.less'
+import {DisabledOnChannelAlert} from './ArticleRecommendationAlerts'
 
 interface Props {
     shopName: string
@@ -74,20 +72,10 @@ const ArticleRecommendationPreview = ({
 
                 if (articleRecommendationDisabled) {
                     return (
-                        <Alert
-                            className={css.alert}
-                            type={AlertType.Warning}
-                            icon
-                        >
-                            This feature is currently disabled on this channel.
-                            Manage this setting in{' '}
-                            <Link
-                                to={`/app/automation/${shopType}/${shopName}/connected-channels`}
-                            >
-                                Connected Channels
-                            </Link>
-                            .
-                        </Alert>
+                        <DisabledOnChannelAlert
+                            shopName={shopName}
+                            shopType={shopType}
+                        />
                     )
                 }
 

@@ -536,11 +536,16 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             Order management
           </a>
           <a
-            class="link isNested"
+            class="link isNested item"
             data-active-class-name="active"
-            href="/app/automation/shopify/gorgiastest/article-recommendation"
+            href="/app/automation/article-recommendation"
           >
             Article recommendation
+            <i
+              class="material-icons md-2 icon"
+            >
+              lock
+            </i>
           </a>
           <div
             class="section d-flex align-items-center flex-grow"
@@ -587,11 +592,16 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             </i>
           </a>
           <a
-            class="link isNested"
+            class="link isNested item"
             data-active-class-name="active"
-            href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
+            href="/app/automation/article-recommendation"
           >
             Article recommendation
+            <i
+              class="material-icons md-2 icon"
+            >
+              lock
+            </i>
           </a>
         </div>
       </div>
@@ -1419,11 +1429,16 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             Order management
           </a>
           <a
-            class="link isNested"
+            class="link isNested item"
             data-active-class-name="active"
-            href="/app/automation/shopify/gorgiastest/article-recommendation"
+            href="/app/automation/article-recommendation"
           >
             Article recommendation
+            <i
+              class="material-icons md-2 icon"
+            >
+              lock
+            </i>
           </a>
           <div
             class="section d-flex align-items-center flex-grow"
@@ -1470,11 +1485,16 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             </i>
           </a>
           <a
-            class="link isNested"
+            class="link isNested item"
             data-active-class-name="active"
-            href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
+            href="/app/automation/article-recommendation"
           >
             Article recommendation
+            <i
+              class="material-icons md-2 icon"
+            >
+              lock
+            </i>
           </a>
         </div>
       </div>
