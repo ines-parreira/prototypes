@@ -1,0 +1,46 @@
+import React from 'react'
+
+import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+
+import {useCampaignStatsFilters} from '../../hooks/useCampaignStatsFilters'
+
+import {CampaignMultiSelect} from '../../components/CampaignMultiSelect'
+import {IntegrationMultiSelect} from '../../components/IntegrationMultiSelect'
+
+import css from './RevenueFilters.less'
+
+export const RevenueFilters = () => {
+    const {
+        campaigns,
+        integrations,
+        selectedCampaigns,
+        selectedIntegrations,
+        selectedPeriod,
+        onChangeCampaigns,
+        onChangeIntegration,
+    } = useCampaignStatsFilters()
+
+    return (
+        <div className={css.container}>
+            <div className={css.filterItem}>
+                <IntegrationMultiSelect
+                    integrations={integrations}
+                    selected={selectedIntegrations}
+                    onChangeItem={onChangeIntegration}
+                />
+            </div>
+
+            <div className={css.filterItem}>
+                <CampaignMultiSelect
+                    campaigns={campaigns}
+                    selected={selectedCampaigns}
+                    onChangeItem={onChangeCampaigns}
+                />
+            </div>
+
+            <div className={css.filterItem}>
+                <PeriodStatsFilter value={selectedPeriod} />
+            </div>
+        </div>
+    )
+}

@@ -14,6 +14,11 @@ import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
 import RevenueStatsRestrictedFeature from 'pages/stats/RevenueStatsRestrictedFeature'
 import StatsPage from 'pages/stats/StatsPage'
 
+import {CampaignStatsFilters} from '../../providers/CampaignStatsFilters'
+
+import {RevenueFilters} from '../../containers/RevenueFilters'
+import {RevenueStatsContent} from '../../containers/RevenueStatsContent'
+
 const CampaignsStats = () => {
     const isRevenueSubscriber = useIsRevenueBetaTester()
     const hasAttributionModel = Boolean(
@@ -21,16 +26,18 @@ const CampaignsStats = () => {
     )
 
     return (
-        <StatsPage title="Campaigns" filters={null}>
-            {isRevenueSubscriber && hasAttributionModel ? (
-                <div>Lots of stats here</div>
-            ) : (
-                <div>
-                    You should not be here. Contact your CSM to get access to
-                    this page
-                </div>
-            )}
-        </StatsPage>
+        <CampaignStatsFilters>
+            <StatsPage title="Campaigns" filters={<RevenueFilters />}>
+                {isRevenueSubscriber && hasAttributionModel ? (
+                    <RevenueStatsContent />
+                ) : (
+                    <div>
+                        You should not be here. Contact your CSM to get access
+                        to this page
+                    </div>
+                )}
+            </StatsPage>
+        </CampaignStatsFilters>
     )
 }
 
