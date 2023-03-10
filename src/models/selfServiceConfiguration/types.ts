@@ -133,6 +133,12 @@ export type QuickResponsePolicy = {
     id: string
 }
 
+export type WorkflowEntrypoint = {
+    label: string
+    workflow_id: string
+    enabled: boolean
+}
+
 export type SelfServiceConfiguration = {
     id: number
     type: ShopType
@@ -146,6 +152,7 @@ export type SelfServiceConfiguration = {
     return_order_policy: SelfServiceConfigurationReturnOrderPolicy
     quick_response_policies: QuickResponsePolicy[]
     article_recommendation_help_center_id: Maybe<number>
+    workflows_entrypoints?: Maybe<WorkflowEntrypoint[]>
 }
 
 // cf. comment on SelfServiceReportIssueCase_DEPRECATED

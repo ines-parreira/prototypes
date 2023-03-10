@@ -1,0 +1,58 @@
+@import '~css/new/colorTokens.less';
+:local {
+    .pageHeaderContainer {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: @classic-neutral-grey-0;
+    }
+
+    .headerContainer {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .dragIcon {
+        cursor: grab;
+        font-size: 20px;
+        color: @classic-neutral-grey-3;
+    }
+
+    .arrowIcon {
+        font-size: 18px;
+    }
+
+    .actionButton {
+        background: none;
+        border: none;
+        font-size: 18px;
+        display: inline-block;
+    }
+
+    .title {
+        cursor: pointer;
+    }
+
+    .alignMiddle {
+        vertical-align: middle !important;
+    }
+
+    .info {
+        padding-left: 30px;
+        padding-bottom: 16px;
+    }
+
+    .infoContainer {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+
+        p:last-child {
+            margin-bottom: -10px;
+        }
+    }
+
+    .description {
+        padding-right: 12px;
+    }
+}

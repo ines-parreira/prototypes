@@ -1,13 +1,18 @@
 import React from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getIconFromType} from 'state/integrations/helpers'
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 
 import AutomationNavbarAddOnPaywallNavbarLink from './AutomationNavbarAddOnPaywallNavbarLink'
+
+import css from './AutomationNavbarAddOnSectionBlock.less'
 
 type Props = {
     shopType: ShopType
@@ -25,6 +30,8 @@ const AutomationNavbarAddOnSectionBlock = ({
     ...props
 }: Props) => {
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const isflowsBetaEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.FlowsBeta]
 
     return (
         <NavbarSectionBlock
@@ -38,12 +45,29 @@ const AutomationNavbarAddOnSectionBlock = ({
             {...props}
         >
             {hasAutomationAddOn ? (
-                <NavbarLink
-                    to={`/app/automation/${shopType}/${shopName}/quick-responses`}
-                    isNested
-                >
-                    Quick responses
-                </NavbarLink>
+                <>
+                    {isflowsBetaEnabled && (
+                        <NavbarLink
+                            to={`/app/automation/${shopType}/${shopName}/flows`}
+                            className={css.workflowsNavbarLink}
+                            isNested
+                        >
+                            Flows
+                            <Badge
+                                type={ColorType.Blue}
+                                className={css.workflowsNavbarLinkBadge}
+                            >
+                                BETA
+                            </Badge>
+                        </NavbarLink>
+                    )}
+                    <NavbarLink
+                        to={`/app/automation/${shopType}/${shopName}/quick-responses`}
+                        isNested
+                    >
+                        Quick responses
+                    </NavbarLink>
+                </>
             ) : (
                 <AutomationNavbarAddOnPaywallNavbarLink
                     to="/app/automation/quick-responses"

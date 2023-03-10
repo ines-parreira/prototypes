@@ -38,4 +38,5 @@ export enum FeatureFlagKey {
     ChatLauncherCustomization = 'chat-launcher-customization',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
     DecoupleContactForm = 'decouple-contact-form',
+    FlowsBeta = 'flows-beta',
 }

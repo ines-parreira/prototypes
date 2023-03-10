@@ -139,6 +139,7 @@ import CreateReportOrderIssueFlowScenarioViewContainer from './automation/orderM
 import EditReportOrderIssueFlowScenarioViewContainer from './automation/orderManagement/reportOrderIssue/EditReportOrderIssueFlowScenarioViewContainer'
 import ArticleRecommendationViewContainer from './automation/articleRecommendation/ArticleRecommendationViewContainer'
 import QuickResponsesViewContainer from './automation/quickResponses/QuickResponsesViewContainer'
+import WorkflowsViewContainer from './automation/workflows/WorkflowsViewContainer'
 import PageHeader from './common/components/PageHeader'
 import HeaderTitle from './common/components/HeaderTitle'
 import SelfServiceStatsPageTitle from './stats/self-service/SelfServiceStatsPageTitle'
@@ -1367,6 +1368,8 @@ export function RulesSettingsRoute({
 }
 
 export function AutomationRoutes({match: {path}}: RouteComponentProps) {
+    const isflowsBetaEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.FlowsBeta]
     return (
         <HelpCenterApiClientProvider>
             <Switch>
@@ -1432,6 +1435,19 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                         navbar: AutomationNavbar,
                     })}
                 />
+                {isflowsBetaEnabled && (
+                    <Route
+                        path={`${path}/:shopType/:shopName/flows`}
+                        exact
+                        render={appRender({
+                            content: memoizedWithUserRoleRequired(
+                                WorkflowsViewContainer,
+                                AGENT_ROLE
+                            ),
+                            navbar: AutomationNavbar,
+                        })}
+                    />
+                )}
                 <Route
                     path={[
                         `${path}/shopify/:shopName/order-management`,
