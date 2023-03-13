@@ -46,7 +46,7 @@ const defaultState: Partial<RootState> = {
                             to_time: '17:30',
                         },
                     ],
-                    timezone: 'US/Pacific',
+                    timezone: 'UTC',
                 },
                 id: 2,
                 type: 'business-hours',
