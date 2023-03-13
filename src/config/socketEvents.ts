@@ -9,6 +9,7 @@ import {MACRO_PARAMS_UPDATED} from 'state/macro/constants'
 import {fetchNewPhoneNumbers} from 'models/phoneNumber/resources'
 import {newPhoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 
+import {getEmailMigrations} from 'state/integrations/selectors'
 import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
 
 import * as agentsActions from '../state/agents/actions'
@@ -688,6 +689,42 @@ export const receivedEvents: ReceivedEvent[] = [
             integrationsActions.onVerify(
                 reduxStore.dispatch,
                 (json as EmailIntegrationVerifiedEvent).integration_id
+            )
+        },
+    },
+    {
+        name: SocketEventType.MigrationIntegrationInboundVerified,
+        onReceive: function (json) {
+            const integrationId = (json as EmailIntegrationVerifiedEvent)
+                .integration_id
+            const migration = getEmailMigrations(reduxStore.getState()).find(
+                (migration) => migration.integration.id === integrationId
+            )
+
+            if (!migration) return
+
+            integrationsActions.onVerifyMigrationForwarding(
+                reduxStore.dispatch,
+                integrationId,
+                migration.integration.meta.address
+            )
+        },
+    },
+    {
+        name: SocketEventType.MigrationIntegrationInboundFailed,
+        onReceive: function (json) {
+            const integrationId = (json as EmailIntegrationVerifiedEvent)
+                .integration_id
+            const migration = getEmailMigrations(reduxStore.getState()).find(
+                (migration) => migration.integration.id === integrationId
+            )
+
+            if (!migration) return
+
+            integrationsActions.onVerifyMigrationForwardingFailure(
+                reduxStore.dispatch,
+                integrationId,
+                migration?.integration.meta.address
             )
         },
     },

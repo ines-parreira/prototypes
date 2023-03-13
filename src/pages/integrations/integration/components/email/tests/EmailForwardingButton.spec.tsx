@@ -25,7 +25,7 @@ const computeStatusSpy = jest.spyOn(
     'computeMigrationInboundVerificationStatus'
 )
 
-const mockMigration = {integration: {id: 1}}
+const mockMigration = {integration: {id: 1, meta: {}}}
 
 describe('EmailForwardingButton', () => {
     const renderComponent = (migration = mockMigration) =>

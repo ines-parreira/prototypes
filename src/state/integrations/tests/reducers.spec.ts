@@ -9,8 +9,10 @@ import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 import {RootState} from '../../types'
 import {
+    EmailMigration,
     GorgiasChatStatusEnum,
     IntegrationType,
+    MigrationStatus,
 } from '../../../models/integration/types'
 
 const state = {
@@ -360,6 +362,52 @@ describe('integrations reducers', () => {
             }
 
             expect(reducer(integrationsState, action)).toMatchSnapshot()
+        })
+    })
+
+    describe('UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS', () => {
+        it('should set the correct status on the migration object', () => {
+            const integrationsState = initialState.mergeDeep(
+                fromJS({
+                    migrations: {
+                        email: [
+                            {
+                                integration: {
+                                    id: 1,
+                                    meta: {
+                                        address: 'address@gorgias.com',
+                                    },
+                                },
+                                status: MigrationStatus.Initiated,
+                            },
+                        ],
+                    },
+                })
+            )
+
+            const action = {
+                type: types.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
+                integrationId: 1,
+                emailMigrationVerificationStatus:
+                    MigrationStatus.InboundPending,
+            }
+            expect(
+                (
+                    reducer(integrationsState, action).toJS() as {
+                        migrations: {email: EmailMigration[]}
+                    }
+                ).migrations?.email
+            ).toEqual([
+                {
+                    integration: {
+                        id: 1,
+                        meta: {
+                            address: 'address@gorgias.com',
+                        },
+                    },
+                    status: MigrationStatus.InboundPending,
+                },
+            ])
         })
     })
 })

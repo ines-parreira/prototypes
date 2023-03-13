@@ -12,6 +12,7 @@ import {
     GorgiasChatStatusEnum,
     Integration,
     IntegrationType,
+    MigrationStatus,
 } from 'models/integration/types'
 import history from 'pages/history'
 import * as constants from 'state/integrations/constants'
@@ -697,6 +698,42 @@ export function onVerify(
     return dispatch({
         type: constants.EMAIL_INTEGRATION_VERIFIED,
         integrationId,
+    })
+}
+
+export function onVerifyMigrationForwarding(
+    dispatch: StoreDispatch,
+    integrationId: number,
+    address: string
+): ReturnType<StoreDispatch> {
+    void dispatch(
+        notify({
+            status: NotificationStatus.Success,
+            message: `Forwarding verified for ${address}`,
+        })
+    )
+    return dispatch({
+        type: constants.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
+        integrationId,
+        emailMigrationVerificationStatus: MigrationStatus.InboundSuccess,
+    })
+}
+
+export function onVerifyMigrationForwardingFailure(
+    dispatch: StoreDispatch,
+    integrationId: number,
+    address: string
+): ReturnType<StoreDispatch> {
+    void dispatch(
+        notify({
+            status: NotificationStatus.Error,
+            message: `${address} could not be verified. Make sure forwarding it set up correctly and re-verify. `,
+        })
+    )
+    return dispatch({
+        type: constants.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
+        integrationId,
+        emailMigrationVerificationStatus: MigrationStatus.InboundFailed,
     })
 }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {AxiosError} from 'axios'
 import {EmailMigration, MigrationStatus} from 'models/integration/types'
@@ -18,6 +18,8 @@ type Props = {
 
 export default function EmailForwardingButton({migration}: Props) {
     const dispatch = useAppDispatch()
+    const [lastSubmittedVerification, setLastSubmittedVerification] =
+        useState<EmailMigration>()
 
     const verificationStatus =
         computeMigrationInboundVerificationStatus(migration)
@@ -26,12 +28,7 @@ export default function EmailForwardingButton({migration}: Props) {
         async (migration: EmailMigration) => {
             try {
                 await verifyMigrationIntegration(migration.integration.id)
-                dispatch({
-                    type: UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
-                    integrationId: migration.integration.id,
-                    emailMigrationVerificationStatus:
-                        MigrationStatus.InboundPending,
-                })
+                setLastSubmittedVerification(migration)
             } catch (error) {
                 const {response} = error as AxiosError<{error: {msg: string}}>
                 const errorMsg =
@@ -47,6 +44,25 @@ export default function EmailForwardingButton({migration}: Props) {
             }
         }
     )
+
+    useEffect(() => {
+        if (lastSubmittedVerification) {
+            dispatch({
+                type: UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
+                integrationId: migration.integration.id,
+                emailMigrationVerificationStatus:
+                    MigrationStatus.InboundPending,
+            })
+            void dispatch(
+                notify({
+                    message: `Verifying forwarding for ${migration.integration.meta.address}. This may take several minutes.`,
+                    status: NotificationStatus.Loading,
+                    dismissible: true,
+                })
+            )
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lastSubmittedVerification])
 
     const handleVerifyClick = () => {
         void verifyIntegration(migration)

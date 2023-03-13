@@ -228,6 +228,8 @@ describe('<IntegrationDetail />', () => {
             updateOrCreateIntegration: jest.fn(),
             importEmails: jest.fn(),
             onVerify: jest.fn(),
+            onVerifyMigrationForwarding: jest.fn(),
+            onVerifyMigrationForwardingFailure: jest.fn(),
             fetchEmailDomain: jest.fn(),
             createEmailDomain: jest.fn(),
             deleteEmailDomain: jest.fn(),

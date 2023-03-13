@@ -1000,5 +1000,78 @@ describe('Config: socketEvents', () => {
                 ).toHaveBeenCalledWith(100)
             })
         })
+
+        describe('MigrationIntegrationInbound events', () => {
+            const migration = {
+                integration: {
+                    id: 1,
+                    meta: {
+                        address: 'address@gorgias.com',
+                    },
+                },
+            }
+
+            it('MigrationIntegrationInboundVerified - should find migration and dispatch onVerifyMigrationForwarding action with correct args', () => {
+                const handler = _find(receivedEvents, {
+                    name: SocketEventType.MigrationIntegrationInboundVerified,
+                }) as socketEvents.ReceivedEvent
+
+                jest.spyOn(reduxStore, 'getState').mockReturnValueOnce({
+                    integrations: fromJS({
+                        migrations: {
+                            email: [migration],
+                        },
+                    }),
+                })
+                const spy = jest.spyOn(
+                    integrationActions,
+                    'onVerifyMigrationForwarding'
+                )
+
+                handler.onReceive({
+                    event: {
+                        type: SocketEventType.EmailIntegrationVerified,
+                    },
+                    integration_id: 1,
+                })
+
+                expect(spy).toHaveBeenCalledWith(
+                    reduxStore.dispatch,
+                    migration.integration.id,
+                    migration.integration.meta.address
+                )
+            })
+
+            it('MigrationIntegrationInboundFailed - should find migration and dispatch onVerifyMigrationForwardingFailure action with correct args', () => {
+                const handler = _find(receivedEvents, {
+                    name: SocketEventType.MigrationIntegrationInboundFailed,
+                }) as socketEvents.ReceivedEvent
+
+                jest.spyOn(reduxStore, 'getState').mockReturnValueOnce({
+                    integrations: fromJS({
+                        migrations: {
+                            email: [migration],
+                        },
+                    }),
+                })
+                const spy = jest.spyOn(
+                    integrationActions,
+                    'onVerifyMigrationForwardingFailure'
+                )
+
+                handler.onReceive({
+                    event: {
+                        type: SocketEventType.EmailIntegrationVerified,
+                    },
+                    integration_id: 1,
+                })
+
+                expect(spy).toHaveBeenCalledWith(
+                    reduxStore.dispatch,
+                    migration.integration.id,
+                    migration.integration.meta.address
+                )
+            })
+        })
     })
 })

@@ -43,6 +43,8 @@ export enum SocketEventType {
     SelfServiceConfigurationsUpdateStarted = 'self-service-configurations-update-started',
     EmailIntegrationVerified = 'email.integration-verified',
     EmailForwardingActivated = 'email.forwarding-activated',
+    MigrationIntegrationInboundVerified = 'email.integration-migration-verified',
+    MigrationIntegrationInboundFailed = 'email.integration-migration-failed',
     FacebookIntegrationsReconnected = 'facebook-integrations-reconnected',
     ViewsDeactivated = 'views-deactivated',
     OutboundPhoneCallInitiated = 'outbound-phone-call-initiated',
