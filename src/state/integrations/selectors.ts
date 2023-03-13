@@ -29,8 +29,10 @@ type IntegrationsCountMap = {
 export const DEPRECATED_getIntegrationsState = (state: RootState) =>
     state.integrations || fromJS({})
 
-export const getIntegrationsState = (state: RootState): IntegrationsState =>
-    state.integrations.toJS() as IntegrationsState
+export const getIntegrationsState = createSelector(
+    DEPRECATED_getIntegrationsState,
+    (state) => state.toJS() as IntegrationsState
+)
 
 export const DEPRECATED_getIntegrations = createSelector(
     DEPRECATED_getIntegrationsState,

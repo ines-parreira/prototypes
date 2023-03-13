@@ -1,4 +1,5 @@
-import {useAsyncFn, useDeepCompareEffect} from 'react-use'
+import {useEffect} from 'react'
+import {useAsyncFn} from 'react-use'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -35,7 +36,7 @@ const useApplicationAutomationSettings = (applicationsIds: string[]) => {
         }
     }, [])
 
-    useDeepCompareEffect(() => {
+    useEffect(() => {
         const valuesMissing = applicationsIds.filter(
             (id) => !(id in applicationsAutomationSettings)
         )
