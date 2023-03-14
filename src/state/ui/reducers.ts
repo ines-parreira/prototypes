@@ -12,6 +12,8 @@ import {SelfServiceConfigurationsState} from './selfServiceConfigurations/types'
 import selfServiceConfigurations from './selfServiceConfigurations/reducer'
 import {HelpCenterState} from './helpCenter/types'
 import helpCenter from './helpCenter/reducer'
+import {ContactFormState} from './contactForm/types'
+import contactForm from './contactForm/reducer'
 
 const uiReducers = combineReducers<{
     editor: EditorState
@@ -20,6 +22,7 @@ const uiReducers = combineReducers<{
     views: ViewsState
     selfServiceConfigurations: SelfServiceConfigurationsState
     helpCenter: HelpCenterState
+    contactForm: ContactFormState
 }>({
     editor,
     stats,
@@ -27,6 +30,7 @@ const uiReducers = combineReducers<{
     views,
     selfServiceConfigurations,
     helpCenter,
+    contactForm,
 })
 
 export default uiReducers

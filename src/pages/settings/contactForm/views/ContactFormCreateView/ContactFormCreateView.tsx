@@ -1,18 +1,15 @@
 import classnames from 'classnames'
-import React, {useMemo, useState} from 'react'
+import React, {useMemo, useState, useCallback} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm.fixture'
 import EmailIntegrationInputSection from 'pages/settings/contactForm/components/EmailIntegrationInputSection'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import {validLocaleCode} from 'models/helpCenter/utils'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
-import InputField from 'pages/common/forms/input/InputField'
 import Label from 'pages/common/forms/Label/Label'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
@@ -21,12 +18,10 @@ import {
     isGenericEmailIntegration,
 } from 'pages/integrations/integration/components/email/helpers'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {getNameValidationError} from 'pages/settings/helpCenter/utils/validations'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
 import settingsCss from 'pages/settings/settings.less'
 import {
     CONTACT_FORM_APPEARANCE_PATH,
@@ -34,8 +29,12 @@ import {
     CONTACT_FORM_DEFAULT_LOCALE,
 } from 'pages/settings/contactForm/constants'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
-import {CreateContactFormParams} from 'pages/settings/contactForm/views/ContactFormCreateView/types/createContactFormParams.type'
-import {ContactFormIntegration} from 'models/contactForm/types'
+import {
+    ContactFormIntegration,
+    CreateContactFormDto,
+} from 'models/contactForm/types'
+import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
+import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import contactFormCss from '../../contactForm.less'
 
 const emailIntegrationsSelector = integrationsSelectors.getIntegrationsByTypes(
@@ -50,18 +49,19 @@ const ContactFormCreateView = ({
     const domain: string = useAppSelector(getCurrentAccountState).get('domain')
     const integrations = useAppSelector(emailIntegrationsSelector)
     const emailIntegrations = integrations.filter(isGenericEmailIntegration)
-
-    const [isLoading, setIsLoading] = useState(false)
+    const {checkContactFormName, createContactForm, isReady, isLoading} =
+        useContactFormApi()
     const [isAlertAcknowledged, setIsAlertAcknowledged] = useState(false)
-    const [newContactForm, setNewContactForm] =
-        useState<CreateContactFormParams>(() => {
+    const [isNameInvalid, setIsNameInvalid] = useState(false)
+    const [createContactFormDto, setCreateContactFormDto] =
+        useState<CreateContactFormDto>(() => {
             const defaultEmailIntegration =
                 emailIntegrations.find(isBaseEmailIntegration) ??
                 emailIntegrations[0]
 
             return {
                 name: `${domain} Contact Form`,
-                default_locale: CONTACT_FORM_DEFAULT_LOCALE,
+                locale: CONTACT_FORM_DEFAULT_LOCALE,
                 email_integration: {
                     id: defaultEmailIntegration.id,
                     email: defaultEmailIntegration.meta.address,
@@ -69,26 +69,34 @@ const ContactFormCreateView = ({
             }
         })
 
-    const navigateToStartView = () => history.push(CONTACT_FORM_BASE_PATH)
-    const navigateToContactFormAppearance = (contactFormId: number) =>
-        history.push(
-            insertContactFormIdParam(
-                CONTACT_FORM_APPEARANCE_PATH,
-                contactFormId
+    const navigateToStartView = useCallback(
+        () => history.push(CONTACT_FORM_BASE_PATH),
+        [history]
+    )
+
+    const navigateToContactFormAppearance = useCallback(
+        (contactFormId: number) => {
+            return history.push(
+                insertContactFormIdParam(
+                    CONTACT_FORM_APPEARANCE_PATH,
+                    contactFormId
+                )
             )
-        )
+        },
+        [history]
+    )
 
     const onInfoClose = () => setIsAlertAcknowledged(true)
 
     const onChangeName = (name: string) => {
-        setNewContactForm((prev) => ({
+        setCreateContactFormDto((prev) => ({
             ...prev,
             name,
         }))
     }
 
     const onChangeEmailIntegration = (integration: ContactFormIntegration) => {
-        setNewContactForm((prev) => ({
+        setCreateContactFormDto((prev) => ({
             ...prev,
             email_integration: {
                 id: integration.id,
@@ -98,16 +106,18 @@ const ContactFormCreateView = ({
     }
 
     const onChangeLocale = (locale: Value) => {
-        setNewContactForm((prev) => ({
+        setCreateContactFormDto((prev) => ({
             ...prev,
-            default_locale: validLocaleCode(locale),
+            locale: validLocaleCode(locale),
         }))
     }
 
-    const onSubmit = () => {
-        setIsLoading(true)
+    const onSubmit = async () => {
+        if (!isReady) return
+
         try {
-            navigateToContactFormAppearance(ContactFormFixture.id)
+            const contactForm = await createContactForm(createContactFormDto)
+            navigateToContactFormAppearance(contactForm.id)
             void notify({
                 message: 'Contact Form successfully created',
                 status: NotificationStatus.Success,
@@ -117,9 +127,6 @@ const ContactFormCreateView = ({
                 message: 'Failed to create the Contact Form',
                 status: NotificationStatus.Error,
             })
-            reportError(err as Error)
-        } finally {
-            setIsLoading(false)
         }
     }
 
@@ -130,23 +137,12 @@ const ContactFormCreateView = ({
         }))
     }, [locales])
 
-    const nameError = useMemo(() => {
-        return (
-            (newContactForm?.name &&
-                getNameValidationError(newContactForm.name)) ||
-            undefined
-        )
-    }, [newContactForm.name])
-
-    const isCreateButtonEnabled = newContactForm.name && !nameError
-
-    if (isLoading) {
-        return (
-            <Container fluid className={settingsCss.pageContainer}>
-                <Loader />
-            </Container>
-        )
-    }
+    const isCreateButtonEnabled =
+        createContactFormDto.name.length > 1 &&
+        createContactFormDto.email_integration &&
+        createContactFormDto.locale !== undefined &&
+        !isNameInvalid &&
+        !isLoading
 
     return (
         <div className="full-width">
@@ -169,19 +165,15 @@ const ContactFormCreateView = ({
                         settingsCss.contentWrapper
                     )}
                 >
-                    <section>
-                        <Label className={contactFormCss.mbXxs} isRequired>
-                            Contact form name
-                        </Label>
-                        <InputField
-                            isRequired
-                            data-testid="name"
-                            type="text"
-                            name="name"
-                            placeholder={`${domain} Contact Form`}
-                            value={newContactForm.name}
+                    <section className={contactFormCss.mbS}>
+                        <ContactFormNameInputSection
+                            isRequiredShown={true}
+                            checkContactFormName={checkContactFormName}
+                            isApiReady={isReady}
                             onChange={onChangeName}
-                            error={nameError}
+                            setIsNameInvalid={setIsNameInvalid}
+                            contactFormName={createContactFormDto.name}
+                            domain={domain}
                         />
                     </section>
 
@@ -199,11 +191,13 @@ const ContactFormCreateView = ({
                         </section>
                     )}
 
-                    <EmailIntegrationInputSection
-                        isRequiredShown
-                        onChange={onChangeEmailIntegration}
-                        integration={newContactForm.email_integration}
-                    />
+                    <section>
+                        <EmailIntegrationInputSection
+                            isRequiredShown
+                            onChange={onChangeEmailIntegration}
+                            integration={createContactFormDto.email_integration}
+                        />
+                    </section>
 
                     <section>
                         <Label
@@ -217,7 +211,7 @@ const ContactFormCreateView = ({
                             required
                             fullWidth
                             id="locale-select"
-                            value={newContactForm.default_locale}
+                            value={createContactFormDto.locale}
                             options={localeOptions}
                             onChange={onChangeLocale}
                         />

@@ -12,7 +12,7 @@ type Props = {
 
 function CodeSnippet({id, code}: Props) {
     return (
-        <Alert className={css.wrapper}>
+        <Alert fade={false} className={css.wrapper}>
             <pre id={id} className={css.code}>
                 {code}
             </pre>

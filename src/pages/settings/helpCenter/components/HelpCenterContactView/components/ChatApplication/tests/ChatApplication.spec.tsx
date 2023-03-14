@@ -54,6 +54,9 @@ const defaultState: Partial<RootState> = {
         ],
     }),
     ui: {
+        contactForm: {
+            currentId: 1,
+        },
         helpCenter: {
             currentLanguage: 'en-US',
             currentId: 1,

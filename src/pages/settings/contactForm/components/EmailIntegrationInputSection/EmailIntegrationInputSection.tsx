@@ -45,7 +45,7 @@ const EmailIntegrationInputSection = ({
     }, [emailIntegrations])
 
     return (
-        <section>
+        <>
             <Label
                 className={contactFormCss.mbXs}
                 isRequired={isRequiredShown}
@@ -63,7 +63,7 @@ const EmailIntegrationInputSection = ({
                 onChange={onChangeEmail}
                 icon="email"
             />
-        </section>
+        </>
     )
 }
 

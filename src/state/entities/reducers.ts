@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux'
 
+import {ContactFormState} from 'state/entities/contactForm'
 import macros from './macros/reducer'
 import {MacrosState} from './macros/types'
 import sections from './sections/reducer'
@@ -31,6 +32,7 @@ import {ChatInstallationStatusState} from './chatInstallationStatus/types'
 import chatInstallationStatus from './chatInstallationStatus/reducer'
 import chatsApplicationAutomationSettings from './chatsApplicationAutomationSettings/reducer'
 import {ChatsApplicationAutomationSettingsState} from './chatsApplicationAutomationSettings/types'
+import contactForm from './contactForm/reducer'
 
 const entitiesReducers = combineReducers<{
     macros: MacrosState
@@ -40,6 +42,7 @@ const entitiesReducers = combineReducers<{
     views: ViewsState
     viewsCount: ViewsCountState
     helpCenter: HelpCenterState
+    contactForm: ContactFormState
     chatInstallationStatus: ChatInstallationStatusState
     selfServiceConfigurations: SelfServiceConfigurationsState
     rules: RulesState
@@ -59,6 +62,7 @@ const entitiesReducers = combineReducers<{
     views,
     viewsCount,
     helpCenter,
+    contactForm,
     chatInstallationStatus,
     selfServiceConfigurations,
     phoneNumbers,

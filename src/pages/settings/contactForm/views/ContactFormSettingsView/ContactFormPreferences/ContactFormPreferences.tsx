@@ -1,41 +1,169 @@
 import classNames from 'classnames'
-import {identity} from 'lodash'
-import {useHistory} from 'react-router-dom'
-import React, {useMemo} from 'react'
+import React, {useState} from 'react'
 import {Container} from 'reactstrap'
+import {useDispatch} from 'react-redux'
+import {useHistory} from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import InputField from 'pages/common/forms/input/InputField'
-import Label from 'pages/common/forms/Label/Label'
 import EmailIntegrationInputSection from 'pages/settings/contactForm/components/EmailIntegrationInputSection'
-import {CONTACT_FORM_BASE_PATH} from 'pages/settings/contactForm/constants'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import css from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences/ContactFormPreferences.less'
-import {getNameValidationError} from 'pages/settings/helpCenter/utils/validations'
 import settingsCss from 'pages/settings/settings.less'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {
+    ContactFormIntegration,
+    UpdateContactFormDto,
+} from 'models/contactForm/types'
+import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
+import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
+import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
+import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
+import {notify as notifyAction} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import {CONTACT_FORM_BASE_PATH} from 'pages/settings/contactForm/constants'
 
 const ContactFormPreferences = (): JSX.Element => {
+    const {
+        isReady,
+        checkContactFormName,
+        updateContactForm,
+        isLoading,
+        deleteContactForm,
+    } = useContactFormApi()
     const history = useHistory()
-    const navigateToStartView = () => history.push(CONTACT_FORM_BASE_PATH)
+    const dispatch = useDispatch()
     const contactForm = useCurrentContactForm()
+    const [isNameInvalid, setIsNameInvalid] = useState(false)
+    const [isDeletionModalShown, setIsDeletionModalShown] = useState(false)
+    const [isChangesModalShown, setIsChangesModalShown] = useState(false)
     const domain: string = useAppSelector(getCurrentAccountState).get('domain')
+    const [updateContactFormDto, setUpdateContactFormDto] = useState<
+        Pick<UpdateContactFormDto, 'name' | 'email_integration'>
+    >({
+        name: contactForm.name,
+        email_integration: contactForm.email_integration,
+    })
 
-    // TODO: finish handlers
-    const onChangeEmailIntegration = identity
-    const onChangeName = identity
+    const onChangeName = (name: string) => {
+        setUpdateContactFormDto((prev) => ({
+            ...prev,
+            name,
+        }))
+    }
 
-    const nameError = useMemo(() => {
-        return (
-            (contactForm?.name && getNameValidationError(contactForm.name)) ||
-            undefined
+    const onChangeEmailIntegration = (integration: ContactFormIntegration) => {
+        setUpdateContactFormDto((prev) => ({
+            ...prev,
+            email_integration: {
+                id: integration.id,
+                email: prev.email_integration.email,
+            },
+        }))
+    }
+
+    const discardChanges = () => {
+        setUpdateContactFormDto({
+            name: contactForm.name,
+            email_integration: contactForm.email_integration,
+        })
+        setIsChangesModalShown(false)
+    }
+
+    const onSave = async () => {
+        const [error, result] = await catchAsync(() =>
+            updateContactForm(contactForm.id, updateContactFormDto)
         )
-    }, [contactForm.name])
+
+        const isUpdated = !error && result
+
+        dispatch(
+            notifyAction({
+                status: isUpdated
+                    ? NotificationStatus.Success
+                    : NotificationStatus.Error,
+                message: isUpdated
+                    ? 'Contact form updated successfully'
+                    : 'Failed to update the Contact Form',
+            })
+        )
+
+        if (isUpdated) {
+            setIsChangesModalShown(false)
+        }
+    }
+
+    const onDelete = async () => {
+        const [error, result] = await catchAsync(() =>
+            deleteContactForm(contactForm.id)
+        )
+
+        const isDeleted = !error && result
+
+        setIsDeletionModalShown(false)
+        dispatch(
+            notifyAction({
+                status: isDeleted
+                    ? NotificationStatus.Success
+                    : NotificationStatus.Error,
+                message: isDeleted
+                    ? 'Contact form deleted successfully'
+                    : 'Failed to delete the Contact Form',
+            })
+        )
+
+        if (isDeleted) history.push(CONTACT_FORM_BASE_PATH)
+    }
+
+    const isDirty =
+        updateContactFormDto.name !== contactForm.name ||
+        updateContactFormDto.email_integration.id !==
+            contactForm.email_integration.id
+
+    const isSaveChangesEnabled =
+        updateContactFormDto.name.length > 1 &&
+        updateContactFormDto.email_integration &&
+        !isNameInvalid &&
+        !isLoading &&
+        isDirty
 
     return (
         <Container fluid className={settingsCss.pageContainer}>
+            <PendingChangesModal
+                when={isDirty}
+                show={isChangesModalShown}
+                onSave={onSave}
+                onDiscard={() => setIsChangesModalShown(false)}
+                onContinueEditing={() => setIsChangesModalShown(false)}
+            />
+            <Modal
+                size="small"
+                isOpen={isDeletionModalShown}
+                onClose={() => setIsDeletionModalShown(false)}
+            >
+                <ModalHeader title="Delete contact form?" />
+                <ModalBody>
+                    <p>
+                        If you delete this form, it will no longer load properly
+                        on pages where it’s embedded on your website.
+                    </p>
+                    <Button intent="destructive" onClick={onDelete}>
+                        Delete Form
+                    </Button>
+                    <Button
+                        onClick={() => setIsDeletionModalShown(false)}
+                        className={contactFormCss.mlXs}
+                        intent="secondary"
+                    >
+                        Cancel
+                    </Button>
+                </ModalBody>
+            </Modal>
+
             <div className={settingsCss.contentWrapper}>
                 <section className={contactFormCss.mbM}>
                     <h2
@@ -53,24 +181,25 @@ const ContactFormPreferences = (): JSX.Element => {
                 </section>
 
                 <section className={contactFormCss.mbS}>
-                    <Label className={contactFormCss.mbXs}>
-                        Contact form name
-                    </Label>
-                    <InputField
-                        isRequired
-                        type="text"
-                        name="name"
-                        placeholder={`${domain} Contact Form`}
-                        value={contactForm.name}
+                    <ContactFormNameInputSection
+                        isNameCheckEnabled={
+                            updateContactFormDto.name !== contactForm.name
+                        }
+                        setIsNameInvalid={setIsNameInvalid}
                         onChange={onChangeName}
-                        error={nameError}
+                        contactFormName={updateContactFormDto.name}
+                        checkContactFormName={checkContactFormName}
+                        domain={domain}
+                        isApiReady={isReady}
                     />
                 </section>
 
-                <EmailIntegrationInputSection
-                    onChange={onChangeEmailIntegration}
-                    integration={contactForm.email_integration}
-                />
+                <section>
+                    <EmailIntegrationInputSection
+                        onChange={onChangeEmailIntegration}
+                        integration={updateContactFormDto.email_integration}
+                    />
+                </section>
 
                 <div
                     className={classNames(
@@ -79,17 +208,24 @@ const ContactFormPreferences = (): JSX.Element => {
                     )}
                 >
                     <div>
-                        <Button>Save Changes</Button>
                         <Button
-                            onClick={navigateToStartView}
+                            isDisabled={!isSaveChangesEnabled}
+                            onClick={onSave}
+                        >
+                            Save Changes
+                        </Button>
+                        <Button
+                            onClick={discardChanges}
                             className={contactFormCss.mlXs}
                             intent="secondary"
                         >
                             Cancel
                         </Button>
                     </div>
-
-                    <Button intent="destructive">
+                    <Button
+                        intent="destructive"
+                        onClick={() => setIsDeletionModalShown(true)}
+                    >
                         <ButtonIconLabel icon="delete">
                             Delete Form
                         </ButtonIconLabel>

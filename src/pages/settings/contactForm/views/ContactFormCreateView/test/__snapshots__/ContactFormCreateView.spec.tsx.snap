@@ -39,7 +39,9 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
       <div
         class="sectionContainer contentWrapper"
       >
-        <section>
+        <section
+          class="mbS"
+        >
           <label
             class="label mbXxs"
           >
@@ -244,10 +246,10 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
                   class="select dropdown-toggle selectFullWidth"
                 >
                   <span
-                    class="label placeholder"
+                    class="label"
                     style="min-width: 10px; opacity: 1;"
                   >
-                    Select an option
+                    English - USA
                   </span>
                   <input
                     autocomplete="chrome-off"
@@ -270,12 +272,107 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
                 role="menu"
                 tabindex="-1"
               >
-                <h6
-                  class="dropdown-header"
-                  tabindex="-1"
+                
+                <button
+                  class="option option--focused dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
                 >
-                  No result
-                </h6>
+                  <span>
+                    French - France
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    French - Canada
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Czech - Czech Republic
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Danish - Denmark
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Dutch - Netherlands
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    German - Germany
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Italian - Italy
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Norwegian - Norway
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Spanish - Spain
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Swedish - Sweden
+                  </span>
+                </button>
               </div>
             </div>
           </div>

@@ -7,7 +7,7 @@ import {
     Switch,
     useHistory,
 } from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -21,12 +21,20 @@ import {
     CONTACT_FORM_PUBLISH_PATH,
 } from 'pages/settings/contactForm/constants'
 import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm.fixture'
 import {useContactFormIdParam} from 'pages/settings/contactForm/hooks/useCurrentContactFormId'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import ContactFormAppearance from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormAppearance'
 import ContactFormPreferences from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences'
 import ContactFormPublish from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getCurrentContactForm} from 'state/entities/contactForm/contactForms'
+import settingsCss from 'pages/settings/settings.less'
+import Loader from 'pages/common/components/Loader/Loader'
+import useAppSelector from 'hooks/useAppSelector'
+import {changeContactFormId} from 'state/ui/contactForm'
+import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
+import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 
 const navLinks = {
     Preferences: CONTACT_FORM_PREFERENCES_PATH,
@@ -37,18 +45,60 @@ const navLinks = {
 const ContactFormSettingsView = (): JSX.Element => {
     const dispatch = useAppDispatch()
     const history = useHistory()
+    const {fetchContactFormById, isReady} = useContactFormApi()
     const {id: contactFormId, isValid: isIdValid} = useContactFormIdParam()
-    // TODO: take contact form via API
-    const contactForm = ContactFormFixture
-
-    const onPreview = () => {
-        // TODO: proper preview
-        window.open(CONTACT_FORM_BASE_PATH, '_blank')?.focus()
-    }
+    const contactForm = useAppSelector(getCurrentContactForm)
 
     useEffect(() => {
-        if (!isIdValid) history.push(CONTACT_FORM_BASE_PATH)
-    }, [isIdValid, history, dispatch])
+        if (!isIdValid) return history.push(CONTACT_FORM_BASE_PATH)
+        dispatch(changeContactFormId(contactFormId))
+        return () => {
+            dispatch(changeContactFormId(null))
+        }
+    }, [contactFormId, isIdValid, history, dispatch])
+
+    useEffect(() => {
+        if (!isReady || !isIdValid) return
+
+        void (async () => {
+            const [error, result] = await catchAsync(() =>
+                fetchContactFormById(contactFormId)
+            )
+
+            if (!error && !!result) return
+
+            void dispatch(
+                notify({
+                    message:
+                        result === null
+                            ? 'Contact Form not found'
+                            : 'Something went wrong',
+                    status: NotificationStatus.Error,
+                })
+            )
+
+            history.push(CONTACT_FORM_BASE_PATH)
+        })()
+    }, [
+        isReady,
+        fetchContactFormById,
+        contactFormId,
+        isIdValid,
+        history,
+        dispatch,
+    ])
+
+    if (!contactForm) {
+        return (
+            <Container fluid className={settingsCss.pageContainer}>
+                <Loader />
+            </Container>
+        )
+    }
+
+    const onPreview = () => {
+        window.open(contactForm.url_template, '_blank')?.focus()
+    }
 
     return (
         <div className="full-width">

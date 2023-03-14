@@ -1,4 +1,4 @@
-import {fireEvent, screen} from '@testing-library/react'
+import {fireEvent, screen, act} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
@@ -7,9 +7,28 @@ import thunk from 'redux-thunk'
 import {account} from 'fixtures/account'
 import {integrationsState} from 'fixtures/integrations'
 import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
-import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {renderWithRouter, assumeMock} from 'utils/testing'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormCreateView/ContactFormCreateView'
+import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+
+const mockCheckContactFormName = jest.fn().mockResolvedValue(true)
+const mockCreateContactForm = jest.fn().mockResolvedValue(ContactFormFixture)
+jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
+    return {
+        useContactFormApi: () => ({
+            isReady: true,
+            isLoading: false,
+            checkContactFormName: mockCheckContactFormName,
+            createContactForm: mockCreateContactForm,
+        }),
+    }
+})
+
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
+const mockedUseSupportedLocales = assumeMock(useSupportedLocales)
+mockedUseSupportedLocales.mockReturnValue(getLocalesResponseFixture)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -22,9 +41,7 @@ describe('<ContactFormCreateView />', () => {
     const renderView = ({state}: {state: Partial<RootState>}) => {
         return renderWithRouter(
             <Provider store={mockStore(state)}>
-                <SupportedLocalesProvider>
-                    <ContactFormCreateView />,
-                </SupportedLocalesProvider>
+                <ContactFormCreateView />,
             </Provider>
         )
     }
@@ -63,6 +80,19 @@ describe('<ContactFormCreateView />', () => {
     })
 
     describe('Submit form', () => {
+        it('should disable the submit button if name is empty', async () => {
+            renderView({state: defaultState})
+            const nameInput = await screen.findByTestId('name')
+            const submitButton = screen.getByRole('button', {
+                name: /Create Contact Form/,
+            })
+
+            fireEvent.change(nameInput, {target: {value: 'Test'}})
+            fireEvent.change(nameInput, {target: {value: ''}})
+
+            expect(submitButton.className).toMatch(/disabled/i)
+        })
+
         it('should have an error message if form name is one character long', async () => {
             renderView({state: defaultState})
 
@@ -76,6 +106,29 @@ describe('<ContactFormCreateView />', () => {
             expect(submitButton.className).toMatch(/disabled/i)
 
             screen.getByText(/Name should be at least 2 characters long/i)
+        })
+
+        it('should call API on submit', () => {
+            renderView({state: defaultState})
+
+            const submitButton = screen.getByRole('button', {
+                name: /Create Contact Form/,
+            })
+
+            act(() => {
+                expect(submitButton.className).not.toMatch(/disabled/i)
+
+                fireEvent.click(submitButton)
+
+                expect(mockCreateContactForm).toHaveBeenLastCalledWith({
+                    email_integration: {
+                        email: 'billing@acme.gorgias.io',
+                        id: 5,
+                    },
+                    locale: 'en-US',
+                    name: 'acme Contact Form',
+                })
+            })
         })
     })
 })

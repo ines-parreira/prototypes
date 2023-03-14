@@ -1,5 +1,5 @@
 import React from 'react'
-import {NavLink, Redirect, Route, Switch} from 'react-router-dom'
+import {NavLink, Redirect, Route, Switch, useHistory} from 'react-router-dom'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import Detail from 'pages/integrations/components/Detail'
@@ -9,10 +9,12 @@ import {
     CONTACT_FORM_FORMS_PATH,
     CONTACT_FORM_PAGE_TITLE,
 } from 'pages/settings/contactForm/constants'
-import {useContactFormList} from 'pages/settings/contactForm/hooks/useContactFormList'
+import {usePaginatedContactForms} from 'pages/settings/contactForm/hooks/usePaginatedContactForms'
 import ManageContactForms from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms'
-import {ManageContactFormsProps} from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms/ManageContactForms'
+import {Props} from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms/ManageContactForms'
 import {CONTACT_FORM_APP_DETAIL} from 'pages/settings/contactForm/views/ContactFormStartView/constants'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 const navLinks = {
     About: CONTACT_FORM_ABOUT_PATH,
@@ -20,19 +22,34 @@ const navLinks = {
 }
 
 const ContactFormStartView: React.FC = () => {
-    const {contactForms = [], isLoading} = useContactFormList()
+    const history = useHistory()
+    const handleAddHelpCenter = () => history.push(CONTACT_FORM_CREATE_PATH)
+    const {contactForms = [], isLoading} = usePaginatedContactForms()
     const defaultSectionPath = contactForms.length
         ? CONTACT_FORM_FORMS_PATH
         : CONTACT_FORM_ABOUT_PATH
 
-    const manageContactFormProps: ManageContactFormsProps = {
+    const manageContactFormProps: Props = {
         contactForms,
         isLoading,
     }
 
     return (
         <div className="full-width">
-            <PageHeader title={CONTACT_FORM_PAGE_TITLE} />
+            <PageHeader title={CONTACT_FORM_PAGE_TITLE}>
+                {isLoading || contactForms.length <= 0 ? null : (
+                    <Route exact path={CONTACT_FORM_FORMS_PATH}>
+                        <Button
+                            aria-label="create-form-nav"
+                            onClick={handleAddHelpCenter}
+                        >
+                            <ButtonIconLabel icon="add">
+                                Create Form
+                            </ButtonIconLabel>
+                        </Button>
+                    </Route>
+                )}
+            </PageHeader>
             <SecondaryNavbar>
                 {Object.entries(navLinks).map(([name, to]) => (
                     <NavLink exact key={name} to={to}>

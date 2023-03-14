@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState, useRef} from 'react'
 import _uniqueId from 'lodash/uniqueId'
 import {
     ContactForm,
@@ -38,10 +38,16 @@ const SubjectLines = ({
         {id: string; value: string}[]
     >([])
     const [subjectLinesExpanded, setSubjectLinesExpanded] = useState(false)
+    const lastSubjectLineRef = useRef<
+        null | UpdateContactForm['subject_lines']
+    >(null)
 
-    // Initialize the subject lines with unique ids just when the locale changes
+    // Initialize the subject lines with unique ids just when the locale/ref changes
     useEffect(() => {
-        if (subjectLines[currentLocale]) {
+        if (
+            subjectLines !== lastSubjectLineRef.current &&
+            subjectLines[currentLocale]
+        ) {
             updateSubjectLinesWithId(
                 subjectLines[currentLocale].options.map((option) => ({
                     id: _uniqueId('subject-line-'),
@@ -49,17 +55,15 @@ const SubjectLines = ({
                 }))
             )
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentLocale])
+    }, [currentLocale, subjectLines])
 
     const updateSubjectLinesWithId = useCallback(
         (subjectLines: {id: string; value: string}[]) => {
             setSubjectLinesWithId(subjectLines)
 
-            updateContactForm((prevContactForm) => ({
-                ...prevContactForm,
-                subject_lines: {
+            updateContactForm((prevContactForm) => {
+                lastSubjectLineRef.current = {
                     ...prevContactForm.subject_lines,
                     [currentLocale]: {
                         allow_other:
@@ -67,8 +71,13 @@ const SubjectLines = ({
                                 ?.allow_other ?? true,
                         options: subjectLines.map(({value}) => value),
                     },
-                },
-            }))
+                }
+
+                return {
+                    ...prevContactForm,
+                    subject_lines: lastSubjectLineRef.current,
+                }
+            })
         },
         [currentLocale, updateContactForm]
     )

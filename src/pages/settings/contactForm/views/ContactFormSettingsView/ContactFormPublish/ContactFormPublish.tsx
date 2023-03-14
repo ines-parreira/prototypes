@@ -11,7 +11,7 @@ import {
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Label from 'pages/common/forms/Label/Label'
 import useClipboard from 'pages/common/hooks/useClipboard'
-import ContactFormInstallationCard from 'pages/settings/contactForm/components/ContactFormInstallationCard/ContactFormInstallationCard'
+import ContactFormInstallationCard from 'pages/settings/contactForm/components/ContactFormInstallationCard'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import settingsCss from 'pages/settings/settings.less'

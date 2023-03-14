@@ -12,21 +12,24 @@ import {
     CONTACT_FORM_CREATE_PATH,
     CONTACT_FORM_FORMS_PATH,
 } from 'pages/settings/contactForm/constants'
-import {useContactFormList} from 'pages/settings/contactForm/hooks/useContactFormList'
+import {usePaginatedContactForms} from 'pages/settings/contactForm/hooks/usePaginatedContactForms'
 import {CONTACT_FORM_APP_DETAIL} from 'pages/settings/contactForm/views/ContactFormStartView/constants'
 import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView/ContactFormStartView'
+import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 
-jest.mock('../../../hooks/useContactFormList')
-const mockedUseHelpCenterList = assumeMock(useContactFormList)
+jest.mock('../../../hooks/usePaginatedContactForms')
+const mockedUsePaginatedContactForms = assumeMock(usePaginatedContactForms)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<ContactFormStartView />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockedUseHelpCenterList.mockReturnValue({
+        mockedUsePaginatedContactForms.mockReturnValue({
             contactForms: [],
             isLoading: false,
+            fetchMore: jest.fn(),
+            hasMore: false,
         })
     })
 
@@ -70,9 +73,11 @@ describe('<ContactFormStartView />', () => {
             const history = createMemoryHistory({
                 initialEntries: [HELP_CENTER_BASE_PATH],
             })
-            mockedUseHelpCenterList.mockReturnValue({
+            mockedUsePaginatedContactForms.mockReturnValue({
                 isLoading: false,
-                contactForms: [{}],
+                fetchMore: jest.fn(),
+                hasMore: false,
+                contactForms: [ContactFormFixture],
             })
 
             renderWithRouter(
@@ -137,7 +142,14 @@ describe('<ContactFormStartView />', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should display `Create Form` button', () => {
+        it('should display `Create Form` button in the container when there is no forms', () => {
+            mockedUsePaginatedContactForms.mockReturnValue({
+                isLoading: false,
+                fetchMore: jest.fn(),
+                hasMore: false,
+                contactForms: [],
+            })
+
             const history = createMemoryHistory({
                 initialEntries: [CONTACT_FORM_FORMS_PATH],
             })
@@ -151,9 +163,37 @@ describe('<ContactFormStartView />', () => {
                 {history}
             )
 
-            const createButton = screen.getByRole('button', {
-                name: /Create Form/,
+            const createButton = screen.getByLabelText('create-form-bottom')
+
+            fireEvent.click(createButton)
+
+            expect(history.push).toHaveBeenLastCalledWith(
+                CONTACT_FORM_CREATE_PATH
+            )
+        })
+
+        it('should display `Create Form` button in the header when there is at least one form', () => {
+            mockedUsePaginatedContactForms.mockReturnValue({
+                contactForms: [ContactFormFixture],
+                isLoading: false,
+                fetchMore: jest.fn(),
+                hasMore: false,
             })
+
+            const history = createMemoryHistory({
+                initialEntries: [CONTACT_FORM_FORMS_PATH],
+            })
+
+            jest.spyOn(history, 'push')
+
+            renderWithRouter(
+                <Provider store={mockStore({})}>
+                    <ContactFormStartView />,
+                </Provider>,
+                {history}
+            )
+
+            const createButton = screen.getByLabelText('create-form-nav')
 
             fireEvent.click(createButton)
 

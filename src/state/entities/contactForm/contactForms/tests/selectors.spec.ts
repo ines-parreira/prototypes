@@ -1,0 +1,43 @@
+import _keyBy from 'lodash/keyBy'
+
+import {StoreState} from 'state/types'
+
+import {initialState as uiState} from 'state/ui/contactForm/reducer'
+import {initialState as contactFormInitialState} from 'state/entities/contactForm/reducer'
+
+import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import {getCurrentContactForm} from '../selectors'
+
+describe('Entities/Contact Form', () => {
+    describe('getCurrentContactForm', () => {
+        it('returns null if the currentId is not defined', () => {
+            const store: Partial<StoreState> = {
+                entities: {contactForm: contactFormInitialState} as any,
+                ui: {contactForm: uiState} as any,
+            }
+            expect(getCurrentContactForm(store as StoreState)).toEqual(null)
+        })
+
+        it('returns the right contact form by currentId', () => {
+            const dataStore: Partial<StoreState> = {
+                entities: {
+                    contactForm: {
+                        contactForms: {
+                            contactFormById: _keyBy([ContactFormFixture], 'id'),
+                        },
+                    },
+                } as any,
+                ui: {
+                    contactForm: {
+                        ...uiState,
+                        currentId: ContactFormFixture.id,
+                    },
+                } as any,
+            }
+
+            expect(getCurrentContactForm(dataStore as StoreState)).toEqual(
+                ContactFormFixture
+            )
+        })
+    })
+})

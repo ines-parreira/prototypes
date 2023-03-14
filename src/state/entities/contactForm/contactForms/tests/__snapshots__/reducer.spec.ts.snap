@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`contactForms reducer contactFormDeleted action should delete a contact form from the state 1`] = `
+{
+  "contactFormById": {
+    "666": {
+      "code_snippet_template": "<script...></script><div></div>",
+      "default_locale": "en-US",
+      "email_integration": {
+        "email": "princesspolly@gorgias.com",
+        "id": 1,
+      },
+      "id": 1,
+      "name": "SF Bicycles Contact Form",
+      "source": "manual",
+      "subject_lines": {
+        "allow_other": true,
+        "created_datetime": "2023-02-21T19:21:06.804Z",
+        "options": {
+          "en-US": [
+            "Track order",
+            "Report issue",
+            "Return order",
+            "Cancel order",
+            "Give feedback",
+          ],
+        },
+        "updated_datetime": "2023-02-21T19:21:06.804Z",
+      },
+      "uid": "1ABCDE12345",
+      "url_template": "http://contact.gorgias.docker/forms/1ABCDE12345",
+    },
+  },
+}
+`;
+
+exports[`contactForms reducer contactFormUpdated action should replace an existing contact form in the state 1`] = `
+{
+  "contactFormById": {
+    "1": {
+      "code_snippet_template": "<script...></script><div></div>",
+      "default_locale": "da-DK",
+      "email_integration": {
+        "email": "princesspolly@gorgias.com",
+        "id": 1,
+      },
+      "id": 1,
+      "name": "test",
+      "source": "manual",
+      "subject_lines": {
+        "allow_other": true,
+        "created_datetime": "2023-02-21T19:21:06.804Z",
+        "options": {
+          "da-DK": [
+            "TEST",
+          ],
+          "en-US": [
+            "Track order",
+            "Report issue",
+            "Return order",
+            "Cancel order",
+            "Give feedback",
+          ],
+        },
+        "updated_datetime": "2023-02-21T19:21:06.804Z",
+      },
+      "uid": "1ABCDE12345",
+      "url_template": "http://contact.gorgias.docker/forms/1ABCDE12345",
+    },
+  },
+}
+`;
+
+exports[`contactForms reducer contactFormsFetched action should add the contact forms to the state 1`] = `
+{
+  "contactFormById": {
+    "1": {
+      "code_snippet_template": "<script...></script><div></div>",
+      "default_locale": "en-US",
+      "email_integration": {
+        "email": "princesspolly@gorgias.com",
+        "id": 1,
+      },
+      "id": 1,
+      "name": "SF Bicycles Contact Form",
+      "source": "manual",
+      "subject_lines": {
+        "allow_other": true,
+        "created_datetime": "2023-02-21T19:21:06.804Z",
+        "options": {
+          "en-US": [
+            "Track order",
+            "Report issue",
+            "Return order",
+            "Cancel order",
+            "Give feedback",
+          ],
+        },
+        "updated_datetime": "2023-02-21T19:21:06.804Z",
+      },
+      "uid": "1ABCDE12345",
+      "url_template": "http://contact.gorgias.docker/forms/1ABCDE12345",
+    },
+  },
+}
+`;

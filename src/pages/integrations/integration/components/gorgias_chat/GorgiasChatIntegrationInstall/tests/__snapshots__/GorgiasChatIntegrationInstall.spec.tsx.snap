@@ -469,7 +469,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                       class="container"
                     >
                       <div
-                        class="wrapper alert alert-success fade"
+                        class="wrapper alert alert-success"
                         role="alert"
                       >
                         <pre
@@ -556,7 +556,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                       class="container"
                     >
                       <div
-                        class="wrapper alert alert-success fade"
+                        class="wrapper alert alert-success"
                         role="alert"
                       >
                         <pre
@@ -941,7 +941,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                       class="container"
                     >
                       <div
-                        class="wrapper alert alert-success fade"
+                        class="wrapper alert alert-success"
                         role="alert"
                       >
                         <pre
@@ -1415,7 +1415,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                       class="container"
                     >
                       <div
-                        class="wrapper alert alert-success fade"
+                        class="wrapper alert alert-success"
                         role="alert"
                       >
                         <pre
@@ -1502,7 +1502,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                       class="container"
                     >
                       <div
-                        class="wrapper alert alert-success fade"
+                        class="wrapper alert alert-success"
                         role="alert"
                       >
                         <pre

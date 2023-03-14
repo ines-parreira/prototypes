@@ -64,6 +64,10 @@ export const useArticlesActions = () => {
     const dispatch = useAppDispatch()
     const {client} = useHelpCenterApi()
     const viewLanguage = useAppSelector(getViewLanguage)
+    /* TODO: Fix isLoading
+            isLoading works only in case of sequential requests. If 2 requests started,
+            and only 1st finished, isLoading will be false, but should be true
+    */
     const [isLoading, setIsLoading] = useState(false)
 
     const fetchArticlesByIds = useCallback(

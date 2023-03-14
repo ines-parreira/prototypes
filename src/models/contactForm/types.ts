@@ -1,9 +1,9 @@
-import {Language} from 'constants/languages'
 import {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
+import {LocaleCode} from 'models/helpCenter/types'
 
 export type ContactFormIntegration =
     | EmailIntegration
@@ -13,7 +13,7 @@ export type ContactFormIntegration =
 export interface ContactForm {
     id: number
     name: string
-    default_locale: Language
+    default_locale: LocaleCode
     source: string
     subject_lines: {
         options: Record<string, string[]>
@@ -22,10 +22,27 @@ export interface ContactForm {
         updated_datetime: string
     }
     email_integration: {
-        id: 1
+        id: number
         email: string
     }
     uid: string
     code_snippet_template: string
     url_template: string
+}
+
+export type CreateContactFormDto = Pick<
+    ContactForm,
+    'name' | 'email_integration'
+> & {
+    locale: LocaleCode
+}
+
+export type UpdateContactFormDto = Pick<
+    ContactForm,
+    'name' | 'email_integration'
+> & {
+    subject_lines: {
+        options: Record<string, string[]>
+        allow_other: boolean
+    }
 }
