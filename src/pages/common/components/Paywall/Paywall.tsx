@@ -25,6 +25,7 @@ export enum UpgradeType {
 }
 
 type Props = {
+    containerId?: string
     pageHeader?: ReactNode
     paywallTheme?: PaywallTheme
     previewImage: string
@@ -41,6 +42,7 @@ type Props = {
 }
 
 const Paywall = ({
+    containerId,
     pageHeader,
     paywallTheme = PaywallTheme.Default,
     previewImage,
@@ -65,7 +67,7 @@ const Paywall = ({
                 ) : (
                     <PageHeader title={pageHeader} />
                 ))}
-            <Container fluid className={classnames(css.page)}>
+            <Container id={containerId} fluid className={classnames(css.page)}>
                 <div className={css.paywallContainer}>
                     <Row className="align-items-center mx-0">
                         <Col

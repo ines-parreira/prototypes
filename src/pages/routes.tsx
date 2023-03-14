@@ -148,6 +148,9 @@ import SelfServiceStatsPageDescription from './stats/self-service/SelfServiceSta
 import {HELP_URL} from './stats/self-service/constants'
 import SelfServiceStatsPagePaywallCustomCta from './stats/self-service/SelfServiceStatsPagePaywallCustomCta'
 import SelfServiceHelpCentersProvider from './automation/common/providers/SelfServiceHelpCentersProvider'
+import QuickResponsesPaywallView from './automation/quickResponses/QuickResponsesPaywallView'
+import OrderManagementPaywallView from './automation/orderManagement/OrderManagementPaywallView'
+import ArticleRecommendationPaywallView from './automation/articleRecommendation/ArticleRecommendationPaywallView'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1558,12 +1561,7 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                     path={`${path}/quick-responses`}
                     exact
                     render={appRender({
-                        children: (
-                            <CanduContent
-                                containerId="candu-quick-responses"
-                                title="Quick responses"
-                            />
-                        ),
+                        children: <QuickResponsesPaywallView />,
                         navbar: AutomationNavbar,
                     })}
                 />
@@ -1571,12 +1569,7 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                     path={`${path}/order-management`}
                     exact
                     render={appRender({
-                        children: (
-                            <CanduContent
-                                containerId="candu-order-management"
-                                title="Order management"
-                            />
-                        ),
+                        children: <OrderManagementPaywallView />,
                         navbar: AutomationNavbar,
                     })}
                 />
@@ -1584,12 +1577,7 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                     path={`${path}/article-recommendation`}
                     exact
                     render={appRender({
-                        children: (
-                            <CanduContent
-                                containerId="candu-article-recommendation"
-                                title="Article recommendation"
-                            />
-                        ),
+                        children: <ArticleRecommendationPaywallView />,
                         navbar: AutomationNavbar,
                     })}
                 />
