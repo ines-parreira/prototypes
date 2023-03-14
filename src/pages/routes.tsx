@@ -1427,41 +1427,43 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                     })}
                 />
                 {isflowsBetaEnabled && (
-                    <>
-                        <Route
-                            path={`${path}/:shopType/:shopName/flows`}
-                            exact
-                            render={appRender({
-                                content: memoizedWithUserRoleRequired(
-                                    WorkflowsViewContainer,
-                                    AGENT_ROLE
-                                ),
-                                navbar: AutomationNavbar,
-                            })}
-                        />
-                        <Route
-                            path={`${path}/:shopType/:shopName/flows/new`}
-                            exact
-                            render={appRender({
-                                content: memoizedWithUserRoleRequired(
-                                    WorkflowEditorViewContainer,
-                                    AGENT_ROLE
-                                ),
-                                navbar: AutomationNavbar,
-                            })}
-                        />
-                        <Route
-                            path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
-                            exact
-                            render={appRender({
-                                content: memoizedWithUserRoleRequired(
-                                    WorkflowEditorViewContainer,
-                                    AGENT_ROLE
-                                ),
-                                navbar: AutomationNavbar,
-                            })}
-                        />
-                    </>
+                    <Route
+                        path={`${path}/:shopType/:shopName/flows`}
+                        exact
+                        render={appRender({
+                            content: memoizedWithUserRoleRequired(
+                                WorkflowsViewContainer,
+                                AGENT_ROLE
+                            ),
+                            navbar: AutomationNavbar,
+                        })}
+                    />
+                )}
+                {isflowsBetaEnabled && (
+                    <Route
+                        path={`${path}/:shopType/:shopName/flows/new`}
+                        exact
+                        render={appRender({
+                            content: memoizedWithUserRoleRequired(
+                                WorkflowEditorViewContainer,
+                                AGENT_ROLE
+                            ),
+                            navbar: AutomationNavbar,
+                        })}
+                    />
+                )}
+                {isflowsBetaEnabled && (
+                    <Route
+                        path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
+                        exact
+                        render={appRender({
+                            content: memoizedWithUserRoleRequired(
+                                WorkflowEditorViewContainer,
+                                AGENT_ROLE
+                            ),
+                            navbar: AutomationNavbar,
+                        })}
+                    />
                 )}
                 <Route
                     path={[
