@@ -40,6 +40,10 @@ const entrypointsFixtures = [
 ]
 
 describe('useWorflowsEntrypoints', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+        updateMock({})
+    })
     it('isFetchPending and isUpdatePending', () => {
         updateMock({
             isFetchPending: true,

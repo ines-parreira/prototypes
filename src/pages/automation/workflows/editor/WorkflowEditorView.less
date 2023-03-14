@@ -1,0 +1,38 @@
+@import '~css/new/layout.less';
+@import '~css/new/colorTokens.less';
+@import '~css/new/typographyTokens.less';
+
+:local {
+    .pageHeaderContainer {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: @classic-neutral-grey-0;
+        input {
+            flex-grow: 0;
+        }
+    }
+
+    .headerLeft {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        max-width: 500px;
+
+        .headerLeftInput {
+            input {
+                font-size: @heading-section-regular-font-size;
+            }
+            height: 40px;
+        }
+
+        .headerLeftdescription {
+            color: @classic-neutral-grey-5;
+        }
+    }
+
+    .headerRight {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+}

@@ -140,6 +140,7 @@ import EditReportOrderIssueFlowScenarioViewContainer from './automation/orderMan
 import ArticleRecommendationViewContainer from './automation/articleRecommendation/ArticleRecommendationViewContainer'
 import QuickResponsesViewContainer from './automation/quickResponses/QuickResponsesViewContainer'
 import WorkflowsViewContainer from './automation/workflows/WorkflowsViewContainer'
+import WorkflowEditorViewContainer from './automation/workflows/editor/WorkflowEditorViewContainer'
 import PageHeader from './common/components/PageHeader'
 import HeaderTitle from './common/components/HeaderTitle'
 import SelfServiceStatsPageTitle from './stats/self-service/SelfServiceStatsPageTitle'
@@ -1423,17 +1424,41 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                     })}
                 />
                 {isflowsBetaEnabled && (
-                    <Route
-                        path={`${path}/:shopType/:shopName/flows`}
-                        exact
-                        render={appRender({
-                            content: memoizedWithUserRoleRequired(
-                                WorkflowsViewContainer,
-                                AGENT_ROLE
-                            ),
-                            navbar: AutomationNavbar,
-                        })}
-                    />
+                    <>
+                        <Route
+                            path={`${path}/:shopType/:shopName/flows`}
+                            exact
+                            render={appRender({
+                                content: memoizedWithUserRoleRequired(
+                                    WorkflowsViewContainer,
+                                    AGENT_ROLE
+                                ),
+                                navbar: AutomationNavbar,
+                            })}
+                        />
+                        <Route
+                            path={`${path}/:shopType/:shopName/flows/new`}
+                            exact
+                            render={appRender({
+                                content: memoizedWithUserRoleRequired(
+                                    WorkflowEditorViewContainer,
+                                    AGENT_ROLE
+                                ),
+                                navbar: AutomationNavbar,
+                            })}
+                        />
+                        <Route
+                            path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
+                            exact
+                            render={appRender({
+                                content: memoizedWithUserRoleRequired(
+                                    WorkflowEditorViewContainer,
+                                    AGENT_ROLE
+                                ),
+                                navbar: AutomationNavbar,
+                            })}
+                        />
+                    </>
                 )}
                 <Route
                     path={[

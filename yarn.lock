@@ -12595,6 +12595,11 @@ launchdarkly-react-client-sdk@2.26.0:
     lodash.camelcase "^4.3.0"
     uuid "^3.3.2"
 
+layerr@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/layerr/-/layerr-0.1.2.tgz#16c8e7fb042d3595ab15492bdad088f31d7afd15"
+  integrity sha512-ob5kTd9H3S4GOG2nVXyQhOu9O8nBgP555XxWPkJI0tR0JeRilfyTp8WtPdIJHLXBmHMSdEq5+KMxiYABeScsIQ==
+
 lazy-universal-dotenv@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/lazy-universal-dotenv/-/lazy-universal-dotenv-3.0.1.tgz#a6c8938414bca426ab8c9463940da451a911db38"
@@ -18461,6 +18466,13 @@ uc.micro@^1.0.1:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/uc.micro/-/uc.micro-1.0.6.tgz#9c411a802a409a91fc6cf74081baba34b24499ac"
   integrity sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==
+
+ulidx@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/ulidx/-/ulidx-0.5.0.tgz#a83f49c869cedc2e65ccfe519776edbef5f457b4"
+  integrity sha512-fZFAVMxsp3QSwOpIta6uqc3ZjHfRe4m3GllM+HO4MNQMXlzcUhWihHKWuBxFcDYATsuyxjBwCH0MqVsj/D/how==
+  dependencies:
+    layerr "^0.1.2"
 
 unbox-primitive@^1.0.1:
   version "1.0.1"
