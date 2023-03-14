@@ -46,7 +46,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           class="dropdown-item dropdown-item menu-item"
           role="menuitem"
           tabindex="0"
-          to="/app/automation"
+          to="/app/automation/macros"
         >
           <i
             class="material-icons mr-2 icon"
@@ -126,18 +126,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         <a
           class="link"
           data-active-class-name="active"
-          href="/app/automation"
+          href="/app/automation/macros"
         >
-          Overview
+          Macros
         </a>
       </div>
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/automation/macros"
-      >
-        Macros
-      </a>
       <a
         class="link"
         data-active-class-name="active"
@@ -358,7 +351,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           class="dropdown-item dropdown-item menu-item"
           role="menuitem"
           tabindex="0"
-          to="/app/automation"
+          to="/app/automation/macros"
         >
           <i
             class="material-icons mr-2 icon"
@@ -438,18 +431,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         <a
           class="link"
           data-active-class-name="active"
-          href="/app/automation"
+          href="/app/automation/macros"
         >
-          Overview
+          Macros
         </a>
       </div>
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/automation/macros"
-      >
-        Macros
-      </a>
       <a
         class="link"
         data-active-class-name="active"
@@ -690,7 +676,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           class="dropdown-item dropdown-item menu-item"
           role="menuitem"
           tabindex="0"
-          to="/app/automation"
+          to="/app/automation/macros"
         >
           <i
             class="material-icons mr-2 icon"
@@ -770,18 +756,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         <a
           class="link"
           data-active-class-name="active"
-          href="/app/automation"
+          href="/app/automation/macros"
         >
-          Overview
+          Macros
         </a>
       </div>
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/automation/macros"
-      >
-        Macros
-      </a>
       <a
         class="link"
         data-active-class-name="active"
@@ -939,7 +918,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           class="dropdown-item dropdown-item menu-item"
           role="menuitem"
           tabindex="0"
-          to="/app/automation"
+          to="/app/automation/macros"
         >
           <i
             class="material-icons mr-2 icon"
@@ -1019,18 +998,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         <a
           class="link"
           data-active-class-name="active"
-          href="/app/automation"
+          href="/app/automation/macros"
         >
-          Overview
+          Macros
         </a>
       </div>
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/automation/macros"
-      >
-        Macros
-      </a>
       <a
         class="link"
         data-active-class-name="active"
@@ -1251,7 +1223,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           class="dropdown-item dropdown-item menu-item"
           role="menuitem"
           tabindex="0"
-          to="/app/automation"
+          to="/app/automation/macros"
         >
           <i
             class="material-icons mr-2 icon"
@@ -1331,18 +1303,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         <a
           class="link"
           data-active-class-name="active"
-          href="/app/automation"
+          href="/app/automation/macros"
         >
-          Overview
+          Macros
         </a>
       </div>
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/automation/macros"
-      >
-        Macros
-      </a>
       <a
         class="link"
         data-active-class-name="active"
@@ -1583,7 +1548,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           class="dropdown-item dropdown-item menu-item"
           role="menuitem"
           tabindex="0"
-          to="/app/automation"
+          to="/app/automation/macros"
         >
           <i
             class="material-icons mr-2 icon"
@@ -1663,18 +1628,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         <a
           class="link"
           data-active-class-name="active"
-          href="/app/automation"
+          href="/app/automation/macros"
         >
-          Overview
+          Macros
         </a>
       </div>
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/automation/macros"
-      >
-        Macros
-      </a>
       <a
         class="link"
         data-active-class-name="active"
@@ -1832,7 +1790,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
           class="dropdown-item dropdown-item menu-item"
           role="menuitem"
           tabindex="0"
-          to="/app/automation"
+          to="/app/automation/macros"
         >
           <i
             class="material-icons mr-2 icon"
@@ -1912,18 +1870,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
         <a
           class="link"
           data-active-class-name="active"
-          href="/app/automation"
+          href="/app/automation/macros"
         >
-          Overview
+          Macros
         </a>
       </div>
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/automation/macros"
-      >
-        Macros
-      </a>
       <a
         class="link"
         data-active-class-name="active"
@@ -2023,7 +1974,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
           class="dropdown-item dropdown-item menu-item"
           role="menuitem"
           tabindex="0"
-          to="/app/automation"
+          to="/app/automation/macros"
         >
           <i
             class="material-icons mr-2 icon"
@@ -2103,18 +2054,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
         <a
           class="link"
           data-active-class-name="active"
-          href="/app/automation"
+          href="/app/automation/macros"
         >
-          Overview
+          Macros
         </a>
       </div>
-      <a
-        class="link"
-        data-active-class-name="active"
-        href="/app/automation/macros"
-      >
-        Macros
-      </a>
       <a
         class="link"
         data-active-class-name="active"

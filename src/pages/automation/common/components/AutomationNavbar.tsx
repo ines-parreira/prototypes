@@ -26,11 +26,8 @@ const AutomationNavbar = () => {
     return (
         <Navbar activeContent="automation">
             <div className={css.category}>
-                <NavbarLink to="/app/automation" exact>
-                    Overview
-                </NavbarLink>
+                <NavbarLink to="/app/automation/macros">Macros</NavbarLink>
             </div>
-            <NavbarLink to="/app/automation/macros">Macros</NavbarLink>
             <NavbarLink to="/app/automation/rules">Rules</NavbarLink>
             <NavbarLink to="/app/automation/ticket-assignment">
                 Ticket assignment

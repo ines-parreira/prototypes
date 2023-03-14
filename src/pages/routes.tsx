@@ -1374,19 +1374,6 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
         <HelpCenterApiClientProvider>
             <Switch>
                 <Route
-                    path={`${path}/`}
-                    exact
-                    render={appRender({
-                        children: (
-                            <CanduContent
-                                containerId="candu-automation"
-                                title="Overview"
-                            />
-                        ),
-                        navbar: AutomationNavbar,
-                    })}
-                />
-                <Route
                     path={`${path}/macros`}
                     render={(props) => (
                         <MacrosSettingsRoutes

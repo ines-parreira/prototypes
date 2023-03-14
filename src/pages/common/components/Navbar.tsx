@@ -124,7 +124,7 @@ const getMainMenu = () => {
     return [
         ...mainMenu.slice(0, 1),
         {
-            url: '/app/automation',
+            url: '/app/automation/macros',
             label: 'Automation',
             content: (
                 <div className="d-flex flex-fill justify-content-between">

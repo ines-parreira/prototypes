@@ -42,7 +42,7 @@ const useSelfServiceConfiguration = (shopType: string, shopName: string) => {
                         status: NotificationStatus.Error,
                     })
                 )
-                history.push('/app/automation')
+                history.push('/app/automation/macros')
             }
         }, [])
     const [{loading: isUpdatePending}, handleSelfServiceConfigurationUpdate] =
@@ -90,7 +90,7 @@ const useSelfServiceConfiguration = (shopType: string, shopName: string) => {
                     status: NotificationStatus.Error,
                 })
             )
-            history.push('/app/automation')
+            history.push('/app/automation/macros')
         }
     }, [storeIntegrationId, dispatch, history])
 
