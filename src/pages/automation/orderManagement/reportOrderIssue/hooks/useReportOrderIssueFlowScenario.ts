@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from 'react'
+import {useCallback, useEffect, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -6,6 +6,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
 
+import {SCENARIO_REASON_DEFAULT_ACTION} from '../constants'
 import useReportOrderIssueFlowScenarios from './useReportOrderIssueFlowScenarios'
 
 const useReportOrderIssueFlowScenario = (
@@ -23,9 +24,17 @@ const useReportOrderIssueFlowScenario = (
     } = useReportOrderIssueFlowScenarios(shopName)
 
     const isFallback = scenarioIndex === scenarios.length - 1
-    const scenario = scenarios[scenarioIndex] as
-        | SelfServiceReportIssueCase
-        | undefined
+    const scenario = useMemo<SelfServiceReportIssueCase | undefined>(
+        () =>
+            scenarios[scenarioIndex] && {
+                ...scenarios[scenarioIndex],
+                reasons: scenarios[scenarioIndex].reasons.map((reason) => ({
+                    ...reason,
+                    action: reason.action ?? SCENARIO_REASON_DEFAULT_ACTION,
+                })),
+            },
+        [scenarios, scenarioIndex]
+    )
 
     useEffect(() => {
         if (selfServiceConfiguration && !scenario) {

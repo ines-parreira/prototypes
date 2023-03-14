@@ -6,7 +6,6 @@ import _isEqual from 'lodash/isEqual'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
-import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {IntegrationType} from 'models/integration/constants'
 import {
     AUTOMATED_RESPONSE,
@@ -19,6 +18,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
 
+import useCancelOrderFlow from './hooks/useCancelOrderFlow'
 import CancelOrderEligibility from './components/CancelOrderEligibility'
 import CancelOrderResponseMessageContent from './components/CancelOrderResponseMessageContent'
 import CancelOrderFlowPreview from './CancelOrderFlowPreview'
@@ -33,13 +33,12 @@ const CancelOrderFlowView = () => {
     const {shopName} = useParams<{shopName: string}>()
     const {
         isUpdatePending,
+        cancelOrderFlow,
         selfServiceConfiguration,
-        handleSelfServiceConfigurationUpdate,
-    } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
+        handleCancelOrderFlowUpdate,
+    } = useCancelOrderFlow(shopName)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
-
-    const cancelOrderFlow = selfServiceConfiguration?.cancel_order_policy
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyCancelOrderFlow, setDirtyCancelOrderFlow] =
@@ -99,14 +98,11 @@ const CancelOrderFlowView = () => {
         })
     }
     const handleSubmit = () => {
-        if (!selfServiceConfiguration || !dirtyCancelOrderFlow) {
+        if (!dirtyCancelOrderFlow) {
             return
         }
 
-        void handleSelfServiceConfigurationUpdate({
-            ...selfServiceConfiguration,
-            cancel_order_policy: dirtyCancelOrderFlow,
-        })
+        void handleCancelOrderFlowUpdate(dirtyCancelOrderFlow)
     }
     const handleCancel = () => {
         setDirtyCancelOrderFlow(cancelOrderFlow)

@@ -6,7 +6,6 @@ import _isEqual from 'lodash/isEqual'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
-import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {IntegrationType} from 'models/integration/constants'
 import {
     ReturnAction,
@@ -18,6 +17,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
 
+import useReturnOrderFlow from './hooks/useReturnOrderFlow'
 import ReturnOrderEligibility from './components/ReturnOrderEligibility'
 import ReturnOrderAction from './components/ReturnOrderAction'
 import ReturnOrderFlowPreview from './ReturnOrderFlowPreview'
@@ -33,13 +33,12 @@ const ReturnOrderFlowView = () => {
     const {
         isUpdatePending,
         storeIntegration,
+        returnOrderFlow,
         selfServiceConfiguration,
-        handleSelfServiceConfigurationUpdate,
-    } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
+        handleReturnOrderFlowUpdate,
+    } = useReturnOrderFlow(shopName)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
-
-    const returnOrderFlow = selfServiceConfiguration?.return_order_policy
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyReturnOrderFlow, setDirtyReturnOrderFlow] =
@@ -92,14 +91,11 @@ const ReturnOrderFlowView = () => {
         setDirtyReturnOrderFlow({...dirtyReturnOrderFlow, action})
     }
     const handleSubmit = () => {
-        if (!selfServiceConfiguration || !dirtyReturnOrderFlow) {
+        if (!dirtyReturnOrderFlow) {
             return
         }
 
-        void handleSelfServiceConfigurationUpdate({
-            ...selfServiceConfiguration,
-            return_order_policy: dirtyReturnOrderFlow,
-        })
+        void handleReturnOrderFlowUpdate(dirtyReturnOrderFlow)
     }
     const handleCancel = () => {
         setDirtyReturnOrderFlow(returnOrderFlow)
