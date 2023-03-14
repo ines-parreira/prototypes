@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from 'react'
-import {Link, useParams} from 'react-router-dom'
+import {Link, useParams, useHistory} from 'react-router-dom'
 import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
@@ -26,6 +26,7 @@ import {DEFAULT_SCENARIO} from './constants'
 import css from './CreateReportOrderIssueFlowScenarioView.less'
 
 const CreateReportOrderIssueFlowScenarioView = () => {
+    const history = useHistory()
     const {shopName} = useParams<{shopName: string}>()
     const {isCreatePending, selfServiceConfiguration, handleScenarioCreate} =
         useReportOrderIssueFlowScenarios(shopName)
@@ -71,7 +72,9 @@ const CreateReportOrderIssueFlowScenarioView = () => {
         void handleScenarioCreate(scenario)
     }
     const handleCancel = () => {
-        setScenario(DEFAULT_SCENARIO)
+        history.push(
+            `/app/automation/shopify/${shopName}/order-management/report-issue`
+        )
     }
 
     return (
