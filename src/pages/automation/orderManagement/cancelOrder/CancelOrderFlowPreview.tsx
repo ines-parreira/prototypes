@@ -5,15 +5,15 @@ import {ResponseMessageContent} from 'models/selfServiceConfiguration/types'
 import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
 import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
-import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceChannels'
 import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
 
+import {useOrderManagementPreviewContext} from '../OrderManagementPreviewContext'
+
 type Props = {
-    channels: SelfServiceChannel[]
     responseMessageContent?: ResponseMessageContent
 }
 
-const CancelOrderFlowPreview = ({channels, responseMessageContent}: Props) => {
+const CancelOrderFlowPreview = ({responseMessageContent}: Props) => {
     const history = useMemo(
         () =>
             createMemoryHistory({
@@ -21,10 +21,14 @@ const CancelOrderFlowPreview = ({channels, responseMessageContent}: Props) => {
             }),
         []
     )
+    const {channels, channel, onChannelChange} =
+        useOrderManagementPreviewContext()
 
     return (
         <SelfServicePreviewContainer
             channels={channels}
+            channel={channel}
+            onChange={onChannelChange}
             alert={{
                 message:
                     'Connect a chat or help center to your store to use this feature.',

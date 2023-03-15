@@ -151,6 +151,7 @@ import SelfServiceHelpCentersProvider from './automation/common/providers/SelfSe
 import QuickResponsesPaywallView from './automation/quickResponses/QuickResponsesPaywallView'
 import OrderManagementPaywallView from './automation/orderManagement/OrderManagementPaywallView'
 import ArticleRecommendationPaywallView from './automation/articleRecommendation/ArticleRecommendationPaywallView'
+import OrderManagementPreviewProvider from './automation/orderManagement/OrderManagementPreviewProvider'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1478,74 +1479,76 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                     exact
                 >
                     <SelfServiceHelpCentersProvider>
-                        <Switch>
-                            <Route
-                                path={`${path}/shopify/:shopName/order-management`}
-                                exact
-                                render={appRender({
-                                    content: memoizedWithUserRoleRequired(
-                                        OrderManagementViewContainer,
-                                        AGENT_ROLE
-                                    ),
-                                    navbar: AutomationNavbar,
-                                })}
-                            />
-                            <Route
-                                path={`${path}/shopify/:shopName/order-management/return`}
-                                exact
-                                render={appRender({
-                                    content: memoizedWithUserRoleRequired(
-                                        ReturnOrderFlowViewContainer,
-                                        AGENT_ROLE
-                                    ),
-                                    navbar: AutomationNavbar,
-                                })}
-                            />
-                            <Route
-                                path={`${path}/shopify/:shopName/order-management/cancel`}
-                                exact
-                                render={appRender({
-                                    content: memoizedWithUserRoleRequired(
-                                        CancelOrderFlowViewContainer,
-                                        AGENT_ROLE
-                                    ),
-                                    navbar: AutomationNavbar,
-                                })}
-                            />
-                            <Route
-                                path={`${path}/shopify/:shopName/order-management/report-issue`}
-                                exact
-                                render={appRender({
-                                    content: memoizedWithUserRoleRequired(
-                                        ReportOrderIssueFlowViewContainer,
-                                        AGENT_ROLE
-                                    ),
-                                    navbar: AutomationNavbar,
-                                })}
-                            />
-                            <Route
-                                path={`${path}/shopify/:shopName/order-management/report-issue/new`}
-                                exact
-                                render={appRender({
-                                    content: memoizedWithUserRoleRequired(
-                                        CreateReportOrderIssueFlowScenarioViewContainer,
-                                        AGENT_ROLE
-                                    ),
-                                    navbar: AutomationNavbar,
-                                })}
-                            />
-                            <Route
-                                path={`${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`}
-                                exact
-                                render={appRender({
-                                    content: memoizedWithUserRoleRequired(
-                                        EditReportOrderIssueFlowScenarioViewContainer,
-                                        AGENT_ROLE
-                                    ),
-                                    navbar: AutomationNavbar,
-                                })}
-                            />
-                        </Switch>
+                        <OrderManagementPreviewProvider>
+                            <Switch>
+                                <Route
+                                    path={`${path}/shopify/:shopName/order-management`}
+                                    exact
+                                    render={appRender({
+                                        content: memoizedWithUserRoleRequired(
+                                            OrderManagementViewContainer,
+                                            AGENT_ROLE
+                                        ),
+                                        navbar: AutomationNavbar,
+                                    })}
+                                />
+                                <Route
+                                    path={`${path}/shopify/:shopName/order-management/return`}
+                                    exact
+                                    render={appRender({
+                                        content: memoizedWithUserRoleRequired(
+                                            ReturnOrderFlowViewContainer,
+                                            AGENT_ROLE
+                                        ),
+                                        navbar: AutomationNavbar,
+                                    })}
+                                />
+                                <Route
+                                    path={`${path}/shopify/:shopName/order-management/cancel`}
+                                    exact
+                                    render={appRender({
+                                        content: memoizedWithUserRoleRequired(
+                                            CancelOrderFlowViewContainer,
+                                            AGENT_ROLE
+                                        ),
+                                        navbar: AutomationNavbar,
+                                    })}
+                                />
+                                <Route
+                                    path={`${path}/shopify/:shopName/order-management/report-issue`}
+                                    exact
+                                    render={appRender({
+                                        content: memoizedWithUserRoleRequired(
+                                            ReportOrderIssueFlowViewContainer,
+                                            AGENT_ROLE
+                                        ),
+                                        navbar: AutomationNavbar,
+                                    })}
+                                />
+                                <Route
+                                    path={`${path}/shopify/:shopName/order-management/report-issue/new`}
+                                    exact
+                                    render={appRender({
+                                        content: memoizedWithUserRoleRequired(
+                                            CreateReportOrderIssueFlowScenarioViewContainer,
+                                            AGENT_ROLE
+                                        ),
+                                        navbar: AutomationNavbar,
+                                    })}
+                                />
+                                <Route
+                                    path={`${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`}
+                                    exact
+                                    render={appRender({
+                                        content: memoizedWithUserRoleRequired(
+                                            EditReportOrderIssueFlowScenarioViewContainer,
+                                            AGENT_ROLE
+                                        ),
+                                        navbar: AutomationNavbar,
+                                    })}
+                                />
+                            </Switch>
+                        </OrderManagementPreviewProvider>
                     </SelfServiceHelpCentersProvider>
                 </Route>
                 <Route

@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from 'react'
-import {Link, useParams, useHistory} from 'react-router-dom'
+import {Link, useHistory, useParams} from 'react-router-dom'
 import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
@@ -12,8 +12,6 @@ import {
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
-import {IntegrationType} from 'models/integration/constants'
 
 import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
@@ -30,7 +28,6 @@ const CreateReportOrderIssueFlowScenarioView = () => {
     const {shopName} = useParams<{shopName: string}>()
     const {isCreatePending, selfServiceConfiguration, handleScenarioCreate} =
         useReportOrderIssueFlowScenarios(shopName)
-    const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [scenario, setScenario] =
@@ -147,7 +144,6 @@ const CreateReportOrderIssueFlowScenarioView = () => {
                             </ReportOrderIssueScenarioFormContext.Provider>
                         </div>
                         <ReportOrderIssueFlowScenarioPreview
-                            channels={channels}
                             reasons={scenario.reasons}
                             expandedReasonKey={expandedReasonKey}
                             hoveredReasonKey={hoveredReasonKey}

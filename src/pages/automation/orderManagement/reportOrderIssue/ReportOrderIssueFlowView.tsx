@@ -6,8 +6,6 @@ import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
 import Button from 'pages/common/components/button/Button'
-import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
-import {IntegrationType} from 'models/integration/constants'
 
 import ReportOrderIssueScenarioList from './components/ReportOrderIssueScenarioList'
 import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
@@ -21,7 +19,6 @@ const ReportOrderIssueFlowView = () => {
     const {scenarios, selfServiceConfiguration, handleScenariosUpdate} =
         useReportOrderIssueFlowScenarios(shopName)
     const [hasHoveredScenario, setHasHoveredScenario] = useState(false)
-    const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
 
     const handleCreateScenarioClick = () => {
         history.push(
@@ -94,7 +91,6 @@ const ReportOrderIssueFlowView = () => {
                             />
                         </div>
                         <ReportOrderIssueFlowPreview
-                            channels={channels}
                             hasHoveredScenario={hasHoveredScenario}
                         />
                     </>

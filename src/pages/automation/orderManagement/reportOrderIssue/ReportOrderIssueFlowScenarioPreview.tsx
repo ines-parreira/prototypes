@@ -4,19 +4,18 @@ import {createMemoryHistory} from 'history'
 import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
 import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
-import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceChannels'
 import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
 import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
 
+import {useOrderManagementPreviewContext} from '../OrderManagementPreviewContext'
+
 type Props = {
-    channels: SelfServiceChannel[]
     reasons: ReportIssueCaseReason[]
     expandedReasonKey: ReportIssueCaseReason['reasonKey'] | null
     hoveredReasonKey: ReportIssueCaseReason['reasonKey'] | null
 }
 
 const ReportOrderIssueFlowScenarioPreview = ({
-    channels,
     reasons,
     expandedReasonKey,
     hoveredReasonKey,
@@ -33,10 +32,14 @@ const ReportOrderIssueFlowScenarioPreview = ({
     const expandedReason = reasons.find(
         (reason) => reason.reasonKey === expandedReasonKey
     )
+    const {channels, channel, onChannelChange} =
+        useOrderManagementPreviewContext()
 
     return (
         <SelfServicePreviewContainer
             channels={channels}
+            channel={channel}
+            onChange={onChannelChange}
             alert={{
                 message:
                     'Connect a chat or help center to your store to use this feature.',

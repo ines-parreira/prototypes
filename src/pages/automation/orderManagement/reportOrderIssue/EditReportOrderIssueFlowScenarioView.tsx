@@ -10,8 +10,6 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
-import {IntegrationType} from 'models/integration/constants'
 import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
 
 import useReportOrderIssueFlowScenario from './hooks/useReportOrderIssueFlowScenario'
@@ -34,7 +32,6 @@ const EditReportOrderIssueFlowScenarioView = () => {
         handleScenarioUpdate,
         handleScenarioDelete,
     } = useReportOrderIssueFlowScenario(shopName, parseInt(scenarioIndex, 10))
-    const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyScenario, setDirtyScenario] = useState(scenario)
@@ -196,7 +193,6 @@ const EditReportOrderIssueFlowScenarioView = () => {
                             </ReportOrderIssueScenarioFormContext.Provider>
                         </div>
                         <ReportOrderIssueFlowScenarioPreview
-                            channels={channels}
                             reasons={dirtyScenario.reasons}
                             expandedReasonKey={expandedReasonKey}
                             hoveredReasonKey={hoveredReasonKey}

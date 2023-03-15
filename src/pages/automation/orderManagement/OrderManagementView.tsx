@@ -13,7 +13,6 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
-import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
 import {IntegrationType} from 'models/integration/constants'
 import {PolicyKey} from 'models/selfServiceConfiguration/types'
 import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
@@ -22,6 +21,7 @@ import SelfServicePreviewContext from 'pages/automation/common/components/previe
 import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
 
 import OrderManagementFlowItem from './components/OrderManagementFlowItem'
+import {useOrderManagementPreviewContext} from './OrderManagementPreviewContext'
 
 import css from './OrderManagementView.less'
 
@@ -59,7 +59,8 @@ const OrderManagementView = () => {
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
+    const {channels, channel, onChannelChange} =
+        useOrderManagementPreviewContext()
     const previewHistory = useMemo(
         () => createMemoryHistory(),
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -264,6 +265,8 @@ const OrderManagementView = () => {
                             />
                         </div>
                         <SelfServicePreviewContainer
+                            channel={channel}
+                            onChange={onChannelChange}
                             channels={channels}
                             alert={{
                                 message:

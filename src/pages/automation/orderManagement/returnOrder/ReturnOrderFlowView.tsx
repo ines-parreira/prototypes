@@ -6,7 +6,6 @@ import _isEqual from 'lodash/isEqual'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
-import {IntegrationType} from 'models/integration/constants'
 import {
     ReturnAction,
     SelfServiceConfigurationFilter,
@@ -15,7 +14,6 @@ import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
-import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
 
 import useReturnOrderFlow from './hooks/useReturnOrderFlow'
 import ReturnOrderEligibility from './components/ReturnOrderEligibility'
@@ -38,7 +36,6 @@ const ReturnOrderFlowView = () => {
         handleReturnOrderFlowUpdate,
     } = useReturnOrderFlow(shopName)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyReturnOrderFlow, setDirtyReturnOrderFlow] =
@@ -203,7 +200,6 @@ const ReturnOrderFlowView = () => {
                             />
                         </div>
                         <ReturnOrderFlowPreview
-                            channels={channels}
                             returnAction={dirtyReturnAction}
                         />
                     </ReturnOrderFlowViewContext.Provider>

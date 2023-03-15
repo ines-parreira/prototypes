@@ -4,7 +4,7 @@ import {createMemoryHistory} from 'history'
 
 import {HelpCenter} from 'models/helpCenter/types'
 import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
-import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
+import UncontrolledSelfServicePreviewContainer from 'pages/automation/common/components/preview/UncontrolledSelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
 import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
 import useSelfServiceChatChannels, {
@@ -51,7 +51,7 @@ const ArticleRecommendationPreview = ({
     )
 
     return (
-        <SelfServicePreviewContainer<SelfServiceChatChannel>
+        <UncontrolledSelfServicePreviewContainer<SelfServiceChatChannel>
             channels={helpCenter !== undefined ? chatIntegrations : []}
             alert={
                 helpCenter && {
@@ -90,7 +90,7 @@ const ArticleRecommendationPreview = ({
                     )
                 )
             }}
-        </SelfServicePreviewContainer>
+        </UncontrolledSelfServicePreviewContainer>
     )
 }
 

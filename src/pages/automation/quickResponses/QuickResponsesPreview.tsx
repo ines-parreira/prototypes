@@ -8,7 +8,7 @@ import {
 import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
 import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
-import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
+import UncontrolledSelfServicePreviewContainer from 'pages/automation/common/components/preview/UncontrolledSelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
 
 type Props = {
@@ -41,7 +41,7 @@ const QuickResponsesPreview = ({
     }, [history, hasExpandedQuickResponse])
 
     return (
-        <SelfServicePreviewContainer
+        <UncontrolledSelfServicePreviewContainer
             channels={channels}
             alert={{
                 message: 'Connect a chat to your store to use this feature.',
@@ -62,7 +62,7 @@ const QuickResponsesPreview = ({
                     <SelfServicePreview channel={channel} history={history} />
                 </SelfServicePreviewContext.Provider>
             )}
-        </SelfServicePreviewContainer>
+        </UncontrolledSelfServicePreviewContainer>
     )
 }
 

@@ -12,17 +12,11 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceChannels'
 
-import {SelfServiceChatChannel} from '../../hooks/useSelfServiceChatChannels'
-import {SelfServiceHelpCenterChannel} from '../../hooks/useSelfServiceHelpCenterChannels'
-
 import css from './SelfServicePreviewContainer.less'
 
-type Props<
-    Channel extends
-        | SelfServiceChannel
-        | SelfServiceChatChannel
-        | SelfServiceHelpCenterChannel
-> = {
+type Props<Channel extends SelfServiceChannel> = {
+    channel?: Channel
+    onChange: (channel?: Channel) => void
     channels: Channel[]
     alert?: {
         message: ReactNode
@@ -31,12 +25,9 @@ type Props<
     children: (channel: Channel) => void
 }
 
-const SelfServicePreviewContainer = <
-    Channel extends
-        | SelfServiceChannel
-        | SelfServiceChatChannel
-        | SelfServiceHelpCenterChannel
->({
+const SelfServicePreviewContainer = <Channel extends SelfServiceChannel>({
+    channel,
+    onChange,
     channels,
     alert,
     children,
@@ -45,7 +36,6 @@ const SelfServicePreviewContainer = <
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
     const [isSelectOpen, setIsSelectOpen] = useState(false)
-    const [channel, setChannel] = useState<Channel | undefined>(channels[0])
 
     const options = useMemo(
         () =>
@@ -60,14 +50,12 @@ const SelfServicePreviewContainer = <
 
     useEffect(() => {
         if (!channel || !channels.includes(channel)) {
-            setChannel(channels[0])
+            onChange(channels[0])
         }
-    }, [channel, channels])
+    }, [channel, channels, onChange])
 
     const handleChange = (nextValue: string) => {
-        setChannel(
-            options.find((option) => option.value === nextValue)?.channel
-        )
+        onChange(options.find((option) => option.value === nextValue)?.channel)
     }
 
     const alertAction = alert?.action

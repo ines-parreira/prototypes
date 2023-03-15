@@ -6,7 +6,6 @@ import _isEqual from 'lodash/isEqual'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
-import {IntegrationType} from 'models/integration/constants'
 import {
     AUTOMATED_RESPONSE,
     ResponseMessageContent,
@@ -16,7 +15,6 @@ import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
-import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
 
 import useCancelOrderFlow from './hooks/useCancelOrderFlow'
 import CancelOrderEligibility from './components/CancelOrderEligibility'
@@ -38,7 +36,6 @@ const CancelOrderFlowView = () => {
         handleCancelOrderFlowUpdate,
     } = useCancelOrderFlow(shopName)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyCancelOrderFlow, setDirtyCancelOrderFlow] =
@@ -214,7 +211,6 @@ const CancelOrderFlowView = () => {
                             />
                         </div>
                         <CancelOrderFlowPreview
-                            channels={channels}
                             responseMessageContent={
                                 dirtyCancelOrderFlow.action
                                     ?.response_message_content
