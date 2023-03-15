@@ -45,6 +45,11 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
 
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
     const isInitialEntry = history.length === 1
+    const isOrderManagementUnavailable =
+        !selfServiceConfiguration?.track_order_policy.enabled &&
+        !selfServiceConfiguration?.report_issue_policy.enabled &&
+        !selfServiceConfiguration?.cancel_order_policy.enabled &&
+        !selfServiceConfiguration?.return_order_policy.enabled
 
     return (
         <div
@@ -95,6 +100,11 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                     >
                         {helpCenterTexts.manageOrdersLabelReportIssue}
                     </OrderManagementFlowItem>
+                )}
+                {isOrderManagementUnavailable && (
+                    <div className={css.orderManagementUnavailable}>
+                        {helpCenterTexts.orderManagementIsCurrentlyUnavailable}
+                    </div>
                 )}
             </div>
         </div>
