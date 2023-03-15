@@ -1,23 +1,15 @@
 import React from 'react'
 import {Map} from 'immutable'
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import {
-    GorgiasChatAvatarImageType,
-    GorgiasChatAvatarNameType,
-    GorgiasChatAvatarSettings,
-} from 'models/integration/types'
-
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import {GorgiasChatAvatarSettings} from 'models/integration/types'
 
 import {AgentDisplayName} from './AgentDisplayName'
 import ArticleAttachment, {
     ArticleAttachmentSchema,
     isArticleAttachment,
 } from './ArticleAttachment'
+import ChatAvatar from './ChatAvatar'
 import ProductCardAttachment, {ProductAttachment} from './ProductCardAttachment'
 
 import css from './ChatIntegrationPreview.less'
@@ -83,68 +75,45 @@ const AgentMessages: React.FC<Props> = ({
     enableAgentMessagesAnimations,
     chatTitle,
     avatar,
-}) => {
-    const hasAvatarCustomization =
-        useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
-
-    return (
-        <div className={css.appMakerMessageWrapper}>
-            <Avatar
-                name={
-                    avatar?.nameType === GorgiasChatAvatarNameType.CHAT_TITLE
-                        ? chatTitle
-                        : currentUser.get('name')
-                }
-                showFirstInitialOnly={
-                    avatar?.nameType ===
-                    GorgiasChatAvatarNameType.AGENT_FIRST_NAME
-                }
-                url={
-                    !hasAvatarCustomization ||
-                    avatar?.imageType ===
-                        GorgiasChatAvatarImageType.AGENT_PICTURE
-                        ? currentUser.getIn(['meta', 'profile_picture_url'])
-                        : avatar?.imageType ===
-                          GorgiasChatAvatarImageType.COMPANY_LOGO
-                        ? avatar.companyLogoUrl
-                        : undefined
-                }
-                size={35}
-                className={classnames(css.avatar, {
+}) => (
+    <div className={css.appMakerMessageWrapper}>
+        <ChatAvatar
+            avatar={avatar}
+            agentName={currentUser.get('name')}
+            agentAvatarUrl={currentUser.getIn(['meta', 'profile_picture_url'])}
+            chatTitle={chatTitle}
+            className={classnames(css.avatar, {
+                [css.isAnimated]: enableAgentMessagesAnimations,
+            })}
+        />
+        <div>
+            <AgentDisplayName
+                chatTitle={chatTitle}
+                className={classnames(css.user, {
                     [css.isAnimated]: enableAgentMessagesAnimations,
                 })}
+                name={currentUser.get('name') as string}
+                type={avatar?.nameType}
             />
-            <div>
-                <AgentDisplayName
-                    chatTitle={chatTitle}
-                    className={classnames(css.user, {
-                        [css.isAnimated]: enableAgentMessagesAnimations,
-                    })}
-                    name={currentUser.get('name') as string}
-                    type={avatar?.nameType}
-                />
 
-                {messages.map((message, index) => (
-                    <div
-                        className={classnames(
-                            css.bubble,
-                            css.firstMessageOfAppMaker,
-                            {
-                                [css.isAnimated]: enableAgentMessagesAnimations,
-                            }
-                        )}
-                        key={
-                            enableAgentMessagesAnimations
-                                ? index
-                                : message.content
+            {messages.map((message, index) => (
+                <div
+                    className={classnames(
+                        css.bubble,
+                        css.firstMessageOfAppMaker,
+                        {
+                            [css.isAnimated]: enableAgentMessagesAnimations,
                         }
-                    >
-                        {renderAgentMessage(message)}
-                    </div>
-                ))}
-            </div>
+                    )}
+                    key={
+                        enableAgentMessagesAnimations ? index : message.content
+                    }
+                >
+                    {renderAgentMessage(message)}
+                </div>
+            ))}
         </div>
-    )
-}
+    </div>
+)
 
 export default AgentMessages

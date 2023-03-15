@@ -1,0 +1,33 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .avatar {
+        min-width: 35px;
+        width: 35px;
+        height: 35px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 50%;
+
+        box-shadow: 0 4px 6px fade(black, 9%);
+
+        background-color: @classic-neutral-grey-2;
+        background-size: cover;
+        background-position: center;
+
+        color: @classic-neutral-grey-4;
+
+        text-transform: uppercase;
+
+        font-size: 14px;
+        font-weight: 600;
+
+        &.placeholder {
+            font-size: 25px;
+            color: @classic-neutral-grey-6;
+        }
+    }
+}

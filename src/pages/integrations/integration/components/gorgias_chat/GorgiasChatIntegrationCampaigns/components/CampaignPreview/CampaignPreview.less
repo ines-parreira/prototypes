@@ -4,18 +4,30 @@
     .preview {
         overflow: hidden;
         display: inline-block;
-        padding: 32px 32px 20px 32px;
-        background: #f8f9fa;
+        background: @classic-neutral-grey-2;
         border-radius: 5px;
+        width: 432px;
+        padding: 24px;
     }
 
     .container {
         display: flex;
         flex-direction: column;
-        width: 330px;
 
-        &.bubbleOnTop {
+        .chatLauncherWrapper {
+            display: flex;
+
+            &.chatLauncherOnRight {
+                justify-content: flex-end;
+            }
+        }
+
+        &.chatLauncherOnTop {
             flex-direction: column-reverse;
+
+            .chatLauncher {
+                margin-bottom: 1em;
+            }
         }
     }
 }

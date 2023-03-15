@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChatAvatar /> should display no image 1`] = `
+<div
+  class="avatar"
+>
+  AN
+</div>
+`;
+
+exports[`<ChatAvatar /> should display placeholder image 1`] = `
+<div
+  class="avatar placeholder"
+>
+  <i
+    class="material-icons"
+  >
+    person
+  </i>
+</div>
+`;

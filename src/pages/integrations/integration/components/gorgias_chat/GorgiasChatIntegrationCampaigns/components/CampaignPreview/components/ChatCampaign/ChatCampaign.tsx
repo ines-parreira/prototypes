@@ -1,10 +1,17 @@
 import React from 'react'
-
 import ReactPlayer from 'react-player'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {extractGorgiasVideoDivFromHtmlContent} from 'utils'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+    GorgiasChatAvatarSettings,
+} from 'models/integration/types'
+import {AgentDisplayName} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentDisplayName'
 import GorgiasChatPoweredBy from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/GorgiasChatPoweredBy'
+import ChatAvatar from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatAvatar'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {CampaignProduct} from '../../../../types/CampaignProduct'
 
@@ -12,9 +19,43 @@ import {ProductCarousel} from '../ProductCarousel'
 
 import css from './ChatCampaign.less'
 
+type AuthorNameProps = {
+    authorName?: string
+    avatar?: GorgiasChatAvatarSettings
+    chatTitle?: string
+    isAuthorSelected: boolean
+}
+
+const AuthorName: React.FC<AuthorNameProps> = ({
+    authorName,
+    avatar,
+    chatTitle,
+    isAuthorSelected,
+}) => {
+    if (isAuthorSelected) {
+        return <AgentDisplayName name={authorName!} type={avatar?.nameType} />
+    }
+
+    if (avatar?.nameType === GorgiasChatAvatarNameType.CHAT_TITLE) {
+        return <>{chatTitle}</>
+    }
+
+    return (
+        <>
+            [Random agent's first name
+            {avatar?.nameType ===
+                GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL &&
+                ', last name initials'}
+            ]
+        </>
+    )
+}
+
 type Props = {
     authorAvatarUrl?: string
     authorName?: string
+    avatar?: GorgiasChatAvatarSettings
+    chatTitle?: string
     html: string
     products?: CampaignProduct[]
     translatedTexts: Record<string, string>
@@ -23,27 +64,54 @@ type Props = {
 export const ChatCampaign = ({
     authorAvatarUrl,
     authorName,
+    avatar,
+    chatTitle,
     html,
     products = [],
     translatedTexts,
 }: Props) => {
+    const isAgentAvatarCustomizationEnabled =
+        useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
+
     const {videoUrls, htmlCleaned} = extractGorgiasVideoDivFromHtmlContent(html)
+
+    const isAuthorSelected = !!authorName
 
     return (
         <div className={css.campaign}>
             <div className={css.content}>
                 <div className={css.header}>
                     <div className={css.author}>
-                        <Avatar
-                            key={authorAvatarUrl}
+                        <ChatAvatar
                             className={css.authorAvatar}
-                            name={authorName || 'Random agent'}
-                            url={authorAvatarUrl}
+                            chatTitle={
+                                isAuthorSelected ? authorName : chatTitle
+                            }
+                            agentName={authorName || 'Random Agent'}
+                            agentAvatarUrl={authorAvatarUrl}
+                            avatar={avatar}
+                            showPlaceholderAvatar={
+                                isAgentAvatarCustomizationEnabled &&
+                                avatar?.imageType ===
+                                    GorgiasChatAvatarImageType.AGENT_PICTURE &&
+                                !isAuthorSelected
+                            }
                         />
                     </div>
                     <div className={css.message}>
                         <div className={css.authorName}>
-                            <b>{authorName || "[Random agent's name]"}</b>
+                            <b>
+                                {isAgentAvatarCustomizationEnabled ? (
+                                    <AuthorName
+                                        authorName={authorName}
+                                        avatar={avatar}
+                                        chatTitle={chatTitle}
+                                        isAuthorSelected={isAuthorSelected}
+                                    />
+                                ) : (
+                                    authorName || "[Random agent's name]"
+                                )}
+                            </b>
                         </div>
                         <div
                             className={css.messageText}

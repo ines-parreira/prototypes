@@ -436,25 +436,9 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
             class="appMakerMessageWrapper"
           >
             <div
-              class="component hasImage avatar"
-              style="width: 35px; height: 35px;"
-            >
-              <div
-                class="initials"
-                style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
-              >
-                <span
-                  style="line-height: 37px;"
-                >
-                  AP
-                </span>
-              </div>
-              <img
-                alt="avatar"
-                class="gravatar"
-                src="https://config.gorgias.io/production/picture"
-              />
-            </div>
+              class="avatar avatar"
+              style="background-image: url(https://config.gorgias.io/production/picture);"
+            />
             <div>
               <div
                 class="user"
@@ -620,25 +604,9 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer wit
             class="appMakerMessageWrapper"
           >
             <div
-              class="component hasImage avatar"
-              style="width: 35px; height: 35px;"
-            >
-              <div
-                class="initials"
-                style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
-              >
-                <span
-                  style="line-height: 37px;"
-                >
-                  AP
-                </span>
-              </div>
-              <img
-                alt="avatar"
-                class="gravatar"
-                src="https://config.gorgias.io/production/picture"
-              />
-            </div>
+              class="avatar avatar"
+              style="background-image: url(https://config.gorgias.io/production/picture);"
+            />
             <div>
               <div
                 class="user"

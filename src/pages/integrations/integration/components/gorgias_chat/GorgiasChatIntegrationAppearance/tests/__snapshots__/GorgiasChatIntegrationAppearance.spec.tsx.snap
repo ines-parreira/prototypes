@@ -783,18 +783,8 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="appMakerMessageWrapper"
                     >
                       <div
-                        class="component avatar"
-                        style="width: 35px; height: 35px;"
-                      >
-                        <div
-                          class="initials"
-                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
-                        >
-                          <span
-                            style="line-height: 37px;"
-                          />
-                        </div>
-                      </div>
+                        class="avatar avatar"
+                      />
                       <div>
                         <div
                           class="user"
@@ -1628,18 +1618,8 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="appMakerMessageWrapper"
                     >
                       <div
-                        class="component avatar"
-                        style="width: 35px; height: 35px;"
-                      >
-                        <div
-                          class="initials"
-                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
-                        >
-                          <span
-                            style="line-height: 37px;"
-                          />
-                        </div>
-                      </div>
+                        class="avatar avatar"
+                      />
                       <div>
                         <div
                           class="user"
@@ -2443,18 +2423,8 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="appMakerMessageWrapper"
                     >
                       <div
-                        class="component avatar"
-                        style="width: 35px; height: 35px;"
-                      >
-                        <div
-                          class="initials"
-                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
-                        >
-                          <span
-                            style="line-height: 37px;"
-                          />
-                        </div>
-                      </div>
+                        class="avatar avatar"
+                      />
                       <div>
                         <div
                           class="user"
@@ -3266,18 +3236,8 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="appMakerMessageWrapper"
                     >
                       <div
-                        class="component avatar"
-                        style="width: 35px; height: 35px;"
-                      >
-                        <div
-                          class="initials"
-                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
-                        >
-                          <span
-                            style="line-height: 37px;"
-                          />
-                        </div>
-                      </div>
+                        class="avatar avatar"
+                      />
                       <div>
                         <div
                           class="user"
@@ -4081,18 +4041,8 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="appMakerMessageWrapper"
                     >
                       <div
-                        class="component avatar"
-                        style="width: 35px; height: 35px;"
-                      >
-                        <div
-                          class="initials"
-                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
-                        >
-                          <span
-                            style="line-height: 37px;"
-                          />
-                        </div>
-                      </div>
+                        class="avatar avatar"
+                      />
                       <div>
                         <div
                           class="user"
@@ -4889,18 +4839,8 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="appMakerMessageWrapper"
                     >
                       <div
-                        class="component avatar"
-                        style="width: 35px; height: 35px;"
-                      >
-                        <div
-                          class="initials"
-                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
-                        >
-                          <span
-                            style="line-height: 37px;"
-                          />
-                        </div>
-                      </div>
+                        class="avatar avatar"
+                      />
                       <div>
                         <div
                           class="user"
@@ -5750,18 +5690,8 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       class="appMakerMessageWrapper"
                     >
                       <div
-                        class="component avatar"
-                        style="width: 35px; height: 35px;"
-                      >
-                        <div
-                          class="initials"
-                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
-                        >
-                          <span
-                            style="line-height: 37px;"
-                          />
-                        </div>
-                      </div>
+                        class="avatar avatar"
+                      />
                       <div>
                         <div
                           class="user"
@@ -6641,19 +6571,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="appMakerMessageWrapper"
                     >
                       <div
-                        class="component avatar"
-                        style="width: 35px; height: 35px;"
+                        class="avatar avatar"
                       >
-                        <div
-                          class="initials"
-                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
-                        >
-                          <span
-                            style="line-height: 37px;"
-                          >
-                            J
-                          </span>
-                        </div>
+                        J
                       </div>
                       <div>
                         <div
@@ -7564,18 +7484,8 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="appMakerMessageWrapper"
                     >
                       <div
-                        class="component avatar"
-                        style="width: 35px; height: 35px;"
-                      >
-                        <div
-                          class="initials"
-                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
-                        >
-                          <span
-                            style="line-height: 37px;"
-                          />
-                        </div>
-                      </div>
+                        class="avatar avatar"
+                      />
                       <div>
                         <div
                           class="user"
@@ -8379,18 +8289,8 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="appMakerMessageWrapper"
                     >
                       <div
-                        class="component avatar"
-                        style="width: 35px; height: 35px;"
-                      >
-                        <div
-                          class="initials"
-                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
-                        >
-                          <span
-                            style="line-height: 37px;"
-                          />
-                        </div>
-                      </div>
+                        class="avatar avatar"
+                      />
                       <div>
                         <div
                           class="user"

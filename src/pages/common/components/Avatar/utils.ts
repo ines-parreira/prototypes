@@ -6,7 +6,7 @@ export type AvatarParamsType = {
 }
 
 export function getInitials(
-    name: string | null,
+    name: Maybe<string>,
     useFirstInitialOnly?: boolean
 ): string {
     if (!name) {

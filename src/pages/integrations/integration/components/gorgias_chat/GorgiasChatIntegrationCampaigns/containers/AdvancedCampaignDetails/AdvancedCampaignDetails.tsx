@@ -12,6 +12,12 @@ import {sanitizeHtmlDefault} from 'utils/html'
 import {User} from 'config/types/user'
 import history from 'pages/history'
 
+import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+    GorgiasChatAvatarSettings,
+} from 'models/integration/types'
+
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 
 import {
@@ -431,6 +437,24 @@ export const AdvancedCampaignDetails = memo(
             (trigger) => !isAllowedToUpdateTrigger(trigger, isRevenueBetaTester)
         )
 
+        const chatTitle = integration.get('name')
+
+        const avatar: GorgiasChatAvatarSettings = {
+            imageType: integration.getIn(
+                ['decoration', 'avatar', 'image_type'],
+                GorgiasChatAvatarImageType.AGENT_PICTURE
+            ),
+            nameType: integration.getIn(
+                ['decoration', 'avatar', 'name_type'],
+                GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+            ),
+            companyLogoUrl: integration.getIn([
+                'decoration',
+                'avatar',
+                'company_logo_url',
+            ]),
+        }
+
         return (
             <div data-testid="advanced-campaign-details-page">
                 <CampaignDetailsHeader
@@ -451,6 +475,8 @@ export const AdvancedCampaignDetails = memo(
                                 authorAvatarUrl={
                                     campaignAgent?.avatar_url ?? ''
                                 }
+                                avatar={avatar}
+                                chatTitle={chatTitle}
                             />
                         )
                     }
