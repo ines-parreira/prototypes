@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, ReactNode, useMemo, useState} from 'react'
+import React, {PropsWithChildren, ReactNode} from 'react'
 import {Container} from 'reactstrap'
 
 import PageHeader from 'pages/common/components/PageHeader'
@@ -7,54 +7,66 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import css from './WorkflowEditorView.less'
 import useWorkflowConfiguration from './hooks/useWorkflowConfiguration'
+import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
+import {
+    withWorkflowEntrypointContext,
+    useWorkflowEntrypointContext,
+} from './hooks/useWorkflowEntrypoint'
 
 type WorkflowEditorViewProps = {
-    editWorkflowId: Maybe<string>
+    shopType: string
+    shopName: string
+    workflowId: string
+    isNewWorkflow: boolean
     goToWorkflowsListPage: () => void
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
 }
 
 const discardChangeConfirmationText = <>Your changes will be lost</>
 
-export default function WorkflowEditorView({
-    editWorkflowId,
+function WorkflowEditorViewWrapped({
+    workflowId,
+    isNewWorkflow,
     goToWorkflowsListPage,
     notifyMerchant,
 }: WorkflowEditorViewProps) {
-    const isNewWorkflow = editWorkflowId == null
-    // memoizing to get a stable workflowId across rerenders
-    // use hard coded workflow id temporarily to ease testing of edit page: https://acme.gorgias.docker/app/automation/shopify/cyprien-pannier/flows/edit/01GV2Y97453JW81MWFHF4NA2F4
-    const workflowId = useMemo(
-        () => editWorkflowId ?? '01GV2Y97453JW81MWFHF4NA2F4', // ulid()
-        [editWorkflowId]
-    )
     const worfklowConfigurationHook = useWorkflowConfiguration(
         workflowId,
         isNewWorkflow
     )
-    // todo workflowEntrypointHook (needed for the trigger button text edition)
+    const workflowEntrypointContext = useWorkflowEntrypointContext()
 
     // flags
-    const [shouldShowErrors, setShouldShowErrors] = useState(false)
-    const isDirty = worfklowConfigurationHook.isDirty
-    const validationError = worfklowConfigurationHook.validationError
-    const isFetchPending = worfklowConfigurationHook.isFetchPending
-    const isSavePending = worfklowConfigurationHook.isSavePending
+    const isDirty =
+        worfklowConfigurationHook.isDirty || workflowEntrypointContext.isDirty
+    const validationError =
+        worfklowConfigurationHook.validationError ??
+        workflowEntrypointContext.validationError
+    const isFetchPending =
+        worfklowConfigurationHook.isFetchPending ||
+        workflowEntrypointContext.isFetchPending
+    const isSavePending =
+        worfklowConfigurationHook.isSavePending ||
+        workflowEntrypointContext.isSavePending
+    const shouldShowErrors =
+        worfklowConfigurationHook.shouldShowErrors ||
+        workflowEntrypointContext.shouldShowErrors
 
     // handlers
     const handleDiscard = () => {
         worfklowConfigurationHook.handleDiscard()
+        workflowEntrypointContext.handleDiscard()
     }
     const handleCancel = () => {
         goToWorkflowsListPage()
     }
     const handleSave = async () => {
+        await worfklowConfigurationHook.handleSave()
+        await workflowEntrypointContext.handleSave()
         if (validationError) {
             notifyMerchant(validationError, 'error')
-            setShouldShowErrors(true)
             return
         }
-        await worfklowConfigurationHook.handleSave()
         notifyMerchant(
             isNewWorkflow
                 ? 'Flow successfully created'
@@ -65,80 +77,70 @@ export default function WorkflowEditorView({
     }
 
     return (
-        <div className="full-width overflow-auto">
-            <div className={css.pageHeaderContainer}>
-                <PageHeader
-                    title={
-                        <div className={css.headerLeft}>
-                            <TextInput
-                                autoFocus={isNewWorkflow}
-                                className={css.headerLeftInput}
-                                isRequired
-                                onChange={(name) => {
-                                    worfklowConfigurationHook.setWorkflowName(
-                                        name
-                                    )
-                                }}
-                                placeholder="Add flow name"
-                                value={
-                                    worfklowConfigurationHook.configuration.name
-                                }
-                                isDisabled={isFetchPending || isSavePending}
-                                hasError={
-                                    shouldShowErrors &&
-                                    worfklowConfigurationHook.configuration.name.trim()
-                                        .length === 0
-                                }
-                            />
-                            <span className={css.headerLeftdescription}>
-                                Flow name will not be visible to customers
-                            </span>
-                        </div>
-                    }
-                >
-                    <div className={css.headerRight}>
-                        {isNewWorkflow ? (
-                            <>
-                                <ButtonWithConfirmation
-                                    confirmationText={
-                                        discardChangeConfirmationText
-                                    }
-                                    isDisabled={!isDirty}
-                                    onClick={handleCancel}
-                                >
-                                    Cancel
-                                </ButtonWithConfirmation>
-                                <Button
-                                    onClick={handleSave}
-                                    isDisabled={!isDirty}
-                                >
-                                    Create flow
-                                </Button>
-                            </>
-                        ) : (
-                            <>
-                                <ButtonWithConfirmation
-                                    confirmationText={
-                                        discardChangeConfirmationText
-                                    }
-                                    isDisabled={!isDirty || isSavePending}
-                                    onClick={handleDiscard}
-                                >
-                                    Discard Changes
-                                </ButtonWithConfirmation>
-                                <Button
-                                    onClick={handleSave}
-                                    isLoading={isSavePending}
-                                    isDisabled={!isDirty}
-                                >
-                                    Save & Close
-                                </Button>
-                            </>
-                        )}
+        <div className={css.page}>
+            <PageHeader
+                className={css.pageHeader}
+                title={
+                    <div className={css.headerLeft}>
+                        <TextInput
+                            autoFocus={isNewWorkflow}
+                            className={css.headerLeftInput}
+                            isRequired
+                            onChange={(name) => {
+                                worfklowConfigurationHook.setWorkflowName(name)
+                            }}
+                            placeholder="Add flow name"
+                            value={worfklowConfigurationHook.configuration.name}
+                            isDisabled={isFetchPending || isSavePending}
+                            hasError={
+                                shouldShowErrors &&
+                                worfklowConfigurationHook.configuration.name.trim()
+                                    .length === 0
+                            }
+                        />
+                        <span className={css.headerLeftdescription}>
+                            Flow name will not be visible to customers
+                        </span>
                     </div>
-                </PageHeader>
-                <Container fluid></Container>
-            </div>
+                }
+            >
+                <div className={css.headerRight}>
+                    {isNewWorkflow ? (
+                        <>
+                            <ButtonWithConfirmation
+                                confirmationText={discardChangeConfirmationText}
+                                isDisabled={!isDirty}
+                                onClick={handleCancel}
+                            >
+                                Cancel
+                            </ButtonWithConfirmation>
+                            <Button onClick={handleSave} isDisabled={!isDirty}>
+                                Create flow
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <ButtonWithConfirmation
+                                confirmationText={discardChangeConfirmationText}
+                                isDisabled={!isDirty || isSavePending}
+                                onClick={handleDiscard}
+                            >
+                                Discard Changes
+                            </ButtonWithConfirmation>
+                            <Button
+                                onClick={handleSave}
+                                isLoading={isSavePending}
+                                isDisabled={!isDirty}
+                            >
+                                Save & Close
+                            </Button>
+                        </>
+                    )}
+                </div>
+            </PageHeader>
+            <Container className={css.pageContainer} fluid>
+                <WorkflowVisualBuilder />
+            </Container>
         </div>
     )
 }
@@ -180,3 +182,5 @@ function ButtonWithConfirmation({
         </ConfirmationPopover>
     )
 }
+
+export default withWorkflowEntrypointContext(WorkflowEditorViewWrapped)

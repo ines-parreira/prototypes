@@ -1,4 +1,4 @@
-import {useEffect, useMemo} from 'react'
+import {useCallback, useEffect, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 
@@ -14,12 +14,16 @@ import {
     selfServiceConfigurationUpdated,
 } from 'state/entities/selfServiceConfigurations/actions'
 import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import {Notification, NotificationStatus} from 'state/notifications/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 
-const useSelfServiceConfiguration = (shopType: string, shopName: string) => {
+const useSelfServiceConfiguration = (
+    shopType: string,
+    shopName: string,
+    notificationHandler?: (notification: Notification) => void
+) => {
     const history = useHistory()
     const dispatch = useAppDispatch()
     const selfServiceConfigurations = useAppSelector(
@@ -27,6 +31,16 @@ const useSelfServiceConfiguration = (shopType: string, shopName: string) => {
     )
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
     const storeIntegrationId = storeIntegration?.id
+    const handleNotify = useCallback(
+        (notif: Notification) => {
+            if (notificationHandler) {
+                notificationHandler(notif)
+            } else {
+                void dispatch(notify(notif))
+            }
+        },
+        [notificationHandler, dispatch]
+    )
 
     const [{loading: isFetchPending}, handleSelfServiceConfigurationFetch] =
         useAsyncFn(async (storeIntegrationId: number) => {
@@ -36,12 +50,10 @@ const useSelfServiceConfiguration = (shopType: string, shopName: string) => {
                 )
                 void dispatch(selfServiceConfigurationFetched(res))
             } catch (error) {
-                void dispatch(
-                    notify({
-                        message: 'Failed to fetch',
-                        status: NotificationStatus.Error,
-                    })
-                )
+                handleNotify({
+                    message: 'Failed to fetch',
+                    status: NotificationStatus.Error,
+                })
                 history.push('/app/automation/macros')
             }
         }, [])
@@ -56,19 +68,15 @@ const useSelfServiceConfiguration = (shopType: string, shopName: string) => {
                         selfServiceConfiguration
                     )
                     void dispatch(selfServiceConfigurationUpdated(res))
-                    void dispatch(
-                        notify({
-                            message: messages.success ?? 'Successfully updated',
-                            status: NotificationStatus.Success,
-                        })
-                    )
+                    handleNotify({
+                        message: messages.success ?? 'Successfully updated',
+                        status: NotificationStatus.Success,
+                    })
                 } catch (error) {
-                    void dispatch(
-                        notify({
-                            message: messages.error ?? 'Failed to update',
-                            status: NotificationStatus.Error,
-                        })
-                    )
+                    handleNotify({
+                        message: messages.error ?? 'Failed to update',
+                        status: NotificationStatus.Error,
+                    })
                 }
             },
             []
@@ -84,15 +92,13 @@ const useSelfServiceConfiguration = (shopType: string, shopName: string) => {
 
     useEffect(() => {
         if (!storeIntegrationId) {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch',
-                    status: NotificationStatus.Error,
-                })
-            )
+            handleNotify({
+                message: 'Failed to fetch',
+                status: NotificationStatus.Error,
+            })
             history.push('/app/automation/macros')
         }
-    }, [storeIntegrationId, dispatch, history])
+    }, [storeIntegrationId, history, handleNotify])
 
     useEffect(() => {
         if (!selfServiceConfiguration && storeIntegrationId) {

@@ -1,7 +1,18 @@
+import React, {ComponentType, ReactChildren} from 'react'
 import {act, renderHook} from '@testing-library/react-hooks'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import {RootState, StoreDispatch} from 'state/types'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import useWorkflowsEntrypoints from '../useWorkflowsEntrypoints'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const renderHookOptions = {
+    wrapper: (({children}: {children: ReactChildren}) => (
+        <Provider store={mockStore({})}>{children}</Provider>
+    )) as ComponentType,
+}
 
 const mockSelfServiceConfiguration: ReturnType<
     typeof useSelfServiceConfiguration
@@ -49,7 +60,10 @@ describe('useWorflowsEntrypoints', () => {
             isFetchPending: true,
             isUpdatePending: true,
         })
-        const {result} = renderHook(() => useWorkflowsEntrypoints('', ''))
+        const {result} = renderHook(
+            () => useWorkflowsEntrypoints('', ''),
+            renderHookOptions
+        )
         expect(result.current).toMatchObject({
             isFetchPending: true,
             isUpdatePending: true,
@@ -58,8 +72,9 @@ describe('useWorflowsEntrypoints', () => {
     })
 
     it('hydrates workflowsEntrypoints once configuration fetched', () => {
-        const {result, rerender} = renderHook(() =>
-            useWorkflowsEntrypoints('', '')
+        const {result, rerender} = renderHook(
+            () => useWorkflowsEntrypoints('', ''),
+            renderHookOptions
         )
         updateMock({
             selfServiceConfiguration: {
@@ -76,7 +91,10 @@ describe('useWorflowsEntrypoints', () => {
                 workflows_entrypoints: entrypointsFixtures,
             } as SelfServiceConfiguration,
         })
-        const {result} = renderHook(() => useWorkflowsEntrypoints('', ''))
+        const {result} = renderHook(
+            () => useWorkflowsEntrypoints('', ''),
+            renderHookOptions
+        )
         act(() => result.current.handleDragAndDrop(['c', 'a', 'b']))
         expect(result.current.workflowsEntrypoints).toEqual([
             entrypointsFixtures[2],
@@ -90,7 +108,10 @@ describe('useWorflowsEntrypoints', () => {
                 workflows_entrypoints: entrypointsFixtures,
             } as SelfServiceConfiguration,
         })
-        const {result} = renderHook(() => useWorkflowsEntrypoints('', ''))
+        const {result} = renderHook(
+            () => useWorkflowsEntrypoints('', ''),
+            renderHookOptions
+        )
         act(() => result.current.deleteWorkflowEntrypoint('a'))
         expect(result.current.workflowsEntrypoints).toEqual([
             ...entrypointsFixtures.slice(1),
@@ -104,8 +125,9 @@ describe('useWorflowsEntrypoints', () => {
         updateMock({
             selfServiceConfiguration: configuration,
         })
-        const {result, rerender} = renderHook(() =>
-            useWorkflowsEntrypoints('', '')
+        const {result, rerender} = renderHook(
+            () => useWorkflowsEntrypoints('', ''),
+            renderHookOptions
         )
         act(() => result.current.toggleEnabled('a'))
         expect(result.current.workflowsEntrypoints).toEqual([

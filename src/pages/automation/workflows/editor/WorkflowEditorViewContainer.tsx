@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
+import {ulid} from 'ulidx'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -23,6 +24,9 @@ export default function WorkflowEditorViewContainer() {
         history.push(`/app/automation/${shopType}/${shopName}/flows`)
     }, [history, shopName, shopType])
 
+    const isNewWorkflow = editWorkflowId == null
+    const workflowId = editWorkflowId ?? ulid()
+
     const notifyMerchant = useCallback(
         (message: string, kind: 'success' | 'error') => {
             void dispatch(
@@ -45,8 +49,11 @@ export default function WorkflowEditorViewContainer() {
     return (
         <WorkflowEditorView
             goToWorkflowsListPage={goToWorkflowsListPage}
-            editWorkflowId={editWorkflowId}
+            workflowId={workflowId}
+            isNewWorkflow={isNewWorkflow}
             notifyMerchant={notifyMerchant}
+            shopName={shopName}
+            shopType={shopType}
         />
     )
 }

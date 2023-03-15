@@ -39,11 +39,14 @@ describe('useWorkflowConfiguration', () => {
         expect(result.current.configuration.name).toEqual('')
     })
 
-    it('errors when editing a not existing configuration', () => {
+    it('errors when editing a not existing configuration', async () => {
         updateMock({
             fetchWorkflowConfiguration: () => Promise.resolve(null),
         })
-        const {result} = renderHook(() => useWorkflowConfiguration('a', false))
+        const {result, waitForNextUpdate} = renderHook(() =>
+            useWorkflowConfiguration('a', false)
+        )
+        await waitForNextUpdate()
         expect(result.current.hookError).toBeDefined()
     })
 

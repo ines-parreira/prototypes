@@ -1,10 +1,15 @@
 import React from 'react'
 import {screen} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouterAndDnD} from 'utils/testing'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import WorkflowsView from '../WorkflowsView'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 jest.mock('pages/automation/common/hooks/useSelfServiceConfiguration')
 jest.mock('utils/launchDarkly')
@@ -29,12 +34,14 @@ describe('<WorkflowsView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <WorkflowsView
-                shopName=""
-                shopType=""
-                goToEditWorkflowPage={jest.fn()}
-                goToNewWorkflowPage={jest.fn()}
-            />
+            <Provider store={mockStore()}>
+                <WorkflowsView
+                    shopName=""
+                    shopType=""
+                    goToEditWorkflowPage={jest.fn()}
+                    goToNewWorkflowPage={jest.fn()}
+                />
+            </Provider>
         )
 
         const skeletonRows = screen.queryAllByTestId(
@@ -66,12 +73,14 @@ describe('<WorkflowsView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <WorkflowsView
-                shopName=""
-                shopType=""
-                goToEditWorkflowPage={jest.fn()}
-                goToNewWorkflowPage={jest.fn()}
-            />
+            <Provider store={mockStore()}>
+                <WorkflowsView
+                    shopName=""
+                    shopType=""
+                    goToEditWorkflowPage={jest.fn()}
+                    goToNewWorkflowPage={jest.fn()}
+                />
+            </Provider>
         )
 
         const skeletonRows = screen.queryAllByTestId(

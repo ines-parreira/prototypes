@@ -5,6 +5,9 @@ import {
     WorkflowEntrypoint,
 } from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
+import {NotificationStatus} from 'state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
 
 export type UseWorflowsEntrypointsReturnType = {
     workflowsEntrypoints: WorkflowEntrypoint[]
@@ -20,12 +23,23 @@ export default function useWorflowsEntrypoints(
     shopType: string,
     shopName: string
 ): UseWorflowsEntrypointsReturnType {
+    const dispatch = useAppDispatch()
     const {
         isFetchPending,
         isUpdatePending,
         handleSelfServiceConfigurationUpdate,
         ...selfServiceConfigurationApi
-    } = useSelfServiceConfiguration(shopType, shopName)
+    } = useSelfServiceConfiguration(
+        shopType,
+        shopName,
+        // we disable the notifications managed by the useSelfServiceConfiguration hook except for errors
+        // because the hook redirects to '/app/automation/macros' in case of API error and we want to keep that behavior so we proxy the notification in this case
+        (notif) => {
+            if (notif.status === NotificationStatus.Error) {
+                void dispatch(notify(notif))
+            }
+        }
+    )
 
     // needed to avoid stale references of self service configuration in the handleDragAndDrop callback below
     // otherwise there is a bug involving ReactSortable onChange prop having a stale version of the callback

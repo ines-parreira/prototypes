@@ -8,6 +8,7 @@ type WorkflowConfigurationHook = {
     configuration: WorkflowConfiguration
     isDirty: boolean
     validationError: Maybe<string>
+    shouldShowErrors: boolean
     isFetchPending: boolean
     isSavePending: boolean
     handleSave: () => Promise<void>
@@ -41,6 +42,7 @@ export default function useWorkflowConfiguration(
         useState<WorkflowConfiguration>(
             workflowConfigurationFactory(workflowId)
         )
+    const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const [hookError, setHookError] = useState<string | null>(null)
 
     useEffect(() => {
@@ -66,7 +68,11 @@ export default function useWorkflowConfiguration(
     const validationError = validate(localConfiguration)
 
     const handleSave = useCallback(async () => {
-        if (validationError || !isDirty) return
+        if (validationError) {
+            setShouldShowErrors(true)
+            return
+        }
+        if (!isDirty) return
         setIsSavePending(true)
         await upsertWorkflowConfiguration(localConfiguration)
         setRemoteConfiguration(localConfiguration)
@@ -91,6 +97,7 @@ export default function useWorkflowConfiguration(
         isSavePending,
         isDirty,
         validationError,
+        shouldShowErrors,
         handleSave,
         handleDiscard,
         ...useStateUpdaters(setLocalConfiguration),
