@@ -9,6 +9,8 @@ import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBloc
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {IntegrationType} from 'models/integration/constants'
+import {assetsUrl} from 'utils'
 
 import AutomationNavbarAddOnPaywallNavbarLink from './AutomationNavbarAddOnPaywallNavbarLink'
 
@@ -33,13 +35,22 @@ const AutomationNavbarAddOnSectionBlock = ({
     const isflowsBetaEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.FlowsBeta]
 
+    const getIconSrc = () => {
+        switch (shopType) {
+            case IntegrationType.BigCommerce:
+                return assetsUrl('/img/integrations/bigcommerce-white.svg')
+            default:
+                return getIconFromType(shopType)
+        }
+    }
+
     return (
         <NavbarSectionBlock
             icon={
                 <img
                     alt={`${shopType} logo`}
                     role="presentation"
-                    src={getIconFromType(shopType)}
+                    src={getIconSrc()}
                 />
             }
             {...props}

@@ -240,7 +240,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                 <img
                   alt="bigcommerce logo"
                   role="presentation"
-                  src="test-file-stub"
+                  src="/assets/img/integrations/bigcommerce-white.svg"
                 />
               </div>
               <span
@@ -555,7 +555,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                 <img
                   alt="bigcommerce logo"
                   role="presentation"
-                  src="test-file-stub"
+                  src="/assets/img/integrations/bigcommerce-white.svg"
                 />
               </div>
               <span
@@ -1112,7 +1112,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                 <img
                   alt="bigcommerce logo"
                   role="presentation"
-                  src="test-file-stub"
+                  src="/assets/img/integrations/bigcommerce-white.svg"
                 />
               </div>
               <span
@@ -1427,7 +1427,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                 <img
                   alt="bigcommerce logo"
                   role="presentation"
-                  src="test-file-stub"
+                  src="/assets/img/integrations/bigcommerce-white.svg"
                 />
               </div>
               <span
