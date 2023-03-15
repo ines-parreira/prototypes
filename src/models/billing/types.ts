@@ -21,9 +21,9 @@ export enum ProductType {
     SMS = 'sms',
 }
 
-export type Product<
-    T = HelpdeskPrice | AutomationPrice | VoicePrice | SMSPrice
-> = {
+export type Price = HelpdeskPrice | AutomationPrice | VoicePrice | SMSPrice
+
+export type Product<T = Price> = {
     id: string
     type: T extends HelpdeskPrice
         ? ProductType.Helpdesk
@@ -100,4 +100,14 @@ export type VoicePrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
 export type SMSPrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
     included_tickets: number
     sms_extra_ticket_cost: number
+}
+
+export type SubscriptionCycle = {
+    current_billing_cycle_end_datetime: string
+    current_billing_cycle_start_datetime: string
+    downgrade_scheduled: boolean
+    downgrades?: {
+        current_price_id: string
+        scheduled_price_id: string | null
+    }[]
 }

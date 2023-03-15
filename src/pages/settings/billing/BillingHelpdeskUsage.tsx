@@ -35,6 +35,7 @@ import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
 
 import css from './BillingHelpdeskUsage.less'
 import BillingHeader from './common/BillingHeader'
+import BillingScheduledDowngrades from './BillingScheduledDowngrades'
 
 const DATE_FORMAT = 'MMM DD'
 
@@ -162,6 +163,7 @@ const BillingHelpdeskUsage = () => {
                 <LegacyPlanBanner isCustomPrice={isCustom} />
             )}
             <BillingHeader icon="insert_chart">Usage & Plans</BillingHeader>
+            <BillingScheduledDowngrades />
             <Card
                 className={classnames(
                     {[css['card-current-plan']]: hasSubscription},
