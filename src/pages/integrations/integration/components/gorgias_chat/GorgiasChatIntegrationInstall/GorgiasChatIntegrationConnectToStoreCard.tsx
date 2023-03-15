@@ -72,8 +72,8 @@ export const GorgiasChatIntegrationConnectToStoreCard = ({
                         <h3>Connect to store</h3>
                         <p>
                             {hasOrderManagement
-                                ? 'By connecting your live chat to an online store, you can leverage the store’s information for automation features including quick response flows, order management flows, and help center article recommendation.'
-                                : "By connecting your live chat to an online store, you can leverage all the store's information for automation such as self-service flows and help articles."}
+                                ? 'By connecting your chat to an online store, you can leverage the store’s information for automation features including quick response flows, order management flows, and help center article recommendation.'
+                                : "By connecting your chat to an online store, you can leverage all the store's information for automation such as self-service flows and help articles."}
                         </p>
                     </div>
                     <div className={css['connect-button-wrapper']}>

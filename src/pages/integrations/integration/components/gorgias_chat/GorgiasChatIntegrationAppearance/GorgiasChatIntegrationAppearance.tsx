@@ -479,7 +479,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     showSelectStoreField: true,
                 })),
             tooltipText:
-                "By connecting your live chat to an online store, you can leverage all the store's information for automation such as self-service flows and help articles.",
+                "By connecting your chat to an online store, you can leverage all the store's information for automation such as self-service flows and help articles.",
             isSelected: Boolean(state.showSelectStoreField),
         },
         {
