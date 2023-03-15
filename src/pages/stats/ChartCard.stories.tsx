@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
-import {TicketsCreatedDataItem} from 'fixtures/chart'
+import {ticketsCreatedDataItem} from 'fixtures/chart'
 
 import ChartCard from './ChartCard'
 import LineChart from './LineChart'
@@ -26,7 +26,7 @@ Default.args = defaultProps
 
 export const WithSingleLineChart = Template.bind({})
 WithSingleLineChart.args = {
-    children: <LineChart data={[TicketsCreatedDataItem]} hasBackground />,
+    children: <LineChart data={[ticketsCreatedDataItem]} hasBackground />,
     title: 'Tickets created',
     hint: 'This is a hint',
 }

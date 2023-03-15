@@ -31,7 +31,7 @@ type Props = {
 const LINE_OPTIONS: ChartOptions<'line'> = {
     elements: {
         point: {
-            radius: 0,
+            pointStyle: false,
         },
     },
     layout: {
@@ -89,6 +89,9 @@ const LINE_OPTIONS: ChartOptions<'line'> = {
         },
         legend: {
             display: false,
+        },
+        tooltip: {
+            enabled: false,
         },
     },
     maintainAspectRatio: false,

@@ -18,6 +18,7 @@ import {
     getStatsMessagingIntegrations,
 } from 'state/stats/selectors'
 import blueStar from 'assets/img/icons/blue-star.svg'
+import {ticketsCreatedDataItem} from 'fixtures/chart'
 
 import BigNumberMetric from './BigNumberMetric'
 import DashboardSection from './DashboardSection'
@@ -27,11 +28,14 @@ import TrendBadge from './TrendBadge'
 import MetricTooltip from './MetricTooltip'
 import TipsToggle from './TipsToggle'
 import css from './SupportPerformanceOverview.less'
+import ChartCard from './ChartCard'
+import LineChart from './LineChart'
 
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 
 type MetricMock = {
     value: string
+    prevValue?: string
     trendValue: string
     trendDirection: ComponentProps<typeof TrendBadge>['direction']
     trendColor: ComponentProps<typeof TrendBadge>['color']
@@ -63,6 +67,46 @@ const messagesPerTicketMock: MetricMock = {
     trendValue: '2',
     trendDirection: 'down',
     trendColor: 'positive',
+}
+
+const openTicketsMock: MetricMock = {
+    value: '112',
+    prevValue: '109',
+    trendValue: '3%',
+    trendDirection: 'up',
+    trendColor: 'neutral',
+}
+
+const ticketsClosedMock: MetricMock = {
+    value: '40',
+    prevValue: '38',
+    trendValue: '7%',
+    trendDirection: 'up',
+    trendColor: 'positive',
+}
+
+const ticketsCreatedMock: MetricMock = {
+    value: '112',
+    prevValue: '109',
+    trendValue: '3%',
+    trendDirection: 'up',
+    trendColor: 'neutral',
+}
+
+const ticketsRepliedMock: MetricMock = {
+    value: '25',
+    prevValue: '20',
+    trendValue: '20%',
+    trendDirection: 'up',
+    trendColor: 'positive',
+}
+
+const messagesSentMock: MetricMock = {
+    value: '25',
+    prevValue: '20',
+    trendValue: '3%',
+    trendDirection: 'up',
+    trendColor: 'neutral',
 }
 
 export default function SupportPerformanceOverview() {
@@ -262,6 +306,157 @@ export default function SupportPerformanceOverview() {
                             {messagesPerTicketMock.value}
                         </BigNumberMetric>
                     </MetricCard>
+                </DashboardGridCell>
+            </DashboardSection>
+            <DashboardSection title="Workload">
+                <DashboardGridCell size={6}>
+                    <MetricCard
+                        title="Open tickets"
+                        hint="Number of tickets with the status “open” at the end of the period"
+                        trendBadge={
+                            <TrendBadge
+                                direction={openTicketsMock.trendDirection}
+                                color={openTicketsMock.trendColor}
+                            >
+                                {openTicketsMock.trendValue}
+                            </TrendBadge>
+                        }
+                    >
+                        <BigNumberMetric from={openTicketsMock.prevValue}>
+                            {openTicketsMock.value}
+                        </BigNumberMetric>
+                    </MetricCard>
+                </DashboardGridCell>
+                <DashboardGridCell size={6}>
+                    <MetricCard
+                        title="Closed tickets"
+                        hint="Number of unique tickets closed during the period (and that did not reopen)"
+                        trendBadge={
+                            <TrendBadge
+                                direction={ticketsClosedMock.trendDirection}
+                                color={ticketsClosedMock.trendColor}
+                            >
+                                {ticketsClosedMock.trendValue}
+                            </TrendBadge>
+                        }
+                    >
+                        <BigNumberMetric from={ticketsClosedMock.prevValue}>
+                            {ticketsClosedMock.value}
+                        </BigNumberMetric>
+                    </MetricCard>
+                </DashboardGridCell>
+                <DashboardGridCell size={4}>
+                    <MetricCard
+                        title="Tickets created"
+                        hint="Number of new tickets to handle"
+                        trendBadge={
+                            <TrendBadge
+                                direction={ticketsCreatedMock.trendDirection}
+                                color={ticketsCreatedMock.trendColor}
+                            >
+                                {ticketsCreatedMock.trendValue}
+                            </TrendBadge>
+                        }
+                    >
+                        <BigNumberMetric from={ticketsCreatedMock.prevValue}>
+                            {ticketsCreatedMock.value}
+                        </BigNumberMetric>
+                    </MetricCard>
+                </DashboardGridCell>
+                <DashboardGridCell size={4}>
+                    <MetricCard
+                        title="Tickets replied"
+                        hint="Number of tickets where the customer got a response"
+                        trendBadge={
+                            <TrendBadge
+                                direction={ticketsRepliedMock.trendDirection}
+                                color={ticketsRepliedMock.trendColor}
+                            >
+                                {ticketsRepliedMock.trendValue}
+                            </TrendBadge>
+                        }
+                    >
+                        <BigNumberMetric from={ticketsRepliedMock.prevValue}>
+                            {ticketsRepliedMock.value}
+                        </BigNumberMetric>
+                    </MetricCard>
+                </DashboardGridCell>
+                <DashboardGridCell size={4}>
+                    <MetricCard
+                        title="Messages sent"
+                        hint="Number of messages received by your customer"
+                        trendBadge={
+                            <TrendBadge
+                                direction={messagesSentMock.trendDirection}
+                                color={messagesSentMock.trendColor}
+                            >
+                                {messagesSentMock.trendValue}
+                            </TrendBadge>
+                        }
+                    >
+                        <BigNumberMetric from={messagesSentMock.prevValue}>
+                            {messagesSentMock.value}
+                        </BigNumberMetric>
+                    </MetricCard>
+                </DashboardGridCell>
+                <DashboardGridCell size={6}>
+                    <ChartCard
+                        title="Tickets created"
+                        hint="Number of new tickets to handle"
+                    >
+                        <LineChart
+                            data={[ticketsCreatedDataItem]}
+                            hasBackground
+                        />
+                    </ChartCard>
+                </DashboardGridCell>
+                <DashboardGridCell size={6}>
+                    <ChartCard
+                        title="Tickets closed"
+                        hint="Number of opened tickets solved by the end of the period"
+                    >
+                        <LineChart
+                            data={[
+                                {
+                                    ...ticketsCreatedDataItem,
+                                    label: 'Tickets closed',
+                                },
+                            ]}
+                            hasBackground
+                        />
+                    </ChartCard>
+                </DashboardGridCell>
+                <DashboardGridCell size={6}>
+                    <ChartCard
+                        title="Tickets replied"
+                        hint="Number of tickets where the customer got a response"
+                    >
+                        <LineChart
+                            data={[
+                                {
+                                    ...ticketsCreatedDataItem,
+                                    label: 'Tickets replied',
+                                },
+                            ]}
+                            hasBackground
+                        />
+                    </ChartCard>
+                </DashboardGridCell>
+                <DashboardGridCell size={6}>
+                    <ChartCard
+                        title="Messages sent"
+                        hint="Number of messages received by your customer"
+                    >
+                        <LineChart
+                            data={[
+                                {
+                                    ...ticketsCreatedDataItem,
+                                    label: 'Messages sent',
+                                },
+                            ]}
+                            hasBackground
+                        />
+                    </ChartCard>
                 </DashboardGridCell>
             </DashboardSection>
         </StatsPage>

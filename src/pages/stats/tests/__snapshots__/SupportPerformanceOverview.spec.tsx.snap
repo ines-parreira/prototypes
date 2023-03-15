@@ -1113,6 +1113,392 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
           </div>
         </div>
       </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="title"
+        >
+          <div
+            class="titleText heading-page-semibold"
+          >
+            Workload
+          </div>
+        </div>
+        <div
+          class="wrapper"
+        >
+          <div
+            class="cell"
+            style="grid-column: span 6 / span 6;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                Open tickets
+                <div
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-39"
+                  >
+                    info
+                  </i>
+                </div>
+                <div
+                  class="trendBadge"
+                >
+                  <div
+                    class="trend neutral"
+                  >
+                    <i
+                      class="material-icons trendIcon"
+                    >
+                      trending_up
+                    </i>
+                    3%
+                  </div>
+                </div>
+              </div>
+              <div
+                class="wrapper heading-page-semibold"
+              >
+                112
+                <span
+                  class="from caption-regular"
+                >
+                  from 
+                  109
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="cell"
+            style="grid-column: span 6 / span 6;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                Closed tickets
+                <div
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-40"
+                  >
+                    info
+                  </i>
+                </div>
+                <div
+                  class="trendBadge"
+                >
+                  <div
+                    class="trend positive"
+                  >
+                    <i
+                      class="material-icons trendIcon"
+                    >
+                      trending_up
+                    </i>
+                    7%
+                  </div>
+                </div>
+              </div>
+              <div
+                class="wrapper heading-page-semibold"
+              >
+                40
+                <span
+                  class="from caption-regular"
+                >
+                  from 
+                  38
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="cell"
+            style="grid-column: span 4 / span 4;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                Tickets created
+                <div
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-41"
+                  >
+                    info
+                  </i>
+                </div>
+                <div
+                  class="trendBadge"
+                >
+                  <div
+                    class="trend neutral"
+                  >
+                    <i
+                      class="material-icons trendIcon"
+                    >
+                      trending_up
+                    </i>
+                    3%
+                  </div>
+                </div>
+              </div>
+              <div
+                class="wrapper heading-page-semibold"
+              >
+                112
+                <span
+                  class="from caption-regular"
+                >
+                  from 
+                  109
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="cell"
+            style="grid-column: span 4 / span 4;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                Tickets replied
+                <div
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-42"
+                  >
+                    info
+                  </i>
+                </div>
+                <div
+                  class="trendBadge"
+                >
+                  <div
+                    class="trend positive"
+                  >
+                    <i
+                      class="material-icons trendIcon"
+                    >
+                      trending_up
+                    </i>
+                    20%
+                  </div>
+                </div>
+              </div>
+              <div
+                class="wrapper heading-page-semibold"
+              >
+                25
+                <span
+                  class="from caption-regular"
+                >
+                  from 
+                  20
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="cell"
+            style="grid-column: span 4 / span 4;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                Messages sent
+                <div
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-43"
+                  >
+                    info
+                  </i>
+                </div>
+                <div
+                  class="trendBadge"
+                >
+                  <div
+                    class="trend neutral"
+                  >
+                    <i
+                      class="material-icons trendIcon"
+                    >
+                      trending_up
+                    </i>
+                    3%
+                  </div>
+                </div>
+              </div>
+              <div
+                class="wrapper heading-page-semibold"
+              >
+                25
+                <span
+                  class="from caption-regular"
+                >
+                  from 
+                  20
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="cell"
+            style="grid-column: span 6 / span 6;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                <span
+                  class="heading-section-semibold"
+                >
+                  Tickets created
+                </span>
+                <div
+                  class="wrapper tooltip"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-44"
+                  >
+                    info
+                  </i>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              />
+            </div>
+          </div>
+          <div
+            class="cell"
+            style="grid-column: span 6 / span 6;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                <span
+                  class="heading-section-semibold"
+                >
+                  Tickets closed
+                </span>
+                <div
+                  class="wrapper tooltip"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-45"
+                  >
+                    info
+                  </i>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              />
+            </div>
+          </div>
+          <div
+            class="cell"
+            style="grid-column: span 6 / span 6;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                <span
+                  class="heading-section-semibold"
+                >
+                  Tickets replied
+                </span>
+                <div
+                  class="wrapper tooltip"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-46"
+                  >
+                    info
+                  </i>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              />
+            </div>
+          </div>
+          <div
+            class="cell"
+            style="grid-column: span 6 / span 6;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                <span
+                  class="heading-section-semibold"
+                >
+                  Messages sent
+                </span>
+                <div
+                  class="wrapper tooltip"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-47"
+                  >
+                    info
+                  </i>
+                </div>
+              </div>
+              <div
+                class="wrapper"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

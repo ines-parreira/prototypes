@@ -20,6 +20,7 @@ import SupportPerformanceOverview, {
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
+jest.mock('react-chartjs-2')
 jest.mock(
     '../TagsStatsFilter',
     () =>
