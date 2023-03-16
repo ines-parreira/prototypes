@@ -291,6 +291,7 @@ export default function BillingComparisonPlanCard({
                                 ? 'Leverage the power of automation 👏'
                                 : "We're happy to see you grow 👏"
                         }
+                        isDowngrade={isDowngrade}
                         isOpen={canChoosePrice && isPriceChangeModalOpen}
                         isUpdating={isUpdating}
                         onClose={() => {

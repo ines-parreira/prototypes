@@ -6,8 +6,10 @@ import React, {
 } from 'react'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import ArrowForward from 'assets/img/icons/arrow-forward.svg'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getFormattedAmount} from 'models/billing/utils'
 import {
     getCurrentHelpdeskAutomationAddonAmount,
@@ -37,6 +39,7 @@ type Props = {
     confirmLabel: string
     description: ReactNode
     header: ReactNode
+    isDowngrade?: boolean
     isOpen: boolean
     isUpdating: boolean
     onClose: () => void
@@ -53,12 +56,15 @@ export const ChangePlanModal = ({
     confirmLabel,
     description,
     header,
+    isDowngrade = false,
     isOpen,
     isUpdating,
     onClose,
     onConfirm,
     renderComparedPlan,
 }: Props) => {
+    const showDowngradeMessage =
+        useFlags()[FeatureFlagKey.BillingEndOfCycleDowngradeMessaging]
     const currentHelpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
     const currentAutomationPrice = useAppSelector(getCurrentAutomationProduct)
     const automationPrices = useAppSelector(getAutomationPricesMap)
@@ -186,6 +192,12 @@ export const ChangePlanModal = ({
                             ),
                         })}
                     </div>
+                    {isDowngrade && showDowngradeMessage && (
+                        <p className={classnames(css.downgrade, 'm-3')}>
+                            The change in your subscription will take effect at
+                            the end of your billing cycle.
+                        </p>
+                    )}
                 </ModalBody>
                 <ModalFooter className={css.footer}>
                     <Button intent="secondary" onClick={onClose}>
