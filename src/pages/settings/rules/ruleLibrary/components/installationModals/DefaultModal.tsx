@@ -17,7 +17,7 @@ const howItWorksText: Record<RuleTemplateRecipeSlugs, string> = {
     [RuleTemplateRecipeSlugs.AutoTagSubscriptionCancel]:
         'This rule tags customer requests to cancel or change subscriptions as urgent. Use this rule to prioritize these requests for prompt support and to gather feedback.',
     [RuleTemplateRecipeSlugs.AutoTagVip]:
-        'This rule tags tickets based on how much a customer has ordered or spent in Shopify. Use this rule to pioritize and target VIP customers to drive retention and satisfaction.',
+        'This rule tags tickets based on how much a customer has ordered or spent in Shopify. Use this rule to prioritize and target VIP customers to drive retention and satisfaction.',
     [RuleTemplateRecipeSlugs.AutoCloseIgGiveaway]:
         'This rule closes replies to Instagram giveaways on your account to save you time and prioritize important tickets. Keep this rule above auto-reply rules on your rules page to prevent irrelevant billable tickets.',
     [RuleTemplateRecipeSlugs.AutoTagBusinessHours]:
