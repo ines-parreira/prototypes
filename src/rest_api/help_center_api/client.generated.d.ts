@@ -399,14 +399,14 @@ declare namespace Components {
        * example:
        * AUTO_GENERATED
        */
-      kind: string;
+      kind: string; // AUTO_GENERATED
     }
     export interface ColumnSourceCsv {
       /**
        * example:
        * CSV_COLUMN
        */
-      kind: string;
+      kind: string; // CSV_COLUMN
       /**
        * example:
        * csv_file_column_1
@@ -423,6 +423,27 @@ declare namespace Components {
       filename: string;
       size: number;
       url: string;
+    }
+    export interface ContactFormDto {
+      id: number;
+      name: string;
+      uid: string;
+      default_locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      source: {
+      };
+      subject_lines: {
+        options?: {
+        };
+        allow_other?: boolean;
+        created_datetime?: string;
+        updated_datetime?: string;
+      };
+      email_integration: {
+        id?: number;
+        email?: string;
+      };
+      code_snippet_template: string;
+      url_template: string;
     }
     export interface ContactInfo {
       email: {
@@ -730,6 +751,14 @@ declare namespace Components {
        */
       description: string | null;
     }
+    export interface CreateContactFormDto {
+      name: string;
+      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      email_integration: {
+        id?: number;
+        email?: string;
+      };
+    }
     export interface CreateCustomDomainDto {
       hostname: string;
     }
@@ -828,7 +857,7 @@ declare namespace Components {
         };
       };
       source?: "manual" | "automation";
-      gaid?: string | null;
+      gaid?: string | null; // GOOGLE_ANALYTICS_ID_REGEXP
       account_id?: number;
     }
     export interface CreateNavigationLinkDto {
@@ -1462,6 +1491,21 @@ declare namespace Components {
        */
       visibility_status?: "PUBLIC" | "UNLISTED";
     }
+    export interface UpdateContactFormDto {
+      subject_lines: {
+        options?: {
+        };
+        allow_other?: boolean;
+        created_datetime?: string;
+        updated_datetime?: string;
+      };
+      name?: string;
+      locale?: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      email_integration: {
+        id?: number;
+        email?: string;
+      };
+    }
     export interface UpdateContactFormIntegrationDto {
       /**
        * The account id whose help centers should be deleted
@@ -1600,7 +1644,7 @@ declare namespace Components {
           [name: string]: SubjectLineDto;
         };
       };
-      gaid?: string | null;
+      gaid?: string | null; // GOOGLE_ANALYTICS_ID_REGEXP
       /**
        * Boolean indicating if "Powered By Gorgias" will be displayed in this help center footer
        * example:
@@ -1746,6 +1790,14 @@ declare namespace Paths {
       subdomain: Parameters.Subdomain;
     }
   }
+  namespace CheckName {
+    namespace Parameters {
+      export type InputName = string;
+    }
+    export interface PathParameters {
+      input_name: Parameters.InputName;
+    }
+  }
   namespace Complete {
     namespace Parameters {
       export type HelpCenterId = number;
@@ -1754,6 +1806,12 @@ declare namespace Paths {
       help_center_id: Parameters.HelpCenterId;
     }
     export type RequestBody = Components.Schemas.HotswapWebhookDto;
+  }
+  namespace Create {
+    export type RequestBody = Components.Schemas.CreateContactFormDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.ContactFormDto;
+    }
   }
   namespace CreateAccessToken {
     namespace Responses {
@@ -2019,6 +2077,17 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $201 = Components.Schemas.HelpCenterDto;
+    }
+  }
+  namespace FindOne {
+    namespace Parameters {
+      export type Id = number;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ContactFormDto;
     }
   }
   namespace GenerateCsvTemplate {
@@ -2497,6 +2566,14 @@ declare namespace Paths {
       shop_name: Parameters.ShopName;
     }
   }
+  namespace Remove {
+    namespace Parameters {
+      export type Id = number;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+  }
   namespace SendContactForm {
     namespace Parameters {
       export type HelpCenterId = number;
@@ -2572,6 +2649,18 @@ declare namespace Paths {
     export type RequestBody = number[];
     namespace Responses {
       export type $200 = number[];
+    }
+  }
+  namespace Update {
+    namespace Parameters {
+      export type Id = number;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    export type RequestBody = Components.Schemas.UpdateContactFormDto;
+    namespace Responses {
+      export type $200 = Components.Schemas.ContactFormDto;
     }
   }
   namespace UpdateArticle {
@@ -3336,6 +3425,54 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
+  /**
+   * checkName
+   */
+  'checkName'(
+    parameters?: Parameters<Paths.CheckName.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * findAll
+   */
+  'findAll'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * create
+   */
+  'create'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.Create.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.Create.Responses.$201>
+  /**
+   * findOne
+   */
+  'findOne'(
+    parameters?: Parameters<Paths.FindOne.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.FindOne.Responses.$200>
+  /**
+   * update
+   */
+  'update'(
+    parameters?: Parameters<Paths.Update.PathParameters> | null,
+    data?: Paths.Update.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.Update.Responses.$200>
+  /**
+   * remove
+   */
+  'remove'(
+    parameters?: Parameters<Paths.Remove.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
 }
 
 export interface PathsDictionary {
@@ -4067,6 +4204,60 @@ export interface PathsDictionary {
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/contact-forms/name/{input_name}']: {
+    /**
+     * checkName
+     */
+    'head'(
+      parameters?: Parameters<Paths.CheckName.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/contact-forms']: {
+    /**
+     * create
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.Create.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.Create.Responses.$201>
+    /**
+     * findAll
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/contact-forms/{id}']: {
+    /**
+     * findOne
+     */
+    'get'(
+      parameters?: Parameters<Paths.FindOne.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.FindOne.Responses.$200>
+    /**
+     * update
+     */
+    'put'(
+      parameters?: Parameters<Paths.Update.PathParameters> | null,
+      data?: Paths.Update.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.Update.Responses.$200>
+    /**
+     * remove
+     */
+    'delete'(
+      parameters?: Parameters<Paths.Remove.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>

@@ -2894,6 +2894,129 @@
                 "tags": ["google-fonts"],
                 "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
             }
+        },
+        "/api/help-center/contact-forms/name/{input_name}": {
+            "head": {
+                "operationId": "checkName",
+                "parameters": [
+                    {
+                        "name": "input_name",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {"204": {"description": ""}},
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms": {
+            "post": {
+                "operationId": "create",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateContactFormDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            },
+            "get": {
+                "operationId": "findAll",
+                "parameters": [],
+                "responses": {"200": {"description": ""}},
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms/{id}": {
+            "get": {
+                "operationId": "findOne",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            },
+            "put": {
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateContactFormDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            },
+            "delete": {
+                "operationId": "remove",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["contact-forms"]
+            }
         }
     },
     "info": {
@@ -2914,7 +3037,11 @@
             "ColumnSourceCsv": {
                 "type": "object",
                 "properties": {
-                    "kind": {"type": "string", "example": "CSV_COLUMN"},
+                    "kind": {
+                        "type": "string",
+                        "pattern": "CSV_COLUMN",
+                        "example": "CSV_COLUMN"
+                    },
                     "csv_column": {
                         "type": "string",
                         "example": "csv_file_column_1"
@@ -2932,7 +3059,11 @@
             "ColumnSourceAutoGenerated": {
                 "type": "object",
                 "properties": {
-                    "kind": {"type": "string", "example": "AUTO_GENERATED"}
+                    "kind": {
+                        "type": "string",
+                        "pattern": "AUTO_GENERATED",
+                        "example": "AUTO_GENERATED"
+                    }
                 },
                 "required": ["kind"]
             },
@@ -3328,7 +3459,11 @@
                         "enum": ["manual", "automation"],
                         "type": "string"
                     },
-                    "gaid": {"type": "string", "nullable": true},
+                    "gaid": {
+                        "type": "string",
+                        "nullable": true,
+                        "pattern": "GOOGLE_ANALYTICS_ID_REGEXP"
+                    },
                     "account_id": {"type": "number"}
                 },
                 "required": ["name", "default_locale"]
@@ -3498,7 +3633,7 @@
                 "type": "object",
                 "properties": {
                     "filename": {"type": "string"},
-                    "size": {"type": "number"},
+                    "size": {"type": "number", "minimum": 1},
                     "url": {"type": "string"}
                 },
                 "required": ["filename", "size", "url"]
@@ -3506,10 +3641,26 @@
             "SubmitHelpCenterContactFormDto": {
                 "type": "object",
                 "properties": {
-                    "full_name": {"type": "string"},
-                    "email": {"type": "string"},
-                    "subject": {"type": "string"},
-                    "message": {"type": "string"},
+                    "full_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 255
+                    },
+                    "email": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 320
+                    },
+                    "subject": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 1000
+                    },
+                    "message": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 10000
+                    },
                     "url": {"type": "string"},
                     "is_embedded": {"type": "boolean"},
                     "attachments": {
@@ -4023,7 +4174,11 @@
                             }
                         ]
                     },
-                    "gaid": {"type": "string", "nullable": true},
+                    "gaid": {
+                        "type": "string",
+                        "nullable": true,
+                        "pattern": "GOOGLE_ANALYTICS_ID_REGEXP"
+                    },
                     "powered_by_deactivated": {
                         "type": "boolean",
                         "description": "Boolean indicating if \"Powered By Gorgias\" will be displayed in this help center footer",
@@ -5727,7 +5882,7 @@
                 "type": "object",
                 "properties": {
                     "filename": {"type": "string"},
-                    "size": {"type": "number"},
+                    "size": {"type": "number", "minimum": 1},
                     "mimetype": {"type": "string"}
                 },
                 "required": ["filename", "size", "mimetype"]
@@ -5875,6 +6030,147 @@
                     }
                 },
                 "required": ["meta", "object", "data"]
+            },
+            "CreateContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "locale": {
+                        "type": "string",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "email_integration": {
+                        "type": "object",
+                        "properties": {
+                            "id": {"required": true, "type": "number"},
+                            "email": {"required": true, "type": "string"}
+                        }
+                    }
+                },
+                "required": ["name", "locale", "email_integration"]
+            },
+            "ContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "number"},
+                    "name": {"type": "string"},
+                    "uid": {"type": "string"},
+                    "default_locale": {
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "source": {"type": "object"},
+                    "subject_lines": {
+                        "type": "object",
+                        "properties": {
+                            "options": {"required": true, "type": "object"},
+                            "allow_other": {
+                                "required": true,
+                                "type": "boolean"
+                            },
+                            "created_datetime": {
+                                "required": true,
+                                "type": "string"
+                            },
+                            "updated_datetime": {
+                                "required": true,
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "email_integration": {
+                        "type": "object",
+                        "properties": {
+                            "id": {"required": true, "type": "number"},
+                            "email": {"required": true, "type": "string"}
+                        }
+                    },
+                    "code_snippet_template": {"type": "string"},
+                    "url_template": {"type": "string"}
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "uid",
+                    "default_locale",
+                    "source",
+                    "subject_lines",
+                    "email_integration",
+                    "code_snippet_template",
+                    "url_template"
+                ]
+            },
+            "UpdateContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "subject_lines": {
+                        "type": "object",
+                        "properties": {
+                            "options": {"required": true, "type": "object"},
+                            "allow_other": {
+                                "required": true,
+                                "type": "boolean"
+                            },
+                            "created_datetime": {
+                                "required": true,
+                                "type": "string"
+                            },
+                            "updated_datetime": {
+                                "required": true,
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "name": {"type": "string"},
+                    "locale": {
+                        "type": "string",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "email_integration": {
+                        "type": "object",
+                        "properties": {
+                            "id": {"required": true, "type": "number"},
+                            "email": {"required": true, "type": "string"}
+                        }
+                    }
+                },
+                "required": ["subject_lines", "email_integration"]
             }
         }
     },
