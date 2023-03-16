@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Calling CubeClient functions [Function getCampaignEventsPerformanceData] should call load 1`] = `
+{
+  "query": "[{"dimensions":["CampaignEvents.campaignId"],"measures":["CampaignEvents.traffic","CampaignEvents.impressions","CampaignEvents.uniqueImpressions","CampaignEvents.clicks","CampaignEvents.clicksRate"],"filters":[{"member":"CampaignEvents.createdDatetime","operator":"inDateRange","values":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"]},{"member":"CampaignEvents.campaignId","operator":"equals","values":["1","2"]}],"segments":["CampaignEvents.campaignEventsOnly"],"limit":100}]",
+}
+`;
+
+exports[`Calling CubeClient functions [Function getCampaignEventsTotalsData] should call load 1`] = `
+{
+  "query": "[{"dimensions":["CampaignOrderEvents.accountId"],"measures":["CampaignOrderEvents.impressions","CampaignOrderEvents.engagement","CampaignOrderEvents.uniqueConversions"],"filters":[{"member":"CampaignOrderEvents.createdDatetime","operator":"inDateRange","values":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"]},{"member":"CampaignOrderEvents.integrationId","operator":"equals","values":["4"]}]}]",
+}
+`;
+
+exports[`Calling CubeClient functions [Function getCampaignOrderPerformanceData] should call load 1`] = `
+{
+  "query": "[{"dimensions":["OrderConversion.campaignId"],"measures":["OrderConversion.gmv","OrderConversion.influencedRevenueUplift","OrderConversion.campaignSales","OrderConversion.campaignSalesCount","OrderConversion.ticketSales","OrderConversion.ticketSalesCount","OrderConversion.discountSales","OrderConversion.discountSalesCount","OrderConversion.revenueSales","OrderConversion.clickSales"],"filters":[{"member":"OrderConversion.createdDatetime","operator":"inDateRange","values":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"]},{"member":"OrderConversion.campaignId","operator":"equals","values":["1","2"]}],"limit":100}]",
+}
+`;
+
+exports[`Calling CubeClient functions [Function getCampaignOrderTotalsData] should call load 1`] = `
+{
+  "query": "[{"dimensions":["OrderConversion.accountId"],"measures":["OrderConversion.gmv","OrderConversion.influencedRevenueUplift","OrderConversion.campaignSales"],"filters":[{"member":"OrderConversion.createdDatetime","operator":"inDateRange","values":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"]},{"member":"OrderConversion.integrationId","operator":"equals","values":["4"]}]}]",
+}
+`;
+
+exports[`Calling CubeClient functions [Function getGMVUpliftGraphData] should call load 1`] = `
+{
+  "query": "[{"dimensions":["OrderConversion.accountId"],"timeDimensions":[{"dimension":"OrderConversion.createdDatetime","dateRange":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"],"granularity":"day"}],"measures":["OrderConversion.influencedRevenueUplift"],"filters":[{"member":"OrderConversion.createdDatetime","operator":"inDateRange","values":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"]},{"member":"OrderConversion.campaignId","operator":"equals","values":["1","2"]}]}]",
+}
+`;
