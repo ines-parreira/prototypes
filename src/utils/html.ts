@@ -105,6 +105,7 @@ export function sanitizeHtmlDefault(html: string): string {
                 'width',
                 'controls',
                 'data-video-src', // used for chat video sharing.
+                'data-discount-code', // used for chat discount sharing.
             ],
         },
         nonTextTags: [

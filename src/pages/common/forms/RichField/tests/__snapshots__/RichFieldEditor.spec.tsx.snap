@@ -145,6 +145,10 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
                   "component": [Function],
                   "strategy": [Function],
                 },
+                {
+                  "component": [Function],
+                  "strategy": [Function],
+                },
               ],
               "handleKeyCommand": [Function],
               "keyBindingFn": [Function],
@@ -336,6 +340,10 @@ exports[`RichFieldEditor should handle shortcuts 1`] = `
           "decorators": Immutable.List [
             CompositeDraftDecorator {
               "_decorators": [
+                {
+                  "component": [Function],
+                  "strategy": [Function],
+                },
                 {
                   "component": [Function],
                   "strategy": [Function],

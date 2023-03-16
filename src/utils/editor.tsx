@@ -244,6 +244,15 @@ export function convertToHTML(contentState: ContentState): string {
                     return `<div class="gorgias-video-container" data-video-src="${url}" width="${width}"></div>`
                 }
 
+                if (
+                    entity.type ===
+                    draftjsGorgiasCustomBlockRenderers.DiscountCodeLink
+                ) {
+                    const url: string = (entity.data.url as string) || ''
+                    const code: string = (entity.data.code as string) || ''
+                    return `<a data-discount-code="${code}" href="${url}">${code}</a>`
+                }
+
                 if (entity.type === 'mention') {
                     return {
                         start: '<span class="gorgias-mention">',
@@ -353,6 +362,17 @@ export function convertFromHTML(html: string): ContentState {
             )
         },
         htmlToEntity: (nodeName: string, node: HTMLElement, createEntity) => {
+            if (nodeName === 'a' && node.getAttribute('data-discount-code')) {
+                return createEntity(
+                    draftjsGorgiasCustomBlockRenderers.DiscountCodeLink,
+                    'IMMUTABLE',
+                    {
+                        url: node.getAttribute('href'),
+                        code: node.getAttribute('data-discount-code'),
+                    }
+                )
+            }
+
             if (nodeName === 'a') {
                 return createEntity('link', 'MUTABLE', {
                     url: unescapeTemplateVars((node as HTMLLinkElement).href),

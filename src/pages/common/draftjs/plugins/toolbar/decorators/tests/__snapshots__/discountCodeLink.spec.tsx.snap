@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`discountCodeLink decorator component should render component with onEdit prop if active 1`] = `
+<a
+  data-discount-code="ABC"
+  href="http://shop.com/discount/ABC"
+  id="1"
+/>
+`;

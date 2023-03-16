@@ -6,7 +6,7 @@ import {fromJS, List, Map} from 'immutable'
 
 import {DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
 import {DiscountCode} from 'models/discountCodes/types'
-import {insertLink, insertText} from 'utils'
+import {insertText} from 'utils'
 import DiscountCodeResults from 'pages/common/components/DiscountCodeResults/DiscountCodeResults'
 import shortcutManager from 'services/shortcutManager'
 import {getIconFromType} from 'state/integrations/helpers'
@@ -14,6 +14,7 @@ import {useModalManager} from 'hooks/useModalManager'
 
 import {ActionInjectedProps} from '../types'
 import {useToolbarContext} from '../ToolbarContext'
+import {addDiscountCodeLink} from '../../utils'
 import Popover from './ButtonPopover'
 
 import css from './AddDiscountCode.less'
@@ -83,7 +84,7 @@ const AddDiscountCode = ({
 
             let newEditorState
             if (discount.shareable_url && canAddDiscountCodeLink) {
-                newEditorState = insertLink(
+                newEditorState = addDiscountCodeLink(
                     editorState,
                     discount.shareable_url,
                     discount.code

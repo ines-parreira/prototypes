@@ -210,6 +210,34 @@ export const addVideo = (
     )
 }
 
+export const addDiscountCodeLink = (
+    editorState: EditorState,
+    url: string,
+    code: string
+): EditorState => {
+    let contentState = editorState
+        .getCurrentContent()
+        .createEntity(
+            draftjsGorgiasCustomBlockRenderers.DiscountCodeLink,
+            'IMMUTABLE',
+            {
+                url: url,
+                code: code,
+            }
+        )
+    const selection = editorState.getSelection()
+    const entityKey = contentState.getLastCreatedEntityKey()
+
+    contentState = Modifier.replaceText(
+        contentState,
+        selection,
+        code || url,
+        undefined,
+        entityKey
+    )
+    return EditorState.push(editorState, contentState, 'apply-entity')
+}
+
 export const linkifyWithTemplate = (url: string) => {
     const noTemplateUrl = url.replace(
         /{{(.*?)}}/g,

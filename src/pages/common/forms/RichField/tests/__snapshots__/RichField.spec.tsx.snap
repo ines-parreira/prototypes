@@ -330,6 +330,10 @@ exports[`RichField should render default content state 1`] = `
                       "component": [Function],
                       "strategy": [Function],
                     },
+                    {
+                      "component": [Function],
+                      "strategy": [Function],
+                    },
                   ],
                 },
               ],
@@ -510,6 +514,10 @@ exports[`RichField should render default content state 1`] = `
                 "decorators": Immutable.List [
                   CompositeDraftDecorator {
                     "_decorators": [
+                      {
+                        "component": [Function],
+                        "strategy": [Function],
+                      },
                       {
                         "component": [Function],
                         "strategy": [Function],
@@ -711,6 +719,10 @@ exports[`RichField should render default content state 1`] = `
                   "decorators": Immutable.List [
                     CompositeDraftDecorator {
                       "_decorators": [
+                        {
+                          "component": [Function],
+                          "strategy": [Function],
+                        },
                         {
                           "component": [Function],
                           "strategy": [Function],
@@ -936,6 +948,10 @@ exports[`RichField should render default content state 1`] = `
                             "component": [Function],
                             "strategy": [Function],
                           },
+                          {
+                            "component": [Function],
+                            "strategy": [Function],
+                          },
                         ],
                       },
                     ],
@@ -1100,6 +1116,10 @@ exports[`RichField should render default content state 1`] = `
                                     "component": [Function],
                                     "strategy": [Function],
                                   },
+                                  {
+                                    "component": [Function],
+                                    "strategy": [Function],
+                                  },
                                 ],
                               },
                             ],
@@ -1161,6 +1181,10 @@ exports[`RichField should render default content state 1`] = `
                         {
                           "blockRendererFn": [Function],
                           "decorators": [
+                            {
+                              "component": [Function],
+                              "strategy": [Function],
+                            },
                             {
                               "component": [Function],
                               "strategy": [Function],
@@ -1450,6 +1474,10 @@ exports[`RichField should render default content state 1`] = `
                                       "component": [Function],
                                       "strategy": [Function],
                                     },
+                                    {
+                                      "component": [Function],
+                                      "strategy": [Function],
+                                    },
                                   ],
                                 },
                               ],
@@ -1519,6 +1547,10 @@ exports[`RichField should render default content state 1`] = `
                           {
                             "blockRendererFn": [Function],
                             "decorators": [
+                              {
+                                "component": [Function],
+                                "strategy": [Function],
+                              },
                               {
                                 "component": [Function],
                                 "strategy": [Function],
@@ -1871,6 +1903,10 @@ exports[`RichField should render default content state 1`] = `
                                               "component": [Function],
                                               "strategy": [Function],
                                             },
+                                            {
+                                              "component": [Function],
+                                              "strategy": [Function],
+                                            },
                                           ],
                                         },
                                       ],
@@ -2030,6 +2066,10 @@ exports[`RichField should render default content state 1`] = `
                                         "decorators": Immutable.List [
                                           CompositeDraftDecorator {
                                             "_decorators": [
+                                              {
+                                                "component": [Function],
+                                                "strategy": [Function],
+                                              },
                                               {
                                                 "component": [Function],
                                                 "strategy": [Function],
@@ -2380,6 +2420,10 @@ exports[`RichField should render default content state 1`] = `
                                 "component": [Function],
                                 "strategy": [Function],
                               },
+                              {
+                                "component": [Function],
+                                "strategy": [Function],
+                              },
                             ],
                           },
                         ],
@@ -2579,6 +2623,10 @@ exports[`RichField should render default content state 1`] = `
                           "decorators": Immutable.List [
                             CompositeDraftDecorator {
                               "_decorators": [
+                                {
+                                  "component": [Function],
+                                  "strategy": [Function],
+                                },
                                 {
                                   "component": [Function],
                                   "strategy": [Function],
@@ -3632,6 +3680,10 @@ exports[`RichField should render immutable variable 1`] = `
                       "component": [Function],
                       "strategy": [Function],
                     },
+                    {
+                      "component": [Function],
+                      "strategy": [Function],
+                    },
                   ],
                 },
               ],
@@ -3669,7 +3721,7 @@ exports[`RichField should render immutable variable 1`] = `
                 Immutable.Record {
                   "start": 5,
                   "end": 26,
-                  "decoratorKey": "0-4.0",
+                  "decoratorKey": "0-5.0",
                   "leaves": Immutable.List [
                     Immutable.Record {
                       "start": 5,
@@ -4068,6 +4120,10 @@ exports[`RichField should render immutable variable 1`] = `
                         "component": [Function],
                         "strategy": [Function],
                       },
+                      {
+                        "component": [Function],
+                        "strategy": [Function],
+                      },
                     ],
                   },
                 ],
@@ -4105,7 +4161,7 @@ exports[`RichField should render immutable variable 1`] = `
                   Immutable.Record {
                     "start": 5,
                     "end": 26,
-                    "decoratorKey": "0-4.0",
+                    "decoratorKey": "0-5.0",
                     "leaves": Immutable.List [
                       Immutable.Record {
                         "start": 5,
@@ -4505,6 +4561,10 @@ exports[`RichField should render immutable variable 1`] = `
                           "component": [Function],
                           "strategy": [Function],
                         },
+                        {
+                          "component": [Function],
+                          "strategy": [Function],
+                        },
                       ],
                     },
                   ],
@@ -4542,7 +4602,7 @@ exports[`RichField should render immutable variable 1`] = `
                     Immutable.Record {
                       "start": 5,
                       "end": 26,
-                      "decoratorKey": "0-4.0",
+                      "decoratorKey": "0-5.0",
                       "leaves": Immutable.List [
                         Immutable.Record {
                           "start": 5,
@@ -4946,6 +5006,10 @@ exports[`RichField should render immutable variable 1`] = `
                             "component": [Function],
                             "strategy": [Function],
                           },
+                          {
+                            "component": [Function],
+                            "strategy": [Function],
+                          },
                         ],
                       },
                     ],
@@ -4983,7 +5047,7 @@ exports[`RichField should render immutable variable 1`] = `
                       Immutable.Record {
                         "start": 5,
                         "end": 26,
-                        "decoratorKey": "0-4.0",
+                        "decoratorKey": "0-5.0",
                         "leaves": Immutable.List [
                           Immutable.Record {
                             "start": 5,
@@ -5403,6 +5467,10 @@ exports[`RichField should render immutable variable 1`] = `
                                     "component": [Function],
                                     "strategy": [Function],
                                   },
+                                  {
+                                    "component": [Function],
+                                    "strategy": [Function],
+                                  },
                                 ],
                               },
                             ],
@@ -5440,7 +5508,7 @@ exports[`RichField should render immutable variable 1`] = `
                               Immutable.Record {
                                 "start": 5,
                                 "end": 26,
-                                "decoratorKey": "0-4.0",
+                                "decoratorKey": "0-5.0",
                                 "leaves": Immutable.List [
                                   Immutable.Record {
                                     "start": 5,
@@ -5665,6 +5733,10 @@ exports[`RichField should render immutable variable 1`] = `
                         {
                           "blockRendererFn": [Function],
                           "decorators": [
+                            {
+                              "component": [Function],
+                              "strategy": [Function],
+                            },
                             {
                               "component": [Function],
                               "strategy": [Function],
@@ -6046,6 +6118,10 @@ exports[`RichField should render immutable variable 1`] = `
                                       "component": [Function],
                                       "strategy": [Function],
                                     },
+                                    {
+                                      "component": [Function],
+                                      "strategy": [Function],
+                                    },
                                   ],
                                 },
                               ],
@@ -6083,7 +6159,7 @@ exports[`RichField should render immutable variable 1`] = `
                                 Immutable.Record {
                                   "start": 5,
                                   "end": 26,
-                                  "decoratorKey": "0-4.0",
+                                  "decoratorKey": "0-5.0",
                                   "leaves": Immutable.List [
                                     Immutable.Record {
                                       "start": 5,
@@ -6316,6 +6392,10 @@ exports[`RichField should render immutable variable 1`] = `
                           {
                             "blockRendererFn": [Function],
                             "decorators": [
+                              {
+                                "component": [Function],
+                                "strategy": [Function],
+                              },
                               {
                                 "component": [Function],
                                 "strategy": [Function],
@@ -6760,6 +6840,10 @@ exports[`RichField should render immutable variable 1`] = `
                                               "component": [Function],
                                               "strategy": [Function],
                                             },
+                                            {
+                                              "component": [Function],
+                                              "strategy": [Function],
+                                            },
                                           ],
                                         },
                                       ],
@@ -6797,7 +6881,7 @@ exports[`RichField should render immutable variable 1`] = `
                                         Immutable.Record {
                                           "start": 5,
                                           "end": 26,
-                                          "decoratorKey": "0-4.0",
+                                          "decoratorKey": "0-5.0",
                                           "leaves": Immutable.List [
                                             Immutable.Record {
                                               "start": 5,
@@ -7324,6 +7408,10 @@ exports[`RichField should render immutable variable 1`] = `
                                                 "component": [Function],
                                                 "strategy": [Function],
                                               },
+                                              {
+                                                "component": [Function],
+                                                "strategy": [Function],
+                                              },
                                             ],
                                           },
                                         ],
@@ -7359,7 +7447,7 @@ exports[`RichField should render immutable variable 1`] = `
                                         Immutable.Record {
                                           "start": 5,
                                           "end": 26,
-                                          "decoratorKey": "0-4.0",
+                                          "decoratorKey": "0-5.0",
                                           "leaves": Immutable.List [
                                             Immutable.Record {
                                               "start": 5,
@@ -8311,6 +8399,10 @@ exports[`RichField should render immutable variable 1`] = `
                                 "component": [Function],
                                 "strategy": [Function],
                               },
+                              {
+                                "component": [Function],
+                                "strategy": [Function],
+                              },
                             ],
                           },
                         ],
@@ -8348,7 +8440,7 @@ exports[`RichField should render immutable variable 1`] = `
                           Immutable.Record {
                             "start": 5,
                             "end": 26,
-                            "decoratorKey": "0-4.0",
+                            "decoratorKey": "0-5.0",
                             "leaves": Immutable.List [
                               Immutable.Record {
                                 "start": 5,
@@ -8766,6 +8858,10 @@ exports[`RichField should render immutable variable 1`] = `
                                   "component": [Function],
                                   "strategy": [Function],
                                 },
+                                {
+                                  "component": [Function],
+                                  "strategy": [Function],
+                                },
                               ],
                             },
                           ],
@@ -8803,7 +8899,7 @@ exports[`RichField should render immutable variable 1`] = `
                             Immutable.Record {
                               "start": 5,
                               "end": 26,
-                              "decoratorKey": "0-4.0",
+                              "decoratorKey": "0-5.0",
                               "leaves": Immutable.List [
                                 Immutable.Record {
                                   "start": 5,
@@ -9912,6 +10008,10 @@ exports[`RichField should render mutable variable 1`] = `
                       "component": [Function],
                       "strategy": [Function],
                     },
+                    {
+                      "component": [Function],
+                      "strategy": [Function],
+                    },
                   ],
                 },
               ],
@@ -10082,6 +10182,10 @@ exports[`RichField should render mutable variable 1`] = `
                 "decorators": Immutable.List [
                   CompositeDraftDecorator {
                     "_decorators": [
+                      {
+                        "component": [Function],
+                        "strategy": [Function],
+                      },
                       {
                         "component": [Function],
                         "strategy": [Function],
@@ -10293,6 +10397,10 @@ exports[`RichField should render mutable variable 1`] = `
                           "component": [Function],
                           "strategy": [Function],
                         },
+                        {
+                          "component": [Function],
+                          "strategy": [Function],
+                        },
                       ],
                     },
                   ],
@@ -10468,6 +10576,10 @@ exports[`RichField should render mutable variable 1`] = `
                     "decorators": Immutable.List [
                       CompositeDraftDecorator {
                         "_decorators": [
+                          {
+                            "component": [Function],
+                            "strategy": [Function],
+                          },
                           {
                             "component": [Function],
                             "strategy": [Function],
@@ -10699,6 +10811,10 @@ exports[`RichField should render mutable variable 1`] = `
                                     "component": [Function],
                                     "strategy": [Function],
                                   },
+                                  {
+                                    "component": [Function],
+                                    "strategy": [Function],
+                                  },
                                 ],
                               },
                             ],
@@ -10803,6 +10919,10 @@ exports[`RichField should render mutable variable 1`] = `
                         {
                           "blockRendererFn": [Function],
                           "decorators": [
+                            {
+                              "component": [Function],
+                              "strategy": [Function],
+                            },
                             {
                               "component": [Function],
                               "strategy": [Function],
@@ -11096,6 +11216,10 @@ exports[`RichField should render mutable variable 1`] = `
                                       "component": [Function],
                                       "strategy": [Function],
                                     },
+                                    {
+                                      "component": [Function],
+                                      "strategy": [Function],
+                                    },
                                   ],
                                 },
                               ],
@@ -11208,6 +11332,10 @@ exports[`RichField should render mutable variable 1`] = `
                           {
                             "blockRendererFn": [Function],
                             "decorators": [
+                              {
+                                "component": [Function],
+                                "strategy": [Function],
+                              },
                               {
                                 "component": [Function],
                                 "strategy": [Function],
@@ -11564,6 +11692,10 @@ exports[`RichField should render mutable variable 1`] = `
                                               "component": [Function],
                                               "strategy": [Function],
                                             },
+                                            {
+                                              "component": [Function],
+                                              "strategy": [Function],
+                                            },
                                           ],
                                         },
                                       ],
@@ -11774,6 +11906,10 @@ exports[`RichField should render mutable variable 1`] = `
                                         "decorators": Immutable.List [
                                           CompositeDraftDecorator {
                                             "_decorators": [
+                                              {
+                                                "component": [Function],
+                                                "strategy": [Function],
+                                              },
                                               {
                                                 "component": [Function],
                                                 "strategy": [Function],
@@ -12075,6 +12211,10 @@ exports[`RichField should render mutable variable 1`] = `
                                 "component": [Function],
                                 "strategy": [Function],
                               },
+                              {
+                                "component": [Function],
+                                "strategy": [Function],
+                              },
                             ],
                           },
                         ],
@@ -12264,6 +12404,10 @@ exports[`RichField should render mutable variable 1`] = `
                           "decorators": Immutable.List [
                             CompositeDraftDecorator {
                               "_decorators": [
+                                {
+                                  "component": [Function],
+                                  "strategy": [Function],
+                                },
                                 {
                                   "component": [Function],
                                   "strategy": [Function],

@@ -15,6 +15,7 @@ import link from './decorators/link'
 import Image from './components/Image'
 import Video from './components/Video'
 import {Config, ActionName} from './types'
+import discountCodeLink from './decorators/discountCodeLink'
 
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
@@ -25,6 +26,7 @@ import {Config, ActionName} from './types'
 export enum draftjsGorgiasCustomBlockRenderers {
     Img = 'img',
     Video = 'video',
+    DiscountCodeLink = 'discount-code-link',
 }
 
 export const isDisplayedAction = (
@@ -49,6 +51,7 @@ export default function toolbarPlugin(config: Config): Plugin {
                 isActive: isLinkDisplayed,
                 onLinkEdit: config.onLinkEdit,
             }),
+            discountCodeLink(),
         ],
 
         blockRendererFn: (

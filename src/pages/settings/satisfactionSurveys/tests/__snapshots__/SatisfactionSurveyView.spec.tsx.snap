@@ -1056,6 +1056,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   "component": [Function],
                                                   "strategy": [Function],
                                                 },
+                                                {
+                                                  "component": [Function],
+                                                  "strategy": [Function],
+                                                },
                                               ],
                                             },
                                           ],
@@ -1205,6 +1209,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             "decorators": Immutable.List [
                                               CompositeDraftDecorator {
                                                 "_decorators": [
+                                                  {
+                                                    "component": [Function],
+                                                    "strategy": [Function],
+                                                  },
                                                   {
                                                     "component": [Function],
                                                     "strategy": [Function],
@@ -1395,6 +1403,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       "component": [Function],
                                                       "strategy": [Function],
                                                     },
+                                                    {
+                                                      "component": [Function],
+                                                      "strategy": [Function],
+                                                    },
                                                   ],
                                                 },
                                               ],
@@ -1555,6 +1567,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                 "decorators": Immutable.List [
                                                   CompositeDraftDecorator {
                                                     "_decorators": [
+                                                      {
+                                                        "component": [Function],
+                                                        "strategy": [Function],
+                                                      },
                                                       {
                                                         "component": [Function],
                                                         "strategy": [Function],
@@ -1769,6 +1785,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 "component": [Function],
                                                                 "strategy": [Function],
                                                               },
+                                                              {
+                                                                "component": [Function],
+                                                                "strategy": [Function],
+                                                              },
                                                             ],
                                                           },
                                                         ],
@@ -1873,6 +1893,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     {
                                                       "blockRendererFn": [Function],
                                                       "decorators": [
+                                                        {
+                                                          "component": [Function],
+                                                          "strategy": [Function],
+                                                        },
                                                         {
                                                           "component": [Function],
                                                           "strategy": [Function],
@@ -2149,6 +2173,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   "component": [Function],
                                                                   "strategy": [Function],
                                                                 },
+                                                                {
+                                                                  "component": [Function],
+                                                                  "strategy": [Function],
+                                                                },
                                                               ],
                                                             },
                                                           ],
@@ -2261,6 +2289,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       {
                                                         "blockRendererFn": [Function],
                                                         "decorators": [
+                                                          {
+                                                            "component": [Function],
+                                                            "strategy": [Function],
+                                                          },
                                                           {
                                                             "component": [Function],
                                                             "strategy": [Function],
@@ -2600,6 +2632,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           "component": [Function],
                                                                           "strategy": [Function],
                                                                         },
+                                                                        {
+                                                                          "component": [Function],
+                                                                          "strategy": [Function],
+                                                                        },
                                                                       ],
                                                                     },
                                                                   ],
@@ -2776,6 +2812,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     "decorators": Immutable.List [
                                                                       CompositeDraftDecorator {
                                                                         "_decorators": [
+                                                                          {
+                                                                            "component": [Function],
+                                                                            "strategy": [Function],
+                                                                          },
                                                                           {
                                                                             "component": [Function],
                                                                             "strategy": [Function],
@@ -3042,6 +3082,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             "component": [Function],
                                                             "strategy": [Function],
                                                           },
+                                                          {
+                                                            "component": [Function],
+                                                            "strategy": [Function],
+                                                          },
                                                         ],
                                                       },
                                                     ],
@@ -3215,6 +3259,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       "decorators": Immutable.List [
                                                         CompositeDraftDecorator {
                                                           "_decorators": [
+                                                            {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
                                                             {
                                                               "component": [Function],
                                                               "strategy": [Function],
