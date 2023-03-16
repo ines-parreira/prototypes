@@ -2,6 +2,15 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, List, Map} from 'immutable'
 
 import {
+    TicketChannel,
+    TicketMessageSourceType,
+    TicketVia,
+} from 'business/types/ticket'
+
+import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {integrationsState} from 'fixtures/integrations'
+import {
     addInternalNoteAction,
     addTagsAction,
     httpAction,
@@ -10,10 +19,10 @@ import {
     setSubjectAction,
     shopifyAction,
 } from 'fixtures/macro'
-import {PhoneIntegrationEvent} from '../../../constants/integrations/types/event'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../constants/integration'
-import {getEmailChannels} from '../../integrations/selectors'
-import {integrationsState} from '../../../fixtures/integrations'
+import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
+import {getEmailChannels} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
+
 import {
     getNewMessageSender,
     getOutboundCallFrom,
@@ -30,13 +39,6 @@ import {
     mergeInternalNoteActions,
     mergeActions,
 } from '../utils'
-import {getPersonLabelFromSource} from '../../../pages/tickets/common/utils'
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-    TicketVia,
-} from '../../../business/types/ticket'
-import {RootState} from '../../types'
 
 import {
     emailTicket,
@@ -376,12 +378,14 @@ describe('ticket utils', () => {
     })
 
     describe('receiversStateFromValue()', () => {
-        expect(
-            receiversStateFromValue(
-                receiversValueExample as unknown as ReceiversValue,
-                TicketMessageSourceType.Email
-            )
-        ).toEqual(receiversStateExample)
+        it('should return receivers from value', () => {
+            expect(
+                receiversStateFromValue(
+                    receiversValueExample as unknown as ReceiversValue,
+                    TicketMessageSourceType.Email
+                )
+            ).toEqual(receiversStateExample)
+        })
     })
 
     describe('getPreferredChannel()', () => {

@@ -512,15 +512,15 @@ export default function reducer(
                 const currentMessages = (
                     newState.get('messages') as List<any>
                 ).reverse()
-                currentMessages.forEach((message: Map<any, any>) => {
-                    const pendingMessages = (newState.getIn([
-                        '_internal',
-                        'pendingMessages',
-                    ]) || fromJS([])) as List<any>
+                const pendingMessages = (
+                    (newState.getIn(['_internal', 'pendingMessages']) ||
+                        fromJS([])) as List<any>
+                ).toJS()
 
+                currentMessages.forEach((message: Map<any, any>) => {
                     // pending messages don't have an id we can match on
                     const pendingIndex = getPendingMessageIndex(
-                        pendingMessages.toJS(),
+                        pendingMessages,
                         message.toJS()
                     )
 

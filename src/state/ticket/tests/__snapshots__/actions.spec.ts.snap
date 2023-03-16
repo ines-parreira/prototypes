@@ -782,14 +782,16 @@ exports[`ticket actions fetchTicketReplyMacro() 1`] = `
 ]
 `;
 
-exports[`ticket actions findAndSetCustomer() should set the customer because there is exactly one customer matching this email address 1`] = `
+exports[`ticket actions findAndSetCustomer() should set the customer because there is a customer matching this id 1`] = `
 [
   {
     "args": Immutable.Map {
       "customer": Immutable.Map {
-        "id": 1,
-        "name": "foo",
-        "email": "foo@gorgias.io",
+        "data": Immutable.Map {
+          "id": 1,
+          "name": "foo",
+          "email": "foo@gorgias.io",
+        },
       },
     },
     "type": "setCustomer",

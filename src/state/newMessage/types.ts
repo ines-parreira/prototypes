@@ -2,10 +2,11 @@ import {List, Map} from 'immutable'
 import {ContentState, SelectionState} from 'draft-js'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {DiscountCode} from 'models/discountCodes/types'
 import {Macro} from 'models/macro/types'
 import {MacroAction} from 'models/macroAction/types'
+import {Source, SourceAddress} from 'models/ticket/types'
 import {Attachment} from 'types'
-import {DiscountCode} from 'models/discountCodes/types'
 
 export enum ReceiverProperty {
     To = 'to',
@@ -24,14 +25,11 @@ type Address = {
     name: string
 }
 
+type Recipient = SourceAddress & {id?: number}
+
 export type NewMessage = {
     id?: string
-    source: {
-        type: string
-        extra: Record<string, unknown>
-        from?: Record<string, unknown>
-        to?: Record<string, unknown>
-    }
+    source: Omit<Source, 'to'> & {to?: Recipient[]}
     channel: string
     sender: User
     body_text: string

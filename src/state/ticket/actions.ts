@@ -17,10 +17,8 @@ import {DEFAULT_ACTIONS} from 'config'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'
 import {MacroActionName} from 'models/macroAction/types'
-import {search} from 'models/search/resources'
 import {InTicketSuggestionState} from 'state/entities/rules/types'
 import {CustomFieldState} from 'models/customField/types'
-import {SearchType, UserSearchResult} from 'models/search/types'
 import browserNotification from 'services/browserNotification'
 import GorgiasApi from 'services/gorgiasApi'
 import socketManager from 'services/socketManager/socketManager'
@@ -51,7 +49,6 @@ import {
     TicketMessageFailedEvent,
 } from 'services/socketManager/types'
 import {CustomerExternalData} from 'state/customers/types'
-import {Customer} from 'models/customer/types'
 import {
     Notification,
     NotificationButton,
@@ -61,6 +58,7 @@ import history from 'pages/history'
 import client from 'models/api/resources'
 import {RootState, StoreDispatch, StoreState} from 'state/types'
 import {Macro} from 'state/macro/types'
+import {getCustomer} from 'models/customer/resources'
 
 import {
     buildPartialUpdateFromAction,
@@ -1254,31 +1252,24 @@ export function deleteTicketPendingMessage(message: Map<any, any>) {
 }
 
 /**
- * Search a customer by email, and then fetch it and set it as customer of the current ticket.
+ * Retrieve a customer by id, and then fetch it and set it as customer of the current ticket.
  */
 export const findAndSetCustomer =
-    (email: string) =>
-    (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> =>
-        search<UserSearchResult>({
-            type: SearchType.UserChannelEmail,
-            query: email,
-        }).then((resp) => {
-            if (resp.data.length !== 1) {
-                // We can't do anything if we are not sure which customer should be set as customer of the current
-                // ticket. We don't want to log an error here, as this may be expected if the agent is sending an email
-                // to a new customer.
-                return Promise.resolve()
-            }
+    (id: number) =>
+    async (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+        try {
+            const {data} = await getCustomer(id)
 
-            const channel = resp.data[0]
-
-            return client
-                .get<Customer>(`/api/customers/${channel.user?.id || ''}/`)
-                .then((json) => json?.data)
-                .then((resp): Promise<ReturnType<StoreDispatch>> => {
-                    return dispatch(setCustomer(fromJS(resp)))
+            return dispatch(setCustomer(fromJS(data)))
+        } catch (error) {
+            void dispatch(
+                notify({
+                    message: 'Failed to fetch customer',
+                    status: NotificationStatus.Error,
                 })
-        })
+            )
+        }
+    }
 
 export const messageDeleted = createAction<string>(types.TICKET_MESSAGE_DELETED)
 

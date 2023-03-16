@@ -1,3 +1,5 @@
+import {CancelToken} from 'axios'
+
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {deepMapKeysToSnakeCase} from 'models/api/utils'
@@ -8,8 +10,8 @@ export const searchCustomers = async ({
     search,
     cancelToken,
     ...rest
-}: CustomerSearchOptions) => {
-    return await client.post<ApiListResponseCursorPagination<Customer[]>>(
+}: CustomerSearchOptions) =>
+    await client.post<ApiListResponseCursorPagination<Customer[]>>(
         '/api/customers/search',
         {
             search,
@@ -21,4 +23,11 @@ export const searchCustomers = async ({
             cancelToken,
         }
     )
-}
+
+export const getCustomer = async (id: number, cancelToken?: CancelToken) =>
+    await client.get<ApiListResponseCursorPagination<Customer>>(
+        `/api/customers/${id}`,
+        {
+            cancelToken,
+        }
+    )

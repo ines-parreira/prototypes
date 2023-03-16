@@ -731,6 +731,20 @@ export function prepareTicketDataToSend(
     let newMessage = (
         newMessageState.get('newMessage') as Map<any, any>
     )?.toJS() as NewMessage
+
+    if (newMessage?.source?.to) {
+        newMessage = {
+            ...newMessage,
+            source: {
+                ...newMessage.source,
+                to: newMessage?.source?.to?.map(({name, address}) => ({
+                    name,
+                    address,
+                })),
+            },
+        }
+    }
+
     ticket.status = (status as TicketStatus) || ticket.status
 
     if (ticket.assignee_user) {

@@ -8,21 +8,25 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import {RootState} from 'state/types'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {IntegrationType} from 'models/integration/types'
+import KeyboardShortcuts from 'pages/common/components/KeyboardShortcuts'
+import SourceIcon from 'pages/common/components/SourceIcon'
 import {KeymapActions} from 'services/shortcutManager/shortcutManager'
 import {hasIntegrationOfTypes} from 'state/integrations/selectors'
 import {prepare} from 'state/newMessage/actions'
-import * as newMessageSelectors from 'state/newMessage/selectors'
-import KeyboardShortcuts from 'pages/common/components/KeyboardShortcuts'
-import SourceIcon from 'pages/common/components/SourceIcon'
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {IntegrationType} from 'models/integration/types'
+import {
+    getNewMessageType,
+    hasNewMessageRecipients,
+    isForward,
+    isNewMessagePublic,
+} from 'state/newMessage/selectors'
+import {RootState} from 'state/types'
 
+import ConvertToForwardPopover from './ConvertToForwardPopover'
 import MultiSelectAsyncField from './MessageSourceFields/components/MultiSelectAsyncField/MultiSelectAsyncField'
 import MessageSourceFields from './MessageSourceFields/MessageSourceFields'
-
 import css from './ReplyMessageChannel.less'
-import ConvertToForwardPopover from './ConvertToForwardPopover'
 
 const changeReceiversAllowedSourceTypes = [
     TicketMessageSourceType.Email,
@@ -133,35 +137,16 @@ export class ReplyMessageChannelContainer extends Component<Props> {
         this.setState({isReceiversAreaOpen: state})
     }
 
-    renderReceiversArea = () => {
-        const {isNewMessagePublic} = this.props
-
-        if (!isNewMessagePublic) {
-            return (
-                <div className={classnames(css.sourceLabel, 'mt-1')}>
-                    Internal note
-                </div>
-            )
-        }
-
-        return (
-            <MessageSourceFields
-                canOpen={this.canChangeReceivers()}
-                isOpenDefault={this.state.isReceiversAreaOpen}
-                ref={(ref) => (this.multiSelectAsyncFieldRef = ref)}
-            />
-        )
-    }
-
     render() {
         const {
-            prepareNewMessage,
-            isForward,
             className,
-            ticket,
             hasPhoneIntegration,
             hasSmsIntegration,
             hasWhatsAppIntegration,
+            isForward,
+            isNewMessagePublic,
+            prepareNewMessage,
+            ticket,
         } = this.props
 
         const isTicketExisting = !!ticket.get('id')
@@ -556,9 +541,17 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </div>
-
-                {this.renderReceiversArea()}
-
+                {isNewMessagePublic ? (
+                    <MessageSourceFields
+                        canOpen={this.canChangeReceivers()}
+                        isOpenDefault={this.state.isReceiversAreaOpen}
+                        ref={(ref) => (this.multiSelectAsyncFieldRef = ref)}
+                    />
+                ) : (
+                    <div className={classnames(css.sourceLabel, 'mt-1')}>
+                        Internal note
+                    </div>
+                )}
                 <KeyboardShortcuts
                     name="TicketDetailContainer"
                     keymap={this.keymap}
@@ -569,25 +562,20 @@ export class ReplyMessageChannelContainer extends Component<Props> {
 }
 
 const connector = connect(
-    (state: RootState) => {
-        const sourceType = newMessageSelectors.getNewMessageType(state)
-        return {
-            hasRecipients: newMessageSelectors.hasNewMessageRecipients(state),
-            isForward: newMessageSelectors.isForward(state),
-            isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
-            sourceType,
-            ticket: state.ticket,
-            hasPhoneIntegration: hasIntegrationOfTypes(IntegrationType.Phone)(
-                state
-            ),
-            hasSmsIntegration: hasIntegrationOfTypes(IntegrationType.Sms)(
-                state
-            ),
-            hasWhatsAppIntegration: hasIntegrationOfTypes(
-                IntegrationType.WhatsApp
-            )(state),
-        }
-    },
+    (state: RootState) => ({
+        hasRecipients: hasNewMessageRecipients(state),
+        isForward: isForward(state),
+        isNewMessagePublic: isNewMessagePublic(state),
+        sourceType: getNewMessageType(state),
+        ticket: state.ticket,
+        hasPhoneIntegration: hasIntegrationOfTypes(IntegrationType.Phone)(
+            state
+        ),
+        hasSmsIntegration: hasIntegrationOfTypes(IntegrationType.Sms)(state),
+        hasWhatsAppIntegration: hasIntegrationOfTypes(IntegrationType.WhatsApp)(
+            state
+        ),
+    }),
     {
         prepareNewMessage: prepare,
     }

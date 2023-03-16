@@ -395,6 +395,7 @@ export function receiversStateFromValue(
 
     return Object.entries(newValue).reduce((acc, [key, receivers]) => {
         acc[key as keyof Receivers] = receivers.map((receiver) => ({
+            ...(receiver.id ? {id: receiver.id} : {}),
             name: receiver.name || '',
             address: receiver.value || '',
         }))
@@ -728,7 +729,7 @@ export function getNewMessageSender(
 
 /**
  * Return pending message index
- * match a newly posted message to a pending message and return it's index
+ * match a newly posted message to a pending message and return its index
  */
 export function getPendingMessageIndex(
     pendingMessages: TicketMessage[],
