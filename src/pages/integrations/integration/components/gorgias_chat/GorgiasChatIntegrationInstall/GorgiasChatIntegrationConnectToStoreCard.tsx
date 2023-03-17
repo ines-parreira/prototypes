@@ -128,17 +128,10 @@ export const GorgiasChatIntegrationConnectToStoreCard = ({
                     )}
                 </p>
                 <StoreNameDropdown
-                    value={selectedShopifyIntegration?.getIn([
-                        'meta',
-                        'shop_name',
-                    ])}
-                    placeholder={'Select a store'}
+                    storeIntegrationId={selectedShopifyIntegration?.get('id')}
                     gorgiasChatIntegrations={gorgiasChatIntegrations}
-                    shopifyIntegrations={shopifyIntegrations}
-                    onChange={(
-                        shopName: string,
-                        storeIntegrationId: number
-                    ) => {
+                    storeIntegrations={shopifyIntegrations}
+                    onChange={(storeIntegrationId: number) => {
                         const shopifyIntegration = shopifyIntegrations.find(
                             (integration) =>
                                 integration?.get('id') === storeIntegrationId

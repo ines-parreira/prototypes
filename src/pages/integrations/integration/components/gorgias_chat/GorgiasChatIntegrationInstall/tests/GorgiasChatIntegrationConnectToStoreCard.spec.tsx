@@ -93,11 +93,11 @@ describe('<GorgiasChatIntegrationConnectToStoreCard/>', () => {
         const connectButton = getByRole('button', {name: /connect/i})
         fireEvent.click(connectButton)
 
-        const selectButton = getByRole('button', {name: /shopifyStore/i})
+        const selectButton = getByRole('button', {name: /Select a store/i})
         fireEvent.click(selectButton)
 
         const shopButton = getByRole('menuitem', {
-            name: /shopifyStore/i,
+            name: /mylittleintegration3/i,
         })
         fireEvent.click(shopButton)
 

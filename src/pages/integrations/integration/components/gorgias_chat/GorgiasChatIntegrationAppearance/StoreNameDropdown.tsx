@@ -2,60 +2,48 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import React, {useState} from 'react'
 import {List, Map} from 'immutable'
 
-import shopifyStore from 'assets/img/icons/shopifyStore.svg'
 import warningIcon from 'assets/img/icons/warning.svg'
+import {getIconFromType} from 'state/integrations/helpers'
 
 import css from './StoreNameDropdown.less'
 
 type Props = {
     gorgiasChatIntegrations: List<Map<any, any>>
-    shopifyIntegrations: List<Map<any, any>>
-    value: string
-    placeholder: string
-    onChange: (
-        newShopNameValue: string,
-        newShopIntegrationIdValue: number
-    ) => void
+    storeIntegrations: List<Map<any, any>>
+    storeIntegrationId: number | null
+    onChange: (newShopIntegrationIdValue: number) => void
 }
 
 export const StoreNameDropdown = ({
-    shopifyIntegrations,
+    storeIntegrations,
     gorgiasChatIntegrations,
-    value,
+    storeIntegrationId,
     onChange,
-    placeholder,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
 
-    const nrOfChatsInstalled: {[key: string]: number} = {}
+    const nrOfChatsInstalled: {[key: number]: number} = {}
     gorgiasChatIntegrations.forEach((gorgiasChatIntegration) => {
-        const storeName: string = gorgiasChatIntegration?.getIn(
-            ['meta', 'shop_name'],
+        const shopIntegrationId: number | null = gorgiasChatIntegration?.getIn(
+            ['meta', 'shop_integration_id'],
             null
         )
 
-        if (storeName) {
-            if (!nrOfChatsInstalled[storeName]) {
-                nrOfChatsInstalled[storeName] = 1
+        if (shopIntegrationId) {
+            if (!nrOfChatsInstalled[shopIntegrationId]) {
+                nrOfChatsInstalled[shopIntegrationId] = 1
             } else {
-                nrOfChatsInstalled[storeName] += 1
+                nrOfChatsInstalled[shopIntegrationId] += 1
             }
         }
     })
 
     const getShopStoreDisplayText = (
         nrOfChatsInstalled: {[key: string]: number},
-        shopifyIntegration?: Map<any, any>
+        storeIntegration?: Map<any, any>
     ) => {
-        const storeName: string = shopifyIntegration?.getIn([
-            'meta',
-            'shop_name',
-        ])
-        if (!storeName) {
-            return null
-        }
-
-        const nr: number = nrOfChatsInstalled[storeName]
+        const id: number = storeIntegration?.get('id')
+        const nr: number = nrOfChatsInstalled[id]
         if (!nr) {
             return null
         }
@@ -64,12 +52,13 @@ export const StoreNameDropdown = ({
             .concat(nr > 1 ? ' connected chats' : ' connected chat')
     }
 
-    const _onClickDropdownItem = (
-        storeName: string,
-        storeIntegrationId: number
-    ) => {
-        onChange(storeName, storeIntegrationId)
+    const _onClickDropdownItem = (storeIntegrationId: number) => {
+        onChange(storeIntegrationId)
     }
+
+    const storeIntegration = storeIntegrations.find(
+        (storeIntegration) => storeIntegration?.get('id') === storeIntegrationId
+    )
 
     return (
         <div className={css.wrapper}>
@@ -77,48 +66,47 @@ export const StoreNameDropdown = ({
                 className={css.dropdown}
                 isOpen={isOpen}
                 toggle={() => setIsOpen(!isOpen)}
-                required
             >
                 <DropdownToggle caret>
-                    {value ? (
+                    {storeIntegration ? (
                         <span className={css.dropdownValue}>
                             <img
-                                src={shopifyStore}
-                                alt="shopifyStore"
-                                style={{marginRight: 16}}
+                                src={getIconFromType(
+                                    storeIntegration.get('type')
+                                )}
+                                className={css.dropdownLogo}
+                                alt="logo"
                             />
-                            {value}
+                            {storeIntegration.get('name')}
                         </span>
                     ) : (
                         <span className={css.dropdownPlaceholder}>
-                            <img
-                                src={shopifyStore}
-                                alt="shopifyStore"
-                                style={{marginRight: 16}}
-                            />
-                            {placeholder}
+                            <i
+                                className="material-icons"
+                                style={{marginRight: 8, fontSize: 20}}
+                            >
+                                store
+                            </i>
+                            Select a store
                         </span>
                     )}
                 </DropdownToggle>
                 <DropdownMenu className={css.dropdownMenu}>
-                    {shopifyIntegrations.map((option) => (
+                    {storeIntegrations.map((option) => (
                         <DropdownItem
                             onClick={() =>
-                                _onClickDropdownItem(
-                                    option?.getIn(['meta', 'shop_name']),
-                                    option?.get('id')
-                                )
+                                _onClickDropdownItem(option?.get('id'))
                             }
                             className={css.storeRow}
                             key={option?.get('id')}
                             value={option?.get('id')}
                         >
-                            <div className={css.innerItem}>
-                                <img src={shopifyStore} alt="shopifyStore" />
-                                <span>
-                                    {option?.getIn(['meta', 'shop_name'])}
-                                </span>
-                            </div>
+                            <img
+                                src={getIconFromType(option?.get('type'))}
+                                className={css.dropdownLogo}
+                                alt="logo"
+                            />
+                            <span>{option?.get('name')}</span>
                             <span className={css.dropdownInfo}>
                                 {!option?.get('deactivated_datetime') ? (
                                     getShopStoreDisplayText(

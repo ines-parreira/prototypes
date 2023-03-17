@@ -136,7 +136,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               >
                 <div
                   class="dropdown dropdown"
-                  required=""
                 >
                   <button
                     aria-expanded="false"
@@ -147,11 +146,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     <span
                       class="dropdownPlaceholder"
                     >
-                      <img
-                        alt="shopifyStore"
-                        src="test-file-stub"
-                        style="margin-right: 16px;"
-                      />
+                      <i
+                        class="material-icons"
+                        style="margin-right: 8px; font-size: 20px;"
+                      >
+                        store
+                      </i>
                       Select a store
                     </span>
                   </button>
@@ -168,17 +168,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       type="button"
                       value="1"
                     >
-                      <div
-                        class="innerItem"
-                      >
-                        <img
-                          alt="shopifyStore"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          myStore1
-                        </span>
-                      </div>
+                      <img
+                        alt="logo"
+                        class="dropdownLogo"
+                        src="test-file-stub"
+                      />
+                      <span>
+                        myStore1
+                      </span>
                       <span
                         class="dropdownInfo"
                       />
@@ -190,17 +187,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       type="button"
                       value="2"
                     >
-                      <div
-                        class="innerItem"
-                      >
-                        <img
-                          alt="shopifyStore"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          myStore2
-                        </span>
-                      </div>
+                      <img
+                        alt="logo"
+                        class="dropdownLogo"
+                        src="test-file-stub"
+                      />
+                      <span>
+                        myStore2
+                      </span>
                       <span
                         class="dropdownInfo"
                       />
@@ -614,6 +608,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   type="submit"
                 >
                   Add new chat
+                </button>
+                <button
+                  class="wrapper cancelButton fill secondary medium"
+                  type="button"
+                >
+                  Cancel
                 </button>
               </div>
             </div>
@@ -5064,7 +5064,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
               >
                 <div
                   class="dropdown dropdown"
-                  required=""
                 >
                   <button
                     aria-expanded="false"
@@ -5076,9 +5075,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       class="dropdownValue"
                     >
                       <img
-                        alt="shopifyStore"
+                        alt="logo"
+                        class="dropdownLogo"
                         src="test-file-stub"
-                        style="margin-right: 16px;"
                       />
                       MY ONLY SHOPIFY STORE
                     </span>
@@ -5096,17 +5095,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       type="button"
                       value="1"
                     >
-                      <div
-                        class="innerItem"
-                      >
-                        <img
-                          alt="shopifyStore"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          MY ONLY SHOPIFY STORE
-                        </span>
-                      </div>
+                      <img
+                        alt="logo"
+                        class="dropdownLogo"
+                        src="test-file-stub"
+                      />
+                      <span>
+                        MY ONLY SHOPIFY STORE
+                      </span>
                       <span
                         class="dropdownInfo"
                       />
@@ -5519,6 +5515,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   type="submit"
                 >
                   Add new chat
+                </button>
+                <button
+                  class="wrapper cancelButton fill secondary medium"
+                  type="button"
+                >
+                  Cancel
                 </button>
               </div>
             </div>
@@ -6816,7 +6818,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
               >
                 <div
                   class="dropdown dropdown"
-                  required=""
                 >
                   <button
                     aria-expanded="false"
@@ -6827,11 +6828,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     <span
                       class="dropdownPlaceholder"
                     >
-                      <img
-                        alt="shopifyStore"
-                        src="test-file-stub"
-                        style="margin-right: 16px;"
-                      />
+                      <i
+                        class="material-icons"
+                        style="margin-right: 8px; font-size: 20px;"
+                      >
+                        store
+                      </i>
                       Select a store
                     </span>
                   </button>
@@ -6848,22 +6850,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       type="button"
                       value="1"
                     >
-                      <div
-                        class="innerItem"
-                      >
-                        <img
-                          alt="shopifyStore"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          myStore1
-                        </span>
-                      </div>
+                      <img
+                        alt="logo"
+                        class="dropdownLogo"
+                        src="test-file-stub"
+                      />
+                      <span>
+                        myStore1
+                      </span>
                       <span
                         class="dropdownInfo"
-                      >
-                        1 connected chat
-                      </span>
+                      />
                     </button>
                     <button
                       class="storeRow dropdown-item"
@@ -6872,22 +6869,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       type="button"
                       value="2"
                     >
-                      <div
-                        class="innerItem"
-                      >
-                        <img
-                          alt="shopifyStore"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          myStore2
-                        </span>
-                      </div>
+                      <img
+                        alt="logo"
+                        class="dropdownLogo"
+                        src="test-file-stub"
+                      />
+                      <span>
+                        myStore2
+                      </span>
                       <span
                         class="dropdownInfo"
-                      >
-                        2 connected chats
-                      </span>
+                      />
                     </button>
                     <button
                       class="storeRow dropdown-item"
@@ -6896,17 +6888,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       type="button"
                       value="3"
                     >
-                      <div
-                        class="innerItem"
-                      >
-                        <img
-                          alt="shopifyStore"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          myStore3
-                        </span>
-                      </div>
+                      <img
+                        alt="logo"
+                        class="dropdownLogo"
+                        src="test-file-stub"
+                      />
+                      <span>
+                        myStore3
+                      </span>
                       <span
                         class="dropdownInfo"
                       >
@@ -7331,6 +7320,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   type="submit"
                 >
                   Add new chat
+                </button>
+                <button
+                  class="wrapper cancelButton fill secondary medium"
+                  type="button"
+                >
+                  Cancel
                 </button>
               </div>
             </div>

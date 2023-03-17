@@ -71,7 +71,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
         shopifyIntegrations: fromJS([
             {
                 id: 1,
-                name: 'mylittleintegration',
+                name: 'myStore1',
                 type: SHOPIFY_INTEGRATION_TYPE,
                 meta: {
                     shop_name: 'myStore1',
@@ -79,7 +79,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             },
             {
                 id: 2,
-                name: 'mylittleintegration2',
+                name: 'myStore2',
                 type: SHOPIFY_INTEGRATION_TYPE,
                 meta: {
                     shop_name: 'myStore2',
@@ -330,7 +330,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                         shopifyIntegrations={fromJS([
                             {
                                 id: 1,
-                                name: 'mylittleintegration',
+                                name: 'myStore1',
                                 type: SHOPIFY_INTEGRATION_TYPE,
                                 meta: {
                                     shop_name: 'myStore1',
@@ -338,7 +338,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             },
                             {
                                 id: 2,
-                                name: 'mylittleintegration2',
+                                name: 'myStore2',
                                 type: SHOPIFY_INTEGRATION_TYPE,
                                 meta: {
                                     shop_name: 'myStore2',
@@ -347,7 +347,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             {
                                 id: 3,
                                 deactivated_datetime: '2021-01-26T00:29:00Z',
-                                name: 'mylittleintegration3',
+                                name: 'myStore3',
                                 type: SHOPIFY_INTEGRATION_TYPE,
                                 meta: {
                                     shop_name: 'myStore3',
@@ -474,7 +474,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                         shopifyIntegrations={fromJS([
                             {
                                 id: 1,
-                                name: 'mylittleintegration',
+                                name: 'myStore1',
                                 type: SHOPIFY_INTEGRATION_TYPE,
                                 meta: {
                                     shop_name: 'myStore1',
@@ -482,7 +482,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             },
                             {
                                 id: 2,
-                                name: 'mylittleintegration2',
+                                name: 'myStore2',
                                 type: SHOPIFY_INTEGRATION_TYPE,
                                 meta: {
                                     shop_name: 'myStore2',
@@ -491,7 +491,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             {
                                 id: 3,
                                 deactivated_datetime: '2021-01-26T00:29:00Z',
-                                name: 'mylittleintegration3',
+                                name: 'myStore3',
                                 type: SHOPIFY_INTEGRATION_TYPE,
                                 meta: {
                                     shop_name: 'myStore3',
@@ -589,7 +589,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                         shopifyIntegrations={fromJS([
                             {
                                 id: 1,
-                                name: 'mylittleintegration',
+                                name: shopifyStoreName,
                                 type: SHOPIFY_INTEGRATION_TYPE,
                                 meta: {
                                     shop_name: shopifyStoreName,

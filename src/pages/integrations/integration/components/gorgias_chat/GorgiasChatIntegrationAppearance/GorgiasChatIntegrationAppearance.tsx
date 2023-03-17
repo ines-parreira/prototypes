@@ -1,11 +1,16 @@
 import React, {SyntheticEvent, useEffect, useState, useRef} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
-import {fromJS, Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import _defaults from 'lodash/defaults'
 import _merge from 'lodash/merge'
 import _cloneDeep from 'lodash/cloneDeep'
-import {Breadcrumb, BreadcrumbItem, Form, Label} from 'reactstrap'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Form,
+    Label as ReactStrapLabel,
+} from 'reactstrap'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
@@ -34,7 +39,6 @@ import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
 } from 'config/integrations/gorgias_chat'
 import {Language} from 'constants/languages'
-import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import * as integrationSelectors from 'state/integrations/selectors'
 import {
     GorgiasChatAvatarSettings,
@@ -44,7 +48,6 @@ import {
     GorgiasChatPositionAlignmentEnum,
     GorgiasChatLauncherType,
     IntegrationType,
-    ShopifyIntegration,
 } from 'models/integration/types'
 import {RootState} from 'state/types'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -62,8 +65,9 @@ import ChatLauncher from 'pages/integrations/integration/components/gorgias_chat
 import OptionalEmailCapture from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/OptionalEmailCapture'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
-
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
+import Label from 'pages/common/forms/Label/Label'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
 
 import css from './GorgiasChatIntegrationAppearance.less'
@@ -179,9 +183,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     actions,
     loading,
     currentUser,
+    storeIntegrations: storeIntegrationsProp,
     shopifyIntegrations,
     gorgiasChatIntegrations,
 }: Props & ConnectedProps<typeof connector>) => {
+    const history = useHistory()
     const [state, setState] = useState<State>(
         _merge(
             {
@@ -200,12 +206,18 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         useFlags()[FeatureFlagKey.ChatLauncherCustomization]
     const shouldShowAvatarCustomization =
         useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
+    const isAutomationSettingsRevampEnabled =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
 
-    const [storeName, setStoreName] = useState(
-        integration.getIn(['meta', 'shop_name'], null)
+    const storeIntegrations = (
+        isAutomationSettingsRevampEnabled
+            ? storeIntegrationsProp
+            : shopifyIntegrations
+    ) as List<Map<any, any>>
+
+    const [storeIntegrationId, setStoreIntegrationId] = useState(
+        integration.getIn(['meta', 'shop_integration_id'], null)
     )
-
-    const [storeIntegrationId, setStoreIntegrationId] = useState(0)
 
     useIntegrationPageViewLogEvent(
         SegmentEvent.ChatSettingsAppearancePageViewed,
@@ -220,17 +232,16 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             initState(integration)
         }
 
-        // Preselect store if merchant has only 1 shopify integration
+        // Preselect store if merchant has only 1 store integration
         if (!isUpdate && !loading.get('integration')) {
-            if (shopifyIntegrations.size === 1) {
-                const shopifyIntegration: ShopifyIntegration = (
-                    shopifyIntegrations.getIn(['0']) as Map<any, any>
-                ).toJS()
+            if (storeIntegrations.size === 1) {
+                const storeIntegration = storeIntegrations.getIn(['0']) as Map<
+                    any,
+                    any
+                >
 
-                const storeName = shopifyIntegration.meta?.shop_name
-                setStoreName(storeName)
-                setStoreIntegrationId(shopifyIntegration.id)
-                prefillWithStorename(storeName)
+                setStoreIntegrationId(storeIntegration.get('id'))
+                prefillWithStorename(storeIntegration.get('name'))
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -327,7 +338,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
     const _canSubmit = () => {
         return (
-            (state.showSelectStoreField && !!storeName && state.name) ||
+            (state.showSelectStoreField &&
+                !!storeIntegrationId &&
+                state.name) ||
             (!state.showSelectStoreField && state.name)
         )
     }
@@ -342,6 +355,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         const conversationColor = CSS.supports('color', state.conversationColor)
             ? state.conversationColor.trim()
             : GORGIAS_CHAT_DEFAULT_COLOR
+
+        const storeIntegration = storeIntegrations.find(
+            (storeIntegration) =>
+                storeIntegration?.get('id') === storeIntegrationId
+        )
 
         const form: SubmitForm = {
             type: state.type,
@@ -361,12 +379,14 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             },
             meta: {
                 language: state.language,
-                shop_name: state.showSelectStoreField ? storeName : null,
-                shop_type: state.showSelectStoreField
-                    ? SHOPIFY_INTEGRATION_TYPE
+                shop_name: storeIntegration
+                    ? getShopNameFromStoreIntegration(storeIntegration.toJS())
                     : null,
-                shop_integration_id: state.showSelectStoreField
-                    ? storeIntegrationId
+                shop_type: storeIntegration
+                    ? storeIntegration.get('type')
+                    : null,
+                shop_integration_id: storeIntegration
+                    ? storeIntegration.get('id')
                     : null,
                 preferences: {
                     email_capture_enforcement:
@@ -490,11 +510,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             label: 'Any other website',
             value: 'website',
             icon: <img src={wrench} alt="wrench" />,
-            onClick: () =>
+            onClick: () => {
                 setState((prevState) => ({
                     ...prevState,
                     showSelectStoreField: false,
-                })),
+                }))
+                setStoreIntegrationId(null)
+            },
             tooltipText:
                 'By creating a custom live chat, you will not be able to leverage any online store information such as self-service flows or help articles.',
             isSelected: !Boolean(state.showSelectStoreField),
@@ -629,6 +651,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         <BreadcrumbItem>
                             {isUpdate
                                 ? integration.get('name')
+                                : isAutomationSettingsRevampEnabled
+                                ? 'New Chat'
                                 : 'New chat integration'}
                         </BreadcrumbItem>
                     </Breadcrumb>
@@ -641,12 +665,12 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
             <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>
                 <Form onSubmit={handleSubmit}>
-                    {!isUpdate ? (
+                    {!isUpdate && !isAutomationSettingsRevampEnabled && (
                         <div className={css.selectStoreTypeContainer}>
-                            <Label className={css.bold}>
+                            <ReactStrapLabel className={css.bold}>
                                 Where will you use this chat?
                                 <span className={css.redStar}>*</span>
-                            </Label>
+                            </ReactStrapLabel>
                             <div className={css.radioButtonGroup}>
                                 {storeTypeRadioButtons.map((props) => (
                                     <StoreRadioButton
@@ -656,70 +680,149 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 ))}
                             </div>
                         </div>
-                    ) : null}
+                    )}
 
                     <div className={css.form}>
-                        {!isUpdate && state.showSelectStoreField ? (
-                            <>
-                                <Label className={css.bold}>
-                                    Select a store
-                                    <span className={css.error}>*</span>
-                                    <span id="select-store">
-                                        <i
-                                            className={classNames(
-                                                'material-icons',
-                                                css.neutral
-                                            )}
+                        {!isUpdate &&
+                            state.showSelectStoreField &&
+                            !isAutomationSettingsRevampEnabled && (
+                                <>
+                                    <ReactStrapLabel className={css.bold}>
+                                        Select a store
+                                        <span className={css.error}>*</span>
+                                        <span id="select-store">
+                                            <i
+                                                className={classNames(
+                                                    'material-icons',
+                                                    css.neutral
+                                                )}
+                                            >
+                                                info_outline
+                                            </i>
+                                        </span>
+                                        <Tooltip
+                                            autohide={false}
+                                            delay={100}
+                                            placement="bottom-start"
+                                            target="select-store"
+                                            style={{
+                                                textAlign: 'start',
+                                                width: 180,
+                                            }}
                                         >
-                                            info_outline
-                                        </i>
-                                    </span>
-                                    <Tooltip
-                                        autohide={false}
-                                        delay={100}
-                                        placement="bottom-start"
-                                        target="select-store"
-                                        style={{
-                                            textAlign: 'start',
-                                            width: 180,
+                                            We currently only support automatic
+                                            installation and self-service
+                                            features with Shopify stores. Use
+                                            the custom live chat option for any
+                                            other ecommerce platform.
+                                            <a
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                href="https://docs.gorgias.com/gorgias-chat/chat-getting-started"
+                                            >
+                                                Read more
+                                            </a>
+                                        </Tooltip>
+                                    </ReactStrapLabel>
+                                    <StoreNameDropdown
+                                        storeIntegrationId={storeIntegrationId}
+                                        gorgiasChatIntegrations={
+                                            gorgiasChatIntegrations
+                                        }
+                                        storeIntegrations={storeIntegrations}
+                                        onChange={(
+                                            storeIntegrationId: number
+                                        ) => {
+                                            const storeIntegration =
+                                                storeIntegrations.find(
+                                                    (storeIntegration) =>
+                                                        storeIntegration?.get(
+                                                            'id'
+                                                        ) === storeIntegrationId
+                                                )!
+
+                                            setStoreIntegrationId(
+                                                storeIntegrationId
+                                            )
+                                            prefillWithStorename(
+                                                storeIntegration.get('name')
+                                            )
                                         }}
-                                    >
-                                        We currently only support automatic
-                                        installation and self-service features
-                                        with Shopify stores. Use the custom live
-                                        chat option for any other ecommerce
-                                        platform.
-                                        <a
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            href="https://docs.gorgias.com/gorgias-chat/chat-getting-started"
-                                        >
-                                            Read more
-                                        </a>
-                                    </Tooltip>
+                                    />
+                                </>
+                            )}
+
+                        {!isUpdate && isAutomationSettingsRevampEnabled && (
+                            <div className={css.formSection}>
+                                <h2 className={css.title}>
+                                    Select a platform type
+                                </h2>
+
+                                <div className={css.platformTypeContainer}>
+                                    <PreviewRadioButton
+                                        value="ecommerce-platforms"
+                                        isSelected={state.showSelectStoreField}
+                                        label="Ecommerce platforms"
+                                        caption="Shopify, Magento, BigCommerce"
+                                        onClick={() =>
+                                            setState((prevState) => ({
+                                                ...prevState,
+                                                showSelectStoreField: true,
+                                            }))
+                                        }
+                                    />
+                                    <PreviewRadioButton
+                                        value="any-other-website"
+                                        isSelected={!state.showSelectStoreField}
+                                        label="Any other website"
+                                        caption="Websites, knowledge bases, etc."
+                                        onClick={() =>
+                                            setState((prevState) => ({
+                                                ...prevState,
+                                                showSelectStoreField: false,
+                                            }))
+                                        }
+                                    />
+                                </div>
+
+                                <Label isRequired={state.showSelectStoreField}>
+                                    Connect a store
                                 </Label>
+                                <div className={css.connectStoreDescription}>
+                                    {state.showSelectStoreField
+                                        ? 'Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.'
+                                        : 'Connect a store to enable Automation Add-on features in chat. You can always connect a store later.'}
+                                </div>
                                 <StoreNameDropdown
-                                    value={storeName}
-                                    placeholder={'Select a store'}
+                                    storeIntegrationId={storeIntegrationId}
                                     gorgiasChatIntegrations={
                                         gorgiasChatIntegrations
                                     }
-                                    shopifyIntegrations={shopifyIntegrations}
-                                    onChange={(
-                                        shopName: string,
-                                        storeIntegrationId: number
-                                    ) => {
-                                        setStoreName(shopName)
+                                    storeIntegrations={storeIntegrations}
+                                    onChange={(storeIntegrationId: number) => {
+                                        const storeIntegration =
+                                            storeIntegrations.find(
+                                                (storeIntegration) =>
+                                                    storeIntegration?.get(
+                                                        'id'
+                                                    ) === storeIntegrationId
+                                            )!
+
                                         setStoreIntegrationId(
                                             storeIntegrationId
                                         )
-                                        prefillWithStorename(shopName)
+                                        prefillWithStorename(
+                                            storeIntegration.get('name')
+                                        )
                                     }}
                                 />
-                            </>
-                        ) : null}
+                            </div>
+                        )}
 
                         <div className={css.formSection}>
+                            {!isUpdate && isAutomationSettingsRevampEnabled && (
+                                <h2 className={css.title}>Preferences</h2>
+                            )}
                             <DEPRECATED_InputField
                                 className={css.formGroup}
                                 type="text"
@@ -774,7 +877,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                         introductionText: value,
                                     }))
                                 }
-                                label="Introduction text during business hours"
+                                label={
+                                    isAutomationSettingsRevampEnabled
+                                        ? 'During business hours'
+                                        : 'Introduction text during business hours'
+                                }
                                 maxLength={
                                     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
                                 }
@@ -795,7 +902,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                         offlineIntroductionText: value,
                                     }))
                                 }}
-                                label="Introduction text outside business hours"
+                                label={
+                                    isAutomationSettingsRevampEnabled
+                                        ? 'Outside business hours'
+                                        : 'Introduction text outside business hours'
+                                }
                                 maxLength={
                                     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
                                 }
@@ -1121,7 +1232,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 </DEPRECATED_InputField>
                                 <div className={css.positionInputsWrapper}>
                                     <div>
-                                        <Label className={css.bold}>
+                                        <ReactStrapLabel className={css.bold}>
                                             Move left / right
                                             <span id="move-widget-left-right">
                                                 <i
@@ -1148,7 +1259,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     edges.
                                                 </Tooltip>
                                             </span>
-                                        </Label>
+                                        </ReactStrapLabel>
                                         <NumberInput
                                             value={position.offsetX}
                                             onChange={(offsetX) => {
@@ -1179,7 +1290,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                         />
                                     </div>
                                     <div>
-                                        <Label className={css.bold}>
+                                        <ReactStrapLabel className={css.bold}>
                                             Move up / down
                                             <span id="move-widget-up-down">
                                                 <i
@@ -1206,7 +1317,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     edges.
                                                 </Tooltip>
                                             </span>
-                                        </Label>
+                                        </ReactStrapLabel>
                                         <NumberInput
                                             value={position.offsetY}
                                             onChange={(offsetY) => {
@@ -1247,6 +1358,19 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             >
                                 {isUpdate ? 'Save changes' : 'Add new chat'}
                             </Button>
+                            {!isUpdate && (
+                                <Button
+                                    intent="secondary"
+                                    onClick={() => {
+                                        history.push(
+                                            '/app/settings/channels/gorgias_chat'
+                                        )
+                                    }}
+                                    className={css.cancelButton}
+                                >
+                                    Cancel
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </Form>
@@ -1257,6 +1381,12 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
 const mapStateToProps = (state: RootState) => {
     return {
+        storeIntegrations:
+            integrationSelectors.DEPRECATED_getIntegrationsByTypes([
+                IntegrationType.Shopify,
+                IntegrationType.BigCommerce,
+                IntegrationType.Magento2,
+            ])(state),
         shopifyIntegrations:
             integrationSelectors.DEPRECATED_getIntegrationsByTypes(
                 IntegrationType.Shopify
