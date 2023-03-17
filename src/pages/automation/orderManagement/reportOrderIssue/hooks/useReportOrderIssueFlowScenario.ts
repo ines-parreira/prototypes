@@ -5,6 +5,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
+import {trimHTML} from 'utils/html'
+import {convertFromHTML, convertToHTML} from 'utils/editor'
 
 import {SCENARIO_REASON_DEFAULT_ACTION} from '../constants'
 import useReportOrderIssueFlowScenarios from './useReportOrderIssueFlowScenarios'
@@ -28,10 +30,32 @@ const useReportOrderIssueFlowScenario = (
         () =>
             scenarios[scenarioIndex] && {
                 ...scenarios[scenarioIndex],
-                reasons: scenarios[scenarioIndex].reasons.map((reason) => ({
-                    ...reason,
-                    action: reason.action ?? SCENARIO_REASON_DEFAULT_ACTION,
-                })),
+                reasons: scenarios[scenarioIndex].reasons.map((reason) => {
+                    let action
+
+                    if (reason.action) {
+                        const html = convertToHTML(
+                            convertFromHTML(
+                                reason.action.responseMessageContent.html
+                            )
+                        )
+
+                        action = {
+                            ...reason.action,
+                            responseMessageContent: {
+                                ...reason.action.responseMessageContent,
+                                html: reason.action.responseMessageContent.text
+                                    .length
+                                    ? html
+                                    : trimHTML(html),
+                            },
+                        }
+                    } else {
+                        action = SCENARIO_REASON_DEFAULT_ACTION
+                    }
+
+                    return {...reason, action}
+                }),
             },
         [scenarios, scenarioIndex]
     )
