@@ -124,6 +124,10 @@ const avatarNameTypeOptions = [
         label: 'First name, last name initial',
     },
     {
+        value: GorgiasChatAvatarNameType.AGENT_FULLNAME,
+        label: 'Full name',
+    },
+    {
         value: GorgiasChatAvatarNameType.CHAT_TITLE,
         label: 'Use chat title instead of agent name',
     },

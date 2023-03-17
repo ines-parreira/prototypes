@@ -6161,6 +6161,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     >
                       <label
                         class="label label"
+                        for="agent-fullname"
+                      >
+                        <input
+                          class="input"
+                          id="agent-fullname"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Full name
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="label label"
                         for="chat-title"
                       >
                         <input

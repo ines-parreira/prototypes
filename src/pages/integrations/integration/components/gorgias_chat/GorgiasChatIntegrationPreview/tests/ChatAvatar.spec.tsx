@@ -38,6 +38,11 @@ describe('<ChatAvatar />', () => {
             GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL,
             'AN',
         ],
+        [
+            'agent full name initials',
+            GorgiasChatAvatarNameType.AGENT_FULLNAME,
+            'AN',
+        ],
         ['chat title initials', GorgiasChatAvatarNameType.CHAT_TITLE, 'CT'],
     ])('should display %s', (_, nameType, initials) => {
         const {container} = render(

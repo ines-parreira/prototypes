@@ -30,6 +30,16 @@ exports[`<AgentDisplayName /> should render agent first name only if last name i
 </div>
 `;
 
+exports[`<AgentDisplayName /> should render agent full name 1`] = `
+<div>
+  <div
+    class="acme"
+  >
+    John Doe
+  </div>
+</div>
+`;
+
 exports[`<AgentDisplayName /> should render agent full name as legacy implementation 1`] = `
 <div>
   <div

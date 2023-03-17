@@ -34,6 +34,9 @@ export const AgentDisplayName = ({
                           )}.`
                         : displayNameArray[0]
                 break
+            case GorgiasChatAvatarNameType.AGENT_FULLNAME:
+                // no need to update 'displayName'
+                break
             case GorgiasChatAvatarNameType.CHAT_TITLE:
                 displayName = chatTitle ?? displayName
                 break

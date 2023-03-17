@@ -121,6 +121,7 @@ export enum GorgiasChatAvatarImageType {
 export enum GorgiasChatAvatarNameType {
     AGENT_FIRST_NAME = 'agent-first-name',
     AGENT_FIRST_LAST_NAME_INITIAL = 'agent-first-last-name-initial',
+    AGENT_FULLNAME = 'agent-fullname',
     CHAT_TITLE = 'chat-title',
 }
 

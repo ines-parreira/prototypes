@@ -77,6 +77,23 @@ describe('<AgentDisplayName />', () => {
         expect(container).toMatchSnapshot()
     })
 
+    it('should render agent full name', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.ChatAgentAvatarCustomization]: true,
+        }))
+
+        const {container} = render(
+            <AgentDisplayName
+                className="acme"
+                chatTitle="Acme Support"
+                name={name}
+                type={GorgiasChatAvatarNameType.AGENT_FULLNAME}
+            />
+        )
+
+        expect(container).toMatchSnapshot()
+    })
+
     it('should render chat title', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ChatAgentAvatarCustomization]: true,
