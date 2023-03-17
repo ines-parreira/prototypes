@@ -22,6 +22,7 @@ import {customer} from 'fixtures/customer'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import {mockSearchRank} from 'fixtures/searchRank'
 import {SearchEngine} from 'models/search/types'
+import mockedVirtuoso from 'tests/mockedVirtuoso'
 
 import SpotlightModal from '../SpotlightModal'
 
@@ -65,6 +66,8 @@ const WrappedSpotlightModal = (
         <SpotlightModal {...props} />
     </Provider>
 )
+
+jest.mock('react-virtuoso', () => mockedVirtuoso)
 
 describe('<SpotlightModal/>', () => {
     const mockCloseModal = jest.fn()
@@ -623,9 +626,8 @@ describe('<SpotlightModal/>', () => {
             rerender(<WrappedSpotlightModal {...minProps} />)
 
             const tab = getByText(name)
-            tab.parentElement!.focus()
-
             const searchInput = getByPlaceholderText('Search...')
+            tab.parentElement!.focus()
 
             await userEvent.type(searchInput, 'foo')
             jest.runOnlyPendingTimers()
@@ -633,6 +635,91 @@ describe('<SpotlightModal/>', () => {
             await act(flushPromises)
 
             expect(container.firstChild).toMatchSnapshot()
+        }
+    )
+
+    it.each([
+        ['Tickets', ticket],
+        ['Customers', customer],
+    ])(
+        'should fetch more from new endpoint on end reached if meta indicates more items are available',
+        async (name, item) => {
+            mockServer.onPost().reply(200, {
+                data: [item],
+                meta: {
+                    prev_cursor: null,
+                    next_cursor: 'foo',
+                },
+            })
+            jest.useFakeTimers()
+
+            const {rerender, getByPlaceholderText, getByText} =
+                renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            await act(flushPromises)
+            rerender(<WrappedSpotlightModal {...minProps} />)
+
+            const tab = getByText(name)
+            const searchInput = getByPlaceholderText('Search...')
+            tab.parentElement!.focus()
+
+            await userEvent.type(searchInput, 'foo')
+            jest.runOnlyPendingTimers()
+            await userEvent.type(searchInput, '{enter}')
+            await act(flushPromises)
+
+            const endTrigger = getByText('end area')
+            userEvent.click(endTrigger)
+
+            await act(flushPromises)
+            expect(
+                (mockServer.history.post[1].params as Record<string, unknown>)
+                    .cursor
+            ).toEqual('foo')
+        }
+    )
+
+    it.each([
+        ['Tickets', ticket],
+        ['Customers', customer],
+    ])(
+        'should fetch more from old endpoint on end reached if meta indicates more items are available',
+        async (name, item) => {
+            const mockMeta = {
+                next_items:
+                    '/api/views/0/items/?direction=next&ignored_item=169178&cursor=MTY3NDc4MTEyNjc0ODg4Ni1mYWxzZQ%3D%3D',
+                prev_items: null,
+                current_cursor: 'MTY3NzY3Nzk0ODM0NzA3NC1mYWxzZQ==',
+            }
+
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.ElasticsearchTicketSearch]: false,
+                [FeatureFlagKey.ElasticsearchCustomerSearch]: false,
+            }))
+            mockServer.onPut().reply(200, {
+                data: [item],
+                meta: mockMeta,
+            })
+            jest.useFakeTimers()
+
+            const {rerender, getByPlaceholderText, getByText} =
+                renderWithRouter(<WrappedSpotlightModal {...minProps} />)
+            await act(flushPromises)
+            rerender(<WrappedSpotlightModal {...minProps} />)
+
+            const tab = getByText(name)
+            const searchInput = getByPlaceholderText('Search...')
+            tab.parentElement!.focus()
+
+            await userEvent.type(searchInput, 'foo')
+            jest.runOnlyPendingTimers()
+            await userEvent.type(searchInput, '{enter}')
+            await act(flushPromises)
+
+            const endTrigger = getByText('end area')
+            userEvent.click(endTrigger)
+
+            await act(flushPromises)
+            expect(mockServer.history.put[1].url).toEqual(mockMeta.next_items)
         }
     )
 

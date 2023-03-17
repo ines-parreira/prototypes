@@ -13,7 +13,7 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
     <ModalHeader
       title="Merge customers"
     />
-    <ModalBody>
+    <ForwardRef(ModalBody)>
       <div
         className="content"
       >
@@ -254,7 +254,7 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
           value={{}}
         />
       </div>
-    </ModalBody>
+    </ForwardRef(ModalBody)>
     <ModalActionsFooter>
       <ForwardRef
         className="mr-2"

@@ -19,7 +19,10 @@ export type ApiListResponse<T, Y> = {
     uri: string
 }
 
-export type ApiListResponsePagination<T> = ApiListResponse<T, PaginationMeta>
+export type ApiListResponsePagination<T, V = PaginationMeta> = ApiListResponse<
+    T,
+    V
+>
 
 export type PaginationMeta = {
     current_page: string

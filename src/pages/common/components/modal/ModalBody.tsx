@@ -1,4 +1,4 @@
-import React, {ReactNode, useContext} from 'react'
+import React, {forwardRef, ReactNode, Ref, useContext} from 'react'
 import classnames from 'classnames'
 
 import {ModalContext} from './Modal'
@@ -10,7 +10,10 @@ type Props = {
     className?: string
 }
 
-const ModalBody = ({children, className}: Props) => {
+const ModalBody = (
+    {children, className}: Props,
+    forwardedRef: Ref<HTMLDivElement> | null | undefined
+) => {
     const {isScrollable, bodyId} = useContext(ModalContext)
 
     return (
@@ -21,10 +24,11 @@ const ModalBody = ({children, className}: Props) => {
                 className
             )}
             id={bodyId}
+            ref={forwardedRef}
         >
             {children}
         </div>
     )
 }
 
-export default ModalBody
+export default forwardRef(ModalBody)

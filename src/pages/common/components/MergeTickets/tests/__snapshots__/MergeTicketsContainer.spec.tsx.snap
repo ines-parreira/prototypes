@@ -9,7 +9,7 @@ exports[`MergeTicketsContainer component should render a closed modal because is
   <ModalHeader
     title="Merge tickets"
   />
-  <ModalBody />
+  <ForwardRef(ModalBody) />
 </ForwardRef(Modal)>
 `;
 
@@ -22,7 +22,7 @@ exports[`MergeTicketsContainer component should render the build component if th
   <ModalHeader
     title="Merge tickets"
   />
-  <ModalBody>
+  <ForwardRef(ModalBody)>
     <BuildFinalTicket
       finalTicket={null}
       sourceTicket={
@@ -53,7 +53,7 @@ exports[`MergeTicketsContainer component should render the build component if th
       }
       updateFinalTicket={[Function]}
     />
-  </ModalBody>
+  </ForwardRef(ModalBody)>
   <ModalActionsFooter
     extra={
       <ForwardRef
@@ -96,7 +96,7 @@ exports[`MergeTicketsContainer component should render the selection component i
   <ModalHeader
     title="Merge tickets"
   />
-  <ModalBody>
+  <ForwardRef(ModalBody)>
     <Connect(SelectTargetTicket)
       customerId={22}
       sourceTicket={
@@ -114,6 +114,6 @@ exports[`MergeTicketsContainer component should render the selection component i
       }
       updateTargetTicket={[Function]}
     />
-  </ModalBody>
+  </ForwardRef(ModalBody)>
 </ForwardRef(Modal)>
 `;

@@ -15,6 +15,7 @@ import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
 import _isEmpty from 'lodash/isEmpty'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import axios, {CancelToken} from 'axios'
+import {VirtuosoHandle} from 'react-virtuoso'
 
 import useSelectedIndex from 'hooks/useSelectedIndex'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
@@ -31,7 +32,7 @@ import {ViewType} from 'models/view/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {searchTickets} from 'models/ticket/resources'
 import client from 'models/api/resources'
-import {ApiListResponsePagination} from 'models/api/types'
+import {ApiListResponsePagination, CursorMeta} from 'models/api/types'
 import {Ticket} from 'models/ticket/types'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -53,6 +54,13 @@ import SpotlightNoResults from './SpotlightNoResults'
 import SpotlightTicketRow from './SpotlightTicketRow'
 import SpotlightCustomerRow from './SpotlightCustomerRow'
 import css from './SpotlightModal.less'
+
+type OldSearchPaginationMeta = {
+    prev_items: string
+    next_items: string
+}
+
+type MetaType = CursorMeta | OldSearchPaginationMeta
 
 type Props = {
     isOpen: boolean
@@ -77,8 +85,10 @@ const searchRankScenarioSource = {
 const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const {pathname} = useLocation()
     const dispatch = useAppDispatch()
-    const scrollAreaRef = useRef<HTMLDivElement>(null)
+    const virtuosoRef = useRef<VirtuosoHandle>(null)
+    const modalBodyRef = useRef<HTMLDivElement>(null)
     const spotlightSearchInputRef = useRef<HTMLInputElement>(null)
+
     const isESTicketSearchEnabled =
         useFlags()[FeatureFlagKey.ElasticsearchTicketSearch]
     const isESCustomerSearchEnabled =
@@ -89,6 +99,8 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         [Tabs.Tickets]: string
         [Tabs.Customers]: string
     }>({customers: '', tickets: ''})
+    const [ticketsSearchMeta, setTicketsSearchMeta] = useState<MetaType>()
+    const [customersSearchMeta, setCustomersSearchMeta] = useState<MetaType>()
     const [hasSearched, setHasSearched] = useState<boolean>(false)
     const [tickets, setTickets] = useState<Ticket[]>([])
     const [customers, setCustomers] = useState<Customer[]>([])
@@ -119,13 +131,9 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     useEffect(resetSelectedIndex, [resetSelectedIndex, searchItemsType])
 
     useEffect(() => {
-        const scrollArea = scrollAreaRef.current
-        if (!scrollArea) return
-
-        const selectedNode = scrollArea.children[selectedIndex]
-        if (!selectedNode) return
-
-        selectedNode.scrollIntoView({block: 'nearest'})
+        const virtuosoScrollArea = virtuosoRef.current
+        if (!virtuosoScrollArea) return
+        virtuosoScrollArea.scrollIntoView({index: selectedIndex})
     }, [selectedIndex])
 
     const selectedItem = useMemo(
@@ -211,6 +219,8 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         !_isEmpty(tickets) && setTickets([])
         !_isEmpty(customers) && setCustomers([])
         hasSearched && setHasSearched(false)
+        !_isEmpty(ticketsSearchMeta) && setTicketsSearchMeta(undefined)
+        !_isEmpty(customersSearchMeta) && setCustomersSearchMeta(undefined)
         setSearchItemsType(ViewType.TicketList)
         setLastSearchQueries({customers: '', tickets: ''})
         cancelSearch()
@@ -220,7 +230,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
 
     const createFetchSearchItems = useCallback(
         (cancelToken: CancelToken) =>
-            async (searchTerm: string, viewType: ViewType) => {
+            async (searchTerm: string, viewType: ViewType, cursor?: string) => {
                 searchRank.endScenario()
                 searchRank.registerResultsRequest({
                     query: searchTerm,
@@ -236,6 +246,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                     promise = searchTickets({
                         search: searchTerm,
                         filters: '',
+                        cursor,
                         cancelToken,
                     })
                     searchEngine = SearchEngine.ES
@@ -245,14 +256,18 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 ) {
                     promise = searchCustomers({
                         search: searchTerm,
-                        cancelToken,
                         orderBy: '_score:desc',
+                        cursor,
+                        cancelToken,
                     })
                     searchEngine = SearchEngine.ES
                 } else {
-                    const url = `/api/views/${0}/items/`
+                    const url = cursor || `/api/views/${0}/items/`
                     promise = client.put<
-                        ApiListResponsePagination<Ticket[] | Customer[]>
+                        ApiListResponsePagination<
+                            Ticket[] | Customer[],
+                            OldSearchPaginationMeta
+                        >
                     >(
                         url,
                         {
@@ -274,13 +289,23 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                             ...lastSearchQueries,
                             tickets: searchTerm,
                         })
-                        setTickets(data.data as Ticket[])
+                        setTickets((tickets) =>
+                            cursor
+                                ? ([...tickets, ...data.data] as Ticket[])
+                                : (data.data as Ticket[])
+                        )
+                        setTicketsSearchMeta(data.meta)
                     } else if (viewType === ViewType.CustomerList) {
                         setLastSearchQueries({
                             ...lastSearchQueries,
                             customers: searchTerm,
                         })
-                        setCustomers(data.data as Customer[])
+                        setCustomers((tickets) =>
+                            cursor
+                                ? ([...tickets, ...data.data] as Customer[])
+                                : (data.data as Customer[])
+                        )
+                        setCustomersSearchMeta(data.meta)
                     }
                 } catch (e) {
                     if (!axios.isCancel(e)) {
@@ -322,6 +347,11 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
             [cancellableFetchSearchItems],
             300
         )
+
+    const [{loading: isFetchingMore}, fetchMoreSearchItems] = useAsyncFn(
+        cancellableFetchSearchItems,
+        [cancellableFetchSearchItems]
+    )
 
     const isLoading = useMemo(
         () => isRequestLoading || isDelayedRequestLoading,
@@ -435,20 +465,31 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
 
     const handleHover = useCallback(
         (e: MouseEvent) => {
-            const scrollArea = scrollAreaRef.current
-            if (!scrollArea) return
+            const index =
+                e.currentTarget.parentElement?.getAttribute('data-index')
+            if (!index) return
 
-            const index = Array.prototype.indexOf.call(
-                scrollArea.children,
-                e.target
-            )
-            if (index === -1) return
-
-            setSelectedIndex(index)
+            setSelectedIndex(parseInt(index))
             spotlightSearchInputRef.current?.focus()
         },
         [setSelectedIndex]
     )
+
+    const nextCursor = useMemo(
+        () =>
+            searchItemsType === ViewType.CustomerList
+                ? (customersSearchMeta as CursorMeta)?.next_cursor ||
+                  (customersSearchMeta as OldSearchPaginationMeta)?.next_items
+                : searchItemsType === ViewType.TicketList
+                ? (ticketsSearchMeta as CursorMeta)?.next_cursor ||
+                  (ticketsSearchMeta as OldSearchPaginationMeta)?.next_items
+                : undefined,
+        [searchItemsType, customersSearchMeta, ticketsSearchMeta]
+    )
+
+    const handleLoadMore = useCallback(async () => {
+        await fetchMoreSearchItems(searchQuery!, searchItemsType, nextCursor)
+    }, [fetchMoreSearchItems, searchQuery, searchItemsType, nextCursor])
 
     return (
         <Modal
@@ -477,7 +518,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 className={css.tabNavigator}
             />
             {(hasSearched || isLoading) && (
-                <ModalBody className={css.modalBody}>
+                <ModalBody className={css.modalBody} ref={modalBodyRef}>
                     {isLoading ? (
                         <SpotlightLoader className={css.loader} />
                     ) : (
@@ -490,42 +531,67 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                                     handleAdvancedSearch={goToAdvancedSearch}
                                 />
                             ) : (
-                                <SpotlightScrollArea ref={scrollAreaRef}>
-                                    <SearchRankScenarioContext.Provider
-                                        value={searchRank}
-                                    >
-                                        {searchItemsType ===
-                                            ViewType.TicketList &&
-                                            tickets.map((ticket, index) => (
-                                                <SpotlightTicketRow
-                                                    key={ticket.id}
-                                                    item={ticket}
-                                                    onCloseModal={onCloseModal}
-                                                    onHover={handleHover}
-                                                    id={ticket.id}
-                                                    index={index}
-                                                    selected={
-                                                        index === selectedIndex
-                                                    }
-                                                />
-                                            ))}
-                                        {searchItemsType ===
-                                            ViewType.CustomerList &&
-                                            customers.map((customer, index) => (
-                                                <SpotlightCustomerRow
-                                                    key={customer.id}
-                                                    item={customer}
-                                                    onCloseModal={onCloseModal}
-                                                    onHover={handleHover}
-                                                    id={customer.id}
-                                                    index={index}
-                                                    selected={
-                                                        index === selectedIndex
-                                                    }
-                                                />
-                                            ))}
-                                    </SearchRankScenarioContext.Provider>
-                                </SpotlightScrollArea>
+                                <SearchRankScenarioContext.Provider
+                                    value={searchRank}
+                                >
+                                    <SpotlightScrollArea
+                                        ref={virtuosoRef}
+                                        scrollerRef={modalBodyRef}
+                                        data={
+                                            searchItemsType ===
+                                            ViewType.CustomerList
+                                                ? customers
+                                                : searchItemsType ===
+                                                  ViewType.TicketList
+                                                ? tickets
+                                                : undefined
+                                        }
+                                        canLoadMore={!!nextCursor}
+                                        loadMore={handleLoadMore}
+                                        isLoading={isFetchingMore}
+                                        itemContent={(index, item) => {
+                                            if (
+                                                searchItemsType ===
+                                                ViewType.TicketList
+                                            ) {
+                                                return (
+                                                    <SpotlightTicketRow
+                                                        id={item.id}
+                                                        index={index}
+                                                        item={item as Ticket}
+                                                        onCloseModal={
+                                                            onCloseModal
+                                                        }
+                                                        onHover={handleHover}
+                                                        selected={
+                                                            index ===
+                                                            selectedIndex
+                                                        }
+                                                    />
+                                                )
+                                            } else if (
+                                                searchItemsType ===
+                                                ViewType.CustomerList
+                                            ) {
+                                                return (
+                                                    <SpotlightCustomerRow
+                                                        id={item.id}
+                                                        index={index}
+                                                        item={item as Customer}
+                                                        onCloseModal={
+                                                            onCloseModal
+                                                        }
+                                                        onHover={handleHover}
+                                                        selected={
+                                                            index ===
+                                                            selectedIndex
+                                                        }
+                                                    />
+                                                )
+                                            }
+                                        }}
+                                    ></SpotlightScrollArea>
+                                </SearchRankScenarioContext.Provider>
                             )}
                         </>
                     )}

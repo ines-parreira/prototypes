@@ -2,6 +2,49 @@
 
 exports[`<SpotlightScrollArea/> should render 1`] = `
 <div>
-  foo
+  <div
+    style="height: 168px;"
+  >
+    <div>
+      0 - item 1
+    </div>
+    <div>
+      1 - item 2
+    </div>
+    <div>
+      2 - item 3
+    </div>
+    <div>
+      end area
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SpotlightScrollArea/> should render footer if loading 1`] = `
+<div>
+  <div
+    style="height: 168px;"
+  >
+    <div>
+      0 - item 1
+    </div>
+    <div>
+      1 - item 2
+    </div>
+    <div>
+      2 - item 3
+    </div>
+    <div
+      class="loader"
+    >
+      <div>
+        SpotlightLoader
+      </div>
+    </div>
+    <div>
+      end area
+    </div>
+  </div>
 </div>
 `;

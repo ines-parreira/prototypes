@@ -19,7 +19,9 @@ exports[`<SpotlightModal/> should cancel previous request when tab is switched a
     "maxBodyLength": -1,
     "maxContentLength": -1,
     "method": "post",
-    "params": {},
+    "params": {
+      "cursor": undefined,
+    },
     "timeout": 0,
     "transformRequest": [
       [Function],
@@ -47,6 +49,7 @@ exports[`<SpotlightModal/> should cancel previous request when tab is switched a
     "maxContentLength": -1,
     "method": "post",
     "params": {
+      "cursor": undefined,
       "order_by": "_score:desc",
     },
     "timeout": 0,
@@ -81,6 +84,7 @@ exports[`<SpotlightModal/> should fetch customers on enter keypress 1`] = `
     "maxContentLength": -1,
     "method": "post",
     "params": {
+      "cursor": undefined,
       "order_by": "_score:desc",
     },
     "timeout": 0,
@@ -148,7 +152,9 @@ exports[`<SpotlightModal/> should fetch items for the search term on previous ta
     "maxBodyLength": -1,
     "maxContentLength": -1,
     "method": "post",
-    "params": {},
+    "params": {
+      "cursor": undefined,
+    },
     "timeout": 0,
     "transformRequest": [
       [Function],
@@ -176,6 +182,7 @@ exports[`<SpotlightModal/> should fetch items for the search term on previous ta
     "maxContentLength": -1,
     "method": "post",
     "params": {
+      "cursor": undefined,
       "order_by": "_score:desc",
     },
     "timeout": 0,
@@ -209,7 +216,9 @@ exports[`<SpotlightModal/> should fetch tickets on enter keypress from the new s
     "maxBodyLength": -1,
     "maxContentLength": -1,
     "method": "post",
-    "params": {},
+    "params": {
+      "cursor": undefined,
+    },
     "timeout": 0,
     "transformRequest": [
       [Function],
@@ -331,9 +340,14 @@ exports[`<SpotlightModal/> should render the fetched result set with SpotlightRo
         class="wrapper scrollable modalBody"
         id="modal-57-desc"
       >
-        <div>
+        <div
+          style="height: 56px;"
+        >
           <div>
             SpotlightCustomerRow
+          </div>
+          <div>
+            end area
           </div>
         </div>
       </div>
@@ -458,9 +472,14 @@ exports[`<SpotlightModal/> should render the fetched result set with SpotlightRo
         class="wrapper scrollable modalBody"
         id="modal-55-desc"
       >
-        <div>
+        <div
+          style="height: 56px;"
+        >
           <div>
             SpotlightTicketRow
+          </div>
+          <div>
+            end area
           </div>
         </div>
       </div>
@@ -629,8 +648,8 @@ exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
 
 exports[`<SpotlightModal/> should reset search after closing and end previous searchRank scenario 1`] = `
 <div
-  aria-describedby="modal-59-desc"
-  aria-labelledby="modal-59-title"
+  aria-describedby="modal-67-desc"
+  aria-labelledby="modal-67-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -658,8 +677,8 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
           </span>
           <input
             class="input"
-            id="input-text-60"
-            name="input-text-60"
+            id="input-text-68"
+            name="input-text-68"
             placeholder="Search..."
             type="text"
             value=""

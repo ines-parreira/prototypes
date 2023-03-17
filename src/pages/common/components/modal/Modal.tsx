@@ -1,9 +1,9 @@
 import React, {
     createContext,
+    ForwardedRef,
     forwardRef,
     MouseEvent,
     ReactNode,
-    Ref,
     RefObject,
     useCallback,
     useImperativeHandle,
@@ -58,7 +58,7 @@ const Modal = (
         onClose,
         size,
     }: Props,
-    forwardedRef: Ref<HTMLDivElement> | null | undefined
+    forwardedRef: ForwardedRef<HTMLDivElement>
 ) => {
     const ref = useRef<HTMLDivElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
