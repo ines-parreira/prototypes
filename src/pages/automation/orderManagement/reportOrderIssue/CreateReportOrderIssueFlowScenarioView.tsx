@@ -107,7 +107,7 @@ const CreateReportOrderIssueFlowScenarioView = () => {
                     <Loader />
                 ) : (
                     <>
-                        <div>
+                        <div className={css.content}>
                             <ReportOrderIssueScenarioFormContext.Provider
                                 value={reportOrderIssueScenarioFormContext}
                             >

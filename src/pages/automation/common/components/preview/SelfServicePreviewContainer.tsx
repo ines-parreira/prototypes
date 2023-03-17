@@ -62,80 +62,82 @@ const SelfServicePreviewContainer = <Channel extends SelfServiceChannel>({
     const value = channel ? `${channel.type}:${channel.value.id}` : undefined
 
     return (
-        <div className={css.container}>
-            <div className={css.header}>Customer preview</div>
-            <SelectInputBox
-                className={css.selectInput}
-                placeholder="Channel"
-                floating={floatingRef}
-                label={channel?.value?.name}
-                onToggle={setIsSelectOpen}
-                ref={targetRef}
-                isDisabled={!channels.length}
-                prefix={
-                    channel && (
-                        <SourceIcon
-                            type={channel.type}
-                            className={css.selectInputIcon}
-                        />
-                    )
-                }
-            >
-                <SelectInputBoxContext.Consumer>
-                    {(context) => (
-                        <Dropdown
-                            isOpen={isSelectOpen}
-                            isDisabled={!channels.length}
-                            onToggle={() => context!.onBlur()}
-                            ref={floatingRef}
-                            target={targetRef}
-                            value={value}
-                        >
-                            <DropdownBody>
-                                {options.map((option) => (
-                                    <DropdownItem
-                                        key={option.value}
-                                        option={option}
-                                        onClick={handleChange}
-                                        shouldCloseOnSelect
-                                        autoFocus
-                                    >
-                                        <SourceIcon
-                                            type={option.type}
-                                            className={css.dropdownItemIcon}
-                                        />
-                                        {option.label}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownBody>
-                        </Dropdown>
-                    )}
-                </SelectInputBoxContext.Consumer>
-            </SelectInputBox>
-            {channel
-                ? children(channel)
-                : alert && (
-                      <Alert
-                          className={css.alert}
-                          type={AlertType.Warning}
-                          icon
-                          customActions={
-                              alertAction && (
-                                  <Button
-                                      fillStyle="ghost"
-                                      size="small"
-                                      onClick={() => {
-                                          history.push(alertAction.href)
-                                      }}
-                                  >
-                                      {alertAction.message}
-                                  </Button>
-                              )
-                          }
-                      >
-                          {alert.message}
-                      </Alert>
-                  )}
+        <div>
+            <div className={css.container}>
+                <div className={css.header}>Customer preview</div>
+                <SelectInputBox
+                    className={css.selectInput}
+                    placeholder="Channel"
+                    floating={floatingRef}
+                    label={channel?.value?.name}
+                    onToggle={setIsSelectOpen}
+                    ref={targetRef}
+                    isDisabled={!channels.length}
+                    prefix={
+                        channel && (
+                            <SourceIcon
+                                type={channel.type}
+                                className={css.selectInputIcon}
+                            />
+                        )
+                    }
+                >
+                    <SelectInputBoxContext.Consumer>
+                        {(context) => (
+                            <Dropdown
+                                isOpen={isSelectOpen}
+                                isDisabled={!channels.length}
+                                onToggle={() => context!.onBlur()}
+                                ref={floatingRef}
+                                target={targetRef}
+                                value={value}
+                            >
+                                <DropdownBody>
+                                    {options.map((option) => (
+                                        <DropdownItem
+                                            key={option.value}
+                                            option={option}
+                                            onClick={handleChange}
+                                            shouldCloseOnSelect
+                                            autoFocus
+                                        >
+                                            <SourceIcon
+                                                type={option.type}
+                                                className={css.dropdownItemIcon}
+                                            />
+                                            {option.label}
+                                        </DropdownItem>
+                                    ))}
+                                </DropdownBody>
+                            </Dropdown>
+                        )}
+                    </SelectInputBoxContext.Consumer>
+                </SelectInputBox>
+                {channel
+                    ? children(channel)
+                    : alert && (
+                          <Alert
+                              className={css.alert}
+                              type={AlertType.Warning}
+                              icon
+                              customActions={
+                                  alertAction && (
+                                      <Button
+                                          fillStyle="ghost"
+                                          size="small"
+                                          onClick={() => {
+                                              history.push(alertAction.href)
+                                          }}
+                                      >
+                                          {alertAction.message}
+                                      </Button>
+                                  )
+                              }
+                          >
+                              {alert.message}
+                          </Alert>
+                      )}
+            </div>
         </div>
     )
 }

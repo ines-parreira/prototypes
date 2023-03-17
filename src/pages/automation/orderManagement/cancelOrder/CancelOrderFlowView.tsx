@@ -140,7 +140,7 @@ const CancelOrderFlowView = () => {
                     <CancelOrderFlowViewContext.Provider
                         value={cancelOrderFlowViewContext}
                     >
-                        <div>
+                        <div className={css.content}>
                             <div className={css.descriptionContainer}>
                                 <p className="mb-1">
                                     Allow customers to request a cancellation if

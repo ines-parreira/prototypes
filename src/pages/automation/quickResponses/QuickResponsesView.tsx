@@ -135,7 +135,7 @@ const QuickResponsesView = () => {
                     <QuickResponsesViewContext.Provider
                         value={quickResponsesViewContext}
                     >
-                        <div>
+                        <div className={css.content}>
                             <div className={css.descriptionContainer}>
                                 <p className="mb-1">
                                     Display up to {MAX_ACTIVE_QUICK_RESPONSES}{' '}

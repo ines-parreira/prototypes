@@ -58,7 +58,7 @@ const ReportOrderIssueFlowView = () => {
                     <Loader />
                 ) : (
                     <>
-                        <div>
+                        <div className={css.content}>
                             <div className={css.descriptionContainer}>
                                 <p className="mb-1">
                                     Customize scenarios and the corresponding

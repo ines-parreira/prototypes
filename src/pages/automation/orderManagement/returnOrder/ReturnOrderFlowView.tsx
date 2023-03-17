@@ -135,7 +135,7 @@ const ReturnOrderFlowView = () => {
                     <ReturnOrderFlowViewContext.Provider
                         value={returnOrderFlowViewContext}
                     >
-                        <div>
+                        <div className={css.content}>
                             <div className={css.descriptionContainer}>
                                 <p className="mb-1">
                                     Allow customers to request a return if an

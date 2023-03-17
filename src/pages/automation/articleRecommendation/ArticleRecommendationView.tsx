@@ -97,7 +97,7 @@ const ArticleRecommendationView = () => {
                     <Loader />
                 ) : (
                     <>
-                        <div>
+                        <div className={css.content}>
                             <div className={css.descriptionContainer}>
                                 <p className="mb-1">
                                     Automatically send a Help Center article in

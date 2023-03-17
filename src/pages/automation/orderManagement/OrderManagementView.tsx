@@ -120,7 +120,7 @@ const OrderManagementView = () => {
                     <Loader />
                 ) : (
                     <>
-                        <div>
+                        <div className={css.content}>
                             <div className={css.descriptionContainer}>
                                 <p className="mb-1">
                                     Allow customers to take actions depending on
