@@ -1,6 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 import client from 'models/api/resources'
 import {
+    getCampaignEventsOrdersPerformanceData,
     getCampaignEventsPerformanceData,
     getCampaignEventsTotalsData,
     getCampaignOrderPerformanceData,
@@ -27,6 +28,7 @@ describe('Calling CubeClient functions', () => {
     it.each([
         [getCampaignEventsPerformanceData],
         [getCampaignOrderPerformanceData],
+        [getCampaignEventsOrdersPerformanceData],
         [getCampaignEventsTotalsData],
         [getCampaignOrderTotalsData],
         [getGMVUpliftGraphData],

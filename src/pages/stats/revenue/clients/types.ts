@@ -55,3 +55,5 @@ export type TimeGranularity =
     | 'month'
     | 'quarter'
     | 'year'
+
+export type CubeData = CubeMetric[]

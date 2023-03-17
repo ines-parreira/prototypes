@@ -19,7 +19,7 @@ const _getDefaultFilters = ({
 }: DefaultFilterParams): CubeFilter[] => {
     const filters = [_inDateRangeFilter(startDate, endDate, cubeName)]
 
-    if (campaignIds) {
+    if (campaignIds?.length) {
         filters.push(_campaignEqualsFilter(campaignIds, cubeName))
     }
 
@@ -107,19 +107,45 @@ export const getCampaignOrderPerformanceData = async ({
         measures: [
             `${ORDER_CUBE}.gmv`,
             `${ORDER_CUBE}.influencedRevenueUplift`,
-            `${ORDER_CUBE}.campaignSales`,
-            `${ORDER_CUBE}.campaignSalesCount`,
             `${ORDER_CUBE}.ticketSales`,
             `${ORDER_CUBE}.ticketSalesCount`,
             `${ORDER_CUBE}.discountSales`,
             `${ORDER_CUBE}.discountSalesCount`,
-            `${ORDER_CUBE}.revenueSales`,
             `${ORDER_CUBE}.clickSales`,
         ],
         filters: _getDefaultFilters({
             startDate,
             endDate,
             cubeName: ORDER_CUBE,
+            campaignIds,
+        }),
+        limit: limit,
+        // TODO: we need to add support for offset to analytics endpoint first
+        // offset: offset,
+    })
+}
+
+export const getCampaignEventsOrdersPerformanceData = async ({
+    startDate,
+    endDate,
+    campaignIds,
+    limit,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    offset,
+}: CubeFilterParams): Promise<CubeResponse> => {
+    return await client.load({
+        dimensions: [`${CAMPAIGN_ORDER_CUBE}.campaignId`],
+        measures: [
+            `${CAMPAIGN_ORDER_CUBE}.engagement`,
+            `${CAMPAIGN_ORDER_CUBE}.campaignCTR`,
+            `${CAMPAIGN_ORDER_CUBE}.uniqueConversions`,
+            `${CAMPAIGN_ORDER_CUBE}.totalConversionRate`,
+            `${CAMPAIGN_ORDER_CUBE}.uniqueCampaignClicksConverted`,
+        ],
+        filters: _getDefaultFilters({
+            startDate,
+            endDate,
+            cubeName: CAMPAIGN_ORDER_CUBE,
             campaignIds,
         }),
         limit: limit,

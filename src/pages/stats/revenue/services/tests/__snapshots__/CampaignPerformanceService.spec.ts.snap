@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Revenue Attribution Service stats methods getCampaignsPerformance should fill default values if data is missing 1`] = `
+{
+  "campaign1": {
+    "clickThroughRate": 12,
+    "clicks": 24,
+    "clicksConversionRate": 487.5,
+    "clicksConverted": 117,
+    "clicksRate": 10,
+    "clicksRevenue": 0,
+    "discountCodesRevenue": 0,
+    "discountCodesUsed": 0,
+    "engagement": 357,
+    "impressions": 234,
+    "revenueUplift": 0,
+    "ticketsConversionRate": 0,
+    "ticketsConverted": 0,
+    "ticketsCreated": 157,
+    "ticketsCreationRate": 67.09401709401709,
+    "ticketsRevenue": 0,
+    "totalConversionRate": 7,
+    "totalRevenue": 0,
+    "traffic": 1234,
+    "uniqueConversions": 125,
+    "uniqueImpressions": 34,
+  },
+  "campaign2": {
+    "clickThroughRate": 11,
+    "clicks": 57,
+    "clicksConversionRate": 435.08771929824564,
+    "clicksConverted": 248,
+    "clicksRate": 21,
+    "clicksRevenue": 0,
+    "discountCodesRevenue": 0,
+    "discountCodesUsed": 0,
+    "engagement": 1357,
+    "impressions": 567,
+    "revenueUplift": 0,
+    "ticketsConversionRate": 0,
+    "ticketsConverted": 0,
+    "ticketsCreated": 357,
+    "ticketsCreationRate": 62.96296296296296,
+    "ticketsRevenue": 0,
+    "totalConversionRate": 9,
+    "totalRevenue": 0,
+    "traffic": 4567,
+    "uniqueConversions": 358,
+    "uniqueImpressions": 67,
+  },
+}
+`;
+
+exports[`Revenue Attribution Service stats methods getCampaignsPerformance should return prepared data for campaign performance table 1`] = `
+{
+  "campaign1": {
+    "clickThroughRate": 12,
+    "clicks": 24,
+    "clicksConversionRate": 487.5,
+    "clicksConverted": 117,
+    "clicksRate": 10,
+    "clicksRevenue": 3596,
+    "discountCodeRevenue": 4567,
+    "discountCodeUsed": 125,
+    "discountCodesRevenue": 0,
+    "discountCodesUsed": 0,
+    "engagement": 357,
+    "impressions": 234,
+    "revenueUplift": 65,
+    "ticketsConversionRate": 49.681528662420384,
+    "ticketsConverted": 78,
+    "ticketsCreated": 157,
+    "ticketsCreationRate": 67.09401709401709,
+    "ticketsRevenue": 1234,
+    "totalConversionRate": 7,
+    "totalRevenue": 12345,
+    "traffic": 1234,
+    "uniqueConversions": 125,
+    "uniqueImpressions": 34,
+  },
+  "campaign2": {
+    "clickThroughRate": 11,
+    "clicks": 57,
+    "clicksConversionRate": 435.08771929824564,
+    "clicksConverted": 248,
+    "clicksRate": 21,
+    "clicksRevenue": 3596,
+    "discountCodeRevenue": 4567,
+    "discountCodeUsed": 125,
+    "discountCodesRevenue": 0,
+    "discountCodesUsed": 0,
+    "engagement": 1357,
+    "impressions": 567,
+    "revenueUplift": 65,
+    "ticketsConversionRate": 21.84873949579832,
+    "ticketsConverted": 78,
+    "ticketsCreated": 357,
+    "ticketsCreationRate": 62.96296296296296,
+    "ticketsRevenue": 1234,
+    "totalConversionRate": 9,
+    "totalRevenue": 12345,
+    "traffic": 4567,
+    "uniqueConversions": 358,
+    "uniqueImpressions": 67,
+  },
+}
+`;
+
+exports[`Revenue Attribution Service stats methods getGMVUplift should return prepared data for chart 1`] = `
+[
+  {
+    "createdDatetime": "2023-02-28T00:00:00.000",
+    "granularityUnit": "day",
+    "granularityValue": "2023-02-28T00:00:00.000",
+    "influencedRevenueUplift": "43.32",
+  },
+]
+`;
+
+exports[`Revenue Attribution Service stats methods getTotals should return prepared data for totals section 1`] = `
+{
+  "engagement": "100",
+  "gmv": "3000",
+  "impressions": "1000",
+  "influencedRevenueUplift": "23.45",
+  "revenue": "2000",
+  "uniqueConversions": "10",
+}
+`;
