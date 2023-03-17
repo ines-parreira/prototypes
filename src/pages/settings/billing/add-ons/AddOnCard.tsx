@@ -3,7 +3,7 @@ import {Card, CardBody, CardTitle} from 'reactstrap'
 import classnames from 'classnames'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {ProductType, SMSPrice, VoicePrice} from 'models/billing/types'
+import {ProductType, SMSOrVoicePrice} from 'models/billing/types'
 import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import CurrentPlanBadge from 'pages/settings/billing/plans/CurrentPlanBadge'
@@ -24,19 +24,13 @@ const title = {
 }
 
 type Props = {
-    addOnPrice?: SMSPrice | VoicePrice
+    addOnPrice?: SMSOrVoicePrice
     headerPriceAmount?: number
     className?: string
     name: ProductType.Voice | ProductType.SMS
     pricingDetailsLink: string
     nonSubscriberDescription: ReactNode
 }
-
-const isVoicePrice = (price: SMSPrice | VoicePrice): price is VoicePrice =>
-    price.internal_id.startsWith('voc-')
-
-const isSMSPrice = (price: SMSPrice | VoicePrice): price is SMSPrice =>
-    price.internal_id.startsWith('sms-')
 
 const TrialPricesInternalIds = new Set([
     'voc-addon-00-monthly-usd-4',
@@ -75,14 +69,7 @@ const AddOnCard = ({
         [addOnPrice]
     )
 
-    const extraTicketCost =
-        isTrialPrice && addOnPrice
-            ? isSMSPrice(addOnPrice)
-                ? addOnPrice.sms_extra_ticket_cost
-                : isVoicePrice(addOnPrice)
-                ? addOnPrice.voice_extra_ticket_cost
-                : undefined
-            : undefined
+    const extraTicketCost = isTrialPrice && addOnPrice?.extra_ticket_cost
 
     const hasAddOn = useMemo(
         () => !!addOnPrice && !isTrialPrice && !isFreePrice,
@@ -117,7 +104,7 @@ const AddOnCard = ({
                             <CurrentPlanBadge className={css.badge} />
                             <div className={css.title}>
                                 {`${new Intl.NumberFormat('en-US').format(
-                                    addOnPrice!.included_tickets
+                                    addOnPrice!.num_quota_tickets
                                 )} ${title[name]} Tickets`}
                             </div>
                         </>

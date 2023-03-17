@@ -202,9 +202,9 @@ export const getPlanCardFeaturesForPrices = (
                 icon: <PlanFeatureMaterialIcon icon="playlist_add_check" />,
                 label: (
                     <BillableTicketsLabel
-                        costPerTicket={helpdeskPrice.cost_per_ticket}
+                        costPerTicket={helpdeskPrice.extra_ticket_cost}
                         currency={helpdeskPrice.currency}
-                        freeTickets={helpdeskPrice.free_tickets}
+                        freeTickets={helpdeskPrice.num_quota_tickets}
                     />
                 ),
             },

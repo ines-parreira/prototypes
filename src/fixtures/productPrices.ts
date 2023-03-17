@@ -7,8 +7,7 @@ import {
     PlanInterval,
     Product,
     ProductType,
-    SMSPrice,
-    VoicePrice,
+    SMSOrVoicePrice,
 } from 'models/billing/types'
 
 export const basicHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
@@ -208,10 +207,10 @@ export const starterHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
 export const basicMonthlyHelpdeskPrice: HelpdeskPrice = {
     addons: ['price_1LJBjXI9qXomtXqSSX34F3we'],
     amount: 6000,
-    cost_per_ticket: 0.4,
+    extra_ticket_cost: 0.4,
     currency: 'usd',
     features: basicHelpdeskPriceFeatures,
-    free_tickets: 300,
+    num_quota_tickets: 300,
     integrations: 150,
     interval: PlanInterval.Month,
     is_legacy: false,
@@ -243,10 +242,10 @@ export const basicMonthlyHelpdeskPrice: HelpdeskPrice = {
 export const basicYearlyHelpdeskPrice: HelpdeskPrice = {
     addons: ['price_1LJBjZI9qXomtXqSPNgkEZpl'],
     amount: 60000,
-    cost_per_ticket: 0.4,
+    extra_ticket_cost: 0.4,
     currency: 'usd',
     features: basicHelpdeskPriceFeatures,
-    free_tickets: 3600,
+    num_quota_tickets: 3600,
     integrations: 150,
     interval: PlanInterval.Year,
     is_legacy: false,
@@ -278,10 +277,10 @@ export const basicYearlyHelpdeskPrice: HelpdeskPrice = {
 export const proMonthlyHelpdeskPrice: HelpdeskPrice = {
     addons: ['price_1LJBjbI9qXomtXqS2sfi1J7P'],
     amount: 36000,
-    cost_per_ticket: 0.36,
+    extra_ticket_cost: 0.36,
     currency: 'usd',
     features: proHelpdeskPriceFeatures,
-    free_tickets: 2000,
+    num_quota_tickets: 2000,
     integrations: 150,
     interval: PlanInterval.Month,
     is_legacy: false,
@@ -313,10 +312,10 @@ export const proMonthlyHelpdeskPrice: HelpdeskPrice = {
 export const proYearlyHelpdeskPrice: HelpdeskPrice = {
     addons: ['price_1LJBjdI9qXomtXqSlp9sh6iQ'],
     amount: 360000,
-    cost_per_ticket: 0.36,
+    extra_ticket_cost: 0.36,
     currency: 'usd',
     features: proHelpdeskPriceFeatures,
-    free_tickets: 24000,
+    num_quota_tickets: 24000,
     integrations: 150,
     interval: PlanInterval.Year,
     is_legacy: false,
@@ -348,10 +347,10 @@ export const proYearlyHelpdeskPrice: HelpdeskPrice = {
 export const advancedMonthlyHelpdeskPrice: HelpdeskPrice = {
     addons: ['price_1LJBjeI9qXomtXqSXRjmhPsL'],
     amount: 90000,
-    cost_per_ticket: 0.36,
+    extra_ticket_cost: 0.36,
     currency: 'usd',
     features: advancedHelpdeskPriceFeatures,
-    free_tickets: 5000,
+    num_quota_tickets: 5000,
     integrations: 150,
     interval: PlanInterval.Month,
     is_legacy: false,
@@ -383,10 +382,10 @@ export const advancedMonthlyHelpdeskPrice: HelpdeskPrice = {
 export const advancedYearlyHelpdeskPrice: HelpdeskPrice = {
     addons: ['price_1LJBjgI9qXomtXqSBZoBcg7G'],
     amount: 900000,
-    cost_per_ticket: 0.36,
+    extra_ticket_cost: 0.36,
     currency: 'usd',
     features: advancedHelpdeskPriceFeatures,
-    free_tickets: 60000,
+    num_quota_tickets: 60000,
     integrations: 150,
     interval: PlanInterval.Year,
     is_legacy: false,
@@ -417,7 +416,8 @@ export const advancedYearlyHelpdeskPrice: HelpdeskPrice = {
 
 export const basicMonthlyAutomationPrice: AutomationPrice = {
     amount: 3000,
-    additional_cost_per_ticket: 0.2,
+    extra_ticket_cost: 0.2,
+    num_quota_tickets: null,
     automation_addon_discount: 0,
     automation_addon_included: true,
     base_price_id: 'price_1LJBjWI9qXomtXqSPZn8LqlD',
@@ -434,7 +434,8 @@ export const basicMonthlyAutomationPrice: AutomationPrice = {
 
 export const basicYearlyAutomationPrice: AutomationPrice = {
     amount: 30000,
-    additional_cost_per_ticket: 0.2,
+    extra_ticket_cost: 0.2,
+    num_quota_tickets: null,
     automation_addon_discount: 0,
     automation_addon_included: true,
     base_price_id: 'price_1LJBjYI9qXomtXqSLEjOrpmV',
@@ -450,7 +451,8 @@ export const basicYearlyAutomationPrice: AutomationPrice = {
 }
 
 export const proMonthlyAutomationPrice: AutomationPrice = {
-    additional_cost_per_ticket: 0.18,
+    extra_ticket_cost: 0.18,
+    num_quota_tickets: null,
     amount: 18000,
     automation_addon_discount: 0,
     automation_addon_included: true,
@@ -467,7 +469,8 @@ export const proMonthlyAutomationPrice: AutomationPrice = {
 }
 
 export const proYearlyAutomationPrice: AutomationPrice = {
-    additional_cost_per_ticket: 0.18,
+    extra_ticket_cost: 0.18,
+    num_quota_tickets: null,
     amount: 180000,
     automation_addon_discount: 0,
     automation_addon_included: true,
@@ -484,7 +487,8 @@ export const proYearlyAutomationPrice: AutomationPrice = {
 }
 
 export const advancedMonthlyAutomationPrice: AutomationPrice = {
-    additional_cost_per_ticket: 0.18,
+    extra_ticket_cost: 0.18,
+    num_quota_tickets: null,
     amount: 45000,
     automation_addon_discount: 0,
     automation_addon_included: true,
@@ -501,7 +505,8 @@ export const advancedMonthlyAutomationPrice: AutomationPrice = {
 }
 
 export const advancedYearlyAutomationPrice: AutomationPrice = {
-    additional_cost_per_ticket: 0.18,
+    extra_ticket_cost: 0.18,
+    num_quota_tickets: null,
     amount: 450000,
     automation_addon_discount: 0,
     automation_addon_included: true,
@@ -520,11 +525,11 @@ export const advancedYearlyAutomationPrice: AutomationPrice = {
 export const legacyBasicHelpdeskPrice: HelpdeskPrice = {
     addons: ['price_1LJBlbI9qXomtXqSvvtgyZ1z'],
     amount: 6000,
-    cost_per_ticket: 0.06,
+    extra_ticket_cost: 0.06,
     currency: 'usd',
     features: basicHelpdeskPriceFeatures,
     legacy_automation_addon_features: legacyAutomationPriceFeatures,
-    free_tickets: 600,
+    num_quota_tickets: 600,
     integrations: 7,
     interval: PlanInterval.Month,
     is_legacy: true,
@@ -553,7 +558,8 @@ export const legacyBasicHelpdeskPrice: HelpdeskPrice = {
 }
 
 export const legacyBasicAutomationPrice: AutomationPrice = {
-    additional_cost_per_ticket: 0,
+    extra_ticket_cost: 0,
+    num_quota_tickets: null,
     amount: 1500,
     automation_addon_discount: 0.5,
     automation_addon_included: true,
@@ -571,11 +577,11 @@ export const legacyBasicAutomationPrice: AutomationPrice = {
 export const customHelpdeskPrice: HelpdeskPrice = {
     addons: ['price_1LJBjiI9qXomtXqSvQBcRw5V'],
     amount: 160000,
-    cost_per_ticket: 0.32,
+    extra_ticket_cost: 0.32,
     currency: 'usd',
     custom: true,
     features: customHelpdeskPriceFeatures,
-    free_tickets: 10000,
+    num_quota_tickets: 10000,
     integrations: 150,
     interval: PlanInterval.Month,
     is_legacy: false,
@@ -604,7 +610,8 @@ export const customHelpdeskPrice: HelpdeskPrice = {
 }
 
 export const customAutomationPrice: AutomationPrice = {
-    additional_cost_per_ticket: 0.16,
+    extra_ticket_cost: 0.16,
+    num_quota_tickets: null,
     amount: 80000,
     automation_addon_discount: 0,
     automation_addon_included: true,
@@ -620,7 +627,8 @@ export const customAutomationPrice: AutomationPrice = {
 }
 
 export const basicDiscountedAutomationPrice: AutomationPrice = {
-    additional_cost_per_ticket: 0.1,
+    extra_ticket_cost: 0.1,
+    num_quota_tickets: null,
     amount: 1500,
     automation_addon_discount: 0.5,
     automation_addon_included: true,
@@ -638,10 +646,10 @@ export const basicDiscountedAutomationPrice: AutomationPrice = {
 
 export const starterHelpdeskPrice: HelpdeskPrice = {
     amount: 1000,
-    cost_per_ticket: 0.4,
+    extra_ticket_cost: 0.4,
     currency: 'usd',
     features: starterHelpdeskPriceFeatures,
-    free_tickets: 50,
+    num_quota_tickets: 50,
     integrations: 150,
     interval: PlanInterval.Month,
     is_legacy: false,
@@ -670,76 +678,76 @@ export const starterHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const voicePrice0: VoicePrice = {
+export const voicePrice0: SMSOrVoicePrice = {
     amount: 0,
     currency: 'usd',
-    included_tickets: 0,
+    num_quota_tickets: 0,
     internal_id: 'voc-addon-00-monthly-usd-4',
     interval: PlanInterval.Month,
     name: 'Voice Addon Trial Monthly',
     price_id: 'price_1LkClqI9qXomtXqSlgYCG6Wm',
     product_id: 'prod_MT6fyh00TCFRGZ',
-    voice_extra_ticket_cost: 2.4,
+    extra_ticket_cost: 2.4,
 }
 
-export const voicePrice1: VoicePrice = {
+export const voicePrice1: SMSOrVoicePrice = {
     amount: 175,
     currency: 'usd',
-    included_tickets: 250,
+    num_quota_tickets: 250,
     internal_id: 'voc-addon-04-monthly-usd-4',
     interval: PlanInterval.Month,
     name: 'Voice Addon 250 Monthly',
     price_id: 'price_1LkAzlI9qXomtXqSxOOrhzcU',
     product_id: 'prod_MT6fyh00TCFRGZ',
-    voice_extra_ticket_cost: 1.4,
+    extra_ticket_cost: 1.4,
 }
 
-const voicePrice2: VoicePrice = {
+const voicePrice2: SMSOrVoicePrice = {
     amount: 1750,
     currency: 'usd',
-    included_tickets: 7500,
+    num_quota_tickets: 7500,
     internal_id: 'voc-addon-10-monthly-usd-4',
     interval: PlanInterval.Month,
     name: 'Voice Addon 7500 Monthly',
     price_id: 'price_1LkB44I9qXomtXqS4aF9ibna',
     product_id: 'prod_MT6fyh00TCFRGZ',
-    voice_extra_ticket_cost: 0.47,
+    extra_ticket_cost: 0.47,
 }
 
-export const smsPrice1: SMSPrice = {
+export const smsPrice1: SMSOrVoicePrice = {
     amount: 90,
     currency: 'usd',
-    included_tickets: 150,
+    num_quota_tickets: 150,
     internal_id: 'sms-addon-03-monthly-usd-4',
     interval: PlanInterval.Month,
     name: 'SMS Addon 150 Monthly',
     price_id: 'price_1LkBzKI9qXomtXqSEXrSV8o4',
     product_id: 'prod_MT8Fzk7vmcT73m',
-    sms_extra_ticket_cost: 1.2,
+    extra_ticket_cost: 1.2,
 }
 
-const smsPrice2: SMSPrice = {
+const smsPrice2: SMSOrVoicePrice = {
     amount: 5768,
     currency: 'usd',
-    included_tickets: 15000,
+    num_quota_tickets: 15000,
     internal_id: 'sms-addon-12-monthly-usd-4',
     interval: PlanInterval.Month,
     name: 'SMS Addon 15000 Monthly',
     price_id: 'price_1LkBzLI9qXomtXqSgzXlOnP4',
     product_id: 'prod_MT8Fzk7vmcT73m',
-    sms_extra_ticket_cost: 0.77,
+    extra_ticket_cost: 0.77,
 }
 
-export const smsPrice0: SMSPrice = {
+export const smsPrice0: SMSOrVoicePrice = {
     amount: 0,
     currency: 'usd',
-    included_tickets: 0,
+    num_quota_tickets: 0,
     internal_id: 'sms-addon-00-monthly-usd-4',
     interval: PlanInterval.Month,
     name: 'SMS Addon Trial Monthly',
     price_id: 'price_1M6V7uI9qXomtXqSpsoVQWUw',
     product_id: 'prod_MT8Fzk7vmcT73m',
-    sms_extra_ticket_cost: 1.6,
+    extra_ticket_cost: 1.6,
 }
 
 export const HELPDESK_PRODUCT_ID = 'prod_LsH6kV35G6zKWo'
@@ -773,18 +781,18 @@ export const automationProduct: Product<AutomationPrice> = {
     ],
 }
 
-export const voiceProduct: Product<VoicePrice> = {
+export const voiceProduct: Product<SMSOrVoicePrice> = {
     id: VOICE_PRODUCT_ID,
     type: ProductType.Voice,
     prices: [voicePrice1, voicePrice2, voicePrice0],
 }
 
-export const smsProduct: Product<SMSPrice> = {
+export const smsProduct: Product<SMSOrVoicePrice> = {
     id: SMS_PRODUCT_ID,
     type: ProductType.SMS,
     prices: [smsPrice1, smsPrice2, smsPrice0],
 }
 
 export const products: Product<
-    HelpdeskPrice | AutomationPrice | SMSPrice | VoicePrice
+    HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
 >[] = [helpdeskProduct, automationProduct, smsProduct, voiceProduct]

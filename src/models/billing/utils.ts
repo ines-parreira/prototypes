@@ -5,8 +5,7 @@ import {
     AutomationPrice,
     HelpdeskPrice,
     PlanInterval,
-    SMSPrice,
-    VoicePrice,
+    SMSOrVoicePrice,
 } from 'models/billing/types'
 
 export const PLAN_NAME_TO_BADGE_COLOR: Record<string, ColorType> = {
@@ -27,7 +26,7 @@ export const getFullPrice = (discounted_amount: number, discount: number) => {
 }
 
 export function isHelpdeskPrice(
-    price: HelpdeskPrice | AutomationPrice | VoicePrice | SMSPrice
+    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
 ): price is HelpdeskPrice {
     return 'public' in price
 }
@@ -37,7 +36,7 @@ export function getFormattedAmount(amountInCents: number) {
 }
 
 export const getCheapestPrice = (
-    prices?: (VoicePrice | SMSPrice)[],
+    prices?: SMSOrVoicePrice[],
     interval?: PlanInterval
 ) =>
     !!prices

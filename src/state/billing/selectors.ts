@@ -14,8 +14,7 @@ import {
     HelpdeskPrice,
     Product,
     ProductType,
-    SMSPrice,
-    VoicePrice,
+    SMSOrVoicePrice,
 } from 'models/billing/types'
 import {
     AccountFeature,
@@ -62,14 +61,14 @@ export const getAutomationProduct = createSelector(getProducts, (products) => {
 
 export const getVoiceProduct = createSelector(getProducts, (products) => {
     return products.find(
-        (product): product is Product<VoicePrice> =>
+        (product): product is Product<SMSOrVoicePrice> =>
             product.type === ProductType.Voice
     )
 })
 
 export const getSMSProduct = createSelector(getProducts, (products) => {
     return products.find(
-        (product): product is Product<SMSPrice> =>
+        (product): product is Product<SMSOrVoicePrice> =>
             product.type === ProductType.SMS
     )
 })
@@ -94,8 +93,8 @@ export const getCurrentProducts = createSelector(
         const currentProducts: {
             [ProductType.Helpdesk]: HelpdeskPrice
             [ProductType.Automation]?: AutomationPrice
-            [ProductType.Voice]?: VoicePrice
-            [ProductType.SMS]?: SMSPrice
+            [ProductType.Voice]?: SMSOrVoicePrice
+            [ProductType.SMS]?: SMSOrVoicePrice
         } = {} as any
         Object.entries(currentSubscriptionProducts).forEach(
             ([productId, priceId]) => {
@@ -185,7 +184,7 @@ export const getCurrentHelpdeskCurrency = createSelector(
 
 export const getCurrentHelpdeskFreeTickets = createSelector(
     getCurrentHelpdeskProduct,
-    (currentHelpdeskProduct) => currentHelpdeskProduct?.free_tickets || 0
+    (currentHelpdeskProduct) => currentHelpdeskProduct?.num_quota_tickets || 0
 )
 
 export const getCurrentHelpdeskInterval = createSelector(
@@ -229,7 +228,7 @@ export const makeHasFeature = createSelector(
 
 export const getPrices = createSelector(getProducts, (products) =>
     products
-        .reduce<Array<HelpdeskPrice | AutomationPrice | VoicePrice | SMSPrice>>(
+        .reduce<Array<HelpdeskPrice | AutomationPrice | SMSOrVoicePrice>>(
             (acc, product) => acc.concat(product.prices),
             []
         )
@@ -247,7 +246,7 @@ export const getAutomationPrices = createSelector(
 
 export const getPricesMap = createSelector(getProducts, (products) =>
     products.reduce<
-        Record<string, HelpdeskPrice | AutomationPrice | VoicePrice | SMSPrice>
+        Record<string, HelpdeskPrice | AutomationPrice | SMSOrVoicePrice>
     >((acc, product) => {
         product.prices.map((price) => {
             acc[price.price_id] = price

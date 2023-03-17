@@ -21,7 +21,7 @@ export enum ProductType {
     SMS = 'sms',
 }
 
-export type Price = HelpdeskPrice | AutomationPrice | VoicePrice | SMSPrice
+export type Price = HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
 
 export type Product<T = Price> = {
     id: string
@@ -29,10 +29,8 @@ export type Product<T = Price> = {
         ? ProductType.Helpdesk
         : T extends AutomationPrice
         ? ProductType.Automation
-        : T extends VoicePrice
-        ? ProductType.Voice
-        : T extends SMSPrice
-        ? ProductType.SMS
+        : T extends SMSOrVoicePrice
+        ? ProductType.Voice | ProductType.SMS
         : never
     prices: T[]
 }
@@ -40,6 +38,7 @@ export type Product<T = Price> = {
 type BasePrice = {
     amount: number
     currency: string
+    extra_ticket_cost: number
     internal_id: string
     interval: PlanInterval
     legacy_id: string
@@ -55,9 +54,8 @@ export type HelpdeskPriceFeatures = Record<
 >
 
 export type HelpdeskPrice = BasePrice & {
+    num_quota_tickets: number
     addons?: string[]
-    cost_per_ticket: number
-    free_tickets: number
     integrations: number
     is_legacy: boolean
     features: HelpdeskPriceFeatures
@@ -89,17 +87,11 @@ export type AutomationPrice = BasePrice & {
     automation_addon_included?: boolean
     base_price_id: string
     features: AutomationPriceFeatures
-    additional_cost_per_ticket: number
+    num_quota_tickets: null
 }
 
-export type VoicePrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
-    included_tickets: number
-    voice_extra_ticket_cost: number
-}
-
-export type SMSPrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
-    included_tickets: number
-    sms_extra_ticket_cost: number
+export type SMSOrVoicePrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
+    num_quota_tickets: number
 }
 
 export type SubscriptionCycle = {

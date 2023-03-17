@@ -25,8 +25,8 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
           "price_1LJBjXI9qXomtXqSSX34F3we",
         ],
         "amount": 6000,
-        "cost_per_ticket": 0.4,
         "currency": "usd",
+        "extra_ticket_cost": 0.4,
         "features": {
           "api_1st_party_rate_limit": {
             "enabled": true,
@@ -114,7 +114,6 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
             "enabled": true,
           },
         },
-        "free_tickets": 300,
         "integrations": 150,
         "internal_id": "basic-monthly-usd-4",
         "interval": "month",
@@ -133,6 +132,7 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
           },
         },
         "name": "Basic",
+        "num_quota_tickets": 300,
         "order": 2,
         "phone_limits": {
           "billing": 50,
@@ -263,8 +263,8 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
           "price_1LJBjXI9qXomtXqSSX34F3we",
         ],
         "amount": 6000,
-        "cost_per_ticket": 0.4,
         "currency": "usd",
+        "extra_ticket_cost": 0.4,
         "features": {
           "api_1st_party_rate_limit": {
             "enabled": true,
@@ -352,7 +352,6 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
             "enabled": true,
           },
         },
-        "free_tickets": 300,
         "integrations": 150,
         "internal_id": "basic-monthly-usd-4",
         "interval": "month",
@@ -371,6 +370,7 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
           },
         },
         "name": "Basic",
+        "num_quota_tickets": 300,
         "order": 2,
         "phone_limits": {
           "billing": 50,

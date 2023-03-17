@@ -3,12 +3,12 @@
 exports[`billing selectors getAutomationPrices should return the automation prices 1`] = `
 [
   {
-    "additional_cost_per_ticket": 0.2,
     "amount": 3000,
     "automation_addon_discount": 0,
     "automation_addon_included": true,
     "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     "currency": "usd",
+    "extra_ticket_cost": 0.2,
     "features": {
       "automation_cancellations_flow": {
         "enabled": true,
@@ -33,17 +33,18 @@ exports[`billing selectors getAutomationPrices should return the automation pric
     "interval": "month",
     "legacy_id": "basic-automation-full-price-monthly-usd-4",
     "name": "Basic",
+    "num_quota_tickets": null,
     "order": 2,
     "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
     "product_id": "prod_LsHD5xmSqoFBBs",
   },
   {
-    "additional_cost_per_ticket": 0.18,
     "amount": 18000,
     "automation_addon_discount": 0,
     "automation_addon_included": true,
     "base_price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
     "currency": "usd",
+    "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
         "enabled": true,
@@ -68,17 +69,18 @@ exports[`billing selectors getAutomationPrices should return the automation pric
     "interval": "month",
     "legacy_id": "pro-automation-full-price-monthly-usd-4",
     "name": "Pro",
+    "num_quota_tickets": null,
     "order": 3,
     "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
     "product_id": "prod_LsHD5xmSqoFBBs",
   },
   {
-    "additional_cost_per_ticket": 0.2,
     "amount": 30000,
     "automation_addon_discount": 0,
     "automation_addon_included": true,
     "base_price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
     "currency": "usd",
+    "extra_ticket_cost": 0.2,
     "features": {
       "automation_cancellations_flow": {
         "enabled": true,
@@ -103,17 +105,18 @@ exports[`billing selectors getAutomationPrices should return the automation pric
     "interval": "year",
     "legacy_id": "basic-automation-full-price-yearly-usd-4",
     "name": "Basic",
+    "num_quota_tickets": null,
     "order": 2,
     "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
     "product_id": "prod_LsHD5xmSqoFBBs",
   },
   {
-    "additional_cost_per_ticket": 0.18,
     "amount": 45000,
     "automation_addon_discount": 0,
     "automation_addon_included": true,
     "base_price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
     "currency": "usd",
+    "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
         "enabled": true,
@@ -138,17 +141,18 @@ exports[`billing selectors getAutomationPrices should return the automation pric
     "interval": "month",
     "legacy_id": "advanced-automation-full-price-monthly-usd-4",
     "name": "Advanced",
+    "num_quota_tickets": null,
     "order": 4,
     "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
     "product_id": "prod_LsHD5xmSqoFBBs",
   },
   {
-    "additional_cost_per_ticket": 0.18,
     "amount": 180000,
     "automation_addon_discount": 0,
     "automation_addon_included": true,
     "base_price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
     "currency": "usd",
+    "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
         "enabled": true,
@@ -173,17 +177,18 @@ exports[`billing selectors getAutomationPrices should return the automation pric
     "interval": "year",
     "legacy_id": "pro-automation-full-price-yearly-usd-4",
     "name": "Pro",
+    "num_quota_tickets": null,
     "order": 3,
     "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
     "product_id": "prod_LsHD5xmSqoFBBs",
   },
   {
-    "additional_cost_per_ticket": 0.18,
     "amount": 450000,
     "automation_addon_discount": 0,
     "automation_addon_included": true,
     "base_price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
     "currency": "usd",
+    "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
         "enabled": true,
@@ -208,6 +213,7 @@ exports[`billing selectors getAutomationPrices should return the automation pric
     "interval": "year",
     "legacy_id": "advanced-automation-full-price-yearly-usd-4",
     "name": "Advanced",
+    "num_quota_tickets": null,
     "order": 4,
     "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
     "product_id": "prod_LsHD5xmSqoFBBs",
@@ -220,12 +226,12 @@ exports[`billing selectors getAutomationProduct should return the automation pro
   "id": "prod_LsHD5xmSqoFBBs",
   "prices": [
     {
-      "additional_cost_per_ticket": 0.2,
       "amount": 3000,
       "automation_addon_discount": 0,
       "automation_addon_included": true,
       "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
       "currency": "usd",
+      "extra_ticket_cost": 0.2,
       "features": {
         "automation_cancellations_flow": {
           "enabled": true,
@@ -250,17 +256,18 @@ exports[`billing selectors getAutomationProduct should return the automation pro
       "interval": "month",
       "legacy_id": "basic-automation-full-price-monthly-usd-4",
       "name": "Basic",
+      "num_quota_tickets": null,
       "order": 2,
       "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
       "product_id": "prod_LsHD5xmSqoFBBs",
     },
     {
-      "additional_cost_per_ticket": 0.2,
       "amount": 30000,
       "automation_addon_discount": 0,
       "automation_addon_included": true,
       "base_price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
       "currency": "usd",
+      "extra_ticket_cost": 0.2,
       "features": {
         "automation_cancellations_flow": {
           "enabled": true,
@@ -285,17 +292,18 @@ exports[`billing selectors getAutomationProduct should return the automation pro
       "interval": "year",
       "legacy_id": "basic-automation-full-price-yearly-usd-4",
       "name": "Basic",
+      "num_quota_tickets": null,
       "order": 2,
       "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
       "product_id": "prod_LsHD5xmSqoFBBs",
     },
     {
-      "additional_cost_per_ticket": 0.18,
       "amount": 18000,
       "automation_addon_discount": 0,
       "automation_addon_included": true,
       "base_price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
       "currency": "usd",
+      "extra_ticket_cost": 0.18,
       "features": {
         "automation_cancellations_flow": {
           "enabled": true,
@@ -320,17 +328,18 @@ exports[`billing selectors getAutomationProduct should return the automation pro
       "interval": "month",
       "legacy_id": "pro-automation-full-price-monthly-usd-4",
       "name": "Pro",
+      "num_quota_tickets": null,
       "order": 3,
       "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
       "product_id": "prod_LsHD5xmSqoFBBs",
     },
     {
-      "additional_cost_per_ticket": 0.18,
       "amount": 180000,
       "automation_addon_discount": 0,
       "automation_addon_included": true,
       "base_price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
       "currency": "usd",
+      "extra_ticket_cost": 0.18,
       "features": {
         "automation_cancellations_flow": {
           "enabled": true,
@@ -355,17 +364,18 @@ exports[`billing selectors getAutomationProduct should return the automation pro
       "interval": "year",
       "legacy_id": "pro-automation-full-price-yearly-usd-4",
       "name": "Pro",
+      "num_quota_tickets": null,
       "order": 3,
       "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
       "product_id": "prod_LsHD5xmSqoFBBs",
     },
     {
-      "additional_cost_per_ticket": 0.18,
       "amount": 45000,
       "automation_addon_discount": 0,
       "automation_addon_included": true,
       "base_price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
       "currency": "usd",
+      "extra_ticket_cost": 0.18,
       "features": {
         "automation_cancellations_flow": {
           "enabled": true,
@@ -390,17 +400,18 @@ exports[`billing selectors getAutomationProduct should return the automation pro
       "interval": "month",
       "legacy_id": "advanced-automation-full-price-monthly-usd-4",
       "name": "Advanced",
+      "num_quota_tickets": null,
       "order": 4,
       "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
       "product_id": "prod_LsHD5xmSqoFBBs",
     },
     {
-      "additional_cost_per_ticket": 0.18,
       "amount": 450000,
       "automation_addon_discount": 0,
       "automation_addon_included": true,
       "base_price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
       "currency": "usd",
+      "extra_ticket_cost": 0.18,
       "features": {
         "automation_cancellations_flow": {
           "enabled": true,
@@ -425,6 +436,7 @@ exports[`billing selectors getAutomationProduct should return the automation pro
       "interval": "year",
       "legacy_id": "advanced-automation-full-price-yearly-usd-4",
       "name": "Advanced",
+      "num_quota_tickets": null,
       "order": 4,
       "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
       "product_id": "prod_LsHD5xmSqoFBBs",
@@ -539,8 +551,8 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       "price_1LJBjXI9qXomtXqSSX34F3we",
     ],
     "amount": 6000,
-    "cost_per_ticket": 0.4,
     "currency": "usd",
+    "extra_ticket_cost": 0.4,
     "features": {
       "api_1st_party_rate_limit": {
         "enabled": true,
@@ -628,7 +640,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
         "enabled": true,
       },
     },
-    "free_tickets": 300,
     "integrations": 150,
     "internal_id": "basic-monthly-usd-4",
     "interval": "month",
@@ -647,6 +658,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       },
     },
     "name": "Basic",
+    "num_quota_tickets": 300,
     "order": 2,
     "phone_limits": {
       "billing": 50,
@@ -661,8 +673,8 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       "price_1LJBjbI9qXomtXqS2sfi1J7P",
     ],
     "amount": 36000,
-    "cost_per_ticket": 0.36,
     "currency": "usd",
+    "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
         "enabled": true,
@@ -750,7 +762,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
         "enabled": true,
       },
     },
-    "free_tickets": 2000,
     "integrations": 150,
     "internal_id": "pro-monthly-usd-4",
     "interval": "month",
@@ -769,6 +780,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       },
     },
     "name": "Pro",
+    "num_quota_tickets": 2000,
     "order": 3,
     "phone_limits": {
       "billing": 200,
@@ -783,8 +795,8 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       "price_1LJBjZI9qXomtXqSPNgkEZpl",
     ],
     "amount": 60000,
-    "cost_per_ticket": 0.4,
     "currency": "usd",
+    "extra_ticket_cost": 0.4,
     "features": {
       "api_1st_party_rate_limit": {
         "enabled": true,
@@ -872,7 +884,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
         "enabled": true,
       },
     },
-    "free_tickets": 3600,
     "integrations": 150,
     "internal_id": "basic-yearly-usd-4",
     "interval": "year",
@@ -891,6 +902,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       },
     },
     "name": "Basic",
+    "num_quota_tickets": 3600,
     "order": 2,
     "phone_limits": {
       "billing": 50,
@@ -905,8 +917,8 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       "price_1LJBjeI9qXomtXqSXRjmhPsL",
     ],
     "amount": 90000,
-    "cost_per_ticket": 0.36,
     "currency": "usd",
+    "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
         "enabled": true,
@@ -994,7 +1006,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
         "enabled": true,
       },
     },
-    "free_tickets": 5000,
     "integrations": 150,
     "internal_id": "advanced-monthly-usd-4",
     "interval": "month",
@@ -1013,6 +1024,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       },
     },
     "name": "Advanced",
+    "num_quota_tickets": 5000,
     "order": 4,
     "phone_limits": {
       "billing": 750,
@@ -1027,8 +1039,8 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       "price_1LJBjdI9qXomtXqSlp9sh6iQ",
     ],
     "amount": 360000,
-    "cost_per_ticket": 0.36,
     "currency": "usd",
+    "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
         "enabled": true,
@@ -1116,7 +1128,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
         "enabled": true,
       },
     },
-    "free_tickets": 24000,
     "integrations": 150,
     "internal_id": "pro-yearly-usd-4",
     "interval": "year",
@@ -1135,6 +1146,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       },
     },
     "name": "Pro",
+    "num_quota_tickets": 24000,
     "order": 3,
     "phone_limits": {
       "billing": 200,
@@ -1149,8 +1161,8 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       "price_1LJBjgI9qXomtXqSBZoBcg7G",
     ],
     "amount": 900000,
-    "cost_per_ticket": 0.36,
     "currency": "usd",
+    "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
         "enabled": true,
@@ -1238,7 +1250,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
         "enabled": true,
       },
     },
-    "free_tickets": 60000,
     "integrations": 150,
     "internal_id": "advanced-yearly-usd-4",
     "interval": "year",
@@ -1257,6 +1268,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       },
     },
     "name": "Advanced",
+    "num_quota_tickets": 60000,
     "order": 4,
     "phone_limits": {
       "billing": 750,
@@ -1278,8 +1290,8 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         "price_1LJBjXI9qXomtXqSSX34F3we",
       ],
       "amount": 6000,
-      "cost_per_ticket": 0.4,
       "currency": "usd",
+      "extra_ticket_cost": 0.4,
       "features": {
         "api_1st_party_rate_limit": {
           "enabled": true,
@@ -1367,7 +1379,6 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
           "enabled": true,
         },
       },
-      "free_tickets": 300,
       "integrations": 150,
       "internal_id": "basic-monthly-usd-4",
       "interval": "month",
@@ -1386,6 +1397,7 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         },
       },
       "name": "Basic",
+      "num_quota_tickets": 300,
       "order": 2,
       "phone_limits": {
         "billing": 50,
@@ -1400,8 +1412,8 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         "price_1LJBjZI9qXomtXqSPNgkEZpl",
       ],
       "amount": 60000,
-      "cost_per_ticket": 0.4,
       "currency": "usd",
+      "extra_ticket_cost": 0.4,
       "features": {
         "api_1st_party_rate_limit": {
           "enabled": true,
@@ -1489,7 +1501,6 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
           "enabled": true,
         },
       },
-      "free_tickets": 3600,
       "integrations": 150,
       "internal_id": "basic-yearly-usd-4",
       "interval": "year",
@@ -1508,6 +1519,7 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         },
       },
       "name": "Basic",
+      "num_quota_tickets": 3600,
       "order": 2,
       "phone_limits": {
         "billing": 50,
@@ -1522,8 +1534,8 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         "price_1LJBjbI9qXomtXqS2sfi1J7P",
       ],
       "amount": 36000,
-      "cost_per_ticket": 0.36,
       "currency": "usd",
+      "extra_ticket_cost": 0.36,
       "features": {
         "api_1st_party_rate_limit": {
           "enabled": true,
@@ -1611,7 +1623,6 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
           "enabled": true,
         },
       },
-      "free_tickets": 2000,
       "integrations": 150,
       "internal_id": "pro-monthly-usd-4",
       "interval": "month",
@@ -1630,6 +1641,7 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         },
       },
       "name": "Pro",
+      "num_quota_tickets": 2000,
       "order": 3,
       "phone_limits": {
         "billing": 200,
@@ -1644,8 +1656,8 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         "price_1LJBjdI9qXomtXqSlp9sh6iQ",
       ],
       "amount": 360000,
-      "cost_per_ticket": 0.36,
       "currency": "usd",
+      "extra_ticket_cost": 0.36,
       "features": {
         "api_1st_party_rate_limit": {
           "enabled": true,
@@ -1733,7 +1745,6 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
           "enabled": true,
         },
       },
-      "free_tickets": 24000,
       "integrations": 150,
       "internal_id": "pro-yearly-usd-4",
       "interval": "year",
@@ -1752,6 +1763,7 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         },
       },
       "name": "Pro",
+      "num_quota_tickets": 24000,
       "order": 3,
       "phone_limits": {
         "billing": 200,
@@ -1766,8 +1778,8 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         "price_1LJBjeI9qXomtXqSXRjmhPsL",
       ],
       "amount": 90000,
-      "cost_per_ticket": 0.36,
       "currency": "usd",
+      "extra_ticket_cost": 0.36,
       "features": {
         "api_1st_party_rate_limit": {
           "enabled": true,
@@ -1855,7 +1867,6 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
           "enabled": true,
         },
       },
-      "free_tickets": 5000,
       "integrations": 150,
       "internal_id": "advanced-monthly-usd-4",
       "interval": "month",
@@ -1874,6 +1885,7 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         },
       },
       "name": "Advanced",
+      "num_quota_tickets": 5000,
       "order": 4,
       "phone_limits": {
         "billing": 750,
@@ -1888,8 +1900,8 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         "price_1LJBjgI9qXomtXqSBZoBcg7G",
       ],
       "amount": 900000,
-      "cost_per_ticket": 0.36,
       "currency": "usd",
+      "extra_ticket_cost": 0.36,
       "features": {
         "api_1st_party_rate_limit": {
           "enabled": true,
@@ -1977,7 +1989,6 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
           "enabled": true,
         },
       },
-      "free_tickets": 60000,
       "integrations": 150,
       "internal_id": "advanced-yearly-usd-4",
       "interval": "year",
@@ -1996,6 +2007,7 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         },
       },
       "name": "Advanced",
+      "num_quota_tickets": 60000,
       "order": 4,
       "phone_limits": {
         "billing": 750,
@@ -2015,65 +2027,65 @@ exports[`billing selectors getPrices should return the prices 1`] = `
   {
     "amount": 0,
     "currency": "usd",
-    "included_tickets": 0,
+    "extra_ticket_cost": 1.6,
     "internal_id": "sms-addon-00-monthly-usd-4",
     "interval": "month",
     "name": "SMS Addon Trial Monthly",
+    "num_quota_tickets": 0,
     "price_id": "price_1M6V7uI9qXomtXqSpsoVQWUw",
     "product_id": "prod_MT8Fzk7vmcT73m",
-    "sms_extra_ticket_cost": 1.6,
   },
   {
     "amount": 0,
     "currency": "usd",
-    "included_tickets": 0,
+    "extra_ticket_cost": 2.4,
     "internal_id": "voc-addon-00-monthly-usd-4",
     "interval": "month",
     "name": "Voice Addon Trial Monthly",
+    "num_quota_tickets": 0,
     "price_id": "price_1LkClqI9qXomtXqSlgYCG6Wm",
     "product_id": "prod_MT6fyh00TCFRGZ",
-    "voice_extra_ticket_cost": 2.4,
   },
   {
     "amount": 90,
     "currency": "usd",
-    "included_tickets": 150,
+    "extra_ticket_cost": 1.2,
     "internal_id": "sms-addon-03-monthly-usd-4",
     "interval": "month",
     "name": "SMS Addon 150 Monthly",
+    "num_quota_tickets": 150,
     "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
     "product_id": "prod_MT8Fzk7vmcT73m",
-    "sms_extra_ticket_cost": 1.2,
   },
   {
     "amount": 175,
     "currency": "usd",
-    "included_tickets": 250,
+    "extra_ticket_cost": 1.4,
     "internal_id": "voc-addon-04-monthly-usd-4",
     "interval": "month",
     "name": "Voice Addon 250 Monthly",
+    "num_quota_tickets": 250,
     "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
     "product_id": "prod_MT6fyh00TCFRGZ",
-    "voice_extra_ticket_cost": 1.4,
   },
   {
     "amount": 1750,
     "currency": "usd",
-    "included_tickets": 7500,
+    "extra_ticket_cost": 0.47,
     "internal_id": "voc-addon-10-monthly-usd-4",
     "interval": "month",
     "name": "Voice Addon 7500 Monthly",
+    "num_quota_tickets": 7500,
     "price_id": "price_1LkB44I9qXomtXqS4aF9ibna",
     "product_id": "prod_MT6fyh00TCFRGZ",
-    "voice_extra_ticket_cost": 0.47,
   },
   {
-    "additional_cost_per_ticket": 0.2,
     "amount": 3000,
     "automation_addon_discount": 0,
     "automation_addon_included": true,
     "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     "currency": "usd",
+    "extra_ticket_cost": 0.2,
     "features": {
       "automation_cancellations_flow": {
         "enabled": true,
@@ -2098,6 +2110,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "interval": "month",
     "legacy_id": "basic-automation-full-price-monthly-usd-4",
     "name": "Basic",
+    "num_quota_tickets": null,
     "order": 2,
     "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
     "product_id": "prod_LsHD5xmSqoFBBs",
@@ -2105,21 +2118,21 @@ exports[`billing selectors getPrices should return the prices 1`] = `
   {
     "amount": 5768,
     "currency": "usd",
-    "included_tickets": 15000,
+    "extra_ticket_cost": 0.77,
     "internal_id": "sms-addon-12-monthly-usd-4",
     "interval": "month",
     "name": "SMS Addon 15000 Monthly",
+    "num_quota_tickets": 15000,
     "price_id": "price_1LkBzLI9qXomtXqSgzXlOnP4",
     "product_id": "prod_MT8Fzk7vmcT73m",
-    "sms_extra_ticket_cost": 0.77,
   },
   {
     "addons": [
       "price_1LJBjXI9qXomtXqSSX34F3we",
     ],
     "amount": 6000,
-    "cost_per_ticket": 0.4,
     "currency": "usd",
+    "extra_ticket_cost": 0.4,
     "features": {
       "api_1st_party_rate_limit": {
         "enabled": true,
@@ -2207,7 +2220,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
         "enabled": true,
       },
     },
-    "free_tickets": 300,
     "integrations": 150,
     "internal_id": "basic-monthly-usd-4",
     "interval": "month",
@@ -2226,6 +2238,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       },
     },
     "name": "Basic",
+    "num_quota_tickets": 300,
     "order": 2,
     "phone_limits": {
       "billing": 50,
@@ -2236,12 +2249,12 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "trial_period_days": 7,
   },
   {
-    "additional_cost_per_ticket": 0.18,
     "amount": 18000,
     "automation_addon_discount": 0,
     "automation_addon_included": true,
     "base_price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
     "currency": "usd",
+    "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
         "enabled": true,
@@ -2266,17 +2279,18 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "interval": "month",
     "legacy_id": "pro-automation-full-price-monthly-usd-4",
     "name": "Pro",
+    "num_quota_tickets": null,
     "order": 3,
     "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
     "product_id": "prod_LsHD5xmSqoFBBs",
   },
   {
-    "additional_cost_per_ticket": 0.2,
     "amount": 30000,
     "automation_addon_discount": 0,
     "automation_addon_included": true,
     "base_price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
     "currency": "usd",
+    "extra_ticket_cost": 0.2,
     "features": {
       "automation_cancellations_flow": {
         "enabled": true,
@@ -2301,6 +2315,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "interval": "year",
     "legacy_id": "basic-automation-full-price-yearly-usd-4",
     "name": "Basic",
+    "num_quota_tickets": null,
     "order": 2,
     "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
     "product_id": "prod_LsHD5xmSqoFBBs",
@@ -2310,8 +2325,8 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "price_1LJBjbI9qXomtXqS2sfi1J7P",
     ],
     "amount": 36000,
-    "cost_per_ticket": 0.36,
     "currency": "usd",
+    "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
         "enabled": true,
@@ -2399,7 +2414,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
         "enabled": true,
       },
     },
-    "free_tickets": 2000,
     "integrations": 150,
     "internal_id": "pro-monthly-usd-4",
     "interval": "month",
@@ -2418,6 +2432,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       },
     },
     "name": "Pro",
+    "num_quota_tickets": 2000,
     "order": 3,
     "phone_limits": {
       "billing": 200,
@@ -2428,12 +2443,12 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "trial_period_days": 7,
   },
   {
-    "additional_cost_per_ticket": 0.18,
     "amount": 45000,
     "automation_addon_discount": 0,
     "automation_addon_included": true,
     "base_price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
     "currency": "usd",
+    "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
         "enabled": true,
@@ -2458,6 +2473,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "interval": "month",
     "legacy_id": "advanced-automation-full-price-monthly-usd-4",
     "name": "Advanced",
+    "num_quota_tickets": null,
     "order": 4,
     "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
     "product_id": "prod_LsHD5xmSqoFBBs",
@@ -2467,8 +2483,8 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "price_1LJBjZI9qXomtXqSPNgkEZpl",
     ],
     "amount": 60000,
-    "cost_per_ticket": 0.4,
     "currency": "usd",
+    "extra_ticket_cost": 0.4,
     "features": {
       "api_1st_party_rate_limit": {
         "enabled": true,
@@ -2556,7 +2572,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
         "enabled": true,
       },
     },
-    "free_tickets": 3600,
     "integrations": 150,
     "internal_id": "basic-yearly-usd-4",
     "interval": "year",
@@ -2575,6 +2590,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       },
     },
     "name": "Basic",
+    "num_quota_tickets": 3600,
     "order": 2,
     "phone_limits": {
       "billing": 50,
@@ -2589,8 +2605,8 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "price_1LJBjeI9qXomtXqSXRjmhPsL",
     ],
     "amount": 90000,
-    "cost_per_ticket": 0.36,
     "currency": "usd",
+    "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
         "enabled": true,
@@ -2678,7 +2694,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
         "enabled": true,
       },
     },
-    "free_tickets": 5000,
     "integrations": 150,
     "internal_id": "advanced-monthly-usd-4",
     "interval": "month",
@@ -2697,6 +2712,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       },
     },
     "name": "Advanced",
+    "num_quota_tickets": 5000,
     "order": 4,
     "phone_limits": {
       "billing": 750,
@@ -2707,12 +2723,12 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "trial_period_days": 7,
   },
   {
-    "additional_cost_per_ticket": 0.18,
     "amount": 180000,
     "automation_addon_discount": 0,
     "automation_addon_included": true,
     "base_price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
     "currency": "usd",
+    "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
         "enabled": true,
@@ -2737,6 +2753,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "interval": "year",
     "legacy_id": "pro-automation-full-price-yearly-usd-4",
     "name": "Pro",
+    "num_quota_tickets": null,
     "order": 3,
     "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
     "product_id": "prod_LsHD5xmSqoFBBs",
@@ -2746,8 +2763,8 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "price_1LJBjdI9qXomtXqSlp9sh6iQ",
     ],
     "amount": 360000,
-    "cost_per_ticket": 0.36,
     "currency": "usd",
+    "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
         "enabled": true,
@@ -2835,7 +2852,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
         "enabled": true,
       },
     },
-    "free_tickets": 24000,
     "integrations": 150,
     "internal_id": "pro-yearly-usd-4",
     "interval": "year",
@@ -2854,6 +2870,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       },
     },
     "name": "Pro",
+    "num_quota_tickets": 24000,
     "order": 3,
     "phone_limits": {
       "billing": 200,
@@ -2864,12 +2881,12 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "trial_period_days": 7,
   },
   {
-    "additional_cost_per_ticket": 0.18,
     "amount": 450000,
     "automation_addon_discount": 0,
     "automation_addon_included": true,
     "base_price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
     "currency": "usd",
+    "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
         "enabled": true,
@@ -2894,6 +2911,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "interval": "year",
     "legacy_id": "advanced-automation-full-price-yearly-usd-4",
     "name": "Advanced",
+    "num_quota_tickets": null,
     "order": 4,
     "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
     "product_id": "prod_LsHD5xmSqoFBBs",
@@ -2903,8 +2921,8 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "price_1LJBjgI9qXomtXqSBZoBcg7G",
     ],
     "amount": 900000,
-    "cost_per_ticket": 0.36,
     "currency": "usd",
+    "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
         "enabled": true,
@@ -2992,7 +3010,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
         "enabled": true,
       },
     },
-    "free_tickets": 60000,
     "integrations": 150,
     "internal_id": "advanced-yearly-usd-4",
     "interval": "year",
@@ -3011,6 +3028,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       },
     },
     "name": "Advanced",
+    "num_quota_tickets": 60000,
     "order": 4,
     "phone_limits": {
       "billing": 750,
@@ -3033,8 +3051,8 @@ exports[`billing selectors getProducts should return products 1`] = `
           "price_1LJBjXI9qXomtXqSSX34F3we",
         ],
         "amount": 6000,
-        "cost_per_ticket": 0.4,
         "currency": "usd",
+        "extra_ticket_cost": 0.4,
         "features": {
           "api_1st_party_rate_limit": {
             "enabled": true,
@@ -3122,7 +3140,6 @@ exports[`billing selectors getProducts should return products 1`] = `
             "enabled": true,
           },
         },
-        "free_tickets": 300,
         "integrations": 150,
         "internal_id": "basic-monthly-usd-4",
         "interval": "month",
@@ -3141,6 +3158,7 @@ exports[`billing selectors getProducts should return products 1`] = `
           },
         },
         "name": "Basic",
+        "num_quota_tickets": 300,
         "order": 2,
         "phone_limits": {
           "billing": 50,
@@ -3155,8 +3173,8 @@ exports[`billing selectors getProducts should return products 1`] = `
           "price_1LJBjZI9qXomtXqSPNgkEZpl",
         ],
         "amount": 60000,
-        "cost_per_ticket": 0.4,
         "currency": "usd",
+        "extra_ticket_cost": 0.4,
         "features": {
           "api_1st_party_rate_limit": {
             "enabled": true,
@@ -3244,7 +3262,6 @@ exports[`billing selectors getProducts should return products 1`] = `
             "enabled": true,
           },
         },
-        "free_tickets": 3600,
         "integrations": 150,
         "internal_id": "basic-yearly-usd-4",
         "interval": "year",
@@ -3263,6 +3280,7 @@ exports[`billing selectors getProducts should return products 1`] = `
           },
         },
         "name": "Basic",
+        "num_quota_tickets": 3600,
         "order": 2,
         "phone_limits": {
           "billing": 50,
@@ -3277,8 +3295,8 @@ exports[`billing selectors getProducts should return products 1`] = `
           "price_1LJBjbI9qXomtXqS2sfi1J7P",
         ],
         "amount": 36000,
-        "cost_per_ticket": 0.36,
         "currency": "usd",
+        "extra_ticket_cost": 0.36,
         "features": {
           "api_1st_party_rate_limit": {
             "enabled": true,
@@ -3366,7 +3384,6 @@ exports[`billing selectors getProducts should return products 1`] = `
             "enabled": true,
           },
         },
-        "free_tickets": 2000,
         "integrations": 150,
         "internal_id": "pro-monthly-usd-4",
         "interval": "month",
@@ -3385,6 +3402,7 @@ exports[`billing selectors getProducts should return products 1`] = `
           },
         },
         "name": "Pro",
+        "num_quota_tickets": 2000,
         "order": 3,
         "phone_limits": {
           "billing": 200,
@@ -3399,8 +3417,8 @@ exports[`billing selectors getProducts should return products 1`] = `
           "price_1LJBjdI9qXomtXqSlp9sh6iQ",
         ],
         "amount": 360000,
-        "cost_per_ticket": 0.36,
         "currency": "usd",
+        "extra_ticket_cost": 0.36,
         "features": {
           "api_1st_party_rate_limit": {
             "enabled": true,
@@ -3488,7 +3506,6 @@ exports[`billing selectors getProducts should return products 1`] = `
             "enabled": true,
           },
         },
-        "free_tickets": 24000,
         "integrations": 150,
         "internal_id": "pro-yearly-usd-4",
         "interval": "year",
@@ -3507,6 +3524,7 @@ exports[`billing selectors getProducts should return products 1`] = `
           },
         },
         "name": "Pro",
+        "num_quota_tickets": 24000,
         "order": 3,
         "phone_limits": {
           "billing": 200,
@@ -3521,8 +3539,8 @@ exports[`billing selectors getProducts should return products 1`] = `
           "price_1LJBjeI9qXomtXqSXRjmhPsL",
         ],
         "amount": 90000,
-        "cost_per_ticket": 0.36,
         "currency": "usd",
+        "extra_ticket_cost": 0.36,
         "features": {
           "api_1st_party_rate_limit": {
             "enabled": true,
@@ -3610,7 +3628,6 @@ exports[`billing selectors getProducts should return products 1`] = `
             "enabled": true,
           },
         },
-        "free_tickets": 5000,
         "integrations": 150,
         "internal_id": "advanced-monthly-usd-4",
         "interval": "month",
@@ -3629,6 +3646,7 @@ exports[`billing selectors getProducts should return products 1`] = `
           },
         },
         "name": "Advanced",
+        "num_quota_tickets": 5000,
         "order": 4,
         "phone_limits": {
           "billing": 750,
@@ -3643,8 +3661,8 @@ exports[`billing selectors getProducts should return products 1`] = `
           "price_1LJBjgI9qXomtXqSBZoBcg7G",
         ],
         "amount": 900000,
-        "cost_per_ticket": 0.36,
         "currency": "usd",
+        "extra_ticket_cost": 0.36,
         "features": {
           "api_1st_party_rate_limit": {
             "enabled": true,
@@ -3732,7 +3750,6 @@ exports[`billing selectors getProducts should return products 1`] = `
             "enabled": true,
           },
         },
-        "free_tickets": 60000,
         "integrations": 150,
         "internal_id": "advanced-yearly-usd-4",
         "interval": "year",
@@ -3751,6 +3768,7 @@ exports[`billing selectors getProducts should return products 1`] = `
           },
         },
         "name": "Advanced",
+        "num_quota_tickets": 60000,
         "order": 4,
         "phone_limits": {
           "billing": 750,
@@ -3767,12 +3785,12 @@ exports[`billing selectors getProducts should return products 1`] = `
     "id": "prod_LsHD5xmSqoFBBs",
     "prices": [
       {
-        "additional_cost_per_ticket": 0.2,
         "amount": 3000,
         "automation_addon_discount": 0,
         "automation_addon_included": true,
         "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
         "currency": "usd",
+        "extra_ticket_cost": 0.2,
         "features": {
           "automation_cancellations_flow": {
             "enabled": true,
@@ -3797,17 +3815,18 @@ exports[`billing selectors getProducts should return products 1`] = `
         "interval": "month",
         "legacy_id": "basic-automation-full-price-monthly-usd-4",
         "name": "Basic",
+        "num_quota_tickets": null,
         "order": 2,
         "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
         "product_id": "prod_LsHD5xmSqoFBBs",
       },
       {
-        "additional_cost_per_ticket": 0.2,
         "amount": 30000,
         "automation_addon_discount": 0,
         "automation_addon_included": true,
         "base_price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
         "currency": "usd",
+        "extra_ticket_cost": 0.2,
         "features": {
           "automation_cancellations_flow": {
             "enabled": true,
@@ -3832,17 +3851,18 @@ exports[`billing selectors getProducts should return products 1`] = `
         "interval": "year",
         "legacy_id": "basic-automation-full-price-yearly-usd-4",
         "name": "Basic",
+        "num_quota_tickets": null,
         "order": 2,
         "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
         "product_id": "prod_LsHD5xmSqoFBBs",
       },
       {
-        "additional_cost_per_ticket": 0.18,
         "amount": 18000,
         "automation_addon_discount": 0,
         "automation_addon_included": true,
         "base_price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
         "currency": "usd",
+        "extra_ticket_cost": 0.18,
         "features": {
           "automation_cancellations_flow": {
             "enabled": true,
@@ -3867,17 +3887,18 @@ exports[`billing selectors getProducts should return products 1`] = `
         "interval": "month",
         "legacy_id": "pro-automation-full-price-monthly-usd-4",
         "name": "Pro",
+        "num_quota_tickets": null,
         "order": 3,
         "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
         "product_id": "prod_LsHD5xmSqoFBBs",
       },
       {
-        "additional_cost_per_ticket": 0.18,
         "amount": 180000,
         "automation_addon_discount": 0,
         "automation_addon_included": true,
         "base_price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
         "currency": "usd",
+        "extra_ticket_cost": 0.18,
         "features": {
           "automation_cancellations_flow": {
             "enabled": true,
@@ -3902,17 +3923,18 @@ exports[`billing selectors getProducts should return products 1`] = `
         "interval": "year",
         "legacy_id": "pro-automation-full-price-yearly-usd-4",
         "name": "Pro",
+        "num_quota_tickets": null,
         "order": 3,
         "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
         "product_id": "prod_LsHD5xmSqoFBBs",
       },
       {
-        "additional_cost_per_ticket": 0.18,
         "amount": 45000,
         "automation_addon_discount": 0,
         "automation_addon_included": true,
         "base_price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
         "currency": "usd",
+        "extra_ticket_cost": 0.18,
         "features": {
           "automation_cancellations_flow": {
             "enabled": true,
@@ -3937,17 +3959,18 @@ exports[`billing selectors getProducts should return products 1`] = `
         "interval": "month",
         "legacy_id": "advanced-automation-full-price-monthly-usd-4",
         "name": "Advanced",
+        "num_quota_tickets": null,
         "order": 4,
         "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
         "product_id": "prod_LsHD5xmSqoFBBs",
       },
       {
-        "additional_cost_per_ticket": 0.18,
         "amount": 450000,
         "automation_addon_discount": 0,
         "automation_addon_included": true,
         "base_price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
         "currency": "usd",
+        "extra_ticket_cost": 0.18,
         "features": {
           "automation_cancellations_flow": {
             "enabled": true,
@@ -3972,6 +3995,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "interval": "year",
         "legacy_id": "advanced-automation-full-price-yearly-usd-4",
         "name": "Advanced",
+        "num_quota_tickets": null,
         "order": 4,
         "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
         "product_id": "prod_LsHD5xmSqoFBBs",
@@ -3985,35 +4009,35 @@ exports[`billing selectors getProducts should return products 1`] = `
       {
         "amount": 90,
         "currency": "usd",
-        "included_tickets": 150,
+        "extra_ticket_cost": 1.2,
         "internal_id": "sms-addon-03-monthly-usd-4",
         "interval": "month",
         "name": "SMS Addon 150 Monthly",
+        "num_quota_tickets": 150,
         "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
         "product_id": "prod_MT8Fzk7vmcT73m",
-        "sms_extra_ticket_cost": 1.2,
       },
       {
         "amount": 5768,
         "currency": "usd",
-        "included_tickets": 15000,
+        "extra_ticket_cost": 0.77,
         "internal_id": "sms-addon-12-monthly-usd-4",
         "interval": "month",
         "name": "SMS Addon 15000 Monthly",
+        "num_quota_tickets": 15000,
         "price_id": "price_1LkBzLI9qXomtXqSgzXlOnP4",
         "product_id": "prod_MT8Fzk7vmcT73m",
-        "sms_extra_ticket_cost": 0.77,
       },
       {
         "amount": 0,
         "currency": "usd",
-        "included_tickets": 0,
+        "extra_ticket_cost": 1.6,
         "internal_id": "sms-addon-00-monthly-usd-4",
         "interval": "month",
         "name": "SMS Addon Trial Monthly",
+        "num_quota_tickets": 0,
         "price_id": "price_1M6V7uI9qXomtXqSpsoVQWUw",
         "product_id": "prod_MT8Fzk7vmcT73m",
-        "sms_extra_ticket_cost": 1.6,
       },
     ],
     "type": "sms",
@@ -4024,35 +4048,35 @@ exports[`billing selectors getProducts should return products 1`] = `
       {
         "amount": 175,
         "currency": "usd",
-        "included_tickets": 250,
+        "extra_ticket_cost": 1.4,
         "internal_id": "voc-addon-04-monthly-usd-4",
         "interval": "month",
         "name": "Voice Addon 250 Monthly",
+        "num_quota_tickets": 250,
         "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
         "product_id": "prod_MT6fyh00TCFRGZ",
-        "voice_extra_ticket_cost": 1.4,
       },
       {
         "amount": 1750,
         "currency": "usd",
-        "included_tickets": 7500,
+        "extra_ticket_cost": 0.47,
         "internal_id": "voc-addon-10-monthly-usd-4",
         "interval": "month",
         "name": "Voice Addon 7500 Monthly",
+        "num_quota_tickets": 7500,
         "price_id": "price_1LkB44I9qXomtXqS4aF9ibna",
         "product_id": "prod_MT6fyh00TCFRGZ",
-        "voice_extra_ticket_cost": 0.47,
       },
       {
         "amount": 0,
         "currency": "usd",
-        "included_tickets": 0,
+        "extra_ticket_cost": 2.4,
         "internal_id": "voc-addon-00-monthly-usd-4",
         "interval": "month",
         "name": "Voice Addon Trial Monthly",
+        "num_quota_tickets": 0,
         "price_id": "price_1LkClqI9qXomtXqSlgYCG6Wm",
         "product_id": "prod_MT6fyh00TCFRGZ",
-        "voice_extra_ticket_cost": 2.4,
       },
     ],
     "type": "voice",

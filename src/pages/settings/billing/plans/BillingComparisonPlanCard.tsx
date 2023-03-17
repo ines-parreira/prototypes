@@ -148,16 +148,18 @@ export default function BillingComparisonPlanCard({
     ) : isDowngrade ? (
         <>
             Note that your number of tickets will decrease from{' '}
-            <b>{currentHelpdeskPrice?.free_tickets}</b> to{' '}
-            <b>{helpdeskPrice.free_tickets}</b> and the extra ticket price will
-            change to{' '}
+            <b>{currentHelpdeskPrice?.num_quota_tickets}</b> to{' '}
+            <b>{helpdeskPrice.num_quota_tickets}</b> and the extra ticket price
+            will change to{' '}
             <b>
                 {new Intl.NumberFormat('en-US', {
                     style: 'currency',
                     currency: helpdeskPrice.currency,
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
-                }).format(helpdeskPrice.cost_per_ticket * costMultiplier)}{' '}
+                }).format(
+                    helpdeskPrice.extra_ticket_cost * costMultiplier
+                )}{' '}
                 per extra {costMultiplier} tickets
             </b>
             .

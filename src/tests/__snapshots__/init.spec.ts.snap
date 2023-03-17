@@ -118,8 +118,8 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
         "type": "helpdesk",
         "prices": Immutable.List [
           Immutable.Map {
-            "cost_per_ticket": 0.4,
             "interval": "month",
+            "num_quota_tickets": 300,
             "phone_limits": Immutable.Map {
               "billing": 50,
             },
@@ -130,11 +130,11 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             "order": 2,
             "currency": "usd",
             "legacy_id": "basic-monthly-usd-4",
+            "extra_ticket_cost": 0.4,
             "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
             "addons": Immutable.List [
               "price_1LJBjXI9qXomtXqSSX34F3we",
             ],
-            "free_tickets": 300,
             "limits": Immutable.Map {
               "messages": Immutable.Map {
                 "default": 100,
@@ -240,8 +240,8 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             "integrations": 150,
           },
           Immutable.Map {
-            "cost_per_ticket": 0.4,
             "interval": "year",
+            "num_quota_tickets": 3600,
             "phone_limits": Immutable.Map {
               "billing": 50,
             },
@@ -252,11 +252,11 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             "order": 2,
             "currency": "usd",
             "legacy_id": "basic-yearly-usd-4",
+            "extra_ticket_cost": 0.4,
             "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
             "addons": Immutable.List [
               "price_1LJBjZI9qXomtXqSPNgkEZpl",
             ],
-            "free_tickets": 3600,
             "limits": Immutable.Map {
               "messages": Immutable.Map {
                 "default": 100,
@@ -362,8 +362,8 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             "integrations": 150,
           },
           Immutable.Map {
-            "cost_per_ticket": 0.36,
             "interval": "month",
+            "num_quota_tickets": 2000,
             "phone_limits": Immutable.Map {
               "billing": 200,
             },
@@ -374,11 +374,11 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             "order": 3,
             "currency": "usd",
             "legacy_id": "pro-monthly-usd-4",
+            "extra_ticket_cost": 0.36,
             "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
             "addons": Immutable.List [
               "price_1LJBjbI9qXomtXqS2sfi1J7P",
             ],
-            "free_tickets": 2000,
             "limits": Immutable.Map {
               "messages": Immutable.Map {
                 "default": 100,
@@ -484,8 +484,8 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             "integrations": 150,
           },
           Immutable.Map {
-            "cost_per_ticket": 0.36,
             "interval": "year",
+            "num_quota_tickets": 24000,
             "phone_limits": Immutable.Map {
               "billing": 200,
             },
@@ -496,11 +496,11 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             "order": 3,
             "currency": "usd",
             "legacy_id": "pro-yearly-usd-4",
+            "extra_ticket_cost": 0.36,
             "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
             "addons": Immutable.List [
               "price_1LJBjdI9qXomtXqSlp9sh6iQ",
             ],
-            "free_tickets": 24000,
             "limits": Immutable.Map {
               "messages": Immutable.Map {
                 "default": 100,
@@ -606,8 +606,8 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             "integrations": 150,
           },
           Immutable.Map {
-            "cost_per_ticket": 0.36,
             "interval": "month",
+            "num_quota_tickets": 5000,
             "phone_limits": Immutable.Map {
               "billing": 750,
             },
@@ -618,11 +618,11 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             "order": 4,
             "currency": "usd",
             "legacy_id": "advanced-monthly-usd-4",
+            "extra_ticket_cost": 0.36,
             "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
             "addons": Immutable.List [
               "price_1LJBjeI9qXomtXqSXRjmhPsL",
             ],
-            "free_tickets": 5000,
             "limits": Immutable.Map {
               "messages": Immutable.Map {
                 "default": 100,
@@ -728,8 +728,8 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             "integrations": 150,
           },
           Immutable.Map {
-            "cost_per_ticket": 0.36,
             "interval": "year",
+            "num_quota_tickets": 60000,
             "phone_limits": Immutable.Map {
               "billing": 750,
             },
@@ -740,11 +740,11 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
             "order": 4,
             "currency": "usd",
             "legacy_id": "advanced-yearly-usd-4",
+            "extra_ticket_cost": 0.36,
             "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
             "addons": Immutable.List [
               "price_1LJBjgI9qXomtXqSBZoBcg7G",
             ],
-            "free_tickets": 60000,
             "limits": Immutable.Map {
               "messages": Immutable.Map {
                 "default": 100,
@@ -858,13 +858,14 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
           Immutable.Map {
             "automation_addon_included": true,
             "interval": "month",
-            "additional_cost_per_ticket": 0.2,
+            "num_quota_tickets": null,
             "automation_addon_discount": 0,
             "product_id": "prod_LsHD5xmSqoFBBs",
             "name": "Basic",
             "order": 2,
             "currency": "usd",
             "legacy_id": "basic-automation-full-price-monthly-usd-4",
+            "extra_ticket_cost": 0.2,
             "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
             "amount": 3000,
             "features": Immutable.Map {
@@ -893,13 +894,14 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
           Immutable.Map {
             "automation_addon_included": true,
             "interval": "year",
-            "additional_cost_per_ticket": 0.2,
+            "num_quota_tickets": null,
             "automation_addon_discount": 0,
             "product_id": "prod_LsHD5xmSqoFBBs",
             "name": "Basic",
             "order": 2,
             "currency": "usd",
             "legacy_id": "basic-automation-full-price-yearly-usd-4",
+            "extra_ticket_cost": 0.2,
             "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
             "amount": 30000,
             "features": Immutable.Map {
@@ -928,13 +930,14 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
           Immutable.Map {
             "automation_addon_included": true,
             "interval": "month",
-            "additional_cost_per_ticket": 0.18,
+            "num_quota_tickets": null,
             "automation_addon_discount": 0,
             "product_id": "prod_LsHD5xmSqoFBBs",
             "name": "Pro",
             "order": 3,
             "currency": "usd",
             "legacy_id": "pro-automation-full-price-monthly-usd-4",
+            "extra_ticket_cost": 0.18,
             "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
             "amount": 18000,
             "features": Immutable.Map {
@@ -963,13 +966,14 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
           Immutable.Map {
             "automation_addon_included": true,
             "interval": "year",
-            "additional_cost_per_ticket": 0.18,
+            "num_quota_tickets": null,
             "automation_addon_discount": 0,
             "product_id": "prod_LsHD5xmSqoFBBs",
             "name": "Pro",
             "order": 3,
             "currency": "usd",
             "legacy_id": "pro-automation-full-price-yearly-usd-4",
+            "extra_ticket_cost": 0.18,
             "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
             "amount": 180000,
             "features": Immutable.Map {
@@ -998,13 +1002,14 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
           Immutable.Map {
             "automation_addon_included": true,
             "interval": "month",
-            "additional_cost_per_ticket": 0.18,
+            "num_quota_tickets": null,
             "automation_addon_discount": 0,
             "product_id": "prod_LsHD5xmSqoFBBs",
             "name": "Advanced",
             "order": 4,
             "currency": "usd",
             "legacy_id": "advanced-automation-full-price-monthly-usd-4",
+            "extra_ticket_cost": 0.18,
             "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
             "amount": 45000,
             "features": Immutable.Map {
@@ -1033,13 +1038,14 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
           Immutable.Map {
             "automation_addon_included": true,
             "interval": "year",
-            "additional_cost_per_ticket": 0.18,
+            "num_quota_tickets": null,
             "automation_addon_discount": 0,
             "product_id": "prod_LsHD5xmSqoFBBs",
             "name": "Advanced",
             "order": 4,
             "currency": "usd",
             "legacy_id": "advanced-automation-full-price-yearly-usd-4",
+            "extra_ticket_cost": 0.18,
             "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
             "amount": 450000,
             "features": Immutable.Map {
@@ -1072,34 +1078,34 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
         "type": "sms",
         "prices": Immutable.List [
           Immutable.Map {
-            "included_tickets": 150,
             "interval": "month",
-            "sms_extra_ticket_cost": 1.2,
+            "num_quota_tickets": 150,
             "product_id": "prod_MT8Fzk7vmcT73m",
             "name": "SMS Addon 150 Monthly",
             "currency": "usd",
+            "extra_ticket_cost": 1.2,
             "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
             "amount": 90,
             "internal_id": "sms-addon-03-monthly-usd-4",
           },
           Immutable.Map {
-            "included_tickets": 15000,
             "interval": "month",
-            "sms_extra_ticket_cost": 0.77,
+            "num_quota_tickets": 15000,
             "product_id": "prod_MT8Fzk7vmcT73m",
             "name": "SMS Addon 15000 Monthly",
             "currency": "usd",
+            "extra_ticket_cost": 0.77,
             "price_id": "price_1LkBzLI9qXomtXqSgzXlOnP4",
             "amount": 5768,
             "internal_id": "sms-addon-12-monthly-usd-4",
           },
           Immutable.Map {
-            "included_tickets": 0,
             "interval": "month",
-            "sms_extra_ticket_cost": 1.6,
+            "num_quota_tickets": 0,
             "product_id": "prod_MT8Fzk7vmcT73m",
             "name": "SMS Addon Trial Monthly",
             "currency": "usd",
+            "extra_ticket_cost": 1.6,
             "price_id": "price_1M6V7uI9qXomtXqSpsoVQWUw",
             "amount": 0,
             "internal_id": "sms-addon-00-monthly-usd-4",
@@ -1111,34 +1117,34 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
         "type": "voice",
         "prices": Immutable.List [
           Immutable.Map {
-            "voice_extra_ticket_cost": 1.4,
-            "included_tickets": 250,
             "interval": "month",
+            "num_quota_tickets": 250,
             "product_id": "prod_MT6fyh00TCFRGZ",
             "name": "Voice Addon 250 Monthly",
             "currency": "usd",
+            "extra_ticket_cost": 1.4,
             "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
             "amount": 175,
             "internal_id": "voc-addon-04-monthly-usd-4",
           },
           Immutable.Map {
-            "voice_extra_ticket_cost": 0.47,
-            "included_tickets": 7500,
             "interval": "month",
+            "num_quota_tickets": 7500,
             "product_id": "prod_MT6fyh00TCFRGZ",
             "name": "Voice Addon 7500 Monthly",
             "currency": "usd",
+            "extra_ticket_cost": 0.47,
             "price_id": "price_1LkB44I9qXomtXqS4aF9ibna",
             "amount": 1750,
             "internal_id": "voc-addon-10-monthly-usd-4",
           },
           Immutable.Map {
-            "voice_extra_ticket_cost": 2.4,
-            "included_tickets": 0,
             "interval": "month",
+            "num_quota_tickets": 0,
             "product_id": "prod_MT6fyh00TCFRGZ",
             "name": "Voice Addon Trial Monthly",
             "currency": "usd",
+            "extra_ticket_cost": 2.4,
             "price_id": "price_1LkClqI9qXomtXqSlgYCG6Wm",
             "amount": 0,
             "internal_id": "voc-addon-00-monthly-usd-4",
