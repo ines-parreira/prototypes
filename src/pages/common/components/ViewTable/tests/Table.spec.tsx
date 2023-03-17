@@ -263,7 +263,9 @@ describe('<Table />', () => {
                 direction,
                 null,
                 null,
-                mockSearchRank
+                mockSearchRank,
+                undefined,
+                undefined
             )
         }
     )
@@ -294,7 +296,9 @@ describe('<Table />', () => {
                 direction,
                 null,
                 null,
-                mockSearchRank
+                mockSearchRank,
+                undefined,
+                undefined
             )
         }
     )

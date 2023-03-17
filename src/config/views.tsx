@@ -93,7 +93,7 @@ export const views = fromJS([
         api: 'tickets', // api endpoint for this object
         singular: 'ticket', // singular version for sentences
         plural: 'tickets', // plural version for sentences
-        mainField: 'details', // mandatory field (+ where are displayed bulk actions)
+        mainField: ViewField.Details, // mandatory field (+ where are displayed bulk actions)
         fields: [
             {
                 name: ViewField.Details,
@@ -415,7 +415,7 @@ export const views = fromJS([
         api: 'customers',
         singular: 'customer',
         plural: 'customers',
-        mainField: 'name',
+        mainField: ViewField.Name,
         fields: [
             {
                 name: ViewField.Name,

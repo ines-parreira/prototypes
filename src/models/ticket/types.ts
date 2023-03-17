@@ -15,7 +15,7 @@ import {Event} from '../event/types'
 
 export type TicketSearchOptions = ApiPaginationParams &
     OrderParams<TicketSearchSortableProperties> & {
-        search: string
+        search?: string
         filters?: string
         cancelToken?: CancelToken
     }

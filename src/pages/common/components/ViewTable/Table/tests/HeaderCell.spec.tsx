@@ -1,13 +1,32 @@
 import React from 'react'
-import {shallow} from 'enzyme'
-import {fromJS, Map, List} from 'immutable'
+import {Provider} from 'react-redux'
+import {fireEvent, render} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import {Map, List} from 'immutable'
 
-import * as viewsConfig from '../../../../../../config/views'
+import {views} from 'config/views'
+import {OrderDirection} from 'models/api/types'
+import {ViewField} from 'models/view/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {fetchViewItems, setOrderDirection} from 'state/views/actions'
+import {assumeMock} from 'utils/testing'
 
-import {HeaderCellContainer} from '../HeaderCell'
+import HeaderCell from '../HeaderCell'
+
+jest.mock('state/views/actions')
+const fetchViewItemsMock = assumeMock(fetchViewItems)
+const setOrderDirectionMock = assumeMock(setOrderDirection)
+
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+
+jest.mock(
+    'pages/common/components/ViewTable/ShowMoreFieldsDropdown',
+    () => () => <div>ShowMoreFieldsDropdown</div>
+)
 
 describe('ViewTable::Table::HeaderCell', () => {
-    const viewConfig = viewsConfig.views.first() as Map<any, any>
+    const viewConfig = views.first() as Map<any, any>
 
     class ActionsComponent extends React.Component {
         render() {
@@ -18,51 +37,82 @@ describe('ViewTable::Table::HeaderCell', () => {
     const viewConfigFields = viewConfig.get('fields') as List<any>
 
     const minProps = {
-        config: viewConfig,
-        type: viewConfig.get('name'),
+        ActionsComponent,
         field: viewConfigFields.first(),
         fields: viewConfigFields.take(3) as List<any>,
         isLast: false,
         isSearch: false,
-        ActionsComponent,
-        activeView: fromJS({}),
-        fetchViewItems: jest.fn(),
-        orderBy: '',
-        orderDirection: '',
-        selectedItemsIds: fromJS([]),
-        setOrderDirection: jest.fn(),
+        type: viewConfig.get('name'),
     }
 
-    it('default cell', () => {
-        const component = shallow(<HeaderCellContainer {...minProps} />)
-        expect(component).toMatchSnapshot()
-        expect(component.find(ActionsComponent)).toBeDefined()
-    })
+    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
-    it('not main field cell', () => {
-        const component = shallow(
-            <HeaderCellContainer
-                {...minProps}
-                field={viewConfigFields.get(1)}
-            />
+    it('diplays the default cell', () => {
+        const {container} = render(
+            <Provider store={mockStore({})}>
+                <HeaderCell {...minProps} />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('sortable field cell', () => {
-        const component = shallow(
-            <HeaderCellContainer
-                {...minProps}
-                field={viewConfigFields.find(
-                    (field: Map<any, any>) => field.get('name') === 'created'
-                )}
-            />
+    it('does not display ActionsComponent for non-main field cell', () => {
+        const {container} = render(
+            <Provider store={mockStore()}>
+                <HeaderCell {...minProps} field={viewConfigFields.get(1)} />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('last cell', () => {
-        const component = shallow(<HeaderCellContainer {...minProps} isLast />)
-        expect(component).toMatchSnapshot()
+    it('displays sortable field cell', () => {
+        const {container} = render(
+            <Provider store={mockStore()}>
+                <HeaderCell
+                    {...minProps}
+                    field={viewConfigFields.find(
+                        (field: Map<any, any>) =>
+                            field.get('name') === ViewField.Created
+                    )}
+                />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('displays More fields dropdown after the last cell', () => {
+        const {container} = render(
+            <Provider store={mockStore()}>
+                <HeaderCell {...minProps} isLast />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('sorts by the field value on click', () => {
+        const field = viewConfigFields.find(
+            (field: Map<any, any>) => field.get('name') === ViewField.Created
+        ) as Map<any, any>
+
+        const {getByText} = render(
+            <Provider store={mockStore()}>
+                <HeaderCell {...minProps} field={field} />
+            </Provider>
+        )
+
+        fireEvent.click(getByText(field.get('title')))
+
+        expect(fetchViewItemsMock).toHaveBeenCalledWith(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            {orderBy: `${field.get('path') as string}:${OrderDirection.Desc}`}
+        )
+        expect(setOrderDirectionMock).toHaveBeenCalledWith(
+            field.get('path'),
+            OrderDirection.Desc
+        )
     })
 })

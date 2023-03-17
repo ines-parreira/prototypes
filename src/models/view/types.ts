@@ -1,4 +1,4 @@
-import {OrderDirection} from '../api/types'
+import {OrderDirection} from 'models/api/types'
 
 export enum ViewCategory {
     System = 'system',

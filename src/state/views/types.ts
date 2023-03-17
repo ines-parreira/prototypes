@@ -1,5 +1,8 @@
 import {Map} from 'immutable'
 
+import {OrderParams} from 'models/api/types'
+import {TicketSearchSortableProperties} from 'models/ticket/types'
+
 export enum ViewNavDirection {
     PrevView = 'prev',
     NextView = 'next',
@@ -19,3 +22,5 @@ export type FieldSearchResult = {
     id: number
     name: string
 }
+
+export type FetchViewItemsOptions = OrderParams<TicketSearchSortableProperties>

@@ -21,7 +21,11 @@ import {
     fetchViewItems,
 } from 'state/views/actions'
 import {areAllActiveViewItemsSelected} from 'state/views/selectors'
-import {ViewImmutable, ViewNavDirection} from 'state/views/types'
+import {
+    FetchViewItemsOptions,
+    ViewImmutable,
+    ViewNavDirection,
+} from 'state/views/types'
 
 import HeaderCell from './Table/HeaderCell'
 import Row from './Table/Row'
@@ -79,6 +83,14 @@ const TableContainer = ({
     const prevItems = usePrevious(items)
     const [rowCursor, setRowCursor] = useState(0)
     const searchRank = useContext(SearchRankScenarioContext)
+    const orderBy = view.get('order_by') as string
+    const fetchParams = useMemo(
+        () =>
+            orderBy
+                ? {orderBy: `${orderBy}:${view.get('order_dir') as string}`}
+                : undefined,
+        [orderBy, view]
+    ) as FetchViewItemsOptions
 
     const areAllSelected = useMemo(
         () => !!selectedItemsIds && items.size === selectedItemsIds.size,
@@ -117,7 +129,14 @@ const TableContainer = ({
             return
         }
 
-        void fetchViewItems(direction, null, null, searchRank)
+        void fetchViewItems(
+            direction,
+            null,
+            null,
+            searchRank,
+            undefined,
+            fetchParams
+        )
     }
 
     useEffect(() => {
@@ -339,7 +358,9 @@ const TableContainer = ({
                         ViewNavDirection.NextView,
                         null,
                         null,
-                        searchRank
+                        searchRank,
+                        undefined,
+                        fetchParams
                     )
                 }
                 fetchPrevItems={() =>
@@ -347,7 +368,9 @@ const TableContainer = ({
                         ViewNavDirection.PrevView,
                         null,
                         null,
-                        searchRank
+                        searchRank,
+                        undefined,
+                        fetchParams
                     )
                 }
             />

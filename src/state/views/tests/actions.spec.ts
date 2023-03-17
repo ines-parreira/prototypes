@@ -467,13 +467,93 @@ describe('actions', () => {
                 }),
             })
 
-            return store.dispatch(actions.fetchViewItems()).then(() => {
-                expect(searchTicketsMock).toHaveBeenCalledWith({
-                    filters: "eq(ticket.channel, 'chat')",
-                    search: '',
+            return store
+                .dispatch(
+                    actions.fetchViewItems(null, null, null, null, undefined, {
+                        orderBy: 'closed_datetime:asc',
+                    })
+                )
+                .then(() => {
+                    expect(searchTicketsMock).toHaveBeenCalledWith({
+                        filters: "eq(ticket.channel, 'chat')",
+                        search: '',
+                        orderBy: 'closed_datetime:asc',
+                    })
                 })
-            })
         })
+
+        it.each([
+            [
+                'current cursor',
+                {
+                    expected: 'current_cursor',
+                    direction: null,
+                    cursor: 'current_cursor',
+                },
+            ],
+            [
+                'next cursor',
+                {
+                    expected: 'next_cursor',
+                    direction: ViewNavDirection.NextView,
+                    cursor: null,
+                },
+            ],
+            [
+                'previous cursor',
+                {
+                    expected: 'prev_cursor',
+                    direction: ViewNavDirection.PrevView,
+                    cursor: null,
+                },
+            ],
+        ])(
+            'should set the %s of the requested direction when using elasticsearch ticket endpoint',
+            async (testName, args) => {
+                variationMock.mockImplementation(
+                    (name: FeatureFlagKey) =>
+                        name === FeatureFlagKey.EnforceTicketsOnES
+                )
+
+                const cancelToken = axios.CancelToken.source().token
+
+                const store = mockStore({
+                    views: fromJS({
+                        active: {
+                            ...view,
+                            dirty: true,
+                            editMode: false,
+                        },
+                        _internal: {
+                            navigation: {
+                                next_cursor: 'next_cursor',
+                                prev_cursor: 'prev_cursor',
+                            },
+                        },
+                    }),
+                })
+
+                return store
+                    .dispatch(
+                        actions.fetchViewItems(
+                            args.direction,
+                            args.cursor,
+                            null,
+                            null,
+                            cancelToken
+                        )
+                    )
+                    .then(() => {
+                        expect(searchTicketsMock).toHaveBeenCalledWith({
+                            filters: "eq(ticket.channel, 'chat')",
+                            search: '',
+                            orderBy: 'last_message_datetime:desc',
+                            cancelToken,
+                            cursor: args.expected,
+                        })
+                    })
+            }
+        )
 
         it('should pass the view because it is dirty', () => {
             const store = mockStore({

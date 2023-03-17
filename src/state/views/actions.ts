@@ -41,6 +41,7 @@ import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
 import * as types from './constants'
 import {
+    FetchViewItemsOptions,
     FieldSearchResult,
     ViewFilter,
     ViewImmutable,
@@ -363,7 +364,8 @@ export function fetchViewItems(
     cursor?: Maybe<string>,
     isPolling: Maybe<boolean> = false,
     searchRank?: SearchRank | null,
-    cancelToken?: CancelToken
+    cancelToken?: CancelToken,
+    params?: FetchViewItemsOptions
 ) {
     return async (
         dispatch: StoreDispatch,
@@ -462,24 +464,37 @@ export function fetchViewItems(
         } else if (isDirty) {
             // when a view is dirty, just send the whole view data rather than just the id
             // this will allow us to test a view before submitting it to the DB
-            promise = enforceTicketsOnES
-                ? searchTickets({
-                      search: (activeView.get('search') as string) || '',
-                      filters: activeView.get('filters') as string,
-                      cancelToken,
-                  })
-                : client.put<ApiListResponsePagination<Ticket[]>>(
-                      url,
-                      {
-                          view: activeView
-                              .delete('dirty')
-                              .delete('editMode')
-                              .delete('allItemsSelected')
-                              .delete('filters_ast')
-                              .toJS(),
-                      },
-                      options
-                  )
+            if (enforceTicketsOnES) {
+                const cursorParam: string =
+                    cursor ||
+                    (direction === ViewNavDirection.NextView &&
+                        navigation.get('next_cursor')) ||
+                    (direction === ViewNavDirection.PrevView &&
+                        navigation.get('prev_cursor')) ||
+                    undefined
+
+                promise = searchTickets({
+                    cursor: cursorParam,
+                    search: (activeView.get('search') as string) || '',
+                    filters: activeView.get('filters') as string,
+                    cancelToken,
+                    orderBy: 'last_message_datetime:desc',
+                    ...params,
+                })
+            } else {
+                promise = client.put<ApiListResponsePagination<Ticket[]>>(
+                    url,
+                    {
+                        view: activeView
+                            .delete('dirty')
+                            .delete('editMode')
+                            .delete('allItemsSelected')
+                            .delete('filters_ast')
+                            .toJS(),
+                    },
+                    options
+                )
+            }
         } else {
             promise = client.get<ApiListResponsePagination<Ticket[]>>(
                 url,

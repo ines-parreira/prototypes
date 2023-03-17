@@ -2,16 +2,17 @@ import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 import moment from 'moment'
 
-import {createImmutableSelector} from '../../utils'
-import * as viewsConfig from '../../config/views'
-import {UserSettingType} from '../../config/types/user'
-import {ViewType, ViewVisibility} from '../../models/view/types'
+import {UserSettingType} from 'config/types/user'
+import * as viewsConfig from 'config/views'
+import {OrderDirection} from 'models/api/types'
+import {ViewType, ViewVisibility} from 'models/view/types'
+import {DEPRECATED_getViewsOrderingSetting} from 'state/currentAccount/selectors'
 import {
     getSettingsByType as getCurrentUserSettingsByType,
     makeGetSettingsByType,
-} from '../currentUser/selectors'
-import {RootState} from '../types'
-import {DEPRECATED_getViewsOrderingSetting} from '../currentAccount/selectors'
+} from 'state/currentUser/selectors'
+import {RootState} from 'state/types'
+import {createImmutableSelector} from 'utils'
 
 import {sortViews} from './utils'
 import {ViewsState} from './types'
@@ -67,7 +68,7 @@ export const areFiltersValid = createSelector(getActiveView, (view) => {
 
 export const getActiveViewOrderDirection = createSelector(
     getActiveView,
-    (state) => (state.get('order_dir') as string) || ''
+    (state) => (state.get('order_dir') as OrderDirection) || ''
 )
 
 export const getActiveViewOrderBy = createSelector(
