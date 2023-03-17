@@ -1,12 +1,14 @@
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {renderWithRouter} from 'utils/testing'
+import {billingState} from 'fixtures/billing'
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 import HelpCenterCustomizationView from '../HelpCenterCustomizationView'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
@@ -27,6 +29,7 @@ const defaultState: Partial<RootState> = {
         },
     } as any,
     ui: {helpCenter: {...uiState, currentId: 1}} as any,
+    billing: fromJS(billingState),
 }
 const store = mockStore(defaultState)
 

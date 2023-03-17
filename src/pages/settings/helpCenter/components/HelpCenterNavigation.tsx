@@ -1,7 +1,9 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 type Props = {
     helpCenterId: string | number
@@ -12,6 +14,8 @@ export const HelpCenterNavigation: React.FC<Props> = ({
     cannotUpdateHelpCenter = false,
     helpCenterId,
 }: Props) => {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const baseURL = `/app/settings/help-center/${helpCenterId}`
 
     if (cannotUpdateHelpCenter) {
@@ -31,9 +35,11 @@ export const HelpCenterNavigation: React.FC<Props> = ({
             <NavLink to={`${baseURL}/customization`} exact>
                 Customization
             </NavLink>
-            <NavLink to={`${baseURL}/automation`} exact>
-                Automation
-            </NavLink>
+            {!isAutomationSettingsRevampEnabled && (
+                <NavLink to={`${baseURL}/automation`} exact>
+                    Automation
+                </NavLink>
+            )}
             <NavLink to={`${baseURL}/publish-track`} exact>
                 Publish & Track
             </NavLink>

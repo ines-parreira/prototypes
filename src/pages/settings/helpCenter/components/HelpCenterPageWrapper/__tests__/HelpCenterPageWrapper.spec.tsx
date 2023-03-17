@@ -3,6 +3,7 @@ import {fireEvent, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -13,6 +14,7 @@ import {
     getHelpCenterDomain,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {renderWithRouter} from 'utils/testing'
+import {billingState} from 'fixtures/billing'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 
 jest.mock('pages/settings/helpCenter/utils/localeSelectOptions', () => {
@@ -65,6 +67,7 @@ const defaultState: Partial<RootState> = {
         },
     } as any,
     ui: {helpCenter: {currentId: 1, currentLanguage: viewLanguage}} as any,
+    billing: fromJS(billingState),
 }
 
 const store = mockStore(defaultState)

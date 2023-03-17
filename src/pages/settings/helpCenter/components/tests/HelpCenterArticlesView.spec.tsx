@@ -4,6 +4,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
 
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
@@ -15,6 +16,7 @@ import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixt
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {billingState} from 'fixtures/billing'
 import HelpCenterArticlesView from '../HelpCenterArticlesView'
 import {SearchContextProvider} from '../../providers/SearchContext'
 import {useHelpCenterCategories} from '../../hooks/useHelpCenterCategories'
@@ -100,6 +102,7 @@ const defaultState: Partial<RootState> = {
         },
     } as any,
     ui: {helpCenter: {...uiState, currentId: 1}} as any,
+    billing: fromJS(billingState),
 }
 
 const route = {

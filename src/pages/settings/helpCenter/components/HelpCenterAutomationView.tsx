@@ -97,7 +97,7 @@ export const HelpCenterAutomationView = (): JSX.Element | null => {
                 <>
                     <ConnectToShopSection
                         onUpdate={updateHelpCenter}
-                        helpCenter={helpCenter}
+                        shopName={helpCenter.shop_name}
                     />
                     <SelfServiceSection
                         shopifyIntegration={shopifyIntegration}

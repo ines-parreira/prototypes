@@ -1,4 +1,4 @@
-import React, {useMemo, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -9,11 +9,10 @@ import Button from 'pages/common/components/button/Button'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Option} from 'pages/common/forms/SelectField/types'
-import {HelpCenter} from 'models/helpCenter/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import useAppSelector from 'hooks/useAppSelector'
 import {FeatureFlagKey} from 'config/featureFlags'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import settingsCss from 'pages/settings/settings.less'
 
@@ -26,42 +25,22 @@ interface Props {
         shop_name: string | null
         self_service_deactivated?: boolean
     }) => void
-    helpCenter: HelpCenter
+    shopName: string | null
 }
 
-const NO_SELECTED_SHOP = '_NO_SELECTED_SHOP_'
-
-const optionLabel = (shop: JSX.Element | string, connectedChats = 0) => (
-    <span className={css['select-option']}>
-        <span>
-            <img
-                src={shopify}
-                className={css['shopify-icon']}
-                alt="shopify logo"
-            />
-        </span>
-
-        <span>{shop}</span>
-
-        {connectedChats > 0 ? (
-            <span className={css['select-connected-chats']}>
-                {connectedChats} connected chat{connectedChats > 1 ? 's' : null}
-            </span>
-        ) : null}
-    </span>
-)
-
 export const ConnectToShopSection = ({
-    helpCenter,
+    shopName,
     onUpdate,
 }: Props): JSX.Element | null => {
     const isAutomationSettingsRevampEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const [disconnectModalOpen, setDisconnectModalOpen] = useState(false)
     const [connectModalOpen, setConnectModalOpen] = useState(false)
-    const [selectedShop, setSelectedShop] = useState<string>(
-        helpCenter.shop_name ?? NO_SELECTED_SHOP
-    )
+    const [selectedShop, setSelectedShop] = useState(shopName)
+
+    useEffect(() => {
+        setSelectedShop(shopName)
+    }, [shopName])
 
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
@@ -73,38 +52,21 @@ export const ConnectToShopSection = ({
         connectedChatsCount: css['select-connected-chats'],
     })
 
-    const shopsOptions: Option[] = useMemo(() => {
-        if (selectedShop === NO_SELECTED_SHOP) {
-            return [
-                {
-                    value: NO_SELECTED_SHOP,
-                    label: optionLabel(
-                        <span
-                            className={css['select-default']}
-                            data-testid="selectStore"
-                        >
-                            Select store
-                        </span>
-                    ),
-                },
-                ...shopifyShopsOptions,
-            ]
-        }
-
-        return shopifyShopsOptions
-    }, [shopifyShopsOptions, selectedShop])
-
     return (
         <section className={settingsCss.mb40}>
-            <h4>Connect to Shopify store</h4>
+            {isAutomationSettingsRevampEnabled ? (
+                <h3>Connect to Shopify store</h3>
+            ) : (
+                <h4>Connect to Shopify store</h4>
+            )}
 
             <p className={css.connectDescription}>
                 {isAutomationSettingsRevampEnabled
-                    ? 'Connect this Help Center to a Shopify store to enable Automation Add-on features.'
+                    ? 'A store connection is required to use Automation Add-on features in Help Center. Currently only available for Shopify stores.'
                     : 'Connect this Help Center to a Shopify store to enable Self-service flows.'}
             </p>
 
-            {helpCenter.shop_name ? (
+            {shopName ? (
                 <div className={css['connected-store']}>
                     <img
                         src={shopify}
@@ -112,19 +74,45 @@ export const ConnectToShopSection = ({
                         alt="shopify logo"
                     />
 
-                    <span className={css['store-name']}>
-                        {helpCenter.shop_name}
-                    </span>
+                    <span className={css['store-name']}>{shopName}</span>
 
-                    <span
-                        className={classNames(
-                            'ml-auto',
-                            css['disconnect-button']
-                        )}
-                        ref={disconnectButtonRef}
-                    >
-                        <i className="material-icons">delete</i>
-                    </span>
+                    {isAutomationSettingsRevampEnabled ? (
+                        <div className="ml-auto">
+                            <Button
+                                fillStyle="ghost"
+                                intent="secondary"
+                                onClick={() => setConnectModalOpen(true)}
+                            >
+                                Change
+                            </Button>
+                            <ConfirmButton
+                                confirmationButtonIntent="destructive"
+                                confirmationContent="Disconnecting this store will remove automation features from your Help Center."
+                                confirmationTitle={<b>Disconnect store?</b>}
+                                confirmLabel="Disconnect"
+                                fillStyle="ghost"
+                                intent="destructive"
+                                onConfirm={() => {
+                                    setDisconnectModalOpen(false)
+                                    onUpdate({shop_name: null})
+                                }}
+                                placement="top"
+                                showCancelButton
+                            >
+                                Disconnect
+                            </ConfirmButton>
+                        </div>
+                    ) : (
+                        <span
+                            className={classNames(
+                                'ml-auto',
+                                css['disconnect-button']
+                            )}
+                            ref={disconnectButtonRef}
+                        >
+                            <i className="material-icons">delete</i>
+                        </span>
+                    )}
 
                     <Tooltip
                         placement="top"
@@ -152,15 +140,14 @@ export const ConnectToShopSection = ({
 
                             <p>
                                 Are you sure you want to disconnect{' '}
-                                <strong>{helpCenter.shop_name}</strong> from
-                                this Help Center?
+                                <strong>{shopName}</strong> from this Help
+                                Center?
                             </p>
 
                             <Button
                                 intent="destructive"
                                 onClick={() => {
                                     setDisconnectModalOpen(false)
-                                    setSelectedShop(NO_SELECTED_SHOP)
                                     onUpdate({shop_name: null})
                                 }}
                             >
@@ -194,7 +181,7 @@ export const ConnectToShopSection = ({
 
                         <Button
                             className="ml-3"
-                            isDisabled={selectedShop === NO_SELECTED_SHOP}
+                            isDisabled={selectedShop === null}
                             onClick={() => {
                                 onUpdate({
                                     shop_name: selectedShop,
@@ -216,11 +203,12 @@ export const ConnectToShopSection = ({
                     <SelectField
                         value={selectedShop}
                         fullWidth
+                        placeholder="Select store"
                         onChange={(value) => {
                             // this type cast is safe as all values are string
                             setSelectedShop(value as string)
                         }}
-                        options={shopsOptions}
+                        options={shopifyShopsOptions}
                     />
                 </>
             </DEPRECATED_Modal>

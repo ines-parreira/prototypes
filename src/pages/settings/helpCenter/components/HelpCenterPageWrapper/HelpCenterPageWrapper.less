@@ -1,3 +1,5 @@
+@import (reference) '~css/new/colorTokens.less';
+
 :local {
     .header {
         display: flex;
@@ -15,5 +17,9 @@
 
     .languageSelector :global(.material-icons) {
         margin-right: 0px;
+    }
+
+    .connectStoreWarning {
+        color: @classic-feedback-warning;
     }
 }

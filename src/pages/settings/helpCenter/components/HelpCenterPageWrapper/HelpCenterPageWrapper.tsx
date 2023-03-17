@@ -1,6 +1,8 @@
 import React, {ReactNode, useMemo, useState} from 'react'
 import classNames from 'classnames'
 import {Container} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useHistory} from 'react-router-dom'
 
 import {HelpCenter} from 'models/helpCenter/types'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -8,12 +10,16 @@ import PageHeader from 'pages/common/components/PageHeader'
 import {getViewLanguage, changeViewLanguage} from 'state/ui/helpCenter'
 
 import Button from 'pages/common/components/button/Button'
-
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {validLocaleCode} from 'models/helpCenter/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import settingsCss from 'pages/settings/settings.less'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
+import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {getAbsoluteUrl, getHelpCenterDomain} from '../../utils/helpCenter.utils'
@@ -34,6 +40,7 @@ type Props = {
     wrapperClassName?: string
     isDirty?: boolean
     onSaveChanges?: () => Promise<void>
+    isConnectStoreLinkEnabled?: boolean
 }
 
 export const HelpCenterPageWrapper: React.FC<Props> = ({
@@ -45,15 +52,20 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
     wrapperClassName = settingsCss.contentWrapper,
     isDirty,
     onSaveChanges,
+    isConnectStoreLinkEnabled = true,
 }: Props) => {
     const dispatch = useAppDispatch()
+    const history = useHistory()
     const locales = useSupportedLocales()
     const viewLanguage =
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
-
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const [showCloseModal, setShowCloseModal] = useState(false)
     const [locale, setLocale] = useState(viewLanguage)
-
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const [isAutomationModalOpened, setIsAutomationModalOpened] =
+        useState(false)
     const helpCenterUrl = useMemo(() => {
         const domain = getHelpCenterDomain(helpCenter)
 
@@ -108,6 +120,62 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                 }
             >
                 <div className={css.header}>
+                    {isAutomationSettingsRevampEnabled &&
+                        (hasAutomationAddOn ? (
+                            helpCenter.shop_name ? (
+                                <Button
+                                    fillStyle="ghost"
+                                    intent="primary"
+                                    onClick={() => {
+                                        history.push(
+                                            `/app/automation/shopify/${
+                                                helpCenter.shop_name as string
+                                            }/connected-channels`
+                                        )
+                                    }}
+                                >
+                                    <ButtonIconLabel icon="auto_awesome">
+                                        Edit automation settings
+                                    </ButtonIconLabel>
+                                </Button>
+                            ) : (
+                                <Button
+                                    fillStyle="ghost"
+                                    intent="primary"
+                                    onClick={() => {
+                                        if (isConnectStoreLinkEnabled) {
+                                            history.push(
+                                                `/app/settings/help-center/${helpCenter.id}/preferences`
+                                            )
+                                        }
+                                    }}
+                                >
+                                    <ButtonIconLabel
+                                        icon="warning"
+                                        className={css.connectStoreWarning}
+                                    >
+                                        Connect store to enable automation
+                                    </ButtonIconLabel>
+                                </Button>
+                            )
+                        ) : (
+                            <>
+                                <AutomationSubscriptionButton
+                                    fillStyle="ghost"
+                                    label="Get Automation Add-on Features"
+                                    onClick={() => {
+                                        setIsAutomationModalOpened(true)
+                                    }}
+                                />
+                                <AutomationSubscriptionModal
+                                    confirmLabel="Confirm"
+                                    isOpen={isAutomationModalOpened}
+                                    onClose={() =>
+                                        setIsAutomationModalOpened(false)
+                                    }
+                                />
+                            </>
+                        ))}
                     {showLanguageSelector && (
                         <SelectField
                             value={viewLanguage}

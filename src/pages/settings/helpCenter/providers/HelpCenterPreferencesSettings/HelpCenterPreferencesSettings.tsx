@@ -34,6 +34,10 @@ export type HelpCenterPreferencesState = {
     defaultLanguage: LocaleCode
     availableLanguages: LocaleCode[]
     seoMeta: HelpCenterTranslationSeoMeta
+    connectedShop: {
+        shopName: string | null
+        selfServiceDeactivated: boolean
+    }
 }
 
 type Props = {
@@ -55,6 +59,10 @@ const defaultPreferences: HelpCenterPreferencesState = {
     seoMeta: {
         title: null,
         description: null,
+    },
+    connectedShop: {
+        shopName: null,
+        selfServiceDeactivated: false,
     },
 }
 
@@ -117,9 +125,17 @@ export const HelpCenterPreferencesSettings = ({
         )
     }, [helpCenter.translations, preferences, viewLanguage])
 
+    const connectedShopChanged = useMemo(
+        () =>
+            helpCenter.shop_name !== preferences.connectedShop.shopName ||
+            Boolean(helpCenter.self_service_deactivated_datetime) !==
+                preferences.connectedShop.selfServiceDeactivated,
+        [helpCenter, preferences]
+    )
+
     const canSavePreferences = useMemo(
-        () => defaultLanguageChanged || seoChanged,
-        [defaultLanguageChanged, seoChanged]
+        () => defaultLanguageChanged || seoChanged || connectedShopChanged,
+        [defaultLanguageChanged, seoChanged, connectedShopChanged]
     )
 
     const savePreferences = async () => {
@@ -160,6 +176,19 @@ export const HelpCenterPreferencesSettings = ({
                         changeViewLanguage(updatedHelpCenter.default_locale)
                     )
                 }
+            }
+
+            if (connectedShopChanged) {
+                const {data: updatedHelpCenter} = await client.updateHelpCenter(
+                    {help_center_id: helpCenter.id},
+                    {
+                        shop_name: preferences.connectedShop.shopName,
+                        self_service_deactivated:
+                            preferences.connectedShop.selfServiceDeactivated,
+                    }
+                )
+
+                dispatch(helpCenterUpdated(updatedHelpCenter))
             }
 
             void dispatch(
@@ -238,6 +267,10 @@ export const HelpCenterPreferencesSettings = ({
         const updateFn = (draftSettings: Draft<HelpCenterPreferencesState>) => {
             draftSettings.defaultLanguage = helpCenter.default_locale
             draftSettings.availableLanguages = helpCenter.supported_locales
+            draftSettings.connectedShop.shopName = helpCenter.shop_name
+            draftSettings.connectedShop.selfServiceDeactivated = Boolean(
+                helpCenter.self_service_deactivated_datetime
+            )
 
             const translation = helpCenter.translations?.find(
                 (t) => t.locale === viewLanguage
