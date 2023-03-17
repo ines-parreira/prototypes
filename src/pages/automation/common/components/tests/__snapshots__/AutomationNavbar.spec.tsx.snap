@@ -507,7 +507,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             data-active-class-name="active"
             href="/app/automation/quick-responses"
           >
-            Quick responses
+            <div
+              class="name"
+            >
+              Quick responses
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -526,7 +530,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             data-active-class-name="active"
             href="/app/automation/article-recommendation"
           >
-            Article recommendation
+            <div
+              class="name"
+            >
+              Article recommendation
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -570,7 +578,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             data-active-class-name="active"
             href="/app/automation/quick-responses"
           >
-            Quick responses
+            <div
+              class="name"
+            >
+              Quick responses
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -582,7 +594,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             data-active-class-name="active"
             href="/app/automation/article-recommendation"
           >
-            Article recommendation
+            <div
+              class="name"
+            >
+              Article recommendation
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -800,7 +816,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             data-active-class-name="active"
             href="/app/automation/quick-responses"
           >
-            Quick responses
+            <div
+              class="name"
+            >
+              Quick responses
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -812,7 +832,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             data-active-class-name="active"
             href="/app/automation/order-management"
           >
-            Order management
+            <div
+              class="name"
+            >
+              Order management
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -824,7 +848,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             data-active-class-name="active"
             href="/app/automation/article-recommendation"
           >
-            Article recommendation
+            <div
+              class="name"
+            >
+              Article recommendation
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -1379,7 +1407,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             data-active-class-name="active"
             href="/app/automation/quick-responses"
           >
-            Quick responses
+            <div
+              class="name"
+            >
+              Quick responses
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -1398,7 +1430,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             data-active-class-name="active"
             href="/app/automation/article-recommendation"
           >
-            Article recommendation
+            <div
+              class="name"
+            >
+              Article recommendation
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -1442,7 +1478,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             data-active-class-name="active"
             href="/app/automation/quick-responses"
           >
-            Quick responses
+            <div
+              class="name"
+            >
+              Quick responses
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -1454,7 +1494,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             data-active-class-name="active"
             href="/app/automation/article-recommendation"
           >
-            Article recommendation
+            <div
+              class="name"
+            >
+              Article recommendation
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -1672,7 +1716,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             data-active-class-name="active"
             href="/app/automation/quick-responses"
           >
-            Quick responses
+            <div
+              class="name"
+            >
+              Quick responses
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -1684,7 +1732,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             data-active-class-name="active"
             href="/app/automation/order-management"
           >
-            Order management
+            <div
+              class="name"
+            >
+              Order management
+            </div>
             <i
               class="material-icons md-2 icon"
             >
@@ -1696,7 +1748,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             data-active-class-name="active"
             href="/app/automation/article-recommendation"
           >
-            Article recommendation
+            <div
+              class="name"
+            >
+              Article recommendation
+            </div>
             <i
               class="material-icons md-2 icon"
             >

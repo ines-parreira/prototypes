@@ -30,8 +30,8 @@ const AutomationNavbarAddOnPaywallNavbarLink = ({
 
     return (
         <>
-            <NavbarLink className={classnames(css.item)} {...props}>
-                {children}
+            <NavbarLink className={css.item} {...props}>
+                <div className={css.name}>{children}</div>
                 <i
                     ref={iconRef}
                     className={classnames('material-icons md-2', css.icon)}
