@@ -10,7 +10,7 @@ import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/pr
 import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
 } from 'pages/automation/common/hooks/useSelfServiceChatChannels'
-import useApplicationAutomationSettings from 'pages/automation/common/hooks/useApplicationAutomationSettings'
+import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
 
 import {DisabledOnChannelAlert} from './ArticleRecommendationAlerts'
 
@@ -38,7 +38,7 @@ const ArticleRecommendationPreview = ({
     )
 
     const {applicationsAutomationSettings} =
-        useApplicationAutomationSettings(chatApplicationsIds)
+        useApplicationsAutomationSettings(chatApplicationsIds)
 
     const history = useMemo(
         () =>

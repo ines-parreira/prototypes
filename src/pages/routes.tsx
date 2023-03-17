@@ -152,6 +152,7 @@ import QuickResponsesPaywallView from './automation/quickResponses/QuickResponse
 import OrderManagementPaywallView from './automation/orderManagement/OrderManagementPaywallView'
 import ArticleRecommendationPaywallView from './automation/articleRecommendation/ArticleRecommendationPaywallView'
 import OrderManagementPreviewProvider from './automation/orderManagement/OrderManagementPreviewProvider'
+import ConnectedChannelsViewContainer from './automation/connectedChannels/ConnectedChannelsViewContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1562,6 +1563,21 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                         navbar: AutomationNavbar,
                     })}
                 />
+                <Route path={`${path}/:shopType/:shopName/connected-channels`}>
+                    <SelfServiceHelpCentersProvider>
+                        <Route
+                            path={`${path}/:shopType/:shopName/connected-channels`}
+                            exact
+                            render={appRender({
+                                content: memoizedWithUserRoleRequired(
+                                    ConnectedChannelsViewContainer,
+                                    AGENT_ROLE
+                                ),
+                                navbar: AutomationNavbar,
+                            })}
+                        />
+                    </SelfServiceHelpCentersProvider>
+                </Route>
                 <Route
                     path={`${path}/quick-responses`}
                     exact

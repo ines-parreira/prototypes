@@ -1,0 +1,32 @@
+@import '~css/new/colorTokens.less';
+@import '~css/new/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .feature {
+        display: flex;
+    }
+
+    .featureName {
+        .body-semibold();
+        font-size: 14px;
+    }
+
+    .featureDisabled {
+        color: @classic-neutral-grey-4;
+    }
+
+    .featureHint {
+        color: @classic-neutral-grey-4;
+        margin-top: @layout-spacing-xxs;
+        font-size: 12px;
+    }
+
+    .featureText {
+        flex-grow: 1;
+    }
+
+    .action {
+        align-self: center;
+    }
+}

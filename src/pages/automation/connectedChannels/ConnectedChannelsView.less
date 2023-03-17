@@ -1,0 +1,35 @@
+@import '~css/new/layout.less';
+@import '~css/new/mixins.less';
+
+:local {
+    .container {
+        padding: @layout-spacing-m;
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 56px;
+        row-gap: @layout-spacing-xl;
+    }
+
+    .content {
+        flex: 1;
+        max-width: 1082px;
+    }
+
+    .descriptionContainer {
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .channelsContainer {
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .noChannels {
+        max-width: 680px;
+    }
+
+    .alertsContainer {
+        display: flex;
+        flex-direction: column;
+        row-gap: @layout-spacing-m;
+    }
+}

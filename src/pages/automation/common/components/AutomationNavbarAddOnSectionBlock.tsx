@@ -118,6 +118,14 @@ const AutomationNavbarAddOnSectionBlock = ({
                     Article recommendation
                 </AutomationNavbarAddOnPaywallNavbarLink>
             )}
+            {hasAutomationAddOn && (
+                <NavbarLink
+                    to={`/app/automation/${shopType}/${shopName}/connected-channels`}
+                    isNested
+                >
+                    Connected channels
+                </NavbarLink>
+            )}
         </NavbarSectionBlock>
     )
 }
