@@ -13,8 +13,8 @@ const QuickResponsesPaywallView = () => {
         <Paywall
             containerId="candu-quick-responses"
             pageHeader="Quick responses"
-            header="Automate up to 14% of interactions with quick responses"
-            description="Display up to 6 custom quick responses to provide customers with automated responses to common questions."
+            header="Automate up to 25% of interactions with advanced automation features"
+            description="Provide customers with automated responses to common questions with quick responses."
             previewImage={assetsUrl(
                 '/img/paywalls/screens/quick-responses.png'
             )}

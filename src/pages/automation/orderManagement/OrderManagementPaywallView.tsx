@@ -13,8 +13,8 @@ const OrderManagementPaywallView = () => {
         <Paywall
             containerId="candu-order-management"
             pageHeader="Order management"
-            header="Automate more requests with order management flows"
-            description="Allow customers to manage their orders from your chat widget and Help Center."
+            header="Automate up to 25% of interactions with advanced automation features"
+            description="Allow customers to manage their orders from your chat widget and Help Center with order management flows."
             previewImage={assetsUrl(
                 '/img/paywalls/screens/order-management.png'
             )}

@@ -13,8 +13,8 @@ const ArticleRecommendationPaywallView = () => {
         <Paywall
             containerId="candu-article-recommendation"
             pageHeader="Article recommendation"
-            header="Leverage your Help Center to automate tickets"
-            description="Automatically recommend relevant Help Center articles to customers."
+            header="Automate up to 25% of interactions with advanced automation features"
+            description="Leverage AI to automatically recommend relevant Help Center articles to customers."
             previewImage={assetsUrl(
                 '/img/paywalls/screens/article-recommendation.png'
             )}
