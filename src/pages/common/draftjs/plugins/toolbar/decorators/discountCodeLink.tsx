@@ -28,7 +28,13 @@ const discountCodeLink = (): Decorator => ({
         const {contentState, entityKey, children} = props
         const {url, code} = contentState.getEntity(entityKey).getData()
         return (
-            <a id={entityKey} href={url} data-discount-code={code}>
+            <a
+                id={entityKey}
+                href={url}
+                data-discount-code={code}
+                target="_blank"
+                rel="noreferrer"
+            >
                 {children}
             </a>
         )

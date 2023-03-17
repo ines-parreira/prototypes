@@ -250,7 +250,7 @@ export function convertToHTML(contentState: ContentState): string {
                 ) {
                     const url: string = (entity.data.url as string) || ''
                     const code: string = (entity.data.code as string) || ''
-                    return `<a data-discount-code="${code}" href="${url}">${code}</a>`
+                    return `<a data-discount-code="${code}" href="${url}" target="_blank" rel="noreferrer">${code}</a>`
                 }
 
                 if (entity.type === 'mention') {

@@ -5,5 +5,7 @@ exports[`discountCodeLink decorator component should render component with onEdi
   data-discount-code="ABC"
   href="http://shop.com/discount/ABC"
   id="1"
+  rel="noreferrer"
+  target="_blank"
 />
 `;
