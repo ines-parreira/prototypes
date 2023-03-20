@@ -271,17 +271,35 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         this.setState({
             hide: value,
         })
+
+        logEvent(SegmentEvent.ChatSettingsHide, {
+            id: this.props.integration.get('id'),
+            type: 'general',
+            state: value ? 'ON' : 'OFF',
+        })
     }
 
     _setHideOnMobile = (value: boolean) => {
         this.setState({
             hideOnMobile: value,
         })
+
+        logEvent(SegmentEvent.ChatSettingsHide, {
+            id: this.props.integration.get('id'),
+            type: 'mobile',
+            state: value ? 'ON' : 'OFF',
+        })
     }
 
     _setHideOutsideBusinessHours = (value: boolean) => {
         this.setState({
             hideOutsideBusinessHours: value,
+        })
+
+        logEvent(SegmentEvent.ChatSettingsHide, {
+            id: this.props.integration.get('id'),
+            type: 'outside_business_hours',
+            state: value ? 'ON' : 'OFF',
         })
     }
 
