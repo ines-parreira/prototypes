@@ -7,8 +7,11 @@ import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi
 import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import useAppSelector from 'hooks/useAppSelector'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
 
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
+import AutomationSubscriptionAction from './AutomationSubscriptionAction'
 
 type Props = {
     channel: SelfServiceHelpCenterChannel
@@ -17,6 +20,7 @@ type Props = {
 const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
     const {client} = useHelpCenterApi()
     const dispatch = useAppDispatch()
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     const [{loading: updatingHelpCenter}, updateHelpCenter] = useAsyncFn(
         async (orderManagementEnabled: boolean) => {
@@ -56,8 +60,9 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
         <ConnectedChannelFeatureToggle
             name="Order management"
             value={channel.value.self_service_deactivated_datetime === null}
-            disabled={updatingHelpCenter}
+            disabled={updatingHelpCenter || !hasAutomationAddOn}
             onChange={updateHelpCenter}
+            action={!hasAutomationAddOn && <AutomationSubscriptionAction />}
         />
     )
 }

@@ -555,69 +555,12 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               lock
             </i>
           </a>
-          <div
-            class="section d-flex align-items-center flex-grow"
-          >
-            <div
-              class="toggleSectionIconWrapper"
-            >
-              <i
-                class="toggleSectionIcon material-icons"
-              >
-                arrow_drop_down
-              </i>
-            </div>
-            <div
-              class="nameWrapper d-flex align-items-center flex-grow"
-              title="gorgiastest.mybigcommerce.com"
-            >
-              <div
-                class="iconWrapper"
-              >
-                <img
-                  alt="bigcommerce logo"
-                  role="presentation"
-                  src="/assets/img/integrations/bigcommerce-white.svg"
-                />
-              </div>
-              <span
-                class="name"
-              >
-                gorgiastest.mybigcommerce.com
-              </span>
-            </div>
-          </div>
           <a
-            class="link isNested item"
+            class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/quick-responses"
+            href="/app/automation/shopify/gorgiastest/connected-channels"
           >
-            <div
-              class="name"
-            >
-              Quick responses
-            </div>
-            <i
-              class="material-icons md-2 icon"
-            >
-              lock
-            </i>
-          </a>
-          <a
-            class="link isNested item"
-            data-active-class-name="active"
-            href="/app/automation/article-recommendation"
-          >
-            <div
-              class="name"
-            >
-              Article recommendation
-            </div>
-            <i
-              class="material-icons md-2 icon"
-            >
-              lock
-            </i>
+            Connected channels
           </a>
         </div>
       </div>
@@ -1469,69 +1412,12 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               lock
             </i>
           </a>
-          <div
-            class="section d-flex align-items-center flex-grow"
-          >
-            <div
-              class="toggleSectionIconWrapper"
-            >
-              <i
-                class="toggleSectionIcon material-icons"
-              >
-                arrow_drop_down
-              </i>
-            </div>
-            <div
-              class="nameWrapper d-flex align-items-center flex-grow"
-              title="gorgiastest.mybigcommerce.com"
-            >
-              <div
-                class="iconWrapper"
-              >
-                <img
-                  alt="bigcommerce logo"
-                  role="presentation"
-                  src="/assets/img/integrations/bigcommerce-white.svg"
-                />
-              </div>
-              <span
-                class="name"
-              >
-                gorgiastest.mybigcommerce.com
-              </span>
-            </div>
-          </div>
           <a
-            class="link isNested item"
+            class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/quick-responses"
+            href="/app/automation/shopify/gorgiastest/connected-channels"
           >
-            <div
-              class="name"
-            >
-              Quick responses
-            </div>
-            <i
-              class="material-icons md-2 icon"
-            >
-              lock
-            </i>
-          </a>
-          <a
-            class="link isNested item"
-            data-active-class-name="active"
-            href="/app/automation/article-recommendation"
-          >
-            <div
-              class="name"
-            >
-              Article recommendation
-            </div>
-            <i
-              class="material-icons md-2 icon"
-            >
-              lock
-            </i>
+            Connected channels
           </a>
         </div>
       </div>

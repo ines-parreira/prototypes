@@ -8,6 +8,7 @@ import {
     BigCommerceIntegration,
 } from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
 
 type StoreIntegration =
     | ShopifyIntegration
@@ -15,14 +16,19 @@ type StoreIntegration =
     | BigCommerceIntegration
 
 const useStoreIntegrations = () => {
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const getStoreIntegrations = useMemo(
         () =>
-            getIntegrationsByTypes([
-                IntegrationType.Shopify,
-                IntegrationType.BigCommerce,
-                IntegrationType.Magento2,
-            ]),
-        []
+            getIntegrationsByTypes(
+                hasAutomationAddOn
+                    ? [
+                          IntegrationType.Shopify,
+                          IntegrationType.BigCommerce,
+                          IntegrationType.Magento2,
+                      ]
+                    : [IntegrationType.Shopify]
+            ),
+        [hasAutomationAddOn]
     )
 
     return useAppSelector(getStoreIntegrations) as StoreIntegration[]

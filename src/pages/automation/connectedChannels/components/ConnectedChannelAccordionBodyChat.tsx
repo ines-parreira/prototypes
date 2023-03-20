@@ -4,9 +4,12 @@ import {Link} from 'react-router-dom'
 import Button from 'pages/common/components/button/Button'
 import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
+import useAppSelector from 'hooks/useAppSelector'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
+import AutomationSubscriptionAction from './AutomationSubscriptionAction'
 
 type Props = {
     channel: SelfServiceChatChannel
@@ -25,6 +28,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         isHelpCenterEmpty,
         isOrderManagementAvailable,
     } = useConnectedChannelsViewContext()
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     const applicationAutomationSettings =
         applicationsAutomationSettings[applicationId]
@@ -46,7 +50,8 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                 name="Quick responses"
                 value={quickResponses.enabled}
                 onChange={updateSettings('quickResponses')}
-                disabled={isUpdatePending}
+                disabled={isUpdatePending || !hasAutomationAddOn}
+                action={!hasAutomationAddOn && <AutomationSubscriptionAction />}
             />
 
             {isOrderManagementAvailable && (
@@ -63,9 +68,14 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                 description="Requires an active help center with published articles."
                 value={articleRecommendation.enabled}
                 onChange={updateSettings('articleRecommendation')}
-                disabled={isUpdatePending || isHelpCenterEmpty}
+                disabled={
+                    isUpdatePending || isHelpCenterEmpty || !hasAutomationAddOn
+                }
                 action={
-                    articleRecommendationHelpCenterId && isHelpCenterEmpty ? (
+                    !hasAutomationAddOn ? (
+                        <AutomationSubscriptionAction />
+                    ) : articleRecommendationHelpCenterId &&
+                      isHelpCenterEmpty ? (
                         <Link
                             to={`/app/settings/help-center/${articleRecommendationHelpCenterId}/articles`}
                         >
