@@ -33,7 +33,14 @@ export default createReducer<HelpCenterCategoriesState>(
                 state.categoriesById = categories.reduce(
                     (acc, category) => ({
                         ...acc,
-                        [category.id.toString()]: category,
+                        [category.id.toString()]: {
+                            ...category,
+                            // If the category is already in the state, keep the article count and don't override it
+                            // This is useful when we save the categories after opening an article that uses a category selector
+                            articleCount:
+                                state.categoriesById[category.id.toString()]
+                                    ?.articleCount || 0,
+                        },
                     }),
                     shouldReset ? {} : state.categoriesById
                 )

@@ -54,6 +54,27 @@ describe('Help Center/Categories reducer', () => {
                 })
             ).toBeTruthy()
         })
+
+        it('keeps the article count if the category is already in the state', () => {
+            const nextState = reducer(
+                {
+                    categoriesById: {
+                        [categoryResponse.id]: {
+                            ...categoryResponse,
+                            articleCount: 2,
+                        },
+                    },
+                },
+                saveCategories({
+                    categories: categoriesResponse,
+                    shouldReset: true,
+                })
+            )
+
+            expect(
+                nextState.categoriesById[categoryResponse.id].articleCount
+            ).toEqual(2)
+        })
     })
 
     describe('dispatch updateCategory', () => {
@@ -136,14 +157,14 @@ describe('Help Center/Categories reducer', () => {
                 },
             },
             pushCategorySupportedLocales({
-                categoryId: 1,
+                categoryId: categoryResponse.id,
                 supportedLocales: ['fr-FR'],
             })
         )
 
         expect(nextState).toEqual({
             categoriesById: {
-                1: {
+                [categoryResponse.id]: {
                     ...categoryResponse,
                     available_locales: ['en-US', 'fr-FR'],
                     translation: {

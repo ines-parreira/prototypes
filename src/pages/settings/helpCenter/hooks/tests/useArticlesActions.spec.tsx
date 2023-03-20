@@ -190,6 +190,19 @@ jest.mock('../useHelpCenterApi', () => {
     }
 })
 
+const mockFetchCategoryArticleCount = jest.fn()
+jest.mock('../useCategoriesActions', () => {
+    return {
+        useCategoriesActions: () => ({
+            fetchCategoryArticleCount: mockFetchCategoryArticleCount,
+        }),
+    }
+})
+
+const mockGetSingleArticleEnglish = jest
+    .fn()
+    .mockResolvedValue(getSingleArticleEnglish)
+
 jest.mock('state/entities/helpCenter/articles', () => ({
     deleteArticle: jest.fn().mockReturnValue({
         type: 'HELPCENTER/ARTICLES/DELETE_ARTICLE',
@@ -214,6 +227,9 @@ jest.mock('state/entities/helpCenter/articles', () => ({
     removeLocaleFromArticle: jest.fn().mockReturnValue({
         type: 'HELPCENTER/ARTICLES/REMOVE_ARTICLE_LOCALE',
         payload: {},
+    }),
+    getArticlesById: jest.fn().mockReturnValue({
+        '1': {...mockGetSingleArticleEnglish, category_id: 1},
     }),
 }))
 
@@ -281,6 +297,7 @@ describe('useArticlesActions()', () => {
                 visibility_status: 'PUBLIC',
             })
 
+            expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
             expect(saveArticles).toHaveBeenCalled()
         })
 
@@ -303,6 +320,7 @@ describe('useArticlesActions()', () => {
                 visibility_status: 'PUBLIC',
             })
 
+            expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
             expect(saveArticles).toHaveBeenCalled()
         })
     })
@@ -353,6 +371,7 @@ describe('useArticlesActions()', () => {
                 }
             )
 
+            expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
             expect(updateArticle).toHaveBeenCalled()
             expect(pushArticleSupportedLocales).toHaveBeenCalledWith({
                 articleId: 1,
@@ -423,6 +442,7 @@ describe('useArticlesActions()', () => {
 
             await result.current.deleteArticle(1)
 
+            expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
             expect(deleteArticle).toHaveBeenCalled()
         })
     })
@@ -475,6 +495,7 @@ describe('useArticlesActions()', () => {
 
             await result.current.cloneArticle(getSingleArticleEnglish)
 
+            expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
             expect(mockListArticleTranslations).toHaveBeenCalled()
         })
 

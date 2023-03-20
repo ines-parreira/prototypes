@@ -13,6 +13,7 @@ import {
 import {createArticleFromDto} from 'models/helpCenter/utils'
 import {
     deleteArticle as deleteArticleAction,
+    getArticlesById,
     pushArticleSupportedLocales,
     removeLocaleFromArticle,
     saveArticles,
@@ -24,8 +25,10 @@ import {getViewLanguage} from 'state/ui/helpCenter'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
+import {ARTICLES_PER_PAGE, HELP_CENTER_DEFAULT_LOCALE} from '../constants'
 import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
+import {useCategoriesActions} from './useCategoriesActions'
 
 function updatePositionRequest(
     client: HelpCenterClient,
@@ -63,7 +66,11 @@ export const useArticlesActions = () => {
     const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
     const {client} = useHelpCenterApi()
-    const viewLanguage = useAppSelector(getViewLanguage)
+    const viewLanguage =
+        useAppSelector(getViewLanguage) ?? HELP_CENTER_DEFAULT_LOCALE
+    const {fetchCategoryArticleCount} = useCategoriesActions()
+    const articlesById = useAppSelector(getArticlesById)
+
     /* TODO: Fix isLoading
             isLoading works only in case of sequential requests. If 2 requests started,
             and only 1st finished, isLoading will be false, but should be true
@@ -197,6 +204,8 @@ export const useArticlesActions = () => {
 
                 dispatch(saveArticles([createdArticle]))
 
+                void fetchCategoryArticleCount(data.category_id, viewLanguage)
+
                 setIsLoading(false)
 
                 return createdArticle
@@ -206,7 +215,13 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
-        [client, dispatch, helpCenterId]
+        [
+            client,
+            dispatch,
+            fetchCategoryArticleCount,
+            helpCenterId,
+            viewLanguage,
+        ]
     )
 
     const createArticleTranslation = useCallback(
@@ -273,10 +288,13 @@ export const useArticlesActions = () => {
             setIsLoading(true)
 
             try {
-                const {data: positions} = article.translation.category_id
+                const previousCategoryId = article.category_id
+                const maybeNextCategoryId = article.translation.category_id
+
+                const {data: positions} = maybeNextCategoryId
                     ? await client.getCategoryArticlesPositions({
                           help_center_id: helpCenterId,
-                          category_id: article.translation.category_id,
+                          category_id: maybeNextCategoryId,
                       })
                     : await client.getUncategorizedArticlesPositions({
                           help_center_id: helpCenterId,
@@ -327,6 +345,23 @@ export const useArticlesActions = () => {
                     dispatch(updateArticleAction(updatedArticle))
                 }
 
+                // update the article count for the old category
+                void fetchCategoryArticleCount(previousCategoryId, viewLanguage)
+
+                if (previousCategoryId !== maybeNextCategoryId) {
+                    // update the article count for the new category
+                    void fetchCategoryArticleCount(
+                        maybeNextCategoryId,
+                        viewLanguage
+                    )
+
+                    // fetch the articles for the new category
+                    void fetchArticles(updatedArticle.translation.category_id, {
+                        page: 1,
+                        per_page: ARTICLES_PER_PAGE,
+                    })
+                }
+
                 dispatch(
                     pushArticleSupportedLocales({
                         articleId: article.id,
@@ -347,6 +382,8 @@ export const useArticlesActions = () => {
             client,
             createArticleTranslation,
             dispatch,
+            fetchArticles,
+            fetchCategoryArticleCount,
             helpCenterId,
             updateArticleTranslation,
             viewLanguage,
@@ -367,6 +404,14 @@ export const useArticlesActions = () => {
 
                 dispatch(deleteArticleAction(articleId))
 
+                const articleToBeDeleted = articlesById[articleId.toString()]
+                if (articleToBeDeleted) {
+                    void fetchCategoryArticleCount(
+                        articleToBeDeleted.category_id,
+                        viewLanguage
+                    )
+                }
+
                 setIsLoading(false)
 
                 return response
@@ -376,7 +421,14 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
-        [client, dispatch, helpCenterId]
+        [
+            articlesById,
+            client,
+            dispatch,
+            fetchCategoryArticleCount,
+            helpCenterId,
+            viewLanguage,
+        ]
     )
 
     const updateArticlesPositions = useCallback(

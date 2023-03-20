@@ -121,7 +121,7 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
 }
 
 export const getSingleCategoryEnglish: Category = {
-    id: 1,
+    id: 5,
     unlisted_id: '29e86632697e4407b2ca6068fcf738ae',
     help_center_id: 1,
     available_locales: ['en-US'],
