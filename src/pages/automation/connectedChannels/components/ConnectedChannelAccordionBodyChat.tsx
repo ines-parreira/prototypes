@@ -1,15 +1,18 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 import AutomationSubscriptionAction from './AutomationSubscriptionAction'
+
+import css from './ConnectedChannelAccordionBodyChat.less'
 
 type Props = {
     channel: SelfServiceChatChannel
@@ -18,6 +21,10 @@ type Props = {
 const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
     const applicationId = channel.value.meta.app_id!
 
+    const {shopType, shopName} = useParams<{
+        shopType: string
+        shopName: string
+    }>()
     const {
         applicationsAutomationSettings,
         handleChatApplicationAutomationSettingsUpdate,
@@ -43,6 +50,41 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                 ...applicationAutomationSettings,
                 [key]: {enabled: value},
             })
+
+    const renderArticleRecommendationAction = () => {
+        if (!hasAutomationAddOn) {
+            return <AutomationSubscriptionAction />
+        }
+
+        if (!articleRecommendationHelpCenterId) {
+            return (
+                <Link
+                    to={`/app/automation/${shopType}/${shopName}/article-recommendation`}
+                >
+                    <Button fillStyle="ghost" size="small">
+                        <ButtonIconLabel
+                            icon="warning"
+                            className={css.connectHelpCenterWarning}
+                        >
+                            Select a help center to enable
+                        </ButtonIconLabel>
+                    </Button>
+                </Link>
+            )
+        }
+
+        if (isHelpCenterEmpty) {
+            return (
+                <Link
+                    to={`/app/settings/help-center/${articleRecommendationHelpCenterId}/articles`}
+                >
+                    <Button size="small">
+                        Add Articles To Your Help Center
+                    </Button>
+                </Link>
+            )
+        }
+    }
 
     return (
         <>
@@ -71,20 +113,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                 disabled={
                     isUpdatePending || isHelpCenterEmpty || !hasAutomationAddOn
                 }
-                action={
-                    !hasAutomationAddOn ? (
-                        <AutomationSubscriptionAction />
-                    ) : articleRecommendationHelpCenterId &&
-                      isHelpCenterEmpty ? (
-                        <Link
-                            to={`/app/settings/help-center/${articleRecommendationHelpCenterId}/articles`}
-                        >
-                            <Button size="small">
-                                Add Articles To Your Help Center
-                            </Button>
-                        </Link>
-                    ) : undefined
-                }
+                action={renderArticleRecommendationAction()}
             />
         </>
     )
