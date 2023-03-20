@@ -60,20 +60,3 @@ export const ConnectedChannelsInfoAlert = ({
         .
     </Alert>
 )
-
-export const DisabledOnChannelAlert = ({
-    shopName,
-    shopType,
-}: {
-    shopName: string
-    shopType: string
-}) => (
-    <Alert className={css.alertInPreview} type={AlertType.Warning} icon>
-        This feature is currently disabled on this channel. Manage this setting
-        in{' '}
-        <Link to={`/app/automation/${shopType}/${shopName}/connected-channels`}>
-            Connected Channels
-        </Link>
-        .
-    </Alert>
-)

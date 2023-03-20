@@ -10,6 +10,9 @@ import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/pr
 import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
 import UncontrolledSelfServicePreviewContainer from 'pages/automation/common/components/preview/UncontrolledSelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
+import useAppSelector from 'hooks/useAppSelector'
+import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
+import SelfServiceFeatureDisabledOnChannelAlert from 'pages/automation/common/components/preview/SelfServiceFeatureDisabledOnChannelAlert'
 
 type Props = {
     channels: SelfServiceChatChannel[]
@@ -29,8 +32,10 @@ const QuickResponsesPreview = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [selfServiceConfiguration.id]
     )
-
     const hasExpandedQuickResponse = Boolean(expandedQuickResponse)
+    const applicationsAutomationSettings = useAppSelector(
+        getChatsApplicationAutomationSettings
+    )
 
     useEffect(() => {
         if (hasExpandedQuickResponse) {
@@ -51,17 +56,36 @@ const QuickResponsesPreview = ({
                 },
             }}
         >
-            {(channel) => (
-                <SelfServicePreviewContext.Provider
-                    value={{
-                        selfServiceConfiguration,
-                        quickResponse: expandedQuickResponse,
-                        hoveredQuickResponseId,
-                    }}
-                >
-                    <SelfServicePreview channel={channel} history={history} />
-                </SelfServicePreviewContext.Provider>
-            )}
+            {(channel) => {
+                const applicationId = channel.value.meta.app_id!
+                const areQuickResponsesDisabled =
+                    applicationsAutomationSettings[applicationId]
+                        ?.quickResponses.enabled === false
+
+                if (areQuickResponsesDisabled) {
+                    return (
+                        <SelfServiceFeatureDisabledOnChannelAlert
+                            shopName={selfServiceConfiguration.shop_name}
+                            shopType={selfServiceConfiguration.type}
+                        />
+                    )
+                }
+
+                return (
+                    <SelfServicePreviewContext.Provider
+                        value={{
+                            selfServiceConfiguration,
+                            quickResponse: expandedQuickResponse,
+                            hoveredQuickResponseId,
+                        }}
+                    >
+                        <SelfServicePreview
+                            channel={channel}
+                            history={history}
+                        />
+                    </SelfServicePreviewContext.Provider>
+                )
+            }}
         </UncontrolledSelfServicePreviewContainer>
     )
 }

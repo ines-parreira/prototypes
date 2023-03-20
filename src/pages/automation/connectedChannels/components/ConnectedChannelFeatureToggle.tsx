@@ -1,5 +1,4 @@
 import React, {ReactNode} from 'react'
-import classnames from 'classnames'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
@@ -22,29 +21,18 @@ const ConnectedChannelFeatureToggle = ({
     disabled,
     action,
 }: Props) => {
-    const toggle = () => !disabled && onChange(!value)
-
     return (
         <div className={css.feature}>
             <ToggleInput
+                className={css.featureToggle}
                 isToggled={value}
                 isDisabled={disabled}
-                onClick={toggle}
-            />
-            <div className={css.featureText}>
-                <div
-                    className={classnames(
-                        css.featureName,
-                        disabled && css.featureDisabled
-                    )}
-                >
-                    {name}
-                </div>
-                {description && (
-                    <div className={css.featureHint}>{description}</div>
-                )}
-            </div>
-            <div className={css.action}>{action}</div>
+                onClick={onChange}
+                caption={description}
+            >
+                {name}
+            </ToggleInput>
+            {action}
         </div>
     )
 }

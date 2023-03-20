@@ -40,6 +40,12 @@ const useSelfServiceChatChannelsMock =
 allFlagsMock.mockReturnValue({})
 
 describe('<QuickResponsesView />', () => {
+    const defaultState = {
+        entities: {
+            chatsApplicationAutomationSettings: fromJS({}),
+        },
+    } as RootState
+
     const quickResponse1 = {
         id: 'ded6b39b-a85c-487e-8658-3f380d238528',
         deactivated_datetime: null,
@@ -82,7 +88,7 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <Provider store={mockStore()}>
+            <Provider store={mockStore(defaultState)}>
                 <QuickResponsesView />
             </Provider>
         )
@@ -103,7 +109,7 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <Provider store={mockStore()}>
+            <Provider store={mockStore(defaultState)}>
                 <QuickResponsesView />
             </Provider>
         )
@@ -128,7 +134,7 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <Provider store={mockStore()}>
+            <Provider store={mockStore(defaultState)}>
                 <QuickResponsesView />
             </Provider>
         )
@@ -174,7 +180,7 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <Provider store={mockStore()}>
+            <Provider store={mockStore(defaultState)}>
                 <QuickResponsesView />
             </Provider>
         )
@@ -226,7 +232,7 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <Provider store={mockStore()}>
+            <Provider store={mockStore(defaultState)}>
                 <QuickResponsesView />
             </Provider>
         )
@@ -272,7 +278,7 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <Provider store={mockStore()}>
+            <Provider store={mockStore(defaultState)}>
                 <QuickResponsesView />
             </Provider>
         )
@@ -328,7 +334,7 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <Provider store={mockStore()}>
+            <Provider store={mockStore(defaultState)}>
                 <QuickResponsesView />
             </Provider>
         )
@@ -372,7 +378,7 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <Provider store={mockStore()}>
+            <Provider store={mockStore(defaultState)}>
                 <QuickResponsesView />
             </Provider>
         )

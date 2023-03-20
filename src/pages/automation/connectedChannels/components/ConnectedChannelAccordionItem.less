@@ -6,9 +6,9 @@
     .channelAccordionHeader {
         display: flex;
         align-items: center;
-        width: 100%;
-        padding-top: 6px;
-        padding-bottom: 6px;
+        flex: 1;
+        padding-top: 3px;
+        padding-bottom: 3px;
     }
 
     .channelIcon {
@@ -18,34 +18,14 @@
 
     .channelName {
         .body-semibold();
-        font-size: 14px;
         margin-left: @layout-spacing-xs;
+        margin-right: @layout-spacing-s;
         flex-grow: 1;
-    }
-
-    .channelSettingsLink {
-        font-size: 12px;
-        margin-right: 14px;
     }
 
     .featureList {
         display: flex;
         flex-direction: column;
         row-gap: @layout-spacing-m;
-    }
-
-    .feature {
-        display: flex;
-    }
-
-    .featureName {
-        .body-semibold();
-        font-size: 14px;
-    }
-
-    .featureHint {
-        color: @classic-neutral-grey-4;
-        margin-top: @layout-spacing-xxs;
-        font-size: 12px;
     }
 }

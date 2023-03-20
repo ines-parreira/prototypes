@@ -19,6 +19,7 @@ export type SelfServicePreviewContextType = {
     reportOrderIssueReasons?: ReportIssueCaseReason['reasonKey'][]
     reportOrderIssueReason?: ReportIssueCaseReason
     hoveredReportOrderIssueReason?: Maybe<ReportIssueCaseReason['reasonKey']>
+    isArticleRecommendationEnabled?: boolean
 }
 
 const SelfServicePreviewContext = createContext<

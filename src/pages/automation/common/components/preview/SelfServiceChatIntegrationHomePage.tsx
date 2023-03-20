@@ -5,8 +5,12 @@ import {useHistory} from 'react-router-dom'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 import {GorgiasChatIntegration} from 'models/integration/types'
+import MessageContent from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentUser} from 'state/currentUser/selectors'
 
 import SelfServiceChatIntegrationFooter from './components/SelfServiceChatIntegrationFooter'
+import SelfServiceChatIntegrationArticleRecommendationFooter from './components/SelfServiceChatIntegrationArticleRecommendationFooter'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 import css from './SelfServiceChatIntegrationHomePage.less'
@@ -27,7 +31,9 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
         selfServiceConfiguration,
         hoveredQuickResponseId,
         hoveredOrderManagementFlow,
+        isArticleRecommendationEnabled,
     } = useSelfServicePreviewContext()
+    const currentUser = useAppSelector(getCurrentUser)
 
     const sspTexts =
         GORGIAS_CHAT_SSP_TEXTS[integration.meta.language || 'en-US']
@@ -43,6 +49,19 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
         selfServiceConfiguration?.cancel_order_policy.enabled ||
         selfServiceConfiguration?.return_order_policy.enabled
     const isInitialEntry = history.length === 1
+
+    if (!quickResponses.length && !canManageOrders) {
+        return (
+            <MessageContent
+                conversationColor={integration.decoration.conversation_color}
+                currentUser={currentUser}
+                customerInitialMessages={[]}
+                agentMessages={[]}
+                hideConversationTimestamp
+                hideMessageTimestamp
+            />
+        )
+    }
 
     return (
         <div
@@ -88,7 +107,13 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
                     </div>
                 </Collapse>
             </div>
-            <SelfServiceChatIntegrationFooter sspTexts={sspTexts} />
+            {isArticleRecommendationEnabled ? (
+                <SelfServiceChatIntegrationArticleRecommendationFooter
+                    sspTexts={sspTexts}
+                />
+            ) : (
+                <SelfServiceChatIntegrationFooter sspTexts={sspTexts} />
+            )}
         </div>
     )
 }

@@ -12,19 +12,20 @@ import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterLi
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
+import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
+import {useHelpCenterPublishedArticlesCount} from 'pages/automation/common/hooks/useHelpCenterPublishedArticlesCount'
+import useSelfServiceChatChannels from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 
-import useSelfServiceConfiguration from '../common/hooks/useSelfServiceConfiguration'
-
-import css from './ArticleRecommendationView.less'
 import ArticleRecommendationHelpCenter from './components/ArticleRecommendationHelpCenter'
-import ArticleRecommendationPreview from './components/ArticleRecommendationPreview'
 import {
     ConnectedChannelsInfoAlert,
     EmptyHelpCenterAlert,
     ManyHelpCentersAlert,
     NoHelpCenterAlert,
 } from './components/ArticleRecommendationAlerts'
-import {useHelpCenterPublishedArticlesCount} from './hooks/useHelpCenterPublishedArticlesCount'
+import ArticleRecommendationPreview from './ArticleRecommendationPreview'
+
+import css from './ArticleRecommendationView.less'
 
 const ArticleRecommendationView = () => {
     const {shopType, shopName} = useParams<{
@@ -41,6 +42,7 @@ const ArticleRecommendationView = () => {
         selfServiceConfiguration,
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(shopType, shopName)
+    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
     const isLoading = !selfServiceConfiguration || isLoadingHelpCenters
 
@@ -114,7 +116,7 @@ const ArticleRecommendationView = () => {
                                     <i className="material-icons mr-2">
                                         menu_book
                                     </i>
-                                    Learn About Article Recommendation in Chat
+                                    Learn About Article Recommendation In Chat
                                 </a>
                             </div>
 
@@ -172,9 +174,9 @@ const ArticleRecommendationView = () => {
                         </div>
 
                         <ArticleRecommendationPreview
-                            shopName={shopName}
-                            shopType={shopType}
-                            helpCenter={helpCenter}
+                            channels={chatChannels}
+                            selfServiceConfiguration={selfServiceConfiguration!}
+                            isHelpCenterSelected={Boolean(helpCenter)}
                         />
                     </>
                 )}

@@ -10,8 +10,6 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 
-import css from './ConnectedChannelAccordionItem.less'
-
 type Props = {
     channel: SelfServiceHelpCenterChannel
 }
@@ -55,14 +53,12 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
     )
 
     return (
-        <div className={css.featureList}>
-            <ConnectedChannelFeatureToggle
-                name="Order management"
-                value={channel.value.self_service_deactivated_datetime === null}
-                disabled={updatingHelpCenter}
-                onChange={updateHelpCenter}
-            />
-        </div>
+        <ConnectedChannelFeatureToggle
+            name="Order management"
+            value={channel.value.self_service_deactivated_datetime === null}
+            disabled={updatingHelpCenter}
+            onChange={updateHelpCenter}
+        />
     )
 }
 

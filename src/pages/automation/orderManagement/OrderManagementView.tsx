@@ -15,12 +15,13 @@ import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automati
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {IntegrationType} from 'models/integration/constants'
 import {PolicyKey} from 'models/selfServiceConfiguration/types'
-import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
-import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
-import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
 import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
+import {TicketChannel} from 'business/types/ticket'
+import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
+import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
 
 import OrderManagementFlowItem from './components/OrderManagementFlowItem'
+import OrderManagementPreview from './OrderManagementPreview'
 import {useOrderManagementPreviewContext} from './OrderManagementPreviewContext'
 
 import css from './OrderManagementView.less'
@@ -59,13 +60,26 @@ const OrderManagementView = () => {
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const {channels, channel, onChannelChange} =
-        useOrderManagementPreviewContext()
+    const {channels} = useOrderManagementPreviewContext()
     const previewHistory = useMemo(
         () => createMemoryHistory(),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [selfServiceConfiguration?.id]
     )
+    const chatApplicationIds = useMemo(
+        () =>
+            channels
+                .filter(
+                    (channel): channel is SelfServiceChatChannel =>
+                        channel.type === TicketChannel.Chat
+                )
+                .map(({value}) => value.meta.app_id)
+                .filter((value): value is string => Boolean(value)),
+        [channels]
+    )
+
+    const {applicationsAutomationSettings} =
+        useApplicationsAutomationSettings(chatApplicationIds)
 
     const [hoveredOrderManagementFlow, setHoveredOrderManagementFlow] =
         useState<PolicyKey>()
@@ -107,16 +121,20 @@ const OrderManagementView = () => {
         previewHistory.push(SELF_SERVICE_PREVIEW_ROUTES.ORDERS)
     }
 
+    const isLoading =
+        !selfServiceConfiguration ||
+        chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
+
     return (
         <div className="full-width">
             <PageHeader title="Order management" />
             <Container
                 fluid
                 className={classnames({
-                    [css.container]: Boolean(selfServiceConfiguration),
+                    [css.container]: !isLoading,
                 })}
             >
-                {!selfServiceConfiguration ? (
+                {isLoading ? (
                     <Loader />
                 ) : (
                     <>
@@ -141,7 +159,7 @@ const OrderManagementView = () => {
 
                             <OrderManagementFlowItem
                                 isEnabled={
-                                    selfServiceConfiguration.track_order_policy
+                                    selfServiceConfiguration!.track_order_policy
                                         .enabled
                                 }
                                 isDisabled={isUpdatePending}
@@ -158,7 +176,7 @@ const OrderManagementView = () => {
                                         fillStyle="ghost"
                                         onClick={handleTrackOrderPreviewClick}
                                         isDisabled={
-                                            !selfServiceConfiguration
+                                            !selfServiceConfiguration!
                                                 .track_order_policy.enabled
                                         }
                                     >
@@ -187,8 +205,8 @@ const OrderManagementView = () => {
                             />
                             <OrderManagementFlowItem
                                 isEnabled={
-                                    selfServiceConfiguration.return_order_policy
-                                        .enabled
+                                    selfServiceConfiguration!
+                                        .return_order_policy.enabled
                                 }
                                 isDisabled={isUpdatePending}
                                 title="Return order"
@@ -211,8 +229,8 @@ const OrderManagementView = () => {
                             />
                             <OrderManagementFlowItem
                                 isEnabled={
-                                    selfServiceConfiguration.cancel_order_policy
-                                        .enabled
+                                    selfServiceConfiguration!
+                                        .cancel_order_policy.enabled
                                 }
                                 isDisabled={isUpdatePending}
                                 title="Cancel order"
@@ -235,8 +253,8 @@ const OrderManagementView = () => {
                             />
                             <OrderManagementFlowItem
                                 isEnabled={
-                                    selfServiceConfiguration.report_issue_policy
-                                        .enabled
+                                    selfServiceConfiguration!
+                                        .report_issue_policy.enabled
                                 }
                                 isDisabled={isUpdatePending}
                                 title="Report order issue"
@@ -264,31 +282,13 @@ const OrderManagementView = () => {
                                       })}
                             />
                         </div>
-                        <SelfServicePreviewContainer
-                            channel={channel}
-                            onChange={onChannelChange}
-                            channels={channels}
-                            alert={{
-                                message:
-                                    'Connect a chat or help center to your store to use this feature.',
-                            }}
-                        >
-                            {(channel) => (
-                                <SelfServicePreviewContext.Provider
-                                    value={{
-                                        selfServiceConfiguration,
-                                        hoveredOrderManagementFlow,
-                                        orderManagementFlow:
-                                            'track_order_policy',
-                                    }}
-                                >
-                                    <SelfServicePreview
-                                        channel={channel}
-                                        history={previewHistory}
-                                    />
-                                </SelfServicePreviewContext.Provider>
-                            )}
-                        </SelfServicePreviewContainer>
+                        <OrderManagementPreview
+                            history={previewHistory}
+                            hoveredOrderManagementFlow={
+                                hoveredOrderManagementFlow
+                            }
+                            selfServiceConfiguration={selfServiceConfiguration!}
+                        />
                     </>
                 )}
             </Container>

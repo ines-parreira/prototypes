@@ -4,23 +4,21 @@ import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceCh
 
 import SelfServicePreviewContainer from './SelfServicePreviewContainer'
 
-type Props<Channel extends SelfServiceChannel> = {
-    channels: Channel[]
+type Props<T extends SelfServiceChannel> = {
+    channels: T[]
     alert?: {
         message: ReactNode
         action?: {message: string; href: string}
     }
-    children: (channel: Channel) => void
+    children: (channel: T) => void
 }
 
-const UncontrolledSelfServicePreviewContainer = <
-    Channel extends SelfServiceChannel
->({
+const UncontrolledSelfServicePreviewContainer = <T extends SelfServiceChannel>({
     children,
     ...props
-}: Props<Channel>) => {
+}: Props<T>) => {
     const {channels} = props
-    const [channel, setChannel] = useState<Channel | undefined>(channels[0])
+    const [channel, setChannel] = useState<T | undefined>(channels[0])
 
     return (
         <SelfServicePreviewContainer

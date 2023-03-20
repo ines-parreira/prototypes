@@ -1,23 +1,26 @@
-import React, {useMemo} from 'react'
-
+import React, {useMemo, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import classnames from 'classnames'
 
+import {TicketChannel} from 'business/types/ticket'
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
 import Accordion from 'pages/common/components/accordion/Accordion'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-
-import useSelfServiceChannels from '../common/hooks/useSelfServiceChannels'
-import useSelfServiceChatChannels from '../common/hooks/useSelfServiceChatChannels'
-import useApplicationsAutomationSettings from '../common/hooks/useApplicationsAutomationSettings'
-import useSelfServiceHelpCenterChannels from '../common/hooks/useSelfServiceHelpCenterChannels'
-import useSelfServiceConfiguration from '../common/hooks/useSelfServiceConfiguration'
-import {useHelpCenterPublishedArticlesCount} from '../articleRecommendation/hooks/useHelpCenterPublishedArticlesCount'
+import {IntegrationType} from 'models/integration/constants'
+import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
+import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
+import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
+import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
+import {useHelpCenterPublishedArticlesCount} from 'pages/automation/common/hooks/useHelpCenterPublishedArticlesCount'
+import Button from 'pages/common/components/button/Button'
 
 import ConnectedChannelAccordionItem from './components/ConnectedChannelAccordionItem'
+import ConnectedChannelsPreview from './ConnectedChannelsPreview'
+import ConnectedChannelsViewContext, {
+    ConnectedChannelsViewContextType,
+} from './ConnectedChannelsViewContext'
 
 import css from './ConnectedChannelsView.less'
 
@@ -26,45 +29,67 @@ const ConnectedChannelsView = () => {
         shopType: string
         shopName: string
     }>()
-
     const channels = useSelfServiceChannels(shopType, shopName)
-    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
-    const helpCenterChannels = useSelfServiceHelpCenterChannels(
-        shopType,
-        shopName
-    )
-
     const {selfServiceConfiguration} = useSelfServiceConfiguration(
         shopType,
         shopName
     )
+    const [expandedChannelIndex, setExpandedChannelIndex] = useState(0)
 
-    const helpCenterArticlesCount = useHelpCenterPublishedArticlesCount(
+    const articleRecommendationHelpCenterId =
         selfServiceConfiguration?.article_recommendation_help_center_id
+    const helpCenterArticlesCount = useHelpCenterPublishedArticlesCount(
+        articleRecommendationHelpCenterId
     )
 
-    const chatApplicationIds: string[] = useMemo(
+    const connectedChannelsViewContext =
+        useMemo<ConnectedChannelsViewContextType>(
+            () => ({
+                articleRecommendationHelpCenterId,
+                isHelpCenterEmpty: helpCenterArticlesCount === 0,
+                isOrderManagementAvailable:
+                    shopType === IntegrationType.Shopify,
+            }),
+            [
+                articleRecommendationHelpCenterId,
+                helpCenterArticlesCount,
+                shopType,
+            ]
+        )
+
+    const chatApplicationIds = useMemo(
         () =>
-            chatChannels
-                .map(({value}) => value.meta.app_id)
+            channels
                 .filter(
-                    (appId: string | undefined): appId is string =>
-                        appId !== undefined
-                ),
-        [chatChannels]
+                    (channel): channel is SelfServiceChatChannel =>
+                        channel.type === TicketChannel.Chat
+                )
+                .map(({value}) => value.meta.app_id)
+                .filter((value): value is string => Boolean(value)),
+        [channels]
     )
 
-    const {
-        applicationsAutomationSettings,
-        isFetchPending: isChatsFetchPending,
-        isUpdatePending: isChatUpdatePending,
-    } = useApplicationsAutomationSettings(chatApplicationIds)
+    const {applicationsAutomationSettings} =
+        useApplicationsAutomationSettings(chatApplicationIds)
 
+    const handleExpandedChannelChange = (channelIndex: string | null) => {
+        if (channelIndex) {
+            setExpandedChannelIndex(parseInt(channelIndex, 10))
+        }
+    }
+
+    const hasChatChannel = channels.some(
+        (channel) => channel.type === TicketChannel.Chat
+    )
+    const hasHelpCenterChannel = channels.some(
+        (channel) => channel.type === TicketChannel.HelpCenter
+    )
+    const hasChannels = hasChatChannel || hasHelpCenterChannel
     const isLoading =
-        isChatsFetchPending ||
-        isChatUpdatePending ||
-        chatApplicationIds.length >
-            Object.keys(applicationsAutomationSettings).length
+        !selfServiceConfiguration ||
+        chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
+
+    const expandedChannel = channels[expandedChannelIndex]
 
     return (
         <div className="full-width">
@@ -81,46 +106,39 @@ const ConnectedChannelsView = () => {
                     <>
                         <div className={css.content}>
                             <div className={css.descriptionContainer}>
-                                <p className="mb-1">
-                                    Manage features enabled per channel
-                                    connected to this store.
-                                </p>
+                                Manage features enabled per channel connected to
+                                this store.
                             </div>
 
-                            {channels.length ? (
+                            {hasChannels && (
                                 <div className={css.channelsContainer}>
-                                    <Accordion
-                                        defaultExpandedItem={channels[0].value.id.toString()}
+                                    <ConnectedChannelsViewContext.Provider
+                                        value={connectedChannelsViewContext}
                                     >
-                                        {channels.map((channel) => (
-                                            <AccordionItem
-                                                key={channel.value.id}
-                                                id={channel.value.id.toString()}
-                                            >
+                                        <Accordion
+                                            expandedItem={expandedChannelIndex.toString()}
+                                            onChange={
+                                                handleExpandedChannelChange
+                                            }
+                                        >
+                                            {channels.map((channel, index) => (
                                                 <ConnectedChannelAccordionItem
+                                                    key={index}
+                                                    index={index}
                                                     channel={channel}
-                                                    articleRecommendationHelpCenterId={
-                                                        selfServiceConfiguration?.article_recommendation_help_center_id
-                                                    }
-                                                    emptyHelpCenter={
-                                                        helpCenterArticlesCount ===
-                                                        0
-                                                    }
-                                                    shopType={shopType}
                                                 />
-                                            </AccordionItem>
-                                        ))}
-                                    </Accordion>
+                                            ))}
+                                        </Accordion>
+                                    </ConnectedChannelsViewContext.Provider>
                                 </div>
-                            ) : null}
+                            )}
 
                             <div
-                                className={classnames(
-                                    css.alertsContainer,
-                                    channels.length === 0 && css.noChannels
-                                )}
+                                className={classnames(css.alertsContainer, {
+                                    [css.noChannels]: !hasChannels,
+                                })}
                             >
-                                {chatChannels.length === 0 && (
+                                {!hasChatChannel && (
                                     <Alert
                                         icon
                                         type={AlertType.Warning}
@@ -128,7 +146,12 @@ const ConnectedChannelsView = () => {
                                             <Link
                                                 to={`/app/settings/channels/gorgias_chat`}
                                             >
-                                                Go To Chat
+                                                <Button
+                                                    size="small"
+                                                    fillStyle="ghost"
+                                                >
+                                                    Go To Chat
+                                                </Button>
                                             </Link>
                                         }
                                     >
@@ -137,8 +160,8 @@ const ConnectedChannelsView = () => {
                                     </Alert>
                                 )}
 
-                                {helpCenterChannels.length === 0 &&
-                                    shopType === 'shopify' && (
+                                {!hasHelpCenterChannel &&
+                                    shopType === IntegrationType.Shopify && (
                                         <Alert
                                             icon
                                             type={AlertType.Warning}
@@ -146,7 +169,12 @@ const ConnectedChannelsView = () => {
                                                 <Link
                                                     to={`/app/settings/help-center`}
                                                 >
-                                                    Go To Help Center
+                                                    <Button
+                                                        size="small"
+                                                        fillStyle="ghost"
+                                                    >
+                                                        Go To Help Center
+                                                    </Button>
                                                 </Link>
                                             }
                                         >
@@ -158,6 +186,14 @@ const ConnectedChannelsView = () => {
                                     )}
                             </div>
                         </div>
+                        {expandedChannel && (
+                            <ConnectedChannelsPreview
+                                channel={expandedChannel}
+                                selfServiceConfiguration={
+                                    selfServiceConfiguration!
+                                }
+                            />
+                        )}
                     </>
                 )}
             </Container>

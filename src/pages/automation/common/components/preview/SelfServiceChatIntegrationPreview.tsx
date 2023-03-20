@@ -26,10 +26,23 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
     const history = useHistory()
     const location = useLocation()
 
-    const {reportOrderIssueReason} = useSelfServicePreviewContext()
+    const {reportOrderIssueReason, selfServiceConfiguration} =
+        useSelfServicePreviewContext()
     const {decoration, meta} = integration
 
     const isInitialEntry = history.length === 1
+
+    const quickResponses =
+        selfServiceConfiguration?.quick_response_policies.filter(
+            (quickResponse) => !quickResponse.deactivated_datetime
+        ) ?? []
+    const canManageOrders =
+        selfServiceConfiguration?.track_order_policy.enabled ||
+        selfServiceConfiguration?.report_issue_policy.enabled ||
+        selfServiceConfiguration?.cancel_order_policy.enabled ||
+        selfServiceConfiguration?.return_order_policy.enabled
+
+    const isSSPDisabled = !quickResponses.length && !canManageOrders
 
     return (
         <ChatIntegrationPreview
@@ -45,10 +58,15 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 location.pathname === SELF_SERVICE_PREVIEW_ROUTES.RETURN ||
                 (location.pathname ===
                     SELF_SERVICE_PREVIEW_ROUTES.REPORT_ISSUE &&
-                    !reportOrderIssueReason?.action?.showHelpfulPrompt)
+                    !reportOrderIssueReason?.action?.showHelpfulPrompt) ||
+                (location.pathname === SELF_SERVICE_PREVIEW_ROUTES.HOME &&
+                    isSSPDisabled)
             }
             renderPoweredBy={
-                location.pathname === SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE
+                location.pathname ===
+                    SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE ||
+                (location.pathname === SELF_SERVICE_PREVIEW_ROUTES.HOME &&
+                    isSSPDisabled)
             }
             autoResponderEnabled={meta.preferences?.auto_responder?.enabled}
             autoResponderReply={meta.preferences?.auto_responder?.reply}

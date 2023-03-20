@@ -12,6 +12,7 @@ import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import useSelfServiceChatChannels from 'pages/automation/common/hooks/useSelfServiceChatChannels'
+import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
 
 import QuickResponsesAccordionCaption from './components/QuickResponsesAccordionCaption'
 import QuickResponsesAccordion from './components/QuickResponsesAccordion'
@@ -86,6 +87,16 @@ const QuickResponsesView = () => {
         }),
         [isUpdatePending, hasError, activeQuickResponsesCount]
     )
+    const chatApplicationIds = useMemo(
+        () =>
+            chatChannels
+                .map(({value}) => value.meta.app_id)
+                .filter((value): value is string => Boolean(value)),
+        [chatChannels]
+    )
+
+    const {applicationsAutomationSettings} =
+        useApplicationsAutomationSettings(chatApplicationIds)
 
     const handleNewQuickResponse = () => {
         const newQuickResponse = {
@@ -120,16 +131,20 @@ const QuickResponsesView = () => {
             dirtyQuickResponse.id === expandedQuickResponseId
     )
 
+    const isLoading =
+        !selfServiceConfiguration ||
+        chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
+
     return (
         <div className="full-width">
             <PageHeader title="Quick responses" />
             <Container
                 fluid
                 className={classnames({
-                    [css.container]: Boolean(selfServiceConfiguration),
+                    [css.container]: !isLoading,
                 })}
             >
-                {!selfServiceConfiguration ? (
+                {isLoading ? (
                     <Loader />
                 ) : (
                     <QuickResponsesViewContext.Provider
@@ -218,7 +233,7 @@ const QuickResponsesView = () => {
                         <QuickResponsesPreview
                             channels={chatChannels}
                             selfServiceConfiguration={{
-                                ...selfServiceConfiguration,
+                                ...selfServiceConfiguration!,
                                 quick_response_policies: dirtyQuickResponses,
                             }}
                             expandedQuickResponse={expandedQuickResponse}

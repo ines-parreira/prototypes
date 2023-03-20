@@ -1,5 +1,4 @@
-@import '~css/new/layout.less';
-@import '~css/new/colorTokens.less';
+@import (reference) '~css/new/layout.less';
 @import (reference) '~css/typography.less';
 
 :local {
@@ -9,26 +8,18 @@
         top: 84px;
     }
 
-    .header {
-        .body-semibold();
-        margin-bottom: @layout-spacing-xs;
+    .controlsContainer {
+        display: flex;
+        flex-direction: column;
+        row-gap: @layout-spacing-xs;
+        margin-bottom: @layout-spacing-m;
     }
 
-    .selectInput {
-        margin-bottom: @layout-spacing-m;
+    .header {
+        .body-semibold();
     }
 
     .alert {
         padding: 12px;
-    }
-
-    .selectInputIcon,
-    .dropdownItemIcon {
-        font-size: 20px;
-        color: @classic-neutral-grey-4;
-    }
-
-    .dropdownItemIcon {
-        margin-right: 7px;
     }
 }

@@ -3,26 +3,16 @@ import {Link} from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
-
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
 
+import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 
-import css from './ConnectedChannelAccordionItem.less'
-
-export type ConnectedChannelAccordionBodyChatProps = {
+type Props = {
     channel: SelfServiceChatChannel
-    shopType: string
-    articleRecommendationHelpCenterId: Maybe<number>
-    emptyHelpCenter: boolean
 }
 
-const ConnectedChannelAccordionBodyChat = ({
-    channel,
-    articleRecommendationHelpCenterId,
-    emptyHelpCenter,
-    shopType,
-}: ConnectedChannelAccordionBodyChatProps) => {
+const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
     const applicationId = channel.value.meta.app_id!
 
     const {
@@ -30,6 +20,11 @@ const ConnectedChannelAccordionBodyChat = ({
         handleChatApplicationAutomationSettingsUpdate,
         isUpdatePending,
     } = useApplicationsAutomationSettings([applicationId])
+    const {
+        articleRecommendationHelpCenterId,
+        isHelpCenterEmpty,
+        isOrderManagementAvailable,
+    } = useConnectedChannelsViewContext()
 
     const applicationAutomationSettings =
         applicationsAutomationSettings[applicationId]
@@ -46,7 +41,7 @@ const ConnectedChannelAccordionBodyChat = ({
             })
 
     return (
-        <div className={css.featureList}>
+        <>
             <ConnectedChannelFeatureToggle
                 name="Quick responses"
                 value={quickResponses.enabled}
@@ -54,7 +49,7 @@ const ConnectedChannelAccordionBodyChat = ({
                 disabled={isUpdatePending}
             />
 
-            {shopType === 'shopify' && (
+            {isOrderManagementAvailable && (
                 <ConnectedChannelFeatureToggle
                     name="Order management"
                     value={orderManagement.enabled}
@@ -68,18 +63,20 @@ const ConnectedChannelAccordionBodyChat = ({
                 description="Requires an active help center with published articles."
                 value={articleRecommendation.enabled}
                 onChange={updateSettings('articleRecommendation')}
-                disabled={isUpdatePending || emptyHelpCenter}
+                disabled={isUpdatePending || isHelpCenterEmpty}
                 action={
-                    articleRecommendationHelpCenterId && emptyHelpCenter ? (
+                    articleRecommendationHelpCenterId && isHelpCenterEmpty ? (
                         <Link
                             to={`/app/settings/help-center/${articleRecommendationHelpCenterId}/articles`}
                         >
-                            <Button>Add Articles To Your Help Center</Button>
+                            <Button size="small">
+                                Add Articles To Your Help Center
+                            </Button>
                         </Link>
                     ) : undefined
                 }
             />
-        </div>
+        </>
     )
 }
 
