@@ -1,17 +1,14 @@
 import React from 'react'
-import {useCampaignStatsFilters} from '../../hooks/useCampaignStatsFilters'
+import {CampaignTotalsStat} from 'pages/stats/revenue/components/CampaignTotalsStat'
 
 export const RevenueStatsContent = () => {
-    const {selectedCampaigns, selectedIntegrations, selectedPeriod} =
-        useCampaignStatsFilters()
+    const handleError = (error: Error) => {
+        console.error(error)
+    }
 
     return (
         <div>
-            <ul>
-                <li>Shopify stores: {JSON.stringify(selectedIntegrations)}</li>
-                <li>Chat campaigns: {JSON.stringify(selectedCampaigns)}</li>
-                <li>Period: {JSON.stringify(selectedPeriod)}</li>
-            </ul>
+            <CampaignTotalsStat onError={handleError} />
         </div>
     )
 }

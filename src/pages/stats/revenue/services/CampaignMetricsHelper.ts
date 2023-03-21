@@ -3,12 +3,11 @@ import _reduce from 'lodash/reduce'
 import _parseInt from 'lodash/parseInt'
 import _mapValues from 'lodash/mapValues'
 import {
-    CampaignEventsTotals,
-    CampaignOrdersTotals,
     CampaignPerformanceData,
     CampaignsPerformanceDataset,
     CampaignStat,
     CampaignStatData,
+    CampaignsTotals,
     GMVGraphDataPoint,
 } from 'pages/stats/revenue/services/types'
 import {
@@ -16,7 +15,7 @@ import {
     EVENTS_CUBE,
     ORDER_CUBE,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
-import {Stat} from 'models/stat/types'
+import {Stat, StatType} from 'models/stat/types'
 import {
     CubeData,
     CubeMetric,
@@ -34,30 +33,59 @@ export const getDataFromStatResult = (result: Stat): CampaignStatData => {
 
 export const transformToCampaignEventsTotals = (
     data: CubeData
-): CampaignEventsTotals => {
+): CampaignsTotals => {
     const metric: CubeMetric = _get(data, '[0]', {})
-    return {
-        impressions: _get(metric, `${CAMPAIGN_ORDER_CUBE}.impressions`),
-        engagement: _get(metric, `${CAMPAIGN_ORDER_CUBE}.engagement`),
-        uniqueConversions: _get(
-            metric,
-            `${CAMPAIGN_ORDER_CUBE}.uniqueConversions`
-        ),
-    }
+    return [
+        {
+            name: 'impressions',
+            value: _get(metric, `${CAMPAIGN_ORDER_CUBE}.impressions`, '0'),
+            type: StatType.Number,
+        },
+        {
+            name: 'engagement',
+            value: _get(metric, `${CAMPAIGN_ORDER_CUBE}.engagement`, '0'),
+            type: StatType.Number,
+        },
+        {
+            name: 'uniqueConversions',
+            value: _get(
+                metric,
+                `${CAMPAIGN_ORDER_CUBE}.uniqueConversions`,
+                '0'
+            ),
+            type: StatType.Number,
+        },
+    ]
 }
 
 export const transformToCampaignOrdersTotals = (
-    data: CubeData
-): CampaignOrdersTotals => {
+    data: CubeData,
+    currency: string
+): CampaignsTotals => {
     const metric: CubeMetric = _get(data, '[0]', {})
-    return {
-        gmv: _get(metric, `${ORDER_CUBE}.gmv`),
-        influencedRevenueUplift: _get(
-            metric,
-            `${ORDER_CUBE}.influencedRevenueUplift`
-        ),
-        revenue: _get(metric, `${ORDER_CUBE}.campaignSales`),
-    }
+    return [
+        {
+            name: 'gmv',
+            value: parseFloat(_get(metric, `${ORDER_CUBE}.gmv`, '0')),
+            type: StatType.Currency,
+            currency: currency,
+        },
+        {
+            name: 'influencedRevenueUplift',
+            value: _toFixed(
+                parseFloat(
+                    _get(metric, `${ORDER_CUBE}.influencedRevenueUplift`, '0')
+                )
+            ),
+            type: StatType.Percent,
+        },
+        {
+            name: 'revenue',
+            value: parseFloat(_get(metric, `${ORDER_CUBE}.campaignSales`, '0')),
+            type: StatType.Currency,
+            currency: currency,
+        },
+    ]
 }
 
 export const transformToGMVUpliftOverTime = (
@@ -268,4 +296,8 @@ const _computeCompoundMetrics = (
         ticketsCreationRate: ticketsCreationRate * 100,
         ticketsConversionRate: ticketsConversionRate * 100,
     }
+}
+
+const _toFixed = (value: number, precision = 2): number => {
+    return Number(value.toFixed(precision))
 }

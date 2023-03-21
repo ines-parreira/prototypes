@@ -53,7 +53,9 @@ describe('Revenue Attribution Service stats methods', () => {
         it('should return prepared data for totals section', async () => {
             // act
             const result = await getTotals(
-                42,
+                [42],
+                ['campaign231', 'campaign232'],
+                'EUR',
                 '2023-01-01T00:00:00-08:00',
                 '2023-02-01T00:00:00-08:00'
             )

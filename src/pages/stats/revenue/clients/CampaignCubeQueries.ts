@@ -15,7 +15,7 @@ const _getDefaultFilters = ({
     endDate,
     cubeName,
     campaignIds,
-    integrationId,
+    integrationIds,
 }: DefaultFilterParams): CubeFilter[] => {
     const filters = [_inDateRangeFilter(startDate, endDate, cubeName)]
 
@@ -23,8 +23,8 @@ const _getDefaultFilters = ({
         filters.push(_campaignEqualsFilter(campaignIds, cubeName))
     }
 
-    if (integrationId) {
-        filters.push(_integrationEqualsFilter(integrationId, cubeName))
+    if (integrationIds?.length) {
+        filters.push(_integrationEqualsFilter(integrationIds, cubeName))
     }
 
     return filters
@@ -43,13 +43,13 @@ const _inDateRangeFilter = (
 }
 
 const _integrationEqualsFilter = (
-    integrationId: number,
+    integrationIds: number[],
     cubeName: string
 ): CubeFilter => {
     return {
         member: `${cubeName}.integrationId`,
         operator: 'equals',
-        values: [integrationId.toString()],
+        values: integrationIds.map((integrationId) => integrationId.toString()),
     }
 }
 
@@ -155,7 +155,8 @@ export const getCampaignEventsOrdersPerformanceData = async ({
 }
 
 export const getCampaignEventsTotalsData = async ({
-    integrationId,
+    integrationIds,
+    campaignIds,
     startDate,
     endDate,
 }: CubeFilterParams): Promise<CubeResponse> => {
@@ -170,13 +171,15 @@ export const getCampaignEventsTotalsData = async ({
             startDate,
             endDate,
             cubeName: CAMPAIGN_ORDER_CUBE,
-            integrationId,
+            integrationIds,
+            campaignIds,
         }),
     })
 }
 
 export const getCampaignOrderTotalsData = async ({
-    integrationId,
+    integrationIds,
+    campaignIds,
     startDate,
     endDate,
 }: CubeFilterParams): Promise<CubeResponse> => {
@@ -191,7 +194,8 @@ export const getCampaignOrderTotalsData = async ({
             startDate,
             endDate,
             cubeName: ORDER_CUBE,
-            integrationId,
+            integrationIds,
+            campaignIds,
         }),
     })
 }

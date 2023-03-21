@@ -33,11 +33,11 @@ export type RequiredFilterParams = {
 export type DefaultFilterParams = {
     cubeName: string
     campaignIds?: string[]
-    integrationId?: number
+    integrationIds?: number[]
 } & RequiredFilterParams
 
 export type FilterParams = {
-    integrationId?: number
+    integrationIds?: number[]
     campaignIds?: string[]
     granularity?: TimeGranularity
     limit?: number

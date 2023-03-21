@@ -28,12 +28,15 @@ import {
 } from 'pages/stats/revenue/clients/types'
 
 export const getTotals = async (
-    integrationId: number,
+    integrationIds: number[],
+    campaignIds: string[],
+    currency: string,
     startDate: string,
     endDate: string
 ): Promise<CampaignsTotals> => {
     const attrs: CubeFilterParams = {
-        integrationId,
+        integrationIds,
+        campaignIds,
         startDate,
         endDate,
     }
@@ -46,10 +49,10 @@ export const getTotals = async (
     const eventsTotalsData = getDataFromResultSet(eventsTotals)
     const orderTotalsData = getDataFromResultSet(orderTotals)
 
-    return {
+    return [
         ...transformToCampaignEventsTotals(eventsTotalsData),
-        ...transformToCampaignOrdersTotals(orderTotalsData),
-    } as CampaignsTotals
+        ...transformToCampaignOrdersTotals(orderTotalsData, currency),
+    ]
 }
 
 export const getGMVUplift = async (

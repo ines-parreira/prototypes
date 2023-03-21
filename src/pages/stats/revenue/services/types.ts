@@ -1,22 +1,9 @@
 import {TimeGranularity} from 'pages/stats/revenue/clients/types'
+import {StatType} from 'models/stat/types'
 
 export type CampaignStat = any[]
 
 export type CampaignStatData = CampaignStat[]
-
-export type CampaignEventsTotals = {
-    impressions: string
-    engagement: string
-    uniqueConversions: string
-}
-
-export type CampaignOrdersTotals = {
-    gmv: string
-    influencedRevenueUplift: string
-    revenue: string
-}
-
-export type CampaignsTotals = CampaignEventsTotals & CampaignOrdersTotals
 
 export type GMVGraphDataPoint = {
     influencedRevenueUplift: string
@@ -52,3 +39,14 @@ export type CampaignPerformanceData = {
 export type CampaignsPerformanceDataset = {
     [key: string]: CampaignPerformanceData
 }
+
+export type StatMetric = {
+    name: string
+    value: any
+    type: StatType
+    delta?: string
+    more_is_better?: boolean
+    currency?: string
+}
+
+export type CampaignsTotals = StatMetric[]
