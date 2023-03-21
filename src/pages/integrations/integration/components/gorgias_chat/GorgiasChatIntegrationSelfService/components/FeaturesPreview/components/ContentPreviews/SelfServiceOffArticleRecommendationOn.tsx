@@ -24,7 +24,6 @@ export const SelfServiceOffArticleRecommendationOn = ({
                 conversationColor=""
                 currentUser={currentUser}
                 customerInitialMessages={['What size am I?']}
-                hideMessageTimestamp
                 agentMessages={[
                     {
                         content: 'Here is an article that may help:',

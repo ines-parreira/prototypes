@@ -1,9 +1,18 @@
+@import '~css/new/layout';
+
 @medium: ~'only screen and (max-width: 1393px)';
 
 :local {
     flex-grow: 1;
 
+    .stickyParent {
+        height: 100%;
+    }
+
     .preview {
         margin-left: 30px;
+
+        position: sticky;
+        top: @layout-spacing-s;
     }
 }

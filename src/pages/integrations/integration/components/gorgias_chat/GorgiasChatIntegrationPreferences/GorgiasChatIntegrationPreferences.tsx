@@ -22,15 +22,13 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 
 import {
-    CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-    CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
-} from '../../../../../../config/integrations'
-import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS_DEPRECATED,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
@@ -48,6 +46,9 @@ import SelectField from '../../../../../common/forms/SelectField/SelectField'
 import {RootState} from '../../../../../../state/types'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 
+import OfflineMessages from '../GorgiasChatIntegrationPreview/OfflineMessages'
+import CustomerInitialMessages from '../GorgiasChatIntegrationPreview/CustomerInitialMessages'
+import ConversationTimestamp from '../GorgiasChatIntegrationPreview/ConversationTimestamp'
 import ChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import OptionalEmailCapturePreview from '../GorgiasChatIntegrationPreview/OptionalEmailCapture'
@@ -100,7 +101,6 @@ const SHOW_CHAT_CONVERSATIONS_SECTION = false
 
 type Props = {
     integration: Map<any, any>
-    currentUser: Map<any, any>
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -139,7 +139,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         hideOutsideBusinessHours: false,
         isInitialized: false,
         isUpdating: false,
-        preview: PREVIEW_EMAIL_CAPTURE,
+        preview: PREVIEW_LIVE_CHAT_AVAILABILITY,
         offlineModeEnabledDatetime: null,
         liveChatAvailability:
             GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
@@ -380,13 +380,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             avatarType,
             avatarTeamPictureUrl,
         } = this.state
-        const {
-            integration,
-            currentUser,
-            emailIntegrations: integrations,
-        } = this.props
+        const {integration, emailIntegrations: integrations} = this.props
         const emailIntegrations = integrations.filter(isGenericEmailIntegration)
 
+        const chatTitle = integration.get('name')
+        const mainColor = integration.getIn(['decoration', 'main_color'])
         const conversationColor = integration.getIn(
             ['decoration', 'conversation_color'],
             ''
@@ -408,47 +406,75 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         }
 
         const renderPreviewFooter =
+            (preview === PREVIEW_LIVE_CHAT_AVAILABILITY &&
+                liveChatAvailability !== GORGIAS_CHAT_LIVE_CHAT_OFFLINE) ||
             preview === PREVIEW_AUTO_RESPONDER ||
-            emailCaptureEnforcement ===
-                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL
+            (preview === PREVIEW_EMAIL_CAPTURE &&
+                emailCaptureEnforcement ===
+                    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL)
+
+        const showCustomerInitialMessages =
+            preview === PREVIEW_AUTO_RESPONDER ||
+            (preview === PREVIEW_EMAIL_CAPTURE &&
+                emailCaptureEnforcement !==
+                    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED) ||
+            (preview === PREVIEW_LIVE_CHAT_AVAILABILITY &&
+                liveChatAvailability !== GORGIAS_CHAT_LIVE_CHAT_OFFLINE)
 
         let previewChildren = null
 
-        if (preview === PREVIEW_AUTO_RESPONDER) {
+        if (
+            preview === PREVIEW_LIVE_CHAT_AVAILABILITY &&
+            liveChatAvailability === GORGIAS_CHAT_LIVE_CHAT_OFFLINE
+        ) {
             previewChildren = (
-                <AutoResponderPreview
-                    conversationColor={conversationColor}
-                    name={integration.get('name')}
+                <OfflineMessages
+                    mainColor={mainColor}
+                    chatTitle={chatTitle}
                     language={language}
-                    autoResponderReply={autoResponderReply}
                 />
             )
         } else if (
+            preview === PREVIEW_EMAIL_CAPTURE &&
             emailCaptureEnforcement ===
-            GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL
+                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL
         ) {
             previewChildren = (
                 <OptionalEmailCapturePreview
-                    currentUser={currentUser}
+                    key="optional-email-capture"
                     conversationColor={conversationColor}
-                    chatTitle={integration.get('name')}
-                    avatar={avatar}
+                    chatTitle={chatTitle}
                     language={language}
+                />
+            )
+        } else if (
+            preview === PREVIEW_EMAIL_CAPTURE &&
+            emailCaptureEnforcement ===
+                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED
+        ) {
+            previewChildren = (
+                <RequiredEmailCapturePreview
+                    key="required-email-capture"
+                    conversationColor={conversationColor}
+                    language={language}
+                    name={chatTitle}
                 />
             )
         } else {
             previewChildren = (
-                <RequiredEmailCapturePreview
+                <AutoResponderPreview
+                    key="auto-responder"
                     conversationColor={conversationColor}
+                    chatTitle={chatTitle}
                     language={language}
-                    name={integration.get('name')}
+                    autoResponderReply={autoResponderReply}
                 />
             )
         }
 
         const chatPreview = (
             <ChatIntegrationPreview
-                name={integration.get('name')}
+                name={chatTitle}
                 avatarType={avatarType}
                 avatarTeamPictureUrl={avatarTeamPictureUrl}
                 avatar={avatar}
@@ -460,18 +486,29 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     'decoration',
                     'offline_introduction_text',
                 ])}
-                mainColor={integration.getIn(['decoration', 'main_color'])}
+                mainColor={mainColor}
                 isOnline
                 shouldHideAvatarOnlineMarker={
-                    liveChatAvailability !==
-                    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
+                    liveChatAvailability === GORGIAS_CHAT_LIVE_CHAT_OFFLINE
                 }
                 language={language}
                 position={position}
                 renderFooter={renderPreviewFooter}
-                autoResponderEnabled={autoResponderEnabled}
+                autoResponderEnabled={
+                    preview === PREVIEW_AUTO_RESPONDER && autoResponderEnabled
+                }
                 autoResponderReply={autoResponderReply}
             >
+                <ConversationTimestamp />
+                {showCustomerInitialMessages && (
+                    <CustomerInitialMessages
+                        conversationColor={conversationColor}
+                        messages={[
+                            'Hi, could you give me an update on my order status?',
+                        ]}
+                        hideConversationTimestamp
+                    />
+                )}
                 {previewChildren}
             </ChatIntegrationPreview>
         )
@@ -519,11 +556,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 ),
             },
             {
-                value: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+                value: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
                 label: 'In a few minutes',
             },
             {
-                value: CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
+                value: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
                 label: 'In a few hours',
             },
         ]
@@ -538,14 +575,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link
-                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                                    to={`/app/settifngs/channels/${IntegrationType.GorgiasChat}`}
                                 >
                                     Chat
                                 </Link>
                             </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                {integration.get('name')}
-                            </BreadcrumbItem>
+                            <BreadcrumbItem>{chatTitle}</BreadcrumbItem>
                         </Breadcrumb>
                     }
                 />

@@ -16,7 +16,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
   "linkedEmailIntegration": null,
   "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
-  "preview": "email-capture",
+  "preview": "live-chat-availability",
 }
 `;
 
@@ -36,7 +36,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
   "linkedEmailIntegration": 234,
   "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
-  "preview": "email-capture",
+  "preview": "live-chat-availability",
 }
 `;
 
@@ -128,7 +128,7 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidMount() should initial
   "linkedEmailIntegration": null,
   "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
-  "preview": "email-capture",
+  "preview": "live-chat-availability",
 }
 `;
 
@@ -152,7 +152,7 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidUpdate() should initia
   "linkedEmailIntegration": null,
   "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
-  "preview": "email-capture",
+  "preview": "live-chat-availability",
 }
 `;
 
@@ -171,7 +171,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           tag="li"
         >
           <Link
-            to="/app/settings/channels/gorgias_chat"
+            to="/app/settifngs/channels/gorgias_chat"
           >
             Chat
           </Link>
@@ -200,7 +200,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
   <GorgiasChatIntegrationPreviewContainer
     preview={
       <ChatIntegrationPreview
-        autoResponderEnabled={true}
+        autoResponderEnabled={false}
         autoResponderReply="reply-dynamic"
         avatar={
           {
@@ -224,16 +224,19 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
         renderFooter={true}
         shouldHideAvatarOnlineMarker={false}
       >
-        <OptionalEmailCapture
-          avatar={
-            {
-              "companyLogoUrl": undefined,
-              "imageType": "agent-picture",
-              "nameType": "agent-first-name",
-            }
-          }
+        <ConversationTimestamp />
+        <CustomerInitialMessages
           conversationColor="#08d123"
-          currentUser={Immutable.Map {}}
+          hideConversationTimestamp={true}
+          messages={
+            [
+              "Hi, could you give me an update on my order status?",
+            ]
+          }
+        />
+        <AutoResponder
+          autoResponderReply="reply-dynamic"
+          conversationColor="#08d123"
           language="en-US"
         />
       </ChatIntegrationPreview>
@@ -614,7 +617,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           tag="li"
         >
           <Link
-            to="/app/settings/channels/gorgias_chat"
+            to="/app/settifngs/channels/gorgias_chat"
           >
             Chat
           </Link>
@@ -643,7 +646,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
   <GorgiasChatIntegrationPreviewContainer
     preview={
       <ChatIntegrationPreview
-        autoResponderEnabled={true}
+        autoResponderEnabled={false}
         autoResponderReply="reply-dynamic"
         avatar={
           {
@@ -667,16 +670,19 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
         renderFooter={true}
         shouldHideAvatarOnlineMarker={false}
       >
-        <OptionalEmailCapture
-          avatar={
-            {
-              "companyLogoUrl": undefined,
-              "imageType": "agent-picture",
-              "nameType": "agent-first-name",
-            }
-          }
+        <ConversationTimestamp />
+        <CustomerInitialMessages
           conversationColor="#08d123"
-          currentUser={Immutable.Map {}}
+          hideConversationTimestamp={true}
+          messages={
+            [
+              "Hi, could you give me an update on my order status?",
+            ]
+          }
+        />
+        <AutoResponder
+          autoResponderReply="reply-dynamic"
+          conversationColor="#08d123"
           language="en-US"
         />
       </ChatIntegrationPreview>

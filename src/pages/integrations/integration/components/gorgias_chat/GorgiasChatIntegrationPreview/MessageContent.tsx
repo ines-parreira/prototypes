@@ -17,7 +17,6 @@ type Props = {
     customerInitialMessages: ReactNode[]
     agentMessages: AgentMessage[]
     hideConversationTimestamp?: boolean
-    hideMessageTimestamp?: boolean
     enableAgentMessagesAnimations?: boolean
     chatTitle?: string
     avatar?: GorgiasChatAvatarSettings
@@ -33,7 +32,6 @@ export default class MessageContent extends Component<Props> {
             customerInitialMessages,
             agentMessages,
             hideConversationTimestamp,
-            hideMessageTimestamp,
             enableAgentMessagesAnimations,
             children,
             chatTitle,
@@ -50,7 +48,6 @@ export default class MessageContent extends Component<Props> {
                     conversationColor={conversationColor}
                     messages={customerInitialMessages}
                     hideConversationTimestamp={hideConversationTimestamp}
-                    hideMessageTimestamp={hideMessageTimestamp}
                 />
 
                 {agentMessages.length > 0 && (

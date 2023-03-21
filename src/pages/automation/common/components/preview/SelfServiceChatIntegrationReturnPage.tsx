@@ -62,7 +62,6 @@ const SelfServiceChatIntegrationReturnPage = ({integration}: Props) => {
             customerInitialMessages={[templatedMessage]}
             agentMessages={agentMessages}
             hideConversationTimestamp
-            hideMessageTimestamp
         />
     )
 }

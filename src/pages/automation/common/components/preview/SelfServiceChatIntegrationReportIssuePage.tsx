@@ -168,7 +168,6 @@ const SelfServiceChatIntegrationReportIssuePage = ({integration}: Props) => {
             customerInitialMessages={[templatedMessage]}
             agentMessages={agentMessages}
             hideConversationTimestamp
-            hideMessageTimestamp
             enableAgentMessagesAnimations
         >
             {previewStep === PreviewStep.REPLIES && (

@@ -11,7 +11,9 @@ exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = 
     ]
   }
 >
-  <div>
+  <div
+    className="d-flex flex-column"
+  >
     <ConversationTimestamp>
       <div
         className="conversationTimestamp"
@@ -55,21 +57,6 @@ exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = 
     >
       How are you doing?
     </div>
-    <MessageTimestamp>
-      <div
-        className="messageTimestamp"
-      >
-        <span>
-          6 minutes ago
-          . 
-        </span>
-        <span
-          className="messageStatus"
-        >
-          Delivered
-        </span>
-      </div>
-    </MessageTimestamp>
   </div>
 </CustomerInitialMessages>
 `;

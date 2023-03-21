@@ -542,299 +542,343 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                       className="col"
                     >
                       <div
-                        className="preview"
+                        className="stickyParent"
                       >
-                        <ChatIntegrationPreview
-                          avatarType="team-members"
-                          introductionText="this is an intro"
-                          isOnline={true}
-                          mainColor="#123456"
-                          name="my chat integration"
-                          position={
-                            {
-                              "alignment": "bottom-right",
-                              "offsetX": 0,
-                              "offsetY": 0,
-                            }
-                          }
+                        <div
+                          className="preview"
                         >
-                          <div
-                            className="preview previewWithBackground"
-                            style={{}}
+                          <ChatIntegrationPreview
+                            avatarType="team-members"
+                            introductionText="this is an intro"
+                            isOnline={true}
+                            mainColor="#123456"
+                            name="my chat integration"
+                            position={
+                              {
+                                "alignment": "bottom-right",
+                                "offsetX": 0,
+                                "offsetY": 0,
+                              }
+                            }
                           >
-                            <div
-                              className="dialog"
+                            <CustomizedChatLauncher
+                              className="preview previewWithBackground"
+                              isClosed={false}
+                              launcher={
+                                {
+                                  "type": "icon",
+                                }
+                              }
+                              mainColor="#123456"
+                              position={
+                                {
+                                  "alignment": "bottom-right",
+                                  "offsetX": 0,
+                                  "offsetY": 0,
+                                }
+                              }
                             >
                               <div
-                                className="header"
-                                style={
-                                  {
-                                    "backgroundColor": "#123456",
-                                  }
-                                }
+                                className="wrapper preview previewWithBackground"
                               >
-                                <ChatIntegrationAvatar
-                                  avatarType="team-members"
-                                  isOnline={true}
-                                  mainColor="#123456"
-                                  offlineColor="#EBEBEB"
-                                  shouldHideAvatarOnlineMarker={false}
+                                <div
+                                  className="buttonWrapper bottom-right"
                                 >
                                   <div
-                                    className="agents"
+                                    className="axisLauncherWrapper"
                                   >
-                                    <div
-                                      className="agent hasIcon first"
-                                      key="first"
-                                      style={
-                                        {
-                                          "borderColor": "#123456",
-                                        }
-                                      }
+                                    <ChatLauncher
+                                      backgroundColor="#123456"
+                                      type="icon"
+                                      windowState="closed"
                                     >
-                                      <i
-                                        className="material-icons"
-                                      >
-                                        person
-                                      </i>
-                                    </div>
-                                    <div
-                                      className="agent hasIcon middle"
-                                      key="middle"
-                                      style={
-                                        {
-                                          "borderColor": "#123456",
-                                        }
-                                      }
-                                    >
-                                      <i
-                                        className="material-icons"
-                                      >
-                                        person
-                                      </i>
                                       <div
-                                        className="onlineMarker"
-                                      />
-                                    </div>
+                                        className="launcher"
+                                        style={
+                                          {
+                                            "backgroundColor": "#123456",
+                                          }
+                                        }
+                                      >
+                                        <div
+                                          className="iconWrapper"
+                                        >
+                                          <BubbleIcon
+                                            className="icon"
+                                            fill="#FFFFFF"
+                                          >
+                                            <svg
+                                              className="icon"
+                                              height="24"
+                                              viewBox="0 0 24 24"
+                                              width="24"
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              xmlnsXlink="http://www.w3.org/1999/xlink"
+                                            >
+                                              <clipPath
+                                                id="bubble-icon"
+                                              >
+                                                <path
+                                                  d="m0 0h24v24h-24z"
+                                                />
+                                              </clipPath>
+                                              <g
+                                                clipPath="url(#bubble-icon)"
+                                              >
+                                                <path
+                                                  clipRule="evenodd"
+                                                  d="m19.875 21.0548c2.5274-2.2 4.125-5.4409 4.125-9.0548 0-6.62742-5.3726-12-12-12-6.62742 0-12 5.37258-12 12 0 6.6274 5.37258 12 12 12h7.875zm-12.375-7.9298c.62132 0 1.125-.5037 1.125-1.125s-.50368-1.125-1.125-1.125-1.125.5037-1.125 1.125.50368 1.125 1.125 1.125zm4.5 0c.6213 0 1.125-.5037 1.125-1.125s-.5037-1.125-1.125-1.125-1.125.5037-1.125 1.125.5037 1.125 1.125 1.125zm5.625-1.125c0 .6213-.5037 1.125-1.125 1.125s-1.125-.5037-1.125-1.125.5037-1.125 1.125-1.125 1.125.5037 1.125 1.125z"
+                                                  fill="#FFFFFF"
+                                                  fillRule="evenodd"
+                                                />
+                                              </g>
+                                            </svg>
+                                          </BubbleIcon>
+                                        </div>
+                                      </div>
+                                    </ChatLauncher>
+                                  </div>
+                                </div>
+                                <div>
+                                  <div
+                                    className="dialog"
+                                  >
                                     <div
-                                      className="agent hasIcon last"
-                                      key="last"
+                                      className="header"
                                       style={
                                         {
-                                          "borderColor": "#123456",
+                                          "backgroundColor": "#123456",
                                         }
                                       }
                                     >
-                                      <i
-                                        className="material-icons"
+                                      <ChatIntegrationAvatar
+                                        avatarType="team-members"
+                                        isOnline={true}
+                                        mainColor="#123456"
+                                        offlineColor="#EBEBEB"
+                                        shouldHideAvatarOnlineMarker={false}
                                       >
-                                        person
+                                        <div
+                                          className="agents"
+                                        >
+                                          <div
+                                            className="agent hasIcon first"
+                                            key="first"
+                                            style={
+                                              {
+                                                "borderColor": "#123456",
+                                              }
+                                            }
+                                          >
+                                            <i
+                                              className="material-icons"
+                                            >
+                                              person
+                                            </i>
+                                          </div>
+                                          <div
+                                            className="agent hasIcon middle"
+                                            key="middle"
+                                            style={
+                                              {
+                                                "borderColor": "#123456",
+                                              }
+                                            }
+                                          >
+                                            <i
+                                              className="material-icons"
+                                            >
+                                              person
+                                            </i>
+                                            <div
+                                              className="onlineMarker"
+                                            />
+                                          </div>
+                                          <div
+                                            className="agent hasIcon last"
+                                            key="last"
+                                            style={
+                                              {
+                                                "borderColor": "#123456",
+                                              }
+                                            }
+                                          >
+                                            <i
+                                              className="material-icons"
+                                            >
+                                              person
+                                            </i>
+                                          </div>
+                                        </div>
+                                      </ChatIntegrationAvatar>
+                                      <div
+                                        className="details"
+                                        style={
+                                          {
+                                            "color": "#FFFFFF",
+                                          }
+                                        }
+                                      >
+                                        <ChatTitle
+                                          title="my chat integration"
+                                        >
+                                          <div
+                                            className="title"
+                                          >
+                                            my chat integration
+                                          </div>
+                                        </ChatTitle>
+                                        <div
+                                          className="introductionText"
+                                        >
+                                          this is an intro
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      className="content"
+                                    >
+                                      <div
+                                        className="content"
+                                      />
+                                      <QuickReplies
+                                        mainColor="#123456"
+                                        quickReplies={
+                                          [
+                                            "Get order status",
+                                            "Apply promo code",
+                                          ]
+                                        }
+                                      >
+                                        <div
+                                          className="quickRepliesContent"
+                                        >
+                                          <div
+                                            className="quickRepliesWrapper"
+                                          >
+                                            <button
+                                              className="btn btn-reply-action reply"
+                                              key="Get order status-0"
+                                              style={
+                                                {
+                                                  "borderColor": "#123456",
+                                                  "color": "#123456",
+                                                }
+                                              }
+                                            >
+                                              Get order status
+                                            </button>
+                                            <button
+                                              className="btn btn-reply-action reply"
+                                              key="Apply promo code-1"
+                                              style={
+                                                {
+                                                  "borderColor": "#123456",
+                                                  "color": "#123456",
+                                                }
+                                              }
+                                            >
+                                              Apply promo code
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </QuickReplies>
+                                    </div>
+                                    <PoweredByGorgias
+                                      translatedTexts={
+                                        {
+                                          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+                                          "backLabelBackAt": "Back online at {time}",
+                                          "backLabelBackInAMinute": "Back in 1 minute",
+                                          "backLabelBackInAnHour": "Back in 1 hour",
+                                          "backLabelBackInDays": "Back in {value} days",
+                                          "backLabelBackInHours": "Back in {value} hours",
+                                          "backLabelBackInMinutes": "Back in {value} minutes",
+                                          "backLabelBackTomorrow": "Back tomorrow",
+                                          "campaignClickToReply": "Click to reply",
+                                          "chatWithUs": "Chat with us",
+                                          "clickToRetry": "Message not delivered. Click to retry.",
+                                          "contactFormAskSubject": "What can we help you with?",
+                                          "contactFormIntro": "Leave a message and we'll email you once we're online.",
+                                          "conversationTimestampHeaderFormat": "MMMM D",
+                                          "emailCaptureInputLabel": "Get notified by email",
+                                          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+                                          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+                                          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+                                          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
+                                          "emailCapturePlaceholder": "your@email.com",
+                                          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+                                          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+                                          "emailCaptureTriggerTextBase": "Leave us your email and we'll get back to you.",
+                                          "emailCaptureTriggerTypicalReplyHours": "We typically reply in a few hours.",
+                                          "emailCaptureTriggerTypicalReplyMinutes": "We typically reply in a few minutes.",
+                                          "fetchHistory": "Load more",
+                                          "fetchingHistory": "Retrieving history...",
+                                          "headerText": "Gorgias Team",
+                                          "inputPlaceholder": "Type a message...",
+                                          "introductionText": "How can we help?",
+                                          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+                                          "messageDelivered": "Delivered",
+                                          "messageError": "An error occurred while sending your message. Please try again.",
+                                          "messageIndicatorTitlePlural": "({count}) New messages",
+                                          "messageIndicatorTitleSingular": "({count}) New message",
+                                          "messageRelativeTimeDay": "{value}d ago",
+                                          "messageRelativeTimeHour": "{value}h ago",
+                                          "messageRelativeTimeJustNow": "Just now",
+                                          "messageRelativeTimeMinute": "{value}m ago",
+                                          "messageSending": "Sending...",
+                                          "messageTimestampFormat": "h:mm A",
+                                          "offlineIntroductionText": "We'll be back tomorrow",
+                                          "poweredBy": "Powered by",
+                                          "poweredByGorgias": "Powered by Gorgias",
+                                          "replyTimeMoments": "We'll reply in a few moments",
+                                          "requiredEmailCaptureInputLabel": "Email",
+                                          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
+                                          "send": "Send",
+                                          "tapToRetry": "Message not delivered. Tap to retry.",
+                                          "unsupportedActionType": "Unsupported action type.",
+                                          "unsupportedMessageType": "Unsupported message type.",
+                                          "usualReplyTimeDay": "Typically replies within a day",
+                                          "usualReplyTimeHours": "Typically replies in a few hours",
+                                          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+                                          "waitTimeMediumReply": "Thanks for reaching out! Leave us your email and an agent will get back to you in about {waitTime} minutes.",
+                                        }
+                                      }
+                                    >
+                                      <div
+                                        className="poweredBy"
+                                      >
+                                        <div>
+                                          <span>
+                                            Powered by
+                                          </span>
+                                          <img
+                                            alt="powered-by"
+                                            src="test-file-stub"
+                                          />
+                                        </div>
+                                      </div>
+                                    </PoweredByGorgias>
+                                    <div
+                                      className="footer"
+                                    >
+                                      <div
+                                        className="placeholder"
+                                      >
+                                        Type a message...
+                                      </div>
+                                      <i
+                                        className="material-icons icon attachmentIcon"
+                                      >
+                                        attach_file
                                       </i>
                                     </div>
                                   </div>
-                                </ChatIntegrationAvatar>
-                                <div
-                                  className="details"
-                                  style={
-                                    {
-                                      "color": "#FFFFFF",
-                                    }
-                                  }
-                                >
-                                  <div
-                                    className="appName"
-                                  >
-                                    my chat integration
-                                  </div>
-                                  <div
-                                    className="introductionText"
-                                  >
-                                    this is an intro
-                                  </div>
                                 </div>
                               </div>
-                              <div
-                                className="content"
-                              />
-                              <QuickReplies
-                                mainColor="#123456"
-                                quickReplies={
-                                  [
-                                    "Get order status",
-                                    "Apply promo code",
-                                  ]
-                                }
-                              >
-                                <div
-                                  className="content quick-replies-content"
-                                >
-                                  <div
-                                    className="quick-replies-wrapper"
-                                  >
-                                    <button
-                                      className="btn btn-reply-action reply"
-                                      key="Get order status-0"
-                                      style={
-                                        {
-                                          "borderColor": "#123456",
-                                          "color": "#123456",
-                                        }
-                                      }
-                                    >
-                                      Get order status
-                                    </button>
-                                    <button
-                                      className="btn btn-reply-action reply"
-                                      key="Apply promo code-1"
-                                      style={
-                                        {
-                                          "borderColor": "#123456",
-                                          "color": "#123456",
-                                        }
-                                      }
-                                    >
-                                      Apply promo code
-                                    </button>
-                                  </div>
-                                </div>
-                              </QuickReplies>
-                              <PoweredByGorgias
-                                translatedTexts={
-                                  {
-                                    "actionPostbackError": "An error occurred while processing your action. Please try again.",
-                                    "backLabelBackAt": "Back online at {time}",
-                                    "backLabelBackInAMinute": "Back in 1 minute",
-                                    "backLabelBackInAnHour": "Back in 1 hour",
-                                    "backLabelBackInDays": "Back in {value} days",
-                                    "backLabelBackInHours": "Back in {value} hours",
-                                    "backLabelBackInMinutes": "Back in {value} minutes",
-                                    "backLabelBackTomorrow": "Back tomorrow",
-                                    "campaignClickToReply": "Click to reply",
-                                    "chatWithUs": "Chat with us",
-                                    "clickToRetry": "Message not delivered. Click to retry.",
-                                    "conversationTimestampHeaderFormat": "MMMM D",
-                                    "emailCaptureInputLabel": "Get notified by email",
-                                    "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-                                    "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-                                    "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-                                    "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-                                    "emailCapturePlaceholder": "your@email.com",
-                                    "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-                                    "emailCaptureRequiredMessagePlaceholder": "Write your message",
-                                    "fetchHistory": "Load more",
-                                    "fetchingHistory": "Retrieving history...",
-                                    "headerText": "Gorgias Team",
-                                    "inputPlaceholder": "Type a message...",
-                                    "introductionText": "How can we help?",
-                                    "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-                                    "messageDelivered": "Delivered",
-                                    "messageError": "An error occurred while sending your message. Please try again.",
-                                    "messageIndicatorTitlePlural": "({count}) New messages",
-                                    "messageIndicatorTitleSingular": "({count}) New message",
-                                    "messageRelativeTimeDay": "{value}d ago",
-                                    "messageRelativeTimeHour": "{value}h ago",
-                                    "messageRelativeTimeJustNow": "Just now",
-                                    "messageRelativeTimeMinute": "{value}m ago",
-                                    "messageSending": "Sending...",
-                                    "messageTimestampFormat": "h:mm A",
-                                    "offlineIntroductionText": "We'll be back tomorrow",
-                                    "poweredBy": "Powered by",
-                                    "poweredByGorgias": "Powered by Gorgias",
-                                    "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-                                    "send": "Send",
-                                    "tapToRetry": "Message not delivered. Tap to retry.",
-                                    "unsupportedActionType": "Unsupported action type.",
-                                    "unsupportedMessageType": "Unsupported message type.",
-                                    "usualReplyTimeDay": "Typically replies within a day",
-                                    "usualReplyTimeHours": "Typically replies in a few hours",
-                                    "usualReplyTimeMinutes": "Typically replies in a few minutes",
-                                    "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-                                  }
-                                }
-                              >
-                                <div
-                                  className="poweredBy"
-                                >
-                                  <div>
-                                    <span>
-                                      Powered by
-                                    </span>
-                                    <img
-                                      alt="powered-by"
-                                      src="test-file-stub"
-                                    />
-                                  </div>
-                                </div>
-                              </PoweredByGorgias>
-                              <div
-                                className="footer"
-                              >
-                                <div
-                                  className="placeholder"
-                                >
-                                  Type a message...
-                                </div>
-                                <i
-                                  className="icon camera"
-                                />
-                              </div>
-                            </div>
-                            <div
-                              className="buttonWrapper bottom-right"
-                            >
-                              <ChatLauncher
-                                backgroundColor="#123456"
-                                type="icon"
-                                windowState="closed"
-                              >
-                                <div
-                                  className="launcher"
-                                  style={
-                                    {
-                                      "backgroundColor": "#123456",
-                                    }
-                                  }
-                                >
-                                  <div
-                                    className="iconWrapper"
-                                  >
-                                    <BubbleIcon
-                                      className="icon"
-                                      fill="#FFFFFF"
-                                    >
-                                      <svg
-                                        className="icon"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        width="24"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        xmlnsXlink="http://www.w3.org/1999/xlink"
-                                      >
-                                        <clipPath
-                                          id="bubble-icon"
-                                        >
-                                          <path
-                                            d="m0 0h24v24h-24z"
-                                          />
-                                        </clipPath>
-                                        <g
-                                          clipPath="url(#bubble-icon)"
-                                        >
-                                          <path
-                                            clipRule="evenodd"
-                                            d="m19.875 21.0548c2.5274-2.2 4.125-5.4409 4.125-9.0548 0-6.62742-5.3726-12-12-12-6.62742 0-12 5.37258-12 12 0 6.6274 5.37258 12 12 12h7.875zm-12.375-7.9298c.62132 0 1.125-.5037 1.125-1.125s-.50368-1.125-1.125-1.125-1.125.5037-1.125 1.125.50368 1.125 1.125 1.125zm4.5 0c.6213 0 1.125-.5037 1.125-1.125s-.5037-1.125-1.125-1.125-1.125.5037-1.125 1.125.5037 1.125 1.125 1.125zm5.625-1.125c0 .6213-.5037 1.125-1.125 1.125s-1.125-.5037-1.125-1.125.5037-1.125 1.125-1.125 1.125.5037 1.125 1.125z"
-                                            fill="#FFFFFF"
-                                            fillRule="evenodd"
-                                          />
-                                        </g>
-                                      </svg>
-                                    </BubbleIcon>
-                                  </div>
-                                </div>
-                              </ChatLauncher>
-                            </div>
-                          </div>
-                        </ChatIntegrationPreview>
+                            </CustomizedChatLauncher>
+                          </ChatIntegrationPreview>
+                        </div>
                       </div>
                     </div>
                   </Col>
@@ -1415,299 +1459,343 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                       className="col"
                     >
                       <div
-                        className="preview"
+                        className="stickyParent"
                       >
-                        <ChatIntegrationPreview
-                          avatarType="team-members"
-                          introductionText="this is an intro"
-                          isOnline={true}
-                          mainColor="#123456"
-                          name="my chat integration"
-                          position={
-                            {
-                              "alignment": "bottom-right",
-                              "offsetX": 0,
-                              "offsetY": 0,
-                            }
-                          }
+                        <div
+                          className="preview"
                         >
-                          <div
-                            className="preview previewWithBackground"
-                            style={{}}
+                          <ChatIntegrationPreview
+                            avatarType="team-members"
+                            introductionText="this is an intro"
+                            isOnline={true}
+                            mainColor="#123456"
+                            name="my chat integration"
+                            position={
+                              {
+                                "alignment": "bottom-right",
+                                "offsetX": 0,
+                                "offsetY": 0,
+                              }
+                            }
                           >
-                            <div
-                              className="dialog"
+                            <CustomizedChatLauncher
+                              className="preview previewWithBackground"
+                              isClosed={false}
+                              launcher={
+                                {
+                                  "type": "icon",
+                                }
+                              }
+                              mainColor="#123456"
+                              position={
+                                {
+                                  "alignment": "bottom-right",
+                                  "offsetX": 0,
+                                  "offsetY": 0,
+                                }
+                              }
                             >
                               <div
-                                className="header"
-                                style={
-                                  {
-                                    "backgroundColor": "#123456",
-                                  }
-                                }
+                                className="wrapper preview previewWithBackground"
                               >
-                                <ChatIntegrationAvatar
-                                  avatarType="team-members"
-                                  isOnline={true}
-                                  mainColor="#123456"
-                                  offlineColor="#EBEBEB"
-                                  shouldHideAvatarOnlineMarker={false}
+                                <div
+                                  className="buttonWrapper bottom-right"
                                 >
                                   <div
-                                    className="agents"
+                                    className="axisLauncherWrapper"
                                   >
-                                    <div
-                                      className="agent hasIcon first"
-                                      key="first"
-                                      style={
-                                        {
-                                          "borderColor": "#123456",
-                                        }
-                                      }
+                                    <ChatLauncher
+                                      backgroundColor="#123456"
+                                      type="icon"
+                                      windowState="closed"
                                     >
-                                      <i
-                                        className="material-icons"
-                                      >
-                                        person
-                                      </i>
-                                    </div>
-                                    <div
-                                      className="agent hasIcon middle"
-                                      key="middle"
-                                      style={
-                                        {
-                                          "borderColor": "#123456",
-                                        }
-                                      }
-                                    >
-                                      <i
-                                        className="material-icons"
-                                      >
-                                        person
-                                      </i>
                                       <div
-                                        className="onlineMarker"
-                                      />
-                                    </div>
+                                        className="launcher"
+                                        style={
+                                          {
+                                            "backgroundColor": "#123456",
+                                          }
+                                        }
+                                      >
+                                        <div
+                                          className="iconWrapper"
+                                        >
+                                          <BubbleIcon
+                                            className="icon"
+                                            fill="#FFFFFF"
+                                          >
+                                            <svg
+                                              className="icon"
+                                              height="24"
+                                              viewBox="0 0 24 24"
+                                              width="24"
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              xmlnsXlink="http://www.w3.org/1999/xlink"
+                                            >
+                                              <clipPath
+                                                id="bubble-icon"
+                                              >
+                                                <path
+                                                  d="m0 0h24v24h-24z"
+                                                />
+                                              </clipPath>
+                                              <g
+                                                clipPath="url(#bubble-icon)"
+                                              >
+                                                <path
+                                                  clipRule="evenodd"
+                                                  d="m19.875 21.0548c2.5274-2.2 4.125-5.4409 4.125-9.0548 0-6.62742-5.3726-12-12-12-6.62742 0-12 5.37258-12 12 0 6.6274 5.37258 12 12 12h7.875zm-12.375-7.9298c.62132 0 1.125-.5037 1.125-1.125s-.50368-1.125-1.125-1.125-1.125.5037-1.125 1.125.50368 1.125 1.125 1.125zm4.5 0c.6213 0 1.125-.5037 1.125-1.125s-.5037-1.125-1.125-1.125-1.125.5037-1.125 1.125.5037 1.125 1.125 1.125zm5.625-1.125c0 .6213-.5037 1.125-1.125 1.125s-1.125-.5037-1.125-1.125.5037-1.125 1.125-1.125 1.125.5037 1.125 1.125z"
+                                                  fill="#FFFFFF"
+                                                  fillRule="evenodd"
+                                                />
+                                              </g>
+                                            </svg>
+                                          </BubbleIcon>
+                                        </div>
+                                      </div>
+                                    </ChatLauncher>
+                                  </div>
+                                </div>
+                                <div>
+                                  <div
+                                    className="dialog"
+                                  >
                                     <div
-                                      className="agent hasIcon last"
-                                      key="last"
+                                      className="header"
                                       style={
                                         {
-                                          "borderColor": "#123456",
+                                          "backgroundColor": "#123456",
                                         }
                                       }
                                     >
-                                      <i
-                                        className="material-icons"
+                                      <ChatIntegrationAvatar
+                                        avatarType="team-members"
+                                        isOnline={true}
+                                        mainColor="#123456"
+                                        offlineColor="#EBEBEB"
+                                        shouldHideAvatarOnlineMarker={false}
                                       >
-                                        person
+                                        <div
+                                          className="agents"
+                                        >
+                                          <div
+                                            className="agent hasIcon first"
+                                            key="first"
+                                            style={
+                                              {
+                                                "borderColor": "#123456",
+                                              }
+                                            }
+                                          >
+                                            <i
+                                              className="material-icons"
+                                            >
+                                              person
+                                            </i>
+                                          </div>
+                                          <div
+                                            className="agent hasIcon middle"
+                                            key="middle"
+                                            style={
+                                              {
+                                                "borderColor": "#123456",
+                                              }
+                                            }
+                                          >
+                                            <i
+                                              className="material-icons"
+                                            >
+                                              person
+                                            </i>
+                                            <div
+                                              className="onlineMarker"
+                                            />
+                                          </div>
+                                          <div
+                                            className="agent hasIcon last"
+                                            key="last"
+                                            style={
+                                              {
+                                                "borderColor": "#123456",
+                                              }
+                                            }
+                                          >
+                                            <i
+                                              className="material-icons"
+                                            >
+                                              person
+                                            </i>
+                                          </div>
+                                        </div>
+                                      </ChatIntegrationAvatar>
+                                      <div
+                                        className="details"
+                                        style={
+                                          {
+                                            "color": "#FFFFFF",
+                                          }
+                                        }
+                                      >
+                                        <ChatTitle
+                                          title="my chat integration"
+                                        >
+                                          <div
+                                            className="title"
+                                          >
+                                            my chat integration
+                                          </div>
+                                        </ChatTitle>
+                                        <div
+                                          className="introductionText"
+                                        >
+                                          this is an intro
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      className="content"
+                                    >
+                                      <div
+                                        className="content"
+                                      />
+                                      <QuickReplies
+                                        mainColor="#123456"
+                                        quickReplies={
+                                          [
+                                            "foo",
+                                            "bar",
+                                          ]
+                                        }
+                                      >
+                                        <div
+                                          className="quickRepliesContent"
+                                        >
+                                          <div
+                                            className="quickRepliesWrapper"
+                                          >
+                                            <button
+                                              className="btn btn-reply-action reply"
+                                              key="foo-0"
+                                              style={
+                                                {
+                                                  "borderColor": "#123456",
+                                                  "color": "#123456",
+                                                }
+                                              }
+                                            >
+                                              foo
+                                            </button>
+                                            <button
+                                              className="btn btn-reply-action reply"
+                                              key="bar-1"
+                                              style={
+                                                {
+                                                  "borderColor": "#123456",
+                                                  "color": "#123456",
+                                                }
+                                              }
+                                            >
+                                              bar
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </QuickReplies>
+                                    </div>
+                                    <PoweredByGorgias
+                                      translatedTexts={
+                                        {
+                                          "actionPostbackError": "An error occurred while processing your action. Please try again.",
+                                          "backLabelBackAt": "Back online at {time}",
+                                          "backLabelBackInAMinute": "Back in 1 minute",
+                                          "backLabelBackInAnHour": "Back in 1 hour",
+                                          "backLabelBackInDays": "Back in {value} days",
+                                          "backLabelBackInHours": "Back in {value} hours",
+                                          "backLabelBackInMinutes": "Back in {value} minutes",
+                                          "backLabelBackTomorrow": "Back tomorrow",
+                                          "campaignClickToReply": "Click to reply",
+                                          "chatWithUs": "Chat with us",
+                                          "clickToRetry": "Message not delivered. Click to retry.",
+                                          "contactFormAskSubject": "What can we help you with?",
+                                          "contactFormIntro": "Leave a message and we'll email you once we're online.",
+                                          "conversationTimestampHeaderFormat": "MMMM D",
+                                          "emailCaptureInputLabel": "Get notified by email",
+                                          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+                                          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+                                          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+                                          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
+                                          "emailCapturePlaceholder": "your@email.com",
+                                          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+                                          "emailCaptureRequiredMessagePlaceholder": "Write your message",
+                                          "emailCaptureTriggerTextBase": "Leave us your email and we'll get back to you.",
+                                          "emailCaptureTriggerTypicalReplyHours": "We typically reply in a few hours.",
+                                          "emailCaptureTriggerTypicalReplyMinutes": "We typically reply in a few minutes.",
+                                          "fetchHistory": "Load more",
+                                          "fetchingHistory": "Retrieving history...",
+                                          "headerText": "Gorgias Team",
+                                          "inputPlaceholder": "Type a message...",
+                                          "introductionText": "How can we help?",
+                                          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+                                          "messageDelivered": "Delivered",
+                                          "messageError": "An error occurred while sending your message. Please try again.",
+                                          "messageIndicatorTitlePlural": "({count}) New messages",
+                                          "messageIndicatorTitleSingular": "({count}) New message",
+                                          "messageRelativeTimeDay": "{value}d ago",
+                                          "messageRelativeTimeHour": "{value}h ago",
+                                          "messageRelativeTimeJustNow": "Just now",
+                                          "messageRelativeTimeMinute": "{value}m ago",
+                                          "messageSending": "Sending...",
+                                          "messageTimestampFormat": "h:mm A",
+                                          "offlineIntroductionText": "We'll be back tomorrow",
+                                          "poweredBy": "Powered by",
+                                          "poweredByGorgias": "Powered by Gorgias",
+                                          "replyTimeMoments": "We'll reply in a few moments",
+                                          "requiredEmailCaptureInputLabel": "Email",
+                                          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
+                                          "send": "Send",
+                                          "tapToRetry": "Message not delivered. Tap to retry.",
+                                          "unsupportedActionType": "Unsupported action type.",
+                                          "unsupportedMessageType": "Unsupported message type.",
+                                          "usualReplyTimeDay": "Typically replies within a day",
+                                          "usualReplyTimeHours": "Typically replies in a few hours",
+                                          "usualReplyTimeMinutes": "Typically replies in a few minutes",
+                                          "waitTimeMediumReply": "Thanks for reaching out! Leave us your email and an agent will get back to you in about {waitTime} minutes.",
+                                        }
+                                      }
+                                    >
+                                      <div
+                                        className="poweredBy"
+                                      >
+                                        <div>
+                                          <span>
+                                            Powered by
+                                          </span>
+                                          <img
+                                            alt="powered-by"
+                                            src="test-file-stub"
+                                          />
+                                        </div>
+                                      </div>
+                                    </PoweredByGorgias>
+                                    <div
+                                      className="footer"
+                                    >
+                                      <div
+                                        className="placeholder"
+                                      >
+                                        Type a message...
+                                      </div>
+                                      <i
+                                        className="material-icons icon attachmentIcon"
+                                      >
+                                        attach_file
                                       </i>
                                     </div>
                                   </div>
-                                </ChatIntegrationAvatar>
-                                <div
-                                  className="details"
-                                  style={
-                                    {
-                                      "color": "#FFFFFF",
-                                    }
-                                  }
-                                >
-                                  <div
-                                    className="appName"
-                                  >
-                                    my chat integration
-                                  </div>
-                                  <div
-                                    className="introductionText"
-                                  >
-                                    this is an intro
-                                  </div>
                                 </div>
                               </div>
-                              <div
-                                className="content"
-                              />
-                              <QuickReplies
-                                mainColor="#123456"
-                                quickReplies={
-                                  [
-                                    "foo",
-                                    "bar",
-                                  ]
-                                }
-                              >
-                                <div
-                                  className="content quick-replies-content"
-                                >
-                                  <div
-                                    className="quick-replies-wrapper"
-                                  >
-                                    <button
-                                      className="btn btn-reply-action reply"
-                                      key="foo-0"
-                                      style={
-                                        {
-                                          "borderColor": "#123456",
-                                          "color": "#123456",
-                                        }
-                                      }
-                                    >
-                                      foo
-                                    </button>
-                                    <button
-                                      className="btn btn-reply-action reply"
-                                      key="bar-1"
-                                      style={
-                                        {
-                                          "borderColor": "#123456",
-                                          "color": "#123456",
-                                        }
-                                      }
-                                    >
-                                      bar
-                                    </button>
-                                  </div>
-                                </div>
-                              </QuickReplies>
-                              <PoweredByGorgias
-                                translatedTexts={
-                                  {
-                                    "actionPostbackError": "An error occurred while processing your action. Please try again.",
-                                    "backLabelBackAt": "Back online at {time}",
-                                    "backLabelBackInAMinute": "Back in 1 minute",
-                                    "backLabelBackInAnHour": "Back in 1 hour",
-                                    "backLabelBackInDays": "Back in {value} days",
-                                    "backLabelBackInHours": "Back in {value} hours",
-                                    "backLabelBackInMinutes": "Back in {value} minutes",
-                                    "backLabelBackTomorrow": "Back tomorrow",
-                                    "campaignClickToReply": "Click to reply",
-                                    "chatWithUs": "Chat with us",
-                                    "clickToRetry": "Message not delivered. Click to retry.",
-                                    "conversationTimestampHeaderFormat": "MMMM D",
-                                    "emailCaptureInputLabel": "Get notified by email",
-                                    "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-                                    "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-                                    "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-                                    "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-                                    "emailCapturePlaceholder": "your@email.com",
-                                    "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-                                    "emailCaptureRequiredMessagePlaceholder": "Write your message",
-                                    "fetchHistory": "Load more",
-                                    "fetchingHistory": "Retrieving history...",
-                                    "headerText": "Gorgias Team",
-                                    "inputPlaceholder": "Type a message...",
-                                    "introductionText": "How can we help?",
-                                    "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-                                    "messageDelivered": "Delivered",
-                                    "messageError": "An error occurred while sending your message. Please try again.",
-                                    "messageIndicatorTitlePlural": "({count}) New messages",
-                                    "messageIndicatorTitleSingular": "({count}) New message",
-                                    "messageRelativeTimeDay": "{value}d ago",
-                                    "messageRelativeTimeHour": "{value}h ago",
-                                    "messageRelativeTimeJustNow": "Just now",
-                                    "messageRelativeTimeMinute": "{value}m ago",
-                                    "messageSending": "Sending...",
-                                    "messageTimestampFormat": "h:mm A",
-                                    "offlineIntroductionText": "We'll be back tomorrow",
-                                    "poweredBy": "Powered by",
-                                    "poweredByGorgias": "Powered by Gorgias",
-                                    "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-                                    "send": "Send",
-                                    "tapToRetry": "Message not delivered. Tap to retry.",
-                                    "unsupportedActionType": "Unsupported action type.",
-                                    "unsupportedMessageType": "Unsupported message type.",
-                                    "usualReplyTimeDay": "Typically replies within a day",
-                                    "usualReplyTimeHours": "Typically replies in a few hours",
-                                    "usualReplyTimeMinutes": "Typically replies in a few minutes",
-                                    "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-                                  }
-                                }
-                              >
-                                <div
-                                  className="poweredBy"
-                                >
-                                  <div>
-                                    <span>
-                                      Powered by
-                                    </span>
-                                    <img
-                                      alt="powered-by"
-                                      src="test-file-stub"
-                                    />
-                                  </div>
-                                </div>
-                              </PoweredByGorgias>
-                              <div
-                                className="footer"
-                              >
-                                <div
-                                  className="placeholder"
-                                >
-                                  Type a message...
-                                </div>
-                                <i
-                                  className="icon camera"
-                                />
-                              </div>
-                            </div>
-                            <div
-                              className="buttonWrapper bottom-right"
-                            >
-                              <ChatLauncher
-                                backgroundColor="#123456"
-                                type="icon"
-                                windowState="closed"
-                              >
-                                <div
-                                  className="launcher"
-                                  style={
-                                    {
-                                      "backgroundColor": "#123456",
-                                    }
-                                  }
-                                >
-                                  <div
-                                    className="iconWrapper"
-                                  >
-                                    <BubbleIcon
-                                      className="icon"
-                                      fill="#FFFFFF"
-                                    >
-                                      <svg
-                                        className="icon"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        width="24"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        xmlnsXlink="http://www.w3.org/1999/xlink"
-                                      >
-                                        <clipPath
-                                          id="bubble-icon"
-                                        >
-                                          <path
-                                            d="m0 0h24v24h-24z"
-                                          />
-                                        </clipPath>
-                                        <g
-                                          clipPath="url(#bubble-icon)"
-                                        >
-                                          <path
-                                            clipRule="evenodd"
-                                            d="m19.875 21.0548c2.5274-2.2 4.125-5.4409 4.125-9.0548 0-6.62742-5.3726-12-12-12-6.62742 0-12 5.37258-12 12 0 6.6274 5.37258 12 12 12h7.875zm-12.375-7.9298c.62132 0 1.125-.5037 1.125-1.125s-.50368-1.125-1.125-1.125-1.125.5037-1.125 1.125.50368 1.125 1.125 1.125zm4.5 0c.6213 0 1.125-.5037 1.125-1.125s-.5037-1.125-1.125-1.125-1.125.5037-1.125 1.125.5037 1.125 1.125 1.125zm5.625-1.125c0 .6213-.5037 1.125-1.125 1.125s-1.125-.5037-1.125-1.125.5037-1.125 1.125-1.125 1.125.5037 1.125 1.125z"
-                                            fill="#FFFFFF"
-                                            fillRule="evenodd"
-                                          />
-                                        </g>
-                                      </svg>
-                                    </BubbleIcon>
-                                  </div>
-                                </div>
-                              </ChatLauncher>
-                            </div>
-                          </div>
-                        </ChatIntegrationPreview>
+                            </CustomizedChatLauncher>
+                          </ChatIntegrationPreview>
+                        </div>
                       </div>
                     </div>
                   </Col>

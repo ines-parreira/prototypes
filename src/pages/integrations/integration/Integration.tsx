@@ -426,7 +426,6 @@ export const IntegrationDetail = ({
                 if (extra === Tab.Preferences) {
                     return (
                         <GorgiasChatIntegrationPreferences
-                            currentUser={currentUser}
                             integration={integration}
                         />
                     )

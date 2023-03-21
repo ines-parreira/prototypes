@@ -134,7 +134,6 @@ const ReportIssuePreview = ({
                                 reportIssueCustomerMessage,
                             ]}
                             agentMessages={agentMessages}
-                            hideMessageTimestamp
                         />
 
                         {showHelpfulPrompt && (

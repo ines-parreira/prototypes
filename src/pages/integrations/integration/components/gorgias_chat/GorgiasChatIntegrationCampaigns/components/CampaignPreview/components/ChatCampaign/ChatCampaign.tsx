@@ -33,7 +33,17 @@ const AuthorName: React.FC<AuthorNameProps> = ({
     isAuthorSelected,
 }) => {
     if (isAuthorSelected) {
-        return <AgentDisplayName name={authorName!} type={avatar?.nameType} />
+        return (
+            <AgentDisplayName
+                name={authorName!}
+                type={
+                    isAuthorSelected &&
+                    avatar?.nameType === GorgiasChatAvatarNameType.CHAT_TITLE
+                        ? GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                        : avatar?.nameType
+                }
+            />
+        )
     }
 
     if (avatar?.nameType === GorgiasChatAvatarNameType.CHAT_TITLE) {
@@ -84,9 +94,7 @@ export const ChatCampaign = ({
                     <div className={css.author}>
                         <ChatAvatar
                             className={css.authorAvatar}
-                            chatTitle={
-                                isAuthorSelected ? authorName : chatTitle
-                            }
+                            chatTitle={chatTitle}
                             agentName={authorName || 'Random Agent'}
                             agentAvatarUrl={authorAvatarUrl}
                             avatar={avatar}
@@ -95,6 +103,13 @@ export const ChatCampaign = ({
                                 avatar?.imageType ===
                                     GorgiasChatAvatarImageType.AGENT_PICTURE &&
                                 !isAuthorSelected
+                            }
+                            forceNameType={
+                                isAuthorSelected &&
+                                avatar?.nameType ===
+                                    GorgiasChatAvatarNameType.CHAT_TITLE
+                                    ? GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                                    : undefined
                             }
                         />
                     </div>

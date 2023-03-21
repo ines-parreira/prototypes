@@ -2,21 +2,20 @@ import classnames from 'classnames'
 import moment from 'moment'
 import React, {ReactNode} from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import Collapse from 'pages/common/components/Collapse/Collapse'
-import {FeatureFlagKey} from 'config/featureFlags'
+
+import useAppSelector from 'hooks/useAppSelector'
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 
 import {
-    CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
-    CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-    CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
-    CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
-    isAutoresponderReply,
-} from '../../../../../../config/integrations'
-import {
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
+    isAutoresponderReply,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {
     GorgiasChatAvatarSettings,
@@ -26,11 +25,12 @@ import {
 } from '../../../../../../models/integration/types'
 import {PositionAxis} from '../GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance'
 
+import ChatTitle from './ChatTitle'
 import ChatIntegrationAvatar from './ChatIntegrationAvatar'
 import css from './ChatIntegrationPreview.less'
 import {getTextColorBasedOnBackground} from './color-utils'
 import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
-import ChatLauncher from './ChatLauncher'
+import CustomizedChatLauncher from './CustomizedChatLauncher'
 
 type Props = {
     name: string
@@ -60,6 +60,7 @@ type Props = {
     }
     isOpen?: boolean
     showBackground?: boolean
+    contentClassName?: string
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -93,60 +94,25 @@ const ChatIntegrationPreview = (props: Props) => {
         },
         isOpen = true,
         showBackground = true,
+        contentClassName,
     } = props
 
-    const isLauncherCustomizationEnabled =
-        useFlags()[FeatureFlagKey.ChatLauncherCustomization]
+    const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
+
+    const businessHours = businessHoursSettings?.data.business_hours || []
+
+    const businessHoursFromHour = businessHours.length
+        ? Number(businessHours[0].from_time.split(':')[0])
+        : 9
 
     // Preserve the space which should be occupied by a string when the string is empty
     const nonbreak = (str?: string) => {
         return str || '\u00a0'
     }
 
-    const isButtonOnTop =
-        position.alignment === GorgiasChatPositionAlignmentEnum.TOP_RIGHT ||
-        position.alignment === GorgiasChatPositionAlignmentEnum.TOP_LEFT
-
     const offlineColor = '#EBEBEB' // Colors.LightGrey in chat client
 
     const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
-
-    const getOffsetXWidth = (): number => {
-        const strLength = `${position.offsetX}px`.length
-        if (strLength <= 4) {
-            return 40
-        }
-
-        return strLength * 10
-    }
-
-    const getPreviewCustomStyle = () => {
-        if (editedPositionAxis !== PositionAxis.AXIS_X) {
-            return {}
-        }
-
-        return {
-            [[
-                GorgiasChatPositionAlignmentEnum.BOTTOM_LEFT,
-                GorgiasChatPositionAlignmentEnum.TOP_LEFT,
-            ].includes(position.alignment)
-                ? 'paddingLeft'
-                : 'paddingRight']: getOffsetXWidth(),
-            width: 380 + getOffsetXWidth(),
-        }
-    }
-
-    const getOffsetBarCustomStyle = () => {
-        return {
-            [[
-                GorgiasChatPositionAlignmentEnum.BOTTOM_LEFT,
-                GorgiasChatPositionAlignmentEnum.TOP_LEFT,
-            ].includes(position.alignment)
-                ? 'left'
-                : 'right']: -getOffsetXWidth(),
-            width: getOffsetXWidth(),
-        }
-    }
 
     const getTypicalResponseText = () => {
         if (!isAutoresponderReply(autoResponderReply)) {
@@ -154,13 +120,15 @@ const ChatIntegrationPreview = (props: Props) => {
         }
 
         return {
-            [CHAT_AUTO_RESPONDER_REPLY_SHORTLY]:
+            [GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC]:
+                translatedTexts.replyTimeMoments,
+            [GORGIAS_CHAT_AUTO_RESPONDER_REPLY_SHORTLY]:
                 translatedTexts.usualReplyTimeMinutes,
-            [CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES]:
+            [GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES]:
                 translatedTexts.usualReplyTimeMinutes,
-            [CHAT_AUTO_RESPONDER_REPLY_IN_HOURS]:
+            [GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS]:
                 translatedTexts.usualReplyTimeHours,
-            [CHAT_AUTO_RESPONDER_REPLY_IN_DAY]:
+            [GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY]:
                 translatedTexts.usualReplyTimeDay,
         }[autoResponderReply]
     }
@@ -190,102 +158,19 @@ const ChatIntegrationPreview = (props: Props) => {
         )
     }
 
-    if (!isOpen) {
-        return (
-            <div
-                className={classnames(
-                    css.preview,
-                    showBackground && css.previewWithBackground
-                )}
-                style={{...getPreviewCustomStyle()}}
-            >
-                <div
-                    className={classnames(
-                        css.buttonWrapper,
-                        css[position.alignment],
-                        css.onlyButton
-                    )}
-                >
-                    <ChatLauncher
-                        {...launcher}
-                        backgroundColor={mainColor}
-                        windowState="closed"
-                    />
-                    {editedPositionAxis === PositionAxis.AXIS_X && (
-                        <div
-                            className={css['axis-x']}
-                            style={{...getOffsetBarCustomStyle()}}
-                        >
-                            <div className={css.offsetLine} />
-                            <div className={css.offsetContent}>
-                                {`${position.offsetX}px`}
-                            </div>
-                        </div>
-                    )}
-                    {editedPositionAxis === PositionAxis.AXIS_Y && (
-                        <div className={css['axis-y']}>
-                            <div className={css.offsetLine} />
-                            <div className={css.offsetContent}>
-                                {`${position.offsetY}px`}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </div>
-        )
-    }
-
-    const ChatButton = isLauncherCustomizationEnabled ? (
-        <ChatLauncher
-            {...launcher}
-            backgroundColor={mainColor}
-            windowState="opened"
-        />
-    ) : (
-        <ChatLauncher
-            {...launcher}
-            backgroundColor={mainColor}
-            windowState="closed"
-        />
-    )
-
     return (
-        <div
+        <CustomizedChatLauncher
             className={classnames(
                 css.preview,
                 showBackground && css.previewWithBackground
             )}
-            style={{...getPreviewCustomStyle()}}
+            launcher={launcher}
+            position={position}
+            mainColor={isOnline ? mainColor : offlineColor}
+            hideButton={hideButton}
+            editedPositionAxis={editedPositionAxis}
+            isClosed={!isOpen || !!editedPositionAxis}
         >
-            {isButtonOnTop && !hideButton && (
-                <div
-                    className={classnames(
-                        css.buttonWrapper,
-                        css[position.alignment]
-                    )}
-                >
-                    {ChatButton}
-                    {editedPositionAxis === PositionAxis.AXIS_X && (
-                        <div
-                            className={css['axis-x']}
-                            style={{...getOffsetBarCustomStyle()}}
-                        >
-                            <div className={css.offsetLine} />
-                            <div className={css.offsetContent}>
-                                {`${position.offsetX}px`}
-                            </div>
-                        </div>
-                    )}
-                    {editedPositionAxis === PositionAxis.AXIS_Y && (
-                        <div className={css['axis-y']}>
-                            <div className={css.offsetLine} />
-                            <div className={css.offsetContent}>
-                                {`${position.offsetY}px`}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
             <div className={css.dialog}>
                 <div
                     className={css.header}
@@ -311,14 +196,14 @@ const ChatIntegrationPreview = (props: Props) => {
                         avatarTeamPictureUrl={avatarTeamPictureUrl}
                         isOnline={isOnline}
                         shouldHideAvatarOnlineMarker={
-                            shouldHideAvatarOnlineMarker
+                            !isOnline || shouldHideAvatarOnlineMarker
                         }
                         mainColor={mainColor}
                         offlineColor={offlineColor}
                     />
 
                     <div className={css.details} style={{color: contrastColor}}>
-                        <div className={css.appName}>{nonbreak(name)}</div>
+                        <ChatTitle title={name} />
                         <div className={css.introductionText}>
                             {nonbreak(
                                 isOnline
@@ -332,7 +217,7 @@ const ChatIntegrationPreview = (props: Props) => {
                                 {translatedTexts.backLabelBackAt.replace(
                                     '{time}',
                                     moment()
-                                        .hour(9)
+                                        .hour(businessHoursFromHour)
                                         .minutes(0)
                                         .locale(language)
                                         .format('LT')
@@ -341,9 +226,7 @@ const ChatIntegrationPreview = (props: Props) => {
                         )}
                         {isOnline &&
                             autoResponderEnabled &&
-                            autoResponderReply &&
-                            autoResponderReply !==
-                                GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC && (
+                            autoResponderReply && (
                                 <div className={css.replyTime}>
                                     {ClockIcon}
                                     {getTypicalResponseText()}
@@ -352,7 +235,9 @@ const ChatIntegrationPreview = (props: Props) => {
                     </div>
                 </div>
 
-                {children}
+                <div className={classnames(css.content, contentClassName)}>
+                    {children}
+                </div>
 
                 {renderPoweredBy && (
                     <GorgiasChatPoweredBy translatedTexts={translatedTexts} />
@@ -364,41 +249,19 @@ const ChatIntegrationPreview = (props: Props) => {
                             {nonbreak(translatedTexts.inputPlaceholder)}
                         </div>
 
-                        <i className={classnames(css.icon, css.camera)} />
+                        <i
+                            className={classnames(
+                                'material-icons',
+                                css.icon,
+                                css.attachmentIcon
+                            )}
+                        >
+                            attach_file
+                        </i>
                     </div>
                 )}
             </div>
-
-            {!isButtonOnTop && !hideButton && (
-                <div
-                    className={classnames(
-                        css.buttonWrapper,
-                        css[position.alignment]
-                    )}
-                >
-                    {ChatButton}
-                    {editedPositionAxis === PositionAxis.AXIS_X && (
-                        <div
-                            className={css['axis-x']}
-                            style={{...getOffsetBarCustomStyle()}}
-                        >
-                            <div className={css.offsetLine} />
-                            <div className={css.offsetContent}>
-                                {`${position.offsetX}px`}
-                            </div>
-                        </div>
-                    )}
-                    {editedPositionAxis === PositionAxis.AXIS_Y && (
-                        <div className={css['axis-y']}>
-                            <div className={css.offsetLine} />
-                            <div className={css.offsetContent}>
-                                {`${position.offsetY}px`}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
-        </div>
+        </CustomizedChatLauncher>
     )
 }
 export default ChatIntegrationPreview

@@ -3,6 +3,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {GorgiasChatAvatarNameType} from 'models/integration/types'
+import ChatTitle from './ChatTitle'
 
 export const AgentDisplayName = ({
     chatTitle,
@@ -18,6 +19,10 @@ export const AgentDisplayName = ({
     let displayName = name
     const isAgentAvatarCustomizationEnabled =
         useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
+
+    if (type === GorgiasChatAvatarNameType.CHAT_TITLE) {
+        return <ChatTitle title={chatTitle} />
+    }
 
     if (isAgentAvatarCustomizationEnabled) {
         const displayNameArray = displayName.split(' ')
@@ -36,9 +41,6 @@ export const AgentDisplayName = ({
                 break
             case GorgiasChatAvatarNameType.AGENT_FULLNAME:
                 // no need to update 'displayName'
-                break
-            case GorgiasChatAvatarNameType.CHAT_TITLE:
-                displayName = chatTitle ?? displayName
                 break
         }
     }

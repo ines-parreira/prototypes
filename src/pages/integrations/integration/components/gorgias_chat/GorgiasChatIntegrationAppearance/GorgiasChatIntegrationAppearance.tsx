@@ -18,8 +18,8 @@ import InputField from 'pages/common/forms/input/InputField'
 import wrench from 'assets/img/icons/wrench.svg'
 import storefront from 'assets/img/icons/storefront.svg'
 
+import * as ToggleButton from 'pages/common/components/ToggleButton'
 import Button from 'pages/common/components/button/Button'
-import Group from 'pages/common/components/layout/Group'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
@@ -61,8 +61,10 @@ import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import GorgiasChatIntegrationNavigation from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+import ConversationTimestamp from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationTimestamp'
 import ChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatLauncher'
-import OptionalEmailCapture from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/OptionalEmailCapture'
+import AutoResponderMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AutoResponderMessages'
+import OfflineMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/OfflineMessages'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
@@ -544,30 +546,24 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
     const chatPreview = (
         <div className={css.container}>
-            <Group className="mb-3">
-                <Button
-                    intent={isOnline ? 'primary' : 'secondary'}
-                    onClick={() =>
-                        setState((prevState) => ({
-                            ...prevState,
-                            isOnline: true,
-                        }))
-                    }
-                >
-                    During business hours
-                </Button>
-                <Button
-                    intent={!isOnline ? 'primary' : 'secondary'}
-                    onClick={() =>
-                        setState((prevState) => ({
-                            ...prevState,
-                            isOnline: false,
-                        }))
-                    }
-                >
-                    Outside business hours
-                </Button>
-            </Group>
+            <ToggleButton.Wrapper
+                type={ToggleButton.Type.Label}
+                value={isOnline}
+                onChange={(isOnline: boolean) =>
+                    setState((prevState) => ({
+                        ...prevState,
+                        isOnline,
+                    }))
+                }
+                className={css.toggleButtonWrapper}
+            >
+                <ToggleButton.Option value={true}>
+                    During Business Hours
+                </ToggleButton.Option>
+                <ToggleButton.Option value={false}>
+                    Outside Business Hours
+                </ToggleButton.Option>
+            </ToggleButton.Wrapper>
             <ChatIntegrationPreview
                 name={name}
                 avatar={avatar}
@@ -584,14 +580,29 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 autoResponderReply={autoResponderReply}
                 launcher={state.launcher}
                 isOpen={isChatOpenInPreview}
+                renderFooter={isOnline}
             >
-                <OptionalEmailCapture
-                    currentUser={currentUser}
-                    conversationColor={conversationColor}
-                    chatTitle={name}
-                    avatar={state.avatar}
-                    language={language}
-                />
+                {isOnline ? (
+                    <AutoResponderMessages
+                        currentUser={currentUser}
+                        conversationColor={conversationColor}
+                        chatTitle={name}
+                        avatar={state.avatar}
+                        language={language}
+                        autoResponderReply={
+                            GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
+                        }
+                    />
+                ) : (
+                    <>
+                        <ConversationTimestamp />
+                        <OfflineMessages
+                            mainColor={mainColor}
+                            chatTitle={name}
+                            language={language}
+                        />
+                    </>
+                )}
             </ChatIntegrationPreview>
         </div>
     )
@@ -1172,6 +1183,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                 type="text"
                                                 label="Label"
                                                 value={state.launcher.label}
+                                                onFocus={() => {
+                                                    setIsChatOpenInPreview(
+                                                        false
+                                                    )
+                                                }}
                                                 onChange={(value: string) => {
                                                     setState((prevState) => ({
                                                         ...prevState,
@@ -1280,6 +1296,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     editedPositionAxis:
                                                         PositionAxis.AXIS_X,
                                                 }))
+                                                setIsChatOpenInPreview(false)
                                             }}
                                             onBlur={() => {
                                                 setState((prevState) => ({
@@ -1338,6 +1355,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     editedPositionAxis:
                                                         PositionAxis.AXIS_Y,
                                                 }))
+                                                setIsChatOpenInPreview(false)
                                             }}
                                             onBlur={() => {
                                                 setState((prevState) => ({

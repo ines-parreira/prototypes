@@ -53,7 +53,6 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         integration: fromJS({}),
         emailIntegrations: [],
         updateOrCreateIntegration: jest.fn(),
-        currentUser: fromJS({}),
     }
 
     describe('componentDidMount()', () => {
@@ -251,7 +250,6 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         <GorgiasChatIntegrationPreferencesComponent
                             updateOrCreateIntegration={jest.fn()}
                             integration={integration}
-                            currentUser={fromJS({})}
                         />
                     )
 
@@ -259,7 +257,9 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 expect(prevState.autoResponderEnabled).toEqual(
                     autoResponderEnabled
                 )
-                expect(prevState.preview).toEqual(PREVIEW_EMAIL_CAPTURE)
+                expect(prevState.preview).toEqual(
+                    PREVIEW_LIVE_CHAT_AVAILABILITY
+                )
 
                 const expectedState = (fromJS(prevState) as Map<any, any>)
                     .set('autoResponderEnabled', !autoResponderEnabled)
@@ -355,7 +355,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             expect(prevState.autoResponderReply).toEqual(
                 CHAT_AUTO_RESPONDER_REPLY_SHORTLY
             )
-            expect(prevState.preview).toEqual(PREVIEW_EMAIL_CAPTURE)
+            expect(prevState.preview).toEqual(PREVIEW_LIVE_CHAT_AVAILABILITY)
 
             const expectedState = (fromJS(prevState) as Map<any, any>)
                 .set('autoResponderReply', CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES)
@@ -395,7 +395,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             expect(prevState.liveChatAvailability).toEqual(
                 GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
             )
-            expect(prevState.preview).toEqual(PREVIEW_EMAIL_CAPTURE)
+            expect(prevState.preview).toEqual(PREVIEW_LIVE_CHAT_AVAILABILITY)
 
             const expectedState = (fromJS(prevState) as Map<any, any>)
                 .set(

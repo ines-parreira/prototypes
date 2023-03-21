@@ -17,7 +17,9 @@ export const GorgiasChatIntegrationPreviewContainer = ({
         <Row>
             <Col>{children}</Col>
             <Col>
-                <div className={css.preview}>{preview}</div>
+                <div className={css.stickyParent}>
+                    <div className={css.preview}>{preview}</div>
+                </div>
             </Col>
         </Row>
     </Container>

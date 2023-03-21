@@ -1,7 +1,4 @@
 import React from 'react'
-import classnames from 'classnames'
-
-import {assetsUrl} from 'utils'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
@@ -10,6 +7,7 @@ import {
 
 import css from './ChatIntegrationPreview.less'
 import {getTextColorBasedOnBackground} from './color-utils'
+import BotMessages from './BotMessages'
 
 type Props = {
     name: Maybe<string>
@@ -32,59 +30,40 @@ export default class RequiredEmailCapture extends React.Component<Props> {
             ]
 
         return (
-            <div
-                className={classnames(
-                    css.content,
-                    css.requiredEmailCaptureContent
-                )}
-            >
-                <div className={css.appMakerMessageWrapper}>
-                    <div className={classnames(css.avatar, css.robotLogo)}>
-                        <img
-                            src={assetsUrl('/img/icons/robot-icon.svg')}
-                            alt="Robot icon"
-                        />
-                    </div>
-                    <div>
-                        <div className={css.user}>{name}</div>
-
-                        <div
-                            className={classnames(
-                                css.bubble,
-                                css.firstMessageOfAppMaker,
-                                'mb-2'
-                            )}
-                        >
-                            {translatedTexts.requiredEmailCaptureWelcomeMessage}
+            <div className={css.requiredEmailCaptureContent}>
+                <BotMessages
+                    chatTitle={name}
+                    messages={[
+                        translatedTexts.requiredEmailCaptureWelcomeMessage,
+                    ]}
+                >
+                    <div className={css.optionalEmailCapture}>
+                        <div className={css.inputLabel}>
+                            {translatedTexts.requiredEmailCaptureInputLabel}{' '}
+                            <span className={css.asterisk}>*</span>
                         </div>
-
-                        <div className={css.optionalEmailCapture}>
-                            <div className={css.inputLabel}>
-                                {translatedTexts.emailCaptureInputLabel}
-                            </div>
-                            <div className={css.inputWrapper}>
-                                <input
-                                    className="input"
-                                    placeholder={
-                                        translatedTexts.emailCapturePlaceholder
-                                    }
-                                    type="email"
-                                    readOnly
-                                />
-                                <button
-                                    style={{backgroundColor: conversationColor}}
+                        <div className={css.inputWrapper}>
+                            <input
+                                className="input"
+                                placeholder={
+                                    translatedTexts.emailCapturePlaceholder
+                                }
+                                type="email"
+                                readOnly
+                            />
+                            <button
+                                style={{backgroundColor: conversationColor}}
+                            >
+                                <i
+                                    className="material-icons"
+                                    style={{color: contrastColor}}
                                 >
-                                    <i
-                                        className="material-icons"
-                                        style={{color: contrastColor}}
-                                    >
-                                        chevron_right
-                                    </i>
-                                </button>
-                            </div>
+                                    chevron_right
+                                </i>
+                            </button>
                         </div>
                     </div>
-                </div>
+                </BotMessages>
             </div>
         )
     }

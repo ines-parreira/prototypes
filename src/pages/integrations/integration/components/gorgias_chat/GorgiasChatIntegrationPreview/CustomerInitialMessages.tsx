@@ -4,24 +4,21 @@ import React, {ReactNode} from 'react'
 import css from './ChatIntegrationPreview.less'
 import {getTextColorBasedOnBackground} from './color-utils'
 import ConversationTimestamp from './ConversationTimestamp'
-import MessageTimestamp from './MessageTimestamp'
 
 type Props = {
     conversationColor: string
     messages: ReactNode[]
     hideConversationTimestamp?: boolean
-    hideMessageTimestamp?: boolean
 }
 
 const CustomerInitialMessages = ({
     conversationColor,
     messages,
     hideConversationTimestamp,
-    hideMessageTimestamp,
 }: Props) => {
     const contrastColor = getTextColorBasedOnBackground(conversationColor)
     return (
-        <div>
+        <div className="d-flex flex-column">
             {!hideConversationTimestamp && <ConversationTimestamp />}
 
             {messages.map((message, index) => (
@@ -41,8 +38,6 @@ const CustomerInitialMessages = ({
                     {message}
                 </div>
             ))}
-
-            {!hideMessageTimestamp && <MessageTimestamp />}
         </div>
     )
 }

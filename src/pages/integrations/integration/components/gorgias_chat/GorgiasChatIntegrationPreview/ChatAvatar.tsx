@@ -19,6 +19,7 @@ type Props = {
     chatTitle?: string
     className?: string
     showPlaceholderAvatar?: boolean
+    forceNameType?: GorgiasChatAvatarNameType
 }
 const ChatAvatar: React.FC<Props> = ({
     agentName,
@@ -27,7 +28,10 @@ const ChatAvatar: React.FC<Props> = ({
     chatTitle,
     className,
     showPlaceholderAvatar,
+    forceNameType,
 }) => {
+    const nameType = forceNameType || avatar?.nameType
+
     const isAgentAvatarCustomizationEnabled =
         useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
 
@@ -41,7 +45,7 @@ const ChatAvatar: React.FC<Props> = ({
 
     const name =
         isAgentAvatarCustomizationEnabled &&
-        avatar?.nameType === GorgiasChatAvatarNameType.CHAT_TITLE
+        nameType === GorgiasChatAvatarNameType.CHAT_TITLE
             ? chatTitle
             : agentName
 
@@ -68,8 +72,7 @@ const ChatAvatar: React.FC<Props> = ({
                 getInitials(
                     name,
                     isAgentAvatarCustomizationEnabled &&
-                        avatar?.nameType ===
-                            GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                        nameType === GorgiasChatAvatarNameType.AGENT_FIRST_NAME
                 )
             )}
         </div>

@@ -131,7 +131,6 @@ const SelfServiceChatIntegrationQuickResponsePage = ({integration}: Props) => {
             ]}
             agentMessages={agentMessages}
             hideConversationTimestamp
-            hideMessageTimestamp
             enableAgentMessagesAnimations
         >
             {previewStep === PreviewStep.REPLIES && (

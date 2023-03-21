@@ -13,13 +13,8 @@ export default class QuickReplies extends Component<Props> {
         const {quickReplies, mainColor} = this.props
 
         return (
-            <div
-                className={classnames(
-                    css.content,
-                    css['quick-replies-content']
-                )}
-            >
-                <div className={css['quick-replies-wrapper']}>
+            <div className={css.quickRepliesContent}>
+                <div className={css.quickRepliesWrapper}>
                     {quickReplies.map((quickReply, index) => (
                         <button
                             key={`${quickReply}-${index}`}

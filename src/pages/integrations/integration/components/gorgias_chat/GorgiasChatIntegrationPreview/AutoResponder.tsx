@@ -1,34 +1,27 @@
 import React, {Component} from 'react'
-import classnames from 'classnames'
-
-import {assetsUrl} from 'utils'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from '../../../../../../config/integrations/gorgias_chat'
-import {CHAT_AUTO_RESPONDER_TEXTS} from '../../../../../../config/integrations'
+import {CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES} from '../../../../../../config/integrations'
 
-import css from './ChatIntegrationPreview.less'
-import CustomerInitialMessages from './CustomerInitialMessages'
+import BotMessages from './BotMessages'
+import EmailCaptureMessage from './EmailCaptureMessage'
 
 type Props = {
     conversationColor: string
-    name?: string
+    chatTitle?: string
     language?: string
     autoResponderReply?: string
 }
 
-export default class OptionalEmailCapture extends Component<Props> {
+export default class AutoResponder extends Component<Props> {
     render() {
-        const {conversationColor, name, language, autoResponderReply} =
+        const {conversationColor, chatTitle, language, autoResponderReply} =
             this.props
 
-        const autoResponderTranslatedTexts =
-            CHAT_AUTO_RESPONDER_TEXTS[
-                language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
-            ]
         const widgetTranslatedTexts =
             GORGIAS_CHAT_WIDGET_TEXTS[
                 language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
@@ -38,39 +31,22 @@ export default class OptionalEmailCapture extends Component<Props> {
             autoResponderReply === GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
                 ? widgetTranslatedTexts['waitTimeMediumReply'].replace(
                       '{waitTime}',
-                      '10'
+                      '5'
                   )
-                : autoResponderTranslatedTexts[autoResponderReply!]
+                : `${widgetTranslatedTexts.emailCaptureTriggerTextBase} ${
+                      autoResponderReply ===
+                      CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES
+                          ? widgetTranslatedTexts.emailCaptureTriggerTypicalReplyMinutes
+                          : widgetTranslatedTexts.emailCaptureTriggerTypicalReplyHours
+                  }`
 
         return (
-            <div className={css.content}>
-                <CustomerInitialMessages
+            <BotMessages chatTitle={chatTitle} messages={[translatedReply]}>
+                <EmailCaptureMessage
                     conversationColor={conversationColor}
-                    messages={['hi']}
+                    language={language}
                 />
-
-                <div className={css.appMakerMessageWrapper}>
-                    <div className={classnames(css.avatar, css.robotLogo)}>
-                        <img
-                            src={assetsUrl('/img/icons/robot-icon.svg')}
-                            alt="Robot icon"
-                        />
-                    </div>
-                    <div>
-                        <div className={css.user}>{name}</div>
-
-                        <div
-                            className={classnames(
-                                css.bubble,
-                                css.firstMessageOfAppMaker,
-                                'mb-2'
-                            )}
-                        >
-                            {translatedReply}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </BotMessages>
         )
     }
 }

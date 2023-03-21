@@ -7,7 +7,7 @@ export enum CONSTRAST_COLORS {
 const DEFAULT_CONTRAST_LEVEL = 2.8
 
 export function getTextColorBasedOnBackground(
-    mainColor: string,
+    mainColor?: string,
     contrastLevel = DEFAULT_CONTRAST_LEVEL
 ): CONSTRAST_COLORS {
     if (!mainColor) {

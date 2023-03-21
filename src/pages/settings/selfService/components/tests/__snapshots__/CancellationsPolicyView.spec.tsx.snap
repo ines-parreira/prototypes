@@ -875,92 +875,99 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
               </button>
             </div>
             <div
-              class="preview"
+              class="wrapper preview"
             >
-              <div
-                class="dialog"
-              >
+              <div>
                 <div
-                  class="header"
-                  style="background-color: rgb(13, 135, 221);"
+                  class="dialog"
                 >
                   <div
-                    class="agents"
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
                   >
                     <div
-                      class="agent hasIcon first"
-                      style="border-color: #0d87dd;"
+                      class="agents"
                     >
-                      <i
-                        class="material-icons"
+                      <div
+                        class="agent hasIcon first"
+                        style="border-color: #0d87dd;"
                       >
-                        person
-                      </i>
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                      <div
+                        class="agent hasIcon middle"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                        <div
+                          class="onlineMarker"
+                        />
+                      </div>
+                      <div
+                        class="agent hasIcon last"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
                     </div>
                     <div
-                      class="agent hasIcon middle"
-                      style="border-color: #0d87dd;"
+                      class="details"
+                      style="color: rgb(255, 255, 255);"
                     >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
                       <div
-                        class="onlineMarker"
+                        class="title"
+                      >
+                        Chat
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="content"
+                  />
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
+                      <img
+                        alt="powered-by"
+                        src="test-file-stub"
                       />
                     </div>
-                    <div
-                      class="agent hasIcon last"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
                   </div>
                   <div
-                    class="details"
-                    style="color: rgb(255, 255, 255);"
+                    class="footer"
                   >
                     <div
-                      class="appName"
+                      class="placeholder"
                     >
-                      Chat
+                      Type a message...
                     </div>
-                    <div
-                      class="introductionText"
+                    <i
+                      class="material-icons icon attachmentIcon"
                     >
-                      How can we help?
-                    </div>
+                      attach_file
+                    </i>
                   </div>
-                </div>
-                <div
-                  class="poweredBy"
-                >
-                  <div>
-                    <span>
-                      Powered by
-                    </span>
-                    <img
-                      alt="powered-by"
-                      src="test-file-stub"
-                    />
-                  </div>
-                </div>
-                <div
-                  class="footer"
-                >
-                  <div
-                    class="placeholder"
-                  >
-                    Type a message...
-                  </div>
-                  <i
-                    class="icon camera"
-                  />
                 </div>
               </div>
             </div>

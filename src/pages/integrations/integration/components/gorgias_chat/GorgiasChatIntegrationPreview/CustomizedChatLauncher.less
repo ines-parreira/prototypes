@@ -1,0 +1,207 @@
+@import '~css/new/colorTokens';
+@import '~css/new/layout.less';
+
+:local {
+    .wrapper {
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: column-reverse;
+
+        &.buttonOnTop {
+            flex-direction: column;
+        }
+    }
+
+    .transparentPlaceholder {
+        flex-grow: 1;
+    }
+
+    .offsetContent {
+        position: absolute;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+        color: @classic-neutral-grey-4;
+    }
+
+    .offsetLine {
+        position: relative;
+    }
+
+    .axisLauncherWrapper {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .axisCenter {
+        position: relative;
+    }
+
+    .axisX,
+    .axisY {
+        position: absolute;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 48px;
+            height: 8px;
+
+            left: 0;
+            top: 0;
+            position: absolute;
+        }
+    }
+
+    @offset-line-size: 48px;
+
+    .axisX {
+        flex-direction: column-reverse;
+        margin-top: -8px;
+
+        transform: translateY(50%);
+
+        .offsetLine {
+            width: @offset-line-size;
+            height: 8px;
+        }
+
+        .offsetContent {
+            top: -16px;
+        }
+    }
+
+    .axisY {
+        left: 0;
+
+        transform: translateX(-50%);
+
+        .offsetLine {
+            height: @offset-line-size;
+            width: 8px;
+        }
+
+        img {
+            transform-origin: top left;
+            transform: rotate(-90deg) translate(-100%);
+        }
+
+        .offsetContent {
+            left: 12px;
+        }
+    }
+
+    .buttonWrapper {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        transition: all 0.2s ease;
+        position: relative;
+
+        &.editing {
+            &.top-right,
+            &.top-left {
+                padding-top: @layout-spacing-m;
+
+                .axisCenter {
+                    top: -60px;
+                }
+
+                &.withLabel .axisCenter {
+                    top: -52px;
+                }
+
+                .axisY {
+                    top: -@offset-line-size;
+                }
+            }
+
+            &.bottom-right,
+            &.bottom-left {
+                padding-bottom: @layout-spacing-m;
+                margin-top: -@layout-spacing-m;
+
+                .axisY {
+                    top: 0;
+                }
+            }
+
+            &.top-left,
+            &.bottom-left {
+                padding-left: @layout-spacing-m;
+            }
+
+            &.top-right,
+            &.bottom-right {
+                padding-right: @layout-spacing-m;
+            }
+        }
+
+        @launcher-size: 30px;
+        @launcher-spacing: @layout-spacing-m + @launcher-size;
+
+        @launcher-with-label-height: 26px;
+        @launcher-with-label-vertical-spacing: @layout-spacing-m +
+            @launcher-with-label-height;
+
+        &.top-right {
+            margin-bottom: 1em;
+            .axisX  {
+                top: @launcher-spacing;
+                right: -@layout-spacing-m;
+            }
+
+            &.withLabel .axisX  {
+                top: @launcher-with-label-vertical-spacing;
+            }
+        }
+
+        &.top-left {
+            justify-content: flex-start;
+            margin-bottom: 1em;
+
+            .axisX  {
+                top: @launcher-spacing;
+                left: -@layout-spacing-m;
+            }
+
+            &.withLabel .axisX {
+                top: @launcher-with-label-vertical-spacing;
+            }
+
+            .axisY {
+                top: -@layout-spacing-m;
+            }
+        }
+
+        &.bottom-left {
+            justify-content: flex-start;
+            margin-top: 1em;
+            .axisX  {
+                left: -@layout-spacing-m;
+                bottom: @launcher-spacing;
+            }
+
+            &.withLabel .axisX  {
+                bottom: @launcher-with-label-vertical-spacing;
+            }
+        }
+
+        &.bottom-right {
+            margin-top: 1em;
+            .axisX {
+                bottom: @launcher-spacing;
+                right: -@layout-spacing-m;
+            }
+
+            &.withLabel .axisX {
+                bottom: @launcher-with-label-vertical-spacing;
+            }
+        }
+    }
+}

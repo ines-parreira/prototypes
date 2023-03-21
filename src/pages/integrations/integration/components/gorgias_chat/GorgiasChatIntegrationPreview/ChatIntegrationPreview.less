@@ -14,16 +14,12 @@
     @dark-contrast-color: '161616';
 
     .preview {
-        position: relative;
         border-radius: 4px;
         width: 384px;
         color: @textColor;
 
         font-weight: 600;
         pointer-events: none;
-
-        display: flex;
-        flex-direction: column;
 
         &.previewWithBackground {
             width: 432px;
@@ -79,6 +75,10 @@
             .appName {
                 font-size: 13px;
                 font-weight: 600;
+
+                &.appNameEmpty {
+                    opacity: 0.3;
+                }
             }
 
             .introductionText {
@@ -100,9 +100,11 @@
 
         .content {
             overflow: auto;
-            padding: 15px 20px 15px 20px;
+            padding: @layout-spacing-s;
             flex: 1;
             pointer-events: initial;
+            display: flex;
+            flex-direction: column;
 
             .conversationTimestamp {
                 color: @classic-neutral-grey-4;
@@ -114,7 +116,6 @@
             }
 
             .messageTimestamp {
-                clear: both;
                 color: @grey;
                 font-size: 12px;
                 margin-top: 5px;
@@ -125,31 +126,24 @@
                 }
             }
 
-            .automatedTimestamp {
-                margin-top: 10px;
-                color: @classic-neutral-grey-4;
-                font-size: 12px;
-            }
+            .quickRepliesContent {
+                display: flex;
+                align-items: flex-end;
+                flex: 1;
 
-            &.quick-replies-content {
-                padding: 0 20px;
-                flex-shrink: 0;
-                flex: 0;
                 overflow: hidden;
-                min-height: 38px;
                 pointer-events: none;
 
-                .quick-replies-wrapper {
+                .quickRepliesWrapper {
                     display: flex;
                     flex-wrap: wrap;
-                    justify-content: center;
-                    width: 326px;
+                    justify-content: flex-end;
+                    padding-left: 10%;
+                }
 
-                    .reply {
-                        background: white;
-                        margin: 0 5px 5px 0;
-                        border-radius: 14px;
-                    }
+                .reply {
+                    background: white;
+                    margin: 8px 0 0 8px;
                 }
             }
         }
@@ -288,19 +282,16 @@
         height: 1em;
         background-size: cover;
 
-        &.camera {
-            @freeGrey: escape(@grey);
-
-            background-image: url('data:image/svg+xml;utf8,<svg width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M896 672q119 0 203.5 84.5t84.5 203.5-84.5 203.5-203.5 84.5-203.5-84.5-84.5-203.5 84.5-203.5 203.5-84.5zm704-416q106 0 181 75t75 181v896q0 106-75 181t-181 75h-1408q-106 0-181-75t-75-181v-896q0-106 75-181t181-75h224l51-136q19-49 69.5-84.5t103.5-35.5h512q53 0 103.5 35.5t69.5 84.5l51 136h224zm-704 1152q185 0 316.5-131.5t131.5-316.5-131.5-316.5-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5z" fill="@{freeGrey}"/></svg>');
-            width: 17px;
-            height: 17px;
+        &.attachmentIcon {
+            color: @classic-neutral-grey-4;
+            font-size: 24px;
         }
     }
 
     .bubble {
-        float: left;
-        clear: both;
-        padding: 13px;
+        margin-right: auto;
+        display: inline-block;
+        padding: 14px;
         margin-bottom: 4px;
         background: #f4f4f4;
         border-radius: 14px;
@@ -308,11 +299,15 @@
         position: relative;
         border-left-color: @primary;
         word-break: break-word;
+        letter-spacing: -0.01em;
+        line-height: 20px;
 
-        line-height: 1.4;
+        & + .automatedTimestamp {
+            margin-top: 4px;
+        }
 
         &.primary {
-            float: right;
+            margin: 0 0 0 auto;
             background: @primary;
 
             color: @classic-neutral-grey-0;
@@ -327,7 +322,7 @@
         }
 
         &.lastMessage {
-            margin-bottom: 10px;
+            margin-bottom: @layout-spacing-m;
         }
 
         &.isAnimated {
@@ -339,18 +334,22 @@
 
     .appMakerMessageWrapper {
         display: flex;
-        clear: both;
-        padding-top: 10px;
+        margin-bottom: @layout-spacing-m;
 
         .avatar {
-            margin-right: 15px;
+            margin-right: @layout-spacing-s;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
         }
     }
 
     .user {
         font-size: 13px;
         font-weight: 600;
-        margin-bottom: 8px;
+        line-height: 20px;
+        margin-bottom: @layout-spacing-xxs;
 
         &.isAnimated {
             :global {
@@ -360,21 +359,16 @@
     }
 
     .avatar {
-        min-width: 35px;
-        width: 35px;
-        height: 35px;
+        min-width: 36px;
+        width: 36px;
+        height: 36px;
 
         border-radius: 50px !important;
         overflow: hidden;
-        box-shadow: 0 4px 6px fade(black, 9%);
 
         display: flex;
         align-items: center;
         justify-content: center;
-
-        &.robotLogo {
-            background: @offlineColor;
-        }
 
         img {
             width: 60%;
@@ -388,7 +382,6 @@
     }
 
     .optionalEmailCapture {
-        clear: both;
         padding: 15px;
         box-shadow: 0 2px 4px fade(black, 12%);
 
@@ -470,11 +463,8 @@
         }
 
         .placeholder {
+            color: @classic-neutral-grey-4;
             flex-grow: 100;
-        }
-
-        .icon {
-            margin-right: 0.8em;
         }
 
         .send {
@@ -486,131 +476,10 @@
         }
     }
 
-    .buttonWrapper {
-        position: relative;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-
-        .axis-x {
-            position: absolute;
-            height: 15px;
-            z-index: 2;
-            border-right: 1px solid @classic-feedback-error;
-            border-left: 1px solid @classic-feedback-error;
-            display: flex;
-            align-items: center;
-
-            .offsetLine {
-                height: 1px;
-                background-color: @classic-feedback-error;
-                align-content: center;
-                width: 100%;
-            }
-
-            .offsetContent {
-                position: absolute;
-                font-family: Inter;
-                font-style: normal;
-                font-weight: 600;
-                font-size: 12px;
-                line-height: 16px;
-                bottom: -12px;
-                left: 6px;
-                color: @classic-feedback-error;
-            }
-        }
-
-        .axis-y  {
-            position: absolute;
-            width: 15px;
-            height: 40px;
-            z-index: 2;
-            border-top: 1px solid @classic-feedback-error;
-            border-bottom: 1px solid @classic-feedback-error;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            .offsetLine {
-                width: 1px;
-                background-color: @classic-feedback-error;
-                align-content: center;
-                height: 100%;
-            }
-            .offsetContent {
-                position: absolute;
-                font-family: Inter;
-                font-style: normal;
-                font-weight: 600;
-                font-size: 12px;
-                line-height: 16px;
-                right: 12px;
-                bottom: calc(~'50% - 8px');
-                color: @classic-feedback-error;
-            }
-        }
-
-        &.top-right {
-            margin-bottom: 1em;
-            .axis-x  {
-                right: -40px;
-            }
-            .axis-y  {
-                top: -40px;
-            }
-        }
-
-        &.top-left {
-            justify-content: flex-start;
-            margin-bottom: 1em;
-            .axis-x  {
-                left: -40px;
-                .offsetContent {
-                    right: 6px;
-                }
-            }
-            .axis-y  {
-                top: -40px;
-                .offsetContent {
-                    left: 12px;
-                }
-            }
-        }
-
-        &.bottom-left {
-            justify-content: flex-start;
-            margin-top: 1em;
-            .axis-x  {
-                left: -40px;
-                .offsetContent {
-                    right: 6px;
-                }
-            }
-            .axis-y  {
-                bottom: -40px;
-                .offsetContent {
-                    left: 12px;
-                }
-            }
-
-            &.onlyButton {
-                margin-top: auto;
-            }
-        }
-
-        &.bottom-right {
-            margin-top: 1em;
-            .axis-x {
-                right: -40px;
-            }
-            .axis-y  {
-                bottom: -40px;
-            }
-
-            &.onlyButton {
-                margin-top: auto;
-            }
-        }
+    .automatedTimestamp {
+        margin-top: 10px;
+        color: @classic-neutral-grey-4;
+        font-size: 12px;
     }
 
     // shrink dialog and chat button
@@ -637,5 +506,11 @@
         display: inline-block;
         margin-right: 8px;
         font-size: 22px;
+    }
+
+    .asterisk {
+        color: @classic-feedback-error;
+        font-weight: 600;
+        font-size: 14px;
     }
 }

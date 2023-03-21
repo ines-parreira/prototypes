@@ -64,7 +64,6 @@ const SelfServiceChatIntegrationCancelPage = ({integration}: Props) => {
             customerInitialMessages={[templatedMessage]}
             agentMessages={agentMessages}
             hideConversationTimestamp
-            hideMessageTimestamp
         />
     )
 }

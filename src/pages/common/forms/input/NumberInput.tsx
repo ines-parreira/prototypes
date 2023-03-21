@@ -81,6 +81,16 @@ function NumberInput(
     const inputGroupContext = useContext(InputGroupContext)
     const [isFocused, setIsFocused] = useState(!!autoFocus)
 
+    const onArrowMouseDown = useCallback<
+        React.MouseEventHandler<HTMLButtonElement>
+    >(
+        (e) => {
+            e.preventDefault()
+            inputElement?.focus()
+        },
+        [inputElement]
+    )
+
     const isDisabledMemoized = useMemo(
         () => groupContext?.isDisabled || isDisabled,
         [groupContext?.isDisabled, isDisabled]
@@ -211,7 +221,7 @@ function NumberInput(
                         intent="secondary"
                         isDisabled={value != null && value >= max}
                         onClick={handleArrowClick('up')}
-                        onMouseDown={(e) => e.preventDefault()}
+                        onMouseDown={onArrowMouseDown}
                         type="button"
                         size="small"
                     >
@@ -222,7 +232,7 @@ function NumberInput(
                         intent="secondary"
                         isDisabled={value != null && value <= min}
                         onClick={handleArrowClick('down')}
-                        onMouseDown={(e) => e.preventDefault()}
+                        onMouseDown={onArrowMouseDown}
                         type="button"
                         size="small"
                     >

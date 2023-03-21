@@ -12,7 +12,7 @@ import css from './ChatLauncher.less'
 interface LauncherProps {
     type: GorgiasChatLauncherType
     label?: string
-    backgroundColor: string
+    backgroundColor?: string
     className?: string
     windowState: 'closed' | 'opened'
 }

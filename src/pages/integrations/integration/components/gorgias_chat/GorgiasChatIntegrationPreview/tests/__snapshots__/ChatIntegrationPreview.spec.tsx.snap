@@ -1,167 +1,110 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
->
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
-      }
-    >
-      <ChatIntegrationAvatar
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-      </div>
-    </div>
-    <OptionalEmailCapture
-      autoResponderReply="reply-shortly"
-      conversationColor="#456789"
-      language="en-US"
-      name="My little chat integration"
-    />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-  </div>
-</div>
-`;
-
-exports[`<ChatIntegrationPreview/> render() should display display the offsets when editing axis x 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display auto responder 1`] = `
+<ContextProvider
+  value={
     {
-      "paddingRight": 60,
-      "width": 440,
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
     }
   }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
+  <ChatIntegrationPreview
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-      </div>
-    </div>
+    }
+    renderFooter={false}
+  >
+    <AutoResponder
+      autoResponderReply="reply-shortly"
+      chatTitle="My little chat integration"
+      conversationColor="#456789"
+      language="en-US"
+    />
+  </ChatIntegrationPreview>
+</ContextProvider>
+`;
+
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display display the offsets when editing axis x 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
+>
+  <ChatIntegrationPreview
+    editedPositionAxis="axis-x"
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 1000,
+        "offsetY": 0,
+      }
+    }
+    renderFooter={false}
+  >
     <MessageContent
       agentMessages={
         [
@@ -180,133 +123,58 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
       }
       customerInitialMessages={[]}
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-    <div
-      className="axis-x"
-      style={
-        {
-          "right": -60,
-          "width": 60,
-        }
-      }
-    >
-      <div
-        className="offsetLine"
-      />
-      <div
-        className="offsetContent"
-      >
-        1000px
-      </div>
-    </div>
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;
 
-exports[`<ChatIntegrationPreview/> render() should display display the offsets when editing axis y 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display display the offsets when editing axis y 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
+  <ChatIntegrationPreview
+    editedPositionAxis="axis-y"
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-      </div>
-    </div>
+    }
+    renderFooter={false}
+  >
     <MessageContent
       agentMessages={
         [
@@ -325,370 +193,169 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
       }
       customerInitialMessages={[]}
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-    <div
-      className="axis-y"
-    >
-      <div
-        className="offsetLine"
-      />
-      <div
-        className="offsetContent"
-      >
-        0px
-      </div>
-    </div>
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;
 
-exports[`<ChatIntegrationPreview/> render() should display optional email capture 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display optional email capture 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
+  <ChatIntegrationPreview
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-      </div>
-    </div>
+    }
+  >
     <OptionalEmailCapture
       chatTitle="My little chat integration"
       conversationColor="#456789"
-      currentUser={Immutable.Map {}}
       language="en-US"
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-    <div
-      className="footer"
-    >
-      <div
-        className="placeholder"
-      >
-        Type a message...
-      </div>
-      <i
-        className="icon camera"
-      />
-    </div>
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;
 
-exports[`<ChatIntegrationPreview/> render() should display required email capture 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display required email capture 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
+  <ChatIntegrationPreview
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-      </div>
-    </div>
+    }
+    renderFooter={false}
+  >
     <RequiredEmailCapture
       conversationColor="#456789"
       language="en-US"
       name="My little chat integration"
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;
 
-exports[`<ChatIntegrationPreview/> render() should display the avatar team picture in the header because the URL is set and the option is enabled 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display the avatar team picture in the header because the URL is set and the option is enabled 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
+  <ChatIntegrationPreview
+    avatarTeamPictureUrl="https://gorgias.io/avatar.png"
+    avatarType="team-picture"
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        avatarTeamPictureUrl="https://gorgias.io/avatar.png"
-        avatarType="team-picture"
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-      </div>
-    </div>
+    }
+  >
     <MessageContent
       agentMessages={
         [
@@ -707,142 +374,56 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
       }
       customerInitialMessages={[]}
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-    <div
-      className="footer"
-    >
-      <div
-        className="placeholder"
-      >
-        Type a message...
-      </div>
-      <i
-        className="icon camera"
-      />
-    </div>
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;
 
-exports[`<ChatIntegrationPreview/> render() should display the offline status because chat is offline 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display the offline status because chat is offline 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#EBEBEB",
-        }
+  <ChatIntegrationPreview
+    introductionText="intro"
+    isOnline={false}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        isOnline={false}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#161616",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-           
-        </div>
-        <div
-          className="replyTime"
-        >
-          <i
-            className="material-icons"
-            style={
-              {
-                "color": "#161616",
-              }
-            }
-          >
-            schedule
-          </i>
-          Back online at 9:00 AM
-        </div>
-      </div>
-    </div>
+    }
+  >
     <MessageContent
       agentMessages={
         [
@@ -861,127 +442,56 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
       }
       customerInitialMessages={[]}
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-    <div
-      className="footer"
-    >
-      <div
-        className="placeholder"
-      >
-        Type a message...
-      </div>
-      <i
-        className="icon camera"
-      />
-    </div>
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;
 
-exports[`<ChatIntegrationPreview/> render() should display the online status because chat is online 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display the online status because chat is online 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
+  <ChatIntegrationPreview
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-      </div>
-    </div>
+    }
+  >
     <MessageContent
       agentMessages={
         [
@@ -1000,127 +510,56 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
       }
       customerInitialMessages={[]}
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-    <div
-      className="footer"
-    >
-      <div
-        className="placeholder"
-      >
-        Type a message...
-      </div>
-      <i
-        className="icon camera"
-      />
-    </div>
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;
 
-exports[`<ChatIntegrationPreview/> render() should display the sliders when editing the position 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display the sliders when editing the position 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
+  <ChatIntegrationPreview
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-      </div>
-    </div>
+    }
+  >
     <MessageContent
       agentMessages={
         [
@@ -1139,142 +578,60 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
       }
       customerInitialMessages={[]}
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-    <div
-      className="footer"
-    >
-      <div
-        className="placeholder"
-      >
-        Type a message...
-      </div>
-      <i
-        className="icon camera"
-      />
-    </div>
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;
 
-exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-in-day 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display typical response time for reply-in-day 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
+  <ChatIntegrationPreview
+    autoResponderEnabled={true}
+    autoResponderReply="reply-in-day"
+    editedPositionAxis="axis-y"
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-        <div
-          className="replyTime"
-        >
-          <i
-            className="material-icons"
-            style={
-              {
-                "color": "#FFFFFF",
-              }
-            }
-          >
-            schedule
-          </i>
-          Typically replies within a day
-        </div>
-      </div>
-    </div>
+    }
+    renderFooter={false}
+  >
     <MessageContent
       agentMessages={
         [
@@ -1293,142 +650,60 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       }
       customerInitialMessages={[]}
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-    <div
-      className="axis-y"
-    >
-      <div
-        className="offsetLine"
-      />
-      <div
-        className="offsetContent"
-      >
-        0px
-      </div>
-    </div>
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;
 
-exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-in-hours 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display typical response time for reply-in-hours 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
+  <ChatIntegrationPreview
+    autoResponderEnabled={true}
+    autoResponderReply="reply-in-hours"
+    editedPositionAxis="axis-y"
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-        <div
-          className="replyTime"
-        >
-          <i
-            className="material-icons"
-            style={
-              {
-                "color": "#FFFFFF",
-              }
-            }
-          >
-            schedule
-          </i>
-          Typically replies in a few hours
-        </div>
-      </div>
-    </div>
+    }
+    renderFooter={false}
+  >
     <MessageContent
       agentMessages={
         [
@@ -1447,142 +722,60 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       }
       customerInitialMessages={[]}
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-    <div
-      className="axis-y"
-    >
-      <div
-        className="offsetLine"
-      />
-      <div
-        className="offsetContent"
-      >
-        0px
-      </div>
-    </div>
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;
 
-exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-in-minutes 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display typical response time for reply-in-minutes 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
+  <ChatIntegrationPreview
+    autoResponderEnabled={true}
+    autoResponderReply="reply-in-minutes"
+    editedPositionAxis="axis-y"
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-        <div
-          className="replyTime"
-        >
-          <i
-            className="material-icons"
-            style={
-              {
-                "color": "#FFFFFF",
-              }
-            }
-          >
-            schedule
-          </i>
-          Typically replies in a few minutes
-        </div>
-      </div>
-    </div>
+    }
+    renderFooter={false}
+  >
     <MessageContent
       agentMessages={
         [
@@ -1601,142 +794,60 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       }
       customerInitialMessages={[]}
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-    <div
-      className="axis-y"
-    >
-      <div
-        className="offsetLine"
-      />
-      <div
-        className="offsetContent"
-      >
-        0px
-      </div>
-    </div>
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;
 
-exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-shortly 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should display typical response time for reply-shortly 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
+  <ChatIntegrationPreview
+    autoResponderEnabled={true}
+    autoResponderReply="reply-shortly"
+    editedPositionAxis="axis-y"
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-        <div
-          className="replyTime"
-        >
-          <i
-            className="material-icons"
-            style={
-              {
-                "color": "#FFFFFF",
-              }
-            }
-          >
-            schedule
-          </i>
-          Typically replies in a few minutes
-        </div>
-      </div>
-    </div>
+    }
+    renderFooter={false}
+  >
     <MessageContent
       agentMessages={
         [
@@ -1755,127 +866,57 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       }
       customerInitialMessages={[]}
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-  </div>
-  <div
-    className="buttonWrapper bottom-right"
-  >
-    <ChatLauncher
-      backgroundColor="#123456"
-      type="icon"
-      windowState="closed"
-    />
-    <div
-      className="axis-y"
-    >
-      <div
-        className="offsetLine"
-      />
-      <div
-        className="offsetContent"
-      >
-        0px
-      </div>
-    </div>
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;
 
-exports[`<ChatIntegrationPreview/> render() should not display button if hideButton provided 1`] = `
-<div
-  className="preview previewWithBackground"
-  style={{}}
+exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> render() should not display button if hideButton provided 1`] = `
+<ContextProvider
+  value={
+    {
+      "store": {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <div
-    className="dialog"
-  >
-    <div
-      className="header"
-      style={
-        {
-          "backgroundColor": "#123456",
-        }
+  <ChatIntegrationPreview
+    hideButton={true}
+    introductionText="intro"
+    isOnline={true}
+    language="en-US"
+    mainColor="#123456"
+    name="My little chat integration"
+    position={
+      {
+        "alignment": "bottom-right",
+        "offsetX": 0,
+        "offsetY": 0,
       }
-    >
-      <ChatIntegrationAvatar
-        isOnline={true}
-        mainColor="#123456"
-        offlineColor="#EBEBEB"
-        shouldHideAvatarOnlineMarker={false}
-      />
-      <div
-        className="details"
-        style={
-          {
-            "color": "#FFFFFF",
-          }
-        }
-      >
-        <div
-          className="appName"
-        >
-          My little chat integration
-        </div>
-        <div
-          className="introductionText"
-        >
-          intro
-        </div>
-      </div>
-    </div>
+    }
+  >
     <MessageContent
       agentMessages={
         [
@@ -1894,72 +935,6 @@ exports[`<ChatIntegrationPreview/> render() should not display button if hideBut
       }
       customerInitialMessages={[]}
     />
-    <PoweredByGorgias
-      translatedTexts={
-        {
-          "actionPostbackError": "An error occurred while processing your action. Please try again.",
-          "backLabelBackAt": "Back online at {time}",
-          "backLabelBackInAMinute": "Back in 1 minute",
-          "backLabelBackInAnHour": "Back in 1 hour",
-          "backLabelBackInDays": "Back in {value} days",
-          "backLabelBackInHours": "Back in {value} hours",
-          "backLabelBackInMinutes": "Back in {value} minutes",
-          "backLabelBackTomorrow": "Back tomorrow",
-          "campaignClickToReply": "Click to reply",
-          "chatWithUs": "Chat with us",
-          "clickToRetry": "Message not delivered. Click to retry.",
-          "conversationTimestampHeaderFormat": "MMMM D",
-          "emailCaptureInputLabel": "Get notified by email",
-          "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-          "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-          "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-          "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-          "emailCapturePlaceholder": "your@email.com",
-          "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-          "emailCaptureRequiredMessagePlaceholder": "Write your message",
-          "fetchHistory": "Load more",
-          "fetchingHistory": "Retrieving history...",
-          "headerText": "Gorgias Team",
-          "inputPlaceholder": "Type a message...",
-          "introductionText": "How can we help?",
-          "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-          "messageDelivered": "Delivered",
-          "messageError": "An error occurred while sending your message. Please try again.",
-          "messageIndicatorTitlePlural": "({count}) New messages",
-          "messageIndicatorTitleSingular": "({count}) New message",
-          "messageRelativeTimeDay": "{value}d ago",
-          "messageRelativeTimeHour": "{value}h ago",
-          "messageRelativeTimeJustNow": "Just now",
-          "messageRelativeTimeMinute": "{value}m ago",
-          "messageSending": "Sending...",
-          "messageTimestampFormat": "h:mm A",
-          "offlineIntroductionText": "We'll be back tomorrow",
-          "poweredBy": "Powered by",
-          "poweredByGorgias": "Powered by Gorgias",
-          "requiredEmailCaptureWelcomeMessage": "Hi, hope you're doing well! Leave us your email so we can get back to you.",
-          "send": "Send",
-          "tapToRetry": "Message not delivered. Tap to retry.",
-          "unsupportedActionType": "Unsupported action type.",
-          "unsupportedMessageType": "Unsupported message type.",
-          "usualReplyTimeDay": "Typically replies within a day",
-          "usualReplyTimeHours": "Typically replies in a few hours",
-          "usualReplyTimeMinutes": "Typically replies in a few minutes",
-          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
-        }
-      }
-    />
-    <div
-      className="footer"
-    >
-      <div
-        className="placeholder"
-      >
-        Type a message...
-      </div>
-      <i
-        className="icon camera"
-      />
-    </div>
-  </div>
-</div>
+  </ChatIntegrationPreview>
+</ContextProvider>
 `;

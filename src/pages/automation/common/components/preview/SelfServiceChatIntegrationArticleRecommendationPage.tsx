@@ -55,7 +55,6 @@ const SelfServiceChatIntegrationArticleRecommendationPage = ({
             customerInitialMessages={['What size am I?']}
             agentMessages={agentMessages}
             hideConversationTimestamp
-            hideMessageTimestamp
         >
             <div className={css.repliesContainer}>
                 {[sspTexts.yesThankYou, sspTexts.noINeedMoreHelp].map(

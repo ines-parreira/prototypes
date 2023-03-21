@@ -1,9 +1,5 @@
 import React from 'react'
 
-import classnames from 'classnames'
-
-import {assetsUrl} from 'utils'
-
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
@@ -14,19 +10,13 @@ import {getTextColorBasedOnBackground} from '../../gorgias_chat/GorgiasChatInteg
 import css from './ChatIntegrationPreview.less'
 
 type Props = {
-    className?: string
     conversationColor: string
-    name?: string
     language?: string
-    hideMessageTimestamp?: boolean
 }
 
 const EmailCaptureMessage: React.FC<Props> = ({
-    className,
     conversationColor,
-    name,
     language,
-    hideMessageTimestamp = true,
 }) => {
     const translatedTexts =
         GORGIAS_CHAT_WIDGET_TEXTS[
@@ -36,54 +26,25 @@ const EmailCaptureMessage: React.FC<Props> = ({
     const contrastColor = getTextColorBasedOnBackground(conversationColor)
 
     return (
-        <div className={classnames(css.appMakerMessageWrapper, className)}>
-            <div className={classnames(css.avatar, css.robotLogo)}>
-                <img
-                    src={assetsUrl('/img/icons/robot-icon.svg')}
-                    alt="Robot icon"
-                />
+        <div className={css.optionalEmailCapture}>
+            <div className={css.inputLabel}>
+                {translatedTexts.emailCaptureInputLabel}
             </div>
-            <div>
-                <div className={css.user}>{name}</div>
-
-                <div
-                    className={classnames(
-                        css.bubble,
-                        css.firstMessageOfAppMaker,
-                        'mb-2'
-                    )}
-                >
-                    {translatedTexts.emailCaptureOnlineTriggerText}
-                </div>
-
-                <div className={css.optionalEmailCapture}>
-                    <div className={css.inputLabel}>
-                        {translatedTexts.emailCaptureInputLabel}
-                    </div>
-                    <div className={css.inputWrapper}>
-                        <input
-                            className="input"
-                            placeholder={
-                                translatedTexts.emailCapturePlaceholder
-                            }
-                            type="email"
-                            readOnly
-                        />
-                        <button style={{backgroundColor: conversationColor}}>
-                            <i
-                                className="material-icons"
-                                style={{color: contrastColor}}
-                            >
-                                chevron_right
-                            </i>
-                        </button>
-                    </div>
-                </div>
-                {!hideMessageTimestamp && (
-                    <div className={css.automatedTimestamp}>
-                        Automated · Just Now
-                    </div>
-                )}
+            <div className={css.inputWrapper}>
+                <input
+                    className="input"
+                    placeholder={translatedTexts.emailCapturePlaceholder}
+                    type="email"
+                    readOnly
+                />
+                <button style={{backgroundColor: conversationColor}}>
+                    <i
+                        className="material-icons"
+                        style={{color: contrastColor}}
+                    >
+                        chevron_right
+                    </i>
+                </button>
             </div>
         </div>
     )
