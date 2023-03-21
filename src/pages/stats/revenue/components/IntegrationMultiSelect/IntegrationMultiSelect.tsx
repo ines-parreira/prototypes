@@ -12,18 +12,24 @@ import css from './IntegrationMultiSelect.less'
 type Props = {
     integrations: Integration[]
     selected: Value[]
+    isMultiple?: boolean
+    isRequired?: boolean
     onChangeItem: ComponentProps<typeof SelectFilter>['onChange']
 }
 
 export const IntegrationMultiSelect = ({
     integrations,
     selected,
+    isMultiple = false,
+    isRequired = false,
     onChangeItem,
 }: Props) => {
     return (
         <SelectFilter
             plural="integrations"
             singular="integration"
+            isMultiple={isMultiple}
+            isRequired={isRequired}
             onChange={onChangeItem}
             value={selected}
         >

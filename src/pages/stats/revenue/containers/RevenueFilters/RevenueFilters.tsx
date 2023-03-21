@@ -26,6 +26,7 @@ export const RevenueFilters = () => {
                 <IntegrationMultiSelect
                     integrations={integrations}
                     selected={selectedIntegrations}
+                    isRequired
                     onChangeItem={onChangeIntegration}
                 />
             </div>

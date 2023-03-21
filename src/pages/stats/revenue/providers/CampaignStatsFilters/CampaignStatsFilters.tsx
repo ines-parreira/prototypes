@@ -29,8 +29,9 @@ export const CampaignStatsFilters = ({children}: Props) => {
     const integrations = useShopifyIntegrations()
 
     const selectedIntegrations = useMemo(() => {
-        return storeStatsFilter.length ? storeStatsFilter : []
-    }, [storeStatsFilter])
+        const fallback = integrations?.[0]?.id ? [integrations[0].id] : []
+        return storeStatsFilter.length ? storeStatsFilter : fallback
+    }, [storeStatsFilter, integrations])
 
     const campaigns = useGetCampaignsForStore(selectedIntegrations)
 
