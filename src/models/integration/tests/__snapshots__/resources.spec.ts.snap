@@ -10,8 +10,10 @@ exports[`integration resource fetchApp should return a formatted app 1`] = `
     "Ecommerce",
     "Reviews & UGC",
   ],
-  "company": "myCompany",
-  "companyUrl": "https://www.gomycompany.com/",
+  "company": {
+    "name": "myCompany",
+    "url": "https://www.gomycompany.com/",
+  },
   "connectUrl": "https://ok.com",
   "description": "Some tagline here",
   "freeTrialPeriod": "14 days",

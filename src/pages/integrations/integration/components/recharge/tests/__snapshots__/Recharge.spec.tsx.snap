@@ -74,11 +74,11 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
       <div
         class="heroMeta"
       >
-        <span
-          class="badge badge badge-secondary badge-pill"
+        <div
+          class="badge badge"
         >
           SUBSCRIPTIONS
-        </span>
+        </div>
         <span
           class="by"
         >
@@ -136,7 +136,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 1 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 1 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="/assets/img/integrations/screenshots/recharge-1.jpeg"
           />
@@ -145,7 +145,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 2 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 2 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="/assets/img/integrations/screenshots/recharge-2.jpeg"
           />
@@ -154,7 +154,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 3 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 3 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="/assets/img/integrations/screenshots/recharge-3.jpeg"
           />
@@ -168,17 +168,18 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
         class="card-body"
       >
         <div
-          class="connectWrapper"
+          class="actionWrapper"
         >
           <a
             class="connectButtonWrapper"
             to="/app/settings/integrations/recharge/new"
           >
             <button
-              class="wrapper actionButton fill primary medium"
+              class="wrapper fill primary medium"
               type="button"
             >
-              Connect App
+              Connect 
+              recharge
             </button>
           </a>
         </div>
@@ -235,7 +236,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
           <li>
             <a
               class="actionLink"
-              href="https://rechargepayments.com/privacy-policy/"
+              href="https://docs.gorgias.com/subscription-integrations/recharge"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -416,7 +417,7 @@ exports[`<Recharge/> Integration should render shopify integrations list 1`] = `
             <img
               alt="shopify logo"
               class="shopifyLogo"
-              src="test-file-stub"
+              src="/assets/img/integrations/shopify.png"
             />
             Install Recharge for
              

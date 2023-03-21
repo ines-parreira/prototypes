@@ -34,9 +34,8 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
     <header
       class="hero"
     >
-      
       <i
-        class="icon material-icons-outlined"
+        class="heroIcon material-icons-outlined"
       >
         live_help
       </i>
@@ -53,21 +52,7 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
         </p>
         <div
           class="heroMeta"
-        >
-          <span
-            class="by"
-          >
-            by
-             
-            <a
-              href="https://gorgias.com"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Gorgias
-            </a>
-          </span>
-        </div>
+        />
       </div>
     </header>
     <main
@@ -125,7 +110,7 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
             class="screenshotListItem"
           >
             <img
-              alt="Screenshot number 1 of things this app allows you to do in Gorgias"
+              alt="Screenshot number 1 of things this products allows you to do in Gorgias"
               class="screenshot"
               src="/assets/img/integrations/screenshots/helpcenter-1.png"
             />
@@ -139,34 +124,19 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
           class="card-body"
         >
           <div
-            class="connectWrapper"
+            class="actionWrapper"
           >
             <a
-              class="connectButtonWrapper"
-              href="http://localhost/app/settings/help-center/new?account=acme"
-              rel="noopener noreferrer"
-              target="_blank"
+              href="/app/settings/help-center/new"
             >
               <button
-                class="wrapper actionButton fill primary medium"
+                class="wrapper full-width fill primary medium"
                 type="button"
               >
                 Create New
               </button>
             </a>
           </div>
-          <h2
-            class="categoryTitle cardTitle"
-          >
-            Pricing
-          </h2>
-          <ul
-            class="cardList"
-          >
-            <li>
-              Free
-            </li>
-          </ul>
           <h2
             class="categoryTitle cardTitle"
           >
@@ -205,7 +175,6 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
                 Monthly Webinar
               </a>
             </li>
-            
           </ul>
           <h2
             class="categoryTitle cardTitle"
@@ -230,7 +199,6 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
                 support@gorgias.com
               </a>
             </li>
-            
           </ul>
         </div>
       </div>
@@ -375,15 +343,15 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         <label
                           aria-checked="true"
                           class="label label"
-                          for="toggle-button-2"
+                          for="toggle-button-1"
                           role="switch"
                         >
                           <input
                             checked=""
                             class="input"
                             disabled=""
-                            id="toggle-button-2"
-                            name="toggle-button-2"
+                            id="toggle-button-1"
+                            name="toggle-button-1"
                             type="checkbox"
                           />
                           <div
@@ -479,15 +447,15 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         <label
                           aria-checked="true"
                           class="label label"
-                          for="toggle-button-3"
+                          for="toggle-button-2"
                           role="switch"
                         >
                           <input
                             checked=""
                             class="input"
                             disabled=""
-                            id="toggle-button-3"
-                            name="toggle-button-3"
+                            id="toggle-button-2"
+                            name="toggle-button-2"
                             type="checkbox"
                           />
                           <div
@@ -594,15 +562,15 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         <label
                           aria-checked="true"
                           class="label label"
-                          for="toggle-button-4"
+                          for="toggle-button-3"
                           role="switch"
                         >
                           <input
                             checked=""
                             class="input"
                             disabled=""
-                            id="toggle-button-4"
-                            name="toggle-button-4"
+                            id="toggle-button-3"
+                            name="toggle-button-3"
                             type="checkbox"
                           />
                           <div
@@ -709,14 +677,14 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                         <label
                           aria-checked="false"
                           class="label label"
-                          for="toggle-button-5"
+                          for="toggle-button-4"
                           role="switch"
                         >
                           <input
                             class="input"
                             disabled=""
-                            id="toggle-button-5"
-                            name="toggle-button-5"
+                            id="toggle-button-4"
+                            name="toggle-button-4"
                             type="checkbox"
                           />
                           <div

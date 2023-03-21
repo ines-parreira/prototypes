@@ -70,7 +70,7 @@ exports[`<AddProductLink/> should render the product picker when the popover is 
             <img
               alt="Shopify logo"
               class="shopifyLogo"
-              src="test-file-stub"
+              src="/assets/img/integrations/shopify.png"
             />
             <span
               class="headerText"
@@ -146,7 +146,7 @@ exports[`<AddProductLink/> should render the store picker because of multiple in
                 <img
                   alt="Shopify logo"
                   class="shopifyLogo"
-                  src="test-file-stub"
+                  src="/assets/img/integrations/shopify.png"
                 />
                 <span>
                   My Shop
@@ -171,7 +171,7 @@ exports[`<AddProductLink/> should render the store picker because of multiple in
                 <img
                   alt="Shopify logo"
                   class="shopifyLogo"
-                  src="test-file-stub"
+                  src="/assets/img/integrations/shopify.png"
                 />
                 <span>
                   My Shop

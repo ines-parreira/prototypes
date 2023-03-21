@@ -4,15 +4,13 @@ import classNames from 'classnames'
 import Slider from 'react-slick'
 
 import {assetsUrl} from 'utils'
-import {AppDetail} from 'models/integration/types/app'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './Detail.less'
+import {ProductDetail} from './types'
 
-export default function Slides(
-    props: Pick<AppDetail, 'screenshots'> & {isApp: boolean}
-) {
-    const {screenshots = [], isApp} = props
+export default function Slides(props: Pick<ProductDetail, 'screenshots'>) {
+    const {screenshots = []} = props
     const [isModalOpen, setModalOpen] = useState(false)
     const [initialSlide, setInitialSlide] = useState(0)
     const sliderRef = useRef<HTMLDivElement>(null)
@@ -24,15 +22,13 @@ export default function Slides(
                     <li className={css.screenshotListItem} key={index}>
                         <img
                             src={
-                                isApp
+                                screenshot.startsWith('http')
                                     ? screenshot
-                                    : assetsUrl(
-                                          `/img/integrations/screenshots/${screenshot}`
-                                      )
+                                    : assetsUrl(screenshot)
                             }
                             alt={`Screenshot number ${
                                 index + 1
-                            } of things this app allows you to do in Gorgias`}
+                            } of things this products allows you to do in Gorgias`}
                             className={css.screenshot}
                             onClick={() => {
                                 setInitialSlide(index)
@@ -100,13 +96,11 @@ export default function Slides(
                                 className={css.sliderPicture}
                                 alt={`Showcase number ${
                                     index + 1
-                                } of things this app allows you to do in Gorgias`}
+                                } of things this product allows you to do in Gorgias`}
                                 src={
-                                    isApp
+                                    screenshot.startsWith('http')
                                         ? screenshot
-                                        : assetsUrl(
-                                              `/img/integrations/screenshots/${screenshot}`
-                                          )
+                                        : assetsUrl(screenshot)
                                 }
                             />
                         </div>

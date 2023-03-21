@@ -24,7 +24,7 @@ exports[`<RechargeIntegration/> render() should display a list of shopify stores
             <img
               alt="shopify logo"
               class="shopifyLogo"
-              src="test-file-stub"
+              src="/assets/img/integrations/shopify.png"
             />
             Install Recharge for
              
@@ -37,7 +37,7 @@ exports[`<RechargeIntegration/> render() should display a list of shopify stores
             <img
               alt="shopify logo"
               class="shopifyLogo"
-              src="test-file-stub"
+              src="/assets/img/integrations/shopify.png"
             />
             Install Recharge for
              

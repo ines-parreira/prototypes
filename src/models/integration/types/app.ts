@@ -83,17 +83,11 @@ export type AppDetail = Omit<IntegrationConfig, 'isExternalConnectUrl'> & {
     image: AppListData['app_icon']
     isUnapproved: AppData['is_unapproved']
     connectUrl: AppData['app_url']
+    hasFreeTrial: AppData['has_free_trial']
+    freeTrialPeriod: AppData['free_trial_period']
     supportEmail: AppData['support_email']
     supportPhone: AppData['support_phone']
     alloyIntegrationId?: AppData['alloy_integration_id']
-    connectTitle?: string
-    icon?: string
-    hideInfoCard?: boolean
-    otherResources?: {
-        title: string
-        icon: string
-        url: string
-    }[]
 }
 
 export type DisconnectResponse = {
@@ -111,5 +105,6 @@ export const isAppListItem = (
 ): input is AppListItem => input.type === IntegrationType.App
 
 export const isAppDetail = (
-    input: AppDetail | IntegrationConfig
-): input is AppDetail => input.type === IntegrationType.App
+    input: Record<string, unknown>
+): input is AppDetail =>
+    input?.type === IntegrationType.App && typeof input?.appId === 'string'

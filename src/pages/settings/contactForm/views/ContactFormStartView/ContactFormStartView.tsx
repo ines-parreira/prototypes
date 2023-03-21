@@ -1,8 +1,16 @@
 import React from 'react'
-import {NavLink, Redirect, Route, Switch, useHistory} from 'react-router-dom'
+import {
+    Link,
+    NavLink,
+    Redirect,
+    Route,
+    Switch,
+    useHistory,
+} from 'react-router-dom'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import Detail from 'pages/integrations/components/Detail'
+import Detail from 'pages/common/components/ProductDetail'
+import Button from 'pages/common/components/button/Button'
 import {
     CONTACT_FORM_ABOUT_PATH,
     CONTACT_FORM_CREATE_PATH,
@@ -13,7 +21,6 @@ import {usePaginatedContactForms} from 'pages/settings/contactForm/hooks/usePagi
 import ManageContactForms from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms'
 import {Props} from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms/ManageContactForms'
 import {CONTACT_FORM_APP_DETAIL} from 'pages/settings/contactForm/views/ContactFormStartView/constants'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 const navLinks = {
@@ -33,6 +40,13 @@ const ContactFormStartView: React.FC = () => {
         contactForms,
         isLoading,
     }
+
+    const detailsProps = {...CONTACT_FORM_APP_DETAIL}
+    detailsProps.infocard.CTA = (
+        <Link to={`${CONTACT_FORM_CREATE_PATH}`}>
+            <Button className="full-width">Create Contact Form</Button>
+        </Link>
+    )
 
     return (
         <div className="full-width">
@@ -59,10 +73,7 @@ const ContactFormStartView: React.FC = () => {
             </SecondaryNavbar>
             <Switch>
                 <Route exact path={CONTACT_FORM_ABOUT_PATH}>
-                    <Detail
-                        {...CONTACT_FORM_APP_DETAIL}
-                        connectUrl={`${location.origin}${CONTACT_FORM_CREATE_PATH}`}
-                    />
+                    <Detail {...detailsProps} />
                 </Route>
                 <Route exact path={CONTACT_FORM_FORMS_PATH}>
                     <ManageContactForms {...manageContactFormProps} />

@@ -120,11 +120,9 @@ describe('<ContactFormStartView />', () => {
             const createButtonHref = screen
                 .getByRole('button', {name: /Create Contact Form/})
                 .closest('a')
-                ?.getAttribute('href')
+                ?.getAttribute('to')
 
-            expect(createButtonHref).toMatch(
-                `${location.origin}${CONTACT_FORM_CREATE_PATH}`
-            )
+            expect(createButtonHref).toMatch(`${CONTACT_FORM_CREATE_PATH}`)
         })
     })
 

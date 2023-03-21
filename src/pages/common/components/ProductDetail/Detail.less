@@ -4,12 +4,21 @@
 :local {
     .hero {
         display: flex;
+        align-items: flex-start;
         padding: 1.7rem; // ~24px
         background-color: @classic-neutral-grey-1;
     }
     .heroImage {
         max-height: 5.7rem; // ~80px
         padding-right: 1.7rem; // ~24px
+    }
+    .heroIcon {
+        margin-right: 1.7rem; // ~24px
+        padding: 1.143rem; // ~16px
+        font-size: 3.714rem !important; // ~52px
+        color: @classic-neutral-grey-0;
+        background-color: @classic-main-primary;
+        border-radius: 4px;
     }
     .heroHeading {
         margin-bottom: 0.286rem; // ~4px
@@ -91,26 +100,10 @@
         border-radius: 5px 5px 0 0;
         overflow: hidden;
     }
-    .connectWrapper {
+    .actionWrapper {
         display: flex;
         flex-direction: column;
         align-items: stretch;
-    }
-    .connectButtonWrapper {
-        display: inline-block;
-        flex: 1 0 auto;
-        position: relative;
-    }
-    .actionButton {
-        width: 100%;
-    }
-    .connectTooltip {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        cursor: not-allowed;
     }
     .actionLink {
         display: block;
@@ -170,14 +163,5 @@
     }
     .slideNext {
         right: -45px !important;
-    }
-
-    .icon {
-        font-size: 3.714rem !important; // ~52px
-        padding: 16px;
-        background-color: @classic-main-primary;
-        color: @classic-neutral-grey-0;
-        border-radius: 4px;
-        margin: auto 24px auto 0;
     }
 }

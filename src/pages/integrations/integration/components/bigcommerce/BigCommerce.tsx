@@ -6,9 +6,12 @@ import {List as ImmutableList, Map} from 'immutable'
 import {getIntegrationConfig} from 'state/integrations/helpers'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import PageHeader from 'pages/common/components/PageHeader'
+import Detail from 'pages/common/components/ProductDetail'
+import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
+import ConnectLink from 'pages/integrations/components/ConnectLink'
+import Button from 'pages/common/components/button/Button'
 import {IntegrationType} from 'models/integration/types'
 
-import Detail from '../../../components/Detail/Detail'
 import Integration from './Integration'
 import List from './List'
 import {getConnectUrl} from './Utils'
@@ -30,6 +33,8 @@ function BigCommerce({integration, integrations, loading, redirectUri}: Props) {
 
     const bigcommerceConfig = getIntegrationConfig(IntegrationType.BigCommerce)
 
+    if (!bigcommerceConfig) return null
+
     const baseURL = `/app/settings/integrations/bigcommerce`
     const links = [
         [`${baseURL}/`, 'App Details'],
@@ -40,6 +45,18 @@ function BigCommerce({integration, integrations, loading, redirectUri}: Props) {
         connectUrl: getConnectUrl(),
         isExternalConnectUrl: true,
     }
+
+    const detailProps = mapAppToDetail(bigcommerceConfig)
+    const CTA = (
+        <ConnectLink
+            connectUrl={connectProps.connectUrl}
+            integrationTitle={IntegrationType.BigCommerce}
+            isExternal={connectProps.isExternalConnectUrl}
+        >
+            <Button>Connect BigCommerce</Button>
+        </ConnectLink>
+    )
+    detailProps.infocard.CTA = CTA
 
     return (
         <div className="full-width">
@@ -86,8 +103,8 @@ function BigCommerce({integration, integrations, loading, redirectUri}: Props) {
                             </NavLink>
                         ))}
                     </SecondaryNavbar>
-                    {!isConnections && bigcommerceConfig ? (
-                        <Detail {...bigcommerceConfig} {...connectProps} />
+                    {!isConnections ? (
+                        <Detail {...detailProps} />
                     ) : (
                         <List
                             integrations={integrations}

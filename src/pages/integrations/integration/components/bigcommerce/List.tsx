@@ -2,12 +2,13 @@ import React from 'react'
 import {List as ImmutableList, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
+import {IntegrationType} from 'models/integration/types'
 import {Props as BannerProps} from 'pages/common/components/BannerNotifications/BannerNotification'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Loader from 'pages/common/components/Loader/Loader'
-import ConnectLink from 'pages/integrations/components/Detail/ConnectLink'
-import {IntegrationType} from 'models/integration/types'
+import ConnectLink from 'pages/integrations/components/ConnectLink'
+
 import NoIntegration from '../NoIntegration'
 import css from './List.less'
 import {getConnectUrl} from './Utils'
@@ -78,12 +79,12 @@ function List({
                     })}
                 </ul>
             )}
+            {integrations.isEmpty() && (
+                <div className={css.wrapper}>
+                    <NoIntegration />
+                </div>
+            )}
             <div className={css.wrapper}>
-                {integrations.isEmpty() && (
-                    <p>
-                        <NoIntegration />
-                    </p>
-                )}
                 <ConnectLink
                     connectUrl={connectUrl}
                     isExternal={isExternalConnectUrl}

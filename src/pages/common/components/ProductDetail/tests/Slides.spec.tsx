@@ -5,7 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import Slides from 'pages/integrations/components/Detail/Slides'
+import Slides from 'pages/common/components/ProductDetail/Slides'
 import {dummyAppDetail} from 'fixtures/apps'
 
 const mockStore = configureMockStore([thunk])
@@ -15,7 +15,7 @@ describe(`Slides`, () => {
     it('should display carousel on screenshot click, and remove it on close', async () => {
         render(
             <Provider store={store}>
-                <Slides screenshots={dummyAppDetail.screenshots} isApp />
+                <Slides screenshots={dummyAppDetail.screenshots} />
             </Provider>
         )
 
@@ -30,7 +30,7 @@ describe(`Slides`, () => {
     it('should have a carousel displaying all screenshots', async () => {
         render(
             <Provider store={store}>
-                <Slides screenshots={dummyAppDetail.screenshots} isApp />
+                <Slides screenshots={dummyAppDetail.screenshots} />
             </Provider>
         )
         fireEvent.click(screen.getAllByAltText(/Screenshot number/)[0])

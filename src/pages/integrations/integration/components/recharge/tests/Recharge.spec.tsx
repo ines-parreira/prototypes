@@ -81,7 +81,7 @@ describe('<Recharge/>', () => {
 
                 expect(screen.getByText(new RegExp(bannerText)))
                 expect(
-                    screen.getByRole('button', {name: 'Connect App'})
+                    screen.getByRole('button', {name: /Connect/})
                 ).toHaveProperty('disabled')
             }
         )

@@ -2,10 +2,13 @@ import React from 'react'
 import {useParams, Switch, Route} from 'react-router-dom'
 
 import PageHeader from 'pages/common/components/PageHeader'
-import AppDetails from 'pages/integrations/components/Detail'
+import AppDetails from 'pages/common/components/ProductDetail'
 import WhatsAppIntegrationSecondaryNavigation from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationSecondaryNavigation'
 import WhatsAppIntegrationPreferences from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationPreferences'
 import WhatsAppIntegrationOnboarding from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationOnboarding'
+import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
+import ConnectLink from 'pages/integrations/components/ConnectLink'
+import Button from 'pages/common/components/button/Button'
 
 import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
@@ -32,6 +35,22 @@ export default function WhatsAppIntegration() {
     })
 
     const baseURL = `/app/settings/integrations/whatsapp`
+
+    if (!config) return null
+    const detailProps = mapAppToDetail(config)
+    const CTA = (
+        <ConnectLink
+            connectUrl={
+                window.GORGIAS_STATE.integrations.authentication.whatsapp
+                    ?.redirect_uri ?? ''
+            }
+            integrationTitle={IntegrationType.WhatsApp}
+            isExternal
+        >
+            <Button>Add WhatsApp</Button>
+        </ConnectLink>
+    )
+    detailProps.infocard.CTA = CTA
 
     return (
         <div className="full-width">
@@ -68,17 +87,7 @@ export default function WhatsAppIntegration() {
                     <WhatsAppIntegrationOnboarding />
                 </Route>
                 <Route path={baseURL} exact>
-                    {config && (
-                        <AppDetails
-                            {...config}
-                            connectUrl={
-                                window.GORGIAS_STATE.integrations.authentication
-                                    .whatsapp?.redirect_uri ?? ''
-                            }
-                            connectTitle="Add WhatsApp"
-                            isExternalConnectUrl
-                        />
-                    )}
+                    {config && <AppDetails {...detailProps} />}
                 </Route>
             </Switch>
         </div>

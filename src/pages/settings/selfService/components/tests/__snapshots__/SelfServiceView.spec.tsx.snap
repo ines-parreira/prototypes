@@ -51,7 +51,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                           alt="Shopify logo"
                           class="logo"
                           role="presentation"
-                          src="test-file-stub"
+                          src="/assets/img/integrations/shopify.png"
                         />
                         <b>
                           mystore1
@@ -87,7 +87,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                           alt="Shopify logo"
                           class="logo"
                           role="presentation"
-                          src="test-file-stub"
+                          src="/assets/img/integrations/shopify.png"
                         />
                         <b>
                           mystore2
@@ -123,7 +123,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                           alt="Shopify logo"
                           class="logo"
                           role="presentation"
-                          src="test-file-stub"
+                          src="/assets/img/integrations/shopify.png"
                         />
                         <b>
                           mystore3

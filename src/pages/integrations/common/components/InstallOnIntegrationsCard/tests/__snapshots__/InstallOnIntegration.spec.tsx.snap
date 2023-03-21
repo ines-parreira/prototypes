@@ -14,7 +14,7 @@ exports[`<InstallOnIntegrationsCard/> render() should render all integrations be
     >
       <img
         alt="shopify-logo"
-        src="test-file-stub"
+        src="/assets/img/integrations/shopify.png"
       />
     </div>
     <div
@@ -116,7 +116,7 @@ exports[`<InstallOnIntegrationsCard/> render() should render first three passed 
     >
       <img
         alt="shopify-logo"
-        src="test-file-stub"
+        src="/assets/img/integrations/shopify.png"
       />
     </div>
     <div

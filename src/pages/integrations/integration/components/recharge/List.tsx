@@ -6,8 +6,9 @@ import {Props as BannerProps} from 'pages/common/components/BannerNotifications/
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Loader from 'pages/common/components/Loader/Loader'
-import ConnectLink from 'pages/integrations/components/Detail/ConnectLink'
+import ConnectLink from 'pages/integrations/components/ConnectLink'
 import {IntegrationType} from 'models/integration/types'
+
 import NoIntegration from '../NoIntegration'
 import css from './List.less'
 
@@ -81,12 +82,12 @@ function List({
                     })}
                 </ul>
             )}
+            {integrations.isEmpty() && (
+                <div className={css.wrapper}>
+                    <NoIntegration />
+                </div>
+            )}
             <div className={css.wrapper}>
-                {integrations.isEmpty() && (
-                    <p>
-                        <NoIntegration />
-                    </p>
-                )}
                 <ConnectLink
                     connectUrl={connectUrl}
                     isExternal={isExternalConnectUrl}

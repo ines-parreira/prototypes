@@ -74,16 +74,16 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
       <div
         class="heroMeta"
       >
-        <span
-          class="badge badge badge-secondary badge-pill"
+        <div
+          class="badge badge"
         >
           FEATURED
-        </span>
-        <span
-          class="badge badge badge-secondary badge-pill"
+        </div>
+        <div
+          class="badge badge"
         >
           ECOMMERCE
-        </span>
+        </div>
         <span
           class="by"
         >
@@ -134,7 +134,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 1 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 1 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="/assets/img/integrations/screenshots/bigcommerce-1.png"
           />
@@ -143,7 +143,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 2 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 2 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="/assets/img/integrations/screenshots/bigcommerce-2.png"
           />
@@ -152,7 +152,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 3 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 3 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="/assets/img/integrations/screenshots/bigcommerce-3.png"
           />
@@ -166,7 +166,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
         class="card-body"
       >
         <div
-          class="connectWrapper"
+          class="actionWrapper"
         >
           <a
             class="connectButtonWrapper"
@@ -175,10 +175,10 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
             target="_blank"
           >
             <button
-              class="wrapper actionButton fill primary medium"
+              class="wrapper fill primary medium"
               type="button"
             >
-              Connect App
+              Connect BigCommerce
             </button>
           </a>
         </div>
@@ -235,7 +235,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           <li>
             <a
               class="actionLink"
-              href="https://www.bigcommerce.com/privacy/"
+              href="https://docs.gorgias.com/bigcommerce-105241"
               rel="noopener noreferrer"
               target="_blank"
             >

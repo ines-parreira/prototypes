@@ -8,9 +8,12 @@ import {getEligibleShopifyIntegrationsFor} from 'state/integrations/selectors'
 import {getIntegrationConfig} from 'state/integrations/helpers'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import PageHeader from 'pages/common/components/PageHeader'
+import Detail from 'pages/common/components/ProductDetail'
+import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
+import ConnectLink from 'pages/integrations/components/ConnectLink'
+import Button from 'pages/common/components/button/Button'
 import {IntegrationType} from 'models/integration/types'
 
-import Detail from '../../../components/Detail/Detail'
 import Integration from './Integration'
 import List from './List'
 
@@ -48,6 +51,7 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
         : undefined
 
     const rechargeConfig = getIntegrationConfig(IntegrationType.Recharge)
+    if (!rechargeConfig) return null
 
     const baseURL = `/app/settings/integrations/recharge`
     const links = [
@@ -58,9 +62,29 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
     const connectProps = {
         connectUrl: '/app/settings/integrations/recharge/new',
         isExternalConnectUrl: false,
-        notification: notification,
         isConnectionDisabled: hasNoAvailableShopifyIntegrations,
+        notification: notification,
     }
+
+    const detailProps = mapAppToDetail({...rechargeConfig})
+    detailProps.notification = notification
+    const CTA = (
+        <ConnectLink
+            connectUrl={connectProps.connectUrl}
+            isExternal={connectProps.isExternalConnectUrl}
+            isDisabled={connectProps.isConnectionDisabled}
+            integrationTitle={IntegrationType.Recharge}
+            disabledMessage={
+                (connectProps.isConnectionDisabled && notification?.message) ||
+                ''
+            }
+        >
+            <Button isDisabled={connectProps.isConnectionDisabled}>
+                Connect {IntegrationType.Recharge}
+            </Button>
+        </ConnectLink>
+    )
+    detailProps.infocard.CTA = CTA
 
     return (
         <div className="full-width">
@@ -77,10 +101,10 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
                                 <Link
                                     to={`/app/settings/integrations/recharge/${connectionsPath}`}
                                 >
-                                    {rechargeConfig?.title}
+                                    {rechargeConfig.title}
                                 </Link>
                             ) : (
-                                rechargeConfig?.title
+                                rechargeConfig.title
                             )}
                         </BreadcrumbItem>
                         {isIntegration && (
@@ -110,8 +134,8 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
                             </NavLink>
                         ))}
                     </SecondaryNavbar>
-                    {!isConnections && rechargeConfig ? (
-                        <Detail {...rechargeConfig} {...connectProps} />
+                    {!isConnections ? (
+                        <Detail {...detailProps} />
                     ) : (
                         <List
                             integrations={integrations}

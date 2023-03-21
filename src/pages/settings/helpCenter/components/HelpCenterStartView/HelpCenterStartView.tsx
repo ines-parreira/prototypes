@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import {NavLink, Route, Switch} from 'react-router-dom'
+import {Link, NavLink, Route, Switch} from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 
@@ -10,9 +10,10 @@ import {PRODUCT_BANNER_KEY} from 'hooks/useProductBannerStorage'
 
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import Detail from 'pages/integrations/components/Detail'
+import Detail from 'pages/common/components/ProductDetail'
 import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
+import Button from 'pages/common/components/button/Button'
 import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import {
     HELP_CENTER_MAX_CREATION,
@@ -88,6 +89,13 @@ const HelpCenterStartView: React.FC = () => {
         }
     }, [helpCenterList, isLoading])
 
+    const detailsProps = {...ABOUT_PAGE}
+    detailsProps.infocard.CTA = (
+        <Link to={`${HELP_CENTER_BASE_PATH}/new`}>
+            <Button className="full-width">Create New</Button>
+        </Link>
+    )
+
     return (
         <div className="full-width">
             <PageHeader title="Help Center" />
@@ -132,10 +140,7 @@ const HelpCenterStartView: React.FC = () => {
                     />
                 </Route>
                 <Route exact path={pathAbout}>
-                    <Detail
-                        {...ABOUT_PAGE}
-                        connectUrl={`${location.origin}${HELP_CENTER_BASE_PATH}/new`}
-                    />
+                    <Detail {...detailsProps} />
                 </Route>
             </Switch>
         </div>

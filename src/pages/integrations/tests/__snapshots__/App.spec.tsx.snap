@@ -1,5 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`App should have a failed disconnection flow 1`] = `
+[
+  [
+    {
+      "message": "Sorry, something went wrong. My test app is still connected.",
+      "status": "error",
+    },
+  ],
+]
+`;
+
+exports[`App should have a functionnal disconnect flow 1`] = `
+[
+  [
+    {
+      "message": "My test app has been disconnected.",
+      "status": "success",
+    },
+  ],
+]
+`;
+
 exports[`App should render 1`] = `
 <div
   class="container"
@@ -69,21 +91,21 @@ exports[`App should render 2`] = `
       <div
         class="heroMeta"
       >
-        <span
-          class="badge badge badge-secondary badge-pill"
+        <div
+          class="badge badge"
         >
           ECOMMERCE
-        </span>
-        <span
-          class="badge badge badge-secondary badge-pill"
+        </div>
+        <div
+          class="badge badge"
         >
           REVIEWS & UGC
-        </span>
-        <span
-          class="badge badge badge-success badge-pill"
+        </div>
+        <div
+          class="badge badge"
         >
           14 DAYS FREE TRIAL
-        </span>
+        </div>
         <span
           class="by"
         >
@@ -154,7 +176,7 @@ exports[`App should render 2`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 1 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 1 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="https://screen.com/my1.png"
           />
@@ -163,7 +185,7 @@ exports[`App should render 2`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 2 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 2 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="https://screen.com/my2.png"
           />
@@ -172,7 +194,7 @@ exports[`App should render 2`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 3 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 3 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="https://screen.com/my3.png"
           />
@@ -181,7 +203,7 @@ exports[`App should render 2`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 4 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 4 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="https://screen.com/my4.png"
           />
@@ -195,7 +217,7 @@ exports[`App should render 2`] = `
         class="card-body"
       >
         <div
-          class="connectWrapper"
+          class="actionWrapper"
         >
           <a
             class="connectButtonWrapper"
@@ -204,7 +226,7 @@ exports[`App should render 2`] = `
             target="_blank"
           >
             <button
-              class="wrapper actionButton fill primary medium"
+              class="wrapper fill primary medium"
               type="button"
             >
               Connect App
@@ -253,31 +275,6 @@ exports[`App should render 2`] = `
                 attach_money
               </i>
               See pricing details
-            </a>
-          </li>
-        </ul>
-        <h2
-          class="categoryTitle cardTitle"
-        >
-          Resources
-        </h2>
-        <ul
-          class="cardList"
-        >
-          
-          <li>
-            <a
-              class="actionLink"
-              href="https://www.mycompany.com/privacy-policy"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons-outlined actionIcon actionIconBigger"
-              >
-                privacy_tip
-              </i>
-              Privacy Policy
             </a>
           </li>
         </ul>

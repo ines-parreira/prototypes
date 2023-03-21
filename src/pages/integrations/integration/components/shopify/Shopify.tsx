@@ -6,9 +6,12 @@ import {List as ImmutableList, Map} from 'immutable'
 import {getIntegrationConfig} from 'state/integrations/helpers'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import PageHeader from 'pages/common/components/PageHeader'
+import Detail from 'pages/common/components/ProductDetail'
+import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
+import ConnectLink from 'pages/integrations/components/ConnectLink'
+import Button from 'pages/common/components/button/Button'
 import {IntegrationType} from 'models/integration/types'
 
-import Detail from '../../../components/Detail/Detail'
 import Integration from './Integration'
 import Create from './Create'
 import List from './List'
@@ -31,6 +34,8 @@ function Shopify({integration, integrations, loading, redirectUri}: Props) {
 
     const shopifyConfig = getIntegrationConfig(IntegrationType.Shopify)
 
+    if (!shopifyConfig) return null
+
     const baseURL = `/app/settings/integrations/shopify`
     const links = [
         [`${baseURL}/`, 'App Details'],
@@ -41,6 +46,18 @@ function Shopify({integration, integrations, loading, redirectUri}: Props) {
         connectUrl: 'https://apps.shopify.com/helpdesk',
         isExternalConnectUrl: true,
     }
+
+    const detailProps = mapAppToDetail(shopifyConfig)
+    const CTA = (
+        <ConnectLink
+            connectUrl={connectProps.connectUrl}
+            integrationTitle={IntegrationType.Shopify}
+            isExternal={connectProps.isExternalConnectUrl}
+        >
+            <Button>Connect {IntegrationType.Shopify}</Button>
+        </ConnectLink>
+    )
+    detailProps.infocard.CTA = CTA
 
     return (
         <div className="full-width">
@@ -57,10 +74,10 @@ function Shopify({integration, integrations, loading, redirectUri}: Props) {
                                 <Link
                                     to={`/app/settings/integrations/shopify/${connectionsPath}`}
                                 >
-                                    {shopifyConfig?.title}
+                                    {shopifyConfig.title}
                                 </Link>
                             ) : (
-                                shopifyConfig?.title
+                                shopifyConfig.title
                             )}
                         </BreadcrumbItem>
                         {isIntegration && (
@@ -93,8 +110,8 @@ function Shopify({integration, integrations, loading, redirectUri}: Props) {
                             </NavLink>
                         ))}
                     </SecondaryNavbar>
-                    {!isConnections && shopifyConfig ? (
-                        <Detail {...shopifyConfig} {...connectProps} />
+                    {!isConnections ? (
+                        <Detail {...detailProps} />
                     ) : (
                         <List
                             integrations={integrations}

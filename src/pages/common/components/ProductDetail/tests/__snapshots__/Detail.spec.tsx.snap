@@ -5,56 +5,71 @@ exports[`Detail should render 1`] = `
   <header
     class="hero"
   >
-    <img
-      alt="My test app's logo"
-      class="heroImage"
-      src="https://ok.com/1.png"
-    />
+    <i
+      class="heroIcon material-icons-outlined"
+    >
+      wysiwyg
+    </i>
     <div>
       <h1
         class="heroHeading"
       >
-        My test app
+        Some title
       </h1>
       <p
         class="heroDescription"
       >
-        Some tagline here
+        Create, customize, and embed a contact form to any page on your website.
       </p>
       <div
         class="heroMeta"
       >
-        <span
-          class="badge badge badge-secondary badge-pill"
+        <div
+          class="badge badge"
         >
-          ECOMMERCE
-        </span>
-        <span
-          class="badge badge badge-secondary badge-pill"
+          MY CATEGORY
+        </div>
+        <div
+          class="badge badge"
         >
-          REVIEWS & UGC
-        </span>
-        <span
-          class="badge badge badge-success badge-pill"
-        >
-          14 DAYS FREE TRIAL
-        </span>
+          WOW
+        </div>
         <span
           class="by"
         >
           by
            
           <a
-            href="https://www.gomycompany.com/"
+            href="https://gorgias.com"
             rel="noopener noreferrer"
             target="_blank"
           >
-            myCompany
+            Gorgias
           </a>
         </span>
       </div>
     </div>
   </header>
+  <div
+    class="bannerNotification info borderless"
+  >
+    <div
+      class="messageContainer"
+    >
+      <img
+        alt="icon"
+        class="icon"
+        src="test-file-stub"
+      />
+      <span
+        class="messageText"
+      >
+        <span>
+          Beware!
+        </span>
+      </span>
+    </div>
+  </div>
   <main
     class="main"
   >
@@ -68,39 +83,8 @@ exports[`Detail should render 1`] = `
       </h2>
       <div>
         <p>
-          My company is an interactive video platform, helping users create meaningful and personal conversations at scale.
+          Some long long description with HTML markup
         </p>
-        
-
-        <p>
-          With the my company app, users can sync their videos and monitor every viewer interaction, while managing leads and audience choices through easy-to-view columns.
-        </p>
-        
-
-        <p>
-          With all of your audience interactions in one place, collecting your insights is a breeze.
-        </p>
-        
-
-        <p>
-          It also has a list:
-        </p>
-        
-
-        <ul>
-          
-
-          <li>
-            In which noting that really matters is said but at least you see it!
-          </li>
-          
-
-          <li>
-            Isn’t it nice?
-          </li>
-          
-
-        </ul>
       </div>
       <ul
         class="screenshotList"
@@ -109,16 +93,7 @@ exports[`Detail should render 1`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 1 of things this app allows you to do in Gorgias"
-            class="screenshot"
-            src="https://screen.com/my1.png"
-          />
-        </li>
-        <li
-          class="screenshotListItem"
-        >
-          <img
-            alt="Screenshot number 2 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 1 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="https://screen.com/my2.png"
           />
@@ -127,7 +102,7 @@ exports[`Detail should render 1`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 3 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 2 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="https://screen.com/my3.png"
           />
@@ -136,7 +111,7 @@ exports[`Detail should render 1`] = `
           class="screenshotListItem"
         >
           <img
-            alt="Screenshot number 4 of things this app allows you to do in Gorgias"
+            alt="Screenshot number 3 of things this products allows you to do in Gorgias"
             class="screenshot"
             src="https://screen.com/my4.png"
           />
@@ -147,23 +122,22 @@ exports[`Detail should render 1`] = `
       class="infoCard card"
     >
       <div
+        class="rounderWrapper"
+      >
+        <p>
+          I am a banner, trust me.
+        </p>
+      </div>
+      <div
         class="card-body"
       >
         <div
-          class="connectWrapper"
+          class="actionWrapper"
         >
           <a
-            class="connectButtonWrapper"
-            href="https://ok.com/?account=20-1+rpz"
-            rel="noopener noreferrer"
-            target="_blank"
+            href="https://dummy.com"
           >
-            <button
-              class="wrapper actionButton fill primary medium"
-              type="button"
-            >
-              Connect App
-            </button>
+            click me
           </a>
         </div>
         <h2
@@ -176,29 +150,13 @@ exports[`Detail should render 1`] = `
         >
           <li>
             <p>
-              They are several options: 
+              Some description with HTML markup
             </p>
-            
-
-            <ul>
-              
-
-              <li>
-                Pay once
-              </li>
-              
-
-              <li>
-                Pay on ticket
-              </li>
-              
-
-            </ul>
           </li>
           <li>
             <a
               class="actionLink"
-              href="https://google.com"
+              href="https://dummy.com"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -219,11 +177,55 @@ exports[`Detail should render 1`] = `
         <ul
           class="cardList"
         >
-          
           <li>
             <a
               class="actionLink"
-              href="https://www.mycompany.com/privacy-policy"
+              href="https://dummydoc.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons-outlined actionIcon actionIconBigger"
+              >
+                description
+              </i>
+              Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              class="actionLink"
+              href="https://youtube.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons actionIcon"
+              >
+                ondemand_video
+              </i>
+              Monthly Webinar 1
+            </a>
+          </li>
+          <li>
+            <a
+              class="actionLink"
+              href="https://youtube.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons actionIcon"
+              >
+                ondemand_video
+              </i>
+              Monthly Webinar 2
+            </a>
+          </li>
+          <li>
+            <a
+              class="actionLink"
+              href="https://dummyprivacy.com"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -247,7 +249,7 @@ exports[`Detail should render 1`] = `
           <li>
             <a
               class="actionLink"
-              href="mailto:support@gotolstoy.com"
+              href="mailto:support@gorgias.com"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -256,13 +258,13 @@ exports[`Detail should render 1`] = `
               >
                 mail
               </i>
-              support@gotolstoy.com
+              support@gorgias.com
             </a>
           </li>
           <li>
             <a
               class="actionLink"
-              href="tel:+33620033659"
+              href="tel:+33620033669"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -271,7 +273,7 @@ exports[`Detail should render 1`] = `
               >
                 phone
               </i>
-              +33620033659
+              +33620033669
             </a>
           </li>
         </ul>

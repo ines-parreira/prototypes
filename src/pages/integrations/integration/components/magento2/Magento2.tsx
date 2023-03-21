@@ -11,8 +11,11 @@ import {getIntegrationConfig} from 'state/integrations/helpers'
 import {AccountFeature} from 'state/currentAccount/types'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import PageHeader from 'pages/common/components/PageHeader'
+import Detail from 'pages/common/components/ProductDetail'
+import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
+import ConnectLink from 'pages/integrations/components/ConnectLink'
+import Button from 'pages/common/components/button/Button'
 
-import Detail from '../../../components/Detail/Detail'
 import Integration from './Integration'
 import Create from './Create'
 import List from './List'
@@ -40,6 +43,7 @@ function Magento2({integration, integrations, loading, redirectUri}: Props) {
     const isConnections = integrationId === connectionsPath && hasMagentoFeature
 
     const magento2Config = getIntegrationConfig(IntegrationType.Magento2)
+    if (!magento2Config) return null
 
     const baseURL = `/app/settings/integrations/magento2`
     const links = [
@@ -50,9 +54,25 @@ function Magento2({integration, integrations, loading, redirectUri}: Props) {
     const connectProps = {
         connectUrl: '/app/settings/integrations/magento2/new',
         isExternalConnectUrl: false,
-        ...(!hasMagentoFeature && {
-            isConnectionDisabled: true,
-            disabledConnectionNotification: (
+        isConnectionDisabled: !hasMagentoFeature,
+        disabledMessage:
+            !hasMagentoFeature && 'App is not available on your current plan',
+    }
+
+    const detailProps = mapAppToDetail(magento2Config)
+    const CTA = (
+        <>
+            <ConnectLink
+                connectUrl={connectProps.connectUrl}
+                isExternal={connectProps.isExternalConnectUrl}
+                isDisabled={connectProps.isConnectionDisabled}
+                integrationTitle={IntegrationType.Magento2}
+            >
+                <Button isDisabled={connectProps.isConnectionDisabled}>
+                    Connect {IntegrationType.Magento2}
+                </Button>
+            </ConnectLink>
+            {connectProps.isConnectionDisabled && (
                 <div className={css.disabledConnectionNotification}>
                     App is not available on your current plan.{' '}
                     <Link
@@ -66,9 +86,10 @@ function Magento2({integration, integrations, loading, redirectUri}: Props) {
                         See upgrade details.
                     </Link>
                 </div>
-            ),
-        }),
-    }
+            )}
+        </>
+    )
+    detailProps.infocard.CTA = CTA
 
     return (
         <div className="full-width">
@@ -128,7 +149,7 @@ function Magento2({integration, integrations, loading, redirectUri}: Props) {
                         </SecondaryNavbar>
                     )}
                     {!isConnections && magento2Config ? (
-                        <Detail {...magento2Config} {...connectProps} />
+                        <Detail {...detailProps} />
                     ) : (
                         <List
                             integrations={integrations}

@@ -37,9 +37,8 @@ exports[`<ContactFormStartView /> \`About\` section should display description 1
     <header
       class="hero"
     >
-      
       <i
-        class="icon material-icons-outlined"
+        class="heroIcon material-icons-outlined"
       >
         wysiwyg
       </i>
@@ -56,21 +55,7 @@ exports[`<ContactFormStartView /> \`About\` section should display description 1
         </p>
         <div
           class="heroMeta"
-        >
-          <span
-            class="by"
-          >
-            by
-             
-            <a
-              href="https://gorgias.com"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Gorgias
-            </a>
-          </span>
-        </div>
+        />
       </div>
     </header>
     <main
@@ -124,7 +109,7 @@ exports[`<ContactFormStartView /> \`About\` section should display description 1
             class="screenshotListItem"
           >
             <img
-              alt="Screenshot number 1 of things this app allows you to do in Gorgias"
+              alt="Screenshot number 1 of things this products allows you to do in Gorgias"
               class="screenshot"
               src="/assets/img/integrations/screenshots/contactform-1.png"
             />
@@ -138,34 +123,19 @@ exports[`<ContactFormStartView /> \`About\` section should display description 1
           class="card-body"
         >
           <div
-            class="connectWrapper"
+            class="actionWrapper"
           >
             <a
-              class="connectButtonWrapper"
-              href="http://localhost/app/settings/contact-form/new?account=undefined"
-              rel="noopener noreferrer"
-              target="_blank"
+              to="/app/settings/contact-form/new"
             >
               <button
-                class="wrapper actionButton fill primary medium"
+                class="wrapper full-width fill primary medium"
                 type="button"
               >
                 Create Contact Form
               </button>
             </a>
           </div>
-          <h2
-            class="categoryTitle cardTitle"
-          >
-            Pricing
-          </h2>
-          <ul
-            class="cardList"
-          >
-            <li>
-              Free
-            </li>
-          </ul>
           <h2
             class="categoryTitle cardTitle"
           >
@@ -189,7 +159,6 @@ exports[`<ContactFormStartView /> \`About\` section should display description 1
                 Documentation
               </a>
             </li>
-            
           </ul>
           <h2
             class="categoryTitle cardTitle"
@@ -214,7 +183,6 @@ exports[`<ContactFormStartView /> \`About\` section should display description 1
                 support@gorgias.com
               </a>
             </li>
-            
           </ul>
         </div>
       </div>

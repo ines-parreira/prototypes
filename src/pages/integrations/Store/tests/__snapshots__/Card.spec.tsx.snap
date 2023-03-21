@@ -16,7 +16,7 @@ exports[`<Card /> should render a basic link card with proper link 1`] = `
         alt="My test app logo"
         class="icon"
         role="presentation"
-        src="test-file-stub"
+        src="/assets/https:/ok.com/1.png"
       />
       <div
         class="pillsContainer"

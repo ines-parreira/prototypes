@@ -14,7 +14,7 @@ import {AccountSettingBusinessHours} from 'state/currentAccount/types'
 import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {getIconFromUrl} from '../../utils'
+import {assetsUrl} from '../../utils'
 
 export const getIntegrationsByTypes = (
     integrations: List<any> = fromJS([]),
@@ -30,15 +30,11 @@ export const getIntegrationConfig = (
     return _find(INTEGRATION_TYPE_CONFIG, {type})
 }
 
-export const getIconUrl = (type: IntegrationType): string => {
-    const config = getIntegrationConfig(type)
-    return config && typeof config === 'object' && config.image
-        ? config.image
-        : ''
-}
-
 export const getIconFromType = (type: IntegrationType): string => {
-    return getIconFromUrl(`integrations/${getIconUrl(type)}`)
+    const config = getIntegrationConfig(type)
+    return assetsUrl(
+        (config && typeof config === 'object' && config.image) || ''
+    )
 }
 
 /**

@@ -2,7 +2,7 @@ import React from 'react'
 import {useParams, Switch, Route} from 'react-router-dom'
 
 import PageHeader from 'pages/common/components/PageHeader'
-import AppDetails from 'pages/integrations/components/Detail'
+import AppDetails from 'pages/common/components/ProductDetail'
 import VoiceIntegrationSecondaryNavigation from 'pages/integrations/integration/components/voice/VoiceIntegrationSecondaryNavigation'
 import VoiceIntegrationPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences'
 import VoiceIntegrationVoicemail from 'pages/integrations/integration/components/voice/VoiceIntegrationVoicemail'
@@ -11,6 +11,9 @@ import VoiceIntegrationIvr from 'pages/integrations/integration/components/voice
 import VoiceIntegrationCreate from 'pages/integrations/integration/components/voice/VoiceIntegrationCreate'
 import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
+import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
+import ConnectLink from 'pages/integrations/components/ConnectLink'
+import Button from 'pages/common/components/button/Button'
 
 import {IntegrationType, isPhoneIntegration} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -44,6 +47,19 @@ export default function VoiceIntegration() {
 
     const baseURL = `/app/settings/channels/phone`
     const routes = getDefaultRoutes(baseURL, phoneIntegrations)
+
+    if (!config) return null
+    const detailProps = mapAppToDetail(config)
+    const CTA = (
+        <ConnectLink
+            connectUrl={`${baseURL}/new`}
+            integrationTitle={IntegrationType.Phone}
+            isExternal={false}
+        >
+            <Button>Add Voice</Button>
+        </ConnectLink>
+    )
+    detailProps.infocard.CTA = CTA
 
     return (
         <div className="full-width">
@@ -108,14 +124,7 @@ export default function VoiceIntegration() {
                     />
                 </Route>
                 <Route path={routes.about} exact>
-                    {config && (
-                        <AppDetails
-                            {...config}
-                            connectUrl={`${baseURL}/new`}
-                            connectTitle="Add Voice"
-                            isExternalConnectUrl={false}
-                        />
-                    )}
+                    {config && <AppDetails {...detailProps} />}
                 </Route>
             </Switch>
         </div>

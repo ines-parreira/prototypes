@@ -7,7 +7,7 @@ import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
 import client from 'models/api/resources'
-import AlloyConnectButton from 'pages/integrations/components/Detail/AlloyConnectButton'
+import AlloyConnectButton from 'pages/integrations/components/AlloyConnectButton'
 import * as actions from 'state/integrations/actions'
 
 jest.spyOn(actions, 'deleteIntegration')

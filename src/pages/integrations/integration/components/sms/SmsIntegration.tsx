@@ -8,16 +8,20 @@ import {
 } from 'state/integrations/selectors'
 import PageHeader from 'pages/common/components/PageHeader'
 
-import AppDetails from 'pages/integrations/components/Detail'
+import AppDetails from 'pages/common/components/ProductDetail'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
 import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
 import SmsIntegrationPreferences from 'pages/integrations/integration/components/sms/SmsIntegrationPreferences'
 import SmsIntegrationCreate from 'pages/integrations/integration/components/sms/SmsIntegrationCreate'
 import SmsIntegrationSecondaryNavigation from 'pages/integrations/integration/components/sms/SmsIntegrationSecondaryNavigation'
+import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
+import ConnectLink from 'pages/integrations/components/ConnectLink'
+import Button from 'pages/common/components/button/Button'
 
 import {IntegrationType, isSmsIntegration} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
+
 import {getDefaultRoutes} from '../../utils/defaultRoutes'
 
 export default function SmsIntegration() {
@@ -41,6 +45,19 @@ export default function SmsIntegration() {
 
     const baseURL = `/app/settings/channels/sms`
     const routes = getDefaultRoutes(baseURL, smsIntegrations)
+
+    if (!config) return null
+    const detailProps = mapAppToDetail(config)
+    const CTA = (
+        <ConnectLink
+            connectUrl={`${baseURL}/new`}
+            integrationTitle={IntegrationType.Sms}
+            isExternal={false}
+        >
+            <Button>Add SMS</Button>
+        </ConnectLink>
+    )
+    detailProps.infocard.CTA = CTA
 
     return (
         <div className="full-width">
@@ -84,14 +101,7 @@ export default function SmsIntegration() {
                     />
                 </Route>
                 <Route path={routes.about} exact>
-                    {config && (
-                        <AppDetails
-                            {...config}
-                            connectUrl={`${baseURL}/new`}
-                            connectTitle="Add SMS"
-                            isExternalConnectUrl={false}
-                        />
-                    )}
+                    {config && <AppDetails {...detailProps} />}
                 </Route>
             </Switch>
         </div>

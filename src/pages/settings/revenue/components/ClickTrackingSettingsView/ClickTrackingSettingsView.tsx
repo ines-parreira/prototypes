@@ -10,7 +10,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import useTitle from 'hooks/useTitle'
 import {FeatureFlagKey} from 'config/featureFlags'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import Detail from 'pages/integrations/components/Detail'
+import Detail from 'pages/common/components/ProductDetail'
 import {ClickTrackingCustomDomain} from '../ClickTrackingCustomDomain'
 
 import {ABOUT_PAGE, CLICK_TRACKING_BASE_PATH} from '../../constants'

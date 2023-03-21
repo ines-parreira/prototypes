@@ -5,7 +5,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import Tooltip from 'pages/common/components/Tooltip'
-import css from './Detail.less'
+import css from './ConnectLink.less'
 
 const CONNECT_BUTTON_ID = 'connect-button'
 

@@ -158,7 +158,7 @@ exports[`<AddDiscountCode/> should render the store picker because of multiple i
                 <img
                   alt="Logo"
                   class="shopifyLogo"
-                  src="test-file-stub"
+                  src="/assets/img/integrations/shopify.png"
                 />
                 <span>
                   My Shop
@@ -183,7 +183,7 @@ exports[`<AddDiscountCode/> should render the store picker because of multiple i
                 <img
                   alt="Logo"
                   class="shopifyLogo"
-                  src="test-file-stub"
+                  src="/assets/img/integrations/shopify.png"
                 />
                 <span>
                   My Shop

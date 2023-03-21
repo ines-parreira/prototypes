@@ -171,7 +171,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       <img
                         alt="logo"
                         class="dropdownLogo"
-                        src="test-file-stub"
+                        src="/assets/img/integrations/shopify.png"
                       />
                       <span>
                         myStore1
@@ -190,7 +190,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       <img
                         alt="logo"
                         class="dropdownLogo"
-                        src="test-file-stub"
+                        src="/assets/img/integrations/shopify.png"
                       />
                       <span>
                         myStore2
@@ -5077,7 +5077,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       <img
                         alt="logo"
                         class="dropdownLogo"
-                        src="test-file-stub"
+                        src="/assets/img/integrations/shopify.png"
                       />
                       MY ONLY SHOPIFY STORE
                     </span>
@@ -5098,7 +5098,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       <img
                         alt="logo"
                         class="dropdownLogo"
-                        src="test-file-stub"
+                        src="/assets/img/integrations/shopify.png"
                       />
                       <span>
                         MY ONLY SHOPIFY STORE
@@ -6853,7 +6853,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       <img
                         alt="logo"
                         class="dropdownLogo"
-                        src="test-file-stub"
+                        src="/assets/img/integrations/shopify.png"
                       />
                       <span>
                         myStore1
@@ -6872,7 +6872,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       <img
                         alt="logo"
                         class="dropdownLogo"
-                        src="test-file-stub"
+                        src="/assets/img/integrations/shopify.png"
                       />
                       <span>
                         myStore2
@@ -6891,7 +6891,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       <img
                         alt="logo"
                         class="dropdownLogo"
-                        src="test-file-stub"
+                        src="/assets/img/integrations/shopify.png"
                       />
                       <span>
                         myStore3

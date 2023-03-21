@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConnectLink should add a domain query param to connectUrl if an App 1`] = `
+<a
+  class="connectButtonWrapper"
+  href="https://iamconnecting.com/?account=20-1+rpz"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  <span>
+    click
+  </span>
+</a>
+`;
+
+exports[`ConnectLink should render a span with a tooltip if disabled 1`] = `
+<span
+  class="connectButtonWrapper"
+>
+  <span>
+    click
+  </span>
+  <span
+    class="connectTooltip"
+    id="connect-button"
+  />
+</span>
+`;
+
+exports[`ConnectLink should render an internal link if not an app or not external 1`] = `
+<a
+  class="connectButtonWrapper"
+  to="https://iamconnecting.com"
+>
+  <span>
+    click
+  </span>
+</a>
+`;

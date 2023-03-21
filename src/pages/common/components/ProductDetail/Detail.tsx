@@ -1,20 +1,20 @@
 import React from 'react'
 
-import {isAppDetail} from 'models/integration/types/app'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import Header from './Header'
 import Slides from './Slides'
-import InfoCard, {InfoCardProps} from './InfoCard'
+import InfoCard from './InfoCard'
+import {ProductDetail} from './types'
 
 import css from './Detail.less'
 
-export default function Detail(props: InfoCardProps) {
-    const {screenshots = [], longDescription, hideInfoCard} = props
+export default function Detail(props: ProductDetail) {
+    const {screenshots = [], longDescription, infocard} = props
 
     return (
         <>
             <Header {...props} />
-            {!isAppDetail(props) && props.notification && (
+            {props.notification && (
                 <BannerNotification
                     {...props.notification}
                     borderless
@@ -26,12 +26,11 @@ export default function Detail(props: InfoCardProps) {
                 <section className={css.longDescription}>
                     <h2 className={css.categoryTitle}>About</h2>
                     <div dangerouslySetInnerHTML={{__html: longDescription}} />
-                    <Slides
-                        isApp={isAppDetail(props)}
-                        screenshots={screenshots}
-                    />
+                    {screenshots && screenshots.length > 0 && (
+                        <Slides screenshots={screenshots} />
+                    )}
                 </section>
-                {!hideInfoCard && <InfoCard {...props} />}
+                {!infocard?.isHidden && <InfoCard {...props.infocard} />}
             </main>
         </>
     )

@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import Skeleton from 'react-loading-skeleton'
 import classnames from 'classnames'
 
+import {assetsUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -12,7 +13,6 @@ import {IntegrationListItem} from 'state/integrations/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 
-import {getIconFromUrl} from 'utils'
 import css from './Card.less'
 
 export const LOADING_TEST_ID = 'card-loading'
@@ -152,9 +152,7 @@ export default function Card({
                                 src={
                                     isAppListItem(item)
                                         ? item.image
-                                        : getIconFromUrl(
-                                              `integrations/${item.image}`
-                                          )
+                                        : assetsUrl(item.image)
                                 }
                                 alt={`${item.title} logo`}
                                 role="presentation"

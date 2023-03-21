@@ -42,7 +42,7 @@ exports[`<ShopifyProductLine/> should render the product picker 1`] = `
         <img
           alt="Shopify logo"
           class="shopifyLogo"
-          src="test-file-stub"
+          src="/assets/img/integrations/shopify.png"
         />
         <span
           class="headerText"
@@ -109,7 +109,7 @@ exports[`<ShopifyProductLine/> should render the product picker with products 1`
         <img
           alt="Shopify logo"
           class="shopifyLogo"
-          src="test-file-stub"
+          src="/assets/img/integrations/shopify.png"
         />
         <span
           class="headerText"
@@ -277,7 +277,7 @@ exports[`<ShopifyProductLine/> should render the variants picker of a product 1`
         <img
           alt="Shopify logo"
           class="shopifyLogo"
-          src="test-file-stub"
+          src="/assets/img/integrations/shopify.png"
         />
         <span
           class="headerText"

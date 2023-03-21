@@ -187,7 +187,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                 <img
                   alt="shopify logo"
                   role="presentation"
-                  src="test-file-stub"
+                  src="/assets/img/integrations/shopify.png"
                 />
               </div>
               <span
@@ -506,7 +506,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
                 <img
                   alt="shopify logo"
                   role="presentation"
-                  src="test-file-stub"
+                  src="/assets/img/integrations/shopify.png"
                 />
               </div>
               <span
@@ -1044,7 +1044,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                 <img
                   alt="shopify logo"
                   role="presentation"
-                  src="test-file-stub"
+                  src="/assets/img/integrations/shopify.png"
                 />
               </div>
               <span
@@ -1363,7 +1363,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
                 <img
                   alt="shopify logo"
                   role="presentation"
-                  src="test-file-stub"
+                  src="/assets/img/integrations/shopify.png"
                 />
               </div>
               <span
