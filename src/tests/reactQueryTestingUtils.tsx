@@ -1,4 +1,5 @@
-import {QueryClient} from '@tanstack/react-query'
+import React, {FC} from 'react'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 
 export function createTestQueryClient() {
     // config recommended by documentation for query client being used inside tests
@@ -16,4 +17,12 @@ export function createTestQueryClient() {
             error: () => {},
         },
     })
+}
+
+export function createTestQueryClientProvider() {
+    const queryClient = createTestQueryClient()
+    const TestQueryClientProvider: FC = (props) => (
+        <QueryClientProvider client={queryClient} {...props} />
+    )
+    return TestQueryClientProvider
 }

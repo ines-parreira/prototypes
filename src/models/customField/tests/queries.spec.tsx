@@ -1,6 +1,5 @@
 import MockAdapter from 'axios-mock-adapter'
-import {renderHook} from '@testing-library/react-hooks'
-import {act, waitFor} from '@testing-library/react'
+import {renderHook, act} from '@testing-library/react-hooks'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
@@ -37,7 +36,7 @@ describe('queries.spec.tsx', () => {
             mockedServer
                 .onGet('/api/custom-fields/')
                 .reply(200, {data: [customField]})
-            const {result} = renderHook(
+            const {result, waitFor} = renderHook(
                 () =>
                     useGetCustomFieldDefinitions({
                         archived: false,
@@ -62,7 +61,7 @@ describe('queries.spec.tsx', () => {
             mockedServer
                 .onGet('/api/custom-fields')
                 .reply(404, {message: 'error'})
-            const {result} = renderHook(
+            const {result, waitFor} = renderHook(
                 () =>
                     useGetCustomFieldDefinitions({
                         archived: false,
@@ -97,7 +96,7 @@ describe('queries.spec.tsx', () => {
         it('successful query hook', async () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer.onGet('/api/custom-fields/123').reply(200, customField)
-            const {result} = renderHook(
+            const {result, waitFor} = renderHook(
                 () => useGetCustomFieldDefinition(123),
                 {
                     wrapper: ({children}) => (
@@ -118,7 +117,7 @@ describe('queries.spec.tsx', () => {
                 .onGet('/api/custom-fields/123')
                 .reply(404, {message: 'error'})
 
-            const {result} = renderHook(
+            const {result, waitFor} = renderHook(
                 () => useGetCustomFieldDefinition(123),
                 {
                     wrapper: ({children}) => (
@@ -152,7 +151,7 @@ describe('queries.spec.tsx', () => {
                 'invalidateQueries'
             )
             mockedServer.onPost('/api/custom-fields').reply(200, customField)
-            const {result} = renderHook(() => useCreateCustomField(), {
+            const {result, waitFor} = renderHook(() => useCreateCustomField(), {
                 wrapper: ({children}) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
@@ -192,7 +191,7 @@ describe('queries.spec.tsx', () => {
             mockedServer.onPost('/api/custom-fields').reply(400, {
                 error: {msg: 'foo error'},
             })
-            const {result} = renderHook(() => useCreateCustomField(), {
+            const {result, waitFor} = renderHook(() => useCreateCustomField(), {
                 wrapper: ({children}) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
@@ -230,13 +229,16 @@ describe('queries.spec.tsx', () => {
                 'invalidateQueries'
             )
             mockedServer.onPut('/api/custom-fields/123').reply(200, customField)
-            const {result} = renderHook(() => useUpdateCustomField(123), {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            })
+            const {result, waitFor} = renderHook(
+                () => useUpdateCustomField(123),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
 
             act(() => {
                 result.current.mutate(customFieldInput)
@@ -270,13 +272,16 @@ describe('queries.spec.tsx', () => {
             mockedServer.onPut('/api/custom-fields/123').reply(400, {
                 error: {msg: 'foo error'},
             })
-            const {result} = renderHook(() => useUpdateCustomField(123), {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            })
+            const {result, waitFor} = renderHook(
+                () => useUpdateCustomField(123),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
 
             act(() => {
                 result.current.mutate(customFieldInput)
@@ -314,7 +319,7 @@ describe('queries.spec.tsx', () => {
             mockedServer
                 .onPut('/api/custom-fields/')
                 .reply(200, {data: [customField]})
-            const {result} = renderHook(
+            const {result, waitFor} = renderHook(
                 () => useUpdateCustomFields(activeParams),
                 {
                     wrapper: ({children}) => (
@@ -354,7 +359,7 @@ describe('queries.spec.tsx', () => {
             mockedServer.onPut('/api/custom-fields/').reply(400, {
                 error: {msg: 'foo error'},
             })
-            const {result} = renderHook(
+            const {result, waitFor} = renderHook(
                 () =>
                     useUpdateCustomFields({
                         archived: false,
@@ -404,13 +409,16 @@ describe('queries.spec.tsx', () => {
                 'invalidateQueries'
             )
             mockedServer.onPut('/api/custom-fields/123').reply(200, customField)
-            const {result} = renderHook(() => useUpdateCustomFieldStatus(123), {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            })
+            const {result, waitFor} = renderHook(
+                () => useUpdateCustomFieldStatus(123),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
 
             act(() => {
                 result.current.mutate({archived: true})
@@ -444,13 +452,16 @@ describe('queries.spec.tsx', () => {
             mockedServer.onPut('/api/custom-fields/123').reply(400, {
                 error: {msg: 'foo error'},
             })
-            const {result} = renderHook(() => useUpdateCustomFieldStatus(123), {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            })
+            const {result, waitFor} = renderHook(
+                () => useUpdateCustomFieldStatus(123),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
 
             act(() => {
                 result.current.mutate({archived: true})
