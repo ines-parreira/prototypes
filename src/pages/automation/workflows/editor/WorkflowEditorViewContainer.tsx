@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useMemo} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
 import {ulid} from 'ulidx'
 
@@ -25,7 +25,7 @@ export default function WorkflowEditorViewContainer() {
     }, [history, shopName, shopType])
 
     const isNewWorkflow = editWorkflowId == null
-    const workflowId = editWorkflowId ?? ulid()
+    const workflowId = useMemo(() => editWorkflowId ?? ulid(), [editWorkflowId])
 
     const notifyMerchant = useCallback(
         (message: string, kind: 'success' | 'error') => {

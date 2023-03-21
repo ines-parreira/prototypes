@@ -1,17 +1,28 @@
-import React, {PropsWithChildren, ReactNode} from 'react'
+import React, {
+    PropsWithChildren,
+    ReactNode,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 import {Container} from 'reactstrap'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import css from './WorkflowEditorView.less'
-import useWorkflowConfiguration from './hooks/useWorkflowConfiguration'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import {
+    useWorkflowConfigurationContext,
+    withWorkflowConfigurationContext,
+} from './hooks/useWorkflowConfiguration'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 import {
     withWorkflowEntrypointContext,
     useWorkflowEntrypointContext,
 } from './hooks/useWorkflowEntrypoint'
+
+import css from './WorkflowEditorView.less'
 
 type WorkflowEditorViewProps = {
     shopType: string
@@ -25,47 +36,50 @@ type WorkflowEditorViewProps = {
 const discardChangeConfirmationText = <>Your changes will be lost</>
 
 function WorkflowEditorViewWrapped({
-    workflowId,
     isNewWorkflow,
     goToWorkflowsListPage,
     notifyMerchant,
 }: WorkflowEditorViewProps) {
-    const worfklowConfigurationHook = useWorkflowConfiguration(
-        workflowId,
-        isNewWorkflow
-    )
+    const worfklowConfigurationContext = useWorkflowConfigurationContext()
     const workflowEntrypointContext = useWorkflowEntrypointContext()
 
     // flags
     const isDirty =
-        worfklowConfigurationHook.isDirty || workflowEntrypointContext.isDirty
-    const validationError =
-        worfklowConfigurationHook.validationError ??
-        workflowEntrypointContext.validationError
+        worfklowConfigurationContext.isDirty ||
+        workflowEntrypointContext.isDirty
     const isFetchPending =
-        worfklowConfigurationHook.isFetchPending ||
+        worfklowConfigurationContext.isFetchPending ||
         workflowEntrypointContext.isFetchPending
     const isSavePending =
-        worfklowConfigurationHook.isSavePending ||
+        worfklowConfigurationContext.isSavePending ||
         workflowEntrypointContext.isSavePending
-    const shouldShowErrors =
-        worfklowConfigurationHook.shouldShowErrors ||
-        workflowEntrypointContext.shouldShowErrors
+    const [lastSaveAttempt, setLastSaveAttempt] = useState<Date | undefined>(
+        undefined
+    )
 
     // handlers
     const handleDiscard = () => {
-        worfklowConfigurationHook.handleDiscard()
+        worfklowConfigurationContext.handleDiscard()
         workflowEntrypointContext.handleDiscard()
     }
     const handleCancel = () => {
         goToWorkflowsListPage()
     }
     const handleSave = async () => {
-        await worfklowConfigurationHook.handleSave()
-        await workflowEntrypointContext.handleSave()
+        const entrypointError = workflowEntrypointContext.handleValidate()
+        const configurationError = worfklowConfigurationContext.handleValidate()
+        const validationError = configurationError || entrypointError
         if (validationError) {
+            setLastSaveAttempt(new Date())
             notifyMerchant(validationError, 'error')
             return
+        }
+        // prevent saving configuration when entrypoint is invalid and vice versa
+        if (!configurationError) {
+            await worfklowConfigurationContext.handleSave()
+        }
+        if (!entrypointError) {
+            await workflowEntrypointContext.handleSave()
         }
         notifyMerchant(
             isNewWorkflow
@@ -76,6 +90,15 @@ function WorkflowEditorViewWrapped({
         goToWorkflowsListPage()
     }
 
+    const inputRef = useRef<HTMLInputElement>(null)
+    useEffect(() => {
+        if (!isNewWorkflow) return
+        const t = setTimeout(() => {
+            inputRef.current?.focus()
+        }, 300)
+        return () => clearTimeout(t)
+    }, [isNewWorkflow])
+
     return (
         <div className={css.page}>
             <PageHeader
@@ -83,18 +106,23 @@ function WorkflowEditorViewWrapped({
                 title={
                     <div className={css.headerLeft}>
                         <TextInput
-                            autoFocus={isNewWorkflow}
+                            ref={inputRef}
                             className={css.headerLeftInput}
                             isRequired
                             onChange={(name) => {
-                                worfklowConfigurationHook.setWorkflowName(name)
+                                worfklowConfigurationContext.dispatch({
+                                    type: 'SET_NAME',
+                                    name,
+                                })
                             }}
                             placeholder="Add flow name"
-                            value={worfklowConfigurationHook.configuration.name}
+                            value={
+                                worfklowConfigurationContext.configuration.name
+                            }
                             isDisabled={isFetchPending || isSavePending}
                             hasError={
-                                shouldShowErrors &&
-                                worfklowConfigurationHook.configuration.name.trim()
+                                lastSaveAttempt &&
+                                worfklowConfigurationContext.configuration.name.trim()
                                     .length === 0
                             }
                         />
@@ -107,14 +135,17 @@ function WorkflowEditorViewWrapped({
                 <div className={css.headerRight}>
                     {isNewWorkflow ? (
                         <>
-                            <ButtonWithConfirmation
-                                confirmationText={discardChangeConfirmationText}
-                                isDisabled={!isDirty}
+                            <Button
+                                isDisabled={isFetchPending || !isDirty}
                                 onClick={handleCancel}
                             >
                                 Cancel
-                            </ButtonWithConfirmation>
-                            <Button onClick={handleSave} isDisabled={!isDirty}>
+                            </Button>
+                            <Button
+                                onClick={handleSave}
+                                isLoading={isFetchPending || isSavePending}
+                                isDisabled={!isDirty}
+                            >
                                 Create flow
                             </Button>
                         </>
@@ -122,14 +153,16 @@ function WorkflowEditorViewWrapped({
                         <>
                             <ButtonWithConfirmation
                                 confirmationText={discardChangeConfirmationText}
-                                isDisabled={!isDirty || isSavePending}
+                                isDisabled={
+                                    !isDirty || isFetchPending || isSavePending
+                                }
                                 onClick={handleDiscard}
                             >
                                 Discard Changes
                             </ButtonWithConfirmation>
                             <Button
                                 onClick={handleSave}
-                                isLoading={isSavePending}
+                                isLoading={isFetchPending || isSavePending}
                                 isDisabled={!isDirty}
                             >
                                 Save & Close
@@ -139,8 +172,12 @@ function WorkflowEditorViewWrapped({
                 </div>
             </PageHeader>
             <Container className={css.pageContainer} fluid>
-                <WorkflowVisualBuilder />
+                <WorkflowVisualBuilder lastSaveAttempt={lastSaveAttempt} />
             </Container>
+            <UnsavedChangesPrompt
+                onSave={handleSave}
+                when={isDirty && !isSavePending}
+            />
         </div>
     )
 }
@@ -183,4 +220,6 @@ function ButtonWithConfirmation({
     )
 }
 
-export default withWorkflowEntrypointContext(WorkflowEditorViewWrapped)
+export default withWorkflowConfigurationContext(
+    withWorkflowEntrypointContext(WorkflowEditorViewWrapped)
+)

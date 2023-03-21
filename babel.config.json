@@ -30,5 +30,5 @@
         "@babel/plugin-proposal-class-properties",
         "@babel/plugin-proposal-export-default-from"
     ],
-    "exclude": ["./node_modules"]
+    "exclude": ["./node_modules/(?!(d3-hierarchy))"]
 }

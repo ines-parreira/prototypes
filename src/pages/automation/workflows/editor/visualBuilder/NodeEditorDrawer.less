@@ -1,0 +1,44 @@
+@import '~css/new/colorTokens';
+@import '~css/new/layout.less';
+:local {
+    .drawer {
+        width: 26vw !important;
+        right: -26vw !important;
+        grid-template-areas:
+            'header'
+            'main' !important;
+        grid-template-rows: 64px auto !important;
+        &:global.opened {
+            transform: translateX(-26vw) !important;
+        }
+    }
+
+    .header {
+        display: block;
+    }
+
+    .headerTop {
+        display: flex;
+        padding: 16px 0;
+        h3 {
+            margin-bottom: 0;
+        }
+    }
+
+    .headerActions {
+        display: flex;
+        column-gap: 16px;
+        padding-top: 8px;
+        & > * {
+            flex: 1 100%;
+        }
+    }
+
+    .label {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .textInput {
+        background-color: @classic-neutral-grey-0;
+    }
+}

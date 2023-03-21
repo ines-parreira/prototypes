@@ -3,14 +3,14 @@ import React from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
 import Label from 'pages/common/forms/Label/Label'
 
-import {TriggerButtonNodeType} from '../types'
+import {AutomatedMessageNodeType} from '../types'
 import css from './Node.less'
 
-export default function TriggerButtonNode({
+export default function AutomatedMessageNode({
     data,
-}: NodeProps<TriggerButtonNodeType['data']>) {
+}: NodeProps<AutomatedMessageNodeType['data']>) {
     const {shouldShowErrors} = data
-    const isErrored = data.entrypoint_label.length === 0
+    const isErrored = data.message.content.text.length === 0
     return (
         <div
             className={classNames(css.node, {
@@ -24,15 +24,15 @@ export default function TriggerButtonNode({
             />
             <div className={css.nodeContainer}>
                 <div className={css.nodeTitle}>
-                    <Label>Trigger button</Label>
+                    <Label>Automated message</Label>
                 </div>
                 <div
                     className={classNames(css.nodeContent, {
                         [css.nodeContentErrored]: shouldShowErrors && isErrored,
                     })}
                 >
-                    {data.entrypoint_label.length > 0 ? (
-                        data.entrypoint_label
+                    {data.message.content.text.length > 0 ? (
+                        data.message.content.text
                     ) : (
                         <span className={css.clickToAdd}>Click to add</span>
                     )}

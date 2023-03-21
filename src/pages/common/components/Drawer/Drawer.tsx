@@ -107,6 +107,7 @@ const Drawer = ({
                         [css.drawer]: true,
                         [css.fullscreen]: open && fullscreen,
                         [css.opened]: open,
+                        opened: open,
                     },
                     className
                 )}
