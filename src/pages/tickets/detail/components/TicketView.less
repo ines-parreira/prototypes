@@ -19,7 +19,6 @@
     }
 
     .ticketContent {
-        overflow: auto;
         padding: 0 30px;
         flex-shrink: 1;
         flex-grow: 1;
@@ -29,19 +28,11 @@
         }
 
         @media @mobiles {
-            padding: 16px;
+            padding: 0 46px;
         }
 
         &.historyDisplayed {
             flex-shrink: 0;
-        }
-
-        // TODO: refactor after Virtualization is rolled out
-        &.isVirtualized {
-            overflow: unset;
-            @media @mobiles {
-                padding: 0 46px;
-            }
         }
     }
 

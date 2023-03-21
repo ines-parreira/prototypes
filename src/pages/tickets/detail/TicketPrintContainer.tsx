@@ -48,7 +48,7 @@ const TicketPrintContainer = () => {
                     <Loader className={css.loader} minHeight="unset" />
                 </div>
             ) : (
-                <TicketBodyNonVirtualized elements={ticketBody} />
+                <TicketBodyNonVirtualized elements={ticketBody} isPrintLayout />
             )}
         </div>
     )

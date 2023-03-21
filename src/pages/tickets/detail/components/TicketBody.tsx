@@ -131,7 +131,7 @@ export default function TicketBody({
                 TicketVirtuosoContextType
             >
                 ref={virtuosoRef}
-                className={classnames(css.wrapper, css.isVirtualized)}
+                className={classnames(css.wrapper)}
                 components={virtuosoComponents}
                 context={virtuosoContext}
                 customScrollParent={customScrollParentRef?.current || undefined}

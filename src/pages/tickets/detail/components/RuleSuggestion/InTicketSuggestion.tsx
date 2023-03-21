@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import classnames from 'classnames'
 import {useMeasure} from 'react-use'
 import {assetsUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
-import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import {Ticket} from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
@@ -39,8 +37,6 @@ export default function InTicketSuggestion({
         (state) =>
             state.ticket.getIn(['_internal', 'isPartialUpdating']) as boolean
     )
-    const isVirtualizationEnabled =
-        useFlags()[FeatureFlagKey.TicketMessagesVirtualization]
 
     const [headerRef, {height: headerHeight}] = useMeasure<HTMLDivElement>()
     useEffect(() => {
@@ -54,11 +50,7 @@ export default function InTicketSuggestion({
     if (!text && !actions?.length) return null
 
     return (
-        <div
-            className={classnames(css.container, {
-                [css.isVirtualized]: isVirtualizationEnabled,
-            })}
-        >
+        <div className={classnames(css.container)}>
             <div className={css.avatar}>
                 <Avatar
                     name="Gorgias Tips"

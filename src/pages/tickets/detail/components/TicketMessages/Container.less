@@ -5,23 +5,13 @@
     display: flex;
     position: relative;
     padding: 4px 2em 16px 2em;
-    margin: 0 -30px;
+    margin: 0;
     word-break: break-word;
     overflow-y: visible;
 
     @media @mobiles {
         padding: 0.8em 16px;
         margin: 0 -16px;
-    }
-
-    // TODO: refactor after Virtualization is rolled out
-    &.isVirtualized {
-        margin: 0;
-
-        @media @mobiles {
-            padding: 0.8em 16px;
-            margin: 0 -16px;
-        }
     }
 
     &:hover {

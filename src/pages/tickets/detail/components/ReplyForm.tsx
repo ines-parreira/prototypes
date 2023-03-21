@@ -1,7 +1,6 @@
 import React, {FormEvent, useMemo, useRef} from 'react'
 import {Map} from 'immutable'
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {getNewMessageType} from 'state/newMessage/selectors'
 import {hasIntegrationOfTypes} from 'state/integrations/selectors'
@@ -9,7 +8,6 @@ import {IntegrationType} from 'models/integration/constants'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import {TicketVirtuosoContextType} from 'pages/tickets/detail/components/TicketBody'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {editorFocused} from 'state/ui/editor/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {SubmitArgs} from '../TicketDetailContainer'
@@ -26,10 +24,6 @@ type ReplyFormProps = {
 }
 
 const ReplyForm = ({submit}: ReplyFormProps) => {
-    // TODO: refactor after Virtualization is rolled out
-    const isVirtualizationEnabled =
-        useFlags()[FeatureFlagKey.TicketMessagesVirtualization]
-
     const statusParamsRef = useRef<SubmitArgs>({})
     const newMessageFormRef = useRef<HTMLFormElement>(null)
 
@@ -88,7 +82,6 @@ const ReplyForm = ({submit}: ReplyFormProps) => {
         <div
             className={classnames('d-print-none', css.newMessageForm, {
                 'mt-3': !isExistingTicket,
-                [css.isVirtualized]: isVirtualizationEnabled,
             })}
             onFocus={() => dispatch(editorFocused(true))}
             onBlur={() => dispatch(editorFocused(false))}

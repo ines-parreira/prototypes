@@ -5,7 +5,7 @@ exports[`<TicketView /> should have the hidden classes 1`] = `
   class="page transition out fade right"
 >
   <div
-    class="ticketContent isVirtualized"
+    class="ticketContent"
     tabindex="1"
   >
     <div>
@@ -20,60 +20,11 @@ exports[`<TicketView /> should not have the hidden classes 1`] = `
   class="page"
 >
   <div
-    class="ticketContent isVirtualized"
-    tabindex="1"
-  >
-    <div>
-      TicketBody
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<TicketView /> should render non-virtualized TicketBody and associated components when LD flag is off 1`] = `
-<div
-  class="page"
->
-  <div>
-    TicketHeaderWrapper
-  </div>
-  <div
     class="ticketContent"
     tabindex="1"
   >
     <div>
-      TicketBodyNonVirtualized
-    </div>
-    <div
-      class="body"
-      style="visibility: hidden;"
-    >
-      <span
-        class="name"
-      >
-        Customer
-      </span>
-      <span>
-         is typing
-      </span>
-      <span
-        class="dot1"
-      >
-        .
-      </span>
-      <span
-        class="dot2"
-      >
-        .
-      </span>
-      <span
-        class="dot3"
-      >
-        .
-      </span>
-    </div>
-    <div>
-      ReplyForm
+      TicketBody
     </div>
   </div>
 </div>

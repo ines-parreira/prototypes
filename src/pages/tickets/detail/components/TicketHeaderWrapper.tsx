@@ -108,9 +108,6 @@ const TicketHeaderWrapper = ({
     setStatus,
 }: Props) => {
     const flags = useFlags()
-    // TODO: refactor after Virtualization is rolled out
-    const isVirtualizationEnabled =
-        flags[FeatureFlagKey.TicketMessagesVirtualization]
     const isTicketFieldsEnabled = flags[FeatureFlagKey.TicketFields]
 
     const ticket = useAppSelector((state) => state.ticket)
@@ -127,11 +124,7 @@ const TicketHeaderWrapper = ({
 
     return (
         <>
-            <div
-                className={classnames(css.headerContainer, {
-                    [css.isVirtualized]: isVirtualizationEnabled,
-                })}
-            >
+            <div className={classnames(css.headerContainer)}>
                 <div className="d-flex">
                     {!hideHistoryButton && (
                         <div
@@ -159,9 +152,7 @@ const TicketHeaderWrapper = ({
                 {isTicketFieldsEnabled && <TicketFields />}
                 <CollisionDetection />
             </div>
-            {isExistingTicket && isVirtualizationEnabled && (
-                <div style={{height: 16}} />
-            )}
+            {isExistingTicket && <div style={{height: 16}} />}
         </>
     )
 }

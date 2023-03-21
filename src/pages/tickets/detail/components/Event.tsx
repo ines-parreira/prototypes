@@ -8,8 +8,6 @@ import _isObject from 'lodash/isObject'
 import JSONPretty from 'react-json-pretty'
 
 import IconButton from 'pages/common/components/button/IconButton'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {IntegrationType} from 'models/integration/constants'
 import {RootState} from 'state/types'
 import {getActionByName} from 'config/actions'
@@ -133,12 +131,6 @@ export class EventContainer extends React.Component<Props, State> {
     }
 
     render() {
-        // TODO: refactor after Virtualization is rolled out
-        const isVirtualizationEnabled =
-            getLDClient().allFlags()[
-                FeatureFlagKey.TicketMessagesVirtualization
-            ]
-
         const {event, isLast, integration, integrationData} = this.props
         const user = (event.get('user') || fromJS({})) as Map<any, any>
         const status = event.getIn(['data', 'status'])
@@ -240,7 +232,6 @@ export class EventContainer extends React.Component<Props, State> {
         return (
             <div
                 className={classnames(css.component, {
-                    [css.isVirtualized]: isVirtualizationEnabled,
                     [css.last]: isLast,
                 })}
             >

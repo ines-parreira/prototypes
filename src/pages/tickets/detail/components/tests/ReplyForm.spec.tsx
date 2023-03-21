@@ -5,14 +5,12 @@ import userEvent from '@testing-library/user-event'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import LD from 'launchdarkly-react-client-sdk'
 import {editorFocused} from 'state/ui/editor/actions'
 
 import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
 import {IntegrationType} from 'models/integration/constants'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('../ReplyArea/ReplyMessageChannel', () => () => (
     <div>ReplyMessageChannel</div>
@@ -49,12 +47,6 @@ jest.mock('state/ui/editor/actions')
 const mockStore = configureMockStore([thunk])
 
 describe('<ReplyForm />', () => {
-    beforeAll(() => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.TicketMessagesVirtualization]: true,
-        }))
-    })
-
     const defaultState = {
         currentUser: fromJS({}),
         ticket: fromJS({}),

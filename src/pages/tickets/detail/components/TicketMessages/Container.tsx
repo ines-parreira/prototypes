@@ -8,11 +8,9 @@ import colorTokens from 'assets/tokens/colors.json'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {getDisplayCustomerLastSeenOnChat} from 'pages/common/components/infobar/utils'
 import {scrollToReactNode} from 'pages/common/utils/keyboard'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {IntegrationType} from 'models/integration/constants'
 import {isFailed, isPending} from 'models/ticket/predicates'
 import {TicketMessage} from 'models/ticket/types'
-import {getLDClient} from 'utils/launchDarkly'
 import css from './Container.less'
 import Header from './Header'
 import Footer from './Footer'
@@ -50,12 +48,6 @@ export default class Container extends Component<Props> {
     }
 
     render() {
-        // TODO: refactor after Virtualization is rolled out
-        const isVirtualizationEnabled =
-            getLDClient().allFlags()[
-                FeatureFlagKey.TicketMessagesVirtualization
-            ]
-
         const {
             children,
             message,
@@ -169,7 +161,6 @@ export default class Container extends Component<Props> {
                         hasError: isFailed(message),
                         'ticket-message-loading': isPending(message),
                         ticketMessagesHighlighted: this.props.isBodyHighlighted,
-                        isVirtualized: isVirtualizationEnabled,
                     }
                 )}
             >

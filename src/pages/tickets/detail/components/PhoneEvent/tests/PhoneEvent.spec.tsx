@@ -4,11 +4,9 @@ import {render} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import LD from 'launchdarkly-react-client-sdk'
 
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {RootState, StoreDispatch} from 'state/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import PhoneEvent from '../PhoneEvent'
 
 describe('<PhoneEvent/>', () => {
@@ -16,12 +14,6 @@ describe('<PhoneEvent/>', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
-
-    beforeAll(() => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.TicketMessagesVirtualization]: true,
-        }))
-    })
 
     beforeEach(() => {
         store = mockStore()

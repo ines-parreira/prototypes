@@ -15,8 +15,6 @@ import {user} from 'fixtures/users'
 import {NotificationStatus} from 'state/notifications/types'
 import {makeExecuteKeyboardAction} from 'utils/testing'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import shortcutManager from 'services/shortcutManager'
 import TicketHeader from '../TicketHeader'
 
@@ -66,12 +64,6 @@ const shortcutEventMock = {
 // mock Date object
 const DATE_TO_USE = new Date('2017')
 jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())
-
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({
-    [FeatureFlagKey.TicketMessagesVirtualization]: false,
-})
 
 const mockStore = configureMockStore([thunk])
 
@@ -289,9 +281,8 @@ describe('<TicketHeader />', () => {
         expect(queryByText(/You are about to /)).toBeFalsy()
     })
 
-    it('should print ticket and log segment event', () => {
+    it('should log segment event', () => {
         jest.useFakeTimers()
-        window.print = jest.fn()
 
         const {getByText} = render(
             <Provider
@@ -306,13 +297,9 @@ describe('<TicketHeader />', () => {
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.PrintTicketClicked)
 
         jest.runAllTimers()
-        expect(window.print).toHaveBeenCalled()
     })
 
-    it('should open the print page if virtualization is enabled', () => {
-        allFlagsMock.mockReturnValue({
-            [FeatureFlagKey.TicketMessagesVirtualization]: true,
-        })
+    it('should open the print page', () => {
         jest.useFakeTimers()
 
         const {getByText} = render(

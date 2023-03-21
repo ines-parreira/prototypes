@@ -1,5 +1,6 @@
 // TODO: remove component entirely after Virtualization is tested out
 
+import cn from 'classnames'
 import React from 'react'
 import moment, {Moment} from 'moment'
 import {connect, ConnectedProps} from 'react-redux'
@@ -24,6 +25,7 @@ type HighlightedElements = {
 
 type OwnProps = {
     elements: List<any>
+    isPrintLayout?: boolean
     setStatus?: (s: string) => void
 }
 
@@ -114,7 +116,7 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
     }
 
     render() {
-        const {elements, groupedElements, setStatus} = this.props
+        const {elements, groupedElements, isPrintLayout, setStatus} = this.props
 
         if (elements.size === 0) {
             return null
@@ -127,7 +129,9 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
                     expandedQuotes: this.state.expandedMessages,
                 }}
             >
-                <div className={css.wrapper}>
+                <div
+                    className={cn(css.wrapper, {[css.print]: !!isPrintLayout})}
+                >
                     {groupedElements.map((element, index: number) => (
                         <TicketBodyElement
                             key={`element-${index}`}

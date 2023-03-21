@@ -2,9 +2,7 @@ import React, {useEffect, useMemo, useRef} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {usePrevious, useUpdateEffect} from 'react-use'
 import Timeline from 'pages/common/components/timeline/Timeline'
 import {RootState} from 'state/types'
 import {displayHistoryOnNextPage, toggleHistory} from 'state/ticket/actions'
@@ -12,14 +10,8 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCustomersState} from 'state/customers/selectors'
 import {getBody, getDisplayHistory} from 'state/ticket/selectors'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
-import TicketBodyNonVirtualized from 'pages/tickets/detail/components/TicketBodyNonVirtualized'
-import {FeatureFlagKey} from 'config/featureFlags'
-import TicketHeaderWrapper from 'pages/tickets/detail/components/TicketHeaderWrapper'
-import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
-import appCss from 'pages/App.less'
 
 import {SubmitArgs} from '../TicketDetailContainer'
-import TypingActivity from './TypingActivity'
 import css from './TicketView.less'
 
 type OwnProps = {
@@ -43,12 +35,6 @@ export const TicketViewContainer = ({
     ticketBody,
     toggleHistory,
 }: Props) => {
-    // TODO: refactor after Virtualization is rolled out
-    const isVirtualizationEnabled =
-        useFlags()[FeatureFlagKey.TicketMessagesVirtualization]
-
-    const prevIsHistoryDisplayed = usePrevious(isHistoryDisplayed)
-    const isExistingTicket = !!ticket.get('id')
     const pageRef = useRef<HTMLDivElement>(null)
     const ticketContentRef = useRef<HTMLDivElement>(null)
 
@@ -96,65 +82,10 @@ export const TicketViewContainer = ({
         })
     }
 
-    // TODO: remove following block after Virtualization is rolled out
-    const getMainContentElement = (
-        isHistoryDisplayed: boolean
-    ): HTMLElement => {
-        const className = isHistoryDisplayed
-            ? appCss['main-content']
-            : css.ticketContent
-        return document.getElementsByClassName(className)[0] as HTMLElement
-    }
-
-    // save before props update if user was at bottom of the page (probably answering something)
-    // if history is displayed we calculate scroll on `main-content` wrapper
-    const prevMainContentElement =
-        typeof prevIsHistoryDisplayed !== 'undefined'
-            ? getMainContentElement(prevIsHistoryDisplayed)
-            : null
-
-    const wasAtBottomOfPage =
-        !!prevMainContentElement &&
-        prevMainContentElement.scrollHeight -
-            prevMainContentElement.scrollTop <=
-            prevMainContentElement.offsetHeight + 40
-
     const isShopperTyping = useMemo(
         () => ticket.getIn(['_internal', 'isShopperTyping']) as boolean,
         [ticket]
     )
-
-    useEffect(() => {
-        // scroll to the bottom of the ticket content the first time the ticket is viewed.
-        // decrease the bottom padding, to avoid scrolling to a white screen on touchscreens.
-        if (ticketContentRef.current && !isVirtualizationEnabled) {
-            const styles = window.getComputedStyle(ticketContentRef.current)
-            const maxScrollTop =
-                ticketContentRef.current.scrollHeight -
-                ticketContentRef.current.clientHeight
-            ticketContentRef.current.scrollTop =
-                maxScrollTop - parseInt(styles.paddingBottom)
-
-            // don't steal focus if another component manages it.
-            // (eg. new ticket focuses the editable title).
-            // body is focused by default.
-            if (document.activeElement === document.body) {
-                // focus ticket content so we can keyboard scroll
-                ticketContentRef.current.focus()
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    useUpdateEffect(() => {
-        // if ticket body (messages, events, etc.) changes but user is at bottom of the page,
-        // then keep him at the bottom of the page
-        if (wasAtBottomOfPage && !isVirtualizationEnabled) {
-            // if history is displayed we set scroll on `main-content` wrapper
-            const mainContentElement = getMainContentElement(isHistoryDisplayed)
-            mainContentElement.scrollTop = mainContentElement.scrollHeight
-        }
-    }, [ticketBody])
 
     return (
         <div
@@ -189,57 +120,26 @@ export const TicketViewContainer = ({
                 </div>
             )}
 
-            {!isVirtualizationEnabled && (
-                <TicketHeaderWrapper
-                    hideTicket={hideTicket}
-                    handleHistoryToggle={handleHistoryToggle}
-                    setStatus={setStatus}
-                />
-            )}
-
             <div
                 className={classnames(css.ticketContent, {
                     [css.historyDisplayed]: isHistoryDisplayed,
-                    [css.isVirtualized]: isVirtualizationEnabled,
                 })}
                 ref={ticketContentRef}
                 tabIndex={1}
             >
-                {isVirtualizationEnabled ? (
-                    <TicketBody
-                        elements={ticketBody}
-                        setStatus={setStatus}
-                        customScrollParentRef={pageRef}
-                        submit={submit}
-                        hideTicket={hideTicket}
-                        handleHistoryToggle={handleHistoryToggle}
-                        isShopperTyping={isShopperTyping}
-                        shopperName={
-                            (ticket.getIn(['customer', 'name']) as string) ??
-                            'Customer'
-                        }
-                    />
-                ) : (
-                    <>
-                        {isExistingTicket && (
-                            <TicketBodyNonVirtualized
-                                elements={ticketBody}
-                                setStatus={setStatus}
-                            />
-                        )}
-                        <TypingActivity
-                            isTyping={isShopperTyping}
-                            name={
-                                (ticket.getIn([
-                                    'customer',
-                                    'name',
-                                ]) as string) ?? 'Customer'
-                            }
-                        />
-
-                        <ReplyForm submit={submit} />
-                    </>
-                )}
+                <TicketBody
+                    elements={ticketBody}
+                    setStatus={setStatus}
+                    customScrollParentRef={pageRef}
+                    submit={submit}
+                    hideTicket={hideTicket}
+                    handleHistoryToggle={handleHistoryToggle}
+                    isShopperTyping={isShopperTyping}
+                    shopperName={
+                        (ticket.getIn(['customer', 'name']) as string) ??
+                        'Customer'
+                    }
+                />
             </div>
         </div>
     )

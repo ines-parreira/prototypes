@@ -1,9 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
-import LD from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketViewContainer} from '../TicketView'
 
 jest.mock('../TicketBody', () => () => <div>TicketBody</div>)
@@ -32,12 +30,6 @@ describe('<TicketView />', () => {
         toggleHistory: jest.fn(),
     } as unknown as ComponentProps<typeof TicketViewContainer>
 
-    beforeAll(() => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.TicketMessagesVirtualization]: true,
-        }))
-    })
-
     it('should not have the hidden classes', () => {
         const {container} = render(<TicketViewContainer {...minProps} />)
 
@@ -47,18 +39,6 @@ describe('<TicketView />', () => {
     it('should have the hidden classes', () => {
         const {container} = render(
             <TicketViewContainer {...minProps} isTicketHidden />
-        )
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should render non-virtualized TicketBody and associated components when LD flag is off', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.TicketMessagesVirtualization]: false,
-        }))
-
-        const {container} = render(
-            <TicketViewContainer {...minProps} ticket={fromJS({id: 123})} />
         )
 
         expect(container.firstChild).toMatchSnapshot()

@@ -31,8 +31,6 @@ import {getTeams} from 'state/teams/selectors'
 import {getEvents} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
 import {eventNameToLabel} from 'config/rules'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import {textToHTML} from 'utils/html'
@@ -522,12 +520,6 @@ export class AuditLogEventContainer extends Component<Props> {
     }
 
     render() {
-        // TODO: refactor after Virtualization is rolled out
-        const isVirtualizationEnabled =
-            getLDClient().allFlags()[
-                FeatureFlagKey.TicketMessagesVirtualization
-            ]
-
         const {event, isLast, users, events} = this.props
         const type = event.get('type') as TicketEventType
         const isRuleExecuted = isRuleExecutedType(event)
@@ -549,7 +541,6 @@ export class AuditLogEventContainer extends Component<Props> {
         return (
             <div
                 className={classnames(css.component, {
-                    [css.isVirtualized]: isVirtualizationEnabled,
                     [css.last]: isLast,
                 })}
             >

@@ -2,7 +2,7 @@
 
 exports[`<ReplyForm /> phone submit buttons should render on existing ticket page 1`] = `
 <div
-  class="d-print-none newMessageForm mt-3 isVirtualized"
+  class="d-print-none newMessageForm mt-3"
 >
   <form
     id="ticket-reply-editor"
@@ -19,7 +19,7 @@ exports[`<ReplyForm /> phone submit buttons should render on existing ticket pag
 
 exports[`<ReplyForm /> phone submit buttons should render on new ticket page 1`] = `
 <div
-  class="d-print-none newMessageForm mt-3 isVirtualized"
+  class="d-print-none newMessageForm mt-3"
 >
   <form
     id="ticket-reply-editor"
@@ -36,7 +36,7 @@ exports[`<ReplyForm /> phone submit buttons should render on new ticket page 1`]
 
 exports[`<ReplyForm /> ticket reply area and submit buttons should render on existing ticket page 1`] = `
 <div
-  class="d-print-none newMessageForm mt-3 isVirtualized"
+  class="d-print-none newMessageForm mt-3"
 >
   <form
     id="ticket-reply-editor"
@@ -59,7 +59,7 @@ exports[`<ReplyForm /> ticket reply area and submit buttons should render on exi
 
 exports[`<ReplyForm /> ticket reply area and submit buttons should render on new ticket page 1`] = `
 <div
-  class="d-print-none newMessageForm mt-3 isVirtualized"
+  class="d-print-none newMessageForm mt-3"
 >
   <form
     id="ticket-reply-editor"

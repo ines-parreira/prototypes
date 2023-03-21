@@ -3,7 +3,7 @@
 exports[`<TicketHeaderWrapper/> should hide history button when on a new ticket and not render separator 1`] = `
 <div>
   <div
-    class="headerContainer isVirtualized"
+    class="headerContainer"
   >
     <div
       class="d-flex"
@@ -22,7 +22,7 @@ exports[`<TicketHeaderWrapper/> should hide history button when on a new ticket 
 exports[`<TicketHeaderWrapper/> should render history button, ticket header and separator 1`] = `
 <div>
   <div
-    class="headerContainer isVirtualized"
+    class="headerContainer"
   >
     <div
       class="d-flex"
