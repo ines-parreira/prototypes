@@ -58,7 +58,6 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
                 customerInitialMessages={[]}
                 agentMessages={[]}
                 hideConversationTimestamp
-                hideMessageTimestamp
             />
         )
     }
