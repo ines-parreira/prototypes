@@ -1,13 +1,11 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
 import _cloneDeep from 'lodash/cloneDeep'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     account,
     automationSubscriptionProductPrices,
@@ -26,14 +24,10 @@ import {RootState, StoreDispatch} from 'state/types'
 import AutomationSubscriptionDescription from '../AutomationSubscriptionDescription'
 import * as billingFixtures from '../../../../../../fixtures/billing'
 
-jest.mock('launchdarkly-react-client-sdk')
-
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const DATE_TO_USE = new Date('2019-09-03')
 jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())
-
-const mockUseFlags = useFlags as jest.Mock
 
 describe('<AutomationSubscriptionDescription />', () => {
     window.GORGIAS_SUPPORT_EMAIL = 'support@gorgias.com'
@@ -48,12 +42,6 @@ describe('<AutomationSubscriptionDescription />', () => {
         }),
         billing: fromJS(billingState),
     }
-
-    beforeEach(() => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.BillingEndOfCycleDowngradeMessaging]: false,
-        })
-    })
 
     it('should render for customers without any addon features', () => {
         const {container} = render(
@@ -90,33 +78,6 @@ describe('<AutomationSubscriptionDescription />', () => {
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should render a message informing that the changes will not go into effect until the end of the billing cycle', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.BillingEndOfCycleDowngradeMessaging]: true,
-        })
-
-        const {getByText} = render(
-            <Provider
-                store={mockStore({
-                    ...defaultState,
-                    currentAccount: fromJS({
-                        ...account,
-                        current_subscription: {
-                            ...account.current_subscription,
-                            products: automationSubscriptionProductPrices,
-                        },
-                    }),
-                })}
-            >
-                <AutomationSubscriptionDescription />
-            </Provider>
-        )
-
-        const msg =
-            /The change in your subscription will take effect at the end of your billing cycle. If you cancel, you will lose access to self-service as soon as the change is effective./
-        expect(getByText(msg)).toBeInTheDocument()
     })
 
     it('should render for customers with legacy automation add-on', () => {

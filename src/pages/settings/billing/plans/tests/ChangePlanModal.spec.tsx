@@ -1,13 +1,11 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import userEvent from '@testing-library/user-event'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     AUTOMATION_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
@@ -70,8 +68,6 @@ jest.mock(
             )
 )
 
-const mockUseFlags = useFlags as jest.Mock
-
 describe('<ChangePlanModal />', () => {
     const minProps: ComponentProps<typeof ChangePlanModal> = {
         confirmLabel: 'Confirm',
@@ -93,12 +89,6 @@ describe('<ChangePlanModal />', () => {
         }),
         billing: fromJS(billingState),
     }
-
-    beforeEach(() => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.BillingEndOfCycleDowngradeMessaging]: false,
-        })
-    })
 
     it('should not render the modal', () => {
         const {baseElement} = render(
@@ -202,10 +192,6 @@ describe('<ChangePlanModal />', () => {
     })
 
     it('should render a downgrade disclaimer when the selected plan is a downgrade if the feature flag is enabled', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.BillingEndOfCycleDowngradeMessaging]: true,
-        })
-
         const {getByText} = render(
             <Provider store={mockStore(defaultState)}>
                 <ChangePlanModal {...minProps} isDowngrade />

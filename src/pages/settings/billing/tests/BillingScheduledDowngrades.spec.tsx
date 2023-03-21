@@ -1,17 +1,13 @@
 import {render} from '@testing-library/react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {ProductType} from 'models/billing/types'
 
 import useScheduledDowngrades from '../hooks/useScheduledDowngrades'
 import BillingScheduledDowngrades from '../BillingScheduledDowngrades'
 
-jest.mock('launchdarkly-react-client-sdk')
 jest.mock('../hooks/useScheduledDowngrades')
 
-const mockUseFlags = useFlags as jest.Mock
 const mockUseScheduledDowngrades = useScheduledDowngrades as jest.Mock
 
 describe('BillingScheduledDowngrades', () => {
@@ -19,20 +15,7 @@ describe('BillingScheduledDowngrades', () => {
     const price2 = {name: 'Price 2', price_id: 'price2'}
 
     beforeEach(() => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.BillingEndOfCycleDowngradeMessaging]: true,
-        })
-
         mockUseScheduledDowngrades.mockReturnValue({loading: true})
-    })
-
-    it('should return null if the feature flag is disabled', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.BillingEndOfCycleDowngradeMessaging]: false,
-        })
-
-        const {container} = render(<BillingScheduledDowngrades />)
-        expect(container).toBeEmptyDOMElement()
     })
 
     it('should return null if the scheduled downgrades are still loading', () => {

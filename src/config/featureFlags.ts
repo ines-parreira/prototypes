@@ -4,7 +4,6 @@ export enum FeatureFlagKey {
     AutomationSettingsRevamp = 'automation-settings-revamp',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigcommerceCreateOrderModifiers = 'bigcommerce-create-order-modifiers',
-    BillingEndOfCycleDowngradeMessaging = 'billing-end-of-cycle-downgrade-messaging',
     ChatEnableTranslationEdit = 'enable-translations-edit',
     ChatNotIntalledStatus = 'chat-not-installed-status',
     ChatVideoSharingCampaigns = 'chat-video-sharing-campaigns',

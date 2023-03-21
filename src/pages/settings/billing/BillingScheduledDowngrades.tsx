@@ -1,8 +1,6 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {ProductType} from 'models/billing/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
@@ -17,15 +15,12 @@ const productNames: Record<ProductType, string> = {
 }
 
 export default function BillingScheduledDowngrades() {
-    const showScheduledDowngrades =
-        useFlags()[FeatureFlagKey.BillingEndOfCycleDowngradeMessaging]
-
     const {
         error,
         loading,
         value: scheduledDowngrades,
     } = useScheduledDowngrades()
-    if (!showScheduledDowngrades || loading) return null
+    if (loading) return null
 
     if (error) {
         return (

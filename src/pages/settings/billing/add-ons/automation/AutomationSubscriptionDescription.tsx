@@ -23,8 +23,6 @@ import css from './AutomationSubscriptionDescription.less'
 const AutomationSubscriptionDescription = () => {
     const isAutomationSettingsRevampEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
-    const showEndOfCycleDowngradeMessage =
-        useFlags()[FeatureFlagKey.BillingEndOfCycleDowngradeMessaging]
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const currentSubscriptionStart = currentSubscription.get('start_datetime')
@@ -59,33 +57,17 @@ const AutomationSubscriptionDescription = () => {
                         .
                         <br />
                         <br />
-                        {showEndOfCycleDowngradeMessage ? (
-                            <>
-                                The change in your subscription will take effect
-                                at the end of your billing cycle. If you cancel,
-                                you will lose access to{' '}
-                                {isAutomationSettingsRevampEnabled
-                                    ? 'Automation Add-on'
-                                    : `self-service${
-                                          isSelfServeLegacy
-                                              ? ' custom report issue flow'
-                                              : ''
-                                      }`}{' '}
-                                as soon as the change is effective.
-                            </>
-                        ) : (
-                            <>
-                                If you cancel now, you will lose access to{' '}
-                                {isAutomationSettingsRevampEnabled
-                                    ? 'Automation Add-on'
-                                    : `self-service${
-                                          isSelfServeLegacy
-                                              ? ' custom report issue flow'
-                                              : ''
-                                      }`}{' '}
-                                immediately.
-                            </>
-                        )}
+                        The change in your subscription will take effect at the
+                        end of your billing cycle. If you cancel, you will lose
+                        access to{' '}
+                        {isAutomationSettingsRevampEnabled
+                            ? 'Automation Add-on'
+                            : `self-service${
+                                  isSelfServeLegacy
+                                      ? ' custom report issue flow'
+                                      : ''
+                              }`}{' '}
+                        as soon as the change is effective.
                     </div>
                 ) : isSelfServeLegacy ? (
                     <div>

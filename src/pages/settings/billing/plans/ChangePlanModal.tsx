@@ -6,10 +6,8 @@ import React, {
 } from 'react'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import ArrowForward from 'assets/img/icons/arrow-forward.svg'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getFormattedAmount} from 'models/billing/utils'
 import {
     getCurrentHelpdeskAutomationAddonAmount,
@@ -63,8 +61,6 @@ export const ChangePlanModal = ({
     onConfirm,
     renderComparedPlan,
 }: Props) => {
-    const showDowngradeMessage =
-        useFlags()[FeatureFlagKey.BillingEndOfCycleDowngradeMessaging]
     const currentHelpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
     const currentAutomationPrice = useAppSelector(getCurrentAutomationProduct)
     const automationPrices = useAppSelector(getAutomationPricesMap)
@@ -192,7 +188,7 @@ export const ChangePlanModal = ({
                             ),
                         })}
                     </div>
-                    {isDowngrade && showDowngradeMessage && (
+                    {isDowngrade && (
                         <p className={classnames(css.downgrade, 'm-3')}>
                             The change in your subscription will take effect at
                             the end of your billing cycle.

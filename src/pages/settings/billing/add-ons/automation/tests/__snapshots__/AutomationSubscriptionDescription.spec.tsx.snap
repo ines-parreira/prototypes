@@ -16,11 +16,11 @@ exports[`<AutomationSubscriptionDescription /> should render a discounted price 
       .
       <br />
       <br />
-      If you cancel now, you will lose access to
+      The change in your subscription will take effect at the end of your billing cycle. If you cancel, you will lose access to
        
       self-service
        
-      immediately.
+      as soon as the change is effective.
     </div>
     <div
       class="amountWrapper amount"
@@ -62,11 +62,11 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
       .
       <br />
       <br />
-      If you cancel now, you will lose access to
+      The change in your subscription will take effect at the end of your billing cycle. If you cancel, you will lose access to
        
       self-service
        
-      immediately.
+      as soon as the change is effective.
     </div>
     <div
       class="amountWrapper amount"

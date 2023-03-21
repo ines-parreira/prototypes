@@ -3240,6 +3240,11 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                   </div>
                 </div>
               </div>
+              <p
+                class="downgrade m-3"
+              >
+                The change in your subscription will take effect at the end of your billing cycle.
+              </p>
             </div>
             <div
               class="footer modal-footer"
