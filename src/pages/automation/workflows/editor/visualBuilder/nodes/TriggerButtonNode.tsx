@@ -4,17 +4,17 @@ import {Handle, Position, NodeProps} from 'reactflow'
 import Label from 'pages/common/forms/Label/Label'
 
 import {TriggerButtonNodeType} from '../types'
+import {useWorkflowEntrypointContext} from '../../hooks/useWorkflowEntrypoint'
 import css from './Node.less'
 
 export default function TriggerButtonNode({
     data,
 }: NodeProps<TriggerButtonNodeType['data']>) {
-    const {shouldShowErrors} = data
-    const isErrored = data.entrypoint_label.length === 0
+    const {validationError, shouldShowErrors} = useWorkflowEntrypointContext()
     return (
         <div
             className={classNames(css.node, {
-                [css.nodeErrored]: shouldShowErrors && isErrored,
+                [css.nodeErrored]: shouldShowErrors && validationError,
             })}
         >
             <Handle
@@ -28,7 +28,8 @@ export default function TriggerButtonNode({
                 </div>
                 <div
                     className={classNames(css.nodeContent, {
-                        [css.nodeContentErrored]: shouldShowErrors && isErrored,
+                        [css.nodeContentErrored]:
+                            shouldShowErrors && validationError,
                     })}
                 >
                     {data.entrypoint_label.length > 0 ? (

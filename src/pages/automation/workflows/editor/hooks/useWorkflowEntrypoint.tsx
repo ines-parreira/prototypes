@@ -10,9 +10,10 @@ type WorkflowEntrypointContext = {
     label: string
     setLabel: (label: string) => void
     isDirty: boolean
+    validationError: string | null
     isFetchPending: boolean
     isSavePending: boolean
-    handleValidate: () => Maybe<string>
+    shouldShowErrors: boolean
     handleSave: () => Promise<void> | void
     handleDiscard: () => void
 }
@@ -76,6 +77,7 @@ export function useWorkflowEntrypoint(
         }
     )
     const [label, setLabel] = useState<string>('')
+    const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const apiLabel = selfServiceConfiguration?.workflows_entrypoints?.find(
         (e) => e.workflow_id === workflowId
     )?.label
@@ -83,12 +85,14 @@ export function useWorkflowEntrypoint(
         setLabel(apiLabel ?? '')
     })
     const isDirty = label !== (apiLabel ?? '')
-
-    const handleValidate = useCallback(() => validate(label), [label])
-
+    const validationError =
+        label.trim().length > 1
+            ? null
+            : 'please add a valid trigger button text'
     const handleSave = useCallback((): Promise<void> | void => {
         if (!selfServiceConfiguration) return
-        if (validate(label)) {
+        if (validationError) {
+            setShouldShowErrors(true)
             return
         }
         if (!isDirty) return
@@ -114,6 +118,7 @@ export function useWorkflowEntrypoint(
         selfServiceConfiguration,
         handleSelfServiceConfigurationUpdate,
         label,
+        validationError,
         isDirty,
         workflowId,
     ])
@@ -124,16 +129,11 @@ export function useWorkflowEntrypoint(
         label,
         setLabel,
         isDirty,
-        isFetchPending: !selfServiceConfiguration || isFetchPending,
+        validationError,
+        shouldShowErrors,
+        isFetchPending,
         isSavePending: isUpdatePending,
-        handleValidate,
         handleSave,
         handleDiscard,
     }
-}
-
-function validate(label: string): Maybe<string> {
-    return label.trim().length > 1
-        ? null
-        : 'please add a valid trigger button text'
 }

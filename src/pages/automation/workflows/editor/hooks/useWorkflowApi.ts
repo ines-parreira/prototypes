@@ -1,47 +1,8 @@
 import {useCallback} from 'react'
-import {ulid} from 'ulidx'
-
-export type MessageContent = {
-    html: string
-    text: string
-}
 
 export type WorkflowConfiguration = {
     id: string
     name: string
-    initial_step_id: string
-    steps: Array<
-        | {
-              id: string
-              kind: 'messages'
-              settings: {
-                  messages: Array<{
-                      content: MessageContent
-                  }>
-                  author: {
-                      kind: 'bot'
-                  }
-              }
-          }
-        | {
-              id: string
-              kind: 'choices'
-              settings: {
-                  choices: Array<{
-                      event_id: string
-                      label: string
-                  }>
-              }
-          }
-    >
-    transitions: Array<{
-        from_step_id: string
-        to_step_id: string
-        event?: Maybe<{
-            id: string
-            kind: 'choices'
-        }>
-    }>
 }
 
 // waiting for the actual configuration API we use local storage to persist configurations
@@ -77,24 +38,7 @@ export default function useWorkflowApi(): WorkflowApi {
     }
 }
 
-export const workflowConfigurationFactory: (
-    workflowId: string
-) => WorkflowConfiguration = (workflowId: string) => {
-    const initial_step_id = ulid()
-    return {
-        id: workflowId,
-        name: '',
-        initial_step_id,
-        steps: [
-            {
-                id: initial_step_id,
-                kind: 'messages',
-                settings: {
-                    messages: [{content: {html: '', text: ''}}],
-                    author: {kind: 'bot'},
-                },
-            },
-        ],
-        transitions: [],
-    }
-}
+export const workflowConfigurationFactory = (workflowId: string) => ({
+    id: workflowId,
+    name: '',
+})

@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, useEffect, useState} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {
     ReactFlow,
     Background,
@@ -7,107 +7,93 @@ import {
     ReactFlowProvider,
     useNodesState,
     useEdgesState,
+    Node,
 } from 'reactflow'
 
 import Loader from 'pages/common/components/Loader/Loader'
 import {useWorkflowEntrypointContext} from '../hooks/useWorkflowEntrypoint'
-import {useWorkflowConfigurationContext} from '../hooks/useWorkflowConfiguration'
 import PlaceholderNode from './nodes/PlaceholderNode'
-import {VisualBuilderNode} from './types'
-
-import TriggerButtonNode from './nodes/TriggerButtonNode'
-import NodeEditorDrawer from './NodeEditorDrawer'
-import {useSyncWorkflowToReactFlow} from './hooks/useSyncWorkflowToReactFlow'
-import useAutoLayout from './hooks/useAutoLayout'
+import {TriggerButtonNodeType} from './types'
 
 import 'reactflow/dist/style.css'
-import AutomatedMessageNode from './nodes/AutomatedMessageNode'
-import ReplyButtonNode from './nodes/ReplyButtonNode'
+import TriggerButtonNode from './nodes/TriggerButtonNode'
 
 const nodeTypes = {
     trigger_button: TriggerButtonNode,
-    automated_message: AutomatedMessageNode,
-    reply_button: ReplyButtonNode,
     placeholder: PlaceholderNode,
 }
 
-type WorkflowVisualBuilderProps = {
-    lastSaveAttempt?: Date
+const placeholderNode: Node = {
+    id: 'b',
+    type: 'placeholder',
+    data: {},
+    // temporary manual setting of node coordinates
+    position: {x: 0, y: 96 - 52},
 }
 
-export function WorkflowVisualBuilderWrapped({
-    lastSaveAttempt,
-}: WorkflowVisualBuilderProps) {
-    const {isFetchPending: isWorkflowEntrypointFetchPending} =
-        useWorkflowEntrypointContext()
-    const {isFetchPending: isWorkflowConfigurationFetchPending} =
-        useWorkflowConfigurationContext()
-    useSyncWorkflowToReactFlow()
-    useAutoLayout()
-    const [nodes, setNodes, onNodesChange] = useNodesState([])
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [edges, _setEdges, onEdgesChange] = useEdgesState([])
-    const [visualBuilderNodeIdEditing, setVisualBuilderNodeIdEditing] =
-        useState<VisualBuilderNode['id'] | null>(null)
-    const visualBuilderNodeEditing = visualBuilderNodeIdEditing
-        ? (nodes.find(
-              (n) => n.id === visualBuilderNodeIdEditing
-          ) as VisualBuilderNode)
-        : null
-
+export function WorkflowVisualBuilderWrapped() {
+    const workflowEntrypointContext = useWorkflowEntrypointContext()
+    const triggerButtonNode: TriggerButtonNodeType = useMemo(
+        () => ({
+            id: 'a',
+            type: 'trigger_button',
+            data: {
+                entrypoint_label: workflowEntrypointContext.label,
+            },
+            // temporary manual setting of node coordinates
+            position: {x: 0, y: -52},
+        }),
+        [workflowEntrypointContext.label]
+    )
+    const [nodes, setNodes, onNodesChange] = useNodesState([
+        triggerButtonNode,
+        placeholderNode,
+    ])
     useEffect(() => {
-        setNodes((nodes) =>
-            nodes.map((n) => ({
-                ...n,
-                data: {...n.data, shouldShowErrors: lastSaveAttempt != null},
-            }))
-        )
-    }, [lastSaveAttempt, setNodes])
+        setNodes([triggerButtonNode, placeholderNode])
+    }, [setNodes, triggerButtonNode])
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [edges, _setEdges, onEdgesChange] = useEdgesState([
+        {
+            id: 'default',
+            source: 'a',
+            target: 'b',
+            type: 'smoothstep',
+            style: {stroke: '#D2D7DE'},
+        },
+    ])
 
-    if (isWorkflowEntrypointFetchPending || isWorkflowConfigurationFetchPending)
-        return <Loader />
-
+    if (workflowEntrypointContext.isFetchPending) return <Loader />
     return (
         <>
             <ReactFlow
                 proOptions={{
                     hideAttribution: true,
                 }}
-                fitView
-                fitViewOptions={{
-                    duration: 0,
-                }}
                 nodes={nodes}
                 edges={edges}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 nodeTypes={nodeTypes}
-                minZoom={0.75}
+                fitView
+                minZoom={0.5}
                 maxZoom={1}
                 nodesDraggable={false}
                 nodesConnectable={false}
                 zoomOnDoubleClick={false}
-                onNodeClick={(_e, node) => {
-                    if (node.type !== 'placeholder')
-                        setVisualBuilderNodeIdEditing(node.id)
-                }}
             >
                 <Controls />
                 <MiniMap zoomable pannable />
                 <Background />
             </ReactFlow>
-            <NodeEditorDrawer
-                nodeInEdition={visualBuilderNodeEditing}
-                onClose={() => setVisualBuilderNodeIdEditing(null)}
-            />
         </>
     )
 }
 
-function withProviders<T>(Component: React.FC<T>): React.FC<T> {
-    return (props: PropsWithChildren<T>) => (
+function withProviders(Component: React.FC): React.FC {
+    return () => (
         <ReactFlowProvider>
-            <Component {...props} />
+            <Component />
         </ReactFlowProvider>
     )
 }
