@@ -86,14 +86,9 @@ const HeaderCell = ({
                     : OrderDirection.Desc
             dispatch(setOrderDirection(fieldPath, newDirection))
             void dispatch(
-                fetchViewItems(
-                    undefined,
-                    undefined,
-                    undefined,
-                    undefined,
-                    undefined,
-                    {orderBy: `${fieldPath}:${newDirection}`}
-                )
+                fetchViewItems(undefined, undefined, undefined, undefined, {
+                    orderBy: `${fieldPath}:${newDirection}`,
+                })
             )
         }
     }, [action, dispatch, field, fieldPath, isSearch, orderDirection])

@@ -61,7 +61,7 @@ jest.mock(
                 </div>
             )
 )
-jest.mock('../../../../../services/shortcutManager/shortcutManager')
+jest.mock('services/shortcutManager/shortcutManager')
 
 describe('<Table />', () => {
     const viewConfig = viewsConfig.views.first() as Map<any, any>
@@ -264,7 +264,6 @@ describe('<Table />', () => {
                 null,
                 null,
                 mockSearchRank,
-                undefined,
                 undefined
             )
         }
@@ -297,7 +296,6 @@ describe('<Table />', () => {
                 null,
                 null,
                 mockSearchRank,
-                undefined,
                 undefined
             )
         }

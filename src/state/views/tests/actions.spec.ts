@@ -469,7 +469,7 @@ describe('actions', () => {
 
             return store
                 .dispatch(
-                    actions.fetchViewItems(null, null, null, null, undefined, {
+                    actions.fetchViewItems(null, null, null, null, {
                         orderBy: 'closed_datetime:asc',
                     })
                 )
@@ -540,6 +540,7 @@ describe('actions', () => {
                             args.cursor,
                             null,
                             null,
+                            undefined,
                             cancelToken
                         )
                     )
@@ -704,7 +705,14 @@ describe('actions', () => {
                 .onPut(`/api/views/${viewId}/items/`)
                 .reply(200, baseReply)
             void store.dispatch(
-                actions.fetchViewItems(null, null, null, null, source.token)
+                actions.fetchViewItems(
+                    null,
+                    null,
+                    null,
+                    null,
+                    undefined,
+                    source.token
+                )
             )
             source.cancel()
 
@@ -1028,6 +1036,7 @@ describe('actions', () => {
                         cursor,
                         null,
                         null,
+                        undefined,
                         cancelToken
                     )
                 )

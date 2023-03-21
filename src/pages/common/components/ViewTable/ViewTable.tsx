@@ -110,7 +110,13 @@ export class ViewTableContainer extends Component<Props> {
                     location.state?.filters
                 )
             )
-            void fetchViewItemsCancellable(null, null, null, this.context)
+            void fetchViewItemsCancellable(
+                null,
+                null,
+                null,
+                this.context,
+                undefined
+            )
         } else if (activeView.isEmpty() || urlViewId) {
             const suggestedViewId = getViewIdToDisplay(
                 config.get('type'),
@@ -244,13 +250,20 @@ export class ViewTableContainer extends Component<Props> {
                     null,
                     urlCursor,
                     null,
-                    this.context
+                    this.context,
+                    undefined
                 )
             }
         }
 
         if (shouldFetchViewItems) {
-            return fetchViewItemsCancellable(null, null, null, this.context)
+            return fetchViewItemsCancellable(
+                null,
+                null,
+                null,
+                this.context,
+                undefined
+            )
         }
     }
 

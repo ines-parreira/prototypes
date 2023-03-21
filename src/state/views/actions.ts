@@ -364,8 +364,8 @@ export function fetchViewItems(
     cursor?: Maybe<string>,
     isPolling: Maybe<boolean> = false,
     searchRank?: SearchRank | null,
-    cancelToken?: CancelToken,
-    params?: FetchViewItemsOptions
+    params?: FetchViewItemsOptions,
+    cancelToken?: CancelToken
 ) {
     return async (
         dispatch: StoreDispatch,

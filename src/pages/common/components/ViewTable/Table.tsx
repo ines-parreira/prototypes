@@ -129,14 +129,7 @@ const TableContainer = ({
             return
         }
 
-        void fetchViewItems(
-            direction,
-            null,
-            null,
-            searchRank,
-            undefined,
-            fetchParams
-        )
+        void fetchViewItems(direction, null, null, searchRank, fetchParams)
     }
 
     useEffect(() => {
@@ -359,7 +352,6 @@ const TableContainer = ({
                         null,
                         null,
                         searchRank,
-                        undefined,
                         fetchParams
                     )
                 }
@@ -369,7 +361,6 @@ const TableContainer = ({
                         null,
                         null,
                         searchRank,
-                        undefined,
                         fetchParams
                     )
                 }

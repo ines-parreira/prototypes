@@ -107,7 +107,6 @@ describe('ViewTable::Table::HeaderCell', () => {
             undefined,
             undefined,
             undefined,
-            undefined,
             {orderBy: `${field.get('path') as string}:${OrderDirection.Desc}`}
         )
         expect(setOrderDirectionMock).toHaveBeenCalledWith(

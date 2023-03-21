@@ -383,7 +383,8 @@ describe('<ViewTable />', () => {
                 null,
                 cursor,
                 null,
-                null
+                null,
+                undefined
             )
         })
 
@@ -404,7 +405,8 @@ describe('<ViewTable />', () => {
                     null,
                     null,
                     null,
-                    null
+                    null,
+                    undefined
                 )
             }
         )
@@ -424,7 +426,8 @@ describe('<ViewTable />', () => {
                 null,
                 null,
                 null,
-                null
+                null,
+                undefined
             )
         })
 
@@ -450,7 +453,7 @@ describe('<ViewTable />', () => {
                 expect(minProps.updateView).toHaveBeenLastCalledWith(newView)
                 expect(
                     minProps.fetchViewItemsCancellable
-                ).toHaveBeenLastCalledWith(null, null, null, null)
+                ).toHaveBeenLastCalledWith(null, null, null, null, undefined)
             }
         )
 
@@ -476,7 +479,7 @@ describe('<ViewTable />', () => {
                 )
                 expect(
                     minProps.fetchViewItemsCancellable
-                ).toHaveBeenLastCalledWith(null, null, null, null)
+                ).toHaveBeenLastCalledWith(null, null, null, null, undefined)
             }
         )
 
@@ -502,7 +505,7 @@ describe('<ViewTable />', () => {
                 )
                 expect(
                     minProps.fetchViewItemsCancellable
-                ).toHaveBeenLastCalledWith(null, null, null, null)
+                ).toHaveBeenLastCalledWith(null, null, null, null, undefined)
             }
         )
 
@@ -525,7 +528,7 @@ describe('<ViewTable />', () => {
                 expect(minProps.setViewActive).toHaveBeenCalledTimes(1)
                 expect(
                     minProps.fetchViewItemsCancellable
-                ).toHaveBeenLastCalledWith(null, null, null, null)
+                ).toHaveBeenLastCalledWith(null, null, null, null, undefined)
             }
         )
 
@@ -553,7 +556,8 @@ describe('<ViewTable />', () => {
                 null,
                 null,
                 null,
-                null
+                null,
+                undefined
             )
         })
 
@@ -652,7 +656,8 @@ describe('<ViewTable />', () => {
                 null,
                 null,
                 null,
-                null
+                null,
+                undefined
             )
         })
 
@@ -679,7 +684,8 @@ describe('<ViewTable />', () => {
                 null,
                 null,
                 null,
-                mockSearchRank
+                mockSearchRank,
+                undefined
             )
         })
     })

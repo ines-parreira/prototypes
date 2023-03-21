@@ -3,6 +3,7 @@ import React, {
     useCallback,
     useContext,
     useEffect,
+    useMemo,
     useRef,
     useState,
 } from 'react'
@@ -69,6 +70,7 @@ import {
     SUBMIT_NEW_VIEW_ERROR,
     SUBMIT_UPDATE_VIEW_ERROR,
 } from 'state/views/constants'
+import {FetchViewItemsOptions} from 'state/views/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {fieldPath, getDefaultOperator, slugify} from 'utils'
 import {reportError} from 'utils/errors'
@@ -113,6 +115,18 @@ export const FilterTopbar = ({
         getViewIdToDisplay(ViewType.TicketList, lastViewId?.toString())
     )
     const searchRank = useContext(SearchRankScenarioContext)
+    const orderBy = activeView.get('order_by') as string
+    const fetchParams = useMemo(
+        () =>
+            orderBy
+                ? {
+                      orderBy: `${orderBy}:${
+                          activeView.get('order_dir') as string
+                      }`,
+                  }
+                : undefined,
+        [activeView, orderBy]
+    ) as FetchViewItemsOptions
 
     useEffect(
         () => () => {
@@ -135,7 +149,8 @@ export const FilterTopbar = ({
                 undefined,
                 undefined,
                 undefined,
-                searchRank
+                searchRank,
+                fetchParams
             )
         }
     }, [activeView, areFiltersValid, previousActiveView])

@@ -231,6 +231,13 @@ describe('<FilterTopbar />', () => {
     })
 
     describe('on active view change', () => {
+        const activeView = defaultState.views!.get('active') as Map<any, any>
+        const params = {
+            orderBy: `${activeView.get('order_by') as string}:${
+                activeView.get('order_dir') as string
+            }`,
+        }
+
         it('should fetch view items', () => {
             const {rerender} = render(
                 <Provider store={mockStore(defaultState)}>
@@ -254,7 +261,8 @@ describe('<FilterTopbar />', () => {
                 undefined,
                 undefined,
                 undefined,
-                null
+                null,
+                params
             )
         })
 
@@ -285,7 +293,8 @@ describe('<FilterTopbar />', () => {
                 undefined,
                 undefined,
                 undefined,
-                mockSearchRank
+                mockSearchRank,
+                params
             )
         })
 
