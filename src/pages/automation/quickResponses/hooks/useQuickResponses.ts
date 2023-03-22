@@ -1,6 +1,7 @@
 import {useCallback, useMemo} from 'react'
 
 import {trimHTML} from 'utils/html'
+import {convertFromHTML, convertToHTML} from 'utils/editor'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
@@ -21,16 +22,22 @@ const useQuickResponses = (shopType: string, shopName: string) => {
             }
 
             const trimmedQuickResponses = quickResponses.map(
-                (quickResponse) => ({
-                    ...quickResponse,
-                    response_message_content: {
-                        ...quickResponse.response_message_content,
-                        html: trimHTML(
-                            quickResponse.response_message_content.html
-                        ),
-                        text: quickResponse.response_message_content.text.trim(),
-                    },
-                })
+                (quickResponse) => {
+                    const html = trimHTML(
+                        quickResponse.response_message_content.html
+                    )
+
+                    return {
+                        ...quickResponse,
+                        response_message_content: {
+                            ...quickResponse.response_message_content,
+                            html: html.length
+                                ? convertToHTML(convertFromHTML(html))
+                                : html,
+                            text: quickResponse.response_message_content.text.trim(),
+                        },
+                    }
+                }
             )
 
             void handleSelfServiceConfigurationUpdate({
