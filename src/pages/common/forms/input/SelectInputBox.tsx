@@ -105,7 +105,10 @@ const SelectInputBox = forwardRef(
                     (inputElement.current?.contains(
                         event.relatedTarget as Node
                     ) ||
-                        floating?.current?.contains(event.target as Node))
+                        floating?.current?.contains(event.target as Node) ||
+                        floating?.current?.contains(
+                            event.relatedTarget as Node
+                        ))
                 ) {
                     return
                 }

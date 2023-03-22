@@ -160,7 +160,6 @@ const ReportOrderIssueScenarioConditionRule = <
                                             option={option}
                                             onClick={handleOperatorChange}
                                             shouldCloseOnSelect
-                                            autoFocus
                                         />
                                     ))}
                                 </DropdownBody>

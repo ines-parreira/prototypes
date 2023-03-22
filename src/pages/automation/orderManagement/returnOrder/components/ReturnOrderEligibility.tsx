@@ -84,7 +84,6 @@ const ReturnOrderEligibility = ({eligibility, onChange}: Props) => {
                                                 }}
                                                 onClick={handleKeyChange}
                                                 shouldCloseOnSelect
-                                                autoFocus
                                             />
                                         )
                                     )}

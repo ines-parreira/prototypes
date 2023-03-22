@@ -122,7 +122,6 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
                                         )
                                     }}
                                     shouldCloseOnSelect
-                                    autoFocus
                                 />
                                 {loopReturnsIntegrations.map((integration) => (
                                     <DropdownItem

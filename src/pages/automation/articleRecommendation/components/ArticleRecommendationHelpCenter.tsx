@@ -42,7 +42,7 @@ const ArticleRecommendationHelpCenter = ({
                         isDisabled={!availableHelpCenters.length}
                     >
                         <DropdownBody>
-                            {availableHelpCenters.map((helpCenter, index) => (
+                            {availableHelpCenters.map((helpCenter) => (
                                 <DropdownItem
                                     key={helpCenter.id}
                                     option={{
@@ -51,7 +51,6 @@ const ArticleRecommendationHelpCenter = ({
                                     }}
                                     onClick={setHelpCenterId}
                                     shouldCloseOnSelect
-                                    autoFocus={index === 0}
                                 />
                             ))}
                         </DropdownBody>

@@ -80,7 +80,6 @@ const SelfServicePreviewChannelSelect = <T extends SelfServiceChannel>({
                                     option={option}
                                     onClick={handleChange}
                                     shouldCloseOnSelect
-                                    autoFocus
                                 >
                                     <SourceIcon
                                         type={option.type}

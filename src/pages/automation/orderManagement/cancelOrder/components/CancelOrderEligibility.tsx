@@ -83,7 +83,6 @@ const CancelOrderEligibility = ({eligibility, onChange}: Props) => {
                                                     )
                                                 }}
                                                 shouldCloseOnSelect
-                                                autoFocus
                                             />
                                         )
                                     )}
