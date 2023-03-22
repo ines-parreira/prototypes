@@ -133,11 +133,7 @@ const ConnectedChannelsView = () => {
                                 </div>
                             )}
 
-                            <div
-                                className={classnames(css.alertsContainer, {
-                                    [css.noChannels]: !hasChannels,
-                                })}
-                            >
+                            <div className={css.alertsContainer}>
                                 {!hasChatChannel && (
                                     <Alert
                                         icon
