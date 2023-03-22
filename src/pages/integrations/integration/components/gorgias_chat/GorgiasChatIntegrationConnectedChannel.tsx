@@ -10,6 +10,7 @@ import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automat
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {TicketChannel} from 'business/types/ticket'
 
 import css from './GorgiasChatIntegrationConnectedChannel.less'
 
@@ -24,6 +25,7 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const integrationId = integration.get('id') as string
     const shopName = integration.getIn(['meta', 'shop_name']) as string | null
     const shopType = integration.getIn(['meta', 'shop_type']) as string | null
 
@@ -58,9 +60,7 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
                 intent="primary"
                 onClick={() => {
                     history.push(
-                        `/app/settings/channels/gorgias_chat/${
-                            integration.get('id') as string
-                        }/installation`
+                        `/app/settings/channels/gorgias_chat/${integrationId}/installation`
                     )
                 }}
             >
@@ -80,7 +80,7 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
             intent="primary"
             onClick={() => {
                 history.push(
-                    `/app/automation/${shopType}/${shopName}/connected-channels`
+                    `/app/automation/${shopType}/${shopName}/connected-channels?type=${TicketChannel.Chat}&id=${integrationId}`
                 )
             }}
         >
