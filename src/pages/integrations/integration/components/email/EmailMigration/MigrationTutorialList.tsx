@@ -1,37 +1,54 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import {providerTutorials} from './constants'
 
 import css from './MigrationTutorialList.less'
 
-export default function MigrationTutorialList() {
+type Instruction = {
+    message: ReactNode
+}
+
+type Tutorial = {
+    name: string
+    icon: string
+    helpDocsUrl: string
+    instructions: Instruction[]
+}
+
+type Props = {
+    description?: ReactNode
+    footer?: ReactNode
+    tutorials: Tutorial[]
+}
+
+export default function MigrationTutorialList({
+    description,
+    footer,
+    tutorials,
+}: Props) {
     return (
         <div className={css.container}>
-            <p>
-                Follow a step-by-step tutorial to set up forwarding. Make sure
-                you’re logged in to the correct email before starting.
-            </p>
+            {description}
             <Accordion>
-                {providerTutorials.map((provider) => (
-                    <AccordionItem key={provider.name}>
+                {tutorials.map((tutorial) => (
+                    <AccordionItem key={tutorial.name}>
                         <AccordionHeader>
                             <img
-                                src={provider.icon}
-                                alt={provider.name}
-                                className={css.providerIcon}
+                                src={tutorial.icon}
+                                alt={tutorial.name}
+                                className={css.tutorialIcon}
                             />
-                            {provider.name}
+                            {tutorial.name}
                         </AccordionHeader>
                         <AccordionBody>
                             <ul>
-                                {provider.instructions.map(
+                                {tutorial.instructions.map(
                                     (instruction, index) => (
                                         <div
                                             className={css.instruction}
-                                            key={`${provider.name}-${index}`}
+                                            key={`${tutorial.name}-${index}`}
                                         >
                                             <div
                                                 className={css.instructionIndex}
@@ -44,26 +61,19 @@ export default function MigrationTutorialList() {
                                 )}
                             </ul>
                             <a
-                                href={provider.helpDocsUrl}
+                                href={tutorial.helpDocsUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={css.helpDocLink}
                             >
                                 <i className="material-icons">menu_book</i>
-                                <span>{provider.name} Help Docs</span>
+                                <span>{tutorial.name} Help Docs</span>
                             </a>
                         </AccordionBody>
                     </AccordionItem>
                 ))}
+                {footer}
             </Accordion>
-            <a
-                href="https://docs.gorgias.com/en-US/other-provider-81758"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={css.helpDocLink}
-            >
-                Other Providers
-            </a>
         </div>
     )
 }

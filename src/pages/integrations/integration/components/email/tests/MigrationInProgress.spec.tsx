@@ -14,7 +14,7 @@ const getInboundUnverifiedMigrationsSpy = jest.spyOn(
     'getInboundUnverifiedMigrations'
 )
 
-const migration = {integration: {meta: {}}} as unknown as EmailMigration[]
+const migration = {integration: {meta: {}}} as unknown as EmailMigration
 
 jest.mock('../EmailMigration/MigrationEmailForwarding', () => () => (
     <div data-testid="migration-email-forwarding" />

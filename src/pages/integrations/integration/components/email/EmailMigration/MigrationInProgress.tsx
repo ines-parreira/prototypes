@@ -13,6 +13,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getEmailMigrations} from 'state/integrations/selectors'
 import MigrationEmailForwarding from './MigrationEmailForwarding'
 import {getInboundUnverifiedMigrations} from './utils'
+import MigrationOutboundVerification from './MigrationOutboundVerification'
 
 enum VerificationStep {
     InboundVerification = 'InboundVerification',
@@ -78,12 +79,17 @@ export default function MigrationInProgress() {
                 {currentStep === VerificationStep.InboundVerification && (
                     <MigrationEmailForwarding
                         migrations={inboundUnverifiedMigrations}
+                        onNextClick={() =>
+                            setCurrentStep(VerificationStep.DomainVerification)
+                        }
                     />
                 )}
                 {currentStep === VerificationStep.DomainVerification && (
-                    <div data-testid="migration-domain-verification">
-                        Domain verification
-                    </div>
+                    <MigrationOutboundVerification
+                        onBackClick={() =>
+                            setCurrentStep(VerificationStep.InboundVerification)
+                        }
+                    />
                 )}
             </Container>
         </div>

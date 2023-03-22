@@ -1,9 +1,17 @@
 import {cleanup, render, screen} from '@testing-library/react'
 import React from 'react'
+import {providerTutorials} from '../EmailMigration/constants'
 import MigrationTutorialList from '../EmailMigration/MigrationTutorialList'
 
 describe('MigrationTutorialList', () => {
-    const renderComponent = () => render(<MigrationTutorialList />)
+    const renderComponent = () =>
+        render(
+            <MigrationTutorialList
+                tutorials={providerTutorials}
+                description={<div data-testid="tutorials-description" />}
+                footer={<div data-testid="tutorials-footer" />}
+            />
+        )
 
     afterEach(cleanup)
 
@@ -15,13 +23,10 @@ describe('MigrationTutorialList', () => {
         }
     )
 
-    it('should display link to help docs for other providers', () => {
+    it('should display description and footer', () => {
         renderComponent()
-        expect(
-            screen.getByRole<HTMLAnchorElement>('link', {
-                name: /other providers/i,
-            }).href
-        ).toBe('https://docs.gorgias.com/en-US/other-provider-81758')
+        expect(screen.getByTestId('tutorials-description')).toBeVisible()
+        expect(screen.getByTestId('tutorials-footer')).toBeVisible()
     })
 
     it.each([

@@ -3,15 +3,16 @@
 :local {
     .layoutWrapper {
         display: flex;
-
-        h1 {
-            margin-bottom: @layout-spacing-m;
-        }
     }
 
     .navigationButtonsWrapper {
         display: flex;
         justify-content: space-between;
         margin-top: @layout-spacing-xl;
+
+        .group {
+            display: flex;
+            gap: @layout-spacing-xs;
+        }
     }
 }

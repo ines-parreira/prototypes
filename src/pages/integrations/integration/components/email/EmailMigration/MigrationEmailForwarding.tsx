@@ -11,14 +11,19 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getForwardingEmailAddress} from 'state/integrations/selectors'
 import EmailForwardingTable from './EmailForwardingTable'
 import MigrationTutorialList from './MigrationTutorialList'
+import {providerTutorials} from './constants'
 
 import css from './MigrationEmailForwarding.less'
 
 type Props = {
     migrations: EmailMigration[]
+    onNextClick: () => void
 }
 
-export default function MigrationEmailForwarding({migrations}: Props) {
+export default function MigrationEmailForwarding({
+    migrations,
+    onNextClick,
+}: Props) {
     const forwardingEmailAddress = useAppSelector(getForwardingEmailAddress)
     const {copyButtonText} = useClipboard('#copy-email-address')
     const history = useHistory()
@@ -68,11 +73,35 @@ export default function MigrationEmailForwarding({migrations}: Props) {
                     >
                         Finish later
                     </Button>
-                    <Button isDisabled>Next</Button>
+                    <Button
+                        isDisabled={!!migrations.length}
+                        onClick={onNextClick}
+                    >
+                        Next
+                    </Button>
                 </div>
             </Col>
             <Col>
-                <MigrationTutorialList />
+                <MigrationTutorialList
+                    tutorials={providerTutorials}
+                    description={
+                        <p>
+                            Follow a step-by-step tutorial to set up forwarding.
+                            Make sure you’re logged in to the correct email
+                            before starting.
+                        </p>
+                    }
+                    footer={
+                        <a
+                            href="https://docs.gorgias.com/en-US/other-provider-81758"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={css.helpDocLink}
+                        >
+                            Other Providers
+                        </a>
+                    }
+                />
             </Col>
         </div>
     )
