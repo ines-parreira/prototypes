@@ -45,7 +45,11 @@ describe('<BigCommerceIntegration/>', () => {
                         {...minProps}
                         integration={fromJS({
                             meta: {
-                                import_state: {customers: {is_over: false}},
+                                import_state: {
+                                    products: {is_over: true},
+                                    customers: {is_over: false},
+                                    external_orders: {is_over: true},
+                                },
                             },
                         })}
                     />
@@ -62,7 +66,11 @@ describe('<BigCommerceIntegration/>', () => {
                         {...minProps}
                         integration={fromJS({
                             meta: {
-                                import_state: {customers: {is_over: true}},
+                                import_state: {
+                                    products: {is_over: true},
+                                    customers: {is_over: true},
+                                    external_orders: {is_over: true},
+                                },
                             },
                         })}
                     />

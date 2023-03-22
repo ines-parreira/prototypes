@@ -37,10 +37,22 @@ const Integration = ({integration, loading}: Props) => {
 
     const isActive = !integration.get('deactivated_datetime', null)
     const isSubmitting = Boolean(loading.get('updateIntegration'))
+    const isProductsImportOver = integration.getIn([
+        'meta',
+        'import_state',
+        'products',
+        'is_over',
+    ])
     const isCustomersImportOver = integration.getIn([
         'meta',
         'import_state',
         'customers',
+        'is_over',
+    ])
+    const isExternalOrdersImportOver = integration.getIn([
+        'meta',
+        'import_state',
+        'external_orders',
         'is_over',
     ])
     const needScopeUpdate = Boolean(
@@ -68,7 +80,11 @@ const Integration = ({integration, loading}: Props) => {
                     <SyncNotification
                         platform="BigCommerce"
                         shopName={shopName}
-                        isSyncComplete={isCustomersImportOver}
+                        isSyncComplete={
+                            isProductsImportOver &&
+                            isCustomersImportOver &&
+                            isExternalOrdersImportOver
+                        }
                     />
 
                     <form onSubmit={handleUpdate}>
