@@ -1,18 +1,18 @@
 import React from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useAppSelector from 'hooks/useAppSelector'
-import shopify from 'assets/img/integrations/shopify.png'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
-import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {StatsFilters} from 'models/stat/types'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useStoreIntegrations from 'pages/automation/common/hooks/useStoreIntegrations'
+import {getIconFromType} from 'state/integrations/helpers'
 
 import SelectFilter from '../common/SelectFilter'
 
-import {ShopifyIntegration} from '../../../models/integration/types'
 import css from './SelfServiceIntegrationsFilter.less'
-import {hasShopifyIntegrationSSPEnabled} from './self-service-stats.utils'
 
 type Props = {
     value: StatsFilters['integrations']
@@ -20,11 +20,11 @@ type Props = {
 }
 
 const SelfServiceIntegrationsFilter = ({value = [], onChange}: Props) => {
+    const isAutomationSettingsRevampEnabled =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
+    const storeIntegrations = useStoreIntegrations()
     const shopifyIntegrations = useAppSelector(
-        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
-    )
-    const selfServiceConfigurations = useAppSelector(
-        getSelfServiceConfigurations
+        getIntegrationsByType(IntegrationType.Shopify)
     )
 
     return (
@@ -34,30 +34,23 @@ const SelfServiceIntegrationsFilter = ({value = [], onChange}: Props) => {
             onChange={onChange as (value: Value[]) => void}
             value={value}
         >
-            {shopifyIntegrations.map((shopifyIntegration) => {
-                const selfServiceDeactivated = !hasShopifyIntegrationSSPEnabled(
-                    shopifyIntegration,
-                    selfServiceConfigurations
-                )
-                return (
-                    <SelectFilter.Item
-                        key={shopifyIntegration.id}
-                        label={
-                            selfServiceDeactivated
-                                ? `${shopifyIntegration.name} (deactivated)`
-                                : shopifyIntegration.name
-                        }
-                        value={shopifyIntegration.id}
-                        icon={
-                            <img
-                                src={shopify}
-                                alt="logo-shopify"
-                                className={css.integrationIcon}
-                            />
-                        }
-                    />
-                )
-            })}
+            {(isAutomationSettingsRevampEnabled
+                ? storeIntegrations
+                : shopifyIntegrations
+            ).map((storeIntegration) => (
+                <SelectFilter.Item
+                    key={storeIntegration.id}
+                    label={storeIntegration.name}
+                    value={storeIntegration.id}
+                    icon={
+                        <img
+                            src={getIconFromType(storeIntegration.type)}
+                            alt="logo"
+                            className={css.integrationIcon}
+                        />
+                    }
+                />
+            ))}
         </SelectFilter>
     )
 }

@@ -3,28 +3,8 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
-import {
-    GorgiasChatIntegration,
-    ShopifyIntegration,
-} from 'models/integration/types'
+import {GorgiasChatIntegration} from 'models/integration/types'
 import {fetchChatHelpCenterConfiguration} from 'models/selfServiceConfiguration/resources'
-import {SelfServiceConfiguration} from '../../../models/selfServiceConfiguration/types'
-
-export const hasShopifyIntegrationSSPEnabled = (
-    shopifyIntegration: ShopifyIntegration,
-    selfServiceConfigurations: SelfServiceConfiguration[]
-): boolean => {
-    const shopifyIntegrationHasSSP = selfServiceConfigurations.find(
-        (configuration) => {
-            return (
-                configuration.shop_name === shopifyIntegration.meta.shop_name &&
-                configuration.deactivated_datetime === null
-            )
-        }
-    )
-
-    return !!shopifyIntegrationHasSSP
-}
 
 export const useIsArticleRecommendationDisabled = (shouldFetch: boolean) => {
     const chatIntegrations = useAppSelector(
