@@ -9,12 +9,15 @@ import Loader from 'pages/common/components/Loader/Loader'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {IntegrationType} from 'models/integration/constants'
-import useSelfServiceChannels from 'pages/automation/common/hooks/useSelfServiceChannels'
+import useSelfServiceChannels, {
+    SelfServiceChannel,
+} from 'pages/automation/common/hooks/useSelfServiceChannels'
 import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {useHelpCenterPublishedArticlesCount} from 'pages/automation/common/hooks/useHelpCenterPublishedArticlesCount'
 import Button from 'pages/common/components/button/Button'
+import useSearch from 'hooks/useSearch'
 
 import ConnectedChannelAccordionItem from './components/ConnectedChannelAccordionItem'
 import ConnectedChannelsPreview from './ConnectedChannelsPreview'
@@ -29,12 +32,34 @@ const ConnectedChannelsView = () => {
         shopType: string
         shopName: string
     }>()
+    const {type: defaultExpandedChannelType, id: defaultExpandedChannelId} =
+        useSearch<{
+            type: SelfServiceChannel['type']
+            id: string
+        }>()
     const channels = useSelfServiceChannels(shopType, shopName)
     const {selfServiceConfiguration} = useSelfServiceConfiguration(
         shopType,
         shopName
     )
-    const [expandedChannelIndex, setExpandedChannelIndex] = useState(0)
+    const [expandedChannelIndex, setExpandedChannelIndex] = useState(() => {
+        if (!defaultExpandedChannelType || !defaultExpandedChannelId) {
+            return 0
+        }
+
+        const defaultExpandedChannelIdInt = parseInt(
+            defaultExpandedChannelId,
+            10
+        )
+
+        const index = channels.findIndex(
+            (channel) =>
+                channel.type === defaultExpandedChannelType &&
+                channel.value.id === defaultExpandedChannelIdInt
+        )
+
+        return index !== -1 ? index : 0
+    })
 
     const articleRecommendationHelpCenterId =
         selfServiceConfiguration?.article_recommendation_help_center_id

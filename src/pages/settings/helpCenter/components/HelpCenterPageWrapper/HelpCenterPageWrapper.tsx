@@ -20,6 +20,7 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {TicketChannel} from 'business/types/ticket'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {getAbsoluteUrl, getHelpCenterDomain} from '../../utils/helpCenter.utils'
@@ -130,7 +131,9 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                                         history.push(
                                             `/app/automation/shopify/${
                                                 helpCenter.shop_name as string
-                                            }/connected-channels`
+                                            }/connected-channels?type=${
+                                                TicketChannel.HelpCenter
+                                            }&id=${helpCenter.id}`
                                         )
                                     }}
                                 >
