@@ -1,0 +1,196 @@
+import React, {useEffect, useMemo, useState} from 'react'
+import {useAsyncFn} from 'react-use'
+import {fromJS, Map} from 'immutable'
+
+import {IntegrationType, StoreIntegration} from 'models/integration/types'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import Button from 'pages/common/components/button/Button'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+import useAppSelector from 'hooks/useAppSelector'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import {getIconFromType} from 'state/integrations/helpers'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+
+import {StoreNameDropdown} from '../GorgiasChatIntegrationAppearance/StoreNameDropdown'
+
+import css from './GorgiasChatIntegrationConnectStore.less'
+
+type Props = {
+    integration: Map<any, any>
+    updateOrCreateIntegration: (integration: Map<any, any>) => Promise<void>
+    storeIntegration: StoreIntegration | undefined
+    storeIntegrations: StoreIntegration[]
+    isOneClickInstallation: boolean
+}
+
+const GorgiasChatIntegrationConnectStore = ({
+    integration,
+    updateOrCreateIntegration,
+    storeIntegration,
+    storeIntegrations,
+    isOneClickInstallation,
+}: Props) => {
+    const getGorgiasChatIntegrations = useMemo(
+        () => getIntegrationsByType(IntegrationType.GorgiasChat),
+        []
+    )
+    const gorgiasChatIntegrations = useAppSelector(getGorgiasChatIntegrations)
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [storeIntegrationId, setStoreIntegration] = useState(
+        storeIntegration?.id ?? null
+    )
+
+    useEffect(() => {
+        setStoreIntegration(storeIntegration?.id ?? null)
+    }, [storeIntegration])
+
+    const handleModalOpen = () => {
+        setIsModalOpen(true)
+    }
+    const handleModalClose = () => {
+        setIsModalOpen(false)
+    }
+
+    const [{loading: isConnectPending}, handleConnect] =
+        useAsyncFn(async () => {
+            if (!storeIntegrationId) {
+                return
+            }
+
+            const storeIntegration = storeIntegrations.find(
+                (storeIntegration) => storeIntegration.id === storeIntegrationId
+            )
+
+            if (!storeIntegration) {
+                return
+            }
+
+            const meta: Map<any, any> = integration.get('meta')
+
+            const form = {
+                id: integration.get('id'),
+                type: integration.get('type'),
+                meta: meta
+                    .set(
+                        'shop_name',
+                        getShopNameFromStoreIntegration(storeIntegration)
+                    )
+                    .set('shop_type', storeIntegration.type)
+                    .set('shop_integration_id', storeIntegration.id)
+                    .set('shopify_integration_ids', []),
+            }
+
+            await updateOrCreateIntegration(fromJS(form))
+
+            setIsModalOpen(false)
+        }, [
+            integration,
+            updateOrCreateIntegration,
+            storeIntegrationId,
+            storeIntegrations,
+        ])
+    const [{loading: isDisconnectPending}, handleDisconnect] =
+        useAsyncFn(async () => {
+            const meta: Map<any, any> = integration.get('meta')
+
+            const form = {
+                id: integration.get('id'),
+                type: integration.get('type'),
+                meta: meta
+                    .set('shop_name', null)
+                    .set('shop_type', null)
+                    .set('shop_integration_id', null)
+                    .set('shopify_integration_ids', []),
+            }
+
+            await updateOrCreateIntegration(fromJS(form))
+        }, [integration, updateOrCreateIntegration])
+
+    const isDirty = storeIntegrationId !== storeIntegration?.id
+
+    return (
+        <div>
+            <div className={css.title}>Connect store</div>
+            <div className={css.description}>
+                A store connection is required to use Automation Add-on features
+                in chat and to enable 1-click installation for Shopify stores.
+            </div>
+            {storeIntegration ? (
+                <div className={css.store}>
+                    <img
+                        className={css.storeIcon}
+                        alt="logo"
+                        src={getIconFromType(storeIntegration.type)}
+                    />
+                    {storeIntegration.name}
+                    <div className="ml-auto">
+                        <Button
+                            fillStyle="ghost"
+                            intent="secondary"
+                            onClick={handleModalOpen}
+                        >
+                            Change
+                        </Button>
+                        <ConfirmButton
+                            confirmationButtonIntent="destructive"
+                            confirmationContent={
+                                isOneClickInstallation
+                                    ? 'Disconnecting this store will remove automation features and uninstall the chat from your store, removing it from all pages.'
+                                    : 'Disconnecting this store will remove automation features from your chat widget.'
+                            }
+                            confirmationTitle={<b>Disconnect store?</b>}
+                            confirmLabel="Disconnect"
+                            fillStyle="ghost"
+                            intent="destructive"
+                            onConfirm={handleDisconnect}
+                            placement="top"
+                            showCancelButton
+                            isDisabled={isDisconnectPending}
+                        >
+                            Disconnect
+                        </ConfirmButton>
+                    </div>
+                </div>
+            ) : (
+                <Button intent="secondary" onClick={handleModalOpen}>
+                    Connect
+                </Button>
+            )}
+            <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+                <ModalHeader title="Connect store" />
+                <ModalBody className={css.modalBody}>
+                    <div>
+                        Connect a store to use Automation Add-on features in
+                        chat and to enable 1-click install for Shopify.
+                    </div>
+                    <StoreNameDropdown
+                        gorgiasChatIntegrations={fromJS(
+                            gorgiasChatIntegrations
+                        )}
+                        storeIntegrations={fromJS(storeIntegrations)}
+                        storeIntegrationId={storeIntegrationId}
+                        onChange={setStoreIntegration}
+                    />
+                </ModalBody>
+                <ModalActionsFooter>
+                    <Button intent="secondary" onClick={handleModalClose}>
+                        Cancel
+                    </Button>
+                    <Button
+                        isDisabled={!storeIntegrationId || !isDirty}
+                        isLoading={isConnectPending}
+                        onClick={handleConnect}
+                    >
+                        Connect store
+                    </Button>
+                </ModalActionsFooter>
+            </Modal>
+        </div>
+    )
+}
+
+export default GorgiasChatIntegrationConnectStore

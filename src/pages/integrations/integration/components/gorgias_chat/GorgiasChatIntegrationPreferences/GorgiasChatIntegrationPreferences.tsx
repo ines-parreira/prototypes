@@ -54,6 +54,7 @@ import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegra
 import OptionalEmailCapturePreview from '../GorgiasChatIntegrationPreview/OptionalEmailCapture'
 import RequiredEmailCapturePreview from '../GorgiasChatIntegrationPreview/RequiredEmailCapture'
 import AutoResponderPreview from '../GorgiasChatIntegrationPreview/AutoResponder'
+import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import {isGenericEmailIntegration} from '../../email/helpers'
 import css from './GorgiasChatIntegrationPreferences.less'
 
@@ -583,7 +584,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             <BreadcrumbItem>{chatTitle}</BreadcrumbItem>
                         </Breadcrumb>
                     }
-                />
+                >
+                    <GorgiasChatIntegrationConnectedChannel
+                        integration={integration}
+                    />
+                </PageHeader>
 
                 <ChatIntegrationNavigation integration={integration} />
                 <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>

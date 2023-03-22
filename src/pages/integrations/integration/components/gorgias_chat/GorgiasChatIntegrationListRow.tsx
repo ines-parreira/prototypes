@@ -3,12 +3,12 @@ import {NavLink} from 'react-router-dom'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 
-import shopifyLogo from 'assets/img/integrations/shopify.png'
 import warningIcon from 'assets/img/icons/warning.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
 import dotWarning from 'assets/img/icons/dot-warning.svg'
 import dotNeutral from 'assets/img/icons/dot-neutral.svg'
 import dotErrorCross from 'assets/img/icons/dot-error-cross.svg'
+import {getIconFromType} from 'state/integrations/helpers'
 
 import {useGorgiasChatIntegrationStatusData} from 'pages/integrations/integration/hooks/useGorgiasChatIntegrationStatusData'
 import Tooltip from '../../../../common/components/Tooltip'
@@ -50,17 +50,15 @@ const GorgiasChatIntegrationListRow = ({
     const baseLink = `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}`
     const editLink = `${baseLink}/campaigns`
     const preferencesLink = `${baseLink}/preferences`
-    const shopifyStoreName: string | null = chat.getIn(
-        ['meta', 'shop_name'],
+    const shopIntegrationId: number | null = chat.getIn(
+        ['meta', 'shop_integration_id'],
         null
     )
-    const shopifyStore: Map<any, any> = integrations.find(
-        (_integration) =>
-            _integration?.get('name') === shopifyStoreName &&
-            _integration?.get('type') === IntegrationType.Shopify
+    const storeIntegration: Map<any, any> = integrations.find(
+        (_integration) => _integration?.get('id') === shopIntegrationId
     )
     const isStoreDisconnected =
-        !shopifyStore || shopifyStore.get('deactivated_datetime')
+        !storeIntegration || storeIntegration.get('deactivated_datetime')
 
     const language: string = chat.getIn(['meta', 'language'])
 
@@ -72,11 +70,18 @@ const GorgiasChatIntegrationListRow = ({
                 {chat.get('name')}
             </BodyCell>
             <BodyCell size="small">
-                {shopifyStoreName !== null ? (
-                    <div className={css.shopifyStoreDiv}>
-                        <span className={css.shopifyStoreName}>
-                            <img src={shopifyLogo} alt="logo Shopify" />
-                            <span>{shopifyStoreName}</span>
+                {storeIntegration ? (
+                    <div className={css.storeDiv}>
+                        <span className={css.storeName}>
+                            <img
+                                height={16}
+                                width={16}
+                                src={getIconFromType(
+                                    storeIntegration.get('type')
+                                )}
+                                alt="logo"
+                            />
+                            <span>{storeIntegration.get('name')}</span>
                         </span>
                         {isStoreDisconnected && (
                             <>

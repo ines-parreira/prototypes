@@ -17,6 +17,10 @@ jest.mock('../GorgiasChatIntegrationNavigation', () => () => {
     return <div data-testid="GorgiasChatIntegrationNavigation" />
 })
 
+jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
+    return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
+})
+
 describe('<GorgiasChatIntegrationQuickReplies/>', () => {
     const integration: Map<any, any> = fromJS({
         id: 7,

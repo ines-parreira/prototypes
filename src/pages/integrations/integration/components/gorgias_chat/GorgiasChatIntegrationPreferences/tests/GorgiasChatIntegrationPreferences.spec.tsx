@@ -46,6 +46,10 @@ jest.mock('../../GorgiasChatIntegrationNavigation', () => () => {
     return <div data-testid="GorgiasChatIntegrationNavigation" />
 })
 
+jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => {
+    return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
+})
+
 describe('<GorgiasChatIntegrationPreferences/>', () => {
     const minProps: ComponentProps<
         typeof GorgiasChatIntegrationPreferencesComponent

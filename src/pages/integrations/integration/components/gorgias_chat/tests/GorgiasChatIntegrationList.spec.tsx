@@ -32,6 +32,7 @@ describe('<GorgiasChatIntegrationList />', () => {
                     },
                     shop_name: 'my associated Shopify store',
                     shop_type: IntegrationType.Shopify,
+                    shop_integration_id: 3,
                     status: GorgiasChatStatusEnum.ONLINE,
                 },
                 decoration: {

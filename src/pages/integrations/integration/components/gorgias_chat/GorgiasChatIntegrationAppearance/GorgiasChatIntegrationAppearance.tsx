@@ -71,6 +71,7 @@ import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import Label from 'pages/common/forms/Label/Label'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
+import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 
 import css from './GorgiasChatIntegrationAppearance.less'
 import {StoreNameDropdown} from './StoreNameDropdown'
@@ -668,7 +669,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         </BreadcrumbItem>
                     </Breadcrumb>
                 }
-            />
+            >
+                {isUpdate && (
+                    <GorgiasChatIntegrationConnectedChannel
+                        integration={integration}
+                    />
+                )}
+            </PageHeader>
 
             {isUpdate && (
                 <GorgiasChatIntegrationNavigation integration={integration} />

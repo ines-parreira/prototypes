@@ -6,6 +6,7 @@ import {INTEGRATION_TYPE_CONFIG, isChannel} from 'config'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {
     Integration,
+    IntegrationFromType,
     IntegrationType,
     isPhoneIntegration,
     isSmsIntegration,
@@ -20,7 +21,7 @@ import {getNewPhoneNumbers as getNewPhoneNumbersState} from 'state/entities/phon
 import {nestedReplace} from 'state/ticket/utils'
 import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
 
-import {IntegrationsState, IntegrationListItem} from './types'
+import {IntegrationListItem, IntegrationsState} from './types'
 
 type IntegrationsCountMap = {
     [key in IntegrationType]?: number
@@ -125,12 +126,13 @@ export const getIntegrationsByType = <T extends Integration>(
         )
     })
 
-export const getIntegrationsByTypes = (
-    types: readonly IntegrationType[] | IntegrationType[]
+export const getIntegrationsByTypes = <T extends Integration['type']>(
+    types: readonly T[] | T[]
 ) =>
     createSelector(getIntegrationsState, (state) => {
-        return state.integrations.filter((integration) =>
-            types.includes(integration.type)
+        return state.integrations.filter(
+            (integration): integration is IntegrationFromType<T> =>
+                types.includes(integration.type as T)
         )
     })
 
@@ -613,3 +615,9 @@ export const getEmailMigrations = createSelector(
     getIntegrationsState,
     (state) => state?.migrations?.email ?? []
 )
+
+export const getStoreIntegrations = getIntegrationsByTypes([
+    IntegrationType.Shopify,
+    IntegrationType.BigCommerce,
+    IntegrationType.Magento2,
+])

@@ -51,6 +51,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
       </nav>
       <div>
         <a
+          class="createCampaignLink"
           to="/app/settings/channels/gorgias_chat/118/campaigns/new"
         >
           <button
@@ -152,6 +153,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
       </nav>
       <div>
         <a
+          class="createCampaignLink"
           to="/app/settings/channels/gorgias_chat/118/campaigns/new"
         >
           <button

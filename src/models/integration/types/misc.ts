@@ -1,4 +1,8 @@
 import {IntegrationType} from '../constants'
+import {ShopifyIntegration} from './shopify'
+import {Magento2Integration} from './magento2'
+import {BigCommerceIntegration} from './bigcommerce'
+import {Integration} from './index'
 
 export type OAuth2 = {
     status: string
@@ -72,3 +76,13 @@ export type ProductCardDetails = {
     variantId: number
     currency?: string
 }
+
+export type IntegrationFromType<T extends Integration['type']> = Extract<
+    Integration,
+    {type: T}
+>
+
+export type StoreIntegration =
+    | ShopifyIntegration
+    | Magento2Integration
+    | BigCommerceIntegration

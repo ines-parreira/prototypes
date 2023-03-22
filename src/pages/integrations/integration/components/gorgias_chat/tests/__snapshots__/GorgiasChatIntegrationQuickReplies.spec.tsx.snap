@@ -115,6 +115,26 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                 </ol>
               </nav>
             </Breadcrumb>
+            <div>
+              <Component
+                integration={
+                  Immutable.Map {
+                    "id": 7,
+                    "name": "my chat integration",
+                    "meta": Immutable.Map {},
+                    "decoration": Immutable.Map {
+                      "introduction_text": "this is an intro",
+                      "input_placeholder": "type something please",
+                      "main_color": "#123456",
+                    },
+                  }
+                }
+              >
+                <div
+                  data-testid="GorgiasChatIntegrationConnectedChannel"
+                />
+              </Component>
+            </div>
           </div>
         </PageHeader>
         <Component
@@ -1024,6 +1044,34 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 </ol>
               </nav>
             </Breadcrumb>
+            <div>
+              <Component
+                integration={
+                  Immutable.Map {
+                    "id": 7,
+                    "name": "my chat integration",
+                    "meta": Immutable.Map {
+                      "quick_replies": Immutable.Map {
+                        "enabled": true,
+                        "replies": Immutable.List [
+                          "foo",
+                          "bar",
+                        ],
+                      },
+                    },
+                    "decoration": Immutable.Map {
+                      "introduction_text": "this is an intro",
+                      "input_placeholder": "type something please",
+                      "main_color": "#123456",
+                    },
+                  }
+                }
+              >
+                <div
+                  data-testid="GorgiasChatIntegrationConnectedChannel"
+                />
+              </Component>
+            </div>
           </div>
         </PageHeader>
         <Component

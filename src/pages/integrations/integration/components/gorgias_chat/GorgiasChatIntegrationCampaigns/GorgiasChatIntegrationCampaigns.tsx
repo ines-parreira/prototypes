@@ -14,6 +14,7 @@ import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import {IntegrationType} from 'models/integration/constants'
 import CampaignGenerator from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator/CampaignGenerator'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 
 import css from './GorgiasChatIntegrationCampaigns.less'
 
@@ -60,11 +61,15 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                         </Breadcrumb>
                     }
                 >
+                    <GorgiasChatIntegrationConnectedChannel
+                        integration={integration}
+                    />
                     <Link
                         to={
                             `/app/settings/channels/${IntegrationType.GorgiasChat}/` +
                             `${integration.get('id') as string}/campaigns/new`
                         }
+                        className={css.createCampaignLink}
                     >
                         <Button>Create Campaign</Button>
                     </Link>

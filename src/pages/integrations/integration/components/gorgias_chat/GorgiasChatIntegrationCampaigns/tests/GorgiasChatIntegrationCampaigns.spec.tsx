@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
+import {billingState} from 'fixtures/billing'
 import * as actions from 'state/integrations/actions'
 import * as betaTesterHook from 'pages/common/hooks/useIsRevenueBetaTester'
 import {CAMPAIGN_INFO_BOX_STORAGE_KEY} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator'
@@ -24,7 +25,10 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
 
     beforeEach(() => {
-        store = mockStore({entities: entitiesInitialState})
+        store = mockStore({
+            entities: entitiesInitialState,
+            billing: fromJS(billingState),
+        })
         localStorage.clear()
         updateOrCreateIntegrationRequest.mockReset()
         jest.spyOn(betaTesterHook, 'useIsRevenueBetaTester').mockImplementation(

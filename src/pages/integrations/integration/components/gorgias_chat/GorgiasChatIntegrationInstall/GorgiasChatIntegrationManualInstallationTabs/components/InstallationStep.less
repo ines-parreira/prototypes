@@ -1,0 +1,23 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/colorTokens.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-s;
+    }
+
+    .bullet {
+        .body-medium();
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: @classic-neutral-grey-6;
+        color: @classic-neutral-grey-0;
+    }
+}

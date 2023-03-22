@@ -25,6 +25,7 @@ import ChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 
 import chatCss from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview.less'
 import css from './GorgiasChatIntegrationQuickReplies.less'
@@ -206,7 +207,11 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                             </BreadcrumbItem>
                         </Breadcrumb>
                     }
-                />
+                >
+                    <GorgiasChatIntegrationConnectedChannel
+                        integration={integration}
+                    />
+                </PageHeader>
 
                 <ChatIntegrationNavigation integration={integration} />
 

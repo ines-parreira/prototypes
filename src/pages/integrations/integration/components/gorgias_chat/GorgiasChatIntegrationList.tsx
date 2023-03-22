@@ -47,9 +47,12 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
     )
     const shopifyIntegrations = useMemo(
         () =>
-            integrations.filter(
-                (integration) =>
-                    integration?.get('type') === IntegrationType.Shopify
+            integrations.filter((integration) =>
+                [
+                    IntegrationType.Shopify,
+                    IntegrationType.BigCommerce,
+                    IntegrationType.Magento2,
+                ].includes(integration?.get('type'))
             ) as List<Map<any, any>>,
         [integrations]
     )

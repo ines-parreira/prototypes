@@ -924,6 +924,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           </li>
         </ol>
       </nav>
+      <div>
+        <div
+          data-testid="GorgiasChatIntegrationConnectedChannel"
+        />
+      </div>
     </div>
     <div
       data-testid="GorgiasChatIntegrationNavigation"
@@ -1778,6 +1783,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           </li>
         </ol>
       </nav>
+      <div>
+        <div
+          data-testid="GorgiasChatIntegrationConnectedChannel"
+        />
+      </div>
     </div>
     <div
       data-testid="GorgiasChatIntegrationNavigation"
@@ -2602,6 +2612,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
           </li>
         </ol>
       </nav>
+      <div>
+        <div
+          data-testid="GorgiasChatIntegrationConnectedChannel"
+        />
+      </div>
     </div>
     <div
       data-testid="GorgiasChatIntegrationNavigation"
@@ -3434,6 +3449,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
           </li>
         </ol>
       </nav>
+      <div>
+        <div
+          data-testid="GorgiasChatIntegrationConnectedChannel"
+        />
+      </div>
     </div>
     <div
       data-testid="GorgiasChatIntegrationNavigation"
@@ -4258,6 +4278,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
           </li>
         </ol>
       </nav>
+      <div>
+        <div
+          data-testid="GorgiasChatIntegrationConnectedChannel"
+        />
+      </div>
     </div>
     <div
       data-testid="GorgiasChatIntegrationNavigation"
@@ -5947,6 +5972,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
           </li>
         </ol>
       </nav>
+      <div>
+        <div
+          data-testid="GorgiasChatIntegrationConnectedChannel"
+        />
+      </div>
     </div>
     <div
       data-testid="GorgiasChatIntegrationNavigation"
@@ -7790,6 +7820,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
           </li>
         </ol>
       </nav>
+      <div>
+        <div
+          data-testid="GorgiasChatIntegrationConnectedChannel"
+        />
+      </div>
     </div>
     <div
       data-testid="GorgiasChatIntegrationNavigation"

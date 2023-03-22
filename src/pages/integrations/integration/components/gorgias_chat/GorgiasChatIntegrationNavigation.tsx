@@ -1,9 +1,11 @@
 import React, {useMemo} from 'react'
 import {Map} from 'immutable'
 import {NavLink} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
+import {FeatureFlagKey} from 'config/featureFlags'
 import dotError from 'assets/img/icons/dot-error.svg'
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 import {IntegrationType} from '../../../../../models/integration/types'
@@ -18,7 +20,8 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
     const integrationId: number = integration.get('id')
 
     const installationStatus = useAppSelector(getChatInstallationStatus)
-
+    const isAutomationSettingsRevampEnabled =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const baseURL = useMemo(
         () =>
             `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}`,
@@ -42,7 +45,7 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
             <NavLink to={`${baseURL}/preferences`} exact>
                 Preferences
             </NavLink>
-            {shopName ? (
+            {!isAutomationSettingsRevampEnabled && shopName ? (
                 <NavLink to={`${baseURL}/automation`} exact>
                     Automation
                 </NavLink>

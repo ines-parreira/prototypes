@@ -1,9 +1,4 @@
-import {
-    BigCommerceIntegration,
-    IntegrationType,
-    Magento2Integration,
-    ShopifyIntegration,
-} from 'models/integration/types'
+import {IntegrationType, StoreIntegration} from 'models/integration/types'
 
 import {
     SelfServiceConfiguration,
@@ -32,10 +27,7 @@ export const selfServiceConfigurationFromDeprecated = (
 })
 
 export const getShopNameFromStoreIntegration = (
-    integration:
-        | ShopifyIntegration
-        | Magento2Integration
-        | BigCommerceIntegration
+    integration: StoreIntegration
 ) => {
     switch (integration.type) {
         case IntegrationType.BigCommerce:

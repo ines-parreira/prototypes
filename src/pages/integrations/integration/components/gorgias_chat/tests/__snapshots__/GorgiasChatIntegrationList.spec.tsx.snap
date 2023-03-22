@@ -160,14 +160,16 @@ exports[`<GorgiasChatIntegrationList /> should display correcty the list of chat
               class="cellContent"
             >
               <div
-                class="shopifyStoreDiv"
+                class="storeDiv"
               >
                 <span
-                  class="shopifyStoreName"
+                  class="storeName"
                 >
                   <img
-                    alt="logo Shopify"
-                    src="test-file-stub"
+                    alt="logo"
+                    height="16"
+                    src="/assets/img/integrations/shopify.png"
+                    width="16"
                   />
                   <span>
                     my associated Shopify store

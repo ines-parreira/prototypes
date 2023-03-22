@@ -1,8 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {List, Map, fromJS} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {
     getHasAutomationAddOn,
@@ -14,6 +15,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
 import {ChatInstallationStatusState} from 'state/entities/chatInstallationStatus'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -30,6 +32,7 @@ import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigatio
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
 import GorgiasChatIntegrationCustomInstallationCard from './GorgiasChatIntegrationCustomInstallationCard'
 import {GorgiasChatIntegrationConnectToStoreCard} from './GorgiasChatIntegrationConnectToStoreCard'
+import NewGorgiasChatIntegrationInstall from './NewGorgiasChatIntegrationInstall'
 import css from './GorgiasChatIntegrationInstall.less'
 
 type OwnProps = {
@@ -72,6 +75,8 @@ function GorgiasChatIntegrationInstall({
     isUpdate,
     installationStatus,
 }: OwnProps & ReturnType<typeof mapStateToProps>) {
+    const isAutomationSettingsRevampEnabled =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     // During the chat creation, the user associated this chat to a shopify store.
     // This chat can only be installed on this specific store
     // Change to associated_shopify_store_id?
@@ -99,6 +104,16 @@ function GorgiasChatIntegrationInstall({
 
     const hasOrderManagement =
         hasAutomationAddOn || hasLegacyAutomationAddOnFeatures
+
+    if (isAutomationSettingsRevampEnabled) {
+        return (
+            <NewGorgiasChatIntegrationInstall
+                integration={integration}
+                actions={actions}
+                isUpdate={isUpdate}
+            />
+        )
+    }
 
     return (
         <div className="full-width">
