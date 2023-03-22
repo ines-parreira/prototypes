@@ -1129,7 +1129,7 @@ export function SelfServiceSettingsRoutes({
                         navbar,
                     })}
                     isDeprecated={isDeprecated}
-                    redirectTo="/app/automation"
+                    redirectTo="/app/automation/macros"
                 />
                 <Redirect
                     exact
@@ -1178,8 +1178,9 @@ export function SelfServiceSettingsRoutes({
                         navbar,
                     })}
                 />
-                <Route
+                <MaybeDeprecatedRoute
                     path={`${path}/:integrationType/:shopName/preferences/order-management`}
+                    redirectTo="/app/automation/:integrationType/:shopName/order-management"
                     exact
                     render={appRender({
                         content: memoizedWithUserRoleRequired(
@@ -1189,6 +1190,7 @@ export function SelfServiceSettingsRoutes({
                         ),
                         navbar,
                     })}
+                    isDeprecated={isDeprecated}
                 />
                 <Route
                     path={`${path}/:integrationType/:shopName/preferences/cancellations`}
@@ -1869,9 +1871,6 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
 }
 
 export function HomepageRoutes({match: {path}}: RouteComponentProps) {
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
-
     return (
         <Switch>
             <Route
@@ -1884,7 +1883,7 @@ export function HomepageRoutes({match: {path}}: RouteComponentProps) {
                     navbar: TicketNavbar,
                 })}
             />
-            <MaybeDeprecatedRoute
+            <Route
                 path={`${path}/automation`}
                 exact
                 render={appRender({
@@ -1896,8 +1895,6 @@ export function HomepageRoutes({match: {path}}: RouteComponentProps) {
                     ),
                     navbar: TicketNavbar,
                 })}
-                isDeprecated={isAutomationSettingsRevampEnabled}
-                redirectTo="/app/automation"
             />
         </Switch>
     )
