@@ -1,2 +1,3 @@
-export const AUTOMATION_NAVBAR_COLLAPSED_SELF_SERVICE_SECTIONS_KEY =
-    'automation:navbar:collapsed-self-service-sections'
+export const AUTOMATION_NAVBAR_COLLAPSED_AAO_SECTIONS_KEY =
+    'automation:navbar:collapsed-aao-sections'
+export const MAX_EXPANDED_AAO_SECTIONS_BY_DEFAULT = 3
