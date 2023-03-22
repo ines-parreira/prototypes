@@ -182,6 +182,9 @@ export default function StatsNavbarView() {
                         to="/app/stats/revenue/campaigns"
                     >
                         Campaigns
+                        <Badge type={ColorType.Blue} className={css.badge}>
+                            BETA
+                        </Badge>
                     </NavbarLink>
                 </NavbarBlock>
             )}
