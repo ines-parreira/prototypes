@@ -7,7 +7,7 @@ exports[`Calling CubeProxyClient should call with stringified query 1`] = `
       "/api/analytics/",
       {
         "params": {
-          "query": "[{"dimensions":["OrderConversion.campaignId"],"measures":["OrderConversion.traffic","OrderConversion.impressions","OrderConversion.uniqueImpressions","OrderConversion.clicks","OrderConversion.clicksRate"],"filters":[{"member":"OrderConversion.createdDatetime","operator":"inDateRange","values":["2018-01-01","2024-01-03"]},{"member":"OrderConversion.integrationId","operator":"equals","values":["42"]},{"member":"OrderConversion.campaignId","operator":"equals","values":["campaignId1","campaignId2"]}],"segments":["OrderConversion.campaignEventsOnly"],"limit":10,"offset":20}]",
+          "query": "[{"dimensions":["OrderConversion.campaignId"],"measures":["OrderConversion.traffic","OrderConversion.impressions","OrderConversion.uniqueImpressions","OrderConversion.clicks","OrderConversion.clicksRate"],"filters":[{"member":"OrderConversion.createdDatetime","operator":"inDateRange","values":["2018-01-01","2024-01-03"]},{"member":"OrderConversion.shopName","operator":"equals","values":"fake-jewels-store"},{"member":"OrderConversion.campaignId","operator":"equals","values":["campaignId1","campaignId2"]}],"segments":["OrderConversion.campaignEventsOnly"],"limit":10,"offset":20}]",
         },
       },
     ],

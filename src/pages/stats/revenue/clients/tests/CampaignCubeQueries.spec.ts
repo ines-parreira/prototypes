@@ -15,7 +15,7 @@ describe('Calling CubeClient functions', () => {
     const props = {
         startDate: '2023-01-01T00:00:00-08:00',
         endDate: '2023-03-15T23:59:59-07:00',
-        integrationIds: [4, 48],
+        shopName: 'punched-tires-shop',
         campaignIds: ['1', '2'],
         limit: 100,
         offset: 200,

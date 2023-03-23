@@ -18,9 +18,9 @@ describe('Calling CubeProxyClient', () => {
                 values: ['2018-01-01', '2024-01-03'],
             },
             {
-                member: `OrderConversion.integrationId`,
+                member: `OrderConversion.shopName`,
                 operator: 'equals',
-                values: ['42'],
+                values: 'fake-jewels-store',
             },
             {
                 member: `OrderConversion.campaignId`,

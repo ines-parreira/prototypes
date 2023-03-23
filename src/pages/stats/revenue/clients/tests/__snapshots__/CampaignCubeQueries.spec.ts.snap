@@ -14,7 +14,7 @@ exports[`Calling CubeClient functions [Function getCampaignEventsPerformanceData
 
 exports[`Calling CubeClient functions [Function getCampaignEventsTotalsData] should call load 1`] = `
 {
-  "query": "[{"dimensions":["CampaignOrderEvents.accountId"],"measures":["CampaignOrderEvents.impressions","CampaignOrderEvents.engagement","CampaignOrderEvents.uniqueConversions"],"filters":[{"member":"CampaignOrderEvents.createdDatetime","operator":"inDateRange","values":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"]},{"member":"CampaignOrderEvents.campaignId","operator":"equals","values":["1","2"]},{"member":"CampaignOrderEvents.integrationId","operator":"equals","values":["4","48"]}]}]",
+  "query": "[{"dimensions":["CampaignOrderEvents.accountId"],"measures":["CampaignOrderEvents.impressions","CampaignOrderEvents.engagement","CampaignOrderEvents.uniqueConversions"],"filters":[{"member":"CampaignOrderEvents.createdDatetime","operator":"inDateRange","values":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"]},{"member":"CampaignOrderEvents.campaignId","operator":"equals","values":["1","2"]},{"member":"CampaignOrderEvents.shopName","operator":"equals","values":["punched-tires-shop"]}]}]",
 }
 `;
 
@@ -26,7 +26,7 @@ exports[`Calling CubeClient functions [Function getCampaignOrderPerformanceData]
 
 exports[`Calling CubeClient functions [Function getCampaignOrderTotalsData] should call load 1`] = `
 {
-  "query": "[{"dimensions":["OrderConversion.accountId"],"measures":["OrderConversion.gmv","OrderConversion.influencedRevenueUplift","OrderConversion.campaignSales"],"filters":[{"member":"OrderConversion.createdDatetime","operator":"inDateRange","values":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"]},{"member":"OrderConversion.campaignId","operator":"equals","values":["1","2"]},{"member":"OrderConversion.integrationId","operator":"equals","values":["4","48"]}]}]",
+  "query": "[{"dimensions":["OrderConversion.accountId"],"measures":["OrderConversion.gmv","OrderConversion.influencedRevenueUplift","OrderConversion.campaignSales"],"filters":[{"member":"OrderConversion.createdDatetime","operator":"inDateRange","values":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"]},{"member":"OrderConversion.campaignId","operator":"equals","values":["1","2"]},{"member":"OrderConversion.shopName","operator":"equals","values":["punched-tires-shop"]}]}]",
 }
 `;
 

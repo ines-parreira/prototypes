@@ -8,6 +8,7 @@ import {useCampaignStatsFilters} from 'pages/stats/revenue/hooks/useCampaignStat
 import {CampaignsTotals} from 'pages/stats/revenue/services/types'
 import {getTotals} from 'pages/stats/revenue/services/CampaignPerformanceService'
 import {useGetCurrencyForStore} from 'pages/stats/revenue/hooks/useGetCurrencyForStore'
+import {useGetNamespacedShopNameForStore} from 'pages/stats/revenue/hooks/useGetNamespacedShopNameForStore'
 
 type Props = {
     onError: (error: Error) => void
@@ -19,11 +20,13 @@ export const CampaignTotalsStat = ({onError}: Props) => {
     const {selectedIntegrations, selectedCampaigns, selectedPeriod} =
         useCampaignStatsFilters()
     const currency = useGetCurrencyForStore(selectedIntegrations)
+    const namespacedShopName =
+        useGetNamespacedShopNameForStore(selectedIntegrations)
 
     const [{loading}, fetchTotals] = useAsyncFn(async () => {
         try {
             const data = await getTotals(
-                selectedIntegrations,
+                namespacedShopName,
                 selectedCampaigns,
                 currency,
                 selectedPeriod.start_datetime,

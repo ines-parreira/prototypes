@@ -28,14 +28,14 @@ import {
 } from 'pages/stats/revenue/clients/types'
 
 export const getTotals = async (
-    integrationIds: number[],
+    namespacedShopName: string,
     campaignIds: string[],
     currency: string,
     startDate: string,
     endDate: string
 ): Promise<CampaignsTotals> => {
     const attrs: CubeFilterParams = {
-        integrationIds,
+        shopName: namespacedShopName,
         campaignIds,
         startDate,
         endDate,
