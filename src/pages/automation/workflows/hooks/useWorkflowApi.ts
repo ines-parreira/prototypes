@@ -5,7 +5,7 @@ import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 import {isProduction, isStaging} from 'utils/environment'
 
 const baseURL = isProduction()
-    ? `http://api.gorgias.work`
+    ? `https://api.gorgias.work`
     : isStaging()
     ? 'https://api-staging.gorgias.work'
     : `http://localhost:3100`
