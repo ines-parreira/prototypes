@@ -26,6 +26,7 @@ export function initLaunchDarkly(
             custom: {
                 ...automationMap,
                 helpdeskPriceId: currentHelpdeskProductId,
+                userId: user.id.toString(),
                 domain: account.domain,
                 cluster: window.GORGIAS_CLUSTER,
             },
