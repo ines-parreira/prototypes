@@ -29,6 +29,7 @@ export enum FeatureFlagKey {
     RevenueAttributionModel = 'revenue-attribution-model',
     RevenueClickTracking = 'revenue-click-tracking',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
+    RevenueDisableUtmParams = 'revenue-disable-utm-params',
     SelfServiceArticleRecommendation = 'self-service-article-recommendation',
     SelfServiceAutomatedResponseOrderManagement = 'self-service-automated-response-order-management',
     SpotlightGlobalSearch = 'spotlight-global-search',

@@ -21,10 +21,10 @@ export function attachSearchParamsToUrl(
             url.searchParams.set(key, value)
         })
 
-        return url.toString()
+        return decodeURI(url.toString())
     } catch (err) {
         console.error(err)
 
-        return baseUrl
+        return decodeURI(baseUrl)
     }
 }

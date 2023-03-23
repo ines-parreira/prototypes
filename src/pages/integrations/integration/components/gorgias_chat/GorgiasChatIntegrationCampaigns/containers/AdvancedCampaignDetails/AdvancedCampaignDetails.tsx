@@ -60,6 +60,7 @@ import {CampaignDetailsHeader} from '../../components/CampaignDetailsHeader'
 import {AdvancedTriggersSelect} from '../../components/AdvancedTriggersSelect'
 import {CampaignDisplaySettings} from '../../components/CampaignDisplaySettings'
 
+import {replaceUrlsWithUtmUrl} from '../../utils/attachUtmParams'
 import {transformProductToAttachment} from '../../utils/transformProductToAttachment'
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
 
@@ -284,7 +285,10 @@ export const AdvancedCampaignDetails = memo(
             try {
                 const triggersArr = Object.values(triggers)
                 const author = campaignAgent ?? undefined
-                const html = campaignMessageHTML
+                const html = replaceUrlsWithUtmUrl(
+                    campaignMessageHTML,
+                    campaignName
+                )
                 const text = campaignMessageText
 
                 let payload: ChatCampaign = {
