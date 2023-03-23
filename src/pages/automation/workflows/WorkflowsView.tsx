@@ -4,7 +4,6 @@ import classNames from 'classnames'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import ReactSortable from 'pages/common/components/dragging/ReactSortable'
-import settingsCss from 'pages/settings/settings.less'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import {WorkflowEntrypoint} from 'models/selfServiceConfiguration/types'
@@ -48,10 +47,14 @@ export default function WorkflowsView({
                         </Button>
                     </div>
                 </PageHeader>
-                <Container fluid className={settingsCss.pageContainer}>
-                    {infoContainer}
+                <Container fluid className={css.pageContainer}>
+                    <div className={css.pageContainerHeadline}>
+                        {infoContainer}
+                    </div>
                     <Table hover className="mb-0">
-                        {tableHeader}
+                        {tableHeader(
+                            workflowsEntrypoints.length === 0 && !isFetchPending
+                        )}
                         <ReactSortable
                             tag="tbody"
                             options={{
@@ -184,7 +187,7 @@ function deleteActionButton(
     )
 }
 
-const tableHeader = (
+const tableHeader = (emptyRows: boolean) => (
     <>
         <colgroup>
             <col style={{width: 25}} />
@@ -202,6 +205,18 @@ const tableHeader = (
                 <td colSpan={3}>Flows appear in the order below</td>
             </tr>
         </thead>
+        {/* This is a hack to make the table header respect the colgroup widths
+        defined above */}
+        {emptyRows && (
+            <tbody>
+                <tr>
+                    <td style={{padding: 0, border: 0}}></td>
+                    <td style={{padding: 0, border: 0}}></td>
+                    <td style={{padding: 0, border: 0}}></td>
+                    <td style={{padding: 0, border: 0}}></td>
+                </tr>
+            </tbody>
+        )}
     </>
 )
 
