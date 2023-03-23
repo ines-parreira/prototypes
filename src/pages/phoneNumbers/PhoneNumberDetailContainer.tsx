@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {Link, useParams} from 'react-router-dom'
-import ReactCountryFlag from 'react-country-flag'
+import {ReactCountryFlag} from 'react-country-flag'
 
 import {fetchNewPhoneNumber} from 'models/phoneNumber/resources'
 import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'

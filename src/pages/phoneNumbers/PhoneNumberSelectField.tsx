@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react'
-import CountryFlag from 'react-country-flag'
+import {ReactCountryFlag as CountryFlag} from 'react-country-flag'
 
 import {NewPhoneNumber} from 'models/phoneNumber/types'
 import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'

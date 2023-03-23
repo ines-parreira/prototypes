@@ -6,7 +6,7 @@ import React, {
     useCallback,
     ComponentProps,
 } from 'react'
-import CountryFlag from 'react-country-flag'
+import {ReactCountryFlag as CountryFlag} from 'react-country-flag'
 import {getCountryCallingCode, CountryCode} from 'libphonenumber-js'
 import {useUpdateEffect} from 'react-use'
 import classnames from 'classnames'

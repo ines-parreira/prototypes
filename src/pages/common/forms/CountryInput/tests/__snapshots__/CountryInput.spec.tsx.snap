@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CountryInput/> should render 1`] = `
+<div
+  class="wrapper"
+>
+  <label
+    class="label label"
+  >
+    Country
+  </label>
+  <div
+    class="wrapper"
+    role="listbox"
+    tabindex="0"
+  >
+    <div
+      class="inputWrapper"
+    >
+      <span
+        class="affix prefix"
+      >
+        <span
+          role="img"
+          style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle;"
+        >
+          🇺🇸
+        </span>
+      </span>
+      <div
+        class="input"
+      >
+        United States
+      </div>
+      <i
+        class="affix suffix toggle material-icons"
+      >
+        arrow_drop_down
+      </i>
+    </div>
+  </div>
+</div>
+`;
