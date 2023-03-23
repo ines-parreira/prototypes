@@ -24,12 +24,13 @@ type Props = {
     cancelButtonProps?: ComponentProps<typeof Button>
     children: (props: {
         uid: string
-        onDisplayConfirmation: (event: SyntheticEvent) => void
+        onDisplayConfirmation: (event?: SyntheticEvent) => void
         elementRef: MutableRefObject<any>
     }) => ReactNode
     content?: ReactNode
     id?: string
     onConfirm?: () => void
+    onCancel?: () => void
     placement?: ComponentProps<typeof Popover>['placement']
     title?: ReactNode
     confirmLabel?: string
@@ -45,6 +46,7 @@ export default function ConfirmationPopover({
     id,
     isOpen,
     onConfirm,
+    onCancel,
     placement = 'bottom',
     title = 'Are you sure?',
     confirmLabel = 'Confirm',
@@ -76,7 +78,7 @@ export default function ConfirmationPopover({
         []
     )
 
-    const handleDisplayConfirmation = useCallback((event: SyntheticEvent) => {
+    const handleDisplayConfirmation = useCallback((event?: SyntheticEvent) => {
         if (buttonProps?.type === 'submit') {
             const form: HTMLFormElement = _get(event, ['target', 'form'])
 
@@ -84,8 +86,8 @@ export default function ConfirmationPopover({
                 return
             }
         }
-        event.preventDefault()
-        event.stopPropagation()
+        event?.preventDefault()
+        event?.stopPropagation()
         setIsOpened(true)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -115,7 +117,10 @@ export default function ConfirmationPopover({
                     placement={placement}
                     target={uid}
                     onClick={(event) => event.stopPropagation()}
-                    toggle={() => setIsOpened(false)}
+                    toggle={() => {
+                        setIsOpened(false)
+                        onCancel?.()
+                    }}
                     trigger="legacy"
                     {...other}
                 >
@@ -137,7 +142,10 @@ export default function ConfirmationPopover({
                                         css.cancelButton,
                                         cancelButtonProps?.className
                                     )}
-                                    onClick={() => setIsOpened(false)}
+                                    onClick={() => {
+                                        setIsOpened(false)
+                                        onCancel?.()
+                                    }}
                                 >
                                     {cancelLabel}
                                 </Button>

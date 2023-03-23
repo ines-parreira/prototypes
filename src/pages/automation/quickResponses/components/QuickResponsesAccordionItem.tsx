@@ -1,5 +1,7 @@
 import React, {MouseEvent} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -9,7 +11,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Tooltip from 'pages/common/components/Tooltip'
 
 import {useQuickResponsesViewContext} from '../QuickResponsesViewContext'
-import {MAX_ACTIVE_QUICK_RESPONSES} from '../constants'
+import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
 import QuickResponseResponseMessageContent from './QuickResponseResponseMessageContent'
 import QuickResponseTitle from './QuickResponseTitle'
 
@@ -67,6 +69,9 @@ const QuickResponsesAccordionItem = ({
     const isUpdatePendingOrHasError = isUpdatePending || hasError
     const isDeactivated = Boolean(item.deactivated_datetime)
 
+    const isFlowsBetaEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.FlowsBeta]
+
     return (
         <>
             <SortableAccordionHeader>
@@ -86,9 +91,9 @@ const QuickResponsesAccordionItem = ({
                         target={toggleInputId}
                         trigger={['hover']}
                     >
-                        There are already {MAX_ACTIVE_QUICK_RESPONSES} active
-                        quick responses. Disable one of them to activate this
-                        one.
+                        {isFlowsBetaEnabled
+                            ? `There are already ${MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} active quick responses and/or flows. Disable one of them to activate this one.`
+                            : `There are already ${MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} active quick responses. Disable one of them to activate this one.`}
                     </Tooltip>
                 )}
                 <QuickResponseTitle

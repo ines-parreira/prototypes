@@ -8,11 +8,14 @@ import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfSe
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
+import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from 'pages/automation/common/components/constants'
+import useWorkflowApi from './useWorkflowApi'
 
 export type UseWorflowsEntrypointsReturnType = {
-    workflowsEntrypoints: WorkflowEntrypoint[]
+    workflowsEntrypoints: Array<WorkflowEntrypoint & {name?: Maybe<string>}>
     isFetchPending: boolean
     isUpdatePending: boolean
+    isEnabledLimitReached: boolean
     isToggleUpdatePending: (workflowId: string) => boolean
     toggleEnabled: (workflowId: string) => void
     handleDragAndDrop: (sortedWorkflowIds: string[]) => void
@@ -40,6 +43,20 @@ export default function useWorflowsEntrypoints(
             }
         }
     )
+    const {fetchWorkflowConfigurations} = useWorkflowApi()
+    const [workflowNamesById, setWorkflowNamesById] = useState<
+        Record<string, string>
+    >({})
+    useEffect(() => {
+        void fetchWorkflowConfigurations().then((confs) =>
+            setWorkflowNamesById(
+                confs.reduce(
+                    (acc, conf) => ({...acc, [conf.id]: conf.name}),
+                    {} as Record<string, string>
+                )
+            )
+        )
+    }, [fetchWorkflowConfigurations])
 
     // needed to avoid stale references of self service configuration in the handleDragAndDrop callback below
     // otherwise there is a bug involving ReactSortable onChange prop having a stale version of the callback
@@ -138,8 +155,21 @@ export default function useWorflowsEntrypoints(
         ]
     )
 
+    const workflowsEntrypoints =
+        draftConfiguration?.workflows_entrypoints?.map((e) => ({
+            ...e,
+            name: workflowNamesById[e.workflow_id],
+        })) ?? []
+    const quickResponsesEnabled =
+        selfServiceConfigurationApi.selfServiceConfiguration?.quick_response_policies?.filter(
+            (p) => p.deactivated_datetime == null
+        ).length ?? 0
     return {
-        workflowsEntrypoints: draftConfiguration?.workflows_entrypoints ?? [],
+        workflowsEntrypoints,
+        isEnabledLimitReached:
+            workflowsEntrypoints.filter((e) => e.enabled).length +
+                quickResponsesEnabled >=
+            MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
         isFetchPending,
         isUpdatePending,
         isToggleUpdatePending,

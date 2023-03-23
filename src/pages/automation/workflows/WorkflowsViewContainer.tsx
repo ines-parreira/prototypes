@@ -24,6 +24,8 @@ export default function WorkflowsViewContainer() {
         [history]
     )
 
+    const quickResponsesUrl = `/app/automation/${shopType}/${shopName}/quick-responses`
+
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     if (!hasAutomationAddOn) {
@@ -36,6 +38,7 @@ export default function WorkflowsViewContainer() {
             shopType={shopType}
             goToNewWorkflowPage={goToNewWorkflowPage}
             goToEditWorkflowPage={goToEditWorkflowPage}
+            quickResponsesUrl={quickResponsesUrl}
         />
     )
 }

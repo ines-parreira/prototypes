@@ -2,21 +2,35 @@ import classNames from 'classnames'
 import React from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
 import Label from 'pages/common/forms/Label/Label'
+import Badge from 'pages/common/components/Badge/Badge'
 
 import {TriggerButtonNodeType} from '../types'
-import {useWorkflowEntrypointContext} from '../../hooks/useWorkflowEntrypoint'
 import css from './Node.less'
 
 export default function TriggerButtonNode({
     data,
 }: NodeProps<TriggerButtonNodeType['data']>) {
-    const {validationError, shouldShowErrors} = useWorkflowEntrypointContext()
+    const {shouldShowErrors} = data
+    const isErrored = data.entrypoint_label.length === 0
+
+    const badge = (
+        <div
+            className={css.badgeContainer}
+            onClick={(e) => {
+                e.stopPropagation()
+            }}
+        >
+            <Badge className={css.badge}>start of flow</Badge>
+        </div>
+    )
+
     return (
         <div
             className={classNames(css.node, {
-                [css.nodeErrored]: shouldShowErrors && validationError,
+                [css.nodeErrored]: shouldShowErrors && isErrored,
             })}
         >
+            {badge}
             <Handle
                 type="target"
                 position={Position.Top}
@@ -28,8 +42,7 @@ export default function TriggerButtonNode({
                 </div>
                 <div
                     className={classNames(css.nodeContent, {
-                        [css.nodeContentErrored]:
-                            shouldShowErrors && validationError,
+                        [css.nodeContentErrored]: shouldShowErrors && isErrored,
                     })}
                 >
                     {data.entrypoint_label.length > 0 ? (

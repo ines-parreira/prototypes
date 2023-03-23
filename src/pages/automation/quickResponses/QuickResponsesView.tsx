@@ -14,6 +14,7 @@ import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import useSelfServiceChatChannels from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
 
+import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../common/components/constants'
 import QuickResponsesAccordionCaption from './components/QuickResponsesAccordionCaption'
 import QuickResponsesAccordion from './components/QuickResponsesAccordion'
 import useQuickResponses from './hooks/useQuickResponses'
@@ -21,10 +22,7 @@ import QuickResponsesPreview from './QuickResponsesPreview'
 import QuickResponsesViewContext, {
     QuickResponsesViewContextType,
 } from './QuickResponsesViewContext'
-import {
-    MAX_ACTIVE_QUICK_RESPONSES,
-    NEW_QUICK_RESPONSE_SYMBOL,
-} from './constants'
+import {NEW_QUICK_RESPONSE_SYMBOL} from './constants'
 
 import css from './QuickResponsesView.less'
 
@@ -62,6 +60,10 @@ const QuickResponsesView = () => {
     const activeQuickResponsesCount = quickResponses.filter(
         (quickResponse) => !quickResponse.deactivated_datetime
     ).length
+    const enabledFlowsCount =
+        selfServiceConfiguration?.workflows_entrypoints?.filter(
+            (e) => e.enabled
+        )?.length ?? 0
     const hasError = Object.keys(errors).length > 0
     const quickResponsesViewContext: QuickResponsesViewContextType = useMemo(
         () => ({
@@ -83,9 +85,15 @@ const QuickResponsesView = () => {
                 })
             },
             isLimitReached:
-                activeQuickResponsesCount >= MAX_ACTIVE_QUICK_RESPONSES,
+                activeQuickResponsesCount + enabledFlowsCount >=
+                MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
         }),
-        [isUpdatePending, hasError, activeQuickResponsesCount]
+        [
+            isUpdatePending,
+            hasError,
+            activeQuickResponsesCount,
+            enabledFlowsCount,
+        ]
     )
     const chatApplicationIds = useMemo(
         () =>
@@ -153,7 +161,8 @@ const QuickResponsesView = () => {
                         <div className={css.content}>
                             <div className={css.descriptionContainer}>
                                 <p className="mb-1">
-                                    Display up to {MAX_ACTIVE_QUICK_RESPONSES}{' '}
+                                    Display up to{' '}
+                                    {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}{' '}
                                     buttons in your chat widget with common
                                     questions that customers can click for an
                                     instant response. If a customer needs more

@@ -1,6 +1,7 @@
 import React from 'react'
 import {Table, Container} from 'reactstrap'
 import classNames from 'classnames'
+import {Link} from 'react-router-dom'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import ReactSortable from 'pages/common/components/dragging/ReactSortable'
@@ -8,6 +9,7 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import {WorkflowEntrypoint} from 'models/selfServiceConfiguration/types'
 import IconButton from 'pages/common/components/button/IconButton'
+import Tooltip from 'pages/common/components/Tooltip'
 import css from './WorkflowsView.less'
 import useWorflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
 
@@ -16,6 +18,7 @@ type WorkflowsViewProps = {
     shopName: string
     goToNewWorkflowPage: () => void
     goToEditWorkflowPage: (flowId: string) => void
+    quickResponsesUrl: string
 }
 
 export default function WorkflowsView({
@@ -23,6 +26,7 @@ export default function WorkflowsView({
     shopType,
     goToNewWorkflowPage,
     goToEditWorkflowPage,
+    quickResponsesUrl,
 }: WorkflowsViewProps) {
     const {
         workflowsEntrypoints,
@@ -32,6 +36,7 @@ export default function WorkflowsView({
         isFetchPending,
         isUpdatePending,
         isToggleUpdatePending,
+        isEnabledLimitReached,
     } = useWorflowsEntrypoints(shopType, shopName)
 
     return (
@@ -90,18 +95,46 @@ export default function WorkflowsView({
                                         </div>
                                     </td>
                                     <td className={css.alignMiddle}>
-                                        <ToggleInput
-                                            isToggled={entrypoint.enabled}
-                                            isLoading={isToggleUpdatePending(
-                                                entrypoint.workflow_id
-                                            )}
-                                            isDisabled={isUpdatePending}
-                                            onClick={() => {
-                                                toggleEnabled(
+                                        <div
+                                            id={`toggle-entrypoint-${entrypoint.workflow_id}`}
+                                        >
+                                            <ToggleInput
+                                                isToggled={entrypoint.enabled}
+                                                isLoading={isToggleUpdatePending(
                                                     entrypoint.workflow_id
-                                                )
-                                            }}
-                                        />
+                                                )}
+                                                isDisabled={
+                                                    isUpdatePending ||
+                                                    (!entrypoint.enabled &&
+                                                        isEnabledLimitReached)
+                                                }
+                                                onClick={() => {
+                                                    toggleEnabled(
+                                                        entrypoint.workflow_id
+                                                    )
+                                                }}
+                                            />
+                                        </div>
+                                        {!entrypoint.enabled &&
+                                            isEnabledLimitReached && (
+                                                <Tooltip
+                                                    target={`toggle-entrypoint-${entrypoint.workflow_id}`}
+                                                    placement="top"
+                                                    trigger={['hover']}
+                                                    autohide={false}
+                                                >
+                                                    You have reached the maximum
+                                                    number of enabled flows.
+                                                    Disable a flow or a{' '}
+                                                    <Link
+                                                        to={quickResponsesUrl}
+                                                    >
+                                                        quick response
+                                                    </Link>{' '}
+                                                    in order to enable this
+                                                    flow.
+                                                </Tooltip>
+                                            )}
                                     </td>
                                     <td
                                         className={classNames(
@@ -114,7 +147,7 @@ export default function WorkflowsView({
                                             )
                                         }}
                                     >
-                                        {entrypoint.label}
+                                        {entrypoint.name}
                                     </td>
                                     <td className={css.alignMiddle}>
                                         {deleteActionButton(

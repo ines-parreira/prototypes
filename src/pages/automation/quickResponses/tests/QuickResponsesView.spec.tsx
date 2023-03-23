@@ -12,10 +12,10 @@ import {RootState, StoreDispatch} from 'state/types'
 import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import useSelfServiceChatChannels from 'pages/automation/common/hooks/useSelfServiceChatChannels'
+import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from 'pages/automation/common/components/constants'
 import {GorgiasChatIntegration} from 'models/integration/types'
 import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
 import {TicketChannel} from 'business/types/ticket'
-import {MAX_ACTIVE_QUICK_RESPONSES} from '../constants'
 
 import QuickResponsesView from '../QuickResponsesView'
 
@@ -367,7 +367,7 @@ describe('<QuickResponsesView />', () => {
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [
-                    ..._times(MAX_ACTIVE_QUICK_RESPONSES, () => ({
+                    ..._times(MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS, () => ({
                         ...quickResponse1,
                         id: uuidv4(),
                     })),

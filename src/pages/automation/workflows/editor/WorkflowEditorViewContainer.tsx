@@ -1,16 +1,20 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useMemo} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
 import {ulid} from 'ulidx'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
 import WorkflowEditorView from './WorkflowEditorView'
 
 export default function WorkflowEditorViewContainer() {
+    const currentAccountId: number = useAppSelector(getCurrentAccountState).get(
+        'id'
+    )
     const {shopType, shopName, editWorkflowId} = useParams<{
         shopType: string
         shopName: string
@@ -25,7 +29,7 @@ export default function WorkflowEditorViewContainer() {
     }, [history, shopName, shopType])
 
     const isNewWorkflow = editWorkflowId == null
-    const workflowId = editWorkflowId ?? ulid()
+    const workflowId = useMemo(() => editWorkflowId ?? ulid(), [editWorkflowId])
 
     const notifyMerchant = useCallback(
         (message: string, kind: 'success' | 'error') => {
@@ -48,6 +52,7 @@ export default function WorkflowEditorViewContainer() {
 
     return (
         <WorkflowEditorView
+            currentAccountId={currentAccountId}
             goToWorkflowsListPage={goToWorkflowsListPage}
             workflowId={workflowId}
             isNewWorkflow={isNewWorkflow}

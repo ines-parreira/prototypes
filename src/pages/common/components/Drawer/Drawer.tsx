@@ -46,6 +46,7 @@ type Props = {
     onBackdropClick?: () => void
     transitionDurationMs?: number
     containerZIndices?: [number, number]
+    disableBackdropOpacity?: boolean
     className?: string
 }
 
@@ -59,6 +60,7 @@ const Drawer = ({
     onBackdropClick,
     transitionDurationMs = 300,
     containerZIndices = [5, -1],
+    disableBackdropOpacity,
     className,
 }: Props): JSX.Element => {
     const [zIndexOpen, zIndexClosed] = containerZIndices
@@ -94,6 +96,7 @@ const Drawer = ({
                         ? `${transitionDurationMs / 2}ms`
                         : '0ms',
                     transitionDuration: `${transitionDurationMs / 2}ms`,
+                    ...(disableBackdropOpacity && {opacity: 0}),
                 }}
                 onClick={onBackdropClick}
             />
@@ -107,6 +110,7 @@ const Drawer = ({
                         [css.drawer]: true,
                         [css.fullscreen]: open && fullscreen,
                         [css.opened]: open,
+                        opened: open,
                     },
                     className
                 )}

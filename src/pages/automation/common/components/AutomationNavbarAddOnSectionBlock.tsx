@@ -6,15 +6,12 @@ import {getIconFromType} from 'state/integrations/helpers'
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {assetsUrl} from 'utils'
 
 import AutomationNavbarAddOnPaywallNavbarLink from './AutomationNavbarAddOnPaywallNavbarLink'
-
-import css from './AutomationNavbarAddOnSectionBlock.less'
 
 type Props = {
     shopType: ShopType
@@ -60,16 +57,9 @@ const AutomationNavbarAddOnSectionBlock = ({
                     {isflowsBetaEnabled && (
                         <NavbarLink
                             to={`/app/automation/${shopType}/${shopName}/flows`}
-                            className={css.workflowsNavbarLink}
                             isNested
                         >
                             Flows
-                            <Badge
-                                type={ColorType.Blue}
-                                className={css.workflowsNavbarLinkBadge}
-                            >
-                                BETA
-                            </Badge>
                         </NavbarLink>
                     )}
                     <NavbarLink

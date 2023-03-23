@@ -8,10 +8,12 @@ import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfSe
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import WorkflowsView from '../WorkflowsView'
+import useWorkflowApi, {WorkflowConfiguration} from '../hooks/useWorkflowApi'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 jest.mock('pages/automation/common/hooks/useSelfServiceConfiguration')
+jest.mock('../hooks/useWorkflowApi')
 jest.mock('utils/launchDarkly')
 
 const useSelfServiceConfigurationMock =
@@ -19,9 +21,25 @@ const useSelfServiceConfigurationMock =
         typeof useSelfServiceConfiguration
     >
 
+const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
+    fetchWorkflowConfigurations: () => {
+        return Promise.resolve([])
+    },
+} as const
+
+function updateUseWorkflowApiMock(
+    overrides: Partial<ReturnType<typeof useWorkflowApi>>
+) {
+    ;(useWorkflowApi as jest.MockedFn<typeof useWorkflowApi>).mockReturnValue({
+        ...mockWorkflowApi,
+        ...overrides,
+    } as ReturnType<typeof useWorkflowApi>)
+}
+
 describe('<WorkflowsView />', () => {
-    afterEach(() => {
-        jest.clearAllMocks()
+    beforeEach(() => {
+        jest.resetAllMocks()
+        updateUseWorkflowApiMock({})
     })
 
     it('should display skeleton while workflow entrypoints are being fetched', () => {
@@ -40,6 +58,7 @@ describe('<WorkflowsView />', () => {
                     shopType=""
                     goToEditWorkflowPage={jest.fn()}
                     goToNewWorkflowPage={jest.fn()}
+                    quickResponsesUrl=""
                 />
             </Provider>
         )
@@ -50,7 +69,7 @@ describe('<WorkflowsView />', () => {
         expect(skeletonRows.length).toBeGreaterThanOrEqual(1)
     })
 
-    it('should display actual rows once workflow entrypoints have been fetched', () => {
+    it('should display actual rows once workflow entrypoints have been fetched', async () => {
         useSelfServiceConfigurationMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
@@ -71,6 +90,14 @@ describe('<WorkflowsView />', () => {
             } as SelfServiceConfiguration,
             handleSelfServiceConfigurationUpdate: jest.fn(),
         })
+        updateUseWorkflowApiMock({
+            fetchWorkflowConfigurations() {
+                return Promise.resolve([
+                    {id: 'a', name: 'my workflow a'} as WorkflowConfiguration,
+                    {id: 'b', name: 'my workflow b'} as WorkflowConfiguration,
+                ])
+            },
+        })
 
         renderWithRouterAndDnD(
             <Provider store={mockStore()}>
@@ -79,6 +106,7 @@ describe('<WorkflowsView />', () => {
                     shopType=""
                     goToEditWorkflowPage={jest.fn()}
                     goToNewWorkflowPage={jest.fn()}
+                    quickResponsesUrl=""
                 />
             </Provider>
         )
@@ -88,9 +116,7 @@ describe('<WorkflowsView />', () => {
         )
         expect(skeletonRows.length).toBe(0)
 
-        const entrypointA = screen.queryByText('my entrypoint a')
-        const entrypointB = screen.queryByText('my entrypoint b')
-        expect(entrypointA).toBeTruthy()
-        expect(entrypointB).toBeTruthy()
+        await screen.findByText('my workflow a')
+        await screen.findByText('my workflow b')
     })
 })
