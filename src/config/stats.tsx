@@ -8,6 +8,7 @@ import {ChartType, Scale, TooltipItem, defaults} from 'chart.js'
 import classNames from 'classnames'
 
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
+import {CampaignsTotalsMetricNames} from 'pages/stats/revenue/services/constants'
 import {
     findChannelNameKey,
     formatDuration,
@@ -1719,19 +1720,19 @@ export const stats = toImmutable<
         api_resource_name: REVENUE_OVERVIEW,
         metrics: [
             {
-                name: 'gmv',
+                name: CampaignsTotalsMetricNames.gmv,
                 label: 'Total Store Revenue',
                 tooltip: `Sum of the order amount for all your store sales
                 during the selected period (including taxes, fees, and refunds).`,
             },
             {
-                name: 'influencedRevenueUplift',
+                name: CampaignsTotalsMetricNames.influencedRevenueUplift,
                 label: 'Revenue Uplift',
                 tooltip: `Evolution rate of your total store revenue thanks to the campaigns,
                     calculated as: (Campaign revenue)/(Total store revenue - Campaign Revenue).`,
             },
             {
-                name: 'revenue',
+                name: CampaignsTotalsMetricNames.revenue,
                 label: 'Campaign Revenue',
                 tooltip: `Sum of the revenue from all campaigns selected,
                     from both tickets converted from campaigns.`,
@@ -1742,7 +1743,7 @@ export const stats = toImmutable<
                 tooltip: `How often the selected campaigns were displayed.`,
             },
             {
-                name: 'engagement',
+                name: CampaignsTotalsMetricNames.engagement,
                 label: 'Engagement',
                 tooltip: `How often shoppers interacted with the selected campaigns.
                 Campaign interactions include:
@@ -1753,7 +1754,7 @@ export const stats = toImmutable<
                 (4) discount code displayed in a campaign applied to an order`,
             },
             {
-                name: 'uniqueConversions',
+                name: CampaignsTotalsMetricNames.uniqueConversions,
                 label: 'Orders',
                 tooltip: `Number of orders following one of the interactions counted as an engagement`,
             },

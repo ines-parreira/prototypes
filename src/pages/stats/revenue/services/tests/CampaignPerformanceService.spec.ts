@@ -6,21 +6,24 @@ import {
     getTotals,
 } from 'pages/stats/revenue/services/CampaignPerformanceService'
 import {Stat} from 'models/stat/types'
-import {
-    CAMPAIGN_ORDER_CUBE,
-    EVENTS_CUBE,
-    ORDER_CUBE,
-} from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {CubeResponse} from 'pages/stats/revenue/clients/types'
+import {
+    CampaignOrderEventsDimensions,
+    CampaignOrderEventsMeasures,
+    EventsDimensions,
+    EventsMeasures,
+    OrderConversionDimensions,
+    OrderConversionMeasures,
+} from 'pages/stats/revenue/clients/constants'
 
 describe('Revenue Attribution Service stats methods', () => {
     describe('getTotals', () => {
         const campaignEventsTotalsData = {
             data: [
                 {
-                    [`${CAMPAIGN_ORDER_CUBE}.impressions`]: '1000',
-                    [`${CAMPAIGN_ORDER_CUBE}.engagement`]: '100',
-                    [`${CAMPAIGN_ORDER_CUBE}.uniqueConversions`]: '10',
+                    [CampaignOrderEventsMeasures.impressions]: '1000',
+                    [CampaignOrderEventsMeasures.engagement]: '100',
+                    [CampaignOrderEventsMeasures.uniqueConversions]: '10',
                 },
             ],
         } as CubeResponse
@@ -33,9 +36,9 @@ describe('Revenue Attribution Service stats methods', () => {
         const campaignOrdersTotalsData = {
             data: [
                 {
-                    [`${ORDER_CUBE}.gmv`]: '3000',
-                    [`${ORDER_CUBE}.influencedRevenueUplift`]: '23.45',
-                    [`${ORDER_CUBE}.campaignSales`]: '2000',
+                    [OrderConversionMeasures.gmv]: '3000',
+                    [OrderConversionMeasures.influencedRevenueUplift]: '23.45',
+                    [OrderConversionMeasures.campaignSales]: '2000',
                 },
             ],
         } as CubeResponse
@@ -68,10 +71,10 @@ describe('Revenue Attribution Service stats methods', () => {
         const gmvUpliftGraphData = {
             data: [
                 {
-                    [`${ORDER_CUBE}.influencedRevenueUplift`]: '43.32',
-                    [`${ORDER_CUBE}.createdDatetime`]:
+                    [OrderConversionMeasures.influencedRevenueUplift]: '43.32',
+                    [OrderConversionDimensions.createdDatatime]:
                         '2023-02-28T00:00:00.000',
-                    [`${ORDER_CUBE}.createdDatetime.day`]:
+                    [`${OrderConversionDimensions.createdDatatime}.day`]:
                         '2023-02-28T00:00:00.000',
                 },
             ],
@@ -114,20 +117,20 @@ describe('Revenue Attribution Service stats methods', () => {
         const campaignEventsPerformanceData = {
             data: [
                 {
-                    [`${EVENTS_CUBE}.campaignId`]: 'campaign1',
-                    [`${EVENTS_CUBE}.traffic`]: '1234',
-                    [`${EVENTS_CUBE}.impressions`]: '234',
-                    [`${EVENTS_CUBE}.uniqueImpressions`]: '34',
-                    [`${EVENTS_CUBE}.clicks`]: '24',
-                    [`${EVENTS_CUBE}.clicksRate`]: '10.20',
+                    [EventsDimensions.campaignId]: 'campaign1',
+                    [EventsMeasures.traffic]: '1234',
+                    [EventsMeasures.impressions]: '234',
+                    [EventsMeasures.uniqueImpressions]: '34',
+                    [EventsMeasures.clicks]: '24',
+                    [EventsMeasures.clicksRate]: '10.20',
                 },
                 {
-                    [`${EVENTS_CUBE}.campaignId`]: 'campaign2',
-                    [`${EVENTS_CUBE}.traffic`]: '4567',
-                    [`${EVENTS_CUBE}.impressions`]: '567',
-                    [`${EVENTS_CUBE}.uniqueImpressions`]: '67',
-                    [`${EVENTS_CUBE}.clicks`]: '57',
-                    [`${EVENTS_CUBE}.clicksRate`]: '21.34',
+                    [EventsDimensions.campaignId]: 'campaign2',
+                    [EventsMeasures.traffic]: '4567',
+                    [EventsMeasures.impressions]: '567',
+                    [EventsMeasures.uniqueImpressions]: '67',
+                    [EventsMeasures.clicks]: '57',
+                    [EventsMeasures.clicksRate]: '21.34',
                 },
             ],
         } as CubeResponse
@@ -140,24 +143,24 @@ describe('Revenue Attribution Service stats methods', () => {
         const campaignOrdersPerformanceData = {
             data: [
                 {
-                    [`${ORDER_CUBE}.campaignId`]: 'campaign1',
-                    [`${ORDER_CUBE}.gmv`]: '12345.67',
-                    [`${ORDER_CUBE}.influencedRevenueUplift`]: '65.78',
-                    [`${ORDER_CUBE}.ticketSales`]: '1234.47',
-                    [`${ORDER_CUBE}.ticketSalesCount`]: '78',
-                    [`${ORDER_CUBE}.discountSales`]: '4567.65',
-                    [`${ORDER_CUBE}.discountSalesCount`]: '125',
-                    [`${ORDER_CUBE}.clickSales`]: '3596.25',
+                    [OrderConversionDimensions.campaignId]: 'campaign1',
+                    [OrderConversionMeasures.gmv]: '12345.67',
+                    [OrderConversionMeasures.influencedRevenueUplift]: '65.78',
+                    [OrderConversionMeasures.ticketSales]: '1234.47',
+                    [OrderConversionMeasures.ticketSalesCount]: '78',
+                    [OrderConversionMeasures.discountSales]: '4567.65',
+                    [OrderConversionMeasures.discountSalesCount]: '125',
+                    [OrderConversionMeasures.clickSales]: '3596.25',
                 },
                 {
-                    [`${ORDER_CUBE}.campaignId`]: 'campaign2',
-                    [`${ORDER_CUBE}.gmv`]: '12345.67',
-                    [`${ORDER_CUBE}.influencedRevenueUplift`]: '65.78',
-                    [`${ORDER_CUBE}.ticketSales`]: '1234.47',
-                    [`${ORDER_CUBE}.ticketSalesCount`]: '78',
-                    [`${ORDER_CUBE}.discountSales`]: '4567.65',
-                    [`${ORDER_CUBE}.discountSalesCount`]: '125',
-                    [`${ORDER_CUBE}.clickSales`]: '3596.25',
+                    [OrderConversionDimensions.campaignId]: 'campaign2',
+                    [OrderConversionMeasures.gmv]: '12345.67',
+                    [OrderConversionMeasures.influencedRevenueUplift]: '65.78',
+                    [OrderConversionMeasures.ticketSales]: '1234.47',
+                    [OrderConversionMeasures.ticketSalesCount]: '78',
+                    [OrderConversionMeasures.discountSales]: '4567.65',
+                    [OrderConversionMeasures.discountSalesCount]: '125',
+                    [OrderConversionMeasures.clickSales]: '3596.25',
                 },
             ],
         } as CubeResponse
@@ -170,21 +173,21 @@ describe('Revenue Attribution Service stats methods', () => {
         const campaignEventsOrdersPerformanceData = {
             data: [
                 {
-                    [`${CAMPAIGN_ORDER_CUBE}.campaignId`]: 'campaign1',
-                    [`${CAMPAIGN_ORDER_CUBE}.engagement`]: '357',
-                    [`${CAMPAIGN_ORDER_CUBE}.campaignCTR`]: '12.78',
-                    [`${CAMPAIGN_ORDER_CUBE}.uniqueConversions`]: '125',
-                    [`${CAMPAIGN_ORDER_CUBE}.totalConversionRate`]: '7.49',
-                    [`${CAMPAIGN_ORDER_CUBE}.uniqueCampaignClicksConverted`]:
+                    [CampaignOrderEventsDimensions.campaignId]: 'campaign1',
+                    [CampaignOrderEventsMeasures.engagement]: '357',
+                    [CampaignOrderEventsMeasures.campaignCTR]: '12.78',
+                    [CampaignOrderEventsMeasures.uniqueConversions]: '125',
+                    [CampaignOrderEventsMeasures.totalConversionRate]: '7.49',
+                    [CampaignOrderEventsMeasures.uniqueCampaignClicksConverted]:
                         '117',
                 },
                 {
-                    [`${CAMPAIGN_ORDER_CUBE}.campaignId`]: 'campaign2',
-                    [`${CAMPAIGN_ORDER_CUBE}.engagement`]: '1357',
-                    [`${CAMPAIGN_ORDER_CUBE}.campaignCTR`]: '11.25',
-                    [`${CAMPAIGN_ORDER_CUBE}.uniqueConversions`]: '358',
-                    [`${CAMPAIGN_ORDER_CUBE}.totalConversionRate`]: '9.87',
-                    [`${CAMPAIGN_ORDER_CUBE}.uniqueCampaignClicksConverted`]:
+                    [CampaignOrderEventsDimensions.campaignId]: 'campaign2',
+                    [CampaignOrderEventsMeasures.engagement]: '1357',
+                    [CampaignOrderEventsMeasures.campaignCTR]: '11.25',
+                    [CampaignOrderEventsMeasures.uniqueConversions]: '358',
+                    [CampaignOrderEventsMeasures.totalConversionRate]: '9.87',
+                    [CampaignOrderEventsMeasures.uniqueCampaignClicksConverted]:
                         '248',
                 },
             ],

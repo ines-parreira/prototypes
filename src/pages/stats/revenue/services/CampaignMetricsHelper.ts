@@ -10,11 +10,6 @@ import {
     CampaignsTotals,
     GMVGraphDataPoint,
 } from 'pages/stats/revenue/services/types'
-import {
-    CAMPAIGN_ORDER_CUBE,
-    EVENTS_CUBE,
-    ORDER_CUBE,
-} from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {Stat, StatType} from 'models/stat/types'
 import {
     CubeData,
@@ -22,6 +17,14 @@ import {
     CubeResponse,
     TimeGranularity,
 } from 'pages/stats/revenue/clients/types'
+import {
+    CampaignOrderEventsDimensions,
+    CampaignOrderEventsMeasures,
+    EventsDimensions,
+    EventsMeasures,
+    OrderConversionDimensions,
+    OrderConversionMeasures,
+} from 'pages/stats/revenue/clients/constants'
 
 export const getDataFromResultSet = (resultSet: CubeResponse): CubeData => {
     return _get(resultSet, 'data', []) as CubeData
@@ -38,19 +41,19 @@ export const transformToCampaignEventsTotals = (
     return [
         {
             name: 'impressions',
-            value: _get(metric, `${CAMPAIGN_ORDER_CUBE}.impressions`, '0'),
+            value: _get(metric, CampaignOrderEventsMeasures.impressions, '0'),
             type: StatType.Number,
         },
         {
             name: 'engagement',
-            value: _get(metric, `${CAMPAIGN_ORDER_CUBE}.engagement`, '0'),
+            value: _get(metric, CampaignOrderEventsMeasures.engagement, '0'),
             type: StatType.Number,
         },
         {
             name: 'uniqueConversions',
             value: _get(
                 metric,
-                `${CAMPAIGN_ORDER_CUBE}.uniqueConversions`,
+                CampaignOrderEventsMeasures.uniqueConversions,
                 '0'
             ),
             type: StatType.Number,
@@ -66,7 +69,7 @@ export const transformToCampaignOrdersTotals = (
     return [
         {
             name: 'gmv',
-            value: parseFloat(_get(metric, `${ORDER_CUBE}.gmv`, '0')),
+            value: parseFloat(_get(metric, OrderConversionMeasures.gmv, '0')),
             type: StatType.Currency,
             currency: currency,
         },
@@ -74,14 +77,20 @@ export const transformToCampaignOrdersTotals = (
             name: 'influencedRevenueUplift',
             value: _toFixed(
                 parseFloat(
-                    _get(metric, `${ORDER_CUBE}.influencedRevenueUplift`, '0')
+                    _get(
+                        metric,
+                        OrderConversionMeasures.influencedRevenueUplift,
+                        '0'
+                    )
                 )
             ),
             type: StatType.Percent,
         },
         {
             name: 'revenue',
-            value: parseFloat(_get(metric, `${ORDER_CUBE}.campaignSales`, '0')),
+            value: parseFloat(
+                _get(metric, OrderConversionMeasures.campaignSales, '0')
+            ),
             type: StatType.Currency,
             currency: currency,
         },
@@ -95,13 +104,16 @@ export const transformToGMVUpliftOverTime = (
     return {
         influencedRevenueUplift: _get(
             dataPoint,
-            `${ORDER_CUBE}.influencedRevenueUplift`
+            OrderConversionMeasures.influencedRevenueUplift
         ),
-        createdDatetime: _get(dataPoint, `${ORDER_CUBE}.createdDatetime`),
+        createdDatetime: _get(
+            dataPoint,
+            OrderConversionDimensions.createdDatatime
+        ),
         granularityUnit: granularityValue,
         granularityValue: _get(
             dataPoint,
-            `${ORDER_CUBE}.createdDatetime.${granularityValue}`
+            `${OrderConversionDimensions.createdDatatime}.${granularityValue}`
         ),
     }
 }
@@ -136,14 +148,14 @@ const _eventsPerformanceReducer = (
     dataset: CampaignsPerformanceDataset,
     metric: CubeMetric
 ): CampaignsPerformanceDataset => {
-    const campaignId = _get(metric, `${EVENTS_CUBE}.campaignId`)
+    const campaignId = _get(metric, EventsDimensions.campaignId)
     const eventMetricValue = _mapValues(
         {
-            traffic: _get(metric, `${EVENTS_CUBE}.traffic`),
-            impressions: _get(metric, `${EVENTS_CUBE}.impressions`),
-            uniqueImpressions: _get(metric, `${EVENTS_CUBE}.uniqueImpressions`),
-            clicks: _get(metric, `${EVENTS_CUBE}.clicks`),
-            clicksRate: _get(metric, `${EVENTS_CUBE}.clicksRate`),
+            traffic: _get(metric, EventsMeasures.traffic),
+            impressions: _get(metric, EventsMeasures.impressions),
+            uniqueImpressions: _get(metric, EventsMeasures.uniqueImpressions),
+            clicks: _get(metric, EventsMeasures.clicks),
+            clicksRate: _get(metric, EventsMeasures.clicksRate),
         },
         _parseInt
     )
@@ -160,19 +172,28 @@ const _ordersPerformanceReducer = (
     dataset: CampaignsPerformanceDataset,
     metric: CubeMetric
 ): CampaignsPerformanceDataset => {
-    const campaignId = _get(metric, `${ORDER_CUBE}.campaignId`)
+    const campaignId = _get(metric, OrderConversionDimensions.campaignId)
     const orderMetricValue = _mapValues(
         {
-            totalRevenue: _get(metric, `${ORDER_CUBE}.gmv`),
+            totalRevenue: _get(metric, OrderConversionMeasures.gmv),
             revenueUplift: _get(
                 metric,
-                `${ORDER_CUBE}.influencedRevenueUplift`
+                OrderConversionMeasures.influencedRevenueUplift
             ),
-            ticketsConverted: _get(metric, `${ORDER_CUBE}.ticketSalesCount`),
-            ticketsRevenue: _get(metric, `${ORDER_CUBE}.ticketSales`),
-            clicksRevenue: _get(metric, `${ORDER_CUBE}.clickSales`),
-            discountCodeUsed: _get(metric, `${ORDER_CUBE}.discountSalesCount`),
-            discountCodeRevenue: _get(metric, `${ORDER_CUBE}.discountSales`),
+            ticketsConverted: _get(
+                metric,
+                OrderConversionMeasures.ticketSalesCount
+            ),
+            ticketsRevenue: _get(metric, OrderConversionMeasures.ticketSales),
+            clicksRevenue: _get(metric, OrderConversionMeasures.clickSales),
+            discountCodeUsed: _get(
+                metric,
+                OrderConversionMeasures.discountSalesCount
+            ),
+            discountCodeRevenue: _get(
+                metric,
+                OrderConversionMeasures.discountSales
+            ),
         },
         _parseInt
     )
@@ -189,25 +210,25 @@ const _campaignsOrdersPerformanceReducer = (
     dataset: CampaignsPerformanceDataset,
     metric: CubeMetric
 ): CampaignsPerformanceDataset => {
-    const campaignId = _get(metric, `${CAMPAIGN_ORDER_CUBE}.campaignId`)
+    const campaignId = _get(metric, CampaignOrderEventsDimensions.campaignId)
     const campaignOrderMetricValue = _mapValues(
         {
-            engagement: _get(metric, `${CAMPAIGN_ORDER_CUBE}.engagement`),
+            engagement: _get(metric, CampaignOrderEventsMeasures.engagement),
             clickThroughRate: _get(
                 metric,
-                `${CAMPAIGN_ORDER_CUBE}.campaignCTR`
+                CampaignOrderEventsMeasures.campaignCTR
             ),
             uniqueConversions: _get(
                 metric,
-                `${CAMPAIGN_ORDER_CUBE}.uniqueConversions`
+                CampaignOrderEventsMeasures.uniqueConversions
             ),
             totalConversionRate: _get(
                 metric,
-                `${CAMPAIGN_ORDER_CUBE}.totalConversionRate`
+                CampaignOrderEventsMeasures.totalConversionRate
             ),
             clicksConverted: _get(
                 metric,
-                `${CAMPAIGN_ORDER_CUBE}.uniqueCampaignClicksConverted`
+                CampaignOrderEventsMeasures.uniqueCampaignClicksConverted
             ),
         },
         _parseInt
