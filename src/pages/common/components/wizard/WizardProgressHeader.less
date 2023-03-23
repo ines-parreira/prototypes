@@ -1,0 +1,44 @@
+@import '~css/new/layout';
+@import '~css/new/colorTokens';
+
+:local {
+    .wrapper {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        user-select: none;
+    }
+
+    .step {
+        border-radius: 50px;
+        padding: 6px 17px;
+        font-weight: 500;
+        color: @classic-neutral-grey-5;
+        line-height: 20px;
+        letter-spacing: -0.01em;
+
+        &.activeStep {
+            color: @classic-main-primary-3;
+            background: @classic-main-primary-0;
+        }
+
+        &.previousStep {
+            color: @classic-neutral-grey-6;
+
+            .index {
+                color: @classic-main-primary-3;
+            }
+        }
+    }
+
+    .stepIndex {
+        margin-right: 11px;
+    }
+
+    .line {
+        flex-grow: 1;
+        height: 1px;
+        background: @classic-neutral-grey-3;
+        margin: 0 @layout-spacing-xs;
+    }
+}

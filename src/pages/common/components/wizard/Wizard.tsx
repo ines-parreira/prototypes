@@ -20,6 +20,7 @@ export type WizardContextState = {
     previousStep: string | undefined
     setActiveStep: (nextStep: string) => void
     totalSteps: number
+    steps: string[]
 }
 
 export const WizardContext = createContext<WizardContextState | null>(null)
@@ -66,6 +67,7 @@ export default function Wizard({children, steps, startAt = steps[0]}: Props) {
             previousStep: steps[activeStepIndex - 1],
             setActiveStep,
             totalSteps: steps.length,
+            steps,
         }
     }, [activeStep, activeStepIndex, steps])
 

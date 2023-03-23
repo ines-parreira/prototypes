@@ -10,7 +10,7 @@ type Props = {
 export default function WizardStep({children, name}: Props) {
     const wizardContext = useContext(WizardContext)
 
-    if (wizardContext == null) {
+    if (wizardContext === null) {
         throw new Error(
             'WizardStep must be used within a WizardContext.Provider'
         )

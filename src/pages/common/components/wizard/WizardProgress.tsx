@@ -13,7 +13,7 @@ type Props = {
 export default function WizardProgress({children, className, ...other}: Props) {
     const wizardContext = useContext(WizardContext)
 
-    if (wizardContext == null) {
+    if (wizardContext === null) {
         throw new Error(
             'WizardProgress must be used within a WizardContext.Provider'
         )
