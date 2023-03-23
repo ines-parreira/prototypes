@@ -3,6 +3,8 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import configureMockStore from 'redux-mock-store'
+import {useParams} from 'react-router-dom'
+
 import {user} from 'fixtures/users'
 import {
     account,
@@ -23,8 +25,12 @@ import {
 import AutomationNavbar from '../AutomationNavbar'
 
 jest.mock('utils/launchDarkly')
+jest.mock('react-router')
+
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({[FeatureFlagKey.AutomationSettingsRevamp]: true})
+const useParamsMock = useParams as jest.Mock
+useParamsMock.mockReturnValue({})
 
 const mockStore = configureMockStore()
 

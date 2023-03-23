@@ -1,10 +1,11 @@
-import React, {useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {useLocalStorage} from 'react-use'
+import {useParams} from 'react-router-dom'
 
 import useStoreIntegrations from 'pages/automation/common/hooks/useStoreIntegrations'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {ShopType} from 'models/selfServiceConfiguration/types'
-import {StoreIntegration} from 'models/integration/types'
+import {IntegrationType, StoreIntegration} from 'models/integration/types'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {compare} from 'utils'
@@ -30,6 +31,8 @@ const AutomationNavbarAddOnView = () => {
         setIsAutomationSubscriptionModal,
     ] = useState(false)
 
+    const {shopType = IntegrationType.Shopify, shopName} =
+        useParams<{shopType?: string; shopName: string}>()
     const storeIntegrations = useStoreIntegrations()
     const sortedStoreIntegrations = useMemo(
         () => [...storeIntegrations].sort((a, b) => compare(a.name, b.name)),
@@ -46,6 +49,24 @@ const AutomationNavbarAddOnView = () => {
         AUTOMATION_NAVBAR_COLLAPSED_AAO_SECTIONS_KEY,
         initialCollapsedSections
     )
+
+    useEffect(() => {
+        if (!collapsedSections) {
+            return
+        }
+
+        const key = `${shopType}:${shopName}`
+
+        const newCollapsedSections = [...collapsedSections]
+        const index = newCollapsedSections.indexOf(key)
+
+        if (index !== -1) {
+            newCollapsedSections.splice(index, 1)
+
+            setCollapsedSections(newCollapsedSections)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shopType, shopName])
 
     const handleToggle = (key: SectionKey) => {
         if (!collapsedSections) {
