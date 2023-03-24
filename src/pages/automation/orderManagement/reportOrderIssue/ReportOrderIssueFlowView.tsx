@@ -60,11 +60,11 @@ const ReportOrderIssueFlowView = () => {
                     <>
                         <div className={css.content}>
                             <div className={css.descriptionContainer}>
-                                <p className="mb-1">
+                                <div className={css.description}>
                                     Customize scenarios and the corresponding
                                     options customers can select when reporting
                                     order issues.
-                                </p>
+                                </div>
                                 <a
                                     href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
                                     rel="noopener noreferrer"

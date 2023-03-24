@@ -137,10 +137,10 @@ const ReturnOrderFlowView = () => {
                     >
                         <div className={css.content}>
                             <div className={css.descriptionContainer}>
-                                <p className="mb-1">
+                                <div className={css.description}>
                                     Allow customers to request a return if an
                                     order has been delivered.
-                                </p>
+                                </div>
                                 <a
                                     href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
                                     rel="noopener noreferrer"

@@ -140,11 +140,11 @@ const OrderManagementView = () => {
                     <>
                         <div className={css.content}>
                             <div className={css.descriptionContainer}>
-                                <p className="mb-1">
+                                <div className={css.description}>
                                     Allow customers to take actions depending on
                                     their order status from your chat widget and
                                     Help Center.
-                                </p>
+                                </div>
                                 <a
                                     href="https://docs.gorgias.com/en-US/installing-self-service-81861"
                                     rel="noopener noreferrer"

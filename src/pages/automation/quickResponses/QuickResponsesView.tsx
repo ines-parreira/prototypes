@@ -160,7 +160,7 @@ const QuickResponsesView = () => {
                     >
                         <div className={css.content}>
                             <div className={css.descriptionContainer}>
-                                <p className="mb-1">
+                                <div className={css.description}>
                                     Display up to{' '}
                                     {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}{' '}
                                     buttons in your chat widget with common
@@ -168,7 +168,7 @@ const QuickResponsesView = () => {
                                     instant response. If a customer needs more
                                     help, a ticket is created for an agent to
                                     handle.
-                                </p>
+                                </div>
                                 <a
                                     href="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"
                                     rel="noopener noreferrer"

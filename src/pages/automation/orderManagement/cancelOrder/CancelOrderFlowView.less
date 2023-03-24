@@ -1,4 +1,5 @@
-@import '~css/new/layout.less';
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/typography.less';
 
 :local {
     .container {
@@ -15,6 +16,11 @@
 
     .descriptionContainer {
         margin-bottom: @layout-spacing-m;
+    }
+
+    .description {
+        .body-regular();
+        margin-bottom: 2px;
     }
 
     .submitAndCancelButtonsContainer {

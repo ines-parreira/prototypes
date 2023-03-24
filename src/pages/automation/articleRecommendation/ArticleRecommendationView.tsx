@@ -101,13 +101,13 @@ const ArticleRecommendationView = () => {
                     <>
                         <div className={css.content}>
                             <div className={css.descriptionContainer}>
-                                <p className="mb-1">
+                                <div className={css.description}>
                                     Automatically send a Help Center article in
                                     response customer questions in chat, if a
                                     relevant article exists. If a customer
                                     requests more help, a ticket will be created
                                     for an agent to handle.
-                                </p>
+                                </div>
                                 <a
                                     href="https://docs.gorgias.com/en-US/help-center---article-recommendations-in-chat-89341"
                                     rel="noopener noreferrer"
