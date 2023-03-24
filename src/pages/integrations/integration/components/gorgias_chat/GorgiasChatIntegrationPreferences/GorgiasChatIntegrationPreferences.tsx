@@ -576,7 +576,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link
-                                    to={`/app/settifngs/channels/${IntegrationType.GorgiasChat}`}
+                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
                                 >
                                     Chat
                                 </Link>

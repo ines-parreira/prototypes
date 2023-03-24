@@ -171,7 +171,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           tag="li"
         >
           <Link
-            to="/app/settifngs/channels/gorgias_chat"
+            to="/app/settings/channels/gorgias_chat"
           >
             Chat
           </Link>
@@ -633,7 +633,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           tag="li"
         >
           <Link
-            to="/app/settifngs/channels/gorgias_chat"
+            to="/app/settings/channels/gorgias_chat"
           >
             Chat
           </Link>
