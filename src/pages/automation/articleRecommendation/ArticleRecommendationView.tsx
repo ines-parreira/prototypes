@@ -125,7 +125,12 @@ const ArticleRecommendationView = () => {
                             )}
 
                             {availableHelpCenters.length > 1 &&
-                                !helpCenterEmpty && <ManyHelpCentersAlert />}
+                                !helpCenterEmpty && (
+                                    <ManyHelpCentersAlert
+                                        shopName={shopName}
+                                        shopType={shopType}
+                                    />
+                                )}
 
                             {helpCenterId && helpCenterEmpty && (
                                 <EmptyHelpCenterAlert

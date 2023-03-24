@@ -1,8 +1,10 @@
 import React from 'react'
-
+import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+
+import {CLOSED_MANY_HELP_CENTERS_ALERT_KEY} from '../constants'
 
 import css from './ArticleRecommendationAlerts.less'
 
@@ -19,12 +21,42 @@ export const NoHelpCenterAlert = () => (
     </Alert>
 )
 
-export const ManyHelpCentersAlert = () => (
-    <Alert className={css.warning} icon type={AlertType.Warning}>
-        You have more than one Help Center. Make sure the desired Help Center is
-        selected below.
-    </Alert>
-)
+export const ManyHelpCentersAlert = ({
+    shopName,
+    shopType,
+}: {
+    shopName: string
+    shopType: string
+}) => {
+    const [closedAlerts, setClosedAlerts] = useLocalStorage<string[]>(
+        CLOSED_MANY_HELP_CENTERS_ALERT_KEY,
+        []
+    )
+    const key = `${shopType}:${shopName}`
+
+    if (closedAlerts?.includes(key)) {
+        return null
+    }
+
+    const handleClose = () => {
+        if (!closedAlerts) {
+            return
+        }
+
+        setClosedAlerts([...closedAlerts, key])
+    }
+
+    return (
+        <Alert
+            className={css.warning}
+            icon
+            type={AlertType.Warning}
+            onClose={handleClose}
+        >
+            Make sure the desired Help Center is selected below.
+        </Alert>
+    )
+}
 
 export const EmptyHelpCenterAlert = ({
     helpCenterId,
