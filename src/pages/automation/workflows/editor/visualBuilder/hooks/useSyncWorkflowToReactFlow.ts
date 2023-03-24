@@ -155,6 +155,7 @@ function newEdge(fromId: string, toId: string): Edge {
         target: toId,
         type: 'smoothstep',
         style: {stroke: '#D2D7DE'},
+        interactionWidth: 0,
     }
 }
 

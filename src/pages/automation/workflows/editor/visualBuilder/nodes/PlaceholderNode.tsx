@@ -39,24 +39,26 @@ export default function PlaceholderNode({
     )
 
     return (
-        <div
-            className={classNames(css.node, css.placeholderNode)}
-            onClick={() =>
-                dispatch({
-                    type: 'ADD_REPLY_BUTTONS',
-                    step_id: data.parentStepId,
-                })
-            }
-        >
+        <div>
             {badge}
-            <Handle
-                type="target"
-                position={Position.Top}
-                className={classNames(css.sourceHandle)}
-            />
-            <div className={classNames(css.placeholderContainer)}>
-                <div className={classNames(css.nodeContent)}>
-                    + Add reply buttons
+            <div
+                className={classNames(css.node, css.placeholderNode)}
+                onClick={() =>
+                    dispatch({
+                        type: 'ADD_REPLY_BUTTONS',
+                        step_id: data.parentStepId,
+                    })
+                }
+            >
+                <Handle
+                    type="target"
+                    position={Position.Top}
+                    className={classNames(css.sourceHandle)}
+                />
+                <div className={classNames(css.placeholderContainer)}>
+                    <div className={classNames(css.nodeContent)}>
+                        + Add reply buttons
+                    </div>
                 </div>
             </div>
         </div>

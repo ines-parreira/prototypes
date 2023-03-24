@@ -41,6 +41,10 @@ export default function TriggerButtonEditor({
                     }
                 }}
             />
+            <div className={css.description}>
+                The flow will be triggered when customers click this button in
+                chat.
+            </div>
         </>
     )
 }

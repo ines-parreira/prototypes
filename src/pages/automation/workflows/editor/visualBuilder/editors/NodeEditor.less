@@ -1,5 +1,8 @@
-@import '~css/new/colorTokens';
-@import '~css/new/layout.less';
+@import (reference) '~css/new/colorTokens';
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/typographyTokens.less';
+@import (reference) '~css/typography.less';
+
 :local {
     .label {
         margin-bottom: @layout-spacing-xs;
@@ -7,5 +10,19 @@
 
     .textInput {
         background-color: @classic-neutral-grey-0;
+    }
+
+    .richFieldLabel {
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .richField {
+        height: 140px;
+    }
+
+    .description {
+        .caption-regular();
+        color: @classic-neutral-grey-5;
+        margin-top: @layout-spacing-xxs;
     }
 }

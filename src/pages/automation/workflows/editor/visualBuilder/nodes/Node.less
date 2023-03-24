@@ -12,6 +12,10 @@
         padding: 14px 16px;
         border-radius: @layout-spacing-xxs;
         cursor: pointer !important;
+
+        &:hover {
+            box-shadow: 4px 4px 16px rgba(22, 22, 22, 0.1);
+        }
     }
 
     .nodeErrored {
@@ -29,6 +33,11 @@
         border-style: dashed;
         background-color: @classic-neutral-grey-1;
         color: @classic-neutral-grey-5;
+
+        &:hover {
+            background: @classic-neutral-grey-0;
+            box-shadow: 4px 4px 16px rgba(22, 22, 22, 0.1);
+        }
     }
 
     label {

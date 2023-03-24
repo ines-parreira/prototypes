@@ -25,38 +25,41 @@ export default function TriggerButtonNode({
     )
 
     return (
-        <div
-            className={classNames(css.node, {
-                [css.nodeErrored]: shouldShowErrors && isErrored,
-            })}
-        >
+        <div>
             {badge}
-            <Handle
-                type="target"
-                position={Position.Top}
-                className={css.sourceHandle}
-            />
-            <div className={css.nodeContainer}>
-                <div className={css.nodeTitle}>
-                    <Label>Trigger button</Label>
+            <div
+                className={classNames(css.node, {
+                    [css.nodeErrored]: shouldShowErrors && isErrored,
+                })}
+            >
+                <Handle
+                    type="target"
+                    position={Position.Top}
+                    className={css.sourceHandle}
+                />
+                <div className={css.nodeContainer}>
+                    <div className={css.nodeTitle}>
+                        <Label>Trigger button</Label>
+                    </div>
+                    <div
+                        className={classNames(css.nodeContent, {
+                            [css.nodeContentErrored]:
+                                shouldShowErrors && isErrored,
+                        })}
+                    >
+                        {data.entrypoint_label.length > 0 ? (
+                            data.entrypoint_label
+                        ) : (
+                            <span className={css.clickToAdd}>Click to add</span>
+                        )}
+                    </div>
                 </div>
-                <div
-                    className={classNames(css.nodeContent, {
-                        [css.nodeContentErrored]: shouldShowErrors && isErrored,
-                    })}
-                >
-                    {data.entrypoint_label.length > 0 ? (
-                        data.entrypoint_label
-                    ) : (
-                        <span className={css.clickToAdd}>Click to add</span>
-                    )}
-                </div>
+                <Handle
+                    type="source"
+                    position={Position.Bottom}
+                    className={classNames(css.targetHandle)}
+                />
             </div>
-            <Handle
-                type="source"
-                position={Position.Bottom}
-                className={classNames(css.targetHandle)}
-            />
         </div>
     )
 }

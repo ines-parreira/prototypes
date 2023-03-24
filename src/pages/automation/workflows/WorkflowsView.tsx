@@ -235,7 +235,9 @@ const tableHeader = (emptyRows: boolean) => (
                         arrow_downward
                     </i>
                 </td>
-                <td colSpan={3}>Flows appear in the order below</td>
+                <td colSpan={3} className={css.tableHeaderTitle}>
+                    Flows appear in the order below
+                </td>
             </tr>
         </thead>
         {/* This is a hack to make the table header respect the colgroup widths

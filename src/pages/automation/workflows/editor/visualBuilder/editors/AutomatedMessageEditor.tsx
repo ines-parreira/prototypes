@@ -40,11 +40,12 @@ export default function AutomatedMessageEditor({
     }
     return (
         <>
-            <Label isRequired={true} className={css.label}>
+            <Label isRequired={true} className={css.richFieldLabel}>
                 Automated message
             </Label>
             <ToolbarProvider>
                 <RichField
+                    className={css.richField}
                     ref={textareaRef}
                     value={nodeContent}
                     allowExternalChanges

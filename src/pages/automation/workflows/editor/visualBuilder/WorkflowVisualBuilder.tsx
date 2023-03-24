@@ -91,6 +91,9 @@ export function WorkflowVisualBuilderWrapped({
                     if (node.type !== 'placeholder')
                         setVisualBuilderNodeIdEditing(node.id)
                 }}
+                elementsSelectable={false}
+                nodesFocusable={false}
+                edgesFocusable={false}
             >
                 <Controls />
                 <MiniMap zoomable pannable />

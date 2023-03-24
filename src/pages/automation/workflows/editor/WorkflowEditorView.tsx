@@ -34,8 +34,6 @@ type WorkflowEditorViewProps = {
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
 }
 
-const discardChangeConfirmationText = <>Your changes will be lost</>
-
 function WorkflowEditorViewWrapped({
     isNewWorkflow,
     goToWorkflowsListPage,
@@ -154,7 +152,9 @@ function WorkflowEditorViewWrapped({
                     ) : (
                         <>
                             <ButtonWithConfirmation
-                                confirmationText={discardChangeConfirmationText}
+                                confirmationButtonLabel="Discard Changes"
+                                confirmationTitle="Discard changes?"
+                                confirmationText="Your changes will be lost and this action cannot be undone"
                                 isDisabled={
                                     !isDirty || isFetchPending || isSavePending
                                 }
@@ -185,11 +185,15 @@ function WorkflowEditorViewWrapped({
 }
 
 function ButtonWithConfirmation({
+    confirmationButtonLabel,
+    confirmationTitle,
     confirmationText,
     isDisabled,
     onClick,
     children,
 }: PropsWithChildren<{
+    confirmationButtonLabel: ReactNode
+    confirmationTitle: ReactNode
     confirmationText: ReactNode
     isDisabled: boolean
     onClick: () => void
@@ -203,10 +207,13 @@ function ButtonWithConfirmation({
     return (
         <ConfirmationPopover
             buttonProps={{
-                intent: 'secondary',
+                intent: 'destructive',
             }}
+            cancelButtonProps={{intent: 'secondary'}}
             onConfirm={onClick}
             showCancelButton={true}
+            buttonLabel={confirmationButtonLabel}
+            title={confirmationTitle}
             content={confirmationText}
         >
             {({uid, onDisplayConfirmation}) => (

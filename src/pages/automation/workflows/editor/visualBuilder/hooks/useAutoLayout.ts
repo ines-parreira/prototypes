@@ -10,13 +10,6 @@ import {
 import {FlextreeNode, flextree} from 'd3-flextree'
 import {shallow} from 'zustand/shallow'
 
-const layout = flextree<Node>({
-    // the node size configures the spacing between the nodes ([width, height])
-    nodeSize: () => [300, 72 + 24 * 2],
-    // this is needed for creating equal space between all nodes
-    spacing: () => 1,
-})
-
 const nodeCountSelector = (state: ReactFlowState) => state.nodeInternals.size
 const nodesInitializedSelector = (state: ReactFlowState) =>
     Array.from(state.nodeInternals.values()).every(
@@ -65,6 +58,7 @@ function useAutoLayout() {
     const {getNodes, getEdges, setNodes, fitView} = useReactFlow()
     const canNodesFitInView = useCanNodesFitInView()
     const previousNodes = useRef<Node[]>([])
+    const isFirstTimeFittingView = useRef(true)
 
     useEffect(() => {
         // only run the layout if there are nodes and they have been initialized with their dimensions
@@ -75,6 +69,21 @@ function useAutoLayout() {
         const edges: Edge[] = getEdges()
         const nodes: Node[] = getNodes()
 
+        const layout = flextree<Node>({
+            // the node size configures the spacing between the nodes ([width, height])
+            // a node is 264 x 72
+            nodeSize: (node) => {
+                const hasSeveralChildren = (node.children?.length ?? 0) > 1
+                const isChildrenPlaceholder =
+                    node.children?.[0].data.type === 'placeholder'
+                if (hasSeveralChildren || isChildrenPlaceholder) {
+                    return [300, 72 + 24 * 2]
+                }
+                return [300, 72 + 24]
+            },
+            // this is needed for creating equal space between all nodes
+            spacing: () => 1,
+        })
         const root = layout.hierarchy(
             nodes.find((n: Node) => n.type === 'trigger_button')!,
             (node: Node) => {
@@ -122,7 +131,9 @@ function useAutoLayout() {
             if (newNodes.length > 0)
                 setTimeout(() => {
                     fitView({
-                        duration: fitViewDuration,
+                        duration: isFirstTimeFittingView.current
+                            ? 0
+                            : fitViewDuration,
                         nodes: newNodes,
                         maxZoom: minZoom,
                     })
@@ -130,9 +141,16 @@ function useAutoLayout() {
         } else {
             setTimeout(() => {
                 fitView({
-                    duration: fitViewDuration,
+                    duration: isFirstTimeFittingView.current
+                        ? 0
+                        : fitViewDuration,
                 })
             })
+        }
+        if (isFirstTimeFittingView.current) {
+            setTimeout(() => {
+                isFirstTimeFittingView.current = false
+            }, fitViewDuration)
         }
         previousNodes.current = getNodes()
     }, [
