@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import {account} from 'fixtures/account'
 import {integrationsState} from 'fixtures/integrations'
 import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter, assumeMock} from 'utils/testing'
+import {renderWithRouter} from 'utils/testing'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormCreateView/ContactFormCreateView'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
@@ -25,10 +25,7 @@ jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
         }),
     }
 })
-
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
-const mockedUseSupportedLocales = assumeMock(useSupportedLocales)
-mockedUseSupportedLocales.mockReturnValue(getLocalesResponseFixture)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -48,6 +45,9 @@ describe('<ContactFormCreateView />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        jest.mocked(useSupportedLocales).mockReturnValue(
+            getLocalesResponseFixture
+        )
     })
 
     it('should preserve valid classnames to have proper distances between sections', () => {

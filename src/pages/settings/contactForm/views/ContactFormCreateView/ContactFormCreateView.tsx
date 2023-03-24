@@ -1,23 +1,18 @@
 import classnames from 'classnames'
-import React, {useMemo, useState, useCallback} from 'react'
+import React, {useState, useCallback} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import EmailIntegrationInputSection from 'pages/settings/contactForm/components/EmailIntegrationInputSection'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
-import {validLocaleCode} from 'models/helpCenter/utils'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-import Label from 'pages/common/forms/Label/Label'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
 import {
     isBaseEmailIntegration,
     isGenericEmailIntegration,
 } from 'pages/integrations/integration/components/email/helpers'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
@@ -35,6 +30,8 @@ import {
 } from 'models/contactForm/types'
 import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
+import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'
+import {LocaleCode} from 'models/helpCenter/types'
 import contactFormCss from '../../contactForm.less'
 
 const emailIntegrationsSelector = integrationsSelectors.getIntegrationsByTypes(
@@ -45,7 +42,6 @@ const ContactFormCreateView = ({
     notify,
 }: ConnectedProps<typeof connector>): JSX.Element => {
     const history = useHistory()
-    const locales = useSupportedLocales()
     const domain: string = useAppSelector(getCurrentAccountState).get('domain')
     const integrations = useAppSelector(emailIntegrationsSelector)
     const emailIntegrations = integrations.filter(isGenericEmailIntegration)
@@ -105,10 +101,10 @@ const ContactFormCreateView = ({
         }))
     }
 
-    const onChangeLocale = (locale: Value) => {
+    const onChangeLocale = (locale: LocaleCode) => {
         setCreateContactFormDto((prev) => ({
             ...prev,
-            locale: validLocaleCode(locale),
+            locale,
         }))
     }
 
@@ -129,13 +125,6 @@ const ContactFormCreateView = ({
             })
         }
     }
-
-    const localeOptions = useMemo(() => {
-        return locales.map(({name, code}) => ({
-            label: name,
-            value: code,
-        }))
-    }, [locales])
 
     const isCreateButtonEnabled =
         createContactFormDto.name.length > 1 &&
@@ -200,19 +189,8 @@ const ContactFormCreateView = ({
                     </section>
 
                     <section>
-                        <Label
-                            className={contactFormCss.mbXxs}
-                            isRequired
-                            htmlFor="locale-select"
-                        >
-                            Select form language
-                        </Label>
-                        <SelectField
-                            required
-                            fullWidth
-                            id="locale-select"
-                            value={createContactFormDto.locale}
-                            options={localeOptions}
+                        <LanguageInputSection
+                            locale={createContactFormDto.locale}
                             onChange={onChangeLocale}
                         />
                     </section>

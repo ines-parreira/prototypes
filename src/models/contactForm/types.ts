@@ -39,7 +39,7 @@ export type CreateContactFormDto = Pick<
 
 export type UpdateContactFormDto = Pick<
     ContactForm,
-    'name' | 'email_integration'
+    'name' | 'email_integration' | 'default_locale'
 > & {
     subject_lines: {
         options: Record<string, string[]>

@@ -20,15 +20,13 @@ import {
 import {integrationsState} from 'fixtures/integrations'
 import {account} from 'fixtures/account'
 import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter, assumeMock} from 'utils/testing'
+import {renderWithRouter} from 'utils/testing'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
-const mockedUseSupportedLocales = assumeMock(useSupportedLocales)
-mockedUseSupportedLocales.mockReturnValue(getLocalesResponseFixture)
 
 describe('<ContactFormSettingsView />', () => {
     const FORM_ID = '1'
@@ -75,6 +73,9 @@ describe('<ContactFormSettingsView />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        jest.mocked(useSupportedLocales).mockReturnValue(
+            getLocalesResponseFixture
+        )
     })
 
     it('should redirect to APPEARANCE page if just form id provided', () => {

@@ -71,10 +71,7 @@ const ContactFormNameInputSection = ({
 
     return (
         <>
-            <Label
-                className={contactFormCss.mbXxs}
-                isRequired={isRequiredShown}
-            >
+            <Label className={contactFormCss.mbXs} isRequired={isRequiredShown}>
                 Contact form name
             </Label>
             <InputField

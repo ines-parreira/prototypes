@@ -43,7 +43,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
           class="mbS"
         >
           <label
-            class="label mbXxs"
+            class="label mbXs"
           >
             Contact form name
             <abbr
@@ -220,7 +220,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
         </section>
         <section>
           <label
-            class="label mbXxs"
+            class="label mbXs"
             for="locale-select"
           >
             Select form language

@@ -17,6 +17,7 @@ import {
     UpdateContactFormDto,
 } from 'models/contactForm/types'
 import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
+import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
 import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
@@ -26,6 +27,7 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import {CONTACT_FORM_BASE_PATH} from 'pages/settings/contactForm/constants'
+import {LocaleCode} from 'models/helpCenter/types'
 
 const ContactFormPreferences = (): JSX.Element => {
     const {
@@ -43,10 +45,14 @@ const ContactFormPreferences = (): JSX.Element => {
     const [isChangesModalShown, setIsChangesModalShown] = useState(false)
     const domain: string = useAppSelector(getCurrentAccountState).get('domain')
     const [updateContactFormDto, setUpdateContactFormDto] = useState<
-        Pick<UpdateContactFormDto, 'name' | 'email_integration'>
+        Pick<
+            UpdateContactFormDto,
+            'name' | 'email_integration' | 'default_locale'
+        >
     >({
         name: contactForm.name,
         email_integration: contactForm.email_integration,
+        default_locale: contactForm.default_locale,
     })
 
     const onChangeName = (name: string) => {
@@ -66,10 +72,18 @@ const ContactFormPreferences = (): JSX.Element => {
         }))
     }
 
+    const onChangeLocale = (locale: LocaleCode) => {
+        setUpdateContactFormDto((prev) => ({
+            ...prev,
+            default_locale: locale,
+        }))
+    }
+
     const discardChanges = () => {
         setUpdateContactFormDto({
             name: contactForm.name,
             email_integration: contactForm.email_integration,
+            default_locale: contactForm.default_locale,
         })
         setIsChangesModalShown(false)
     }
@@ -121,12 +135,14 @@ const ContactFormPreferences = (): JSX.Element => {
 
     const isDirty =
         updateContactFormDto.name !== contactForm.name ||
+        updateContactFormDto.default_locale !== contactForm.default_locale ||
         updateContactFormDto.email_integration.id !==
             contactForm.email_integration.id
 
     const isSaveChangesEnabled =
         updateContactFormDto.name.length > 1 &&
         updateContactFormDto.email_integration &&
+        updateContactFormDto.default_locale &&
         !isNameInvalid &&
         !isLoading &&
         isDirty
@@ -180,7 +196,7 @@ const ContactFormPreferences = (): JSX.Element => {
                     </p>
                 </section>
 
-                <section className={contactFormCss.mbS}>
+                <section className={contactFormCss.mbL}>
                     <ContactFormNameInputSection
                         isNameCheckEnabled={
                             updateContactFormDto.name !== contactForm.name
@@ -194,10 +210,17 @@ const ContactFormPreferences = (): JSX.Element => {
                     />
                 </section>
 
-                <section>
+                <section className={contactFormCss.mbL}>
                     <EmailIntegrationInputSection
                         onChange={onChangeEmailIntegration}
                         integration={updateContactFormDto.email_integration}
+                    />
+                </section>
+
+                <section className={contactFormCss.mbL}>
+                    <LanguageInputSection
+                        onChange={onChangeLocale}
+                        locale={updateContactFormDto.default_locale}
                     />
                 </section>
 
