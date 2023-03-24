@@ -35,7 +35,7 @@ const LoopReturnsIntegrationCreateModal = ({
     onClose,
     onCreate,
 }: Props) => {
-    const {storeIntegrationName} = useReturnOrderFlowViewContext()
+    const {storeIntegration} = useReturnOrderFlowViewContext()
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [apiKey, setApiKey] = useState('')
 
@@ -48,6 +48,8 @@ const LoopReturnsIntegrationCreateModal = ({
             onCreate()
         }
     }, [isSubmitted, areIntegrationsLoading, onCreate])
+
+    const storeIntegrationName = storeIntegration?.name || ''
 
     const [{loading: isSubmitting}, handleSubmit] = useAsyncFn(async () => {
         const integration = {

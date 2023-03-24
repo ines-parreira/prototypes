@@ -10,6 +10,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {entitiesInitialState} from 'fixtures/entities'
+import {integrationsState} from 'fixtures/integrations'
 import * as revenueBetaHook from 'pages/common/hooks/useIsRevenueBetaTester'
 
 import {ChatCampaignDetailsFactory} from '../ChatCampaignDetailsFactory'
@@ -27,7 +28,10 @@ allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 
 describe('<ChatCampaignDetailsFactory />', () => {
-    const defaultState = {entities: entitiesInitialState} as RootState
+    const defaultState = {
+        entities: entitiesInitialState,
+        integrations: fromJS(integrationsState),
+    } as RootState
 
     describe('Merchant is an alpha tester', () => {
         beforeAll(() => {

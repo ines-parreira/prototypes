@@ -9,7 +9,6 @@ type Props = {
     name: string
     icon: string
     style: string
-    id: string
 } & ActionInjectedProps
 
 export default class InlineStyle extends Component<Props> {
@@ -37,7 +36,6 @@ export default class InlineStyle extends Component<Props> {
             <Button
                 name={this.props.name}
                 icon={this.props.icon}
-                id={this.props.id}
                 isActive={this._isActive()}
                 isDisabled={false}
                 onToggle={this._onToggle}

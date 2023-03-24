@@ -3,12 +3,15 @@ import {render, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {ManagedRulesSlugs} from 'state/rules/types'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {integrationsState} from 'fixtures/integrations'
+
 import AutoReplyReturnEditor from '../AutoReplyReturnEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -38,6 +41,7 @@ describe('<AutoReplyReturnEditor/>', () => {
                     emptyRuleRecipeFixture,
             },
         },
+        integrations: fromJS(integrationsState),
     } as RootState)
 
     beforeEach(() => {

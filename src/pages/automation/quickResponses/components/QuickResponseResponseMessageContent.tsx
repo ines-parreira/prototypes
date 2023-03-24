@@ -10,8 +10,12 @@ import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvide
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {trimHTML} from 'utils/html'
+import {IntegrationType} from 'models/integration/constants'
 
-import {usePropagateError} from '../QuickResponsesViewContext'
+import {
+    usePropagateError,
+    useQuickResponsesViewContext,
+} from '../QuickResponsesViewContext'
 import {
     QUICK_RESPONSE_RESPONSE_MESSAGE_HTML_MAX_LENGTH,
     QUICK_RESPONSE_RESPONSE_MESSAGE_TEXT_MAX_LENGTH,
@@ -39,6 +43,8 @@ const QuickResponseResponseMessageContent = ({
             QUICK_RESPONSE_RESPONSE_MESSAGE_HTML_MAX_LENGTH
 
     usePropagateError('response_message_content', hasError)
+
+    const {storeIntegration} = useQuickResponsesViewContext()
 
     const handleTextChange = (editorState: EditorState) => {
         const content = editorState.getCurrentContent()
@@ -74,6 +80,11 @@ const QuickResponseResponseMessageContent = ({
             <ToolbarProvider
                 canAddProductCard
                 onAddProductCardAttachment={handleAddAttachment}
+                shopifyIntegrations={fromJS(
+                    storeIntegration?.type === IntegrationType.Shopify
+                        ? [storeIntegration]
+                        : []
+                )}
             >
                 <RichField
                     value={responseMessageContent}

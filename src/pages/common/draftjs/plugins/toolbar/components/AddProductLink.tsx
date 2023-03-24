@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
-import {fromJS, List, Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {IntegrationType} from 'models/integration/constants'
 import ShopifyProductLine from 'pages/common/components/ShopifyProductLine/ShopifyProductLine'
@@ -17,9 +17,7 @@ import Popover from './ButtonPopover'
 
 import css from './AddProductLink.less'
 
-type Props = {
-    integrations: List<any>
-} & ActionInjectedProps
+type Props = ActionInjectedProps
 
 export type ProductCardAttachment = {
     content_type: 'application/productCard'
@@ -48,24 +46,21 @@ const mapIntegrationToPickedShopifyIntegration = (
     }) as Map<any, any>
 }
 
-const AddProductLink = ({
-    getEditorState,
-    setEditorState,
-    integrations,
-}: Props) => {
+const AddProductLink = ({getEditorState, setEditorState}: Props) => {
     const {
         canAddProductCard,
         canAddProductLink,
         onAddProductCardAttachment,
         onInsertProductLinkOpen,
         onInsertProductLinkAdded,
+        shopifyIntegrations,
     } = useToolbarContext()
     const [isOpen, setOpen] = useState(false)
     const [pickedShopifyIntegration, setPickedShopifyIntegration] = useState(
         () => {
-            if (integrations.size === 1) {
+            if (shopifyIntegrations.size === 1) {
                 return mapIntegrationToPickedShopifyIntegration(
-                    integrations.get(0) as Map<any, any>
+                    shopifyIntegrations.get(0) as Map<any, any>
                 )
             }
 
@@ -161,7 +156,6 @@ const AddProductLink = ({
     return (
         <Popover
             icon="shopify"
-            id="insert_shopify_product"
             name="Insert Shopify Product"
             className={classnames(css.productLinkToolTip, 'p-0', 'd-flex')}
             isOpen={isOpen}
@@ -171,7 +165,7 @@ const AddProductLink = ({
             {!pickedShopifyIntegration ? (
                 <div className={css.productLineContainer}>
                     <ListGroup flush>
-                        {integrations.map(
+                        {shopifyIntegrations.map(
                             (integration: Map<any, any>, index) => (
                                 <ListGroupItem
                                     key={index}
@@ -216,7 +210,7 @@ const AddProductLink = ({
                 <ShopifyProductLine
                     productClicked={handleAddProductLink}
                     onResetStoreChoice={
-                        integrations.size > 1
+                        shopifyIntegrations.size > 1
                             ? handleResetStoreChoice
                             : undefined
                     }

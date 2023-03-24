@@ -287,7 +287,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                 >
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_bold"
+                    id="toolbar-button-30"
                     type="button"
                   >
                     <i
@@ -298,7 +298,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_italic"
+                    id="toolbar-button-31"
                     type="button"
                   >
                     <i
@@ -309,7 +309,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_underline"
+                    id="toolbar-button-32"
                     type="button"
                   >
                     <i
@@ -323,7 +323,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_link"
+                      id="toolbar-button-33"
                       type="button"
                     >
                       <i
@@ -341,7 +341,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_photo"
+                      id="toolbar-button-34"
                       type="button"
                     >
                       <i
@@ -359,7 +359,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_emoticon"
+                      id="toolbar-button-35"
                       type="button"
                     >
                       <i
@@ -377,7 +377,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_shopify_product"
+                      id="toolbar-button-36"
                       type="button"
                     >
                       <i
@@ -599,7 +599,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                 >
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_bold"
+                    id="toolbar-button-37"
                     type="button"
                   >
                     <i
@@ -610,7 +610,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_italic"
+                    id="toolbar-button-38"
                     type="button"
                   >
                     <i
@@ -621,7 +621,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_underline"
+                    id="toolbar-button-39"
                     type="button"
                   >
                     <i
@@ -635,7 +635,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_link"
+                      id="toolbar-button-40"
                       type="button"
                     >
                       <i
@@ -653,7 +653,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_photo"
+                      id="toolbar-button-41"
                       type="button"
                     >
                       <i
@@ -671,7 +671,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_emoticon"
+                      id="toolbar-button-42"
                       type="button"
                     >
                       <i
@@ -689,7 +689,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_shopify_product"
+                      id="toolbar-button-43"
                       type="button"
                     >
                       <i
@@ -722,15 +722,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
           <label
             aria-checked="true"
             class="label label"
-            for="toggle-button-3"
+            for="toggle-button-29"
             role="switch"
           >
             <input
               checked=""
               class="input"
               disabled=""
-              id="toggle-button-3"
-              name="toggle-button-3"
+              id="toggle-button-29"
+              name="toggle-button-29"
               type="checkbox"
             />
             <div
@@ -877,7 +877,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_bold"
+                        id="toolbar-button-44"
                         type="button"
                       >
                         <i
@@ -888,7 +888,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_italic"
+                        id="toolbar-button-45"
                         type="button"
                       >
                         <i
@@ -899,7 +899,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_underline"
+                        id="toolbar-button-46"
                         type="button"
                       >
                         <i
@@ -913,7 +913,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_link"
+                          id="toolbar-button-47"
                           type="button"
                         >
                           <i
@@ -931,7 +931,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_photo"
+                          id="toolbar-button-48"
                           type="button"
                         >
                           <i
@@ -949,7 +949,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_emoticon"
+                          id="toolbar-button-49"
                           type="button"
                         >
                           <i
@@ -960,24 +960,6 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         </button>
                         <div
                           class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
-                      >
-                        <button
-                          class="wrapper button wrapper small fill secondary small"
-                          id="insert_shopify_product"
-                          type="button"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            shopify
-                          </i>
-                        </button>
-                        <div
-                          class="productLinkToolTip p-0 d-flex popover top-left hidden"
                         />
                       </span>
                     </div>
@@ -1118,7 +1100,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_bold"
+                        id="toolbar-button-50"
                         type="button"
                       >
                         <i
@@ -1129,7 +1111,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_italic"
+                        id="toolbar-button-51"
                         type="button"
                       >
                         <i
@@ -1140,7 +1122,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_underline"
+                        id="toolbar-button-52"
                         type="button"
                       >
                         <i
@@ -1154,7 +1136,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_link"
+                          id="toolbar-button-53"
                           type="button"
                         >
                           <i
@@ -1172,7 +1154,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_photo"
+                          id="toolbar-button-54"
                           type="button"
                         >
                           <i
@@ -1190,7 +1172,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_emoticon"
+                          id="toolbar-button-55"
                           type="button"
                         >
                           <i
@@ -1201,24 +1183,6 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                         </button>
                         <div
                           class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
-                      >
-                        <button
-                          class="wrapper button wrapper small fill secondary small"
-                          id="insert_shopify_product"
-                          type="button"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            shopify
-                          </i>
-                        </button>
-                        <div
-                          class="productLinkToolTip p-0 d-flex popover top-left hidden"
                         />
                       </span>
                     </div>
@@ -1258,7 +1222,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
         <div>
           <label
             class="label label"
-            for="input-text-4"
+            for="input-text-56"
           >
             Return portal URL
             <abbr
@@ -1273,10 +1237,10 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
             class="wrapper hasError"
           >
             <input
-              aria-describedby="input-text-4-caption"
+              aria-describedby="input-text-56-caption"
               class="input"
-              id="input-text-4"
-              name="input-text-4"
+              id="input-text-56"
+              name="input-text-56"
               required=""
               type="url"
               value=""
@@ -1284,7 +1248,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           </div>
           <div
             class="caption error"
-            id="input-text-4-caption"
+            id="input-text-56-caption"
           >
             Enter a valid URL.
           </div>
@@ -1540,7 +1504,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                 >
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_bold"
+                    id="toolbar-button-59"
                     type="button"
                   >
                     <i
@@ -1551,7 +1515,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_italic"
+                    id="toolbar-button-60"
                     type="button"
                   >
                     <i
@@ -1562,7 +1526,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_underline"
+                    id="toolbar-button-61"
                     type="button"
                   >
                     <i
@@ -1576,7 +1540,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_link"
+                      id="toolbar-button-62"
                       type="button"
                     >
                       <i
@@ -1594,7 +1558,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_photo"
+                      id="toolbar-button-63"
                       type="button"
                     >
                       <i
@@ -1612,7 +1576,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_emoticon"
+                      id="toolbar-button-64"
                       type="button"
                     >
                       <i
@@ -1630,7 +1594,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_shopify_product"
+                      id="toolbar-button-65"
                       type="button"
                     >
                       <i
@@ -1852,7 +1816,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                 >
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_bold"
+                    id="toolbar-button-66"
                     type="button"
                   >
                     <i
@@ -1863,7 +1827,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_italic"
+                    id="toolbar-button-67"
                     type="button"
                   >
                     <i
@@ -1874,7 +1838,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_underline"
+                    id="toolbar-button-68"
                     type="button"
                   >
                     <i
@@ -1888,7 +1852,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_link"
+                      id="toolbar-button-69"
                       type="button"
                     >
                       <i
@@ -1906,7 +1870,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_photo"
+                      id="toolbar-button-70"
                       type="button"
                     >
                       <i
@@ -1924,7 +1888,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_emoticon"
+                      id="toolbar-button-71"
                       type="button"
                     >
                       <i
@@ -1942,7 +1906,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_shopify_product"
+                      id="toolbar-button-72"
                       type="button"
                     >
                       <i
@@ -1975,15 +1939,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           <label
             aria-checked="true"
             class="label label"
-            for="toggle-button-6"
+            for="toggle-button-58"
             role="switch"
           >
             <input
               checked=""
               class="input"
               disabled=""
-              id="toggle-button-6"
-              name="toggle-button-6"
+              id="toggle-button-58"
+              name="toggle-button-58"
               type="checkbox"
             />
             <div
@@ -2130,7 +2094,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_bold"
+                        id="toolbar-button-73"
                         type="button"
                       >
                         <i
@@ -2141,7 +2105,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_italic"
+                        id="toolbar-button-74"
                         type="button"
                       >
                         <i
@@ -2152,7 +2116,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_underline"
+                        id="toolbar-button-75"
                         type="button"
                       >
                         <i
@@ -2166,7 +2130,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_link"
+                          id="toolbar-button-76"
                           type="button"
                         >
                           <i
@@ -2184,7 +2148,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_photo"
+                          id="toolbar-button-77"
                           type="button"
                         >
                           <i
@@ -2202,7 +2166,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_emoticon"
+                          id="toolbar-button-78"
                           type="button"
                         >
                           <i
@@ -2213,24 +2177,6 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         </button>
                         <div
                           class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
-                      >
-                        <button
-                          class="wrapper button wrapper small fill secondary small"
-                          id="insert_shopify_product"
-                          type="button"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            shopify
-                          </i>
-                        </button>
-                        <div
-                          class="productLinkToolTip p-0 d-flex popover top-left hidden"
                         />
                       </span>
                     </div>
@@ -2320,7 +2266,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_bold"
+                        id="toolbar-button-79"
                         type="button"
                       >
                         <i
@@ -2331,7 +2277,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_italic"
+                        id="toolbar-button-80"
                         type="button"
                       >
                         <i
@@ -2342,7 +2288,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_underline"
+                        id="toolbar-button-81"
                         type="button"
                       >
                         <i
@@ -2356,7 +2302,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_link"
+                          id="toolbar-button-82"
                           type="button"
                         >
                           <i
@@ -2374,7 +2320,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_photo"
+                          id="toolbar-button-83"
                           type="button"
                         >
                           <i
@@ -2392,7 +2338,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_emoticon"
+                          id="toolbar-button-84"
                           type="button"
                         >
                           <i
@@ -2403,24 +2349,6 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                         </button>
                         <div
                           class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
-                      >
-                        <button
-                          class="wrapper button wrapper small fill secondary small"
-                          id="insert_shopify_product"
-                          type="button"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            shopify
-                          </i>
-                        </button>
-                        <div
-                          class="productLinkToolTip p-0 d-flex popover top-left hidden"
                         />
                       </span>
                     </div>
@@ -2704,7 +2632,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                 >
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_bold"
+                    id="toolbar-button-3"
                     type="button"
                   >
                     <i
@@ -2715,7 +2643,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_italic"
+                    id="toolbar-button-4"
                     type="button"
                   >
                     <i
@@ -2726,7 +2654,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_underline"
+                    id="toolbar-button-5"
                     type="button"
                   >
                     <i
@@ -2740,7 +2668,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_link"
+                      id="toolbar-button-6"
                       type="button"
                     >
                       <i
@@ -2758,7 +2686,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_photo"
+                      id="toolbar-button-7"
                       type="button"
                     >
                       <i
@@ -2776,7 +2704,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_emoticon"
+                      id="toolbar-button-8"
                       type="button"
                     >
                       <i
@@ -2794,7 +2722,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_shopify_product"
+                      id="toolbar-button-9"
                       type="button"
                     >
                       <i
@@ -3016,7 +2944,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                 >
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_bold"
+                    id="toolbar-button-10"
                     type="button"
                   >
                     <i
@@ -3027,7 +2955,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_italic"
+                    id="toolbar-button-11"
                     type="button"
                   >
                     <i
@@ -3038,7 +2966,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="format_underline"
+                    id="toolbar-button-12"
                     type="button"
                   >
                     <i
@@ -3052,7 +2980,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_link"
+                      id="toolbar-button-13"
                       type="button"
                     >
                       <i
@@ -3070,7 +2998,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_photo"
+                      id="toolbar-button-14"
                       type="button"
                     >
                       <i
@@ -3088,7 +3016,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_emoticon"
+                      id="toolbar-button-15"
                       type="button"
                     >
                       <i
@@ -3106,7 +3034,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="insert_shopify_product"
+                      id="toolbar-button-16"
                       type="button"
                     >
                       <i
@@ -3294,7 +3222,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_bold"
+                        id="toolbar-button-17"
                         type="button"
                       >
                         <i
@@ -3305,7 +3233,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_italic"
+                        id="toolbar-button-18"
                         type="button"
                       >
                         <i
@@ -3316,7 +3244,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_underline"
+                        id="toolbar-button-19"
                         type="button"
                       >
                         <i
@@ -3330,7 +3258,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_link"
+                          id="toolbar-button-20"
                           type="button"
                         >
                           <i
@@ -3348,7 +3276,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_photo"
+                          id="toolbar-button-21"
                           type="button"
                         >
                           <i
@@ -3366,7 +3294,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_emoticon"
+                          id="toolbar-button-22"
                           type="button"
                         >
                           <i
@@ -3377,24 +3305,6 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         </button>
                         <div
                           class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
-                      >
-                        <button
-                          class="wrapper button wrapper small fill secondary small"
-                          id="insert_shopify_product"
-                          type="button"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            shopify
-                          </i>
-                        </button>
-                        <div
-                          class="productLinkToolTip p-0 d-flex popover top-left hidden"
                         />
                       </span>
                     </div>
@@ -3556,7 +3466,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_bold"
+                        id="toolbar-button-23"
                         type="button"
                       >
                         <i
@@ -3567,7 +3477,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_italic"
+                        id="toolbar-button-24"
                         type="button"
                       >
                         <i
@@ -3578,7 +3488,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_underline"
+                        id="toolbar-button-25"
                         type="button"
                       >
                         <i
@@ -3592,7 +3502,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_link"
+                          id="toolbar-button-26"
                           type="button"
                         >
                           <i
@@ -3610,7 +3520,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_photo"
+                          id="toolbar-button-27"
                           type="button"
                         >
                           <i
@@ -3628,7 +3538,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_emoticon"
+                          id="toolbar-button-28"
                           type="button"
                         >
                           <i
@@ -3639,24 +3549,6 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                         </button>
                         <div
                           class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
-                      >
-                        <button
-                          class="wrapper button wrapper small fill secondary small"
-                          id="insert_shopify_product"
-                          type="button"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            shopify
-                          </i>
-                        </button>
-                        <div
-                          class="productLinkToolTip p-0 d-flex popover top-left hidden"
                         />
                       </span>
                     </div>

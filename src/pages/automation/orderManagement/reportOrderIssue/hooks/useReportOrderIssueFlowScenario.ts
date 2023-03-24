@@ -21,6 +21,7 @@ const useReportOrderIssueFlowScenario = (
         isFetchPending,
         isUpdatePending,
         scenarios,
+        storeIntegration,
         selfServiceConfiguration,
         handleScenariosUpdate,
     } = useReportOrderIssueFlowScenarios(shopName)
@@ -105,6 +106,7 @@ const useReportOrderIssueFlowScenario = (
         isUpdatePending,
         isFallback,
         scenario,
+        storeIntegration,
         selfServiceConfiguration,
         handleScenarioUpdate,
         handleScenarioDelete,

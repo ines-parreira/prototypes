@@ -108,7 +108,6 @@ const AddVideo = ({getEditorState, setEditorState}: Props) => {
     return (
         <Popover
             icon="video_library"
-            id="insert_video"
             name="Insert video"
             isOpen={isOpen}
             onOpen={handlePopoverOpen}

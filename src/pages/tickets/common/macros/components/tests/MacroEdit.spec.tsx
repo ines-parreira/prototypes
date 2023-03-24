@@ -9,6 +9,7 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {MacroActionName} from 'models/macroAction/types'
+import {integrationsState} from 'fixtures/integrations'
 
 import {getLDClient} from 'utils/launchDarkly'
 import {MacroEdit} from '../MacroEdit'
@@ -83,7 +84,9 @@ describe('MacroEdit component', () => {
         const setActions = jest.fn()
 
         render(
-            <Provider store={mockStore({})}>
+            <Provider
+                store={mockStore({integrations: fromJS(integrationsState)})}
+            >
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([
@@ -117,7 +120,9 @@ describe('MacroEdit component', () => {
         const setActions = jest.fn()
 
         const {queryByText} = render(
-            <Provider store={mockStore({})}>
+            <Provider
+                store={mockStore({integrations: fromJS(integrationsState)})}
+            >
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([

@@ -18,6 +18,7 @@ import {Provider} from 'react-redux'
 import {User} from 'config/types/user'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'
+import {integrationsState} from 'fixtures/integrations'
 
 import {RootState, StoreDispatch} from 'state/types'
 
@@ -33,7 +34,7 @@ import {AdvancedCampaignDetails} from '../AdvancedCampaignDetails'
 import {VisitCountOperators} from '../../../types/enums/VisitCountOperators.enum'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
-const defaultState = {} as RootState
+const defaultState = {integrations: fromJS(integrationsState)} as RootState
 jest.mock('utils/launchDarkly')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 

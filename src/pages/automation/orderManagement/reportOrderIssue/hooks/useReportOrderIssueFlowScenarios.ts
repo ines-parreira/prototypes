@@ -11,6 +11,7 @@ const useReportOrderIssueFlowScenarios = (shopName: string) => {
     const {
         isFetchPending,
         isUpdatePending,
+        storeIntegration,
         selfServiceConfiguration,
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
@@ -60,6 +61,7 @@ const useReportOrderIssueFlowScenarios = (shopName: string) => {
         isUpdatePending,
         isCreatePending,
         scenarios,
+        storeIntegration,
         selfServiceConfiguration,
         handleScenariosUpdate,
         handleScenarioCreate,

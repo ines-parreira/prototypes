@@ -31,6 +31,7 @@ const CancelOrderFlowView = () => {
     const {shopName} = useParams<{shopName: string}>()
     const {
         isUpdatePending,
+        storeIntegration,
         cancelOrderFlow,
         selfServiceConfiguration,
         handleCancelOrderFlowUpdate,
@@ -48,6 +49,7 @@ const CancelOrderFlowView = () => {
     const hasError = Object.keys(errors).length > 0
     const cancelOrderFlowViewContext: CancelOrderFlowViewContextType = useMemo(
         () => ({
+            storeIntegration,
             setError: (path, hasError) => {
                 setErrors((prevErrors) => {
                     const nextErrors = {...prevErrors}
@@ -64,7 +66,7 @@ const CancelOrderFlowView = () => {
                 })
             },
         }),
-        []
+        [storeIntegration]
     )
 
     const handleEligibilityChange = (

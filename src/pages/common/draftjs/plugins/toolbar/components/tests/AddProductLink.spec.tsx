@@ -7,11 +7,11 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
+import ToolbarProvider from '../../ToolbarProvider'
 import AddProductLink from '../AddProductLink'
 import {integrationsStateWithShopify} from '../../../../../../../fixtures/integrations'
 
 const minProps = {
-    integrations: integrationsStateWithShopify.get('integrations') as List<any>,
     getEditorState: jest.fn(),
     setEditorState: jest.fn(),
 }
@@ -29,7 +29,15 @@ describe('<AddProductLink/>', () => {
     it('should not render when the popover is closed', () => {
         const {container} = render(
             <Provider store={store}>
-                <AddProductLink {...minProps} />
+                <ToolbarProvider
+                    shopifyIntegrations={
+                        integrationsStateWithShopify.get(
+                            'integrations'
+                        ) as List<any>
+                    }
+                >
+                    <AddProductLink {...minProps} />
+                </ToolbarProvider>
             </Provider>
         )
         expect(container).toMatchSnapshot()
@@ -38,7 +46,15 @@ describe('<AddProductLink/>', () => {
     it('should render the product picker when the popover is clicked and only one integration', () => {
         const {getByText, container} = render(
             <Provider store={store}>
-                <AddProductLink {...minProps} />
+                <ToolbarProvider
+                    shopifyIntegrations={
+                        integrationsStateWithShopify.get(
+                            'integrations'
+                        ) as List<any>
+                    }
+                >
+                    <AddProductLink {...minProps} />
+                </ToolbarProvider>
             </Provider>
         )
         fireEvent.click(getByText(/shopify/i))
@@ -52,11 +68,12 @@ describe('<AddProductLink/>', () => {
         integrations = integrations.push(integrations.toArray()[0])
         const {getByText, container} = render(
             <Provider store={store}>
-                <AddProductLink
-                    integrations={integrations}
-                    getEditorState={minProps.getEditorState}
-                    setEditorState={minProps.setEditorState}
-                />
+                <ToolbarProvider shopifyIntegrations={integrations}>
+                    <AddProductLink
+                        getEditorState={minProps.getEditorState}
+                        setEditorState={minProps.setEditorState}
+                    />
+                </ToolbarProvider>
             </Provider>
         )
         fireEvent.click(getByText(/shopify/i))

@@ -26,8 +26,12 @@ import css from './CreateReportOrderIssueFlowScenarioView.less'
 const CreateReportOrderIssueFlowScenarioView = () => {
     const history = useHistory()
     const {shopName} = useParams<{shopName: string}>()
-    const {isCreatePending, selfServiceConfiguration, handleScenarioCreate} =
-        useReportOrderIssueFlowScenarios(shopName)
+    const {
+        isCreatePending,
+        storeIntegration,
+        selfServiceConfiguration,
+        handleScenarioCreate,
+    } = useReportOrderIssueFlowScenarios(shopName)
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [scenario, setScenario] =
@@ -61,8 +65,9 @@ const CreateReportOrderIssueFlowScenarioView = () => {
                             : nextErrors
                     })
                 },
+                storeIntegration,
             }),
-            [isCreatePending, errors, hasError]
+            [isCreatePending, errors, hasError, storeIntegration]
         )
 
     const handleSubmit = () => {

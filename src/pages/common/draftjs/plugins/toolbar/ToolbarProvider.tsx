@@ -1,5 +1,6 @@
 import React, {ReactNode, useMemo} from 'react'
 import _noop from 'lodash/noop'
+import {List} from 'immutable'
 
 import ToolbarContext, {ToolbarContextType} from './ToolbarContext'
 
@@ -22,6 +23,7 @@ const ToolbarProvider = ({
     onAddProductCardAttachment = _noop,
     onInsertProductLinkOpen = _noop,
     onInsertProductLinkAdded = _noop,
+    shopifyIntegrations = List(),
 }: Props) => {
     const toolbarContext: ToolbarContextType = useMemo(
         () => ({
@@ -38,6 +40,7 @@ const ToolbarProvider = ({
             onAddProductCardAttachment,
             onInsertProductLinkOpen,
             onInsertProductLinkAdded,
+            shopifyIntegrations,
         }),
         [
             canAddVideoPlayer,
@@ -53,6 +56,7 @@ const ToolbarProvider = ({
             onAddProductCardAttachment,
             onInsertProductLinkOpen,
             onInsertProductLinkAdded,
+            shopifyIntegrations,
         ]
     )
 

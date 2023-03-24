@@ -2,11 +2,14 @@ import {createContext, useContext, useEffect} from 'react'
 import {usePrevious} from 'react-use'
 import _noop from 'lodash/noop'
 
+import {StoreIntegration} from 'models/integration/types'
+
 export type ReportOrderIssueScenarioFormContextType = {
     isUpdatePending: boolean
     errors: Record<string, true>
     hasError: boolean
     setError: (path: string, hasError: boolean) => void
+    storeIntegration: StoreIntegration | undefined
 }
 
 const ReportOrderIssueScenarioFormContext =
@@ -15,6 +18,7 @@ const ReportOrderIssueScenarioFormContext =
         errors: {},
         hasError: false,
         setError: _noop,
+        storeIntegration: undefined,
     })
 
 export const useReportOrderIssueScenarioFormContext = () =>

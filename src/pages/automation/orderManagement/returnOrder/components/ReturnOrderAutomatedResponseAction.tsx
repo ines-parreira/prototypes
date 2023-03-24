@@ -1,14 +1,19 @@
 import React from 'react'
 import {EditorState} from 'draft-js'
 import classnames from 'classnames'
+import {fromJS} from 'immutable'
 
 import RichField from 'pages/common/forms/RichField/RichField'
 import {convertToHTML} from 'utils/editor'
 import {ResponseMessageContent} from 'models/selfServiceConfiguration/types'
 import {trimHTML} from 'utils/html'
+import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 
 import {AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH} from '../../constants'
-import {usePropagateError} from '../ReturnOrderFlowViewContext'
+import {
+    usePropagateError,
+    useReturnOrderFlowViewContext,
+} from '../ReturnOrderFlowViewContext'
 
 import css from './ReturnOrderAutomatedResponseAction.less'
 
@@ -26,6 +31,8 @@ const ReturnOrderAutomatedResponseAction = ({
         AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH
 
     usePropagateError('response_message_content', hasError)
+
+    const {storeIntegration} = useReturnOrderFlowViewContext()
 
     const handleChange = (editorState: EditorState) => {
         const content = editorState.getCurrentContent()
@@ -46,15 +53,17 @@ const ReturnOrderAutomatedResponseAction = ({
                 After customers request a return, reply with an automated
                 message.
             </div>
-            <RichField
-                value={responseMessageContent}
-                allowExternalChanges
-                onChange={handleChange}
-                className={classnames(css.richField, {
-                    [css.hasError]: hasError,
-                })}
-                maxLength={AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH}
-            />
+            <ToolbarProvider shopifyIntegrations={fromJS([storeIntegration])}>
+                <RichField
+                    value={responseMessageContent}
+                    allowExternalChanges
+                    onChange={handleChange}
+                    className={classnames(css.richField, {
+                        [css.hasError]: hasError,
+                    })}
+                    maxLength={AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH}
+                />
+            </ToolbarProvider>
         </>
     )
 }

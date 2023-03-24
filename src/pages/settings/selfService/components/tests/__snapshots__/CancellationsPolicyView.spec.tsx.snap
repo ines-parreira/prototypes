@@ -713,7 +713,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="format_bold"
+                          id="toolbar-button-1"
                           type="button"
                         >
                           <i
@@ -724,7 +724,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                         </button>
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="format_italic"
+                          id="toolbar-button-2"
                           type="button"
                         >
                           <i
@@ -735,7 +735,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                         </button>
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="format_underline"
+                          id="toolbar-button-3"
                           type="button"
                         >
                           <i
@@ -749,7 +749,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                         >
                           <button
                             class="wrapper button wrapper small fill secondary small"
-                            id="insert_link"
+                            id="toolbar-button-4"
                             type="button"
                           >
                             <i
@@ -767,7 +767,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                         >
                           <button
                             class="wrapper button wrapper small fill secondary small"
-                            id="insert_photo"
+                            id="toolbar-button-5"
                             type="button"
                           >
                             <i
@@ -785,7 +785,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                         >
                           <button
                             class="wrapper button wrapper small fill secondary small"
-                            id="insert_emoticon"
+                            id="toolbar-button-6"
                             type="button"
                           >
                             <i
@@ -803,7 +803,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                         >
                           <button
                             class="wrapper button wrapper small fill secondary small"
-                            id="insert_shopify_product"
+                            id="toolbar-button-7"
                             type="button"
                           >
                             <i

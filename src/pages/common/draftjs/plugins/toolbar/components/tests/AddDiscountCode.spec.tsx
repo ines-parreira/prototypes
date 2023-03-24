@@ -9,10 +9,10 @@ import {Provider} from 'react-redux'
 
 import {integrationsStateWithShopify} from 'fixtures/integrations'
 
+import ToolbarProvider from '../../ToolbarProvider'
 import AddDiscountCode from '../AddDiscountCode'
 
 const minProps = {
-    integrations: integrationsStateWithShopify.get('integrations') as List<any>,
     getEditorState: jest.fn(),
     setEditorState: jest.fn(),
 }
@@ -35,7 +35,15 @@ describe('<AddDiscountCode/>', () => {
     it('should render the discount picker when the popover is clicked and only one integration', () => {
         const {getByText, container} = render(
             <Provider store={store}>
-                <AddDiscountCode {...minProps} />
+                <ToolbarProvider
+                    shopifyIntegrations={
+                        integrationsStateWithShopify.get(
+                            'integrations'
+                        ) as List<any>
+                    }
+                >
+                    <AddDiscountCode {...minProps} />
+                </ToolbarProvider>
             </Provider>
         )
         fireEvent.click(getByText(/discount/i))
@@ -49,11 +57,9 @@ describe('<AddDiscountCode/>', () => {
         integrations = integrations.push(integrations.toArray()[0])
         const {getByText, container} = render(
             <Provider store={store}>
-                <AddDiscountCode
-                    integrations={integrations}
-                    getEditorState={minProps.getEditorState}
-                    setEditorState={minProps.setEditorState}
-                />
+                <ToolbarProvider shopifyIntegrations={integrations}>
+                    <AddDiscountCode {...minProps} />
+                </ToolbarProvider>
             </Provider>
         )
         fireEvent.click(getByText(/discount/i))

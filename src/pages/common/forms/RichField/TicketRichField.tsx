@@ -1,4 +1,5 @@
-import React, {useMemo, forwardRef} from 'react'
+import React, {forwardRef, useMemo} from 'react'
+import {fromJS} from 'immutable'
 
 import ToolbarContext, {
     ToolbarContextType,
@@ -19,16 +20,20 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {TicketChannel} from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    addProductCardAttachment,
     addNewMessageDiscountCode,
+    addProductCardAttachment,
 } from 'state/newMessage/actions'
 import {canAddVideoPlayer} from 'utils'
-
+import {getIntegrationsByType} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/constants'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
+
 import RichField, {Props as RichFieldProps} from './RichField'
 
 type Props = {disableProductCards?: boolean} & RichFieldProps
+
+const getShopifyIntegrations = getIntegrationsByType(IntegrationType.Shopify)
 
 const TicketRichField = forwardRef<RichField, Props>(
     ({disableProductCards, ...props}, ref) => {
@@ -37,6 +42,7 @@ const TicketRichField = forwardRef<RichField, Props>(
         const ticket = useAppSelector(getTicketState)
         const newMessageChannel = useAppSelector(getNewMessageChannel)
         const isNewMessagePublic = useAppSelector(getIsNewMessagePublic)
+        const shopifyIntegrations = useAppSelector(getShopifyIntegrations)
 
         const toolbarContext: ToolbarContextType = useMemo(
             () => ({
@@ -123,6 +129,7 @@ const TicketRichField = forwardRef<RichField, Props>(
                         ticket: ticket?.get('id') || 'new',
                     })
                 },
+                shopifyIntegrations: fromJS(shopifyIntegrations),
             }),
             [
                 disableProductCards,
@@ -131,6 +138,7 @@ const TicketRichField = forwardRef<RichField, Props>(
                 ticket,
                 newMessageChannel,
                 isNewMessagePublic,
+                shopifyIntegrations,
             ]
         )
 

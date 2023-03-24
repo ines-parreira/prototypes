@@ -7,7 +7,7 @@ exports[`<AddDiscountCode/> should not render when the popover is closed 1`] = `
   >
     <button
       class="wrapper button wrapper small fill secondary small"
-      id="insert_discount_code"
+      id="toolbar-button-1"
       type="button"
     >
       <i
@@ -30,7 +30,7 @@ exports[`<AddDiscountCode/> should render the discount picker when the popover i
   >
     <button
       class="wrapper button wrapper small fill secondary small"
-      id="insert_discount_code"
+      id="toolbar-button-2"
       type="button"
     >
       <i
@@ -128,7 +128,7 @@ exports[`<AddDiscountCode/> should render the store picker because of multiple i
   >
     <button
       class="wrapper button wrapper small fill secondary small"
-      id="insert_discount_code"
+      id="toolbar-button-3"
       type="button"
     >
       <i

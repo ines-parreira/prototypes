@@ -7,7 +7,10 @@ import {Provider} from 'react-redux'
 import {getLDClient} from 'utils/launchDarkly'
 import {RootState, StoreDispatch} from 'state/types'
 
-import {usePropagateError} from '../../QuickResponsesViewContext'
+import {
+    usePropagateError,
+    useQuickResponsesViewContext,
+} from '../../QuickResponsesViewContext'
 import QuickResponseResponseMessageContent from '../QuickResponseResponseMessageContent'
 
 jest.mock('utils/launchDarkly')
@@ -17,6 +20,9 @@ const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
     ReturnType<typeof getLDClient>['allFlags']
 >
 allFlagsMock.mockReturnValue({})
+const useQuickResponsesViewContextMock =
+    useQuickResponsesViewContext as jest.Mock
+useQuickResponsesViewContextMock.mockReturnValue({})
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 

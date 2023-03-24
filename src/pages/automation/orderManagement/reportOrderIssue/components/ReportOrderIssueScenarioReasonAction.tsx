@@ -1,6 +1,7 @@
 import React from 'react'
 import {EditorState} from 'draft-js'
 import classnames from 'classnames'
+import {fromJS} from 'immutable'
 
 import {ReportIssueCaseReasonAction} from 'models/selfServiceConfiguration/types'
 import {AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH} from 'models/selfServiceConfiguration/constants'
@@ -8,8 +9,12 @@ import RichField from 'pages/common/forms/RichField/RichField'
 import {convertToHTML} from 'utils/editor'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {trimHTML} from 'utils/html'
+import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 
-import {usePropagateError} from './ReportOrderIssueScenarioFormContext'
+import {
+    usePropagateError,
+    useReportOrderIssueScenarioFormContext,
+} from './ReportOrderIssueScenarioFormContext'
 
 import css from './ReportOrderIssueScenarioReasonAction.less'
 
@@ -24,6 +29,8 @@ const ReportOrderIssueScenarioReasonAction = ({value, onChange}: Props) => {
         AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH
 
     usePropagateError('action', hasError)
+
+    const {storeIntegration} = useReportOrderIssueScenarioFormContext()
 
     const handleResponseMessageContentChange = (editorState: EditorState) => {
         const content = editorState.getCurrentContent()
@@ -50,15 +57,17 @@ const ReportOrderIssueScenarioReasonAction = ({value, onChange}: Props) => {
                 After customers choose this option, reply with an automated
                 message.
             </div>
-            <RichField
-                value={value.responseMessageContent}
-                allowExternalChanges
-                onChange={handleResponseMessageContentChange}
-                className={classnames(css.richField, {
-                    [css.hasError]: hasError,
-                })}
-                maxLength={AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH}
-            />
+            <ToolbarProvider shopifyIntegrations={fromJS([storeIntegration])}>
+                <RichField
+                    value={value.responseMessageContent}
+                    allowExternalChanges
+                    onChange={handleResponseMessageContentChange}
+                    className={classnames(css.richField, {
+                        [css.hasError]: hasError,
+                    })}
+                    maxLength={AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH}
+                />
+            </ToolbarProvider>
             <ToggleInput
                 className={css.showHelpfulPromptToggleInput}
                 isDisabled={!value.responseMessageContent.text.length}

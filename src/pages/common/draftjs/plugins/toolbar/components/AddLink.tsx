@@ -232,7 +232,6 @@ export class AddLinkContainer extends Component<Props> {
         return (
             <Popover
                 icon="link"
-                id="insert_link"
                 name="Insert link"
                 isActive={!!this._getSelectedLinkEntityKey()}
                 isOpen={this.props.isOpen}

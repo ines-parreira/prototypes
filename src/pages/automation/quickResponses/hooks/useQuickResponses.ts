@@ -11,6 +11,7 @@ const useQuickResponses = (shopType: string, shopName: string) => {
     const {
         isFetchPending,
         isUpdatePending,
+        storeIntegration,
         selfServiceConfiguration,
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(shopType, shopName)
@@ -88,6 +89,7 @@ const useQuickResponses = (shopType: string, shopName: string) => {
         isFetchPending,
         isUpdatePending,
         quickResponses,
+        storeIntegration,
         selfServiceConfiguration,
         handleQuickResponsesUpdate,
         handleQuickResponsesDelete,

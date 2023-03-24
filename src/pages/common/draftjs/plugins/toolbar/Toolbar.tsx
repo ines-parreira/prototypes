@@ -1,32 +1,25 @@
+import React, {DragEvent, ReactNode, useState} from 'react'
 import classnames from 'classnames'
-import React, {Component, ReactNode, DragEvent} from 'react'
-
-import {connect, ConnectedProps} from 'react-redux'
 
 import Button from 'pages/common/components/button/Button'
-import {RootState} from '../../../../../state/types'
-import {DEPRECATED_getIntegrationsByTypes} from '../../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../../models/integration/types'
 
 import {
+    AddDiscountCode,
     AddEmoji,
+    AddImage,
+    AddLink,
+    AddProductLink,
+    AddVideo,
     Bold,
     Italic,
     Underline,
-    AddProductLink,
-    AddDiscountCode,
-    AddLink,
-    AddVideo,
-    AddImage,
 } from './components/index'
-import {ActionName, ActionInjectedProps} from './types'
+import {ActionInjectedProps, ActionName} from './types'
+import {useToolbarContext} from './ToolbarContext'
 
 import css from './Toolbar.less'
-import {isDisplayedAction} from './index'
 
-type State = {
-    isHovered: boolean
-}
+import {isDisplayedAction} from './index'
 
 type Props = {
     buttons?: ReactNode[]
@@ -43,164 +36,120 @@ type Props = {
     onLinkTextChange: (text: string) => void
     onLinkOpen: () => void
     onLinkClose: () => void
-} & ActionInjectedProps &
-    ConnectedProps<typeof connector>
+} & ActionInjectedProps
 
-export class Toolbar extends Component<Props, State> {
-    static defaultProps = {
-        buttons: [],
-    }
+const renderButton = (button: ReactNode, index: number) => (
+    <Button className={css.button} key={index} intent="secondary" size="small">
+        {button}
+    </Button>
+)
 
-    state: State = {
-        isHovered: false,
-    }
+const Toolbar = ({
+    buttons,
+    attachFiles,
+    canDropFiles,
+    getEditorState,
+    setEditorState,
+    displayedActions,
+    quickReply,
+    attachments,
+    linkEntityKey,
+    linkIsOpen,
+    linkUrl,
+    linkText,
+    onLinkUrlChange,
+    onLinkTextChange,
+    onLinkOpen,
+    onLinkClose,
+}: Props) => {
+    const [isHovered, setIsHovered] = useState(false)
 
-    _renderButton = (button: ReactNode | null, index: number) => {
-        return (
-            <Button
-                className={css.button}
-                key={index}
-                intent="secondary"
-                size="small"
-            >
-                {button}
-            </Button>
-        )
-    }
+    const {shopifyIntegrations} = useToolbarContext()
 
-    _onDrop = (e: DragEvent) => {
-        const {canDropFiles, attachFiles} = this.props
-        if (!canDropFiles) {
-            return
-        }
-
+    const handleDrop = (e: DragEvent) => {
         e.preventDefault()
         const eventFiles = (e.dataTransfer && e.dataTransfer.files) || []
         const files = Array.from(eventFiles)
         attachFiles(files)
-        this._hideDragHover()
+        setIsHovered(false)
     }
-
-    _onDragOver = (e: DragEvent) => {
-        const {canDropFiles} = this.props
+    const handleDragOver = (e: DragEvent) => {
         if (!canDropFiles) {
             return
         }
 
         e.preventDefault()
-        this.setState({isHovered: true})
+        setIsHovered(true)
+    }
+    const handleDragLeave = () => {
+        setIsHovered(false)
     }
 
-    _hideDragHover = () => {
-        this.setState({isHovered: false})
-    }
+    const isActionDisplayed = (name: ActionName) =>
+        isDisplayedAction(name, displayedActions)
 
-    _isDisplayedAction = (name: ActionName): boolean =>
-        isDisplayedAction(name, this.props.displayedActions)
+    const actionsProps = {getEditorState, setEditorState}
 
-    render() {
-        const {
-            buttons,
-            getEditorState,
-            setEditorState,
-            quickReply,
-            integrations,
-            attachments,
-            linkEntityKey,
-            linkIsOpen,
-            linkUrl,
-            linkText,
-            onLinkUrlChange,
-            onLinkTextChange,
-            onLinkOpen,
-            onLinkClose,
-        } = this.props
-
-        const actionsProps = {getEditorState, setEditorState}
-
-        return (
-            <div
-                className={classnames('editor-toolbar', css.page, {
-                    [css.isHovered]: this.state.isHovered,
-                })}
-                onDrop={this._onDrop}
-                onDragOver={this._onDragOver}
-                onDragLeave={this._hideDragHover}
-            >
-                {quickReply && (
-                    <div className={css.quickReply}> {quickReply} </div>
-                )}
-                <div className={css.actionsWrapper}>
-                    <div className={css.actions}>
-                        {this._isDisplayedAction(ActionName.Bold) && (
-                            <Bold {...actionsProps} />
+    return (
+        <div
+            className={classnames('editor-toolbar', css.page, {
+                [css.isHovered]: isHovered,
+            })}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+        >
+            {quickReply && <div className={css.quickReply}> {quickReply} </div>}
+            <div className={css.actionsWrapper}>
+                <div className={css.actions}>
+                    {isActionDisplayed(ActionName.Bold) && (
+                        <Bold {...actionsProps} />
+                    )}
+                    {isActionDisplayed(ActionName.Italic) && (
+                        <Italic {...actionsProps} />
+                    )}
+                    {isActionDisplayed(ActionName.Underline) && (
+                        <Underline {...actionsProps} />
+                    )}
+                    {isActionDisplayed(ActionName.Link) && (
+                        <AddLink
+                            {...actionsProps}
+                            entityKey={linkEntityKey}
+                            isOpen={linkIsOpen}
+                            url={linkUrl}
+                            text={linkText}
+                            onUrlChange={onLinkUrlChange}
+                            onTextChange={onLinkTextChange}
+                            onOpen={onLinkOpen}
+                            onClose={onLinkClose}
+                        />
+                    )}
+                    {isActionDisplayed(ActionName.Image) && (
+                        <AddImage {...actionsProps} attachments={attachments} />
+                    )}
+                    {/* Do not display `insert Video` by default if `displayedActions` prop is not set. */}
+                    {isActionDisplayed(ActionName.Video) &&
+                        displayedActions && <AddVideo {...actionsProps} />}
+                    {isActionDisplayed(ActionName.Emoji) && (
+                        <AddEmoji {...actionsProps} />
+                    )}
+                    {isActionDisplayed(ActionName.ProductPicker) &&
+                        shopifyIntegrations.size > 0 && (
+                            <AddProductLink {...actionsProps} />
                         )}
-                        {this._isDisplayedAction(ActionName.Italic) && (
-                            <Italic {...actionsProps} />
+                    {/* Do not display `insert Discount Code` by default if `displayedActions` prop is not set. */}
+                    {isActionDisplayed(ActionName.DiscountCodePicker) &&
+                        displayedActions &&
+                        shopifyIntegrations.size > 0 && (
+                            <AddDiscountCode {...actionsProps} />
                         )}
-                        {this._isDisplayedAction(ActionName.Underline) && (
-                            <Underline {...actionsProps} />
-                        )}
-                        {this._isDisplayedAction(ActionName.Link) && (
-                            <AddLink
-                                {...actionsProps}
-                                entityKey={linkEntityKey}
-                                isOpen={linkIsOpen}
-                                url={linkUrl}
-                                text={linkText}
-                                onUrlChange={onLinkUrlChange}
-                                onTextChange={onLinkTextChange}
-                                onOpen={onLinkOpen}
-                                onClose={onLinkClose}
-                            />
-                        )}
-                        {this._isDisplayedAction(ActionName.Image) && (
-                            <AddImage
-                                {...actionsProps}
-                                attachments={attachments}
-                            />
-                        )}
-                        {/* Do not display `insert Video` by default if `displayedActions` prop is not set. */}
-                        {this._isDisplayedAction(ActionName.Video) &&
-                            this.props.displayedActions && (
-                                <AddVideo {...actionsProps} />
-                            )}
-                        {this._isDisplayedAction(ActionName.Emoji) && (
-                            <AddEmoji {...actionsProps} />
-                        )}
-                        {this._isDisplayedAction(ActionName.ProductPicker) &&
-                            integrations.size > 0 && (
-                                <AddProductLink
-                                    {...actionsProps}
-                                    integrations={integrations}
-                                />
-                            )}
-                        {/* Do not display `insert Discount Code` by default if `displayedActions` prop is not set. */}
-                        {this._isDisplayedAction(
-                            ActionName.DiscountCodePicker
-                        ) &&
-                            this.props.displayedActions &&
-                            integrations.size > 0 && (
-                                <AddDiscountCode
-                                    {...actionsProps}
-                                    integrations={integrations}
-                                />
-                            )}
-                    </div>
-                    {buttons?.map(this._renderButton)}
-
-                    <div className={css.hoverOverlay}>
-                        Add files as attachments
-                    </div>
                 </div>
+                {buttons?.map(renderButton)}
+
+                <div className={css.hoverOverlay}>Add files as attachments</div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
-const connector = connect((state: RootState) => ({
-    integrations: DEPRECATED_getIntegrationsByTypes([IntegrationType.Shopify])(
-        state
-    ),
-}))
-export default connector(Toolbar)
+export default Toolbar

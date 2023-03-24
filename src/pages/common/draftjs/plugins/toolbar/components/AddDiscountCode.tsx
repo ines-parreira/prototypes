@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
-import {fromJS, List, Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
 import {DiscountCode} from 'models/discountCodes/types'
@@ -19,9 +19,7 @@ import Popover from './ButtonPopover'
 
 import css from './AddDiscountCode.less'
 
-type Props = {
-    integrations: List<any>
-} & ActionInjectedProps
+type Props = ActionInjectedProps
 
 const mapIntegrationToPickedIntegration = (integration: Map<any, any>) => {
     return fromJS({
@@ -33,21 +31,18 @@ const mapIntegrationToPickedIntegration = (integration: Map<any, any>) => {
     }) as Map<any, any>
 }
 
-const AddDiscountCode = ({
-    integrations,
-    getEditorState,
-    setEditorState,
-}: Props) => {
+const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
     const {
         canAddDiscountCodeLink,
         onInsertDiscountCodeOpen,
         onInsertDiscountCodeAdded,
+        shopifyIntegrations,
     } = useToolbarContext()
     const [isOpen, setOpen] = useState(false)
     const [pickedIntegration, setPickedIntegration] = useState(() => {
-        if (integrations.size === 1) {
+        if (shopifyIntegrations.size === 1) {
             return mapIntegrationToPickedIntegration(
-                integrations.get(0) as Map<any, any>
+                shopifyIntegrations.get(0) as Map<any, any>
             )
         }
 
@@ -124,7 +119,6 @@ const AddDiscountCode = ({
     return (
         <Popover
             icon="discount"
-            id="insert_discount_code"
             name="Insert Discount Code"
             className={classnames(css.discountCodeToolTip, 'p-0', 'd-flex')}
             isOpen={isOpen}
@@ -134,7 +128,7 @@ const AddDiscountCode = ({
             {!pickedIntegration ? (
                 <div className={css.discountLineContainer}>
                     <ListGroup flush>
-                        {integrations.map(
+                        {shopifyIntegrations.map(
                             (integration: Map<any, any>, index) => (
                                 <ListGroupItem
                                     key={index}
@@ -179,7 +173,7 @@ const AddDiscountCode = ({
                 <DiscountCodeResults
                     onDiscountClicked={handleAddDiscountCode}
                     onResetStoreChoice={
-                        integrations.size > 1
+                        shopifyIntegrations.size > 1
                             ? handleResetStoreChoice
                             : undefined
                     }

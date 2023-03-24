@@ -1,5 +1,6 @@
-import React, {createContext, useContext, ComponentType} from 'react'
+import React, {ComponentType, createContext, useContext} from 'react'
 import _noop from 'lodash/noop'
+import {List} from 'immutable'
 
 import {DiscountCode} from 'models/discountCodes/types'
 import {ProductCardDetails} from 'models/integration/types'
@@ -25,6 +26,7 @@ export type ToolbarContextType = {
     onAddProductCardAttachment: (attachment: ProductCardAttachment) => void
     onInsertProductLinkOpen: () => void
     onInsertProductLinkAdded: (productCardDetails: ProductCardDetails) => void
+    shopifyIntegrations: List<any>
 }
 
 const ToolbarContext = createContext<ToolbarContextType>({
@@ -41,6 +43,7 @@ const ToolbarContext = createContext<ToolbarContextType>({
     onAddProductCardAttachment: _noop,
     onInsertProductLinkOpen: _noop,
     onInsertProductLinkAdded: _noop,
+    shopifyIntegrations: List([]),
 })
 
 export const useToolbarContext = () => useContext(ToolbarContext)

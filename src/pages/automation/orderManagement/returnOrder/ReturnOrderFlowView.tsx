@@ -48,7 +48,7 @@ const ReturnOrderFlowView = () => {
     const hasError = Object.keys(errors).length > 0
     const returnOrderFlowViewContext: ReturnOrderFlowViewContextType = useMemo(
         () => ({
-            storeIntegrationName: storeIntegration?.name ?? '',
+            storeIntegration,
             setError: (path, hasError) => {
                 setErrors((prevErrors) => {
                     const nextErrors = {...prevErrors}
@@ -65,7 +65,7 @@ const ReturnOrderFlowView = () => {
                 })
             },
         }),
-        [storeIntegration?.name]
+        [storeIntegration]
     )
 
     const handleEligibilityChange = (

@@ -7,7 +7,7 @@ exports[`<AddVideo/> should not render when the popover is closed 1`] = `
   >
     <button
       class="wrapper button wrapper small fill secondary small"
-      id="insert_video"
+      id="toolbar-button-1"
       type="button"
     >
       <i
@@ -30,7 +30,7 @@ exports[`<AddVideo/> should render the popover when the button is clicked 1`] = 
   >
     <button
       class="wrapper button wrapper small fill secondary small"
-      id="insert_video"
+      id="toolbar-button-2"
       type="button"
     >
       <i
@@ -56,8 +56,8 @@ exports[`<AddVideo/> should render the popover when the button is clicked 1`] = 
           >
             <input
               class="input"
-              id="input-text-1"
-              name="input-text-1"
+              id="input-text-3"
+              name="input-text-3"
               placeholder="External video URL"
               type="text"
               value=""

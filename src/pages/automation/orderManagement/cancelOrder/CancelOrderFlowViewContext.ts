@@ -2,12 +2,16 @@ import {createContext, useContext, useEffect} from 'react'
 import {usePrevious} from 'react-use'
 import _noop from 'lodash/noop'
 
+import {StoreIntegration} from 'models/integration/types'
+
 export type CancelOrderFlowViewContextType = {
+    storeIntegration: StoreIntegration | undefined
     setError: (path: string, hasError: boolean) => void
 }
 
 const CancelOrderFlowViewContext =
     createContext<CancelOrderFlowViewContextType>({
+        storeIntegration: undefined,
         setError: _noop,
     })
 

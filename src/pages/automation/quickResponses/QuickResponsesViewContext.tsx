@@ -2,11 +2,14 @@ import {createContext, useContext, useEffect} from 'react'
 import {usePrevious} from 'react-use'
 import _noop from 'lodash/noop'
 
+import {StoreIntegration} from 'models/integration/types'
+
 export type QuickResponsesViewContextType = {
     isUpdatePending: boolean
     hasError: boolean
     setError: (path: string, hasError: boolean) => void
     isLimitReached: boolean
+    storeIntegration: StoreIntegration | undefined
 }
 
 const QuickResponsesViewContext = createContext<QuickResponsesViewContextType>({
@@ -14,6 +17,7 @@ const QuickResponsesViewContext = createContext<QuickResponsesViewContextType>({
     hasError: false,
     setError: _noop,
     isLimitReached: false,
+    storeIntegration: undefined,
 })
 
 export const useQuickResponsesViewContext = () =>

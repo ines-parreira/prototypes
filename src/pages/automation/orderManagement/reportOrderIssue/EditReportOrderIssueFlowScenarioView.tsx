@@ -28,6 +28,7 @@ const EditReportOrderIssueFlowScenarioView = () => {
         isUpdatePending,
         isFallback,
         scenario,
+        storeIntegration,
         selfServiceConfiguration,
         handleScenarioUpdate,
         handleScenarioDelete,
@@ -71,8 +72,9 @@ const EditReportOrderIssueFlowScenarioView = () => {
                             : nextErrors
                     })
                 },
+                storeIntegration,
             }),
-            [isUpdatePending, errors, hasError]
+            [isUpdatePending, errors, hasError, storeIntegration]
         )
 
     const handleSubmit = () => {

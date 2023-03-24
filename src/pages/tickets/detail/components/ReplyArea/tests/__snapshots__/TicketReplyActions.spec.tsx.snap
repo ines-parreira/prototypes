@@ -131,7 +131,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_bold"
+                        id="toolbar-button-21"
                         type="button"
                       >
                         <i
@@ -142,7 +142,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_italic"
+                        id="toolbar-button-22"
                         type="button"
                       >
                         <i
@@ -153,7 +153,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_underline"
+                        id="toolbar-button-23"
                         type="button"
                       >
                         <i
@@ -167,7 +167,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_link"
+                          id="toolbar-button-24"
                           type="button"
                         >
                           <i
@@ -185,7 +185,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_photo"
+                          id="toolbar-button-25"
                           type="button"
                         >
                           <i
@@ -203,7 +203,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_emoticon"
+                          id="toolbar-button-26"
                           type="button"
                         >
                           <i
@@ -369,7 +369,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_bold"
+                        id="toolbar-button-9"
                         type="button"
                       >
                         <i
@@ -380,7 +380,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_italic"
+                        id="toolbar-button-10"
                         type="button"
                       >
                         <i
@@ -391,7 +391,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_underline"
+                        id="toolbar-button-11"
                         type="button"
                       >
                         <i
@@ -405,7 +405,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_link"
+                          id="toolbar-button-12"
                           type="button"
                         >
                           <i
@@ -423,7 +423,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_photo"
+                          id="toolbar-button-13"
                           type="button"
                         >
                           <i
@@ -441,7 +441,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_emoticon"
+                          id="toolbar-button-14"
                           type="button"
                         >
                           <i
@@ -573,7 +573,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_bold"
+                        id="toolbar-button-15"
                         type="button"
                       >
                         <i
@@ -584,7 +584,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_italic"
+                        id="toolbar-button-16"
                         type="button"
                       >
                         <i
@@ -595,7 +595,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_underline"
+                        id="toolbar-button-17"
                         type="button"
                       >
                         <i
@@ -609,7 +609,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_link"
+                          id="toolbar-button-18"
                           type="button"
                         >
                           <i
@@ -627,7 +627,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_photo"
+                          id="toolbar-button-19"
                           type="button"
                         >
                           <i
@@ -645,7 +645,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_emoticon"
+                          id="toolbar-button-20"
                           type="button"
                         >
                           <i
@@ -710,13 +710,13 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
             >
               <label
                 class="label label"
-                for="checkbox-1"
+                for="checkbox-7"
               >
                 <input
                   checked=""
                   class="input"
-                  id="checkbox-1"
-                  name="checkbox-1"
+                  id="checkbox-7"
+                  name="checkbox-7"
                   type="checkbox"
                 />
                 Restock
@@ -727,13 +727,13 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
             >
               <label
                 class="label label"
-                for="checkbox-2"
+                for="checkbox-8"
               >
                 <input
                   checked=""
                   class="input"
-                  id="checkbox-2"
-                  name="checkbox-2"
+                  id="checkbox-8"
+                  name="checkbox-8"
                   type="checkbox"
                 />
                 Refund
@@ -1050,7 +1050,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_bold"
+                        id="toolbar-button-1"
                         type="button"
                       >
                         <i
@@ -1061,7 +1061,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_italic"
+                        id="toolbar-button-2"
                         type="button"
                       >
                         <i
@@ -1072,7 +1072,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="format_underline"
+                        id="toolbar-button-3"
                         type="button"
                       >
                         <i
@@ -1086,7 +1086,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_link"
+                          id="toolbar-button-4"
                           type="button"
                         >
                           <i
@@ -1104,7 +1104,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_photo"
+                          id="toolbar-button-5"
                           type="button"
                         >
                           <i
@@ -1122,7 +1122,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="insert_emoticon"
+                          id="toolbar-button-6"
                           type="button"
                         >
                           <i

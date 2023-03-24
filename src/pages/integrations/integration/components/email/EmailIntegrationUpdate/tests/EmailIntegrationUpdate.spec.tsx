@@ -8,6 +8,7 @@ import {Provider} from 'react-redux'
 import {assumeMock} from 'utils/testing'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {integrationsState} from 'fixtures/integrations'
 
 import {EmailProvider} from 'models/integration/constants'
 
@@ -44,10 +45,10 @@ allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<EmailIntegrationUpdateContainer />', () => {
     const mockStore = configureMockStore([thunk])
-    let store = mockStore({})
+    let store = mockStore({integrations: fromJS(integrationsState)})
 
     beforeEach(() => {
-        store = mockStore({})
+        store = mockStore({integrations: fromJS(integrationsState)})
     })
 
     const renderWithStore = (props = {}) =>

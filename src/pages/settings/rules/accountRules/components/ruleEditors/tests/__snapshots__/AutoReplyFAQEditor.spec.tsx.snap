@@ -205,6 +205,89 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
             </button>
           </div>
         </div>
+        <div
+          class="btn-group"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            BigCommerce
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Number of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Date of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Tracking url of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Tracking number of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Status of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Shipping date of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Destination country of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Shipping address of last order
+            </button>
+          </div>
+        </div>
       </div>
       <div
         class="rich-textarea-wrapper"
@@ -281,7 +364,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
             >
               <button
                 class="wrapper button wrapper small fill secondary small"
-                id="format_bold"
+                id="toolbar-button-1"
                 type="button"
               >
                 <i
@@ -292,7 +375,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               </button>
               <button
                 class="wrapper button wrapper small fill secondary small"
-                id="format_italic"
+                id="toolbar-button-2"
                 type="button"
               >
                 <i
@@ -303,7 +386,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               </button>
               <button
                 class="wrapper button wrapper small fill secondary small"
-                id="format_underline"
+                id="toolbar-button-3"
                 type="button"
               >
                 <i
@@ -317,7 +400,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               >
                 <button
                   class="wrapper button wrapper small fill secondary small"
-                  id="insert_link"
+                  id="toolbar-button-4"
                   type="button"
                 >
                   <i
@@ -335,7 +418,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               >
                 <button
                   class="wrapper button wrapper small fill secondary small"
-                  id="insert_photo"
+                  id="toolbar-button-5"
                   type="button"
                 >
                   <i
@@ -353,7 +436,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               >
                 <button
                   class="wrapper button wrapper small fill secondary small"
-                  id="insert_emoticon"
+                  id="toolbar-button-6"
                   type="button"
                 >
                   <i
@@ -499,6 +582,89 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
             </button>
           </div>
         </div>
+        <div
+          class="btn-group"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            BigCommerce
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Number of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Date of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Tracking url of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Tracking number of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Status of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Shipping date of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Destination country of last order
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Shipping address of last order
+            </button>
+          </div>
+        </div>
       </div>
       <div
         class="rich-textarea-wrapper"
@@ -575,7 +741,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
             >
               <button
                 class="wrapper button wrapper small fill secondary small"
-                id="format_bold"
+                id="toolbar-button-7"
                 type="button"
               >
                 <i
@@ -586,7 +752,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               </button>
               <button
                 class="wrapper button wrapper small fill secondary small"
-                id="format_italic"
+                id="toolbar-button-8"
                 type="button"
               >
                 <i
@@ -597,7 +763,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               </button>
               <button
                 class="wrapper button wrapper small fill secondary small"
-                id="format_underline"
+                id="toolbar-button-9"
                 type="button"
               >
                 <i
@@ -611,7 +777,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               >
                 <button
                   class="wrapper button wrapper small fill secondary small"
-                  id="insert_link"
+                  id="toolbar-button-10"
                   type="button"
                 >
                   <i
@@ -629,7 +795,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               >
                 <button
                   class="wrapper button wrapper small fill secondary small"
-                  id="insert_photo"
+                  id="toolbar-button-11"
                   type="button"
                 >
                   <i
@@ -647,7 +813,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
               >
                 <button
                   class="wrapper button wrapper small fill secondary small"
-                  id="insert_emoticon"
+                  id="toolbar-button-12"
                   type="button"
                 >
                   <i

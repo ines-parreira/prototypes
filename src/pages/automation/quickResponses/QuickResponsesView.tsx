@@ -34,6 +34,7 @@ const QuickResponsesView = () => {
     const {
         isUpdatePending,
         quickResponses,
+        storeIntegration,
         selfServiceConfiguration,
         handleQuickResponsesUpdate,
         handleQuickResponsesDelete,
@@ -87,12 +88,14 @@ const QuickResponsesView = () => {
             isLimitReached:
                 activeQuickResponsesCount + enabledFlowsCount >=
                 MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
+            storeIntegration,
         }),
         [
             isUpdatePending,
             hasError,
             activeQuickResponsesCount,
             enabledFlowsCount,
+            storeIntegration,
         ]
     )
     const chatApplicationIds = useMemo(

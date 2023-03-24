@@ -144,6 +144,7 @@ describe('<QuickResponsesAccordionItem />', () => {
                         hasError: false,
                         setError: jest.fn(),
                         isLimitReached: true,
+                        storeIntegration: undefined,
                     }}
                 >
                     <QuickResponsesAccordionItem

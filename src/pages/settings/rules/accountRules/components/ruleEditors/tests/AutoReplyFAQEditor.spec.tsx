@@ -3,10 +3,12 @@ import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {ManagedRulesSlugs} from 'state/rules/types'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
+import {integrationsState} from 'fixtures/integrations'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'
@@ -43,6 +45,7 @@ describe('<AutoReplyFAQEditor/>', () => {
     it('should render correctly', () => {
         const store = mockStore({
             entities,
+            integrations: fromJS(integrationsState),
         } as RootState)
         const {container} = render(
             <Provider store={store}>
@@ -66,6 +69,7 @@ describe('<AutoReplyFAQEditor/>', () => {
                     },
                 },
             },
+            integrations: fromJS(integrationsState),
         } as unknown as RootState)
         const {getByText} = render(
             <Provider store={store}>
@@ -99,6 +103,7 @@ describe('<AutoReplyFAQEditor/>', () => {
                     },
                 },
             },
+            integrations: fromJS(integrationsState),
         } as unknown as RootState)
         const {getByText} = render(
             <Provider store={store}>

@@ -7,6 +7,7 @@ import {createEvent, fireEvent, render} from '@testing-library/react'
 
 import {FORM_CONTENT_TYPE} from 'config'
 import {MacroActionName} from 'models/macroAction/types'
+import {integrationsState} from 'fixtures/integrations'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'
@@ -37,7 +38,9 @@ describe('<TicketReplyAction />', () => {
 
     it('should call updateActionArgsOnApplied when the internal note is updated', () => {
         const {container} = render(
-            <Provider store={mockStore({})}>
+            <Provider
+                store={mockStore({integrations: fromJS(integrationsState)})}
+            >
                 <TicketReplyActionContainer {...minProps} />
             </Provider>
         )
@@ -57,7 +60,9 @@ describe('<TicketReplyAction />', () => {
 
     it('should call updateActionArgsOnApplied when the dict argument is updated', () => {
         const {getByDisplayValue} = render(
-            <Provider store={mockStore({})}>
+            <Provider
+                store={mockStore({integrations: fromJS(integrationsState)})}
+            >
                 <TicketReplyActionContainer
                     {...minProps}
                     action={fromJS({
@@ -98,7 +103,9 @@ describe('<TicketReplyAction />', () => {
 
     it('should call updateActionArgsOnApplied when the argument is updated', () => {
         const {queryAllByRole} = render(
-            <Provider store={mockStore({})}>
+            <Provider
+                store={mockStore({integrations: fromJS(integrationsState)})}
+            >
                 <TicketReplyActionContainer
                     {...minProps}
                     action={fromJS({

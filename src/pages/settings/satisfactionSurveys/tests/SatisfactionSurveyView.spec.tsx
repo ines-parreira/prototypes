@@ -10,6 +10,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {submitSetting} from 'state/currentAccount/actions'
+import {integrationsState} from 'fixtures/integrations'
 
 import SatisfactionSurveyView from '../SatisfactionSurveyView'
 
@@ -17,6 +18,7 @@ const mockSubmitSetting = jest.fn()
 type MockedRootState = {
     currentAccount: RootState
     submitSetting: typeof submitSetting
+    integrations: RootState
 }
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>([thunk])
 
@@ -40,6 +42,7 @@ describe('SatisfactionSurveyView', () => {
                 ],
             }),
             submitSetting: mockSubmitSetting,
+            integrations: fromJS(integrationsState),
         })
         jest.clearAllMocks()
     })

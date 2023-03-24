@@ -7,6 +7,7 @@ import {Provider} from 'react-redux'
 import LD from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {integrationsState} from 'fixtures/integrations'
 
 import {getLDClient} from 'utils/launchDarkly'
 import {CampaignDetail} from '../CampaignDetail'
@@ -46,7 +47,7 @@ jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 jest.mock('utils/launchDarkly')
 
 describe('CampaignDetail component', () => {
-    let store = mockStore({})
+    let store = mockStore({integrations: fromJS(integrationsState)})
     const realDateNow = Date.now
     beforeAll(() => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
@@ -55,7 +56,7 @@ describe('CampaignDetail component', () => {
     })
     beforeEach(() => {
         jest.resetAllMocks()
-        store = mockStore({})
+        store = mockStore({integrations: fromJS(integrationsState)})
         Date.now = jest.fn(() => 42)
         const allFlagsMock = getLDClient().allFlags as jest.Mock
         allFlagsMock.mockReturnValue({
