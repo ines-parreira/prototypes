@@ -18,7 +18,7 @@ const SelfServiceFeatureDisabledOnChannelAlert = ({
         This feature is currently disabled on this channel. Manage this setting
         in{' '}
         <Link to={`/app/automation/${shopType}/${shopName}/connected-channels`}>
-            Connected Channels
+            connected channels
         </Link>
         .
     </Alert>
