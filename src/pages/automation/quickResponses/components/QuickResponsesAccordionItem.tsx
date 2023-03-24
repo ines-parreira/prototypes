@@ -1,5 +1,6 @@
 import React, {MouseEvent} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {List} from 'immutable'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
@@ -9,6 +10,9 @@ import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Tooltip from 'pages/common/components/Tooltip'
+import {toImmutable} from 'utils'
+import {useAccordionItemContext} from 'pages/common/components/accordion/AccordionItemContext'
+import EmptyResponseMessageContentError from 'pages/automation/common/components/EmptyResponseMessageContentError'
 
 import {useQuickResponsesViewContext} from '../QuickResponsesViewContext'
 import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
@@ -35,6 +39,7 @@ const QuickResponsesAccordionItem = ({
 }: Props) => {
     const {isUpdatePending, hasError, isLimitReached} =
         useQuickResponsesViewContext()
+    const {isExpanded} = useAccordionItemContext()
 
     const toggleInputId = `toggle-input-${item.id}`
 
@@ -68,6 +73,12 @@ const QuickResponsesAccordionItem = ({
 
     const isUpdatePendingOrHasError = isUpdatePending || hasError
     const isDeactivated = Boolean(item.deactivated_datetime)
+    const isEmpty =
+        !item.response_message_content.text &&
+        !item.response_message_content.html &&
+        toImmutable<List<any>>(
+            item.response_message_content.attachments ?? []
+        ).isEmpty()
 
     const isFlowsBetaEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.FlowsBeta]
@@ -100,6 +111,7 @@ const QuickResponsesAccordionItem = ({
                     title={item.title}
                     onChange={handleTitleChange}
                 />
+                {isEmpty && !isExpanded && <EmptyResponseMessageContentError />}
             </SortableAccordionHeader>
             <AccordionBody>
                 <QuickResponseResponseMessageContent

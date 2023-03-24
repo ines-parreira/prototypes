@@ -1,0 +1,25 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/colorTokens.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        padding: 2px @layout-spacing-xs;
+        gap: @layout-spacing-xxs;
+    }
+
+    .icon {
+        font-size: 16px;
+        color: @classic-feedback-warning;
+    }
+
+    .message {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 20px;
+        color: @classic-neutral-grey-6;
+    }
+}

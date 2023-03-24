@@ -9,6 +9,7 @@ import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
+import EmptyResponseMessageContentError from 'pages/automation/common/components/EmptyResponseMessageContentError'
 
 import {SCENARIO_REASON_DEFAULT_ACTION} from '../constants'
 import ReportOrderIssueScenarioReasonAction from './ReportOrderIssueScenarioReasonAction'
@@ -39,11 +40,15 @@ const ReportOrderIssueScenarioReason = ({
     const reasonLabel = SELECTABLE_REASONS_DROPDOWN_OPTIONS.find(
         (option) => option.value === value.reasonKey
     )?.label
+    const isEmpty =
+        !value.action?.responseMessageContent.text &&
+        !value.action?.responseMessageContent.html
 
     return (
         <>
             <SortableAccordionHeader>
                 <div className={css.header}>{reasonLabel}</div>
+                {isEmpty && <EmptyResponseMessageContentError />}
             </SortableAccordionHeader>
             <AccordionBody>
                 <ReportOrderIssueScenarioReasonAction
