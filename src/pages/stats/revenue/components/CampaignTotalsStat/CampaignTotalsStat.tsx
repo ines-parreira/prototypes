@@ -36,7 +36,7 @@ export const CampaignTotalsStat = ({onError}: Props) => {
         } catch (error) {
             onError(error)
         }
-    }, [selectedIntegrations, selectedCampaigns, selectedPeriod, currency])
+    }, [namespacedShopName, selectedCampaigns, selectedPeriod, currency])
 
     useEffect(() => void fetchTotals(), [fetchTotals])
 

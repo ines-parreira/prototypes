@@ -208,7 +208,8 @@ export const getCampaignOrderTotalsData = async ({
     })
 }
 
-export const getGMVUpliftGraphData = async ({
+export const getRevenueUpliftGraphData = async ({
+    shopName,
     campaignIds,
     startDate,
     endDate,
@@ -233,6 +234,7 @@ export const getGMVUpliftGraphData = async ({
             endDate,
             cubeName: Cubes.orderConversion,
             campaignIds,
+            shopName,
         }),
     })
 }

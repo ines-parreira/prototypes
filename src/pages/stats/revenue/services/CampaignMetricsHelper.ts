@@ -2,13 +2,14 @@ import _get from 'lodash/get'
 import _reduce from 'lodash/reduce'
 import _parseInt from 'lodash/parseInt'
 import _mapValues from 'lodash/mapValues'
+import moment from 'moment'
 import {
     CampaignPerformanceData,
     CampaignsPerformanceDataset,
     CampaignStat,
     CampaignStatData,
     CampaignsTotals,
-    GMVGraphDataPoint,
+    RevenueGraphDataPoint,
 } from 'pages/stats/revenue/services/types'
 import {Stat, StatType} from 'models/stat/types'
 import {
@@ -97,24 +98,24 @@ export const transformToCampaignOrdersTotals = (
     ]
 }
 
-export const transformToGMVUpliftOverTime = (
+export const transformToRevenueUpliftOverTime = (
     dataPoint: CubeMetric,
     granularityValue: TimeGranularity
-): GMVGraphDataPoint => {
+): RevenueGraphDataPoint => {
     return {
-        influencedRevenueUplift: _get(
-            dataPoint,
-            OrderConversionMeasures.influencedRevenueUplift
+        y: parseFloat(
+            _get(
+                dataPoint,
+                OrderConversionMeasures.influencedRevenueUplift,
+                '0'
+            )
         ),
-        createdDatetime: _get(
-            dataPoint,
-            OrderConversionDimensions.createdDatatime
-        ),
-        granularityUnit: granularityValue,
-        granularityValue: _get(
-            dataPoint,
-            `${OrderConversionDimensions.createdDatatime}.${granularityValue}`
-        ),
+        x: moment(
+            _get(
+                dataPoint,
+                `${OrderConversionDimensions.createdDatatime}.${granularityValue}`
+            )
+        ).format('MMM'),
     }
 }
 

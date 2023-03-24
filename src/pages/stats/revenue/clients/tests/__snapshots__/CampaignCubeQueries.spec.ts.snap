@@ -30,8 +30,8 @@ exports[`Calling CubeClient functions [Function getCampaignOrderTotalsData] shou
 }
 `;
 
-exports[`Calling CubeClient functions [Function getGMVUpliftGraphData] should call load 1`] = `
+exports[`Calling CubeClient functions [Function getRevenueUpliftGraphData] should call load 1`] = `
 {
-  "query": "[{"dimensions":["OrderConversion.accountId"],"timeDimensions":[{"dimension":"OrderConversion.createdDatetime","dateRange":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"],"granularity":"day"}],"measures":["OrderConversion.influencedRevenueUplift"],"filters":[{"member":"OrderConversion.createdDatetime","operator":"inDateRange","values":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"]},{"member":"OrderConversion.campaignId","operator":"equals","values":["1","2"]}]}]",
+  "query": "[{"dimensions":["OrderConversion.accountId"],"timeDimensions":[{"dimension":"OrderConversion.createdDatetime","dateRange":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"],"granularity":"day"}],"measures":["OrderConversion.influencedRevenueUplift"],"filters":[{"member":"OrderConversion.createdDatetime","operator":"inDateRange","values":["2023-01-01T00:00:00-08:00","2023-03-15T23:59:59-07:00"]},{"member":"OrderConversion.campaignId","operator":"equals","values":["1","2"]},{"member":"OrderConversion.shopName","operator":"equals","values":["punched-tires-shop"]}]}]",
 }
 `;

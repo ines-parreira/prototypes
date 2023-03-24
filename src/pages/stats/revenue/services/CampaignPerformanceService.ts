@@ -4,12 +4,12 @@ import {
     getCampaignEventsTotalsData,
     getCampaignOrderPerformanceData,
     getCampaignOrderTotalsData,
-    getGMVUpliftGraphData,
+    getRevenueUpliftGraphData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {
     CampaignsPerformanceDataset,
     CampaignsTotals,
-    GMVGraphDataPoint,
+    RevenueGraphDataPoint,
 } from 'pages/stats/revenue/services/types'
 import {
     getDataFromResultSet,
@@ -17,7 +17,7 @@ import {
     transformToCampaignEventsTotals,
     transformToCampaignOrdersTotals,
     transformToCampaignsPerformanceTable,
-    transformToGMVUpliftOverTime,
+    transformToRevenueUpliftOverTime,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {getCampaignTicketsPerformanceData} from 'pages/stats/revenue/clients/RevenueAttributionClient'
 import {
@@ -55,26 +55,26 @@ export const getTotals = async (
     ]
 }
 
-export const getGMVUplift = async (
+export const getRevenueUpliftOverTime = async (
     startDate: string,
     endDate: string,
+    namespacedShopName: string,
     campaignIds: string[],
     timeGranularity: TimeGranularity = 'day'
-): Promise<GMVGraphDataPoint[]> => {
-    if (campaignIds?.length === 0) return []
-
+): Promise<RevenueGraphDataPoint[]> => {
     const attrs = {
+        shopName: namespacedShopName,
         campaignIds,
         startDate,
         endDate,
-        timeGranularity,
+        granularity: timeGranularity,
     }
 
-    const gmvGraph = await getGMVUpliftGraphData(attrs)
-    const gmvGraphData = getDataFromResultSet(gmvGraph)
+    const revenueGraph = await getRevenueUpliftGraphData(attrs)
+    const revenueGraphData = getDataFromResultSet(revenueGraph)
 
-    return gmvGraphData.map((dataPoint: CubeMetric) =>
-        transformToGMVUpliftOverTime(dataPoint, timeGranularity)
+    return revenueGraphData.map((dataPoint: CubeMetric) =>
+        transformToRevenueUpliftOverTime(dataPoint, timeGranularity)
     )
 }
 

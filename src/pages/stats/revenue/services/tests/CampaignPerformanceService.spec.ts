@@ -2,7 +2,7 @@ import * as cubeQueries from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import * as revenueAttributionClient from 'pages/stats/revenue/clients/RevenueAttributionClient'
 import {
     getCampaignsPerformance,
-    getGMVUplift,
+    getRevenueUpliftOverTime,
     getTotals,
 } from 'pages/stats/revenue/services/CampaignPerformanceService'
 import {Stat} from 'models/stat/types'
@@ -56,7 +56,7 @@ describe('Revenue Attribution Service stats methods', () => {
         it('should return prepared data for totals section', async () => {
             // act
             const result = await getTotals(
-                'slow-formulas-for-sale',
+                'shopify:slow-formulas-for-sale',
                 ['campaign231', 'campaign232'],
                 'EUR',
                 '2023-01-01T00:00:00-08:00',
@@ -67,8 +67,8 @@ describe('Revenue Attribution Service stats methods', () => {
             expect(result).toMatchSnapshot()
         })
     })
-    describe('getGMVUplift', () => {
-        const gmvUpliftGraphData = {
+    describe('getRevenueUpliftOverTime', () => {
+        const revenueUpliftGraphData = {
             data: [
                 {
                     [OrderConversionMeasures.influencedRevenueUplift]: '43.32',
@@ -79,33 +79,22 @@ describe('Revenue Attribution Service stats methods', () => {
                 },
             ],
         } as CubeResponse
-        const mockGetGMVGraph = jest
-            .spyOn(cubeQueries, 'getGMVUpliftGraphData')
+        const mockGetRevenueUpliftGraph = jest
+            .spyOn(cubeQueries, 'getRevenueUpliftGraphData')
             .mockReturnValue(
-                new Promise((resolve) => resolve(gmvUpliftGraphData))
+                new Promise((resolve) => resolve(revenueUpliftGraphData))
             )
 
         beforeEach(() => {
-            mockGetGMVGraph.mockClear()
-        })
-
-        it('should return empty array if no campaignIds', async () => {
-            // act
-            const result = await getGMVUplift(
-                '2023-01-01T00:00:00-08:00',
-                '2023-02-01T00:00:00-08:00',
-                []
-            )
-
-            // assert
-            expect(result).toEqual([])
+            mockGetRevenueUpliftGraph.mockClear()
         })
 
         it('should return prepared data for chart', async () => {
             // act
-            const result = await getGMVUplift(
+            const result = await getRevenueUpliftOverTime(
                 '2023-01-01T00:00:00-08:00',
                 '2023-02-01T00:00:00-08:00',
+                'shopify:square-wheels-company',
                 ['campaign1', 'campaign2']
             )
 

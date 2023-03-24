@@ -6,7 +6,7 @@ import {
     getCampaignEventsTotalsData,
     getCampaignOrderPerformanceData,
     getCampaignOrderTotalsData,
-    getGMVUpliftGraphData,
+    getRevenueUpliftGraphData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
 
 const mockedServer = new MockAdapter(client)
@@ -31,7 +31,7 @@ describe('Calling CubeClient functions', () => {
         [getCampaignEventsOrdersPerformanceData],
         [getCampaignEventsTotalsData],
         [getCampaignOrderTotalsData],
-        [getGMVUpliftGraphData],
+        [getRevenueUpliftGraphData],
     ])('%p should call load', async (cubeFn) => {
         // arrange
         let expectedParams

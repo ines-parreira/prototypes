@@ -1,15 +1,12 @@
-import {TimeGranularity} from 'pages/stats/revenue/clients/types'
 import {StatType} from 'models/stat/types'
 
 export type CampaignStat = any[]
 
 export type CampaignStatData = CampaignStat[]
 
-export type GMVGraphDataPoint = {
-    influencedRevenueUplift: string
-    createdDatetime: string
-    granularityUnit: TimeGranularity
-    granularityValue: string
+export type RevenueGraphDataPoint = {
+    x: string
+    y: number
 }
 
 export type CampaignPerformanceData = {

@@ -106,13 +106,11 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
 }
 `;
 
-exports[`Revenue Attribution Service stats methods getGMVUplift should return prepared data for chart 1`] = `
+exports[`Revenue Attribution Service stats methods getRevenueUpliftOverTime should return prepared data for chart 1`] = `
 [
   {
-    "createdDatetime": "2023-02-28T00:00:00.000",
-    "granularityUnit": "day",
-    "granularityValue": "2023-02-28T00:00:00.000",
-    "influencedRevenueUplift": "43.32",
+    "x": "Feb",
+    "y": 43.32,
   },
 ]
 `;
