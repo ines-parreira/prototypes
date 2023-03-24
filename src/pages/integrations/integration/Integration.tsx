@@ -251,7 +251,6 @@ export const IntegrationDetail = ({
     }, [integration, integrationType])
 
     const dispatch = useAppDispatch()
-    const enableWhatsApp = useFlags()[FeatureFlagKey.EnableWhatsApp]
 
     const [, handleFetchPhoneNumbers] = useAsyncFn(async () => {
         try {
@@ -494,10 +493,6 @@ export const IntegrationDetail = ({
             return <VoiceIntegration />
 
         case IntegrationType.WhatsApp: {
-            if (!enableWhatsApp) {
-                return null
-            }
-
             return <WhatsAppIntegration />
         }
 

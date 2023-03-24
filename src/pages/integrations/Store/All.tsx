@@ -1,8 +1,6 @@
 import React, {ReactNode, useEffect, useState} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useSearch from 'hooks/useSearch'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getCheapestPriceNameForFeature} from 'utils/paywalls'
 import {fetchApps} from 'models/integration/resources'
 import {Integration, IntegrationType} from 'models/integration/types'
@@ -131,12 +129,9 @@ export default function All() {
         void dispatch(fetchIntegrations())
     }, [dispatch])
 
-    const featureFlags = useFlags()
-    const isWhatsAppEnabled = featureFlags[FeatureFlagKey.EnableWhatsApp]
     const filteredIntegrationsList = filterOutDeprecatedIntegrations(
         integrationsList,
-        integrations,
-        isWhatsAppEnabled
+        integrations
     )
 
     const items: Item[] = [

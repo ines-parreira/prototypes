@@ -402,6 +402,22 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                      Yotpo Review
                   </label>
                 </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-20"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-20"
+                      name="checkbox-20"
+                      type="checkbox"
+                    />
+                     WhatsApp
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -445,13 +461,13 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-20"
+                    for="checkbox-21"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-20"
-                      name="checkbox-20"
+                      id="checkbox-21"
+                      name="checkbox-21"
                       type="checkbox"
                     />
                     Deselect
@@ -482,22 +498,6 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-21"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-21"
-                        name="checkbox-21"
-                        type="checkbox"
-                      />
-                      Foo
-                    </label>
-                  </div>
-                  <div
-                    class="wrapperItem"
-                  >
-                    <label
-                      class="label label labelItem"
                       for="checkbox-22"
                     >
                       <input
@@ -506,7 +506,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                         name="checkbox-22"
                         type="checkbox"
                       />
-                      Phone team - +1 205-396-3441
+                      Foo
                     </label>
                   </div>
                   <div
@@ -522,7 +522,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                         name="checkbox-23"
                         type="checkbox"
                       />
-                      Team: user meta null
+                      Phone team - +1 205-396-3441
                     </label>
                   </div>
                   <div
@@ -536,6 +536,22 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                         class="input"
                         id="checkbox-24"
                         name="checkbox-24"
+                        type="checkbox"
+                      />
+                      Team: user meta null
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-25"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-25"
+                        name="checkbox-25"
                         type="checkbox"
                       />
                       Test
@@ -557,13 +573,13 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-25"
+                    for="checkbox-26"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-25"
-                      name="checkbox-25"
+                      id="checkbox-26"
+                      name="checkbox-26"
                       type="checkbox"
                     />
                      Acme Support
@@ -574,12 +590,12 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-26"
+                    for="checkbox-27"
                   >
                     <input
                       class="input"
-                      id="checkbox-26"
-                      name="checkbox-26"
+                      id="checkbox-27"
+                      name="checkbox-27"
                       type="checkbox"
                     />
                      Bob Smith

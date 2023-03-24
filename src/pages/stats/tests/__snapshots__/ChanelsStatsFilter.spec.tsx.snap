@@ -368,6 +368,22 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
            Yotpo Review
         </label>
       </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-20"
+        >
+          <input
+            class="input"
+            id="checkbox-20"
+            name="checkbox-20"
+            type="checkbox"
+          />
+           WhatsApp
+        </label>
+      </div>
     </div>
   </div>
 </div>

@@ -6,6 +6,7 @@ import outlookIcon from 'assets/img/integrations/outlook.svg'
 import shopifyIcon from 'assets/img/integrations/shopify.png'
 import smoochIcon from 'assets/img/integrations/smooch.png'
 import zendeskIcon from 'assets/img/integrations/zendesk.png'
+import whatsAppIcon from 'assets/img/integrations/whatsapp.svg'
 import {IntegrationType} from 'models/integration/constants'
 import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -24,6 +25,7 @@ export const IMAGE_ICONS = {
     [IntegrationType.Smooch]: smoochIcon,
     [IntegrationType.SmoochInside]: smoochIcon,
     [IntegrationType.Zendesk]: zendeskIcon,
+    [IntegrationType.WhatsApp]: whatsAppIcon,
 }
 
 export const FONT_ICONS = {
@@ -31,6 +33,7 @@ export const FONT_ICONS = {
     [IntegrationType.Facebook]: 'facebook',
     [IntegrationType.Http]: 'http',
     [IntegrationType.Phone]: 'phone',
+    [IntegrationType.Sms]: 'sms',
     [IntegrationType.GorgiasChat]: 'chat',
 }
 

@@ -28,8 +28,7 @@ function hasKlaviyoIntegrations(integrations: Integration[]) {
 
 export function filterOutDeprecatedIntegrations(
     integrationsListItems: IntegrationListItem[],
-    integrations: Integration[],
-    isWhatsAppEnabled: boolean
+    integrations: Integration[]
 ) {
     return integrationsListItems.filter((integration) => {
         if (
@@ -46,12 +45,6 @@ export function filterOutDeprecatedIntegrations(
             return false
         }
 
-        if (
-            integration.type === IntegrationType.WhatsApp &&
-            !isWhatsAppEnabled
-        ) {
-            return false
-        }
         return true
     })
 }

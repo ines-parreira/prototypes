@@ -605,6 +605,22 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                      Yotpo Review
                   </label>
                 </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-28"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-28"
+                      name="checkbox-28"
+                      type="checkbox"
+                    />
+                     WhatsApp
+                  </label>
+                </div>
               </div>
             </div>
           </div>

@@ -554,6 +554,22 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                      Yotpo Review
                   </label>
                 </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-24"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-24"
+                      name="checkbox-24"
+                      type="checkbox"
+                    />
+                     WhatsApp
+                  </label>
+                </div>
               </div>
             </div>
           </div>

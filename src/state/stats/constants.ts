@@ -13,8 +13,10 @@ export const STATS_MESSAGING_INTEGRATIONS_TYPES = [
     IntegrationType.GorgiasChat,
     IntegrationType.Smooch,
     IntegrationType.SmoochInside,
+    IntegrationType.Sms,
     IntegrationType.Facebook,
     IntegrationType.Zendesk,
+    IntegrationType.WhatsApp,
 ]
 
 export const STATS_STORE_INTEGRATION_TYPES = [IntegrationType.Shopify]
