@@ -1,6 +1,6 @@
 import React from 'react'
 import {EditorState} from 'draft-js'
-import {fromJS, List} from 'immutable'
+import {fromJS} from 'immutable'
 import classnames from 'classnames'
 
 import RichField from 'pages/common/forms/RichField/RichField'
@@ -9,7 +9,6 @@ import {convertToHTML} from 'utils/editor'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
-import {toImmutable} from 'utils'
 import {trimHTML} from 'utils/html'
 
 import {usePropagateError} from '../QuickResponsesViewContext'
@@ -31,9 +30,7 @@ const QuickResponseResponseMessageContent = ({
     responseMessageContent,
     onChange,
 }: Props) => {
-    const attachments = toImmutable<List<any>>(
-        responseMessageContent.attachments ?? []
-    )
+    const attachments = responseMessageContent.attachments
 
     const hasError =
         responseMessageContent.text.length >

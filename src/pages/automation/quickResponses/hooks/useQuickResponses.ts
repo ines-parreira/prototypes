@@ -1,9 +1,11 @@
 import {useCallback, useMemo} from 'react'
+import {List} from 'immutable'
 
 import {trimHTML} from 'utils/html'
 import {convertFromHTML, convertToHTML} from 'utils/editor'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {toImmutable} from 'utils'
 
 const useQuickResponses = (shopType: string, shopName: string) => {
     const {
@@ -66,7 +68,19 @@ const useQuickResponses = (shopType: string, shopName: string) => {
         [selfServiceConfiguration, handleSelfServiceConfigurationUpdate]
     )
     const quickResponses = useMemo(
-        () => selfServiceConfiguration?.quick_response_policies ?? [],
+        () =>
+            (selfServiceConfiguration?.quick_response_policies ?? []).map(
+                (quickResponse) => ({
+                    ...quickResponse,
+                    response_message_content: {
+                        ...quickResponse.response_message_content,
+                        attachments: toImmutable<List<any>>(
+                            quickResponse.response_message_content
+                                .attachments ?? []
+                        ),
+                    },
+                })
+            ),
         [selfServiceConfiguration?.quick_response_policies]
     )
 

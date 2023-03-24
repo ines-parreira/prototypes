@@ -1,6 +1,5 @@
 import React, {MouseEvent} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {List} from 'immutable'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
@@ -10,7 +9,6 @@ import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Tooltip from 'pages/common/components/Tooltip'
-import {toImmutable} from 'utils'
 import {useAccordionItemContext} from 'pages/common/components/accordion/AccordionItemContext'
 import EmptyResponseMessageContentError from 'pages/automation/common/components/EmptyResponseMessageContentError'
 
@@ -76,9 +74,7 @@ const QuickResponsesAccordionItem = ({
     const isEmpty =
         !item.response_message_content.text &&
         !item.response_message_content.html &&
-        toImmutable<List<any>>(
-            item.response_message_content.attachments ?? []
-        ).isEmpty()
+        item.response_message_content.attachments.isEmpty()
 
     const isFlowsBetaEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.FlowsBeta]
