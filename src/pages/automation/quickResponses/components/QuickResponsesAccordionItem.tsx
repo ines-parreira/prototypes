@@ -41,12 +41,10 @@ const QuickResponsesAccordionItem = ({
 
     const toggleInputId = `toggle-input-${item.id}`
 
-    const handleToggle = (
-        nextValue: boolean,
-        event: MouseEvent<HTMLLabelElement>
-    ) => {
+    const handleToggleStopPropagation = (event: MouseEvent<HTMLDivElement>) => {
         event.stopPropagation()
-
+    }
+    const handleToggle = (nextValue: boolean) => {
         const deactivatedDatetime = nextValue ? null : new Date().toISOString()
 
         onToggle(item.id, deactivatedDatetime)
@@ -82,7 +80,7 @@ const QuickResponsesAccordionItem = ({
     return (
         <>
             <SortableAccordionHeader>
-                <div id={toggleInputId}>
+                <div id={toggleInputId} onClick={handleToggleStopPropagation}>
                     <ToggleInput
                         isDisabled={
                             isUpdatePendingOrHasError ||
