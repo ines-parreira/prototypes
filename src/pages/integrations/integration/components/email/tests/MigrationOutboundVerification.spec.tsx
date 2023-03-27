@@ -1,8 +1,24 @@
-import {cleanup, fireEvent, render, screen} from '@testing-library/react'
+import {
+    cleanup,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import React from 'react'
+import {act} from 'react-dom/test-utils'
 import {mockStore} from 'utils/testing'
+import * as dateUtils from 'utils/date'
 import MigrationOutboundVerification from '../EmailMigration/MigrationOutboundVerification'
+
+jest.useFakeTimers()
+
+jest.mock('models/integration/resources/email', () => ({
+    fetchMigrationDomains: jest.fn(() => []),
+}))
+
+const getMomentSpy = jest.spyOn(dateUtils, 'getMoment') as jest.Mock
 
 describe('MigrationOutboundVerification', () => {
     const onBackClick = jest.fn()
@@ -25,5 +41,34 @@ describe('MigrationOutboundVerification', () => {
             })
         )
         expect(onBackClick).toHaveBeenCalled()
+    })
+
+    it('should display and refresh last checked time', async () => {
+        getMomentSpy.mockReturnValue({calendar: () => 'Today at 00:00'})
+        renderComponent()
+        await screen.findByText('Last checked: Today at 00:00')
+        const getMomentCalls = getMomentSpy.mock.calls.length
+
+        act(() => {
+            jest.advanceTimersByTime(5 * 60 * 1000)
+        })
+        expect(getMomentSpy).toHaveBeenCalledTimes(getMomentCalls + 1)
+    })
+
+    it('should refresh last checked time when clicking Refresh button', async () => {
+        getMomentSpy
+            .mockReturnValueOnce({calendar: () => 'Today at 00:00'})
+            .mockReturnValueOnce({calendar: () => 'Today at 00:01'})
+        renderComponent()
+        const refreshButton = screen.getByRole('button', {
+            name: /refresh/i,
+        })
+        await waitFor(() => expect(refreshButton).not.toBeDisabled())
+
+        act(() => {
+            fireEvent.click(refreshButton)
+        })
+        await waitFor(() => expect(refreshButton).not.toBeDisabled())
+        expect(screen.getByText('Last checked: Today at 00:01')).toBeVisible()
     })
 })

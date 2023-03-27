@@ -1,4 +1,5 @@
 @import '~css/new/layout.less';
+@import '~css/new/colorTokens';
 
 :local {
     .layoutWrapper {
@@ -13,6 +14,16 @@
         .group {
             display: flex;
             gap: @layout-spacing-xs;
+        }
+    }
+
+    .verificationDurationInfo {
+        display: flex;
+        justify-content: space-between;
+        margin-top: @layout-spacing-m;
+
+        .verificationDurationValue {
+            color: @classic-neutral-grey-4;
         }
     }
 }

@@ -7,7 +7,7 @@ import {
     IntegrationAuthentication,
     IntegrationType,
     EmailMigrationBannerStatus,
-    EmailMigration,
+    EmailMigrationInboundVerification,
 } from '../../models/integration/types'
 
 export type IntegrationsImmutableState = Map<any, any>
@@ -38,7 +38,7 @@ export type IntegrationsState = {
     emailDomain?: EmailDomain
     emailMigrationBannerStatus?: EmailMigrationBannerStatus
     migrations?: {
-        email?: EmailMigration[]
+        email?: EmailMigrationInboundVerification[]
     }
 }
 

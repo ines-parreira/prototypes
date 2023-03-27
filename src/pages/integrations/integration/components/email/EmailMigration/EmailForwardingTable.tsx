@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import {EmailMigration} from 'models/integration/types'
+import {EmailMigrationInboundVerification} from 'models/integration/types'
 import useClientSidePagination from 'pages/common/hooks/useClientSidePagination'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -20,7 +20,7 @@ import EmptyMigrationTableRow from './EmptyMigrationTableRow'
 import css from './EmailForwardingTable.less'
 
 type Props = {
-    migrations: EmailMigration[]
+    migrations: EmailMigrationInboundVerification[]
 }
 
 export default function EmailForwardingTable({migrations}: Props) {

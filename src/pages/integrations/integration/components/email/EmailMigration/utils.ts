@@ -1,23 +1,31 @@
-import {EmailMigration, MigrationStatus} from 'models/integration/types'
+import {
+    EmailMigrationInboundVerification,
+    EmailMigrationInboundVerificationStatus,
+} from 'models/integration/types'
 import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
 
 export const computeMigrationInboundVerificationStatus = (
-    migration: EmailMigration
+    migration: EmailMigrationInboundVerification
 ): EmailVerificationStatus => {
-    if (migration.status === MigrationStatus.Initiated) {
+    if (
+        migration.status === EmailMigrationInboundVerificationStatus.Initiated
+    ) {
         return EmailVerificationStatus.Unverified
     }
 
     if (
         [
-            MigrationStatus.InboundPartialSuccess,
-            MigrationStatus.InboundSuccess,
+            EmailMigrationInboundVerificationStatus.InboundPartialSuccess,
+            EmailMigrationInboundVerificationStatus.InboundSuccess,
         ].includes(migration.status)
     ) {
         return EmailVerificationStatus.Success
     }
 
-    if (migration.status === MigrationStatus.InboundPending) {
+    if (
+        migration.status ===
+        EmailMigrationInboundVerificationStatus.InboundPending
+    ) {
         return EmailVerificationStatus.Pending
     }
 
@@ -25,7 +33,7 @@ export const computeMigrationInboundVerificationStatus = (
 }
 
 export const getInboundUnverifiedMigrations = (
-    migrations: EmailMigration[]
+    migrations: EmailMigrationInboundVerification[]
 ) => {
     return migrations.filter(
         (migration) =>

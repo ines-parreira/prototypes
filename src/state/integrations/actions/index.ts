@@ -12,7 +12,7 @@ import {
     GorgiasChatStatusEnum,
     Integration,
     IntegrationType,
-    MigrationStatus,
+    EmailMigrationInboundVerificationStatus,
 } from 'models/integration/types'
 import history from 'pages/history'
 import * as constants from 'state/integrations/constants'
@@ -715,7 +715,8 @@ export function onVerifyMigrationForwarding(
     return dispatch({
         type: constants.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
         integrationId,
-        emailMigrationVerificationStatus: MigrationStatus.InboundSuccess,
+        emailMigrationVerificationStatus:
+            EmailMigrationInboundVerificationStatus.InboundSuccess,
     })
 }
 
@@ -733,7 +734,8 @@ export function onVerifyMigrationForwardingFailure(
     return dispatch({
         type: constants.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
         integrationId,
-        emailMigrationVerificationStatus: MigrationStatus.InboundFailed,
+        emailMigrationVerificationStatus:
+            EmailMigrationInboundVerificationStatus.InboundFailed,
     })
 }
 

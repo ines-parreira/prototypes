@@ -2,7 +2,7 @@ import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 
 import {
-    EmailMigration,
+    EmailMigrationInboundVerification,
     Integration,
     IntegrationType,
 } from 'models/integration/types'
@@ -312,7 +312,7 @@ export default function reducer(
         case constants.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS: {
             const migrations = (
                 state.getIn(['migrations', 'email']) as Map<any, any>
-            ).toJS() as EmailMigration[]
+            ).toJS() as EmailMigrationInboundVerification[]
 
             const newMigrations = migrations.map((migration) =>
                 migration.integration.id === action.integrationId

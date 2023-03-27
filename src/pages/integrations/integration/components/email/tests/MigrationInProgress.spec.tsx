@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 import {mockStore} from 'utils/testing'
 import client from 'models/api/resources'
-import {EmailMigration} from 'models/integration/types'
+import {EmailMigrationInboundVerification} from 'models/integration/types'
 import MigrationInProgress from '../EmailMigration/MigrationInProgress'
 import * as migrationUtils from '../EmailMigration/utils'
 
@@ -14,7 +14,9 @@ const getInboundUnverifiedMigrationsSpy = jest.spyOn(
     'getInboundUnverifiedMigrations'
 )
 
-const migration = {integration: {meta: {}}} as unknown as EmailMigration
+const migration = {
+    integration: {meta: {}},
+} as unknown as EmailMigrationInboundVerification
 
 jest.mock('../EmailMigration/MigrationEmailForwarding', () => () => (
     <div data-testid="migration-email-forwarding" />

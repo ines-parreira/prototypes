@@ -9,10 +9,10 @@ import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 import {RootState} from '../../types'
 import {
-    EmailMigration,
+    EmailMigrationInboundVerification,
     GorgiasChatStatusEnum,
     IntegrationType,
-    MigrationStatus,
+    EmailMigrationInboundVerificationStatus,
 } from '../../../models/integration/types'
 
 const state = {
@@ -378,7 +378,7 @@ describe('integrations reducers', () => {
                                         address: 'address@gorgias.com',
                                     },
                                 },
-                                status: MigrationStatus.Initiated,
+                                status: EmailMigrationInboundVerificationStatus.Initiated,
                             },
                         ],
                     },
@@ -389,12 +389,12 @@ describe('integrations reducers', () => {
                 type: types.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
                 integrationId: 1,
                 emailMigrationVerificationStatus:
-                    MigrationStatus.InboundPending,
+                    EmailMigrationInboundVerificationStatus.InboundPending,
             }
             expect(
                 (
                     reducer(integrationsState, action).toJS() as {
-                        migrations: {email: EmailMigration[]}
+                        migrations: {email: EmailMigrationInboundVerification[]}
                     }
                 ).migrations?.email
             ).toEqual([
@@ -405,7 +405,7 @@ describe('integrations reducers', () => {
                             address: 'address@gorgias.com',
                         },
                     },
-                    status: MigrationStatus.InboundPending,
+                    status: EmailMigrationInboundVerificationStatus.InboundPending,
                 },
             ])
         })

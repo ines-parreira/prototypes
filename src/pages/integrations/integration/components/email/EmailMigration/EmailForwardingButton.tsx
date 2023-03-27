@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {AxiosError} from 'axios'
-import {EmailMigration, MigrationStatus} from 'models/integration/types'
+import {
+    EmailMigrationInboundVerification,
+    EmailMigrationInboundVerificationStatus,
+} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {verifyMigrationIntegration} from 'models/integration/resources/email'
@@ -13,19 +16,19 @@ import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
 import {computeMigrationInboundVerificationStatus} from './utils'
 
 type Props = {
-    migration: EmailMigration
+    migration: EmailMigrationInboundVerification
 }
 
 export default function EmailForwardingButton({migration}: Props) {
     const dispatch = useAppDispatch()
     const [lastSubmittedVerification, setLastSubmittedVerification] =
-        useState<EmailMigration>()
+        useState<EmailMigrationInboundVerification>()
 
     const verificationStatus =
         computeMigrationInboundVerificationStatus(migration)
 
     const [{loading: isLoading}, verifyIntegration] = useAsyncFn(
-        async (migration: EmailMigration) => {
+        async (migration: EmailMigrationInboundVerification) => {
             try {
                 await verifyMigrationIntegration(migration.integration.id)
                 setLastSubmittedVerification(migration)
@@ -51,7 +54,7 @@ export default function EmailForwardingButton({migration}: Props) {
                 type: UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
                 integrationId: migration.integration.id,
                 emailMigrationVerificationStatus:
-                    MigrationStatus.InboundPending,
+                    EmailMigrationInboundVerificationStatus.InboundPending,
             })
             void dispatch(
                 notify({

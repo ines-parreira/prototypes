@@ -10,7 +10,7 @@ import {Provider} from 'react-redux'
 import MockAdapter from 'axios-mock-adapter'
 import {mockStore} from 'utils/testing'
 import client from 'models/api/resources'
-import {MigrationStatus} from 'models/integration/types'
+import {EmailMigrationInboundVerificationStatus} from 'models/integration/types'
 import {UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS} from 'state/integrations/constants'
 import EmailForwardingButton from '../EmailMigration/EmailForwardingButton'
 import * as utils from '../EmailMigration/utils'
@@ -53,7 +53,9 @@ describe('EmailForwardingButton', () => {
             computeStatusSpy.mockReturnValue(status)
             serverMock
                 .onPost(`/integrations/email/1/migration/verify`)
-                .reply(200, {status: MigrationStatus.InboundPending})
+                .reply(200, {
+                    status: EmailMigrationInboundVerificationStatus.InboundPending,
+                })
             renderComponent()
 
             fireEvent.click(screen.getByText(buttonText))
@@ -62,7 +64,7 @@ describe('EmailForwardingButton', () => {
                     type: UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
                     integrationId: 1,
                     emailMigrationVerificationStatus:
-                        MigrationStatus.InboundPending,
+                        EmailMigrationInboundVerificationStatus.InboundPending,
                 })
             )
         }

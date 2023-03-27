@@ -1,5 +1,6 @@
 // g/integrations/email/schemas.py
 
+import {SenderInformation} from 'models/singleSenderVerification/types'
 import {createTypeGuard} from '../../../utils'
 
 import {EmailProvider, IntegrationType} from '../constants'
@@ -79,7 +80,7 @@ export type EmailMigrationBannerStatus = {
     due_at: string | null
 }
 
-export enum MigrationStatus {
+export enum EmailMigrationInboundVerificationStatus {
     Initiated = 'initiated',
     InboundPending = 'inbound_pending',
     InboundPartialSuccess = 'inbound_partial_success',
@@ -93,9 +94,34 @@ export type MigrationIntegration = {
     meta: Pick<EmailIntegrationMeta, 'address' | 'verified' | 'provider'>
 }
 
-export type EmailMigration = {
+export type EmailMigrationInboundVerification = {
     integration: MigrationIntegration
-    status: MigrationStatus
+    status: EmailMigrationInboundVerificationStatus
+}
+
+export enum EmailMigrationOutboundVerificationStatus {
+    Verified = 'verified',
+    Unverified = 'not_verified',
+}
+
+export type EmailMigrationSenderVerificationIntegration = {
+    id: EmailIntegration['id']
+    meta: Pick<EmailIntegrationMeta, 'address'>
+    migration: {
+        status: EmailMigrationInboundVerificationStatus
+    }
+    sender: SenderInformation
+}
+
+export type EmailMigrationSenderVerification = {
+    integrations: EmailMigrationSenderVerificationIntegration[]
+}
+
+export type EmailMigrationOutboundVerification = {
+    name: string
+    status: EmailMigrationOutboundVerificationStatus
+    domain: EmailDomain
+    sender_verification: EmailMigrationSenderVerification
 }
 
 export const isEmailIntegration = createTypeGuard<

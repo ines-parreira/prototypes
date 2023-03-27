@@ -6,7 +6,7 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import useClipboard from 'pages/common/hooks/useClipboard'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {EmailMigration} from 'models/integration/types'
+import {EmailMigrationInboundVerification} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getForwardingEmailAddress} from 'state/integrations/selectors'
 import EmailForwardingTable from './EmailForwardingTable'
@@ -16,7 +16,7 @@ import {providerTutorials} from './constants'
 import css from './MigrationEmailForwarding.less'
 
 type Props = {
-    migrations: EmailMigration[]
+    migrations: EmailMigrationInboundVerification[]
     onNextClick: () => void
 }
 

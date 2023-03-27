@@ -1,5 +1,9 @@
 import client from 'models/api/resources'
-import {EmailMigration, EmailMigrationBannerStatus} from '../types'
+import {
+    EmailMigrationInboundVerification,
+    EmailMigrationBannerStatus,
+    EmailMigrationOutboundVerification,
+} from '../types'
 
 export const startEmailMigration = async () => {
     const response = await client.post('/integrations/email/migration')
@@ -7,9 +11,9 @@ export const startEmailMigration = async () => {
 }
 
 export const fetchMigrations = async () => {
-    const response = await client.get<{data: EmailMigration[]}>(
-        '/integrations/email/migration/integrations'
-    )
+    const response = await client.get<{
+        data: EmailMigrationInboundVerification[]
+    }>('/integrations/email/migration/integrations')
     return response.data
 }
 
@@ -21,8 +25,15 @@ export const fetchEmailMigrationBannerStatus = async () => {
 }
 
 export const verifyMigrationIntegration = async (id: number) => {
-    const response = await client.post<EmailMigration>(
+    const response = await client.post<EmailMigrationInboundVerification>(
         `/integrations/email/${id}/migration/verify`
+    )
+    return response.data
+}
+
+export const fetchMigrationDomains = async () => {
+    const response = await client.get<EmailMigrationOutboundVerification[]>(
+        '/integrations/email/migration/domains'
     )
     return response.data
 }

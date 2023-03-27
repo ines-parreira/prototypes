@@ -13,7 +13,7 @@ import StartMigration from '../EmailMigration/StartMigration'
 
 jest.mock('models/integration/resources/email')
 
-const getMomenySpy = jest.spyOn(dateUtils, 'getMoment')
+const getMomentSpy = jest.spyOn(dateUtils, 'getMoment')
 
 const mockFetchMigrationStatus = jest.fn()
 jest.spyOn(migrationBannerHook, 'default').mockImplementation(
@@ -118,7 +118,7 @@ describe('StartMigration', () => {
     })
 
     it('should display due date when it is not past deadline', () => {
-        getMomenySpy.mockImplementation(
+        getMomentSpy.mockImplementation(
             () => dateUtils.stringToDatetime('2023-01-10T00:00') as Moment
         )
         renderComponent()
@@ -128,7 +128,7 @@ describe('StartMigration', () => {
     })
 
     it('should display "migrate your emails or risk deactivation" when it is past deadline', () => {
-        getMomenySpy.mockImplementation(
+        getMomentSpy.mockImplementation(
             () => dateUtils.stringToDatetime('2023-02-10T00:00') as Moment
         )
         renderComponent()

@@ -1,6 +1,9 @@
 import {cleanup, render, screen} from '@testing-library/react'
 import React from 'react'
-import {EmailMigration, MigrationStatus} from 'models/integration/types'
+import {
+    EmailMigrationInboundVerification,
+    EmailMigrationInboundVerificationStatus,
+} from 'models/integration/types'
 import EmailForwardingTable from '../EmailMigration/EmailForwardingTable'
 
 jest.mock('fixtures/emailMigration.ts', () => ({migrations: undefined}))
@@ -13,7 +16,7 @@ const mockMigrations = [
                 address: 'support1@customer.com',
             },
         },
-        status: MigrationStatus.Initiated,
+        status: EmailMigrationInboundVerificationStatus.Initiated,
     },
     {
         integration: {
@@ -22,9 +25,9 @@ const mockMigrations = [
                 address: 'support2@customer.com',
             },
         },
-        status: MigrationStatus.InboundPartialSuccess,
+        status: EmailMigrationInboundVerificationStatus.InboundPartialSuccess,
     },
-] as unknown as EmailMigration[]
+] as unknown as EmailMigrationInboundVerification[]
 
 jest.mock('../EmailMigration/EmailForwardingButton', () => () => (
     <div data-testid="cta" />

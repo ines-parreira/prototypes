@@ -1,4 +1,7 @@
-import {EmailMigration, MigrationStatus} from 'models/integration/types'
+import {
+    EmailMigrationInboundVerification,
+    EmailMigrationInboundVerificationStatus,
+} from 'models/integration/types'
 
 export const emailMigrations = [
     {
@@ -8,7 +11,7 @@ export const emailMigrations = [
                 address: 'support1@customer.com',
             },
         },
-        status: MigrationStatus.Initiated,
+        status: EmailMigrationInboundVerificationStatus.Initiated,
     },
     {
         integration: {
@@ -17,7 +20,7 @@ export const emailMigrations = [
                 address: 'support2@customer.com',
             },
         },
-        status: MigrationStatus.InboundPending,
+        status: EmailMigrationInboundVerificationStatus.InboundPending,
     },
     {
         integration: {
@@ -26,7 +29,7 @@ export const emailMigrations = [
                 address: 'support3@customer.com',
             },
         },
-        status: MigrationStatus.InboundSuccess,
+        status: EmailMigrationInboundVerificationStatus.InboundSuccess,
     },
     {
         integration: {
@@ -35,7 +38,7 @@ export const emailMigrations = [
                 address: 'support4@customer.com',
             },
         },
-        status: MigrationStatus.InboundFailed,
+        status: EmailMigrationInboundVerificationStatus.InboundFailed,
     },
     {
         integration: {
@@ -44,7 +47,7 @@ export const emailMigrations = [
                 address: 'support5@customer.com',
             },
         },
-        status: MigrationStatus.InboundCriticalFailure,
+        status: EmailMigrationInboundVerificationStatus.InboundCriticalFailure,
     },
     {
         integration: {
@@ -53,7 +56,7 @@ export const emailMigrations = [
                 address: 'support6@customer.com',
             },
         },
-        status: MigrationStatus.InboundCriticalFailure,
+        status: EmailMigrationInboundVerificationStatus.InboundCriticalFailure,
     },
     {
         integration: {
@@ -62,6 +65,6 @@ export const emailMigrations = [
                 address: 'support7@customer.com',
             },
         },
-        status: MigrationStatus.InboundCriticalFailure,
+        status: EmailMigrationInboundVerificationStatus.InboundCriticalFailure,
     },
-] as unknown as EmailMigration[]
+] as unknown as EmailMigrationInboundVerification[]

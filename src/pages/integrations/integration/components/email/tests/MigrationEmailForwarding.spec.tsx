@@ -2,10 +2,12 @@ import {cleanup, fireEvent, render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import React from 'react'
 import {mockStore} from 'utils/testing'
-import {EmailMigration} from 'models/integration/types'
+import {EmailMigrationInboundVerification} from 'models/integration/types'
 import MigrationEmailForwarding from '../EmailMigration/MigrationEmailForwarding'
 
-const migration = {integration: {meta: {}}} as unknown as EmailMigration
+const migration = {
+    integration: {meta: {}},
+} as unknown as EmailMigrationInboundVerification
 
 describe('MigrationEmailForwarding', () => {
     const onNextClick = jest.fn()

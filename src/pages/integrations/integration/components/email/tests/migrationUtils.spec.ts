@@ -1,4 +1,7 @@
-import {EmailMigration, MigrationStatus} from 'models/integration/types'
+import {
+    EmailMigrationInboundVerification,
+    EmailMigrationInboundVerificationStatus,
+} from 'models/integration/types'
 import {
     computeMigrationInboundVerificationStatus,
     getInboundUnverifiedMigrations,
@@ -9,7 +12,7 @@ describe('migration utils', () => {
     describe('getInboundUnverifiedMigrations', () => {
         it('should return only unverified migrations', () => {
             const unverifiedMigration = {
-                status: MigrationStatus.Initiated,
+                status: EmailMigrationInboundVerificationStatus.Initiated,
                 integration: {
                     meta: {
                         address: 'first@gorgias.com',
@@ -17,11 +20,11 @@ describe('migration utils', () => {
                 } as any,
             }
             const verifiedMigration = {
-                status: MigrationStatus.InboundSuccess,
+                status: EmailMigrationInboundVerificationStatus.InboundSuccess,
                 integration: {meta: {address: 'second@gorgias.com'}} as any,
             }
             const partiallyVerifiedMigration = {
-                status: MigrationStatus.InboundPartialSuccess,
+                status: EmailMigrationInboundVerificationStatus.InboundPartialSuccess,
                 integration: {meta: {address: 'third@gorgias.com'}} as any,
             }
 
@@ -29,7 +32,7 @@ describe('migration utils', () => {
                 unverifiedMigration,
                 verifiedMigration,
                 partiallyVerifiedMigration,
-            ] as unknown as EmailMigration[]
+            ] as unknown as EmailMigrationInboundVerification[]
 
             const result = getInboundUnverifiedMigrations(migrations)
             expect(result).toHaveLength(1)
@@ -41,12 +44,12 @@ describe('migration utils', () => {
         it('should return Unverified when migration status is Initiated', () => {
             expect(
                 computeMigrationInboundVerificationStatus({
-                    status: MigrationStatus.Initiated,
+                    status: EmailMigrationInboundVerificationStatus.Initiated,
                 } as any)
             ).toBe(EmailVerificationStatus.Unverified)
         })
 
-        it.each([MigrationStatus.InboundPending])(
+        it.each([EmailMigrationInboundVerificationStatus.InboundPending])(
             'should return Pending when migration status is %s',
             (status) => {
                 expect(
@@ -58,8 +61,8 @@ describe('migration utils', () => {
         )
 
         it.each([
-            MigrationStatus.InboundFailed,
-            MigrationStatus.InboundCriticalFailure,
+            EmailMigrationInboundVerificationStatus.InboundFailed,
+            EmailMigrationInboundVerificationStatus.InboundCriticalFailure,
         ])('should return Failed when migration status is %s', (status) => {
             expect(
                 computeMigrationInboundVerificationStatus({
@@ -69,8 +72,8 @@ describe('migration utils', () => {
         })
 
         it.each([
-            MigrationStatus.InboundPartialSuccess,
-            MigrationStatus.InboundSuccess,
+            EmailMigrationInboundVerificationStatus.InboundPartialSuccess,
+            EmailMigrationInboundVerificationStatus.InboundSuccess,
         ])('should return Success when migration status is %s', (status) => {
             expect(
                 computeMigrationInboundVerificationStatus({
