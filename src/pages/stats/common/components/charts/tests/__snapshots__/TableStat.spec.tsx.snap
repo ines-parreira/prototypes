@@ -342,7 +342,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                 09:55 am
               </Tooltip>
               <span>
-                4h 27m 
+                4h 27m
               </span>
             </div>
           </span>
@@ -663,7 +663,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                 09:55 am
               </Tooltip>
               <span>
-                4h 27m 
+                4h 27m
               </span>
             </div>
           </span>
@@ -1205,7 +1205,7 @@ exports[`TableStat should render a table chart 1`] = `
                 09:55 am
               </Tooltip>
               <span>
-                4h 27m 
+                4h 27m
               </span>
             </div>
           </span>
@@ -1742,7 +1742,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                 09:55 am
               </Tooltip>
               <span>
-                4h 27m 
+                4h 27m
               </span>
             </div>
           </span>

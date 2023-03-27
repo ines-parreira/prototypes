@@ -63,56 +63,27 @@ export const formatCurrency = (value: number, currency: string) => {
  * Display a duration in days, hours, minutes and seconds
  */
 export const formatDuration = (value: number, precision = 9) => {
+    if (!value) {
+        return '0s'
+    }
+
     const duration = moment.duration(value, 'seconds')
-    let response = ''
     let curPrecision = 0
-    const months = duration.months()
-    const days = duration.days()
-    const hours = duration.hours()
-    const minutes = duration.minutes()
-    const seconds = duration.seconds()
-
-    if (months) {
-        response += `${months}mo `
-        curPrecision++
-
-        if (curPrecision >= precision) {
-            return response
+    const parts = [
+        [duration.months(), 'mo'],
+        [duration.days(), 'd'],
+        [duration.hours(), 'h'],
+        [duration.minutes(), 'm'],
+        [duration.seconds(), 's'],
+    ].reduce((acc, [num, unit]) => {
+        if (num && curPrecision < precision) {
+            acc.push(`${num}${unit}`)
+            curPrecision++
         }
-    }
+        return acc
+    }, [] as string[])
 
-    if (days) {
-        response += `${days}d `
-        curPrecision++
-
-        if (curPrecision >= precision) {
-            return response
-        }
-    }
-
-    if (hours) {
-        response += `${hours}h `
-        curPrecision++
-
-        if (curPrecision >= precision) {
-            return response
-        }
-    }
-
-    if (minutes) {
-        response += `${minutes}m `
-        curPrecision++
-
-        if (curPrecision >= precision) {
-            return response
-        }
-    }
-
-    if (seconds) {
-        response += `${seconds}s`
-    }
-
-    return response
+    return parts.join(' ')
 }
 
 export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {

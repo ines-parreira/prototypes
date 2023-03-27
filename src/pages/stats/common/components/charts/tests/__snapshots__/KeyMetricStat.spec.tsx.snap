@@ -357,7 +357,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           <div
             class="value"
           >
-            3d 23h 
+            3d 23h
           </div>
           <span
             class="diff"
