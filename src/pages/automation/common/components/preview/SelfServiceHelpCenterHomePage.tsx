@@ -8,6 +8,7 @@ import trackIcon from 'assets/img/self-service/track.svg'
 import returnIcon from 'assets/img/self-service/return.svg'
 import cancelIcon from 'assets/img/self-service/cancel.svg'
 import reportIssueIcon from 'assets/img/self-service/report-issue.svg'
+import gorgiasLogo from 'assets/img/help-center/gorgias-logo.svg'
 
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
@@ -24,7 +25,7 @@ const OrderManagementFlowItem = ({
 }) => {
     return (
         <div
-            className={classnames(css.item, {
+            className={classnames(css.orderManagementItem, {
                 [css.isHighlighted]: isHighlighted,
             })}
         >
@@ -51,16 +52,75 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
         !selfServiceConfiguration?.cancel_order_policy.enabled &&
         !selfServiceConfiguration?.return_order_policy.enabled
 
+    if (isOrderManagementUnavailable) {
+        return (
+            <div
+                className={classnames(css.container, {
+                    [css.isInitialEntry]: isInitialEntry,
+                })}
+            >
+                <div className={css.searchBar}>
+                    <i
+                        className={classnames(
+                            'material-icons',
+                            css.searchBarIcon
+                        )}
+                    >
+                        search
+                    </i>
+                    {helpCenterTexts.searchComboboxInputPlaceholder}
+                </div>
+                <div className={css.title}>
+                    {helpCenterTexts.getMoreInformationLabel}
+                </div>
+                <div className={css.seeAll}>
+                    {helpCenterTexts.homePageAllArticlesLinkLabel}
+                    <i className={classnames('material-icons', css.seeAllIcon)}>
+                        arrow_forward
+                    </i>
+                </div>
+                <div className={css.articlesContainer}>
+                    <div className={css.article}>
+                        <div className={css.articleTitle}>
+                            Lorem ipsum dolor sit amet
+                        </div>
+                        <div className={css.articleDescription}>
+                            Viva Forevis aptent taciti sociosqu ad litora
+                            torquent. Si u mundo tá muito paradis? Toma um mé
+                            que o mundo vai girarzis! Nullam volutpat risus nec
+                            leo commodo, ut interdum diam laoreet.
+                        </div>
+                    </div>
+                    <div className={css.article}>
+                        <div className={css.articleTitle}>
+                            Lorem ipsum dolor sit amet
+                        </div>
+                        <div className={css.articleDescription}>
+                            Viva Forevis aptent taciti sociosqu ad litora
+                            torquent. Si u mundo tá muito paradis? Toma um mé
+                            que o mundo vai girarzis! Nullam volutpat risus nec
+                            leo commodo, ut interdum diam laoreet.
+                        </div>
+                    </div>
+                </div>
+                <div className={css.footer}>
+                    {helpCenterTexts.poweredByGorgiasTextBeforeLogo}
+                    <img src={gorgiasLogo} alt="Gorgias" />
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div
-            className={classnames(css.container, {
+            className={classnames(css.orderManagementContainer, {
                 [css.isInitialEntry]: isInitialEntry,
             })}
         >
-            <div className={css.title}>
+            <div className={css.orderManagementTitle}>
                 {helpCenterTexts.homepageManageOrdersTitle}
             </div>
-            <div className={css.itemsContainer}>
+            <div className={css.orderManagementItemsContainer}>
                 {selfServiceConfiguration?.track_order_policy.enabled && (
                     <OrderManagementFlowItem
                         icon={trackIcon}
@@ -100,11 +160,6 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                     >
                         {helpCenterTexts.manageOrdersLabelReportIssue}
                     </OrderManagementFlowItem>
-                )}
-                {isOrderManagementUnavailable && (
-                    <div className={css.orderManagementUnavailable}>
-                        {helpCenterTexts.orderManagementIsCurrentlyUnavailable}
-                    </div>
                 )}
             </div>
         </div>

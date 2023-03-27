@@ -1,10 +1,10 @@
-@import '~css/new/layout.less';
-@import '~css/new/colorTokens.less';
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/colorTokens.less';
 @import (reference) '~css/typography.less';
 @import (reference) '~css/new/util.less';
 
 :local {
-    .container {
+    .orderManagementContainer {
         background-color: @modern-neutral-grey-0;
         color: @modern-neutral-grey-6;
         flex: 1;
@@ -16,20 +16,20 @@
         }
     }
 
-    .title {
+    .orderManagementTitle {
         .heading-page-semibold();
         padding: @layout-spacing-m;
         border-bottom: 1px solid @modern-neutral-grey-3;
     }
 
-    .itemsContainer {
+    .orderManagementItemsContainer {
         display: flex;
         flex-direction: column;
         padding: @layout-spacing-m;
         row-gap: @layout-spacing-s;
     }
 
-    .item {
+    .orderManagementItem {
         .heading-subsection-semibold();
         display: flex;
         align-items: center;
@@ -44,11 +44,98 @@
         }
     }
 
-    .orderManagementUnavailable {
-        .heading-subsection-semibold();
+    .container {
+        background-color: @modern-neutral-grey-1;
+        color: @modern-neutral-grey-6;
+        flex: 1;
+        overflow: auto;
+        pointer-events: initial;
+
+        &:not(.isInitialEntry) {
+            :global {
+                animation: fadeIn 0.3s ease-in;
+            }
+        }
+    }
+
+    .searchBar {
+        .heading-subsection-regular();
+        display: flex;
+        align-items: center;
+        margin: 13px @layout-spacing-s @layout-spacing-m;
+        padding: @layout-spacing-s;
+        gap: @layout-spacing-xs;
+        filter: drop-shadow(0px 2px 4px rgba(22, 22, 22, 0.16));
+        border-radius: 4px;
+        background-color: @modern-neutral-grey-0;
         border: 1px solid @modern-neutral-grey-3;
-        border-radius: 8px;
-        padding: 44px @layout-spacing-s;
-        text-align: center;
+        color: @modern-neutral-grey-4;
+    }
+
+    .searchBarIcon {
+        font-size: 24px;
+    }
+
+    .title {
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 32px;
+        margin: 64px @layout-spacing-s 40px;
+    }
+
+    .seeAll {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin: 0 @layout-spacing-s;
+        gap: @layout-spacing-xxs;
+        text-transform: capitalize;
+    }
+
+    .seeAllIcon {
+        font-size: 20px;
+    }
+
+    .articlesContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        margin-top: @layout-spacing-m;
+    }
+
+    .article {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m;
+        gap: @layout-spacing-xxs;
+        background-color: @modern-neutral-grey-0;
+    }
+
+    .articleTitle {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+    }
+
+    .articleDescription {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        color: @modern-neutral-grey-5;
+    }
+
+    .footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: @layout-spacing-m @layout-spacing-s;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        color: @modern-neutral-grey-4;
+        gap: @layout-spacing-xs;
     }
 }
