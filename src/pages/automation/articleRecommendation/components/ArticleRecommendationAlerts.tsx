@@ -10,7 +10,6 @@ import css from './ArticleRecommendationAlerts.less'
 
 export const NoHelpCenterAlert = () => (
     <Alert
-        className={css.warning}
         icon
         type={AlertType.Warning}
         customActions={
@@ -47,12 +46,7 @@ export const ManyHelpCentersAlert = ({
     }
 
     return (
-        <Alert
-            className={css.warning}
-            icon
-            type={AlertType.Warning}
-            onClose={handleClose}
-        >
+        <Alert icon type={AlertType.Warning} onClose={handleClose}>
             Make sure the desired Help Center is selected below.
         </Alert>
     )
@@ -64,7 +58,6 @@ export const EmptyHelpCenterAlert = ({
     helpCenterId: number
 }) => (
     <Alert
-        className={css.warning}
         icon
         type={AlertType.Warning}
         customActions={
