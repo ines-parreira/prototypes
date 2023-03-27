@@ -10,6 +10,7 @@ import {update2FAEnabled} from 'state/currentUser/actions'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import InputField from 'pages/common/forms/DEPRECATED_InputField'
 
 export type OwnProps = {
     user?: User
@@ -32,6 +33,7 @@ export default function TwoFactorAuthenticationDisableModal({
 }: OwnProps) {
     const dispatch = useAppDispatch()
 
+    const [verificationCode, setVerificationCode] = useState('')
     const [errorText, setErrorText] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
@@ -41,7 +43,7 @@ export default function TwoFactorAuthenticationDisableModal({
             setErrorText('')
 
             if (!user) {
-                await deleteTwoFASecret()
+                await deleteTwoFASecret(undefined, verificationCode)
                 void dispatch(update2FAEnabled(false))
             } else {
                 await deleteTwoFASecret(user.id)
@@ -64,7 +66,7 @@ export default function TwoFactorAuthenticationDisableModal({
         } finally {
             setIsLoading(false)
         }
-    }, [dispatch, onSuccess, user])
+    }, [dispatch, onSuccess, user, verificationCode])
 
     return (
         <DEPRECATED_Modal
@@ -86,6 +88,7 @@ export default function TwoFactorAuthenticationDisableModal({
                     <Button
                         intent="destructive"
                         onClick={disableTwoFA}
+                        isDisabled={!user && !verificationCode}
                         isLoading={isLoading}
                     >
                         {actionButtonText}
@@ -99,6 +102,21 @@ export default function TwoFactorAuthenticationDisableModal({
                 </Alert>
             )}
             {children}
+            {!user && (
+                <>
+                    <p className="mb-2 mt-3">
+                        Enter the 6-digit verification code generated from your
+                        authenticator app.
+                    </p>
+                    <InputField
+                        type="text"
+                        name="verificationCode"
+                        placeholder="Enter 6-digit verification code from app"
+                        onChange={setVerificationCode}
+                        className="mb-0"
+                    />
+                </>
+            )}
         </DEPRECATED_Modal>
     )
 }

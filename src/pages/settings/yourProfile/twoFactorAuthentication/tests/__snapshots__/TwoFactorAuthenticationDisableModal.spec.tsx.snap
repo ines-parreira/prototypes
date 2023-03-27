@@ -54,6 +54,26 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
               <b>
                 body
               </b>
+              <p
+                class="mb-2 mt-3"
+              >
+                Enter the 6-digit verification code generated from your authenticator app.
+              </p>
+              <div
+                class="InputField mb-0 form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-verificationCode"
+                    placeholder="Enter 6-digit verification code from app"
+                    type="text"
+                  />
+                </div>
+              </div>
             </div>
             <div
               class="modalFooter modal-footer"
@@ -226,6 +246,109 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
               <b>
                 body
               </b>
+              <p
+                class="mb-2 mt-3"
+              >
+                Enter the 6-digit verification code generated from your authenticator app.
+              </p>
+              <div
+                class="InputField mb-0 form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-verificationCode"
+                    placeholder="Enter 6-digit verification code from app"
+                    type="text"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="modalFooter modal-footer"
+            >
+              <button
+                class="wrapper mr-auto fill secondary medium"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="wrapper fill destructive medium isDisabled"
+                disabled=""
+                type="button"
+              >
+                Foo action button text
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 2`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal show"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Foo title
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              
+              Foo 
+              <b>
+                body
+              </b>
             </div>
             <div
               class="modalFooter modal-footer"
@@ -303,31 +426,31 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
             <div
               class="modal-body"
             >
-              <div
-                class="alert error mb-3"
-              >
-                <div
-                  class="iconContainer"
-                >
-                  <img
-                    alt="icon"
-                    src="test-file-stub"
-                  />
-                </div>
-                <div
-                  class="content"
-                >
-                  <span
-                    class="label"
-                  >
-                    foo error deleteTwoFASecretMock
-                  </span>
-                </div>
-              </div>
+              
               Foo 
               <b>
                 body
               </b>
+              <p
+                class="mb-2 mt-3"
+              >
+                Enter the 6-digit verification code generated from your authenticator app.
+              </p>
+              <div
+                class="InputField mb-0 form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-verificationCode"
+                    placeholder="Enter 6-digit verification code from app"
+                    type="text"
+                  />
+                </div>
+              </div>
             </div>
             <div
               class="modalFooter modal-footer"
@@ -339,7 +462,8 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
                 Cancel
               </button>
               <button
-                class="wrapper fill destructive medium"
+                class="wrapper fill destructive medium isDisabled"
+                disabled=""
                 type="button"
               >
                 Foo action button text

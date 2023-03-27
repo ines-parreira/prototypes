@@ -25,10 +25,11 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
     }
     const store = configureMockStore([thunk])()
 
-    it('should render the modal', async () => {
+    it.each([undefined, 1])('should render the modal', async (userId) => {
+        const user = userId ? ({id: userId} as User) : undefined
         const {baseElement} = render(
             <Provider store={store}>
-                <TwoFactorAuthenticationDisableModal {...minProps}>
+                <TwoFactorAuthenticationDisableModal {...minProps} user={user}>
                     Foo <b>body</b>
                 </TwoFactorAuthenticationDisableModal>
             </Provider>
@@ -61,9 +62,9 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
     it.each([undefined, 1])(
         'should call the delete function',
         async (userId) => {
-            const user = {id: userId} as User
+            const user = userId ? ({id: userId} as User) : undefined
 
-            const {baseElement} = render(
+            const {baseElement, getByPlaceholderText} = render(
                 <Provider store={store}>
                     <TwoFactorAuthenticationDisableModal
                         {...minProps}
@@ -81,6 +82,14 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
                 ).toBe(1)
             )
 
+            // Fill the verification code if not provided an user ID
+            if (!userId) {
+                const inputField = getByPlaceholderText(
+                    'Enter 6-digit verification code from app'
+                ) as HTMLInputElement
+                fireEvent.change(inputField, {target: {value: '123456'}})
+            }
+
             const continueButton = screen.getByText(minProps.actionButtonText)
             fireEvent.click(continueButton)
 
@@ -94,7 +103,10 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
             if (userId) {
                 expect(deleteTwoFASecretMock).toHaveBeenCalledWith(userId)
             } else {
-                expect(deleteTwoFASecretMock).toHaveBeenCalled()
+                expect(deleteTwoFASecretMock).toHaveBeenCalledWith(
+                    undefined,
+                    '123456'
+                )
             }
 
             expect(baseElement).toMatchSnapshot()
@@ -111,7 +123,7 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
                     },
                 },
             })
-            const user = {id: userId} as User
+            const user = userId ? ({id: userId} as User) : undefined
 
             const {baseElement} = render(
                 <Provider store={store}>

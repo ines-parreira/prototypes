@@ -25,13 +25,17 @@ export const saveTwoFASecret = async (): Promise<void> => {
     await client.post<void>('/api/2fa/secret', {})
 }
 
-export const deleteTwoFASecret = async (userId?: number): Promise<void> => {
-    let params = {}
+export const deleteTwoFASecret = async (
+    userId?: number,
+    verificationCode?: string
+): Promise<void> => {
+    const params: Record<string, any> = {}
 
     if (userId) {
-        params = {
-            user_id: userId,
-        }
+        params['user_id'] = userId
+    }
+    if (verificationCode) {
+        params['verification_code'] = verificationCode
     }
 
     await client.delete<void>('/api/2fa/secret', {params})
