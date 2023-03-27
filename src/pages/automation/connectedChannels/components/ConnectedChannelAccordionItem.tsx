@@ -23,6 +23,8 @@ const ConnectedChannelAccordionItem = ({index, channel}: Props) => {
         channel.type === TicketChannel.HelpCenter
             ? `/app/settings/help-center/${channel.value.id}/preferences`
             : `/app/settings/channels/gorgias_chat/${channel.value.id}/preferences`
+    const channelNamePrefix =
+        channel.type === TicketChannel.HelpCenter ? 'Help Center' : 'Chat'
 
     return (
         <AccordionItem id={index.toString(10)}>
@@ -33,7 +35,9 @@ const ConnectedChannelAccordionItem = ({index, channel}: Props) => {
                         className={css.channelIcon}
                     />
 
-                    <div className={css.channelName}>{channel.value.name}</div>
+                    <div className={css.channelName}>
+                        {channelNamePrefix}: {channel.value.name}
+                    </div>
 
                     <Link to={channelSettingsUrl}>
                         <Button fillStyle="ghost" size="small">
