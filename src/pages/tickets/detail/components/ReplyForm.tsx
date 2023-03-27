@@ -7,7 +7,6 @@ import {hasIntegrationOfTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import {TicketVirtuosoContextType} from 'pages/tickets/detail/components/TicketBody'
 import {editorFocused} from 'state/ui/editor/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {SubmitArgs} from '../TicketDetailContainer'
@@ -15,7 +14,6 @@ import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
 import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
 import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons'
 import TicketReplyArea from './ReplyArea/TicketReplyArea'
-import TypingActivity from './TypingActivity'
 
 import css from './ReplyForm.less'
 
@@ -110,22 +108,6 @@ const ReplyForm = ({submit}: ReplyFormProps) => {
                 )}
             </form>
         </div>
-    )
-}
-
-export const ReplyFormWithVirtuosoContext = ({
-    context,
-}: {
-    // context is assumed possibly undefined per the Virtuoso type definitions
-    context?: TicketVirtuosoContextType
-}) => {
-    const {submit, isShopperTyping, shopperName} = context!
-
-    return (
-        <>
-            <TypingActivity isTyping={isShopperTyping} name={shopperName} />
-            <ReplyForm submit={submit} />
-        </>
     )
 }
 

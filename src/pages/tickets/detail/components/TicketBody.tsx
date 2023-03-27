@@ -17,17 +17,11 @@ import {
     useLastMessageDatetimeAfterMount,
 } from '../hooks'
 import MessageQuoteContext from './MessageQuoteContext'
-import {ReplyFormWithVirtuosoContext} from './ReplyForm'
 import TicketBodyElement from './TicketBodyElement'
+import TicketFooter, {TicketFooterContext} from './TicketFooter'
 import TicketHeaderWrapper from './TicketHeaderWrapper'
 
 import css from './TicketBody.less'
-
-export type TicketVirtuosoContextType = {
-    isShopperTyping: boolean
-    shopperName: string
-    submit: (params: SubmitArgs) => any
-}
 
 interface Props {
     customScrollParentRef?: React.RefObject<HTMLDivElement>
@@ -76,12 +70,9 @@ export default function TicketBody({
         (isAtBottom: boolean) => (isAtBottom ? 'smooth' : false),
         []
     )
-    const virtuosoComponents = useMemo(
-        () => ({Footer: ReplyFormWithVirtuosoContext}),
-        []
-    )
-    const virtuosoContext = useMemo(
-        () => ({isShopperTyping, shopperName, submit}),
+    const virtuosoComponents = useMemo(() => ({Footer: TicketFooter}), [])
+    const footerContext = useMemo(
+        (): TicketFooterContext => ({isShopperTyping, shopperName, submit}),
         [isShopperTyping, shopperName, submit]
     )
 
@@ -128,12 +119,12 @@ export default function TicketBody({
         >
             <Virtuoso<
                 TicketElement | TicketMessage[] | 'header',
-                TicketVirtuosoContextType
+                TicketFooterContext
             >
                 ref={virtuosoRef}
                 className={classnames(css.wrapper)}
                 components={virtuosoComponents}
-                context={virtuosoContext}
+                context={footerContext}
                 customScrollParent={customScrollParentRef?.current || undefined}
                 data={groupedElements}
                 followOutput={getFollowOutput}
