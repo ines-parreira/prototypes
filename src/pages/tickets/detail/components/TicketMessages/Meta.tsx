@@ -214,7 +214,8 @@ export default function Meta(props: Props) {
         } else if (isFacebookPost) {
             const postId = isFacebookPost ? getId(fullPostId!) : fullPostId
             type = 'post'
-            link = `https://facebook.com/${pageId!}/posts/${postId!}`
+            link =
+                permalink || `https://facebook.com/${pageId!}/posts/${postId!}`
         } else if (isFacebookMentionPost) {
             type = 'post'
             link = permalink
