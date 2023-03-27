@@ -1,15 +1,14 @@
 import classNames from 'classnames'
 import React from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
+import _isEqual from 'lodash/isEqual'
 import Label from 'pages/common/forms/Label/Label'
 import Badge from 'pages/common/components/Badge/Badge'
 
 import {TriggerButtonNodeType} from '../types'
 import css from './Node.less'
 
-export default function TriggerButtonNode({
-    data,
-}: NodeProps<TriggerButtonNodeType['data']>) {
+function TriggerButtonNode({data}: NodeProps<TriggerButtonNodeType['data']>) {
     const {shouldShowErrors} = data
     const isErrored = data.entrypoint_label.length === 0
 
@@ -63,3 +62,7 @@ export default function TriggerButtonNode({
         </div>
     )
 }
+
+export default React.memo(TriggerButtonNode, (prevProps, nextProps) =>
+    _isEqual(prevProps, nextProps)
+)

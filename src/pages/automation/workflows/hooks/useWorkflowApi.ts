@@ -1,4 +1,4 @@
-import {useCallback} from 'react'
+import {useCallback, useState} from 'react'
 import {ulid} from 'ulidx'
 import axios from 'axios'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
@@ -64,6 +64,8 @@ export type WorkflowConfiguration = {
 }
 
 type WorkflowApi = {
+    isFetchPending: boolean
+    isUpdatePending: boolean
     fetchWorkflowConfigurations: () => Promise<WorkflowConfiguration[]>
     fetchWorkflowConfiguration: (
         id: string
@@ -81,33 +83,53 @@ type WorkflowApi = {
 }
 
 export default function useWorkflowApi(): WorkflowApi {
+    const [isFetchPending, setIsFetchPending] = useState(false)
+    const [isUpdatePending, setIsUpdatePending] = useState(false)
     return {
+        isFetchPending,
+        isUpdatePending,
         fetchWorkflowConfigurations: useCallback(() => {
+            setIsFetchPending(true)
             return apiClient
                 .get<WorkflowConfiguration[]>('/configurations')
-                .then((res) => res.data)
+                .then((res) => {
+                    setIsFetchPending(false)
+                    return res.data
+                })
         }, []),
         fetchWorkflowConfiguration: useCallback((id: string) => {
+            setIsFetchPending(true)
             return apiClient
                 .get<WorkflowConfiguration>(`/configurations/${id}`)
-                .then((res) => res.data)
+                .then((res) => {
+                    setIsFetchPending(false)
+                    return res.data
+                })
         }, []),
         createWorkflowConfiguration: useCallback(
             (data: WorkflowConfiguration) => {
+                setIsFetchPending(true)
                 return apiClient
                     .post<WorkflowConfiguration>('/configurations', data)
-                    .then((res) => res.data)
+                    .then((res) => {
+                        setIsFetchPending(false)
+                        return res.data
+                    })
             },
             []
         ),
         updateWorkflowConfiguration: useCallback(
             (data: WorkflowConfiguration) => {
+                setIsUpdatePending(true)
                 return apiClient
                     .put<WorkflowConfiguration>(
                         `/configurations/${data.internal_id}`,
                         data
                     )
-                    .then((res) => res.data)
+                    .then((res) => {
+                        setIsUpdatePending(false)
+                        return res.data
+                    })
             },
             []
         ),

@@ -55,6 +55,9 @@ function WorkflowEditorViewWrapped({
     const [lastSaveAttempt, setLastSaveAttempt] = useState<Date | undefined>(
         undefined
     )
+    const workflowNameisErrored =
+        worfklowConfigurationContext.configuration.name.trim().length === 0 ||
+        worfklowConfigurationContext.configuration.name.length > 100
 
     // handlers
     const handleDiscard = () => {
@@ -73,12 +76,15 @@ function WorkflowEditorViewWrapped({
             notifyMerchant(validationError, 'error')
             return
         }
-        // prevent saving configuration when entrypoint is invalid and vice versa
-        if (!configurationError) {
+        try {
             await worfklowConfigurationContext.handleSave()
-        }
-        if (!entrypointError) {
             await workflowEntrypointContext.handleSave()
+        } catch (e) {
+            notifyMerchant(
+                'An error happened trying to save the flow, please try again or contact support',
+                'error'
+            )
+            return
         }
         notifyMerchant(
             isNewWorkflow
@@ -114,16 +120,22 @@ function WorkflowEditorViewWrapped({
                                     name,
                                 })
                             }}
-                            placeholder="Add flow name"
+                            placeholder={
+                                !isNewWorkflow &&
+                                worfklowConfigurationContext.isFetchPending
+                                    ? '...'
+                                    : 'Add flow name'
+                            }
                             value={
                                 worfklowConfigurationContext.configuration.name
                             }
                             isDisabled={isFetchPending || isSavePending}
-                            hasError={
-                                lastSaveAttempt &&
-                                worfklowConfigurationContext.configuration.name.trim()
-                                    .length === 0
-                            }
+                            hasError={lastSaveAttempt && workflowNameisErrored}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    inputRef.current?.blur()
+                                }
+                            }}
                         />
                         <span className={css.headerLeftdescription}>
                             Flow name will not be visible to customers
@@ -165,7 +177,6 @@ function WorkflowEditorViewWrapped({
                             <Button
                                 onClick={handleSave}
                                 isLoading={isFetchPending || isSavePending}
-                                isDisabled={!isDirty}
                             >
                                 Save & Close
                             </Button>
@@ -192,7 +203,7 @@ function ButtonWithConfirmation({
     onClick,
     children,
 }: PropsWithChildren<{
-    confirmationButtonLabel: ReactNode
+    confirmationButtonLabel?: string
     confirmationTitle: ReactNode
     confirmationText: ReactNode
     isDisabled: boolean
@@ -212,7 +223,7 @@ function ButtonWithConfirmation({
             cancelButtonProps={{intent: 'secondary'}}
             onConfirm={onClick}
             showCancelButton={true}
-            buttonLabel={confirmationButtonLabel}
+            confirmLabel={confirmationButtonLabel}
             title={confirmationTitle}
             content={confirmationText}
         >

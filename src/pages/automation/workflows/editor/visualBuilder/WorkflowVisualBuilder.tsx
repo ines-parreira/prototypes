@@ -95,8 +95,8 @@ export function WorkflowVisualBuilderWrapped({
                 nodesFocusable={false}
                 edgesFocusable={false}
             >
-                <Controls />
-                <MiniMap zoomable pannable />
+                <MiniMap zoomable pannable position="bottom-left" />
+                <Controls showInteractive={false} style={{bottom: 150 + 15}} />
                 <Background />
             </ReactFlow>
             <NodeEditorDrawer

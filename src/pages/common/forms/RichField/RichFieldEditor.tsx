@@ -94,6 +94,7 @@ export type Props = {
     canAddVideoPlayer?: boolean
     onInsertVideoAddedFromPastedLink?: () => void
     maxLength?: number
+    minHeight?: string | number
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
     GrammarlyUsageTrackingProps
@@ -434,10 +435,16 @@ export class RichFieldEditor extends Component<Props, State> {
                     onDragOver={this._onDragOver}
                     onDragLeave={this._onDragLeave}
                     onDrop={this._onDrop}
+                    {...(this.props.minHeight && {
+                        style: {
+                            minHeight: this.props.minHeight,
+                        },
+                    })}
                 >
                     <div
                         className={classnames({
-                            [css.withMinHeight]: !this.props.quickReply,
+                            [css.withMinHeight]:
+                                !this.props.quickReply && !this.props.minHeight,
                         })}
                     >
                         {header}

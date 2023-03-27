@@ -1,15 +1,27 @@
 @import '~css/new/colorTokens';
 @import '~css/new/layout.less';
+
+@drawer-width: 26vw;
+@drawer-wide-width: 612px;
+
 :local {
     .drawer {
-        width: 26vw !important;
-        right: -26vw !important;
+        width: @drawer-width !important;
+        right: -@drawer-width !important;
         grid-template-areas:
             'header'
             'main' !important;
         grid-template-rows: 64px auto !important;
         &:global.opened {
-            transform: translateX(-26vw) !important;
+            transform: translateX(-@drawer-width) !important;
+        }
+    }
+
+    .drawerWide {
+        width: @drawer-wide-width !important;
+        right: -@drawer-wide-width !important;
+        &:global.opened {
+            transform: translateX(-@drawer-wide-width) !important;
         }
     }
 

@@ -125,10 +125,15 @@ export function useWorkflowConfiguration(
         }
         if (!isDirty) return
         setIsSavePending(true)
-        if (isNew) {
-            await createWorkflowConfiguration(localConfiguration)
-        } else {
-            await updateWorkflowConfiguration(localConfiguration)
+        try {
+            if (isNew) {
+                await createWorkflowConfiguration(localConfiguration)
+            } else {
+                await updateWorkflowConfiguration(localConfiguration)
+            }
+        } catch (e) {
+            setIsSavePending(false)
+            throw e
         }
         setRemoteConfiguration(localConfiguration)
         setIsSavePending(false)
@@ -170,6 +175,8 @@ export function useWorkflowConfiguration(
 function validate(conf: WorkflowConfiguration): Maybe<string> {
     if (conf.name.trim().length === 0)
         return 'You must add a flow name in order to save'
+    else if (conf.name.length > 100)
+        return 'Flow name must be less than 100 characters'
     if (
         conf.steps.find(
             (s) =>

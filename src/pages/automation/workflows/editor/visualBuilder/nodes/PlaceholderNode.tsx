@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React from 'react'
 import {Handle, Position} from 'reactflow'
+import _isEqual from 'lodash/isEqual'
 
 import useId from 'hooks/useId'
 import Badge from 'pages/common/components/Badge/Badge'
@@ -8,11 +9,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
 import css from './Node.less'
 
-export default function PlaceholderNode({
-    data,
-}: {
-    data: {parentStepId: string}
-}) {
+function PlaceholderNode({data}: {data: {parentStepId: string}}) {
     const badgeInfoId = `workflow-placeholder-${useId()}`
     const {dispatch} = useWorkflowConfigurationContext()
 
@@ -64,3 +61,7 @@ export default function PlaceholderNode({
         </div>
     )
 }
+
+export default React.memo(PlaceholderNode, (prevProps, nextProps) =>
+    _isEqual(prevProps, nextProps)
+)

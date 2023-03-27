@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
+import _isEqual from 'lodash/isEqual'
 import Label from 'pages/common/forms/Label/Label'
 
 import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
@@ -11,7 +12,7 @@ import NodeMenuDropdown from './NodeMenuDropdown'
 
 const maxChildrenChoices = 6
 
-export default function AutomatedMessageNode({
+function AutomatedMessageNode({
     data,
 }: NodeProps<AutomatedMessageNodeType['data']>) {
     const {dispatch, configuration} = useWorkflowConfigurationContext()
@@ -92,3 +93,7 @@ export default function AutomatedMessageNode({
         </div>
     )
 }
+
+export default React.memo(AutomatedMessageNode, (prevProps, nextProps) =>
+    _isEqual(prevProps, nextProps)
+)

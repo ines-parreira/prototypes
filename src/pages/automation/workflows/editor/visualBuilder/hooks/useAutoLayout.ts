@@ -50,12 +50,16 @@ function useCanNodesFitInView() {
 }
 
 const fitViewDuration = 300
+const nodeWidth = 300
+const nodeHeight = 72
+const nodeGap = 24
 
 function useAutoLayout() {
     const minZoom = useStore((store: ReactFlowState) => store.minZoom)
+    const viewportWidth = useStore((store: ReactFlowState) => store.width)
     const nodeCount = useStore(nodeCountSelector)
     const nodesInitialized = useStore(nodesInitializedSelector)
-    const {getNodes, getEdges, setNodes, fitView} = useReactFlow()
+    const {getNodes, getEdges, setNodes, fitView, setViewport} = useReactFlow()
     const canNodesFitInView = useCanNodesFitInView()
     const previousNodes = useRef<Node[]>([])
     const isFirstTimeFittingView = useRef(true)
@@ -77,9 +81,9 @@ function useAutoLayout() {
                 const isChildrenPlaceholder =
                     node.children?.[0].data.type === 'placeholder'
                 if (hasSeveralChildren || isChildrenPlaceholder) {
-                    return [300, 72 + 24 * 2]
+                    return [nodeWidth, nodeHeight + nodeGap * 2]
                 }
-                return [300, 72 + 24]
+                return [nodeWidth, nodeHeight + nodeGap]
             },
             // this is needed for creating equal space between all nodes
             spacing: () => 1,
@@ -128,16 +132,26 @@ function useAutoLayout() {
                 (n) => !previousNodesIds.has(n.id)
             )
             // do not try to fit view if nodes have been deleted but nodes won't fit in the viewport
-            if (newNodes.length > 0)
-                setTimeout(() => {
-                    fitView({
-                        duration: isFirstTimeFittingView.current
-                            ? 0
-                            : fitViewDuration,
-                        nodes: newNodes,
-                        maxZoom: minZoom,
+            if (newNodes.length > 0) {
+                if (isFirstTimeFittingView.current) {
+                    // on first load, when nodes don't fit in view, we make sure the first nodes are visible
+                    setTimeout(() => {
+                        setViewport({
+                            zoom: 1,
+                            x: (viewportWidth - nodeWidth) / 2,
+                            y: nodeGap * 2,
+                        })
                     })
-                })
+                } else {
+                    setTimeout(() => {
+                        fitView({
+                            duration: fitViewDuration,
+                            nodes: newNodes,
+                            maxZoom: minZoom,
+                        })
+                    })
+                }
+            }
         } else {
             setTimeout(() => {
                 fitView({
@@ -162,6 +176,8 @@ function useAutoLayout() {
         fitView,
         canNodesFitInView,
         minZoom,
+        setViewport,
+        viewportWidth,
     ])
 }
 

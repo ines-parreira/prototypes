@@ -28,7 +28,7 @@ export default function useWorflowsEntrypoints(
 ): UseWorflowsEntrypointsReturnType {
     const dispatch = useAppDispatch()
     const {
-        isFetchPending,
+        isFetchPending: isSelfServiceFetchPending,
         isUpdatePending,
         handleSelfServiceConfigurationUpdate,
         ...selfServiceConfigurationApi
@@ -43,7 +43,10 @@ export default function useWorflowsEntrypoints(
             }
         }
     )
-    const {fetchWorkflowConfigurations} = useWorkflowApi()
+    const {
+        isFetchPending: isWorkflowApiFetchPending,
+        fetchWorkflowConfigurations,
+    } = useWorkflowApi()
     const [workflowNamesById, setWorkflowNamesById] = useState<
         Record<string, string>
     >({})
@@ -170,7 +173,7 @@ export default function useWorflowsEntrypoints(
             workflowsEntrypoints.filter((e) => e.enabled).length +
                 quickResponsesEnabled >=
             MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
-        isFetchPending,
+        isFetchPending: isSelfServiceFetchPending || isWorkflowApiFetchPending,
         isUpdatePending,
         isToggleUpdatePending,
         toggleEnabled,

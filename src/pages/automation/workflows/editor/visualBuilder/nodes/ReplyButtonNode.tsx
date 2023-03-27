@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React from 'react'
 import {Handle, Position, NodeProps, useReactFlow} from 'reactflow'
+import _isEqual from 'lodash/isEqual'
 import Label from 'pages/common/forms/Label/Label'
 
 import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
@@ -8,10 +9,7 @@ import {ReplyButtonNodeType} from '../types'
 import css from './Node.less'
 import NodeMenuDropdown from './NodeMenuDropdown'
 
-export default function ReplyButtonNode({
-    id,
-    data,
-}: NodeProps<ReplyButtonNodeType['data']>) {
+function ReplyButtonNode({id, data}: NodeProps<ReplyButtonNodeType['data']>) {
     const {dispatch} = useWorkflowConfigurationContext()
     const {setNodes, getEdges} = useReactFlow()
     const {shouldShowErrors, isGreyedOut} = data
@@ -109,3 +107,7 @@ export default function ReplyButtonNode({
         </div>
     )
 }
+
+export default React.memo(ReplyButtonNode, (prevProps, nextProps) =>
+    _isEqual(prevProps, nextProps)
+)

@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 import {Drawer} from 'pages/common/components/Drawer'
 import IconButton from 'pages/common/components/button/IconButton'
 import {VisualBuilderNode} from './types'
@@ -20,7 +21,9 @@ export default function NodeEditorDrawer({
 }: NodeEditorDrawerProps) {
     return (
         <Drawer
-            className={css.drawer}
+            className={classNames(css.drawer, {
+                [css.drawerWide]: nodeInEdition?.type === 'automated_message',
+            })}
             name="visual-builder-node-edition"
             open={!!nodeInEdition}
             fullscreen={false}
@@ -54,7 +57,10 @@ export default function NodeEditorDrawer({
                     />
                 )}
                 {nodeInEdition?.type === 'automated_message' && (
-                    <AutomatedMessageEditor nodeInEdition={nodeInEdition} />
+                    <AutomatedMessageEditor
+                        nodeInEdition={nodeInEdition}
+                        onClose={onClose}
+                    />
                 )}
                 {nodeInEdition?.type === 'reply_button' && (
                     <ReplyButtonEditor

@@ -6,6 +6,8 @@ import {TriggerButtonNodeType} from '../types'
 
 import css from './NodeEditor.less'
 
+const textLimit = 100
+
 export default function TriggerButtonEditor({
     nodeInEdition,
     onClose,
@@ -24,7 +26,13 @@ export default function TriggerButtonEditor({
     const {label, setLabel, isFetchPending, isSavePending} =
         useWorkflowEntrypointContext()
     return (
-        <>
+        <div
+            onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === 'Escape') {
+                    onClose()
+                }
+            }}
+        >
             <Label isRequired={true} className={css.label}>
                 Trigger button
             </Label>
@@ -32,19 +40,15 @@ export default function TriggerButtonEditor({
                 className={css.textInput}
                 ref={inputRef}
                 isRequired
+                maxLength={textLimit}
                 onChange={setLabel}
                 value={label}
                 isDisabled={isFetchPending || isSavePending}
-                onKeyDown={(event) => {
-                    if (event.key === 'Enter' || event.key === 'Escape') {
-                        onClose()
-                    }
-                }}
             />
             <div className={css.description}>
                 The flow will be triggered when customers click this button in
                 chat.
             </div>
-        </>
+        </div>
     )
 }

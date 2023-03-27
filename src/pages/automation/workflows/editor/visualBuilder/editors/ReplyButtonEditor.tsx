@@ -6,6 +6,8 @@ import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfigurat
 
 import css from './NodeEditor.less'
 
+const textLimit = 50
+
 export default function ReplyButtonEditor({
     nodeInEdition,
     onClose,
@@ -28,13 +30,20 @@ export default function ReplyButtonEditor({
         choice: {label, event_id},
     } = nodeInEdition.data
     return (
-        <>
+        <div
+            onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === 'Escape') {
+                    onClose()
+                }
+            }}
+        >
             <Label isRequired={true} className={css.label}>
                 Reply button
             </Label>
             <TextInput
                 className={css.textInput}
                 ref={inputRef}
+                maxLength={textLimit}
                 isRequired
                 onChange={(label) =>
                     dispatch({
@@ -46,12 +55,7 @@ export default function ReplyButtonEditor({
                 }
                 value={label}
                 isDisabled={isFetchPending || isSavePending}
-                onKeyDown={(event) => {
-                    if (event.key === 'Enter') {
-                        onClose()
-                    }
-                }}
             />
-        </>
+        </div>
     )
 }
