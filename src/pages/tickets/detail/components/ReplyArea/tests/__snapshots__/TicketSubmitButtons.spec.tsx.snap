@@ -10,7 +10,6 @@ exports[`TicketSubmitButtons component should not render confirm popover 1`] = `
     id="submit-button"
     isDisabled={false}
     isLoading={false}
-    onClick={[Function]}
     tabIndex={5}
     type="submit"
   >
@@ -58,7 +57,6 @@ exports[`TicketSubmitButtons component should render buttons with a filled ticke
       id="submit-button"
       isDisabled={false}
       isLoading={false}
-      onConfirm={[Function]}
       tabIndex={5}
       type="submit"
     >
@@ -134,7 +132,6 @@ exports[`TicketSubmitButtons component should render buttons with an empty ticke
     id="submit-button"
     isDisabled={true}
     isLoading={false}
-    onConfirm={[Function]}
     tabIndex={5}
     type="submit"
   >
@@ -166,7 +163,6 @@ exports[`TicketSubmitButtons component should render buttons with content that c
     id="submit-button"
     isDisabled={true}
     isLoading={false}
-    onConfirm={[Function]}
     tabIndex={5}
     type="submit"
   >
@@ -198,7 +194,6 @@ exports[`TicketSubmitButtons component should render buttons with contentless ac
     id="submit-button"
     isDisabled={false}
     isLoading={false}
-    onConfirm={[Function]}
     tabIndex={5}
     type="submit"
   >
@@ -244,7 +239,6 @@ exports[`TicketSubmitButtons component should render buttons with contentless ac
     id="submit-button"
     isDisabled={false}
     isLoading={false}
-    onConfirm={[Function]}
     tabIndex={5}
     type="submit"
   >

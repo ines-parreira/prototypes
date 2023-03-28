@@ -62,7 +62,6 @@ import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 
 export type SubmitArgs = {
     status?: TicketStatus
-    next?: any
     action?: string
     resetMessage?: boolean
 }
@@ -257,7 +256,6 @@ export const TicketDetailContainer = ({
 
     const submit = async ({
         status,
-        next,
         action,
         resetMessage = true,
     }: SubmitArgs) => {
@@ -295,12 +293,11 @@ export const TicketDetailContainer = ({
         if (!ticket.get('id')) {
             await prepareAndSubmitNewTicket({
                 status,
-                next,
                 action,
                 resetMessage,
             })
         } else {
-            await submitNewMessage({status, next, action, resetMessage})
+            await submitNewMessage({status, action, resetMessage})
         }
 
         if (status === TicketStatus.Closed) {
@@ -340,7 +337,7 @@ export const TicketDetailContainer = ({
                         e.preventDefault()
                         e.stopImmediatePropagation()
                     }
-                    void submit({status: TicketStatus.Closed, next: true})
+                    void submit({status: TicketStatus.Closed})
                 },
             },
         })

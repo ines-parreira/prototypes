@@ -1,15 +1,18 @@
-import React, {FormEvent, useMemo, useRef} from 'react'
+import React, {FormEvent, RefObject, useMemo} from 'react'
 import {Map} from 'immutable'
 import classnames from 'classnames'
 
 import {getNewMessageType} from 'state/newMessage/selectors'
 import {hasIntegrationOfTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {
+    TicketChannel,
+    TicketMessageSourceType,
+    TicketStatus,
+} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import {editorFocused} from 'state/ui/editor/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {SubmitArgs} from '../TicketDetailContainer'
 import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
 import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
 import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons'
@@ -18,13 +21,12 @@ import TicketReplyArea from './ReplyArea/TicketReplyArea'
 import css from './ReplyForm.less'
 
 type ReplyFormProps = {
-    submit: (params: SubmitArgs) => any
+    formRef: RefObject<HTMLFormElement>
+    onSubmit: (event: FormEvent<HTMLFormElement>) => void
+    setTicketStatus: (status: TicketStatus) => void
 }
 
-const ReplyForm = ({submit}: ReplyFormProps) => {
-    const statusParamsRef = useRef<SubmitArgs>({})
-    const newMessageFormRef = useRef<HTMLFormElement>(null)
-
+const ReplyForm = ({formRef, onSubmit, setTicketStatus}: ReplyFormProps) => {
     const dispatch = useAppDispatch()
     const ticket = useAppSelector((state) => state.ticket)
     const sourceType = useAppSelector(getNewMessageType)
@@ -51,31 +53,6 @@ const ReplyForm = ({submit}: ReplyFormProps) => {
         [hasPhoneIntegration, hasPhoneChannel, sourceType, isExistingTicket]
     )
 
-    const handlePreSubmit = ({
-        status,
-        next,
-        action,
-        resetMessage,
-    }: SubmitArgs) => {
-        if (newMessageFormRef?.current?.checkValidity()) {
-            statusParamsRef.current = {status, next, action, resetMessage}
-        } else {
-            statusParamsRef.current = {}
-        }
-    }
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        // https://github.com/gorgias/gorgias/issues/4074
-        if (e.target !== newMessageFormRef.current) {
-            return
-        }
-
-        Object.values(statusParamsRef.current).length &&
-            submit(statusParamsRef.current)
-    }
-
     return (
         <div
             className={classnames('d-print-none', css.newMessageForm, {
@@ -84,11 +61,7 @@ const ReplyForm = ({submit}: ReplyFormProps) => {
             onFocus={() => dispatch(editorFocused(true))}
             onBlur={() => dispatch(editorFocused(false))}
         >
-            <form
-                onSubmit={handleSubmit}
-                ref={newMessageFormRef}
-                id="ticket-reply-editor"
-            >
+            <form ref={formRef} id="ticket-reply-editor" onSubmit={onSubmit}>
                 <ReplyMessageChannel />
 
                 {shouldRenderPhoneButtons ? (
@@ -101,8 +74,8 @@ const ReplyForm = ({submit}: ReplyFormProps) => {
                         />
 
                         <TicketSubmitButtons
+                            setTicketStatus={setTicketStatus}
                             ticket={ticket}
-                            submit={handlePreSubmit}
                         />
                     </>
                 )}

@@ -17,7 +17,6 @@ import {getPreferences, isHidingTips} from 'state/currentUser/selectors'
 import {canSend, hasContent} from 'state/newMessage/selectors'
 import {hasContentlessAction} from 'state/ticket/selectors'
 import Tooltip from 'pages/common/components/Tooltip'
-import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
 
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import css from './TicketSubmitButtons.less'
@@ -54,7 +53,7 @@ const TIPS: ReactNode[] = [
 /* eslint-enable */
 
 type Props = {
-    submit: (params: SubmitArgs) => void
+    setTicketStatus: (status: TicketStatus) => void
     ticket: Map<any, any>
 } & ConnectedProps<typeof connector>
 
@@ -65,24 +64,17 @@ export function TicketSubmitButtonsContainer({
     hasContentlessAction,
     isHidingTips,
     newMessage,
-    submit,
+    setTicketStatus,
     submitSetting,
     ticket,
 }: Props) {
     const tip = useMemo(() => _sample(TIPS), [])
 
-    const handleSubmit = useCallback(
-        (status?: TicketStatus, next?: any) => {
-            if (status === TicketStatus.Closed && next === true) {
-                logEvent(SegmentEvent.TicketSendAndCloseButtonClicked, {
-                    ticketId: ticket.get('id'),
-                })
-            }
-
-            submit({status, next})
-        },
-        [submit, ticket]
-    )
+    const trackSendAndClosedClicked = useCallback(() => {
+        logEvent(SegmentEvent.TicketSendAndCloseButtonClicked, {
+            ticketId: ticket.get('id'),
+        })
+    }, [ticket])
 
     const handleClickHideTips = useCallback(() => {
         const newPreferences = currentUserPreferences.setIn(
@@ -131,7 +123,6 @@ export function TicketSubmitButtonsContainer({
                         className="mr-2"
                         isDisabled={!canSend}
                         tabIndex={5}
-                        onClick={() => handleSubmit()}
                         isLoading={isLoading}
                     >
                         {text}
@@ -144,7 +135,6 @@ export function TicketSubmitButtonsContainer({
                         className="mr-2"
                         isDisabled={!canSend}
                         tabIndex={5}
-                        onConfirm={() => handleSubmit()}
                         isLoading={isLoading}
                     >
                         {text}
@@ -167,7 +157,10 @@ export function TicketSubmitButtonsContainer({
                         type="submit"
                         intent="secondary"
                         isDisabled={!canSend}
-                        onClick={() => handleSubmit(TicketStatus.Closed, true)}
+                        onClick={() => {
+                            trackSendAndClosedClicked()
+                            setTicketStatus(TicketStatus.Closed)
+                        }}
                         isLoading={isLoading}
                     >
                         {text} &amp; Close
@@ -179,9 +172,10 @@ export function TicketSubmitButtonsContainer({
                         confirmationContent={titleConfirmation}
                         intent="secondary"
                         isDisabled={!canSend}
-                        onConfirm={() =>
-                            handleSubmit(TicketStatus.Closed, true)
-                        }
+                        onConfirm={() => {
+                            trackSendAndClosedClicked()
+                            setTicketStatus(TicketStatus.Closed)
+                        }}
                         isLoading={isLoading}
                     >
                         {text} &amp; Close

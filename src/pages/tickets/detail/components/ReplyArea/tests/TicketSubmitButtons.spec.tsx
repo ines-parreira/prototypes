@@ -27,7 +27,6 @@ describe('TicketSubmitButtons component', () => {
     const ticketWithSubject = createTicket([MacroActionName.SetSubject])
 
     const minProps: ComponentProps<typeof TicketSubmitButtonsContainer> = {
-        submit: () => null,
         ticket: fromJS({}),
         isAccountActive: true,
         canSend: true,
@@ -36,6 +35,7 @@ describe('TicketSubmitButtons component', () => {
         currentUserPreferences: fromJS({}),
         isHidingTips: false,
         newMessage: fromJS(minNewMessage),
+        setTicketStatus: jest.fn(),
         submitSetting: jest.fn(),
     }
 
