@@ -11,12 +11,13 @@ import {
     CampaignPerformanceData,
     CampaignsPerformanceDataset,
     CampaignStat,
-    CampaignsTotals,
+    EventsTotals,
+    OrdersTotals,
     RevenueGraphDataPoint,
     StatData,
     TicketPerformanceData,
 } from 'pages/stats/revenue/services/types'
-import {Stat, StatType} from 'models/stat/types'
+import {Stat} from 'models/stat/types'
 import {
     CubeData,
     CubeMetric,
@@ -32,9 +33,15 @@ import {
     OrderConversionMeasures,
 } from 'pages/stats/revenue/clients/constants'
 import {
+    CampaignsTotalsMetricNames,
     COMPARISON_DATA_FORMAT,
     GRAPH_LABEL_DATE_FORMAT,
 } from 'pages/stats/revenue/services/constants'
+import {
+    formatCurrency,
+    formatNumber,
+    formatPercent,
+} from 'pages/stats/common/utils'
 
 export const getDataFromResultSet = (resultSet: CubeResponse): CubeData => {
     return _get(resultSet, 'data', []) as CubeData
@@ -46,46 +53,40 @@ export const getDataFromStatResult = (result: Stat): StatData => {
 
 export const transformToCampaignEventsTotals = (
     data: CubeData
-): CampaignsTotals => {
+): EventsTotals => {
     const metric: CubeMetric = _get(data, '[0]', {})
-    return [
-        {
-            name: 'impressions',
-            value: _get(metric, CampaignOrderEventsMeasures.impressions, '0'),
-            type: StatType.Number,
-        },
-        {
-            name: 'engagement',
-            value: _get(metric, CampaignOrderEventsMeasures.engagement, '0'),
-            type: StatType.Number,
-        },
-        {
-            name: 'uniqueConversions',
-            value: _get(
-                metric,
-                CampaignOrderEventsMeasures.uniqueConversions,
-                '0'
-            ),
-            type: StatType.Number,
-        },
-    ]
+    return {
+        [CampaignsTotalsMetricNames.impressions]: formatNumber(
+            parseFloat(
+                _get(metric, CampaignOrderEventsMeasures.impressions, '0')
+            )
+        ),
+        [CampaignsTotalsMetricNames.engagement]: formatNumber(
+            parseFloat(
+                _get(metric, CampaignOrderEventsMeasures.engagement, '0')
+            )
+        ),
+        [CampaignsTotalsMetricNames.uniqueConversions]: formatNumber(
+            parseFloat(
+                _get(metric, CampaignOrderEventsMeasures.uniqueConversions, '0')
+            )
+        ),
+    }
 }
 
 export const transformToCampaignOrdersTotals = (
     data: CubeData,
     currency: string
-): CampaignsTotals => {
+): OrdersTotals => {
     const metric: CubeMetric = _get(data, '[0]', {})
-    return [
-        {
-            name: 'gmv',
-            value: parseFloat(_get(metric, OrderConversionMeasures.gmv, '0')),
-            type: StatType.Currency,
-            currency: currency,
-        },
-        {
-            name: 'influencedRevenueUplift',
-            value: _toFixed(
+
+    return {
+        [CampaignsTotalsMetricNames.gmv]: formatCurrency(
+            parseFloat(_get(metric, OrderConversionMeasures.gmv, '0')),
+            currency
+        ),
+        [CampaignsTotalsMetricNames.influencedRevenueUplift]: formatPercent(
+            _toFixed(
                 parseFloat(
                     _get(
                         metric,
@@ -93,18 +94,15 @@ export const transformToCampaignOrdersTotals = (
                         '0'
                     )
                 )
-            ),
-            type: StatType.Percent,
-        },
-        {
-            name: 'revenue',
-            value: parseFloat(
+            )
+        ),
+        [CampaignsTotalsMetricNames.revenue]: formatCurrency(
+            parseFloat(
                 _get(metric, OrderConversionMeasures.campaignSales, '0')
             ),
-            type: StatType.Currency,
-            currency: currency,
-        },
-    ]
+            currency
+        ),
+    }
 }
 
 export const transformToRevenueUpliftOverTime = (

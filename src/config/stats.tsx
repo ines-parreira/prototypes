@@ -8,7 +8,6 @@ import {ChartType, Scale, TooltipItem, defaults} from 'chart.js'
 import classNames from 'classnames'
 
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
-import {CampaignsTotalsMetricNames} from 'pages/stats/revenue/services/constants'
 import {
     findChannelNameKey,
     formatDuration,
@@ -92,7 +91,6 @@ export const SELF_SERVICE_SECTION_RETURN = 'self-service-section-return'
 export const SELF_SERVICE_TICKETS_DEFLECTED = 'self-service-tickets-deflected'
 export const SELF_SERVICE_TICKETS_CREATED = 'self-service-tickets-created'
 export const SELF_SERVICE_USAGE = 'self-service-usage'
-export const CAMPAIGN_OVERVIEW = 'campaign-overview'
 
 const mainBlue = '#152065'
 export const colors = [
@@ -1714,51 +1712,6 @@ export const stats = toImmutable<
     [SELF_SERVICE_SECTION_RETURN]: {
         style: 'element',
         component: () => <h3 style={{marginBottom: 6}}>Returns flow</h3>,
-    },
-    [CAMPAIGN_OVERVIEW]: {
-        style: 'key-metrics',
-        api_resource_name: REVENUE_OVERVIEW,
-        metrics: [
-            {
-                name: CampaignsTotalsMetricNames.gmv,
-                label: 'Total Store Revenue',
-                tooltip: `Sum of the order amount for all your store sales
-                during the selected period (including taxes, fees, and refunds).`,
-            },
-            {
-                name: CampaignsTotalsMetricNames.influencedRevenueUplift,
-                label: 'Revenue Uplift',
-                tooltip: `Evolution rate of your total store revenue thanks to the campaigns,
-                    calculated as: (Campaign revenue)/(Total store revenue - Campaign Revenue).`,
-            },
-            {
-                name: CampaignsTotalsMetricNames.revenue,
-                label: 'Campaign Revenue',
-                tooltip: `Sum of the revenue from all campaigns selected,
-                    from both tickets converted from campaigns.`,
-            },
-            {
-                name: 'impressions',
-                label: 'Impressions',
-                tooltip: `How often the selected campaigns were displayed.`,
-            },
-            {
-                name: CampaignsTotalsMetricNames.engagement,
-                label: 'Engagement',
-                tooltip: `How often shoppers interacted with the selected campaigns.
-                Campaign interactions include:
-                (1) tickets created after a campaign,
-                (2) clicks on a link displayed in a campaign,
-                (3) clicks on product recommendations displayed in a campaign
-                (clicks on the product link or direct add to cart),
-                (4) discount code displayed in a campaign applied to an order`,
-            },
-            {
-                name: CampaignsTotalsMetricNames.uniqueConversions,
-                label: 'Orders',
-                tooltip: `Number of orders following one of the interactions counted as an engagement`,
-            },
-        ],
     },
 })
 

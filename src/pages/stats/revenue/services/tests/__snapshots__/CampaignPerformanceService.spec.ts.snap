@@ -163,38 +163,12 @@ exports[`Revenue Attribution Service stats methods getRevenueUpliftOverTime shou
 `;
 
 exports[`Revenue Attribution Service stats methods getTotals should return prepared data for totals section 1`] = `
-[
-  {
-    "name": "impressions",
-    "type": "number",
-    "value": "1000",
-  },
-  {
-    "name": "engagement",
-    "type": "number",
-    "value": "100",
-  },
-  {
-    "name": "uniqueConversions",
-    "type": "number",
-    "value": "10",
-  },
-  {
-    "currency": "EUR",
-    "name": "gmv",
-    "type": "currency",
-    "value": 3000,
-  },
-  {
-    "name": "influencedRevenueUplift",
-    "type": "percent",
-    "value": 23.45,
-  },
-  {
-    "currency": "EUR",
-    "name": "revenue",
-    "type": "currency",
-    "value": 2000,
-  },
-]
+{
+  "engagement": "100",
+  "gmv": "€3,000",
+  "impressions": "1,000",
+  "influencedRevenueUplift": "23.45%",
+  "revenue": "€2,000",
+  "uniqueConversions": "10",
+}
 `;

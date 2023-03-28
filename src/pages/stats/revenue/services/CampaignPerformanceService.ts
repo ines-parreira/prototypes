@@ -61,10 +61,10 @@ export const getTotals = async (
     const eventsTotalsData = getDataFromResultSet(eventsTotals)
     const orderTotalsData = getDataFromResultSet(orderTotals)
 
-    return [
+    return {
         ...transformToCampaignEventsTotals(eventsTotalsData),
         ...transformToCampaignOrdersTotals(orderTotalsData, currency),
-    ]
+    }
 }
 
 export const getRevenueUpliftOverTime = async (

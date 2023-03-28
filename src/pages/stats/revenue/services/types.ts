@@ -1,4 +1,4 @@
-import {StatType} from 'models/stat/types'
+import {CampaignsTotalsMetricNames} from 'pages/stats/revenue/services/constants'
 
 export type CampaignStat = number[]
 
@@ -59,13 +59,16 @@ export type CampaignsPerformanceDataset = {
     [key: string]: CampaignPerformanceData
 }
 
-export type StatMetric = {
-    name: string
-    value: any
-    type: StatType
-    delta?: string
-    more_is_better?: boolean
-    currency?: string
+export type EventsTotals = {
+    [CampaignsTotalsMetricNames.impressions]: string
+    [CampaignsTotalsMetricNames.engagement]: string
+    [CampaignsTotalsMetricNames.uniqueConversions]: string
 }
 
-export type CampaignsTotals = StatMetric[]
+export type OrdersTotals = {
+    [CampaignsTotalsMetricNames.gmv]: string | number
+    [CampaignsTotalsMetricNames.influencedRevenueUplift]: string
+    [CampaignsTotalsMetricNames.revenue]: string | number
+}
+
+export type CampaignsTotals = EventsTotals & OrdersTotals
