@@ -1,8 +1,8 @@
 import moment from 'moment-timezone'
 
-import {DataItem} from 'pages/stats/LineChart'
+import {OneDimensionalDataItem, TwoDimensionalDataItem} from 'pages/stats/types'
 
-export const ticketsCreatedDataItem: DataItem = {
+export const ticketsCreatedDataItem: TwoDimensionalDataItem = {
     label: 'Tickets created',
     values: [
         {x: moment('12/31/2022', 'MM/DD/YYYY').format('MMM DD'), y: 51000000},
@@ -40,10 +40,35 @@ export const ticketsCreatedDataItem: DataItem = {
     ],
 }
 
-export const ticketsClosedDataItem: DataItem = {
+export const ticketsClosedDataItem: TwoDimensionalDataItem = {
     label: 'Tickets closed',
     values: ticketsCreatedDataItem.values.map((item) => ({
         ...item,
         y: item.y - 10000000,
     })),
+}
+
+export const ChatWorkload: OneDimensionalDataItem = {
+    label: 'Chat',
+    value: 10000,
+}
+
+export const EmailWorkload: OneDimensionalDataItem = {
+    label: 'Email',
+    value: 4000,
+}
+
+export const InstagramWorkload: OneDimensionalDataItem = {
+    label: 'Instagram DM',
+    value: 2000,
+}
+
+export const PhoneWorkload: OneDimensionalDataItem = {
+    label: 'Phone',
+    value: 6000,
+}
+
+export const OthersWorkload: OneDimensionalDataItem = {
+    label: 'Others',
+    value: 8000,
 }

@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GaugeChart /> should render the gauge chart 1`] = `
+<div>
+  <div>
+    <div
+      class="chart"
+    >
+      <div
+        style="background-color: rgb(51, 115, 219); flex-grow: 0.7142857142857143;"
+      />
+      <div
+        style="background-color: rgb(214, 56, 77); flex-grow: 0.2857142857142857;"
+      />
+    </div>
+    <div
+      class="legend"
+    >
+      <div
+        class="legendItem"
+      >
+        <div
+          class="legendCaret"
+          style="background-color: rgb(51, 115, 219);"
+        />
+        Chat
+      </div>
+      <div
+        class="legendItem"
+      >
+        <div
+          class="legendCaret"
+          style="background-color: rgb(214, 56, 77);"
+        />
+        Email
+      </div>
+    </div>
+  </div>
+</div>
+`;

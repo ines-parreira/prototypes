@@ -4,17 +4,8 @@ import {Line} from 'react-chartjs-2'
 
 import colors from 'assets/tokens/colors.json'
 import css from './LineChart.less'
+import {TwoDimensionalDataItem} from './types'
 import {getGradient, NUMBER_TICK_FORMATTER} from './utils'
-
-export type DataItem = {
-    label: string
-    values: PositionalData[]
-}
-
-type PositionalData = {
-    x: string | number
-    y: number
-}
 
 const STAT_COLORS = Object.freeze([
     colors['📺 Classic'].Main.Primary.value,
@@ -24,7 +15,7 @@ const STAT_COLORS = Object.freeze([
 ])
 
 type Props = {
-    data: DataItem[]
+    data: TwoDimensionalDataItem[]
     hasBackground?: boolean
     displayLegend?: boolean
 }
@@ -110,7 +101,7 @@ export default function LineChart({
         const labels = Array.from(
             new Set(
                 data.reduce(
-                    (acc: (string | number)[], item) => [
+                    (acc: string[], item) => [
                         ...acc,
                         ...item.values.map((value) => value.x),
                     ],
