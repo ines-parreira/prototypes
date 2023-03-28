@@ -1,27 +1,18 @@
 import {useMemo} from 'react'
-import _head from 'lodash/head'
 
-import {useShopifyIntegrations} from 'pages/stats/revenue/hooks/useShopifyIntegrations'
-import {ShopifyIntegration} from 'models/integration/types'
+import {useGetFirstValidIntegration} from 'pages/stats/revenue/hooks/useGetFirstValidIntegration'
 
 export function useGetNamespacedShopNameForStore(
     selectedIntegrations: number[]
 ) {
-    const shopifyIntegrations = useShopifyIntegrations() as ShopifyIntegration[]
+    const selectedIntegration =
+        useGetFirstValidIntegration(selectedIntegrations)
 
     const namespacedShopName = useMemo(() => {
-        const selected = selectedIntegrations || []
-        const shop = _head(
-            shopifyIntegrations.filter((integration) =>
-                selected.some(
-                    (integrationId) => integrationId === integration.id
-                )
-            )
-        )
-        return shop?.meta?.shop_name && shop?.type
-            ? `${shop.type}:${shop.meta.shop_name}`
+        return selectedIntegration?.meta?.shop_name && selectedIntegration?.type
+            ? `${selectedIntegration.type}:${selectedIntegration.meta.shop_name}`
             : ''
-    }, [selectedIntegrations, shopifyIntegrations])
+    }, [selectedIntegration])
 
     return namespacedShopName
 }

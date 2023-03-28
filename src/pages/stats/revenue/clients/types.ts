@@ -1,3 +1,5 @@
+import {TicketChannel} from 'business/types/ticket'
+
 type KeyValuePair = {
     [key: string]: string | string[]
 }
@@ -45,6 +47,11 @@ export type FilterParams = {
 } & RequiredFilterParams
 
 export type CubeFilterParams = FilterParams
+
+export type RevenueAttributionFilterParams = {
+    integrationIds?: number[]
+    channels?: TicketChannel[]
+} & FilterParams
 
 export type TimeGranularity =
     | 'second'

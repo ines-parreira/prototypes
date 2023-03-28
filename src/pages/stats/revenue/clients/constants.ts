@@ -60,6 +60,7 @@ export const OrderConversionMeasures = {
 export const CampaignOrderEventsDimensions = {
     campaignId: `${Cubes.campaignOrderEvents}.${SharedDimensionNames.campaignId}`,
     accountId: `${Cubes.campaignOrderEvents}.${SharedDimensionNames.accountId}`,
+    createdDatatime: `${Cubes.campaignOrderEvents}.${SharedDimensionNames.createdDatetime}`,
 }
 
 export const CampaignOrderEventsMeasures = {

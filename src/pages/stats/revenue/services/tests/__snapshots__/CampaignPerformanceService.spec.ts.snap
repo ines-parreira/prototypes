@@ -1,5 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Revenue Attribution Service stats methods getCampaignsAndChatPerformanceOverTime should return prepared and backfilled data for chart 1`] = `
+{
+  "campaignCTR": [
+    {
+      "x": "Feb 28th",
+      "y": 12.32,
+    },
+    {
+      "x": "Mar 1st",
+      "y": 0,
+    },
+    {
+      "x": "Mar 2nd",
+      "y": 0,
+    },
+  ],
+  "campaignConversionRate": [
+    {
+      "x": "Feb 28th",
+      "y": 13.25,
+    },
+    {
+      "x": "Mar 1st",
+      "y": 0,
+    },
+    {
+      "x": "Mar 2nd",
+      "y": 0,
+    },
+  ],
+  "chatConversionRate": [
+    {
+      "x": "Feb 28th",
+      "y": 9.6,
+    },
+    {
+      "x": "Mar 1st",
+      "y": 2.9411764705882355,
+    },
+    {
+      "x": "Mar 2nd",
+      "y": 0,
+    },
+  ],
+}
+`;
+
 exports[`Revenue Attribution Service stats methods getCampaignsPerformance should fill default values if data is missing 1`] = `
 {
   "campaign1": {
@@ -109,7 +156,7 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
 exports[`Revenue Attribution Service stats methods getRevenueUpliftOverTime should return prepared data for chart 1`] = `
 [
   {
-    "x": "Feb",
+    "x": "Feb 28th",
     "y": 43.32,
   },
 ]

@@ -26,6 +26,7 @@ const STAT_COLORS = Object.freeze([
 type Props = {
     data: DataItem[]
     hasBackground?: boolean
+    displayLegend?: boolean
 }
 
 const LINE_OPTIONS: ChartOptions<'line'> = {
@@ -97,7 +98,11 @@ const LINE_OPTIONS: ChartOptions<'line'> = {
     maintainAspectRatio: false,
 }
 
-export default function LineChart({data, hasBackground}: Props) {
+export default function LineChart({
+    data,
+    hasBackground,
+    displayLegend = false,
+}: Props) {
     const [chartArea, setChartArea] = useState<ChartArea>()
     const [chartContext, setChartContext] = useState<CanvasRenderingContext2D>()
 
@@ -136,12 +141,16 @@ export default function LineChart({data, hasBackground}: Props) {
     const options = useMemo<ChartOptions<'line'>>(
         () => ({
             ...LINE_OPTIONS,
+            plugins: {
+                ...LINE_OPTIONS.plugins,
+                legend: {display: displayLegend},
+            },
             onResize: (chart) => {
                 setChartArea(chart.chartArea)
                 setChartContext(chart.ctx)
             },
         }),
-        []
+        [displayLegend]
     )
 
     return (

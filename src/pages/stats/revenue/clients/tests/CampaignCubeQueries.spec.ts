@@ -6,6 +6,7 @@ import {
     getCampaignEventsTotalsData,
     getCampaignOrderPerformanceData,
     getCampaignOrderTotalsData,
+    getCampaignsPerformanceGraphData,
     getRevenueUpliftGraphData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
 
@@ -32,6 +33,7 @@ describe('Calling CubeClient functions', () => {
         [getCampaignEventsTotalsData],
         [getCampaignOrderTotalsData],
         [getRevenueUpliftGraphData],
+        [getCampaignsPerformanceGraphData],
     ])('%p should call load', async (cubeFn) => {
         // arrange
         let expectedParams

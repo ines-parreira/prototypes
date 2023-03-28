@@ -1,6 +1,7 @@
 import React from 'react'
 import {CampaignTotalsStat} from 'pages/stats/revenue/components/CampaignTotalsStat'
 import {CampaignRevenueUpliftStat} from 'pages/stats/revenue/components/CampaignRevenueUpliftStat'
+import {CampaignChatPerformanceStat} from 'pages/stats/revenue/components/CampaignChatPerformanceStat'
 
 export const RevenueStatsContent = () => {
     const handleError = (error: Error) => {
@@ -11,6 +12,7 @@ export const RevenueStatsContent = () => {
         <div>
             <CampaignTotalsStat onError={handleError} />
             <CampaignRevenueUpliftStat onError={handleError} />
+            <CampaignChatPerformanceStat onError={handleError} />
         </div>
     )
 }

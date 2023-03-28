@@ -2,14 +2,19 @@ import _get from 'lodash/get'
 import _reduce from 'lodash/reduce'
 import _parseInt from 'lodash/parseInt'
 import _mapValues from 'lodash/mapValues'
+import _unzip from 'lodash/unzip'
+import _values from 'lodash/values'
+import _zip from 'lodash/zip'
 import moment from 'moment'
 import {
+    CampaignGraphData,
     CampaignPerformanceData,
     CampaignsPerformanceDataset,
     CampaignStat,
-    CampaignStatData,
     CampaignsTotals,
     RevenueGraphDataPoint,
+    StatData,
+    TicketPerformanceData,
 } from 'pages/stats/revenue/services/types'
 import {Stat, StatType} from 'models/stat/types'
 import {
@@ -26,13 +31,17 @@ import {
     OrderConversionDimensions,
     OrderConversionMeasures,
 } from 'pages/stats/revenue/clients/constants'
+import {
+    COMPARISON_DATA_FORMAT,
+    GRAPH_LABEL_DATE_FORMAT,
+} from 'pages/stats/revenue/services/constants'
 
 export const getDataFromResultSet = (resultSet: CubeResponse): CubeData => {
     return _get(resultSet, 'data', []) as CubeData
 }
 
-export const getDataFromStatResult = (result: Stat): CampaignStatData => {
-    return _get(result, 'data.data', []) as CampaignStatData
+export const getDataFromStatResult = (result: Stat): StatData => {
+    return _get(result, 'data.data', []) as StatData
 }
 
 export const transformToCampaignEventsTotals = (
@@ -102,28 +111,119 @@ export const transformToRevenueUpliftOverTime = (
     dataPoint: CubeMetric,
     granularityValue: TimeGranularity
 ): RevenueGraphDataPoint => {
+    return _transformToGraphOverTime(
+        dataPoint,
+        OrderConversionMeasures.influencedRevenueUplift,
+        `${OrderConversionDimensions.createdDatatime}.${granularityValue}`,
+        GRAPH_LABEL_DATE_FORMAT
+    )
+}
+
+export const transformToCampaignCTROverTime = (
+    dataPoint: CubeMetric,
+    granularityValue: TimeGranularity
+): RevenueGraphDataPoint => {
+    return _transformToGraphOverTime(
+        dataPoint,
+        CampaignOrderEventsMeasures.campaignCTR,
+        `${CampaignOrderEventsDimensions.createdDatatime}.${granularityValue}`
+    )
+}
+
+export const transformToCampaignConversionRateOverTime = (
+    dataPoint: CubeMetric,
+    granularityValue: TimeGranularity
+): RevenueGraphDataPoint => {
+    return _transformToGraphOverTime(
+        dataPoint,
+        CampaignOrderEventsMeasures.totalConversionRate,
+        `${CampaignOrderEventsDimensions.createdDatatime}.${granularityValue}`
+    )
+}
+
+const _transformToGraphOverTime = (
+    dataPoint: CubeMetric,
+    yColname: string,
+    xDateColname: string,
+    dateFormat: string = COMPARISON_DATA_FORMAT
+): RevenueGraphDataPoint => {
     return {
-        y: parseFloat(
-            _get(
-                dataPoint,
-                OrderConversionMeasures.influencedRevenueUplift,
-                '0'
-            )
-        ),
-        x: moment(
-            _get(
-                dataPoint,
-                `${OrderConversionDimensions.createdDatatime}.${granularityValue}`
-            )
-        ).format('MMM'),
+        y: parseFloat(_get(dataPoint, yColname, '0')),
+        x: moment(_get(dataPoint, xDateColname)).format(dateFormat),
     }
+}
+
+export const transformToChatConversionRateOverTime = (
+    data: CampaignGraphData
+): RevenueGraphDataPoint[] => {
+    const combinedData = _zip(
+        data.axes.x, // timestamps
+        data.lines[0].data, // tickets created
+        data.lines[1].data // tickets converted
+    )
+
+    return combinedData.map(([x, ticketsCreated, ticketsConverted]) => {
+        const created = ticketsCreated === undefined ? 0 : ticketsCreated
+        const converted = ticketsConverted === undefined ? 0 : ticketsConverted
+        return {
+            y: created > 0 ? (converted * 100) / created : 0,
+            x:
+                x === undefined
+                    ? ''
+                    : moment.unix(x).format(COMPARISON_DATA_FORMAT),
+        }
+    })
+}
+
+export const backfillGraphData = (
+    data: RevenueGraphDataPoint[][],
+    startDate: string,
+    endDate: string
+): RevenueGraphDataPoint[][] => {
+    const allDates = _getDefaultsForAllDates(startDate, endDate, data.length)
+
+    data.map((dataSet: RevenueGraphDataPoint[], i) => {
+        dataSet.map((dataPoint: RevenueGraphDataPoint) => {
+            // override default value in allDates with actual data
+            if (dataPoint.x in allDates) {
+                allDates[dataPoint.x][i] = {
+                    x: allDates[dataPoint.x][i].x, // display-formatted date
+                    y: dataPoint.y,
+                }
+            }
+        })
+    })
+
+    return _unzip(_values(allDates))
+}
+
+const _getDefaultsForAllDates = (
+    startDate: string,
+    endDate: string,
+    defaultsLength: number
+): {[key: string]: RevenueGraphDataPoint[]} => {
+    let start = moment(startDate)
+    const end = moment(endDate)
+
+    // allDates will contain `defaultsLength` long array
+    const allDates = {} as {[key: string]: RevenueGraphDataPoint[]}
+    while (start <= end) {
+        allDates[start.format(COMPARISON_DATA_FORMAT)] = new Array(
+            defaultsLength
+        ).fill({
+            x: start.format(GRAPH_LABEL_DATE_FORMAT),
+            y: 0,
+        })
+        start = moment(start).add(1, 'days')
+    }
+    return allDates
 }
 
 export const transformToCampaignsPerformanceTable = (
     eventsData: CubeData,
     ordersData: CubeData,
     campaignsOrdersData: CubeData,
-    ticketsData: CampaignStatData
+    ticketsData: TicketPerformanceData
 ): CampaignsPerformanceDataset => {
     const eventsDataset = _reduce(eventsData, _eventsPerformanceReducer, {})
     const ordersDataset = _reduce(

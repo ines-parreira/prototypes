@@ -1,12 +1,34 @@
 import {StatType} from 'models/stat/types'
 
-export type CampaignStat = any[]
+export type CampaignStat = number[]
 
-export type CampaignStatData = CampaignStat[]
+export type CampaignStatData = CampaignStat
+
+export type Line = {
+    data: CampaignStat
+}
+
+export type CampaignGraphData = {
+    axes: {
+        x: CampaignStat
+        y: CampaignStat
+    }
+    lines: Line[]
+}
+
+export type TicketPerformanceData = CampaignStat[]
+
+export type StatData = TicketPerformanceData | CampaignGraphData
 
 export type RevenueGraphDataPoint = {
     x: string
     y: number
+}
+
+export type CampaignChatPerformanceData = {
+    campaignCTR: RevenueGraphDataPoint[]
+    campaignConversionRate: RevenueGraphDataPoint[]
+    chatConversionRate: RevenueGraphDataPoint[]
 }
 
 export type CampaignPerformanceData = {

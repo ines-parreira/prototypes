@@ -7,3 +7,6 @@ export enum CampaignsTotalsMetricNames {
     influencedRevenueUplift = 'influencedRevenueUplift',
     revenue = 'revenue',
 }
+
+export const GRAPH_LABEL_DATE_FORMAT = 'MMM Do'
+export const COMPARISON_DATA_FORMAT = 'YYYY-MM-DD'

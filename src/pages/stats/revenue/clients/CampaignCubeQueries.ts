@@ -238,3 +238,33 @@ export const getRevenueUpliftGraphData = async ({
         }),
     })
 }
+
+export const getCampaignsPerformanceGraphData = async ({
+    shopName,
+    campaignIds,
+    startDate,
+    endDate,
+    granularity = 'day',
+}: CubeFilterParams): Promise<CubeResponse> => {
+    return await client.load({
+        dimensions: [CampaignOrderEventsDimensions.accountId],
+        timeDimensions: [
+            {
+                dimension: CampaignOrderEventsDimensions.createdDatatime,
+                dateRange: [startDate, endDate],
+                granularity: granularity,
+            },
+        ],
+        measures: [
+            CampaignOrderEventsMeasures.campaignCTR,
+            CampaignOrderEventsMeasures.totalConversionRate,
+        ],
+        filters: _getDefaultFilters({
+            startDate,
+            endDate,
+            cubeName: Cubes.campaignOrderEvents,
+            campaignIds,
+            shopName,
+        }),
+    })
+}
