@@ -5,6 +5,7 @@ import {
     RouteComponentProps,
     Switch,
     useLocation,
+    useRouteMatch,
 } from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 
@@ -1257,25 +1258,19 @@ export function SelfServiceSettingsRoutes({
     )
 }
 
-export function MacrosSettingsRoutes({
-    match: {path},
-    navbar = SettingsNavbar,
-    isReadonlyForAll,
-}: RouteComponentPropsWithNavbar & {isReadonlyForAll?: boolean}) {
+export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
     return (
         <Switch>
             <Route
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: isReadonlyForAll
-                        ? MacrosSettingsContent
-                        : memoizedWithUserRoleRequired(
-                              MacrosSettingsContent,
-                              AGENT_ROLE,
-                              PageSection.Macros
-                          ),
-                    navbar,
+                    content: memoizedWithUserRoleRequired(
+                        MacrosSettingsContent,
+                        AGENT_ROLE,
+                        PageSection.Macros
+                    ),
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -1287,32 +1282,26 @@ export function MacrosSettingsRoutes({
                         AGENT_ROLE,
                         PageSection.Macros
                     ),
-                    navbar,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
                 path={`${path}/:macroId`}
                 exact
                 render={appRender({
-                    content: isReadonlyForAll
-                        ? MacrosSettingsForm
-                        : memoizedWithUserRoleRequired(
-                              MacrosSettingsForm,
-                              AGENT_ROLE,
-                              PageSection.Macros
-                          ),
-                    navbar,
+                    content: memoizedWithUserRoleRequired(
+                        MacrosSettingsForm,
+                        AGENT_ROLE,
+                        PageSection.Macros
+                    ),
+                    navbar: SettingsNavbar,
                 })}
             />
         </Switch>
     )
 }
 
-export function RulesSettingsRoute({
-    match: {path},
-    navbar = SettingsNavbar,
-    isReadonlyForAll,
-}: RouteComponentPropsWithNavbar & {isReadonlyForAll?: boolean}) {
+export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
     return (
         <HelpCenterApiClientProvider>
             <Switch>
@@ -1320,28 +1309,24 @@ export function RulesSettingsRoute({
                     path={`${path}/`}
                     exact
                     render={appRender({
-                        content: isReadonlyForAll
-                            ? RulesView
-                            : memoizedWithUserRoleRequired(
-                                  RulesView,
-                                  AGENT_ROLE,
-                                  PageSection.Rules
-                              ),
-                        navbar,
+                        content: memoizedWithUserRoleRequired(
+                            RulesView,
+                            AGENT_ROLE,
+                            PageSection.Rules
+                        ),
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
                     path={`${path}/library`}
                     exact
                     render={appRender({
-                        content: isReadonlyForAll
-                            ? RulesLibrary
-                            : memoizedWithUserRoleRequired(
-                                  RulesLibrary,
-                                  AGENT_ROLE,
-                                  PageSection.Rules
-                              ),
-                        navbar,
+                        content: memoizedWithUserRoleRequired(
+                            RulesLibrary,
+                            AGENT_ROLE,
+                            PageSection.Rules
+                        ),
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
@@ -1353,21 +1338,19 @@ export function RulesSettingsRoute({
                             AGENT_ROLE,
                             PageSection.Rules
                         ),
-                        navbar,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
                     path={`${path}/:ruleId`}
                     exact
                     render={appRender({
-                        content: isReadonlyForAll
-                            ? RuleDetailForm
-                            : memoizedWithUserRoleRequired(
-                                  RuleDetailForm,
-                                  AGENT_ROLE,
-                                  PageSection.Rules
-                              ),
-                        navbar,
+                        content: memoizedWithUserRoleRequired(
+                            RuleDetailForm,
+                            AGENT_ROLE,
+                            PageSection.Rules
+                        ),
+                        navbar: SettingsNavbar,
                     })}
                 />
             </Switch>
@@ -1376,39 +1359,9 @@ export function RulesSettingsRoute({
 }
 
 export function AutomationRoutes({match: {path}}: RouteComponentProps) {
-    const isflowsBetaEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.FlowsBeta]
     return (
         <HelpCenterApiClientProvider>
             <Switch>
-                <Route
-                    path={`${path}/macros`}
-                    render={(props) => (
-                        <MacrosSettingsRoutes
-                            {...props}
-                            navbar={AutomationNavbar}
-                            isReadonlyForAll
-                        />
-                    )}
-                />
-                <Route
-                    path={`${path}/rules`}
-                    render={(props) => (
-                        <RulesSettingsRoute
-                            {...props}
-                            navbar={AutomationNavbar}
-                            isReadonlyForAll
-                        />
-                    )}
-                />
-                <Route
-                    path={`${path}/ticket-assignment`}
-                    exact
-                    render={appRender({
-                        content: TicketAssignment,
-                        navbar: AutomationNavbar,
-                    })}
-                />
                 <Route
                     path={`${path}/self-service`}
                     render={(props) => (
@@ -1420,192 +1373,197 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                     )}
                 />
                 <Route
-                    path={`${path}/:shopType/:shopName/quick-responses`}
-                    exact
                     render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            QuickResponsesViewContainer,
-                            AGENT_ROLE
-                        ),
-                        navbar: AutomationNavbar,
-                    })}
-                />
-                {isflowsBetaEnabled && (
-                    <Route
-                        path={`${path}/:shopType/:shopName/flows`}
-                        exact
-                        render={appRender({
-                            content: memoizedWithUserRoleRequired(
-                                WorkflowsViewContainer,
-                                AGENT_ROLE
-                            ),
-                            navbar: AutomationNavbar,
-                        })}
-                    />
-                )}
-                {isflowsBetaEnabled && (
-                    <Route
-                        path={`${path}/:shopType/:shopName/flows/new`}
-                        exact
-                        render={appRender({
-                            content: memoizedWithUserRoleRequired(
-                                WorkflowEditorViewContainer,
-                                AGENT_ROLE
-                            ),
-                            navbar: AutomationNavbar,
-                        })}
-                    />
-                )}
-                {isflowsBetaEnabled && (
-                    <Route
-                        path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
-                        exact
-                        render={appRender({
-                            content: memoizedWithUserRoleRequired(
-                                WorkflowEditorViewContainer,
-                                AGENT_ROLE
-                            ),
-                            navbar: AutomationNavbar,
-                        })}
-                    />
-                )}
-                <Route
-                    path={[
-                        `${path}/shopify/:shopName/order-management`,
-                        `${path}/shopify/:shopName/order-management/return`,
-                        `${path}/shopify/:shopName/order-management/cancel`,
-                        `${path}/shopify/:shopName/order-management/cancel`,
-                        `${path}/shopify/:shopName/order-management/report-issue`,
-                        `${path}/shopify/:shopName/order-management/report-issue/new`,
-                        `${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`,
-                    ]}
-                    exact
-                >
-                    <SelfServiceHelpCentersProvider>
-                        <OrderManagementPreviewProvider>
-                            <Switch>
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management`}
-                                    exact
-                                    render={appRender({
-                                        content: memoizedWithUserRoleRequired(
-                                            OrderManagementViewContainer,
-                                            AGENT_ROLE
-                                        ),
-                                        navbar: AutomationNavbar,
-                                    })}
-                                />
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management/return`}
-                                    exact
-                                    render={appRender({
-                                        content: memoizedWithUserRoleRequired(
-                                            ReturnOrderFlowViewContainer,
-                                            AGENT_ROLE
-                                        ),
-                                        navbar: AutomationNavbar,
-                                    })}
-                                />
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management/cancel`}
-                                    exact
-                                    render={appRender({
-                                        content: memoizedWithUserRoleRequired(
-                                            CancelOrderFlowViewContainer,
-                                            AGENT_ROLE
-                                        ),
-                                        navbar: AutomationNavbar,
-                                    })}
-                                />
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management/report-issue`}
-                                    exact
-                                    render={appRender({
-                                        content: memoizedWithUserRoleRequired(
-                                            ReportOrderIssueFlowViewContainer,
-                                            AGENT_ROLE
-                                        ),
-                                        navbar: AutomationNavbar,
-                                    })}
-                                />
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management/report-issue/new`}
-                                    exact
-                                    render={appRender({
-                                        content: memoizedWithUserRoleRequired(
-                                            CreateReportOrderIssueFlowScenarioViewContainer,
-                                            AGENT_ROLE
-                                        ),
-                                        navbar: AutomationNavbar,
-                                    })}
-                                />
-                                <Route
-                                    path={`${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`}
-                                    exact
-                                    render={appRender({
-                                        content: memoizedWithUserRoleRequired(
-                                            EditReportOrderIssueFlowScenarioViewContainer,
-                                            AGENT_ROLE
-                                        ),
-                                        navbar: AutomationNavbar,
-                                    })}
-                                />
-                            </Switch>
-                        </OrderManagementPreviewProvider>
-                    </SelfServiceHelpCentersProvider>
-                </Route>
-                <Route
-                    path={`${path}/:shopType/:shopName/article-recommendation`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            ArticleRecommendationViewContainer,
-                            AGENT_ROLE
-                        ),
-                        navbar: AutomationNavbar,
-                    })}
-                />
-                <Route path={`${path}/:shopType/:shopName/connected-channels`}>
-                    <SelfServiceHelpCentersProvider>
-                        <Route
-                            path={`${path}/:shopType/:shopName/connected-channels`}
-                            exact
-                            render={appRender({
-                                content: memoizedWithUserRoleRequired(
-                                    ConnectedChannelsViewContainer,
-                                    AGENT_ROLE
-                                ),
-                                navbar: AutomationNavbar,
-                            })}
-                        />
-                    </SelfServiceHelpCentersProvider>
-                </Route>
-                <Route
-                    path={`${path}/quick-responses`}
-                    exact
-                    render={appRender({
-                        children: <QuickResponsesPaywallView />,
-                        navbar: AutomationNavbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/order-management`}
-                    exact
-                    render={appRender({
-                        children: <OrderManagementPaywallView />,
-                        navbar: AutomationNavbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/article-recommendation`}
-                    exact
-                    render={appRender({
-                        children: <ArticleRecommendationPaywallView />,
+                        content: AutomationContent,
                         navbar: AutomationNavbar,
                     })}
                 />
             </Switch>
         </HelpCenterApiClientProvider>
+    )
+}
+
+function AutomationContent() {
+    const isflowsBetaEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.FlowsBeta]
+    const {path} = useRouteMatch()
+
+    return (
+        <Switch>
+            <Route path={`${path}/macros`} exact>
+                <MacrosSettingsContent />
+            </Route>
+            <Route
+                path={`${path}/macros/new`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    MacrosSettingsForm,
+                    AGENT_ROLE,
+                    PageSection.Macros
+                )}
+            />
+            <Route path={`${path}/macros/:macroId`} exact>
+                <MacrosSettingsForm />
+            </Route>
+            <Route path={`${path}/rules`} exact>
+                <RulesView />
+            </Route>
+            <Route path={`${path}/rules/library`} exact>
+                <RulesLibrary />
+            </Route>
+            <Route
+                path={`${path}/rules/new`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    RuleDetailForm,
+                    AGENT_ROLE,
+                    PageSection.Rules
+                )}
+            />
+            <Route path={`${path}/rules/:ruleId`} exact>
+                <RuleDetailForm />
+            </Route>
+            <Route path={`${path}/ticket-assignment`} exact>
+                <TicketAssignment />
+            </Route>
+            <Route
+                path={`${path}/:shopType/:shopName/quick-responses`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    QuickResponsesViewContainer,
+                    AGENT_ROLE
+                )}
+            />
+            {isflowsBetaEnabled && (
+                <Route
+                    path={`${path}/:shopType/:shopName/flows`}
+                    exact
+                    component={memoizedWithUserRoleRequired(
+                        WorkflowsViewContainer,
+                        AGENT_ROLE
+                    )}
+                />
+            )}
+            {isflowsBetaEnabled && (
+                <Route
+                    path={`${path}/:shopType/:shopName/flows/new`}
+                    exact
+                    component={memoizedWithUserRoleRequired(
+                        WorkflowEditorViewContainer,
+                        AGENT_ROLE
+                    )}
+                />
+            )}
+            {isflowsBetaEnabled && (
+                <Route
+                    path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
+                    exact
+                    component={memoizedWithUserRoleRequired(
+                        WorkflowEditorViewContainer,
+                        AGENT_ROLE
+                    )}
+                />
+            )}
+            <Route
+                path={[
+                    `${path}/shopify/:shopName/order-management`,
+                    `${path}/shopify/:shopName/order-management/return`,
+                    `${path}/shopify/:shopName/order-management/cancel`,
+                    `${path}/shopify/:shopName/order-management/cancel`,
+                    `${path}/shopify/:shopName/order-management/report-issue`,
+                    `${path}/shopify/:shopName/order-management/report-issue/new`,
+                    `${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`,
+                ]}
+                exact
+            >
+                <SelfServiceHelpCentersProvider>
+                    <OrderManagementPreviewProvider>
+                        <Switch>
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management`}
+                                exact
+                                component={memoizedWithUserRoleRequired(
+                                    OrderManagementViewContainer,
+                                    AGENT_ROLE
+                                )}
+                            />
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management/return`}
+                                exact
+                                component={memoizedWithUserRoleRequired(
+                                    ReturnOrderFlowViewContainer,
+                                    AGENT_ROLE
+                                )}
+                            />
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management/cancel`}
+                                exact
+                                component={memoizedWithUserRoleRequired(
+                                    CancelOrderFlowViewContainer,
+                                    AGENT_ROLE
+                                )}
+                            />
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management/report-issue`}
+                                exact
+                                component={memoizedWithUserRoleRequired(
+                                    ReportOrderIssueFlowViewContainer,
+                                    AGENT_ROLE
+                                )}
+                            />
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management/report-issue/new`}
+                                exact
+                                component={memoizedWithUserRoleRequired(
+                                    CreateReportOrderIssueFlowScenarioViewContainer,
+                                    AGENT_ROLE
+                                )}
+                            />
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`}
+                                exact
+                                component={memoizedWithUserRoleRequired(
+                                    EditReportOrderIssueFlowScenarioViewContainer,
+                                    AGENT_ROLE
+                                )}
+                            />
+                        </Switch>
+                    </OrderManagementPreviewProvider>
+                </SelfServiceHelpCentersProvider>
+            </Route>
+            <Route
+                path={`${path}/:shopType/:shopName/article-recommendation`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    ArticleRecommendationViewContainer,
+                    AGENT_ROLE
+                )}
+            />
+            <Route path={`${path}/:shopType/:shopName/connected-channels`}>
+                <SelfServiceHelpCentersProvider>
+                    <Route
+                        path={`${path}/:shopType/:shopName/connected-channels`}
+                        exact
+                        component={memoizedWithUserRoleRequired(
+                            ConnectedChannelsViewContainer,
+                            AGENT_ROLE
+                        )}
+                    />
+                </SelfServiceHelpCentersProvider>
+            </Route>
+            <Route path={`${path}/quick-responses`} exact>
+                <QuickResponsesPaywallView />
+            </Route>
+            <Route path={`${path}/order-management`} exact>
+                <OrderManagementPaywallView />
+            </Route>
+            <Route path={`${path}/article-recommendation`} exact>
+                <ArticleRecommendationPaywallView />
+            </Route>
+            <Route>
+                <Redirect to="/app/automation/macros" />
+            </Route>
+        </Switch>
     )
 }
 
