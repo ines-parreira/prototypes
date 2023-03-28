@@ -225,10 +225,7 @@ export const getRevenueUpliftGraphData = async ({
             },
         ],
         measures: [OrderConversionMeasures.influencedRevenueUplift],
-        // TODO: return order back once analytics supports it
-        // order: {
-        //     [OrderConversionDimensions.createdDatetime]: 'asc',
-        // },
+        order: [[OrderConversionDimensions.createdDatatime, 'asc']],
         filters: _getDefaultFilters({
             startDate,
             endDate,
@@ -259,6 +256,7 @@ export const getCampaignsPerformanceGraphData = async ({
             CampaignOrderEventsMeasures.campaignCTR,
             CampaignOrderEventsMeasures.totalConversionRate,
         ],
+        order: [[CampaignOrderEventsDimensions.createdDatatime, 'asc']],
         filters: _getDefaultFilters({
             startDate,
             endDate,

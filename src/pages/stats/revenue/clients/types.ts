@@ -8,7 +8,7 @@ export type CubeQueryBody = {
     measures?: string[]
     dimensions?: string[]
     timeDimensions?: KeyValuePair[]
-    order?: KeyValuePair
+    order?: string[][]
     filters?: KeyValuePair[]
     segments?: string[]
     limit?: number
