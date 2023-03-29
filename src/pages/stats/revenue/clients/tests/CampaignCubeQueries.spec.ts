@@ -9,6 +9,7 @@ import {
     getCampaignsPerformanceGraphData,
     getRevenueUpliftGraphData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
+import {ANALYTICS_ENDPOINT} from 'models/analytics/resources'
 
 const mockedServer = new MockAdapter(client)
 
@@ -39,7 +40,7 @@ describe('Calling CubeClient functions', () => {
         let expectedParams
         const expectedResponse = {hello: cubeFn.toString()}
 
-        mockedServer.onGet('/api/analytics/').reply((config) => {
+        mockedServer.onGet(ANALYTICS_ENDPOINT).reply((config) => {
             expectedParams = config.params
             return [200, expectedResponse]
         })
