@@ -85,8 +85,10 @@ export default class Actions extends Component<Props, State> {
                                 arg as keyof typeof action.arguments
                             ]
 
-                        if (typeof value === 'boolean') {
-                            value = value.toString()
+                        if (typeof value === 'object') {
+                            value = JSON.stringify(value)
+                        } else {
+                            value = String(value)
                         }
 
                         return (

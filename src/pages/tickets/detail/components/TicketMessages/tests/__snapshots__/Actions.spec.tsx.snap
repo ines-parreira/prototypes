@@ -61,6 +61,38 @@ exports[`Actions component should display the action badge without arguments 1`]
 </span>
 `;
 
+exports[`Actions component should not crash when passing objects to Shopify actions 1`] = `
+<div
+  class="wrapper"
+  id="modal-14-desc"
+>
+  <p>
+    <b>
+      restock
+      :
+    </b>
+     
+    true
+  </p>
+  <p>
+    <b>
+      order_id
+      :
+    </b>
+     
+    1234
+  </p>
+  <p>
+    <b>
+      object_value
+      :
+    </b>
+     
+    {"key":"value"}
+  </p>
+</div>
+`;
+
 exports[`Actions component should open modal when clicking more details on http or shopify tooltip 1`] = `
 <div
   class="tooltip-inner"

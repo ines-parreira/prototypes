@@ -140,4 +140,29 @@ describe('Actions component', () => {
         fireEvent.click(await findByText('More details'))
         expect((await findByText('order_id:')).closest('div')).toMatchSnapshot()
     })
+
+    it('should not crash when passing objects to Shopify actions', async () => {
+        const minArguments = {
+            restock: true,
+            order_id: 1234,
+            object_value: {
+                key: 'value',
+            },
+        }
+        const messageWithRefund: TicketMessage = {
+            ...defaultMessage,
+            actions: [
+                {
+                    ...defaultAction,
+                    name: MacroActionName.ShopifyFullRefundLastOrder,
+                    title: 'Refund Action',
+                    arguments: minArguments,
+                },
+            ],
+        }
+        const {findByText} = render(<Actions message={messageWithRefund} />)
+        fireEvent.mouseOver(await findByText('Refund Action'))
+        fireEvent.click(await findByText('More details'))
+        expect((await findByText('order_id:')).closest('div')).toMatchSnapshot()
+    })
 })
