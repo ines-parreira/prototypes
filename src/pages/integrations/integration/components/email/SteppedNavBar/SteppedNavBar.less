@@ -1,0 +1,38 @@
+@import '~css/new/layout.less';
+@import '~css/new/colorTokens.less';
+
+:local {
+    .container {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .line {
+        width: 100%;
+        height: 1px;
+        position: absolute;
+        background-color: @classic-neutral-grey-3;
+        z-index: -1;
+    }
+
+    .stepContainer {
+        padding: 0 @layout-spacing-xs;
+        background-color: @classic-neutral-grey-0;
+    }
+
+    .step {
+        border-radius: 50px;
+        padding: 6px @layout-spacing-s;
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+        font-weight: 500;
+
+        &.active {
+            background-color: @classic-main-primary-0;
+            color: @classic-main-primary-3;
+        }
+    }
+}

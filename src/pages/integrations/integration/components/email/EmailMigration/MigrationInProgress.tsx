@@ -11,17 +11,20 @@ import Loader from 'pages/common/components/Loader/Loader'
 import {SET_EMAIL_PROVIDER_MIGRATIONS} from 'state/integrations/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import {getEmailMigrations} from 'state/integrations/selectors'
+import SteppedNavBar from '../SteppedNavBar/SteppedNavBar'
 import MigrationEmailForwarding from './MigrationEmailForwarding'
 import {getInboundUnverifiedMigrations} from './utils'
 import MigrationOutboundVerification from './MigrationOutboundVerification'
 
 enum VerificationStep {
-    InboundVerification = 'InboundVerification',
-    DomainVerification = 'DomainVerification',
+    InboundVerification = 0,
+    DomainVerification = 1,
 }
 
 export default function MigrationInProgress() {
-    const [currentStep, setCurrentStep] = useState<VerificationStep>()
+    const [currentStep, setCurrentStep] = useState<VerificationStep | null>(
+        null
+    )
     const migrations = useAppSelector(getEmailMigrations)
 
     const dispatch = useAppDispatch()
@@ -55,17 +58,25 @@ export default function MigrationInProgress() {
         void loadMigrations()
     })
 
+    const isInboundVerificationStepComplete =
+        !inboundUnverifiedMigrations.length
+
     /* default to "Email forwarding" step when there are migrations
      * that are not inbound verified when first loading the page */
     useEffect(() => {
-        if (migrations.length && !currentStep) {
+        if (migrations.length && currentStep === null) {
             setCurrentStep(
-                inboundUnverifiedMigrations.length
-                    ? VerificationStep.InboundVerification
-                    : VerificationStep.DomainVerification
+                isInboundVerificationStepComplete
+                    ? VerificationStep.DomainVerification
+                    : VerificationStep.InboundVerification
             )
         }
-    }, [inboundUnverifiedMigrations, setCurrentStep, currentStep, migrations])
+    }, [
+        isInboundVerificationStepComplete,
+        setCurrentStep,
+        currentStep,
+        migrations,
+    ])
 
     if (loading) return <Loader />
 
@@ -73,7 +84,22 @@ export default function MigrationInProgress() {
         <div data-testid="migration-pending">
             <Container fluid className={settingsCss.pageContainer}>
                 <Col lg={6} xl={7} className="mb-5">
-                    NAVIGATION BAR HERE
+                    {currentStep !== null && (
+                        <SteppedNavBar
+                            activeStep={currentStep}
+                            steps={[
+                                {
+                                    name: 'Email forwarding',
+                                    isComplete:
+                                        isInboundVerificationStepComplete,
+                                },
+                                {
+                                    name: 'Outbound verification',
+                                    isComplete: false,
+                                },
+                            ]}
+                        />
+                    )}
                 </Col>
 
                 {currentStep === VerificationStep.InboundVerification && (
