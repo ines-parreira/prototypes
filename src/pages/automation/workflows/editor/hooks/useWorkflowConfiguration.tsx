@@ -14,6 +14,7 @@ import useWorkflowApi, {
     MessageContent,
     WorkflowConfiguration,
     WorkflowStepChoices,
+    wasThisHelpfulWorkflowId,
 } from '../../hooks/useWorkflowApi'
 import useOnLoaded from './useOnLoaded'
 
@@ -242,12 +243,20 @@ export function reducer(
                 choice.label = action.label
             })
         case 'ADD_REPLY_BUTTONS': {
-            const nextConfiguration = produce(configuration, (draft) => {
+            const wasThisHelpfulStepId = configuration.transitions.find(
+                (t) => t.from_step_id === action.step_id
+            )?.to_step_id
+            let nextConfiguration = wasThisHelpfulStepId
+                ? deleteConfigurationBranch(configuration, wasThisHelpfulStepId)
+                : configuration
+            nextConfiguration = produce(nextConfiguration, (draft) => {
                 const choicesStepId = ulid()
                 const choiceEventA = ulid()
                 const choiceEventB = ulid()
                 const automatedMessageA = ulid()
                 const automatedMessageB = ulid()
+                const wasThisHelpfulA = ulid()
+                const wasThisHelpfulB = ulid()
                 draft.steps.push(
                     {
                         id: choicesStepId,
@@ -292,6 +301,20 @@ export function reducer(
                                 },
                             ],
                         },
+                    },
+                    {
+                        id: wasThisHelpfulA,
+                        kind: 'workflow_call',
+                        settings: {
+                            configuration_id: wasThisHelpfulWorkflowId,
+                        },
+                    },
+                    {
+                        id: wasThisHelpfulB,
+                        kind: 'workflow_call',
+                        settings: {
+                            configuration_id: wasThisHelpfulWorkflowId,
+                        },
                     }
                 )
                 draft.transitions.push(
@@ -317,6 +340,16 @@ export function reducer(
                         },
                         from_step_id: choicesStepId,
                         to_step_id: automatedMessageB,
+                    },
+                    {
+                        id: ulid(),
+                        from_step_id: automatedMessageA,
+                        to_step_id: wasThisHelpfulA,
+                    },
+                    {
+                        id: ulid(),
+                        from_step_id: automatedMessageB,
+                        to_step_id: wasThisHelpfulB,
                     }
                 )
             })
@@ -329,6 +362,7 @@ export function reducer(
             if (!choicesStepId) return configuration
             const choiceEventId = ulid()
             const automatedMessageId = ulid()
+            const wasThisHelpfulId = ulid()
             return produce(configuration, (draft) => {
                 const choicesStep = draft.steps.find<WorkflowStepChoices>(
                     (s): s is WorkflowStepChoices =>
@@ -338,29 +372,45 @@ export function reducer(
                     event_id: choiceEventId,
                     label: '',
                 })
-                draft.steps.push({
-                    id: automatedMessageId,
-                    kind: 'messages',
-                    settings: {
-                        messages: [
-                            {
-                                content: {
-                                    html: '',
-                                    text: '',
+                draft.steps.push(
+                    {
+                        id: automatedMessageId,
+                        kind: 'messages',
+                        settings: {
+                            messages: [
+                                {
+                                    content: {
+                                        html: '',
+                                        text: '',
+                                    },
                                 },
-                            },
-                        ],
+                            ],
+                        },
                     },
-                })
-                draft.transitions.push({
-                    id: ulid(),
-                    from_step_id: choicesStepId,
-                    to_step_id: automatedMessageId,
-                    event: {
-                        id: choiceEventId,
-                        kind: 'choices',
+                    {
+                        id: wasThisHelpfulId,
+                        kind: 'workflow_call',
+                        settings: {
+                            configuration_id: wasThisHelpfulWorkflowId,
+                        },
+                    }
+                )
+                draft.transitions.push(
+                    {
+                        id: ulid(),
+                        from_step_id: choicesStepId,
+                        to_step_id: automatedMessageId,
+                        event: {
+                            id: choiceEventId,
+                            kind: 'choices',
+                        },
                     },
-                })
+                    {
+                        id: ulid(),
+                        from_step_id: automatedMessageId,
+                        to_step_id: wasThisHelpfulId,
+                    }
+                )
             })
         }
         case 'DELETE_CHOICE': {

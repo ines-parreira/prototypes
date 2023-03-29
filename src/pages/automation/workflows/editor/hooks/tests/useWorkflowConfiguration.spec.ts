@@ -88,7 +88,7 @@ describe('useWorkflowConfiguration', () => {
         expect(result.current.hookError).toBeDefined()
     })
 
-    it('reflect changes on workflow name', async () => {
+    it('reflects changes on workflow name', async () => {
         updateMock({
             fetchWorkflowConfiguration: () =>
                 Promise.resolve({
@@ -159,9 +159,14 @@ describe('useWorkflowConfiguration', () => {
         const stepsMessages = withReplyButtons.steps.filter(
             (s) => s.kind === 'messages' && s.id !== 's1'
         )
+        const stepsWorkflowCall = withReplyButtons.steps.filter(
+            (s) => s.kind === 'workflow_call'
+        )
         const stepMessagesIds = new Set(stepsMessages.map((s) => s.id))
+        const stepWorkflowCallIds = new Set(stepsWorkflowCall.map((s) => s.id))
         expect(stepsChoices.length).toEqual(1)
         expect(stepsMessages.length).toEqual(2)
+        expect(stepsWorkflowCall.length).toEqual(2)
         // there should be a a transition from the s1 step to the choices step
         expect(
             withReplyButtons.transitions.find(
@@ -180,6 +185,13 @@ describe('useWorkflowConfiguration', () => {
             choicesTransitions.map((t) => t.to_step_id)
         )
         expect(transitionsTargets).toEqual(stepMessagesIds)
+        // there should be two transitions from the two leaves messages nodes going to the workflow call steps
+        const workflowCallTransitionsTargets = new Set(
+            withReplyButtons.transitions
+                .filter((t) => stepMessagesIds.has(t.from_step_id))
+                .map((t) => t.to_step_id)
+        )
+        expect(workflowCallTransitionsTargets).toEqual(stepWorkflowCallIds)
 
         const withModifiedReplyButton = reducer(withReplyButtons, {
             type: 'SET_REPLY_BUTTON_LABEL',

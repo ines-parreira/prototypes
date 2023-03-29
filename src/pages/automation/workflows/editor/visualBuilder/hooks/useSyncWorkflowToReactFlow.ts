@@ -113,6 +113,7 @@ function transitionToEdges(
     steps: WorkflowConfiguration['steps']
 ): Edge[] {
     const destinationStep = steps.find((s) => s.id === t.to_step_id)!
+    if (destinationStep.kind === 'workflow_call') return []
     if (destinationStep.kind === 'choices') {
         return destinationStep.settings.choices.map((choice) =>
             newEdge(`${t.from_step_id}`, `${t.to_step_id}-${choice.event_id}`)

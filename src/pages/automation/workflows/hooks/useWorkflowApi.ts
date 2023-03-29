@@ -44,6 +44,14 @@ export type WorkflowStepChoices = {
     }
 }
 
+export type WorkflowStepWorkflowCall = {
+    id: string
+    kind: 'workflow_call'
+    settings: {
+        configuration_id: string
+    }
+}
+
 export type WorkflowConfiguration = {
     id: string
     internal_id: string
@@ -51,7 +59,9 @@ export type WorkflowConfiguration = {
     is_draft: boolean
     name: string
     initial_step_id: string
-    steps: Array<WorkflowStepMessages | WorkflowStepChoices>
+    steps: Array<
+        WorkflowStepMessages | WorkflowStepChoices | WorkflowStepWorkflowCall
+    >
     transitions: Array<{
         id: string
         from_step_id: string
@@ -137,11 +147,14 @@ export default function useWorkflowApi(): WorkflowApi {
     }
 }
 
+export const wasThisHelpfulWorkflowId = '01GWPRH2G05DYYFBB1GNVNRB19'
+
 export const workflowConfigurationFactory = (
     accountId: number,
     workflowId: string
 ): WorkflowConfiguration => {
     const initial_step_id = ulid()
+    const workflowCallStepId = ulid()
     return {
         id: workflowId,
         internal_id: ulid(),
@@ -157,7 +170,20 @@ export const workflowConfigurationFactory = (
                     messages: [{content: {html: '', text: ''}}],
                 },
             },
+            {
+                id: workflowCallStepId,
+                kind: 'workflow_call',
+                settings: {
+                    configuration_id: wasThisHelpfulWorkflowId,
+                },
+            },
         ],
-        transitions: [],
+        transitions: [
+            {
+                id: ulid(),
+                from_step_id: initial_step_id,
+                to_step_id: workflowCallStepId,
+            },
+        ],
     }
 }

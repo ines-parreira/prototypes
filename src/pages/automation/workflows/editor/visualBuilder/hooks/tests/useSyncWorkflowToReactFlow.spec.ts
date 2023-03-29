@@ -135,7 +135,8 @@ describe('useSyncWorkflowToReactFlow', () => {
         expect(exploredNodesIds.size).toEqual(
             workflow.steps.length +
                 1 + // 1 step choices becomes 2 steps reply_button
-                2 // 2 placeholder nodes are added, one for each choice leaf
+                2 -
+                2 // 2 placeholder nodes are added, one for each choice leaf, but 2 steps corresponding to the wasItHelpful workflow_call are invisible, hence 2 - 2
         )
     })
 })
