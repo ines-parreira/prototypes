@@ -119,7 +119,7 @@ exports[`StatsNavbarView should render 1`] = `
             >
               bolt
             </i>
-            Automations
+            Automation
           </div>
         </h4>
         <div
@@ -265,7 +265,7 @@ exports[`StatsNavbarView should render 1`] = `
           >
             bolt
           </i>
-          Automations
+          Automation
         </div>
       </h4>
       <div

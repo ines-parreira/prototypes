@@ -108,7 +108,7 @@ export default function StatsNavbarView() {
                     )}
                 </div>
             </NavbarBlock>
-            <NavbarBlock icon="bolt" title="Automations">
+            <NavbarBlock icon="bolt" title="Automation">
                 <div className={cssNavbar.menu}>
                     {
                         // TMP: This link will come back when the page will be reworked
