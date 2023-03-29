@@ -14,7 +14,10 @@ describe('<HomePageLink />', () => {
     it('should render the link if candu has some nodes injected', () => {
         const canduNodes = new Map()
         const canduRoot = document.createElement('div')
-        canduRoot.appendChild(document.createElement('img'))
+        canduRoot.dataset.canduId = 'navbar-dropdown'
+        const imgElement = document.createElement('img')
+        imgElement.dataset.canduContentId = 'm9njQUGKJd'
+        canduRoot.appendChild(imgElement)
         canduNodes.set(canduRoot, {shadowChild: canduRoot})
         window.Candu = {
             elementCanduRootMap: canduNodes,

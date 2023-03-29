@@ -57,7 +57,10 @@ declare global {
         WHATSAPP_APP_ID: string
         devToolsExtension: () => Middleware
         Candu?: {
-            elementCanduRootMap?: Map<any, any>
+            elementCanduRootMap?: Map<
+                HTMLElement,
+                {root: HTMLElement; shadowChild: ShadowRoot}
+            >
         }
     }
 

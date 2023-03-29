@@ -1,9 +1,12 @@
 import React, {useState} from 'react'
 
 import Paywall, {UpgradeType} from 'pages/common/components/Paywall/Paywall'
+import {withCanduPaywall} from 'pages/common/components/Paywall/CanduPaywall'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {assetsUrl} from 'utils'
+
+const TITLE = 'Quick responses'
 
 const QuickResponsesPaywallView = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -11,8 +14,7 @@ const QuickResponsesPaywallView = () => {
 
     return (
         <Paywall
-            containerId="candu-quick-responses"
-            pageHeader="Quick responses"
+            pageHeader={TITLE}
             header="Automate up to 25% of interactions with advanced automation features"
             description="Provide customers with automated responses to common questions with quick responses."
             previewImage={assetsUrl(
@@ -41,4 +43,7 @@ const QuickResponsesPaywallView = () => {
     )
 }
 
-export default QuickResponsesPaywallView
+export default withCanduPaywall({
+    title: TITLE,
+    canduId: 'quick-responses-paywall',
+})(QuickResponsesPaywallView)
