@@ -1,7 +1,11 @@
+import React, {HTMLProps, ReactNode, useRef} from 'react'
 import classnames from 'classnames'
-import React, {HTMLProps, ReactNode} from 'react'
+
+import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
 
 import {OrderDirection} from '../../../../../models/api/types'
+
+import Tooltip from '../../Tooltip'
 
 import HeaderCell from './HeaderCell'
 import css from './HeaderCellProperty.less'
@@ -13,6 +17,7 @@ type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     isOrderedBy?: boolean
     onClick?: () => void
     title: string
+    tooltip?: string
 }
 
 export default function HeaderCellProperty({
@@ -22,8 +27,11 @@ export default function HeaderCellProperty({
     isOrderedBy,
     onClick,
     title,
+    tooltip,
     ...otherProps
 }: Props) {
+    const tooltipRef = useRef<HTMLElement>(null)
+
     return (
         <HeaderCell
             {...otherProps}
@@ -32,8 +40,14 @@ export default function HeaderCellProperty({
         >
             <div className={css.content}>
                 {children}
-                <div>
+                <div className={css.cell}>
                     <span className={css.title}>{title}</span>
+                    {tooltip && (
+                        <span>
+                            <StatsHelpIcon ref={tooltipRef} />
+                            <Tooltip target={tooltipRef}>{tooltip}</Tooltip>
+                        </span>
+                    )}
                     <i
                         className={classnames(
                             'material-icons md-1',

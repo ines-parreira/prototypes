@@ -5,6 +5,7 @@ type Props = {
     currencyCode: string | null
     negative: boolean
     renderIfZero: boolean
+    currencyDisplay?: Intl.NumberFormatOptions['currencyDisplay']
 }
 
 export default class MoneyAmount extends Component<Props> {
@@ -15,8 +16,11 @@ export default class MoneyAmount extends Component<Props> {
 
     static _DEFAULT_CURRENCY_CODE = 'USD'
 
+    static _DEFAULT_CURRENCY_DISPLAY = 'symbol'
+
     render() {
-        const {amount, renderIfZero, currencyCode, negative} = this.props
+        const {amount, renderIfZero, currencyCode, negative, currencyDisplay} =
+            this.props
         const parsedAmount = parseFloat(amount)
 
         if ((!parsedAmount && !renderIfZero) || isNaN(parsedAmount)) {
@@ -26,7 +30,8 @@ export default class MoneyAmount extends Component<Props> {
         const formatter = new Intl.NumberFormat(window.navigator.language, {
             style: 'currency',
             currency: currencyCode || MoneyAmount._DEFAULT_CURRENCY_CODE,
-            currencyDisplay: 'symbol',
+            currencyDisplay:
+                currencyDisplay ?? MoneyAmount._DEFAULT_CURRENCY_DISPLAY,
             maximumFractionDigits: 2,
         })
         const formattedAmount = formatter.format(

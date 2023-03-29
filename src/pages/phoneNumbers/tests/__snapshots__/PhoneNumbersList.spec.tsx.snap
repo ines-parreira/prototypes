@@ -16,7 +16,9 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
         <div
           class="content"
         >
-          <div>
+          <div
+            class="cell"
+          >
             <span
               class="title"
             >
@@ -36,7 +38,9 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
         <div
           class="content"
         >
-          <div>
+          <div
+            class="cell"
+          >
             <span
               class="title"
             >
@@ -249,7 +253,9 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
         <div
           class="content"
         >
-          <div>
+          <div
+            class="cell"
+          >
             <span
               class="title"
             >
@@ -269,7 +275,9 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
         <div
           class="content"
         >
-          <div>
+          <div
+            class="cell"
+          >
             <span
               class="title"
             >

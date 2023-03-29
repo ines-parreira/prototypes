@@ -7,7 +7,9 @@ exports[`<HeaderCellProperty/> should render 1`] = `
   <div
     className="content"
   >
-    <div>
+    <div
+      className="cell"
+    >
       <span
         className="title"
       >
@@ -31,7 +33,9 @@ exports[`<HeaderCellProperty/> should render children 1`] = `
     className="content"
   >
     Bar
-    <div>
+    <div
+      className="cell"
+    >
       <span
         className="title"
       >
@@ -54,7 +58,9 @@ exports[`<HeaderCellProperty/> should render sorted property 1`] = `
   <div
     className="content"
   >
-    <div>
+    <div
+      className="cell"
+    >
       <span
         className="title"
       >

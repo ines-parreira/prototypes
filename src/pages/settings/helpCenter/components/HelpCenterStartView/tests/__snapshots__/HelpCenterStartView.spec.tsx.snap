@@ -268,7 +268,9 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     <div
                       class="content"
                     >
-                      <div>
+                      <div
+                        class="cell"
+                      >
                         <span
                           class="title"
                         >
@@ -288,7 +290,9 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     <div
                       class="content"
                     >
-                      <div>
+                      <div
+                        class="cell"
+                      >
                         <span
                           class="title"
                         >
@@ -308,7 +312,9 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
                     <div
                       class="content"
                     >
-                      <div>
+                      <div
+                        class="cell"
+                      >
                         <span
                           class="title"
                         >

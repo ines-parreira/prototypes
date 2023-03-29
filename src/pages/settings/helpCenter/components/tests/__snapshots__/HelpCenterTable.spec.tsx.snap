@@ -38,7 +38,9 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           <div
             class="content"
           >
-            <div>
+            <div
+              class="cell"
+            >
               <span
                 class="title"
               >
@@ -58,7 +60,9 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           <div
             class="content"
           >
-            <div>
+            <div
+              class="cell"
+            >
               <span
                 class="title"
               >
@@ -78,7 +82,9 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           <div
             class="content"
           >
-            <div>
+            <div
+              class="cell"
+            >
               <span
                 class="title"
               >

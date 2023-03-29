@@ -1,0 +1,71 @@
+import React, {ComponentType} from 'react'
+import {createStore} from 'redux'
+import {Provider} from 'react-redux'
+import {fromJS} from 'immutable'
+
+import {renderHook} from '@testing-library/react-hooks'
+
+import {RootState} from 'state/types'
+
+import {IntegrationType} from 'models/integration/types'
+
+import {useGetChatForStore} from '../useGetChatForStore'
+
+const defaultState = {
+    integrations: fromJS({
+        integrations: [
+            {
+                id: 1,
+                type: IntegrationType.Shopify,
+            },
+            {
+                id: 2,
+                type: IntegrationType.Shopify,
+            },
+            {
+                id: 3,
+                type: IntegrationType.GorgiasChat,
+                meta: {
+                    shop_integration_id: 1,
+                },
+            },
+        ],
+    }),
+} as RootState
+
+const store = createStore((state) => state as RootState, defaultState)
+const hookOptions = {
+    wrapper: (({children}) => (
+        <Provider store={store}>{children}</Provider>
+    )) as ComponentType,
+}
+
+describe('useGetChatForStore', () => {
+    describe('when there is a chat integration', () => {
+        it('returns the chat integration', () => {
+            const {result} = renderHook(
+                () => useGetChatForStore(1),
+                hookOptions
+            )
+
+            expect(result.current).toEqual({
+                id: 3,
+                type: IntegrationType.GorgiasChat,
+                meta: {
+                    shop_integration_id: 1,
+                },
+            })
+        })
+    })
+
+    describe('when there is no chat integration', () => {
+        it('returns undefined', () => {
+            const {result} = renderHook(
+                () => useGetChatForStore(2),
+                hookOptions
+            )
+
+            expect(result.current).toBeUndefined()
+        })
+    })
+})

@@ -267,7 +267,9 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
           <div
             class="content"
           >
-            <div>
+            <div
+              class="cell"
+            >
               <span
                 class="title"
               >
@@ -287,7 +289,9 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
           <div
             class="content"
           >
-            <div>
+            <div
+              class="cell"
+            >
               <span
                 class="title"
               >
@@ -307,7 +311,9 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
           <div
             class="content"
           >
-            <div>
+            <div
+              class="cell"
+            >
               <span
                 class="title"
               >
@@ -327,7 +333,9 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
           <div
             class="content"
           >
-            <div>
+            <div
+              class="cell"
+            >
               <span
                 class="title"
               >

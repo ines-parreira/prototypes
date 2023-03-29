@@ -59,7 +59,9 @@ exports[`<GorgiasChatIntegrationList /> should display correcty the list of chat
             <div
               class="content"
             >
-              <div>
+              <div
+                class="cell"
+              >
                 <span
                   class="title"
                 >
@@ -79,7 +81,9 @@ exports[`<GorgiasChatIntegrationList /> should display correcty the list of chat
             <div
               class="content"
             >
-              <div>
+              <div
+                class="cell"
+              >
                 <span
                   class="title"
                 >
@@ -99,7 +103,9 @@ exports[`<GorgiasChatIntegrationList /> should display correcty the list of chat
             <div
               class="content"
             >
-              <div>
+              <div
+                class="cell"
+              >
                 <span
                   class="title"
                 >
@@ -119,7 +125,9 @@ exports[`<GorgiasChatIntegrationList /> should display correcty the list of chat
             <div
               class="content"
             >
-              <div>
+              <div
+                class="cell"
+              >
                 <span
                   class="title"
                 >
