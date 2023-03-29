@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Legend /> should render the legend 1`] = `
+<div>
+  <div
+    class="legend"
+  >
+    <div
+      class="legendItem"
+    >
+      <div
+        class="legendCaret"
+        style="background-color: rgb(51, 115, 219);"
+      />
+      Foo
+    </div>
+    <div
+      class="legendItem"
+    >
+      <div
+        class="legendCaret"
+        style="background-color: rgb(214, 56, 77);"
+      />
+      Bar
+    </div>
+  </div>
+</div>
+`;

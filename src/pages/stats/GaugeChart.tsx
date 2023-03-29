@@ -3,6 +3,7 @@ import React, {useMemo} from 'react'
 import colors from 'assets/tokens/colors.json'
 import css from './GaugeChart.less'
 import {OneDimensionalDataItem} from './types'
+import Legend from './Legend'
 
 const STAT_COLORS = Object.freeze([
     colors['📺 Classic'].Main.Variations.Primary_3.value,
@@ -61,21 +62,13 @@ export default function GaugeChart({className, data}: Props) {
                     />
                 ))}
             </div>
-
-            <div className={css.legend}>
-                {data.map(({label}, index) => (
-                    <div className={css.legendItem} key={label}>
-                        <div
-                            className={css.legendCaret}
-                            style={{
-                                backgroundColor: STAT_COLORS[index],
-                            }}
-                        />
-
-                        {label}
-                    </div>
-                ))}
-            </div>
+            <Legend
+                className={css.legend}
+                items={data.map(({label}, index) => ({
+                    label,
+                    color: STAT_COLORS[index],
+                }))}
+            />
         </div>
     )
 }

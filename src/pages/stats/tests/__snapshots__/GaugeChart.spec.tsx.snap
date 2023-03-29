@@ -14,7 +14,7 @@ exports[`<GaugeChart /> should render the gauge chart 1`] = `
       />
     </div>
     <div
-      class="legend"
+      class="legend legend"
     >
       <div
         class="legendItem"
