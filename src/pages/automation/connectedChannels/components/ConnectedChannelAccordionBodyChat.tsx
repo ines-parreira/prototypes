@@ -1,6 +1,8 @@
 import React from 'react'
 import {Link, useParams} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
@@ -19,6 +21,8 @@ type Props = {
 }
 
 const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
+    const isflowsBetaEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.FlowsBeta]
     const applicationId = channel.value.meta.app_id!
 
     const {shopType, shopName} = useParams<{
@@ -40,11 +44,17 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
     const applicationAutomationSettings =
         applicationsAutomationSettings[applicationId]
 
-    const {articleRecommendation, orderManagement, quickResponses} =
+    const {articleRecommendation, orderManagement, quickResponses, workflows} =
         applicationAutomationSettings
 
     const updateSettings =
-        (key: 'articleRecommendation' | 'orderManagement' | 'quickResponses') =>
+        (
+            key:
+                | 'articleRecommendation'
+                | 'orderManagement'
+                | 'quickResponses'
+                | 'workflows'
+        ) =>
         (value: boolean) =>
             handleChatApplicationAutomationSettingsUpdate({
                 ...applicationAutomationSettings,
@@ -88,6 +98,18 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
 
     return (
         <>
+            {isflowsBetaEnabled && (
+                <ConnectedChannelFeatureToggle
+                    name="Flows"
+                    value={workflows.enabled}
+                    onChange={updateSettings('workflows')}
+                    disabled={isUpdatePending || !hasAutomationAddOn}
+                    action={
+                        !hasAutomationAddOn && <AutomationSubscriptionAction />
+                    }
+                />
+            )}
+
             <ConnectedChannelFeatureToggle
                 name="Quick responses"
                 value={quickResponses.enabled}

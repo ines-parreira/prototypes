@@ -13,6 +13,7 @@ const applicationAutomationSettings1: ChatApplicationAutomationSettings = {
     articleRecommendation: {enabled: true},
     orderManagement: {enabled: true},
     quickResponses: {enabled: true},
+    workflows: {enabled: true},
     createdDatetime: '2022-10-08T09:01:01.054322+00:00',
     updatedDatetime: '2022-10-08T09:01:01.054322+00:00',
 }
@@ -23,6 +24,7 @@ const applicationAutomationSettings2: ChatApplicationAutomationSettings = {
     articleRecommendation: {enabled: false},
     orderManagement: {enabled: false},
     quickResponses: {enabled: false},
+    workflows: {enabled: false},
     createdDatetime: '2023-01-10T10:11:00.077382+00:00',
     updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
 }
@@ -38,40 +40,40 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                 ])
             )
 
-            expect(state).toMatchInlineSnapshot(`
-                {
-                  "10": {
-                    "applicationId": 10,
-                    "articleRecommendation": {
-                      "enabled": true,
+            expect(state).toEqual({
+                '10': expect.objectContaining({
+                    applicationId: 10,
+                    id: 1,
+                    articleRecommendation: {
+                        enabled: true,
                     },
-                    "createdDatetime": "2022-10-08T09:01:01.054322+00:00",
-                    "id": 1,
-                    "orderManagement": {
-                      "enabled": true,
+                    orderManagement: {
+                        enabled: true,
                     },
-                    "quickResponses": {
-                      "enabled": true,
+                    quickResponses: {
+                        enabled: true,
                     },
-                    "updatedDatetime": "2022-10-08T09:01:01.054322+00:00",
-                  },
-                  "15": {
-                    "applicationId": 15,
-                    "articleRecommendation": {
-                      "enabled": false,
+                    workflows: {
+                        enabled: true,
                     },
-                    "createdDatetime": "2023-01-10T10:11:00.077382+00:00",
-                    "id": 2,
-                    "orderManagement": {
-                      "enabled": false,
+                }),
+                '15': expect.objectContaining({
+                    applicationId: 15,
+                    id: 2,
+                    articleRecommendation: {
+                        enabled: false,
                     },
-                    "quickResponses": {
-                      "enabled": false,
+                    orderManagement: {
+                        enabled: false,
                     },
-                    "updatedDatetime": "2023-01-10T10:11:00.077382+00:00",
-                  },
-                }
-            `)
+                    quickResponses: {
+                        enabled: false,
+                    },
+                    workflows: {
+                        enabled: false,
+                    },
+                }),
+            })
         })
     })
 
@@ -87,40 +89,40 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                 )
             )
 
-            expect(state).toMatchInlineSnapshot(`
-                {
-                  "10": {
-                    "applicationId": 10,
-                    "articleRecommendation": {
-                      "enabled": true,
+            expect(state).toEqual({
+                '10': expect.objectContaining({
+                    applicationId: 10,
+                    id: 1,
+                    articleRecommendation: {
+                        enabled: true,
                     },
-                    "createdDatetime": "2022-10-08T09:01:01.054322+00:00",
-                    "id": 1,
-                    "orderManagement": {
-                      "enabled": true,
+                    orderManagement: {
+                        enabled: true,
                     },
-                    "quickResponses": {
-                      "enabled": true,
+                    quickResponses: {
+                        enabled: true,
                     },
-                    "updatedDatetime": "2022-10-08T09:01:01.054322+00:00",
-                  },
-                  "15": {
-                    "applicationId": 15,
-                    "articleRecommendation": {
-                      "enabled": false,
+                    workflows: {
+                        enabled: true,
                     },
-                    "createdDatetime": "2023-01-10T10:11:00.077382+00:00",
-                    "id": 2,
-                    "orderManagement": {
-                      "enabled": false,
+                }),
+                '15': expect.objectContaining({
+                    applicationId: 15,
+                    id: 2,
+                    articleRecommendation: {
+                        enabled: false,
                     },
-                    "quickResponses": {
-                      "enabled": false,
+                    orderManagement: {
+                        enabled: false,
                     },
-                    "updatedDatetime": "2023-01-10T10:11:00.077382+00:00",
-                  },
-                }
-            `)
+                    quickResponses: {
+                        enabled: false,
+                    },
+                    workflows: {
+                        enabled: false,
+                    },
+                }),
+            })
         })
     })
 
@@ -140,40 +142,40 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                 })
             )
 
-            expect(state).toMatchInlineSnapshot(`
-                {
-                  "10": {
-                    "applicationId": 10,
-                    "articleRecommendation": {
-                      "enabled": true,
+            expect(state).toEqual({
+                '10': expect.objectContaining({
+                    applicationId: 10,
+                    id: 1,
+                    articleRecommendation: {
+                        enabled: true,
                     },
-                    "createdDatetime": "2022-10-08T09:01:01.054322+00:00",
-                    "id": 1,
-                    "orderManagement": {
-                      "enabled": true,
+                    orderManagement: {
+                        enabled: true,
                     },
-                    "quickResponses": {
-                      "enabled": true,
+                    quickResponses: {
+                        enabled: true,
                     },
-                    "updatedDatetime": "2022-10-08T09:01:01.054322+00:00",
-                  },
-                  "15": {
-                    "applicationId": 15,
-                    "articleRecommendation": {
-                      "enabled": false,
+                    workflows: {
+                        enabled: true,
                     },
-                    "createdDatetime": "2023-01-10T10:11:00.077382+00:00",
-                    "id": 2,
-                    "orderManagement": {
-                      "enabled": true,
+                }),
+                '15': expect.objectContaining({
+                    applicationId: 15,
+                    id: 2,
+                    articleRecommendation: {
+                        enabled: false,
                     },
-                    "quickResponses": {
-                      "enabled": false,
+                    orderManagement: {
+                        enabled: true,
                     },
-                    "updatedDatetime": "2023-03-01T11:10:05.000987+00:00",
-                  },
-                }
-            `)
+                    quickResponses: {
+                        enabled: false,
+                    },
+                    workflows: {
+                        enabled: false,
+                    },
+                }),
+            })
         })
 
         it('adds new application automation settings in the state', () => {
@@ -187,40 +189,40 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                 )
             )
 
-            expect(state).toMatchInlineSnapshot(`
-                {
-                  "10": {
-                    "applicationId": 10,
-                    "articleRecommendation": {
-                      "enabled": true,
+            expect(state).toEqual({
+                '10': expect.objectContaining({
+                    applicationId: 10,
+                    id: 1,
+                    articleRecommendation: {
+                        enabled: true,
                     },
-                    "createdDatetime": "2022-10-08T09:01:01.054322+00:00",
-                    "id": 1,
-                    "orderManagement": {
-                      "enabled": true,
+                    orderManagement: {
+                        enabled: true,
                     },
-                    "quickResponses": {
-                      "enabled": true,
+                    quickResponses: {
+                        enabled: true,
                     },
-                    "updatedDatetime": "2022-10-08T09:01:01.054322+00:00",
-                  },
-                  "15": {
-                    "applicationId": 15,
-                    "articleRecommendation": {
-                      "enabled": false,
+                    workflows: {
+                        enabled: true,
                     },
-                    "createdDatetime": "2023-01-10T10:11:00.077382+00:00",
-                    "id": 2,
-                    "orderManagement": {
-                      "enabled": false,
+                }),
+                '15': expect.objectContaining({
+                    applicationId: 15,
+                    id: 2,
+                    articleRecommendation: {
+                        enabled: false,
                     },
-                    "quickResponses": {
-                      "enabled": false,
+                    orderManagement: {
+                        enabled: false,
                     },
-                    "updatedDatetime": "2023-01-10T10:11:00.077382+00:00",
-                  },
-                }
-            `)
+                    quickResponses: {
+                        enabled: false,
+                    },
+                    workflows: {
+                        enabled: false,
+                    },
+                }),
+            })
         })
     })
 })

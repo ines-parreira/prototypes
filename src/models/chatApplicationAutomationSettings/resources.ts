@@ -23,7 +23,10 @@ export const upsertChatApplicationAutomationSettings = async (
     applicationId: string,
     payload: Pick<
         ChatApplicationAutomationSettings,
-        'articleRecommendation' | 'quickResponses' | 'orderManagement'
+        | 'articleRecommendation'
+        | 'quickResponses'
+        | 'orderManagement'
+        | 'workflows'
     >
 ): Promise<ChatApplicationAutomationSettings> => {
     const client = await getGorgiasChatProtectedApiClient()

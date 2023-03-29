@@ -51,12 +51,21 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
             applicationAutomationSettings: ChatApplicationAutomationSettings
         ) => {
             try {
-                const {articleRecommendation, quickResponses, orderManagement} =
-                    applicationAutomationSettings
+                const {
+                    articleRecommendation,
+                    quickResponses,
+                    orderManagement,
+                    workflows,
+                } = applicationAutomationSettings
 
                 const res = await upsertChatApplicationAutomationSettings(
                     applicationAutomationSettings.applicationId.toString(),
-                    {articleRecommendation, quickResponses, orderManagement}
+                    {
+                        articleRecommendation,
+                        quickResponses,
+                        orderManagement,
+                        workflows,
+                    }
                 )
 
                 void dispatch(chatApplicationAutomationSettingsUpdated(res))

@@ -4,6 +4,7 @@ export type ChatApplicationAutomationSettings = {
     articleRecommendation: {enabled: boolean}
     orderManagement: {enabled: boolean}
     quickResponses: {enabled: boolean}
+    workflows: {enabled: boolean}
     createdDatetime: string
     updatedDatetime: string
 }
