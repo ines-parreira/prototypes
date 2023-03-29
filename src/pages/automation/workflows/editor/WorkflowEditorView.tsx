@@ -87,9 +87,7 @@ function WorkflowEditorViewWrapped({
             return
         }
         notifyMerchant(
-            isNewWorkflow
-                ? 'Flow successfully created'
-                : 'Flow successfully updated',
+            isNewWorkflow ? 'Successfully created' : 'Successfully updated',
             'success'
         )
         goToWorkflowsListPage()
@@ -147,8 +145,8 @@ function WorkflowEditorViewWrapped({
                     {isNewWorkflow ? (
                         <>
                             <Button
-                                isDisabled={isFetchPending || !isDirty}
                                 onClick={handleCancel}
+                                isLoading={isFetchPending}
                                 intent="secondary"
                             >
                                 Cancel

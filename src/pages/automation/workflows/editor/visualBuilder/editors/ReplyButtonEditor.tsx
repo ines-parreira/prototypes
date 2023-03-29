@@ -32,7 +32,7 @@ export default function ReplyButtonEditor({
     return (
         <div
             onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === 'Escape') {
+                if (event.key === 'Enter') {
                     onClose()
                 }
             }}

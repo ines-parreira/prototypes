@@ -28,7 +28,7 @@ export default function TriggerButtonEditor({
     return (
         <div
             onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === 'Escape') {
+                if (event.key === 'Enter') {
                     onClose()
                 }
             }}
@@ -46,8 +46,7 @@ export default function TriggerButtonEditor({
                 isDisabled={isFetchPending || isSavePending}
             />
             <div className={css.description}>
-                The flow will be triggered when customers click this button in
-                chat.
+                The flow will be triggered when customers click this button.
             </div>
         </div>
     )

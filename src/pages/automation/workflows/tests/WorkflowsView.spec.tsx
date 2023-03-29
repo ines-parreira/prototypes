@@ -59,6 +59,7 @@ describe('<WorkflowsView />', () => {
                     goToEditWorkflowPage={jest.fn()}
                     goToNewWorkflowPage={jest.fn()}
                     quickResponsesUrl=""
+                    notifyMerchant={jest.fn()}
                 />
             </Provider>
         )
@@ -107,6 +108,7 @@ describe('<WorkflowsView />', () => {
                     goToEditWorkflowPage={jest.fn()}
                     goToNewWorkflowPage={jest.fn()}
                     quickResponsesUrl=""
+                    notifyMerchant={jest.fn()}
                 />
             </Provider>
         )

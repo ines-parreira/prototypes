@@ -57,10 +57,7 @@ export default function NodeEditorDrawer({
                     />
                 )}
                 {nodeInEdition?.type === 'automated_message' && (
-                    <AutomatedMessageEditor
-                        nodeInEdition={nodeInEdition}
-                        onClose={onClose}
-                    />
+                    <AutomatedMessageEditor nodeInEdition={nodeInEdition} />
                 )}
                 {nodeInEdition?.type === 'reply_button' && (
                     <ReplyButtonEditor

@@ -6,8 +6,6 @@ import {
 } from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
 import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from 'pages/automation/common/components/constants'
 import useWorkflowApi from './useWorkflowApi'
 
@@ -17,16 +15,16 @@ export type UseWorflowsEntrypointsReturnType = {
     isUpdatePending: boolean
     isEnabledLimitReached: boolean
     isToggleUpdatePending: (workflowId: string) => boolean
-    toggleEnabled: (workflowId: string) => void
-    handleDragAndDrop: (sortedWorkflowIds: string[]) => void
-    deleteWorkflowEntrypoint: (workflowId: string) => void
+    toggleEnabled: (workflowId: string) => Promise<void>
+    handleDragAndDrop: (sortedWorkflowIds: string[]) => Promise<void>
+    deleteWorkflowEntrypoint: (workflowId: string) => Promise<void>
 }
 
 export default function useWorflowsEntrypoints(
     shopType: string,
-    shopName: string
+    shopName: string,
+    notifyMerchant: (message: string, kind: 'success' | 'error') => void
 ): UseWorflowsEntrypointsReturnType {
-    const dispatch = useAppDispatch()
     const {
         isFetchPending: isSelfServiceFetchPending,
         isUpdatePending,
@@ -38,8 +36,8 @@ export default function useWorflowsEntrypoints(
         // we disable the notifications managed by the useSelfServiceConfiguration hook except for errors
         // because the hook redirects to '/app/automation/macros' in case of API error and we want to keep that behavior so we proxy the notification in this case
         (notif) => {
-            if (notif.status === NotificationStatus.Error) {
-                void dispatch(notify(notif))
+            if (notif.status === NotificationStatus.Error && notif.message) {
+                notifyMerchant(notif.message, 'error')
             }
         }
     )
@@ -84,7 +82,7 @@ export default function useWorflowsEntrypoints(
     }, [selfServiceConfigurationApi.selfServiceConfiguration])
 
     const toggleEnabled = useCallback(
-        (workflowId: string) => {
+        async (workflowId: string) => {
             if (!selfServiceConfigurationApi.selfServiceConfiguration) return
             const nextConfiguration = produce(
                 selfServiceConfigurationApi.selfServiceConfiguration,
@@ -96,16 +94,18 @@ export default function useWorflowsEntrypoints(
                 }
             )
             setDraftConfiguration(nextConfiguration)
-            void handleSelfServiceConfigurationUpdate(nextConfiguration)
+            await handleSelfServiceConfigurationUpdate(nextConfiguration)
+            notifyMerchant('Successfully updated', 'success')
         },
         [
             selfServiceConfigurationApi.selfServiceConfiguration,
             handleSelfServiceConfigurationUpdate,
+            notifyMerchant,
         ]
     )
 
     const handleDragAndDrop = useCallback(
-        (sortedWorkflowIds: string[]) => {
+        async (sortedWorkflowIds: string[]) => {
             // see why we use a ref here instead of selfServiceConfigurationApi.selfServiceConfiguration in the comment above the ref definition
             if (!selfServiceConfigurationRef.current) return
             const nextConfiguration = reorderWorkflowsEntrypoints(
@@ -113,13 +113,14 @@ export default function useWorflowsEntrypoints(
                 sortedWorkflowIds
             )
             setDraftConfiguration(nextConfiguration)
-            void handleSelfServiceConfigurationUpdate(nextConfiguration)
+            await handleSelfServiceConfigurationUpdate(nextConfiguration)
+            notifyMerchant('Successfully updated', 'success')
         },
-        [handleSelfServiceConfigurationUpdate]
+        [handleSelfServiceConfigurationUpdate, notifyMerchant]
     )
 
     const deleteWorkflowEntrypoint = useCallback(
-        (workflowId: string) => {
+        async (workflowId: string) => {
             if (!selfServiceConfigurationApi.selfServiceConfiguration) return
             const nextConfiguration = produce(
                 selfServiceConfigurationApi.selfServiceConfiguration,
@@ -132,11 +133,13 @@ export default function useWorflowsEntrypoints(
                 }
             )
             setDraftConfiguration(nextConfiguration)
-            void handleSelfServiceConfigurationUpdate(nextConfiguration)
+            await handleSelfServiceConfigurationUpdate(nextConfiguration)
+            notifyMerchant('Successfully deleted', 'success')
         },
         [
             selfServiceConfigurationApi.selfServiceConfiguration,
             handleSelfServiceConfigurationUpdate,
+            notifyMerchant,
         ]
     )
 

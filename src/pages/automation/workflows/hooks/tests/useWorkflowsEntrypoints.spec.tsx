@@ -61,7 +61,7 @@ describe('useWorflowsEntrypoints', () => {
             isUpdatePending: true,
         })
         const {result} = renderHook(
-            () => useWorkflowsEntrypoints('', ''),
+            () => useWorkflowsEntrypoints('', '', () => null),
             renderHookOptions
         )
         expect(result.current).toMatchObject({
@@ -73,7 +73,7 @@ describe('useWorflowsEntrypoints', () => {
 
     it('hydrates workflowsEntrypoints once configuration fetched', () => {
         const {result, rerender} = renderHook(
-            () => useWorkflowsEntrypoints('', ''),
+            () => useWorkflowsEntrypoints('', '', () => null),
             renderHookOptions
         )
         updateMock({
@@ -85,40 +85,40 @@ describe('useWorflowsEntrypoints', () => {
         expect(result.current.workflowsEntrypoints).toEqual(entrypointsFixtures)
     })
 
-    it('handleDragAndDrop', () => {
+    it('handleDragAndDrop', async () => {
         updateMock({
             selfServiceConfiguration: {
                 workflows_entrypoints: entrypointsFixtures,
             } as SelfServiceConfiguration,
         })
         const {result} = renderHook(
-            () => useWorkflowsEntrypoints('', ''),
+            () => useWorkflowsEntrypoints('', '', () => null),
             renderHookOptions
         )
-        act(() => result.current.handleDragAndDrop(['c', 'a', 'b']))
+        await act(() => result.current.handleDragAndDrop(['c', 'a', 'b']))
         expect(result.current.workflowsEntrypoints).toEqual([
             entrypointsFixtures[2],
             ...entrypointsFixtures.slice(0, 2),
         ])
     })
 
-    it('deleteWorkflowEntrypoint', () => {
+    it.only('deleteWorkflowEntrypoint', async () => {
         updateMock({
             selfServiceConfiguration: {
                 workflows_entrypoints: entrypointsFixtures,
             } as SelfServiceConfiguration,
         })
         const {result} = renderHook(
-            () => useWorkflowsEntrypoints('', ''),
+            () => useWorkflowsEntrypoints('', '', () => null),
             renderHookOptions
         )
-        act(() => result.current.deleteWorkflowEntrypoint('a'))
+        await act(() => result.current.deleteWorkflowEntrypoint('a'))
         expect(result.current.workflowsEntrypoints).toEqual([
             ...entrypointsFixtures.slice(1),
         ])
     })
 
-    it('toggleEnabled and isToggleUpdatePending', () => {
+    it('toggleEnabled and isToggleUpdatePending', async () => {
         const configuration = {
             workflows_entrypoints: entrypointsFixtures,
         } as SelfServiceConfiguration
@@ -126,10 +126,10 @@ describe('useWorflowsEntrypoints', () => {
             selfServiceConfiguration: configuration,
         })
         const {result, rerender} = renderHook(
-            () => useWorkflowsEntrypoints('', ''),
+            () => useWorkflowsEntrypoints('', '', () => null),
             renderHookOptions
         )
-        act(() => result.current.toggleEnabled('a'))
+        await act(() => result.current.toggleEnabled('a'))
         expect(result.current.workflowsEntrypoints).toEqual([
             {...entrypointsFixtures[0], enabled: false},
             ...entrypointsFixtures.slice(1),
@@ -145,7 +145,7 @@ describe('useWorflowsEntrypoints', () => {
         expect(result.current.isToggleUpdatePending('a')).toBe(true)
         // refresh useCallbacks to use the last selfServiceConfiguration mock
         rerender()
-        act(() => result.current.toggleEnabled('a'))
+        await act(() => result.current.toggleEnabled('a'))
         expect(result.current.workflowsEntrypoints).toEqual(entrypointsFixtures)
     })
 })

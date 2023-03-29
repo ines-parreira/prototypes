@@ -13,10 +13,8 @@ const textLimit = 5000
 
 export default function AutomatedMessageEditor({
     nodeInEdition,
-    onClose,
 }: {
     nodeInEdition: AutomatedMessageNodeType
-    onClose: () => void
 }) {
     const textareaRef = useRef<RichField>(null)
     useEffect(() => {
@@ -41,12 +39,7 @@ export default function AutomatedMessageEditor({
         const content = editorState.getCurrentContent()
         const text = content.getPlainText()
 
-        const isKeyTypedNewLine =
-            convertToHTML(content).length > nodeContent.html.length &&
-            convertToHTML(content).substring(nodeContent.html.length) ===
-                '<div><br></div>'
-        if (convertToHTML(content) === nodeContent.html || isKeyTypedNewLine)
-            return
+        if (convertToHTML(content) === nodeContent.html) return
         if (text.length > textLimit) return
         dispatch({
             type: 'SET_AUTOMATED_MESSAGE_CONTENT',
@@ -58,13 +51,7 @@ export default function AutomatedMessageEditor({
         })
     }
     return (
-        <div
-            onKeyDown={(event) => {
-                if (event.key === 'Escape' || event.key === 'Enter') {
-                    onClose()
-                }
-            }}
-        >
+        <>
             <Label isRequired={true} className={css.richFieldLabel}>
                 Automated message
             </Label>
@@ -82,6 +69,6 @@ export default function AutomatedMessageEditor({
                     onChange={handleChange}
                 />
             </ToolbarProvider>
-        </div>
+        </>
     )
 }

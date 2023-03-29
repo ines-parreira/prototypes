@@ -19,6 +19,7 @@ type WorkflowsViewProps = {
     goToNewWorkflowPage: () => void
     goToEditWorkflowPage: (flowId: string) => void
     quickResponsesUrl: string
+    notifyMerchant: (message: string, kind: 'success' | 'error') => void
 }
 
 export default function WorkflowsView({
@@ -27,6 +28,7 @@ export default function WorkflowsView({
     goToNewWorkflowPage,
     goToEditWorkflowPage,
     quickResponsesUrl,
+    notifyMerchant,
 }: WorkflowsViewProps) {
     const {
         workflowsEntrypoints,
@@ -37,7 +39,7 @@ export default function WorkflowsView({
         isUpdatePending,
         isToggleUpdatePending,
         isEnabledLimitReached,
-    } = useWorflowsEntrypoints(shopType, shopName)
+    } = useWorflowsEntrypoints(shopType, shopName, notifyMerchant)
 
     return (
         <div className="full-width overflow-auto">
@@ -68,7 +70,7 @@ export default function WorkflowsView({
                                 animation: 150,
                             }}
                             onChange={(sortedIds) => {
-                                handleDragAndDrop(sortedIds)
+                                void handleDragAndDrop(sortedIds)
                             }}
                         >
                             {isFetchPending && (
@@ -109,7 +111,7 @@ export default function WorkflowsView({
                                                         isEnabledLimitReached)
                                                 }
                                                 onClick={() => {
-                                                    toggleEnabled(
+                                                    void toggleEnabled(
                                                         entrypoint.workflow_id
                                                     )
                                                 }}
@@ -183,7 +185,7 @@ const infoContainer = (
 
 function deleteActionButton(
     entrypoint: WorkflowEntrypoint,
-    handleDelete: (workflowId: string) => void,
+    handleDelete: (workflowId: string) => Promise<void>,
     isUpdatePending: boolean
 ) {
     return (
@@ -199,7 +201,7 @@ function deleteActionButton(
                     </>
                 }
                 onConfirm={() => {
-                    handleDelete(entrypoint.workflow_id)
+                    void handleDelete(entrypoint.workflow_id)
                 }}
             >
                 {({uid, onDisplayConfirmation}) => (
