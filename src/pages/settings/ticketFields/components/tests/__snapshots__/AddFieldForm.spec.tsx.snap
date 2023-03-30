@@ -212,6 +212,7 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
     >
       <button
         class="wrapper fill primary medium isDisabled"
+        data-testid="save-button"
         disabled=""
         type="submit"
       >

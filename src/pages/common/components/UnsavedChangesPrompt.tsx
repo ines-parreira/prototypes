@@ -16,7 +16,7 @@ import css from './UnsavedChangesPrompt.less'
 
 type Props = {
     onDiscard?: () => void
-    onSave: () => void
+    onSave: (location?: Location) => void
     when: boolean | undefined
 }
 
@@ -97,7 +97,7 @@ const UnsavedChangesPrompt: React.FC<Props> = ({onDiscard, onSave, when}) => {
                         </Button>
                         <Button
                             onClick={() => {
-                                onSave()
+                                onSave(location)
                                 setShow(false)
                             }}
                             className="mb-3"

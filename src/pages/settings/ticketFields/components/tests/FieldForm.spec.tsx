@@ -1,17 +1,19 @@
 import React from 'react'
 import {omit} from 'lodash'
 
-import {render} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {createMemoryHistory} from 'history'
 import {QueryClientProvider} from '@tanstack/react-query'
 
 import {customField, customFieldInput} from 'fixtures/customField'
 import {CustomFieldInput} from 'models/customField/types'
 import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
+import {renderWithRouter} from 'utils/testing'
 
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import FieldForm from '../FieldForm'
@@ -28,7 +30,7 @@ describe('<FieldForm/>', () => {
         const props = {
             field: customFieldInput,
             onSubmit: jest.fn(),
-            onCancel: jest.fn(),
+            onClose: jest.fn(),
         }
 
         const {container} = render(
@@ -45,7 +47,7 @@ describe('<FieldForm/>', () => {
         const props = {
             field: customField,
             onSubmit: jest.fn(),
-            onCancel: jest.fn(),
+            onClose: jest.fn(),
         }
 
         const {container} = render(
@@ -62,7 +64,7 @@ describe('<FieldForm/>', () => {
         const props = {
             field: {...customFieldInput, label: ''},
             onSubmit: jest.fn(),
-            onCancel: jest.fn(),
+            onClose: jest.fn(),
         }
 
         const {findByText} = render(
@@ -92,7 +94,7 @@ describe('<FieldForm/>', () => {
                 },
             } as CustomFieldInput,
             onSubmit: jest.fn(),
-            onCancel: jest.fn(),
+            onClose: jest.fn(),
         }
 
         const {findByText} = render(
@@ -126,7 +128,7 @@ describe('<FieldForm/>', () => {
                 },
             } as CustomFieldInput,
             onSubmit: jest.fn(),
-            onCancel: jest.fn(),
+            onClose: jest.fn(),
         }
 
         const {findByText} = render(
@@ -149,7 +151,7 @@ describe('<FieldForm/>', () => {
         const props = {
             field: customFieldInput,
             onSubmit: jest.fn(),
-            onCancel: jest.fn(),
+            onClose: jest.fn(),
         }
 
         const {findByText} = render(
@@ -169,11 +171,11 @@ describe('<FieldForm/>', () => {
         )
     })
 
-    it('should call onCancel if the cancel button is clicked', async () => {
+    it('should call onClose if the cancel button is clicked', async () => {
         const props = {
             field: customFieldInput,
             onSubmit: jest.fn(),
-            onCancel: jest.fn(),
+            onClose: jest.fn(),
         }
 
         const {findByText} = render(
@@ -187,6 +189,32 @@ describe('<FieldForm/>', () => {
         const cancelButton = await findByText(/Cancel/)
         cancelButton.click()
 
-        expect(props.onCancel).toHaveBeenCalledTimes(1)
+        expect(props.onClose).toHaveBeenCalledTimes(1)
+    })
+
+    it('should prompt for confirmation when closing the page with unsaved changes', async () => {
+        const history = createMemoryHistory()
+        const props = {
+            field: customFieldInput,
+            onSubmit: jest.fn(),
+            onClose: jest.fn(),
+        }
+
+        const {findByLabelText, findByText} = renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <FieldForm {...props} />
+                </Provider>{' '}
+            </QueryClientProvider>
+        )
+
+        const nameInput = await findByLabelText(/Name/)
+        fireEvent.change(nameInput, {target: {value: 'New name'}})
+
+        history.push('/')
+
+        await findByText(
+            'Your changes to this page will be lost if you don’t save them.'
+        )
     })
 })

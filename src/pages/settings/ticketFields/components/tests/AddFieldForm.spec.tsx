@@ -11,6 +11,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {customField} from 'fixtures/customField'
 import client from 'models/api/resources'
 import history from 'pages/history'
+import {renderWithRouter} from 'utils/testing'
 
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import AddFieldForm from '../AddFieldForm'
@@ -43,7 +44,7 @@ describe('<AddFieldForm/>', () => {
     it('should create custom field if the save button is clicked', async () => {
         mockedServer.onPost('/api/custom-fields').reply(200, customField)
 
-        const {findByText, findByLabelText} = render(
+        const {findByTestId, findByLabelText} = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
@@ -56,7 +57,7 @@ describe('<AddFieldForm/>', () => {
         const nameInput = await findByLabelText(/Name/)
         fireEvent.change(nameInput, {target: {value: 'Test name'}})
 
-        const saveButton = await findByText(/Save Changes/)
+        const saveButton = await findByTestId('save-button')
         saveButton.click()
 
         await waitFor(() => mockedServer.history.post.length > 0)

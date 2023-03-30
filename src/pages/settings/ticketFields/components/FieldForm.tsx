@@ -1,5 +1,8 @@
 import React, {FormEvent, useCallback, useEffect, useRef, useState} from 'react'
 import {set, pick} from 'lodash'
+import {Location} from 'history'
+
+import history from 'pages/history'
 
 import {
     CustomField,
@@ -12,6 +15,7 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import Label from 'pages/common/forms/Label/Label'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
 import ArchiveConfirmationModal from 'pages/settings/ticketFields/components/ArchiveConfirmationModal'
@@ -22,7 +26,7 @@ import css from './FieldForm.less'
 interface FieldFormProps {
     field: CustomField | CustomFieldInput
     onSubmit: (field: CustomFieldInput) => Promise<void>
-    onCancel: () => void
+    onClose: () => void
 }
 
 const pickMap = {
@@ -51,6 +55,7 @@ export default function FieldForm(props: FieldFormProps) {
     const [archiveModalVisible, setArchiveModalVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [isFormValid, setIsFormValid] = useState(false)
+    const [isFormDirty, setIsFormDirty] = useState(false)
     const [form, setForm] = useState(
         pick(props.field, [
             'object_type',
@@ -67,19 +72,38 @@ export default function FieldForm(props: FieldFormProps) {
     }, [form])
 
     const setValue = useCallback((key: string, value: any) => {
+        setIsFormDirty(true)
         setForm((form) => set({...form}, key, value))
     }, [])
 
-    const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
-        evt.preventDefault()
-
+    const save = async () => {
         setIsLoading(true)
         try {
             await props.onSubmit(sanitizeInput(form))
+            setIsFormDirty(false)
+            return true
         } catch (e) {
             console.error('Custom field error', e)
+            setIsFormDirty(true)
+            return false
         } finally {
             setIsLoading(false)
+        }
+    }
+
+    // On form submit, save the data then close the form
+    const handleSubmit = async (evt?: FormEvent<HTMLFormElement>) => {
+        evt?.preventDefault()
+        if (await save()) {
+            props.onClose()
+        }
+    }
+
+    // When navigating away, save the data then navigate to the target location
+    const handleSaveOnLeave = async (location?: Location) => {
+        const ok = await save()
+        if (ok && location) {
+            history.push(location)
         }
     }
 
@@ -188,10 +212,11 @@ export default function FieldForm(props: FieldFormProps) {
                         type="submit"
                         isDisabled={!isFormValid}
                         isLoading={isLoading}
+                        data-testid="save-button"
                     >
                         Save Changes
                     </Button>
-                    <Button intent="secondary" onClick={props.onCancel}>
+                    <Button intent="secondary" onClick={props.onClose}>
                         Cancel
                     </Button>
                 </div>
@@ -243,6 +268,13 @@ export default function FieldForm(props: FieldFormProps) {
                     </>
                 )}
             </div>
+
+            {isFormDirty && (
+                <UnsavedChangesPrompt
+                    onSave={handleSaveOnLeave}
+                    when={isFormDirty}
+                />
+            )}
         </form>
     )
 }

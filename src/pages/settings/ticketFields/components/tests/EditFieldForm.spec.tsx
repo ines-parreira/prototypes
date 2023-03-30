@@ -11,6 +11,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {customField} from 'fixtures/customField'
 import client from 'models/api/resources'
 import history from 'pages/history'
+import {renderWithRouter} from 'utils/testing'
 
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import EditFieldForm from '../EditFieldForm'
@@ -45,7 +46,7 @@ describe('<EditFieldForm/>', () => {
             .onPut(`/api/custom-fields/${customField.id}`)
             .reply(200, customField)
 
-        const {findByText, findByLabelText} = render(
+        const {findByTestId, findByLabelText} = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
@@ -58,7 +59,7 @@ describe('<EditFieldForm/>', () => {
         const nameInput = await findByLabelText(/Name/)
         fireEvent.change(nameInput, {target: {value: 'Updated name'}})
 
-        const saveButton = await findByText(/Save Changes/)
+        const saveButton = await findByTestId('save-button')
         saveButton.click()
 
         await waitFor(() => mockedServer.history.put.length > 0)

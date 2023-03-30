@@ -15,14 +15,13 @@ export default function EditFieldForm(props: EditFieldFormProps) {
     const close = () => history.push('/app/settings/ticket-fields')
     const handleSubmit = async (field: CustomFieldInput) => {
         await mutateAsync(field)
-        close()
     }
 
     return (
         <FieldForm
             field={props.field}
             onSubmit={handleSubmit}
-            onCancel={close}
+            onClose={close}
         />
     )
 }

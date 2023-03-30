@@ -28,10 +28,9 @@ export default function AddFieldForm(props: AddFieldFormProps) {
     const close = () => history.push('/app/settings/ticket-fields')
     const handleSubmit = async (field: CustomFieldInput) => {
         await mutateAsync(field)
-        close()
     }
 
     return (
-        <FieldForm field={newField} onSubmit={handleSubmit} onCancel={close} />
+        <FieldForm field={newField} onSubmit={handleSubmit} onClose={close} />
     )
 }
