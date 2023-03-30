@@ -13,6 +13,7 @@ import {
     CLUSTER_GROUP_ID,
     DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
     DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
+    HELPCENTER_GROUP_ID,
 } from '../constants'
 import {
     ComponentStatus,
@@ -592,6 +593,38 @@ describe('statusPageManager', () => {
                 } as StatusPageScheduledMaintenanceResponseData)
                 expect(notifySpy.mock.calls).toMatchSnapshot()
             })
+        })
+    })
+
+    describe('help center filtering', () => {
+        it('should not notify if help center is not installed', () => {
+            const clusterName = 'us-east1-abc'
+            window.GORGIAS_CLUSTER = 'us-east1-abc'
+
+            statusPageManager.processIncidents({
+                page: {
+                    url: 'https://status.gorgias.com/',
+                },
+                incidents: [
+                    {
+                        id: 'incident-id',
+                        impact: IncidentImpact.Major,
+                        components: [
+                            {
+                                name: 'Customer Help Center website',
+                                status: ComponentStatus.MajorOutage,
+                                group_id: HELPCENTER_GROUP_ID,
+                            },
+                            {
+                                name: clusterName,
+                                status: ComponentStatus.MajorOutage,
+                                group_id: CLUSTER_GROUP_ID,
+                            },
+                        ],
+                    },
+                ],
+            } as StatusPageIncidentsResponseData)
+            expect(notifySpy).not.toHaveBeenCalled()
         })
     })
 })

@@ -8,6 +8,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 export const PAGE_ID = isProduction ? '2lqy3hys4460' : '35qcq6ntxgz6'
 
 export const CLUSTER_GROUP_ID = isProduction ? '88h5zd5h2mgt' : 'nydnlcqwbz23'
+export const HELPCENTER_GROUP_ID = 'pg54vh9swgvc'
 
 // We're grouping our components (ex: REST API, Facebook Comments, etc..) into groups below (used for filtering).
 export const HELPDESK_GROUP_IDS: {[key: string]: string} = isProduction
@@ -15,10 +16,12 @@ export const HELPDESK_GROUP_IDS: {[key: string]: string} = isProduction
           xdk1c5fgbgyh: 'Helpdesk',
           '0x365t428kwc': 'Integrations',
           '6t2f6lmtxb0c': 'Cloud infrastructure',
+          [HELPCENTER_GROUP_ID]: 'Help Center',
       })
     : Object.freeze({
           '20nf38t5262g': 'API',
           m0ys84glpszb: 'Integrations',
+          [HELPCENTER_GROUP_ID]: 'Help Center',
       })
 
 //$TsFixMe fallback for js files, use ComponentStatus enum
@@ -67,7 +70,7 @@ export const INTEGRATION_COMPONENTS_TYPES: {
           k647tnkgnrzn: IntegrationType.Email, // Mailgun API
           c696fffd032x: IntegrationType.Gmail,
           '0k9stqn0czpt': IntegrationType.Outlook,
-          slm5jt5rbn6w: IntegrationType.SmoochInside,
+          slm5jt5rbn6w: IntegrationType.GorgiasChat, // Gorgias Chat
           wt84j6hkbg5v: IntegrationType.SmoochInside, // Smooch Core API
           zlsstk1s8j12: IntegrationType.Facebook,
           x95q6p88z8hd: IntegrationType.Facebook, // Instagram comments

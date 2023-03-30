@@ -13,18 +13,8 @@ import {getActiveIntegrations} from '../../state/integrations/selectors'
 import {IntegrationType} from '../../models/integration/types'
 import {tryLocalStorage} from '../common/utils'
 
-import {
-    ComponentStatus,
-    IncidentImpact,
-    MaintenanceStatus,
-    Page,
-    StatusPageComponent,
-    StatusPageScheduledMaintenance,
-    StatusPageScheduledMaintenanceResponseData,
-    StatusPageIncident,
-    StatusPageIncidentsResponseData,
-} from './types'
-
+import {getHelpCenters} from '../../state/entities/helpCenter/helpCenters'
+import {HelpCenter} from '../../models/helpCenter/types'
 import {
     CLUSTER_GROUP_ID,
     INCIDENTS_NOTIFICATION_ID,
@@ -38,7 +28,19 @@ import {
     INCIDENT_IMPACT_LABEL,
     DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
     DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
+    HELPCENTER_GROUP_ID,
 } from './constants'
+import {
+    ComponentStatus,
+    IncidentImpact,
+    MaintenanceStatus,
+    Page,
+    StatusPageComponent,
+    StatusPageScheduledMaintenance,
+    StatusPageScheduledMaintenanceResponseData,
+    StatusPageIncident,
+    StatusPageIncidentsResponseData,
+} from './types'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
@@ -141,6 +143,7 @@ export class StatusPageManager {
     static getAffectedComponents(
         impact: IncidentImpact,
         components: StatusPageComponent[],
+        helpCenters: Record<string, HelpCenter>,
         activeIntegrationsTypes?: ImmutableSet<IntegrationType>
     ) {
         return components.filter((component) => {
@@ -162,6 +165,13 @@ export class StatusPageManager {
                 if (
                     affectedIntegrationType &&
                     !activeIntegrationsTypes?.includes(affectedIntegrationType)
+                ) {
+                    return false
+                }
+
+                if (
+                    component.group_id === HELPCENTER_GROUP_ID &&
+                    !Object.keys(helpCenters).length
                 ) {
                     return false
                 }
@@ -196,6 +206,8 @@ export class StatusPageManager {
     }
 
     processIncidents = (data: StatusPageIncidentsResponseData) => {
+        const helpCenters = getHelpCenters(this.store.getState())
+
         const relevantIncidents = data.incidents
             .filter((incident) =>
                 StatusPageManager.isEventImpactingCurrentCluster(incident)
@@ -205,6 +217,7 @@ export class StatusPageManager {
                 components: StatusPageManager.getAffectedComponents(
                     incident.impact,
                     incident.components,
+                    helpCenters,
                     this.activeIntegrationsTypes
                 ),
             }))
@@ -296,6 +309,7 @@ export class StatusPageManager {
         this.store.dispatch(dismissNotification(MAINTENANCE_NOTIFICATION_ID))
 
         const now = moment()
+        const helpCenters = getHelpCenters(this.store.getState())
 
         const [maintenance] = data.scheduled_maintenances
             .filter((maintenance) => {
@@ -324,6 +338,7 @@ export class StatusPageManager {
                 components: StatusPageManager.getAffectedComponents(
                     maintenance.impact,
                     maintenance.components,
+                    helpCenters,
                     this.activeIntegrationsTypes
                 ),
             }))
