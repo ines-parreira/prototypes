@@ -211,8 +211,8 @@ export default function ShopifyProductLine({
                 />
             </div>
             <div className={css.headerResult}>
-                <div className={css.backContainer}>
-                    {(onResetStoreChoice || subResults.length > 0) && (
+                {(onResetStoreChoice || subResults.length > 0) && (
+                    <div className={css.backContainer}>
                         <Button
                             className="mr-2"
                             onClick={
@@ -227,8 +227,8 @@ export default function ShopifyProductLine({
                                 Back
                             </ButtonIconLabel>
                         </Button>
-                    )}
-                </div>
+                    </div>
+                )}
                 <div>
                     <img
                         src={getIconFromType(IntegrationType.Shopify)}

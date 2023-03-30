@@ -35,9 +35,6 @@ exports[`<ShopifyProductLine/> should render the product picker 1`] = `
     <div
       class="headerResult"
     >
-      <div
-        class="backContainer"
-      />
       <div>
         <img
           alt="Shopify logo"
@@ -102,9 +99,6 @@ exports[`<ShopifyProductLine/> should render the product picker with products 1`
     <div
       class="headerResult"
     >
-      <div
-        class="backContainer"
-      />
       <div>
         <img
           alt="Shopify logo"

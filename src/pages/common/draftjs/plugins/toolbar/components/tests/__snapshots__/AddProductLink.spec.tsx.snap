@@ -63,9 +63,6 @@ exports[`<AddProductLink/> should render the product picker when the popover is 
         <div
           class="headerResult"
         >
-          <div
-            class="backContainer"
-          />
           <div>
             <img
               alt="Shopify logo"
