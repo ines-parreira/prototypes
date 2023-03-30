@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
@@ -15,9 +16,20 @@ type Props = {
     column: CampaignTableColumn
     cell: CampaignTableContentCell
     data: any
+    isLoading?: boolean
 }
 
-export const CampaignTableCell = ({column, cell, data}: Props) => {
+export const CampaignTableCell = ({column, cell, data, isLoading}: Props) => {
+    if (isLoading) {
+        return (
+            <BodyCell>
+                <div style={{width: '100%'}}>
+                    <Skeleton count={1} width="100%" />
+                </div>
+            </BodyCell>
+        )
+    }
+
     if (column.key === CampaignTableKeys.CampaignName) {
         if (cell.chatIntegration) {
             const url = `/app/settings/channels/gorgias_chat/${cell.chatIntegration.id}/campaigns/${cell.campaign.id}`

@@ -1,5 +1,6 @@
 import React, {useCallback, useState} from 'react'
 import useMeasure from 'react-use/lib/useMeasure'
+import {Link} from 'react-router-dom'
 
 import {OrderDirection} from 'models/api/types'
 
@@ -9,6 +10,7 @@ import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellPr
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import Navigation from 'pages/common/components/Navigation/Navigation'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
 import {CampaignTableKeys} from '../../types/enums/CampaignTableKeys.enum'
 import {CampaignTableColumn} from '../../types/CampaignTableColumn'
@@ -27,15 +29,19 @@ import {CampaignTableCell} from './components/CampaignTableCell'
 import css from './CampaignTableStats.less'
 
 type Props = {
+    chatIntegrationId?: number
     rows: CampaignTableContentCell[]
     offset: number
+    isLoading?: boolean
     onClickNextPage: () => void
     onClickPrevPage: () => void
 }
 
 export const CampaignTableStats = ({
+    chatIntegrationId,
     rows,
     offset,
+    isLoading,
     onClickNextPage,
     onClickPrevPage,
 }: Props) => {
@@ -96,10 +102,11 @@ export const CampaignTableStats = ({
                     column={column}
                     cell={cell}
                     data={getDataFromTableCell(cell, column.key)}
+                    isLoading={isLoading}
                 />
             )
         },
-        []
+        [isLoading]
     )
 
     const renderRows = useCallback(
@@ -115,6 +122,38 @@ export const CampaignTableStats = ({
         [renderCells]
     )
 
+    const renderTableBody = useCallback(() => {
+        if (isLoading === false && paginatedRows.length === 0) {
+            if (typeof chatIntegrationId === 'number') {
+                const url = `/app/settings/channels/gorgias_chat/${chatIntegrationId}/campaigns/new`
+                return (
+                    <TableBodyRow>
+                        <BodyCell colSpan={CAMPAIGN_TABLE_CELLS.length}>
+                            Start by
+                            <Link
+                                to={url}
+                                style={{marginLeft: 3, marginRight: 3}}
+                            >
+                                creating
+                            </Link>
+                            a campaign for this store!
+                        </BodyCell>
+                    </TableBodyRow>
+                )
+            }
+            return (
+                <TableBodyRow>
+                    <BodyCell colSpan={CAMPAIGN_TABLE_CELLS.length}>
+                        This store is not associated with any chat integration!
+                    </BodyCell>
+                </TableBodyRow>
+            )
+        }
+        return isLoading
+            ? paginatedRows.slice(0, ITEMS_PER_PAGE).map(renderRows)
+            : paginatedRows.map(renderRows)
+    }, [chatIntegrationId, isLoading, paginatedRows, renderRows])
+
     return (
         <div className={css.wrapper}>
             <div className={css.header}>
@@ -125,7 +164,7 @@ export const CampaignTableStats = ({
                     <TableHead className={css.header}>
                         {CAMPAIGN_TABLE_CELLS.map(renderHeaderCells)}
                     </TableHead>
-                    <TableBody>{paginatedRows.map(renderRows)}</TableBody>
+                    <TableBody>{renderTableBody()}</TableBody>
                 </TableWrapper>
             </div>
 

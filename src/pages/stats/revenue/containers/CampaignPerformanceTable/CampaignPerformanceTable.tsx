@@ -33,8 +33,7 @@ export const CampaignPerformanceTable = () => {
             : campaigns.map((campaign) => campaign.id)
     }, [campaigns, selectedCampaigns])
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, fetchMetrics] = useAsyncFn(async () => {
+    const [{loading}, fetchMetrics] = useAsyncFn(async () => {
         const data = await getCampaignsPerformance(
             selectedPeriod.start_datetime,
             selectedPeriod.end_datetime,
@@ -85,6 +84,8 @@ export const CampaignPerformanceTable = () => {
         <DashboardSection title="">
             <DashboardGridCell size={12}>
                 <CampaignTableStats
+                    chatIntegrationId={chatIntegration?.id}
+                    isLoading={loading}
                     rows={rows}
                     offset={offset}
                     onClickNextPage={handleClickNextPage}
