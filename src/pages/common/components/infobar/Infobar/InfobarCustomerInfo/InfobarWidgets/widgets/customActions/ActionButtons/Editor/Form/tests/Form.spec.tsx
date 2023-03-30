@@ -11,6 +11,10 @@ jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     return fn
 })
 
+jest.mock('ulidx', () => ({
+    ulid: jest.fn(() => 'ulid-generated-id'),
+}))
+
 describe('<Form/>', () => {
     const onClose = jest.fn()
     const onSubmit = jest.fn()
@@ -103,6 +107,7 @@ describe('<Form/>', () => {
                     headers: [
                         {
                             key: newValue,
+                            id: 'ulid-generated-id',
                             value: '',
                             label: '',
                             editable: false,

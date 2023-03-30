@@ -18,6 +18,7 @@ export type RemoveLink = (redirectionLinkIndex: number) => void
 export type SubmitLink = (link: Link, index?: number) => void
 
 export type Parameter = {
+    id?: string
     key: string
     value: string
     label: string

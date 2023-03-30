@@ -8,6 +8,10 @@ jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     return fn
 })
 
+jest.mock('ulidx', () => ({
+    ulid: jest.fn(() => 'ulid-generated-id'),
+}))
+
 describe('<Parameters/>', () => {
     const props = {
         onChange: jest.fn(),
@@ -36,7 +40,14 @@ describe('<Parameters/>', () => {
             })
         )
         expect(props.onChange).toHaveBeenCalledWith(props.path, [
-            {key: '', value: '', label: '', editable: false, mandatory: false},
+            {
+                id: 'ulid-generated-id',
+                key: '',
+                value: '',
+                label: '',
+                editable: false,
+                mandatory: false,
+            },
         ])
     })
 
@@ -102,5 +113,54 @@ describe('<Parameters/>', () => {
         render(<Parameters {...props} />)
         fireEvent.click(screen.getByRole('button', {name: 'delete'}))
         expect(props.onChange).toHaveBeenCalledWith(props.path, [])
+    })
+
+    it('should call onChange when try to render a param without ID', () => {
+        render(<Parameters {...props} />)
+        expect(props.onChange).toHaveBeenCalledWith(props.path, [
+            {
+                key: 'key',
+                id: 'ulid-generated-id',
+                value: 'value',
+                label: 'label',
+                editable: false,
+                mandatory: false,
+            },
+        ])
+    })
+
+    it('should call onChange when removing param and remove the correct value', () => {
+        const multipleParams = {
+            onChange: jest.fn(),
+            path: 'path',
+            value: [
+                {
+                    key: 'keyA',
+                    value: 'value',
+                    label: 'label',
+                    editable: false,
+                    mandatory: false,
+                },
+                {
+                    key: 'keyB',
+                    value: 'value',
+                    label: 'label',
+                    editable: false,
+                    mandatory: false,
+                },
+            ],
+        }
+
+        render(<Parameters {...multipleParams} />)
+        fireEvent.click(screen.getByTestId('delete-1'))
+        expect(multipleParams.onChange).toHaveBeenCalledWith(props.path, [
+            {
+                key: 'keyA',
+                value: 'value',
+                label: 'label',
+                editable: false,
+                mandatory: false,
+            },
+        ])
     })
 })

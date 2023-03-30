@@ -1,4 +1,5 @@
 import React, {memo, useEffect, useState} from 'react'
+import {ulid} from 'ulidx'
 import {Button} from 'reactstrap'
 import debounce from 'lodash/debounce'
 
@@ -24,6 +25,18 @@ const generateBaseId = (path: string, index: number) =>
     `action-button-${path.replace(/[./]/g, '-')}-${index}`
 
 function Parameters({value, path, onChange}: Props) {
+    // NOTE: Not every values comes with an ID
+    // so we need to generate the missing ones
+    if (!value.every((field) => field.id)) {
+        onChange(
+            path,
+            value.map((field) => ({
+                ...field,
+                id: field.id || ulid(),
+            }))
+        )
+    }
+
     const [hasDuplicates, setDuplicates] = useState<boolean>(
         checkDuplicates(value)
     )
@@ -45,7 +58,14 @@ function Parameters({value, path, onChange}: Props) {
     const onAdd = () => {
         onChange(path, [
             ...value,
-            {key: '', value: '', label: '', editable: false, mandatory: false},
+            {
+                id: ulid(),
+                key: '',
+                value: '',
+                label: '',
+                editable: false,
+                mandatory: false,
+            },
         ])
     }
 
@@ -55,7 +75,7 @@ function Parameters({value, path, onChange}: Props) {
                 const indexedPath = path + `[${index}]`
                 return (
                     <div
-                        key={index}
+                        key={field.id || index}
                         className={`${css.formParamRow} ${css.squash}`}
                     >
                         <div>
@@ -174,6 +194,7 @@ function Parameters({value, path, onChange}: Props) {
                                 type="button"
                                 size="sm"
                                 onClick={() => onDelete(index)}
+                                data-testid={`delete-${index}`}
                             >
                                 <i
                                     className={`material-icons text-danger ${css.formParamIcon}`}

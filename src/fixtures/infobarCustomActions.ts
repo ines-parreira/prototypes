@@ -20,6 +20,7 @@ export const actionFixture = ({edit = false} = {}): Action => {
         key: 'someKey',
         value: 'somevalue',
         label: '',
+        id: 'ulid-generated-id',
         editable: true,
         mandatory: false,
     }
