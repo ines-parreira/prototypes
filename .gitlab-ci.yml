@@ -1,6 +1,6 @@
 include:
   - project: 'gorgias/gorgias-ops'
-    ref: 6e37eca138ea47f270c20a81c1ac18dae0e007b2
+    ref: 341dcd3f6bca962fce96fe6e75495f736e5bcaec
     file: /.gitlab/ci/common.gitlab-ci.yml
 
 stages:
@@ -175,7 +175,9 @@ Deploy production:
   <<: *gitlab_environment
 
 Deploy preview:
-  extends: .deploy
+  extends:
+    - .deploy
+    - .staging_env
   dependencies: [Build preview]
   needs: [Build preview]
   when: manual
