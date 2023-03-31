@@ -103,8 +103,8 @@ exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan car
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.36}
       currency="usd"
+      extraTicketCost={0.36}
       freeTickets={5000}
     />,
   },
@@ -204,8 +204,8 @@ exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan car
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.4}
       currency="usd"
+      extraTicketCost={0.4}
       freeTickets={300}
     />,
   },
@@ -304,8 +304,8 @@ exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan car
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.32}
       currency="usd"
+      extraTicketCost={0.32}
       freeTickets={10000}
     />,
   },
@@ -405,8 +405,8 @@ exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan car
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.36}
       currency="usd"
+      extraTicketCost={0.36}
       freeTickets={2000}
     />,
   },
@@ -506,8 +506,8 @@ exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan car
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.4}
       currency="usd"
+      extraTicketCost={0.4}
       freeTickets={50}
     />,
   },
@@ -601,8 +601,8 @@ exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan car
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.06}
       currency="usd"
+      extraTicketCost={0.06}
       freeTickets={600}
     />,
   },
@@ -701,8 +701,8 @@ exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan car
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.4}
       currency="usd"
+      extraTicketCost={0.4}
       freeTickets={300}
     />,
   },

@@ -141,8 +141,8 @@ exports[`CreditCard component should display credit card form 1`] = `
               icon="playlist_add_check"
             />,
             "label": <BillableTicketsLabel
-              costPerTicket={0.4}
               currency="usd"
+              extraTicketCost={0.4}
               freeTickets={300}
             />,
           },
@@ -392,8 +392,8 @@ exports[`CreditCard component should not render the billing address form when a 
               icon="playlist_add_check"
             />,
             "label": <BillableTicketsLabel
-              costPerTicket={0.4}
               currency="usd"
+              extraTicketCost={0.4}
               freeTickets={300}
             />,
           },
@@ -635,8 +635,8 @@ exports[`CreditCard component should render billing plan card with automation fo
               icon="playlist_add_check"
             />,
             "label": <BillableTicketsLabel
-              costPerTicket={0.4}
               currency="usd"
+              extraTicketCost={0.6000000000000001}
               freeTickets={300}
             />,
           },
@@ -895,8 +895,8 @@ exports[`CreditCard component should render billing plan card with automation fo
               icon="playlist_add_check"
             />,
             "label": <BillableTicketsLabel
-              costPerTicket={0.4}
               currency="usd"
+              extraTicketCost={0.6000000000000001}
               freeTickets={300}
             />,
           },
@@ -1154,8 +1154,8 @@ exports[`CreditCard component should render nothing if loaded, but no current su
               icon="playlist_add_check"
             />,
             "label": <BillableTicketsLabel
-              costPerTicket={0.4}
               currency="usd"
+              extraTicketCost={0.4}
               freeTickets={300}
             />,
           },
@@ -1422,8 +1422,8 @@ exports[`CreditCard component should render the billing address form when accoun
               icon="playlist_add_check"
             />,
             "label": <BillableTicketsLabel
-              costPerTicket={0.4}
               currency="usd"
+              extraTicketCost={0.4}
               freeTickets={300}
             />,
           },

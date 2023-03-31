@@ -9,7 +9,7 @@ import {
     HelpdeskPrice,
     HelpdeskPriceFeatures,
 } from 'models/billing/types'
-import {isHelpdeskPrice} from 'models/billing/utils'
+import {isHelpdeskPrice, isAutomationPrice} from 'models/billing/utils'
 import {isFeatureEnabled} from '../../../../utils/account'
 import {
     AccountFeature,
@@ -175,12 +175,23 @@ export const getPlanCardFeaturesForPrices = (
     const helpdeskPrice = prices.find((price) => isHelpdeskPrice(price)) as
         | HelpdeskPrice
         | undefined
+
     if (!helpdeskPrice) {
         return []
     }
+
     if (helpdeskPrice.name.toLocaleLowerCase() === 'enterprise') {
         return getEnterprisePlanCardFeatures()
     }
+
+    const automationPrice = prices.find((price) => isAutomationPrice(price)) as
+        | AutomationPrice
+        | undefined
+
+    const extraTicketCost = automationPrice
+        ? helpdeskPrice.extra_ticket_cost + automationPrice.extra_ticket_cost
+        : helpdeskPrice.extra_ticket_cost
+
     const planFeatures = prices.reduce(
         (
             acc: Partial<HelpdeskPriceFeatures & AutomationPriceFeatures>,
@@ -193,16 +204,18 @@ export const getPlanCardFeaturesForPrices = (
     const enabledFeatures = _pickBy(planFeatures, (featureMetadata) =>
         isFeatureEnabled(featureMetadata)
     ) as AccountFeatures
+
     const enabledFeaturesNames = Object.keys(
         enabledFeatures
     ) as AccountFeature[]
+
     return (
         [
             {
                 icon: <PlanFeatureMaterialIcon icon="playlist_add_check" />,
                 label: (
                     <BillableTicketsLabel
-                        costPerTicket={helpdeskPrice.extra_ticket_cost}
+                        extraTicketCost={extraTicketCost}
                         currency={helpdeskPrice.currency}
                         freeTickets={helpdeskPrice.num_quota_tickets}
                     />

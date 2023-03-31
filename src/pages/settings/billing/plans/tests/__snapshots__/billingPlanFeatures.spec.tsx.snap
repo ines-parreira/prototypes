@@ -7,8 +7,8 @@ exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return the feat
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.36}
       currency="usd"
+      extraTicketCost={0.54}
       freeTickets={2000}
     />,
   },
@@ -108,8 +108,8 @@ exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return the feat
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.36}
       currency="usd"
+      extraTicketCost={0.54}
       freeTickets={2000}
     />,
   },

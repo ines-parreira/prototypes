@@ -8,6 +8,7 @@ import {
     getCheapestPrice,
     getFormattedAmount,
     getFullPrice,
+    isAutomationPrice,
     isHelpdeskPrice,
 } from '../utils'
 
@@ -37,6 +38,18 @@ describe('isHelpdeskPrice', () => {
         'should validate if the price is of helpdesk price',
         (price, expectedResult) => {
             expect(isHelpdeskPrice(price)).toBe(expectedResult)
+        }
+    )
+})
+
+describe('isAutomationPrice', () => {
+    it.each([
+        [basicMonthlyHelpdeskPrice, false],
+        [basicMonthlyAutomationPrice, true],
+    ])(
+        'should validate if the price is of automation price',
+        (price, expectedResult) => {
+            expect(isAutomationPrice(price)).toBe(expectedResult)
         }
     )
 })

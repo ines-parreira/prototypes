@@ -8,20 +8,20 @@ import css from './BillableTicketsLabel.less'
 type Props = {
     id?: string
     costMultiplier?: number
-    costPerTicket: number
+    extraTicketCost: number
     currency: string
     freeTickets: number
 }
 
 export default function BillableTicketsLabel({
     costMultiplier = 100,
-    costPerTicket,
+    extraTicketCost,
     currency,
     freeTickets,
 }: Props) {
     const id = useId()
     const tooltipId = 'billable-ticket-label-' + id
-    const formattedCostPerTicket = costPerTicket * costMultiplier
+    const multipliedExtraTicketCost = extraTicketCost * costMultiplier
 
     return (
         <>
@@ -40,7 +40,7 @@ export default function BillableTicketsLabel({
                     currency,
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
-                }).format(formattedCostPerTicket)}{' '}
+                }).format(multipliedExtraTicketCost)}{' '}
                 per {costMultiplier} extra tickets
             </Tooltip>
         </>

@@ -217,6 +217,7 @@ export default function BillingComparisonPlanCard({
             ),
         [helpdeskPrice, isCurrentHelpdeskLegacy, isCurrentPrice]
     )
+
     const automationFeatures = useMemo(
         () =>
             automationPrice &&
@@ -231,6 +232,7 @@ export default function BillingComparisonPlanCard({
             isCurrentPrice,
         ]
     )
+
     const isEditable = useMemo(() => addOnAmount != null, [addOnAmount])
 
     return (
@@ -245,7 +247,11 @@ export default function BillingComparisonPlanCard({
             currency={helpdeskPrice.currency}
             interval={helpdeskPrice.interval}
             name={formattedName}
-            features={features}
+            features={
+                isAutomationChecked && automationFeatures
+                    ? automationFeatures
+                    : features
+            }
             subHeader={
                 <AutomationAmount
                     addOnAmount={addOnAmount}

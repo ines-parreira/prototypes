@@ -31,6 +31,12 @@ export function isHelpdeskPrice(
     return 'public' in price
 }
 
+export function isAutomationPrice(
+    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
+): price is AutomationPrice {
+    return 'automation_addon_discount' in price
+}
+
 export function getFormattedAmount(amountInCents: number) {
     return amountInCents / 100
 }
