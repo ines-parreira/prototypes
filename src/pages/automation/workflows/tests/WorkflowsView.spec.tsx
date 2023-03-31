@@ -64,10 +64,8 @@ describe('<WorkflowsView />', () => {
             </Provider>
         )
 
-        const skeletonRows = screen.queryAllByTestId(
-            'shopper-flows-skeleton-row'
-        )
-        expect(skeletonRows.length).toBeGreaterThanOrEqual(1)
+        const loader = screen.queryAllByTestId('loader')
+        expect(loader.length).toBe(1)
     })
 
     it('should display actual rows once workflow entrypoints have been fetched', async () => {

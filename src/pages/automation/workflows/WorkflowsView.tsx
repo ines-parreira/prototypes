@@ -10,6 +10,7 @@ import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPop
 import {WorkflowEntrypoint} from 'models/selfServiceConfiguration/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Tooltip from 'pages/common/components/Tooltip'
+import Loader from 'pages/common/components/Loader/Loader'
 import css from './WorkflowsView.less'
 import useWorflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
 
@@ -54,115 +55,116 @@ export default function WorkflowsView({
                         </Button>
                     </div>
                 </PageHeader>
-                <Container fluid className={css.pageContainer}>
-                    <div className={css.pageContainerHeadline}>
-                        {infoContainer}
-                    </div>
-                    <Table hover className="mb-0">
-                        {tableHeader(
-                            workflowsEntrypoints.length === 0 && !isFetchPending
-                        )}
-                        <ReactSortable
-                            tag="tbody"
-                            options={{
-                                draggable: '.draggable',
-                                handle: '.drag-handle',
-                                animation: 150,
-                            }}
-                            onChange={(sortedIds) => {
-                                void handleDragAndDrop(sortedIds)
-                            }}
-                        >
-                            {isFetchPending && (
-                                <>
-                                    {skeletonRow}
-                                    {skeletonRow}
-                                    {skeletonRow}
-                                </>
-                            )}
-                            {workflowsEntrypoints.map((entrypoint) => (
-                                <tr
-                                    className="draggable"
-                                    data-id={entrypoint.workflow_id}
-                                    key={entrypoint.workflow_id}
-                                >
-                                    <td className={css.alignMiddle}>
-                                        <div
-                                            className={classNames(
-                                                'material-icons drag-handle',
-                                                css.dragIcon
-                                            )}
-                                        >
-                                            drag_indicator
-                                        </div>
-                                    </td>
-                                    <td className={css.alignMiddle}>
-                                        <div
-                                            id={`toggle-entrypoint-${entrypoint.workflow_id}`}
-                                        >
-                                            <ToggleInput
-                                                isToggled={entrypoint.enabled}
-                                                isLoading={isToggleUpdatePending(
-                                                    entrypoint.workflow_id
-                                                )}
-                                                isDisabled={
-                                                    isUpdatePending ||
-                                                    (!entrypoint.enabled &&
-                                                        isEnabledLimitReached)
-                                                }
-                                                onClick={() => {
-                                                    void toggleEnabled(
-                                                        entrypoint.workflow_id
-                                                    )
-                                                }}
-                                            />
-                                        </div>
-                                        {!entrypoint.enabled &&
-                                            isEnabledLimitReached && (
-                                                <Tooltip
-                                                    target={`toggle-entrypoint-${entrypoint.workflow_id}`}
-                                                    placement="top"
-                                                    trigger={['hover']}
-                                                    autohide={false}
-                                                >
-                                                    You have reached the maximum
-                                                    number of enabled flows.
-                                                    Disable a flow or a{' '}
-                                                    <Link
-                                                        to={quickResponsesUrl}
-                                                    >
-                                                        quick response
-                                                    </Link>{' '}
-                                                    in order to enable this
-                                                    flow.
-                                                </Tooltip>
-                                            )}
-                                    </td>
-                                    <td
-                                        className={classNames(
-                                            css.alignMiddle,
-                                            css.title
-                                        )}
-                                        onClick={() => {
-                                            goToEditWorkflowPage(
-                                                entrypoint.workflow_id
-                                            )
-                                        }}
+                {isFetchPending ? (
+                    <Loader data-testid="loader" />
+                ) : (
+                    <Container fluid className={css.pageContainer}>
+                        <div className={css.pageContainerHeadline}>
+                            {infoContainer}
+                        </div>
+
+                        <Table hover className="mb-0">
+                            {tableHeader(workflowsEntrypoints.length === 0)}
+                            <ReactSortable
+                                tag="tbody"
+                                options={{
+                                    draggable: '.draggable',
+                                    handle: '.drag-handle',
+                                    animation: 150,
+                                }}
+                                onChange={(sortedIds) => {
+                                    void handleDragAndDrop(sortedIds)
+                                }}
+                            >
+                                {workflowsEntrypoints.map((entrypoint) => (
+                                    <tr
+                                        className="draggable"
+                                        data-id={entrypoint.workflow_id}
+                                        key={entrypoint.workflow_id}
                                     >
-                                        {entrypoint.name}
-                                    </td>
-                                    <td className={css.alignMiddle}>
-                                        {deleteActionButton(
-                                            entrypoint,
-                                            deleteWorkflowEntrypoint,
-                                            isUpdatePending
-                                        )}
-                                    </td>
-                                </tr>
-                            ))}
-                        </ReactSortable>
-                    </Table>
-                </Container>
+                                        <td className={css.alignMiddle}>
+                                            <div
+                                                className={classNames(
+                                                    'material-icons drag-handle',
+                                                    css.dragIcon
+                                                )}
+                                            >
+                                                drag_indicator
+                                            </div>
+                                        </td>
+                                        <td className={css.alignMiddle}>
+                                            <div
+                                                id={`toggle-entrypoint-${entrypoint.workflow_id}`}
+                                            >
+                                                <ToggleInput
+                                                    isToggled={
+                                                        entrypoint.enabled
+                                                    }
+                                                    isLoading={isToggleUpdatePending(
+                                                        entrypoint.workflow_id
+                                                    )}
+                                                    isDisabled={
+                                                        isUpdatePending ||
+                                                        (!entrypoint.enabled &&
+                                                            isEnabledLimitReached)
+                                                    }
+                                                    onClick={() => {
+                                                        void toggleEnabled(
+                                                            entrypoint.workflow_id
+                                                        )
+                                                    }}
+                                                />
+                                            </div>
+                                            {!entrypoint.enabled &&
+                                                isEnabledLimitReached && (
+                                                    <Tooltip
+                                                        target={`toggle-entrypoint-${entrypoint.workflow_id}`}
+                                                        placement="top"
+                                                        trigger={['hover']}
+                                                        autohide={false}
+                                                    >
+                                                        You have reached the
+                                                        maximum number of
+                                                        enabled flows. Disable a
+                                                        flow or a{' '}
+                                                        <Link
+                                                            to={
+                                                                quickResponsesUrl
+                                                            }
+                                                        >
+                                                            quick response
+                                                        </Link>{' '}
+                                                        in order to enable this
+                                                        flow.
+                                                    </Tooltip>
+                                                )}
+                                        </td>
+                                        <td
+                                            className={classNames(
+                                                css.alignMiddle,
+                                                css.title
+                                            )}
+                                            onClick={() => {
+                                                goToEditWorkflowPage(
+                                                    entrypoint.workflow_id
+                                                )
+                                            }}
+                                        >
+                                            {entrypoint.name}
+                                        </td>
+                                        <td className={css.alignMiddle}>
+                                            {deleteActionButton(
+                                                entrypoint,
+                                                deleteWorkflowEntrypoint,
+                                                isUpdatePending
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </ReactSortable>
+                        </Table>
+                    </Container>
+                )}
             </div>
         </div>
     )
@@ -255,40 +257,4 @@ const tableHeader = (emptyRows: boolean) => (
             </tbody>
         )}
     </>
-)
-
-const skeletonRow = (
-    <tr className="draggable" data-testid="shopper-flows-skeleton-row">
-        <td className={css.alignMiddle}>
-            <div
-                className={classNames(
-                    'material-icons drag-handle',
-                    css.dragIcon
-                )}
-            >
-                drag_indicator
-            </div>
-        </td>
-        <td className={css.alignMiddle}>
-            <ToggleInput
-                isToggled={false}
-                isLoading={true}
-                onClick={() => {
-                    //
-                }}
-            />
-        </td>
-        <td className={classNames(css.alignMiddle, css.title)}></td>
-        <td className={css.alignMiddle}>
-            <IconButton
-                className={css.actionButton}
-                fillStyle="ghost"
-                intent="destructive"
-                title="Delete flow"
-                isLoading={true}
-            >
-                delete
-            </IconButton>
-        </td>
-    </tr>
 )
