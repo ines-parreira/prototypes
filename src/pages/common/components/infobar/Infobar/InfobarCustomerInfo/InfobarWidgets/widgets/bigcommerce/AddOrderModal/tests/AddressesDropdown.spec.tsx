@@ -28,6 +28,8 @@ const emptyProps: Props = {
     selectedAddress: null,
     availableAddresses: [],
     onSelectAddress: jest.fn(),
+    integrationId: 1,
+    currencyCode: 'USD',
 }
 
 const shippingAddressesProps: Props = {
@@ -35,6 +37,8 @@ const shippingAddressesProps: Props = {
     selectedAddress: null,
     availableAddresses: bigCommerceShippingAddressesFixture,
     onSelectAddress: jest.fn(),
+    integrationId: 1,
+    currencyCode: 'USD',
 }
 
 const selectedShippingAddressProps: Props = {
@@ -42,6 +46,8 @@ const selectedShippingAddressProps: Props = {
     selectedAddress: bigCommerceShippingAddressesFixture[1],
     availableAddresses: bigCommerceShippingAddressesFixture,
     onSelectAddress: jest.fn(),
+    integrationId: 1,
+    currencyCode: 'USD',
 }
 
 describe('<ShippingAddressesDropdown/>', () => {

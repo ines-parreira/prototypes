@@ -68,10 +68,14 @@ describe('OrderModal', () => {
     })
 
     it('should render', async () => {
-        const {baseElement} = render(
-            <Provider store={store}>
-                <OrderModal {...defaultProps} />
-            </Provider>
+        const {rerender, baseElement} = render(<div id="App" />)
+        rerender(
+            <>
+                <div id="App" />
+                <Provider store={store}>
+                    <OrderModal {...defaultProps} />
+                </Provider>
+            </>
         )
 
         await screen.findByText('Address')
@@ -127,7 +131,20 @@ describe('OrderModalConnected', () => {
     })
 
     it('renders when `isOpen` is `true` and IntegrationContext has value', () => {
-        renderSubject({orderModalProps: {...defaultProps, isOpen: true}})
+        defaultProps.isOpen = true
+        const {rerender} = render(<div id="App" />)
+        rerender(
+            <>
+                <div id="App" />
+                <Provider store={store}>
+                    <IntegrationContext.Provider
+                        value={defaultIntegrationContextValue}
+                    >
+                        <OrderModalRenderWrapper {...defaultProps} />
+                    </IntegrationContext.Provider>
+                </Provider>
+            </>
+        )
 
         expect(
             screen.getByRole('button', {name: /Create draft order/i})
@@ -139,7 +156,19 @@ describe('OrderModalConnected', () => {
             utils,
             'bigcommerceCreateOrder'
         )
-        renderSubject({orderModalProps: {...defaultProps, isOpen: true}})
+        const {rerender} = render(<div id="App" />)
+        rerender(
+            <>
+                <div id="App" />
+                <Provider store={store}>
+                    <IntegrationContext.Provider
+                        value={defaultIntegrationContextValue}
+                    >
+                        <OrderModalRenderWrapper {...defaultProps} />
+                    </IntegrationContext.Provider>
+                </Provider>
+            </>
+        )
 
         screen.getByRole('button', {name: /Create draft order/i}).click()
 
@@ -190,6 +219,9 @@ describe('useCheckout', () => {
         const defaultProps = {
             integrationId: 188,
             setIsTotalPriceLoading: jest.fn(),
+            availableAddresses: bigCommerceShippingAddressesFixture,
+            customAddresses: [],
+            setCustomAddresses: jest.fn(),
         }
 
         const {result} = renderHook(() => useCheckout(defaultProps))

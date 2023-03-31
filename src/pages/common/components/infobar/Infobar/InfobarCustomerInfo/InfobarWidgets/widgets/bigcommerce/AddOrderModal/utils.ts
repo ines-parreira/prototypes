@@ -3,6 +3,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
     addBigCommerceCheckoutBillingAddress,
+    addBigCommerceCustomAddressToCustomerAddressBook,
     addBigCommerceLineItem,
     createBigCommerceCart,
     createBigCommerceCheckoutConsignment,
@@ -20,6 +21,7 @@ import {
     BigCommerceCart,
     BigCommerceCartLineItem,
     BigCommerceCheckout,
+    BigCommerceCustomAddress,
     BigCommerceCustomCartLineItem,
     BigCommerceCustomer,
     BigCommerceCustomerAddress,
@@ -980,6 +982,19 @@ export const updateCheckoutConsignmentShippingMethod = async ({
     })
 }
 
+export const createCustomAddress = async ({
+    integrationId,
+    address,
+}: {
+    integrationId: number
+    address: BigCommerceCustomAddress
+}) => {
+    return await addBigCommerceCustomAddressToCustomerAddressBook({
+        integrationId,
+        address,
+    })
+}
+
 export function checkProductsValidity(
     products: BigCommerceProductsListType | undefined | null
 ) {
@@ -993,7 +1008,16 @@ export function checkProductsValidity(
 export function checkAddressValidity(
     address: Maybe<BigCommerceCustomerAddress>
 ) {
-    return !!(address?.email && address?.country_code)
+    return !!(
+        address?.customer_id &&
+        address?.first_name &&
+        address?.last_name &&
+        address?.city &&
+        address?.state_or_province &&
+        address?.postal_code &&
+        address?.country_code &&
+        address?.address1
+    )
 }
 
 export function checkCheckoutValidity({
@@ -1017,8 +1041,13 @@ export function checkCheckoutValidity({
         !(
             checkout &&
             checkout.cart?.line_items &&
-            checkout.billing_address?.email &&
-            checkout.billing_address?.country_code
+            checkout.billing_address?.first_name &&
+            checkout.billing_address?.last_name &&
+            checkout.billing_address?.city &&
+            checkout.billing_address?.state_or_province &&
+            checkout.billing_address?.postal_code &&
+            checkout.billing_address?.country_code &&
+            checkout.billing_address?.address1
         )
     ) {
         return false
@@ -1030,8 +1059,14 @@ export function checkCheckoutValidity({
             checkout.cart.line_items?.custom_items?.length) &&
         checkout.consignments?.length &&
         checkout.consignments[0].line_item_ids?.length &&
-        checkout.consignments[0].address?.email &&
         checkout.consignments[0].address?.country_code &&
+        checkout.consignments[0].address?.first_name &&
+        checkout.consignments[0].address?.last_name &&
+        checkout.consignments[0].address?.city &&
+        checkout.consignments[0].address?.state_or_province &&
+        checkout.consignments[0].address?.postal_code &&
+        checkout.consignments[0].address?.country_code &&
+        checkout.consignments[0].address?.address1 &&
         checkout.consignments[0].selected_shipping_option &&
         checkout.consignments[0].available_shipping_options.find(
             ({id}) =>

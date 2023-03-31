@@ -13,6 +13,7 @@ import {buildAddressComponent, getOneLineAddress} from './utils'
 
 import css from './AddressesDropdown.less'
 import cssOrderModal from './OrderModal.less'
+import {CustomAddressModal} from './CustomAddressModal'
 
 const BILLING_ADDRESS_DROPDOWN_ID = 'billing-address-dropdown'
 const SHIPPING_ADDRESS_DROPDOWN_ID = 'shipping-address-dropdown'
@@ -26,9 +27,71 @@ type Props = {
         addressType: 'billing' | 'shipping'
     ) => Promise<void>
     addressType: 'billing' | 'shipping'
+    currencyCode: string
     errorMessage?: string
     hasError?: boolean
     isDisabled?: boolean
+    integrationId: number
+    customerId?: number
+}
+
+function AddressesDropdownItems({
+    availableAddresses,
+    onSelectAddress,
+    addressType,
+}: {
+    availableAddresses: BigCommerceCustomerAddress[]
+    onSelectAddress: (
+        selectedAddress: BigCommerceCustomerAddress,
+        addressType: 'billing' | 'shipping'
+    ) => Promise<void>
+    addressType: 'billing' | 'shipping'
+}) {
+    return (
+        <>
+            {availableAddresses.map((address, index) => (
+                <DropdownItem
+                    key={index}
+                    autoFocus
+                    shouldCloseOnSelect
+                    className={css.addressItem}
+                    option={{
+                        label: address.address1,
+                        value: address.address1,
+                    }}
+                    onClick={() => {
+                        void onSelectAddress(address, addressType)
+                    }}
+                >
+                    <div className={css.addressLine}>
+                        <b>{`${address.first_name} ${address.last_name}`}</b>
+                        <br />
+                        <>
+                            {address.address2
+                                ? `${address.address1}, ${address.address2}`
+                                : address.address1}
+                            <br />
+                        </>
+                        <>
+                            {buildAddressComponent({
+                                addressObj: address,
+                                includeCountry: false,
+                            })}
+                            <br />
+                            {address.country}
+                            <br />
+                            {address.phone && (
+                                <>
+                                    {address.phone}
+                                    <br />
+                                </>
+                            )}
+                        </>
+                    </div>
+                </DropdownItem>
+            ))}
+        </>
+    )
 }
 
 export function AddressesDropdown({
@@ -36,14 +99,18 @@ export function AddressesDropdown({
     availableAddresses,
     onSelectAddress,
     addressType,
+    currencyCode,
     errorMessage = 'Please fill out this field.',
     hasError = false,
     isDisabled = false,
+    integrationId,
+    customerId,
 }: Props) {
     const selectRef = useRef(null)
     const floatingSelectRef = useRef(null)
     const [isSelectOpen, setIsSelectOpen] = useState(false)
-
+    const [isCustomAddressModalOpen, setIsCustomAddressModalOpen] =
+        useState(false)
     return (
         <>
             <Label className={cssOrderModal.label} isRequired>
@@ -51,133 +118,94 @@ export function AddressesDropdown({
                     ? 'Billing address'
                     : 'Shipping address'}
             </Label>
-            <div
-                id={
-                    addressType === 'billing'
-                        ? BILLING_ADDRESS_DROPDOWN_ID
-                        : SHIPPING_ADDRESS_DROPDOWN_ID
-                }
-                className={css.dropdown}
-            >
-                <SelectInputBox
-                    className={classnames({
-                        [cssOrderModal.disabled]: isDisabled,
-                    })}
-                    ref={selectRef}
-                    hasError={hasError}
-                    floating={floatingSelectRef}
-                    onToggle={setIsSelectOpen}
-                    placeholder={'Select from address book...'}
-                    label={getOneLineAddress({addressObj: selectedAddress})}
-                >
-                    <SelectInputBoxContext.Consumer>
-                        {(context) => (
-                            <Dropdown
-                                target={selectRef}
-                                ref={floatingSelectRef}
-                                isOpen={isSelectOpen}
-                                onToggle={() => context!.onBlur()}
-                                contained
-                            >
-                                <DropdownBody className={css.addressDropDown}>
-                                    {!availableAddresses?.length ? (
-                                        <DropdownItem
-                                            option={{
-                                                label: 'No results',
-                                                value: 'No results',
-                                            }}
-                                            onClick={() => null}
-                                        />
-                                    ) : (
-                                        <>
-                                            {availableAddresses.map(
-                                                (address, index) => (
-                                                    <DropdownItem
-                                                        key={index}
-                                                        autoFocus
-                                                        shouldCloseOnSelect
-                                                        className={
-                                                            css.addressItem
-                                                        }
-                                                        option={{
-                                                            label: address.address1,
-                                                            value: address.address1,
-                                                        }}
-                                                        onClick={() => {
-                                                            void onSelectAddress(
-                                                                address,
-                                                                addressType
-                                                            )
-                                                        }}
-                                                    >
-                                                        <div
-                                                            className={
-                                                                css.addressLine
-                                                            }
-                                                        >
-                                                            <b>{`${address.first_name} ${address.last_name}`}</b>
-                                                            <br />
-                                                            <>
-                                                                {address.address2
-                                                                    ? `${address.address1}, ${address.address2}`
-                                                                    : address.address1}
-                                                                <br />
-                                                            </>
-                                                            <>
-                                                                {buildAddressComponent(
-                                                                    {
-                                                                        addressObj:
-                                                                            address,
-                                                                        includeCountry:
-                                                                            false,
-                                                                    }
-                                                                )}
-                                                                <br />
-                                                                {
-                                                                    address.country
-                                                                }
-                                                                <br />
-                                                                {address.phone && (
-                                                                    <>
-                                                                        {
-                                                                            address.phone
-                                                                        }
-                                                                        <br />
-                                                                    </>
-                                                                )}
-                                                            </>
-                                                        </div>
-                                                    </DropdownItem>
-                                                )
-                                            )}
-                                        </>
-                                    )}
-                                </DropdownBody>
-                            </Dropdown>
-                        )}
-                    </SelectInputBoxContext.Consumer>
-                </SelectInputBox>
-            </div>
-            {isDisabled && (
-                <Tooltip
-                    target={
+            <div className={cssOrderModal.flex}>
+                <div
+                    id={
                         addressType === 'billing'
                             ? BILLING_ADDRESS_DROPDOWN_ID
                             : SHIPPING_ADDRESS_DROPDOWN_ID
                     }
+                    className={css.dropdown}
                 >
-                    Set currency to select the address.
-                </Tooltip>
-            )}
-            {hasError && (
-                <p
-                    className={classnames(cssOrderModal.caption, {
-                        [cssOrderModal.hasError]: hasError,
-                    })}
-                >
-                    {errorMessage}
-                </p>
-            )}
+                    <SelectInputBox
+                        className={classnames({
+                            [cssOrderModal.disabled]: isDisabled,
+                        })}
+                        ref={selectRef}
+                        hasError={hasError}
+                        floating={floatingSelectRef}
+                        onToggle={setIsSelectOpen}
+                        placeholder={'Select from address book...'}
+                        label={getOneLineAddress({addressObj: selectedAddress})}
+                    >
+                        <SelectInputBoxContext.Consumer>
+                            {(context) => (
+                                <Dropdown
+                                    target={selectRef}
+                                    ref={floatingSelectRef}
+                                    isOpen={isSelectOpen}
+                                    onToggle={() => context!.onBlur()}
+                                    contained
+                                >
+                                    <DropdownBody
+                                        className={css.addressDropDown}
+                                    >
+                                        {!availableAddresses?.length ? (
+                                            <DropdownItem
+                                                option={{
+                                                    label: 'No results',
+                                                    value: 'No results',
+                                                }}
+                                                onClick={() => null}
+                                            />
+                                        ) : (
+                                            <AddressesDropdownItems
+                                                availableAddresses={
+                                                    availableAddresses
+                                                }
+                                                onSelectAddress={
+                                                    onSelectAddress
+                                                }
+                                                addressType={addressType}
+                                            />
+                                        )}
+                                    </DropdownBody>
+                                </Dropdown>
+                            )}
+                        </SelectInputBoxContext.Consumer>
+                    </SelectInputBox>
+                </div>
+                {isDisabled && (
+                    <Tooltip
+                        target={
+                            addressType === 'billing'
+                                ? BILLING_ADDRESS_DROPDOWN_ID
+                                : SHIPPING_ADDRESS_DROPDOWN_ID
+                        }
+                    >
+                        Set currency to select the address.
+                    </Tooltip>
+                )}
+                {hasError && (
+                    <p
+                        className={classnames(cssOrderModal.caption, {
+                            [cssOrderModal.hasError]: hasError,
+                        })}
+                    >
+                        {errorMessage}
+                    </p>
+                )}
+                <CustomAddressModal
+                    currencyCode={currencyCode}
+                    isOpen={isCustomAddressModalOpen}
+                    integrationId={integrationId}
+                    customerId={customerId}
+                    onOpen={() => setIsCustomAddressModalOpen(true)}
+                    onClose={() => setIsCustomAddressModalOpen(false)}
+                    onAddCustomAddress={onSelectAddress}
+                    addressType={addressType}
+                />
+            </div>
         </>
     )
 }

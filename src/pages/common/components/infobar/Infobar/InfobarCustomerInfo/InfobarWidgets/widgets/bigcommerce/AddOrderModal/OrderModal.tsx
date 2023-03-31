@@ -207,7 +207,17 @@ const getTotals = ({
     }
 }
 
-export const useCheckout = ({integrationId}: {integrationId: number}) => {
+export const useCheckout = ({
+    integrationId,
+    availableAddresses,
+    customAddresses,
+    setCustomAddresses,
+}: {
+    integrationId: number
+    availableAddresses: Array<BigCommerceCustomerAddress>
+    customAddresses: Array<BigCommerceCustomerAddress>
+    setCustomAddresses: (addresses: Array<BigCommerceCustomerAddress>) => void
+}) => {
     const [billingAddress, setBillingAddress] =
         useState<Maybe<BigCommerceCustomerAddress>>(null)
     const [shippingAddress, setShippingAddress] =
@@ -292,66 +302,91 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         newSelectedAddress: BigCommerceCustomerAddress,
         addressType: 'billing' | 'shipping'
     ) => {
-        if (cart) {
-            setIsTotalPriceLoading(true)
+        if (!cart) {
+            return
+        }
 
-            try {
-                if (addressType === 'billing') {
-                    const newCheckout = await addCheckoutBillingAddress({
-                        integrationId,
-                        selectedAddress: newSelectedAddress,
-                        cart,
-                    })
+        const allAddresses = Array<BigCommerceCustomerAddress>(
+            ...customAddresses,
+            ...availableAddresses
+        )
+        setIsTotalPriceLoading(true)
+        if (
+            !allAddresses.find((address) => {
+                return (
+                    address.first_name === newSelectedAddress.first_name &&
+                    address.last_name === newSelectedAddress.last_name &&
+                    address.company === newSelectedAddress.company &&
+                    address.city === newSelectedAddress.city &&
+                    address.state_or_province ===
+                        newSelectedAddress.state_or_province &&
+                    address.postal_code === newSelectedAddress.postal_code &&
+                    address.country_code === newSelectedAddress.country_code &&
+                    address.address1 === newSelectedAddress.address1 &&
+                    address.address2 === newSelectedAddress.address2
+                )
+            })
+        ) {
+            customAddresses.push(newSelectedAddress)
+            setCustomAddresses(customAddresses)
+        }
 
-                    setBillingAddress(newSelectedAddress)
-                    setCheckout(newCheckout)
+        try {
+            if (addressType === 'billing') {
+                const newCheckout = await addCheckoutBillingAddress({
+                    integrationId,
+                    selectedAddress: newSelectedAddress,
+                    cart,
+                })
 
-                    if (!hasDifferentShippingAddress) {
-                        // Billing address === Shipping address
-                        await updateConsignment({
-                            cart: newCheckout.cart,
-                            address: newSelectedAddress,
-                        })
+                setBillingAddress(newSelectedAddress)
+                setCheckout(newCheckout)
 
-                        setShippingAddress(newSelectedAddress)
-                    }
-                } else {
+                if (!hasDifferentShippingAddress) {
+                    // Billing address === Shipping address
                     await updateConsignment({
-                        cart: cart,
+                        cart: newCheckout.cart,
                         address: newSelectedAddress,
                     })
 
                     setShippingAddress(newSelectedAddress)
                 }
+            } else {
+                await updateConsignment({
+                    cart: cart,
+                    address: newSelectedAddress,
+                })
 
-                // Error Handling
+                setShippingAddress(newSelectedAddress)
+            }
+
+            // Error Handling
+            setModalErrors(
+                'component',
+                null,
+                addressType === 'billing'
+                    ? 'onSelectBillingAddress'
+                    : 'onSelectShippingAddress'
+            )
+        } catch (error) {
+            // Error Handling
+            if (
+                error instanceof BigCommerceGeneralError &&
+                error.message ===
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+            ) {
+                setModalErrors('global', error.message)
+            } else {
                 setModalErrors(
                     'component',
-                    null,
+                    BigCommerceGeneralErrorMessage.defaultError,
                     addressType === 'billing'
                         ? 'onSelectBillingAddress'
                         : 'onSelectShippingAddress'
                 )
-            } catch (error) {
-                // Error Handling
-                if (
-                    error instanceof BigCommerceGeneralError &&
-                    error.message ===
-                        BigCommerceGeneralErrorMessage.rateLimitingError
-                ) {
-                    setModalErrors('global', error.message)
-                } else {
-                    setModalErrors(
-                        'component',
-                        BigCommerceGeneralErrorMessage.defaultError,
-                        addressType === 'billing'
-                            ? 'onSelectBillingAddress'
-                            : 'onSelectShippingAddress'
-                    )
-                }
-            } finally {
-                setIsTotalPriceLoading(false)
             }
+        } finally {
+            setIsTotalPriceLoading(false)
         }
     }
 
@@ -563,6 +598,9 @@ export function OrderModal({
     const [products, setProducts] = useState<BigCommerceProductsListType>(
         new Map()
     )
+    const [customAddresses, setCustomAddresses] = useState<
+        Array<BigCommerceCustomerAddress>
+    >([])
 
     const {
         cart,
@@ -585,6 +623,9 @@ export function OrderModal({
         setModalErrors,
     } = useCheckout({
         integrationId: integration.id,
+        availableAddresses: availableAddresses,
+        customAddresses,
+        setCustomAddresses,
     })
 
     const {validationStatus, performValidations} = useValidationStatus({
@@ -762,6 +803,8 @@ export function OrderModal({
         }
     )
 
+    const containerElement = document.getElementById('App') as Element
+
     return (
         <>
             <Modal
@@ -770,6 +813,7 @@ export function OrderModal({
                 isClosable={false}
                 onClose={() => handleCancel('header')}
                 size="medium"
+                container={containerElement}
             >
                 <ModalHeader title="Create order" forceCloseButton />
                 <div
@@ -1000,9 +1044,15 @@ export function OrderModal({
                             <p className={css.modalSection}>Address</p>
                             <AddressesDropdown
                                 selectedAddress={billingAddress}
-                                availableAddresses={availableAddresses}
+                                availableAddresses={
+                                    new Array<BigCommerceCustomerAddress>(
+                                        ...availableAddresses,
+                                        ...customAddresses
+                                    )
+                                }
                                 onSelectAddress={onSelectAddress}
                                 addressType="billing"
+                                currencyCode={currency}
                                 hasError={
                                     !validationStatus.billingAddress ||
                                     !!errors.component.get(
@@ -1015,6 +1065,8 @@ export function OrderModal({
                                     ) || ''
                                 }
                                 isDisabled={!currency}
+                                integrationId={integration.id}
+                                customerId={data?.customer?.id}
                             />
                             <CheckBox
                                 isChecked={!hasDifferentShippingAddress}
@@ -1032,9 +1084,15 @@ export function OrderModal({
                             {hasDifferentShippingAddress && (
                                 <AddressesDropdown
                                     selectedAddress={shippingAddress}
-                                    availableAddresses={availableAddresses}
+                                    availableAddresses={
+                                        new Array<BigCommerceCustomerAddress>(
+                                            ...availableAddresses,
+                                            ...customAddresses
+                                        )
+                                    }
                                     onSelectAddress={onSelectAddress}
                                     addressType="shipping"
+                                    currencyCode={currency}
                                     hasError={
                                         !validationStatus.shippingAddress ||
                                         !!errors.component.get(
@@ -1047,6 +1105,8 @@ export function OrderModal({
                                         ) || ''
                                     }
                                     isDisabled={!currency}
+                                    integrationId={integration.id}
+                                    customerId={data?.customer?.id}
                                 />
                             )}
                         </div>

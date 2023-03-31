@@ -2,129 +2,429 @@
 
 exports[`OrderModal should render 1`] = `
 <body>
-  <div />
+  <div>
+    <div
+      id="App"
+    >
+      <div
+        aria-describedby="modal-1-desc"
+        aria-labelledby="modal-1-title"
+        aria-modal="true"
+        class="modal default open"
+        role="dialog"
+      >
+        <div
+          class="dialog medium scrollableDialog"
+        >
+          <div
+            class="modalContent scrollableContent default"
+          >
+            <div
+              class="wrapper"
+            >
+              <div>
+                <div
+                  class="title"
+                  id="modal-1-title"
+                >
+                  Create order
+                </div>
+                <div
+                  class="subtitle"
+                />
+              </div>
+              <i
+                class="material-icons icon"
+              >
+                close
+              </i>
+            </div>
+            <div
+              aria-expanded="false"
+              aria-haspopup="dialog"
+              class="scrollable"
+            >
+              <div
+                class="formBody"
+              >
+                <div
+                  class="alerts"
+                >
+                  <div>
+                    <div
+                      class="mb-3 row"
+                    >
+                      <div
+                        aria-checked="true"
+                        aria-label="Draft order"
+                        class="wrapper selected previewRadioButtonsWrapper"
+                        role="radio"
+                        tabindex="0"
+                      >
+                        <div>
+                          <label
+                            class="label label"
+                            for="personal"
+                          >
+                            <input
+                              checked=""
+                              class="input"
+                              id="personal"
+                              tabindex="-1"
+                              type="radio"
+                            />
+                            Draft order
+                          </label>
+                          <div
+                            class="caption caption"
+                          >
+                            Generate unique cart URL valid for up to 30 days.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="mb-3 row"
+                    >
+                      <div
+                        aria-checked="false"
+                        aria-label="Paid order"
+                        class="wrapper previewRadioButtonsWrapper"
+                        role="radio"
+                        tabindex="0"
+                      >
+                        <div>
+                          <label
+                            class="label label"
+                            for="company"
+                          >
+                            <input
+                              class="input"
+                              id="company"
+                              tabindex="-1"
+                              type="radio"
+                            />
+                            Paid order
+                          </label>
+                          <div
+                            class="caption caption"
+                          >
+                            Create paid order with Awaiting Fulfillment status.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="currencyDropdown"
+                >
+                  <p
+                    class="heading-section-semibold"
+                  >
+                    Billing
+                  </p>
+                  <label
+                    class="label label"
+                  >
+                    Currency
+                    <abbr
+                      aria-label="required"
+                      class="abbr"
+                      title="required"
+                    >
+                      *
+                    </abbr>
+                  </label>
+                  <div
+                    class="wrapper"
+                    role="listbox"
+                    tabindex="0"
+                  >
+                    <div
+                      class="inputWrapper"
+                    >
+                      <div
+                        class="input isGreyed"
+                      >
+                        Select currency
+                      </div>
+                      <i
+                        class="affix suffix toggle material-icons"
+                      >
+                        arrow_drop_down
+                      </i>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <p
+                    class="heading-section-semibold"
+                  >
+                    Products
+                  </p>
+                </div>
+                <div
+                  class="relative"
+                  id="product-search-input-tooltip"
+                >
+                  <div
+                    class="flex"
+                  >
+                    <div
+                      class="searchInput disabled dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class="input-icon input-icon-right"
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="wrapper"
+                        >
+                          <input
+                            class="input"
+                            id="input-text-2"
+                            name="input-text-2"
+                            placeholder="Search products..."
+                            type="text"
+                            value=""
+                          />
+                          <span
+                            class="suffix"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              search
+                            </i>
+                          </span>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="dropdown dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        <h6
+                          class="header dropdown-header"
+                          tabindex="-1"
+                        >
+                          0 product
+                        </h6>
+                        <button
+                          class="dropdownItem addCustomResultDropdownItem dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          + Add custom product
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      class="wrapper ml-2 wrapper fill secondary medium isDisabled"
+                      disabled=""
+                      id="bigcommerce-add-custom-product-btn"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        add
+                      </i>
+                    </button>
+                    
+                  </div>
+                  <p
+                    class="searchbarInfo"
+                  >
+                    This order is currently empty. Add products using the search above.
+                  </p>
+                </div>
+                <div>
+                  <p
+                    class="modalSection"
+                  >
+                    Address
+                  </p>
+                  <label
+                    class="label label"
+                  >
+                    Billing address
+                    <abbr
+                      aria-label="required"
+                      class="abbr"
+                      title="required"
+                    >
+                      *
+                    </abbr>
+                  </label>
+                  <div
+                    class="flex"
+                  >
+                    <div
+                      class="dropdown"
+                      id="billing-address-dropdown"
+                    >
+                      <div
+                        class="wrapper disabled"
+                        role="listbox"
+                        tabindex="0"
+                      >
+                        <div
+                          class="inputWrapper"
+                        >
+                          <div
+                            class="input isGreyed"
+                          >
+                            Select from address book...
+                          </div>
+                          <i
+                            class="affix suffix toggle material-icons"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      class="wrapper ml-2 wrapper fill secondary medium isDisabled"
+                      disabled=""
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        add
+                      </i>
+                    </button>
+                    <div />
+                  </div>
+                  <div
+                    class="mt-3 mb-3"
+                  >
+                    <label
+                      class="label label"
+                      for="checkbox-22"
+                    >
+                      <input
+                        checked=""
+                        class="input"
+                        id="checkbox-22"
+                        name="checkbox-22"
+                        type="checkbox"
+                      />
+                      Shipping address is same as billing address
+                    </label>
+                  </div>
+                </div>
+                <p
+                  class="modalSection"
+                >
+                  Comments & Notes
+                </p>
+                <div>
+                  <label
+                    class="label label"
+                    for="comment"
+                  >
+                    Comment
+                  </label>
+                  <textarea
+                    aria-describedby="comment-desc"
+                    class="form-control"
+                    id="comment"
+                    placeholder="Add comment..."
+                    rows="1"
+                  />
+                  <p
+                    class="caption"
+                    id="comment-desc"
+                  >
+                    Visible to customer
+                  </p>
+                </div>
+                <div>
+                  <label
+                    class="label label"
+                    for="note"
+                  >
+                    Staff note
+                  </label>
+                  <textarea
+                    aria-describedby="note-desc"
+                    class="form-control"
+                    id="note"
+                    placeholder="Add note..."
+                    rows="1"
+                  />
+                  <p
+                    class="caption"
+                    id="note-desc"
+                  >
+                    Not visible to customer
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="wrapper wrapper"
+            >
+              <div
+                class="actions"
+              >
+                <button
+                  class="wrapper fill secondary medium"
+                  tabindex="0"
+                  type="button"
+                >
+                  Cancel
+                </button>
+                <button
+                  class="wrapper fill primary medium isDisabled"
+                  disabled=""
+                  tabindex="0"
+                  type="button"
+                >
+                  Create Draft Order
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div
-    aria-describedby="modal-1-desc"
-    aria-labelledby="modal-1-title"
+    aria-describedby="modal-3-desc"
+    aria-labelledby="modal-3-title"
     aria-modal="true"
-    class="modal default open"
+    class="modal default"
     role="dialog"
   >
     <div
-      class="dialog medium scrollableDialog"
+      class="dialog small scrollableDialog"
     >
       <div
         class="modalContent scrollableContent default"
       >
         <div
-          class="wrapper"
+          class="wrapper scrollable"
         >
-          <div>
-            <div
-              class="title"
-              id="modal-1-title"
-            >
-              Create order
-            </div>
-            <div
-              class="subtitle"
-            />
-          </div>
-          <i
-            class="material-icons icon"
-          >
-            close
-          </i>
-        </div>
-        <div
-          aria-expanded="false"
-          aria-haspopup="dialog"
-          class="scrollable"
-        >
-          <div
-            class="formBody"
+          <form
+            class=""
           >
             <div
-              class="alerts"
+              class="mb-2"
             >
-              <div>
-                <div
-                  class="mb-3 row"
-                >
-                  <div
-                    aria-checked="true"
-                    aria-label="Draft order"
-                    class="wrapper selected previewRadioButtonsWrapper"
-                    role="radio"
-                    tabindex="0"
-                  >
-                    <div>
-                      <label
-                        class="label label"
-                        for="personal"
-                      >
-                        <input
-                          checked=""
-                          class="input"
-                          id="personal"
-                          tabindex="-1"
-                          type="radio"
-                        />
-                        Draft order
-                      </label>
-                      <div
-                        class="caption caption"
-                      >
-                        Generate unique cart URL valid for up to 30 days.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="mb-3 row"
-                >
-                  <div
-                    aria-checked="false"
-                    aria-label="Paid order"
-                    class="wrapper previewRadioButtonsWrapper"
-                    role="radio"
-                    tabindex="0"
-                  >
-                    <div>
-                      <label
-                        class="label label"
-                        for="company"
-                      >
-                        <input
-                          class="input"
-                          id="company"
-                          tabindex="-1"
-                          type="radio"
-                        />
-                        Paid order
-                      </label>
-                      <div
-                        class="caption caption"
-                      >
-                        Create paid order with Awaiting Fulfillment status.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="currencyDropdown"
-            >
-              <p
-                class="heading-section-semibold"
-              >
-                Billing
-              </p>
               <label
                 class="label label"
+                for="input-text-4"
               >
-                Currency
+                First Name
                 <abbr
                   aria-label="required"
                   class="abbr"
@@ -135,122 +435,25 @@ exports[`OrderModal should render 1`] = `
               </label>
               <div
                 class="wrapper"
-                role="listbox"
-                tabindex="0"
               >
-                <div
-                  class="inputWrapper"
-                >
-                  <div
-                    class="input isGreyed"
-                  >
-                    Select currency
-                  </div>
-                  <i
-                    class="affix suffix toggle material-icons"
-                  >
-                    arrow_drop_down
-                  </i>
-                </div>
+                <input
+                  class="input"
+                  id="input-text-4"
+                  name="firstName"
+                  required=""
+                  type="text"
+                  value=""
+                />
               </div>
-            </div>
-            <div>
-              <p
-                class="heading-section-semibold"
-              >
-                Products
-              </p>
             </div>
             <div
-              class="relative"
-              id="product-search-input-tooltip"
+              class="mb-2"
             >
-              <div
-                class="flex"
-              >
-                <div
-                  class="searchInput disabled dropdown"
-                >
-                  <div
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    class="input-icon input-icon-right"
-                    data-toggle="dropdown"
-                  >
-                    <div
-                      class="wrapper"
-                    >
-                      <input
-                        class="input"
-                        id="input-text-2"
-                        name="input-text-2"
-                        placeholder="Search products..."
-                        type="text"
-                        value=""
-                      />
-                      <span
-                        class="suffix"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          search
-                        </i>
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    aria-hidden="true"
-                    class="dropdown dropdown-menu"
-                    role="menu"
-                    tabindex="-1"
-                  >
-                    <h6
-                      class="header dropdown-header"
-                      tabindex="-1"
-                    >
-                      0 product
-                    </h6>
-                    <button
-                      class="dropdownItem addCustomResultDropdownItem dropdown-item"
-                      role="menuitem"
-                      tabindex="0"
-                      type="button"
-                    >
-                      + Add custom product
-                    </button>
-                  </div>
-                </div>
-                <button
-                  class="wrapper ml-2 wrapper fill secondary medium isDisabled"
-                  disabled=""
-                  id="bigcommerce-add-custom-product-btn"
-                  type="button"
-                >
-                  <i
-                    class="material-icons icon"
-                  >
-                    add
-                  </i>
-                </button>
-                
-              </div>
-              <p
-                class="searchbarInfo"
-              >
-                This order is currently empty. Add products using the search above.
-              </p>
-            </div>
-            <div>
-              <p
-                class="modalSection"
-              >
-                Address
-              </p>
               <label
                 class="label label"
+                for="input-text-6"
               >
-                Billing address
+                Last Name
                 <abbr
                   aria-label="required"
                   class="abbr"
@@ -260,96 +463,274 @@ exports[`OrderModal should render 1`] = `
                 </abbr>
               </label>
               <div
-                class="dropdown"
-                id="billing-address-dropdown"
+                class="wrapper"
               >
-                <div
-                  class="wrapper disabled"
-                  role="listbox"
-                  tabindex="0"
-                >
-                  <div
-                    class="inputWrapper"
-                  >
-                    <div
-                      class="input isGreyed"
-                    >
-                      Select from address book...
-                    </div>
-                    <i
-                      class="affix suffix toggle material-icons"
-                    >
-                      arrow_drop_down
-                    </i>
-                  </div>
-                </div>
+                <input
+                  class="input"
+                  id="input-text-6"
+                  name="lastName"
+                  required=""
+                  type="text"
+                  value=""
+                />
               </div>
-              <div
-                class="mt-3 mb-3"
+            </div>
+            <div
+              class="mb-2"
+            >
+              <label
+                class="label label"
+                for="input-text-8"
               >
-                <label
-                  class="label label"
-                  for="checkbox-3"
+                Company
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-8"
+                  name="company"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="wrapper"
+            >
+              <label
+                class="label label"
+              >
+                Phone
+              </label>
+              <span
+                class="wrapper group horizontal"
+              >
+                <button
+                  class="wrapper button fill secondary medium left isAuxiliaryButton"
+                  type="button"
+                >
+                  <span
+                    role="img"
+                    style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle;"
+                  >
+                    🇺🇸
+                  </span>
+                  <span
+                    class="ml-2 dropdown-toggle"
+                  >
+                    +
+                    1
+                  </span>
+                </button>
+                <div
+                  class="wrapper right isNested"
                 >
                   <input
-                    checked=""
                     class="input"
-                    id="checkbox-3"
-                    name="checkbox-3"
-                    type="checkbox"
+                    id="input-text-10"
+                    name="input-text-10"
+                    type="text"
+                    value=""
                   />
-                  Shipping address is same as billing address
-                </label>
+                </div>
+              </span>
+            </div>
+            <div
+              class="mb-2 topPadded"
+            >
+              <label
+                class="label label"
+                for="input-text-11"
+              >
+                Address 1
+                <abbr
+                  aria-label="required"
+                  class="abbr"
+                  title="required"
+                >
+                  *
+                </abbr>
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-11"
+                  name="address1"
+                  required=""
+                  type="text"
+                  value=""
+                />
               </div>
             </div>
-            <p
-              class="modalSection"
+            <div
+              class="mb-2"
             >
-              Comments & Notes
-            </p>
-            <div>
               <label
                 class="label label"
-                for="comment"
+                for="input-text-13"
               >
-                Comment
+                Address 2
               </label>
-              <textarea
-                aria-describedby="comment-desc"
-                class="form-control"
-                id="comment"
-                placeholder="Add comment..."
-                rows="1"
-              />
-              <p
-                class="caption"
-                id="comment-desc"
+              <div
+                class="wrapper"
               >
-                Visible to customer
-              </p>
+                <input
+                  class="input"
+                  id="input-text-13"
+                  name="address2"
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
-            <div>
+            <div
+              class="mb-2"
+            >
               <label
                 class="label label"
-                for="note"
+                for="input-text-15"
               >
-                Staff note
+                City
+                <abbr
+                  aria-label="required"
+                  class="abbr"
+                  title="required"
+                >
+                  *
+                </abbr>
               </label>
-              <textarea
-                aria-describedby="note-desc"
-                class="form-control"
-                id="note"
-                placeholder="Add note..."
-                rows="1"
-              />
-              <p
-                class="caption"
-                id="note-desc"
+              <div
+                class="wrapper"
               >
-                Not visible to customer
-              </p>
+                <input
+                  class="input"
+                  id="input-text-15"
+                  name="city"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
-          </div>
+            <div
+              class="wrapper"
+            >
+              <label
+                class="label label"
+              >
+                Country
+              </label>
+              <div
+                class="wrapper"
+                role="listbox"
+                tabindex="0"
+              >
+                <div
+                  class="inputWrapper"
+                >
+                  <span
+                    class="affix prefix"
+                  >
+                    <span
+                      role="img"
+                      style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle;"
+                    >
+                      🇺🇸
+                    </span>
+                  </span>
+                  <div
+                    class="input"
+                  >
+                    United States
+                  </div>
+                  <i
+                    class="affix suffix toggle material-icons"
+                  >
+                    arrow_drop_down
+                  </i>
+                </div>
+              </div>
+            </div>
+            <div
+              class="mb-2"
+            >
+              <label
+                class="label label"
+                for="input-text-17"
+              >
+                State or province
+                <abbr
+                  aria-label="required"
+                  class="abbr"
+                  title="required"
+                >
+                  *
+                </abbr>
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-17"
+                  name="stateOrProvince"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="mb-2"
+            >
+              <label
+                class="label label"
+                for="input-text-19"
+              >
+                ZIP/Postal code
+                <abbr
+                  aria-label="required"
+                  class="abbr"
+                  title="required"
+                >
+                  *
+                </abbr>
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-19"
+                  name="zip"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="mt-3 mb-3"
+            >
+              <label
+                class="label label"
+                for="checkbox-21"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  id="checkbox-21"
+                  name="checkbox-21"
+                  type="checkbox"
+                />
+                Save to customer's address book
+              </label>
+            </div>
+          </form>
         </div>
         <div
           class="wrapper wrapper"
@@ -365,12 +746,11 @@ exports[`OrderModal should render 1`] = `
               Cancel
             </button>
             <button
-              class="wrapper fill primary medium isDisabled"
-              disabled=""
+              class="wrapper fill primary medium"
               tabindex="0"
               type="button"
             >
-              Create Draft Order
+              Create Address
             </button>
           </div>
         </div>
@@ -384,6 +764,10 @@ exports[`OrderModal should render 1`] = `
   <div
     data-floating-ui-portal=""
     id="floating-ui-1"
+  />
+  <div
+    data-floating-ui-portal=""
+    id="floating-ui-2"
   />
 </body>
 `;

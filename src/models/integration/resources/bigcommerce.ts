@@ -23,6 +23,8 @@ import {
     BigCommerceCartErrorResponse,
     BigCommerceCheckoutErrorResponse,
     BigCommerceCartRedirect,
+    BigCommerceAddressResponse,
+    BigCommerceCustomAddress,
 } from '../types'
 export type OptionSelection = {option_id: number; option_value: number}
 
@@ -109,6 +111,46 @@ export async function addBigCommerceCheckoutBillingAddress(
             }
 
             return response.data.checkout
+        })
+        .catch((error) => {
+            const {response} =
+                error as AxiosError<BigCommerceCheckoutErrorResponse>
+
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
+
+            throw new BigCommerceGeneralError(
+                BigCommerceGeneralErrorMessage.defaultError
+            )
+        })
+}
+
+export async function addBigCommerceCustomAddressToCustomerAddressBook({
+    integrationId,
+    address,
+}: {
+    integrationId: number
+    address: BigCommerceCustomAddress
+}): Promise<BigCommerceCustomerAddress> {
+    const url = '/integrations/bigcommerce/order/address/'
+
+    return await client
+        .post<BigCommerceAddressResponse>(url, [address], {
+            params: {
+                integration_id: integrationId,
+            },
+        })
+        .then((response) => {
+            if (!('address' in response.data) || !response.data.address) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.defaultError
+                )
+            }
+
+            return response.data.address
         })
         .catch((error) => {
             const {response} =

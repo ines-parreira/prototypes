@@ -326,6 +326,10 @@ export type BigCommerceCustomerAddress = {
     state_or_province: Maybe<string>
 }
 
+export type BigCommerceCustomAddress = BigCommerceCustomerAddress & {
+    customer_id: number
+} & Omit<BigCommerceCustomerAddress, 'id'>
+
 export type BigCommerceShippingOption = {
     id: string
     description: string
@@ -507,5 +511,11 @@ export type BigCommerceNestedCheckoutResponse =
           data?: {
               checkout?: Maybe<BigCommerceCheckout>
           }
+      }
+    | BigCommerceCheckoutErrorResponse
+
+export type BigCommerceAddressResponse =
+    | {
+          address?: Maybe<BigCommerceCustomerAddress>
       }
     | BigCommerceCheckoutErrorResponse
