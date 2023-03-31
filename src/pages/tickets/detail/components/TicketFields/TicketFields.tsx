@@ -33,7 +33,9 @@ function TicketFields() {
         [mutate]
     )
 
-    if (isLoading || !ticketFieldDefinitions.length) {
+    // @TODO remove the ticket id check once the issue below is solved
+    // https://linear.app/gorgias/issue/APPED-1514/custom-field-value-cannot-be-set-in-a-new-ticket
+    if (isLoading || !ticketFieldDefinitions.length || !ticketId) {
         return null
     }
 
