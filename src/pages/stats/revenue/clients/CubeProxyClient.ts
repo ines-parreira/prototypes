@@ -10,8 +10,8 @@ export class Client {
 
     // simulates Cube package interface to remain swappable in the future
     load = async (query: CubeQueryBody): Promise<CubeResponse> => {
-        const response = await this.client.get(ANALYTICS_ENDPOINT, {
-            params: {query: JSON.stringify([query])},
+        const response = await this.client.post(ANALYTICS_ENDPOINT, {
+            query: [query],
         })
 
         return response.data as CubeResponse

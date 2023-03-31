@@ -37,11 +37,11 @@ describe('Calling CubeClient functions', () => {
         [getCampaignsPerformanceGraphData],
     ])('%p should call load', async (cubeFn) => {
         // arrange
-        let expectedParams
+        let expectedData
         const expectedResponse = {hello: cubeFn.toString()}
 
-        mockedServer.onGet(ANALYTICS_ENDPOINT).reply((config) => {
-            expectedParams = config.params
+        mockedServer.onPost(ANALYTICS_ENDPOINT).reply((config) => {
+            expectedData = config.data
             return [200, expectedResponse]
         })
 
@@ -50,6 +50,6 @@ describe('Calling CubeClient functions', () => {
 
         // assert
         expect(expectedResponse).toStrictEqual(expectedResponse)
-        expect(expectedParams).toMatchSnapshot()
+        expect(JSON.parse(expectedData || '{}')).toMatchSnapshot()
     })
 })

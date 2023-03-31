@@ -38,9 +38,9 @@ describe('Calling CubeProxyClient', () => {
         const expectedData = {
             hello: 'kitty',
         }
-        const mockGet = jest.fn(() => Promise.resolve({data: expectedData}))
+        const mockPost = jest.fn(() => Promise.resolve({data: expectedData}))
         const clientMock = {
-            get: mockGet,
+            post: mockPost,
         }
         // @ts-ignore - we pass fake client mock
         const cubeProxyClient = new Client(clientMock)
@@ -49,7 +49,7 @@ describe('Calling CubeProxyClient', () => {
         const response = await cubeProxyClient.load(query)
 
         // assert
-        expect(mockGet).toMatchSnapshot()
+        expect(mockPost).toMatchSnapshot()
         expect(response).toStrictEqual(expectedData)
     })
 })
