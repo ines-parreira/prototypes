@@ -59,8 +59,6 @@ const CONTENT_STATE_PATH = ['state', 'contentState']
 const PREFILL_TOP_MACRO_SCORE_THRESHOLD = 0.8
 
 type Props = {
-    currentUser: Map<any, any>
-    ticket: Map<any, any>
     flags?: LDFlagSet
 } & CancellableRequestInjectedProps<
     'fetchMacrosCancellable',
@@ -682,12 +680,14 @@ const connector = connect(
     (state: RootState) => ({
         cacheAdded: isCacheAdded(state),
         currentTicket: DEPRECATED_getTicket(state),
+        currentUser: state.currentUser,
         newMessage: state.newMessage,
         newMessageType: getNewMessageType(state),
         lastMessage: getLastMessage(state),
         preferences: getPreferences(state),
         macroParametersOptions: getMacroParametersOptions(state),
         appliedMacro: getAppliedMacro(state),
+        ticket: state.ticket,
         topRankMacroState: getTopRankMacroState(state),
         inTicketSuggestionState: getInTicketSuggestionState(state),
     }),

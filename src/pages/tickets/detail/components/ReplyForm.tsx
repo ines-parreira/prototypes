@@ -1,44 +1,19 @@
-import React, {FormEvent, RefObject, useMemo} from 'react'
+import React, {PropsWithChildren, useMemo} from 'react'
 import {Map} from 'immutable'
-import classnames from 'classnames'
 
 import {getNewMessageType} from 'state/newMessage/selectors'
 import {hasIntegrationOfTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-    TicketStatus,
-} from 'business/types/ticket'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
 import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
-import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons'
-import TicketReplyArea from './ReplyArea/TicketReplyArea'
 
-import css from './ReplyForm.less'
-
-type ReplyFormProps = {
-    formRef: RefObject<HTMLFormElement>
-    onBlur?: () => void
-    onFocus?: () => void
-    onSubmit: (event: FormEvent<HTMLFormElement>) => void
-    setTicketStatus: (status: TicketStatus) => void
-}
-
-const ReplyForm = ({
-    formRef,
-    onBlur,
-    onFocus,
-    onSubmit,
-    setTicketStatus,
-}: ReplyFormProps) => {
+const ReplyForm = ({children}: PropsWithChildren<unknown>) => {
     const ticket = useAppSelector((state) => state.ticket)
     const sourceType = useAppSelector(getNewMessageType)
     const hasPhoneIntegration = useAppSelector(
         hasIntegrationOfTypes(IntegrationType.Phone)
     )
-    const currentUser = useAppSelector((state) => state.currentUser)
 
     const isExistingTicket = useMemo(() => !!ticket.get('id'), [ticket])
     const hasPhoneChannel = useMemo(
@@ -58,34 +33,10 @@ const ReplyForm = ({
         [hasPhoneIntegration, hasPhoneChannel, sourceType, isExistingTicket]
     )
 
-    return (
-        <div
-            className={classnames('d-print-none', css.newMessageForm, {
-                'mt-3': !isExistingTicket,
-            })}
-            onBlur={onBlur}
-            onFocus={onFocus}
-        >
-            <form ref={formRef} id="ticket-reply-editor" onSubmit={onSubmit}>
-                <ReplyMessageChannel />
-
-                {shouldRenderPhoneButtons ? (
-                    <PhoneTicketSubmitButtons />
-                ) : (
-                    <>
-                        <TicketReplyArea
-                            currentUser={currentUser}
-                            ticket={ticket}
-                        />
-
-                        <TicketSubmitButtons
-                            setTicketStatus={setTicketStatus}
-                            ticket={ticket}
-                        />
-                    </>
-                )}
-            </form>
-        </div>
+    return shouldRenderPhoneButtons ? (
+        <PhoneTicketSubmitButtons />
+    ) : (
+        <>{children}</>
     )
 }
 

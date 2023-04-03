@@ -54,7 +54,6 @@ const TIPS: ReactNode[] = [
 
 type Props = {
     setTicketStatus: (status: TicketStatus) => void
-    ticket: Map<any, any>
 } & ConnectedProps<typeof connector>
 
 export function TicketSubmitButtonsContainer({
@@ -230,6 +229,7 @@ const connector = connect(
         newMessage: state.newMessage,
         canSend: canSend(state),
         hasContentlessAction: hasContentlessAction(state),
+        ticket: state.ticket,
     }),
     {
         submitSetting,
