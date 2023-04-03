@@ -4,7 +4,6 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import {editorFocused} from 'state/ui/editor/actions'
 
 import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
 import {
@@ -47,18 +46,20 @@ jest.mock(
             )
         }
 )
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
-jest.mock('state/ui/editor/actions')
 
 const mockStore = configureMockStore([thunk])
 
 describe('<ReplyForm />', () => {
     let formRef: jest.Mock
+    let onBlur: jest.Mock
+    let onFocus: jest.Mock
     let onSubmit: jest.Mock
     let setTicketStatus: jest.Mock
 
     let defaultProps: {
         formRef: RefObject<HTMLFormElement>
+        onBlur: jest.Mock
+        onFocus: jest.Mock
         onSubmit: jest.Mock
         setTicketStatus: jest.Mock
     }
@@ -81,11 +82,15 @@ describe('<ReplyForm />', () => {
 
     beforeEach(() => {
         formRef = jest.fn()
+        onBlur = jest.fn()
+        onFocus = jest.fn()
         onSubmit = jest.fn()
         setTicketStatus = jest.fn()
 
         defaultProps = {
             formRef: formRef as unknown as RefObject<HTMLFormElement>,
+            onBlur,
+            onFocus,
             onSubmit,
             setTicketStatus,
         }
@@ -133,14 +138,18 @@ describe('<ReplyForm />', () => {
         })
     })
 
-    it('should send events when focused', () => {
+    it('should call onFocus/onBlur when focus changes', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <ReplyForm {...defaultProps} />
             </Provider>
         )
-        screen.getByRole('button').focus()
-        expect(editorFocused).toHaveBeenCalledTimes(1)
+        const button = screen.getByRole('button')
+        button.focus()
+        expect(onFocus).toHaveBeenCalledTimes(1)
+
+        button.blur()
+        expect(onBlur).toHaveBeenCalledTimes(1)
     })
 
     describe('phone submit buttons', () => {

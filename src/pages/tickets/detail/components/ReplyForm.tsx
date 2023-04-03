@@ -11,8 +11,6 @@ import {
     TicketStatus,
 } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import {editorFocused} from 'state/ui/editor/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
 import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
 import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
 import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons'
@@ -22,12 +20,19 @@ import css from './ReplyForm.less'
 
 type ReplyFormProps = {
     formRef: RefObject<HTMLFormElement>
+    onBlur?: () => void
+    onFocus?: () => void
     onSubmit: (event: FormEvent<HTMLFormElement>) => void
     setTicketStatus: (status: TicketStatus) => void
 }
 
-const ReplyForm = ({formRef, onSubmit, setTicketStatus}: ReplyFormProps) => {
-    const dispatch = useAppDispatch()
+const ReplyForm = ({
+    formRef,
+    onBlur,
+    onFocus,
+    onSubmit,
+    setTicketStatus,
+}: ReplyFormProps) => {
     const ticket = useAppSelector((state) => state.ticket)
     const sourceType = useAppSelector(getNewMessageType)
     const hasPhoneIntegration = useAppSelector(
@@ -58,8 +63,8 @@ const ReplyForm = ({formRef, onSubmit, setTicketStatus}: ReplyFormProps) => {
             className={classnames('d-print-none', css.newMessageForm, {
                 'mt-3': !isExistingTicket,
             })}
-            onFocus={() => dispatch(editorFocused(true))}
-            onBlur={() => dispatch(editorFocused(false))}
+            onBlur={onBlur}
+            onFocus={onFocus}
         >
             <form ref={formRef} id="ticket-reply-editor" onSubmit={onSubmit}>
                 <ReplyMessageChannel />
