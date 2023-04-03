@@ -19,7 +19,7 @@ type Props = {
     integration: Maybe<PhoneIntegration>
 }
 
-export function VoiceIntegrationVoicemail({
+export default function VoiceIntegrationVoicemail({
     integration,
 }: Props): JSX.Element | null {
     const dispatch = useAppDispatch()
@@ -107,5 +107,3 @@ export function VoiceIntegrationVoicemail({
         </Container>
     )
 }
-
-export default VoiceIntegrationVoicemail

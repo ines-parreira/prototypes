@@ -533,7 +533,9 @@ function getStatusFromPersistedState({
     progress,
 }: PersistedState): Status {
     if (isEmpty(progress)) {
-        return isEmpty(target) ? Status.NotStarted : Status.NotSubmitted
+        return !target || Object.values(target).every(isEmpty)
+            ? Status.NotStarted
+            : Status.NotSubmitted
     }
 
     if (

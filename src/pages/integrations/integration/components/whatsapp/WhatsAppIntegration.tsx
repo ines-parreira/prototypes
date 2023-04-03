@@ -8,6 +8,7 @@ import WhatsAppIntegrationDetails from 'pages/integrations/integration/component
 import WhatsAppIntegrationPreferences from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationPreferences'
 import WhatsAppIntegrationOnboarding from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationOnboarding'
 import WhatsAppIntegrationMigration from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationMigration'
+import WhatsAppIntegrationConnectButton from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationConnectButton'
 
 import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
@@ -44,7 +45,11 @@ export default function WhatsAppIntegration() {
                         integration={currentIntegration}
                     />
                 }
-            />
+            >
+                <Route path={`${baseURL}/integrations`} exact>
+                    <WhatsAppIntegrationConnectButton isHorizontal />
+                </Route>
+            </PageHeader>
 
             <WhatsAppIntegrationSecondaryNavigation
                 integration={currentIntegration}

@@ -20,7 +20,7 @@ type Props = {
 
 const MAX_RECORDING_DURATION = 30
 
-export function VoiceIntegrationGreetingMessage({
+export default function VoiceIntegrationGreetingMessage({
     integration,
 }: Props): JSX.Element | null {
     const dispatch = useAppDispatch()
@@ -88,5 +88,3 @@ export function VoiceIntegrationGreetingMessage({
         </Container>
     )
 }
-
-export default VoiceIntegrationGreetingMessage

@@ -45,13 +45,23 @@ describe('utilities', () => {
                     progress: undefined,
                 })
             ).toEqual(Status.NotStarted)
+
+            expect(
+                getStatusFromPersistedState({
+                    target: {
+                        waba_id: '',
+                        phone_number: '',
+                    },
+                    progress: undefined,
+                })
+            ).toEqual(Status.NotStarted)
         })
 
         it('should return Status.NotSubmitted when the data has not yet been submitted to FB', () => {
             expect(
                 getStatusFromPersistedState({
                     target: {
-                        waba_id: '',
+                        waba_id: '123123',
                         phone_number: '',
                     },
                     progress: undefined,

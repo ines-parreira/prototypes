@@ -1,10 +1,8 @@
 import React, {useState, useCallback, useMemo} from 'react'
 import {sortBy, reverse} from 'lodash'
 import {useDeepCompareEffect} from 'react-use'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Container} from 'reactstrap'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {OrderDirection} from 'models/api/types'
 import {
     PhoneIntegration,
@@ -25,11 +23,10 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
-import Button from 'pages/common/components/button/Button'
+import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
 
-import settingsCss from 'pages/settings/settings.less'
 import css from './PhoneIntegrationsList.less'
 
 type Row = {
@@ -109,10 +106,9 @@ export default function PhoneIntegrationsList({
 
     if (!sortedRows.length) {
         return (
-            <Container fluid className={settingsCss.pageContainer}>
+            <SettingsPageContainer>
                 <p>You have no integration of this type at the moment.</p>
-                <AddButton type={type} />
-            </Container>
+            </SettingsPageContainer>
         )
     }
 
@@ -196,60 +192,7 @@ export default function PhoneIntegrationsList({
                         </a>
                     )}
                 </p>
-                <AddButton type={type} />
             </Container>
         </>
-    )
-}
-
-function AddButton({type}: Pick<Props, 'type'>) {
-    const enableWhatsAppMigration =
-        useFlags()[FeatureFlagKey.EnableWhatsAppMigrations]
-
-    const openOnboardingPage = (type: IntegrationType) => {
-        if (type === IntegrationType.WhatsApp) {
-            window.open(
-                window.GORGIAS_STATE.integrations.authentication.whatsapp
-                    ?.redirect_uri ?? ''
-            )
-            return
-        }
-
-        history.push(`/app/settings/channels/${type}/new`)
-    }
-
-    const name = {
-        [IntegrationType.Sms]: 'SMS',
-        [IntegrationType.Phone]: 'Voice',
-        [IntegrationType.WhatsApp]: 'WhatsApp',
-    }[type]
-
-    if (type === IntegrationType.WhatsApp) {
-        return (
-            <>
-                <Button onClick={() => openOnboardingPage(type)}>
-                    Connect WhatsApp Business
-                </Button>
-                {enableWhatsAppMigration && (
-                    <Button
-                        onClick={() =>
-                            history.push(
-                                `/app/settings/integrations/${type}/migration`
-                            )
-                        }
-                        className="ml-3"
-                        intent="secondary"
-                    >
-                        Migrate From Another Provider
-                    </Button>
-                )}
-            </>
-        )
-    }
-
-    return (
-        <Button onClick={() => openOnboardingPage(type)}>
-            {`Add ${name}`}
-        </Button>
     )
 }
