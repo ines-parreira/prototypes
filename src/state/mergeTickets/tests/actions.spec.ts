@@ -62,6 +62,7 @@ describe('mergeTickets actions', () => {
                             'neq(ticket.id, 1) && eq(ticket.customer.id, 118)',
                         limit: 5,
                         search: '',
+                        orderBy: 'created_datetime:desc',
                     })
                 })
         })

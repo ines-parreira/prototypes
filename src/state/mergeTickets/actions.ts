@@ -9,8 +9,8 @@ import {notify} from '../notifications/actions'
 import {createErrorNotification} from '../utils'
 import {defaultMergeTicketsView} from '../../config/views'
 import {BASE_VIEW_ID} from '../../constants/view'
-import {ApiListResponsePagination} from '../../models/api/types'
-import {Ticket} from '../../models/ticket/types'
+import {ApiListResponsePagination, OrderDirection} from '../../models/api/types'
+import {Ticket, TicketSearchSortableProperties} from '../../models/ticket/types'
 import {MoveIndexDirection} from '../../pages/common/utils/keyboard'
 import {NotificationStatus} from '../notifications/types'
 import client from '../../models/api/resources'
@@ -59,6 +59,7 @@ export function searchTickets(
                 search: (view.get('search') as string) || '',
                 filters: view.get('filters') as string,
                 limit: LIMIT,
+                orderBy: `${TicketSearchSortableProperties.CreatedDatetime}:${OrderDirection.Desc}`,
             })
         } else {
             promise = client.put<ApiListResponsePagination<Ticket[]>>(
