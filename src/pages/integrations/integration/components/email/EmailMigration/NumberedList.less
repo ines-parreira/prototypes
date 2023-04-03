@@ -1,0 +1,33 @@
+@import '~css/new/layout.less';
+@import '~css/new/colorTokens.less';
+
+:local {
+    .list {
+        margin-block-start: 0;
+        margin-block-end: 0;
+        padding-inline-start: 0;
+        margin-bottom: 0;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: @layout-spacing-s;
+
+            .number {
+                color: @classic-neutral-grey-0;
+                font-weight: 600;
+                background-color: @classic-neutral-grey-6;
+                width: 24px;
+                height: 24px;
+                border-radius: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+        }
+    }
+}

@@ -1,4 +1,5 @@
 @import '~css/new/colorTokens';
+@import '~css/new/layout';
 @import (reference) '~css/typography';
 
 :local {
@@ -12,6 +13,16 @@
 
         &:last-child {
             margin-bottom: 0;
+        }
+    }
+
+    .horizontal {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+
+        .legend {
+            margin-bottom: @layout-spacing-s;
         }
     }
 }

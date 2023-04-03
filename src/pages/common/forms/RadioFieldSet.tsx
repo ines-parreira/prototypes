@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react'
 
+import classnames from 'classnames'
 import useId from 'hooks/useId'
 import RadioButton from '../components/RadioButton'
 
@@ -20,6 +21,7 @@ type Props = {
     onChange: (value: string) => void
     options: Array<RadioFieldOption>
     selectedValue: string | null
+    isHorizontal?: boolean
 }
 
 const RadioFieldSet = ({
@@ -30,6 +32,7 @@ const RadioFieldSet = ({
     onChange,
     options,
     selectedValue,
+    isHorizontal,
 }: Props) => {
     const id = useId()
     const fieldsetName = name || 'radio-field-' + id
@@ -38,7 +41,9 @@ const RadioFieldSet = ({
         <fieldset
             disabled={isDisabled}
             name={fieldsetName}
-            className={className}
+            className={classnames(className, {
+                [css.horizontal]: isHorizontal,
+            })}
         >
             {!!label && <legend className={css.legend}>{label}</legend>}
             {options.map(({value, label, caption, disabled}) => (

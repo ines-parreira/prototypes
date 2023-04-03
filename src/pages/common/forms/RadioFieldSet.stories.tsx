@@ -12,6 +12,11 @@ const storyConfig: Meta = {
                 type: 'boolean',
             },
         },
+        isHorizontal: {
+            control: {
+                type: 'boolean',
+            },
+        },
     },
 }
 
@@ -29,7 +34,7 @@ const Template: Story<ComponentProps<typeof RadioFieldSet>> = (props) => {
 
 const templateParameters = {
     controls: {
-        include: ['isDisabled'],
+        include: ['isDisabled', 'isHorizontal'],
     },
 }
 
@@ -71,5 +76,12 @@ WithCaptions.args = {
     })),
 }
 WithCaptions.parameters = templateParameters
+
+export const WithHorizontalLayout = Template.bind({})
+WithHorizontalLayout.args = {
+    ...defaultProps,
+    isHorizontal: true,
+}
+WithHorizontalLayout.parameters = templateParameters
 
 export default storyConfig

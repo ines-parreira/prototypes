@@ -11,6 +11,8 @@ export enum FeatureFlagKey {
     ChatVideoSharingExtra = 'enable-chat-video-sharing-extra',
     ChatMergedOrderManagementButton = 'chat-merged-order-management-button',
     EarlyAdopter = 'early-adopter',
+    EnableWhatsAppMigrations = 'enable-whatsapp-migrations',
+    WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     EnforceTicketsOnES = 'enforce-tickets-on-es',
     ElasticsearchSearchLoadTest = 'elasticsearch-search-load-test',
     ElasticsearchCustomerSearch = 'elasticsearch-customer-search',

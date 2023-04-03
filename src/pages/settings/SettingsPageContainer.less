@@ -1,0 +1,13 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/mixins';
+
+:local {
+    .container {
+        display: flex;
+        padding: @layout-spacing-m;
+
+        @media @tablets {
+            flex-direction: column;
+        }
+    }
+}

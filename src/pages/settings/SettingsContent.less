@@ -1,0 +1,15 @@
+@import '~css/new/colorTokens';
+@import '~css/new/mixins';
+
+:local {
+    .container {
+        color: @classic-neutral-grey-6;
+        max-width: 680px;
+        width: 70%;
+
+        @media @mobiles, @tablets {
+            max-width: inherit;
+            width: 100%;
+        }
+    }
+}

@@ -26,3 +26,27 @@ export const isWhatsAppIntegration = createTypeGuard<
 >((input: Maybe<Integration>) =>
     input?.type === IntegrationType.WhatsApp ? input : undefined
 )
+
+export type WhatsAppMigrationProgress = {
+    waba_phone_number_id: string
+    status: WhatsAppPhoneNumberStatus
+    verification_status: WhatsAppPhoneNumberVerificationStatus
+}
+
+export enum WhatsAppPhoneNumberStatus {
+    Online = 'ONLINE',
+    Pending = 'PENDING',
+    Offline = 'OFFLINE',
+    Migrated = 'MIGRATED',
+    Connected = 'CONNECTED',
+}
+
+export enum WhatsAppPhoneNumberVerificationStatus {
+    Unverified = 'UNVERIFIED',
+    Verified = 'VERIFIED',
+}
+
+export enum WhatsAppCodeVerificationMethod {
+    Voice = 'VOICE',
+    Sms = 'SMS',
+}

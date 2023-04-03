@@ -13,6 +13,7 @@ exports[`<Body/> should render with a json textarea 1`] = `
     class="mb-3"
   >
     <fieldset
+      class=""
       name="radio-field-1"
     >
       <div
@@ -90,6 +91,7 @@ exports[`<Body/> should render with parameter fields 1`] = `
     class="mb-3"
   >
     <fieldset
+      class=""
       name="radio-field-2"
     >
       <div

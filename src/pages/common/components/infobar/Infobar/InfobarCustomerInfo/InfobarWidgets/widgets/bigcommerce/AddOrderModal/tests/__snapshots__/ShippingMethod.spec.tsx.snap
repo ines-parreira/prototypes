@@ -63,6 +63,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
           tabindex="-1"
         >
           <fieldset
+            class=""
             name="radio-field-1"
           >
             <div

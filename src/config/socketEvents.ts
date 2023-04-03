@@ -8,7 +8,7 @@ import {setIsAvailable} from 'state/currentUser/actions'
 import {MACRO_PARAMS_UPDATED} from 'state/macro/constants'
 import {fetchNewPhoneNumbers} from 'models/phoneNumber/resources'
 import {newPhoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
-
+import {isMigrationInProgress} from 'hooks/useWhatsAppMigration'
 import {getEmailMigrations} from 'state/integrations/selectors'
 import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
 
@@ -831,6 +831,10 @@ export const receivedEvents: ReceivedEvent[] = [
         name: SocketEventType.WhatsAppOnboardingSucceeded,
         onReceive: async (data) => {
             const {phone_number} = data as WhatsAppOnboardingSucceededEvent
+            const isMigrating = isMigrationInProgress()
+            if (isMigrating) {
+                return
+            }
             const listPath = '/app/settings/integrations/whatsapp/integrations'
             if (window.location.pathname !== listPath) {
                 history.push(listPath)

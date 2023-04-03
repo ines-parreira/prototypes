@@ -2,6 +2,7 @@
 
 exports[`<RadioFieldSet /> render() should render a Radio field with label 1`] = `
 <fieldset
+  class=""
   name="radio-field-2"
 >
   <legend
@@ -47,6 +48,7 @@ exports[`<RadioFieldSet /> render() should render a Radio field with label 1`] =
 
 exports[`<RadioFieldSet /> render() should render a disabled RadioField 1`] = `
 <fieldset
+  class=""
   disabled=""
   name="radio-field-3"
 >
@@ -90,6 +92,7 @@ exports[`<RadioFieldSet /> render() should render a disabled RadioField 1`] = `
 
 exports[`<RadioFieldSet /> render() should render an enabled Radio field 1`] = `
 <fieldset
+  class=""
   name="radio-field-1"
 >
   <div
@@ -130,6 +133,7 @@ exports[`<RadioFieldSet /> render() should render an enabled Radio field 1`] = `
 
 exports[`<RadioFieldSet /> render() should render captions under radio buttons 1`] = `
 <fieldset
+  class=""
   name="radio-field-4"
 >
   <div

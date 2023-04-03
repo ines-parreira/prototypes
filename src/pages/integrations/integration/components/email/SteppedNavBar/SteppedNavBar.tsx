@@ -28,13 +28,16 @@ export default function SteppedNavBar({steps, activeStep}: Props) {
                         >
                             {step.isComplete && !isActive ? (
                                 <i
-                                    className={classNames('material-icons')}
+                                    className={classNames(
+                                        'material-icons',
+                                        css.number
+                                    )}
                                     data-testid="check-icon"
                                 >
                                     check
                                 </i>
                             ) : (
-                                <div>{index + 1}</div>
+                                <div className={css.number}>{index + 1}</div>
                             )}
                             <div>{step.name}</div>
                         </div>

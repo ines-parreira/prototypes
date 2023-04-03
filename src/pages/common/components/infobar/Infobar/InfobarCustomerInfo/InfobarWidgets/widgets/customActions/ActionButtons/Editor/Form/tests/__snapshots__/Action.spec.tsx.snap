@@ -132,6 +132,7 @@ exports[`<Action/> should render with a Body component 1`] = `
       class="mb-3"
     >
       <fieldset
+        class=""
         name="radio-field-1"
       >
         <div

@@ -5,6 +5,7 @@ import React, {
     useRef,
     useCallback,
     ComponentProps,
+    ReactNode,
 } from 'react'
 import {ReactCountryFlag as CountryFlag} from 'react-country-flag'
 import {getCountryCallingCode, CountryCode} from 'libphonenumber-js'
@@ -37,8 +38,11 @@ type Props = {
     allowedCountries?: CountryCode[]
     defaultCountry?: CountryCode
     disabled?: boolean
-    label?: string
+    label?: ReactNode
+    caption?: ReactNode
+    error?: string
     value: string
+    onCountryChange?: (country: CountryCode) => void
 } & ComponentProps<typeof TextInput>
 
 const PhoneNumberInput = ({
@@ -49,7 +53,11 @@ const PhoneNumberInput = ({
     disabled = false,
     label,
     onChange,
+    onCountryChange,
     value,
+    isRequired,
+    error,
+    caption,
     ...other
 }: Props) => {
     const containerRef = useRef<HTMLDivElement>(null)
@@ -105,14 +113,24 @@ const PhoneNumberInput = ({
         [onChange, setCurrentCountry]
     )
 
+    useEffect(() => {
+        onCountryChange?.(currentCountry)
+    }, [onCountryChange, currentCountry])
+
     useOnClickOutside<HTMLDivElement>(containerRef, () => {
         setCountrySelectVisible(false)
     })
 
+    const hasError = !!error || isPhoneNumberTooLong
+
     return (
         <div ref={containerRef} className={classnames(css.wrapper, className)}>
-            {label && <Label className={css.label}>{label}</Label>}
-            <InputGroup hasError={isPhoneNumberTooLong} isDisabled={disabled}>
+            {label && (
+                <Label isRequired={isRequired} className={css.label}>
+                    {label}
+                </Label>
+            )}
+            <InputGroup hasError={hasError} isDisabled={disabled}>
                 <InputGroupContext.Consumer>
                     {(inputGroupContext) => (
                         <Button
@@ -161,6 +179,7 @@ const PhoneNumberInput = ({
                         [css.hiddenInput]: isCountrySelectVisible,
                     })}
                     value={formatAsNationalNumber(value)}
+                    hasError={hasError}
                     onChange={(value) => {
                         const numberOfDigits = value.replace(/\s+/g, '').length
                         if (numberOfDigits > 15) {
@@ -173,12 +192,14 @@ const PhoneNumberInput = ({
                     autoFocus={autoFocus}
                 />
             </InputGroup>
-            {isPhoneNumberTooLong && (
+            {!error && isPhoneNumberTooLong && (
                 <Caption
                     error="A phone number can't have more than 15
                                 digits"
                 />
             )}
+            {error && <Caption error={error}>{error}</Caption>}
+            {!hasError && caption && <Caption>{caption}</Caption>}
         </div>
     )
 }

@@ -1,27 +1,26 @@
 import React from 'react'
 import {useParams, Switch, Route} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import PageHeader from 'pages/common/components/PageHeader'
-import AppDetails from 'pages/common/components/ProductDetail'
 import WhatsAppIntegrationSecondaryNavigation from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationSecondaryNavigation'
+import WhatsAppIntegrationDetails from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationDetails'
 import WhatsAppIntegrationPreferences from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationPreferences'
 import WhatsAppIntegrationOnboarding from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationOnboarding'
-import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
-import Button from 'pages/common/components/button/Button'
+import WhatsAppIntegrationMigration from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationMigration'
 
 import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
 
 import {IntegrationType, isWhatsAppIntegration} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
+import {FeatureFlagKey} from 'config/featureFlags'
 
-import {getIntegrationConfig} from 'state/integrations/helpers'
 import {getIntegrationById} from 'state/integrations/selectors'
 
 export default function WhatsAppIntegration() {
-    const config = getIntegrationConfig(IntegrationType.WhatsApp)
     const {integrationId} = useParams<{integrationId: string}>()
+    const enableMigration = useFlags()[FeatureFlagKey.EnableWhatsAppMigrations]
 
     const currentIntegration = useAppSelector((state) => {
         if (integrationId) {
@@ -35,22 +34,6 @@ export default function WhatsAppIntegration() {
     })
 
     const baseURL = `/app/settings/integrations/whatsapp`
-
-    if (!config) return null
-    const detailProps = mapAppToDetail(config)
-    const CTA = (
-        <ConnectLink
-            connectUrl={
-                window.GORGIAS_STATE.integrations.authentication.whatsapp
-                    ?.redirect_uri ?? ''
-            }
-            integrationTitle={IntegrationType.WhatsApp}
-            isExternal
-        >
-            <Button>Add WhatsApp</Button>
-        </ConnectLink>
-    )
-    detailProps.infocard.CTA = CTA
 
     return (
         <div className="full-width">
@@ -86,8 +69,13 @@ export default function WhatsAppIntegration() {
                 <Route path={`${baseURL}/onboard`} exact>
                     <WhatsAppIntegrationOnboarding />
                 </Route>
+                {enableMigration && (
+                    <Route path={`${baseURL}/migration`} exact>
+                        <WhatsAppIntegrationMigration />
+                    </Route>
+                )}
                 <Route path={baseURL} exact>
-                    {config && <AppDetails {...detailProps} />}
+                    <WhatsAppIntegrationDetails />
                 </Route>
             </Switch>
         </div>

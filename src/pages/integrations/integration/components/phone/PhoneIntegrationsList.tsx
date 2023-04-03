@@ -1,8 +1,10 @@
 import React, {useState, useCallback, useMemo} from 'react'
 import {sortBy, reverse} from 'lodash'
 import {useDeepCompareEffect} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Container} from 'reactstrap'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {OrderDirection} from 'models/api/types'
 import {
     PhoneIntegration,
@@ -39,7 +41,9 @@ type Props = {
     type: IntegrationType.Phone | IntegrationType.Sms | IntegrationType.WhatsApp
 }
 
-export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
+export default function PhoneIntegrationsList({
+    type,
+}: Props): JSX.Element | null {
     const config = getIntegrationConfig(type)
     const integrations = useAppSelector(
         getIntegrationsByType<
@@ -199,6 +203,9 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
 }
 
 function AddButton({type}: Pick<Props, 'type'>) {
+    const enableWhatsAppMigration =
+        useFlags()[FeatureFlagKey.EnableWhatsAppMigrations]
+
     const openOnboardingPage = (type: IntegrationType) => {
         if (type === IntegrationType.WhatsApp) {
             window.open(
@@ -217,11 +224,32 @@ function AddButton({type}: Pick<Props, 'type'>) {
         [IntegrationType.WhatsApp]: 'WhatsApp',
     }[type]
 
+    if (type === IntegrationType.WhatsApp) {
+        return (
+            <>
+                <Button onClick={() => openOnboardingPage(type)}>
+                    Connect WhatsApp Business
+                </Button>
+                {enableWhatsAppMigration && (
+                    <Button
+                        onClick={() =>
+                            history.push(
+                                `/app/settings/integrations/${type}/migration`
+                            )
+                        }
+                        className="ml-3"
+                        intent="secondary"
+                    >
+                        Migrate From Another Provider
+                    </Button>
+                )}
+            </>
+        )
+    }
+
     return (
         <Button onClick={() => openOnboardingPage(type)}>
             {`Add ${name}`}
         </Button>
     )
 }
-
-export default PhoneIntegrationsList

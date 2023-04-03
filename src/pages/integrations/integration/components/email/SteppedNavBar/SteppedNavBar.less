@@ -20,6 +20,14 @@
     .stepContainer {
         padding: 0 @layout-spacing-xs;
         background-color: @classic-neutral-grey-0;
+
+        &:nth-child(2) {
+            padding-left: 0;
+        }
+
+        &:last-child {
+            padding-right: 0;
+        }
     }
 
     .step {
@@ -33,6 +41,10 @@
         &.active {
             background-color: @classic-main-primary-0;
             color: @classic-main-primary-3;
+        }
+
+        .number {
+            width: 14px;
         }
     }
 }
