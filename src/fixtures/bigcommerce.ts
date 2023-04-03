@@ -13,6 +13,7 @@ import {
     BigCommerceCheckout,
     BigCommerceBillingAddress,
     BigCommerceCustomCartLineItem,
+    BigCommerceCustomProduct,
 } from 'models/integration/types'
 
 export const bigCommerceCustomerFixture = () => ({
@@ -579,3 +580,13 @@ export const bigCommerceCheckoutFixture: BigCommerceCheckout = {
 }
 
 export const bigCommerceAvailableCurrenciesFixture = ['EUR', 'USD']
+
+export const bigCommerceCustomProductFixture: BigCommerceCustomProduct = {
+    id: 'custom-product',
+    name: '[Sample] Custom Product',
+    sku: '',
+    list_price: 78,
+    quantity: 1,
+    extended_list_price: 78,
+    image_url: '',
+}

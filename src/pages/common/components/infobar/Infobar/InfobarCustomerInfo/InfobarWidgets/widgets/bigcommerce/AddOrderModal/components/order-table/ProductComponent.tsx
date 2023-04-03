@@ -89,6 +89,26 @@ const Modifiers = ({
     )
 }
 
+export const getVariant = (
+    lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem,
+    product?: BigCommerceProduct | BigCommerceCustomProduct
+) => {
+    if (
+        !isBigCommerceCartLineItem(lineItem) ||
+        !product ||
+        !isBigCommerceProduct(product)
+    ) {
+        return null
+    }
+
+    return (
+        product.variants.find(
+            (variant: BigCommerceProductVariant) =>
+                variant.id === lineItem.variant_id
+        ) || null
+    )
+}
+
 export default function ProductComponent({
     product,
     lineItem,
@@ -97,19 +117,9 @@ export default function ProductComponent({
     errorMessage,
 }: Props) {
     const sku = lineItem.sku
-    const renderImage = () => {
-        let src
-
-        if (product && isBigCommerceProduct(product)) {
-            // Product
-            src =
-                !!product && product.image_url
-                    ? product.image_url
-                    : defaultImage
-        } else {
-            // Custom Product - use the default image
-            src = defaultImage
-        }
+    const renderImage = useCallback(() => {
+        const variant = getVariant(lineItem, product)
+        const src = variant?.image_url || product?.image_url || defaultImage
 
         return (
             <img
@@ -118,7 +128,7 @@ export default function ProductComponent({
                 alt={product ? product.name : ''}
             />
         )
-    }
+    }, [product, lineItem])
 
     const renderTitle = useCallback(() => {
         const productId = isBigCommerceCartLineItem(lineItem)
@@ -159,13 +169,7 @@ export default function ProductComponent({
             return <StockNotAvailable />
         }
 
-        const variantId = lineItem.variant_id
-        const variant = !!product
-            ? product.variants.find(
-                  (variant: BigCommerceProductVariant) =>
-                      variant.id === variantId
-              )
-            : null
+        const variant = getVariant(lineItem, product)
 
         if (!product || !variant) {
             return <StockNotAvailable />

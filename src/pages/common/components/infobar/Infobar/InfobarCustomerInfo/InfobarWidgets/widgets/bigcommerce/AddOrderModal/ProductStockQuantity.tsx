@@ -17,7 +17,7 @@ export function ProductStockQuantity({value}: Props) {
     }
 
     return (
-        <span className={className}>
+        <span aria-label="product stock quantity" className={className}>
             {new Intl.NumberFormat().format(value) + ' in stock'}
         </span>
     )

@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProductComponent/> should render correctly 1`] = `
+<div>
+  <td
+    class="descriptionCol"
+  >
+    <div
+      class="imgContainer"
+    >
+      <img
+        alt="[Sample] Serviette de plage Fog Linen en chambray - Beige rayé"
+        class="img"
+        src="https://cdn11.bigcommerce.com/s-pk360c6roo/products/77/images/266/foglinenbeigestripetowel1b.1650970371.220.290.jpg?c=1"
+      />
+    </div>
+    <div
+      class="legend"
+    >
+      <div>
+        <a
+          class="title"
+          href="https://store-storeHash.mybigcommerce.com/manage/products/edit/245/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          test 102
+        </a>
+      </div>
+      <div
+        class="subtitle"
+      >
+        <span
+          class="text-muted"
+        >
+          N/A
+        </span>
+      </div>
+    </div>
+  </td>
+</div>
+`;
+
+exports[`<ProductComponent/> should show not available stock if a custom product 1`] = `
+<div>
+  <td
+    class="descriptionCol"
+  >
+    <div
+      class="imgContainer"
+    >
+      <img
+        alt="[Sample] Custom Product"
+        class="img"
+        src="test-file-stub"
+      />
+    </div>
+    <div
+      class="legend"
+    >
+      <div>
+        <a
+          class="title"
+          href="https://store-storeHash.mybigcommerce.com/manage/products/edit/245/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          test 102
+        </a>
+      </div>
+      <div
+        class="subtitle"
+      >
+        <span
+          class="text-muted"
+        >
+          N/A
+        </span>
+      </div>
+    </div>
+  </td>
+</div>
+`;
+
+exports[`<ProductComponent/> should show not available stock if missing product 1`] = `
+<div>
+  <td
+    class="descriptionCol"
+  >
+    <div
+      class="imgContainer"
+    >
+      <img
+        alt=""
+        class="img"
+        src="test-file-stub"
+      />
+    </div>
+    <div
+      class="legend"
+    >
+      <div>
+        <a
+          class="title"
+          href="https://store-storeHash.mybigcommerce.com/manage/products/edit/245/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          test 102
+        </a>
+      </div>
+      <div
+        class="subtitle"
+      >
+        <span
+          class="text-muted"
+        >
+          N/A
+        </span>
+      </div>
+    </div>
+  </td>
+</div>
+`;
