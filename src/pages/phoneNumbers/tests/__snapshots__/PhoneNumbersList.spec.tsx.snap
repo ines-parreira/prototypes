@@ -1,242 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] = `
-<table
-  class="table table"
->
-  <thead
-    class="header"
-  >
-    <tr
-      class="headerRow"
-    >
-      <td
-        class="wrapper is-clickable normal"
-      >
-        <div
-          class="content"
-        >
-          <div
-            class="cell"
-          >
-            <span
-              class="title"
-            >
-              Phone Number
-            </span>
-            <i
-              class="material-icons md-1 directionIcon isVisible"
-            >
-              arrow_drop_down
-            </i>
-          </div>
-        </div>
-      </td>
-      <td
-        class="wrapper is-clickable normal"
-      >
-        <div
-          class="content"
-        >
-          <div
-            class="cell"
-          >
-            <span
-              class="title"
-            >
-              Connected Apps
-            </span>
-            <i
-              class="material-icons md-1 directionIcon"
-            >
-              arrow_drop_down
-            </i>
-          </div>
-        </div>
-      </td>
-      <td
-        class="wrapper normal"
-      />
-    </tr>
-  </thead>
-  <tbody
-    class="tableBody"
-  >
-    <tr
-      class="row isClickable"
-    >
-      <td
-        class="wrapper small"
-      >
-        <div
-          class="cellContent"
-        >
-          <div
-            class="wrapper"
-          >
-            <div
-              class="wrapper round"
-            >
-              <span
-                role="img"
-                style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
-              >
-                🇺🇸
-              </span>
-            </div>
-            <strong>
-              A Phone Number
-            </strong>
-             
-            <span>
-              +1 415 111 2222
-            </span>
-          </div>
-        </div>
-      </td>
-      <td
-        class="wrapper normal"
-      >
-        <div
-          class="cellContent"
-        />
-      </td>
-      <td
-        class="wrapper normal"
-      >
-        <div
-          class="cellContent"
-        >
-          <a
-            to="/app/settings/phone-numbers/1"
-          >
-            <i
-              class="material-icons md-2 align-middle icon-go-forward"
-            >
-              keyboard_arrow_right
-            </i>
-          </a>
-        </div>
-      </td>
-    </tr>
-    <tr
-      class="row isClickable"
-    >
-      <td
-        class="wrapper small"
-      >
-        <div
-          class="cellContent"
-        >
-          <div
-            class="wrapper"
-          >
-            <div
-              class="wrapper round"
-            >
-              <span
-                role="img"
-                style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
-              >
-                🇨🇦
-              </span>
-            </div>
-            <strong>
-              Another Phone Number
-            </strong>
-             
-            <span>
-              +1 813 111 2223
-            </span>
-          </div>
-        </div>
-      </td>
-      <td
-        class="wrapper normal"
-      >
-        <div
-          class="cellContent"
-        />
-      </td>
-      <td
-        class="wrapper normal"
-      >
-        <div
-          class="cellContent"
-        >
-          <a
-            to="/app/settings/phone-numbers/2"
-          >
-            <i
-              class="material-icons md-2 align-middle icon-go-forward"
-            >
-              keyboard_arrow_right
-            </i>
-          </a>
-        </div>
-      </td>
-    </tr>
-    <tr
-      class="row isClickable"
-    >
-      <td
-        class="wrapper small"
-      >
-        <div
-          class="cellContent"
-        >
-          <div
-            class="wrapper"
-          >
-            <div
-              class="wrapper round"
-            >
-              <span
-                role="img"
-                style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
-              >
-                🇨🇦
-              </span>
-            </div>
-            <strong>
-              Intl. Phone Number
-            </strong>
-             
-            <span>
-              +1 4151 11 2223
-            </span>
-          </div>
-        </div>
-      </td>
-      <td
-        class="wrapper normal"
-      >
-        <div
-          class="cellContent"
-        />
-      </td>
-      <td
-        class="wrapper normal"
-      >
-        <div
-          class="cellContent"
-        >
-          <a
-            to="/app/settings/phone-numbers/3"
-          >
-            <i
-              class="material-icons md-2 align-middle icon-go-forward"
-            >
-              keyboard_arrow_right
-            </i>
-          </a>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
-`;
-
 exports[`<PhoneNumbersList/> render() should render 1`] = `
 <table
   class="table table"
@@ -326,7 +89,7 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             </strong>
              
             <span>
-              +1 4151 11 2223
+              +1 213 373 4255
             </span>
           </div>
         </div>
@@ -383,7 +146,7 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             </strong>
              
             <span>
-              +1 813 111 2223
+              +1 213 373 4254
             </span>
           </div>
         </div>
@@ -440,7 +203,7 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             </strong>
              
             <span>
-              +1 415 111 2222
+              +1 213 373 4253
             </span>
           </div>
         </div>

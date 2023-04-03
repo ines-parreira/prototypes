@@ -16,16 +16,16 @@ describe('getPersonLabelFromSource()', () => {
 
         const label = getPersonLabelFromSource(person, sourceType)
 
-        expect(label).toMatchSnapshot()
+        expect(label).toBe('Foo Bar (foo@bar.com)')
     })
 
     it('should return phone label', () => {
-        const person = {address: '+14151235555', name: 'Foo Bar'}
+        const person = {address: '+12133734253', name: 'Foo Bar'}
         const sourceType = TicketMessageSourceType.Phone
 
         const label = getPersonLabelFromSource(person, sourceType)
 
-        expect(label).toMatchSnapshot()
+        expect(label).toBe('Foo Bar (+1 213 373 4253)')
     })
 })
 

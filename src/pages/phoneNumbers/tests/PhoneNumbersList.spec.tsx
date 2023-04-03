@@ -32,7 +32,7 @@ describe('<PhoneNumbersList/>', () => {
         })
 
         it('should allow sorting by column header', () => {
-            const {container, getByText, getAllByRole} = render(
+            const {getByText, getAllByRole} = render(
                 <Provider store={store}>
                     <PhoneNumbersList />
                 </Provider>
@@ -48,13 +48,13 @@ describe('<PhoneNumbersList/>', () => {
             const rowsBeforeSorting = getRows()
 
             expect(rowsBeforeSorting[1].slice(0, 1)).toEqual([
-                '🇨🇦Intl. Phone Number +1 4151 11 2223',
+                '🇨🇦Intl. Phone Number +1 213 373 4255',
             ])
             expect(rowsBeforeSorting[2].slice(0, 1)).toEqual([
-                '🇨🇦Another Phone Number +1 813 111 2223',
+                '🇨🇦Another Phone Number +1 213 373 4254',
             ])
             expect(rowsBeforeSorting[3].slice(0, 1)).toEqual([
-                '🇺🇸A Phone Number +1 415 111 2222',
+                '🇺🇸A Phone Number +1 213 373 4253',
             ])
 
             fireEvent.click(getByText('Phone Number'))
@@ -62,16 +62,14 @@ describe('<PhoneNumbersList/>', () => {
             const rowsAfterSorting = getRows()
 
             expect(rowsAfterSorting[1].slice(0, 1)).toEqual([
-                '🇺🇸A Phone Number +1 415 111 2222',
+                '🇺🇸A Phone Number +1 213 373 4253',
             ])
             expect(rowsAfterSorting[2].slice(0, 1)).toEqual([
-                '🇨🇦Another Phone Number +1 813 111 2223',
+                '🇨🇦Another Phone Number +1 213 373 4254',
             ])
             expect(rowsAfterSorting[3].slice(0, 1)).toEqual([
-                '🇨🇦Intl. Phone Number +1 4151 11 2223',
+                '🇨🇦Intl. Phone Number +1 213 373 4255',
             ])
-
-            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

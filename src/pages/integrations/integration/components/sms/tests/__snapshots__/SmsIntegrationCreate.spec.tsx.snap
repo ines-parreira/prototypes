@@ -113,7 +113,7 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
                      - 
                     US
                      (
-                    +1 415 111 2222
+                    +1 213 373 4253
                     )
                   </span>
                   <input
@@ -181,7 +181,7 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
                      - 
                     CA
                      (
-                    +1 813 111 2223
+                    +1 213 373 4254
                     )
                   </span>
                 </button>
@@ -344,7 +344,7 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
                      - 
                     US
                      (
-                    +1 415 111 2222
+                    +1 213 373 4253
                     )
                   </span>
                   <input
@@ -412,7 +412,7 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
                      - 
                     CA
                      (
-                    +1 813 111 2223
+                    +1 213 373 4254
                     )
                   </span>
                 </button>
@@ -545,7 +545,7 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
                      - 
                     US
                      (
-                    +1 415 111 2222
+                    +1 213 373 4253
                     )
                   </span>
                   <input
@@ -613,7 +613,7 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
                      - 
                     CA
                      (
-                    +1 813 111 2223
+                    +1 213 373 4254
                     )
                   </span>
                 </button>

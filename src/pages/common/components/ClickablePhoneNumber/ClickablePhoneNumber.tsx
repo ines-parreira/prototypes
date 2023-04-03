@@ -8,6 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import Tooltip from 'pages/common/components/Tooltip'
 
+import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 import PhoneIntegrationsDropdownList from './PhoneIntegrationsDropdownList'
 import SmsIntegrationsDropdownList from './SmsIntegrationsDropdownList'
 import css from './ClickablePhoneNumber.less'
@@ -34,6 +35,8 @@ const ClickablePhoneNumber = ({
     const hasPhoneIntegrations = !!phoneIntegrations.length
     const hasSmsIntegrations = !!smsIntegrations.length
 
+    const formattedAddress = formatPhoneNumberInternational(address)
+
     useEffect(() => {
         if (hasPhoneIntegrations && !hasSmsIntegrations) {
             setShowPhoneIntegrations(true)
@@ -45,10 +48,10 @@ const ClickablePhoneNumber = ({
 
     const tooltipMessage = useMemo(() => {
         if (hasPhoneIntegrations && hasSmsIntegrations) {
-            return 'Make an outbound call or send an SMS'
+            return 'Make outbound call or send SMS'
         }
         if (hasPhoneIntegrations && !hasSmsIntegrations) {
-            return 'Make an outbound call'
+            return 'Make outbound call'
         }
         if (!hasPhoneIntegrations && hasSmsIntegrations) {
             return 'Send SMS'
@@ -59,7 +62,7 @@ const ClickablePhoneNumber = ({
         const href = address.replace(/[. ]/g, '')
         return (
             <a id={id} href={`tel:${href}`}>
-                {address}
+                {formattedAddress}
             </a>
         )
     }
@@ -86,7 +89,7 @@ const ClickablePhoneNumber = ({
                     onClick={(e) => e.preventDefault()}
                 >
                     <Tooltip target={id}>{tooltipMessage}</Tooltip>
-                    {address}
+                    {formattedAddress}
                 </DropdownToggle>
                 <DropdownMenu container="body" className={css.dropdownMenu}>
                     {hasPhoneIntegrations &&

@@ -10,7 +10,7 @@ export const phoneNumbers: OldPhoneNumber[] = [
     {
         id: 1,
         name: 'A Phone Number',
-        phone_number: '+14151112222',
+        phone_number: '+12133734253',
         phone_number_id: 1,
         created_datetime: '2021-12-01T18:00:00.000000+00:00',
         updated_datetime: '2021-12-01T18:00:00.000000+00:00',
@@ -18,7 +18,7 @@ export const phoneNumbers: OldPhoneNumber[] = [
         meta: {
             emoji: null,
             type: PhoneType.Local,
-            friendly_name: '+1 415 111 2222',
+            friendly_name: '+1 213 373 4253',
             state: 'CA',
             country: PhoneCountry.US,
             area_code: 415,
@@ -34,7 +34,7 @@ export const phoneNumbers: OldPhoneNumber[] = [
     {
         id: 2,
         name: 'Another Phone Number',
-        phone_number: '+14151112223',
+        phone_number: '+12133734255',
         phone_number_id: 2,
         created_datetime: '2021-12-01T18:00:00.000000+00:00',
         updated_datetime: '2021-12-01T18:00:00.000000+00:00',
@@ -42,7 +42,7 @@ export const phoneNumbers: OldPhoneNumber[] = [
         meta: {
             emoji: null,
             type: PhoneType.TollFree,
-            friendly_name: '+1 813 111 2223',
+            friendly_name: '+1 213 373 4255',
             country: PhoneCountry.CA,
             area_code: 813,
         },
@@ -57,7 +57,7 @@ export const phoneNumbers: OldPhoneNumber[] = [
     {
         id: 3,
         name: 'Intl. Phone Number',
-        phone_number: '+14151112223',
+        phone_number: '+1 213 373 4253',
         phone_number_id: 3,
         created_datetime: '2021-12-01T18:00:00.000000+00:00',
         updated_datetime: '2021-12-01T18:00:00.000000+00:00',

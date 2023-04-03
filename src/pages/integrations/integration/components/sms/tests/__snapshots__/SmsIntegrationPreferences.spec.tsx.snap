@@ -96,9 +96,7 @@ exports[`<SmsIntegrationPreferences/> render() should render 1`] = `
                     A Phone Number
                   </strong>
                    
-                  <span>
-                    +1 415 111 2222
-                  </span>
+                  <span />
                 </div>
               </div>
               <div
@@ -241,9 +239,7 @@ exports[`<SmsIntegrationPreferences/> render() should submit a valid payload wit
                     A Phone Number
                   </strong>
                    
-                  <span>
-                    +1 415 111 2222
-                  </span>
+                  <span />
                 </div>
               </div>
               <div

@@ -9,8 +9,8 @@ export const phoneNumbers: NewPhoneNumber[] = [
     {
         id: 1,
         name: 'A Phone Number',
-        phone_number: '+14151112222',
-        phone_number_friendly: '+1 415 111 2222',
+        phone_number: '+12133734253',
+        phone_number_friendly: '+1 213 373 4253',
         created_datetime: '2021-12-01T18:00:00.000000+00:00',
         updated_datetime: '2021-12-01T18:00:00.000000+00:00',
         deleted_datetime: null,
@@ -38,8 +38,8 @@ export const phoneNumbers: NewPhoneNumber[] = [
     {
         id: 2,
         name: 'Another Phone Number',
-        phone_number: '+14151112223',
-        phone_number_friendly: '+1 813 111 2223',
+        phone_number: '+12133734254',
+        phone_number_friendly: '+1 213 373 4254',
         created_datetime: '2021-12-01T18:00:00.000000+00:00',
         updated_datetime: '2021-12-01T18:00:00.000000+00:00',
         deleted_datetime: null,
@@ -66,8 +66,8 @@ export const phoneNumbers: NewPhoneNumber[] = [
     {
         id: 3,
         name: 'Intl. Phone Number',
-        phone_number: '+14151112223',
-        phone_number_friendly: '+1 4151 11 2223',
+        phone_number: '+12133734255',
+        phone_number_friendly: '+1 213 373 4255',
         created_datetime: '2021-12-01T18:00:00.000000+00:00',
         updated_datetime: '2021-12-01T18:00:00.000000+00:00',
         deleted_datetime: null,

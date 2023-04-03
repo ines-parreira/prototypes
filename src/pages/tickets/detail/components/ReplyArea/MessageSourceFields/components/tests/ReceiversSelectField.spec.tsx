@@ -141,4 +141,23 @@ describe('<ReceiversSelectField />', () => {
             index: 1,
         })
     })
+
+    it.each([
+        TicketMessageSourceType.Phone,
+        TicketMessageSourceType.WhatsAppMessage,
+        TicketMessageSourceType.Sms,
+    ])(
+        'should display "Search customers or enter a number" when channel is phone',
+        (channel) => {
+            const {getByPlaceholderText} = render(
+                <Provider store={mockStore(defaultStore)}>
+                    <MultiSelectAsyncField {...minProps} sourceType={channel} />
+                </Provider>
+            )
+
+            expect(
+                getByPlaceholderText('Search customers or enter a number...')
+            ).toBeVisible()
+        }
+    )
 })

@@ -43,13 +43,12 @@ describe('<AircallIntegrationListItem/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render the aircall integration list item and click on delete integration', () => {
+        it('should click on delete integration', () => {
             const {container} = render(
                 <Provider store={store}>
                     <AircallIntegrationListItem {...props} />
                 </Provider>
             )
-            expect(container.firstChild).toMatchSnapshot()
 
             const deleteButton = container.querySelector(`#delete-button-7`)
             if (!deleteButton) {

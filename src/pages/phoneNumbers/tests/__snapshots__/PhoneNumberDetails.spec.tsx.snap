@@ -46,7 +46,7 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
               id="phone-number"
               readonly=""
               type="text"
-              value="+1 4151 11 2223"
+              value="+1 213 373 4255"
             />
             <div
               class="input-group-append"
@@ -286,7 +286,7 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
               id="phone-number"
               readonly=""
               type="text"
-              value="+1 813 111 2223"
+              value="+1 213 373 4254"
             />
             <div
               class="input-group-append"
@@ -556,7 +556,7 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
               id="phone-number"
               readonly=""
               type="text"
-              value="+1 813 111 2223"
+              value="+1 213 373 4254"
             />
             <div
               class="input-group-append"
@@ -821,7 +821,7 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
               id="phone-number"
               readonly=""
               type="text"
-              value="+1 813 111 2223"
+              value="+1 213 373 4254"
             />
             <div
               class="input-group-append"
@@ -1091,7 +1091,7 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
               id="phone-number"
               readonly=""
               type="text"
-              value="+1 415 111 2222"
+              value="+1 213 373 4253"
             />
             <div
               class="input-group-append"
@@ -1379,7 +1379,7 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
               id="phone-number"
               readonly=""
               type="text"
-              value="+1 4151 11 2223"
+              value="+1 213 373 4255"
             />
             <div
               class="input-group-append"
@@ -1619,7 +1619,7 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
               id="phone-number"
               readonly=""
               type="text"
-              value="+1 813 111 2223"
+              value="+1 213 373 4254"
             />
             <div
               class="input-group-append"

@@ -13,6 +13,7 @@ import {
     deactivateIntegration,
 } from 'state/integrations/actions'
 import {AircallIntegration} from 'models/integration/types'
+import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 
 type Props = {
     integration: AircallIntegration
@@ -47,7 +48,9 @@ export default function AircallIntegrationListItem({
                 <div className="cell-content">
                     <b className="mr-2">{integration.name}</b>
                     <span className="text-faded">
-                        {integration.meta?.address}
+                        {formatPhoneNumberInternational(
+                            integration.meta?.address
+                        )}
                     </span>
                 </div>
             </td>

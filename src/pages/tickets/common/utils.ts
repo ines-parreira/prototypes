@@ -3,8 +3,9 @@ import {fromJS, List, Map} from 'immutable'
 import {getValuePropFromSourceType} from 'state/ticket/utils'
 import {getActionTemplate} from 'utils'
 import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
-import {TicketMessageSourceType} from 'business/types/ticket'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {ActionTemplate} from 'config'
+import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 
 /**
  * Return the label of the given person
@@ -23,13 +24,15 @@ export function getPersonLabelFromSource(
     const addressProp = getValuePropFromSourceType(sourceType)
     let address: string = (addressProp && person[addressProp]) || ''
 
+    if (isPhoneBasedSource(sourceType)) {
+        address = formatPhoneNumberInternational(address)
+    }
     let label = person.name || address
 
     // if is email channel and has a name, show the address next to the name
     if (
         sourceType === TicketMessageSourceType.Email ||
-        sourceType === TicketMessageSourceType.Phone ||
-        sourceType === TicketMessageSourceType.Sms
+        isPhoneBasedSource(sourceType)
     ) {
         // shrink email address if too long
         if (address.length > 45) {
@@ -100,3 +103,17 @@ export const getSortedIntegrationActions = (
             return {...sorted, [type]: [...(sorted![type] || []), action]}
         }, {} as {[key: string]: any[]})
     ) as Map<string, any>
+
+export const isPhoneBasedSource = (
+    sourceType: TicketMessageSourceType | TicketChannel
+): boolean => {
+    return [
+        TicketMessageSourceType.Phone,
+        TicketMessageSourceType.Sms,
+        TicketMessageSourceType.WhatsAppMessage,
+        TicketChannel.Aircall,
+        TicketChannel.Phone,
+        TicketChannel.Sms,
+        TicketChannel.WhatsApp,
+    ].includes(sourceType)
+}

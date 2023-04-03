@@ -113,7 +113,7 @@ exports[`<VoiceIntegrationCreate/> render() should prefill the title field using
                      - 
                     US
                      (
-                    +1 415 111 2222
+                    +1 213 373 4253
                     )
                   </span>
                   <input
@@ -181,7 +181,7 @@ exports[`<VoiceIntegrationCreate/> render() should prefill the title field using
                      - 
                     CA
                      (
-                    +1 813 111 2223
+                    +1 213 373 4254
                     )
                   </span>
                 </button>
@@ -203,7 +203,7 @@ exports[`<VoiceIntegrationCreate/> render() should prefill the title field using
                      - 
                     CA
                      (
-                    +1 4151 11 2223
+                    +1 213 373 4255
                     )
                   </span>
                 </button>
@@ -430,7 +430,7 @@ exports[`<VoiceIntegrationCreate/> render() should render 1`] = `
                      - 
                     US
                      (
-                    +1 415 111 2222
+                    +1 213 373 4253
                     )
                   </span>
                   <input
@@ -498,7 +498,7 @@ exports[`<VoiceIntegrationCreate/> render() should render 1`] = `
                      - 
                     CA
                      (
-                    +1 813 111 2223
+                    +1 213 373 4254
                     )
                   </span>
                 </button>
@@ -520,7 +520,7 @@ exports[`<VoiceIntegrationCreate/> render() should render 1`] = `
                      - 
                     CA
                      (
-                    +1 4151 11 2223
+                    +1 213 373 4255
                     )
                   </span>
                 </button>
@@ -717,7 +717,7 @@ exports[`<VoiceIntegrationCreate/> render() should submit a valid payload with t
                      - 
                     US
                      (
-                    +1 415 111 2222
+                    +1 213 373 4253
                     )
                   </span>
                   <input
@@ -785,7 +785,7 @@ exports[`<VoiceIntegrationCreate/> render() should submit a valid payload with t
                      - 
                     CA
                      (
-                    +1 813 111 2223
+                    +1 213 373 4254
                     )
                   </span>
                 </button>
@@ -807,7 +807,7 @@ exports[`<VoiceIntegrationCreate/> render() should submit a valid payload with t
                      - 
                     CA
                      (
-                    +1 4151 11 2223
+                    +1 213 373 4255
                     )
                   </span>
                 </button>

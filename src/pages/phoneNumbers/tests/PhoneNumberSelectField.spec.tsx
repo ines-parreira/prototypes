@@ -63,7 +63,7 @@ describe('<PhoneNumberSelectField/>', () => {
                                 ...number,
                                 integrations:
                                     number.phone_number_friendly ===
-                                    '+1 415 111 2222'
+                                    '+1 213 373 4253'
                                         ? []
                                         : [existingIntegration],
                             },
@@ -83,7 +83,7 @@ describe('<PhoneNumberSelectField/>', () => {
                     />
                 </Provider>
             )
-            expect(queryByText(/\+1 415 111 2222/)).toBeTruthy()
+            expect(queryByText(/\+1 213 373 4253/)).toBeTruthy()
             expect(queryByText(/\+1 415 111 2223/)).toBeFalsy()
             expect(container).toMatchSnapshot()
         })
@@ -111,7 +111,7 @@ describe('<PhoneNumberSelectField/>', () => {
                     />
                 </Provider>
             )
-            expect(queryByText(/\+1 415 111 2222/)).toBeTruthy()
+            expect(queryByText(/\+1 213 373 4253/)).toBeTruthy()
             expect(queryByText(/\+1 415 111 2223/)).toBeFalsy()
             expect(container).toMatchSnapshot()
         })

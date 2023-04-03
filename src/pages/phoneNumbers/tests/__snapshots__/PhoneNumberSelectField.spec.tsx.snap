@@ -30,7 +30,7 @@ exports[`<PhoneNumberSelectField/> render() should hide phone numbers that have 
              - 
             US
              (
-            +1 415 111 2222
+            +1 213 373 4253
             )
           </span>
           <input
@@ -116,7 +116,7 @@ exports[`<PhoneNumberSelectField/> render() should hide phone numbers that have 
              - 
             US
              (
-            +1 415 111 2222
+            +1 213 373 4253
             )
           </span>
           <input
@@ -184,7 +184,7 @@ exports[`<PhoneNumberSelectField/> render() should hide phone numbers that have 
              - 
             CA
              (
-            +1 813 111 2223
+            +1 213 373 4254
             )
           </span>
         </button>

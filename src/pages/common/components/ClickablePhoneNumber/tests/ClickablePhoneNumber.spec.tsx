@@ -144,7 +144,7 @@ describe('<ClickablePhoneNumber/>', () => {
 
             userEvent.hover(getByText('+33 6 11 22 33 44'))
             await waitFor(() => {
-                expect(queryByText('Make an outbound call')).not.toBeNull()
+                expect(queryByText('Make outbound call')).not.toBeNull()
             })
 
             expect(container.firstChild).toMatchSnapshot()
@@ -220,23 +220,21 @@ describe('<ClickablePhoneNumber/>', () => {
 
         expect(queryByText('SMS with')).not.toBeNull()
         expect(
-            queryByText('My Phone Integration 1 (+1 415 111 2222)')
+            queryByText('My Phone Integration 1 (+1 213 373 4253)')
         ).not.toBeNull()
 
         userEvent.hover(getByText('+33 6 11 22 33 44'))
         await waitFor(() => {
-            expect(
-                queryByText('Make an outbound call or send an SMS')
-            ).not.toBeNull()
+            expect(queryByText('Make outbound call or send SMS')).not.toBeNull()
         })
 
         expect(container.firstChild).toMatchSnapshot()
 
-        fireEvent.click(getByText('My Phone Integration 1 (+1 415 111 2222)'))
+        fireEvent.click(getByText('My Phone Integration 1 (+1 213 373 4253)'))
 
         expect(push).toHaveBeenCalledWith('/app/ticket/new?customer=1', {
             receiver: {address: '+33611223344', name: 'Foo'},
-            sender: '+14151112222',
+            sender: '+12133734253',
             source: 'sms',
         })
     })

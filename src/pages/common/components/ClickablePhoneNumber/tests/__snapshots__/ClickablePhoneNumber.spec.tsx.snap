@@ -36,7 +36,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing SMS integratio
       
       My Phone Integration 1
        (
-      +1 415 111 2222
+      +1 213 373 4253
       )
     </button>
     <button
@@ -50,7 +50,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing SMS integratio
       
       My Phone Integration 2
        (
-      +1 813 111 2223
+      +1 213 373 4254
       )
     </button>
   </div>
@@ -93,7 +93,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       
       My Phone Integration 1
        (
-      +1 415 111 2222
+      +1 213 373 4253
       )
     </button>
     <button
@@ -107,7 +107,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       
       My Phone Integration 2
        (
-      +1 813 111 2223
+      +1 213 373 4254
       )
     </button>
   </div>
@@ -150,7 +150,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       
       My Phone Integration 1
        (
-      +1 415 111 2222
+      +1 213 373 4253
       )
     </button>
   </div>
@@ -193,7 +193,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       
       My Phone Integration 1
        (
-      +1 415 111 2222
+      +1 213 373 4253
       )
     </button>
     <button
@@ -207,7 +207,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       
       My Phone Integration 2
        (
-      +1 813 111 2223
+      +1 213 373 4254
       )
     </button>
   </div>
@@ -250,7 +250,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       
       My Phone Integration 1
        (
-      +1 415 111 2222
+      +1 213 373 4253
       )
     </button>
   </div>
@@ -293,7 +293,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       
       My Phone Integration 1
        (
-      +1 415 111 2222
+      +1 213 373 4253
       )
     </button>
     <button
@@ -307,7 +307,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       
       My Phone Integration 2
        (
-      +1 813 111 2223
+      +1 213 373 4254
       )
     </button>
   </div>
@@ -350,7 +350,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       
       My Phone Integration 1
        (
-      +1 415 111 2222
+      +1 213 373 4253
       )
     </button>
   </div>
@@ -393,7 +393,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown to choose between phon
       
       My Phone Integration 1
        (
-      +1 415 111 2222
+      +1 213 373 4253
       )
     </button>
   </div>

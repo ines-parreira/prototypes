@@ -24,12 +24,12 @@ import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {getCountryCountryCallingCodeSelectOptions} from 'pages/settings/helpCenter/utils/phoneCodeSelectOptions'
 import {reportError} from 'utils/errors'
-
 import {
     getCountryFromPhoneNumber,
     buildInternationalNumber,
     formatAsNationalNumber,
-} from './utils'
+} from 'pages/phoneNumbers/utils'
+
 import css from './PhoneNumberInput.less'
 
 const typedCountries = countries as {value: CountryCode; label: string}[]

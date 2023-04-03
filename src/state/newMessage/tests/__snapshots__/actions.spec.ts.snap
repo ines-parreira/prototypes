@@ -2924,7 +2924,7 @@ exports[`actions new message setSender action should handle phone channel 1`] = 
   {
     "sender": Immutable.Map {
       "name": "Acme Phone",
-      "address": "+14151112223",
+      "address": "+12133734254",
       "id": 6,
     },
     "type": "NEW_MESSAGE_SET_SENDER",

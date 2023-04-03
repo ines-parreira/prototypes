@@ -40,76 +40,7 @@ exports[`<AircallIntegrationListItem/> render() should render the aircall integr
       <span
         class="text-faded"
       >
-        +18443076830
-      </span>
-    </div>
-  </td>
-  <td>
-    <div
-      class="align-middle"
-    >
-      <button
-        class="wrapper float-right fill destructive medium"
-        id="delete-button-7"
-        type="button"
-      >
-        <span
-          class="wrapper"
-        >
-          <i
-            class="material-icons icon isLeft medium"
-          >
-            delete
-          </i>
-          Delete integration
-        </span>
-      </button>
-    </div>
-  </td>
-</tr>
-`;
-
-exports[`<AircallIntegrationListItem/> render() should render the aircall integration list item and click on delete integration 1`] = `
-<tr>
-  <td
-    class="smallest align-middle"
-  >
-    <div>
-      <label
-        aria-checked="true"
-        class="label label"
-        for="toggle-button-2"
-        role="switch"
-      >
-        <input
-          checked=""
-          class="input"
-          disabled=""
-          id="toggle-button-2"
-          name="toggle-button-2"
-          type="checkbox"
-        />
-        <div
-          class="slider"
-        />
-      </label>
-    </div>
-  </td>
-  <td
-    class="align-middle link-full-td"
-  >
-    <div
-      class="cell-content"
-    >
-      <b
-        class="mr-2"
-      >
-        my Aircall integration
-      </b>
-      <span
-        class="text-faded"
-      >
-        +18443076830
+        +1 844 307 6830
       </span>
     </div>
   </td>

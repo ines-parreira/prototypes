@@ -4,9 +4,9 @@ import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
 import {WhatsAppCodeVerificationMethod} from 'models/integration/types'
-import {formatAsNationalNumber} from 'pages/common/forms/PhoneNumberInput/utils'
 import SettingsContent from 'pages/settings/SettingsContent'
 import FormRow from 'pages/common/forms/FormRow'
+import {formatAsNationalNumber} from 'pages/phoneNumbers/utils'
 
 import WhatsAppMigrationButtons from './WhatsAppMigrationButtons'
 

@@ -24,7 +24,10 @@ import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {MacroActionName} from 'models/macroAction/types'
 import {TicketMessage} from 'models/ticket/types'
 import {renderTemplate} from 'pages/common/utils/template'
-import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
+import {
+    getPersonLabelFromSource,
+    isPhoneBasedSource,
+} from 'pages/tickets/common/utils'
 import {tryLocalStorage} from 'services/common/utils'
 import * as responseUtils from 'state/newMessage/responseUtils'
 import {notify as notifyAction} from 'state/notifications/actions'
@@ -281,11 +284,7 @@ export function guessReceiversFromTicket(
                 const address = receiver.get('address')
                 // set address to lowercase
                 if (address) {
-                    if (
-                        sourceType === TicketMessageSourceType.Sms ||
-                        sourceType === TicketMessageSourceType.Phone ||
-                        sourceType === TicketMessageSourceType.WhatsAppMessage
-                    ) {
+                    if (isPhoneBasedSource(sourceType)) {
                         const parsedNumber = parsePhoneNumber(address)
                         if (parsedNumber) {
                             return receiver.set(
@@ -300,6 +299,9 @@ export function guessReceiversFromTicket(
                 return receiver
             })
             .filter((receiver) => {
+                if (isPhoneBasedSource(sourceType)) {
+                    return true
+                }
                 // remove support addresses
                 return !isSupportAddress(
                     receiver!.get('address'),

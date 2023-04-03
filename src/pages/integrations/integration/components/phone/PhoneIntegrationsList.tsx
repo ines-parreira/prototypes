@@ -12,7 +12,7 @@ import {
     SmsIntegration,
     WhatsAppIntegration,
 } from 'models/integration/types'
-import {PhoneNumber} from 'models/phoneNumber/types'
+import {NewPhoneNumber} from 'models/phoneNumber/types'
 import {getIntegrationConfig} from 'state/integrations/helpers'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
@@ -34,7 +34,7 @@ import css from './PhoneIntegrationsList.less'
 
 type Row = {
     integration: PhoneIntegration | SmsIntegration | WhatsAppIntegration
-    phoneNumber: Maybe<PhoneNumber>
+    phoneNumber: Maybe<NewPhoneNumber>
 }
 
 type Props = {

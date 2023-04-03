@@ -223,6 +223,23 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                             target={this.replyMessageChannelToggle}
                         />
                         <DropdownMenu>
+                            {suggestInternalNote && (
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        prepareNewMessage(
+                                            TicketMessageSourceType.InternalNote
+                                        )
+                                    }}
+                                >
+                                    <SourceIcon
+                                        type={
+                                            TicketMessageSourceType.InternalNote
+                                        }
+                                    />
+                                    Leave internal note
+                                </DropdownItem>
+                            )}
                             {suggestEmail && (
                                 <DropdownItem
                                     type="button"
@@ -252,7 +269,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                             TicketMessageSourceType.EmailForward
                                         }
                                     />
-                                    Forward by email
+                                    Forward to email
                                 </DropdownItem>
                             )}
                             {suggestChat && (
@@ -472,23 +489,6 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                         }
                                     />
                                     Reply via Twitter direct message
-                                </DropdownItem>
-                            )}
-                            {suggestInternalNote && (
-                                <DropdownItem
-                                    type="button"
-                                    onClick={() => {
-                                        prepareNewMessage(
-                                            TicketMessageSourceType.InternalNote
-                                        )
-                                    }}
-                                >
-                                    <SourceIcon
-                                        type={
-                                            TicketMessageSourceType.InternalNote
-                                        }
-                                    />
-                                    Leave an internal note
                                 </DropdownItem>
                             )}
                             {suggestPhone && (

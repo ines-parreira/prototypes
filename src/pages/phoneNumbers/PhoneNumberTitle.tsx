@@ -1,13 +1,13 @@
 import React from 'react'
-import {PhoneNumber} from 'models/phoneNumber/types'
+import {NewPhoneNumber} from 'models/phoneNumber/types'
 
-import {countryCode, friendlyName} from './utils'
+import {countryCode} from './utils'
 import CountryFlag from './CountryFlag'
 
 import css from './PhoneNumberTitle.less'
 
 type Props = {
-    phoneNumber: PhoneNumber
+    phoneNumber: NewPhoneNumber
     withRoundFlag?: boolean
     withCountryCode?: boolean
 }
@@ -33,7 +33,7 @@ export default function PhoneNumberTitle({
                     ` - ${phoneCountryCode}`}
             </strong>
             &nbsp;
-            <span>{friendlyName(phoneNumber)}</span>
+            <span>{phoneNumber.phone_number_friendly}</span>
         </div>
     )
 }

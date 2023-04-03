@@ -21,6 +21,7 @@ import {updatePotentialCustomers} from 'state/newMessage/actions'
 import {isEmail} from 'utils'
 import {SearchResponse, SearchType} from 'models/search/types'
 
+import {isPhoneBasedSource} from 'pages/tickets/common/utils'
 import MultiSelectAsyncField from './MultiSelectAsyncField/MultiSelectAsyncField'
 
 type Props = {
@@ -50,12 +51,9 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
     ) {
         const dispatch = useAppDispatch()
         const valueProp = getValuePropFromSourceType(sourceType) // the property to display from the object
-        const searchType =
-            sourceType === TicketMessageSourceType.Phone ||
-            sourceType === TicketMessageSourceType.Sms ||
-            sourceType === TicketMessageSourceType.WhatsAppMessage
-                ? SearchType.UserChannelPhone
-                : SearchType.UserChannelEmail
+        const searchType = isPhoneBasedSource(sourceType)
+            ? SearchType.UserChannelPhone
+            : SearchType.UserChannelEmail
         const searchRankSource =
             searchType === SearchType.UserChannelPhone
                 ? SearchRankSource.CustomerChannelPhone
@@ -135,19 +133,18 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
         const _placeholder =
             placeholder ??
             (valueProp
-                ? 'Search customers...'
+                ? `Search customers${
+                      searchType === SearchType.UserChannelPhone
+                          ? ' or enter a number'
+                          : ''
+                  }...`
                 : 'Sorry, no recipient for this type of message...')
         const allowCreate =
             sourceType === TicketMessageSourceType.Email ||
-            sourceType === TicketMessageSourceType.Phone ||
-            sourceType === TicketMessageSourceType.Sms ||
-            sourceType === TicketMessageSourceType.WhatsAppMessage
-        const allowCreateConstraint =
-            sourceType === TicketMessageSourceType.Phone ||
-            sourceType === TicketMessageSourceType.Sms ||
-            sourceType === TicketMessageSourceType.WhatsAppMessage
-                ? isValidPhoneNumber
-                : isEmail
+            isPhoneBasedSource(sourceType)
+        const allowCreateConstraint = isPhoneBasedSource(sourceType)
+            ? isValidPhoneNumber
+            : isEmail
 
         return (
             <MultiSelectAsyncField
