@@ -58,4 +58,19 @@ describe('StatsNavbarView', () => {
 
         expect(screen.getByText('Weekly ticket load')).toBeInTheDocument()
     })
+
+    it('should render the link to the Revenue Campaign when having access to the beta', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.RevenueBetaTesters]: true,
+            [FeatureFlagKey.RevenueAttributionModel]: true,
+            [FeatureFlagKey.RevenueAttributionModelHideDashboard]: false,
+        }))
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <StatsNavbarView />
+            </Provider>
+        )
+
+        expect(screen.getByText('Campaigns')).toBeInTheDocument()
+    })
 })

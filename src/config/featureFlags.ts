@@ -29,6 +29,7 @@ export enum FeatureFlagKey {
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueAttributionModel = 'revenue-attribution-model',
+    RevenueAttributionModelHideDashboard = 'revenue-attribution-model-hide-dashboard',
     RevenueClickTracking = 'revenue-click-tracking',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',

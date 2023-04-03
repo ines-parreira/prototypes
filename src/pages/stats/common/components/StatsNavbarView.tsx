@@ -30,10 +30,16 @@ export default function StatsNavbarView() {
         setIsAutomationSubscriptionModal,
     ] = useState(false)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const isRevenueSubscriber = useIsRevenueBetaTester()
     const hasAttributionModel = Boolean(
         useFlags()[FeatureFlagKey.RevenueAttributionModel]
     )
+    const hasAttributionModelDashboardHidden = Boolean(
+        useFlags()[FeatureFlagKey.RevenueAttributionModelHideDashboard]
+    )
+    const isRevenueSubscriber =
+        useIsRevenueBetaTester() &&
+        hasAttributionModel &&
+        !hasAttributionModelDashboardHidden
 
     return (
         <>
@@ -104,7 +110,7 @@ export default function StatsNavbarView() {
                     >
                         Satisfaction
                     </NavbarLink>
-                    {!(isRevenueSubscriber && hasAttributionModel) && (
+                    {!isRevenueSubscriber && (
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
                             to="/app/stats/revenue"
@@ -175,7 +181,7 @@ export default function StatsNavbarView() {
                     )}
                 </div>
             </NavbarBlock>
-            {isRevenueSubscriber && hasAttributionModel && (
+            {isRevenueSubscriber && (
                 <NavbarBlock icon="attach_money" title="Revenue">
                     <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}
