@@ -10,9 +10,20 @@ export const getAnalyticsQueryKey = (params: GetAnalyticsParams) => [
     params,
 ]
 
-export const useGetAnalytics = <TData extends unknown[]>(
+type UseGetAnalyticsQueryData<TData extends unknown[]> = AxiosResponse<
+    GetAnalyticsResponse<TData>
+>
+
+export const useGetAnalytics = <
+    TData extends unknown[],
+    SelectData = UseGetAnalyticsQueryData<TData>
+>(
     params: GetAnalyticsParams,
-    overrides?: UseQueryOptions<AxiosResponse<GetAnalyticsResponse<TData>>>
+    overrides?: UseQueryOptions<
+        UseGetAnalyticsQueryData<TData>,
+        unknown,
+        SelectData
+    >
 ) => {
     return useQuery({
         queryKey: getAnalyticsQueryKey(params),

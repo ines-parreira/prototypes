@@ -13,6 +13,8 @@ import {teams} from 'fixtures/teams'
 import {StatsFilters} from 'models/stat/types'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {RootState, StoreDispatch} from 'state/types'
+import {useGetMetricTrend} from 'hooks/analytics/useGetMetricTrend'
+import {assumeMock} from 'utils/testing'
 
 import SupportPerformanceOverview, {
     STATS_TIPS_VISIBILITY_KEY,
@@ -27,6 +29,9 @@ jest.mock(
         ({value}: ComponentProps<typeof TagsStatsFilter>) =>
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
+
+jest.mock('hooks/analytics/useGetMetricTrend')
+const useGetMetricTrendMock = assumeMock(useGetMetricTrend)
 
 describe('<SupportPerformanceOverview />', () => {
     const defaultState = {
@@ -54,6 +59,15 @@ describe('<SupportPerformanceOverview />', () => {
 
     beforeEach(() => {
         localStorage.clear()
+        jest.resetAllMocks()
+        useGetMetricTrendMock.mockReturnValue({
+            isFetching: false,
+            isError: true,
+            data: {
+                value: 456,
+                prevValue: 123,
+            },
+        })
     })
 
     it('should render the page', () => {

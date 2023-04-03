@@ -909,14 +909,14 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     >
                       trending_up
                     </i>
-                    1.2
+                    +333
                   </div>
                 </div>
               </div>
               <div
                 class="wrapper heading-page-semibold"
               >
-                2.24
+                456
                  
                 <img
                   alt="Blue star"
@@ -969,21 +969,21 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   class="trendBadge"
                 >
                   <div
-                    class="trend positive"
+                    class="trend negative"
                   >
                     <i
                       class="material-icons trendIcon"
                     >
-                      trending_down
+                      trending_up
                     </i>
-                    21s
+                    +5m
                   </div>
                 </div>
               </div>
               <div
                 class="wrapper heading-page-semibold"
               >
-                5m24s
+                7m 36s
               </div>
               <div
                 class="tooltip"
@@ -1037,14 +1037,14 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     >
                       trending_up
                     </i>
-                    2m
+                    +5m
                   </div>
                 </div>
               </div>
               <div
                 class="wrapper heading-page-semibold"
               >
-                1h22m
+                7m 36s
               </div>
               <div
                 class="tooltip"
@@ -1091,21 +1091,21 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   class="trendBadge"
                 >
                   <div
-                    class="trend positive"
+                    class="trend negative"
                   >
                     <i
                       class="material-icons trendIcon"
                     >
-                      trending_down
+                      trending_up
                     </i>
-                    2
+                    +333
                   </div>
                 </div>
               </div>
               <div
                 class="wrapper heading-page-semibold"
               >
-                6
+                456
               </div>
               <div
                 class="tooltip"
@@ -1176,19 +1176,19 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     >
                       trending_up
                     </i>
-                    3%
+                    +271%
                   </div>
                 </div>
               </div>
               <div
                 class="wrapper heading-page-semibold"
               >
-                112
+                456
                 <span
                   class="from caption-regular"
                 >
                   from 
-                  109
+                  123
                 </span>
               </div>
             </div>
@@ -1225,19 +1225,19 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     >
                       trending_up
                     </i>
-                    7%
+                    +271%
                   </div>
                 </div>
               </div>
               <div
                 class="wrapper heading-page-semibold"
               >
-                40
+                456
                 <span
                   class="from caption-regular"
                 >
                   from 
-                  38
+                  123
                 </span>
               </div>
             </div>
@@ -1274,19 +1274,19 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     >
                       trending_up
                     </i>
-                    3%
+                    +271%
                   </div>
                 </div>
               </div>
               <div
                 class="wrapper heading-page-semibold"
               >
-                112
+                456
                 <span
                   class="from caption-regular"
                 >
                   from 
-                  109
+                  123
                 </span>
               </div>
             </div>
@@ -1323,19 +1323,19 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     >
                       trending_up
                     </i>
-                    20%
+                    +271%
                   </div>
                 </div>
               </div>
               <div
                 class="wrapper heading-page-semibold"
               >
-                25
+                456
                 <span
                   class="from caption-regular"
                 >
                   from 
-                  20
+                  123
                 </span>
               </div>
             </div>
@@ -1372,19 +1372,19 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     >
                       trending_up
                     </i>
-                    3%
+                    +271%
                   </div>
                 </div>
               </div>
               <div
                 class="wrapper heading-page-semibold"
               >
-                25
+                456
                 <span
                   class="from caption-regular"
                 >
                   from 
-                  20
+                  123
                 </span>
               </div>
             </div>

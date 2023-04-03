@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TrendMetricCard should render the trend metric card 1`] = `
+<div
+  class="wrapper card"
+>
+  <div
+    class="title"
+  >
+    Title
+    <div
+      class="wrapper"
+    >
+      <i
+        class="material-icons-outlined icon"
+        id="tooltip-1"
+      >
+        info
+      </i>
+    </div>
+    <div
+      class="trendBadge"
+    >
+      <div
+        data-color="neutral"
+        data-direction="down"
+        data-testid="trend-badge"
+      >
+        formatted-metric-trend
+      </div>
+    </div>
+  </div>
+  formatted-metric-value from formatted-metric-value
+</div>
+`;

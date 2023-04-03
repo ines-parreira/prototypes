@@ -33,9 +33,21 @@ export type AnalyticsFilter = {
     values?: string[]
 }
 
-export enum AnalyticsDimension {}
+export enum AnalyticsDimension {
+    CreatedDatetime = 'created_datetime',
+}
 
-export enum AnalyticsMeasure {}
+export enum AnalyticsMeasure {
+    CustomerSatisfaction = 'ticketStateCube.CustomerSatisfaction',
+    FirstResponseTime = 'ticketStateCube.TicketFirstResponseTime',
+    ResolutionTime = 'ticketStateCube.ResolutionTime',
+    MessagesPerTicket = 'ticketStateCube.MessagesPerTicket',
+    OpenTickets = 'ticketStateCube.OpenTickets',
+    ClosedTickets = 'ticketStateCube.ClosedTickets',
+    TicketsCreated = 'ticketStateCube.TicketsCreated',
+    TicketsReplied = 'ticketStateCube.TicketsReplied',
+    MessagesSent = 'ticketStateCube.MessagesSent',
+}
 
 export enum AnalyticsTimeDimensionGranularity {
     Quarter = 'quarter',

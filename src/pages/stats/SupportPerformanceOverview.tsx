@@ -1,4 +1,4 @@
-import React, {ComponentProps, useMemo} from 'react'
+import React, {useMemo} from 'react'
 import {useLocalStorage} from 'react-use'
 
 import {TicketChannel} from 'business/types/ticket'
@@ -19,95 +19,20 @@ import {
 } from 'state/stats/selectors'
 import blueStar from 'assets/img/icons/blue-star.svg'
 import {ticketsCreatedDataItem} from 'fixtures/chart'
+import {AnalyticsMeasure} from 'models/analytics/types'
+import {useGetMetricTrend} from 'hooks/analytics/useGetMetricTrend'
 
 import BigNumberMetric from './BigNumberMetric'
 import DashboardSection from './DashboardSection'
 import DashboardGridCell from './DashboardGridCell'
-import MetricCard from './MetricCard'
-import TrendBadge from './TrendBadge'
 import MetricTooltip from './MetricTooltip'
 import TipsToggle from './TipsToggle'
 import css from './SupportPerformanceOverview.less'
 import ChartCard from './ChartCard'
 import LineChart from './LineChart'
+import TrendMetricCard from './TrendMetricCard'
 
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
-
-type MetricMock = {
-    value: string
-    prevValue?: string
-    trendValue: string
-    trendDirection: ComponentProps<typeof TrendBadge>['direction']
-    trendColor: ComponentProps<typeof TrendBadge>['color']
-}
-
-const customerSatisfactionMock: MetricMock = {
-    value: '2.24',
-    trendValue: '1.2',
-    trendDirection: 'up',
-    trendColor: 'positive',
-}
-
-const firstResponseTimeMock: MetricMock = {
-    value: '5m24s',
-    trendValue: '21s',
-    trendDirection: 'down',
-    trendColor: 'positive',
-}
-
-const resolutionTimeMock: MetricMock = {
-    value: '1h22m',
-    trendValue: '2m',
-    trendDirection: 'up',
-    trendColor: 'negative',
-}
-
-const messagesPerTicketMock: MetricMock = {
-    value: '6',
-    trendValue: '2',
-    trendDirection: 'down',
-    trendColor: 'positive',
-}
-
-const openTicketsMock: MetricMock = {
-    value: '112',
-    prevValue: '109',
-    trendValue: '3%',
-    trendDirection: 'up',
-    trendColor: 'neutral',
-}
-
-const ticketsClosedMock: MetricMock = {
-    value: '40',
-    prevValue: '38',
-    trendValue: '7%',
-    trendDirection: 'up',
-    trendColor: 'positive',
-}
-
-const ticketsCreatedMock: MetricMock = {
-    value: '112',
-    prevValue: '109',
-    trendValue: '3%',
-    trendDirection: 'up',
-    trendColor: 'neutral',
-}
-
-const ticketsRepliedMock: MetricMock = {
-    value: '25',
-    prevValue: '20',
-    trendValue: '20%',
-    trendDirection: 'up',
-    trendColor: 'positive',
-}
-
-const messagesSentMock: MetricMock = {
-    value: '25',
-    prevValue: '20',
-    trendValue: '3%',
-    trendDirection: 'up',
-    trendColor: 'neutral',
-}
 
 export default function SupportPerformanceOverview() {
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
@@ -130,6 +55,43 @@ export default function SupportPerformanceOverview() {
             integrations: integrationsStatsFilter,
         }
     }, [integrationsStatsFilter, statsFilters])
+
+    const customerSatisfactionTrend = useGetMetricTrend(
+        AnalyticsMeasure.CustomerSatisfaction,
+        pageStatsFilters
+    )
+    const firstResponseTimeTrend = useGetMetricTrend(
+        AnalyticsMeasure.FirstResponseTime,
+        pageStatsFilters
+    )
+    const resolutionTimeTrend = useGetMetricTrend(
+        AnalyticsMeasure.ResolutionTime,
+        pageStatsFilters
+    )
+    const messagePerTicketTrend = useGetMetricTrend(
+        AnalyticsMeasure.MessagesPerTicket,
+        pageStatsFilters
+    )
+    const openTicketsTrend = useGetMetricTrend(
+        AnalyticsMeasure.OpenTickets,
+        pageStatsFilters
+    )
+    const closedTicketsTrend = useGetMetricTrend(
+        AnalyticsMeasure.ClosedTickets,
+        pageStatsFilters
+    )
+    const ticketsCreatedTrend = useGetMetricTrend(
+        AnalyticsMeasure.TicketsCreated,
+        pageStatsFilters
+    )
+    const ticketsRepliedTrend = useGetMetricTrend(
+        AnalyticsMeasure.TicketsReplied,
+        pageStatsFilters
+    )
+    const messagesSentTrend = useGetMetricTrend(
+        AnalyticsMeasure.MessagesSent,
+        pageStatsFilters
+    )
 
     return (
         <StatsPage
@@ -184,19 +146,11 @@ export default function SupportPerformanceOverview() {
                 }
             >
                 <DashboardGridCell size={3}>
-                    <MetricCard
+                    <TrendMetricCard
                         title="Customer satisfaction"
                         hint="Average CSAT score for tickets which received a survey during the period"
-                        trendBadge={
-                            <TrendBadge
-                                direction={
-                                    customerSatisfactionMock.trendDirection
-                                }
-                                color={customerSatisfactionMock.trendColor}
-                            >
-                                {customerSatisfactionMock.trendValue}
-                            </TrendBadge>
-                        }
+                        data={customerSatisfactionTrend.data}
+                        interpretAs="more-is-better"
                         tooltip={
                             areTipsVisible && (
                                 <MetricTooltip
@@ -210,28 +164,25 @@ export default function SupportPerformanceOverview() {
                             )
                         }
                     >
-                        <BigNumberMetric>
-                            {customerSatisfactionMock.value}{' '}
-                            <img
-                                className={css.customerSatisfactionStar}
-                                src={blueStar}
-                                alt="Blue star"
-                            />
-                        </BigNumberMetric>
-                    </MetricCard>
+                        {({formattedValue}) => (
+                            <BigNumberMetric>
+                                {formattedValue}{' '}
+                                <img
+                                    className={css.customerSatisfactionStar}
+                                    src={blueStar}
+                                    alt="Blue star"
+                                />
+                            </BigNumberMetric>
+                        )}
+                    </TrendMetricCard>
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
-                    <MetricCard
+                    <TrendMetricCard
                         title="First response time"
                         hint="Median time between 1st customer message and 1st human agent response"
-                        trendBadge={
-                            <TrendBadge
-                                direction={firstResponseTimeMock.trendDirection}
-                                color={firstResponseTimeMock.trendColor}
-                            >
-                                {firstResponseTimeMock.trendValue}
-                            </TrendBadge>
-                        }
+                        data={firstResponseTimeTrend.data}
+                        interpretAs="less-is-better"
+                        valueFormat="duration"
                         tooltip={
                             areTipsVisible && (
                                 <MetricTooltip
@@ -244,23 +195,18 @@ export default function SupportPerformanceOverview() {
                             )
                         }
                     >
-                        <BigNumberMetric>
-                            {firstResponseTimeMock.value}
-                        </BigNumberMetric>
-                    </MetricCard>
+                        {({formattedValue}) => (
+                            <BigNumberMetric>{formattedValue}</BigNumberMetric>
+                        )}
+                    </TrendMetricCard>
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
-                    <MetricCard
+                    <TrendMetricCard
                         title="Resolution time"
                         hint="Median time between the 1st customer message and the last time the ticket was closed"
-                        trendBadge={
-                            <TrendBadge
-                                direction={resolutionTimeMock.trendDirection}
-                                color={resolutionTimeMock.trendColor}
-                            >
-                                {resolutionTimeMock.trendValue}
-                            </TrendBadge>
-                        }
+                        data={resolutionTimeTrend.data}
+                        valueFormat="duration"
+                        interpretAs="less-is-better"
                         tooltip={
                             areTipsVisible && (
                                 <MetricTooltip
@@ -274,23 +220,17 @@ export default function SupportPerformanceOverview() {
                             )
                         }
                     >
-                        <BigNumberMetric>
-                            {resolutionTimeMock.value}
-                        </BigNumberMetric>
-                    </MetricCard>
+                        {({formattedValue}) => (
+                            <BigNumberMetric>{formattedValue}</BigNumberMetric>
+                        )}
+                    </TrendMetricCard>
                 </DashboardGridCell>
                 <DashboardGridCell size={3}>
-                    <MetricCard
+                    <TrendMetricCard
                         title="Messages per ticket"
                         hint="Average number of messages exchanged per closed ticket"
-                        trendBadge={
-                            <TrendBadge
-                                direction={messagesPerTicketMock.trendDirection}
-                                color={messagesPerTicketMock.trendColor}
-                            >
-                                {messagesPerTicketMock.trendValue}
-                            </TrendBadge>
-                        }
+                        data={messagePerTicketTrend.data}
+                        interpretAs="less-is-better"
                         tooltip={
                             areTipsVisible && (
                                 <MetricTooltip
@@ -302,102 +242,84 @@ export default function SupportPerformanceOverview() {
                             )
                         }
                     >
-                        <BigNumberMetric>
-                            {messagesPerTicketMock.value}
-                        </BigNumberMetric>
-                    </MetricCard>
+                        {({formattedValue}) => (
+                            <BigNumberMetric>{formattedValue}</BigNumberMetric>
+                        )}
+                    </TrendMetricCard>
                 </DashboardGridCell>
             </DashboardSection>
             <DashboardSection title="Workload">
                 <DashboardGridCell size={6}>
-                    <MetricCard
+                    <TrendMetricCard
                         title="Open tickets"
                         hint="Number of tickets with the status “open” at the end of the period"
-                        trendBadge={
-                            <TrendBadge
-                                direction={openTicketsMock.trendDirection}
-                                color={openTicketsMock.trendColor}
-                            >
-                                {openTicketsMock.trendValue}
-                            </TrendBadge>
-                        }
+                        data={openTicketsTrend.data}
+                        trendFormat="percent"
                     >
-                        <BigNumberMetric from={openTicketsMock.prevValue}>
-                            {openTicketsMock.value}
-                        </BigNumberMetric>
-                    </MetricCard>
+                        {({formattedValue, formattedPrevValue}) => (
+                            <BigNumberMetric from={formattedPrevValue}>
+                                {formattedValue}
+                            </BigNumberMetric>
+                        )}
+                    </TrendMetricCard>
                 </DashboardGridCell>
                 <DashboardGridCell size={6}>
-                    <MetricCard
+                    <TrendMetricCard
                         title="Closed tickets"
                         hint="Number of unique tickets closed during the period (and that did not reopen)"
-                        trendBadge={
-                            <TrendBadge
-                                direction={ticketsClosedMock.trendDirection}
-                                color={ticketsClosedMock.trendColor}
-                            >
-                                {ticketsClosedMock.trendValue}
-                            </TrendBadge>
-                        }
+                        data={closedTicketsTrend.data}
+                        trendFormat="percent"
+                        interpretAs="more-is-better"
                     >
-                        <BigNumberMetric from={ticketsClosedMock.prevValue}>
-                            {ticketsClosedMock.value}
-                        </BigNumberMetric>
-                    </MetricCard>
+                        {({formattedValue, formattedPrevValue}) => (
+                            <BigNumberMetric from={formattedPrevValue}>
+                                {formattedValue}
+                            </BigNumberMetric>
+                        )}
+                    </TrendMetricCard>
                 </DashboardGridCell>
                 <DashboardGridCell size={4}>
-                    <MetricCard
+                    <TrendMetricCard
                         title="Tickets created"
                         hint="Number of new tickets to handle"
-                        trendBadge={
-                            <TrendBadge
-                                direction={ticketsCreatedMock.trendDirection}
-                                color={ticketsCreatedMock.trendColor}
-                            >
-                                {ticketsCreatedMock.trendValue}
-                            </TrendBadge>
-                        }
+                        data={ticketsCreatedTrend.data}
+                        trendFormat="percent"
                     >
-                        <BigNumberMetric from={ticketsCreatedMock.prevValue}>
-                            {ticketsCreatedMock.value}
-                        </BigNumberMetric>
-                    </MetricCard>
+                        {({formattedValue, formattedPrevValue}) => (
+                            <BigNumberMetric from={formattedPrevValue}>
+                                {formattedValue}
+                            </BigNumberMetric>
+                        )}
+                    </TrendMetricCard>
                 </DashboardGridCell>
                 <DashboardGridCell size={4}>
-                    <MetricCard
+                    <TrendMetricCard
                         title="Tickets replied"
                         hint="Number of tickets where the customer got a response"
-                        trendBadge={
-                            <TrendBadge
-                                direction={ticketsRepliedMock.trendDirection}
-                                color={ticketsRepliedMock.trendColor}
-                            >
-                                {ticketsRepliedMock.trendValue}
-                            </TrendBadge>
-                        }
+                        data={ticketsRepliedTrend.data}
+                        trendFormat="percent"
+                        interpretAs="more-is-better"
                     >
-                        <BigNumberMetric from={ticketsRepliedMock.prevValue}>
-                            {ticketsRepliedMock.value}
-                        </BigNumberMetric>
-                    </MetricCard>
+                        {({formattedValue, formattedPrevValue}) => (
+                            <BigNumberMetric from={formattedPrevValue}>
+                                {formattedValue}
+                            </BigNumberMetric>
+                        )}
+                    </TrendMetricCard>
                 </DashboardGridCell>
                 <DashboardGridCell size={4}>
-                    <MetricCard
+                    <TrendMetricCard
                         title="Messages sent"
                         hint="Number of messages received by your customer"
-                        trendBadge={
-                            <TrendBadge
-                                direction={messagesSentMock.trendDirection}
-                                color={messagesSentMock.trendColor}
-                            >
-                                {messagesSentMock.trendValue}
-                            </TrendBadge>
-                        }
+                        data={messagesSentTrend.data}
+                        trendFormat="percent"
                     >
-                        <BigNumberMetric from={messagesSentMock.prevValue}>
-                            {messagesSentMock.value}
-                        </BigNumberMetric>
-                    </MetricCard>
+                        {({formattedValue, formattedPrevValue}) => (
+                            <BigNumberMetric from={formattedPrevValue}>
+                                {formattedValue}
+                            </BigNumberMetric>
+                        )}
+                    </TrendMetricCard>
                 </DashboardGridCell>
                 <DashboardGridCell size={6}>
                     <ChartCard

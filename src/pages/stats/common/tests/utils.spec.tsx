@@ -16,6 +16,8 @@ import {
     formatDuration,
     useStatsViewFilters,
     findChannelNameKey,
+    formatMetricValue,
+    formatMetricTrend,
 } from '../utils'
 
 const mockStore = configureMockStore([thunk])
@@ -200,6 +202,50 @@ describe('stats components utils', () => {
         it('should return undefined when key is unknown', () => {
             const key = findChannelNameKey('Something else')
             expect(key).toBeUndefined()
+        })
+    })
+
+    describe('formatMetricValue', () => {
+        it('should format value up to two decimal places when format is "decimal"', () => {
+            expect(formatMetricValue(123456.789, 'decimal')).toBe('123,456.79')
+        })
+
+        it('should format value as duration with precision two when format is "duration"', () => {
+            const minuteInSeconds = 60
+            const hourInSeconds = 60 * minuteInSeconds
+            const dayInSeconds = 24 * hourInSeconds
+
+            expect(
+                formatMetricValue(
+                    5 * dayInSeconds +
+                        17 * hourInSeconds +
+                        42 * minuteInSeconds +
+                        33,
+                    'duration'
+                )
+            ).toBe('5d 17h')
+        })
+    })
+
+    describe('formatMetricTrend', () => {
+        it('should format trend up to one decimal when format is "decimal"', () => {
+            expect(formatMetricTrend(13.14, 10, 'decimal')).toBe('+3.1')
+        })
+
+        it('should format trend as duration with precision one when format is "duration"', () => {
+            const minuteInSeconds = 60
+
+            expect(
+                formatMetricTrend(
+                    38 * minuteInSeconds + 15,
+                    21 * minuteInSeconds + 6,
+                    'duration'
+                )
+            ).toBe('+17m')
+        })
+
+        it('should format trend as percent with no decimal places when format is "percent"', () => {
+            expect(formatMetricTrend(2.3, 1.2, 'percent')).toBe('+92%')
         })
     })
 })

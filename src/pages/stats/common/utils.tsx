@@ -18,6 +18,8 @@ import {TicketChannel} from 'business/types/ticket'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import StatsFiltersContext from '../StatsFiltersContext'
 
+export const DEFAULT_LOCALE = 'en-US'
+
 export const comparedPeriodString = (
     previousStartDatetime: Moment,
     previousEndDatetime: Moment
@@ -34,7 +36,7 @@ export const comparedPeriodString = (
 }
 
 export const formatNumber = (value: number) => {
-    const numberFormatter = new Intl.NumberFormat('en')
+    const numberFormatter = new Intl.NumberFormat(DEFAULT_LOCALE)
 
     return numberFormatter.format(value)
 }
@@ -50,8 +52,7 @@ export const formatCurrency = (value: number, currency: string) => {
         return value
     }
 
-    // For now, we don't store the country, and we'll use en-us
-    return value.toLocaleString('en-us', {
+    return value.toLocaleString(DEFAULT_LOCALE, {
         style: 'currency',
         currency: currency,
         maximumFractionDigits: 2,
@@ -180,4 +181,42 @@ export const findChannelNameKey = (
         TICKET_CHANNEL_NAMES,
         (name) => name.toLowerCase() === channelName.toLowerCase()
     ) as TicketChannel | undefined
+}
+
+export type MetricValueFormat = 'decimal' | 'duration'
+export const formatMetricValue = (value: number, format: MetricValueFormat) => {
+    if (format === 'duration') {
+        return formatDuration(value, 2)
+    }
+
+    return value.toLocaleString(DEFAULT_LOCALE, {
+        maximumFractionDigits: 2,
+    })
+}
+
+export type MetricTrendFormat = 'decimal' | 'duration' | 'percent'
+export const formatMetricTrend = (
+    value: number,
+    prevValue: number,
+    format: MetricTrendFormat
+) => {
+    const diff = value - prevValue
+    const sign = diff > 0 ? '+' : diff < 0 ? '-' : ''
+    const absDiff = Math.abs(diff)
+    let formattedDiff: string
+
+    if (format === 'duration') {
+        formattedDiff = formatDuration(absDiff, 1)
+    } else if (format === 'percent') {
+        formattedDiff = new Intl.NumberFormat(DEFAULT_LOCALE, {
+            style: 'percent',
+            maximumFractionDigits: 0,
+        }).format(absDiff / prevValue)
+    } else {
+        formattedDiff = Intl.NumberFormat(DEFAULT_LOCALE, {
+            maximumFractionDigits: 1,
+        }).format(absDiff)
+    }
+
+    return sign + formattedDiff
 }

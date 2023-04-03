@@ -1,5 +1,4 @@
-import client from 'models/api/resources'
-
+import client from './mockedClient'
 import {GetAnalyticsParams, GetAnalyticsResponse} from './types'
 
 export const ANALYTICS_ENDPOINT = '/api/reporting'
