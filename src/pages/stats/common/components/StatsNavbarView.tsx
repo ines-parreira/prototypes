@@ -14,14 +14,13 @@ import NavbarLink, {
 } from 'pages/common/components/navbar/NavbarLink'
 import {useIsRevenueBetaTester} from 'pages/common/hooks/useIsRevenueBetaTester'
 
-import css from './StatsNavbarView.less'
-
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
-    className: css.link,
     exact: true,
 }
 
 export default function StatsNavbarView() {
+    const hasTicketFields: boolean | undefined =
+        useFlags()[FeatureFlagKey.TicketFields]
     const hasAnalyticsBeta: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
     const isAutomationSettingsRevampEnabled: boolean | undefined =
@@ -62,9 +61,7 @@ export default function StatsNavbarView() {
                     >
                         Overview
                         {hasAnalyticsBeta && (
-                            <Badge className={css.badge} type={ColorType.Blue}>
-                                new
-                            </Badge>
+                            <Badge type={ColorType.Blue}>new</Badge>
                         )}
                     </NavbarLink>
 
@@ -74,6 +71,15 @@ export default function StatsNavbarView() {
                             to="/app/stats/weekly-ticket-load"
                         >
                             Weekly ticket load
+                        </NavbarLink>
+                    )}
+
+                    {hasTicketFields && (
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/ticket-fields"
+                        >
+                            Ticket Fields
                         </NavbarLink>
                     )}
 
@@ -182,9 +188,7 @@ export default function StatsNavbarView() {
                         to="/app/stats/revenue/campaigns"
                     >
                         Campaigns
-                        <Badge type={ColorType.Blue} className={css.badge}>
-                            BETA
-                        </Badge>
+                        <Badge type={ColorType.Blue}>BETA</Badge>
                     </NavbarLink>
                 </NavbarBlock>
             )}

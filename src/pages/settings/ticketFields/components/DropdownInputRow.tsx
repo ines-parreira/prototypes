@@ -77,6 +77,7 @@ export function DropdownInputRow(props: DropdownInputRowProps) {
                 <TextInput
                     id={props.id}
                     value={props.value}
+                    placeholder="e.g. Shipping issue::Delay"
                     onChange={(val) => props.onChange(props.position, val)}
                     hasError={!!props.error}
                     data-testid={props.id}

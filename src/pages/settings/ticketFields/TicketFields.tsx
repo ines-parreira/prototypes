@@ -3,6 +3,7 @@ import {Container} from 'reactstrap'
 
 import {Link, NavLink, useParams} from 'react-router-dom'
 import {useDebounce} from 'react-use'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useIsFlagEnabled} from 'hooks/useIsFlagEnabled'
 import useTitle from 'hooks/useTitle'
@@ -16,10 +17,10 @@ import List from 'pages/settings/ticketFields/components/List'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import Loader from 'pages/common/components/Loader/Loader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Search from 'pages/common/components/Search'
 import {ListParams} from 'models/customField/resources'
+
 import css from './TicketFields.less'
 
 type TicketFieldsTab = 'active' | 'archived'
@@ -90,7 +91,12 @@ export default function TicketFields() {
         activeFields.length >= 4 ? (
             <Button isDisabled>Create Field</Button>
         ) : (
-            <Link to="/app/settings/ticket-fields/add">
+            <Link
+                to="/app/settings/ticket-fields/add"
+                onClick={() =>
+                    logEvent(SegmentEvent.CustomFieldTicketCreateFieldClicked)
+                }
+            >
                 <Button>Create Field</Button>
             </Link>
         )
@@ -117,17 +123,23 @@ export default function TicketFields() {
                     </div>
                 </PageHeader>
                 {shouldDisplayListingPage && (
-                    <SecondaryNavbar>
-                        <NavLink to="/app/settings/ticket-fields/active" exact>
-                            Active
-                        </NavLink>
-                        <NavLink
-                            to="/app/settings/ticket-fields/archived"
-                            exact
-                        >
-                            Archived
-                        </NavLink>
-                    </SecondaryNavbar>
+                    <>
+                        <div data-candu-id="ticket-fields-listing-educational-material"></div>
+                        <SecondaryNavbar>
+                            <NavLink
+                                to="/app/settings/ticket-fields/active"
+                                exact
+                            >
+                                Active
+                            </NavLink>
+                            <NavLink
+                                to="/app/settings/ticket-fields/archived"
+                                exact
+                            >
+                                Archived
+                            </NavLink>
+                        </SecondaryNavbar>
+                    </>
                 )}
             </div>
 
@@ -144,6 +156,7 @@ export default function TicketFields() {
                                 Create custom fields to track and report common
                                 ticket categories.
                             </p>
+                            <div data-candu-id="ticket-fields-landing-educational-material"></div>
                             {createFieldButton}
                         </div>
                     ) : (

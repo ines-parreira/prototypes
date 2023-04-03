@@ -35,12 +35,16 @@ exports[`<HomePageLink /> should render the link if candu has some nodes injecte
       data-testid="home-page-link"
       href="/app/home"
     >
-      <i
-        class="material-icons icon"
+      <span
+        class="flex"
       >
-        home
-      </i>
-      Home
+        <i
+          class="material-icons icon"
+        >
+          home
+        </i>
+        Home
+      </span>
     </a>
   </div>
 </body>

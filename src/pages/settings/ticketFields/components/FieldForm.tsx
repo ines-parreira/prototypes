@@ -19,6 +19,7 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
 import ArchiveConfirmationModal from 'pages/settings/ticketFields/components/ArchiveConfirmationModal'
+import Tooltip from 'pages/common/components/Tooltip'
 import DropdownInput from './DropdownInput'
 import TypeSelectInput from './TypeSelectInput'
 import css from './FieldForm.less'
@@ -142,6 +143,8 @@ export default function FieldForm(props: FieldFormProps) {
             <InputField
                 name="label"
                 label="Name"
+                placeholder="e.g. Contact Reason"
+                caption="Visible to agents"
                 value={form.label}
                 onChange={(val) => setValue('label', val)}
                 className={css.formRow}
@@ -150,6 +153,7 @@ export default function FieldForm(props: FieldFormProps) {
             <TextArea
                 name="description"
                 label="Description"
+                placeholder="e.g. Reasons why customers reach out to us"
                 caption="Not visible to agents"
                 rows={1}
                 value={form.description}
@@ -158,6 +162,7 @@ export default function FieldForm(props: FieldFormProps) {
             />
             <CheckBox
                 isChecked={form.required}
+                caption="Enable to prevent agents from closing the ticket if the field is left empty. Snooze and Send actions will still work."
                 onChange={(val) => setValue('required', val)}
                 className={css.formRow}
             >
@@ -191,13 +196,21 @@ export default function FieldForm(props: FieldFormProps) {
             )}
             {form.definition.input_settings.input_type === 'dropdown' && (
                 <div className={css.formRow}>
-                    <Label
-                        htmlFor="settings.choices"
-                        className={css.formLabel}
-                        isRequired
-                    >
-                        Dropdown choices
-                    </Label>
+                    <span className={css.formLabelWithTooltip}>
+                        <Label htmlFor="settings.choices" isRequired>
+                            Dropdown values
+                        </Label>
+                        <span
+                            id="custom-field-dropdown-tooltip-id"
+                            className="material-icons-outlined ml-2"
+                        >
+                            info
+                        </span>
+                        <Tooltip target="custom-field-dropdown-tooltip-id">
+                            Max 2,000 values and 5 nested children levels
+                            allowed.
+                        </Tooltip>
+                    </span>
                     <DropdownInput
                         value={form.definition.input_settings.choices}
                         onChange={handleChoiceChange}

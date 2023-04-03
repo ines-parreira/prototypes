@@ -89,13 +89,21 @@ exports[`<EditTicketField/> should render if the account has the feature flag 2`
             class="wrapper"
           >
             <input
+              aria-describedby="input-text-1-caption"
               class="input"
               id="input-text-1"
               name="label"
+              placeholder="e.g. Contact Reason"
               required=""
               type="text"
               value="Test field"
             />
+          </div>
+          <div
+            class="caption"
+            id="input-text-1-caption"
+          >
+            Visible to agents
           </div>
         </div>
         <div
@@ -112,6 +120,7 @@ exports[`<EditTicketField/> should render if the account has the feature flag 2`
             class="textarea"
             id="textarea-3"
             name="description"
+            placeholder="e.g. Reasons why customers reach out to us"
             rows="1"
           />
           <div
@@ -136,6 +145,11 @@ exports[`<EditTicketField/> should render if the account has the feature flag 2`
             />
             Required to close ticket
           </label>
+          <div
+            class="caption caption"
+          >
+            Enable to prevent agents from closing the ticket if the field is left empty. Snooze and Send actions will still work.
+          </div>
         </div>
         <div
           class="formRow"

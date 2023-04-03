@@ -57,6 +57,9 @@ exports[`<TicketFields/> account has the feature flag should render active ticke
         </div>
       </div>
     </div>
+    <div
+      data-candu-id="ticket-fields-listing-educational-material"
+    />
     <nav
       class="navbar navbar"
     >
@@ -145,6 +148,9 @@ exports[`<TicketFields/> account has the feature flag should render archived tic
         </div>
       </div>
     </div>
+    <div
+      data-candu-id="ticket-fields-listing-educational-material"
+    />
     <nav
       class="navbar navbar"
     >
@@ -212,6 +218,9 @@ exports[`<TicketFields/> account has the feature flag should render get started 
     >
       Create custom fields to track and report common ticket categories.
     </p>
+    <div
+      data-candu-id="ticket-fields-landing-educational-material"
+    />
     <a
       to="/app/settings/ticket-fields/add"
     >
@@ -283,6 +292,9 @@ exports[`<TicketFields/> account has the feature flag should render no active ti
         </div>
       </div>
     </div>
+    <div
+      data-candu-id="ticket-fields-listing-educational-material"
+    />
     <nav
       class="navbar navbar"
     >
@@ -377,6 +389,9 @@ exports[`<TicketFields/> account has the feature flag should render no archived 
         </div>
       </div>
     </div>
+    <div
+      data-candu-id="ticket-fields-listing-educational-material"
+    />
     <nav
       class="navbar navbar"
     >
@@ -471,6 +486,9 @@ exports[`<TicketFields/> account has the feature flag should render no results f
         </div>
       </div>
     </div>
+    <div
+      data-candu-id="ticket-fields-listing-educational-material"
+    />
     <nav
       class="navbar navbar"
     >

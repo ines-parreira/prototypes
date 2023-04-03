@@ -239,6 +239,8 @@ export enum SegmentEvent {
     ChatSettingsToneOfVoiceFieldClicked = 'settings-tone-of-voice-field-clicked',
     ChatSettingsToneOfVoicePageSaved = 'settings-tone-of-voice-page-saved',
     ChatSettingsHide = 'settings-hide-chat',
+    CustomFieldTicketCreateFieldClicked = 'custom-fields/ticket/create-field-clicked',
+    CustomFieldTicketSaveNewFieldClicked = 'custom-fields/ticket/save-new-field-clicked',
     CustomFieldTicketValueInputFocused = 'custom-fields/ticket/input-focused',
     CustomFieldTicketValueDropdownFocused = 'custom-fields/ticket/dropdown-focused',
     CustomFieldTicketValueRequiredMissingError = 'custom-fields/ticket/value-required-missing-error',

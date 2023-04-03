@@ -25,6 +25,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
           data-testid="dropdown-choice-1"
           id="dropdown-choice-1"
           name="dropdown-choice-1"
+          placeholder="e.g. Shipping issue::Delay"
           type="text"
           value="Option 1"
         />
@@ -65,6 +66,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
           data-testid="dropdown-choice-2"
           id="dropdown-choice-2"
           name="dropdown-choice-2"
+          placeholder="e.g. Shipping issue::Delay"
           type="text"
           value="Option 2"
         />
@@ -105,6 +107,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
           data-testid="dropdown-choice-3"
           id="dropdown-choice-3"
           name="dropdown-choice-3"
+          placeholder="e.g. Shipping issue::Delay"
           type="text"
           value="Option 3"
         />
@@ -143,6 +146,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
           data-testid="dropdown-choice-4"
           id="dropdown-choice-4"
           name="dropdown-choice-4"
+          placeholder="e.g. Shipping issue::Delay"
           type="text"
           value=""
         />
@@ -152,13 +156,17 @@ exports[`<DropdownInput/> should render correctly 1`] = `
   <div
     class="caption lastInput"
   >
-    Use 
+    Type 
     ::
-     to separate nesting levels (e.g. Category
-    ::
-    Subcategory
-    ::
-    Item). Max 5 nesting levels allowed.
+     symbol to add a new child level.
+     
+    <a
+      href="https://docs.gorgias.com/en-US/215327-755feceee342410d80f5cde55e8e4f46#how-to-define-your-fields-to-generate-insights-efficiently"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      See examples
+    </a>
   </div>
 </div>
 `;
@@ -188,6 +196,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
           data-testid="dropdown-choice-1"
           id="dropdown-choice-1"
           name="dropdown-choice-1"
+          placeholder="e.g. Shipping issue::Delay"
           type="text"
           value="Option 1"
         />
@@ -233,6 +242,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
           data-testid="dropdown-choice-2"
           id="dropdown-choice-2"
           name="dropdown-choice-2"
+          placeholder="e.g. Shipping issue::Delay"
           type="text"
           value="Option 2"
         />
@@ -273,6 +283,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
           data-testid="dropdown-choice-3"
           id="dropdown-choice-3"
           name="dropdown-choice-3"
+          placeholder="e.g. Shipping issue::Delay"
           type="text"
           value="Option 1"
         />
@@ -318,6 +329,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
           data-testid="dropdown-choice-4"
           id="dropdown-choice-4"
           name="dropdown-choice-4"
+          placeholder="e.g. Shipping issue::Delay"
           type="text"
           value="Option 3"
         />
@@ -356,6 +368,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
           data-testid="dropdown-choice-5"
           id="dropdown-choice-5"
           name="dropdown-choice-5"
+          placeholder="e.g. Shipping issue::Delay"
           type="text"
           value=""
         />
@@ -365,13 +378,17 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
   <div
     class="caption lastInput"
   >
-    Use 
+    Type 
     ::
-     to separate nesting levels (e.g. Category
-    ::
-    Subcategory
-    ::
-    Item). Max 5 nesting levels allowed.
+     symbol to add a new child level.
+     
+    <a
+      href="https://docs.gorgias.com/en-US/215327-755feceee342410d80f5cde55e8e4f46#how-to-define-your-fields-to-generate-insights-efficiently"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      See examples
+    </a>
   </div>
 </div>
 `;

@@ -30,10 +30,17 @@ export const HomePageLink = () => {
                         navBarCss['category-title']
                     )}
                 >
-                    <i className={classnames('material-icons', navBarCss.icon)}>
-                        home
-                    </i>
-                    Home
+                    <span className="flex">
+                        <i
+                            className={classnames(
+                                'material-icons',
+                                navBarCss.icon
+                            )}
+                        >
+                            home
+                        </i>
+                        Home
+                    </span>
                 </NavLink>
             )}
         </>

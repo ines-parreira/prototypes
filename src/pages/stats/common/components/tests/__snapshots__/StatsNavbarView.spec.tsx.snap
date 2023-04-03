@@ -26,14 +26,14 @@ exports[`StatsNavbarView should render 1`] = `
           class="menu"
         >
           <a
-            class="link link"
+            class="link"
             data-active-class-name="active"
             href="/app/stats/live-overview"
           >
             Overview
           </a>
           <a
-            class="link link"
+            class="link"
             data-active-class-name="active"
             href="/app/stats/live-agents"
           >
@@ -62,42 +62,42 @@ exports[`StatsNavbarView should render 1`] = `
           class="menu"
         >
           <a
-            class="link link"
+            class="link"
             data-active-class-name="active"
             href="/app/stats/support-performance-overview"
           >
             Overview
           </a>
           <a
-            class="link link"
+            class="link"
             data-active-class-name="active"
             href="/app/stats/tags"
           >
             Tags
           </a>
           <a
-            class="link link"
+            class="link"
             data-active-class-name="active"
             href="/app/stats/channels"
           >
             Channels
           </a>
           <a
-            class="link link"
+            class="link"
             data-active-class-name="active"
             href="/app/stats/support-performance-agents"
           >
             Agents
           </a>
           <a
-            class="link link"
+            class="link"
             data-active-class-name="active"
             href="/app/stats/satisfaction"
           >
             Satisfaction
           </a>
           <a
-            class="link link"
+            class="link"
             data-active-class-name="active"
             href="/app/stats/revenue"
           >
@@ -126,21 +126,21 @@ exports[`StatsNavbarView should render 1`] = `
           class="menu"
         >
           <a
-            class="link link"
+            class="link"
             data-active-class-name="active"
             href="/app/stats/macros"
           >
             Macros
           </a>
           <a
-            class="link link"
+            class="link"
             data-active-class-name="active"
             href="/app/stats/intents"
           >
             Intents
           </a>
           <a
-            class="link link"
+            class="link"
             data-active-class-name="active"
             href="/app/stats/self-service"
           >
@@ -172,14 +172,14 @@ exports[`StatsNavbarView should render 1`] = `
         class="menu"
       >
         <a
-          class="link link"
+          class="link"
           data-active-class-name="active"
           href="/app/stats/live-overview"
         >
           Overview
         </a>
         <a
-          class="link link"
+          class="link"
           data-active-class-name="active"
           href="/app/stats/live-agents"
         >
@@ -208,42 +208,42 @@ exports[`StatsNavbarView should render 1`] = `
         class="menu"
       >
         <a
-          class="link link"
+          class="link"
           data-active-class-name="active"
           href="/app/stats/support-performance-overview"
         >
           Overview
         </a>
         <a
-          class="link link"
+          class="link"
           data-active-class-name="active"
           href="/app/stats/tags"
         >
           Tags
         </a>
         <a
-          class="link link"
+          class="link"
           data-active-class-name="active"
           href="/app/stats/channels"
         >
           Channels
         </a>
         <a
-          class="link link"
+          class="link"
           data-active-class-name="active"
           href="/app/stats/support-performance-agents"
         >
           Agents
         </a>
         <a
-          class="link link"
+          class="link"
           data-active-class-name="active"
           href="/app/stats/satisfaction"
         >
           Satisfaction
         </a>
         <a
-          class="link link"
+          class="link"
           data-active-class-name="active"
           href="/app/stats/revenue"
         >
@@ -272,21 +272,21 @@ exports[`StatsNavbarView should render 1`] = `
         class="menu"
       >
         <a
-          class="link link"
+          class="link"
           data-active-class-name="active"
           href="/app/stats/macros"
         >
           Macros
         </a>
         <a
-          class="link link"
+          class="link"
           data-active-class-name="active"
           href="/app/stats/intents"
         >
           Intents
         </a>
         <a
-          class="link link"
+          class="link"
           data-active-class-name="active"
           href="/app/stats/self-service"
         >

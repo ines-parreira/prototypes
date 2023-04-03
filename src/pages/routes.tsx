@@ -110,6 +110,7 @@ import CurrentHelpCenter from './settings/helpCenter/providers/CurrentHelpCenter
 import {HelpCenterApiClientProvider} from './settings/helpCenter/hooks/useHelpCenterApi'
 import {SupportedLocalesProvider} from './settings/helpCenter/providers/SupportedLocales'
 import DefaultStatsFilters from './stats/DefaultStatsFilters'
+import TicketFieldsStats from './stats/TicketFieldsStatsPage'
 import SupportPerformanceTags from './stats/SupportPerformanceTags'
 import ImportPhoneNumber from './tasks/detail/ImportPhoneNumber'
 import SupportPerformanceChannels from './stats/SupportPerformanceChannels'
@@ -538,6 +539,14 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                         })}
                     />
                 )}
+                <Route
+                    exact
+                    path={`${path}/ticket-fields`}
+                    render={appRender({
+                        content: TicketFieldsStats,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
                 <Route
                     exact
                     path={`${path}/tags`}

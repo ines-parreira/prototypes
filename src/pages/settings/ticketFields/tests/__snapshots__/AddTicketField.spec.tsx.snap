@@ -59,13 +59,21 @@ exports[`<AddTicketField/> should render if the account has the feature flag 1`]
             class="wrapper"
           >
             <input
+              aria-describedby="input-text-1-caption"
               class="input"
               id="input-text-1"
               name="label"
+              placeholder="e.g. Contact Reason"
               required=""
               type="text"
               value=""
             />
+          </div>
+          <div
+            class="caption"
+            id="input-text-1-caption"
+          >
+            Visible to agents
           </div>
         </div>
         <div
@@ -82,6 +90,7 @@ exports[`<AddTicketField/> should render if the account has the feature flag 1`]
             class="textarea"
             id="textarea-3"
             name="description"
+            placeholder="e.g. Reasons why customers reach out to us"
             rows="1"
           />
           <div
@@ -106,6 +115,11 @@ exports[`<AddTicketField/> should render if the account has the feature flag 1`]
             />
             Required to close ticket
           </label>
+          <div
+            class="caption caption"
+          >
+            Enable to prevent agents from closing the ticket if the field is left empty. Snooze and Send actions will still work.
+          </div>
         </div>
         <div
           class="formRow"
@@ -152,19 +166,29 @@ exports[`<AddTicketField/> should render if the account has the feature flag 1`]
         <div
           class="formRow"
         >
-          <label
-            class="label formLabel"
-            for="settings.choices"
+          <span
+            class="formLabelWithTooltip"
           >
-            Dropdown choices
-            <abbr
-              aria-label="required"
-              class="abbr"
-              title="required"
+            <label
+              class="label"
+              for="settings.choices"
             >
-              *
-            </abbr>
-          </label>
+              Dropdown values
+              <abbr
+                aria-label="required"
+                class="abbr"
+                title="required"
+              >
+                *
+              </abbr>
+            </label>
+            <span
+              class="material-icons-outlined ml-2"
+              id="custom-field-dropdown-tooltip-id"
+            >
+              info
+            </span>
+          </span>
           <div
             class="lastInput"
             data-handler-id="T0"
@@ -186,6 +210,7 @@ exports[`<AddTicketField/> should render if the account has the feature flag 1`]
                   data-testid="dropdown-choice-5"
                   id="dropdown-choice-5"
                   name="dropdown-choice-5"
+                  placeholder="e.g. Shipping issue::Delay"
                   type="text"
                   value=""
                 />
@@ -195,13 +220,17 @@ exports[`<AddTicketField/> should render if the account has the feature flag 1`]
           <div
             class="caption lastInput"
           >
-            Use 
+            Type 
             ::
-             to separate nesting levels (e.g. Category
-            ::
-            Subcategory
-            ::
-            Item). Max 5 nesting levels allowed.
+             symbol to add a new child level.
+             
+            <a
+              href="https://docs.gorgias.com/en-US/215327-755feceee342410d80f5cde55e8e4f46#how-to-define-your-fields-to-generate-insights-efficiently"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              See examples
+            </a>
           </div>
         </div>
         <div

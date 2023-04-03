@@ -3,6 +3,8 @@ import React from 'react'
 import {CustomFieldInput} from 'models/customField/types'
 import history from 'pages/history'
 import {useCreateCustomField} from 'models/customField/queries'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
 import FieldForm from './FieldForm'
 
 interface AddFieldFormProps {
@@ -27,6 +29,9 @@ export default function AddFieldForm(props: AddFieldFormProps) {
 
     const close = () => history.push('/app/settings/ticket-fields')
     const handleSubmit = async (field: CustomFieldInput) => {
+        logEvent(SegmentEvent.CustomFieldTicketSaveNewFieldClicked, {
+            fieldType: field.definition.input_settings.input_type,
+        })
         await mutateAsync(field)
     }
 

@@ -1,0 +1,70 @@
+@import '~css/new/colors';
+@import '~css/new/mixins';
+@import (reference) '~css/new/layout';
+
+:local {
+    .layout {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        flex: 1;
+        overflow: hidden;
+        @media @large-desktops {
+            flex-direction: row-reverse;
+            justify-content: space-around;
+            &::before {
+                content: '';
+                z-index: -1;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                height: 110%;
+                aspect-ratio: 1/1;
+                background-color: @classic-main-primary-0;
+                border-radius: 0 100% 100% 0;
+                transform: translateX(-20%);
+            }
+        }
+    }
+
+    .imageContainer {
+        margin: @layout-spacing-xl;
+        flex: 0 1 auto;
+        border-radius: 5px;
+        box-shadow: 1px 1px 8px lighten(@modern-neutral-grey-6, 75%);
+        @media @large-desktops {
+            flex: 1 1 45%;
+            max-width: 50%;
+            margin: @layout-spacing-xl @layout-spacing-m @layout-spacing-xl
+                @layout-spacing-xl;
+        }
+    }
+
+    .picture {
+        width: 100%;
+        object-fit: contain;
+    }
+
+    .content {
+        margin: @layout-spacing-m;
+        @media @large-desktops {
+            flex: 1 1 45%;
+            margin: @layout-spacing-xl @layout-spacing-xl @layout-spacing-m
+                @layout-spacing-xl;
+        }
+    }
+}

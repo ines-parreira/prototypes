@@ -1,5 +1,5 @@
 import {flatMap} from 'lodash'
-import React from 'react'
+import React, {ReactNode} from 'react'
 import classnames from 'classnames'
 import {Link, useLocation} from 'react-router-dom'
 
@@ -17,8 +17,9 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-
 import Navbar from 'pages/common/components/Navbar'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+
 import {CONTACT_FORM_PAGE_TITLE} from '../contactForm/constants'
 import {buildPasswordAnd2FaText} from '../yourProfile/twoFactorAuthentication/utils'
 
@@ -28,6 +29,7 @@ type CategoryLink = {
     requiredFeatureFlag?: FeatureFlagKey
     text: string
     to: string
+    extra?: ReactNode
     isHidden?: boolean
 }
 
@@ -129,6 +131,11 @@ const CATEGORIES: Category[] = [
                 requiredFeatureFlag: FeatureFlagKey.TicketFields,
                 to: 'ticket-fields',
                 text: 'Ticket fields',
+                extra: (
+                    <Badge type={ColorType.Blue} className={css.badge}>
+                        BETA
+                    </Badge>
+                ),
             },
             {
                 requiredRole: AGENT_ROLE,
@@ -267,68 +274,77 @@ const SettingsNavbar = () => {
             {categoriesInUse.map(({name, icon, links}, index) => {
                 const displayedLinks = links
                     .filter((link) => !link.isHidden)
-                    .map(({to, text, requiredRole, requiredFeatureFlag}) => {
-                        let computedText = text
-                        if (
-                            (requiredRole &&
-                                !hasRole(currentUser, requiredRole)) ||
-                            (requiredFeatureFlag &&
-                                !featureFlags[requiredFeatureFlag])
-                        ) {
-                            return null
-                        }
+                    .map(
+                        ({
+                            to,
+                            text,
+                            requiredRole,
+                            requiredFeatureFlag,
+                            extra,
+                        }) => {
+                            let computedText = text
+                            if (
+                                (requiredRole &&
+                                    !hasRole(currentUser, requiredRole)) ||
+                                (requiredFeatureFlag &&
+                                    !featureFlags[requiredFeatureFlag])
+                            ) {
+                                return null
+                            }
 
-                        if (to === 'password-2fa') {
-                            computedText = buildPasswordAnd2FaText(
-                                currentUser.get('has_password')
+                            if (to === 'password-2fa') {
+                                computedText = buildPasswordAnd2FaText(
+                                    currentUser.get('has_password')
+                                )
+                            }
+
+                            let isActive =
+                                pathname.startsWith(`/app/settings/${to}`) ||
+                                (/settings\/?$/.test(pathname) &&
+                                    to === 'channels/email')
+
+                            if (
+                                isActive &&
+                                pathname.includes('integrations/mine') &&
+                                to.match(/.*integrations(\/)?$/)
+                            ) {
+                                isActive = false
+                            }
+
+                            // TODO(@Manuel): remove this edge case once the http integration has its own route
+                            if (
+                                isActive &&
+                                pathname.includes('integrations/http') &&
+                                to.match(/.*integrations(\/)?$/)
+                            ) {
+                                isActive = false
+                            }
+
+                            return (
+                                <Link
+                                    key={to}
+                                    to={`/app/settings/${to}`}
+                                    className={classnames(css.link, {
+                                        active: isActive,
+                                    })}
+                                    onClick={() => {
+                                        logEvent(
+                                            SegmentEvent.SettingsNavigationClicked,
+                                            {
+                                                title: text,
+                                                account_domain:
+                                                    account.get('domain'),
+                                            }
+                                        )
+                                        dispatch(closePanels())
+                                    }}
+                                >
+                                    {computedText}
+                                    {extra}
+                                </Link>
                             )
                         }
-
-                        let isActive =
-                            pathname.startsWith(`/app/settings/${to}`) ||
-                            (/settings\/?$/.test(pathname) &&
-                                to === 'channels/email')
-
-                        if (
-                            isActive &&
-                            pathname.includes('integrations/mine') &&
-                            to.match(/.*integrations(\/)?$/)
-                        ) {
-                            isActive = false
-                        }
-
-                        // TODO(@Manuel): remove this edge case once the http integration has its own route
-                        if (
-                            isActive &&
-                            pathname.includes('integrations/http') &&
-                            to.match(/.*integrations(\/)?$/)
-                        ) {
-                            isActive = false
-                        }
-
-                        return (
-                            <Link
-                                key={to}
-                                to={`/app/settings/${to}`}
-                                className={classnames(css.link, {
-                                    active: isActive,
-                                })}
-                                onClick={() => {
-                                    logEvent(
-                                        SegmentEvent.SettingsNavigationClicked,
-                                        {
-                                            title: text,
-                                            account_domain:
-                                                account.get('domain'),
-                                        }
-                                    )
-                                    dispatch(closePanels())
-                                }}
-                            >
-                                {computedText}
-                            </Link>
-                        )
-                    })
+                    )
                     .filter((link) => link)
 
                 // Hide the category if there's nothing to display

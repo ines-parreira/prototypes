@@ -141,9 +141,15 @@ export function DropdownInput({value, onChange}: DropdownInputProps) {
                 />
             ))}
             <Caption className={css.lastInput}>
-                Use {DROPDOWN_NESTING_DELIMITER} to separate nesting levels
-                (e.g. Category{DROPDOWN_NESTING_DELIMITER}Subcategory
-                {DROPDOWN_NESTING_DELIMITER}Item). Max 5 nesting levels allowed.
+                Type {DROPDOWN_NESTING_DELIMITER} symbol to add a new child
+                level.{' '}
+                <a
+                    href="https://docs.gorgias.com/en-US/215327-755feceee342410d80f5cde55e8e4f46#how-to-define-your-fields-to-generate-insights-efficiently"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    See examples
+                </a>
             </Caption>
         </>
     )
