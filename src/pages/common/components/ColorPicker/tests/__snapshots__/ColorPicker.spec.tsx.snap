@@ -5,10 +5,10 @@ exports[`<ColorPicker /> should display popup on button click with default color
   id="container"
 >
   <div
-    class="d-inline-block"
+    class="wrapper"
   >
     <button
-      class="wrapper fill secondary medium"
+      class="wrapper button fill secondary medium"
       id="color-picker-4"
       type="button"
     >
@@ -17,6 +17,12 @@ exports[`<ColorPicker /> should display popup on button click with default color
         style="background-color: rgb(255, 255, 255);"
       />
     </button>
+    <input
+      class="input form-control"
+      placeholder="ex: #eeeeee"
+      type="text"
+      value="#fff"
+    />
   </div>
   <div>
     <div
@@ -25,7 +31,7 @@ exports[`<ColorPicker /> should display popup on button click with default color
       <div
         class="popover show bs-popover-auto"
         style="position: absolute; top: 0px; left: 0px; transform: translate3d(NaNpx, NaNpx, 0); will-change: transform;"
-        x-placement="right"
+        x-placement="bottom"
       >
         <div
           class="popover-inner"
@@ -121,12 +127,6 @@ exports[`<ColorPicker /> should display popup on button click with default color
                 style="background-color: rgb(118, 118, 118);"
                 type="button"
               />
-              <input
-                class="input form-control-sm form-control"
-                placeholder="ex: #eeeeee"
-                type="text"
-                value="#fff"
-              />
             </div>
           </div>
         </div>
@@ -157,12 +157,6 @@ exports[`<ColorPicker /> should display popup on button click with provided colo
           style="background-color: rgb(255, 255, 255);"
           type="button"
         />
-        <input
-          class="input form-control-sm form-control"
-          placeholder="ex: #eeeeee"
-          type="text"
-          value=""
-        />
       </div>
     </div>
   </div>,
@@ -171,10 +165,10 @@ exports[`<ColorPicker /> should display popup on button click with provided colo
 
 exports[`<ColorPicker /> should render with background color matching defaultValue 1`] = `
 <div
-  class="d-inline-block"
+  class="wrapper"
 >
   <button
-    class="wrapper fill secondary medium"
+    class="wrapper button fill secondary medium"
     id="color-picker-3"
     type="button"
   >
@@ -183,15 +177,21 @@ exports[`<ColorPicker /> should render with background color matching defaultVal
       style="background-color: rgb(0, 0, 0);"
     />
   </button>
+  <input
+    class="input form-control"
+    placeholder="ex: #eeeeee"
+    type="text"
+    value=""
+  />
 </div>
 `;
 
 exports[`<ColorPicker /> should render with background color matching value 1`] = `
 <div
-  class="d-inline-block"
+  class="wrapper"
 >
   <button
-    class="wrapper fill secondary medium"
+    class="wrapper button fill secondary medium"
     id="color-picker-2"
     type="button"
   >
@@ -200,19 +200,31 @@ exports[`<ColorPicker /> should render with background color matching value 1`] 
       style="background-color: rgb(255, 255, 255);"
     />
   </button>
+  <input
+    class="input form-control"
+    placeholder="ex: #eeeeee"
+    type="text"
+    value="#fff"
+  />
 </div>
 `;
 
 exports[`<ColorPicker /> should render with minimal props 1`] = `
 <div
-  class="d-inline-block"
+  class="wrapper"
 >
   <button
-    class="wrapper fill secondary medium"
+    class="wrapper button fill secondary medium"
     id="color-picker-1"
     type="button"
   >
     Pick a color
   </button>
+  <input
+    class="input form-control"
+    placeholder="ex: #eeeeee"
+    type="text"
+    value=""
+  />
 </div>
 `;

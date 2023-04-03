@@ -432,9 +432,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
           <div
             class="content"
           >
-            <div
-              class="content"
-            >
+            <div>
               <div
                 class="d-flex flex-column"
               >
@@ -608,9 +606,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer wit
           <div
             class="content"
           >
-            <div
-              class="content"
-            >
+            <div>
               <div
                 class="d-flex flex-column"
               >
@@ -773,9 +769,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page without answer 
           <div
             class="content"
           >
-            <div
-              class="content"
-            >
+            <div>
               <div
                 class="d-flex flex-column"
               >

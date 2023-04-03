@@ -1,0 +1,47 @@
+@import '~css/new/colorTokens';
+@import '~css/new/layout';
+
+:local {
+    .section {
+        margin-bottom: @layout-spacing-xl;
+    }
+
+    .sectionHeading {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 28px;
+        letter-spacing: -0.02em;
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .launcherPreview {
+        height: 120px;
+        border-radius: 4px;
+        border: 1px @classic-neutral-grey-3 solid;
+        background-color: @classic-neutral-grey-2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .radioButtonGroup {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: @layout-spacing-s;
+        margin-bottom: @layout-spacing-l;
+    }
+
+    .colorPickerGroup {
+        display: flex;
+        gap: @layout-spacing-m;
+    }
+
+    .wizardButtons {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .colorPicker {
+        flex: 1;
+    }
+}

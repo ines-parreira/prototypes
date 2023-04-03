@@ -370,7 +370,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="colorPickersWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -383,10 +383,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -395,11 +395,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -412,10 +418,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -424,6 +430,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1149,7 +1161,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="colorPickersWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -1162,10 +1174,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -1174,11 +1186,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -1191,10 +1209,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -1203,6 +1221,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
@@ -2008,7 +2032,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="colorPickersWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -2021,10 +2045,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -2033,11 +2057,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -2050,10 +2080,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -2062,6 +2092,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
@@ -2837,7 +2873,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   class="colorPickersWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -2850,10 +2886,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -2862,11 +2898,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -2879,10 +2921,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -2891,6 +2933,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
@@ -3674,7 +3722,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   class="colorPickersWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -3687,10 +3735,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -3699,11 +3747,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -3716,10 +3770,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -3728,6 +3782,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
@@ -4503,7 +4563,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   class="colorPickersWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -4516,10 +4576,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -4528,11 +4588,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -4545,10 +4611,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -4557,6 +4623,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
@@ -5419,7 +5491,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   class="colorPickersWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -5432,10 +5504,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -5444,11 +5516,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -5461,10 +5539,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -5473,6 +5551,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
@@ -6164,7 +6248,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                   class="colorPickersWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -6177,10 +6261,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -6189,11 +6273,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -6206,10 +6296,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -6218,6 +6308,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
@@ -7266,7 +7362,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   class="colorPickersWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -7279,10 +7375,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -7291,11 +7387,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -7308,10 +7410,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -7320,6 +7422,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
@@ -8045,7 +8153,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   class="colorPickersWrapper"
                 >
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -8058,10 +8166,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -8070,11 +8178,17 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>
                   <div
-                    class="InputField form-group"
+                    class="InputField colorPicker form-group"
                     color=""
                   >
                     <label
@@ -8087,10 +8201,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class=""
                     >
                       <div
-                        class="d-inline-block"
+                        class="wrapper"
                       >
                         <button
-                          class="wrapper fill secondary medium"
+                          class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -8099,6 +8213,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             style="background-color: rgb(13, 135, 221);"
                           />
                         </button>
+                        <input
+                          class="input form-control"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#0d87dd"
+                        />
                       </div>
                     </div>
                   </div>

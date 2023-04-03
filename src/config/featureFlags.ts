@@ -9,6 +9,7 @@ export enum FeatureFlagKey {
     ChatVideoSharingCampaigns = 'chat-video-sharing-campaigns',
     ChatVideoSharingConversations = 'chat-video-sharing-conversations',
     ChatVideoSharingExtra = 'enable-chat-video-sharing-extra',
+    ChatCreationWizard = 'chat-creation-wizard',
     ChatMergedOrderManagementButton = 'chat-merged-order-management-button',
     EarlyAdopter = 'early-adopter',
     EnableWhatsAppMigrations = 'enable-whatsapp-migrations',

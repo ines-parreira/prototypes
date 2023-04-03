@@ -15,10 +15,10 @@ exports[`ColorField should render with minimal props 1`] = `
     class=""
   >
     <div
-      class="d-inline-block"
+      class="wrapper"
     >
       <button
-        class="wrapper fill secondary medium"
+        class="wrapper button fill secondary medium"
         id="color-picker-2"
         type="button"
       >
@@ -27,6 +27,12 @@ exports[`ColorField should render with minimal props 1`] = `
           style="background-color: rgb(255, 255, 255);"
         />
       </button>
+      <input
+        class="input form-control"
+        placeholder="ex: #eeeeee"
+        type="text"
+        value="#fff"
+      />
     </div>
   </div>
 </div>

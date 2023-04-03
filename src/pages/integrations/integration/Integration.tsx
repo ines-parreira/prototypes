@@ -35,6 +35,7 @@ import {reportError} from 'utils/errors'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import {EmailProvider} from 'models/integration/constants'
+
 import {
     chatInstallationStatusFetched,
     resetChatInstallationStatus,
@@ -53,6 +54,7 @@ import FacebookIntegrationInstagramAds from './components/facebook/FacebookInteg
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup'
 import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat'
 
+import GorgiasChatCreationWizard from './components/gorgias_chat/GorgiasChatCreationWizard'
 import GorgiasChatIntegrationAppearance from './components/gorgias_chat/GorgiasChatIntegrationAppearance'
 import ChatCampaignDetailsFactory from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/containers/CampaignDetailsFactory'
 import GorgiasChatIntegrationCampaigns from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
@@ -137,6 +139,7 @@ export enum Tab {
     PhoneGreetingMessage = 'greeting-message',
     PhoneIvr = 'ivr',
     SmoochInsideMigration = 'migration',
+    CreateWizard = 'create-wizard',
 }
 
 export const IntegrationDetail = ({
@@ -412,6 +415,16 @@ export const IntegrationDetail = ({
 
         case IntegrationType.GorgiasChat:
             if (!!integrationId) {
+                if (extra === Tab.CreateWizard) {
+                    return (
+                        <GorgiasChatCreationWizard
+                            isUpdate={isUpdate}
+                            loading={loading}
+                            integration={integration}
+                        />
+                    )
+                }
+
                 if (extra === Tab.Installation) {
                     return (
                         <GorgiasChatIntegrationInstall
@@ -470,6 +483,7 @@ export const IntegrationDetail = ({
                             <GorgiasTranslateText integration={integration} />
                         )
                     }
+
                     return (
                         <GorgiasChatIntegrationAppearance
                             actions={actions}

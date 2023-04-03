@@ -1,0 +1,44 @@
+@import '~css/new/colorTokens';
+@import '~css/new/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .inputLabel {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .inputGroup,
+    .connectStoreDescription {
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .section {
+        margin-bottom: @layout-spacing-xl;
+    }
+
+    .sectionHeading {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 28px;
+        letter-spacing: -0.02em;
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .radioButtonGroup {
+        display: grid;
+        grid-template-columns: 1fr;
+        row-gap: @layout-spacing-s;
+        column-gap: @layout-spacing-s;
+        margin-bottom: @layout-spacing-l;
+
+        @media (min-width: 1280px) {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .error {
+        .caption-regular();
+        color: @classic-feedback-error;
+        margin-top: 4px;
+    }
+}

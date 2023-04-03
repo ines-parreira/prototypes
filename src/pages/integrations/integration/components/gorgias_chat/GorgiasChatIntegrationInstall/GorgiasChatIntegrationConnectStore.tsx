@@ -9,7 +9,9 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Button from 'pages/common/components/button/Button'
 import {getIntegrationsByType} from 'state/integrations/selectors'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
 import useAppSelector from 'hooks/useAppSelector'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {getIconFromType} from 'state/integrations/helpers'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -20,7 +22,6 @@ import css from './GorgiasChatIntegrationConnectStore.less'
 
 type Props = {
     integration: Map<any, any>
-    updateOrCreateIntegration: (integration: Map<any, any>) => Promise<void>
     storeIntegration: StoreIntegration | undefined
     storeIntegrations: StoreIntegration[]
     isOneClickInstallation: boolean
@@ -28,11 +29,12 @@ type Props = {
 
 const GorgiasChatIntegrationConnectStore = ({
     integration,
-    updateOrCreateIntegration,
     storeIntegration,
     storeIntegrations,
     isOneClickInstallation,
 }: Props) => {
+    const dispatch = useAppDispatch()
+
     const getGorgiasChatIntegrations = useMemo(
         () => getIntegrationsByType(IntegrationType.GorgiasChat),
         []
@@ -84,15 +86,10 @@ const GorgiasChatIntegrationConnectStore = ({
                     .set('shopify_integration_ids', []),
             }
 
-            await updateOrCreateIntegration(fromJS(form))
+            await dispatch(updateOrCreateIntegration(fromJS(form)))
 
             setIsModalOpen(false)
-        }, [
-            integration,
-            updateOrCreateIntegration,
-            storeIntegrationId,
-            storeIntegrations,
-        ])
+        }, [integration, storeIntegrationId, storeIntegrations])
     const [{loading: isDisconnectPending}, handleDisconnect] =
         useAsyncFn(async () => {
             const meta: Map<any, any> = integration.get('meta')
@@ -107,18 +104,13 @@ const GorgiasChatIntegrationConnectStore = ({
                     .set('shopify_integration_ids', []),
             }
 
-            await updateOrCreateIntegration(fromJS(form))
-        }, [integration, updateOrCreateIntegration])
+            await dispatch(updateOrCreateIntegration(fromJS(form)))
+        }, [integration])
 
     const isDirty = storeIntegrationId !== storeIntegration?.id
 
     return (
-        <div>
-            <div className={css.title}>Connect store</div>
-            <div className={css.description}>
-                A store connection is required to use Automation Add-on features
-                in chat and to enable 1-click installation for Shopify stores.
-            </div>
+        <>
             {storeIntegration ? (
                 <div className={css.store}>
                     <img
@@ -189,7 +181,7 @@ const GorgiasChatIntegrationConnectStore = ({
                     </Button>
                 </ModalActionsFooter>
             </Modal>
-        </div>
+        </>
     )
 }
 

@@ -944,6 +944,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 className={classNames(css.colorPickersWrapper)}
                             >
                                 <ColorField
+                                    className={css.colorPicker}
                                     value={mainColor}
                                     onChange={(value: string) => {
                                         setState((prevState) => ({
@@ -954,6 +955,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     label="Main color"
                                 />
                                 <ColorField
+                                    className={css.colorPicker}
                                     value={conversationColor}
                                     onChange={(value: string) =>
                                         setState((prevState) => ({

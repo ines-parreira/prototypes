@@ -88,10 +88,10 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
       class=""
     >
       <div
-        class="d-inline-block"
+        class="wrapper"
       >
         <button
-          class="wrapper fill secondary medium"
+          class="wrapper button fill secondary medium"
           id="color-picker-2"
           type="button"
         >
@@ -100,6 +100,12 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
             style="background-color: rgb(74, 141, 249);"
           />
         </button>
+        <input
+          class="input form-control"
+          placeholder="ex: #eeeeee"
+          type="text"
+          value="#4A8DF9"
+        />
       </div>
     </div>
     <small

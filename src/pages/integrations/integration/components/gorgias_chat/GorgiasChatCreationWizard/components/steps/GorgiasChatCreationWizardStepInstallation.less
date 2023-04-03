@@ -1,0 +1,35 @@
+@import '~css/new/colorTokens';
+@import '~css/new/layout';
+
+:local {
+    .section {
+        margin-bottom: @layout-spacing-xl;
+    }
+
+    .sectionHeading {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 28px;
+        letter-spacing: -0.02em;
+        margin-bottom: @layout-spacing-m;
+
+        &.sectionHeadingWithLabel {
+            margin-bottom: @layout-spacing-xxs;
+        }
+    }
+
+    .sectionHeadingLabel {
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .radioButtonGroup {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .wizardButtons {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+}

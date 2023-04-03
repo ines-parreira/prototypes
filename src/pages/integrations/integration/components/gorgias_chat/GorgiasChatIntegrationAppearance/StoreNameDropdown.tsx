@@ -1,5 +1,6 @@
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import React, {useState} from 'react'
+import classnames from 'classnames'
 import {List, Map} from 'immutable'
 
 import warningIcon from 'assets/img/icons/warning.svg'
@@ -12,6 +13,7 @@ type Props = {
     storeIntegrations: List<Map<any, any>>
     storeIntegrationId: number | null
     onChange: (newShopIntegrationIdValue: number) => void
+    hasError?: boolean
 }
 
 export const StoreNameDropdown = ({
@@ -19,6 +21,7 @@ export const StoreNameDropdown = ({
     gorgiasChatIntegrations,
     storeIntegrationId,
     onChange,
+    hasError,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
 
@@ -67,7 +70,10 @@ export const StoreNameDropdown = ({
                 isOpen={isOpen}
                 toggle={() => setIsOpen(!isOpen)}
             >
-                <DropdownToggle caret>
+                <DropdownToggle
+                    className={classnames({[css.hasError]: hasError})}
+                    caret
+                >
                     {storeIntegration ? (
                         <span className={css.dropdownValue}>
                             <img

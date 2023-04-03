@@ -47,15 +47,21 @@ exports[`<WrapperEdit/> should render 1`] = `
           class=""
         >
           <div
-            class="d-inline-block"
+            class="wrapper"
           >
             <button
-              class="wrapper fill secondary medium"
+              class="wrapper button fill secondary medium"
               id="color-picker-2"
               type="button"
             >
               Pick a color
             </button>
+            <input
+              class="input form-control"
+              placeholder="ex: #eeeeee"
+              type="text"
+              value=""
+            />
           </div>
         </div>
       </div>

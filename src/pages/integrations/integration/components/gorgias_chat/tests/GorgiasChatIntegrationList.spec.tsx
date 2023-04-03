@@ -6,6 +6,10 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 
+import LD from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import {RootState, StoreDispatch} from 'state/types'
 import GorgiasChatIntegrationList from '../GorgiasChatIntegrationList'
 
@@ -65,6 +69,10 @@ describe('<GorgiasChatIntegrationList />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.ChatCreationWizard]: false,
+        }))
     })
 
     it('should display correcty the list of chat integrations', () => {

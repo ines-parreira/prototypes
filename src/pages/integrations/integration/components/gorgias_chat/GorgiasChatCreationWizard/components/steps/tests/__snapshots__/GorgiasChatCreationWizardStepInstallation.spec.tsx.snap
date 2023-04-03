@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GorgiasChatCreationWizardStepInstallation /> submits form when using 1-click installation for Shopify 1`] = `
+[
+  [
+    Immutable.Map {
+      "id": 1,
+      "type": undefined,
+      "meta": Immutable.Map {
+        "shop_integration_id": 1,
+        "shopify_integration_ids": Immutable.List [
+          1,
+        ],
+      },
+    },
+  ],
+]
+`;

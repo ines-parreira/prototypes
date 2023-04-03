@@ -102,13 +102,22 @@ const GorgiasChatIntegrationInstall = ({
             )}
             <Container fluid className={css.container}>
                 <div className={css.content}>
-                    <GorgiasChatIntegrationConnectStore
-                        integration={integration}
-                        updateOrCreateIntegration={updateOrCreateIntegration}
-                        storeIntegration={storeIntegration}
-                        storeIntegrations={storeIntegrations}
-                        isOneClickInstallation={isOneClickInstallation}
-                    />
+                    <div>
+                        <div className={css.connectStoreTitle}>
+                            Connect store
+                        </div>
+                        <div className={css.connectStoreDescription}>
+                            A store connection is required to use Automation
+                            Add-on features in chat and to enable 1-click
+                            installation for Shopify stores.
+                        </div>
+                        <GorgiasChatIntegrationConnectStore
+                            integration={integration}
+                            storeIntegration={storeIntegration}
+                            storeIntegrations={storeIntegrations}
+                            isOneClickInstallation={isOneClickInstallation}
+                        />
+                    </div>
 
                     <div className={css.installationMethodContainer}>
                         <div className={css.installationMethodTitle}>

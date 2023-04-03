@@ -2,6 +2,9 @@ import React, {useMemo} from 'react'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -29,6 +32,9 @@ type Props = {
 }
 
 function GorgiasChatIntegrationList({integrations, loading}: Props) {
+    const isChatCreationWizardEnabled =
+        useFlags()[FeatureFlagKey.ChatCreationWizard]
+
     const longTypeDescription = (
         <div>
             Chat with your customers by adding our Chat widget on your website.
@@ -75,7 +81,13 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
                 <Button
                     onClick={() =>
                         history.push(
-                            `/app/settings/channels/${IntegrationType.GorgiasChat}/new/appearance`
+                            `/app/settings/channels/${
+                                IntegrationType.GorgiasChat
+                            }/new/${
+                                isChatCreationWizardEnabled
+                                    ? 'create-wizard'
+                                    : 'appearance'
+                            }`
                         )
                     }
                 >

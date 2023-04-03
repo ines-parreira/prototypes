@@ -203,25 +203,25 @@ export function onCreateSuccess(
 
     void fetchIntegrations()(dispatch)
 
-    let nextStep = ''
-
-    if (resp.type === IntegrationType.Email) {
-        nextStep = '/forwarding'
-    } else if (
-        resp.type === IntegrationType.Phone ||
-        resp.type === IntegrationType.Sms
-    ) {
-        nextStep = '/preferences'
-    } else if (
-        resp.type === IntegrationType.SmoochInside ||
-        resp.type === IntegrationType.GorgiasChat
-    ) {
-        nextStep = '/installation'
-    } else if (resp.type === IntegrationType.Smooch) {
-        nextStep = '/overview'
-    }
-
     if (!disableRedirect) {
+        let nextStep = ''
+
+        if (resp.type === IntegrationType.Email) {
+            nextStep = '/forwarding'
+        } else if (
+            resp.type === IntegrationType.Phone ||
+            resp.type === IntegrationType.Sms
+        ) {
+            nextStep = '/preferences'
+        } else if (
+            resp.type === IntegrationType.SmoochInside ||
+            resp.type === IntegrationType.GorgiasChat
+        ) {
+            nextStep = '/installation'
+        } else if (resp.type === IntegrationType.Smooch) {
+            nextStep = '/overview'
+        }
+
         history.push(
             `/app/settings/${
                 isChannel(resp.type) ? 'channels' : 'integrations'
@@ -385,7 +385,8 @@ export function updateOrCreateIntegrationRequest(
     integration: Map<any, any>,
     action?: Record<string, unknown>,
     notificationId: Maybe<string> = null,
-    disableRedirectOnCreateSuccess = false
+    disableRedirectOnCreateSuccess = false,
+    onSuccess?: (resp: any) => void
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const isUpdate = integration.get('id') as number
@@ -424,6 +425,8 @@ export function updateOrCreateIntegrationRequest(
             .then((json) => json?.data)
             .then(
                 (resp) => {
+                    onSuccess && onSuccess(resp)
+
                     if (isUpdate) {
                         return onUpdateSuccess(
                             dispatch,
@@ -634,7 +637,8 @@ export function activateIntegration(id: number) {
 export function updateOrCreateIntegration(
     integration: Map<any, any>,
     action?: Record<string, unknown>,
-    disableRedirectOnCreateSuccess?: boolean
+    disableRedirectOnCreateSuccess?: boolean,
+    onSuccess?: (resp: any) => void
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return dispatch(
@@ -642,7 +646,8 @@ export function updateOrCreateIntegration(
                 integration,
                 action,
                 null,
-                disableRedirectOnCreateSuccess
+                disableRedirectOnCreateSuccess,
+                onSuccess
             )
         )
     }

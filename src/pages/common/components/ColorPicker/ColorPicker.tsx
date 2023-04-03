@@ -60,27 +60,38 @@ export default function ColorPicker({
         [onChange]
     )
 
+    const colorValue = value || defaultValue
+
     return (
-        <div className="d-inline-block">
+        <div className={css.wrapper}>
             <Button
                 id={popoverId}
                 intent="secondary"
                 onClick={() => setPopupVisible(!isPopupVisible)}
                 ref={buttonEl}
+                className={css.button}
             >
-                {value || defaultValue ? (
+                {colorValue ? (
                     <div
                         className={css.color}
                         style={{
-                            backgroundColor: value || defaultValue,
+                            backgroundColor: colorValue,
                         }}
                     />
                 ) : (
                     'Pick a color'
                 )}
             </Button>
+            <Input
+                className={css.input}
+                value={value}
+                onChange={(evt) => {
+                    onChange(evt.target.value)
+                }}
+                placeholder="ex: #eeeeee"
+            />
             <Popover
-                placement="right"
+                placement="bottom"
                 isOpen={isPopupVisible}
                 target={popoverId}
                 container={popupContainer}
@@ -101,15 +112,6 @@ export default function ColorPicker({
                                 />
                             )
                         })}
-                        <Input
-                            bsSize="sm"
-                            className={css.input}
-                            value={value}
-                            onChange={(evt) => {
-                                onChange(evt.target.value)
-                            }}
-                            placeholder="ex: #eeeeee"
-                        />
                     </div>
                 </PopoverBody>
             </Popover>

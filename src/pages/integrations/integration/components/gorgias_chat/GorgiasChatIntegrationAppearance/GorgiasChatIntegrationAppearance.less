@@ -20,14 +20,12 @@
 
     .colorPickersWrapper {
         display: flex;
+        gap: @layout-spacing-m;
+    }
 
-        & > div:not(:first-child) {
-            margin-left: 80px;
-        }
-
-        :global(.form-group) {
-            margin-bottom: 0;
-        }
+    .colorPicker {
+        flex: 1;
+        margin-bottom: 0;
     }
 
     .redStar {

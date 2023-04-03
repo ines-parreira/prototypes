@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GorgiasChatCreationWizardStepBranding /> submits form when fields have been changed 1`] = `
+[
+  [
+    Immutable.Map {
+      "type": "gorgias_chat",
+      "id": 1,
+      "decoration": Immutable.Map {
+        "conversation_color": "#0d87dd",
+        "main_color": "#f00ba5",
+        "launcher": Immutable.Map {
+          "type": "icon-label",
+          "label": "Chat with us",
+        },
+      },
+    },
+    undefined,
+    true,
+    [Function],
+  ],
+]
+`;

@@ -1,7 +1,33 @@
+@import '~css/new/layout';
+
 :local {
+    .wrapper {
+        height: @layout-spacing-l;
+        width: 100%;
+        display: inline-flex;
+    }
+
+    .button {
+        padding: 0 @layout-spacing-xs;
+
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: 0;
+    }
+
     .color {
-        height: 16px;
-        width: 80px;
+        height: @layout-spacing-s;
+        width: @layout-spacing-s;
+    }
+
+    .input {
+        height: 100%;
+        flex: 1;
+        padding-left: @layout-spacing-xs;
+
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-left: 0;
     }
 
     .popover-content {
@@ -9,7 +35,7 @@
     }
 
     .popup {
-        @choices-per-row: 8;
+        @choices-per-row: 7;
         @choice-size: 30px;
         @choice-margin: 3px;
         @choice-width: @choice-size + (@choice-margin * 2);
@@ -25,12 +51,6 @@
             width: @choice-size;
             border-radius: 3px;
             margin: @choice-margin;
-        }
-
-        .input {
-            margin: @choice-margin;
-            width: @choice-width * 3;
-            flex: 1;
         }
     }
 }

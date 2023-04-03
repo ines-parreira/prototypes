@@ -130,3 +130,9 @@ export type GorgiasChatAvatarSettings = {
     nameType: GorgiasChatAvatarNameType
     companyLogoUrl?: string
 }
+
+export enum GorgiasChatCreationWizardSteps {
+    Basics = 'basics',
+    Branding = 'branding',
+    Installation = 'installation',
+}
