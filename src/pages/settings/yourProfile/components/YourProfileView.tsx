@@ -1,4 +1,4 @@
-import React, {Component, SyntheticEvent, ComponentClass} from 'react'
+import React, {Component, SyntheticEvent} from 'react'
 import classnames from 'classnames'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
@@ -9,9 +9,6 @@ import {Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {CallForwardingCountries} from 'business/twilio'
 import {AVAILABLE_LANGUAGES} from 'config'
 import {EditableUserProfile, User, UserSetting} from 'config/types/user'
@@ -53,7 +50,6 @@ type Props = {
         notification: boolean
     ) => Promise<unknown>
     preferences: Map<any, any>
-    flags: LDFlagSet
 }
 
 type State = {
@@ -158,10 +154,6 @@ export class YourProfileView extends Component<Props, State> {
 
     render() {
         const {isLoading, hasChangedEmail, password_confirmation} = this.state
-
-        const {flags} = this.props
-        const isPrefillBestMacroEnabled: boolean | undefined =
-            flags[FeatureFlagKey.PrefillBestMacro]
 
         return (
             <div className="full-width">
@@ -381,43 +373,41 @@ export class YourProfileView extends Component<Props, State> {
                                     'body-regular'
                                 )}
                             >
-                                {isPrefillBestMacroEnabled && (
-                                    <Group
-                                        orientation="vertical"
-                                        className={settingsCss.inputField}
+                                <Group
+                                    orientation="vertical"
+                                    className={settingsCss.inputField}
+                                >
+                                    <ToggleInput
+                                        name="prefill_best_macro"
+                                        isToggled={
+                                            this.state.preferences.get(
+                                                'prefill_best_macro'
+                                            ) as boolean
+                                        }
+                                        onClick={(value: boolean) =>
+                                            this.setState({
+                                                preferences:
+                                                    this.state.preferences.set(
+                                                        'prefill_best_macro',
+                                                        value
+                                                    ),
+                                            })
+                                        }
                                     >
-                                        <ToggleInput
-                                            name="prefill_best_macro"
-                                            isToggled={
-                                                this.state.preferences.get(
-                                                    'prefill_best_macro'
-                                                ) as boolean
-                                            }
-                                            onClick={(value: boolean) =>
-                                                this.setState({
-                                                    preferences:
-                                                        this.state.preferences.set(
-                                                            'prefill_best_macro',
-                                                            value
-                                                        ),
-                                                })
-                                            }
+                                        Macro prediction
+                                    </ToggleInput>
+                                    <FormText color="muted">
+                                        Automatically select macros based on
+                                        ticket content.{' '}
+                                        <a
+                                            href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                         >
-                                            Macro prediction
-                                        </ToggleInput>
-                                        <FormText color="muted">
-                                            Automatically select macros based on
-                                            ticket content.{' '}
-                                            <a
-                                                href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                Learn more
-                                            </a>
-                                        </FormText>
-                                    </Group>
-                                )}
+                                            Learn more
+                                        </a>
+                                    </FormText>
+                                </Group>
                                 <Group
                                     orientation="vertical"
                                     className={settingsCss.inputField}
@@ -571,6 +561,4 @@ export class YourProfileView extends Component<Props, State> {
     }
 }
 
-export default withLDConsumer()(
-    YourProfileView as any as ComponentClass<Omit<Props, 'flags'>>
-)
+export default YourProfileView

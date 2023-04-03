@@ -24,7 +24,6 @@ export enum FeatureFlagKey {
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     NewPhoneErrorHandling = 'new-phone-error-handling',
-    PrefillBestMacro = 'pre-fill-best-macro',
     RevenueAlphaTesters = 'revenue-alpha-testers',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',

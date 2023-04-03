@@ -1,18 +1,11 @@
-import React, {
-    Component,
-    KeyboardEvent as KeyboardEventReact,
-    ComponentClass,
-} from 'react'
+import React, {Component, KeyboardEvent as KeyboardEventReact} from 'react'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 import {ContentState, EditorState} from 'draft-js'
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 
 import {clearMacroBeforeApply} from 'business/macro'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {OrderDirection} from 'models/api/types'
 import {
     FetchMacrosOptions,
@@ -59,7 +52,8 @@ const CONTENT_STATE_PATH = ['state', 'contentState']
 const PREFILL_TOP_MACRO_SCORE_THRESHOLD = 0.8
 
 type Props = {
-    flags?: LDFlagSet
+    currentUser: Map<any, any>
+    ticket: Map<any, any>
 } & CancellableRequestInjectedProps<
     'fetchMacrosCancellable',
     'cancelFetchMacrosCancellable',
@@ -114,8 +108,6 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     async componentDidMount() {
-        const {flags} = this.props
-
         this.bindKeys()
         this.setState({isInitialMacrosLoading: true})
         await this.loadMacros({
@@ -123,9 +115,7 @@ export class TicketReplyArea extends Component<Props, State> {
         })
         this.setState({isInitialMacrosLoading: false})
 
-        if (flags && flags[FeatureFlagKey.PrefillBestMacro]) {
-            this.checkTopRankMacro()
-        }
+        this.checkTopRankMacro()
     }
 
     applyTopRankMacro(macro: Map<any, any>, state: TopRankMacroState['state']) {
@@ -706,10 +696,4 @@ export default withCancellableRequest<
 >(
     'fetchMacrosCancellable',
     fetchMacros
-)(
-    connector(
-        withLDConsumer()(
-            TicketReplyArea as any as ComponentClass<Omit<Props, 'flags'>>
-        )
-    )
-)
+)(connector(TicketReplyArea))

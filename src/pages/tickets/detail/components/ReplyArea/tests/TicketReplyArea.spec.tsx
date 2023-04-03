@@ -6,7 +6,6 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {ContentState} from 'draft-js'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {Macro} from 'state/macro/types'
 import TicketReply from '../TicketReply'
 import {TicketReplyArea} from '../TicketReplyArea'
@@ -259,10 +258,7 @@ describe('<TicketReplyArea/>', () => {
             async (macros, shouldApplyMacro) => {
                 const component = mount(
                     <Provider store={mockedStore({})}>
-                        <TicketReplyArea
-                            {...minProps}
-                            flags={{[FeatureFlagKey.PrefillBestMacro]: true}}
-                        />
+                        <TicketReplyArea {...minProps} />
                     </Provider>
                 )
                 const ticketReplyArea = component.find('TicketReplyArea')
@@ -309,10 +305,7 @@ describe('<TicketReplyArea/>', () => {
 
             const component = mount(
                 <Provider store={mockedStore({})}>
-                    <TicketReplyArea
-                        {...minProps}
-                        flags={{[FeatureFlagKey.PrefillBestMacro]: true}}
-                    />
+                    <TicketReplyArea {...minProps} />
                 </Provider>
             )
             const ticketReplyArea = component.find('TicketReplyArea')

@@ -2690,6 +2690,31 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             orientation="vertical"
           >
             <ToggleInput
+              name="prefill_best_macro"
+              onClick={[Function]}
+            >
+              Macro prediction
+            </ToggleInput>
+            <FormText
+              color="muted"
+              tag="small"
+            >
+              Automatically select macros based on ticket content.
+               
+              <a
+                href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more
+              </a>
+            </FormText>
+          </Group>
+          <Group
+            className="inputField"
+            orientation="vertical"
+          >
+            <ToggleInput
               name="show_macros"
               onClick={[Function]}
             >
