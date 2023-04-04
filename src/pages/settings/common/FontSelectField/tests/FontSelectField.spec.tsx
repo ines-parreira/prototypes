@@ -5,6 +5,19 @@ import {FontSelectField} from '../FontSelectField'
 import {AGENT_ADDED_FONTS} from '../constants'
 
 describe('<FontSelectField />', () => {
+    const defaultFonts = [
+        'Arial',
+        'Georgia',
+        'Impact',
+        'Inter',
+        'Merriweather',
+        'Source Code Pro',
+        'Tahoma',
+        'Times New Roman',
+        'Verdana',
+    ]
+    const placeholder = 'Select a primary font'
+
     it('should download custom fonts', () => {
         localStorage.setItem(
             AGENT_ADDED_FONTS,
@@ -12,7 +25,8 @@ describe('<FontSelectField />', () => {
         )
         render(
             <FontSelectField
-                title="Title"
+                defaultFonts={defaultFonts}
+                placeholder={placeholder}
                 value="Abracadabra"
                 onChange={_noop}
             />
@@ -27,7 +41,12 @@ describe('<FontSelectField />', () => {
     it('matches snapshot', () => {
         localStorage.setItem(AGENT_ADDED_FONTS, JSON.stringify(['Roboto']))
         const {container} = render(
-            <FontSelectField title="Title" value="font" onChange={_noop} />
+            <FontSelectField
+                defaultFonts={defaultFonts}
+                placeholder={placeholder}
+                value="font"
+                onChange={_noop}
+            />
         )
 
         expect(container).toMatchSnapshot()
@@ -36,7 +55,12 @@ describe('<FontSelectField />', () => {
     it('should display headers if fonts in local storage', () => {
         localStorage.setItem(AGENT_ADDED_FONTS, JSON.stringify(['Roboto']))
         const {getByText} = render(
-            <FontSelectField title="Title" value="font" onChange={_noop} />
+            <FontSelectField
+                defaultFonts={defaultFonts}
+                placeholder={placeholder}
+                value="font"
+                onChange={_noop}
+            />
         )
 
         getByText('RECENTLY ADDED')
@@ -46,7 +70,12 @@ describe('<FontSelectField />', () => {
     it('should not display headers if one font in local storage and it is currently used', () => {
         localStorage.setItem(AGENT_ADDED_FONTS, JSON.stringify(['Roboto']))
         const {queryByText} = render(
-            <FontSelectField title="Title" value="Roboto" onChange={_noop} />
+            <FontSelectField
+                defaultFonts={defaultFonts}
+                placeholder={placeholder}
+                value="Roboto"
+                onChange={_noop}
+            />
         )
 
         expect(queryByText('RECENTLY ADDED')).toBeNull()
@@ -55,7 +84,12 @@ describe('<FontSelectField />', () => {
 
     it('should not display headers if no fonts in local storage', () => {
         const {queryByText} = render(
-            <FontSelectField title="Title" value="Roboto" onChange={_noop} />
+            <FontSelectField
+                defaultFonts={defaultFonts}
+                placeholder={placeholder}
+                value="Roboto"
+                onChange={_noop}
+            />
         )
 
         expect(queryByText('RECENTLY ADDED')).toBeNull()

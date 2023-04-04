@@ -1,12 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import {FormText} from 'reactstrap'
 import uniq from 'lodash/uniq'
-import {defined} from 'utils'
 
-import SelectField from '../../../../common/forms/SelectField/SelectField'
-import SelectFieldDropdownAction from '../../../../common/forms/SelectField/SelectFieldDropdownAction'
-import {Value, Option} from '../../../../common/forms/SelectField/types'
-import {HELP_CENTER_AVAILABLE_FONTS} from '../../constants'
+import SelectField from '../../../common/forms/SelectField/SelectField'
+import SelectFieldDropdownAction from '../../../common/forms/SelectField/SelectFieldDropdownAction'
+import {Value, Option} from '../../../common/forms/SelectField/types'
 import css from './FontSelectField.less'
 import {
     FontCatalogueModal,
@@ -15,9 +12,9 @@ import {
 import {AGENT_ADDED_FONTS} from './constants'
 
 type Props = {
-    title: string
-    help?: string
     value: Value
+    defaultFonts: string[]
+    placeholder: string
     onChange: (value: string) => void
 }
 
@@ -32,9 +29,14 @@ const getFontsFromLocalStorage = (): string[] => {
     return agentAddedFonts ? (JSON.parse(agentAddedFonts) as string[]) : []
 }
 
-export const FontSelectField = ({title, help, value, onChange}: Props) => {
+export const FontSelectField = ({
+    value,
+    defaultFonts,
+    placeholder,
+    onChange,
+}: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [currentPrimaryFont, setCurrentPrimaryFont] = useState(value) as [
+    const [selectedFont, setSelectedFont] = useState(value) as [
         string,
         (value: string) => void
     ]
@@ -45,7 +47,7 @@ export const FontSelectField = ({title, help, value, onChange}: Props) => {
     useEffect(() => {
         if (
             fontsFromLocalStorage.length === 0 &&
-            HELP_CENTER_AVAILABLE_FONTS.includes(currentPrimaryFont)
+            defaultFonts.includes(selectedFont)
         ) {
             return
         }
@@ -54,27 +56,25 @@ export const FontSelectField = ({title, help, value, onChange}: Props) => {
             link.rel = 'stylesheet'
             link.type = 'text/css'
             link.href = getMultipleFontLink(
-                HELP_CENTER_AVAILABLE_FONTS.includes(currentPrimaryFont)
+                defaultFonts.includes(selectedFont)
                     ? fontsFromLocalStorage
-                    : [...fontsFromLocalStorage, currentPrimaryFont]
+                    : [...fontsFromLocalStorage, selectedFont]
             )
             document.body.appendChild(link)
         }
 
         void addLinkToDownloadFonts()
-    }, [fontsFromLocalStorage, currentPrimaryFont])
+    }, [fontsFromLocalStorage, selectedFont, defaultFonts])
 
-    const recentlyAddedFonts = HELP_CENTER_AVAILABLE_FONTS.includes(
-        currentPrimaryFont
-    )
+    const recentlyAddedFonts = defaultFonts.includes(selectedFont)
         ? fontsFromLocalStorage
-        : uniq([currentPrimaryFont, ...fontsFromLocalStorage])
+        : uniq([selectedFont, ...fontsFromLocalStorage])
 
     const fontOptions: Option[] = useMemo(() => {
         const shouldDisplayHeaders =
             recentlyAddedFonts.length > 1 ||
             (recentlyAddedFonts.length === 1 &&
-                currentPrimaryFont !== recentlyAddedFonts[0])
+                selectedFont !== recentlyAddedFonts[0])
 
         const displayedOptions: Option[] = [
             {
@@ -111,36 +111,31 @@ export const FontSelectField = ({title, help, value, onChange}: Props) => {
         }
 
         displayedOptions.push(
-            ...HELP_CENTER_AVAILABLE_FONTS.map((font) =>
-                getOptionFromFontName(font)
-            )
+            ...defaultFonts.map((font) => getOptionFromFontName(font))
         )
 
         return displayedOptions
-    }, [recentlyAddedFonts, currentPrimaryFont])
+    }, [recentlyAddedFonts, selectedFont, defaultFonts])
 
     return (
         <>
-            <label className="control-label">{title}</label>
             <SelectField
                 fullWidth
-                placeholder="Select a primary font"
+                placeholder={placeholder}
                 value={value}
                 onChange={(value) => {
                     onChange(value as string)
-                    setCurrentPrimaryFont(value as string)
+                    setSelectedFont(value as string)
                 }}
                 options={fontOptions}
                 dropdownMenuClassName={css.longDropdown}
             />
-            {defined(help) && <FormText color="muted">{help}</FormText>}
-
             <FontCatalogueModal
                 recentlyAddedFonts={recentlyAddedFonts}
                 setFontsFromLocalStorage={setFontsFromLocalStorage}
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
-                currentPrimaryFont={currentPrimaryFont}
+                currentPrimaryFont={selectedFont}
             />
         </>
     )

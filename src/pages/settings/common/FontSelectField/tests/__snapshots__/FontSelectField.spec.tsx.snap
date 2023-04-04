@@ -2,11 +2,6 @@
 
 exports[`<FontSelectField /> matches snapshot 1`] = `
 <div>
-  <label
-    class="control-label"
-  >
-    Title
-  </label>
   <div>
     <div
       class="dropdown"

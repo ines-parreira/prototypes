@@ -523,189 +523,194 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           >
             <label
               class="control-label"
+              for="primary-font"
             >
               Primary Font
             </label>
-            <div>
-              <div
-                class="dropdown"
-              >
+            <div
+              id="primary-font"
+            >
+              <div>
                 <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
+                  class="dropdown"
                 >
                   <div
-                    class="select dropdown-toggle selectFullWidth"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class=""
+                    data-toggle="dropdown"
                   >
-                    <span
-                      class="label"
-                      style="min-width: 10px; opacity: 1;"
+                    <div
+                      class="select dropdown-toggle selectFullWidth"
                     >
                       <span
-                        style="font-family: Inter;"
+                        class="label"
+                        style="min-width: 10px; opacity: 1;"
                       >
-                        Inter
+                        <span
+                          style="font-family: Inter;"
+                        >
+                          Inter
+                        </span>
                       </span>
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                    <i
-                      class="material-icons dropdownIcon"
-                    >
-                      arrow_drop_down
-                    </i>
+                      <input
+                        autocomplete="chrome-off"
+                        class="input"
+                        style="min-width: 10px;"
+                        type="text"
+                        value=""
+                      />
+                      <i
+                        class="material-icons dropdownIcon"
+                      >
+                        arrow_drop_down
+                      </i>
+                    </div>
                   </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options longDropdown optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <div>
-                    <h6
-                      class="action action--focused dropdown-header"
-                      tabindex="-1"
-                      type="button"
-                    >
-                      <div
-                        class="dropdownAction"
+                  <div
+                    aria-hidden="true"
+                    class="options longDropdown optionsFullWidth dropdown-menu"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    
+                    <div>
+                      <h6
+                        class="action action--focused dropdown-header"
+                        tabindex="-1"
+                        type="button"
                       >
                         <div
-                          class="dropdownActionIcon"
+                          class="dropdownAction"
                         >
-                          <i
-                            class="material-icons"
+                          <div
+                            class="dropdownActionIcon"
                           >
-                            add
-                          </i>
+                            <i
+                              class="material-icons"
+                            >
+                              add
+                            </i>
+                          </div>
+                          <span>
+                            More fonts
+                          </span>
                         </div>
-                        <span>
-                          More fonts
+                      </h6>
+                    </div>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        <span
+                          style="font-family: Arial;"
+                        >
+                          Arial
                         </span>
-                      </div>
-                    </h6>
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        <span
+                          style="font-family: Georgia;"
+                        >
+                          Georgia
+                        </span>
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        <span
+                          style="font-family: Impact;"
+                        >
+                          Impact
+                        </span>
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        <span
+                          style="font-family: Merriweather;"
+                        >
+                          Merriweather
+                        </span>
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        <span
+                          style="font-family: Source Code Pro;"
+                        >
+                          Source Code Pro
+                        </span>
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        <span
+                          style="font-family: Tahoma;"
+                        >
+                          Tahoma
+                        </span>
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        <span
+                          style="font-family: Times New Roman;"
+                        >
+                          Times New Roman
+                        </span>
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        <span
+                          style="font-family: Verdana;"
+                        >
+                          Verdana
+                        </span>
+                      </span>
+                    </button>
                   </div>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span
-                        style="font-family: Arial;"
-                      >
-                        Arial
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span
-                        style="font-family: Georgia;"
-                      >
-                        Georgia
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span
-                        style="font-family: Impact;"
-                      >
-                        Impact
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span
-                        style="font-family: Merriweather;"
-                      >
-                        Merriweather
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span
-                        style="font-family: Source Code Pro;"
-                      >
-                        Source Code Pro
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span
-                        style="font-family: Tahoma;"
-                      >
-                        Tahoma
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span
-                        style="font-family: Times New Roman;"
-                      >
-                        Times New Roman
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span
-                        style="font-family: Verdana;"
-                      >
-                        Verdana
-                      </span>
-                    </span>
-                  </button>
                 </div>
               </div>
             </div>

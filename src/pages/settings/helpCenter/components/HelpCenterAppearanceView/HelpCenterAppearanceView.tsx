@@ -1,7 +1,7 @@
 import React, {createRef, useEffect, useMemo, useState} from 'react'
 import axios from 'axios'
 import {useAsyncFn} from 'react-use'
-import {FormGroup} from 'reactstrap'
+import {FormGroup, FormText} from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
 
 import Button from 'pages/common/components/button/Button'
@@ -27,6 +27,7 @@ import {
     HELP_CENTER_DEFAULT_FONT,
     HELP_CENTER_DEFAULT_THEME,
     HELP_CENTER_DEFAULT_LOCALE,
+    HELP_CENTER_AVAILABLE_FONTS,
 } from 'pages/settings/helpCenter/constants'
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import {
@@ -44,7 +45,7 @@ import InputField from 'pages/common/forms/input/InputField'
 import {reportError} from 'utils/errors'
 import {ImageUpload} from '../ImageUpload'
 import {UpdateToggle} from '../UpdateToggle'
-import {FontSelectField} from '../FontSelectField/FontSelectField'
+import {FontSelectField} from '../../../common/FontSelectField/FontSelectField'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 import {ThemeSwitch} from '../ThemeSwitch'
 import {ImageRepositioningModal} from '../ImageRepositioningModal'
@@ -465,14 +466,29 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     />
                 </div>
                 <div className={settingsCss.mb16}>
-                    <FontSelectField
-                        title="Primary Font"
-                        help="This font will be applied to the website and set by default to new articles. This will override the default font in existing articles."
-                        value={currentPrimaryFont}
-                        onChange={(value) => {
-                            setCurrentPrimaryFont(value)
-                        }}
-                    />
+                    <>
+                        <label
+                            className="control-label"
+                            htmlFor={'primary-font'}
+                        >
+                            Primary Font
+                        </label>
+                        <div id="primary-font">
+                            <FontSelectField
+                                value={currentPrimaryFont}
+                                defaultFonts={HELP_CENTER_AVAILABLE_FONTS}
+                                placeholder="Select a primary font"
+                                onChange={(value) => {
+                                    setCurrentPrimaryFont(value)
+                                }}
+                            />
+                        </div>
+                        <FormText color="muted">
+                            This font will be applied to the website and set by
+                            default to new articles. This will override the
+                            default font in existing articles.
+                        </FormText>
+                    </>
                 </div>
             </section>
             <section className={settingsCss.mb40}>
