@@ -5,6 +5,7 @@ export enum FeatureFlagKey {
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigcommerceCreateOrderModifiers = 'bigcommerce-create-order-modifiers',
     ChatEnableTranslationEdit = 'enable-translations-edit',
+    ChatFontCustomization = 'chat-font-customization',
     ChatNotIntalledStatus = 'chat-not-installed-status',
     ChatVideoSharingCampaigns = 'chat-video-sharing-campaigns',
     ChatVideoSharingConversations = 'chat-video-sharing-conversations',

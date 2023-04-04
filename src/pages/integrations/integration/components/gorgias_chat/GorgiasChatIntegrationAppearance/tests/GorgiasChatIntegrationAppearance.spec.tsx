@@ -23,6 +23,7 @@ import {
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
 
+import {getLDClient} from 'utils/launchDarkly'
 import {GorgiasChatIntegrationAppearanceComponent} from '../GorgiasChatIntegrationAppearance'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
@@ -65,6 +66,12 @@ jest.mock('../../GorgiasChatIntegrationNavigation', () => () => {
 
 jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => {
     return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
+})
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({
+    [FeatureFlagKey.ChatFontCustomization]: true,
 })
 
 describe('<GorgiasChatIntegrationAppearance/>', () => {
@@ -400,6 +407,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                         "offsetX": 0,
                         "offsetY": 0,
                       },
+                      "main_font_family": "Inter",
                       "avatar_team_picture_url": undefined,
                       "introduction_text": "How can we help?",
                       "offline_introduction_text": "We'll be back tomorrow",
@@ -544,6 +552,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                         "offsetX": 0,
                         "offsetY": 0,
                       },
+                      "main_font_family": "Inter",
                       "avatar_team_picture_url": undefined,
                       "introduction_text": "How can we help?",
                       "offline_introduction_text": "We'll be back tomorrow",

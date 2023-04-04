@@ -37,6 +37,8 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    GORGIAS_CHAT_DEFAULT_FONTS,
 } from 'config/integrations/gorgias_chat'
 import {Language} from 'constants/languages'
 import * as integrationSelectors from 'state/integrations/selectors'
@@ -70,6 +72,7 @@ import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import Label from 'pages/common/forms/Label/Label'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectField'
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 
@@ -105,6 +108,7 @@ export const defaultContent = {
         imageType: GorgiasChatAvatarImageType.AGENT_PICTURE,
         nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
     },
+    mainFontFamily: GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 }
 
 const avatarTypeOptions = [
@@ -170,6 +174,7 @@ type State = {
         label?: string
     }
     avatar: GorgiasChatAvatarSettings
+    mainFontFamily: string
 }
 
 type SubmitForm = {
@@ -211,6 +216,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
     const isAutomationSettingsRevampEnabled =
         useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
+    const shoudShowFontCustomization =
+        useFlags()[FeatureFlagKey.ChatFontCustomization]
 
     const storeIntegrations = (
         isAutomationSettingsRevampEnabled
@@ -329,6 +336,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             'company_logo_url',
                         ]),
                     },
+                    mainFontFamily: integration.getIn([
+                        'decoration',
+                        'main_font_family',
+                    ]),
                 },
                 defaultContent
             )
@@ -379,6 +390,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     image_type: state.avatar.imageType,
                     name_type: state.avatar.nameType,
                 },
+                main_font_family: state.mainFontFamily,
             },
             meta: {
                 language: state.language,
@@ -967,6 +979,27 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 />
                             </div>
                         </div>
+
+                        {shoudShowFontCustomization && (
+                            <div className={css.formSection}>
+                                <h2 className={css.title}>Font</h2>
+                                <div className={css.formGroup}>
+                                    <FontSelectField
+                                        value={state.mainFontFamily}
+                                        defaultFonts={
+                                            GORGIAS_CHAT_DEFAULT_FONTS
+                                        }
+                                        onChange={(mainFontFamily) => {
+                                            setState((prevState) => ({
+                                                ...prevState,
+                                                mainFontFamily,
+                                            }))
+                                        }}
+                                        placeholder="Select a font"
+                                    />
+                                </div>
+                            </div>
+                        )}
 
                         {isUpdate && (
                             <>

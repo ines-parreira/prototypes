@@ -49,6 +49,19 @@ export const GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS =
     GORGIAS_CHAT_WIDGET_TEXTS[GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT]
 export const GORGIAS_CHAT_DEFAULT_COLOR = '#0d87dd'
 
+export const GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT = 'Inter'
+export const GORGIAS_CHAT_DEFAULT_FONTS = [
+    'Arial',
+    'Georgia',
+    'Impact',
+    'Inter',
+    'Merriweather',
+    'Source Code Pro',
+    'Tahoma',
+    'Times New Roman',
+    'Verdana',
+]
+
 export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL = 'optional'
 export const GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS_DEPRECATED =
     'required-outside-business-hours'
