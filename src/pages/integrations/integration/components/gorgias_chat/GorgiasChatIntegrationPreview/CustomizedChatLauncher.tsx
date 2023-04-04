@@ -22,6 +22,12 @@ import css from './CustomizedChatLauncher.less'
 
 const offsetLine = assetsUrl('/img/icons/offset-line.svg')
 
+/**
+ * Use the same fallback fonts as the real widget.
+ */
+const defaultChatFontFamily =
+    'Inter, "Helvetica Neue", Helvetica, Arial, sans-serif'
+
 type Props = {
     className?: string
     launcher?: {
@@ -66,8 +72,9 @@ const CustomizedChatLauncher: React.FC<Props> = ({
                 [css.buttonOnTop]: isButtonOnTop,
             })}
             style={{
-                fontFamily:
-                    mainFontFamily ?? GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+                fontFamily: `${
+                    mainFontFamily ?? GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                }, ${defaultChatFontFamily}`,
             }}
         >
             {!hideButton && (

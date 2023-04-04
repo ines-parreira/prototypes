@@ -605,7 +605,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                 className="wrapper preview previewWithBackground"
                                 style={
                                   {
-                                    "fontFamily": "Inter",
+                                    "fontFamily": "Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif",
                                   }
                                 }
                               >
@@ -1558,7 +1558,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                 className="wrapper preview previewWithBackground"
                                 style={
                                   {
-                                    "fontFamily": "Inter",
+                                    "fontFamily": "Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif",
                                   }
                                 }
                               >

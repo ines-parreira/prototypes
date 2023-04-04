@@ -24,7 +24,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
     </div>
     <div
       class="wrapper preview"
-      style="font-family: Inter;"
+      style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
     >
       <div>
         <div
@@ -214,7 +214,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page with the merge
     </div>
     <div
       class="wrapper preview"
-      style="font-family: Inter;"
+      style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
     >
       <div>
         <div
@@ -369,7 +369,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
     </div>
     <div
       class="wrapper preview"
-      style="font-family: Inter;"
+      style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
     >
       <div>
         <div
@@ -544,7 +544,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer wit
     </div>
     <div
       class="wrapper preview"
-      style="font-family: Inter;"
+      style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
     >
       <div>
         <div
@@ -708,7 +708,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page without answer 
     </div>
     <div
       class="wrapper preview"
-      style="font-family: Inter;"
+      style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
     >
       <div>
         <div

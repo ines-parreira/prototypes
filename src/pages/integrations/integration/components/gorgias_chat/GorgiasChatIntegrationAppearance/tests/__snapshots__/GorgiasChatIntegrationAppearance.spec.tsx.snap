@@ -666,7 +666,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 </div>
                 <div
                   class="wrapper preview previewWithBackground"
-                  style="font-family: Inter;"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
                     class="buttonWrapper bottom-right"
@@ -1538,7 +1538,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 </div>
                 <div
                   class="wrapper preview previewWithBackground"
-                  style="font-family: Inter;"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
                     class="buttonWrapper bottom-right"
@@ -2380,7 +2380,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 </div>
                 <div
                   class="wrapper preview previewWithBackground"
-                  style="font-family: Inter;"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
                     class="buttonWrapper bottom-right"
@@ -3230,7 +3230,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 </div>
                 <div
                   class="wrapper preview previewWithBackground"
-                  style="font-family: Inter;"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
                     class="buttonWrapper bottom-right"
@@ -4072,7 +4072,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 </div>
                 <div
                   class="wrapper preview previewWithBackground"
-                  style="font-family: Inter;"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
                     class="buttonWrapper bottom-right"
@@ -4928,7 +4928,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 </div>
                 <div
                   class="wrapper preview previewWithBackground"
-                  style="font-family: Inter;"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
                     class="buttonWrapper bottom-right"
@@ -5792,7 +5792,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                 </div>
                 <div
                   class="wrapper preview previewWithBackground"
-                  style="font-family: Inter;"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
                     class="buttonWrapper bottom-right"
@@ -6750,7 +6750,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                 </div>
                 <div
                   class="wrapper preview previewWithBackground"
-                  style="font-family: Inter;"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
                     class="buttonWrapper bottom-right"
@@ -7666,7 +7666,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 </div>
                 <div
                   class="wrapper preview previewWithBackground"
-                  style="font-family: Inter;"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
                     class="buttonWrapper bottom-right"
@@ -8508,7 +8508,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 </div>
                 <div
                   class="wrapper preview previewWithBackground"
-                  style="font-family: Inter;"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
                 >
                   <div
                     class="buttonWrapper bottom-right"
