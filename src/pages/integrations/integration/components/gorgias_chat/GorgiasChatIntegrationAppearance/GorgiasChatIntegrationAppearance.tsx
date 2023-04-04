@@ -59,6 +59,10 @@ import FileField from 'pages/common/forms/FileField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import NavigatedSuccessModal, {
+    NavigatedSuccessModalName,
+} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import GorgiasChatIntegrationNavigation from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
@@ -216,7 +220,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
     const isAutomationSettingsRevampEnabled =
         useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
-    const shoudShowFontCustomization =
+    const shouldShowFontCustomization =
         useFlags()[FeatureFlagKey.ChatFontCustomization]
 
     const storeIntegrations = (
@@ -665,99 +669,195 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     ]
 
     return (
-        <div className="full-width">
-            <PageHeader
-                title={
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                            >
-                                Chat
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {isUpdate
-                                ? integration.get('name')
-                                : isAutomationSettingsRevampEnabled
-                                ? 'New Chat'
-                                : 'New chat integration'}
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                }
+        <>
+            <NavigatedSuccessModal
+                name={NavigatedSuccessModalName.GorgiasChatAutoInstallation}
+                icon={SuccessModalIcon.PartyPopper}
+                buttonLabel="See Chat Settings"
             >
+                <div className="heading-page-semibold mb-2">All set!</div>
+                <div className="heading-subsection-regular">
+                    Your chat is now available on your website.
+                </div>
+            </NavigatedSuccessModal>
+            <div className="full-width">
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link
+                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                                >
+                                    Chat
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {isUpdate
+                                    ? integration.get('name')
+                                    : isAutomationSettingsRevampEnabled
+                                    ? 'New Chat'
+                                    : 'New chat integration'}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                >
+                    {isUpdate && (
+                        <GorgiasChatIntegrationConnectedChannel
+                            integration={integration}
+                        />
+                    )}
+                </PageHeader>
+
                 {isUpdate && (
-                    <GorgiasChatIntegrationConnectedChannel
+                    <GorgiasChatIntegrationNavigation
                         integration={integration}
                     />
                 )}
-            </PageHeader>
 
-            {isUpdate && (
-                <GorgiasChatIntegrationNavigation integration={integration} />
-            )}
-
-            <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>
-                <Form onSubmit={handleSubmit}>
-                    {!isUpdate && !isAutomationSettingsRevampEnabled && (
-                        <div className={css.selectStoreTypeContainer}>
-                            <ReactStrapLabel className={css.bold}>
-                                Where will you use this chat?
-                                <span className={css.redStar}>*</span>
-                            </ReactStrapLabel>
-                            <div className={css.radioButtonGroup}>
-                                {storeTypeRadioButtons.map((props) => (
-                                    <StoreRadioButton
-                                        {...props}
-                                        key={props.label}
-                                    />
-                                ))}
+                <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>
+                    <Form onSubmit={handleSubmit}>
+                        {!isUpdate && !isAutomationSettingsRevampEnabled && (
+                            <div className={css.selectStoreTypeContainer}>
+                                <ReactStrapLabel className={css.bold}>
+                                    Where will you use this chat?
+                                    <span className={css.redStar}>*</span>
+                                </ReactStrapLabel>
+                                <div className={css.radioButtonGroup}>
+                                    {storeTypeRadioButtons.map((props) => (
+                                        <StoreRadioButton
+                                            {...props}
+                                            key={props.label}
+                                        />
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
 
-                    <div className={css.form}>
-                        {!isUpdate &&
-                            state.showSelectStoreField &&
-                            !isAutomationSettingsRevampEnabled && (
-                                <>
-                                    <ReactStrapLabel className={css.bold}>
-                                        Select a store
-                                        <span className={css.error}>*</span>
-                                        <span id="select-store">
-                                            <i
-                                                className={classNames(
-                                                    'material-icons',
-                                                    css.neutral
-                                                )}
+                        <div className={css.form}>
+                            {!isUpdate &&
+                                state.showSelectStoreField &&
+                                !isAutomationSettingsRevampEnabled && (
+                                    <>
+                                        <ReactStrapLabel className={css.bold}>
+                                            Select a store
+                                            <span className={css.error}>*</span>
+                                            <span id="select-store">
+                                                <i
+                                                    className={classNames(
+                                                        'material-icons',
+                                                        css.neutral
+                                                    )}
+                                                >
+                                                    info_outline
+                                                </i>
+                                            </span>
+                                            <Tooltip
+                                                autohide={false}
+                                                delay={100}
+                                                placement="bottom-start"
+                                                target="select-store"
+                                                style={{
+                                                    textAlign: 'start',
+                                                    width: 180,
+                                                }}
                                             >
-                                                info_outline
-                                            </i>
-                                        </span>
-                                        <Tooltip
-                                            autohide={false}
-                                            delay={100}
-                                            placement="bottom-start"
-                                            target="select-store"
-                                            style={{
-                                                textAlign: 'start',
-                                                width: 180,
+                                                We currently only support
+                                                automatic installation and
+                                                self-service features with
+                                                Shopify stores. Use the custom
+                                                live chat option for any other
+                                                ecommerce platform.
+                                                <a
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    href="https://docs.gorgias.com/gorgias-chat/chat-getting-started"
+                                                >
+                                                    Read more
+                                                </a>
+                                            </Tooltip>
+                                        </ReactStrapLabel>
+                                        <StoreNameDropdown
+                                            storeIntegrationId={
+                                                storeIntegrationId
+                                            }
+                                            gorgiasChatIntegrations={
+                                                gorgiasChatIntegrations
+                                            }
+                                            storeIntegrations={
+                                                storeIntegrations
+                                            }
+                                            onChange={(
+                                                storeIntegrationId: number
+                                            ) => {
+                                                const storeIntegration =
+                                                    storeIntegrations.find(
+                                                        (storeIntegration) =>
+                                                            storeIntegration?.get(
+                                                                'id'
+                                                            ) ===
+                                                            storeIntegrationId
+                                                    )!
+
+                                                setStoreIntegrationId(
+                                                    storeIntegrationId
+                                                )
+                                                prefillWithStorename(
+                                                    storeIntegration.get('name')
+                                                )
                                             }}
-                                        >
-                                            We currently only support automatic
-                                            installation and self-service
-                                            features with Shopify stores. Use
-                                            the custom live chat option for any
-                                            other ecommerce platform.
-                                            <a
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                href="https://docs.gorgias.com/gorgias-chat/chat-getting-started"
-                                            >
-                                                Read more
-                                            </a>
-                                        </Tooltip>
-                                    </ReactStrapLabel>
+                                        />
+                                    </>
+                                )}
+
+                            {!isUpdate && isAutomationSettingsRevampEnabled && (
+                                <div className={css.formSection}>
+                                    <h2 className={css.title}>
+                                        Select a platform type
+                                    </h2>
+
+                                    <div className={css.platformTypeContainer}>
+                                        <PreviewRadioButton
+                                            value="ecommerce-platforms"
+                                            isSelected={
+                                                state.showSelectStoreField
+                                            }
+                                            label="Ecommerce platforms"
+                                            caption="Shopify, Magento, BigCommerce"
+                                            onClick={() =>
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    showSelectStoreField: true,
+                                                }))
+                                            }
+                                        />
+                                        <PreviewRadioButton
+                                            value="any-other-website"
+                                            isSelected={
+                                                !state.showSelectStoreField
+                                            }
+                                            label="Any other website"
+                                            caption="Websites, knowledge bases, etc."
+                                            onClick={() =>
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    showSelectStoreField: false,
+                                                }))
+                                            }
+                                        />
+                                    </div>
+
+                                    <Label
+                                        isRequired={state.showSelectStoreField}
+                                    >
+                                        Connect a store
+                                    </Label>
+                                    <div
+                                        className={css.connectStoreDescription}
+                                    >
+                                        {state.showSelectStoreField
+                                            ? 'Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.'
+                                            : 'Connect a store to enable Automation Add-on features in chat. You can always connect a store later.'}
+                                    </div>
                                     <StoreNameDropdown
                                         storeIntegrationId={storeIntegrationId}
                                         gorgiasChatIntegrations={
@@ -783,501 +883,39 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             )
                                         }}
                                     />
-                                </>
+                                </div>
                             )}
 
-                        {!isUpdate && isAutomationSettingsRevampEnabled && (
                             <div className={css.formSection}>
-                                <h2 className={css.title}>
-                                    Select a platform type
-                                </h2>
-
-                                <div className={css.platformTypeContainer}>
-                                    <PreviewRadioButton
-                                        value="ecommerce-platforms"
-                                        isSelected={state.showSelectStoreField}
-                                        label="Ecommerce platforms"
-                                        caption="Shopify, Magento, BigCommerce"
-                                        onClick={() =>
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                showSelectStoreField: true,
-                                            }))
-                                        }
-                                    />
-                                    <PreviewRadioButton
-                                        value="any-other-website"
-                                        isSelected={!state.showSelectStoreField}
-                                        label="Any other website"
-                                        caption="Websites, knowledge bases, etc."
-                                        onClick={() =>
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                showSelectStoreField: false,
-                                            }))
-                                        }
-                                    />
-                                </div>
-
-                                <Label isRequired={state.showSelectStoreField}>
-                                    Connect a store
-                                </Label>
-                                <div className={css.connectStoreDescription}>
-                                    {state.showSelectStoreField
-                                        ? 'Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.'
-                                        : 'Connect a store to enable Automation Add-on features in chat. You can always connect a store later.'}
-                                </div>
-                                <StoreNameDropdown
-                                    storeIntegrationId={storeIntegrationId}
-                                    gorgiasChatIntegrations={
-                                        gorgiasChatIntegrations
-                                    }
-                                    storeIntegrations={storeIntegrations}
-                                    onChange={(storeIntegrationId: number) => {
-                                        const storeIntegration =
-                                            storeIntegrations.find(
-                                                (storeIntegration) =>
-                                                    storeIntegration?.get(
-                                                        'id'
-                                                    ) === storeIntegrationId
-                                            )!
-
-                                        setStoreIntegrationId(
-                                            storeIntegrationId
-                                        )
-                                        prefillWithStorename(
-                                            storeIntegration.get('name')
-                                        )
-                                    }}
-                                />
-                            </div>
-                        )}
-
-                        <div className={css.formSection}>
-                            {!isUpdate && isAutomationSettingsRevampEnabled && (
-                                <h2 className={css.title}>Preferences</h2>
-                            )}
-                            <DEPRECATED_InputField
-                                className={css.formGroup}
-                                type="text"
-                                label="Chat title"
-                                value={name}
-                                onChange={(value: string) =>
-                                    setState((prevState) => ({
-                                        ...prevState,
-                                        name: value,
-                                    }))
-                                }
-                                placeholder="Ex: Company Support"
-                                required
-                            />
-                            <DEPRECATED_InputField
-                                className={css.formGroup}
-                                type="select"
-                                value={language}
-                                options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
-                                onChange={setLanguage}
-                                label="Language"
-                            >
-                                {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
-                                    (option) => {
-                                        const value = option?.get('value')
-                                        const label = option?.get('label')
-                                        return (
-                                            <option key={value} value={value}>
-                                                {label}
-                                            </option>
-                                        )
-                                    }
-                                )}
-                            </DEPRECATED_InputField>
-                        </div>
-
-                        <div className={css.formSection}>
-                            <h2 className={css.title}>Intro message</h2>
-                            <DEPRECATED_InputField
-                                className={css.formGroup}
-                                type="text"
-                                value={introductionText}
-                                onFocus={() =>
-                                    setState((prevState) => ({
-                                        ...prevState,
-                                        isOnline: true,
-                                    }))
-                                }
-                                onChange={(value: string) =>
-                                    setState((prevState) => ({
-                                        ...prevState,
-                                        introductionText: value,
-                                    }))
-                                }
-                                label={
-                                    isAutomationSettingsRevampEnabled
-                                        ? 'During business hours'
-                                        : 'Introduction text during business hours'
-                                }
-                                maxLength={
-                                    GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
-                                }
-                            />
-                            <DEPRECATED_InputField
-                                className={css.formGroup}
-                                type="text"
-                                value={offlineIntroductionText}
-                                onFocus={() => {
-                                    setState((prevState) => ({
-                                        ...prevState,
-                                        isOnline: false,
-                                    }))
-                                }}
-                                onChange={(value: string) => {
-                                    setState((prevState) => ({
-                                        ...prevState,
-                                        offlineIntroductionText: value,
-                                    }))
-                                }}
-                                label={
-                                    isAutomationSettingsRevampEnabled
-                                        ? 'Outside business hours'
-                                        : 'Introduction text outside business hours'
-                                }
-                                maxLength={
-                                    GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
-                                }
-                            />
-
-                            {viewTranslateEdit && isUpdate && (
-                                <CustomizeToneOfVoiceBlock
-                                    integrationId={integration.get('id')}
-                                />
-                            )}
-                        </div>
-
-                        <div className={css.formSection}>
-                            <h2 className={css.title}>Colors</h2>
-
-                            <div
-                                className={classNames(css.colorPickersWrapper)}
-                            >
-                                <ColorField
-                                    className={css.colorPicker}
-                                    value={mainColor}
-                                    onChange={(value: string) => {
-                                        setState((prevState) => ({
-                                            ...prevState,
-                                            mainColor: value,
-                                        }))
-                                    }}
-                                    label="Main color"
-                                />
-                                <ColorField
-                                    className={css.colorPicker}
-                                    value={conversationColor}
+                                {!isUpdate &&
+                                    isAutomationSettingsRevampEnabled && (
+                                        <h2 className={css.title}>
+                                            Preferences
+                                        </h2>
+                                    )}
+                                <DEPRECATED_InputField
+                                    className={css.formGroup}
+                                    type="text"
+                                    label="Chat title"
+                                    value={name}
                                     onChange={(value: string) =>
                                         setState((prevState) => ({
                                             ...prevState,
-                                            conversationColor: value,
+                                            name: value,
                                         }))
                                     }
-                                    label="Conversation color"
+                                    placeholder="Ex: Company Support"
+                                    required
                                 />
-                            </div>
-                        </div>
-
-                        {shoudShowFontCustomization && (
-                            <div className={css.formSection}>
-                                <h2 className={css.title}>Font</h2>
-                                <div className={css.formGroup}>
-                                    <FontSelectField
-                                        value={state.mainFontFamily}
-                                        defaultFonts={
-                                            GORGIAS_CHAT_DEFAULT_FONTS
-                                        }
-                                        onChange={(mainFontFamily) => {
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                mainFontFamily,
-                                            }))
-                                        }}
-                                        placeholder="Select a font"
-                                    />
-                                </div>
-                            </div>
-                        )}
-
-                        {isUpdate && (
-                            <>
-                                {shouldShowAvatarCustomization ? (
-                                    <div className={css.formSection}>
-                                        <h2 className={css.title}>
-                                            Company logo
-                                        </h2>
-                                        <ImageField
-                                            isDiscardable={true}
-                                            onChange={onCompanyLogoUrlChange}
-                                            url={avatar.companyLogoUrl}
-                                            maxSize={500 * 1000}
-                                        />
-                                        <h2
-                                            className={classNames(
-                                                css.title,
-                                                'mt-5'
-                                            )}
-                                        >
-                                            Agent avatar
-                                        </h2>
-
-                                        <div
-                                            className={css.avatarInputsWrapper}
-                                        >
-                                            <RadioFieldSet
-                                                className={css.radioFieldSet}
-                                                label="Name"
-                                                name="avatar-name-type-field"
-                                                options={avatarNameTypeOptions}
-                                                selectedValue={avatar.nameType}
-                                                onChange={(value) =>
-                                                    setState((prevState) => ({
-                                                        ...prevState,
-                                                        avatar: {
-                                                            ...prevState.avatar,
-                                                            nameType:
-                                                                value as GorgiasChatAvatarNameType,
-                                                        },
-                                                    }))
-                                                }
-                                            />
-                                            <RadioFieldSet
-                                                className={css.radioFieldSet}
-                                                label="Image"
-                                                name="avatar-image-type-field"
-                                                options={avatarImageTypeOptions}
-                                                selectedValue={avatar.imageType}
-                                                onChange={(value) =>
-                                                    setState((prevState) => ({
-                                                        ...prevState,
-                                                        avatar: {
-                                                            ...prevState.avatar,
-                                                            imageType:
-                                                                value as GorgiasChatAvatarImageType,
-                                                        },
-                                                    }))
-                                                }
-                                            />
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className={css.formSection}>
-                                        <h2 className={css.title}>
-                                            Chat header
-                                        </h2>
-
-                                        <RadioFieldSet
-                                            name="type-field"
-                                            className="mb-3"
-                                            options={avatarTypeOptions}
-                                            selectedValue={avatarType}
-                                            onChange={(value) =>
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    avatarType: value,
-                                                }))
-                                            }
-                                            label="Image"
-                                        />
-                                        {isTeamPictureAvatarSelected && (
-                                            <div
-                                                key="file-field"
-                                                className="d-flex flex-direction-row mb-2"
-                                            >
-                                                {!!avatarTeamPictureUrl && (
-                                                    <img
-                                                        className="mr-3"
-                                                        style={{
-                                                            maxWidth: '100px',
-                                                        }}
-                                                        src={
-                                                            avatarTeamPictureUrl
-                                                        }
-                                                        alt="Team avatar"
-                                                    />
-                                                )}
-                                                <FileField
-                                                    returnFiles={false}
-                                                    noPreview={true}
-                                                    onChange={(
-                                                        avatarTeamPictureUrl: string
-                                                    ) =>
-                                                        setState(
-                                                            (prevState) => ({
-                                                                ...prevState,
-                                                                avatarTeamPictureUrl,
-                                                            })
-                                                        )
-                                                    }
-                                                    uploadType="avatar_team_picture"
-                                                    params={{
-                                                        ['integration_id']:
-                                                            integration.get(
-                                                                'id'
-                                                            ),
-                                                    }}
-                                                    maxSize={500 * 1000}
-                                                    required={
-                                                        isTeamPictureAvatarSelected &&
-                                                        !avatarTeamPictureUrl
-                                                    }
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                            </>
-                        )}
-
-                        <div className={css.formSection}>
-                            <h2 className={css.title}>Launcher</h2>
-
-                            {shouldShowLauncherCustomization && (
-                                <div ref={launcherCustomizationRef}>
-                                    <div className={css.launcherTypes}>
-                                        <PreviewRadioButton
-                                            isSelected={
-                                                state.launcher.type ===
-                                                GorgiasChatLauncherType.ICON
-                                            }
-                                            label="Icon"
-                                            preview={
-                                                <div
-                                                    className={
-                                                        css.launcherPreview
-                                                    }
-                                                >
-                                                    <ChatLauncher
-                                                        type={
-                                                            GorgiasChatLauncherType.ICON
-                                                        }
-                                                        backgroundColor={
-                                                            mainColor
-                                                        }
-                                                        windowState="closed"
-                                                    />
-                                                </div>
-                                            }
-                                            value={GorgiasChatLauncherType.ICON}
-                                            onClick={() => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    launcher: {
-                                                        ...prevState.launcher,
-                                                        type: GorgiasChatLauncherType.ICON,
-                                                    },
-                                                }))
-                                                setIsChatOpenInPreview(false)
-                                            }}
-                                        />
-
-                                        <PreviewRadioButton
-                                            isSelected={
-                                                state.launcher.type ===
-                                                GorgiasChatLauncherType.ICON_AND_LABEL
-                                            }
-                                            label="Icon and label"
-                                            preview={
-                                                <div
-                                                    className={
-                                                        css.launcherPreview
-                                                    }
-                                                >
-                                                    <ChatLauncher
-                                                        type={
-                                                            GorgiasChatLauncherType.ICON_AND_LABEL
-                                                        }
-                                                        backgroundColor={
-                                                            mainColor
-                                                        }
-                                                        label={launcherLabel}
-                                                        windowState="closed"
-                                                    />
-                                                </div>
-                                            }
-                                            value={
-                                                GorgiasChatLauncherType.ICON_AND_LABEL
-                                            }
-                                            onClick={() => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    launcher: {
-                                                        type: GorgiasChatLauncherType.ICON_AND_LABEL,
-                                                        label: launcherLabel,
-                                                    },
-                                                }))
-                                                setIsChatOpenInPreview(false)
-                                            }}
-                                        />
-                                    </div>
-                                    {state.launcher.type ===
-                                        GorgiasChatLauncherType.ICON_AND_LABEL && (
-                                        <div
-                                            className={css.launcherSettingsGrid}
-                                        >
-                                            <InputField
-                                                className={classNames(
-                                                    css.formGroup,
-                                                    css.launcherLabelInput
-                                                )}
-                                                type="text"
-                                                label="Label"
-                                                value={state.launcher.label}
-                                                onFocus={() => {
-                                                    setIsChatOpenInPreview(
-                                                        false
-                                                    )
-                                                }}
-                                                onChange={(value: string) => {
-                                                    setState((prevState) => ({
-                                                        ...prevState,
-                                                        launcher: {
-                                                            type: GorgiasChatLauncherType.ICON_AND_LABEL,
-                                                            label: value,
-                                                        },
-                                                    }))
-                                                    setIsChatOpenInPreview(
-                                                        false
-                                                    )
-                                                }}
-                                                isRequired
-                                                maxLength={20}
-                                                caption={`${
-                                                    state.launcher.label
-                                                        ?.length || 0
-                                                }/20 characters`}
-                                            />
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-
-                            <div className={css.launcherSettingsGrid}>
                                 <DEPRECATED_InputField
                                     className={css.formGroup}
                                     type="select"
-                                    value={position.alignment}
-                                    options={GORGIAS_CHAT_WIDGET_POSITION_OPTIONS.toJS()}
-                                    onChange={(
-                                        alignment: GorgiasChatPositionAlignmentEnum
-                                    ) => {
-                                        setState((prevState) => ({
-                                            ...prevState,
-                                            position: {
-                                                ...position,
-                                                alignment,
-                                            },
-                                        }))
-                                    }}
-                                    label="Widget position on page"
+                                    value={language}
+                                    options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
+                                    onChange={setLanguage}
+                                    label="Language"
                                 >
-                                    {GORGIAS_CHAT_WIDGET_POSITION_OPTIONS.map(
+                                    {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
                                         (option) => {
                                             const value = option?.get('value')
                                             const label = option?.get('label')
@@ -1292,154 +930,611 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                         }
                                     )}
                                 </DEPRECATED_InputField>
-                                <div className={css.positionInputsWrapper}>
-                                    <div>
-                                        <ReactStrapLabel className={css.bold}>
-                                            Move left / right
-                                            <span id="move-widget-left-right">
-                                                <i
-                                                    className={classNames(
-                                                        'material-icons-outlined',
-                                                        css.tooltipIcon
-                                                    )}
-                                                >
-                                                    info
-                                                </i>
-                                                <Tooltip
-                                                    style={{
-                                                        textAlign: 'left',
-                                                    }}
-                                                    target="move-widget-left-right"
-                                                >
-                                                    Move the chat left or right
-                                                    to avoid overlap with other
-                                                    widgets you might have. By
-                                                    default, the chat icon is
-                                                    displayed at 20px from the
-                                                    left/right edges and and
-                                                    20px from the top/bottom
-                                                    edges.
-                                                </Tooltip>
-                                            </span>
-                                        </ReactStrapLabel>
-                                        <NumberInput
-                                            value={position.offsetX}
-                                            onChange={(offsetX) => {
+                            </div>
+
+                            <div className={css.formSection}>
+                                <h2 className={css.title}>Intro message</h2>
+                                <DEPRECATED_InputField
+                                    className={css.formGroup}
+                                    type="text"
+                                    value={introductionText}
+                                    onFocus={() =>
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            isOnline: true,
+                                        }))
+                                    }
+                                    onChange={(value: string) =>
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            introductionText: value,
+                                        }))
+                                    }
+                                    label={
+                                        isAutomationSettingsRevampEnabled
+                                            ? 'During business hours'
+                                            : 'Introduction text during business hours'
+                                    }
+                                    maxLength={
+                                        GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
+                                    }
+                                />
+                                <DEPRECATED_InputField
+                                    className={css.formGroup}
+                                    type="text"
+                                    value={offlineIntroductionText}
+                                    onFocus={() => {
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            isOnline: false,
+                                        }))
+                                    }}
+                                    onChange={(value: string) => {
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            offlineIntroductionText: value,
+                                        }))
+                                    }}
+                                    label={
+                                        isAutomationSettingsRevampEnabled
+                                            ? 'Outside business hours'
+                                            : 'Introduction text outside business hours'
+                                    }
+                                    maxLength={
+                                        GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
+                                    }
+                                />
+
+                                {viewTranslateEdit && isUpdate && (
+                                    <CustomizeToneOfVoiceBlock
+                                        integrationId={integration.get('id')}
+                                    />
+                                )}
+                            </div>
+
+                            <div className={css.formSection}>
+                                <h2 className={css.title}>Colors</h2>
+
+                                <div
+                                    className={classNames(
+                                        css.colorPickersWrapper
+                                    )}
+                                >
+                                    <ColorField
+                                        className={css.colorPicker}
+                                        value={mainColor}
+                                        onChange={(value: string) => {
+                                            setState((prevState) => ({
+                                                ...prevState,
+                                                mainColor: value,
+                                            }))
+                                        }}
+                                        label="Main color"
+                                    />
+                                    <ColorField
+                                        className={css.colorPicker}
+                                        value={conversationColor}
+                                        onChange={(value: string) =>
+                                            setState((prevState) => ({
+                                                ...prevState,
+                                                conversationColor: value,
+                                            }))
+                                        }
+                                        label="Conversation color"
+                                    />
+                                </div>
+                            </div>
+
+                            {shouldShowFontCustomization && (
+                                <div className={css.formSection}>
+                                    <h2 className={css.title}>Font</h2>
+                                    <div className={css.formGroup}>
+                                        <FontSelectField
+                                            value={state.mainFontFamily}
+                                            defaultFonts={
+                                                GORGIAS_CHAT_DEFAULT_FONTS
+                                            }
+                                            onChange={(mainFontFamily) => {
                                                 setState((prevState) => ({
                                                     ...prevState,
-                                                    position: {
-                                                        ...position,
-                                                        offsetX: offsetX || 0,
-                                                    },
+                                                    mainFontFamily,
                                                 }))
                                             }}
-                                            min={-20}
-                                            max={200}
-                                            suffix="px"
-                                            onFocus={() => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    editedPositionAxis:
-                                                        PositionAxis.AXIS_X,
-                                                }))
-                                                setIsChatOpenInPreview(false)
-                                            }}
-                                            onBlur={() => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    editedPositionAxis: null,
-                                                }))
-                                            }}
-                                        />
-                                    </div>
-                                    <div>
-                                        <ReactStrapLabel className={css.bold}>
-                                            Move up / down
-                                            <span id="move-widget-up-down">
-                                                <i
-                                                    className={classNames(
-                                                        'material-icons-outlined',
-                                                        css.tooltipIcon
-                                                    )}
-                                                >
-                                                    info
-                                                </i>
-                                                <Tooltip
-                                                    style={{
-                                                        textAlign: 'left',
-                                                    }}
-                                                    target="move-widget-up-down"
-                                                >
-                                                    Move the chat up or down to
-                                                    avoid overlap with other
-                                                    widgets you might have. By
-                                                    default, the chat icon is
-                                                    displayed at 20px from the
-                                                    left/right edges and and
-                                                    20px from the top/bottom
-                                                    edges.
-                                                </Tooltip>
-                                            </span>
-                                        </ReactStrapLabel>
-                                        <NumberInput
-                                            value={position.offsetY}
-                                            onChange={(offsetY) => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    position: {
-                                                        ...position,
-                                                        offsetY: offsetY || 0,
-                                                    },
-                                                }))
-                                            }}
-                                            min={-20}
-                                            max={200}
-                                            suffix="px"
-                                            onFocus={() => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    editedPositionAxis:
-                                                        PositionAxis.AXIS_Y,
-                                                }))
-                                                setIsChatOpenInPreview(false)
-                                            }}
-                                            onBlur={() => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    editedPositionAxis: null,
-                                                }))
-                                            }}
+                                            placeholder="Select a font"
                                         />
                                     </div>
                                 </div>
+                            )}
+
+                            {isUpdate && (
+                                <>
+                                    {shouldShowAvatarCustomization ? (
+                                        <div className={css.formSection}>
+                                            <h2 className={css.title}>
+                                                Company logo
+                                            </h2>
+                                            <ImageField
+                                                isDiscardable={true}
+                                                onChange={
+                                                    onCompanyLogoUrlChange
+                                                }
+                                                url={avatar.companyLogoUrl}
+                                                maxSize={500 * 1000}
+                                            />
+                                            <h2
+                                                className={classNames(
+                                                    css.title,
+                                                    'mt-5'
+                                                )}
+                                            >
+                                                Agent avatar
+                                            </h2>
+
+                                            <div
+                                                className={
+                                                    css.avatarInputsWrapper
+                                                }
+                                            >
+                                                <RadioFieldSet
+                                                    className={
+                                                        css.radioFieldSet
+                                                    }
+                                                    label="Name"
+                                                    name="avatar-name-type-field"
+                                                    options={
+                                                        avatarNameTypeOptions
+                                                    }
+                                                    selectedValue={
+                                                        avatar.nameType
+                                                    }
+                                                    onChange={(value) =>
+                                                        setState(
+                                                            (prevState) => ({
+                                                                ...prevState,
+                                                                avatar: {
+                                                                    ...prevState.avatar,
+                                                                    nameType:
+                                                                        value as GorgiasChatAvatarNameType,
+                                                                },
+                                                            })
+                                                        )
+                                                    }
+                                                />
+                                                <RadioFieldSet
+                                                    className={
+                                                        css.radioFieldSet
+                                                    }
+                                                    label="Image"
+                                                    name="avatar-image-type-field"
+                                                    options={
+                                                        avatarImageTypeOptions
+                                                    }
+                                                    selectedValue={
+                                                        avatar.imageType
+                                                    }
+                                                    onChange={(value) =>
+                                                        setState(
+                                                            (prevState) => ({
+                                                                ...prevState,
+                                                                avatar: {
+                                                                    ...prevState.avatar,
+                                                                    imageType:
+                                                                        value as GorgiasChatAvatarImageType,
+                                                                },
+                                                            })
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className={css.formSection}>
+                                            <h2 className={css.title}>
+                                                Chat header
+                                            </h2>
+
+                                            <RadioFieldSet
+                                                name="type-field"
+                                                className="mb-3"
+                                                options={avatarTypeOptions}
+                                                selectedValue={avatarType}
+                                                onChange={(value) =>
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        avatarType: value,
+                                                    }))
+                                                }
+                                                label="Image"
+                                            />
+                                            {isTeamPictureAvatarSelected && (
+                                                <div
+                                                    key="file-field"
+                                                    className="d-flex flex-direction-row mb-2"
+                                                >
+                                                    {!!avatarTeamPictureUrl && (
+                                                        <img
+                                                            className="mr-3"
+                                                            style={{
+                                                                maxWidth:
+                                                                    '100px',
+                                                            }}
+                                                            src={
+                                                                avatarTeamPictureUrl
+                                                            }
+                                                            alt="Team avatar"
+                                                        />
+                                                    )}
+                                                    <FileField
+                                                        returnFiles={false}
+                                                        noPreview={true}
+                                                        onChange={(
+                                                            avatarTeamPictureUrl: string
+                                                        ) =>
+                                                            setState(
+                                                                (
+                                                                    prevState
+                                                                ) => ({
+                                                                    ...prevState,
+                                                                    avatarTeamPictureUrl,
+                                                                })
+                                                            )
+                                                        }
+                                                        uploadType="avatar_team_picture"
+                                                        params={{
+                                                            ['integration_id']:
+                                                                integration.get(
+                                                                    'id'
+                                                                ),
+                                                        }}
+                                                        maxSize={500 * 1000}
+                                                        required={
+                                                            isTeamPictureAvatarSelected &&
+                                                            !avatarTeamPictureUrl
+                                                        }
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </>
+                            )}
+
+                            <div className={css.formSection}>
+                                <h2 className={css.title}>Launcher</h2>
+
+                                {shouldShowLauncherCustomization && (
+                                    <div ref={launcherCustomizationRef}>
+                                        <div className={css.launcherTypes}>
+                                            <PreviewRadioButton
+                                                isSelected={
+                                                    state.launcher.type ===
+                                                    GorgiasChatLauncherType.ICON
+                                                }
+                                                label="Icon"
+                                                preview={
+                                                    <div
+                                                        className={
+                                                            css.launcherPreview
+                                                        }
+                                                    >
+                                                        <ChatLauncher
+                                                            type={
+                                                                GorgiasChatLauncherType.ICON
+                                                            }
+                                                            backgroundColor={
+                                                                mainColor
+                                                            }
+                                                            windowState="closed"
+                                                        />
+                                                    </div>
+                                                }
+                                                value={
+                                                    GorgiasChatLauncherType.ICON
+                                                }
+                                                onClick={() => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        launcher: {
+                                                            ...prevState.launcher,
+                                                            type: GorgiasChatLauncherType.ICON,
+                                                        },
+                                                    }))
+                                                    setIsChatOpenInPreview(
+                                                        false
+                                                    )
+                                                }}
+                                            />
+
+                                            <PreviewRadioButton
+                                                isSelected={
+                                                    state.launcher.type ===
+                                                    GorgiasChatLauncherType.ICON_AND_LABEL
+                                                }
+                                                label="Icon and label"
+                                                preview={
+                                                    <div
+                                                        className={
+                                                            css.launcherPreview
+                                                        }
+                                                    >
+                                                        <ChatLauncher
+                                                            type={
+                                                                GorgiasChatLauncherType.ICON_AND_LABEL
+                                                            }
+                                                            backgroundColor={
+                                                                mainColor
+                                                            }
+                                                            label={
+                                                                launcherLabel
+                                                            }
+                                                            windowState="closed"
+                                                        />
+                                                    </div>
+                                                }
+                                                value={
+                                                    GorgiasChatLauncherType.ICON_AND_LABEL
+                                                }
+                                                onClick={() => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        launcher: {
+                                                            type: GorgiasChatLauncherType.ICON_AND_LABEL,
+                                                            label: launcherLabel,
+                                                        },
+                                                    }))
+                                                    setIsChatOpenInPreview(
+                                                        false
+                                                    )
+                                                }}
+                                            />
+                                        </div>
+                                        {state.launcher.type ===
+                                            GorgiasChatLauncherType.ICON_AND_LABEL && (
+                                            <div
+                                                className={
+                                                    css.launcherSettingsGrid
+                                                }
+                                            >
+                                                <InputField
+                                                    className={classNames(
+                                                        css.formGroup,
+                                                        css.launcherLabelInput
+                                                    )}
+                                                    type="text"
+                                                    label="Label"
+                                                    value={state.launcher.label}
+                                                    onFocus={() => {
+                                                        setIsChatOpenInPreview(
+                                                            false
+                                                        )
+                                                    }}
+                                                    onChange={(
+                                                        value: string
+                                                    ) => {
+                                                        setState(
+                                                            (prevState) => ({
+                                                                ...prevState,
+                                                                launcher: {
+                                                                    type: GorgiasChatLauncherType.ICON_AND_LABEL,
+                                                                    label: value,
+                                                                },
+                                                            })
+                                                        )
+                                                        setIsChatOpenInPreview(
+                                                            false
+                                                        )
+                                                    }}
+                                                    isRequired
+                                                    maxLength={20}
+                                                    caption={`${
+                                                        state.launcher.label
+                                                            ?.length || 0
+                                                    }/20 characters`}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
+                                <div className={css.launcherSettingsGrid}>
+                                    <DEPRECATED_InputField
+                                        className={css.formGroup}
+                                        type="select"
+                                        value={position.alignment}
+                                        options={GORGIAS_CHAT_WIDGET_POSITION_OPTIONS.toJS()}
+                                        onChange={(
+                                            alignment: GorgiasChatPositionAlignmentEnum
+                                        ) => {
+                                            setState((prevState) => ({
+                                                ...prevState,
+                                                position: {
+                                                    ...position,
+                                                    alignment,
+                                                },
+                                            }))
+                                        }}
+                                        label="Widget position on page"
+                                    >
+                                        {GORGIAS_CHAT_WIDGET_POSITION_OPTIONS.map(
+                                            (option) => {
+                                                const value =
+                                                    option?.get('value')
+                                                const label =
+                                                    option?.get('label')
+                                                return (
+                                                    <option
+                                                        key={value}
+                                                        value={value}
+                                                    >
+                                                        {label}
+                                                    </option>
+                                                )
+                                            }
+                                        )}
+                                    </DEPRECATED_InputField>
+                                    <div className={css.positionInputsWrapper}>
+                                        <div>
+                                            <ReactStrapLabel
+                                                className={css.bold}
+                                            >
+                                                Move left / right
+                                                <span id="move-widget-left-right">
+                                                    <i
+                                                        className={classNames(
+                                                            'material-icons-outlined',
+                                                            css.tooltipIcon
+                                                        )}
+                                                    >
+                                                        info
+                                                    </i>
+                                                    <Tooltip
+                                                        style={{
+                                                            textAlign: 'left',
+                                                        }}
+                                                        target="move-widget-left-right"
+                                                    >
+                                                        Move the chat left or
+                                                        right to avoid overlap
+                                                        with other widgets you
+                                                        might have. By default,
+                                                        the chat icon is
+                                                        displayed at 20px from
+                                                        the left/right edges and
+                                                        and 20px from the
+                                                        top/bottom edges.
+                                                    </Tooltip>
+                                                </span>
+                                            </ReactStrapLabel>
+                                            <NumberInput
+                                                value={position.offsetX}
+                                                onChange={(offsetX) => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        position: {
+                                                            ...position,
+                                                            offsetX:
+                                                                offsetX || 0,
+                                                        },
+                                                    }))
+                                                }}
+                                                min={-20}
+                                                max={200}
+                                                suffix="px"
+                                                onFocus={() => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        editedPositionAxis:
+                                                            PositionAxis.AXIS_X,
+                                                    }))
+                                                    setIsChatOpenInPreview(
+                                                        false
+                                                    )
+                                                }}
+                                                onBlur={() => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        editedPositionAxis:
+                                                            null,
+                                                    }))
+                                                }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <ReactStrapLabel
+                                                className={css.bold}
+                                            >
+                                                Move up / down
+                                                <span id="move-widget-up-down">
+                                                    <i
+                                                        className={classNames(
+                                                            'material-icons-outlined',
+                                                            css.tooltipIcon
+                                                        )}
+                                                    >
+                                                        info
+                                                    </i>
+                                                    <Tooltip
+                                                        style={{
+                                                            textAlign: 'left',
+                                                        }}
+                                                        target="move-widget-up-down"
+                                                    >
+                                                        Move the chat up or down
+                                                        to avoid overlap with
+                                                        other widgets you might
+                                                        have. By default, the
+                                                        chat icon is displayed
+                                                        at 20px from the
+                                                        left/right edges and and
+                                                        20px from the top/bottom
+                                                        edges.
+                                                    </Tooltip>
+                                                </span>
+                                            </ReactStrapLabel>
+                                            <NumberInput
+                                                value={position.offsetY}
+                                                onChange={(offsetY) => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        position: {
+                                                            ...position,
+                                                            offsetY:
+                                                                offsetY || 0,
+                                                        },
+                                                    }))
+                                                }}
+                                                min={-20}
+                                                max={200}
+                                                suffix="px"
+                                                onFocus={() => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        editedPositionAxis:
+                                                            PositionAxis.AXIS_Y,
+                                                    }))
+                                                    setIsChatOpenInPreview(
+                                                        false
+                                                    )
+                                                }}
+                                                onBlur={() => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        editedPositionAxis:
+                                                            null,
+                                                    }))
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <Button
+                                    type="submit"
+                                    isDisabled={!isUpdate && !canSubmit}
+                                    isLoading={isSubmitting}
+                                >
+                                    {isUpdate ? 'Save changes' : 'Add new chat'}
+                                </Button>
+                                {!isUpdate && (
+                                    <Button
+                                        intent="secondary"
+                                        onClick={() => {
+                                            history.push(
+                                                '/app/settings/channels/gorgias_chat'
+                                            )
+                                        }}
+                                        className={css.cancelButton}
+                                    >
+                                        Cancel
+                                    </Button>
+                                )}
                             </div>
                         </div>
-                        <div>
-                            <Button
-                                type="submit"
-                                isDisabled={!isUpdate && !canSubmit}
-                                isLoading={isSubmitting}
-                            >
-                                {isUpdate ? 'Save changes' : 'Add new chat'}
-                            </Button>
-                            {!isUpdate && (
-                                <Button
-                                    intent="secondary"
-                                    onClick={() => {
-                                        history.push(
-                                            '/app/settings/channels/gorgias_chat'
-                                        )
-                                    }}
-                                    className={css.cancelButton}
-                                >
-                                    Cancel
-                                </Button>
-                            )}
-                        </div>
-                    </div>
-                </Form>
-            </GorgiasChatIntegrationPreviewContainer>
-        </div>
+                    </Form>
+                </GorgiasChatIntegrationPreviewContainer>
+            </div>
+        </>
     )
 }
 

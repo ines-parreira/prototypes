@@ -2,6 +2,9 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
+import {Router} from 'react-router-dom'
+
+import history from 'pages/history'
 
 import {billingState} from 'fixtures/billing'
 import {entitiesInitialState} from 'fixtures/entities'
@@ -83,23 +86,25 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
 
     it('should display the associated Shopify store when shop_name and shop_type are defined and installed in shopify_integration_ids', () => {
         const {container} = render(
-            <Provider store={minProps.store}>
-                <GorgiasChatIntegrationInstall
-                    {...minProps}
-                    integration={fromJS({
-                        id: 2,
-                        name: 'mychat',
-                        type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                        meta: {
-                            shop_name: 'mylittleintegration3',
-                            shop_type: SHOPIFY_INTEGRATION_TYPE,
-                            shopify_integration_ids: [3],
-                            script_url: 'config.gorgias.io/foo/chat/bar',
-                        },
-                    })}
-                    isUpdate={false}
-                />
-            </Provider>
+            <Router history={history}>
+                <Provider store={minProps.store}>
+                    <GorgiasChatIntegrationInstall
+                        {...minProps}
+                        integration={fromJS({
+                            id: 2,
+                            name: 'mychat',
+                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                            meta: {
+                                shop_name: 'mylittleintegration3',
+                                shop_type: SHOPIFY_INTEGRATION_TYPE,
+                                shopify_integration_ids: [3],
+                                script_url: 'config.gorgias.io/foo/chat/bar',
+                            },
+                        })}
+                        isUpdate={false}
+                    />
+                </Provider>
+            </Router>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -107,21 +112,23 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
 
     it('should display a list of Shopify store if the chat as multiple shopify_integration_ids', () => {
         const {container} = render(
-            <Provider store={minProps.store}>
-                <GorgiasChatIntegrationInstall
-                    {...minProps}
-                    integration={fromJS({
-                        id: 2,
-                        name: 'mychat',
-                        type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                        meta: {
-                            shopify_integration_ids: [1, 2, 3],
-                            script_url: 'config.gorgias.io/foo/chat/bar',
-                        },
-                    })}
-                    isUpdate={false}
-                />
-            </Provider>
+            <Router history={history}>
+                <Provider store={minProps.store}>
+                    <GorgiasChatIntegrationInstall
+                        {...minProps}
+                        integration={fromJS({
+                            id: 2,
+                            name: 'mychat',
+                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                            meta: {
+                                shopify_integration_ids: [1, 2, 3],
+                                script_url: 'config.gorgias.io/foo/chat/bar',
+                            },
+                        })}
+                        isUpdate={false}
+                    />
+                </Provider>
+            </Router>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -129,21 +136,23 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
 
     it('should display the Custom installation block if shop_name & shop_type are not set and there is no shopify_integration_ids', () => {
         const {container} = render(
-            <Provider store={minProps.store}>
-                <GorgiasChatIntegrationInstall
-                    {...minProps}
-                    integration={fromJS({
-                        id: 2,
-                        name: 'mychat',
-                        type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                        meta: {
-                            shopify_integration_ids: [],
-                            script_url: 'config.gorgias.io/foo/chat/bar',
-                        },
-                    })}
-                    isUpdate={false}
-                />
-            </Provider>
+            <Router history={history}>
+                <Provider store={minProps.store}>
+                    <GorgiasChatIntegrationInstall
+                        {...minProps}
+                        integration={fromJS({
+                            id: 2,
+                            name: 'mychat',
+                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                            meta: {
+                                shopify_integration_ids: [],
+                                script_url: 'config.gorgias.io/foo/chat/bar',
+                            },
+                        })}
+                        isUpdate={false}
+                    />
+                </Provider>
+            </Router>
         )
 
         expect(container.firstChild).toMatchSnapshot()

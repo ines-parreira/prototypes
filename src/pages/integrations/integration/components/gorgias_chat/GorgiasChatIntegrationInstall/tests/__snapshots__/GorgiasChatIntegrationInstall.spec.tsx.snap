@@ -474,7 +474,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                       >
                         <pre
                           class="code"
-                          id="code-snippet-3"
+                          id="code-snippet-5"
                         >
                           &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                         </pre>
@@ -561,7 +561,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                       >
                         <pre
                           class="code"
-                          id="code-snippet-4"
+                          id="code-snippet-6"
                         >
                           &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                         </pre>
@@ -946,7 +946,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                       >
                         <pre
                           class="code"
-                          id="code-snippet-5"
+                          id="code-snippet-8"
                         >
                           &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                         </pre>
@@ -1420,7 +1420,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                       >
                         <pre
                           class="code"
-                          id="code-snippet-1"
+                          id="code-snippet-2"
                         >
                           &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                         </pre>
@@ -1507,7 +1507,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                       >
                         <pre
                           class="code"
-                          id="code-snippet-2"
+                          id="code-snippet-3"
                         >
                           &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                         </pre>

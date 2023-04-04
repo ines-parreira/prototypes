@@ -17,6 +17,10 @@ import {getStoreIntegrations} from 'state/integrations/selectors'
 import Button from 'pages/common/components/button/Button'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import {
+    NavigatedSuccessModalLocationState,
+    NavigatedSuccessModalName,
+} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 
 import GorgiasChatIntegrationConnectStore from '../../../GorgiasChatIntegrationInstall/GorgiasChatIntegrationConnectStore'
 
@@ -58,8 +62,20 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
 
     const [{loading: isInstallPending}, handleInstall] =
         useAsyncFn(async () => {
+            const id = integration.get('id') as number
+
             if (!isOneClickInstallation) {
-                return Promise.resolve()
+                const locationState: NavigatedSuccessModalLocationState = {
+                    showModal:
+                        NavigatedSuccessModalName.GorgiasChatManualInstallation,
+                }
+
+                history.push(
+                    `/app/settings/channels/gorgias_chat/${id}/installation`,
+                    locationState
+                )
+
+                return
             }
 
             const shopIntegrationId = integration.getIn([
@@ -75,7 +91,19 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                     .toJS(),
             }
 
-            await dispatch(updateOrCreateIntegration(fromJS(form)))
+            await dispatch(
+                updateOrCreateIntegration(fromJS(form), undefined, true, () => {
+                    const locationState: NavigatedSuccessModalLocationState = {
+                        showModal:
+                            NavigatedSuccessModalName.GorgiasChatAutoInstallation,
+                    }
+
+                    history.push(
+                        `/app/settings/channels/gorgias_chat/${id}/appearance`,
+                        locationState
+                    )
+                })
+            )
         }, [integration, isOneClickInstallation])
 
     return (

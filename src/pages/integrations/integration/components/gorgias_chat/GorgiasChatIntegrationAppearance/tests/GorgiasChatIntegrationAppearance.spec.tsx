@@ -2,8 +2,11 @@ import React, {ComponentProps} from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import {Router} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
+
+import history from 'pages/history'
 
 import {user} from 'fixtures/users'
 import {RootState, StoreDispatch} from 'state/types'
@@ -131,15 +134,17 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
     describe('render()', () => {
         it('should display correctly when creating a new chat integration', () => {
             const {container} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <GorgiasChatIntegrationAppearanceComponent
-                        {...minProps}
-                        loading={fromJS({updateIntegration: false})}
-                        integration={fromJS({})}
-                        currentUser={fromJS({})}
-                        isUpdate={false}
-                    />
-                </Provider>
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationAppearanceComponent
+                            {...minProps}
+                            loading={fromJS({updateIntegration: false})}
+                            integration={fromJS({})}
+                            currentUser={fromJS({})}
+                            isUpdate={false}
+                        />
+                    </Provider>
+                </Router>
             )
 
             expect(container).toMatchSnapshot()
@@ -147,22 +152,25 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
         it('should display correctly when updating an existing integration', () => {
             const {container} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <GorgiasChatIntegrationAppearanceComponent
-                        {...minProps}
-                        loading={fromJS({updateIntegration: false})}
-                        integration={fromJS({
-                            id: 2,
-                            name: 'hellochatintegration',
-                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                            meta: {
-                                language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                            },
-                        })}
-                        currentUser={fromJS({})}
-                        isUpdate={true}
-                    />
-                </Provider>
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationAppearanceComponent
+                            {...minProps}
+                            loading={fromJS({updateIntegration: false})}
+                            integration={fromJS({
+                                id: 2,
+                                name: 'hellochatintegration',
+                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                meta: {
+                                    language:
+                                        GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                                },
+                            })}
+                            currentUser={fromJS({})}
+                            isUpdate={true}
+                        />
+                    </Provider>
+                </Router>
             )
 
             expect(container).toMatchSnapshot()
@@ -170,22 +178,25 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
         it('should display correctly when integration is loading', () => {
             const {container} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <GorgiasChatIntegrationAppearanceComponent
-                        {...minProps}
-                        loading={fromJS({updateIntegration: 2})}
-                        integration={fromJS({
-                            id: 2,
-                            name: 'hellochatintegration',
-                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                            meta: {
-                                language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                            },
-                        })}
-                        currentUser={fromJS({})}
-                        isUpdate={true}
-                    />
-                </Provider>
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationAppearanceComponent
+                            {...minProps}
+                            loading={fromJS({updateIntegration: 2})}
+                            integration={fromJS({
+                                id: 2,
+                                name: 'hellochatintegration',
+                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                meta: {
+                                    language:
+                                        GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                                },
+                            })}
+                            currentUser={fromJS({})}
+                            isUpdate={true}
+                        />
+                    </Provider>
+                </Router>
             )
 
             expect(container).toMatchSnapshot()
@@ -196,28 +207,30 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                 'there is no team picture set',
             () => {
                 const {container} = render(
-                    <Provider store={mockStore(defaultState)}>
-                        <GorgiasChatIntegrationAppearanceComponent
-                            {...minProps}
-                            loading={fromJS({updateIntegration: false})}
-                            integration={fromJS({
-                                id: 2,
-                                name: 'hellochatintegration',
-                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                                decoration: {
-                                    avatar_type:
-                                        GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
-                                    avatar_team_picture_url: null,
-                                },
-                                meta: {
-                                    language:
-                                        GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                                },
-                            })}
-                            currentUser={fromJS({})}
-                            isUpdate={true}
-                        />
-                    </Provider>
+                    <Router history={history}>
+                        <Provider store={mockStore(defaultState)}>
+                            <GorgiasChatIntegrationAppearanceComponent
+                                {...minProps}
+                                loading={fromJS({updateIntegration: false})}
+                                integration={fromJS({
+                                    id: 2,
+                                    name: 'hellochatintegration',
+                                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                    decoration: {
+                                        avatar_type:
+                                            GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
+                                        avatar_team_picture_url: null,
+                                    },
+                                    meta: {
+                                        language:
+                                            GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                                    },
+                                })}
+                                currentUser={fromJS({})}
+                                isUpdate={true}
+                            />
+                        </Provider>
+                    </Router>
                 )
 
                 expect(container).toMatchSnapshot()
@@ -229,29 +242,31 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                 'there is a team picture set',
             () => {
                 const {container} = render(
-                    <Provider store={mockStore(defaultState)}>
-                        <GorgiasChatIntegrationAppearanceComponent
-                            {...minProps}
-                            loading={fromJS({updateIntegration: false})}
-                            integration={fromJS({
-                                id: 2,
-                                name: 'hellochatintegration',
-                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                                decoration: {
-                                    avatar_type:
-                                        GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
-                                    avatar_team_picture_url:
-                                        'https://gorgias.io/teampicture.png',
-                                },
-                                meta: {
-                                    language:
-                                        GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                                },
-                            })}
-                            currentUser={fromJS({})}
-                            isUpdate={true}
-                        />
-                    </Provider>
+                    <Router history={history}>
+                        <Provider store={mockStore(defaultState)}>
+                            <GorgiasChatIntegrationAppearanceComponent
+                                {...minProps}
+                                loading={fromJS({updateIntegration: false})}
+                                integration={fromJS({
+                                    id: 2,
+                                    name: 'hellochatintegration',
+                                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                    decoration: {
+                                        avatar_type:
+                                            GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
+                                        avatar_team_picture_url:
+                                            'https://gorgias.io/teampicture.png',
+                                    },
+                                    meta: {
+                                        language:
+                                            GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                                    },
+                                })}
+                                currentUser={fromJS({})}
+                                isUpdate={true}
+                            />
+                        </Provider>
+                    </Router>
                 )
 
                 expect(container).toMatchSnapshot()
@@ -263,28 +278,30 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                 '`team-members`',
             () => {
                 const {container} = render(
-                    <Provider store={mockStore(defaultState)}>
-                        <GorgiasChatIntegrationAppearanceComponent
-                            {...minProps}
-                            loading={fromJS({updateIntegration: false})}
-                            integration={fromJS({
-                                id: 2,
-                                name: 'hellochatintegration',
-                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                                decoration: {
-                                    avatar_type:
-                                        GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
-                                    avatar_team_picture_url: null,
-                                },
-                                meta: {
-                                    language:
-                                        GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                                },
-                            })}
-                            currentUser={fromJS({})}
-                            isUpdate={true}
-                        />
-                    </Provider>
+                    <Router history={history}>
+                        <Provider store={mockStore(defaultState)}>
+                            <GorgiasChatIntegrationAppearanceComponent
+                                {...minProps}
+                                loading={fromJS({updateIntegration: false})}
+                                integration={fromJS({
+                                    id: 2,
+                                    name: 'hellochatintegration',
+                                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                    decoration: {
+                                        avatar_type:
+                                            GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
+                                        avatar_team_picture_url: null,
+                                    },
+                                    meta: {
+                                        language:
+                                            GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                                    },
+                                })}
+                                currentUser={fromJS({})}
+                                isUpdate={true}
+                            />
+                        </Provider>
+                    </Router>
                 )
 
                 expect(container).toMatchSnapshot()
@@ -297,87 +314,91 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             )
 
             const {container} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <GorgiasChatIntegrationAppearanceComponent
-                        {...minProps}
-                        actions={
-                            {
-                                createGorgiasChatIntegration:
-                                    mockCreateGorgiasChatIntegration,
-                                deleteIntegration: jest.fn(() =>
-                                    Promise.resolve()
-                                ),
-                            } as unknown as typeof IntegrationsActions
-                        }
-                        gorgiasChatIntegrations={fromJS([
-                            {
-                                id: 1,
-                                name: 'myChat1',
-                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                                meta: {
-                                    shop_name: 'myStore1',
-                                    shop_type: SHOPIFY_INTEGRATION_TYPE,
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationAppearanceComponent
+                            {...minProps}
+                            actions={
+                                {
+                                    createGorgiasChatIntegration:
+                                        mockCreateGorgiasChatIntegration,
+                                    deleteIntegration: jest.fn(() =>
+                                        Promise.resolve()
+                                    ),
+                                } as unknown as typeof IntegrationsActions
+                            }
+                            gorgiasChatIntegrations={fromJS([
+                                {
+                                    id: 1,
+                                    name: 'myChat1',
+                                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: 'myStore1',
+                                        shop_type: SHOPIFY_INTEGRATION_TYPE,
+                                    },
                                 },
-                            },
-                            {
+                                {
+                                    id: 2,
+                                    name: 'myChat2',
+                                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: 'myStore2',
+                                        shop_type: SHOPIFY_INTEGRATION_TYPE,
+                                    },
+                                },
+                                {
+                                    id: 3,
+                                    name: 'myChat3',
+                                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: 'myStore2',
+                                        shop_type: SHOPIFY_INTEGRATION_TYPE,
+                                    },
+                                },
+                            ])}
+                            shopifyIntegrations={fromJS([
+                                {
+                                    id: 1,
+                                    name: 'myStore1',
+                                    type: SHOPIFY_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: 'myStore1',
+                                    },
+                                },
+                                {
+                                    id: 2,
+                                    name: 'myStore2',
+                                    type: SHOPIFY_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: 'myStore2',
+                                    },
+                                },
+                                {
+                                    id: 3,
+                                    deactivated_datetime:
+                                        '2021-01-26T00:29:00Z',
+                                    name: 'myStore3',
+                                    type: SHOPIFY_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: 'myStore3',
+                                    },
+                                },
+                            ])}
+                            loading={fromJS({updateIntegration: false})}
+                            integration={fromJS({
                                 id: 2,
-                                name: 'myChat2',
+                                name: 'hellochatintegration',
                                 type: GORGIAS_CHAT_INTEGRATION_TYPE,
                                 meta: {
-                                    shop_name: 'myStore2',
-                                    shop_type: SHOPIFY_INTEGRATION_TYPE,
+                                    language:
+                                        GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                                 },
-                            },
-                            {
-                                id: 3,
-                                name: 'myChat3',
-                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                                meta: {
-                                    shop_name: 'myStore2',
-                                    shop_type: SHOPIFY_INTEGRATION_TYPE,
-                                },
-                            },
-                        ])}
-                        shopifyIntegrations={fromJS([
-                            {
-                                id: 1,
-                                name: 'myStore1',
-                                type: SHOPIFY_INTEGRATION_TYPE,
-                                meta: {
-                                    shop_name: 'myStore1',
-                                },
-                            },
-                            {
-                                id: 2,
-                                name: 'myStore2',
-                                type: SHOPIFY_INTEGRATION_TYPE,
-                                meta: {
-                                    shop_name: 'myStore2',
-                                },
-                            },
-                            {
-                                id: 3,
-                                deactivated_datetime: '2021-01-26T00:29:00Z',
-                                name: 'myStore3',
-                                type: SHOPIFY_INTEGRATION_TYPE,
-                                meta: {
-                                    shop_name: 'myStore3',
-                                },
-                            },
-                        ])}
-                        loading={fromJS({updateIntegration: false})}
-                        integration={fromJS({
-                            id: 2,
-                            name: 'hellochatintegration',
-                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                            meta: {
-                                language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                            },
-                        })}
-                        currentUser={fromJS({})}
-                        isUpdate={false}
-                    />
-                </Provider>
+                            })}
+                            currentUser={fromJS({})}
+                            isUpdate={false}
+                        />
+                    </Provider>
+                </Router>
             )
 
             expect(container).toMatchSnapshot()
@@ -442,89 +463,92 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             )
 
             const {container} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <GorgiasChatIntegrationAppearanceComponent
-                        {...minProps}
-                        actions={
-                            {
-                                updateOrCreateIntegration:
-                                    mockUpdateOrCreateIntegration,
-                                deleteIntegration: jest.fn(() =>
-                                    Promise.resolve()
-                                ),
-                            } as unknown as typeof IntegrationsActions
-                        }
-                        gorgiasChatIntegrations={fromJS([
-                            {
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationAppearanceComponent
+                            {...minProps}
+                            actions={
+                                {
+                                    updateOrCreateIntegration:
+                                        mockUpdateOrCreateIntegration,
+                                    deleteIntegration: jest.fn(() =>
+                                        Promise.resolve()
+                                    ),
+                                } as unknown as typeof IntegrationsActions
+                            }
+                            gorgiasChatIntegrations={fromJS([
+                                {
+                                    id: 1,
+                                    name: 'myChat1',
+                                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: 'myStore1',
+                                        shop_type: SHOPIFY_INTEGRATION_TYPE,
+                                    },
+                                },
+                                {
+                                    id: 2,
+                                    name: 'myChat2',
+                                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: 'myStore2',
+                                        shop_type: SHOPIFY_INTEGRATION_TYPE,
+                                    },
+                                },
+                                {
+                                    id: 3,
+                                    name: 'myChat3',
+                                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: 'myStore2',
+                                        shop_type: SHOPIFY_INTEGRATION_TYPE,
+                                    },
+                                },
+                            ])}
+                            shopifyIntegrations={fromJS([
+                                {
+                                    id: 1,
+                                    name: 'myStore1',
+                                    type: SHOPIFY_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: 'myStore1',
+                                    },
+                                },
+                                {
+                                    id: 2,
+                                    name: 'myStore2',
+                                    type: SHOPIFY_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: 'myStore2',
+                                    },
+                                },
+                                {
+                                    id: 3,
+                                    deactivated_datetime:
+                                        '2021-01-26T00:29:00Z',
+                                    name: 'myStore3',
+                                    type: SHOPIFY_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: 'myStore3',
+                                    },
+                                },
+                            ])}
+                            loading={fromJS({updateIntegration: false})}
+                            integration={fromJS({
                                 id: 1,
                                 name: 'myChat1',
                                 type: GORGIAS_CHAT_INTEGRATION_TYPE,
                                 meta: {
                                     shop_name: 'myStore1',
                                     shop_type: SHOPIFY_INTEGRATION_TYPE,
+                                    shop_integration_id: 2,
                                 },
-                            },
-                            {
-                                id: 2,
-                                name: 'myChat2',
-                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                                meta: {
-                                    shop_name: 'myStore2',
-                                    shop_type: SHOPIFY_INTEGRATION_TYPE,
-                                },
-                            },
-                            {
-                                id: 3,
-                                name: 'myChat3',
-                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                                meta: {
-                                    shop_name: 'myStore2',
-                                    shop_type: SHOPIFY_INTEGRATION_TYPE,
-                                },
-                            },
-                        ])}
-                        shopifyIntegrations={fromJS([
-                            {
-                                id: 1,
-                                name: 'myStore1',
-                                type: SHOPIFY_INTEGRATION_TYPE,
-                                meta: {
-                                    shop_name: 'myStore1',
-                                },
-                            },
-                            {
-                                id: 2,
-                                name: 'myStore2',
-                                type: SHOPIFY_INTEGRATION_TYPE,
-                                meta: {
-                                    shop_name: 'myStore2',
-                                },
-                            },
-                            {
-                                id: 3,
-                                deactivated_datetime: '2021-01-26T00:29:00Z',
-                                name: 'myStore3',
-                                type: SHOPIFY_INTEGRATION_TYPE,
-                                meta: {
-                                    shop_name: 'myStore3',
-                                },
-                            },
-                        ])}
-                        loading={fromJS({updateIntegration: false})}
-                        integration={fromJS({
-                            id: 1,
-                            name: 'myChat1',
-                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                            meta: {
-                                shop_name: 'myStore1',
-                                shop_type: SHOPIFY_INTEGRATION_TYPE,
-                                shop_integration_id: 2,
-                            },
-                        })}
-                        currentUser={fromJS({})}
-                        isUpdate={true}
-                    />
-                </Provider>
+                            })}
+                            currentUser={fromJS({})}
+                            isUpdate={true}
+                        />
+                    </Provider>
+                </Router>
             )
 
             expect(container).toMatchSnapshot()
@@ -586,35 +610,37 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             const shopifyStoreName = 'MY ONLY SHOPIFY STORE'
 
             const {container} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <GorgiasChatIntegrationAppearanceComponent
-                        {...minProps}
-                        actions={
-                            {
-                                updateOrCreateIntegration:
-                                    mockUpdateOrCreateIntegration,
-                                deleteIntegration: jest.fn(() =>
-                                    Promise.resolve()
-                                ),
-                            } as unknown as typeof IntegrationsActions
-                        }
-                        gorgiasChatIntegrations={fromJS([])}
-                        shopifyIntegrations={fromJS([
-                            {
-                                id: 1,
-                                name: shopifyStoreName,
-                                type: SHOPIFY_INTEGRATION_TYPE,
-                                meta: {
-                                    shop_name: shopifyStoreName,
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationAppearanceComponent
+                            {...minProps}
+                            actions={
+                                {
+                                    updateOrCreateIntegration:
+                                        mockUpdateOrCreateIntegration,
+                                    deleteIntegration: jest.fn(() =>
+                                        Promise.resolve()
+                                    ),
+                                } as unknown as typeof IntegrationsActions
+                            }
+                            gorgiasChatIntegrations={fromJS([])}
+                            shopifyIntegrations={fromJS([
+                                {
+                                    id: 1,
+                                    name: shopifyStoreName,
+                                    type: SHOPIFY_INTEGRATION_TYPE,
+                                    meta: {
+                                        shop_name: shopifyStoreName,
+                                    },
                                 },
-                            },
-                        ])}
-                        loading={fromJS({updateIntegration: false})}
-                        integration={fromJS({})}
-                        currentUser={fromJS({})}
-                        isUpdate={false}
-                    />
-                </Provider>
+                            ])}
+                            loading={fromJS({updateIntegration: false})}
+                            integration={fromJS({})}
+                            currentUser={fromJS({})}
+                            isUpdate={false}
+                        />
+                    </Provider>
+                </Router>
             )
 
             expect(container).toMatchSnapshot()
@@ -626,32 +652,35 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             })
 
             const {container} = render(
-                <Provider store={mockStore(defaultState)}>
-                    <GorgiasChatIntegrationAppearanceComponent
-                        {...minProps}
-                        loading={fromJS({updateIntegration: false})}
-                        integration={fromJS({
-                            id: 1,
-                            name: 'Acme Chat',
-                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                            decoration: {
-                                avatar: {
-                                    image_type:
-                                        GorgiasChatAvatarImageType.AGENT_PICTURE,
-                                    name_type:
-                                        GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+                <Router history={history}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationAppearanceComponent
+                            {...minProps}
+                            loading={fromJS({updateIntegration: false})}
+                            integration={fromJS({
+                                id: 1,
+                                name: 'Acme Chat',
+                                type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                decoration: {
+                                    avatar: {
+                                        image_type:
+                                            GorgiasChatAvatarImageType.AGENT_PICTURE,
+                                        name_type:
+                                            GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+                                    },
                                 },
-                            },
-                            meta: {
-                                language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                            },
-                        })}
-                        currentUser={fromJS({
-                            name: 'John Doe',
-                        })}
-                        isUpdate={true}
-                    />
-                </Provider>
+                                meta: {
+                                    language:
+                                        GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                                },
+                            })}
+                            currentUser={fromJS({
+                                name: 'John Doe',
+                            })}
+                            isUpdate={true}
+                        />
+                    </Provider>
+                </Router>
             )
 
             expect(container).toMatchSnapshot()

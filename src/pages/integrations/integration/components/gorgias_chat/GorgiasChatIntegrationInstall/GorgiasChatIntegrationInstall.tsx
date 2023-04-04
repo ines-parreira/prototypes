@@ -10,6 +10,10 @@ import {
     getHasLegacyAutomationAddOnFeatures,
 } from 'state/billing/selectors'
 import {deleteIntegration} from 'state/integrations/actions'
+import NavigatedSuccessModal, {
+    NavigatedSuccessModalName,
+} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
@@ -105,112 +109,134 @@ function GorgiasChatIntegrationInstall({
     const hasOrderManagement =
         hasAutomationAddOn || hasLegacyAutomationAddOnFeatures
 
+    const manualInstallationSuccessModal = (
+        <NavigatedSuccessModal
+            name={NavigatedSuccessModalName.GorgiasChatManualInstallation}
+            icon={SuccessModalIcon.PinchingHand}
+            buttonLabel="See instructions"
+        >
+            <div className="heading-page-semibold mb-2">Almost there!</div>
+            <div className="heading-subsection-regular">
+                Install the chat on your website by following the{' '}
+                <b>Manual installation</b> instructions.
+            </div>
+        </NavigatedSuccessModal>
+    )
+
     if (isAutomationSettingsRevampEnabled) {
         return (
-            <NewGorgiasChatIntegrationInstall
-                integration={integration}
-                actions={actions}
-                isUpdate={isUpdate}
-            />
+            <>
+                {manualInstallationSuccessModal}
+                <NewGorgiasChatIntegrationInstall
+                    integration={integration}
+                    actions={actions}
+                    isUpdate={isUpdate}
+                />
+            </>
         )
     }
 
     return (
-        <div className="full-width">
-            <PageHeader
-                title={
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                            >
-                                Chat
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {integration.get('name')}
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                }
-            />
-
-            <GorgiasChatIntegrationNavigation integration={integration} />
-
-            <Container fluid className={css.pageContainer}>
-                <Row>
-                    <Col className={css.pageColumn} md="8">
-                        {!installationStatus.installed && (
-                            <div className={css.installationStatusIssue}>
-                                <Alert type={AlertType.Error} icon>
-                                    Your chat widget was not seen installed on
-                                    your website in the past 72 hours. Check its
-                                    installation and your website to resolve.{' '}
-                                    <a
-                                        href="https://docs.gorgias.com/en-US/chat-getting-started-81789#installation-monitoring"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        More information
-                                    </a>
-                                </Alert>
-                            </div>
-                        )}
-                        {isShopifyChat ? (
-                            <GorgiasChatIntegrationOneClickInstallationCard
-                                integration={integration}
-                                updateOrCreateIntegration={
-                                    actions.updateOrCreateIntegration
-                                }
-                                shopifyIntegrations={shopifyIntegrations}
-                                hasOrderManagement={hasOrderManagement}
-                            />
-                        ) : (
-                            <GorgiasChatIntegrationConnectToStoreCard
-                                integration={integration}
-                                updateOrCreateIntegration={
-                                    actions.updateOrCreateIntegration
-                                }
-                                shopifyIntegrations={shopifyIntegrations}
-                                gorgiasChatIntegrations={
-                                    gorgiasChatIntegrations
-                                }
-                                hasOrderManagement={hasOrderManagement}
-                            />
-                        )}
-
-                        <GorgiasChatIntegrationCustomInstallationCard
-                            isShopifyChat={isShopifyChat}
-                            code={renderChatCodeSnippet({
-                                chatAppId: integration.getIn([
-                                    'meta',
-                                    'app_id',
-                                ]),
-                                gorgiasChatExtraState: gorgiasChatExtraState,
-                            })}
-                            integrationId={integration.get('id')}
-                        />
-                        <div className={css.installationOptions}>
-                            {isUpdate && (
-                                <ConfirmButton
-                                    className=""
-                                    onConfirm={() =>
-                                        actions.deleteIntegration(
-                                            integration
-                                        ) as unknown as Promise<any>
-                                    }
-                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                    intent="destructive"
+        <>
+            {manualInstallationSuccessModal}
+            <div className="full-width">
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link
+                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
                                 >
-                                    <ButtonIconLabel icon="delete">
-                                        Delete Chat
-                                    </ButtonIconLabel>
-                                </ConfirmButton>
+                                    Chat
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
+
+                <GorgiasChatIntegrationNavigation integration={integration} />
+
+                <Container fluid className={css.pageContainer}>
+                    <Row>
+                        <Col className={css.pageColumn} md="8">
+                            {!installationStatus.installed && (
+                                <div className={css.installationStatusIssue}>
+                                    <Alert type={AlertType.Error} icon>
+                                        Your chat widget was not seen installed
+                                        on your website in the past 72 hours.
+                                        Check its installation and your website
+                                        to resolve.{' '}
+                                        <a
+                                            href="https://docs.gorgias.com/en-US/chat-getting-started-81789#installation-monitoring"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            More information
+                                        </a>
+                                    </Alert>
+                                </div>
                             )}
-                        </div>
-                    </Col>
-                </Row>
-            </Container>
-        </div>
+                            {isShopifyChat ? (
+                                <GorgiasChatIntegrationOneClickInstallationCard
+                                    integration={integration}
+                                    updateOrCreateIntegration={
+                                        actions.updateOrCreateIntegration
+                                    }
+                                    shopifyIntegrations={shopifyIntegrations}
+                                    hasOrderManagement={hasOrderManagement}
+                                />
+                            ) : (
+                                <GorgiasChatIntegrationConnectToStoreCard
+                                    integration={integration}
+                                    updateOrCreateIntegration={
+                                        actions.updateOrCreateIntegration
+                                    }
+                                    shopifyIntegrations={shopifyIntegrations}
+                                    gorgiasChatIntegrations={
+                                        gorgiasChatIntegrations
+                                    }
+                                    hasOrderManagement={hasOrderManagement}
+                                />
+                            )}
+
+                            <GorgiasChatIntegrationCustomInstallationCard
+                                isShopifyChat={isShopifyChat}
+                                code={renderChatCodeSnippet({
+                                    chatAppId: integration.getIn([
+                                        'meta',
+                                        'app_id',
+                                    ]),
+                                    gorgiasChatExtraState:
+                                        gorgiasChatExtraState,
+                                })}
+                                integrationId={integration.get('id')}
+                            />
+                            <div className={css.installationOptions}>
+                                {isUpdate && (
+                                    <ConfirmButton
+                                        className=""
+                                        onConfirm={() =>
+                                            actions.deleteIntegration(
+                                                integration
+                                            ) as unknown as Promise<any>
+                                        }
+                                        confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                        intent="destructive"
+                                    >
+                                        <ButtonIconLabel icon="delete">
+                                            Delete Chat
+                                        </ButtonIconLabel>
+                                    </ConfirmButton>
+                                )}
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
+        </>
     )
 }
 
