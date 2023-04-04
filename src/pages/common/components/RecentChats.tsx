@@ -62,8 +62,10 @@ class RecentChatsItem extends Component<ItemProps> {
                 className={linkClasses}
                 title={customerName}
             >
-                <SourceIcon type={channel} />
-                <span>{customerName}</span>
+                <span>
+                    <SourceIcon type={channel} />
+                    <span>{customerName}</span>
+                </span>
             </Link>
         )
     }
