@@ -1,5 +1,6 @@
 import React from 'react'
 import {Provider} from 'react-redux'
+import {MemoryRouter} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {fireEvent, render} from '@testing-library/react'
 
@@ -48,11 +49,13 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
 
     it('renders wizard with default options selected', () => {
         const {container, getByLabelText} = render(
-            <Provider store={mockStore({})}>
-                <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                    <GorgiasChatCreationWizardStepBranding {...minProps} />
-                </Wizard>
-            </Provider>
+            <MemoryRouter>
+                <Provider store={mockStore({})}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBranding {...minProps} />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
         )
 
         container
@@ -66,11 +69,13 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
 
     it('submits form when fields have been changed', () => {
         const {container, getByText, getByLabelText} = render(
-            <Provider store={mockStore({})}>
-                <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                    <GorgiasChatCreationWizardStepBranding {...minProps} />
-                </Wizard>
-            </Provider>
+            <MemoryRouter>
+                <Provider store={mockStore({})}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBranding {...minProps} />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
         )
 
         fireEvent.change(container.querySelector('.colorPicker input')!, {
@@ -90,22 +95,24 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
         const setActiveStepMock = jest.fn()
 
         const {getByText} = render(
-            <Provider store={mockStore({})}>
-                <WizardContext.Provider
-                    value={
-                        {
-                            steps: [
-                                GorgiasChatCreationWizardSteps.Basics,
-                                'test',
-                            ],
-                            nextStep: 'test',
-                            setActiveStep: setActiveStepMock,
-                        } as unknown as WizardContextState
-                    }
-                >
-                    <GorgiasChatCreationWizardStepBranding {...minProps} />
-                </WizardContext.Provider>
-            </Provider>
+            <MemoryRouter>
+                <Provider store={mockStore({})}>
+                    <WizardContext.Provider
+                        value={
+                            {
+                                steps: [
+                                    GorgiasChatCreationWizardSteps.Basics,
+                                    'test',
+                                ],
+                                nextStep: 'test',
+                                setActiveStep: setActiveStepMock,
+                            } as unknown as WizardContextState
+                        }
+                    >
+                        <GorgiasChatCreationWizardStepBranding {...minProps} />
+                    </WizardContext.Provider>
+                </Provider>
+            </MemoryRouter>
         )
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
@@ -118,14 +125,16 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
 
     it('disables buttons when submitting form', () => {
         const {getByText} = render(
-            <Provider store={mockStore({})}>
-                <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                    <GorgiasChatCreationWizardStepBranding
-                        {...minProps}
-                        isSubmitting
-                    />
-                </Wizard>
-            </Provider>
+            <MemoryRouter>
+                <Provider store={mockStore({})}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBranding
+                            {...minProps}
+                            isSubmitting
+                        />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
         )
 
         expect(getByText('Save & Customize Later')).toHaveClass('isDisabled')

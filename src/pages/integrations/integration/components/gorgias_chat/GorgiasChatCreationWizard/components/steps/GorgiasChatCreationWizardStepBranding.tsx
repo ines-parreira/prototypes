@@ -26,6 +26,7 @@ import InputField from 'pages/common/forms/input/InputField'
 import Button from 'pages/common/components/button/Button'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
 import ChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatLauncher'
 
@@ -96,14 +97,14 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
             GorgiasChatLauncherType.ICON
         ) as GorgiasChatLauncherType)
 
+    const isPristine =
+        currentMainColor === undefined &&
+        currentConversationColor === undefined &&
+        currentLauncherLabel === undefined &&
+        currentLauncherType === undefined
+
     const onSave = (shouldGoToNextStep = true) => {
-        if (
-            shouldGoToNextStep &&
-            currentMainColor === undefined &&
-            currentConversationColor === undefined &&
-            currentLauncherLabel === undefined &&
-            currentLauncherType === undefined
-        ) {
+        if (shouldGoToNextStep && isPristine) {
             goToNextStep()
             return Promise.resolve()
         }
@@ -144,147 +145,157 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
     )
 
     return (
-        <GorgiasChatCreationWizardStep
-            step={GorgiasChatCreationWizardSteps.Branding}
-            preview={
-                <GorgiasChatCreationWizardPreview
-                    integration={integration}
-                    mainColor={currentMainColor}
-                    conversationColor={currentConversationColor}
-                    launcher={launcher}
-                    isOpen={isChatOpenInPreview}
-                />
-            }
-            footer={
-                <>
-                    <Button
-                        fillStyle="ghost"
-                        onClick={() =>
-                            onSave().then(() => {
-                                history.push(
-                                    '/app/settings/channels/gorgias_chat'
-                                )
-                            })
-                        }
-                        isDisabled={isSubmitting}
-                    >
-                        Save &amp; Customize Later
-                    </Button>
-                    <div className={css.wizardButtons}>
+        <>
+            <UnsavedChangesPrompt
+                onSave={() => onSave()}
+                when={!isPristine}
+                shouldRedirectAfterSave
+            />
+            <GorgiasChatCreationWizardStep
+                step={GorgiasChatCreationWizardSteps.Branding}
+                preview={
+                    <GorgiasChatCreationWizardPreview
+                        integration={integration}
+                        mainColor={currentMainColor}
+                        conversationColor={currentConversationColor}
+                        launcher={launcher}
+                        isOpen={isChatOpenInPreview}
+                    />
+                }
+                footer={
+                    <>
                         <Button
-                            intent="secondary"
-                            onClick={goToPreviousStep}
+                            fillStyle="ghost"
+                            onClick={() =>
+                                onSave().then(() => {
+                                    history.push(
+                                        '/app/settings/channels/gorgias_chat'
+                                    )
+                                })
+                            }
                             isDisabled={isSubmitting}
                         >
-                            Back
+                            Save &amp; Customize Later
                         </Button>
-                        <Button
-                            onClick={() => onSave(true)}
-                            isLoading={isSubmitting}
-                        >
-                            Next
-                        </Button>
-                    </div>
-                </>
-            }
-        >
-            <>
-                <div className={css.section}>
-                    <div className={css.sectionHeading}>Colors</div>
-                    <div className={css.colorPickerGroup}>
-                        <ColorField
-                            className={css.colorPicker}
-                            value={mainColor}
-                            onChange={setCurrentMainColor}
-                            label="Main color"
-                        />
+                        <div className={css.wizardButtons}>
+                            <div className={css.wizardButtons}>
+                                <Button
+                                    intent="secondary"
+                                    onClick={goToPreviousStep}
+                                    isDisabled={isSubmitting}
+                                >
+                                    Back
+                                </Button>
+                                <Button
+                                    onClick={() => onSave(true)}
+                                    isLoading={isSubmitting}
+                                >
+                                    Next
+                                </Button>
+                            </div>
+                        </div>
+                    </>
+                }
+            >
+                <>
+                    <div className={css.section}>
+                        <div className={css.sectionHeading}>Colors</div>
+                        <div className={css.colorPickerGroup}>
+                            <ColorField
+                                className={css.colorPicker}
+                                value={mainColor}
+                                onChange={setCurrentMainColor}
+                                label="Main color"
+                            />
 
-                        <ColorField
-                            className={css.colorPicker}
-                            value={conversationColor}
-                            onChange={setCurrentConversationColor}
-                            label="Conversation color"
-                        />
-                    </div>
-                </div>
-                <div className={css.section}>
-                    <div className={css.sectionHeading}>Launcher</div>
-                    <div
-                        className={css.radioButtonGroup}
-                        ref={launcherCustomizationRef}
-                    >
-                        <PreviewRadioButton
-                            isSelected={
-                                launcherType === GorgiasChatLauncherType.ICON
-                            }
-                            label="Icon"
-                            preview={
-                                <div className={css.launcherPreview}>
-                                    <ChatLauncher
-                                        type={GorgiasChatLauncherType.ICON}
-                                        backgroundColor={currentMainColor}
-                                        windowState="closed"
-                                    />
-                                </div>
-                            }
-                            value={GorgiasChatLauncherType.ICON}
-                            onClick={() => {
-                                setCurrentLauncherType(
-                                    GorgiasChatLauncherType.ICON
-                                )
-                                setIsChatOpenInPreview(false)
-                            }}
-                        />
-
-                        <PreviewRadioButton
-                            isSelected={
-                                launcherType ===
-                                GorgiasChatLauncherType.ICON_AND_LABEL
-                            }
-                            label="Icon and label"
-                            preview={
-                                <div className={css.launcherPreview}>
-                                    <ChatLauncher
-                                        type={
-                                            GorgiasChatLauncherType.ICON_AND_LABEL
-                                        }
-                                        backgroundColor={currentMainColor}
-                                        label={launcherLabel}
-                                        windowState="closed"
-                                    />
-                                </div>
-                            }
-                            value={GorgiasChatLauncherType.ICON_AND_LABEL}
-                            onClick={() => {
-                                setCurrentLauncherType(
-                                    GorgiasChatLauncherType.ICON_AND_LABEL
-                                )
-                                setIsChatOpenInPreview(false)
-                            }}
-                        />
-                    </div>
-                    {launcherType ===
-                        GorgiasChatLauncherType.ICON_AND_LABEL && (
-                        <div className={css.launcherSettingsGrid}>
-                            <InputField
-                                type="text"
-                                label="Label"
-                                value={launcherLabel}
-                                onFocus={() => {
-                                    setIsChatOpenInPreview(false)
-                                }}
-                                onChange={setCurrentLauncherLabel}
-                                isRequired
-                                maxLength={20}
-                                caption={`${
-                                    launcherLabel?.length || 0
-                                }/20 characters`}
+                            <ColorField
+                                className={css.colorPicker}
+                                value={conversationColor}
+                                onChange={setCurrentConversationColor}
+                                label="Conversation color"
                             />
                         </div>
-                    )}
-                </div>
-            </>
-        </GorgiasChatCreationWizardStep>
+                    </div>
+                    <div className={css.section}>
+                        <div className={css.sectionHeading}>Launcher</div>
+                        <div
+                            className={css.radioButtonGroup}
+                            ref={launcherCustomizationRef}
+                        >
+                            <PreviewRadioButton
+                                isSelected={
+                                    launcherType ===
+                                    GorgiasChatLauncherType.ICON
+                                }
+                                label="Icon"
+                                preview={
+                                    <div className={css.launcherPreview}>
+                                        <ChatLauncher
+                                            type={GorgiasChatLauncherType.ICON}
+                                            backgroundColor={currentMainColor}
+                                            windowState="closed"
+                                        />
+                                    </div>
+                                }
+                                value={GorgiasChatLauncherType.ICON}
+                                onClick={() => {
+                                    setCurrentLauncherType(
+                                        GorgiasChatLauncherType.ICON
+                                    )
+                                    setIsChatOpenInPreview(false)
+                                }}
+                            />
+
+                            <PreviewRadioButton
+                                isSelected={
+                                    launcherType ===
+                                    GorgiasChatLauncherType.ICON_AND_LABEL
+                                }
+                                label="Icon and label"
+                                preview={
+                                    <div className={css.launcherPreview}>
+                                        <ChatLauncher
+                                            type={
+                                                GorgiasChatLauncherType.ICON_AND_LABEL
+                                            }
+                                            backgroundColor={currentMainColor}
+                                            label={launcherLabel}
+                                            windowState="closed"
+                                        />
+                                    </div>
+                                }
+                                value={GorgiasChatLauncherType.ICON_AND_LABEL}
+                                onClick={() => {
+                                    setCurrentLauncherType(
+                                        GorgiasChatLauncherType.ICON_AND_LABEL
+                                    )
+                                    setIsChatOpenInPreview(false)
+                                }}
+                            />
+                        </div>
+                        {launcherType ===
+                            GorgiasChatLauncherType.ICON_AND_LABEL && (
+                            <div className={css.launcherSettingsGrid}>
+                                <InputField
+                                    type="text"
+                                    label="Label"
+                                    value={launcherLabel}
+                                    onFocus={() => {
+                                        setIsChatOpenInPreview(false)
+                                    }}
+                                    onChange={setCurrentLauncherLabel}
+                                    isRequired
+                                    maxLength={20}
+                                    caption={`${
+                                        launcherLabel?.length || 0
+                                    }/20 characters`}
+                                />
+                            </div>
+                        )}
+                    </div>
+                </>
+            </GorgiasChatCreationWizardStep>
+        </>
     )
 }
 

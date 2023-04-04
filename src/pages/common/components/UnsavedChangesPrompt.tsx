@@ -16,11 +16,17 @@ import css from './UnsavedChangesPrompt.less'
 
 type Props = {
     onDiscard?: () => void
-    onSave: (location?: Location) => void
+    onSave: (location?: Location) => Promise<unknown> | void
+    shouldRedirectAfterSave?: boolean
     when: boolean | undefined
 }
 
-const UnsavedChangesPrompt: React.FC<Props> = ({onDiscard, onSave, when}) => {
+const UnsavedChangesPrompt: React.FC<Props> = ({
+    onDiscard,
+    onSave,
+    shouldRedirectAfterSave,
+    when,
+}) => {
     const isDiscarding = useRef(false)
     const [show, setShow] = useState(false)
     const [location, setLocation] = useState<Location>()
@@ -43,6 +49,14 @@ const UnsavedChangesPrompt: React.FC<Props> = ({onDiscard, onSave, when}) => {
             window.removeEventListener('beforeunload', beforeUnload)
         }
     }, [beforeUnload])
+
+    const redirectToOriginalLocation = () => {
+        if (location) {
+            isDiscarding.current = true
+
+            history.push(location.pathname, location.state)
+        }
+    }
 
     return (
         <>
@@ -71,16 +85,7 @@ const UnsavedChangesPrompt: React.FC<Props> = ({onDiscard, onSave, when}) => {
                             onClick={() => {
                                 setShow(false)
                                 onDiscard && onDiscard()
-                                if (location) {
-                                    isDiscarding.current = true
-
-                                    history.push(
-                                        location.pathname,
-                                        location.state
-                                    )
-                                } else {
-                                    window.close()
-                                }
+                                redirectToOriginalLocation()
                             }}
                             className="mr-2 mb-3"
                         >
@@ -96,8 +101,15 @@ const UnsavedChangesPrompt: React.FC<Props> = ({onDiscard, onSave, when}) => {
                             Back To Editing
                         </Button>
                         <Button
-                            onClick={() => {
-                                onSave(location)
+                            onClick={async () => {
+                                if (shouldRedirectAfterSave) {
+                                    onSave(location)?.then(
+                                        redirectToOriginalLocation
+                                    )
+                                } else {
+                                    await onSave(location)
+                                }
+
                                 setShow(false)
                             }}
                             className="mb-3"

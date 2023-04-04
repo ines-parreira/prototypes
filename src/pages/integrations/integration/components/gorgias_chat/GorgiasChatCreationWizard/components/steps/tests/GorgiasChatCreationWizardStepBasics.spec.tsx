@@ -1,5 +1,6 @@
 import React from 'react'
 import {Provider} from 'react-redux'
+import {MemoryRouter} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {fireEvent, render} from '@testing-library/react'
 
@@ -8,7 +9,10 @@ import configureMockStore from 'redux-mock-store'
 
 import * as actions from 'state/integrations/actions'
 
-import {GorgiasChatCreationWizardSteps} from 'models/integration/types'
+import {
+    GorgiasChatCreationWizardSteps,
+    IntegrationType,
+} from 'models/integration/types'
 
 import Wizard, {
     WizardContext,
@@ -45,11 +49,24 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
     it('renders wizard with default options selected', () => {
         const {getByLabelText} = render(
-            <Provider store={mockStore({})}>
-                <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                    <GorgiasChatCreationWizardStepBasics {...minProps} />
-                </Wizard>
-            </Provider>
+            <MemoryRouter>
+                <Provider
+                    store={mockStore({
+                        integrations: fromJS({
+                            integrations: [
+                                {
+                                    id: 1,
+                                    type: IntegrationType.Shopify,
+                                },
+                            ],
+                        }),
+                    })}
+                >
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBasics {...minProps} />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
         )
 
         expect(
@@ -62,13 +79,27 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
     })
 
     it('renders error for empty fields after submit attempt', () => {
-        const {getByText, getAllByText} = render(
-            <Provider store={mockStore({})}>
-                <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                    <GorgiasChatCreationWizardStepBasics {...minProps} />
-                </Wizard>
-            </Provider>
+        const {getByText, getByLabelText, getAllByText} = render(
+            <MemoryRouter>
+                <Provider store={mockStore({})}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBasics {...minProps} />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
         )
+
+        fireEvent.click(getByText('Create & Customize', {selector: 'button'}))
+
+        expect(getAllByText('This field is required.')).toHaveLength(1)
+
+        fireEvent.click(
+            getByLabelText('Ecommerce platforms', {selector: 'input'})
+        )
+
+        expect(
+            getByLabelText('Ecommerce platforms', {selector: 'input'})
+        ).toBeChecked()
 
         fireEvent.click(getByText('Create & Customize', {selector: 'button'}))
 
@@ -77,11 +108,13 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
     it('submits form with default values when creating chat', () => {
         const {getByText, getByLabelText} = render(
-            <Provider store={mockStore({})}>
-                <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                    <GorgiasChatCreationWizardStepBasics {...minProps} />
-                </Wizard>
-            </Provider>
+            <MemoryRouter>
+                <Provider store={mockStore({})}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBasics {...minProps} />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
         )
 
         fireEvent.change(getByLabelText('Chat title*', {selector: 'input'}), {
@@ -101,15 +134,17 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
     it('submits form when updating chat', () => {
         const {getByText, getByLabelText} = render(
-            <Provider store={mockStore({})}>
-                <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                    <GorgiasChatCreationWizardStepBasics
-                        {...minProps}
-                        integration={integration}
-                        isUpdate
-                    />
-                </Wizard>
-            </Provider>
+            <MemoryRouter>
+                <Provider store={mockStore({})}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBasics
+                            {...minProps}
+                            integration={integration}
+                            isUpdate
+                        />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
         )
 
         fireEvent.change(getByLabelText('Chat title*', {selector: 'input'}), {
@@ -131,26 +166,28 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
         const setActiveStepMock = jest.fn()
 
         const {getByText} = render(
-            <Provider store={mockStore({})}>
-                <WizardContext.Provider
-                    value={
-                        {
-                            steps: [
-                                GorgiasChatCreationWizardSteps.Basics,
-                                'test',
-                            ],
-                            nextStep: 'test',
-                            setActiveStep: setActiveStepMock,
-                        } as unknown as WizardContextState
-                    }
-                >
-                    <GorgiasChatCreationWizardStepBasics
-                        {...minProps}
-                        integration={integration}
-                        isUpdate
-                    />
-                </WizardContext.Provider>
-            </Provider>
+            <MemoryRouter>
+                <Provider store={mockStore({})}>
+                    <WizardContext.Provider
+                        value={
+                            {
+                                steps: [
+                                    GorgiasChatCreationWizardSteps.Basics,
+                                    'test',
+                                ],
+                                nextStep: 'test',
+                                setActiveStep: setActiveStepMock,
+                            } as unknown as WizardContextState
+                        }
+                    >
+                        <GorgiasChatCreationWizardStepBasics
+                            {...minProps}
+                            integration={integration}
+                            isUpdate
+                        />
+                    </WizardContext.Provider>
+                </Provider>
+            </MemoryRouter>
         )
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
@@ -163,14 +200,16 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
     it('disables buttons when submitting create form', () => {
         const {getByText} = render(
-            <Provider store={mockStore({})}>
-                <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                    <GorgiasChatCreationWizardStepBasics
-                        {...minProps}
-                        isSubmitting
-                    />
-                </Wizard>
-            </Provider>
+            <MemoryRouter>
+                <Provider store={mockStore({})}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBasics
+                            {...minProps}
+                            isSubmitting
+                        />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
         )
 
         expect(getByText('Cancel')).toHaveClass('isDisabled')
@@ -179,16 +218,18 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
     it('disables buttons when submitting update form', () => {
         const {getByText} = render(
-            <Provider store={mockStore({})}>
-                <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                    <GorgiasChatCreationWizardStepBasics
-                        {...minProps}
-                        integration={integration}
-                        isUpdate
-                        isSubmitting
-                    />
-                </Wizard>
-            </Provider>
+            <MemoryRouter>
+                <Provider store={mockStore({})}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBasics
+                            {...minProps}
+                            integration={integration}
+                            isUpdate
+                            isSubmitting
+                        />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
         )
 
         expect(getByText('Save & Customize Later')).toHaveClass('isDisabled')

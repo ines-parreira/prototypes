@@ -44,6 +44,7 @@ import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
 import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 
@@ -104,13 +105,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             : shopifyIntegrations
     ) as List<Map<any, any>>
 
-    const [currentStoreIntegration, setCurrentStoreIntegration] = useState<
-        Map<any, any> | undefined
-    >(
-        !isUpdate && storeIntegrations.size === 1
-            ? storeIntegrations.first()
-            : undefined
-    )
+    const [currentStoreIntegration, setCurrentStoreIntegration] =
+        useState<Map<any, any>>()
     const [currentLiveChatAvailability, setCurrentLiveChatAvailability] =
         useState<
             | typeof GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
@@ -133,18 +129,24 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
         )
 
-    const storeIntegrationId =
-        currentStoreIntegration?.get('id') ||
-        integration.getIn(['meta', 'shop_integration_id'])
+    const storeIntegration =
+        currentStoreIntegration ||
+        (isUpdate
+            ? storeIntegrations.find(
+                  (storeIntegration) =>
+                      storeIntegration?.get('id') ===
+                      integration.getIn(['meta', 'shop_integration_id'])
+              )
+            : storeIntegrations.size === 1
+            ? storeIntegrations.first()
+            : undefined)
 
     const [currentIsStoreRequired, setCurrentIsStoreRequired] =
         useState<boolean>()
 
-    const isStoreRequired =
-        currentIsStoreRequired ?? (isUpdate ? !!storeIntegrationId : true)
+    const isStoreRequired = !!(currentIsStoreRequired ?? storeIntegration)
 
-    const hasIncompleteFields =
-        !name || (isStoreRequired && !storeIntegrationId)
+    const hasIncompleteFields = !name || (isStoreRequired && !storeIntegration)
 
     const goToNextStep = (id: number) => {
         navigateWizardSteps.goToNextStep()
@@ -156,21 +158,20 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         }
     }
 
+    const isPristine =
+        currentName === undefined &&
+        currentStoreIntegration === undefined &&
+        currentLanguage === undefined &&
+        currentLiveChatAvailability === undefined &&
+        currentIsStoreRequired === undefined
+
     const onSave = (shouldGoToNextStep = true) => {
         if (hasIncompleteFields) {
             setHasFailedSubmit(true)
             return
         }
 
-        if (
-            shouldGoToNextStep &&
-            isUpdate &&
-            currentName === undefined &&
-            currentStoreIntegration === undefined &&
-            currentLanguage === undefined &&
-            currentLiveChatAvailability === undefined &&
-            currentIsStoreRequired === undefined
-        ) {
+        if (shouldGoToNextStep && isUpdate && isPristine) {
             goToNextStep(integration.get('id'))
             return Promise.resolve()
         }
@@ -229,23 +230,19 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
         if (
             !isUpdate ||
-            currentStoreIntegration !== undefined ||
+            storeIntegration !== undefined ||
             currentIsStoreRequired !== undefined
         ) {
-            const hasStore = isStoreRequired && currentStoreIntegration
+            const hasStore = isStoreRequired && storeIntegration
 
             form.meta = {
                 ...form.meta,
                 shop_name: hasStore
-                    ? getShopNameFromStoreIntegration(
-                          currentStoreIntegration?.toJS()
-                      )
+                    ? getShopNameFromStoreIntegration(storeIntegration?.toJS())
                     : null,
-                shop_type: hasStore
-                    ? currentStoreIntegration?.get('type')
-                    : null,
+                shop_type: hasStore ? storeIntegration?.get('type') : null,
                 shop_integration_id: hasStore
-                    ? currentStoreIntegration?.get('id')
+                    ? storeIntegration?.get('id')
                     : null,
             }
         }
@@ -258,181 +255,192 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     }
 
     const hasStoreError =
-        hasFailedSubmit && isStoreRequired && !storeIntegrationId
+        hasFailedSubmit && isStoreRequired && !storeIntegration
 
     return (
-        <GorgiasChatCreationWizardStep
-            step={GorgiasChatCreationWizardSteps.Basics}
-            preview={
-                <GorgiasChatCreationWizardPreview
-                    integration={integration}
-                    showStatusToggle={false}
-                    name={name}
-                    language={language}
-                    isOnline={
-                        liveChatAvailability ===
-                        GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
-                    }
-                />
-            }
-            footer={
-                <>
-                    {isUpdate ? (
-                        <Button
-                            fillStyle="ghost"
-                            onClick={() =>
-                                onSave()?.then(() => {
-                                    history.push(
-                                        '/app/settings/channels/gorgias_chat'
-                                    )
-                                })
-                            }
-                            isDisabled={isSubmitting}
-                        >
-                            Save &amp; Customize Later
-                        </Button>
-                    ) : (
-                        <Link to="/app/settings/channels/gorgias_chat">
-                            <Button
-                                fillStyle="ghost"
-                                intent="secondary"
-                                isDisabled={isSubmitting}
-                            >
-                                Cancel
-                            </Button>
-                        </Link>
-                    )}
-                    <Button
-                        onClick={() => onSave(true)}
-                        isLoading={isSubmitting}
-                    >
-                        {isUpdate ? 'Next' : 'Create & Customize'}
-                    </Button>
-                </>
-            }
-        >
-            <>
-                <div className={css.section}>
-                    <InputField
-                        label="Chat title"
-                        isRequired
-                        value={name}
-                        onChange={setCurrentName}
-                        className={css.inputGroup}
-                        error={
-                            hasFailedSubmit && !name
-                                ? 'This field is required.'
-                                : undefined
+        <>
+            <UnsavedChangesPrompt
+                onSave={() => onSave()}
+                when={!isPristine}
+                shouldRedirectAfterSave
+            />
+            <GorgiasChatCreationWizardStep
+                step={GorgiasChatCreationWizardSteps.Basics}
+                preview={
+                    <GorgiasChatCreationWizardPreview
+                        integration={integration}
+                        showStatusToggle={false}
+                        name={name}
+                        language={language}
+                        isOnline={
+                            liveChatAvailability ===
+                            GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
                         }
                     />
-                    <div className={css.inputGroup}>
-                        <Label className={css.inputLabel}>Language</Label>
-                        <SelectField
-                            value={language}
-                            onChange={
-                                setCurrentLanguage as React.ComponentProps<
-                                    typeof SelectField
-                                >['onChange']
+                }
+                footer={
+                    <>
+                        {isUpdate ? (
+                            <Button
+                                fillStyle="ghost"
+                                onClick={() =>
+                                    onSave()?.then(() => {
+                                        history.push(
+                                            '/app/settings/channels/gorgias_chat'
+                                        )
+                                    })
+                                }
+                                isDisabled={isSubmitting}
+                            >
+                                Save &amp; Customize Later
+                            </Button>
+                        ) : (
+                            <Link to="/app/settings/channels/gorgias_chat">
+                                <Button
+                                    fillStyle="ghost"
+                                    intent="secondary"
+                                    isDisabled={isSubmitting}
+                                >
+                                    Cancel
+                                </Button>
+                            </Link>
+                        )}
+                        <Button
+                            onClick={() => onSave(true)}
+                            isLoading={isSubmitting}
+                        >
+                            {isUpdate ? 'Next' : 'Create & Customize'}
+                        </Button>
+                    </>
+                }
+            >
+                <>
+                    <div className={css.section}>
+                        <InputField
+                            label="Chat title"
+                            isRequired
+                            value={name}
+                            onChange={setCurrentName}
+                            className={css.inputGroup}
+                            error={
+                                hasFailedSubmit && !name
+                                    ? 'This field is required.'
+                                    : undefined
                             }
-                            options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
                         />
+                        <div className={css.inputGroup}>
+                            <Label className={css.inputLabel}>Language</Label>
+                            <SelectField
+                                value={language}
+                                onChange={
+                                    setCurrentLanguage as React.ComponentProps<
+                                        typeof SelectField
+                                    >['onChange']
+                                }
+                                options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className={css.section}>
-                    <div className={css.sectionHeading}>
-                        Select a platform type
+                    <div className={css.section}>
+                        <div className={css.sectionHeading}>
+                            Select a platform type
+                        </div>
+                        <div className={css.radioButtonGroup}>
+                            <PreviewRadioButton
+                                value="ecommerce-platforms"
+                                isSelected={isStoreRequired}
+                                label="Ecommerce platforms"
+                                caption="Shopify, Magento, BigCommerce"
+                                onClick={() => {
+                                    if (
+                                        !currentStoreIntegration &&
+                                        storeIntegrations.size === 1
+                                    ) {
+                                        setCurrentStoreIntegration(
+                                            storeIntegrations.first()
+                                        )
+                                    }
+                                    setCurrentIsStoreRequired(true)
+                                }}
+                            />
+                            <PreviewRadioButton
+                                value="any-other-website"
+                                isSelected={!isStoreRequired}
+                                label="Any other website"
+                                caption="Websites, knowledge bases, etc."
+                                onClick={() => setCurrentIsStoreRequired(false)}
+                            />
+                        </div>
+                        <Label isRequired={isStoreRequired}>
+                            Connect a store
+                        </Label>
+                        <div className={css.connectStoreDescription}>
+                            {isStoreRequired
+                                ? 'Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.'
+                                : 'Connect a store to enable Automation Add-on features in chat. You can always connect a store later.'}
+                        </div>
+                        <StoreNameDropdown
+                            storeIntegrationId={storeIntegration?.get('id')}
+                            gorgiasChatIntegrations={gorgiasChatIntegrations}
+                            storeIntegrations={storeIntegrations}
+                            onChange={(storeIntegrationId: number) => {
+                                const storeIntegration = storeIntegrations.find(
+                                    (storeIntegration) =>
+                                        storeIntegration?.get('id') ===
+                                        storeIntegrationId
+                                )!
+
+                                setCurrentStoreIntegration(storeIntegration)
+                                setCurrentName(storeIntegration.get('name'))
+                            }}
+                            hasError={hasStoreError}
+                        />
+                        {hasStoreError && (
+                            <div className={css.error}>
+                                This field is required.
+                            </div>
+                        )}
                     </div>
-                    <div className={css.radioButtonGroup}>
-                        <PreviewRadioButton
-                            value="ecommerce-platforms"
-                            isSelected={isStoreRequired}
-                            label="Ecommerce platforms"
-                            caption="Shopify, Magento, BigCommerce"
-                            onClick={() => {
-                                if (
-                                    !currentStoreIntegration &&
-                                    storeIntegrations.size === 1
-                                ) {
-                                    setCurrentStoreIntegration(
-                                        storeIntegrations.first()
+                    <div className={css.section}>
+                        <div className={css.sectionHeading}>
+                            Allow customers to send live chat messages
+                        </div>
+                        <div className={css.radioButtonGroup}>
+                            <PreviewRadioButton
+                                value={
+                                    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
+                                }
+                                isSelected={
+                                    liveChatAvailability ===
+                                    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
+                                }
+                                label="Allow live chat messages"
+                                caption="Creates live chat tickets when an agent is available during business hours."
+                                onClick={() =>
+                                    setCurrentLiveChatAvailability(
+                                        GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
                                     )
                                 }
-                                setCurrentIsStoreRequired(true)
-                            }}
-                        />
-                        <PreviewRadioButton
-                            value="any-other-website"
-                            isSelected={!isStoreRequired}
-                            label="Any other website"
-                            caption="Websites, knowledge bases, etc."
-                            onClick={() => setCurrentIsStoreRequired(false)}
-                        />
-                    </div>
-                    <Label isRequired={isStoreRequired}>Connect a store</Label>
-                    <div className={css.connectStoreDescription}>
-                        {isStoreRequired
-                            ? 'Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.'
-                            : 'Connect a store to enable Automation Add-on features in chat. You can always connect a store later.'}
-                    </div>
-                    <StoreNameDropdown
-                        storeIntegrationId={storeIntegrationId}
-                        gorgiasChatIntegrations={gorgiasChatIntegrations}
-                        storeIntegrations={storeIntegrations}
-                        onChange={(storeIntegrationId: number) => {
-                            const storeIntegration = storeIntegrations.find(
-                                (storeIntegration) =>
-                                    storeIntegration?.get('id') ===
-                                    storeIntegrationId
-                            )!
-
-                            setCurrentStoreIntegration(storeIntegration)
-                            setCurrentName(storeIntegration.get('name'))
-                        }}
-                        hasError={hasStoreError}
-                    />
-                    {hasStoreError && (
-                        <div className={css.error}>This field is required.</div>
-                    )}
-                </div>
-                <div className={css.section}>
-                    <div className={css.sectionHeading}>
-                        Allow customers to send live chat messages
-                    </div>
-                    <div className={css.radioButtonGroup}>
-                        <PreviewRadioButton
-                            value={
-                                GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
-                            }
-                            isSelected={
-                                liveChatAvailability ===
-                                GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
-                            }
-                            label="Allow live chat messages"
-                            caption="Creates live chat tickets when an agent is available during business hours."
-                            onClick={() =>
-                                setCurrentLiveChatAvailability(
-                                    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
-                                )
-                            }
-                        />
-                        <PreviewRadioButton
-                            value={GORGIAS_CHAT_LIVE_CHAT_OFFLINE}
-                            isSelected={
-                                liveChatAvailability ===
-                                GORGIAS_CHAT_LIVE_CHAT_OFFLINE
-                            }
-                            label="Only contact form messages"
-                            caption="Creates contact form tickets that you can reply by email at any moment."
-                            onClick={() =>
-                                setCurrentLiveChatAvailability(
+                            />
+                            <PreviewRadioButton
+                                value={GORGIAS_CHAT_LIVE_CHAT_OFFLINE}
+                                isSelected={
+                                    liveChatAvailability ===
                                     GORGIAS_CHAT_LIVE_CHAT_OFFLINE
-                                )
-                            }
-                        />
+                                }
+                                label="Only contact form messages"
+                                caption="Creates contact form tickets that you can reply by email at any moment."
+                                onClick={() =>
+                                    setCurrentLiveChatAvailability(
+                                        GORGIAS_CHAT_LIVE_CHAT_OFFLINE
+                                    )
+                                }
+                            />
+                        </div>
                     </div>
-                </div>
-            </>
-        </GorgiasChatCreationWizardStep>
+                </>
+            </GorgiasChatCreationWizardStep>
+        </>
     )
 }
 
