@@ -5,6 +5,7 @@ import _mapValues from 'lodash/mapValues'
 import _unzip from 'lodash/unzip'
 import _values from 'lodash/values'
 import _zip from 'lodash/zip'
+import _pickBy from 'lodash/pickBy'
 import moment from 'moment'
 import {
     CampaignGraphData,
@@ -285,11 +286,11 @@ const _ordersPerformanceReducer = (
             ),
             ticketsRevenue: _get(metric, OrderConversionMeasures.ticketSales),
             clicksRevenue: _get(metric, OrderConversionMeasures.clickSales),
-            discountCodeUsed: _get(
+            discountCodesUsed: _get(
                 metric,
                 OrderConversionMeasures.discountSalesCount
             ),
-            discountCodeRevenue: _get(
+            discountCodesRevenue: _get(
                 metric,
                 OrderConversionMeasures.discountSales
             ),
@@ -391,7 +392,13 @@ const _addDefaultValues = (
         discountCodesRevenue: 0,
     }
 
-    return {...defaultValues, ...campaign}
+    return {
+        ...defaultValues,
+        ..._pickBy(
+            campaign,
+            (value) => value !== undefined && value !== null && !isNaN(value)
+        ),
+    }
 }
 
 const _computeCompoundMetrics = (
@@ -404,7 +411,7 @@ const _computeCompoundMetrics = (
     const ticketsCreated = _get(campaign, 'ticketsCreated') || 0
     const ticketsConverted = _get(campaign, 'ticketsConverted') || 0
 
-    const clicksConversionRate = clicksConverted ? clicksConverted / clicks : 0
+    const clicksConversionRate = clicks ? clicksConverted / clicks : 0
     const ticketsCreationRate = impressions ? ticketsCreated / impressions : 0
     const ticketsConversionRate = ticketsCreated
         ? ticketsConverted / ticketsCreated

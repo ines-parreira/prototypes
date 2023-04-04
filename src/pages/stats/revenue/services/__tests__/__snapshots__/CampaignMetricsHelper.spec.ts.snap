@@ -1,0 +1,223 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Campaign metrics helper tests backfillGraphData should backfill graph data for inner empty data 1`] = `
+[
+  [
+    {
+      "x": "Feb 1st",
+      "y": 1,
+    },
+    {
+      "x": "Feb 2nd",
+      "y": 2,
+    },
+    {
+      "x": "Feb 3rd",
+      "y": 3,
+    },
+  ],
+  [
+    {
+      "x": "Feb 1st",
+      "y": 0,
+    },
+    {
+      "x": "Feb 2nd",
+      "y": 0,
+    },
+    {
+      "x": "Feb 3rd",
+      "y": 0,
+    },
+  ],
+]
+`;
+
+exports[`Campaign metrics helper tests backfillGraphData should backfill graph data for missing days 1`] = `
+[
+  [
+    {
+      "x": "Jan 31st",
+      "y": 0,
+    },
+    {
+      "x": "Feb 1st",
+      "y": 1,
+    },
+    {
+      "x": "Feb 2nd",
+      "y": 2,
+    },
+    {
+      "x": "Feb 3rd",
+      "y": 3,
+    },
+  ],
+  [
+    {
+      "x": "Jan 31st",
+      "y": 0,
+    },
+    {
+      "x": "Feb 1st",
+      "y": 0,
+    },
+    {
+      "x": "Feb 2nd",
+      "y": 20,
+    },
+    {
+      "x": "Feb 3rd",
+      "y": 30,
+    },
+  ],
+  [
+    {
+      "x": "Jan 31st",
+      "y": 0,
+    },
+    {
+      "x": "Feb 1st",
+      "y": 100,
+    },
+    {
+      "x": "Feb 2nd",
+      "y": 200,
+    },
+    {
+      "x": "Feb 3rd",
+      "y": 0,
+    },
+  ],
+]
+`;
+
+exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable should not divide by zero for compound metrics 1`] = `
+{
+  "campaign1": {
+    "clickThroughRate": 0,
+    "clicks": 0,
+    "clicksConversionRate": 0,
+    "clicksConverted": 20,
+    "clicksRate": 0,
+    "clicksRevenue": 0,
+    "discountCodesRevenue": 0,
+    "discountCodesUsed": 0,
+    "engagement": 0,
+    "impressions": 0,
+    "revenueUplift": 0,
+    "ticketsConversionRate": 0,
+    "ticketsConverted": 60,
+    "ticketsCreated": 0,
+    "ticketsCreationRate": 0,
+    "ticketsRevenue": 0,
+    "totalConversionRate": 0,
+    "totalRevenue": 0,
+    "traffic": 0,
+    "uniqueConversions": 0,
+    "uniqueImpressions": 0,
+  },
+}
+`;
+
+exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable should return defaults for missing data 1`] = `
+{
+  "campaign1": {
+    "clickThroughRate": 0,
+    "clicks": 0,
+    "clicksConversionRate": 0,
+    "clicksConverted": 0,
+    "clicksRate": 0,
+    "clicksRevenue": 0,
+    "discountCodesRevenue": 0,
+    "discountCodesUsed": 0,
+    "engagement": 0,
+    "impressions": 0,
+    "revenueUplift": 0,
+    "ticketsConversionRate": 0,
+    "ticketsConverted": 0,
+    "ticketsCreated": 300,
+    "ticketsCreationRate": 0,
+    "ticketsRevenue": 0,
+    "totalConversionRate": 0,
+    "totalRevenue": 0,
+    "traffic": 0,
+    "uniqueConversions": 0,
+    "uniqueImpressions": 0,
+  },
+  "campaign2": {
+    "clickThroughRate": 0,
+    "clicks": 0,
+    "clicksConversionRate": 0,
+    "clicksConverted": 0,
+    "clicksRate": 0,
+    "clicksRevenue": 0,
+    "discountCodesRevenue": 0,
+    "discountCodesUsed": 0,
+    "engagement": 0,
+    "impressions": 0,
+    "revenueUplift": 0,
+    "ticketsConversionRate": 0,
+    "ticketsConverted": 0,
+    "ticketsCreated": 400,
+    "ticketsCreationRate": 0,
+    "ticketsRevenue": 0,
+    "totalConversionRate": 0,
+    "totalRevenue": 0,
+    "traffic": 0,
+    "uniqueConversions": 0,
+    "uniqueImpressions": 0,
+  },
+}
+`;
+
+exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable should transform data from metrics to table data 1`] = `
+{
+  "campaign1": {
+    "clickThroughRate": 12,
+    "clicks": 1000,
+    "clicksConversionRate": 2,
+    "clicksConverted": 20,
+    "clicksRate": 10,
+    "clicksRevenue": 3596,
+    "discountCodesRevenue": 4567,
+    "discountCodesUsed": 125,
+    "engagement": 357,
+    "impressions": 2000,
+    "revenueUplift": 65,
+    "ticketsConversionRate": 20,
+    "ticketsConverted": 60,
+    "ticketsCreated": 300,
+    "ticketsCreationRate": 15,
+    "ticketsRevenue": 1234,
+    "totalConversionRate": 7,
+    "totalRevenue": 12345,
+    "traffic": 1234,
+    "uniqueConversions": 125,
+    "uniqueImpressions": 34,
+  },
+  "campaign2": {
+    "clickThroughRate": 11,
+    "clicks": 2000,
+    "clicksConversionRate": 2,
+    "clicksConverted": 40,
+    "clicksRate": 21,
+    "clicksRevenue": 3596,
+    "discountCodesRevenue": 4567,
+    "discountCodesUsed": 125,
+    "engagement": 1357,
+    "impressions": 4000,
+    "revenueUplift": 65,
+    "ticketsConversionRate": 20,
+    "ticketsConverted": 80,
+    "ticketsCreated": 400,
+    "ticketsCreationRate": 10,
+    "ticketsRevenue": 1234,
+    "totalConversionRate": 9,
+    "totalRevenue": 12345,
+    "traffic": 4567,
+    "uniqueConversions": 358,
+    "uniqueImpressions": 67,
+  },
+}
+`;

@@ -1,0 +1,469 @@
+import {
+    backfillGraphData,
+    getDataFromResultSet,
+    getDataFromStatResult,
+    transformToCampaignConversionRateOverTime,
+    transformToCampaignCTROverTime,
+    transformToCampaignEventsTotals,
+    transformToCampaignOrdersTotals,
+    transformToCampaignsPerformanceTable,
+    transformToChatConversionRateOverTime,
+    transformToRevenueUpliftOverTime,
+} from 'pages/stats/revenue/services/CampaignMetricsHelper'
+import {CubeResponse} from 'pages/stats/revenue/clients/types'
+import {Stat} from 'models/stat/types'
+import {
+    CampaignOrderEventsDimensions,
+    CampaignOrderEventsMeasures,
+    EventsDimensions,
+    EventsMeasures,
+    OrderConversionDimensions,
+    OrderConversionMeasures,
+} from 'pages/stats/revenue/clients/constants'
+import {CampaignsTotalsMetricNames} from 'pages/stats/revenue/services/constants'
+import {TicketPerformanceData} from 'pages/stats/revenue/services/types'
+
+describe('Campaign metrics helper tests', () => {
+    describe('getDataFromResultSet', () => {
+        const cubeResponse = {
+            data: [{metricKey: 'metricValue'}],
+        }
+
+        it.each([
+            [cubeResponse, [{metricKey: 'metricValue'}]],
+            [{nodata: 'no metric'}, []],
+            [{}, []],
+            [null, []],
+            [undefined, []],
+        ])('For data %p should return %p', (data, expected) => {
+            const result = getDataFromResultSet(data as CubeResponse)
+            expect(result).toEqual(expected)
+        })
+    })
+
+    describe('getDataFromStatResult', () => {
+        const statResponse = {
+            data: {
+                data: [1, 2, 3, 4],
+            },
+        }
+
+        it.each([
+            [statResponse, [1, 2, 3, 4]],
+            [{data: 'need one more'}, []],
+            [{data: {nodata: 'no metric'}}, []],
+            [{nodata: 'no metric'}, []],
+            [{}, []],
+            [null, []],
+            [undefined, []],
+        ])('For data %p should return %p', (data, expected) => {
+            const result = getDataFromStatResult(data as Stat)
+            expect(result).toEqual(expected)
+        })
+    })
+
+    describe('transformToCampaignEventsTotals', () => {
+        const cubeData = [
+            {
+                [CampaignOrderEventsMeasures.impressions]: '12345678',
+                [CampaignOrderEventsMeasures.engagement]: '2345678',
+                [CampaignOrderEventsMeasures.uniqueConversions]: '345678',
+            },
+        ]
+
+        const cubeDataMissing = [
+            {
+                onlyWrongKeyHere: '12345678',
+            },
+        ]
+
+        it('should return correct data', () => {
+            const result = transformToCampaignEventsTotals(cubeData)
+            expect(result).toStrictEqual({
+                [CampaignsTotalsMetricNames.impressions]: '12,345,678',
+                [CampaignsTotalsMetricNames.engagement]: '2,345,678',
+                [CampaignsTotalsMetricNames.uniqueConversions]: '345,678',
+            })
+        })
+
+        it('should return the defaults for missing data', () => {
+            const result = transformToCampaignEventsTotals(cubeDataMissing)
+            expect(result).toStrictEqual({
+                [CampaignsTotalsMetricNames.impressions]: '0',
+                [CampaignsTotalsMetricNames.engagement]: '0',
+                [CampaignsTotalsMetricNames.uniqueConversions]: '0',
+            })
+        })
+
+        it('should return the defaults for wrong data', () => {
+            const result = transformToCampaignEventsTotals([])
+            expect(result).toStrictEqual({
+                [CampaignsTotalsMetricNames.impressions]: '0',
+                [CampaignsTotalsMetricNames.engagement]: '0',
+                [CampaignsTotalsMetricNames.uniqueConversions]: '0',
+            })
+        })
+    })
+
+    describe('transformToCampaignOrdersTotals', () => {
+        const currency = 'USD'
+        const cubeData = [
+            {
+                [OrderConversionMeasures.gmv]: '12345.678',
+                [OrderConversionMeasures.influencedRevenueUplift]: '4567.8',
+                [OrderConversionMeasures.campaignSales]: '34.56',
+            },
+        ]
+
+        const cubeDataMissing = [
+            {
+                onlyWrongKeyHere: '12345678',
+            },
+        ]
+
+        it('should return correct data', () => {
+            const result = transformToCampaignOrdersTotals(cubeData, currency)
+            expect(result).toStrictEqual({
+                [CampaignsTotalsMetricNames.gmv]: '$12,345.68',
+                [CampaignsTotalsMetricNames.influencedRevenueUplift]: '4567.8%',
+                [CampaignsTotalsMetricNames.revenue]: '$34.56',
+            })
+        })
+
+        it('should return the defaults for missing data', () => {
+            const result = transformToCampaignOrdersTotals(
+                cubeDataMissing,
+                currency
+            )
+            expect(result).toStrictEqual({
+                [CampaignsTotalsMetricNames.gmv]: '$0',
+                [CampaignsTotalsMetricNames.influencedRevenueUplift]: '0%',
+                [CampaignsTotalsMetricNames.revenue]: '$0',
+            })
+        })
+
+        it('should return the defaults for wrong data', () => {
+            const result = transformToCampaignOrdersTotals([], currency)
+            expect(result).toStrictEqual({
+                [CampaignsTotalsMetricNames.gmv]: '$0',
+                [CampaignsTotalsMetricNames.influencedRevenueUplift]: '0%',
+                [CampaignsTotalsMetricNames.revenue]: '$0',
+            })
+        })
+    })
+
+    describe('transformToRevenueUpliftOverTime', () => {
+        const revenueDataPoint = {
+            [OrderConversionMeasures.influencedRevenueUplift]: '67.8',
+            [`${OrderConversionDimensions.createdDatatime}.day`]:
+                '2023-02-28T00:00:00.000',
+            [OrderConversionDimensions.createdDatatime]:
+                '2023-02-28T00:00:00.000',
+        }
+
+        it('should return correct data', () => {
+            const result = transformToRevenueUpliftOverTime(
+                revenueDataPoint,
+                'day'
+            )
+            expect(result).toStrictEqual({
+                x: 'Feb 28th',
+                y: 67.8,
+            })
+        })
+    })
+
+    describe('transformToCampaignCTROverTime', () => {
+        const ctrDataPoint = {
+            [CampaignOrderEventsMeasures.campaignCTR]: '15.65',
+            [`${CampaignOrderEventsDimensions.createdDatatime}.day`]:
+                '2023-01-16T07:00:00.000',
+            [CampaignOrderEventsDimensions.createdDatatime]:
+                '2023-01-16T07:00:00.000',
+        }
+
+        it('should return correct data', () => {
+            const result = transformToCampaignCTROverTime(ctrDataPoint, 'day')
+            expect(result).toStrictEqual({
+                x: '2023-01-16',
+                y: 15.65,
+            })
+        })
+    })
+
+    describe('transformToCampaignConversionRateOverTime', () => {
+        const conversionDataPoint = {
+            [CampaignOrderEventsMeasures.totalConversionRate]: '7.18',
+            [`${CampaignOrderEventsDimensions.createdDatatime}.day`]:
+                '2023-02-01T00:08:00.000',
+            [CampaignOrderEventsDimensions.createdDatatime]:
+                '2023-02-01T00:08:00.000',
+        }
+
+        it('should return correct data', () => {
+            const result = transformToCampaignConversionRateOverTime(
+                conversionDataPoint,
+                'day'
+            )
+            expect(result).toStrictEqual({
+                x: '2023-02-01',
+                y: 7.18,
+            })
+        })
+    })
+
+    describe('transformToCampaignConversionRateOverTime', () => {
+        it('should return graph data with conversion computed', () => {
+            const result = transformToChatConversionRateOverTime({
+                axes: {
+                    x: [1612137600, 1612224000, 1612310400],
+                    y: [0, 0, 0],
+                },
+                lines: [
+                    {
+                        data: [4, 8, 12],
+                    },
+                    {
+                        data: [2, 4, 6],
+                    },
+                ],
+            })
+            expect(result).toStrictEqual([
+                {
+                    x: '2021-02-01',
+                    y: 50,
+                },
+                {
+                    x: '2021-02-02',
+                    y: 50,
+                },
+                {
+                    x: '2021-02-03',
+                    y: 50,
+                },
+            ])
+        })
+
+        it('should return graph data with defaults for missing values', () => {
+            const result = transformToChatConversionRateOverTime({
+                axes: {
+                    x: [1612137600, 1612224000],
+                    y: [0, 0, 0],
+                },
+                lines: [
+                    {
+                        data: [4, 12],
+                    },
+                    {
+                        data: [2, 6, 1234],
+                    },
+                ],
+            })
+            expect(result).toStrictEqual([
+                {
+                    x: '2021-02-01',
+                    y: 50,
+                },
+                {
+                    x: '2021-02-02',
+                    y: 50,
+                },
+                {
+                    x: '',
+                    y: 0,
+                },
+            ])
+        })
+    })
+
+    describe('backfillGraphData', () => {
+        const graphData1 = [
+            {
+                x: '2021-02-01',
+                y: 1,
+            },
+            {
+                x: '2021-02-02',
+                y: 2,
+            },
+            {
+                x: '2021-02-03',
+                y: 3,
+            },
+        ]
+        const graphData2 = [
+            {
+                x: '2021-02-02',
+                y: 20,
+            },
+            {
+                x: '2021-02-03',
+                y: 30,
+            },
+        ]
+        const graphData3 = [
+            {
+                x: '2021-02-01',
+                y: 100,
+            },
+            {
+                x: '2021-02-02',
+                y: 200,
+            },
+        ]
+        const data = [graphData1, graphData2, graphData3]
+
+        it('should backfill graph data for missing days', () => {
+            const startDate = '2021-01-31'
+            const endDate = '2021-02-03'
+            const result = backfillGraphData(data, startDate, endDate)
+            expect(result).toMatchSnapshot()
+        })
+
+        it('should backfill graph data for inner empty data', () => {
+            const startDate = '2021-02-01'
+            const endDate = '2021-02-03'
+            const result = backfillGraphData(
+                [graphData1, []],
+                startDate,
+                endDate
+            )
+            expect(result).toMatchSnapshot()
+        })
+
+        it('should not backfill graph data for empty data', () => {
+            const startDate = '2021-02-01'
+            const endDate = '2021-02-03'
+            const result = backfillGraphData([], startDate, endDate)
+            expect(result).toStrictEqual([])
+        })
+
+        it('should not loop forever if dates are passed wrongly', () => {
+            const startDate = '2021-02-03'
+            const endDate = '2021-02-01'
+            const result = backfillGraphData(
+                [graphData1, []],
+                startDate,
+                endDate
+            )
+            expect(result).toStrictEqual([])
+        })
+    })
+
+    describe('transformToCampaignsPerformanceTable', () => {
+        const campaignEventsPerformanceData = [
+            {
+                [EventsDimensions.campaignId]: 'campaign1',
+                [EventsMeasures.traffic]: '1234',
+                [EventsMeasures.impressions]: '2000',
+                [EventsMeasures.uniqueImpressions]: '34',
+                [EventsMeasures.clicks]: '1000',
+                [EventsMeasures.clicksRate]: '10.20',
+            },
+            {
+                [EventsDimensions.campaignId]: 'campaign2',
+                [EventsMeasures.traffic]: '4567',
+                [EventsMeasures.impressions]: '4000',
+                [EventsMeasures.uniqueImpressions]: '67',
+                [EventsMeasures.clicks]: '2000',
+                [EventsMeasures.clicksRate]: '21.34',
+            },
+        ]
+
+        const campaignOrdersPerformanceData = [
+            {
+                [OrderConversionDimensions.campaignId]: 'campaign1',
+                [OrderConversionMeasures.gmv]: '12345.67',
+                [OrderConversionMeasures.influencedRevenueUplift]: '65.78',
+                [OrderConversionMeasures.ticketSales]: '1234.47',
+                [OrderConversionMeasures.ticketSalesCount]: '60',
+                [OrderConversionMeasures.discountSales]: '4567.65',
+                [OrderConversionMeasures.discountSalesCount]: '125',
+                [OrderConversionMeasures.clickSales]: '3596.25',
+            },
+            {
+                [OrderConversionDimensions.campaignId]: 'campaign2',
+                [OrderConversionMeasures.gmv]: '12345.67',
+                [OrderConversionMeasures.influencedRevenueUplift]: '65.78',
+                [OrderConversionMeasures.ticketSales]: '1234.47',
+                [OrderConversionMeasures.ticketSalesCount]: '80',
+                [OrderConversionMeasures.discountSales]: '4567.65',
+                [OrderConversionMeasures.discountSalesCount]: '125',
+                [OrderConversionMeasures.clickSales]: '3596.25',
+            },
+        ]
+
+        const campaignEventsOrdersPerformanceData = [
+            {
+                [CampaignOrderEventsDimensions.campaignId]: 'campaign1',
+                [CampaignOrderEventsMeasures.engagement]: '357',
+                [CampaignOrderEventsMeasures.campaignCTR]: '12.78',
+                [CampaignOrderEventsMeasures.uniqueConversions]: '125',
+                [CampaignOrderEventsMeasures.totalConversionRate]: '7.49',
+                [CampaignOrderEventsMeasures.uniqueCampaignClicksConverted]:
+                    '20',
+            },
+            {
+                [CampaignOrderEventsDimensions.campaignId]: 'campaign2',
+                [CampaignOrderEventsMeasures.engagement]: '1357',
+                [CampaignOrderEventsMeasures.campaignCTR]: '11.25',
+                [CampaignOrderEventsMeasures.uniqueConversions]: '358',
+                [CampaignOrderEventsMeasures.totalConversionRate]: '9.87',
+                [CampaignOrderEventsMeasures.uniqueCampaignClicksConverted]:
+                    '40',
+            },
+        ]
+
+        const campaignTicketsPerformanceData = [
+            ['campaign1', 300],
+            ['campaign2', 400],
+        ]
+
+        it('should transform data from metrics to table data', () => {
+            const result = transformToCampaignsPerformanceTable(
+                campaignEventsPerformanceData,
+                campaignOrdersPerformanceData,
+                campaignEventsOrdersPerformanceData,
+                campaignTicketsPerformanceData as TicketPerformanceData
+            )
+            expect(result).toMatchSnapshot()
+        })
+
+        it('should return defaults for missing data', () => {
+            const result = transformToCampaignsPerformanceTable(
+                [],
+                [],
+                [],
+                campaignTicketsPerformanceData as TicketPerformanceData
+            )
+            expect(result).toMatchSnapshot()
+        })
+
+        it('should not divide by zero for compound metrics', () => {
+            const result = transformToCampaignsPerformanceTable(
+                [
+                    {
+                        [EventsDimensions.campaignId]: 'campaign1',
+                        [EventsMeasures.impressions]: '0',
+                        [EventsMeasures.clicks]: '0',
+                    },
+                ],
+                [
+                    {
+                        [OrderConversionDimensions.campaignId]: 'campaign1',
+                        [OrderConversionMeasures.ticketSalesCount]: '60',
+                    },
+                ],
+                [
+                    {
+                        [CampaignOrderEventsDimensions.campaignId]: 'campaign1',
+                        [CampaignOrderEventsMeasures.uniqueCampaignClicksConverted]:
+                            '20',
+                    },
+                ],
+                [['campaign1', 0]] as TicketPerformanceData
+            )
+            expect(result).toMatchSnapshot()
+        })
+    })
+})
