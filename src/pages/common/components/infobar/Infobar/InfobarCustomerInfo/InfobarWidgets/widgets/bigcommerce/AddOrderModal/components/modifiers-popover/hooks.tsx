@@ -13,7 +13,6 @@ import {
     BigCommerceProductVariant,
 } from 'models/integration/types'
 
-import {useCanViewBigCommerceCreateOrderModifiers} from '../../utils'
 import {ModifiersPopover} from './ModifiersPopover'
 
 import css from './ModifiersPopover.less'
@@ -169,8 +168,6 @@ export const useAddModifiersPopover = (
         modifierValues: ModifierValues
     }) => Promise<void>
 ) => {
-    const canViewModifiers = useCanViewBigCommerceCreateOrderModifiers()
-
     const [props, setProps] = useState<AddModifiersPopoverState | null>(null)
 
     /**
@@ -180,11 +177,6 @@ export const useAddModifiersPopover = (
     const maybeOpenModifierPopover = (
         props: AddModifiersPopoverState
     ): boolean => {
-        // Do not open if we do not have LD flag set
-        if (!canViewModifiers) {
-            return false
-        }
-
         // Do not open if we do not have required modifiers
         if (!(props.product.modifiers ?? []).some(({required}) => required)) {
             return false

@@ -36,6 +36,16 @@ exports[`<ProductComponent/> should render correctly 1`] = `
           N/A
         </span>
       </div>
+      <button
+        class="modifierButton"
+      >
+        <i
+          class="material-icons"
+        >
+          tune
+        </i>
+        Modify
+      </button>
     </div>
   </td>
 </div>

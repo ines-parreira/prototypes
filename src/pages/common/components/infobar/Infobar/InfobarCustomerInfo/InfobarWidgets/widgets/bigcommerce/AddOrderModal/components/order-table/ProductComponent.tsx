@@ -12,7 +12,6 @@ import errorIcon from 'assets/img/icons/error.svg'
 import {
     isBigCommerceCartLineItem,
     isBigCommerceProduct,
-    useCanViewBigCommerceCreateOrderModifiers,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/utils'
 import {ProductStockQuantity} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/ProductStockQuantity'
 import css from './OrderLineItemRow.less'
@@ -35,9 +34,7 @@ const Modifiers = ({
     lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
     onOpenModifiers: () => void
 }) => {
-    const canViewModifiers = useCanViewBigCommerceCreateOrderModifiers()
-
-    if (!canViewModifiers || !isBigCommerceCartLineItem(lineItem)) {
+    if (!isBigCommerceCartLineItem(lineItem)) {
         return null
     }
 

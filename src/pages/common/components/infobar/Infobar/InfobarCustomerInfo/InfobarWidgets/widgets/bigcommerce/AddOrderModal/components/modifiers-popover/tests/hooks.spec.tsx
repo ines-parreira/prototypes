@@ -7,7 +7,6 @@ import {
     bigCommerceVariantFixture,
 } from 'fixtures/bigcommerce'
 import {useAddModifiersPopover, useEditModifiersPopover} from '../hooks'
-import {useCanViewBigCommerceCreateOrderModifiers} from '../../../utils'
 
 jest.mock('../../../utils', () => ({
     ...jest.requireActual<Record<string, unknown>>('../../../utils'),
@@ -18,14 +17,6 @@ const product = bigCommerceProductFixture()
 const variant = bigCommerceVariantFixture()
 
 describe('useModifiersPopover', () => {
-    beforeEach(() =>
-        (
-            useCanViewBigCommerceCreateOrderModifiers as jest.MockedFunction<
-                typeof useCanViewBigCommerceCreateOrderModifiers
-            >
-        ).mockImplementation(() => true)
-    )
-
     it('returns component when maybeOpenModifierPopover is triggered', async () => {
         const onApplyMock = jest.fn()
 
@@ -42,29 +33,6 @@ describe('useModifiersPopover', () => {
 
         await waitFor(() => {
             expect(result.current.modifiersPopover).toBeTruthy()
-        })
-    })
-
-    it('does not return component when maybeOpenModifierPopover is triggered but no LD flag', async () => {
-        const onApplyMock = jest.fn()
-        ;(
-            useCanViewBigCommerceCreateOrderModifiers as jest.MockedFunction<
-                typeof useCanViewBigCommerceCreateOrderModifiers
-            >
-        ).mockImplementationOnce(() => false)
-
-        const {result} = renderHook(() =>
-            useAddModifiersPopover('storeHash', onApplyMock)
-        )
-
-        expect(result.current.modifiersPopover).toBeNull()
-
-        expect(
-            result.current.maybeOpenModifierPopover({product, variant})
-        ).toBe(false)
-
-        await waitFor(() => {
-            expect(result.current.modifiersPopover).toBeNull()
         })
     })
 

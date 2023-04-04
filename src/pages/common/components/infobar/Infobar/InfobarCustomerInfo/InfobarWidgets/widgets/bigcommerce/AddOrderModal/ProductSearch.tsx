@@ -12,7 +12,6 @@ import {
 import {bigcommerceDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import {AddCustomProductPopover} from './AddCustomProductPopover'
-import {useCanViewBigCommerceCreateOrderModifiers} from './utils'
 
 import css from './OrderModal.less'
 
@@ -30,8 +29,6 @@ export const ProductSearch = ({
     ) => void
     onAddCustomProduct: (customItem: BigCommerceCustomProduct) => void
 }) => {
-    const canViewModifiers = useCanViewBigCommerceCreateOrderModifiers()
-
     const [isPopoverOpen, setPopoverOpen] = useState(false)
 
     return (
@@ -58,16 +55,12 @@ export const ProductSearch = ({
                         + Add custom product
                     </DropdownItem>
                 )}
-                renderResultItemProps={
-                    canViewModifiers
-                        ? (props) => {
-                              const {disabled, disabledReason} =
-                                  bigcommerceDataMappers.product(props.result)
+                renderResultItemProps={(props) => {
+                    const {disabled, disabledReason} =
+                        bigcommerceDataMappers.product(props.result)
 
-                              return {disabled, disabledReason}
-                          }
-                        : undefined
-                }
+                    return {disabled, disabledReason}
+                }}
                 onVariantClicked={onVariantClicked}
             />
             <AddCustomProductPopover
