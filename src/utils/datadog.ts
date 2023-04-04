@@ -46,7 +46,7 @@ export const initDatadogRum = (
         site: 'datadoghq.com',
         service: 'helpdesk-web-app',
         version,
-        sampleRate: 1,
+        sampleRate: 5,
         sessionReplaySampleRate: 0,
         trackResources: true,
         trackLongTasks: true,
