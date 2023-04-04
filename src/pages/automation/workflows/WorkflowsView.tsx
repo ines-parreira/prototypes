@@ -214,7 +214,7 @@ function deleteActionButton(
                         intent="destructive"
                         title="Delete flow"
                         id={uid}
-                        isLoading={isUpdatePending}
+                        isDisabled={isUpdatePending}
                     >
                         delete
                     </IconButton>
