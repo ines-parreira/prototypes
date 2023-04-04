@@ -3,12 +3,15 @@
 @import '~css/new/mixins';
 
 :local {
-    .content {
+    .wizard {
         width: 100%;
         max-width: 1000px;
         min-width: 480px;
-        padding: 0 @layout-spacing-m @layout-spacing-m @layout-spacing-m;
         flex-direction: column;
+    }
+
+    .content {
+        padding: 0 @layout-spacing-m @layout-spacing-m @layout-spacing-m;
     }
 
     .preview {
@@ -66,7 +69,11 @@
         justify-content: space-between;
         position: sticky;
         bottom: 0;
-        padding: @layout-spacing-m 0;
+        padding: @layout-spacing-m;
         background: @classic-neutral-grey-0;
+    }
+
+    .footerIsSticking {
+        box-shadow: 0px -2px 16px rgba(22, 22, 22, 0.05);
     }
 }

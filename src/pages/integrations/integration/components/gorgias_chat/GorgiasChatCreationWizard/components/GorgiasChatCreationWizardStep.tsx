@@ -1,6 +1,9 @@
 import React from 'react'
+import classnames from 'classnames'
 
 import {GorgiasChatCreationWizardSteps} from 'models/integration/types/gorgiasChat'
+
+import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
 
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 
@@ -30,26 +33,42 @@ const GorgiasChatCreationWizardStep: React.FC<Props> = ({
     children,
     preview,
     footer,
-}) => (
-    <>
-        <div className={css.content}>
-            <WizardProgressHeader
-                labels={labels}
-                className={css.wizardProgressHeader}
-            />
-            <div className={css.heading}>
-                <div className={css.title}>{labels[step]}</div>
-                {description[step] && (
-                    <div className={css.description}>{description[step]}</div>
-                )}
+}) => {
+    const contentRef = React.useRef<HTMLDivElement>(null)
+    const contentIsIntersecting =
+        useIsIntersectingWithBrowserViewport(contentRef)
+
+    return (
+        <>
+            <div className={css.wizard}>
+                <div className={css.content} ref={contentRef}>
+                    <WizardProgressHeader
+                        labels={labels}
+                        className={css.wizardProgressHeader}
+                    />
+                    <div className={css.heading}>
+                        <div className={css.title}>{labels[step]}</div>
+                        {description[step] && (
+                            <div className={css.description}>
+                                {description[step]}
+                            </div>
+                        )}
+                    </div>
+                    {children}
+                </div>
+                <div
+                    className={classnames(css.footer, {
+                        [css.footerIsSticking]: !contentIsIntersecting,
+                    })}
+                >
+                    {footer}
+                </div>
             </div>
-            {children}
-            <div className={css.footer}>{footer}</div>
-        </div>
-        <div className={css.preview}>
-            <div className={css.previewCenter}>{preview}</div>
-        </div>
-    </>
-)
+            <div className={css.preview}>
+                <div className={css.previewCenter}>{preview}</div>
+            </div>
+        </>
+    )
+}
 
 export default GorgiasChatCreationWizardStep

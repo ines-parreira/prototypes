@@ -17,6 +17,11 @@ import Wizard from 'pages/common/components/wizard/Wizard'
 
 import GorgiasChatCreationWizardStepInstallation from '../GorgiasChatCreationWizardStepInstallation'
 
+jest.mock(
+    'pages/common/hooks/useIsIntersectingWithBrowserViewport',
+    () => () => false
+)
+
 const mockStore = configureMockStore([thunk])
 
 const defaultState = {
