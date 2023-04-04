@@ -29,6 +29,17 @@ const getFontsFromLocalStorage = (): string[] => {
     return agentAddedFonts ? (JSON.parse(agentAddedFonts) as string[]) : []
 }
 
+/**
+ * Helper function to install the font(s) in the browser.
+ */
+export const addLinkToDownloadFonts = (fonts: string[]) => {
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.type = 'text/css'
+    link.href = getMultipleFontLink(fonts)
+    document.body.appendChild(link)
+}
+
 export const FontSelectField = ({
     value,
     defaultFonts,
@@ -51,19 +62,12 @@ export const FontSelectField = ({
         ) {
             return
         }
-        const addLinkToDownloadFonts = () => {
-            const link = document.createElement('link')
-            link.rel = 'stylesheet'
-            link.type = 'text/css'
-            link.href = getMultipleFontLink(
-                defaultFonts.includes(selectedFont)
-                    ? fontsFromLocalStorage
-                    : [...fontsFromLocalStorage, selectedFont]
-            )
-            document.body.appendChild(link)
-        }
 
-        void addLinkToDownloadFonts()
+        void addLinkToDownloadFonts(
+            defaultFonts.includes(selectedFont)
+                ? fontsFromLocalStorage
+                : [...fontsFromLocalStorage, selectedFont]
+        )
     }, [fontsFromLocalStorage, selectedFont, defaultFonts])
 
     const recentlyAddedFonts = defaultFonts.includes(selectedFont)

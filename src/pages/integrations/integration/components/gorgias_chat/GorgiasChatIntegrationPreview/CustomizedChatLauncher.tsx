@@ -2,6 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {addLinkToDownloadFonts} from 'pages/settings/common/FontSelectField/FontSelectField'
 import {assetsUrl} from 'utils'
 
 import {
@@ -12,6 +13,7 @@ import {
 
 import {FeatureFlagKey} from 'config/featureFlags'
 
+import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
 import {PositionAxis} from '../GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance'
 
 import ChatLauncher from './ChatLauncher'
@@ -28,6 +30,7 @@ type Props = {
     }
     position: GorgiasChatPosition
     mainColor?: string
+    mainFontFamily: string
     editedPositionAxis?: PositionAxis | null
     hideButton?: boolean
     isClosed?: boolean
@@ -41,12 +44,17 @@ const CustomizedChatLauncher: React.FC<Props> = ({
     },
     position: {alignment, offsetX, offsetY},
     mainColor,
+    mainFontFamily,
     editedPositionAxis,
     hideButton,
     isClosed,
 }) => {
     const isLauncherCustomizationEnabled =
         useFlags()[FeatureFlagKey.ChatLauncherCustomization]
+
+    if (mainFontFamily !== GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT) {
+        addLinkToDownloadFonts([mainFontFamily])
+    }
 
     const isButtonOnTop =
         alignment === GorgiasChatPositionAlignmentEnum.TOP_RIGHT ||
@@ -57,6 +65,10 @@ const CustomizedChatLauncher: React.FC<Props> = ({
             className={classnames(css.wrapper, className, {
                 [css.buttonOnTop]: isButtonOnTop,
             })}
+            style={{
+                fontFamily:
+                    mainFontFamily ?? GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+            }}
         >
             {!hideButton && (
                 <div

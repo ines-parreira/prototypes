@@ -4,7 +4,10 @@ import {fromJS} from 'immutable'
 import {user} from 'fixtures/users'
 
 import QuickResponseReplies from 'pages/settings/selfService/components/QuickResponseFlowItem/components/QuickResponseReplies/QuickResponseReplies'
-import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_DEFAULT_COLOR,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+} from 'config/integrations/gorgias_chat'
 import {CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES} from 'config/integrations'
 import ChatIntegrationPreview from './ChatIntegrationPreview'
 import css from './ChatIntegrationPreview.less'
@@ -30,6 +33,7 @@ const Template: Story<ComponentProps<typeof ChatIntegrationPreview>> = (
 const defaultProps: ComponentProps<typeof ChatIntegrationPreview> = {
     name: 'My chat',
     mainColor: GORGIAS_CHAT_DEFAULT_COLOR,
+    mainFontFamily: GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     isOnline: true,
     children: (
         <MessageContent
@@ -148,6 +152,18 @@ WithAgentMessagesAnimations.args = {
             enableAgentMessagesAnimations
         />
     ),
+}
+
+export const CustomFontImpact = Template.bind({})
+CustomFontImpact.args = {
+    ...defaultProps,
+    mainFontFamily: 'Impact',
+}
+
+export const CustomFontDeliciousHandrawn = Template.bind({})
+CustomFontImpact.args = {
+    ...defaultProps,
+    mainFontFamily: 'Delicious Handrawn',
 }
 
 export default storyConfig

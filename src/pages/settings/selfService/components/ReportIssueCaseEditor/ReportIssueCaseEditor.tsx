@@ -42,6 +42,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 
+import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
 import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
 import BackButton from '../BackButton'
 import {useChatIntegration} from '../QuickResponseFlowsPreferences/components/SelfServicePreview/hooks'
@@ -513,6 +514,11 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                 }
                                 mainColor={
                                     chatIntegration.decoration?.main_color
+                                }
+                                mainFontFamily={
+                                    chatIntegration.decoration
+                                        ?.main_font_family ??
+                                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
                                 }
                                 avatarTeamPictureUrl={
                                     chatIntegration.decoration

@@ -18,6 +18,7 @@ export type GorgiasChatIntegration = IntegrationBase & {
             image_type: GorgiasChatAvatarImageType
             name_type: GorgiasChatAvatarNameType
         }
+        main_font_family?: string
     }
 }
 

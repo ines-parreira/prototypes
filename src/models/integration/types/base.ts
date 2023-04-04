@@ -26,6 +26,7 @@ export type IntegrationDecoration = {
     introduction_text: string
     main_color: string
     offline_introduction_text: string
+    main_font_family: string
 }
 
 type HttpIntegrationMeta = {

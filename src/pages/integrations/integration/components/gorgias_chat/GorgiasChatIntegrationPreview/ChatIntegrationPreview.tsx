@@ -2,11 +2,13 @@ import classnames from 'classnames'
 import moment from 'moment'
 import React, {ReactNode} from 'react'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
@@ -16,6 +18,7 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
     isAutoresponderReply,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {
     GorgiasChatAvatarSettings,
@@ -41,6 +44,7 @@ type Props = {
     avatar?: GorgiasChatAvatarSettings
     avatarType?: string
     avatarTeamPictureUrl?: string | null
+    mainFontFamily: string
     isOnline: boolean
     language?: string
     children: ReactNode
@@ -71,6 +75,7 @@ const ChatIntegrationPreview = (props: Props) => {
         avatar,
         avatarType,
         avatarTeamPictureUrl,
+        mainFontFamily,
         mainColor,
         isOnline,
         shouldHideAvatarOnlineMarker = false,
@@ -96,6 +101,12 @@ const ChatIntegrationPreview = (props: Props) => {
         showBackground = true,
         contentClassName,
     } = props
+
+    const shoudShowFontCustomization =
+        useFlags()[FeatureFlagKey.ChatFontCustomization]
+    const finalMainFontFamily = shoudShowFontCustomization
+        ? mainFontFamily
+        : GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
 
     const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
 
@@ -164,6 +175,7 @@ const ChatIntegrationPreview = (props: Props) => {
                 css.preview,
                 showBackground && css.previewWithBackground
             )}
+            mainFontFamily={finalMainFontFamily}
             launcher={launcher}
             position={position}
             mainColor={isOnline ? mainColor : offlineColor}

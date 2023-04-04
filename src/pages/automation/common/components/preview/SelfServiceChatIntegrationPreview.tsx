@@ -4,6 +4,7 @@ import {Route, useHistory, useLocation} from 'react-router-dom'
 import {GorgiasChatIntegration} from 'models/integration/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 
+import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
 import SelfServiceChatIntegrationHomePage from './SelfServiceChatIntegrationHomePage'
 import SelfServiceChatIntegrationQuickResponsePage from './SelfServiceChatIntegrationQuickResponsePage'
 import SelfServiceChatIntegrationTrackPage from './SelfServiceChatIntegrationTrackPage'
@@ -51,6 +52,10 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
             mainColor={decoration.main_color}
             avatarType={decoration.avatar_type}
             avatarTeamPictureUrl={decoration.avatar_team_picture_url}
+            mainFontFamily={
+                decoration.main_font_family ??
+                GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+            }
             isOnline
             language={meta.language}
             renderFooter={

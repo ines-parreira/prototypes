@@ -31,6 +31,7 @@ import InputField from 'pages/common/forms/input/InputField'
 import {Value} from 'pages/common/forms/SelectField/types'
 
 import RichField from 'pages/common/forms/RichField/RichField'
+import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
 import {createTrigger} from '../../utils/createTrigger'
 
 import {useChatPreviewProps} from '../../hooks/useChatPreviewProps'
@@ -481,6 +482,10 @@ export const AdvancedCampaignDetails = memo(
                                 }
                                 avatar={avatar}
                                 chatTitle={chatTitle}
+                                mainFontFamily={
+                                    chatPreviewProps.mainFontFamily ??
+                                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                                }
                             />
                         )
                     }

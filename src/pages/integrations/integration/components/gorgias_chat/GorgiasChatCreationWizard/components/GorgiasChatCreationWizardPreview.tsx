@@ -8,6 +8,7 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS,
 } from 'config/integrations/gorgias_chat'
@@ -79,6 +80,13 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
             GORGIAS_CHAT_DEFAULT_COLOR
         )
 
+    const mainFontFamily: string =
+        mainColorProp ??
+        integration.getIn(
+            ['decoration', 'main_font_family'],
+            GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+        )
+
     const language =
         languageProp ??
         integration.getIn(
@@ -121,6 +129,7 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
                 name={name}
                 language={language}
                 mainColor={mainColor}
+                mainFontFamily={mainFontFamily}
                 isOnline={isOnline}
                 introductionText={introductionText}
                 offlineIntroductionText={offlineIntroductionText}

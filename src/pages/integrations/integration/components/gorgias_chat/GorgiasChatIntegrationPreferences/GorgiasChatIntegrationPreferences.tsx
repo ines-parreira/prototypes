@@ -35,6 +35,7 @@ import {
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
@@ -488,6 +489,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     'offline_introduction_text',
                 ])}
                 mainColor={mainColor}
+                mainFontFamily={integration.getIn(
+                    ['decoration', 'main_font_family'],
+                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                )}
                 isOnline
                 shouldHideAvatarOnlineMarker={
                     liveChatAvailability === GORGIAS_CHAT_LIVE_CHAT_OFFLINE

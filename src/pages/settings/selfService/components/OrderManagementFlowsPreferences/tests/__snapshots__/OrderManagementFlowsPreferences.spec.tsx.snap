@@ -390,6 +390,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
               </div>
               <div
                 class="wrapper preview"
+                style="font-family: Inter;"
               >
                 <div>
                   <div
@@ -911,6 +912,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
               </div>
               <div
                 class="wrapper preview"
+                style="font-family: Inter;"
               >
                 <div>
                   <div

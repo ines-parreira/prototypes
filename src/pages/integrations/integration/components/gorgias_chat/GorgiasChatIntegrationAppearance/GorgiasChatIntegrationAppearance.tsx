@@ -497,6 +497,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         avatarTeamPictureUrl,
         mainColor,
         conversationColor,
+        mainFontFamily,
         language,
         isOnline,
         position,
@@ -585,6 +586,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 introductionText={introductionText}
                 offlineIntroductionText={offlineIntroductionText}
                 mainColor={mainColor}
+                mainFontFamily={
+                    mainFontFamily ?? GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                }
                 isOnline={isOnline}
                 language={language}
                 position={position}

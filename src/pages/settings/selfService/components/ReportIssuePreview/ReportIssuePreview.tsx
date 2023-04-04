@@ -4,7 +4,10 @@ import {Button, ButtonGroup} from 'reactstrap'
 import {ConnectedProps, connect} from 'react-redux'
 
 import {List} from 'immutable'
-import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    GORGIAS_CHAT_SSP_TEXTS,
+} from 'config/integrations/gorgias_chat'
 import {ResponseMessageContent} from 'models/selfServiceConfiguration/types'
 import {getIntegrations} from 'state/integrations/selectors'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
@@ -108,6 +111,10 @@ const ReportIssuePreview = ({
                 name={chatIntegration.name}
                 introductionText={chatIntegration.decoration?.introduction_text}
                 mainColor={chatIntegration.decoration?.main_color}
+                mainFontFamily={
+                    chatIntegration.decoration?.main_font_family ??
+                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                }
                 avatarTeamPictureUrl={
                     chatIntegration.decoration?.avatar_team_picture_url ??
                     undefined

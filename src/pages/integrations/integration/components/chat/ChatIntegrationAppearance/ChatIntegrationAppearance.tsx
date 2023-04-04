@@ -184,6 +184,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
             offline_introduction_text: this.state.offlineIntroductionText,
             avatar_type: this.state.avatarType,
             avatar_team_picture_url: this.state.avatarTeamPictureUrl,
+            main_font_family: 'Inter', // Hardcoded. This legacy Smooth integration only supports Inter font.
         }
 
         form.meta = {

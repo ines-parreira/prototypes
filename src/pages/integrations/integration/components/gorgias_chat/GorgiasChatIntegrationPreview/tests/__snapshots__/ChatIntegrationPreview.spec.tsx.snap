@@ -37,6 +37,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -95,6 +96,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -165,6 +167,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -234,6 +237,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -289,6 +293,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -347,6 +352,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -415,6 +421,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={false}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -483,6 +490,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -551,6 +559,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -622,6 +631,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -694,6 +704,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -766,6 +777,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -838,6 +850,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {
@@ -908,6 +921,7 @@ exports[`<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/> ren
     isOnline={true}
     language="en-US"
     mainColor="#123456"
+    mainFontFamily="Inter"
     name="My little chat integration"
     position={
       {

@@ -16,6 +16,7 @@ import {
     QUICK_REPLIES_MAX_ITEMS,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 
 import {IntegrationType} from 'models/integration/constants'
@@ -172,6 +173,10 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                     'introduction_text',
                 ])}
                 mainColor={integration.getIn(['decoration', 'main_color'])}
+                mainFontFamily={integration.getIn(
+                    ['decoration', 'main_font_family'],
+                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                )}
                 language={integration.getIn(['meta', 'language'])}
                 isOnline
                 position={position}

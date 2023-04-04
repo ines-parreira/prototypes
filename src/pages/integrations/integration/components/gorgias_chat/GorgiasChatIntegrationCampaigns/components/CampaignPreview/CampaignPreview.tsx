@@ -21,6 +21,7 @@ type Props = {
     avatar?: GorgiasChatAvatarSettings
     chatTitle?: string
     mainColor?: string
+    mainFontFamily: string
     translatedTexts: Record<string, string>
     position: GorgiasChatPosition
     products?: CampaignProduct[]
@@ -37,6 +38,7 @@ const CampaignPreview = ({
     avatar,
     chatTitle,
     mainColor,
+    mainFontFamily,
     translatedTexts,
     position,
     products = [],
@@ -47,6 +49,7 @@ const CampaignPreview = ({
         position={position}
         mainColor={mainColor}
         launcher={launcher}
+        mainFontFamily={mainFontFamily}
     >
         <ChatCampaign
             authorAvatarUrl={authorAvatarUrl}

@@ -6,6 +6,7 @@ import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 
+import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
 import {
     SelfServiceOffArticleRecommendationOff,
     SelfServiceOnArticleRecommendationOff,
@@ -78,6 +79,10 @@ const SelfServicePreview = ({
             name={integration.name}
             introductionText={integration.decoration?.introduction_text}
             mainColor={integration.decoration?.main_color}
+            mainFontFamily={
+                integration.decoration?.main_font_family ??
+                GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+            }
             language={integration.meta?.language}
             renderPoweredBy={false}
             renderFooter={!isSelfServiceChecked}

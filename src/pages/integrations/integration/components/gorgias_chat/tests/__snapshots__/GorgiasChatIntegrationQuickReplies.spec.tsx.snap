@@ -162,6 +162,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
               introductionText="this is an intro"
               isOnline={true}
               mainColor="#123456"
+              mainFontFamily="Inter"
               name="my chat integration"
               position={
                 {
@@ -572,6 +573,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                             introductionText="this is an intro"
                             isOnline={true}
                             mainColor="#123456"
+                            mainFontFamily="Inter"
                             name="my chat integration"
                             position={
                               {
@@ -590,6 +592,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                 }
                               }
                               mainColor="#123456"
+                              mainFontFamily="Inter"
                               position={
                                 {
                                   "alignment": "bottom-right",
@@ -600,6 +603,11 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                             >
                               <div
                                 className="wrapper preview previewWithBackground"
+                                style={
+                                  {
+                                    "fontFamily": "Inter",
+                                  }
+                                }
                               >
                                 <div
                                   className="buttonWrapper bottom-right"
@@ -1107,6 +1115,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
               introductionText="this is an intro"
               isOnline={true}
               mainColor="#123456"
+              mainFontFamily="Inter"
               name="my chat integration"
               position={
                 {
@@ -1517,6 +1526,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                             introductionText="this is an intro"
                             isOnline={true}
                             mainColor="#123456"
+                            mainFontFamily="Inter"
                             name="my chat integration"
                             position={
                               {
@@ -1535,6 +1545,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                 }
                               }
                               mainColor="#123456"
+                              mainFontFamily="Inter"
                               position={
                                 {
                                   "alignment": "bottom-right",
@@ -1545,6 +1556,11 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                             >
                               <div
                                 className="wrapper preview previewWithBackground"
+                                style={
+                                  {
+                                    "fontFamily": "Inter",
+                                  }
+                                }
                               >
                                 <div
                                   className="buttonWrapper bottom-right"

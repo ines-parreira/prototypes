@@ -4,6 +4,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import {SPANISH_LANGUAGE} from 'constants/languages'
 
 import {
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
@@ -24,6 +25,7 @@ describe('useChatPreviewProps()', () => {
                     GORGIAS_CHAT_WIDGET_TEXTS[
                         GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
                     ],
+                mainFontFamily: GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
             })
         })
     })
@@ -32,6 +34,7 @@ describe('useChatPreviewProps()', () => {
         const integration = fromJS({
             decoration: {
                 main_color: '#000',
+                main_font_family: 'Impact',
             },
             meta: {
                 language: SPANISH_LANGUAGE,
@@ -45,6 +48,7 @@ describe('useChatPreviewProps()', () => {
                 position: GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
                 mainColor: '#000',
                 translatedTexts: GORGIAS_CHAT_WIDGET_TEXTS[SPANISH_LANGUAGE],
+                mainFontFamily: 'Impact',
             })
         })
     })

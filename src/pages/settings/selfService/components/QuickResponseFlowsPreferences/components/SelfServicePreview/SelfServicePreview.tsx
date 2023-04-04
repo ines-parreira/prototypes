@@ -2,7 +2,10 @@ import React, {useMemo, useState, useEffect} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 import {ButtonGroup, ListGroup, Button} from 'reactstrap'
 
-import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    GORGIAS_CHAT_SSP_TEXTS,
+} from 'config/integrations/gorgias_chat'
 
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import {getIntegrations} from 'state/integrations/selectors'
@@ -95,6 +98,10 @@ const SelfServicePreview = ({showHelpCenterPreview = false}: Props) => {
                         chatIntegration.decoration?.introduction_text
                     }
                     mainColor={chatIntegration.decoration?.main_color}
+                    mainFontFamily={
+                        chatIntegration.decoration?.main_font_family ??
+                        GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                    }
                     avatarTeamPictureUrl={
                         chatIntegration.decoration
                             ?.avatar_team_picture_url as string

@@ -15,6 +15,7 @@ import {
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
 } from 'config/integrations/index'
 import {
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
@@ -67,6 +68,7 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
         > = {
             name: 'My little chat integration',
             mainColor: mainColor,
+            mainFontFamily: GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
             isOnline: true,
             language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
             position: GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,

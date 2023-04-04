@@ -5,7 +5,10 @@ import {
     isGorgiasChatIntegration,
     isShopifyIntegration,
 } from 'models/integration/types'
-import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_DEFAULT_COLOR,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+} from 'config/integrations/gorgias_chat'
 
 export const useChatIntegration = ({
     integrations,
@@ -49,6 +52,7 @@ export const useChatIntegration = ({
                     offsetY: 0,
                     alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_RIGHT,
                 },
+                main_font_family: GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
             },
         }
     }, [integrations, shopName])

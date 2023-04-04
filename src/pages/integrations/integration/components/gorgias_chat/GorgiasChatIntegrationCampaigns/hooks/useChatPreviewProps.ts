@@ -2,6 +2,7 @@ import {Map} from 'immutable'
 import {useMemo} from 'react'
 
 import {
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
@@ -28,6 +29,10 @@ export function useChatPreviewProps(integration: Map<any, any>) {
     const mainColor: string | undefined =
         integration.getIn(['decoration', 'main_color']) ?? undefined
 
+    const mainFontFamily: string | undefined =
+        integration.getIn(['decoration', 'main_font_family']) ??
+        GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+
     const translatedTexts = useMemo<Record<string, string>>(() => {
         return GORGIAS_CHAT_WIDGET_TEXTS[
             (integration.getIn(['meta', 'language']) as string) ||
@@ -40,8 +45,9 @@ export function useChatPreviewProps(integration: Map<any, any>) {
             position,
             mainColor,
             translatedTexts,
+            mainFontFamily,
         }),
-        [position, mainColor, translatedTexts]
+        [position, mainColor, translatedTexts, mainFontFamily]
     )
 
     return output
