@@ -120,7 +120,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
         )
 
-    const name = currentName || integration.get('name')
+    const name = currentName ?? integration.get('name')
 
     const language =
         currentLanguage ||
@@ -391,7 +391,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 )!
 
                                 setCurrentStoreIntegration(storeIntegration)
-                                setCurrentName(storeIntegration.get('name'))
+
+                                if (!currentName) {
+                                    setCurrentName(storeIntegration.get('name'))
+                                }
                             }}
                             hasError={hasStoreError}
                         />
