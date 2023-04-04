@@ -64,7 +64,6 @@ type Props = {
     }
     isOpen?: boolean
     showBackground?: boolean
-    contentClassName?: string
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -99,7 +98,6 @@ const ChatIntegrationPreview = (props: Props) => {
         },
         isOpen = true,
         showBackground = true,
-        contentClassName,
     } = props
 
     const shoudShowFontCustomization =
@@ -247,9 +245,7 @@ const ChatIntegrationPreview = (props: Props) => {
                     </div>
                 </div>
 
-                <div className={classnames(css.content, contentClassName)}>
-                    {children}
-                </div>
+                {children}
 
                 {renderPoweredBy && (
                     <GorgiasChatPoweredBy translatedTexts={translatedTexts} />

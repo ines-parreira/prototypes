@@ -1,11 +1,14 @@
 import {Map} from 'immutable'
 import React, {Component, ReactNode, Ref} from 'react'
+import classnames from 'classnames'
 
 import {GorgiasChatAvatarSettings} from 'models/integration/types'
 
 import CustomerInitialMessages from './CustomerInitialMessages'
 
 import AgentMessages, {AgentMessage} from './AgentMessages'
+
+import css from './ChatIntegrationPreview.less'
 
 type Props = {
     className?: string
@@ -41,7 +44,7 @@ export default class MessageContent extends Component<Props> {
         }
 
         return (
-            <div ref={innerRef} className={className}>
+            <div ref={innerRef} className={classnames(css.content, className)}>
                 <CustomerInitialMessages
                     conversationColor={conversationColor}
                     messages={customerInitialMessages}

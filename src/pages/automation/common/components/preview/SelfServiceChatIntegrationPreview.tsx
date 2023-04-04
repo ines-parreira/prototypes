@@ -84,7 +84,6 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 location.pathname === SELF_SERVICE_PREVIEW_ROUTES.QUICK_RESPONSE
             }
             showBackground={false}
-            contentClassName="p-0"
         >
             <React.Fragment key={location.key}>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.HOME} exact>

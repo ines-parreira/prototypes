@@ -458,59 +458,55 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                     <div
                       class="content"
                     >
-                      <div
-                        class="content"
+                      <ul
+                        class="buttons list-group"
                       >
-                        <ul
-                          class="buttons list-group"
+                        <li
+                          class="button header list-group-item"
                         >
-                          <li
-                            class="button header list-group-item"
+                          Manage your orders
+                        </li>
+                        <li
+                          class="button list-group-item"
+                        >
+                          Track an order
+                          <span
+                            class="material-icons-outlined chevronIcon"
                           >
-                            Manage your orders
-                          </li>
-                          <li
-                            class="button list-group-item"
+                            chevron_right
+                          </span>
+                        </li>
+                        <li
+                          class="button list-group-item"
+                        >
+                          Return an order
+                          <span
+                            class="material-icons-outlined chevronIcon"
                           >
-                            Track an order
-                            <span
-                              class="material-icons-outlined chevronIcon"
-                            >
-                              chevron_right
-                            </span>
-                          </li>
-                          <li
-                            class="button list-group-item"
-                          >
-                            Return an order
-                            <span
-                              class="material-icons-outlined chevronIcon"
-                            >
-                              chevron_right
-                            </span>
-                          </li>
-                        </ul>
-                      </div>
-                      <div
-                        class="footer"
+                            chevron_right
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div
+                      class="footer"
+                    >
+                      <span
+                        class="needHelpText"
                       >
-                        <span
-                          class="needHelpText"
-                        >
-                          Need more help?
-                        </span>
-                        <button
-                          class="btn btn-primary"
-                          style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
-                        >
-                          <img
-                            alt="send message icon"
-                            class="sendMessageIcon"
-                            src="test-file-stub"
-                          />
-                          Send us a message
-                        </button>
-                      </div>
+                        Need more help?
+                      </span>
+                      <button
+                        class="btn btn-primary"
+                        style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
+                      >
+                        <img
+                          alt="send message icon"
+                          class="sendMessageIcon"
+                          src="test-file-stub"
+                        />
+                        Send us a message
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -982,59 +978,55 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                     <div
                       class="content"
                     >
-                      <div
-                        class="content"
+                      <ul
+                        class="buttons list-group"
                       >
-                        <ul
-                          class="buttons list-group"
+                        <li
+                          class="button header list-group-item"
                         >
-                          <li
-                            class="button header list-group-item"
+                          Manage your orders
+                        </li>
+                        <li
+                          class="button list-group-item"
+                        >
+                          Track an order
+                          <span
+                            class="material-icons-outlined chevronIcon"
                           >
-                            Manage your orders
-                          </li>
-                          <li
-                            class="button list-group-item"
+                            chevron_right
+                          </span>
+                        </li>
+                        <li
+                          class="button list-group-item"
+                        >
+                          Return an order
+                          <span
+                            class="material-icons-outlined chevronIcon"
                           >
-                            Track an order
-                            <span
-                              class="material-icons-outlined chevronIcon"
-                            >
-                              chevron_right
-                            </span>
-                          </li>
-                          <li
-                            class="button list-group-item"
-                          >
-                            Return an order
-                            <span
-                              class="material-icons-outlined chevronIcon"
-                            >
-                              chevron_right
-                            </span>
-                          </li>
-                        </ul>
-                      </div>
-                      <div
-                        class="footer"
+                            chevron_right
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div
+                      class="footer"
+                    >
+                      <span
+                        class="needHelpText"
                       >
-                        <span
-                          class="needHelpText"
-                        >
-                          Need more help?
-                        </span>
-                        <button
-                          class="btn btn-primary"
-                          style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
-                        >
-                          <img
-                            alt="send message icon"
-                            class="sendMessageIcon"
-                            src="test-file-stub"
-                          />
-                          Send us a message
-                        </button>
-                      </div>
+                        Need more help?
+                      </span>
+                      <button
+                        class="btn btn-primary"
+                        style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
+                      >
+                        <img
+                          alt="send message icon"
+                          class="sendMessageIcon"
+                          src="test-file-stub"
+                        />
+                        Send us a message
+                      </button>
                     </div>
                   </div>
                 </div>

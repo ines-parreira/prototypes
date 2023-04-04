@@ -19,6 +19,7 @@ import * as ToggleButton from 'pages/common/components/ToggleButton'
 
 import ConversationTimestamp from '../../GorgiasChatIntegrationPreview/ConversationTimestamp'
 import ChatIntegrationPreview from '../../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import ChatIntegrationPreviewContent from '../../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 
 import MessageContent from '../../GorgiasChatIntegrationPreview/MessageContent'
 import OfflineMessages from '../../GorgiasChatIntegrationPreview/OfflineMessages'
@@ -146,31 +147,33 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
                 isOpen={isOpen}
                 launcher={launcher}
             >
-                {isOnline ? (
-                    <MessageContent
-                        conversationColor={conversationColor}
-                        customerInitialMessages={[
-                            'Hi, could you give me an update on my order status?',
-                        ]}
-                        agentMessages={[
-                            {
-                                content:
-                                    "Hi there, thanks for your patience! Sure, let me check. What's your order number?",
-                                isHtml: false,
-                                attachments: [],
-                            },
-                        ]}
-                        currentUser={currentUser}
-                    />
-                ) : (
-                    <>
-                        <ConversationTimestamp />
-                        <OfflineMessages
-                            mainColor={mainColor}
-                            chatTitle={name}
+                <ChatIntegrationPreviewContent>
+                    {isOnline ? (
+                        <MessageContent
+                            conversationColor={conversationColor}
+                            customerInitialMessages={[
+                                'Hi, could you give me an update on my order status?',
+                            ]}
+                            agentMessages={[
+                                {
+                                    content:
+                                        "Hi there, thanks for your patience! Sure, let me check. What's your order number?",
+                                    isHtml: false,
+                                    attachments: [],
+                                },
+                            ]}
+                            currentUser={currentUser}
                         />
-                    </>
-                )}
+                    ) : (
+                        <>
+                            <ConversationTimestamp />
+                            <OfflineMessages
+                                mainColor={mainColor}
+                                chatTitle={name}
+                            />
+                        </>
+                    )}
+                </ChatIntegrationPreviewContent>
             </ChatIntegrationPreview>
         </div>
     )

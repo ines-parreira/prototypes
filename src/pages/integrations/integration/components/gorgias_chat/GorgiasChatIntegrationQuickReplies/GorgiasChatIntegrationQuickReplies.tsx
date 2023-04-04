@@ -27,6 +27,7 @@ import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegra
 import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
+import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 
 import chatCss from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview.less'
 import css from './GorgiasChatIntegrationQuickReplies.less'
@@ -183,15 +184,21 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                 autoResponderEnabled={autoResponderEnabled}
                 autoResponderReply={autoResponderReply}
             >
-                <div className={chatCss.content} />
-                <QuickRepliesPreview
-                    quickReplies={this.state.quickReplies
-                        .filter(
-                            (s: string | undefined) => s?.trim().length !== 0
-                        )
-                        .toJS()}
-                    mainColor={integration.getIn(['decoration', 'main_color'])}
-                />
+                <ChatIntegrationPreviewContent>
+                    <div className={chatCss.content} />
+                    <QuickRepliesPreview
+                        quickReplies={this.state.quickReplies
+                            .filter(
+                                (s: string | undefined) =>
+                                    s?.trim().length !== 0
+                            )
+                            .toJS()}
+                        mainColor={integration.getIn([
+                            'decoration',
+                            'main_color',
+                        ])}
+                    />
+                </ChatIntegrationPreviewContent>
             </ChatIntegrationPreview>
         )
 

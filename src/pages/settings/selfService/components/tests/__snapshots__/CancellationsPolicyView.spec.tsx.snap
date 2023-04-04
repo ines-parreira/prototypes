@@ -942,9 +942,6 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                     </div>
                   </div>
                   <div
-                    class="content"
-                  />
-                  <div
                     class="poweredBy"
                   >
                     <div>

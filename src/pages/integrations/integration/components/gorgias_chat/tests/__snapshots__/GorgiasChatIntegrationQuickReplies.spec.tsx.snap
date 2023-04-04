@@ -172,18 +172,20 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                 }
               }
             >
-              <div
-                className="content"
-              />
-              <QuickReplies
-                mainColor="#123456"
-                quickReplies={
-                  [
-                    "Get order status",
-                    "Apply promo code",
-                  ]
-                }
-              />
+              <ChatIntegrationPreviewContent>
+                <div
+                  className="content"
+                />
+                <QuickReplies
+                  mainColor="#123456"
+                  quickReplies={
+                    [
+                      "Get order status",
+                      "Apply promo code",
+                    ]
+                  }
+                />
+              </ChatIntegrationPreviewContent>
             </ChatIntegrationPreview>
           }
         >
@@ -765,55 +767,57 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                         </div>
                                       </div>
                                     </div>
-                                    <div
-                                      className="content"
-                                    >
+                                    <ChatIntegrationPreviewContent>
                                       <div
                                         className="content"
-                                      />
-                                      <QuickReplies
-                                        mainColor="#123456"
-                                        quickReplies={
-                                          [
-                                            "Get order status",
-                                            "Apply promo code",
-                                          ]
-                                        }
                                       >
                                         <div
-                                          className="quickRepliesContent"
+                                          className="content"
+                                        />
+                                        <QuickReplies
+                                          mainColor="#123456"
+                                          quickReplies={
+                                            [
+                                              "Get order status",
+                                              "Apply promo code",
+                                            ]
+                                          }
                                         >
                                           <div
-                                            className="quickRepliesWrapper"
+                                            className="quickRepliesContent"
                                           >
-                                            <button
-                                              className="btn btn-reply-action reply"
-                                              key="Get order status-0"
-                                              style={
-                                                {
-                                                  "borderColor": "#123456",
-                                                  "color": "#123456",
-                                                }
-                                              }
+                                            <div
+                                              className="quickRepliesWrapper"
                                             >
-                                              Get order status
-                                            </button>
-                                            <button
-                                              className="btn btn-reply-action reply"
-                                              key="Apply promo code-1"
-                                              style={
-                                                {
-                                                  "borderColor": "#123456",
-                                                  "color": "#123456",
+                                              <button
+                                                className="btn btn-reply-action reply"
+                                                key="Get order status-0"
+                                                style={
+                                                  {
+                                                    "borderColor": "#123456",
+                                                    "color": "#123456",
+                                                  }
                                                 }
-                                              }
-                                            >
-                                              Apply promo code
-                                            </button>
+                                              >
+                                                Get order status
+                                              </button>
+                                              <button
+                                                className="btn btn-reply-action reply"
+                                                key="Apply promo code-1"
+                                                style={
+                                                  {
+                                                    "borderColor": "#123456",
+                                                    "color": "#123456",
+                                                  }
+                                                }
+                                              >
+                                                Apply promo code
+                                              </button>
+                                            </div>
                                           </div>
-                                        </div>
-                                      </QuickReplies>
-                                    </div>
+                                        </QuickReplies>
+                                      </div>
+                                    </ChatIntegrationPreviewContent>
                                     <PoweredByGorgias
                                       translatedTexts={
                                         {
@@ -1127,18 +1131,20 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 }
               }
             >
-              <div
-                className="content"
-              />
-              <QuickReplies
-                mainColor="#123456"
-                quickReplies={
-                  [
-                    "foo",
-                    "bar",
-                  ]
-                }
-              />
+              <ChatIntegrationPreviewContent>
+                <div
+                  className="content"
+                />
+                <QuickReplies
+                  mainColor="#123456"
+                  quickReplies={
+                    [
+                      "foo",
+                      "bar",
+                    ]
+                  }
+                />
+              </ChatIntegrationPreviewContent>
             </ChatIntegrationPreview>
           }
         >
@@ -1720,55 +1726,57 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                         </div>
                                       </div>
                                     </div>
-                                    <div
-                                      className="content"
-                                    >
+                                    <ChatIntegrationPreviewContent>
                                       <div
                                         className="content"
-                                      />
-                                      <QuickReplies
-                                        mainColor="#123456"
-                                        quickReplies={
-                                          [
-                                            "foo",
-                                            "bar",
-                                          ]
-                                        }
                                       >
                                         <div
-                                          className="quickRepliesContent"
+                                          className="content"
+                                        />
+                                        <QuickReplies
+                                          mainColor="#123456"
+                                          quickReplies={
+                                            [
+                                              "foo",
+                                              "bar",
+                                            ]
+                                          }
                                         >
                                           <div
-                                            className="quickRepliesWrapper"
+                                            className="quickRepliesContent"
                                           >
-                                            <button
-                                              className="btn btn-reply-action reply"
-                                              key="foo-0"
-                                              style={
-                                                {
-                                                  "borderColor": "#123456",
-                                                  "color": "#123456",
-                                                }
-                                              }
+                                            <div
+                                              className="quickRepliesWrapper"
                                             >
-                                              foo
-                                            </button>
-                                            <button
-                                              className="btn btn-reply-action reply"
-                                              key="bar-1"
-                                              style={
-                                                {
-                                                  "borderColor": "#123456",
-                                                  "color": "#123456",
+                                              <button
+                                                className="btn btn-reply-action reply"
+                                                key="foo-0"
+                                                style={
+                                                  {
+                                                    "borderColor": "#123456",
+                                                    "color": "#123456",
+                                                  }
                                                 }
-                                              }
-                                            >
-                                              bar
-                                            </button>
+                                              >
+                                                foo
+                                              </button>
+                                              <button
+                                                className="btn btn-reply-action reply"
+                                                key="bar-1"
+                                                style={
+                                                  {
+                                                    "borderColor": "#123456",
+                                                    "color": "#123456",
+                                                  }
+                                                }
+                                              >
+                                                bar
+                                              </button>
+                                            </div>
                                           </div>
-                                        </div>
-                                      </QuickReplies>
-                                    </div>
+                                        </QuickReplies>
+                                      </div>
+                                    </ChatIntegrationPreviewContent>
                                     <PoweredByGorgias
                                       translatedTexts={
                                         {

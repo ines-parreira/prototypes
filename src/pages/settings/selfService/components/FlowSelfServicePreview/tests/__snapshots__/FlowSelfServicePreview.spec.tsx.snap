@@ -92,98 +92,94 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
           <div
             class="content"
           >
-            <div
-              class="content"
+            <ul
+              class="buttons list-group"
             >
-              <ul
-                class="buttons list-group"
+              <li
+                class="button header list-group-item"
               >
-                <li
-                  class="button header list-group-item"
-                >
-                  Quick responses
-                </li>
-                <li
-                  class="button list-group-item"
-                >
-                  question
-                  <span
-                    class="material-icons-outlined chevronIcon"
-                  >
-                    chevron_right
-                  </span>
-                </li>
-              </ul>
-              <ul
-                class="buttons list-group"
+                Quick responses
+              </li>
+              <li
+                class="button list-group-item"
               >
-                <li
-                  class="button header list-group-item"
+                question
+                <span
+                  class="material-icons-outlined chevronIcon"
                 >
-                  Manage your orders
-                </li>
-                <li
-                  class="button list-group-item"
-                >
-                  Track an order
-                  <span
-                    class="material-icons-outlined chevronIcon"
-                  >
-                    chevron_right
-                  </span>
-                </li>
-                <li
-                  class="button list-group-item"
-                >
-                  Return an order
-                  <span
-                    class="material-icons-outlined chevronIcon"
-                  >
-                    chevron_right
-                  </span>
-                </li>
-                <li
-                  class="button list-group-item"
-                >
-                  Cancel an order
-                  <span
-                    class="material-icons-outlined chevronIcon"
-                  >
-                    chevron_right
-                  </span>
-                </li>
-                <li
-                  class="button list-group-item"
-                >
-                  Report issue
-                  <span
-                    class="material-icons-outlined chevronIcon"
-                  >
-                    chevron_right
-                  </span>
-                </li>
-              </ul>
-            </div>
-            <div
-              class="footer"
+                  chevron_right
+                </span>
+              </li>
+            </ul>
+            <ul
+              class="buttons list-group"
             >
-              <span
-                class="needHelpText"
+              <li
+                class="button header list-group-item"
               >
-                Need more help?
-              </span>
-              <button
-                class="btn btn-primary"
-                style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
+                Manage your orders
+              </li>
+              <li
+                class="button list-group-item"
               >
-                <img
-                  alt="send message icon"
-                  class="sendMessageIcon"
-                  src="test-file-stub"
-                />
-                Send us a message
-              </button>
-            </div>
+                Track an order
+                <span
+                  class="material-icons-outlined chevronIcon"
+                >
+                  chevron_right
+                </span>
+              </li>
+              <li
+                class="button list-group-item"
+              >
+                Return an order
+                <span
+                  class="material-icons-outlined chevronIcon"
+                >
+                  chevron_right
+                </span>
+              </li>
+              <li
+                class="button list-group-item"
+              >
+                Cancel an order
+                <span
+                  class="material-icons-outlined chevronIcon"
+                >
+                  chevron_right
+                </span>
+              </li>
+              <li
+                class="button list-group-item"
+              >
+                Report issue
+                <span
+                  class="material-icons-outlined chevronIcon"
+                >
+                  chevron_right
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="footer"
+          >
+            <span
+              class="needHelpText"
+            >
+              Need more help?
+            </span>
+            <button
+              class="btn btn-primary"
+              style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
+            >
+              <img
+                alt="send message icon"
+                class="sendMessageIcon"
+                src="test-file-stub"
+              />
+              Send us a message
+            </button>
           </div>
         </div>
       </div>
@@ -284,63 +280,59 @@ exports[`<ChatIntegrationPreview/> render() displays landing page with the merge
           <div
             class="content"
           >
-            <div
-              class="content"
+            <ul
+              class="buttons list-group"
             >
-              <ul
-                class="buttons list-group"
+              <li
+                class="button header list-group-item"
               >
-                <li
-                  class="button header list-group-item"
-                >
-                  Quick responses
-                </li>
-                <li
-                  class="button list-group-item"
-                >
-                  question
-                  <span
-                    class="material-icons-outlined chevronIcon"
-                  >
-                    chevron_right
-                  </span>
-                </li>
-              </ul>
-              <ul
-                class="buttons list-group"
+                Quick responses
+              </li>
+              <li
+                class="button list-group-item"
               >
-                <li
-                  class="button header list-group-item"
+                question
+                <span
+                  class="material-icons-outlined chevronIcon"
                 >
-                  Track and manage my orders
-                  <span
-                    class="material-icons-outlined chevronIcon"
-                  >
-                    chevron_right
-                  </span>
-                </li>
-              </ul>
-            </div>
-            <div
-              class="footer"
+                  chevron_right
+                </span>
+              </li>
+            </ul>
+            <ul
+              class="buttons list-group"
             >
-              <span
-                class="needHelpText"
+              <li
+                class="button header list-group-item"
               >
-                Need more help?
-              </span>
-              <button
-                class="btn btn-primary"
-                style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
-              >
-                <img
-                  alt="send message icon"
-                  class="sendMessageIcon"
-                  src="test-file-stub"
-                />
-                Send us a message
-              </button>
-            </div>
+                Track and manage my orders
+                <span
+                  class="material-icons-outlined chevronIcon"
+                >
+                  chevron_right
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="footer"
+          >
+            <span
+              class="needHelpText"
+            >
+              Need more help?
+            </span>
+            <button
+              class="btn btn-primary"
+              style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
+            >
+              <img
+                alt="send message icon"
+                class="sendMessageIcon"
+                src="test-file-stub"
+              />
+              Send us a message
+            </button>
           </div>
         </div>
       </div>
@@ -441,69 +433,67 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
           <div
             class="content"
           >
-            <div>
+            <div
+              class="d-flex flex-column"
+            >
               <div
-                class="d-flex flex-column"
+                class="conversationTimestamp"
               >
-                <div
-                  class="conversationTimestamp"
-                >
-                  January 24
-                </div>
-                <div
-                  class="bubble primary firstMessageOfAppUser lastMessage"
-                  style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
-                >
-                  question
-                </div>
+                January 24
               </div>
               <div
-                class="appMakerMessageWrapper"
+                class="bubble primary firstMessageOfAppUser lastMessage"
+                style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
               >
-                <div
-                  class="avatar avatar"
-                  style="background-image: url(https://config.gorgias.io/production/picture);"
-                />
-                <div>
-                  <div
-                    class="user"
-                  >
-                    Alex Plugaru
-                  </div>
-                  <div
-                    class="bubble firstMessageOfAppMaker"
-                  >
-                    <div>
-                      response
-                    </div>
-                  </div>
-                  <div
-                    class="bubble firstMessageOfAppMaker"
-                  >
-                    Was this helpful?
-                  </div>
-                </div>
+                question
               </div>
             </div>
             <div
-              class="content quick-replies-content"
+              class="appMakerMessageWrapper"
             >
               <div
-                class="quick-replies-wrapper"
-              >
-                <button
-                  class="btn btn-reply-action reply"
-                  style="color: rgb(13, 135, 221); border-color: #0d87dd;"
+                class="avatar avatar"
+                style="background-image: url(https://config.gorgias.io/production/picture);"
+              />
+              <div>
+                <div
+                  class="user"
                 >
-                  Yes, thank you
-                </button>
-                <button
-                  class="btn btn-reply-action reply"
-                  style="color: rgb(13, 135, 221); border-color: #0d87dd;"
+                  Alex Plugaru
+                </div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
                 >
-                  No, I need more help
-                </button>
+                  <div>
+                    response
+                  </div>
+                </div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  Was this helpful?
+                </div>
               </div>
+            </div>
+          </div>
+          <div
+            class="content quick-replies-content"
+          >
+            <div
+              class="quick-replies-wrapper"
+            >
+              <button
+                class="btn btn-reply-action reply"
+                style="color: rgb(13, 135, 221); border-color: #0d87dd;"
+              >
+                Yes, thank you
+              </button>
+              <button
+                class="btn btn-reply-action reply"
+                style="color: rgb(13, 135, 221); border-color: #0d87dd;"
+              >
+                No, I need more help
+              </button>
             </div>
           </div>
           <div
@@ -618,41 +608,39 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer wit
           <div
             class="content"
           >
-            <div>
+            <div
+              class="d-flex flex-column"
+            >
               <div
-                class="d-flex flex-column"
+                class="conversationTimestamp"
               >
-                <div
-                  class="conversationTimestamp"
-                >
-                  January 24
-                </div>
-                <div
-                  class="bubble primary firstMessageOfAppUser lastMessage"
-                  style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
-                >
-                  question
-                </div>
+                January 24
               </div>
               <div
-                class="appMakerMessageWrapper"
+                class="bubble primary firstMessageOfAppUser lastMessage"
+                style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
               >
+                question
+              </div>
+            </div>
+            <div
+              class="appMakerMessageWrapper"
+            >
+              <div
+                class="avatar avatar"
+                style="background-image: url(https://config.gorgias.io/production/picture);"
+              />
+              <div>
                 <div
-                  class="avatar avatar"
-                  style="background-image: url(https://config.gorgias.io/production/picture);"
-                />
-                <div>
-                  <div
-                    class="user"
-                  >
-                    Alex Plugaru
-                  </div>
-                  <div
-                    class="bubble firstMessageOfAppMaker"
-                  >
-                    <div>
-                      response
-                    </div>
+                  class="user"
+                >
+                  Alex Plugaru
+                </div>
+                <div
+                  class="bubble firstMessageOfAppMaker"
+                >
+                  <div>
+                    response
                   </div>
                 </div>
               </div>
@@ -784,21 +772,19 @@ exports[`<ChatIntegrationPreview/> render() displays thread page without answer 
           <div
             class="content"
           >
-            <div>
+            <div
+              class="d-flex flex-column"
+            >
               <div
-                class="d-flex flex-column"
+                class="conversationTimestamp"
               >
-                <div
-                  class="conversationTimestamp"
-                >
-                  January 24
-                </div>
-                <div
-                  class="bubble primary firstMessageOfAppUser lastMessage"
-                  style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
-                >
-                  question
-                </div>
+                January 24
+              </div>
+              <div
+                class="bubble primary firstMessageOfAppUser lastMessage"
+                style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
+              >
+                question
               </div>
             </div>
           </div>

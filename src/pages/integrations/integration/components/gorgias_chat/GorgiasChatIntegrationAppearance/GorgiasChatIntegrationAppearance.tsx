@@ -79,6 +79,7 @@ import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/u
 import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectField'
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
+import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 
 import css from './GorgiasChatIntegrationAppearance.less'
 import {StoreNameDropdown} from './StoreNameDropdown'
@@ -603,27 +604,29 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 isOpen={isChatOpenInPreview}
                 renderFooter={isOnline}
             >
-                {isOnline ? (
-                    <AutoResponderMessages
-                        currentUser={currentUser}
-                        conversationColor={conversationColor}
-                        chatTitle={name}
-                        avatar={state.avatar}
-                        language={language}
-                        autoResponderReply={
-                            GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
-                        }
-                    />
-                ) : (
-                    <>
-                        <ConversationTimestamp />
-                        <OfflineMessages
-                            mainColor={mainColor}
+                <ChatIntegrationPreviewContent>
+                    {isOnline ? (
+                        <AutoResponderMessages
+                            currentUser={currentUser}
+                            conversationColor={conversationColor}
                             chatTitle={name}
+                            avatar={state.avatar}
                             language={language}
+                            autoResponderReply={
+                                GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
+                            }
                         />
-                    </>
-                )}
+                    ) : (
+                        <>
+                            <ConversationTimestamp />
+                            <OfflineMessages
+                                mainColor={mainColor}
+                                chatTitle={name}
+                                language={language}
+                            />
+                        </>
+                    )}
+                </ChatIntegrationPreviewContent>
             </ChatIntegrationPreview>
         </div>
     )

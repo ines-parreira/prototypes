@@ -46,6 +46,7 @@ import RadioFieldSet from '../../../../../common/forms/RadioFieldSet'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
 import {RootState} from '../../../../../../state/types'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 
 import OfflineMessages from '../GorgiasChatIntegrationPreview/OfflineMessages'
 import CustomerInitialMessages from '../GorgiasChatIntegrationPreview/CustomerInitialMessages'
@@ -505,17 +506,19 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 }
                 autoResponderReply={autoResponderReply}
             >
-                <ConversationTimestamp />
-                {showCustomerInitialMessages && (
-                    <CustomerInitialMessages
-                        conversationColor={conversationColor}
-                        messages={[
-                            'Hi, could you give me an update on my order status?',
-                        ]}
-                        hideConversationTimestamp
-                    />
-                )}
-                {previewChildren}
+                <ChatIntegrationPreviewContent>
+                    <ConversationTimestamp />
+                    {showCustomerInitialMessages && (
+                        <CustomerInitialMessages
+                            conversationColor={conversationColor}
+                            messages={[
+                                'Hi, could you give me an update on my order status?',
+                            ]}
+                            hideConversationTimestamp
+                        />
+                    )}
+                    {previewChildren}
+                </ChatIntegrationPreviewContent>
             </ChatIntegrationPreview>
         )
 
