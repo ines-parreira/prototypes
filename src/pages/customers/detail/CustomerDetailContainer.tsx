@@ -2,9 +2,12 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List} from 'immutable'
 import {Link, useParams} from 'react-router-dom'
+import _pick from 'lodash/pick'
 
 import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
+import useRecentItems from 'hooks/useRecentItems/useRecentItems'
+import {RecentItems} from 'hooks/useRecentItems/constants'
 import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
 import Loader from 'pages/common/components/Loader/Loader'
 import CustomerForm from 'pages/customers/common/components/CustomerForm'
@@ -21,6 +24,10 @@ import {RootState} from 'state/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import {
+    PickedCustomer,
+    pickedCustomerFields,
+} from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 
 import css from './CustomerDetailContainer.less'
 
@@ -44,6 +51,17 @@ export const CustomerDetailContainer = ({
     )
     const params = useParams<{customerId?: string}>()
     const customerId = useMemo(() => params.customerId || '', [params])
+    const {setRecentItem} = useRecentItems<PickedCustomer>(
+        RecentItems.Customers
+    )
+
+    useEffect(() => {
+        if (activeCustomer.get('id')) {
+            const customer = activeCustomer.toJS()
+            const pickedCustomer = _pick(customer, pickedCustomerFields)
+            void setRecentItem(pickedCustomer)
+        }
+    }, [activeCustomer, setRecentItem])
 
     useEffect(() => {
         void (async () => {

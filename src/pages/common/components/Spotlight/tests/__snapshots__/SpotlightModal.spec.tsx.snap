@@ -265,270 +265,6 @@ exports[`<SpotlightModal/> should fetch tickets on enter keypress from the old s
 ]
 `;
 
-exports[`<SpotlightModal/> should render the fetched result set with SpotlightRow for Customers tab 1`] = `
-<div
-  aria-describedby="modal-57-desc"
-  aria-labelledby="modal-57-title"
-  aria-modal="true"
-  class="modal spotlightModal default open"
-  role="dialog"
->
-  <div
-    class="dialog large scrollableDialog"
-  >
-    <div
-      class="modalContent scrollableContent default spotlightModalContent"
-    >
-      <div
-        class="component searchInput"
-      >
-        <div
-          class="wrapper isFocused input textInput shortcuts-enable"
-        >
-          <span
-            class="prefix"
-          >
-            <i
-              class="material-icons icon"
-            >
-              search
-            </i>
-          </span>
-          <input
-            class="input"
-            id="input-text-58"
-            name="input-text-58"
-            placeholder="Search..."
-            type="text"
-            value="foo"
-          />
-        </div>
-      </div>
-      <div
-        class="container tabNavigator"
-      >
-        <div
-          class="tabContainer"
-        >
-          <div
-            class="tab"
-            tabindex="1"
-          >
-            <span
-              class="tabLabel"
-            >
-              Tickets
-            </span>
-          </div>
-          <div
-            class="tab activeTab"
-            tabindex="2"
-          >
-            <span
-              class="tabLabel"
-            >
-              Customers
-            </span>
-          </div>
-        </div>
-        <div
-          class="activeIndicator"
-          style="width: 0px; left: 0px;"
-        />
-      </div>
-      <div
-        class="wrapper scrollable modalBody"
-        id="modal-57-desc"
-      >
-        <div
-          style="height: 56px;"
-        >
-          <div>
-            SpotlightCustomerRow
-          </div>
-          <div>
-            end area
-          </div>
-        </div>
-      </div>
-      <div
-        class="wrapper footer"
-      >
-        <div
-          class="navigationShortcutWrapper"
-        >
-          <div
-            class="wrapper navigationShortcut"
-          >
-            ↑↓ Select
-          </div>
-          <div
-            class="wrapper navigationShortcut"
-          >
-            ↩ Open
-          </div>
-          <div
-            class="wrapper navigationShortcut"
-          >
-            ctrl + ↩ Open in a new tab
-          </div>
-        </div>
-        <button
-          class="wrapper ghost secondary small"
-          type="button"
-        >
-          <span>
-            Advanced Search
-          </span>
-          <div
-            class="wrapper classic advancedShortcut"
-          >
-            ⇧
-          </div>
-          <div
-            class="wrapper classic advancedShortcut"
-          >
-            ↩
-          </div>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<SpotlightModal/> should render the fetched result set with SpotlightRow for Tickets tab 1`] = `
-<div
-  aria-describedby="modal-55-desc"
-  aria-labelledby="modal-55-title"
-  aria-modal="true"
-  class="modal spotlightModal default open"
-  role="dialog"
->
-  <div
-    class="dialog large scrollableDialog"
-  >
-    <div
-      class="modalContent scrollableContent default spotlightModalContent"
-    >
-      <div
-        class="component searchInput"
-      >
-        <div
-          class="wrapper isFocused input textInput shortcuts-enable"
-        >
-          <span
-            class="prefix"
-          >
-            <i
-              class="material-icons icon"
-            >
-              search
-            </i>
-          </span>
-          <input
-            class="input"
-            id="input-text-56"
-            name="input-text-56"
-            placeholder="Search..."
-            type="text"
-            value="foo"
-          />
-        </div>
-      </div>
-      <div
-        class="container tabNavigator"
-      >
-        <div
-          class="tabContainer"
-        >
-          <div
-            class="tab activeTab"
-            tabindex="1"
-          >
-            <span
-              class="tabLabel"
-            >
-              Tickets
-            </span>
-          </div>
-          <div
-            class="tab"
-            tabindex="2"
-          >
-            <span
-              class="tabLabel"
-            >
-              Customers
-            </span>
-          </div>
-        </div>
-        <div
-          class="activeIndicator"
-          style="width: 0px; left: 0px;"
-        />
-      </div>
-      <div
-        class="wrapper scrollable modalBody"
-        id="modal-55-desc"
-      >
-        <div
-          style="height: 56px;"
-        >
-          <div>
-            SpotlightTicketRow
-          </div>
-          <div>
-            end area
-          </div>
-        </div>
-      </div>
-      <div
-        class="wrapper footer"
-      >
-        <div
-          class="navigationShortcutWrapper"
-        >
-          <div
-            class="wrapper navigationShortcut"
-          >
-            ↑↓ Select
-          </div>
-          <div
-            class="wrapper navigationShortcut"
-          >
-            ↩ Open
-          </div>
-          <div
-            class="wrapper navigationShortcut"
-          >
-            ctrl + ↩ Open in a new tab
-          </div>
-        </div>
-        <button
-          class="wrapper ghost secondary small"
-          type="button"
-        >
-          <span>
-            Advanced Search
-          </span>
-          <div
-            class="wrapper classic advancedShortcut"
-          >
-            ⇧
-          </div>
-          <div
-            class="wrapper classic advancedShortcut"
-          >
-            ↩
-          </div>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
 <div
   aria-describedby="modal-1-desc"
@@ -599,6 +335,30 @@ exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
           class="activeIndicator"
           style="width: 0px; left: 0px;"
         />
+      </div>
+      <div
+        class="wrapper scrollable modalBody"
+        id="modal-1-desc"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="title"
+          >
+            No recent results
+          </div>
+          <div
+            class="body"
+          >
+            Try searching for a customer, agent name or ticket title.
+            <button
+              class="advancedSearchCta"
+            >
+              Use advanced search
+            </button>
+          </div>
+        </div>
       </div>
       <div
         class="wrapper footer cleanSearchFooter"
@@ -718,6 +478,30 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
         />
       </div>
       <div
+        class="wrapper scrollable modalBody"
+        id="modal-67-desc"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="title"
+          >
+            No recent results
+          </div>
+          <div
+            class="body"
+          >
+            Try searching for a customer, agent name or ticket title.
+            <button
+              class="advancedSearchCta"
+            >
+              Use advanced search
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
         class="wrapper footer cleanSearchFooter"
       >
         <div
@@ -833,6 +617,30 @@ exports[`<SpotlightModal/> should set customers tab on click 1`] = `
           class="activeIndicator"
           style="width: 0px; left: 0px;"
         />
+      </div>
+      <div
+        class="wrapper scrollable modalBody"
+        id="modal-3-desc"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="title"
+          >
+            No recent results
+          </div>
+          <div
+            class="body"
+          >
+            Try searching for a customer, agent name or ticket title.
+            <button
+              class="advancedSearchCta"
+            >
+              Use advanced search
+            </button>
+          </div>
+        </div>
       </div>
       <div
         class="wrapper footer cleanSearchFooter"

@@ -37,6 +37,8 @@ import {Ticket} from 'models/ticket/types'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
+import useRecentItems from 'hooks/useRecentItems/useRecentItems'
+import {RecentItems} from 'hooks/useRecentItems/constants'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {Customer} from 'models/customer/types'
@@ -94,6 +96,9 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const isESCustomerSearchEnabled =
         useFlags()[FeatureFlagKey.ElasticsearchCustomerSearch]
 
+    const areRecentItemsEnabled =
+        useFlags()[FeatureFlagKey.SpotlightRecentItems]
+
     const [searchQuery, setSearchQuery] = useState<string>()
     const [lastSearchQueries, setLastSearchQueries] = useState<{
         [Tabs.Tickets]: string
@@ -104,6 +109,10 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const [hasSearched, setHasSearched] = useState<boolean>(false)
     const [tickets, setTickets] = useState<Ticket[]>([])
     const [customers, setCustomers] = useState<Customer[]>([])
+    const {items: recentTickets} = useRecentItems<Ticket>(RecentItems.Tickets)
+    const {items: recentCustomers} = useRecentItems<Customer>(
+        RecentItems.Customers
+    )
     const [searchItemsType, setSearchItemsType] = useState<ViewType>(
         ViewType.TicketList
     )
@@ -362,6 +371,8 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         if (!query && searchQuery) {
             cancelSearch()
             setHasSearched(false)
+            setTicketsSearchMeta(undefined)
+            setCustomersSearchMeta(undefined)
             setTickets([])
             setCustomers([])
         }
@@ -491,6 +502,144 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         await fetchMoreSearchItems(searchQuery!, searchItemsType, nextCursor)
     }, [fetchMoreSearchItems, searchQuery, searchItemsType, nextCursor])
 
+    const modalContent = useMemo(() => {
+        if (isLoading) {
+            return <SpotlightLoader className={css.loader} />
+        }
+
+        if (
+            hasSearched &&
+            ((_isEmpty(tickets) && searchItemsType === ViewType.TicketList) ||
+                (_isEmpty(customers) &&
+                    searchItemsType === ViewType.CustomerList))
+        ) {
+            return (
+                <SpotlightNoResults
+                    title="No results"
+                    bodyText="You may want to try using different keywords or check for typos."
+                    handleAdvancedSearch={goToAdvancedSearch}
+                />
+            )
+        }
+
+        if (
+            !hasSearched &&
+            ((_isEmpty(recentTickets) &&
+                searchItemsType === ViewType.TicketList) ||
+                (_isEmpty(recentCustomers) &&
+                    searchItemsType === ViewType.CustomerList))
+        ) {
+            if (!areRecentItemsEnabled) {
+                return null
+            }
+
+            return (
+                <SpotlightNoResults
+                    title="No recent results"
+                    bodyText="Try searching for a customer, agent name or ticket title."
+                    handleAdvancedSearch={goToAdvancedSearch}
+                />
+            )
+        }
+
+        const displayedTickets = hasSearched ? tickets : recentTickets
+        const displayedCustomers = hasSearched ? customers : recentCustomers
+
+        const header =
+            !hasSearched &&
+            ((!_isEmpty(recentTickets) &&
+                searchItemsType === ViewType.TicketList) ||
+                (!_isEmpty(recentCustomers) &&
+                    searchItemsType === ViewType.CustomerList))
+                ? () => (
+                      <div className={css.recentItemsHeader}>
+                          Recently accessed
+                      </div>
+                  )
+                : undefined
+
+        return (
+            <SearchRankScenarioContext.Provider value={searchRank}>
+                <SpotlightScrollArea
+                    ref={virtuosoRef}
+                    scrollerRef={modalBodyRef}
+                    data={
+                        searchItemsType === ViewType.CustomerList
+                            ? displayedCustomers
+                            : searchItemsType === ViewType.TicketList
+                            ? displayedTickets
+                            : undefined
+                    }
+                    canLoadMore={!!nextCursor}
+                    loadMore={handleLoadMore}
+                    isLoading={isFetchingMore}
+                    itemContent={(index, item) => {
+                        if (searchItemsType === ViewType.TicketList) {
+                            return (
+                                <SpotlightTicketRow
+                                    id={item.id}
+                                    index={index}
+                                    item={item as Ticket}
+                                    onCloseModal={onCloseModal}
+                                    onHover={handleHover}
+                                    selected={index === selectedIndex}
+                                />
+                            )
+                        } else if (searchItemsType === ViewType.CustomerList) {
+                            return (
+                                <SpotlightCustomerRow
+                                    id={item.id}
+                                    index={index}
+                                    item={item as Customer}
+                                    onCloseModal={onCloseModal}
+                                    onHover={handleHover}
+                                    selected={index === selectedIndex}
+                                />
+                            )
+                        }
+                    }}
+                    header={header}
+                ></SpotlightScrollArea>
+            </SearchRankScenarioContext.Provider>
+        )
+    }, [
+        isLoading,
+        searchItemsType,
+        tickets,
+        customers,
+        recentTickets,
+        recentCustomers,
+        goToAdvancedSearch,
+        searchRank,
+        virtuosoRef,
+        modalBodyRef,
+        nextCursor,
+        handleLoadMore,
+        isFetchingMore,
+        onCloseModal,
+        handleHover,
+        selectedIndex,
+        hasSearched,
+        areRecentItemsEnabled,
+    ])
+
+    const isFooterClean = useMemo(() => {
+        return (
+            !hasSearched &&
+            !isLoading &&
+            ((searchItemsType === ViewType.TicketList &&
+                _isEmpty(recentTickets)) ||
+                (searchItemsType === ViewType.CustomerList &&
+                    _isEmpty(recentCustomers)))
+        )
+    }, [
+        hasSearched,
+        isLoading,
+        searchItemsType,
+        recentTickets,
+        recentCustomers,
+    ])
+
     return (
         <Modal
             isOpen={isOpen}
@@ -517,89 +666,12 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 onTabChange={handleTabChange as (tab: string) => void}
                 className={css.tabNavigator}
             />
-            {(hasSearched || isLoading) && (
-                <ModalBody className={css.modalBody} ref={modalBodyRef}>
-                    {isLoading ? (
-                        <SpotlightLoader className={css.loader} />
-                    ) : (
-                        <>
-                            {(_isEmpty(tickets) &&
-                                searchItemsType === ViewType.TicketList) ||
-                            (_isEmpty(customers) &&
-                                searchItemsType === ViewType.CustomerList) ? (
-                                <SpotlightNoResults
-                                    handleAdvancedSearch={goToAdvancedSearch}
-                                />
-                            ) : (
-                                <SearchRankScenarioContext.Provider
-                                    value={searchRank}
-                                >
-                                    <SpotlightScrollArea
-                                        ref={virtuosoRef}
-                                        scrollerRef={modalBodyRef}
-                                        data={
-                                            searchItemsType ===
-                                            ViewType.CustomerList
-                                                ? customers
-                                                : searchItemsType ===
-                                                  ViewType.TicketList
-                                                ? tickets
-                                                : undefined
-                                        }
-                                        canLoadMore={!!nextCursor}
-                                        loadMore={handleLoadMore}
-                                        isLoading={isFetchingMore}
-                                        itemContent={(index, item) => {
-                                            if (
-                                                searchItemsType ===
-                                                ViewType.TicketList
-                                            ) {
-                                                return (
-                                                    <SpotlightTicketRow
-                                                        id={item.id}
-                                                        index={index}
-                                                        item={item as Ticket}
-                                                        onCloseModal={
-                                                            onCloseModal
-                                                        }
-                                                        onHover={handleHover}
-                                                        selected={
-                                                            index ===
-                                                            selectedIndex
-                                                        }
-                                                    />
-                                                )
-                                            } else if (
-                                                searchItemsType ===
-                                                ViewType.CustomerList
-                                            ) {
-                                                return (
-                                                    <SpotlightCustomerRow
-                                                        id={item.id}
-                                                        index={index}
-                                                        item={item as Customer}
-                                                        onCloseModal={
-                                                            onCloseModal
-                                                        }
-                                                        onHover={handleHover}
-                                                        selected={
-                                                            index ===
-                                                            selectedIndex
-                                                        }
-                                                    />
-                                                )
-                                            }
-                                        }}
-                                    ></SpotlightScrollArea>
-                                </SearchRankScenarioContext.Provider>
-                            )}
-                        </>
-                    )}
-                </ModalBody>
-            )}
+            <ModalBody className={css.modalBody} ref={modalBodyRef}>
+                {modalContent}
+            </ModalBody>
             <ModalFooter
                 className={classnames(css.footer, {
-                    [css.cleanSearchFooter]: !hasSearched && !isLoading,
+                    [css.cleanSearchFooter]: isFooterClean,
                 })}
             >
                 <div className={css.navigationShortcutWrapper}>

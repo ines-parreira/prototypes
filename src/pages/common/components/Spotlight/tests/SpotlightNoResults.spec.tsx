@@ -1,23 +1,26 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
 import SpotlightNoResults from '../SpotlightNoResults'
 
 describe('<SpotlightNoResults />', () => {
+    const mockHandleAdvancedSearch = jest.fn()
+    const componentProps: ComponentProps<typeof SpotlightNoResults> = {
+        handleAdvancedSearch: mockHandleAdvancedSearch,
+        title: 'No results',
+        bodyText:
+            'You may want to try using different keywords or check for typos.',
+    }
+
     it('should render', () => {
-        const {container} = render(
-            <SpotlightNoResults handleAdvancedSearch={jest.fn} />
-        )
+        const {container} = render(<SpotlightNoResults {...componentProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should handle link click', () => {
-        const handleAdvancedSearch = jest.fn()
-        const {getByText} = render(
-            <SpotlightNoResults handleAdvancedSearch={handleAdvancedSearch} />
-        )
+        const {getByText} = render(<SpotlightNoResults {...componentProps} />)
 
         fireEvent.click(getByText(/Use advanced search/i))
-        expect(handleAdvancedSearch).toHaveBeenCalled()
+        expect(mockHandleAdvancedSearch).toHaveBeenCalled()
     })
 })

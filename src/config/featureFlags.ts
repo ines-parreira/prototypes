@@ -41,4 +41,5 @@ export enum FeatureFlagKey {
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
     DecoupleContactForm = 'decouple-contact-form',
     FlowsBeta = 'flows-beta',
+    SpotlightRecentItems = 'spotlight-recent-items',
 }

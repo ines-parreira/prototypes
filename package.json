@@ -107,6 +107,10 @@
         "libphonenumber-js": "1.9.39",
         "linkify-it": "2.0.3",
         "linkifyjs": "2.1.8",
+        "localforage": "1.10.0",
+        "localforage-getitems": "1.4.2",
+        "localforage-observable": "2.1.1",
+        "localforage-removeitems": "1.4.0",
         "lodash": "4.17.21",
         "lz-string": "1.4.4",
         "md5": "2.2.1",
@@ -161,7 +165,8 @@
         "ulidx": "^0.5.0",
         "urlsafe-base64": "1.0.0",
         "uuid": "9.0.0",
-        "web-vitals": "3.0.1"
+        "web-vitals": "3.0.1",
+        "zen-observable": "0.10.0"
     },
     "devDependencies": {
         "@babel/cli": "7.10.1",
@@ -247,6 +252,7 @@
         "@types/uuid": "9.0.0",
         "@types/validator": "13.6.3",
         "@types/webpack-env": "1.18.0",
+        "@types/zen-observable": "0.8.3",
         "@typescript-eslint/eslint-plugin": "5.2.0",
         "@typescript-eslint/parser": "5.2.0",
         "axios-mock-adapter": "1.18.1",

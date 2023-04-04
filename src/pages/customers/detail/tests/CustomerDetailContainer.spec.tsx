@@ -33,6 +33,11 @@ jest.mock(
         } as MockLabels)
 )
 
+const mockSetRecentItem = jest.fn()
+jest.mock('hooks/useRecentItems/useRecentItems', () => () => ({
+    setRecentItem: mockSetRecentItem,
+}))
+
 describe('<CustomerDetailContainer />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
@@ -51,6 +56,11 @@ describe('<CustomerDetailContainer />', () => {
         }),
     }
 
+    const mockActiveCustomer = {
+        id: 1,
+        name: 'Rachel Greene',
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
         store = mockStore(defaultStore)
@@ -61,10 +71,7 @@ describe('<CustomerDetailContainer />', () => {
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
-                    activeCustomer={fromJS({
-                        id: 1,
-                        name: 'Rachel Greene',
-                    })}
+                    activeCustomer={fromJS(mockActiveCustomer)}
                     customerHistory={fromJS({
                         hasHistory: true,
                         triedLoading: true,
@@ -207,10 +214,7 @@ describe('<CustomerDetailContainer />', () => {
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
-                    activeCustomer={fromJS({
-                        id: 1,
-                        name: 'Rachel Greene',
-                    })}
+                    activeCustomer={fromJS(mockActiveCustomer)}
                     customerHistory={fromJS({
                         hasHistory: true,
                         triedLoading: true,
@@ -227,5 +231,22 @@ describe('<CustomerDetailContainer />', () => {
         expect(
             getByText(/This customer has no activity recorded/i)
         ).toBeTruthy()
+    })
+
+    it('should call setRecentItems on mount', () => {
+        renderWithRouter(
+            <Provider store={store}>
+                <CustomerDetailContainer
+                    {...minProps}
+                    activeCustomer={fromJS(mockActiveCustomer)}
+                />
+            </Provider>,
+            {
+                path: '/foo/:customerId?',
+                route: '/foo/1',
+            }
+        )
+
+        expect(mockSetRecentItem).toHaveBeenCalledWith(mockActiveCustomer)
     })
 })

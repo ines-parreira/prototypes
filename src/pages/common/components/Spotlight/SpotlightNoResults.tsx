@@ -3,15 +3,17 @@ import React from 'react'
 import css from './SpotlightNoResults.less'
 
 type Props = {
+    title: string
+    bodyText: string
     handleAdvancedSearch: () => void
 }
 
-const SpotlightNoResults = ({handleAdvancedSearch}: Props) => {
+const SpotlightNoResults = ({title, bodyText, handleAdvancedSearch}: Props) => {
     return (
         <div className={css.wrapper}>
-            <div className={css.title}>No results</div>
+            <div className={css.title}>{title}</div>
             <div className={css.body}>
-                You may want to try using different keywords or check for typos.
+                {bodyText}
                 <button
                     onClick={handleAdvancedSearch}
                     className={css.advancedSearchCta}

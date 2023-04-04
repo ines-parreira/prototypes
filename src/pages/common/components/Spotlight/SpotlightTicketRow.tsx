@@ -4,6 +4,7 @@ import {fromJS} from 'immutable'
 import classnames from 'classnames'
 
 import {Ticket, TicketAssignee} from 'models/ticket/types'
+import {Customer} from 'models/customer/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import Tooltip from 'pages/common/components/Tooltip'
 import {UserAssigneeLabel} from 'pages/common/utils/labels'
@@ -13,6 +14,20 @@ import useId from 'hooks/useId'
 import SpotlightRow from './SpotlightRow'
 import css from './SpotlightTicketRow.less'
 
+export const pickedTicketFields = [
+    'id',
+    'channel',
+    'status',
+    'subject',
+    'excerpt',
+    'assignee_user',
+    'created_datetime',
+] as const
+
+export type PickedTicket = Pick<Ticket, typeof pickedTicketFields[number]> & {
+    customer: Pick<Customer, 'id' | 'name' | 'email'>
+}
+
 const SpotlightTicketRow = ({
     item,
     onCloseModal,
@@ -21,7 +36,7 @@ const SpotlightTicketRow = ({
     onHover,
     selected,
 }: {
-    item: Ticket
+    item: Ticket | PickedTicket
     onCloseModal: () => void
     id: number
     index: number

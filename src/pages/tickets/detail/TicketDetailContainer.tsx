@@ -1,8 +1,9 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {useParams, useLocation} from 'react-router-dom'
+import {useLocation, useParams} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
-import {useAsyncFn, useEffectOnce, usePrevious, useKey} from 'react-use'
+import {useAsyncFn, useEffectOnce, useKey, usePrevious} from 'react-use'
+import _pick from 'lodash/pick'
 
 import {TicketMessageSourceType, TicketStatus} from 'business/types/ticket'
 import {getInvalidTicketFieldIds} from 'utils/customFields'
@@ -24,18 +25,18 @@ import {
     getCustomersState,
 } from 'state/customers/selectors'
 import {
+    prepare,
     prepareTicketMessage,
     sendTicketMessage,
     setReceivers,
     setSender,
     submitTicket,
-    prepare,
 } from 'state/newMessage/actions'
 import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
-import {getNewMessageSource, canSend} from 'state/newMessage/selectors'
+import {canSend, getNewMessageSource} from 'state/newMessage/selectors'
 import {fetchTags} from 'state/tags/actions'
 import {
     clearTicket,
@@ -53,8 +54,15 @@ import {getActiveView} from 'state/views/selectors'
 import {isMacOs} from 'utils/platform'
 
 import {useIsFlagEnabled} from 'hooks/useIsFlagEnabled'
+import useRecentItems from 'hooks/useRecentItems/useRecentItems'
+import {RecentItems} from 'hooks/useRecentItems/constants'
+import {Ticket} from 'models/ticket/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useGetCustomFieldDefinitions} from 'models/customField/queries'
+import {
+    PickedTicket,
+    pickedTicketFields,
+} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import Loader from '../../common/components/Loader/Loader'
 
 import TicketView from './components/TicketView'
@@ -99,6 +107,7 @@ export const TicketDetailContainer = ({
     const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
     const {customer: customerId} = useSearch<{customer?: string}>()
     const ticketIdParamRef = useRef(ticketIdParam)
+    const {setRecentItem} = useRecentItems<PickedTicket>(RecentItems.Tickets)
     const location = useLocation<{
         source?: string
         sender?: string
@@ -479,6 +488,25 @@ export const TicketDetailContainer = ({
             )
         }
     })
+
+    useEffect(() => {
+        if (ticket.get('id')) {
+            const ticketJS = ticket.toJS() as Ticket
+            const ticketCustomer = ticketJS.customer || {}
+
+            const pickedTicket = _pick(ticketJS, pickedTicketFields)
+            const pickedCustomer = _pick(ticketCustomer, [
+                'id',
+                'name',
+                'email',
+            ])
+
+            void setRecentItem({
+                ...pickedTicket,
+                customer: pickedCustomer,
+            })
+        }
+    }, [ticket, setRecentItem])
 
     const trackCtrlFKeyCombo = () => {
         logEvent(SegmentEvent.TicketMessageSearchKeyPressed)

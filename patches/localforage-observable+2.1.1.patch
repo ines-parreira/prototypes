@@ -1,0 +1,111 @@
+diff --git a/node_modules/localforage-observable/dist/localforage-observable.es6.js b/node_modules/localforage-observable/dist/localforage-observable.es6.js
+index 112238f..b79ccf9 100644
+--- a/node_modules/localforage-observable/dist/localforage-observable.es6.js
++++ b/node_modules/localforage-observable/dist/localforage-observable.es6.js
+@@ -224,24 +224,24 @@ const isSupported = typeof window !== 'undefined' &&
+     localforage.supports(localforage.LOCALSTORAGE);
+ const sysKeyPrefix = ['_localforage_sys', '_localforage_observable_sys'].join('/');
+ const db = isSupported ? window.localStorage : null;
+-let inited = false;
+ class StorageEventObserver {
+     constructor(localforageInstance) {
++        this.inited = false;
+         this.localforageInstance = localforageInstance;
+         this._onStorageEventBinded = this._onStorageEvent.bind(this);
+     }
+     setup() {
+-        if (!isSupported || inited) {
++        if (!isSupported || this.inited) {
+             return;
+         }
+         window.addEventListener('storage', this._onStorageEventBinded, false);
+-        inited = true;
++        this.inited = true;
+     }
+     destroy() {
+         this.localforageInstance = null;
+-        if (inited) {
++        if (this.inited) {
+             window.removeEventListener('storage', this._onStorageEventBinded, false);
+-            inited = false;
++            this.inited = false;
+         }
+     }
+     _onStorageEvent(e) {
+diff --git a/node_modules/localforage-observable/dist/localforage-observable.js b/node_modules/localforage-observable/dist/localforage-observable.js
+index 91cdc04..e924b86 100644
+--- a/node_modules/localforage-observable/dist/localforage-observable.js
++++ b/node_modules/localforage-observable/dist/localforage-observable.js
+@@ -233,24 +233,24 @@
+         localforage.supports(localforage.LOCALSTORAGE);
+     var sysKeyPrefix = ['_localforage_sys', '_localforage_observable_sys'].join('/');
+     var db = isSupported ? window.localStorage : null;
+-    var inited = false;
+     var StorageEventObserver = (function () {
+         function StorageEventObserver(localforageInstance) {
++            this.inited = false;
+             this.localforageInstance = localforageInstance;
+             this._onStorageEventBinded = this._onStorageEvent.bind(this);
+         }
+         StorageEventObserver.prototype.setup = function () {
+-            if (!isSupported || inited) {
++            if (!isSupported || this.inited) {
+                 return;
+             }
+             window.addEventListener('storage', this._onStorageEventBinded, false);
+-            inited = true;
++            this.inited = true;
+         };
+         StorageEventObserver.prototype.destroy = function () {
+             this.localforageInstance = null;
+-            if (inited) {
++            if (this.inited) {
+                 window.removeEventListener('storage', this._onStorageEventBinded, false);
+-                inited = false;
++                this.inited = false;
+             }
+         };
+         StorageEventObserver.prototype._onStorageEvent = function (e) {
+diff --git a/node_modules/localforage-observable/lib/StorageEventObserver.ts b/node_modules/localforage-observable/lib/StorageEventObserver.ts
+index d524d5f..9dc1253 100644
+--- a/node_modules/localforage-observable/lib/StorageEventObserver.ts
++++ b/node_modules/localforage-observable/lib/StorageEventObserver.ts
+@@ -29,9 +29,10 @@ const sysKeyPrefix = ['_localforage_sys', '_localforage_observable_sys'].join(
+ );
+ 
+ const db = isSupported ? window.localStorage : null;
+-let inited = false;
+ 
+ export default class StorageEventObserver {
++    private inited = false;
++
+     private localforageInstance: LocalForageWithObservablePrivateProps | null;
+ 
+     constructor(localforageInstance: LocalForageWithObservableMethods) {
+@@ -40,22 +41,22 @@ export default class StorageEventObserver {
+     }
+ 
+     setup() {
+-        if (!isSupported || inited) {
++        if (!isSupported || this.inited) {
+             return;
+         }
+         window.addEventListener('storage', this._onStorageEventBinded, false);
+-        inited = true;
++        this.inited = true;
+     }
+ 
+     destroy() {
+         this.localforageInstance = null;
+-        if (inited) {
++        if (this.inited) {
+             window.removeEventListener(
+                 'storage',
+                 this._onStorageEventBinded,
+                 false,
+             );
+-            inited = false;
++            this.inited = false;
+         }
+     }
+ 

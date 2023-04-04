@@ -60,6 +60,11 @@ const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager
 >
 
+const mockSetRecentItem = jest.fn()
+jest.mock('hooks/useRecentItems/useRecentItems', () => () => ({
+    setRecentItem: mockSetRecentItem,
+}))
+
 describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
     const newTicket = fromJS({
@@ -1102,5 +1107,33 @@ describe('TicketDetailContainer component', () => {
         makeExecuteKeyboardAction(shortcutManagerMock)('SUBMIT_TICKET')
 
         expect(minProps.submitTicket).not.toHaveBeenCalled()
+    })
+
+    it('should call setRecentItem on mount', () => {
+        const mockCustomer = {
+            id: 1,
+            name: 'Pizza Pepperoni',
+            email: 'pizza@pepperoni.com',
+        }
+        const ticket = existingTicket.set('customer', fromJS(mockCustomer))
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} ticket={ticket} />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            }
+        )
+
+        expect(mockSetRecentItem).toHaveBeenCalledWith(
+            expect.objectContaining({
+                id: existingTicket.get('id'),
+                customer: mockCustomer,
+            })
+        )
     })
 })

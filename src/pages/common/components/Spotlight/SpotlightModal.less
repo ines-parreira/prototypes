@@ -1,4 +1,5 @@
-@import '~css/new/colorTokens';
+@import (reference) '~css/new/colorTokens';
+@import (reference) '~css/typography.less';
 
 :local {
     .spotlightModal {
@@ -12,6 +13,8 @@
 
     .spotlightModalContent {
         max-height: 452px;
+        .caption-semibold();
+        color: @classic-neutral-grey-4;
     }
 
     .tabNavigator {
@@ -63,6 +66,13 @@
         background-repeat: no-repeat;
         background-size: 100% 8px, 100% 4px;
         background-attachment: local, scroll;
+    }
+
+    .recentItemsHeader {
+        padding: 0 16px;
+        height: 32px;
+        display: flex;
+        align-items: center;
     }
 
     .loader {

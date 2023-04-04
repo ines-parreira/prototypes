@@ -6,6 +6,9 @@ import {Customer} from 'models/customer/types'
 import SpotlightRow from './SpotlightRow'
 import css from './SpotlightCustomerRow.less'
 
+export const pickedCustomerFields = ['email', 'id', 'name', 'channels'] as const
+export type PickedCustomer = Pick<Customer, typeof pickedCustomerFields[number]>
+
 const SpotlightCustomerRow = ({
     item,
     onCloseModal,
@@ -14,7 +17,7 @@ const SpotlightCustomerRow = ({
     onHover,
     selected,
 }: {
-    item: Customer
+    item: Customer | PickedCustomer
     onCloseModal: () => void
     id: number
     index: number

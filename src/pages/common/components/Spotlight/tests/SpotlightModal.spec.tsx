@@ -10,6 +10,7 @@ import thunk from 'redux-thunk'
 import {createBrowserHistory} from 'history'
 import MockAdapter from 'axios-mock-adapter'
 
+import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -69,6 +70,10 @@ const WrappedSpotlightModal = (
 
 jest.mock('react-virtuoso', () => mockedVirtuoso)
 
+const mockUseRecentItems = assumeMock(useRecentItems)
+
+jest.mock('hooks/useRecentItems/useRecentItems')
+
 describe('<SpotlightModal/>', () => {
     const mockCloseModal = jest.fn()
     const minProps: ComponentProps<typeof SpotlightModal> = {
@@ -88,8 +93,14 @@ describe('<SpotlightModal/>', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ElasticsearchTicketSearch]: true,
             [FeatureFlagKey.ElasticsearchCustomerSearch]: true,
+            [FeatureFlagKey.SpotlightRecentItems]: true,
         }))
         mockServer = new MockAdapter(client)
+        mockUseRecentItems.mockReturnValue({
+            items: [],
+            setRecentItem: jest.fn() as any,
+            isGettingItems: false,
+        })
     })
 
     afterEach(() => {
@@ -612,15 +623,15 @@ describe('<SpotlightModal/>', () => {
     })
 
     it.each([
-        ['Tickets', ticket],
-        ['Customers', customer],
+        ['Tickets', ticket, 'SpotlightTicketRow'],
+        ['Customers', customer, 'SpotlightCustomerRow'],
     ])(
         'should render the fetched result set with SpotlightRow for %s tab',
-        async (name, item) => {
+        async (name, item, componentName) => {
             mockServer.onPost().reply(200, {data: [item]})
             jest.useFakeTimers()
 
-            const {rerender, getByPlaceholderText, getByText, container} =
+            const {rerender, getByPlaceholderText, getByText} =
                 renderWithRouter(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
             rerender(<WrappedSpotlightModal {...minProps} />)
@@ -634,7 +645,7 @@ describe('<SpotlightModal/>', () => {
             await userEvent.type(searchInput, '{enter}')
             await act(flushPromises)
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getByText(componentName)).toBeInTheDocument()
         }
     )
 
@@ -792,5 +803,44 @@ describe('<SpotlightModal/>', () => {
         expect(mockSearchRank.endScenario).toHaveBeenCalledTimes(1)
         ticketsTab.parentElement!.focus()
         expect(mockSearchRank.endScenario).toHaveBeenCalledTimes(2)
+    })
+
+    it.each([
+        ['Tickets', ticket, 'SpotlightTicketRow'],
+        ['Customers', customer, 'SpotlightCustomerRow'],
+    ])(
+        'should render the recent %s searches with SpotlightRow',
+        async (name, item, componentName) => {
+            mockUseRecentItems.mockReturnValue({
+                items: [item],
+                setRecentItem: jest.fn() as any,
+                isGettingItems: false,
+            })
+
+            const {rerender, getByText} = renderWithRouter(
+                <WrappedSpotlightModal {...minProps} />
+            )
+            await act(flushPromises)
+            rerender(<WrappedSpotlightModal {...minProps} />)
+
+            const tab = getByText(name)
+            tab.parentElement!.focus()
+
+            expect(getByText('Recently accessed')).toBeInTheDocument()
+            expect(getByText(componentName)).toBeInTheDocument()
+        }
+    )
+
+    it('should not return the no recent results message if feature flag is disabled', async () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.ElasticsearchTicketSearch]: true,
+            [FeatureFlagKey.ElasticsearchCustomerSearch]: true,
+            [FeatureFlagKey.SpotlightRecentItems]: false,
+        }))
+        const {queryByText} = renderWithRouter(
+            <WrappedSpotlightModal {...minProps} />
+        )
+        await act(flushPromises)
+        expect(queryByText('No recent results')).toEqual(null)
     })
 })

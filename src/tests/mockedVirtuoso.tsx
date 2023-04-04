@@ -3,9 +3,11 @@ import React, {forwardRef, Fragment} from 'react'
 
 //eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Virtuoso(props: VirtuosoProps<unknown, unknown>, _ref: any) {
+    const Header = props.components?.Header
     const Footer = props.components?.Footer
     return (
         <div style={props.style}>
+            {!!Header && <Header context={props.context} />}
             {props.data?.map((value, index) => (
                 <Fragment key={index}>
                     {props.itemContent?.(index, value, undefined)}
