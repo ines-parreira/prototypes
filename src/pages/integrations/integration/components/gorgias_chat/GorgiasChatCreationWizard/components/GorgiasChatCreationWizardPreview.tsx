@@ -5,6 +5,8 @@ import classnames from 'classnames'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser} from 'state/currentUser/selectors'
 
+import {GorgiasChatLauncherType} from 'models/integration/types'
+
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
@@ -31,6 +33,11 @@ type Props = {
     mainColor?: string
     conversationColor?: string
     isOnline?: boolean
+    isOpen?: boolean
+    launcher?: {
+        type: GorgiasChatLauncherType
+        label?: string
+    }
 }
 
 const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
@@ -41,6 +48,8 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
     mainColor: mainColorProp,
     conversationColor: conversationColorProp,
     isOnline: isOnlineProp,
+    isOpen,
+    launcher,
 }) => {
     const currentUser = useAppSelector(getCurrentUser)
 
@@ -134,6 +143,8 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
                 introductionText={introductionText}
                 offlineIntroductionText={offlineIntroductionText}
                 showBackground={false}
+                isOpen={isOpen}
+                launcher={launcher}
             >
                 {isOnline ? (
                     <MessageContent

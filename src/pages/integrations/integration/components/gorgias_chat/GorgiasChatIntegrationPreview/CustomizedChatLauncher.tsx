@@ -124,11 +124,13 @@ const CustomizedChatLauncher: React.FC<Props> = ({
                     </div>
                 </div>
             )}
-            {isClosed || editedPositionAxis ? (
-                <div className={css.transparentPlaceholder}></div>
-            ) : (
-                <div>{children}</div>
-            )}
+            <div
+                className={classnames({
+                    [css.isPlaceholder]: isClosed || editedPositionAxis,
+                })}
+            >
+                {children}
+            </div>
         </div>
     )
 }

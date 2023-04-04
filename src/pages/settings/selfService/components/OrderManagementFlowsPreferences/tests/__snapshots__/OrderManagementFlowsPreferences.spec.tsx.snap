@@ -392,7 +392,9 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                 class="wrapper preview"
                 style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
               >
-                <div>
+                <div
+                  class=""
+                >
                   <div
                     class="dialog"
                   >
@@ -914,7 +916,9 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                 class="wrapper preview"
                 style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
               >
-                <div>
+                <div
+                  class=""
+                >
                   <div
                     class="dialog"
                   >

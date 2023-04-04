@@ -667,7 +667,9 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                     </ChatLauncher>
                                   </div>
                                 </div>
-                                <div>
+                                <div
+                                  className=""
+                                >
                                   <div
                                     className="dialog"
                                   >
@@ -1620,7 +1622,9 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                     </ChatLauncher>
                                   </div>
                                 </div>
-                                <div>
+                                <div
+                                  className=""
+                                >
                                   <div
                                     className="dialog"
                                   >

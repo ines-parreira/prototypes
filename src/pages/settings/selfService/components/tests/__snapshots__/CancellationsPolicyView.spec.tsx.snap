@@ -878,7 +878,9 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
               class="wrapper preview"
               style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
             >
-              <div>
+              <div
+                class=""
+              >
                 <div
                   class="dialog"
                 >

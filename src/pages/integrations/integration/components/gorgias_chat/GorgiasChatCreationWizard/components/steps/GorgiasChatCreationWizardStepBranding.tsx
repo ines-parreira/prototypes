@@ -1,9 +1,11 @@
-import React, {useState} from 'react'
+import React, {useState, useRef, useMemo} from 'react'
 import {Map, fromJS} from 'immutable'
 
 import history from 'pages/history'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+
+import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 
 import {
     GORGIAS_CHAT_WIDGET_TEXTS,
@@ -48,6 +50,13 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
     isSubmitting,
 }) => {
     const dispatch = useAppDispatch()
+
+    const launcherCustomizationRef = useRef<HTMLDivElement>(null)
+
+    const [isChatOpenInPreview, setIsChatOpenInPreview] = useState(true)
+    useOnClickOutside(launcherCustomizationRef, () => {
+        setIsChatOpenInPreview(true)
+    })
 
     const {goToNextStep, goToPreviousStep} = useNavigateWizardSteps()
 
@@ -126,6 +135,14 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
         )
     }
 
+    const launcher = useMemo(
+        () => ({
+            type: launcherType,
+            label: launcherLabel,
+        }),
+        [launcherLabel, launcherType]
+    )
+
     return (
         <GorgiasChatCreationWizardStep
             step={GorgiasChatCreationWizardSteps.Branding}
@@ -134,6 +151,8 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                     integration={integration}
                     mainColor={currentMainColor}
                     conversationColor={currentConversationColor}
+                    launcher={launcher}
+                    isOpen={isChatOpenInPreview}
                 />
             }
             footer={
@@ -190,7 +209,10 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                 </div>
                 <div className={css.section}>
                     <div className={css.sectionHeading}>Launcher</div>
-                    <div className={css.radioButtonGroup}>
+                    <div
+                        className={css.radioButtonGroup}
+                        ref={launcherCustomizationRef}
+                    >
                         <PreviewRadioButton
                             isSelected={
                                 launcherType === GorgiasChatLauncherType.ICON
@@ -206,11 +228,12 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                 </div>
                             }
                             value={GorgiasChatLauncherType.ICON}
-                            onClick={() =>
+                            onClick={() => {
                                 setCurrentLauncherType(
                                     GorgiasChatLauncherType.ICON
                                 )
-                            }
+                                setIsChatOpenInPreview(false)
+                            }}
                         />
 
                         <PreviewRadioButton
@@ -232,11 +255,12 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                 </div>
                             }
                             value={GorgiasChatLauncherType.ICON_AND_LABEL}
-                            onClick={() =>
+                            onClick={() => {
                                 setCurrentLauncherType(
                                     GorgiasChatLauncherType.ICON_AND_LABEL
                                 )
-                            }
+                                setIsChatOpenInPreview(false)
+                            }}
                         />
                     </div>
                     {launcherType ===
@@ -246,6 +270,9 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                 type="text"
                                 label="Label"
                                 value={launcherLabel}
+                                onFocus={() => {
+                                    setIsChatOpenInPreview(false)
+                                }}
                                 onChange={setCurrentLauncherLabel}
                                 isRequired
                                 maxLength={20}
