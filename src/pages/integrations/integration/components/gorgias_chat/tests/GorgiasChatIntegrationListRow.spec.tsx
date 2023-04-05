@@ -4,7 +4,9 @@ import thunk from 'redux-thunk'
 import {fromJS, Map, List} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import {render} from '@testing-library/react'
+import LD from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState, StoreDispatch} from 'state/types'
 import {IntegrationType} from 'models/integration/constants'
 import {
@@ -72,6 +74,10 @@ describe('<GorgiasChatIntegrationListRow />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.ChatCreationWizard]: false,
+        }))
     })
 
     it('should render loading feedback if status is being fetched', () => {
@@ -151,6 +157,9 @@ describe('<GorgiasChatIntegrationListRow />', () => {
     })
 
     it('should render "Continue Setup" link for draft chat', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.ChatCreationWizard]: true,
+        }))
         jest.spyOn(
             hookGorgiasChatIntegrationStatusData,
             'useGorgiasChatIntegrationStatusData'

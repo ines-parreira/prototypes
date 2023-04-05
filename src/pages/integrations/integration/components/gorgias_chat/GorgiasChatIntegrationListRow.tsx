@@ -2,6 +2,7 @@ import React, {memo} from 'react'
 import {NavLink, Link} from 'react-router-dom'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
@@ -10,6 +11,7 @@ import dotNeutral from 'assets/img/icons/dot-neutral.svg'
 import dotErrorCross from 'assets/img/icons/dot-error-cross.svg'
 import {getIconFromType} from 'state/integrations/helpers'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useGorgiasChatIntegrationStatusData} from 'pages/integrations/integration/hooks/useGorgiasChatIntegrationStatusData'
 import Tooltip from '../../../../common/components/Tooltip'
 import history from '../../../../history'
@@ -49,6 +51,8 @@ const GorgiasChatIntegrationListRow = ({
 }: GorgiasChatIntegrationListRowProps) => {
     const {chatStatus, isChatStatusLoading, isChatStatusError} =
         useGorgiasChatIntegrationStatusData(chat, isLoadingIntegrations)
+    const isChatCreationWizardEnabled =
+        useFlags()[FeatureFlagKey.ChatCreationWizard]
     const integrationId: number = chat.get('id')
 
     const wizardStatus: GorgiasChatCreationWizardStatus = chat.getIn([
@@ -59,9 +63,10 @@ const GorgiasChatIntegrationListRow = ({
 
     const baseLink = `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}`
     const editLink = `${baseLink}/${
-        wizardStatus === GorgiasChatCreationWizardStatus.Published
-            ? Tab.Campaigns
-            : Tab.CreateWizard
+        isChatCreationWizardEnabled &&
+        wizardStatus === GorgiasChatCreationWizardStatus.Draft
+            ? Tab.CreateWizard
+            : Tab.Campaigns
     }`
     const preferencesLink = `${baseLink}/${Tab.Preferences}}`
     const shopIntegrationId: number | null = chat.getIn(
@@ -214,14 +219,8 @@ const GorgiasChatIntegrationListRow = ({
                 <LanguageBullet code={language} />
             </BodyCell>
             <BodyCell size="smallest" innerClassName={css.lastColumn}>
-                {wizardStatus === GorgiasChatCreationWizardStatus.Published ? (
-                    <ForwardIcon
-                        href={editLink}
-                        onClick={(ev) => {
-                            ev.stopPropagation()
-                        }}
-                    />
-                ) : (
+                {isChatCreationWizardEnabled &&
+                wizardStatus === GorgiasChatCreationWizardStatus.Draft ? (
                     <Link
                         to={editLink}
                         onClick={(ev) => {
@@ -230,6 +229,13 @@ const GorgiasChatIntegrationListRow = ({
                     >
                         Continue Setup
                     </Link>
+                ) : (
+                    <ForwardIcon
+                        href={editLink}
+                        onClick={(ev) => {
+                            ev.stopPropagation()
+                        }}
+                    />
                 )}
             </BodyCell>
         </TableBodyRow>
