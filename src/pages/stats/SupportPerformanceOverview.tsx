@@ -31,8 +31,33 @@ import css from './SupportPerformanceOverview.less'
 import ChartCard from './ChartCard'
 import LineChart from './LineChart'
 import TrendMetricCard from './TrendMetricCard'
+import GaugeChart from './GaugeChart'
+import {OneDimensionalDataItem} from './types'
 
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
+
+const workloadPerChannelMock: OneDimensionalDataItem[] = [
+    {
+        label: 'Chat',
+        value: 382,
+    },
+    {
+        label: 'Email',
+        value: 43,
+    },
+    {
+        label: 'Instagram DM',
+        value: 26,
+    },
+    {
+        label: 'Phone',
+        value: 54,
+    },
+    {
+        label: 'Others',
+        value: 72,
+    },
+]
 
 export default function SupportPerformanceOverview() {
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
@@ -378,6 +403,14 @@ export default function SupportPerformanceOverview() {
                             ]}
                             hasBackground
                         />
+                    </ChartCard>
+                </DashboardGridCell>
+                <DashboardGridCell size={12}>
+                    <ChartCard
+                        title="Workload per channel"
+                        hint="Distribution of all tickets of the period (both “open” and “closed”) per channel"
+                    >
+                        <GaugeChart data={workloadPerChannelMock} />
                     </ChartCard>
                 </DashboardGridCell>
             </DashboardSection>

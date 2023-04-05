@@ -1513,6 +1513,104 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
               />
             </div>
           </div>
+          <div
+            class="cell"
+            style="grid-column: span 12 / span 12;"
+          >
+            <div
+              class="wrapper card"
+            >
+              <div
+                class="title"
+              >
+                <span
+                  class="heading-section-semibold"
+                >
+                  Workload per channel
+                </span>
+                <div
+                  class="wrapper tooltip"
+                >
+                  <i
+                    class="material-icons-outlined icon"
+                    id="tooltip-49"
+                  >
+                    info
+                  </i>
+                </div>
+              </div>
+              <div>
+                <div
+                  class="chart"
+                >
+                  <div
+                    style="background-color: rgb(51, 115, 219); flex-grow: 0.6620450606585788;"
+                  />
+                  <div
+                    style="background-color: rgb(85, 104, 133); flex-grow: 0.12478336221837089;"
+                  />
+                  <div
+                    style="background-color: rgb(148, 17, 181); flex-grow: 0.09358752166377816;"
+                  />
+                  <div
+                    style="background-color: rgb(214, 56, 77); flex-grow: 0.07452339688041594;"
+                  />
+                  <div
+                    style="background-color: rgb(253, 171, 64); flex-grow: 0.045060658578856154;"
+                  />
+                </div>
+                <div
+                  class="legend legend"
+                >
+                  <div
+                    class="legendItem"
+                  >
+                    <div
+                      class="legendCaret"
+                      style="background-color: rgb(51, 115, 219);"
+                    />
+                    Chat
+                  </div>
+                  <div
+                    class="legendItem"
+                  >
+                    <div
+                      class="legendCaret"
+                      style="background-color: rgb(214, 56, 77);"
+                    />
+                    Email
+                  </div>
+                  <div
+                    class="legendItem"
+                  >
+                    <div
+                      class="legendCaret"
+                      style="background-color: rgb(253, 171, 64);"
+                    />
+                    Instagram DM
+                  </div>
+                  <div
+                    class="legendItem"
+                  >
+                    <div
+                      class="legendCaret"
+                      style="background-color: rgb(148, 17, 181);"
+                    />
+                    Phone
+                  </div>
+                  <div
+                    class="legendItem"
+                  >
+                    <div
+                      class="legendCaret"
+                      style="background-color: rgb(85, 104, 133);"
+                    />
+                    Others
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
