@@ -1,12 +1,13 @@
 @import '~css/new/colorTokens';
+@import '~css/new/layout';
 
 &:local {
     .wrapper {
         background: @classic-neutral-grey-2;
         border-radius: 4px;
         color: @classic-neutral-grey-5;
-        margin-top: 8px;
-        padding: 16px;
+        margin-top: @layout-spacing-xs;
+        padding: @layout-spacing-s;
 
         &.success {
             background: @classic-main-primary-4;
@@ -30,6 +31,6 @@
     }
 
     .title {
-        margin-bottom: 8px;
+        margin-bottom: @layout-spacing-xs;
     }
 }
