@@ -171,8 +171,12 @@ export default class EmailInvoicePopover extends Component<Props, State> {
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">
+                            <p className={css.legend}>
+                                Creating a draft order sends the standard
+                                Shopify invoice to the customer.
+                            </p>
                             <FormGroup>
-                                <Label for="to">To</Label>
+                                <Label for="to">Email address</Label>
                                 <Input
                                     type="text"
                                     id="to"
@@ -185,7 +189,7 @@ export default class EmailInvoicePopover extends Component<Props, State> {
                             </FormGroup>
                             <FormGroup>
                                 <Label for="custom-message">
-                                    Custom message for this customer
+                                    Custom message
                                 </Label>
                                 <Input
                                     type="textarea"
@@ -196,6 +200,10 @@ export default class EmailInvoicePopover extends Component<Props, State> {
                                     innerRef={this._saveInputRef}
                                     onChange={this._onCustomMessageChange}
                                 />
+                                <small className={css.legend}>
+                                    This message will appear at the top of the
+                                    invoice email.
+                                </small>
                             </FormGroup>
                         </PopoverBody>
                         <hr className="m-0" />
@@ -214,7 +222,7 @@ export default class EmailInvoicePopover extends Component<Props, State> {
                                 tabIndex={0}
                                 className={classnames('ml-auto', css.focusable)}
                             >
-                                Send notification
+                                Create Draft Order
                             </Button>
                         </PopoverBody>
                     </Form>

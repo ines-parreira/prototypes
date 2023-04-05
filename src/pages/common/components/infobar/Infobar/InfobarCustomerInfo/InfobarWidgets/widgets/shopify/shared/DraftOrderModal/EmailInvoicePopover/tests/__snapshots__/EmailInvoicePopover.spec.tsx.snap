@@ -34,6 +34,11 @@ exports[`<EmailInvoicePopover/> render() should render 1`] = `
         className="pt-3"
         tag="div"
       >
+        <p
+          className="legend"
+        >
+          Creating a draft order sends the standard Shopify invoice to the customer.
+        </p>
         <FormGroup
           tag="div"
         >
@@ -50,7 +55,7 @@ exports[`<EmailInvoicePopover/> render() should render 1`] = `
               ]
             }
           >
-            To
+            Email address
           </Label>
           <Input
             autoComplete="off"
@@ -78,7 +83,7 @@ exports[`<EmailInvoicePopover/> render() should render 1`] = `
               ]
             }
           >
-            Custom message for this customer
+            Custom message
           </Label>
           <Input
             autoComplete="off"
@@ -89,6 +94,11 @@ exports[`<EmailInvoicePopover/> render() should render 1`] = `
             type="textarea"
             value=""
           />
+          <small
+            className="legend"
+          >
+            This message will appear at the top of the invoice email.
+          </small>
         </FormGroup>
       </PopoverBody>
       <hr
@@ -115,7 +125,7 @@ exports[`<EmailInvoicePopover/> render() should render 1`] = `
           tag="button"
           type="submit"
         >
-          Send notification
+          Create Draft Order
         </Button>
       </PopoverBody>
     </Form>

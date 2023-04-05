@@ -718,7 +718,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
         <h4
           class="mr-auto"
         >
-          Email invoice
+          Create draft order & send Shopify invoice
         </h4>
         <div
           data-testid="EmailInvoicePopover"
@@ -1056,7 +1056,7 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
         <h4
           class="mr-auto"
         >
-          Email invoice
+          Create draft order & send Shopify invoice
         </h4>
         <div
           data-testid="EmailInvoicePopover"
@@ -1174,7 +1174,7 @@ exports[`<DraftOrderModal/> should render with an empty order table when data is
         <h4
           class="mr-auto"
         >
-          Email invoice
+          Create draft order & send Shopify invoice
         </h4>
         <div
           data-testid="EmailInvoicePopover"

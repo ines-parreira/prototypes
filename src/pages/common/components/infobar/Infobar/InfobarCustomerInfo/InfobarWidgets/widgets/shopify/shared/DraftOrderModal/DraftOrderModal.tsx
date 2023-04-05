@@ -337,7 +337,9 @@ export function DraftOrderModalContainer({
                         </div>
                     ) : (
                         <div className={css.emailInvoiceContainer}>
-                            <h4 className="mr-auto">Email invoice</h4>
+                            <h4 className="mr-auto">
+                                Create draft order & send Shopify invoice
+                            </h4>
                             <EmailInvoicePopover
                                 id="email-invoice"
                                 actionName={data.actionName!}
@@ -349,7 +351,7 @@ export function DraftOrderModalContainer({
                                 disabled={loading || isEmpty}
                                 onSubmit={handleInvoiceSubmit}
                             >
-                                Email invoice
+                                Create Draft Order
                             </EmailInvoicePopover>
                         </div>
                     )}
