@@ -1,6 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
+import {formatPercentage} from 'pages/common/utils/numbers'
+
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -55,13 +57,7 @@ export const CampaignTableCell = ({column, cell, data, isLoading}: Props) => {
     }
 
     if (column.format === CampaignTableValueFormat.Percentage) {
-        return (
-            <BodyCell>
-                {new Intl.NumberFormat(window.navigator.language, {
-                    style: 'percent',
-                }).format(data)}
-            </BodyCell>
-        )
+        return <BodyCell>{formatPercentage(data)}</BodyCell>
     }
 
     return <BodyCell>{data}</BodyCell>
