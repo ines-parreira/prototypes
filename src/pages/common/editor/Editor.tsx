@@ -8,6 +8,7 @@ import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
 import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
 
 import useForm from './hooks/useForm'
+import useMacros from './hooks/useMacros'
 import css from './Editor.less'
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
 
 export default function Editor({onBlur, onFocus, submit}: Props) {
     const {formRef, onSubmit, setTicketStatus} = useForm(submit)
+    const {hasShown, isActive, onChangeActive} = useMacros()
 
     return (
         <div
@@ -28,7 +30,11 @@ export default function Editor({onBlur, onFocus, submit}: Props) {
             <form ref={formRef} id="ticket-reply-editor" onSubmit={onSubmit}>
                 <ReplyMessageChannel />
                 <ReplyForm>
-                    <TicketReplyArea />
+                    <TicketReplyArea
+                        hasShownMacros={hasShown}
+                        isMacrosActive={isActive}
+                        onChangeMacrosActive={onChangeActive}
+                    />
                     <TicketSubmitButtons setTicketStatus={setTicketStatus} />
                 </ReplyForm>
             </form>

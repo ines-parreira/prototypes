@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {shallow, mount, ReactWrapper} from 'enzyme'
+import {shallow, mount} from 'enzyme'
 import {fromJS} from 'immutable'
 import {waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
@@ -80,11 +80,10 @@ const minProps = {
         messages: [{id: 1}],
     }),
     cacheAdded: false,
+    hasShownMacros: false,
+    isMacrosActive: false,
+    onChangeMacrosActive: jest.fn(),
 } as unknown as ComponentProps<typeof TicketReplyArea>
-
-function focusMacroInput(component: ReactWrapper<any>) {
-    component.find('input').simulate('focus')
-}
 
 describe('<TicketReplyArea/>', () => {
     beforeEach(() => {
@@ -98,27 +97,42 @@ describe('<TicketReplyArea/>', () => {
     })
 
     it("should hide macros when newMessageType becomes 'internal-note'", () => {
-        const component = mount(<TicketReplyArea {...minProps} />)
+        const component = mount(
+            <TicketReplyArea {...minProps} hasShownMacros isMacrosActive />
+        )
 
-        focusMacroInput(component)
         expect(component.find(TicketMacros)).toHaveLength(1)
+
         component.setProps({
             newMessageType: TicketMessageSourceType.InternalNote,
+        })
+        component.update()
+        expect(minProps.onChangeMacrosActive).toHaveBeenCalledWith(false)
+
+        component.setProps({
+            isMacrosActive: false,
         })
         component.update()
         expect(component.find(TicketMacros)).toHaveLength(0)
     })
 
     it('should hide macros when editor has text', () => {
-        const component = mount(<TicketReplyArea {...minProps} />)
+        const component = mount(
+            <TicketReplyArea {...minProps} hasShownMacros isMacrosActive />
+        )
 
-        focusMacroInput(component)
         expect(component.find(TicketMacros)).toHaveLength(1)
         component.setProps({
             newMessage: fromJS({
                 state: {contentState: ContentState.createFromText('test')},
                 newMessage: {body_text: 'test'},
             }),
+        })
+        component.update()
+        expect(minProps.onChangeMacrosActive).toHaveBeenCalledWith(false)
+
+        component.setProps({
+            isMacrosActive: false,
         })
         component.update()
         expect(component.find(TicketMacros)).toHaveLength(0)
@@ -150,8 +164,9 @@ describe('<TicketReplyArea/>', () => {
     })
 
     it('should not apply macro on enter key down when macro search results are empty', () => {
-        const component = mount(<TicketReplyArea {...minProps} />)
-        focusMacroInput(component)
+        const component = mount(
+            <TicketReplyArea {...minProps} hasShownMacros isMacrosActive />
+        )
         component.find('input').simulate('keyDown', {key: 'Enter'})
         expect(minProps.applyMacro).not.toHaveBeenCalled()
     })

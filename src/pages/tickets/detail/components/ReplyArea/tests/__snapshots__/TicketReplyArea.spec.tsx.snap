@@ -14,6 +14,8 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
   currentUser={Immutable.Map {}}
   customers={{}}
   fetchMacrosCancellable={[Function]}
+  hasShownMacros={false}
+  isMacrosActive={false}
   lastMessage={
     Immutable.Map {
       "id": 10,
@@ -29,6 +31,7 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
   }
   newMessageType="internal-note"
   notify={[Function]}
+  onChangeMacrosActive={[MockFunction]}
   page={1}
   preferences={Immutable.Map {}}
   selectMacro={[MockFunction]}

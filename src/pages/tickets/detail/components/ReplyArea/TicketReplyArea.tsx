@@ -52,8 +52,9 @@ const CONTENT_STATE_PATH = ['state', 'contentState']
 const PREFILL_TOP_MACRO_SCORE_THRESHOLD = 0.8
 
 type Props = {
-    currentUser: Map<any, any>
-    ticket: Map<any, any>
+    hasShownMacros: boolean
+    isMacrosActive: boolean
+    onChangeMacrosActive: (isActive?: boolean) => void
 } & CancellableRequestInjectedProps<
     'fetchMacrosCancellable',
     'cancelFetchMacrosCancellable',
@@ -62,11 +63,9 @@ type Props = {
     ConnectedProps<typeof connector>
 
 type State = {
-    hasShownMacros: boolean
     isInitialMacrosLoading: boolean
     searchParams: FetchMacrosOptions
     searchResults: List<Map<any, any>>
-    macrosVisible: boolean
     selectedMacroId: number | null
     shouldFocusEditor: boolean
     topRankMacro: Map<any, any> | null
@@ -97,11 +96,9 @@ export class TicketReplyArea extends Component<Props, State> {
                 orderBy: `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
             },
             searchResults: fromJS([]),
-            macrosVisible: false,
             selectedMacroId: null,
             isInitialMacrosLoading: false,
             shouldFocusEditor: false,
-            hasShownMacros: false,
             topRankMacro: null,
             nextCursor: null,
         }
@@ -230,7 +227,7 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     componentDidUpdate = (prevProps: Props, prevState: State) => {
-        const {shouldFocusEditor, macrosVisible} = this.state
+        const {shouldFocusEditor} = this.state
 
         if (this.props.cacheAdded && this.cacheAdded !== true) {
             this.showMacrosDefault()
@@ -251,7 +248,7 @@ export class TicketReplyArea extends Component<Props, State> {
         const getContextState = (props: Props) =>
             props.newMessage.getIn(CONTENT_STATE_PATH) as ContentState
         if (
-            macrosVisible &&
+            this.props.isMacrosActive &&
             getContextState(prevProps) !== getContextState(this.props)
         )
             this.hideMacros()
@@ -312,7 +309,7 @@ export class TicketReplyArea extends Component<Props, State> {
             (this.props.newMessage.getIn(['newMessage', 'body_text']) as string)
                 .length < 3 &&
             !this.props.ticket.getIn(['state', 'appliedMacro']) &&
-            !this.state.hasShownMacros &&
+            !this.props.hasShownMacros &&
             showQuickReply
         )
     }
@@ -540,11 +537,12 @@ export class TicketReplyArea extends Component<Props, State> {
         }
     }
 
-    showMacros = () =>
-        this.setState({macrosVisible: true, hasShownMacros: true})
+    showMacros = () => {
+        this.props.onChangeMacrosActive(true)
+    }
 
     hideMacros = () => {
-        this.setState({macrosVisible: false})
+        this.props.onChangeMacrosActive(false)
     }
 
     hideMacrosAndFocusEditor = () => {
@@ -573,14 +571,13 @@ export class TicketReplyArea extends Component<Props, State> {
             searchParams,
             searchResults,
             isInitialMacrosLoading,
-            macrosVisible,
             nextCursor,
         } = this.state
         const currentMacro = getCurrentMacro(
             this.state.searchResults,
             this.state.selectedMacroId
         )
-        const {currentTicket, newMessageType} = this.props
+        const {currentTicket, isMacrosActive, newMessageType} = this.props
 
         const requireCustomerSelection =
             !currentTicket.get('id') &&
@@ -590,13 +587,13 @@ export class TicketReplyArea extends Component<Props, State> {
         return (
             <div
                 className={classnames(css.component, {
-                    [css.macrosVisible]: this.state.macrosVisible,
+                    [css.macrosVisible]: isMacrosActive,
                 })}
             >
                 <TicketMacrosSearch
                     setFocus={(input) => (this.macroInput = input)}
                     searchParams={searchParams}
-                    macrosVisible={macrosVisible}
+                    macrosVisible={isMacrosActive}
                     searchMacros={this.searchMacros}
                     showMacros={this.showMacros}
                     handleSearchKeyDown={this.handleSearchKeyDown}
@@ -624,7 +621,7 @@ export class TicketReplyArea extends Component<Props, State> {
                                 first in the infobar
                             </span>
                         </div>
-                    ) : macrosVisible ? (
+                    ) : isMacrosActive ? (
                         <TicketMacros
                             macros={searchResults}
                             isInitialMacrosLoading={isInitialMacrosLoading}
