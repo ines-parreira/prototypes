@@ -1,5 +1,4 @@
 import React from 'react'
-import classnames from 'classnames'
 
 import {GorgiasChatCreationWizardSteps} from 'models/integration/types/gorgiasChat'
 
@@ -56,12 +55,11 @@ const GorgiasChatCreationWizardStep: React.FC<Props> = ({
                     </div>
                     {children}
                 </div>
-                <div
-                    className={classnames(css.footer, {
-                        [css.footerIsSticking]: !contentIsIntersecting,
-                    })}
-                >
-                    {footer}
+                <div className={css.footer}>
+                    {!contentIsIntersecting && (
+                        <div className={css.footerShadow}></div>
+                    )}
+                    <div className={css.footerContent}>{footer}</div>
                 </div>
             </div>
             <div className={css.preview}>
