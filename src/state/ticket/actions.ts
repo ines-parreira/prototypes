@@ -1262,7 +1262,7 @@ export const findAndSetCustomer =
 
             return dispatch(setCustomer(fromJS(data)))
         } catch (error) {
-            void dispatch(
+            return dispatch(
                 notify({
                     message: 'Failed to fetch customer',
                     status: NotificationStatus.Error,
@@ -1278,13 +1278,9 @@ export const sendIntentFeedbackSuccess = createAction<{
     intents: TicketMessageIntent[]
 }>(types.SEND_INTENT_FEEDBACK_SUCCESS)
 
-export const setTypingActivityShopper =
-    (ticketId: number) =>
-    (
-        dispatch: StoreDispatch,
-        getState: () => RootState
-    ): Promise<ReturnType<StoreDispatch>> => {
-        if (isCurrentlyOnTicket(ticketId)) {
+export function setTypingActivityShopper(ticketId: number) {
+    return (dispatch: StoreDispatch, getState: () => RootState) => {
+        if (isCurrentlyOnTicket(ticketId.toString())) {
             let timeoutId = getState().ticket.getIn([
                 '_internal',
                 'isShopperTypingTimeoutId',
@@ -1311,9 +1307,8 @@ export const setTypingActivityShopper =
                 },
             })
         }
-
-        return Promise.resolve()
     }
+}
 
 export function setInTicketSuggestionState(
     inTicketSuggestionState: InTicketSuggestionState

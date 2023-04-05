@@ -655,4 +655,25 @@ describe('ticket selectors', () => {
             ])
         })
     })
+
+    describe('getTicketFieldState', () => {
+        it('should return the ticket field state', () => {
+            state = {
+                ticket: initialState.mergeDeep({
+                    custom_fields: {
+                        42: {id: 42, value: 'test', hasError: false},
+                    },
+                }),
+            } as RootState
+
+            expect(selectors.getTicketFieldState(state)).toEqual(
+                (
+                    state.ticket.get('custom_fields') as Map<
+                        unknown,
+                        Map<unknown, unknown>
+                    >
+                ).toJS()
+            )
+        })
+    })
 })

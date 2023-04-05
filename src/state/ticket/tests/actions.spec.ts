@@ -1121,7 +1121,44 @@ describe('ticket actions', () => {
 
     describe('setTypingActivityShopper()', () => {
         it('should dispatch SET_TYPING_ACTIVITY_SHOPPER action', () => {
-            expect(actions.setTypingActivityShopper(1)).toMatchSnapshot()
+            window.location.pathname = '/app/ticket/1'
+            store.dispatch(actions.setTypingActivityShopper(1))
+            expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('updateCustomFieldState()', () => {
+        it('should dispatch UPDATE_CUSTOM_FIELD_STATE action', () => {
+            store.dispatch(actions.updateCustomFieldState({id: 1, value: 'ok'}))
+            expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('updateCustomFieldValue()', () => {
+        it('should dispatch UPDATE_CUSTOM_FIELD_VALUE action', () => {
+            store.dispatch(actions.updateCustomFieldValue(1, 'ok'))
+            expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('updateCustomFieldError()', () => {
+        it('should dispatch UPDATE_CUSTOM_FIELD_ERROR action', () => {
+            store.dispatch(actions.updateCustomFieldError(1, true))
+            expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('setInvalidCustomFieldsToErrored()', () => {
+        it('should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED action', () => {
+            store.dispatch(actions.setInvalidCustomFieldsToErrored([1, 2, 3]))
+            expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('triggerTicketFieldsErrors()', () => {
+        it('should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED and notify action', () => {
+            store.dispatch(actions.triggerTicketFieldsErrors([1, 2, 3]))
+            expect(store.getActions()).toMatchSnapshot()
         })
     })
 })

@@ -1387,4 +1387,128 @@ describe('ticket reducers', () => {
             expect(nextState.toJS()).toMatchSnapshot()
         })
     })
+
+    describe('action UPDATE_CUSTOM_FIELD_STATE', () => {
+        it('should update the custom field state', () => {
+            const action = {
+                type: types.UPDATE_CUSTOM_FIELD_STATE,
+                payload: {
+                    id: 1,
+                    value: 'test',
+                    hasError: true,
+                },
+            }
+
+            const nextState = reducer(initialState, action)
+            expect(
+                (
+                    nextState.getIn(['custom_fields', '1']) as Map<
+                        unknown,
+                        unknown
+                    >
+                ).toJS()
+            ).toEqual(action.payload)
+        })
+    })
+
+    describe('action UPDATE_CUSTOM_FIELD_VALUE', () => {
+        it('should update the custom field value, and value only', () => {
+            const customFieldsInitialState = {
+                1: {id: 1, value: 'test', hasError: true},
+            }
+            const action = {
+                type: types.UPDATE_CUSTOM_FIELD_VALUE,
+                payload: {
+                    id: 1,
+                    value: 'test plus',
+                    hasError: false,
+                },
+            }
+
+            const nextState = reducer(
+                initialState.mergeDeep({
+                    custom_fields: customFieldsInitialState,
+                }),
+                action
+            )
+
+            expect(
+                (
+                    nextState.getIn(['custom_fields', '1']) as Map<
+                        unknown,
+                        unknown
+                    >
+                ).toJS()
+            ).toEqual({
+                ...customFieldsInitialState[1],
+                value: action.payload.value,
+            })
+        })
+    })
+
+    describe('action UPDATE_CUSTOM_FIELD_ERROR', () => {
+        it('should update the custom field error key, and error only', () => {
+            const customFieldsInitialState = {
+                1: {id: 1, value: 'test', hasError: true},
+            }
+            const action = {
+                type: types.UPDATE_CUSTOM_FIELD_ERROR,
+                payload: {
+                    id: 1,
+                    value: 'test plus',
+                    hasError: false,
+                },
+            }
+
+            const nextState = reducer(
+                initialState.mergeDeep({
+                    custom_fields: customFieldsInitialState,
+                }),
+                action
+            )
+
+            expect(
+                (
+                    nextState.getIn(['custom_fields', '1']) as Map<
+                        unknown,
+                        unknown
+                    >
+                ).toJS()
+            ).toEqual({
+                ...customFieldsInitialState[1],
+                hasError: action.payload.hasError,
+            })
+        })
+    })
+
+    describe('action SET_INVALID_CUSTOM_FIELDS_TO_ERRORED', () => {
+        it('should update the custom field error key, and error only', () => {
+            const customFieldsInitialState = {
+                1: {id: 1, value: 'test', hasError: true},
+                2: {id: 2, value: 'test', hasError: false},
+                3: {id: 3, value: 'test', hasError: false},
+            }
+            const action = {
+                type: types.SET_INVALID_CUSTOM_FIELDS_TO_ERRORED,
+                payload: [2, 3],
+            }
+
+            const nextState = reducer(
+                initialState.mergeDeep({
+                    custom_fields: customFieldsInitialState,
+                }),
+                action
+            )
+
+            expect(
+                (
+                    nextState.getIn(['custom_fields']) as Map<unknown, unknown>
+                ).toJS()
+            ).toEqual({
+                ...customFieldsInitialState,
+                2: {...customFieldsInitialState[2], hasError: true},
+                3: {...customFieldsInitialState[3], hasError: true},
+            })
+        })
+    })
 })

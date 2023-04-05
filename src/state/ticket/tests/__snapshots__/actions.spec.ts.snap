@@ -1858,6 +1858,19 @@ exports[`ticket actions setCustomer() 1`] = `
 ]
 `;
 
+exports[`ticket actions setInvalidCustomFieldsToErrored() should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED action 1`] = `
+[
+  {
+    "payload": [
+      1,
+      2,
+      3,
+    ],
+    "type": "SET_INVALID_CUSTOM_FIELDS_TO_ERRORED",
+  },
+]
+`;
+
 exports[`ticket actions setSpam() fails because same status 1`] = `[]`;
 
 exports[`ticket actions setSpam() should undo when clicking on notification button 1`] = `
@@ -2041,7 +2054,17 @@ exports[`ticket actions setTrashed() should undo when clicking on notification b
 ]
 `;
 
-exports[`ticket actions setTypingActivityShopper() should dispatch SET_TYPING_ACTIVITY_SHOPPER action 1`] = `[Function]`;
+exports[`ticket actions setTypingActivityShopper() should dispatch SET_TYPING_ACTIVITY_SHOPPER action 1`] = `
+[
+  {
+    "payload": {
+      "isShopperTyping": true,
+      "isShopperTypingTimeoutId": 233,
+    },
+    "type": "SET_TYPING_ACTIVITY_SHOPPER",
+  },
+]
+`;
 
 exports[`ticket actions snoozeTicket() should snooze ticket 1`] = `
 [
@@ -2117,6 +2140,19 @@ exports[`ticket actions toggleHistory() 2`] = `
 }
 `;
 
+exports[`ticket actions triggerTicketFieldsErrors() should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED and notify action 1`] = `
+[
+  {
+    "payload": [
+      1,
+      2,
+      3,
+    ],
+    "type": "SET_INVALID_CUSTOM_FIELDS_TO_ERRORED",
+  },
+]
+`;
+
 exports[`ticket actions updateActionArgsOnApplied() 1`] = `
 [
   {
@@ -2126,6 +2162,42 @@ exports[`ticket actions updateActionArgsOnApplied() 1`] = `
     "value": Immutable.Map {
       "name": "hello",
     },
+  },
+]
+`;
+
+exports[`ticket actions updateCustomFieldError() should dispatch UPDATE_CUSTOM_FIELD_ERROR action 1`] = `
+[
+  {
+    "payload": {
+      "hasError": true,
+      "id": 1,
+    },
+    "type": "UPDATE_CUSTOM_FIELD_ERROR",
+  },
+]
+`;
+
+exports[`ticket actions updateCustomFieldState() should dispatch UPDATE_CUSTOM_FIELD_STATE action 1`] = `
+[
+  {
+    "payload": {
+      "id": 1,
+      "value": "ok",
+    },
+    "type": "UPDATE_CUSTOM_FIELD_STATE",
+  },
+]
+`;
+
+exports[`ticket actions updateCustomFieldValue() should dispatch UPDATE_CUSTOM_FIELD_VALUE action 1`] = `
+[
+  {
+    "payload": {
+      "id": 1,
+      "value": "ok",
+    },
+    "type": "UPDATE_CUSTOM_FIELD_VALUE",
   },
 ]
 `;

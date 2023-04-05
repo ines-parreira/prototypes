@@ -730,7 +730,10 @@ export default function reducer(
 
         case types.UPDATE_CUSTOM_FIELD_STATE: {
             const {id} = action.payload as CustomFieldState
-            return state.setIn(['custom_fields', String(id)], action.payload)
+            return state.setIn(
+                ['custom_fields', String(id)],
+                fromJS(action.payload)
+            )
         }
 
         case types.UPDATE_CUSTOM_FIELD_VALUE: {
