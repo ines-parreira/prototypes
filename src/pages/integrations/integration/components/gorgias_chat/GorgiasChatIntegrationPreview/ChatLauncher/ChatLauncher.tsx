@@ -13,6 +13,7 @@ interface LauncherProps {
     type: GorgiasChatLauncherType
     label?: string
     backgroundColor?: string
+    fontFamily: string
     className?: string
     windowState: 'closed' | 'opened'
 }
@@ -21,6 +22,7 @@ const ChatLauncher: React.FC<LauncherProps> = ({
     type,
     className,
     backgroundColor,
+    fontFamily,
     label,
     windowState,
 }) => {
@@ -48,7 +50,10 @@ const ChatLauncher: React.FC<LauncherProps> = ({
 
             {type === GorgiasChatLauncherType.ICON_AND_LABEL &&
                 windowState === 'closed' && (
-                    <div className={css.label} style={{color: contentColor}}>
+                    <div
+                        className={css.label}
+                        style={{color: contentColor, fontFamily: fontFamily}}
+                    >
                         {label}
                     </div>
                 )}

@@ -619,6 +619,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                   >
                                     <ChatLauncher
                                       backgroundColor="#123456"
+                                      fontFamily="Inter"
                                       type="icon"
                                       windowState="closed"
                                     >
@@ -1578,6 +1579,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                   >
                                     <ChatLauncher
                                       backgroundColor="#123456"
+                                      fontFamily="Inter"
                                       type="icon"
                                       windowState="closed"
                                     >

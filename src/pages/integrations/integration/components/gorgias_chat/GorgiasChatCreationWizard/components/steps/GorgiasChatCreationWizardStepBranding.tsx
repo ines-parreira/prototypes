@@ -10,6 +10,7 @@ import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import {
     GORGIAS_CHAT_WIDGET_TEXTS,
     GORGIAS_CHAT_DEFAULT_COLOR,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 
 import {updateOrCreateIntegration} from 'state/integrations/actions'
@@ -233,6 +234,9 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                         <ChatLauncher
                                             type={GorgiasChatLauncherType.ICON}
                                             backgroundColor={currentMainColor}
+                                            fontFamily={
+                                                GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                                            }
                                             windowState="closed"
                                         />
                                     </div>
@@ -259,6 +263,9 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                                 GorgiasChatLauncherType.ICON_AND_LABEL
                                             }
                                             backgroundColor={currentMainColor}
+                                            fontFamily={
+                                                GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                                            }
                                             label={launcherLabel}
                                             windowState="closed"
                                         />

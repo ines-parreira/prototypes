@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChatLauncher/> should render with the correct setup (icon+label, closed) 1`] = `
+<div
+  className="launcher iconAndLabelMode"
+  style={
+    {
+      "backgroundColor": "#0d87dd",
+    }
+  }
+>
+  <div
+    className="iconWrapper"
+  >
+    <BubbleIcon
+      className="icon"
+      fill="#FFFFFF"
+    />
+  </div>
+  <div
+    className="label"
+    style={
+      {
+        "color": "#FFFFFF",
+        "fontFamily": "Impact",
+      }
+    }
+  >
+    Chat with us
+  </div>
+</div>
+`;
+
+exports[`<ChatLauncher/> should render with the correct setup (icon+label, open) 1`] = `
+<div
+  className="launcher"
+  style={
+    {
+      "backgroundColor": "#0d87dd",
+    }
+  }
+>
+  <div
+    className="iconWrapper"
+  >
+    <Cross
+      className="icon"
+      fill="#FFFFFF"
+    />
+  </div>
+</div>
+`;
+
+exports[`<ChatLauncher/> should render with the correct setup (icon, closed) 1`] = `
+<div
+  className="launcher"
+  style={
+    {
+      "backgroundColor": "#0d87dd",
+    }
+  }
+>
+  <div
+    className="iconWrapper"
+  >
+    <BubbleIcon
+      className="icon"
+      fill="#FFFFFF"
+    />
+  </div>
+</div>
+`;
+
+exports[`<ChatLauncher/> should render with the correct setup (icon, open) 1`] = `
+<div
+  className="launcher"
+  style={
+    {
+      "backgroundColor": "#0d87dd",
+    }
+  }
+>
+  <div
+    className="iconWrapper"
+  >
+    <Cross
+      className="icon"
+      fill="#FFFFFF"
+    />
+  </div>
+</div>
+`;

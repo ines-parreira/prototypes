@@ -90,6 +90,7 @@ const CustomizedChatLauncher: React.FC<Props> = ({
                         <ChatLauncher
                             {...launcher}
                             backgroundColor={mainColor}
+                            fontFamily={mainFontFamily}
                             windowState={
                                 !isLauncherCustomizationEnabled || isClosed
                                     ? 'closed'

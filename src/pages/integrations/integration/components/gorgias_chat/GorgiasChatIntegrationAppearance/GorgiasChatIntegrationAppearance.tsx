@@ -1227,6 +1227,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                             backgroundColor={
                                                                 mainColor
                                                             }
+                                                            fontFamily={
+                                                                mainFontFamily
+                                                            }
                                                             windowState="closed"
                                                         />
                                                     </div>
@@ -1266,6 +1269,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                             }
                                                             backgroundColor={
                                                                 mainColor
+                                                            }
+                                                            fontFamily={
+                                                                mainFontFamily
                                                             }
                                                             label={
                                                                 launcherLabel
