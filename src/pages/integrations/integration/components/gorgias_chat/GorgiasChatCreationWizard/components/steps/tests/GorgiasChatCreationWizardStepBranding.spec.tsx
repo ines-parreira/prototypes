@@ -12,10 +12,7 @@ import * as actions from 'state/integrations/actions'
 import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
 import {GorgiasChatCreationWizardSteps} from 'models/integration/types'
 
-import Wizard, {
-    WizardContext,
-    WizardContextState,
-} from 'pages/common/components/wizard/Wizard'
+import Wizard from 'pages/common/components/wizard/Wizard'
 
 import GorgiasChatCreationWizardStepBranding from '../GorgiasChatCreationWizardStepBranding'
 
@@ -89,38 +86,6 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
         fireEvent.click(getByText('Next', {selector: 'button'}))
 
         expect(spy.mock.calls).toMatchSnapshot()
-    })
-
-    it('skips submitting form and navigates to next step when no fields have been changed', () => {
-        const setActiveStepMock = jest.fn()
-
-        const {getByText} = render(
-            <MemoryRouter>
-                <Provider store={mockStore({})}>
-                    <WizardContext.Provider
-                        value={
-                            {
-                                steps: [
-                                    GorgiasChatCreationWizardSteps.Basics,
-                                    'test',
-                                ],
-                                nextStep: 'test',
-                                setActiveStep: setActiveStepMock,
-                            } as unknown as WizardContextState
-                        }
-                    >
-                        <GorgiasChatCreationWizardStepBranding {...minProps} />
-                    </WizardContext.Provider>
-                </Provider>
-            </MemoryRouter>
-        )
-
-        const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
-
-        fireEvent.click(getByText('Next', {selector: 'button'}))
-
-        expect(spy).not.toHaveBeenCalled()
-        expect(setActiveStepMock).toHaveBeenCalledWith('test')
     })
 
     it('disables buttons when submitting form', () => {

@@ -40,6 +40,7 @@ type SubmitForm = {
     type: IntegrationType.GorgiasChat
     id: number
     decoration: Record<string, any>
+    meta: Record<string, any>
 }
 
 type Props = {
@@ -104,18 +105,21 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
         currentLauncherLabel === undefined &&
         currentLauncherType === undefined
 
-    const onSave = (shouldGoToNextStep = true) => {
-        if (shouldGoToNextStep && isPristine) {
-            goToNextStep()
-            return Promise.resolve()
-        }
-
+    const onSave = (shouldGoToNextStep = false) => {
         const form: SubmitForm = {
             type: IntegrationType.GorgiasChat,
             id: integration.get('id'),
             decoration: (integration.get('decoration') as Map<any, any>)
                 .set('conversation_color', conversationColor)
                 .set('main_color', mainColor)
+                .toJS(),
+            meta: (integration.get('meta') as Map<any, any>)
+                .setIn(
+                    ['wizard', 'step'],
+                    shouldGoToNextStep
+                        ? GorgiasChatCreationWizardSteps.Installation
+                        : GorgiasChatCreationWizardSteps.Branding
+                )
                 .toJS(),
         }
 

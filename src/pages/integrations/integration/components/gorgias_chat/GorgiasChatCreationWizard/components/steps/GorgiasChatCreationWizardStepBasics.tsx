@@ -27,6 +27,7 @@ import {
     GorgiasChatAvatarNameType,
     GorgiasChatAvatarImageType,
     GorgiasChatCreationWizardSteps,
+    GorgiasChatCreationWizardStatus,
     IntegrationType,
 } from 'models/integration/types'
 
@@ -165,15 +166,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         currentLiveChatAvailability === undefined &&
         currentIsStoreRequired === undefined
 
-    const onSave = (shouldGoToNextStep = true) => {
+    const onSave = (shouldGoToNextStep = false) => {
         if (hasIncompleteFields) {
             setHasFailedSubmit(true)
             return
-        }
-
-        if (shouldGoToNextStep && isUpdate && isPristine) {
-            goToNextStep(integration.get('id'))
-            return Promise.resolve()
         }
 
         let form: SubmitForm = {
@@ -191,6 +187,12 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         liveChatAvailability
                     )
                     .set('language', language)
+                    .setIn(
+                        ['wizard', 'step'],
+                        shouldGoToNextStep
+                            ? GorgiasChatCreationWizardSteps.Branding
+                            : GorgiasChatCreationWizardSteps.Basics
+                    )
                     .toJS(),
             }
         } else {
@@ -223,6 +225,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         },
                         offline_mode_enabled_datetime:
                             GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
+                    },
+                    wizard: {
+                        status: GorgiasChatCreationWizardStatus.Draft,
+                        step: GorgiasChatCreationWizardSteps.Branding,
                     },
                 },
             }

@@ -48,6 +48,10 @@ export type GorgiasChatIntegrationMeta = {
     }
     position?: GorgiasChatPosition
     status?: GorgiasChatStatusEnum
+    wizard?: {
+        step: GorgiasChatCreationWizardSteps
+        status: GorgiasChatCreationWizardStatus
+    }
 }
 
 enum GorgiasChatEmailCaptureType {
@@ -130,6 +134,11 @@ export type GorgiasChatAvatarSettings = {
     imageType: GorgiasChatAvatarImageType
     nameType: GorgiasChatAvatarNameType
     companyLogoUrl?: string
+}
+
+export enum GorgiasChatCreationWizardStatus {
+    Draft = 'draft',
+    Published = 'published',
 }
 
 export enum GorgiasChatCreationWizardSteps {

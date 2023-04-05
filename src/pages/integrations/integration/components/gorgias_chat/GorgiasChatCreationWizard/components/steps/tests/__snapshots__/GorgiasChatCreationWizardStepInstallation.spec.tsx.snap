@@ -11,6 +11,9 @@ exports[`<GorgiasChatCreationWizardStepInstallation /> submits form when using 1
         "shopify_integration_ids": Immutable.List [
           1,
         ],
+        "wizard": Immutable.Map {
+          "status": "published",
+        },
       },
     },
     undefined,

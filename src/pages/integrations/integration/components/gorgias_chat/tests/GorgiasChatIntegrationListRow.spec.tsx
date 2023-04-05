@@ -7,7 +7,11 @@ import {render} from '@testing-library/react'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {IntegrationType} from 'models/integration/constants'
-import {GorgiasChatStatusEnum} from 'models/integration/types'
+import {
+    GorgiasChatCreationWizardStatus,
+    GorgiasChatCreationWizardSteps,
+    GorgiasChatStatusEnum,
+} from 'models/integration/types'
 import GorgiasChatIntegrationListRow, {
     GorgiasChatIntegrationListRowProps,
     GorgiasChatIntegrationStatusFeedbackMapping,
@@ -110,6 +114,76 @@ describe('<GorgiasChatIntegrationListRow />', () => {
         )
 
         expect(getByText(/Status unavailable/)).toBeDefined()
+    })
+
+    it('should render forward icon link for published chat', () => {
+        jest.spyOn(
+            hookGorgiasChatIntegrationStatusData,
+            'useGorgiasChatIntegrationStatusData'
+        ).mockImplementation(() => ({
+            chatStatus: undefined,
+            isChatStatusLoading: false,
+            isChatStatusError: true,
+        }))
+
+        const {container, queryByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TestWrapper>
+                    <GorgiasChatIntegrationListRow
+                        {...defaultProps}
+                        chat={fromJS({
+                            ...defaultChat,
+                            meta: {
+                                ...defaultChat.meta,
+                                wizard: {
+                                    status: GorgiasChatCreationWizardStatus.Published,
+                                    step: GorgiasChatCreationWizardSteps.Installation,
+                                },
+                            },
+                        })}
+                    />
+                </TestWrapper>
+            </Provider>
+        )
+
+        expect(queryByText('Continue Setup')).not.toBeInTheDocument()
+        expect(container.querySelector('.icon-go-forward')).toBeInTheDocument()
+    })
+
+    it('should render "Continue Setup" link for draft chat', () => {
+        jest.spyOn(
+            hookGorgiasChatIntegrationStatusData,
+            'useGorgiasChatIntegrationStatusData'
+        ).mockImplementation(() => ({
+            chatStatus: undefined,
+            isChatStatusLoading: false,
+            isChatStatusError: true,
+        }))
+
+        const {container, queryByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TestWrapper>
+                    <GorgiasChatIntegrationListRow
+                        {...defaultProps}
+                        chat={fromJS({
+                            ...defaultChat,
+                            meta: {
+                                ...defaultChat.meta,
+                                wizard: {
+                                    status: GorgiasChatCreationWizardStatus.Draft,
+                                    step: GorgiasChatCreationWizardSteps.Basics,
+                                },
+                            },
+                        })}
+                    />
+                </TestWrapper>
+            </Provider>
+        )
+
+        expect(queryByText('Continue Setup')).toBeInTheDocument()
+        expect(
+            container.querySelector('.icon-go-forward')
+        ).not.toBeInTheDocument()
     })
 
     it.each(Object.entries(GorgiasChatIntegrationStatusFeedbackMapping))(

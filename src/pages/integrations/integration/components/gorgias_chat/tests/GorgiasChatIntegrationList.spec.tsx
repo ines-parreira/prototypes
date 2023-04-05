@@ -14,6 +14,8 @@ import {RootState, StoreDispatch} from 'state/types'
 import GorgiasChatIntegrationList from '../GorgiasChatIntegrationList'
 
 import {
+    GorgiasChatCreationWizardStatus,
+    GorgiasChatCreationWizardSteps,
     GorgiasChatStatusEnum,
     IntegrationType,
 } from '../../../../../../models/integration/types'
@@ -38,6 +40,10 @@ describe('<GorgiasChatIntegrationList />', () => {
                     shop_type: IntegrationType.Shopify,
                     shop_integration_id: 3,
                     status: GorgiasChatStatusEnum.ONLINE,
+                    wizard: {
+                        status: GorgiasChatCreationWizardStatus.Published,
+                        step: GorgiasChatCreationWizardSteps.Installation,
+                    },
                 },
                 decoration: {
                     introduction_text: 'this is an intro',
@@ -52,6 +58,10 @@ describe('<GorgiasChatIntegrationList />', () => {
                 meta: {
                     self_service: {
                         enabled: false,
+                    },
+                    wizard: {
+                        status: GorgiasChatCreationWizardStatus.Published,
+                        step: GorgiasChatCreationWizardSteps.Installation,
                     },
                 },
                 decoration: {

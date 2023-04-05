@@ -13,6 +13,9 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form when updating chat
           "live_chat_availability": "always-live-during-business-hours",
         },
         "language": "en-US",
+        "wizard": Immutable.Map {
+          "step": "branding",
+        },
         "shop_name": null,
         "shop_type": null,
       },
@@ -56,6 +59,10 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form with default value
             "reply": "reply-dynamic",
           },
           "offline_mode_enabled_datetime": null,
+        },
+        "wizard": Immutable.Map {
+          "status": "draft",
+          "step": "branding",
         },
         "shop_name": null,
         "shop_type": null,

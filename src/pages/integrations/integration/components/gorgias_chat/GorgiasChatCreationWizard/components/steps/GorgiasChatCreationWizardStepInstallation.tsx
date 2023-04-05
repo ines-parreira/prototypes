@@ -9,11 +9,13 @@ import {updateOrCreateIntegration} from 'state/integrations/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
+    GorgiasChatCreationWizardStatus,
     GorgiasChatCreationWizardSteps,
     IntegrationType,
 } from 'models/integration/types'
 import {getStoreIntegrations} from 'state/integrations/selectors'
 
+import {Tab} from 'pages/integrations/integration/Integration'
 import Button from 'pages/common/components/button/Button'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
@@ -62,46 +64,43 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
 
     const [{loading: isInstallPending}, handleInstall] =
         useAsyncFn(async () => {
-            const id = integration.get('id') as number
-
-            if (!isOneClickInstallation) {
-                const locationState: NavigatedSuccessModalLocationState = {
-                    showModal:
-                        NavigatedSuccessModalName.GorgiasChatManualInstallation,
-                }
-
-                history.push(
-                    `/app/settings/channels/gorgias_chat/${id}/installation`,
-                    locationState
-                )
-
-                return
-            }
+            const id: number = integration.get('id')
+            let meta = integration.get('meta') as Map<any, any>
 
             const shopIntegrationId = integration.getIn([
                 'meta',
                 'shop_integration_id',
             ])
 
+            if (isOneClickInstallation) {
+                meta = meta.set('shopify_integration_ids', [shopIntegrationId])
+            }
+
             const form = {
-                id: integration.get('id'),
+                id,
                 type: integration.get('type'),
-                meta: (integration.get('meta') as Map<any, any>)
-                    .set('shopify_integration_ids', [shopIntegrationId])
+                meta: meta
+                    .setIn(
+                        ['wizard', 'status'],
+                        GorgiasChatCreationWizardStatus.Published
+                    )
                     .toJS(),
             }
 
             await dispatch(
                 updateOrCreateIntegration(fromJS(form), undefined, true, () => {
+                    const redirectUrl = `/app/settings/channels/gorgias_chat/${id}/${
+                        isOneClickInstallation
+                            ? Tab.Appearance
+                            : Tab.Installation
+                    }`
                     const locationState: NavigatedSuccessModalLocationState = {
-                        showModal:
-                            NavigatedSuccessModalName.GorgiasChatAutoInstallation,
+                        showModal: isOneClickInstallation
+                            ? NavigatedSuccessModalName.GorgiasChatAutoInstallation
+                            : NavigatedSuccessModalName.GorgiasChatManualInstallation,
                     }
 
-                    history.push(
-                        `/app/settings/channels/gorgias_chat/${id}/appearance`,
-                        locationState
-                    )
+                    history.push(redirectUrl, locationState)
                 })
             )
         }, [integration, isOneClickInstallation])

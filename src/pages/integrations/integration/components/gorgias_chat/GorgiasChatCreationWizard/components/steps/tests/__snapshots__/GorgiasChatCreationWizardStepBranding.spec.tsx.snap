@@ -14,6 +14,12 @@ exports[`<GorgiasChatCreationWizardStepBranding /> submits form when fields have
           "label": "Chat with us",
         },
       },
+      "meta": Immutable.Map {
+        "language": "en-US",
+        "wizard": Immutable.Map {
+          "step": "installation",
+        },
+      },
     },
     undefined,
     true,

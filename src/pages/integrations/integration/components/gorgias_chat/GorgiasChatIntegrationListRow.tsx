@@ -1,5 +1,5 @@
 import React, {memo} from 'react'
-import {NavLink} from 'react-router-dom'
+import {NavLink, Link} from 'react-router-dom'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 
@@ -14,9 +14,12 @@ import {useGorgiasChatIntegrationStatusData} from 'pages/integrations/integratio
 import Tooltip from '../../../../common/components/Tooltip'
 import history from '../../../../history'
 import {
+    GorgiasChatCreationWizardStatus,
     GorgiasChatStatusEnum,
     IntegrationType,
 } from '../../../../../models/integration/types'
+
+import {Tab} from '../../Integration'
 
 import BodyCell from '../../../../common/components/table/cells/BodyCell'
 import TableBodyRow from '../../../../common/components/table/TableBodyRow'
@@ -47,9 +50,20 @@ const GorgiasChatIntegrationListRow = ({
     const {chatStatus, isChatStatusLoading, isChatStatusError} =
         useGorgiasChatIntegrationStatusData(chat, isLoadingIntegrations)
     const integrationId: number = chat.get('id')
+
+    const wizardStatus: GorgiasChatCreationWizardStatus = chat.getIn([
+        'meta',
+        'wizard',
+        'status',
+    ])
+
     const baseLink = `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}`
-    const editLink = `${baseLink}/campaigns`
-    const preferencesLink = `${baseLink}/preferences`
+    const editLink = `${baseLink}/${
+        wizardStatus === GorgiasChatCreationWizardStatus.Published
+            ? Tab.Campaigns
+            : Tab.CreateWizard
+    }`
+    const preferencesLink = `${baseLink}/${Tab.Preferences}}`
     const shopIntegrationId: number | null = chat.getIn(
         ['meta', 'shop_integration_id'],
         null
@@ -199,8 +213,24 @@ const GorgiasChatIntegrationListRow = ({
             <BodyCell size="small">
                 <LanguageBullet code={language} />
             </BodyCell>
-            <BodyCell size="smallest">
-                <ForwardIcon href={editLink} />
+            <BodyCell size="smallest" innerClassName={css.lastColumn}>
+                {wizardStatus === GorgiasChatCreationWizardStatus.Published ? (
+                    <ForwardIcon
+                        href={editLink}
+                        onClick={(ev) => {
+                            ev.stopPropagation()
+                        }}
+                    />
+                ) : (
+                    <Link
+                        to={editLink}
+                        onClick={(ev) => {
+                            ev.stopPropagation()
+                        }}
+                    >
+                        Continue Setup
+                    </Link>
+                )}
             </BodyCell>
         </TableBodyRow>
     )
