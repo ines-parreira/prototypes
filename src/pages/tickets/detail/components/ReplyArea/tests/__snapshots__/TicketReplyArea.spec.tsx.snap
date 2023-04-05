@@ -41,7 +41,7 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
   <div
     className="component"
   >
-    <TicketMacrosSearch
+    <Component
       handleSearchKeyDown={[Function]}
       macrosVisible={false}
       onClearMacro={[Function]}
@@ -57,66 +57,10 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
       setFocus={[Function]}
       showMacros={[Function]}
     >
-      <div
-        className="component d-flex align-items-center"
-      >
-        <ForwardRef(TextInput)
-          className="border-0 shadow-none"
-          inputClassName="searchInput"
-          isDisabled={true}
-          onChange={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          placeholder="Search macros by name, tags or body..."
-          prefix={
-            <IconInput
-              className="bolt md-2 text-info"
-              icon="bolt"
-            />
-          }
-          tabIndex={3}
-        >
-          <div
-            className="wrapper isDisabled border-0 shadow-none"
-          >
-            <span
-              className="prefix"
-              onClick={[Function]}
-            >
-              <IconInput
-                className="bolt md-2 text-info"
-                icon="bolt"
-              >
-                <i
-                  className="material-icons icon bolt md-2 text-info"
-                >
-                  bolt
-                </i>
-              </IconInput>
-            </span>
-            <input
-              className="input searchInput"
-              disabled={true}
-              id="input-text-4"
-              name="input-text-4"
-              onChange={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              placeholder="Search macros by name, tags or body..."
-              required={false}
-              tabIndex={3}
-              type="text"
-            />
-          </div>
-        </ForwardRef(TextInput)>
-        <i
-          className="material-icons md-2 mr-3 clickable closeButton"
-          onClick={[Function]}
-        >
-          keyboard_arrow_down
-        </i>
-      </div>
-    </TicketMacrosSearch>
+      <input
+        onFocus={[Function]}
+      />
+    </Component>
     <div
       className="content"
     >
@@ -146,7 +90,7 @@ exports[`<TicketReplyArea/> should render 1`] = `
 <div
   className="component"
 >
-  <TicketMacrosSearch
+  <Component
     handleSearchKeyDown={[Function]}
     macrosVisible={false}
     onClearMacro={[Function]}

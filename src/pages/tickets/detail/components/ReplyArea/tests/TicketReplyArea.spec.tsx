@@ -10,6 +10,7 @@ import {Macro} from 'state/macro/types'
 import TicketReply from '../TicketReply'
 import {TicketReplyArea} from '../TicketReplyArea'
 import TicketMacros from '../TicketMacros'
+import TicketMacrosSearch from '../TicketMacrosSearch'
 import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
 
 const mockedStore = configureMockStore([thunk])
@@ -56,6 +57,13 @@ jest.mock('../TicketMacros', () => ({onClearMacro}: TicketMacrosMockProps) => (
         </button>
     </div>
 ))
+
+jest.mock(
+    '../TicketMacrosSearch',
+    () =>
+        ({showMacros}: ComponentProps<typeof TicketMacrosSearch>) =>
+            <input onFocus={() => showMacros()} />
+)
 
 const minProps = {
     ticket: fromJS({}),

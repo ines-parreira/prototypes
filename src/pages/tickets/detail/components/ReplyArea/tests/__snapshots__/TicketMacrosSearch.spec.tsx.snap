@@ -34,6 +34,9 @@ exports[`<TicketMacrosSearch /> should render TicketMacrosSearch focused 1`] = `
   >
     keyboard_arrow_up
   </i>
+  <div>
+    OnbordingMacroPopover
+  </div>
 </div>
 `;
 
@@ -68,5 +71,8 @@ exports[`<TicketMacrosSearch /> should render TicketMacrosSearch unfocused 1`] =
   >
     keyboard_arrow_down
   </i>
+  <div>
+    OnbordingMacroPopover
+  </div>
 </div>
 `;

@@ -1,8 +1,6 @@
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {KeyboardEvent as KeyboardEventReact, useRef} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {FetchMacrosOptions} from 'models/macro/types'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
@@ -32,8 +30,6 @@ const TicketMacrosSearch = ({
     requireCustomerSelection,
 }: Props) => {
     const ref = useRef<HTMLElement | null>(null)
-    const hasDefaultMacroToSearch: boolean | undefined =
-        useFlags()[FeatureFlagKey.DefaultMacroToSearch]
 
     return (
         <div className={classnames(css.component, 'd-flex align-items-center')}>
@@ -80,13 +76,11 @@ const TicketMacrosSearch = ({
                 {macrosVisible ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
             </i>
 
-            {hasDefaultMacroToSearch && (
-                <OnbordingMacroPopover
-                    macrosVisible={macrosVisible}
-                    target={ref}
-                    onClearMacro={onClearMacro}
-                />
-            )}
+            <OnbordingMacroPopover
+                macrosVisible={macrosVisible}
+                target={ref}
+                onClearMacro={onClearMacro}
+            />
         </div>
     )
 }

@@ -1,8 +1,6 @@
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import TicketMacrosSearch from '../TicketMacrosSearch'
 
 jest.mock('pages/common/components/MacroFilters/MacroFilters', () => () => (
@@ -25,13 +23,6 @@ describe('<TicketMacrosSearch />', () => {
         onClearMacro: jest.fn(),
     }
 
-    beforeEach(() => {
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.DefaultMacroToSearch]: false,
-        })
-    })
-
     it('should render TicketMacrosSearch unfocused', () => {
         const {container} = render(<TicketMacrosSearch {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
@@ -43,16 +34,5 @@ describe('<TicketMacrosSearch />', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should render the onboarding popover when DefaultMacroToSearch feature flag is truthy', () => {
-        mockFlags({
-            [FeatureFlagKey.DefaultMacroToSearch]: true,
-        })
-        const {getByText} = render(
-            <TicketMacrosSearch {...minProps} macrosVisible={true} />
-        )
-
-        expect(getByText(/OnbordingMacroPopover/)).toBeTruthy()
     })
 })
