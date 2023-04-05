@@ -81,6 +81,7 @@ const UnsavedChangesPrompt: React.FC<Props> = ({
                 <ModalFooter className={classNames(css.footer, 'pt-3 px-3')}>
                     <div>
                         <Button
+                            fillStyle="ghost"
                             intent="destructive"
                             onClick={() => {
                                 setShow(false)
