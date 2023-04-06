@@ -1,11 +1,14 @@
 import React, {useEffect, useMemo, useRef} from 'react'
 import {EditorState} from 'draft-js'
+import {fromJS} from 'immutable'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import {convertToHTML} from 'utils/editor'
 import RichField from 'pages/common/forms/RichField/RichField'
 import Label from 'pages/common/forms/Label/Label'
+import {IntegrationType} from 'models/integration/constants'
 import {AutomatedMessageNodeType} from '../types'
 import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
+import {useWorkflowEntrypointContext} from '../../hooks/useWorkflowEntrypoint'
 
 import css from './NodeEditor.less'
 
@@ -25,6 +28,7 @@ export default function AutomatedMessageEditor({
         return () => clearTimeout(t)
     }, [nodeInEdition])
     const {dispatch} = useWorkflowConfigurationContext()
+    const {storeIntegration} = useWorkflowEntrypointContext()
     const nodeContent = useMemo(
         () => ({
             html: nodeInEdition.data.message.content.html,
@@ -59,6 +63,11 @@ export default function AutomatedMessageEditor({
                 canAddProductCard={false}
                 canAddDiscountCodeLink={false}
                 canAddVideoPlayer={false}
+                shopifyIntegrations={fromJS(
+                    storeIntegration?.type === IntegrationType.Shopify
+                        ? [storeIntegration]
+                        : []
+                )}
             >
                 <RichField
                     minHeight={250}

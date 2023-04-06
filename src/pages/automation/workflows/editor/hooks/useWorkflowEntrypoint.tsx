@@ -4,6 +4,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
+import {StoreIntegration} from 'models/integration/types'
 import useOnLoaded from './useOnLoaded'
 
 type WorkflowEntrypointContext = {
@@ -15,6 +16,7 @@ type WorkflowEntrypointContext = {
     handleValidate: () => Maybe<string>
     handleSave: () => Promise<void> | void
     handleDiscard: () => void
+    storeIntegration: StoreIntegration | undefined
 }
 
 const WorkflowEntrypointContext = createContext<
@@ -64,6 +66,7 @@ export function useWorkflowEntrypoint(
         isUpdatePending,
         selfServiceConfiguration,
         handleSelfServiceConfigurationUpdate,
+        storeIntegration,
     } = useSelfServiceConfiguration(
         shopType,
         shopName,
@@ -129,6 +132,7 @@ export function useWorkflowEntrypoint(
         handleValidate,
         handleSave,
         handleDiscard,
+        storeIntegration,
     }
 }
 
