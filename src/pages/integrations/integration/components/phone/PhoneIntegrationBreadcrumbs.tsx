@@ -71,9 +71,23 @@ export default function PhoneIntegrationBreadcrumbs({
                     </BreadcrumbItem>
                 </>
             )}
-            {!integration && integrationId !== 'new' && (
-                <BreadcrumbItem>{name}</BreadcrumbItem>
-            )}
+            {type === IntegrationType.WhatsApp &&
+                !integration &&
+                integrationId === 'migration' && (
+                    <>
+                        <BreadcrumbItem>
+                            <Link to={baseUrl}>{name}</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            Migrate From Another Provider
+                        </BreadcrumbItem>
+                    </>
+                )}
+            {!integration &&
+                integrationId !== 'new' &&
+                integrationId !== 'migration' && (
+                    <BreadcrumbItem>{name}</BreadcrumbItem>
+                )}
         </Breadcrumb>
     )
 }
