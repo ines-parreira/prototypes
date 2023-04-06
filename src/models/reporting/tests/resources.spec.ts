@@ -2,19 +2,19 @@ import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 
-import {ANALYTICS_ENDPOINT, getAnalytics} from '../resources'
-import {GetAnalyticsResponse} from '../types'
+import {REPORTING_ENDPOINT, getReporting} from '../resources'
+import {GetReportingResponse} from '../types'
 
 const mockedServer = new MockAdapter(client)
 
-describe('analytics resources', () => {
+describe('Reporting resources', () => {
     beforeEach(() => {
         mockedServer.reset()
     })
 
-    describe('getAnalytics', () => {
+    describe('getReporting', () => {
         it('should resolve with the data on success', async () => {
-            const resFixture: GetAnalyticsResponse<[number]> = {
+            const resFixture: GetReportingResponse<[number]> = {
                 query: 'foo',
                 data: [1],
                 annotation: {
@@ -23,9 +23,9 @@ describe('analytics resources', () => {
                     type: 'number',
                 },
             }
-            mockedServer.onGet(ANALYTICS_ENDPOINT).reply(200, resFixture)
+            mockedServer.onGet(REPORTING_ENDPOINT).reply(200, resFixture)
 
-            const res = await getAnalytics<[number]>({
+            const res = await getReporting<[number]>({
                 dimensions: [],
                 measures: [],
                 filters: [],
@@ -36,10 +36,10 @@ describe('analytics resources', () => {
         })
 
         it('should reject with an error on success', async () => {
-            mockedServer.onGet(ANALYTICS_ENDPOINT).reply(503)
+            mockedServer.onGet(REPORTING_ENDPOINT).reply(503)
 
             return expect(
-                getAnalytics<[number]>({
+                getReporting<[number]>({
                     dimensions: [],
                     measures: [],
                     filters: [],

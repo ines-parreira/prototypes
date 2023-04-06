@@ -2,11 +2,11 @@ import MockAdapter from 'axios-mock-adapter'
 
 import {createClient} from 'models/api/resources'
 
-import {ANALYTICS_ENDPOINT} from './resources'
+import {REPORTING_ENDPOINT} from './resources'
 import {
-    AnalyticsMeasure,
-    GetAnalyticsParams,
-    GetAnalyticsResponse,
+    ReportingMeasure,
+    GetReportingParams,
+    GetReportingResponse,
 } from './types'
 
 const client = createClient()
@@ -15,14 +15,14 @@ export default client
 
 const mock = new MockAdapter(client, {delayResponse: 3000})
 
-mock.onGet(ANALYTICS_ENDPOINT).reply<GetAnalyticsResponse<[number]>>(
+mock.onGet(REPORTING_ENDPOINT).reply<GetReportingResponse<[number]>>(
     (config) => {
         const {
             measures: [measure],
-        } = config.params as GetAnalyticsParams
+        } = config.params as GetReportingParams
 
         switch (measure) {
-            case AnalyticsMeasure.CustomerSatisfaction: {
+            case ReportingMeasure.CustomerSatisfaction: {
                 return [
                     200,
                     {
@@ -36,7 +36,7 @@ mock.onGet(ANALYTICS_ENDPOINT).reply<GetAnalyticsResponse<[number]>>(
                     },
                 ]
             }
-            case AnalyticsMeasure.FirstResponseTime: {
+            case ReportingMeasure.FirstResponseTime: {
                 const minResponseTimeSeconds = 30
                 const maxResponseTimeSeconds = 20 * 60
                 const firstResponseTime = Math.round(
@@ -57,7 +57,7 @@ mock.onGet(ANALYTICS_ENDPOINT).reply<GetAnalyticsResponse<[number]>>(
                     },
                 ]
             }
-            case AnalyticsMeasure.ResolutionTime: {
+            case ReportingMeasure.ResolutionTime: {
                 const minResolutionTimeSeconds = 5 * 60
                 const maxResolutionTimeSeconds = 3 * 24 * 60 * 60
                 const resolutionTime = Math.round(
@@ -78,7 +78,7 @@ mock.onGet(ANALYTICS_ENDPOINT).reply<GetAnalyticsResponse<[number]>>(
                     },
                 ]
             }
-            case AnalyticsMeasure.MessagesPerTicket: {
+            case ReportingMeasure.MessagesPerTicket: {
                 return [
                     200,
                     {
@@ -92,7 +92,7 @@ mock.onGet(ANALYTICS_ENDPOINT).reply<GetAnalyticsResponse<[number]>>(
                     },
                 ]
             }
-            case AnalyticsMeasure.OpenTickets: {
+            case ReportingMeasure.OpenTickets: {
                 return [
                     200,
                     {
@@ -106,7 +106,7 @@ mock.onGet(ANALYTICS_ENDPOINT).reply<GetAnalyticsResponse<[number]>>(
                     },
                 ]
             }
-            case AnalyticsMeasure.ClosedTickets: {
+            case ReportingMeasure.ClosedTickets: {
                 return [
                     200,
                     {
@@ -120,7 +120,7 @@ mock.onGet(ANALYTICS_ENDPOINT).reply<GetAnalyticsResponse<[number]>>(
                     },
                 ]
             }
-            case AnalyticsMeasure.TicketsCreated: {
+            case ReportingMeasure.TicketsCreated: {
                 return [
                     200,
                     {
@@ -134,7 +134,7 @@ mock.onGet(ANALYTICS_ENDPOINT).reply<GetAnalyticsResponse<[number]>>(
                     },
                 ]
             }
-            case AnalyticsMeasure.TicketsReplied: {
+            case ReportingMeasure.TicketsReplied: {
                 return [
                     200,
                     {
@@ -148,7 +148,7 @@ mock.onGet(ANALYTICS_ENDPOINT).reply<GetAnalyticsResponse<[number]>>(
                     },
                 ]
             }
-            case AnalyticsMeasure.MessagesSent: {
+            case ReportingMeasure.MessagesSent: {
                 return [
                     200,
                     {

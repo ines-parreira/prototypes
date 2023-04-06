@@ -1,6 +1,6 @@
-export enum AnalyticsFilterMember {}
+export enum ReportingFilterMember {}
 
-export enum AnalyticsFilterOperator {
+export enum ReportingFilterOperator {
     Equals = 'equals',
     NotEquals = 'notEquals',
     Contains = 'contains',
@@ -25,19 +25,19 @@ export enum AnalyticsFilterOperator {
     MeasureFilter = 'measureFilter',
 }
 
-export type AnalyticsFilter = {
+export type ReportingFilter = {
     or?: string
     and?: string
-    member?: AnalyticsFilterMember
-    operator?: AnalyticsFilterOperator
+    member?: ReportingFilterMember
+    operator?: ReportingFilterOperator
     values?: string[]
 }
 
-export enum AnalyticsDimension {
+export enum ReportingDimension {
     CreatedDatetime = 'created_datetime',
 }
 
-export enum AnalyticsMeasure {
+export enum ReportingMeasure {
     CustomerSatisfaction = 'ticketStateCube.CustomerSatisfaction',
     FirstResponseTime = 'ticketStateCube.TicketFirstResponseTime',
     ResolutionTime = 'ticketStateCube.ResolutionTime',
@@ -49,7 +49,7 @@ export enum AnalyticsMeasure {
     MessagesSent = 'ticketStateCube.MessagesSent',
 }
 
-export enum AnalyticsTimeDimensionGranularity {
+export enum ReportingTimeDimensionGranularity {
     Quarter = 'quarter',
     Day = 'day',
     Month = 'month',
@@ -61,28 +61,28 @@ export enum AnalyticsTimeDimensionGranularity {
     Null = 'null',
 }
 
-export type AnalyticsOrder = [
-    AnalyticsDimension | AnalyticsMeasure,
+export type ReportingOrder = [
+    ReportingDimension | ReportingMeasure,
     'asc' | 'desc'
 ]
 
-export type AnalyticsTimeDimension = {
-    dimension: AnalyticsDimension
-    granularity?: AnalyticsTimeDimensionGranularity
+export type ReportingTimeDimension = {
+    dimension: ReportingDimension
+    granularity?: ReportingTimeDimensionGranularity
     dateRange?: string[]
 }
 
-export type GetAnalyticsParams = {
-    dimensions: AnalyticsDimension[]
-    filters: AnalyticsFilter[]
+export type GetReportingParams = {
+    dimensions: ReportingDimension[]
+    filters: ReportingFilter[]
     limit?: number
-    measures: AnalyticsMeasure[]
-    order?: AnalyticsOrder[]
-    timeDimensions: AnalyticsTimeDimension[]
+    measures: ReportingMeasure[]
+    order?: ReportingOrder[]
+    timeDimensions: ReportingTimeDimension[]
     timezone?: string
 }
 
-export type GetAnalyticsResponse<TData extends unknown[]> = {
+export type GetReportingResponse<TData extends unknown[]> = {
     annotation: {
         title: string
         shortTitle: string

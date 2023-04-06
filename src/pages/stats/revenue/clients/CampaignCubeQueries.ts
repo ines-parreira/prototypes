@@ -97,7 +97,7 @@ export const getCampaignEventsPerformanceData = async ({
         }),
         segments: [EventsSegments.campaignEventsOnly],
         limit: limit,
-        // TODO: we need to add support for offset to analytics endpoint first
+        // TODO: we need to add support for offset to reporting endpoint first
         // offset: offset,
     })
 }
@@ -128,7 +128,7 @@ export const getCampaignOrderPerformanceData = async ({
             campaignIds,
         }),
         limit: limit,
-        // TODO: we need to add support for offset to analytics endpoint first
+        // TODO: we need to add support for offset to reporting endpoint first
         // offset: offset,
     })
 }
@@ -157,7 +157,7 @@ export const getCampaignEventsOrdersPerformanceData = async ({
             campaignIds,
         }),
         limit: limit,
-        // TODO: we need to add support for offset to analytics endpoint first
+        // TODO: we need to add support for offset to reporting endpoint first
         // offset: offset,
     })
 }

@@ -10,7 +10,7 @@ import {
     getRevenueUpliftGraphData,
     getStoreRevenueTotalData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
-import {ANALYTICS_ENDPOINT} from 'models/analytics/resources'
+import {REPORTING_ENDPOINT} from 'models/reporting/resources'
 
 const mockedServer = new MockAdapter(client)
 
@@ -42,7 +42,7 @@ describe('Calling CubeClient functions', () => {
         let expectedData
         const expectedResponse = {hello: cubeFn.toString()}
 
-        mockedServer.onPost(ANALYTICS_ENDPOINT).reply((config) => {
+        mockedServer.onPost(REPORTING_ENDPOINT).reply((config) => {
             expectedData = config.data
             return [200, expectedResponse]
         })

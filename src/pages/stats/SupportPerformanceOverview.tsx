@@ -19,8 +19,8 @@ import {
 } from 'state/stats/selectors'
 import blueStar from 'assets/img/icons/blue-star.svg'
 import {ticketsCreatedDataItem} from 'fixtures/chart'
-import {AnalyticsMeasure} from 'models/analytics/types'
-import {useGetMetricTrend} from 'hooks/analytics/useGetMetricTrend'
+import {ReportingMeasure} from 'models/reporting/types'
+import {useGetMetricTrend} from 'hooks/reporting/useGetMetricTrend'
 
 import BigNumberMetric from './BigNumberMetric'
 import DashboardSection from './DashboardSection'
@@ -82,39 +82,39 @@ export default function SupportPerformanceOverview() {
     }, [integrationsStatsFilter, statsFilters])
 
     const customerSatisfactionTrend = useGetMetricTrend(
-        AnalyticsMeasure.CustomerSatisfaction,
+        ReportingMeasure.CustomerSatisfaction,
         pageStatsFilters
     )
     const firstResponseTimeTrend = useGetMetricTrend(
-        AnalyticsMeasure.FirstResponseTime,
+        ReportingMeasure.FirstResponseTime,
         pageStatsFilters
     )
     const resolutionTimeTrend = useGetMetricTrend(
-        AnalyticsMeasure.ResolutionTime,
+        ReportingMeasure.ResolutionTime,
         pageStatsFilters
     )
     const messagePerTicketTrend = useGetMetricTrend(
-        AnalyticsMeasure.MessagesPerTicket,
+        ReportingMeasure.MessagesPerTicket,
         pageStatsFilters
     )
     const openTicketsTrend = useGetMetricTrend(
-        AnalyticsMeasure.OpenTickets,
+        ReportingMeasure.OpenTickets,
         pageStatsFilters
     )
     const closedTicketsTrend = useGetMetricTrend(
-        AnalyticsMeasure.ClosedTickets,
+        ReportingMeasure.ClosedTickets,
         pageStatsFilters
     )
     const ticketsCreatedTrend = useGetMetricTrend(
-        AnalyticsMeasure.TicketsCreated,
+        ReportingMeasure.TicketsCreated,
         pageStatsFilters
     )
     const ticketsRepliedTrend = useGetMetricTrend(
-        AnalyticsMeasure.TicketsReplied,
+        ReportingMeasure.TicketsReplied,
         pageStatsFilters
     )
     const messagesSentTrend = useGetMetricTrend(
-        AnalyticsMeasure.MessagesSent,
+        ReportingMeasure.MessagesSent,
         pageStatsFilters
     )
 

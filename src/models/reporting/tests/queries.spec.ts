@@ -2,17 +2,17 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import {createTestQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
-import {GetAnalyticsParams} from '../types'
-import {getAnalytics} from '../resources'
-import {useGetAnalytics} from '../queries'
+import {GetReportingParams} from '../types'
+import {getReporting} from '../resources'
+import {useGetReporting} from '../queries'
 
 jest.mock('../resources')
-const getAnalyticsMock = getAnalytics as jest.Mock
+const getReportingMock = getReporting as jest.Mock
 
-describe('analytics queries', () => {
+describe('Reporting queries', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        getAnalyticsMock.mockResolvedValue({
+        getReportingMock.mockResolvedValue({
             data: {
                 annotation: {
                     title: 'Foo Bar',
@@ -25,9 +25,9 @@ describe('analytics queries', () => {
         })
     })
 
-    describe('useGetAnalytics', () => {
-        it('should call getAnalytics and return the result', async () => {
-            const params: GetAnalyticsParams = {
+    describe('useGetReporting', () => {
+        it('should call getReporting and return the result', async () => {
+            const params: GetReportingParams = {
                 filters: [],
                 measures: [],
                 dimensions: [],
@@ -35,14 +35,14 @@ describe('analytics queries', () => {
             }
 
             const {result, waitForNextUpdate} = renderHook(
-                () => useGetAnalytics<[number]>(params),
+                () => useGetReporting<[number]>(params),
                 {
                     wrapper: createTestQueryClientProvider(),
                 }
             )
             await waitForNextUpdate()
 
-            expect(getAnalyticsMock).toHaveBeenCalledWith(params)
+            expect(getReportingMock).toHaveBeenCalledWith(params)
             expect(result.current.data?.data.data).toEqual([42])
         })
     })

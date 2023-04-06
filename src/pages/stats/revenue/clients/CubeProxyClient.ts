@@ -1,7 +1,7 @@
 import {RateLimitedAxiosInstance} from 'axios-rate-limit'
 import helpdeskClient from 'models/api/resources'
 import {CubeQueryBody, CubeResponse} from 'pages/stats/revenue/clients/types'
-import {ANALYTICS_ENDPOINT} from 'models/analytics/resources'
+import {REPORTING_ENDPOINT} from 'models/reporting/resources'
 
 export class Client {
     constructor(private readonly client: RateLimitedAxiosInstance) {
@@ -10,7 +10,7 @@ export class Client {
 
     // simulates Cube package interface to remain swappable in the future
     load = async (query: CubeQueryBody): Promise<CubeResponse> => {
-        const response = await this.client.post(ANALYTICS_ENDPOINT, {
+        const response = await this.client.post(REPORTING_ENDPOINT, {
             query: [query],
         })
 

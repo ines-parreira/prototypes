@@ -1,5 +1,5 @@
-import {useGetAnalytics} from 'models/analytics/queries'
-import {AnalyticsDimension, AnalyticsMeasure} from 'models/analytics/types'
+import {useGetReporting} from 'models/reporting/queries'
+import {ReportingDimension, ReportingMeasure} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
 const STALE_TIME_MS = 5 * 60 * 1000 // 5 minutes
@@ -14,18 +14,18 @@ export type TrendMetricQuery = {
 }
 
 export const useGetMetricTrend = (
-    trendMeasure: AnalyticsMeasure,
+    trendMeasure: ReportingMeasure,
     // todo: to implement StatsFilters -> query timeDimensions & filters
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _filters: StatsFilters
 ): TrendMetricQuery => {
-    const currentPeriod = useGetAnalytics<[number], number>(
+    const currentPeriod = useGetReporting<[number], number>(
         {
             dimensions: [],
             // todo: compute timeDimensions from filters.period
             timeDimensions: [
                 {
-                    dimension: AnalyticsDimension.CreatedDatetime,
+                    dimension: ReportingDimension.CreatedDatetime,
                     dateRange: ['2023-01-02'],
                 },
             ],
@@ -41,13 +41,13 @@ export const useGetMetricTrend = (
         }
     )
 
-    const prevPeriod = useGetAnalytics<[number], number>(
+    const prevPeriod = useGetReporting<[number], number>(
         {
             dimensions: [],
             // todo: compute timeDimensions from filters.period
             timeDimensions: [
                 {
-                    dimension: AnalyticsDimension.CreatedDatetime,
+                    dimension: ReportingDimension.CreatedDatetime,
                     dateRange: ['2023-01-01'],
                 },
             ],

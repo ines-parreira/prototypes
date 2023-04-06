@@ -13,7 +13,7 @@ import {teams} from 'fixtures/teams'
 import {StatsFilters} from 'models/stat/types'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {RootState, StoreDispatch} from 'state/types'
-import {useGetMetricTrend} from 'hooks/analytics/useGetMetricTrend'
+import {useGetMetricTrend} from 'hooks/reporting/useGetMetricTrend'
 import {assumeMock} from 'utils/testing'
 
 import SupportPerformanceOverview, {
@@ -30,7 +30,7 @@ jest.mock(
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
 
-jest.mock('hooks/analytics/useGetMetricTrend')
+jest.mock('hooks/reporting/useGetMetricTrend')
 const useGetMetricTrendMock = assumeMock(useGetMetricTrend)
 
 describe('<SupportPerformanceOverview />', () => {
