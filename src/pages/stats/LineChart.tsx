@@ -136,6 +136,7 @@ export default function LineChart({
                 ...LINE_OPTIONS.plugins,
                 legend: {display: displayLegend},
             },
+            resizeDelay: 1000,
             onResize: (chart) => {
                 setChartArea(chart.chartArea)
                 setChartContext(chart.ctx)

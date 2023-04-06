@@ -793,10 +793,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
             </div>
           </div>
           <div>
-            TagsStatsFilterMock, value: 
-            [1]
-          </div>
-          <div>
             <button
               class="wrapper ghost secondary medium"
               type="button"
@@ -822,21 +818,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
               </span>
             </button>
           </div>
-          <button
-            class="wrapper ml-2 ghost secondary medium"
-            type="button"
-          >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                download
-              </i>
-              Download Data
-            </span>
-          </button>
         </div>
       </div>
     </div>

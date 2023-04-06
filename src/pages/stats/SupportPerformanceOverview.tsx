@@ -4,14 +4,11 @@ import {useLocalStorage} from 'react-use'
 import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import {StatsFilters} from 'models/stat/types'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
 import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
 import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 import StatsPage from 'pages/stats/StatsPage'
-import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {
     getMessagingIntegrationsStatsFilter,
     getStatsFilters,
@@ -71,11 +68,10 @@ export default function SupportPerformanceOverview() {
     )
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
-        const {channels, agents, tags, period} = statsFilters
+        const {channels, agents, period} = statsFilters
         return {
             channels,
             agents,
-            tags,
             period,
             integrations: integrationsStatsFilter,
         }
@@ -139,24 +135,10 @@ export default function SupportPerformanceOverview() {
                             value={pageStatsFilters.agents}
                             variant="ghost"
                         />
-                        <TagsStatsFilter
-                            value={pageStatsFilters.tags}
-                            variant="ghost"
-                        />
                         <PeriodStatsFilter
                             value={pageStatsFilters.period}
                             variant="ghost"
                         />
-
-                        <Button
-                            className="ml-2"
-                            fillStyle="ghost"
-                            intent="secondary"
-                        >
-                            <ButtonIconLabel icon="download">
-                                Download Data
-                            </ButtonIconLabel>
-                        </Button>
                     </>
                 )
             }
