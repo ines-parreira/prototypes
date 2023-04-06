@@ -10,11 +10,18 @@ export const RevenueStatsContent = () => {
         console.error(error)
     }
 
+    // TODO: temporary disable graphs for the initial release
+    const graphsVisible = false
+
     return (
         <div>
             <CampaignTotalsStat onError={handleError} />
-            <CampaignRevenueUpliftStat onError={handleError} />
-            <CampaignChatPerformanceStat onError={handleError} />
+            {graphsVisible && (
+                <CampaignRevenueUpliftStat onError={handleError} />
+            )}
+            {graphsVisible && (
+                <CampaignChatPerformanceStat onError={handleError} />
+            )}
             <CampaignPerformanceTable />
         </div>
     )
