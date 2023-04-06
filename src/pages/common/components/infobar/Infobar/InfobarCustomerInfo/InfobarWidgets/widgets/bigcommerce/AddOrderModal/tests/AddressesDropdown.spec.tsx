@@ -30,6 +30,7 @@ const emptyProps: Props = {
     onSelectAddress: jest.fn(),
     integrationId: 1,
     currencyCode: 'USD',
+    customerEmail: 'test2@gorgias.com',
 }
 
 const shippingAddressesProps: Props = {
@@ -39,6 +40,7 @@ const shippingAddressesProps: Props = {
     onSelectAddress: jest.fn(),
     integrationId: 1,
     currencyCode: 'USD',
+    customerEmail: 'test2@gorgias.com',
 }
 
 const selectedShippingAddressProps: Props = {
@@ -48,6 +50,7 @@ const selectedShippingAddressProps: Props = {
     onSelectAddress: jest.fn(),
     integrationId: 1,
     currencyCode: 'USD',
+    customerEmail: 'test2@gorgias.com',
 }
 
 describe('<ShippingAddressesDropdown/>', () => {
@@ -119,7 +122,8 @@ describe('<ShippingAddressesDropdown/>', () => {
 
         expect(onSelectAddress).toHaveBeenCalledWith(
             bigCommerceShippingAddressesFixture[1],
-            'shipping'
+            'shipping',
+            'test2@gorgias.com'
         )
     })
 })

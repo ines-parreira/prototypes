@@ -7,6 +7,7 @@ import {
 } from 'fixtures/bigcommerce'
 import client from 'models/api/resources'
 import {
+    BigCommerceActionType,
     BigCommerceCartResponse,
     BigCommerceLineItemError,
     BigCommerceNestedCartResponse,
@@ -14,14 +15,13 @@ import {
     ProductModifiersChangedError,
 } from 'models/integration/types'
 import {
+    addLineItem,
+    exportedForTesting,
     onCancel,
     onInit,
-    // onReset,
-    exportedForTesting,
-    addLineItem,
     removeRow,
-    updateRow,
     updateLineItemModifiers,
+    updateRow,
 } from '../utils'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
@@ -64,19 +64,17 @@ describe('utils', () => {
         it('should init the order modal', async () => {
             apiMock.onAny().reply(200, cartResponse)
 
-            const setIsLoadingMock = jest.fn()
             const setCartMock = jest.fn()
 
             await onInit({
+                actionName: BigCommerceActionType.CreateOrder,
                 customer,
                 integrationId,
                 currency,
-                setIsLoading: setIsLoadingMock,
                 setCart: setCartMock,
             })
 
             expect(setCartMock).toHaveBeenCalledWith(cart)
-            expect(setIsLoadingMock).toHaveBeenCalledWith(false)
         })
     })
 
@@ -87,6 +85,7 @@ describe('utils', () => {
             const setCartMock = jest.fn()
 
             onCancel({
+                actionName: BigCommerceActionType.CreateOrder,
                 integrationId,
                 via: 'footer',
                 cart,
@@ -102,6 +101,7 @@ describe('utils', () => {
             apiMock.onAny().reply(200, cartResponse)
 
             const newCart = await exportedForTesting.createCart({
+                actionName: BigCommerceActionType.CreateOrder,
                 integrationId,
                 customer,
                 currency,
@@ -120,6 +120,7 @@ describe('utils', () => {
             const setCartMock = jest.fn()
 
             await addLineItem({
+                actionName: BigCommerceActionType.CreateOrder,
                 integrationId,
                 product,
                 variant,
@@ -156,6 +157,7 @@ describe('utils', () => {
 
             await expect(
                 addLineItem({
+                    actionName: BigCommerceActionType.CreateOrder,
                     integrationId,
                     product,
                     variant,
@@ -185,6 +187,7 @@ describe('utils', () => {
             const setModalErrorsMock = jest.fn()
 
             await addLineItem({
+                actionName: BigCommerceActionType.CreateOrder,
                 integrationId: integrationId,
                 product: product,
                 variant: variant,
@@ -214,6 +217,7 @@ describe('utils', () => {
             const setModalErrorsMock = jest.fn()
 
             await removeRow({
+                actionName: BigCommerceActionType.CreateOrder,
                 integrationId,
                 index,
                 cart,
@@ -253,6 +257,7 @@ describe('utils', () => {
                 ...defaultProps,
                 setIsLoading: setIsLoadingMock,
                 setCart: setCartMock,
+                actionName: BigCommerceActionType.CreateOrder,
             })
 
             expect(setIsLoadingMock).toHaveBeenCalled()
@@ -270,6 +275,7 @@ describe('utils', () => {
                     ...defaultProps,
                     setIsLoading: setIsLoadingMock,
                     setModalErrors: setModalErrorsMock,
+                    actionName: BigCommerceActionType.CreateOrder,
                 })
             ).rejects.toThrow()
 
@@ -294,6 +300,7 @@ describe('utils', () => {
                     ...defaultProps,
                     setIsLoading: setIsLoadingMock,
                     setModalErrors: setModalErrorsMock,
+                    actionName: BigCommerceActionType.CreateOrder,
                 })
             ).rejects.toThrow(
                 new BigCommerceLineItemError(

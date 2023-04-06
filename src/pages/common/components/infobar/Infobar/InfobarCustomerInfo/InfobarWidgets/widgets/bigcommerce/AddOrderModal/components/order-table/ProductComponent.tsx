@@ -206,7 +206,7 @@ export default function ProductComponent({
                     onOpenModifiers={onOpenModifiers}
                 />
                 {errorMessage && (
-                    <div className={`mt-2 ${css.errorRow}`}>
+                    <div className={`mt-3 ${css.errorRow}`}>
                         <img src={errorIcon} alt="icon" />
                         <span className="ml-3">{errorMessage}</span>
                     </div>

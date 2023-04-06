@@ -111,7 +111,7 @@ export default function PriceComponent({
                             prefix={
                                 <span className={css.amountPrefix}>
                                     {getShopifyMoneySymbol(
-                                        currencyCode ?? 'USD'
+                                        currencyCode || 'USD'
                                     )}
                                 </span>
                             }

@@ -21,8 +21,13 @@ import {getCustomersState} from 'state/customers/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import Loader from 'pages/common/components/Loader/Loader'
-import {CustomStaticField} from './CustomStaticField'
+import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
+import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {BigCommerceActionType} from 'models/integration/types/index'
 import css from './OrderWidget.less'
+import {CustomStaticField} from './CustomStaticField'
+import OrderModalRenderWrapper from './AddOrderModal/OrderModal'
 
 export default function OrderWidget() {
     return {
@@ -127,6 +132,44 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
     }
     const cartId = source.get('cart_id')
 
+    const orderPayload = {
+        order_id: (source.get('id') as number) || '',
+    }
+
+    const actions: Array<InfobarAction> = [
+        {
+            key: 'duplicate',
+            options: [
+                {
+                    value: BigCommerceActionType.DuplicateOrder,
+                    label: 'Duplicate',
+                    parameters: [
+                        {name: 'bigcommerce_checkout_id', type: 'hidden'},
+                        {name: 'bigcommerce_order_payload', type: 'hidden'},
+                        {
+                            name: 'bigcommerce_draft_order_url',
+                            type: 'hidden',
+                        },
+                    ],
+                },
+            ],
+            title: 'Duplicate order',
+            child: (
+                <>
+                    <ButtonIconLabel icon="content_copy" /> Duplicate
+                </>
+            ),
+            modal: OrderModalRenderWrapper,
+            modalData: {
+                actionName: BigCommerceActionType.DuplicateOrder,
+                order: source,
+                customer: {
+                    id: source.get('customer_id'),
+                },
+            },
+        },
+    ]
+
     return (
         <>
             {draftOrderUrl && (
@@ -192,6 +235,7 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                     </CustomStaticField>
                 </div>
             )}
+            <ActionButtonsGroup actions={actions} payload={orderPayload} />
             <StaticField label="Created">
                 <DatetimeLabel
                     key="created"

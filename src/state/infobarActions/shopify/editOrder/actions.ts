@@ -3,6 +3,7 @@ import {fromJS, List} from 'immutable'
 import _debounce from 'lodash/debounce'
 import axios from 'axios'
 
+import {fetchIntegrationProducts} from 'state/integrations/helpers'
 import {ShopifyActionType} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import {
     addCustomLineItem,
@@ -20,7 +21,6 @@ import {
     Variant,
     EditOrderAction,
 } from '../../../../constants/integrations/types/shopify'
-import {IntegrationDataItemType} from '../../../../models/integration/types'
 import GorgiasApi from '../../../../services/gorgiasApi'
 import {RootState, StoreDispatch} from '../../../types'
 import {onApiError} from '../../../utils'
@@ -425,23 +425,20 @@ export const onNotifyChange =
 export const loadProducts = async (
     integrationId: number,
     oldOrder: Map<any, any>
-): Promise<globalThis.Map<any, any>> => {
+): Promise<globalThis.Map<string, any>> => {
     const products = new window.Map()
     const productIds = (oldOrder.get('line_items', []) as List<any>).map(
         (lineItem: Map<any, any>) => lineItem.get('product_id') as number
     ) as unknown as number[]
-    const api = new GorgiasApi()
-    const generator = api.getIntegrationDataItems(
+
+    const integrationProducts = await fetchIntegrationProducts(
         integrationId,
-        IntegrationDataItemType.IntegrationDataItemTypeProduct,
         productIds
     )
 
-    for await (const items of generator) {
-        items.forEach((item: Map<any, any>) => {
-            products.set(item.getIn(['data', 'id']), item.get('data'))
-        })
-    }
+    integrationProducts.forEach((item: Map<string, any>) => {
+        products.set(item.get('id'), item)
+    })
 
     return products
 }

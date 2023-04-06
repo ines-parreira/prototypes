@@ -4,6 +4,7 @@ import {
     BigCommerceConsignment,
     BigCommerceCart,
     BigCommerceCheckout,
+    BigCommerceActionType,
 } from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -22,7 +23,10 @@ type Props = {
     onUpdateConsignmentShippingMethod: (
         selectedShippingMethodId: Maybe<string>
     ) => Promise<void>
-    onUpdateDiscountAmount: (discountAmount: number) => Promise<void>
+    onUpdateDiscountAmount: (
+        actionName: BigCommerceActionType,
+        discountAmount: number
+    ) => Promise<void>
     onUpdateCoupon: (coupon: string) => Promise<void>
     onRemoveCoupon: () => Promise<void>
     totals: {
@@ -34,6 +38,7 @@ type Props = {
     hasError?: boolean
     isTotalPriceLoading: boolean
     currencyCode: string
+    actionName: BigCommerceActionType
 }
 
 const TotalLine = ({
@@ -89,6 +94,7 @@ export default function OrderTotals({
     hasError = false,
     isTotalPriceLoading,
     currencyCode,
+    actionName,
 }: Props) {
     return (
         <dl className={css.totalsContainer}>
@@ -102,6 +108,7 @@ export default function OrderTotals({
                 cart={cart}
                 currencyCode={currencyCode}
                 onUpdateDiscountAmount={onUpdateDiscountAmount}
+                actionName={actionName}
             />
 
             <Coupon

@@ -70,6 +70,11 @@ export const actions = [
         objectType: 'order',
     },
     {
+        name: BigCommerceActionType.DuplicateOrder,
+        label: 'Duplicate Order',
+        objectType: 'order',
+    },
+    {
         name: 'rechargeCancelSubscription',
         label: 'Cancel subscription',
         objectType: 'subscription',

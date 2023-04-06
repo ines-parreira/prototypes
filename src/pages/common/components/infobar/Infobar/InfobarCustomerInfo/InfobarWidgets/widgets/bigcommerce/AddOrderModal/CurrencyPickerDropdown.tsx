@@ -12,15 +12,16 @@ import css from './AddressesDropdown.less'
 import cssOrderModal from './OrderModal.less'
 
 type Props = {
-    className?: string
     availableCurrencies?: string[]
     currency?: string
     setCurrency: (value: string) => void
+    isDisabled?: boolean
 }
 export function CurrencyPickerDropdown({
     availableCurrencies,
     currency,
     setCurrency,
+    isDisabled = false,
 }: Props) {
     const selectRef = useRef(null)
     const floatingSelectRef = useRef(null)
@@ -44,6 +45,7 @@ export function CurrencyPickerDropdown({
                 onToggle={setIsSelectOpen}
                 placeholder={'Select currency'}
                 label={currency}
+                isDisabled={isDisabled}
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => (

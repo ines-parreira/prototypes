@@ -4,6 +4,7 @@ import client from 'models/api/resources'
 import {
     BigCommerceCart,
     BigCommerceCartLineItem,
+    BigCommerceCustomCartLineItem,
     BigCommerceCustomerAddress,
     BigCommerceCheckout,
     BigCommerceCreateConsignmentPayload,
@@ -23,6 +24,8 @@ import {
     BigCommerceCartErrorResponse,
     BigCommerceCheckoutErrorResponse,
     BigCommerceCartRedirect,
+    BigCommerceDuplicateOrderResponse,
+    BigCommerceDuplicateOrderErrorResponse,
     BigCommerceAddressResponse,
     BigCommerceCustomAddress,
 } from '../types'
@@ -58,8 +61,8 @@ export async function createBigCommerceCart(
 
             return response.data.cart
         })
-        .catch((error) => {
-            const {response} = error as AxiosError<BigCommerceCartErrorResponse>
+        .catch((error: AxiosError<BigCommerceCartErrorResponse>) => {
+            const {response} = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
@@ -112,9 +115,8 @@ export async function addBigCommerceCheckoutBillingAddress(
 
             return response.data.checkout
         })
-        .catch((error) => {
-            const {response} =
-                error as AxiosError<BigCommerceCheckoutErrorResponse>
+        .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
+            const {response} = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
@@ -218,8 +220,8 @@ export async function addBigCommerceLineItem({
 
             return response.data.cart
         })
-        .catch((error) => {
-            const {response} = error as AxiosError<BigCommerceCartErrorResponse>
+        .catch((error: AxiosError<BigCommerceCartErrorResponse>) => {
+            const {response} = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
@@ -315,8 +317,8 @@ export async function editBigCommerceLineItem({
 
             return response.data.data.cart
         })
-        .catch((error) => {
-            const {response} = error as AxiosError<BigCommerceCartErrorResponse>
+        .catch((error: AxiosError<BigCommerceCartErrorResponse>) => {
+            const {response} = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
@@ -384,8 +386,8 @@ export async function editBigCommerceLineItemModifiers({
 
             return response.data.data.cart
         })
-        .catch((error) => {
-            const {response} = error as AxiosError<BigCommerceCartErrorResponse>
+        .catch((error: AxiosError<BigCommerceCartErrorResponse>) => {
+            const {response} = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
@@ -441,8 +443,8 @@ export async function removeBigCommerceLineItem(
 
             return result.data.data.cart
         })
-        .catch((error) => {
-            const {response} = error as AxiosError<BigCommerceCartErrorResponse>
+        .catch((error: AxiosError<BigCommerceCartErrorResponse>) => {
+            const {response} = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
@@ -483,9 +485,8 @@ export async function createBigCommerceCheckoutConsignment({
 
             return response.data.checkout
         })
-        .catch((error) => {
-            const {response} =
-                error as AxiosError<BigCommerceCheckoutErrorResponse>
+        .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
+            const {response} = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
@@ -535,9 +536,8 @@ export async function updateBigCommerceCheckoutConsignment({
 
             return response.data.data.checkout
         })
-        .catch((error) => {
-            const {response} =
-                error as AxiosError<BigCommerceCheckoutErrorResponse>
+        .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
+            const {response} = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
@@ -582,9 +582,8 @@ export async function getBigCommerceCheckout({
 
             return response.data.data.checkout
         })
-        .catch((error) => {
-            const {response} =
-                error as AxiosError<BigCommerceCheckoutErrorResponse>
+        .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
+            const {response} = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
@@ -627,9 +626,8 @@ export async function updateBigCommerceCheckoutDiscount({
 
             return response.data.checkout
         })
-        .catch((error) => {
-            const {response} =
-                error as AxiosError<BigCommerceCheckoutErrorResponse>
+        .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
+            const {response} = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
@@ -672,9 +670,8 @@ export async function updateBigCommerceCoupon({
 
             return response.data.checkout
         })
-        .catch((error) => {
-            const {response} =
-                error as AxiosError<BigCommerceCheckoutErrorResponse>
+        .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
+            const {response} = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
@@ -734,9 +731,8 @@ export async function deleteBigCommerceCoupon({
 
             return response.data.data.checkout
         })
-        .catch((error) => {
-            const {response} =
-                error as AxiosError<BigCommerceCheckoutErrorResponse>
+        .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
+            const {response} = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
@@ -783,4 +779,70 @@ export async function getBigCommerceDraftOrderUrl({
     )
 
     return response.data.data
+}
+
+export async function createCartFromOrder({
+    integrationId,
+    customerId,
+    bigcommerceOrderId,
+}: {
+    integrationId: number
+    customerId: number
+    bigcommerceOrderId: number
+}): Promise<{
+    cart: Maybe<BigCommerceCart>
+    checkout: Maybe<BigCommerceCheckout>
+    missingLineItems: Maybe<
+        Array<{
+            line_item: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
+            error: string
+        }>
+    >
+}> {
+    const url = '/integrations/bigcommerce/order/cart/duplicate/'
+
+    return await client
+        .post<BigCommerceDuplicateOrderResponse>(
+            url,
+            {},
+            {
+                params: {
+                    integration_id: integrationId,
+                    customer_id: customerId,
+                    bigcommerce_order_id: bigcommerceOrderId,
+                },
+            }
+        )
+        .then((response) => {
+            if (
+                !response.data ||
+                !('cart' in response.data) ||
+                !('checkout' in response.data) ||
+                (!response.data.cart?.currency &&
+                    !response.data.missing_line_items?.length)
+            ) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.defaultError
+                )
+            }
+
+            return {
+                cart: response.data.cart,
+                checkout: response.data.checkout,
+                missingLineItems: response.data.missing_line_items,
+            }
+        })
+        .catch((error: AxiosError<BigCommerceDuplicateOrderErrorResponse>) => {
+            const {response} = error
+
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
+
+            throw new BigCommerceGeneralError(
+                BigCommerceGeneralErrorMessage.defaultError
+            )
+        })
 }

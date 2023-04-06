@@ -7,14 +7,14 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import {
     bigCommerceCartFixture,
-    bigCommerceConsignmentFixture,
+    bigCommerceConsignmentWithSelectedShippingMethodFixture,
     bigCommerceCustomerFixture,
     bigCommerceIntegrationFixture,
+    bigCommerceOrderFixture,
     bigCommerceShippingAddressesFixture,
 } from 'fixtures/bigcommerce'
 import OrderModalRenderWrapper, {
     OrderModal,
-    useCheckout,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModal'
 import {integrationsState} from 'fixtures/integrations'
 import {
@@ -25,6 +25,7 @@ import {
     BigCommerceActionType,
     BigCommerceCheckout,
 } from 'models/integration/types'
+import {useCheckout} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModalHelper'
 import {
     addCheckoutBillingAddress,
     upsertCheckoutConsignment,
@@ -46,11 +47,24 @@ const mockStore = configureMockStore([thunk])
 const store = mockStore(defaultState)
 
 describe('OrderModal', () => {
-    const defaultProps: ComponentProps<typeof OrderModal> = {
+    const createOrderProps: ComponentProps<typeof OrderModal> = {
         isOpen: true,
         data: {
             actionName: BigCommerceActionType.CreateOrder,
             customer: bigCommerceCustomerFixture(),
+            order: null,
+        },
+        integration: bigCommerceIntegrationFixture(),
+        availableAddresses: bigCommerceShippingAddressesFixture,
+        onClose: jest.fn(),
+    }
+
+    const duplicateOrderProps: ComponentProps<typeof OrderModal> = {
+        isOpen: true,
+        data: {
+            actionName: BigCommerceActionType.DuplicateOrder,
+            customer: bigCommerceCustomerFixture(),
+            order: fromJS(bigCommerceOrderFixture),
         },
         integration: bigCommerceIntegrationFixture(),
         availableAddresses: bigCommerceShippingAddressesFixture,
@@ -67,13 +81,29 @@ describe('OrderModal', () => {
         jest.resetAllMocks()
     })
 
-    it('should render', async () => {
+    it('should render Create Order', async () => {
         const {rerender, baseElement} = render(<div id="App" />)
         rerender(
             <>
                 <div id="App" />
                 <Provider store={store}>
-                    <OrderModal {...defaultProps} />
+                    <OrderModal {...createOrderProps} />
+                </Provider>
+            </>
+        )
+
+        await screen.findByText('Address')
+
+        expect(baseElement).toMatchSnapshot()
+    })
+
+    it('should render Duplicate Order', async () => {
+        const {rerender, baseElement} = render(<div id="App" />)
+        rerender(
+            <>
+                <div id="App" />
+                <Provider store={store}>
+                    <OrderModal {...duplicateOrderProps} />
                 </Provider>
             </>
         )
@@ -90,18 +120,30 @@ describe('OrderModalConnected', () => {
         integrationId: 515,
     }
 
-    const defaultProps: ComponentProps<typeof OrderModalRenderWrapper> = {
+    const createOrderProps: ComponentProps<typeof OrderModalRenderWrapper> = {
         data: {
             actionName: BigCommerceActionType.CreateOrder,
             customer: bigCommerceCustomerFixture(),
+            order: null,
         },
         isOpen: false,
         onClose: jest.fn(),
     }
 
+    const duplicateOrderProps: ComponentProps<typeof OrderModalRenderWrapper> =
+        {
+            data: {
+                actionName: BigCommerceActionType.DuplicateOrder,
+                customer: bigCommerceCustomerFixture(),
+                order: fromJS(bigCommerceOrderFixture),
+            },
+            isOpen: false,
+            onClose: jest.fn(),
+        }
+
     const renderSubject = ({
         integrationContextValue = defaultIntegrationContextValue,
-        orderModalProps = defaultProps,
+        orderModalProps = createOrderProps,
     }: {
         integrationContextValue?: IntegrationContextType
         orderModalProps?: ComponentProps<typeof OrderModalRenderWrapper>
@@ -115,12 +157,19 @@ describe('OrderModalConnected', () => {
         )
     }
 
-    it('renders null when `isOpen` is false', () => {
+    it('Create Order - renders null when `isOpen` is false', () => {
         const {container} = renderSubject({})
         expect(container.firstChild).toBe(null)
     })
 
-    it('renders null when IntegrationContext has no integrationId', () => {
+    it('Duplicate Order - renders null when `isOpen` is false', () => {
+        const {container} = renderSubject({
+            orderModalProps: duplicateOrderProps,
+        })
+        expect(container.firstChild).toBe(null)
+    })
+
+    it('Create Order - renders null when IntegrationContext has no integrationId', () => {
         const {container} = renderSubject({
             integrationContextValue: {
                 integrationId: null,
@@ -130,8 +179,19 @@ describe('OrderModalConnected', () => {
         expect(container.firstChild).toBe(null)
     })
 
-    it('renders when `isOpen` is `true` and IntegrationContext has value', () => {
-        defaultProps.isOpen = true
+    it('Duplicate Order - renders null when IntegrationContext has no integrationId', () => {
+        const {container} = renderSubject({
+            integrationContextValue: {
+                integrationId: null,
+                integration: fromJS({}),
+            },
+            orderModalProps: duplicateOrderProps,
+        })
+        expect(container.firstChild).toBe(null)
+    })
+
+    it('Create Order - renders when `isOpen` is `true` and IntegrationContext has value', () => {
+        createOrderProps.isOpen = true
         const {rerender} = render(<div id="App" />)
         rerender(
             <>
@@ -140,7 +200,28 @@ describe('OrderModalConnected', () => {
                     <IntegrationContext.Provider
                         value={defaultIntegrationContextValue}
                     >
-                        <OrderModalRenderWrapper {...defaultProps} />
+                        <OrderModalRenderWrapper {...createOrderProps} />
+                    </IntegrationContext.Provider>
+                </Provider>
+            </>
+        )
+
+        expect(
+            screen.getByRole('button', {name: /Create draft order/i})
+        ).toBeTruthy()
+    })
+
+    it('Duplicate Order - renders when `isOpen` is `true` and IntegrationContext has value', () => {
+        duplicateOrderProps.isOpen = true
+        const {rerender} = render(<div id="App" />)
+        rerender(
+            <>
+                <div id="App" />
+                <Provider store={store}>
+                    <IntegrationContext.Provider
+                        value={defaultIntegrationContextValue}
+                    >
+                        <OrderModalRenderWrapper {...duplicateOrderProps} />
                     </IntegrationContext.Provider>
                 </Provider>
             </>
@@ -154,7 +235,7 @@ describe('OrderModalConnected', () => {
     it('`Create order` button does not send a create BigCommerce order action', () => {
         const bigcommerceCreateOrderSpy = jest.spyOn(
             utils,
-            'bigcommerceCreateOrder'
+            'bigcommerceCreateOrderFromCheckoutCart'
         )
         const {rerender} = render(<div id="App" />)
         rerender(
@@ -164,7 +245,31 @@ describe('OrderModalConnected', () => {
                     <IntegrationContext.Provider
                         value={defaultIntegrationContextValue}
                     >
-                        <OrderModalRenderWrapper {...defaultProps} />
+                        <OrderModalRenderWrapper {...createOrderProps} />
+                    </IntegrationContext.Provider>
+                </Provider>
+            </>
+        )
+
+        screen.getByRole('button', {name: /Create draft order/i}).click()
+
+        expect(bigcommerceCreateOrderSpy).toHaveBeenCalledTimes(0)
+    })
+
+    it('`Create order` button does not send a create BigCommerce order action', () => {
+        const bigcommerceCreateOrderSpy = jest.spyOn(
+            utils,
+            'bigcommerceCreateOrderFromCheckoutCart'
+        )
+        const {rerender} = render(<div id="App" />)
+        rerender(
+            <>
+                <div id="App" />
+                <Provider store={store}>
+                    <IntegrationContext.Provider
+                        value={defaultIntegrationContextValue}
+                    >
+                        <OrderModalRenderWrapper {...duplicateOrderProps} />
                     </IntegrationContext.Provider>
                 </Provider>
             </>
@@ -179,7 +284,7 @@ describe('OrderModalConnected', () => {
     test.skip('`Create order` button sends a create BigCommerce order action', () => {
         const bigcommerceCreateOrderSpy = jest.spyOn(
             utils,
-            'bigcommerceCreateOrder'
+            'bigcommerceCreateOrderFromCheckoutCart'
         )
         ;(
             checkProductsValidity as jest.MockedFunction<
@@ -196,7 +301,9 @@ describe('OrderModalConnected', () => {
                 typeof checkCheckoutValidity
             >
         ).mockReturnValue(true)
-        renderSubject({orderModalProps: {...defaultProps, isOpen: true}})
+        renderSubject({
+            orderModalProps: {...createOrderProps, isOpen: true},
+        })
 
         screen.getByRole('button', {name: /Create draft order/i}).click()
 
@@ -210,7 +317,9 @@ describe('useCheckout', () => {
         const bigCommerceCheckoutFixture = {
             id: 'returned-checkout-id',
             cart: cartMock,
-            consignments: [bigCommerceConsignmentFixture],
+            consignments: [
+                bigCommerceConsignmentWithSelectedShippingMethodFixture,
+            ],
             shipping_cost_total_ex_tax: 27,
             subtotal_ex_tax: 777,
             tax_total: 111,
@@ -274,7 +383,8 @@ describe('useCheckout', () => {
         act(() => {
             void result.current.onSelectAddress(
                 bigCommerceShippingAddressesFixture[0],
-                'billing'
+                'billing',
+                'test2@gorgias.com'
             )
         })
 
@@ -294,7 +404,8 @@ describe('useCheckout', () => {
         // we now have `consignment` and `shippingAddress` set
         expect(result.current).toMatchObject({
             cart: cartMock,
-            consignment: bigCommerceConsignmentFixture,
+            consignment:
+                bigCommerceConsignmentWithSelectedShippingMethodFixture,
             shippingAddress: bigCommerceShippingAddressesFixture[0],
             totals: {
                 subTotal: 78,

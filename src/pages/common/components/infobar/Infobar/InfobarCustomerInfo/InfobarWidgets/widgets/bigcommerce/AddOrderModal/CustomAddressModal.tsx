@@ -25,10 +25,12 @@ import cssAddressesDropdown from './AddressesDropdown.less'
 type Props = {
     onAddCustomAddress: (
         newSelectedAddress: BigCommerceCustomerAddress,
-        addressType: 'billing' | 'shipping'
+        addressType: 'billing' | 'shipping',
+        customerEmail: Maybe<string>
     ) => void
     addressType: 'billing' | 'shipping'
     currencyCode: string
+    customerEmail: Maybe<string>
     isOpen: boolean
     integrationId: number
     customerId?: number
@@ -72,6 +74,7 @@ export function CustomAddressModal({
     onAddCustomAddress,
     addressType,
     currencyCode,
+    customerEmail,
     isOpen,
     integrationId,
     customerId,
@@ -158,7 +161,7 @@ export function CustomAddressModal({
                 }
             }
 
-            onAddCustomAddress(address, addressType)
+            onAddCustomAddress(address, addressType, customerEmail)
             onClose()
         }
     }

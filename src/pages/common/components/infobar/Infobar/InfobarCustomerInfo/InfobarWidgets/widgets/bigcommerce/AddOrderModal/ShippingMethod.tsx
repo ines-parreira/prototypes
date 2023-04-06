@@ -115,6 +115,20 @@ export const useShippingMethods = ({
                     return setSelectedShippingMethod(null)
                 }
             }
+
+            if (!selectedShippingMethod) {
+                if (
+                    consignment.selected_shipping_option.id &&
+                    consignment.available_shipping_options.find(
+                        ({id}) =>
+                            id === consignment.selected_shipping_option?.id
+                    )
+                ) {
+                    return setSelectedShippingMethod(
+                        consignment.selected_shipping_option
+                    )
+                }
+            }
         }
 
         void consignmentSync()

@@ -1,4 +1,5 @@
 import _debounce from 'lodash/debounce'
+import {Map as ImmutableMap} from 'immutable'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
     addBigCommerceCheckoutBillingAddress,
@@ -6,6 +7,7 @@ import {
     addBigCommerceLineItem,
     createBigCommerceCart,
     createBigCommerceCheckoutConsignment,
+    createCartFromOrder,
     deleteBigCommerceCart,
     editBigCommerceLineItem,
     editBigCommerceLineItemModifiers,
@@ -14,6 +16,7 @@ import {
     OptionSelection,
     removeBigCommerceLineItem,
     updateBigCommerceCheckoutConsignment,
+    updateBigCommerceCheckoutDiscount,
 } from 'models/integration/resources/bigcommerce'
 import {
     BigCommerceActionType,
@@ -41,6 +44,8 @@ import {
 import {StoreDispatch} from 'state/types'
 import {executeAction} from 'state/infobar/actions'
 import {ActionDataPayload} from 'state/infobar/utils'
+import {fetchIntegrationProducts} from 'state/integrations/helpers'
+import {toJS} from 'utils'
 
 export const isBigCommerceCartLineItem = (
     lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
@@ -51,31 +56,105 @@ export const isBigCommerceProduct = (
 ): product is BigCommerceProduct => 'variants' in product
 
 export const onInit = async ({
+    actionName,
     customer,
     integrationId,
     currency,
-    setIsLoading,
     setCart,
 }: {
+    actionName: BigCommerceActionType
     customer: BigCommerceCustomer
     integrationId: number
     currency: string
-    setIsLoading: (state: boolean) => void
     setCart: (state: BigCommerceCart) => void
 }) => {
-    const cart = await createCart({integrationId, customer, currency})
-    const eventName = SegmentEvent.BigCommerceCreateOrderOpen
-    logEvent(eventName)
+    const cart = await createCart({
+        actionName,
+        integrationId,
+        customer,
+        currency,
+    })
     setCart(cart)
-    setIsLoading(false)
+
+    if (actionName === BigCommerceActionType.CreateOrder) {
+        logEvent(SegmentEvent.BigCommerceCreateOrderOpen)
+    }
+}
+
+export const onInitDuplicateView = async ({
+    integrationId,
+    customerId,
+    order,
+    setIsLoading,
+}: {
+    integrationId: number
+    customerId: number
+    order: Map<string, any>
+    setIsLoading: (state: boolean) => void
+}) => {
+    setIsLoading(true)
+
+    const {cart, checkout, missingLineItems} = await createCartFromOrder({
+        integrationId,
+        customerId,
+        bigcommerceOrderId: order.get('id'),
+    })
+
+    logEvent(SegmentEvent.BigCommerceDuplicateOrderOpen)
+
+    return {cart, checkout, missingLineItems}
+}
+
+export const loadCartProducts = async ({
+    integrationId,
+    cart,
+}: {
+    integrationId: number
+    cart: BigCommerceCart
+}) => {
+    const products = new Map()
+
+    // Custom Line Items
+    cart.line_items.custom_items.forEach((customProduct) => {
+        // Custom Items are identified by their ID, computed after adding them to the cart, in the Products list
+        if (customProduct.id && !products.has(customProduct.id)) {
+            products.set(customProduct.id, customProduct)
+        }
+    })
+
+    // Physical & Digital Line Items
+    const lineItems = [
+        ...cart.line_items.physical_items,
+        ...cart.line_items.digital_items,
+    ]
+    const lineItemsIds = lineItems.map((lineItem) => lineItem.product_id)
+    const integrationProducts = await fetchIntegrationProducts(
+        integrationId,
+        lineItemsIds
+    )
+
+    integrationProducts.forEach((item: ImmutableMap<string, any>) => {
+        const product = new Object(
+            toJS<Record<string, any>>(item)
+        ) as BigCommerceProduct
+
+        // Line Items are identified by their ID in the Products list
+        if (product.id && !products.has(product.id)) {
+            products.set(product.id, product)
+        }
+    })
+
+    return products
 }
 
 export const onCancel = ({
+    actionName,
     integrationId,
     via,
     cart,
     setCart,
 }: {
+    actionName: BigCommerceActionType
     integrationId: Maybe<number>
     via: string
     cart: Maybe<BigCommerceCart>
@@ -84,20 +163,26 @@ export const onCancel = ({
     if (!cart) {
         return
     }
-    const cartId = cart.id
-    void deleteCart({integrationId, cartId})
-    const eventName = SegmentEvent.BigCommerceCreateOrderCancel
-    logEvent(eventName, {via})
+
+    void deleteCart({actionName, integrationId, cartId: cart.id})
     setCart(null)
+
+    const eventName =
+        actionName === BigCommerceActionType.CreateOrder
+            ? SegmentEvent.BigCommerceCreateOrderCancel
+            : SegmentEvent.BigCommerceDuplicateOrderCancel
+    logEvent(eventName, {via})
 }
 
 export const onReset = _debounce(
     ({
+        actionName,
         setCart,
         setProducts,
         setComment,
         setNote,
     }: {
+        actionName: BigCommerceActionType
         setCart: (cart: Maybe<BigCommerceCart>) => void
         setProducts: (products: BigCommerceProductsListType) => void
         setComment: (value: string) => void
@@ -107,65 +192,123 @@ export const onReset = _debounce(
         setProducts(new Map())
         setComment('')
         setNote('')
-        const eventName = SegmentEvent.BigCommerceCreateOrderResetModal
+
+        const eventName =
+            actionName === BigCommerceActionType.CreateOrder
+                ? SegmentEvent.BigCommerceCreateOrderResetModal
+                : SegmentEvent.BigCommerceDuplicateOrderResetModal
         logEvent(eventName)
     },
     250
 )
 
+export const updateCheckoutDiscount = async ({
+    actionName,
+    integrationId,
+    cart,
+    discountAmount,
+}: {
+    actionName: BigCommerceActionType
+    integrationId: number
+    cart: BigCommerceCart
+    discountAmount: number
+}): Promise<BigCommerceCheckout> => {
+    const eventName =
+        actionName === BigCommerceActionType.CreateOrder
+            ? SegmentEvent.BigCommerceCreateOrderAddOrderDiscount
+            : SegmentEvent.BigCommerceDuplicateOrderAddOrderDiscount
+    logEvent(eventName, {
+        discountAmount: discountAmount,
+        cartTotal: cart.base_amount,
+        isFullDiscount: discountAmount >= cart.base_amount,
+    })
+
+    return await updateBigCommerceCheckoutDiscount({
+        integrationId,
+        checkoutId: cart.id,
+        discountAmount,
+    })
+}
+
 const createCart = async ({
+    actionName,
     integrationId,
     customer,
     currency,
 }: {
+    actionName: BigCommerceActionType
     integrationId: number
     customer: BigCommerceCustomer
     currency: string
 }): Promise<BigCommerceCart> => {
-    const eventName = SegmentEvent.BigCommerceCreateOrderCreateCart
+    const eventName =
+        actionName === BigCommerceActionType.CreateOrder
+            ? SegmentEvent.BigCommerceCreateOrderCreateCart
+            : SegmentEvent.BigCommerceDuplicateOrderCreateCart
     logEvent(eventName)
+
     return await createBigCommerceCart(integrationId, customer.id, currency)
 }
 
 const deleteCart = async ({
+    actionName,
     integrationId,
     cartId,
 }: {
+    actionName: BigCommerceActionType
     integrationId?: Maybe<number>
     cartId: Maybe<string>
 }) => {
-    const eventName = SegmentEvent.BigCommerceCreateOrderDeleteCart
-    logEvent(eventName)
     if (!integrationId) {
         return
     }
+
+    const eventName =
+        actionName === BigCommerceActionType.CreateOrder
+            ? SegmentEvent.BigCommerceCreateOrderDeleteCart
+            : SegmentEvent.BigCommerceDuplicateOrderDeleteCart
+    logEvent(eventName)
+
     await deleteBigCommerceCart(integrationId, cartId)
 }
 
 const logAddProduct = ({
+    actionName,
     integrationId,
     cart,
     product,
     variant,
 }: {
+    actionName: BigCommerceActionType
     integrationId: number
     cart: BigCommerceCart
     product: BigCommerceProduct | BigCommerceCustomProduct
     variant?: BigCommerceProductVariant
 }) => {
-    logEvent(SegmentEvent.BigCommerceCreateOrderSetProducts, {
-        productId: product.id,
-        variantId: variant?.id,
-    })
-    logEvent(SegmentEvent.BigCommerceCreateOrderAddRow, {
-        integrationId,
-        product,
-        newCart: cart,
-        variant,
-    })
+    logEvent(
+        actionName === BigCommerceActionType.CreateOrder
+            ? SegmentEvent.BigCommerceCreateOrderSetProducts
+            : SegmentEvent.BigCommerceDuplicateOrderSetProducts,
+        {
+            productId: product.id,
+            variantId: variant?.id,
+        }
+    )
+    logEvent(
+        actionName === BigCommerceActionType.CreateOrder
+            ? SegmentEvent.BigCommerceCreateOrderAddRow
+            : SegmentEvent.BigCommerceDuplicateOrderAddRow,
+        {
+            integrationId,
+            product,
+            newCart: cart,
+            variant,
+        }
+    )
 }
 
 export const addCustomLineItem = async ({
+    actionName,
     integrationId,
     customProduct,
     products,
@@ -175,6 +318,7 @@ export const addCustomLineItem = async ({
     setProducts,
     setModalErrors,
 }: {
+    actionName: BigCommerceActionType
     integrationId: number
     customProduct: BigCommerceCustomProduct
     products: BigCommerceProductsListType
@@ -221,7 +365,12 @@ export const addCustomLineItem = async ({
         setProducts(newProducts)
         setCart(newCart)
 
-        logAddProduct({integrationId, cart: newCart, product: newCustomProduct})
+        logAddProduct({
+            actionName,
+            integrationId,
+            cart: newCart,
+            product: newCustomProduct,
+        })
 
         // Error Handling
         setModalErrors(
@@ -259,6 +408,7 @@ export const addCustomLineItem = async ({
 }
 
 export const addLineItem = async ({
+    actionName,
     integrationId,
     product,
     products,
@@ -270,6 +420,7 @@ export const addLineItem = async ({
     setProducts,
     setModalErrors,
 }: {
+    actionName: BigCommerceActionType
     integrationId: number
     product: BigCommerceProduct
     products: BigCommerceProductsListType
@@ -309,7 +460,13 @@ export const addLineItem = async ({
         setProducts(newProducts)
         setCart(newCart)
 
-        logAddProduct({integrationId, cart: newCart, product, variant})
+        logAddProduct({
+            actionName,
+            integrationId,
+            cart: newCart,
+            product,
+            variant,
+        })
 
         // Error Handling
         setModalErrors(
@@ -405,12 +562,18 @@ function computeLineItemCustomErrorMessage(
         )
     ) {
         return `Invalid quantity selected for ${product}. Please adjust product quantity.`
+    } else if (
+        errorMessage.includes(
+            BigCommerceLineItemErrorMessage.unsupportedModifiersError
+        )
+    ) {
+        return `${product} could not be added due to unsupported modifiers.`
     }
 
     return errorMessage
 }
 
-function computeLineItemName(
+export function computeLineItemName(
     lineItem:
         | BigCommerceCartLineItem
         | BigCommerceCustomCartLineItem
@@ -420,7 +583,7 @@ function computeLineItemName(
     return lineItem.name
 }
 
-function computeLineItemErrorMessage(
+export function computeLineItemErrorMessage(
     error: Maybe<
         | BigCommerceGeneralErrorMessage
         | ProductModifiersChangedError
@@ -469,6 +632,7 @@ export const computeLineItemErrorKey = ({
 }
 
 export const removeRow = async ({
+    actionName,
     integrationId,
     index,
     setIsLoading,
@@ -476,6 +640,7 @@ export const removeRow = async ({
     setCart,
     setModalErrors,
 }: {
+    actionName: BigCommerceActionType
     integrationId: number
     index: number
     setIsLoading: (state: boolean) => void
@@ -508,11 +673,16 @@ export const removeRow = async ({
 
         setCart(newCart)
 
-        logEvent(SegmentEvent.BigCommerceCreateOrderRemoveRow, {
-            integrationId: integrationId,
-            index: index,
-            newCart: newCart,
-        })
+        logEvent(
+            actionName === BigCommerceActionType.CreateOrder
+                ? SegmentEvent.BigCommerceCreateOrderRemoveRow
+                : SegmentEvent.BigCommerceDuplicateOrderRemoveRow,
+            {
+                integrationId: integrationId,
+                index: index,
+                newCart: newCart,
+            }
+        )
 
         // Error Handling
         setModalErrors(
@@ -549,6 +719,7 @@ export const removeRow = async ({
 }
 
 export const updateRow = async ({
+    actionName,
     integrationId,
     index,
     quantity,
@@ -557,6 +728,7 @@ export const updateRow = async ({
     setCart,
     setModalErrors,
 }: {
+    actionName: BigCommerceActionType
     integrationId: number
     index: number
     quantity: number
@@ -596,12 +768,17 @@ export const updateRow = async ({
 
         setCart(newCart)
 
-        logEvent(SegmentEvent.BigCommerceCreateOrderUpdateRow, {
-            integrationId,
-            index,
-            quantity,
-            newCart,
-        })
+        logEvent(
+            actionName === BigCommerceActionType.CreateOrder
+                ? SegmentEvent.BigCommerceCreateOrderUpdateRow
+                : SegmentEvent.BigCommerceDuplicateOrderUpdateRow,
+            {
+                integrationId,
+                index,
+                quantity,
+                newCart,
+            }
+        )
 
         // Error Handling
         setModalErrors(
@@ -723,6 +900,7 @@ export const updateLineItemModifiers = async ({
 }
 
 export const setLineItemDiscount = async ({
+    actionName,
     integrationId,
     index,
     setIsLoading,
@@ -732,6 +910,7 @@ export const setLineItemDiscount = async ({
     action = 'add',
     setModalErrors,
 }: {
+    actionName: BigCommerceActionType
     integrationId: number
     index: number
     setIsLoading: (state: boolean) => void
@@ -771,12 +950,17 @@ export const setLineItemDiscount = async ({
 
         setCart(newCart)
 
-        logEvent(SegmentEvent.BigCommerceCreateOrderAddLineItemDiscount, {
-            integrationId,
-            index,
-            listPrice,
-            newCart,
-        })
+        logEvent(
+            actionName === BigCommerceActionType.CreateOrder
+                ? SegmentEvent.BigCommerceCreateOrderAddLineItemDiscount
+                : SegmentEvent.BigCommerceDuplicateOrderAddLineItemDiscount,
+            {
+                integrationId,
+                index,
+                listPrice,
+                newCart,
+            }
+        )
 
         // Error Handling
         setModalErrors(
@@ -854,6 +1038,56 @@ export const buildAddressComponent = ({
     return address
 }
 
+export function processAvailableAddresses(
+    availableAddresses: BigCommerceCustomerAddress[],
+    customAddresses: BigCommerceCustomAddress[],
+    billingAddress: BigCommerceCustomerAddress | undefined | null,
+    shippingAddress: BigCommerceCustomerAddress | undefined | null
+) {
+    if (
+        billingAddress &&
+        !availableAddresses.find((item) =>
+            isSameAddress(billingAddress, item)
+        ) &&
+        !customAddresses.find((item) => isSameAddress(billingAddress, item))
+    ) {
+        availableAddresses.push(billingAddress)
+    }
+    if (
+        shippingAddress &&
+        !availableAddresses.find((item) =>
+            isSameAddress(shippingAddress, item)
+        ) &&
+        !customAddresses.find((item) => isSameAddress(shippingAddress, item))
+    ) {
+        availableAddresses.push(shippingAddress)
+    }
+}
+
+export const isSameAddress = (
+    address1: BigCommerceCustomerAddress,
+    address2: BigCommerceCustomerAddress
+) => {
+    if (!address1 || !address2) {
+        return false
+    }
+
+    return (
+        address1.first_name === address2.first_name &&
+        address1.last_name === address2.last_name &&
+        address1.email === address2.email &&
+        address1.company === address2.company &&
+        address1.address1 === address2.address1 &&
+        address1.address2 === address2.address2 &&
+        address1.city === address2.city &&
+        address1.state_or_province === address2.state_or_province &&
+        address1.country === address2.country &&
+        address1.country_code === address2.country_code &&
+        address1.postal_code === address2.postal_code &&
+        address1.phone === address2.phone
+    )
+}
+
 export const getOneLineAddress = ({
     addressObj,
 }: {
@@ -861,7 +1095,7 @@ export const getOneLineAddress = ({
 }): string => {
     let address = ''
 
-    if (!addressObj) {
+    if (!addressObj || !checkAddressValidity(addressObj)) {
         return address
     }
 
@@ -1007,14 +1241,21 @@ export function checkAddressValidity(
     address: Maybe<BigCommerceCustomerAddress>
 ) {
     return !!(
-        address?.customer_id &&
         address?.first_name &&
         address?.last_name &&
         address?.city &&
-        address?.state_or_province &&
         address?.postal_code &&
         address?.country_code &&
         address?.address1
+    )
+}
+
+export function checkDigitalOrder(cart: Maybe<BigCommerceCart>) {
+    return !!(
+        cart &&
+        cart.line_items?.digital_items?.length &&
+        !cart.line_items?.physical_items?.length &&
+        !cart.line_items?.custom_items?.length
     )
 }
 
@@ -1025,12 +1266,7 @@ export function checkCheckoutValidity({
     checkout: Maybe<BigCommerceCheckout>
     cart: Maybe<BigCommerceCart>
 }) {
-    if (
-        cart &&
-        cart.line_items?.digital_items?.length &&
-        !cart.line_items?.physical_items?.length &&
-        !cart.line_items?.custom_items?.length
-    ) {
+    if (checkDigitalOrder(cart)) {
         // Cart contains only digital products -> there are no consignments in checkout
         return true
     }
@@ -1042,7 +1278,6 @@ export function checkCheckoutValidity({
             checkout.billing_address?.first_name &&
             checkout.billing_address?.last_name &&
             checkout.billing_address?.city &&
-            checkout.billing_address?.state_or_province &&
             checkout.billing_address?.postal_code &&
             checkout.billing_address?.country_code &&
             checkout.billing_address?.address1
@@ -1061,7 +1296,6 @@ export function checkCheckoutValidity({
         checkout.consignments[0].address?.first_name &&
         checkout.consignments[0].address?.last_name &&
         checkout.consignments[0].address?.city &&
-        checkout.consignments[0].address?.state_or_province &&
         checkout.consignments[0].address?.postal_code &&
         checkout.consignments[0].address?.country_code &&
         checkout.consignments[0].address?.address1 &&
@@ -1074,11 +1308,13 @@ export function checkCheckoutValidity({
 }
 
 /**
- * Send a bigcommerceCreateAction that will result in creating an order in BigCommerce
+ * Send a `bigcommerceCreateOrder` or `bigcommerceDuplicateOrder` action that will result in creating an order from an
+ * existing checkout cart on BigCommerce.
  * Note: The BigCommerce cart ID and checkout ID are the same.
  * @url https://developer.bigcommerce.com/api-reference/07d6082e99052-get-a-checkout
  */
-export async function bigcommerceCreateOrder(
+export async function bigcommerceCreateOrderFromCheckoutCart(
+    actionName: BigCommerceActionType,
     dispatch: StoreDispatch,
     integration: BigCommerceIntegration,
     customerId: Maybe<string>,
@@ -1115,7 +1351,7 @@ export async function bigcommerceCreateOrder(
 
     dispatch(
         executeAction({
-            actionName: BigCommerceActionType.CreateOrder,
+            actionName: actionName,
             integrationId: integration.id,
             customerId: customerId?.toString(),
             payload: payload,

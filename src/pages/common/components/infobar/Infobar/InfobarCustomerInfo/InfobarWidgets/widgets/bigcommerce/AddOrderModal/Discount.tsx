@@ -7,6 +7,7 @@ import NumberInput from 'pages/common/forms/input/NumberInput'
 import Label from 'pages/common/forms/Label/Label'
 
 import {
+    BigCommerceActionType,
     BigCommerceCart,
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,
@@ -22,10 +23,19 @@ import css from './Discount.less'
 type Props = {
     cart: Maybe<BigCommerceCart>
     currencyCode: string | null
-    onUpdateDiscountAmount: (discountAmount: number) => Promise<void>
+    onUpdateDiscountAmount: (
+        actionName: BigCommerceActionType,
+        discountAmount: number
+    ) => Promise<void>
+    actionName: BigCommerceActionType
 }
 
-export function Discount({cart, currencyCode, onUpdateDiscountAmount}: Props) {
+export function Discount({
+    cart,
+    currencyCode,
+    onUpdateDiscountAmount,
+    actionName,
+}: Props) {
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
     const [isUpdatingDiscount, setIsUpdatingDiscount] = useState(false)
@@ -48,7 +58,7 @@ export function Discount({cart, currencyCode, onUpdateDiscountAmount}: Props) {
         setIsUpdatingDiscount(true)
 
         try {
-            await onUpdateDiscountAmount(discountAmount)
+            await onUpdateDiscountAmount(actionName, discountAmount)
             onClose()
         } catch (error) {
             if (
@@ -69,7 +79,7 @@ export function Discount({cart, currencyCode, onUpdateDiscountAmount}: Props) {
         setIsUpdatingDiscount(true)
 
         try {
-            await onUpdateDiscountAmount(0)
+            await onUpdateDiscountAmount(actionName, 0)
             onClose()
             setDiscountAmount(0)
         } catch (error) {

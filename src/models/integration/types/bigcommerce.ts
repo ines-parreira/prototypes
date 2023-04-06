@@ -51,7 +51,7 @@ export type BigCommerceCart = {
     customer_id: number
     channel_id: number
     email: string
-    currency: any
+    currency: {code: string}
     tax_included: boolean
     // Sum of cart line-item amounts before cart-level discounts, coupons, or taxes are applied.
     base_amount: number
@@ -324,6 +324,7 @@ export type BigCommerceCustomerAddress = {
     phone: Maybe<string>
     postal_code: Maybe<string>
     state_or_province: Maybe<string>
+    state_or_province_code?: Maybe<string>
 }
 
 export type BigCommerceCustomAddress = BigCommerceCustomerAddress & {
@@ -365,6 +366,7 @@ export type BigCommerceUpsertConsignmentPayload =
 
 export enum BigCommerceActionType {
     CreateOrder = 'bigcommerceCreateOrder',
+    DuplicateOrder = 'bigcommerceDuplicateOrder',
 }
 
 export enum OrderStatusIDType {
@@ -445,6 +447,7 @@ export enum BigCommerceLineItemErrorMessage {
     onlyOfflineAvailabilityError = 'Product cannot be purchased in the online store.',
     insufficientInventoryError = 'Insufficient inventory. Please adjust product quantity.',
     invalidQuantityError = 'Invalid quantity selected. Please adjust product quantity.',
+    unsupportedModifiersError = 'Unsupported modifiers',
 }
 
 export class BigCommerceCouponError extends Error {
@@ -503,6 +506,14 @@ export type BigCommerceCheckoutErrorResponse = {
 export type BigCommerceCheckoutResponse =
     | {
           checkout?: Maybe<BigCommerceCheckout>
+          missing_line_items?: Maybe<
+              Array<{
+                  line_item:
+                      | BigCommerceCartLineItem
+                      | BigCommerceCustomCartLineItem
+                  error: string
+              }>
+          >
       }
     | BigCommerceCheckoutErrorResponse
 
@@ -513,6 +524,39 @@ export type BigCommerceNestedCheckoutResponse =
           }
       }
     | BigCommerceCheckoutErrorResponse
+
+export type BigCommerceDuplicateOrderErrorResponse = {
+    error: {
+        data: {
+            cart?: Maybe<BigCommerceCart>
+            checkout?: Maybe<BigCommerceCheckout>
+            missing_line_items?: Maybe<
+                Array<{
+                    line_item:
+                        | BigCommerceCartLineItem
+                        | BigCommerceCustomCartLineItem
+                    error: string
+                }>
+            >
+        }
+        msg: Maybe<string>
+    }
+}
+
+export type BigCommerceDuplicateOrderResponse =
+    | {
+          cart?: Maybe<BigCommerceCart>
+          checkout?: Maybe<BigCommerceCheckout>
+          missing_line_items?: Maybe<
+              Array<{
+                  line_item:
+                      | BigCommerceCartLineItem
+                      | BigCommerceCustomCartLineItem
+                  error: string
+              }>
+          >
+      }
+    | Maybe<BigCommerceDuplicateOrderErrorResponse>
 
 export type BigCommerceAddressResponse =
     | {

@@ -24,10 +24,12 @@ type Props = {
     availableAddresses: BigCommerceCustomerAddress[]
     onSelectAddress: (
         selectedAddress: BigCommerceCustomerAddress,
-        addressType: 'billing' | 'shipping'
+        addressType: 'billing' | 'shipping',
+        customerEmail: Maybe<string>
     ) => Promise<void>
     addressType: 'billing' | 'shipping'
     currencyCode: string
+    customerEmail: Maybe<string>
     errorMessage?: string
     hasError?: boolean
     isDisabled?: boolean
@@ -39,13 +41,16 @@ function AddressesDropdownItems({
     availableAddresses,
     onSelectAddress,
     addressType,
+    customerEmail,
 }: {
     availableAddresses: BigCommerceCustomerAddress[]
     onSelectAddress: (
         selectedAddress: BigCommerceCustomerAddress,
-        addressType: 'billing' | 'shipping'
+        addressType: 'billing' | 'shipping',
+        customerEmail: Maybe<string>
     ) => Promise<void>
     addressType: 'billing' | 'shipping'
+    customerEmail: Maybe<string>
 }) {
     return (
         <>
@@ -60,7 +65,11 @@ function AddressesDropdownItems({
                         value: address.address1,
                     }}
                     onClick={() => {
-                        void onSelectAddress(address, addressType)
+                        void onSelectAddress(
+                            address,
+                            addressType,
+                            customerEmail
+                        )
                     }}
                 >
                     <div className={css.addressLine}>
@@ -100,6 +109,7 @@ export function AddressesDropdown({
     onSelectAddress,
     addressType,
     currencyCode,
+    customerEmail,
     errorMessage = 'Please fill out this field.',
     hasError = false,
     isDisabled = false,
@@ -167,6 +177,7 @@ export function AddressesDropdown({
                                                     onSelectAddress
                                                 }
                                                 addressType={addressType}
+                                                customerEmail={customerEmail}
                                             />
                                         )}
                                     </DropdownBody>
@@ -204,6 +215,7 @@ export function AddressesDropdown({
                     onClose={() => setIsCustomAddressModalOpen(false)}
                     onAddCustomAddress={onSelectAddress}
                     addressType={addressType}
+                    customerEmail={customerEmail}
                 />
             </div>
         </>

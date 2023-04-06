@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event'
 
 import {bigCommerceCartFixture} from 'fixtures/bigcommerce'
 
+import {BigCommerceActionType} from 'models/integration/types'
 import {Discount} from '../Discount'
 
 describe('<Discount />', () => {
@@ -15,6 +16,7 @@ describe('<Discount />', () => {
 
         const {rerender, baseElement} = render(
             <Discount
+                actionName={BigCommerceActionType.CreateOrder}
                 cart={cartFixture}
                 currencyCode="EUR"
                 onUpdateDiscountAmount={onUpdateDiscountAmountMock}
@@ -42,7 +44,11 @@ describe('<Discount />', () => {
         })
         userEvent.click(screen.getByRole('button', {name: /Apply/i}))
 
-        expect(onUpdateDiscountAmountMock).toHaveBeenNthCalledWith(1, 5.55)
+        expect(onUpdateDiscountAmountMock).toHaveBeenNthCalledWith(
+            1,
+            BigCommerceActionType.CreateOrder,
+            5.55
+        )
 
         // Popover gets closed
         await waitFor(() => {
@@ -53,6 +59,7 @@ describe('<Discount />', () => {
 
         rerender(
             <Discount
+                actionName={BigCommerceActionType.CreateOrder}
                 cart={produce(cartFixture, (draft) => {
                     draft.discount_amount = 5.55
                 })}
@@ -78,6 +85,10 @@ describe('<Discount />', () => {
 
         // Check that the callback on the "Remove" button is called correctly
         userEvent.click(screen.getByRole('button', {name: /Remove/i}))
-        expect(onUpdateDiscountAmountMock).toHaveBeenNthCalledWith(2, 0)
+        expect(onUpdateDiscountAmountMock).toHaveBeenNthCalledWith(
+            2,
+            BigCommerceActionType.CreateOrder,
+            0
+        )
     })
 })

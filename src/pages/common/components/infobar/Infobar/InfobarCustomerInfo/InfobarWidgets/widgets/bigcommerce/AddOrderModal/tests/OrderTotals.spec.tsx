@@ -5,6 +5,7 @@ import {
     bigCommerceCheckoutFixture,
     bigCommerceConsignmentFixture,
 } from 'fixtures/bigcommerce'
+import {BigCommerceActionType} from 'models/integration/types'
 import OrderTotals from '../OrderTotals'
 
 jest.mock('../utils', () => ({
@@ -18,6 +19,7 @@ describe('<OrderTotals/>', () => {
 
             const {container} = render(
                 <OrderTotals
+                    actionName={BigCommerceActionType.CreateOrder}
                     checkout={bigCommerceCheckoutFixture}
                     cart={bigCommerceCartFixture()}
                     consignment={bigCommerceConsignmentFixture}

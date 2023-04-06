@@ -9,12 +9,16 @@ import {
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
 } from 'config/integrations/gorgias_chat'
 import {IntegrationType} from 'models/integration/constants'
-import {GorgiasChatStatusEnum} from 'models/integration/types'
+import {
+    GorgiasChatStatusEnum,
+    IntegrationDataItemType,
+} from 'models/integration/types'
 import {AccountSettingBusinessHours} from 'state/currentAccount/types'
 import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {assetsUrl} from '../../utils'
+import GorgiasApi from 'services/gorgiasApi'
+import {assetsUrl} from 'utils'
 
 export const getIntegrationsByTypes = (
     integrations: List<any> = fromJS([]),
@@ -35,6 +39,33 @@ export const getIconFromType = (type: IntegrationType): string => {
     return assetsUrl(
         (config && typeof config === 'object' && config.image) || ''
     )
+}
+
+/**
+ * Fetch integration data items that match given product IDs
+ */
+export const fetchIntegrationProducts = async (
+    integrationId: number,
+    productsIds: number[]
+): Promise<Map<string, any>[]> => {
+    const products: Map<string, any>[] = []
+
+    const api = new GorgiasApi()
+    const generator = api.getIntegrationDataItems(
+        integrationId,
+        IntegrationDataItemType.IntegrationDataItemTypeProduct,
+        productsIds
+    )
+
+    for await (const items of generator) {
+        items.forEach((item: Map<string, any>) => {
+            if (item.get('data')) {
+                products.push(item.get('data'))
+            }
+        })
+    }
+
+    return products
 }
 
 /**
