@@ -29,14 +29,6 @@ describe('ast', () => {
                             address: 'support@acme.gorgias.io',
                         },
                     },
-                    {
-                        id: 2,
-                        name: 'Acme Chat',
-                        type: 'smooch_inside',
-                        meta: {
-                            app_id: '123456uy5tr1d2g3h4',
-                        },
-                    },
                 ])
                 const component = shallow(
                     <IntegrationSelectContainer

@@ -1,4 +1,4 @@
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 import moment from 'moment-timezone'
 import {Store} from 'redux'
 import {
@@ -20,10 +20,7 @@ import './polyfills'
 
 import {EditableUserProfile} from 'config/types/user'
 import {resendVerificationEmail} from 'state/currentAccount/actions'
-import {
-    getActiveIntegrations,
-    getBaseEmailIntegration,
-} from 'state/integrations/selectors'
+import {getBaseEmailIntegration} from 'state/integrations/selectors'
 import {recentViewsStorage} from 'state/views/utils'
 import {notify} from 'state/notifications/actions'
 import configureStore from 'store/configureStore'
@@ -37,7 +34,6 @@ import {initializeNewReleaseHandler} from 'models/api/resources'
 import {Tag} from 'models/tag/types'
 import {View} from 'models/view/types'
 import {NewPhoneNumber, OldPhoneNumber} from 'models/phoneNumber/types'
-import {SMOOCH_INSIDE_INTEGRATION_TYPE} from 'constants/integration'
 import {initLaunchDarkly} from 'utils/launchDarkly'
 import {getEnvironment, isProduction, isStaging} from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
@@ -187,33 +183,6 @@ export const notifyUserImpersonated = (reduxStore: Store) => {
     }
 }
 
-export const notifyChatIntegrationDeprecated = (reduxStore: Store) => {
-    const integrations = getActiveIntegrations(reduxStore.getState())
-    const hasActiveSmoochInsideIntegrations = integrations.find(
-        (integration: Map<any, any>) =>
-            integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
-    )
-
-    if (hasActiveSmoochInsideIntegrations) {
-        reduxStore.dispatch(
-            notify({
-                allowHTML: true,
-                id: 'has-deprecated-chat-integrations',
-                style: NotificationStyle.Banner,
-                status: NotificationStatus.Warning,
-                dismissible: false,
-                onClick: () =>
-                    window.open(
-                        'https://docs.gorgias.com/gorgias-chat/migrating-to-new-chat-integration-beta-version'
-                    ),
-                message:
-                    'You are currently using a deprecated version of the chat integration. ' +
-                    'Please migrate to the new chat integration by 03/31.',
-            }) as any
-        )
-    }
-}
-
 export type InitAppParams = {
     datadog: boolean
     sentry: boolean
@@ -265,8 +234,6 @@ export function initApp({datadog, sentry}: InitAppParams) {
     notifyDeprecatedTld(window.location.href, store)
     notifyAccountNotVerified(store)
     notifyUserImpersonated(store)
-
-    notifyChatIntegrationDeprecated(store)
 
     // Dispatch system messages as notifications
     transformSystemMessagesToNotifications(

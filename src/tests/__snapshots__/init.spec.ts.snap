@@ -1421,9 +1421,6 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
       "gmail": Immutable.Map {
         "redirect_uri": "/integrations/gmail/auth/pre-callback",
       },
-      "smooch": Immutable.Map {
-        "redirect_uri": "https://app.smooch.io/oauth/authorize/?client_id=gorgias_dev&response_type=code&state=eyJhY2NvdW50X2RvbWFpbiI6ICJhY21lIn0%3D&redirect_uri=https%3A%2F%2Faccounts.gorgias.xyz%2Fintegrations%2Fsmooch%2Fauth%2Fcallback%2F",
-      },
     },
     "extra": Immutable.Map {
       "facebook": Immutable.Map {

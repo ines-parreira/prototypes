@@ -11,7 +11,6 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
 import {notify} from 'state/notifications/actions'
 import {IntegrationType} from 'models/integration/types'
-import {NotificationStatus} from 'state/notifications/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 
 import css from './InstallOnIntegrations.less'
@@ -47,16 +46,6 @@ export class InstallOnIntegrationsCardContainer extends Component<
     async _installOnStore(targetIntegration: Map<any, any>) {
         const {integration, integrationType, updateOrCreateIntegration} =
             this.props
-
-        if (integration.get('type') === IntegrationType.SmoochInside) {
-            void notify({
-                status: NotificationStatus.Error,
-                message:
-                    'This version of the chat is no longer supported. Please use the new chat integration to add ' +
-                    'a chat to your online store.',
-            })
-            return
-        }
 
         this.setState({
             integrationLoading: targetIntegration.get('id') as number,
@@ -137,8 +126,7 @@ export class InstallOnIntegrationsCardContainer extends Component<
         const {integrationType, targetIntegrations, integration} = this.props
         const {showAll, integrationLoading} = this.state
 
-        const isChat = integration.get('type') === IntegrationType.SmoochInside
-        const integrationAlias = isChat ? 'chat' : 'customer chat'
+        const integrationAlias = 'customer chat'
 
         let sortedTargetIntegrations = targetIntegrations.sortBy(
             (targetIntegration) =>

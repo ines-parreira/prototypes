@@ -126,46 +126,8 @@ jest.mock('../components/voice/VoiceIntegration', () => () => (
     <div>VoiceIntegration</div>
 ))
 
-jest.mock('../components/chat/ChatIntegrationList', () => () => (
-    <div>ChatIntegrationList</div>
-))
-jest.mock(
-    '../components/chat/ChatIntegrationAppearance/ChatIntegrationAppearance',
-    () => () => <div>ChatIntegrationAppearance</div>
-)
-jest.mock(
-    '../components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns',
-    () => () => <div>ChatIntegrationCampaigns</div>
-)
-jest.mock(
-    '../components/chat/ChatIntegrationQuickReplies/ChatIntegrationQuickReplies',
-    () => () => <div>ChatIntegrationQuickReplies</div>
-)
-jest.mock(
-    '../components/chat/ChatIntegrationMigration/ChatIntegrationMigration',
-    () => () => <div>ChatIntegrationMigration</div>
-)
-jest.mock(
-    '../components/chat/ChatIntegrationPreferences/ChatIntegrationPreferences',
-    () => () => <div>ChatIntegrationPreferences</div>
-)
-jest.mock(
-    '../components/chat/ChatIntegrationInstall/ChatIntegrationInstall',
-    () => () => <div>ChatIntegrationInstall</div>
-)
-jest.mock(
-    '../components/chat/ChatIntegrationCampaigns/CampaignDetail',
-    () => () => <div>CampaignDetail</div>
-)
-
-jest.mock('../components/smooch/SmoochIntegrationDetail', () => () => (
-    <div>SmoochIntegrationDetail</div>
-))
-jest.mock('../components/smooch/SmoochIntegrationList', () => () => (
-    <div>SmoochIntegrationList</div>
-))
-jest.mock('../components/smooch/SmoochIntegrationPreferences', () => () => (
-    <div>SmoochIntegrationPreferences</div>
+jest.mock('../components/deprecated/SmoochDeprecatedIntegration', () => () => (
+    <div>SmoochDeprecatedIntegration</div>
 ))
 
 jest.mock('../components/shopify/Shopify', () => () => (
@@ -270,8 +232,6 @@ describe('<IntegrationDetail />', () => {
         [IntegrationType.Recharge],
         [IntegrationType.Shopify],
         [IntegrationType.Smile],
-        [IntegrationType.SmoochInside],
-        [IntegrationType.Smooch],
         [IntegrationType.Yotpo],
     ])(
         'should render the list or detail page of integrations for %s',
@@ -348,8 +308,6 @@ describe('<IntegrationDetail />', () => {
         [IntegrationType.Shopify],
         [IntegrationType.Magento2],
         [IntegrationType.Smile],
-        [IntegrationType.SmoochInside],
-        [IntegrationType.Smooch],
         [IntegrationType.Yotpo],
     ])(
         'should render the page of a specific integration for %s',
@@ -370,28 +328,24 @@ describe('<IntegrationDetail />', () => {
         }
     )
 
-    it.each([[IntegrationType.GorgiasChat], [IntegrationType.SmoochInside]])(
-        'should render the installation tab of a specific integration for %s',
-        (integrationType) => {
-            const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${integrationType}/1/${Tab.Installation}`,
-                }
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        }
-    )
+    it('should render the installation tab of a specific integration for %s', () => {
+        const {container} = renderWithRouter(
+            <Provider store={store}>
+                <IntegrationDetail {...minProps} />
+            </Provider>,
+            {
+                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Installation}`,
+            }
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
 
     it.each([
         [IntegrationType.Facebook],
         [IntegrationType.GorgiasChat],
         [IntegrationType.Phone],
         [IntegrationType.Sms],
-        [IntegrationType.Smooch],
     ])(
         'should render the preferences tab of a specific integrations for %s',
         (integrationType) => {
@@ -408,53 +362,31 @@ describe('<IntegrationDetail />', () => {
         }
     )
 
-    it.each([[IntegrationType.GorgiasChat], [IntegrationType.SmoochInside]])(
-        'should render the list of campaigns of a specific integration for %s',
-        (integrationType) => {
-            const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${integrationType}/1/${Tab.Campaigns}`,
-                }
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        }
-    )
+    it('should render the list of campaigns of a specific integration for %s', () => {
+        const {container} = renderWithRouter(
+            <Provider store={store}>
+                <IntegrationDetail {...minProps} />
+            </Provider>,
+            {
+                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Campaigns}`,
+            }
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
 
-    it.each([[IntegrationType.GorgiasChat], [IntegrationType.SmoochInside]])(
-        'should render the campaign tab of a specific integration for %s',
-        (integrationType) => {
-            const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${integrationType}/1/${Tab.Campaigns}/1`,
-                }
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        }
-    )
-
-    it.each([[IntegrationType.GorgiasChat], [IntegrationType.SmoochInside]])(
-        'should render the quick replies tab of a specific integration for %s',
-        (integrationType) => {
-            const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${integrationType}/1/${Tab.QuickReplies}`,
-                }
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        }
-    )
+    it('should render the campaign tab of a specific integration for %s', () => {
+        const {container} = renderWithRouter(
+            <Provider store={store}>
+                <IntegrationDetail {...minProps} />
+            </Provider>,
+            {
+                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Campaigns}/1`,
+            }
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
 
     describe(`${IntegrationType.Email}`, () => {
         it('should render the custom creation page', () => {
@@ -583,21 +515,6 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/channels/${IntegrationType.Phone}/1/${Tab.PhoneVoicemail}`,
-                }
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        })
-    })
-
-    describe(`${IntegrationType.SmoochInside}`, () => {
-        it('should render the migration tab of a specific integrations', () => {
-            const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.SmoochInside}/1/${Tab.SmoochInsideMigration}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()

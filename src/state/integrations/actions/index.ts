@@ -213,13 +213,8 @@ export function onCreateSuccess(
             resp.type === IntegrationType.Sms
         ) {
             nextStep = '/preferences'
-        } else if (
-            resp.type === IntegrationType.SmoochInside ||
-            resp.type === IntegrationType.GorgiasChat
-        ) {
+        } else if (resp.type === IntegrationType.GorgiasChat) {
             nextStep = '/installation'
-        } else if (resp.type === IntegrationType.Smooch) {
-            nextStep = '/overview'
         }
 
         history.push(

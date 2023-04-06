@@ -31,27 +31,6 @@ exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
         "text": "Acme Support",
         "value": 1,
       },
-      {
-        "label": <RenderLabel
-          field={
-            Immutable.Map {
-              "name": "integrations",
-            }
-          }
-          value={
-            Immutable.Map {
-              "id": 2,
-              "name": "Acme Chat",
-              "type": "smooch_inside",
-              "meta": Immutable.Map {
-                "app_id": "123456uy5tr1d2g3h4",
-              },
-            }
-          }
-        />,
-        "text": "Acme Chat",
-        "value": 2,
-      },
     ]
   }
   placeholder="Select an integration"

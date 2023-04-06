@@ -161,12 +161,6 @@ exports[`<IntegrationDetail /> phone should render the voicemail tab of a speci
 </div>
 `;
 
-exports[`<IntegrationDetail /> smooch_inside should render the migration tab of a specific integrations 1`] = `
-<div>
-  ChatIntegrationMigration
-</div>
-`;
-
 exports[`<IntegrationDetail /> should display not available message if twitter integration not included in price 1`] = `
 <div
   class="container-fluid"
@@ -179,15 +173,9 @@ exports[`<IntegrationDetail /> should display not available message if twitter i
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the campaign tab of a specific integration for gorgias_chat 1`] = `
+exports[`<IntegrationDetail /> should render the campaign tab of a specific integration for %s 1`] = `
 <div>
   GorgiasChatCampaignDetail
-</div>
-`;
-
-exports[`<IntegrationDetail /> should render the campaign tab of a specific integration for smooch_inside 1`] = `
-<div>
-  CampaignDetail
 </div>
 `;
 
@@ -221,27 +209,15 @@ exports[`<IntegrationDetail /> should render the creation page for sms 1`] = `
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the installation tab of a specific integration for gorgias_chat 1`] = `
+exports[`<IntegrationDetail /> should render the installation tab of a specific integration for %s 1`] = `
 <div>
   GorgiasChatIntegrationInstall
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the installation tab of a specific integration for smooch_inside 1`] = `
-<div>
-  ChatIntegrationInstall
-</div>
-`;
-
-exports[`<IntegrationDetail /> should render the list of campaigns of a specific integration for gorgias_chat 1`] = `
+exports[`<IntegrationDetail /> should render the list of campaigns of a specific integration for %s 1`] = `
 <div>
   GorgiasChatIntegrationCampaigns
-</div>
-`;
-
-exports[`<IntegrationDetail /> should render the list of campaigns of a specific integration for smooch_inside 1`] = `
-<div>
-  ChatIntegrationCampaigns
 </div>
 `;
 
@@ -314,18 +290,6 @@ exports[`<IntegrationDetail /> should render the list or detail page of integrat
 exports[`<IntegrationDetail /> should render the list or detail page of integrations for smile 1`] = `
 <div>
   SmileIntegrationList
-</div>
-`;
-
-exports[`<IntegrationDetail /> should render the list or detail page of integrations for smooch 1`] = `
-<div>
-  SmoochIntegrationList
-</div>
-`;
-
-exports[`<IntegrationDetail /> should render the list or detail page of integrations for smooch_inside 1`] = `
-<div>
-  ChatIntegrationList
 </div>
 `;
 
@@ -501,18 +465,6 @@ exports[`<IntegrationDetail /> should render the page of a specific integration 
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the page of a specific integration for smooch 1`] = `
-<div>
-  SmoochIntegrationDetail
-</div>
-`;
-
-exports[`<IntegrationDetail /> should render the page of a specific integration for smooch_inside 1`] = `
-<div>
-  ChatIntegrationAppearance
-</div>
-`;
-
 exports[`<IntegrationDetail /> should render the page of a specific integration for yotpo 1`] = `
 <div>
   YotpoIntegrationDetail
@@ -537,27 +489,9 @@ exports[`<IntegrationDetail /> should render the preferences tab of a specific i
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the preferences tab of a specific integrations for smooch 1`] = `
-<div>
-  SmoochIntegrationPreferences
-</div>
-`;
-
 exports[`<IntegrationDetail /> should render the preferences tab of a specific integrations for sms 1`] = `
 <div>
   SmsIntegration
-</div>
-`;
-
-exports[`<IntegrationDetail /> should render the quick replies tab of a specific integration for gorgias_chat 1`] = `
-<div>
-  GorgiasChatIntegrationQuickReplies
-</div>
-`;
-
-exports[`<IntegrationDetail /> should render the quick replies tab of a specific integration for smooch_inside 1`] = `
-<div>
-  ChatIntegrationQuickReplies
 </div>
 `;
 

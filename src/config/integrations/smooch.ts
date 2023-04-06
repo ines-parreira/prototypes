@@ -2,7 +2,6 @@ import {fromJS, List} from 'immutable'
 
 import {Language} from '../../constants/languages'
 
-export const SMOOCH_LANGUAGE_DEFAULT = Language.EnglishUs
 export const SMOOCH_LANGUAGE_OPTIONS = fromJS([
     {value: Language.EnglishUs, label: 'English US'},
     {value: Language.French, label: 'French'},

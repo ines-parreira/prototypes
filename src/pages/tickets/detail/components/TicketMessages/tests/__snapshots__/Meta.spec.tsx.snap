@@ -128,7 +128,7 @@ exports[`ticket message meta should add a -sent via campaign- label because the 
     <b>
       <a
         title="Campaign"
-        to="/app/settings/integrations/smooch_inside/118/campaigns/123"
+        to="/app/settings/integrations/smooch_inside"
       >
         <i
           class="material-icons mr-1"

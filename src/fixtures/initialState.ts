@@ -75,10 +75,6 @@ export const initialState: GorgiasInitialState = {
                 redirect_uri:
                     'https://connect.smile.io/oauth2/authorize?redirect_uri=https%3A%2F%2Faccounts.gorgias.xyz%2Fintegrations%2Fsmile%2Fauth%2Fcallback%2F&client_id=08YEKLFR5jmB0oDujlh8nFUDIaTK3PjWxOAj2HTmWj8&state=eyJhY2NvdW50X2RvbWFpbiI6ICJhY21lIn0%3D&response_type=code',
             },
-            smooch: {
-                redirect_uri:
-                    'https://app.smooch.io/oauth/authorize/?client_id=gorgias_dev&response_type=code&state=eyJhY2NvdW50X2RvbWFpbiI6ICJhY21lIn0%3D&redirect_uri=https%3A%2F%2Faccounts.gorgias.xyz%2Fintegrations%2Fsmooch%2Fauth%2Fcallback%2F',
-            },
             twitter: {
                 redirect_uri: '/integrations/twitter/auth/pre-callback/',
             },

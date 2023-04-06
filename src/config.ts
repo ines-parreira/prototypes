@@ -198,19 +198,6 @@ export type IntegrationConfig = {
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
     {
-        type: IntegrationType.SmoochInside,
-        title: 'Chat - 🗄 DEPRECATED',
-        description:
-            'Please migrate to the new chat integration as this one will soon be removed.',
-        longDescription: '',
-        categories: [Category.CHAT],
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
-        screenshots: [],
-        pricingPlan: PricingPlan.FREE,
-        privacyPolicy: '',
-        setupGuide: '',
-    },
-    {
         type: IntegrationType.Email,
         subTypes: [
             IntegrationType.Email,
@@ -552,21 +539,6 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         privacyPolicy: 'https://www.yotpo.com/privacy-policy/',
         setupGuide:
             'https://docs.gorgias.com/reward-and-loyalty/yotpo-customer-data',
-    },
-    {
-        type: IntegrationType.Smooch,
-        title: 'Smooch',
-        description: 'Connect your own Smooch to Gorgias.',
-        image: '/img/integrations/smooch.png',
-        categories: [Category.CHAT],
-        longDescription: '',
-        screenshots: [],
-        pricingPlan: PricingPlan.FREE,
-        pricingDetails: '',
-        pricingLink: '',
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
-        privacyPolicy: '',
-        setupGuide: '',
     },
     {
         type: IntegrationType.Klaviyo,

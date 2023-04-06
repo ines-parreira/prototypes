@@ -9,15 +9,6 @@ export function hasTwitterIntegrations(integrations: Integration[]) {
     )
 }
 
-function hasSmoochInsideIntegrations(integrations: Integration[]) {
-    return integrations.some(
-        (integration) =>
-            integration.type === IntegrationType.SmoochInside &&
-            (integration.deactivated_datetime === null ||
-                Boolean(integration.meta?.shopify_integration_ids?.length))
-    )
-}
-
 function hasKlaviyoIntegrations(integrations: Integration[]) {
     return integrations.some(
         (integration) =>
@@ -31,13 +22,6 @@ export function filterOutDeprecatedIntegrations(
     integrations: Integration[]
 ) {
     return integrationsListItems.filter((integration) => {
-        if (
-            integration.type === IntegrationType.SmoochInside &&
-            !hasSmoochInsideIntegrations(integrations)
-        ) {
-            return false
-        }
-
         if (
             integration.type === IntegrationType.Klaviyo &&
             !hasKlaviyoIntegrations(integrations)

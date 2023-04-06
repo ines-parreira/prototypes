@@ -68,10 +68,6 @@ import HTTPIntegrationList from './components/http/HTTPIntegrationList'
 
 import Magento2 from './components/magento2/Magento2'
 
-import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail'
-import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
-import SmoochIntegrationPreferences from './components/smooch/SmoochIntegrationPreferences'
-
 import Shopify from './components/shopify/Shopify'
 
 import BigCommerce from './components/bigcommerce/BigCommerce'
@@ -97,15 +93,6 @@ import EmailIntegrationLayout from './components/email/EmailIntegrationUpdateLay
 import EmailDomainVerificationContainer from './components/email/EmailDomainVerification/EmailDomainVerificationContainer'
 import EmailOutboundVerification from './components/email/EmailOutboundVerification/EmailOutboundVerification'
 
-import ChatIntegrationList from './components/chat/ChatIntegrationList'
-import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance/ChatIntegrationAppearance'
-import ChatIntegrationCampaigns from './components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns'
-import ChatIntegrationQuickReplies from './components/chat/ChatIntegrationQuickReplies/ChatIntegrationQuickReplies'
-import ChatIntegrationMigration from './components/chat/ChatIntegrationMigration/ChatIntegrationMigration'
-import ChatIntegrationPreferences from './components/chat/ChatIntegrationPreferences/ChatIntegrationPreferences'
-import ChatIntegrationInstall from './components/chat/ChatIntegrationInstall/ChatIntegrationInstall'
-import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignDetail'
-
 import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
 import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents/HTTPIntegrationEvents'
 import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent/HTTPIntegrationEvent'
@@ -119,6 +106,7 @@ import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDet
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
 import GorgiasTranslateText from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 import EmailMigration from './components/email/EmailMigration/EmailMigration'
+import SmoochDeprecatedIntegration from './components/deprecated/SmoochDeprecatedIntegration'
 
 export enum Tab {
     EmailForwarding = 'forwarding',
@@ -138,7 +126,6 @@ export enum Tab {
     PhoneVoicemail = 'voicemail',
     PhoneGreetingMessage = 'greeting-message',
     PhoneIvr = 'ivr',
-    SmoochInsideMigration = 'migration',
     CreateWizard = 'create-wizard',
 }
 
@@ -515,85 +502,10 @@ export const IntegrationDetail = ({
         }
 
         case IntegrationType.SmoochInside:
-            if (!!integrationId) {
-                if (extra === Tab.SmoochInsideMigration) {
-                    return (
-                        <ChatIntegrationMigration integration={integration} />
-                    )
-                }
-
-                if (extra === Tab.Installation) {
-                    return <ChatIntegrationInstall integration={integration} />
-                }
-
-                if (extra === Tab.Preferences) {
-                    return (
-                        <ChatIntegrationPreferences integration={integration} />
-                    )
-                }
-
-                if (extra === Tab.Campaigns) {
-                    if (subId) {
-                        return (
-                            <CampaignDetail
-                                integration={integration}
-                                id={subId}
-                            />
-                        )
-                    }
-
-                    return (
-                        <ChatIntegrationCampaigns integration={integration} />
-                    )
-                }
-
-                if (extra === Tab.QuickReplies) {
-                    return (
-                        <ChatIntegrationQuickReplies
-                            integration={integration}
-                        />
-                    )
-                }
-
-                return (
-                    <ChatIntegrationAppearance
-                        integration={integration}
-                        isUpdate={isUpdate}
-                        loading={loading}
-                    />
-                )
-            }
-
-            return (
-                <ChatIntegrationList
-                    integrations={integrationsProp}
-                    loading={loading}
-                />
-            )
-
         case IntegrationType.Smooch:
-            if (!!integrationId) {
-                if (extra === Tab.Preferences) {
-                    return (
-                        <SmoochIntegrationPreferences
-                            integration={integration}
-                        />
-                    )
-                }
-
-                return (
-                    <SmoochIntegrationDetail
-                        integration={integration}
-                        loading={loading}
-                    />
-                )
-            }
-
             return (
-                <SmoochIntegrationList
-                    integrations={integrationsProp}
-                    loading={loading}
-                    redirectUri={redirectUri}
+                <SmoochDeprecatedIntegration
+                    loading={loading.get('integrations', false)}
                 />
             )
 

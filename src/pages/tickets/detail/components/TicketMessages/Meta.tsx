@@ -355,7 +355,7 @@ export default function Meta(props: Props) {
         if (via === TicketVias.GORGIAS_CHAT) {
             sentViaLink = `/app/settings/channels/gorgias_chat/${props.integrationId}/campaigns/${meta.campaign_id}`
         } else {
-            sentViaLink = `/app/settings/integrations/smooch_inside/${props.integrationId}/campaigns/${meta.campaign_id}`
+            sentViaLink = `/app/settings/integrations/smooch_inside` // Will show the deprecation page
         }
 
         widgets.push(
