@@ -94,22 +94,52 @@ const setInitialState = () => ({
 export const onInit =
     (integrationId: number, order: Map<any, any>) =>
     async (dispatch: StoreDispatch) => {
-        let payload = initRefundOrderPayload(order)
-        const lineItems = initRefundOrderLineItems(order)
-        const orderId = order.get('id') as number
+        try {
+            let payload = initRefundOrderPayload(order)
+            const lineItems = initRefundOrderLineItems(order)
+            const api = getApi()
+            const orderId = order.get('id') as number
 
-        logEvent(SegmentEvent.ShopifyRefundOrderOpen, {
-            orderId,
-        })
+            logEvent(SegmentEvent.ShopifyRefundOrderOpen, {
+                orderId,
+            })
 
-        dispatch(setLoading(true, 'Calculating refund...'))
-        payload = payload.setIn(['shipping', 'amount'], '0.00')
+            // Fetch maximum refundable amount, and use it as default value
+            dispatch(setLoading(true, 'Calculating refund...'))
 
-        return Promise.all([
-            dispatch(setOrderId(orderId)),
-            dispatch(onPayloadChange(integrationId, payload)),
-            dispatch(setLineItems(lineItems)),
-        ])
+            const suggestedRefund = await api.calculateRefund(
+                integrationId,
+                orderId,
+                payload
+            )
+            const shippingMaximumRefundable = suggestedRefund.getIn([
+                'shipping',
+                'maximum_refundable',
+            ]) as number
+            payload = payload.setIn(
+                ['shipping', 'amount'],
+                shippingMaximumRefundable
+            )
+
+            return Promise.all([
+                dispatch(setOrderId(orderId)),
+                dispatch(onPayloadChange(integrationId, payload)),
+                dispatch(setLineItems(lineItems)),
+            ])
+        } catch (error) {
+            if (axios.isCancel(error)) {
+                return
+            }
+
+            console.error(error)
+            return dispatch(
+                onApiError(
+                    error,
+                    'Error while calculating refund',
+                    setLoading(false)
+                )
+            )
+        }
     }
 
 export const onLineItemChange =

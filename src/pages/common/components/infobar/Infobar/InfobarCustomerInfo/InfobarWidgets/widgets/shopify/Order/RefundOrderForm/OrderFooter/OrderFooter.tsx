@@ -31,22 +31,9 @@ type Props = {
     onNotifyChange: (newValue: boolean) => void
 }
 
-const OrderFooter = ({
-    editable,
-    actionName,
-    hasShippingLine,
-    notify,
-    loading,
-    payload,
-    refund,
-    setPayload,
-    currencyCode,
-    reason,
-    onPayloadChange,
-    onReasonChange,
-    onNotifyChange,
-}: Props) => {
-    const _onAmountChange = (value: string) => {
+export default class OrderFooter extends React.PureComponent<Props> {
+    _onAmountChange = (value: string) => {
+        const {refund, payload, setPayload} = this.props
         const max = getTotalAvailableToRefund(refund)
         const newAmount = parseFloat(value) > max ? max : value
         const newPayload = payload.setIn(
@@ -57,22 +44,24 @@ const OrderFooter = ({
         setPayload(newPayload)
     }
 
-    const _onDiscrepancyReasonChange = (
-        event: ChangeEvent<HTMLInputElement>
-    ) => {
+    _onDiscrepancyReasonChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const {payload, setPayload} = this.props
         const {value} = event.target
         const newPayload = payload.set('discrepancy_reason', value)
 
         setPayload(newPayload)
     }
 
-    const _onRestockItemsChange = (newValue: boolean) => {
+    _onRestockItemsChange = (newValue: boolean) => {
+        const {payload, setPayload} = this.props
         const newPayload = payload.set('restock', newValue)
 
         setPayload(newPayload)
     }
 
-    const _renderReason = () => {
+    _renderReason() {
+        const {actionName, reason, onReasonChange} = this.props
+
         if (actionName === ShopifyActionType.CancelOrder) {
             return (
                 <FormGroup>
@@ -112,116 +101,133 @@ const OrderFooter = ({
         )
     }
 
-    const amount = payload.getIn(['transactions', 0, 'amount'], '')
-    const amountMax = refund.isEmpty()
-        ? undefined
-        : getTotalAvailableToRefund(refund)
-    const totalQuantities = getTotalQuantities(payload, refund)
-    const discrepancyLimit = getRefundAmount(refund)
-    const hasDiscrepancy = !loading && parseFloat(amount) !== discrepancyLimit
+    render() {
+        const {
+            editable,
+            hasShippingLine,
+            notify,
+            loading,
+            payload,
+            refund,
+            currencyCode,
+            onPayloadChange,
+            onNotifyChange,
+        } = this.props
+        const amount = payload.getIn(['transactions', 0, 'amount'], '')
+        const amountMax = refund.isEmpty()
+            ? undefined
+            : getTotalAvailableToRefund(refund)
+        const totalQuantities = getTotalQuantities(payload, refund)
+        const discrepancyLimit = getRefundAmount(refund)
+        const hasDiscrepancy =
+            !loading && parseFloat(amount) !== discrepancyLimit
 
-    return (
-        <Container fluid className={css.container}>
-            <Row>
-                <Col xs={{size: 12, order: 2}} xl={{size: 7, order: 1}}>
-                    <Row className="mb-5">
-                        <Col xs={12}>
-                            <CheckBox
-                                className="mb-3"
-                                isChecked={payload.get('restock', false)}
-                                isDisabled={totalQuantities === 0}
-                                onChange={_onRestockItemsChange}
-                                caption="The claimed quantity will be restocked back to your store. Note that custom items can’t be restocked."
-                            >
-                                Restock items
-                            </CheckBox>
-                            <CheckBox
-                                className="mb-3"
-                                name="notify-customer"
-                                isChecked={notify}
-                                onChange={onNotifyChange}
-                            >
-                                Send notification to customer
-                            </CheckBox>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs={12} lg={6}>
-                            <FormGroup>
-                                <Label htmlFor="amount">
-                                    Refund with: Manual
-                                </Label>
-                                <AmountInput
-                                    id="amount"
-                                    required
-                                    disabled={loading}
-                                    value={amount}
-                                    max={amountMax}
-                                    currencyCode={currencyCode}
-                                    className={css.amountInput}
-                                    onChange={_onAmountChange}
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col xs={12} lg={6}>
-                            {_renderReason()}
-                        </Col>
-                    </Row>
-                    {hasDiscrepancy && (
-                        <Row>
+        return (
+            <Container fluid className={css.container}>
+                <Row>
+                    <Col xs={{size: 12, order: 2}} xl={{size: 7, order: 1}}>
+                        <Row className="mb-5">
                             <Col xs={12}>
-                                <FormGroup>
-                                    <Label htmlFor="discrepancy-reason">
-                                        Reason for custom refund amount
-                                    </Label>
-                                    <Input
-                                        type="select"
-                                        id="discrepancy-reason"
-                                        value={payload.get(
-                                            'discrepancy_reason',
-                                            'other'
-                                        )}
-                                        className={css.discrepancyReasonInput}
-                                        onChange={_onDiscrepancyReasonChange}
-                                    >
-                                        <option value="restock">
-                                            Restocking fee
-                                        </option>
-                                        <option value="damage">
-                                            Damaged goods
-                                        </option>
-                                        <option value="customer">
-                                            Customer satisfaction
-                                        </option>
-                                        <option value="other">Other</option>
-                                    </Input>
-                                    <FormText color="muted">
-                                        The amount being refunded is different
-                                        from the value of items being returned.
-                                    </FormText>
-                                </FormGroup>
+                                <CheckBox
+                                    className="mb-3"
+                                    isChecked={payload.get('restock', false)}
+                                    isDisabled={totalQuantities === 0}
+                                    onChange={this._onRestockItemsChange}
+                                    caption="The claimed quantity will be restocked back to your store. Note that custom items can’t be restocked."
+                                >
+                                    Restock items
+                                </CheckBox>
+                                <CheckBox
+                                    className="mb-3"
+                                    name="notify-customer"
+                                    isChecked={notify}
+                                    onChange={onNotifyChange}
+                                >
+                                    Send notification to customer
+                                </CheckBox>
                             </Col>
                         </Row>
-                    )}
-                </Col>
-                <Col
-                    xs={{size: 12, order: 1}}
-                    xl={{size: 5, order: 2}}
-                    className="mb-sm-4"
-                >
-                    <OrderTotals
-                        editable={editable}
-                        hasShippingLine={hasShippingLine}
-                        currencyCode={currencyCode}
-                        loading={loading}
-                        payload={payload}
-                        refund={refund}
-                        onPayloadChange={onPayloadChange}
-                    />
-                </Col>
-            </Row>
-        </Container>
-    )
+                        <Row>
+                            <Col xs={12} lg={6}>
+                                <FormGroup>
+                                    <Label htmlFor="amount">
+                                        Refund with: Manual
+                                    </Label>
+                                    <AmountInput
+                                        id="amount"
+                                        required
+                                        disabled={loading}
+                                        value={amount}
+                                        max={amountMax}
+                                        currencyCode={currencyCode}
+                                        className={css.amountInput}
+                                        onChange={this._onAmountChange}
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col xs={12} lg={6}>
+                                {this._renderReason()}
+                            </Col>
+                        </Row>
+                        {hasDiscrepancy && (
+                            <Row>
+                                <Col xs={12}>
+                                    <FormGroup>
+                                        <Label htmlFor="discrepancy-reason">
+                                            Reason for custom refund amount
+                                        </Label>
+                                        <Input
+                                            type="select"
+                                            id="discrepancy-reason"
+                                            value={payload.get(
+                                                'discrepancy_reason',
+                                                'other'
+                                            )}
+                                            className={
+                                                css.discrepancyReasonInput
+                                            }
+                                            onChange={
+                                                this._onDiscrepancyReasonChange
+                                            }
+                                        >
+                                            <option value="restock">
+                                                Restocking fee
+                                            </option>
+                                            <option value="damage">
+                                                Damaged goods
+                                            </option>
+                                            <option value="customer">
+                                                Customer satisfaction
+                                            </option>
+                                            <option value="other">Other</option>
+                                        </Input>
+                                        <FormText color="muted">
+                                            The amount being refunded is
+                                            different from the value of items
+                                            being returned.
+                                        </FormText>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                        )}
+                    </Col>
+                    <Col
+                        xs={{size: 12, order: 1}}
+                        xl={{size: 5, order: 2}}
+                        className="mb-sm-4"
+                    >
+                        <OrderTotals
+                            editable={editable}
+                            hasShippingLine={hasShippingLine}
+                            currencyCode={currencyCode}
+                            loading={loading}
+                            payload={payload}
+                            refund={refund}
+                            onPayloadChange={onPayloadChange}
+                        />
+                    </Col>
+                </Row>
+            </Container>
+        )
+    }
 }
-
-export default OrderFooter
