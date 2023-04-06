@@ -6,7 +6,7 @@ import {TriggerButtonNodeType} from '../types'
 
 import css from './NodeEditor.less'
 
-const textLimit = 100
+const textLimit = 50
 
 export default function TriggerButtonEditor({
     nodeInEdition,

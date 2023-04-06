@@ -3,28 +3,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {renderHook} from '@testing-library/react-hooks'
 import {Edge, Node, useReactFlow} from 'reactflow'
-import {
-    useWorkflowConfigurationContext,
-    reducer,
-} from '../../../hooks/useWorkflowConfiguration'
+import {useWorkflowConfigurationContext} from '../../../hooks/useWorkflowConfiguration'
 import {
     WorkflowConfiguration,
     workflowConfigurationFactory,
 } from '../../../../hooks/useWorkflowApi'
 import {useWorkflowEntrypointContext} from '../../../hooks/useWorkflowEntrypoint'
 import {useSyncWorkflowToReactFlow} from '../useSyncWorkflowToReactFlow'
+import {reducer} from '../../../hooks/useWorkflowConfigurationReducer'
 
-jest.mock('../../../hooks/useWorkflowConfiguration', () => {
-    const {reducer} = jest.requireActual(
-        '../../../hooks/useWorkflowConfiguration'
-    )
-    return {
-        __esModule: true,
-        useWorkflowConfiguration: jest.fn(),
-        useWorkflowConfigurationContext: jest.fn(),
-        reducer,
-    }
-})
+jest.mock('../../../hooks/useWorkflowConfiguration')
 jest.mock('../../../hooks/useWorkflowEntrypoint')
 jest.mock('reactflow')
 
