@@ -46,9 +46,11 @@ export const CampaignTableStats = ({
     onClickPrevPage,
 }: Props) => {
     const [ref, {width}] = useMeasure<HTMLDivElement>()
-    const [orderKey, setOrderKey] = useState<CampaignTableKeys>()
+    const [orderKey, setOrderKey] = useState<CampaignTableKeys>(
+        CampaignTableKeys.TotalRevenue
+    )
     const [orderDirection, setOrderDirection] = useState<OrderDirection>(
-        OrderDirection.Asc
+        OrderDirection.Desc
     )
 
     const paginatedRows = useSortedAndPaginatedTableRows(rows, {

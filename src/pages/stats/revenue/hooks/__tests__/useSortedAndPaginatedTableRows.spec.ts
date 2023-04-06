@@ -1,14 +1,14 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {OrderDirection} from 'models/api/types'
 
-import {ITEMS_PER_PAGE} from '../../constants/campaignPerformanceTable'
-
 import CAMPAIGN_PERFORMANCE_ROWS from '../../fixtures/campaignPerformanceRows'
 import {CampaignTableContentCell} from '../../types/CampaignTableContentCell'
 
 import {CampaignTableKeys} from '../../types/enums/CampaignTableKeys.enum'
 
 import {useSortedAndPaginatedTableRows} from '../useSortedAndPaginatedTableRows'
+
+const MOCK_ITEMS_PER_PAGE = 5
 
 describe('useSortedAndPaginatedTableRows', () => {
     describe('when there is an order key', () => {
@@ -20,7 +20,7 @@ describe('useSortedAndPaginatedTableRows', () => {
                         orderKey: CampaignTableKeys.CampaignName,
                         orderDirection: OrderDirection.Asc,
                         offset: 0,
-                        page: ITEMS_PER_PAGE,
+                        page: MOCK_ITEMS_PER_PAGE,
                     }
                 )
             )
@@ -60,7 +60,7 @@ describe('useSortedAndPaginatedTableRows', () => {
                     {
                         orderDirection: OrderDirection.Asc,
                         offset: 4,
-                        page: ITEMS_PER_PAGE,
+                        page: MOCK_ITEMS_PER_PAGE,
                     }
                 )
             )
@@ -77,13 +77,13 @@ describe('useSortedAndPaginatedTableRows', () => {
                     {
                         orderDirection: OrderDirection.Asc,
                         offset: 2,
-                        page: ITEMS_PER_PAGE,
+                        page: MOCK_ITEMS_PER_PAGE,
                     }
                 )
             )
 
             expect(result.current).toEqual(
-                CAMPAIGN_PERFORMANCE_ROWS.slice(2, 2 + ITEMS_PER_PAGE)
+                CAMPAIGN_PERFORMANCE_ROWS.slice(2, 2 + MOCK_ITEMS_PER_PAGE)
             )
         })
     })

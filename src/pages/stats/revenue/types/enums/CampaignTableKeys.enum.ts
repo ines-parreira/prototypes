@@ -1,22 +1,31 @@
 export enum CampaignTableKeys {
     CampaignName = 'campaignName',
+    // Core
+    TotalRevenue = 'totalRevenue',
+    RevenueUplift = 'revenueUplift',
     Traffic = 'traffic',
     Impressions = 'impressions',
     UniqueImpressions = 'uniqueImpressions',
-    NumberOfClicks = 'clicks',
+    Engagement = 'engagement',
     ClickThroughRate = 'clickThroughRate',
-    TicketCreated = 'ticketsCreated',
-    TicketCreationRate = 'ticketsCreationRate',
+    // Orders
+    Conversions = 'uniqueConversions',
+    TotalConversionRate = 'totalConversionRate',
+    // Tickets
+    TicketsCreated = 'ticketsCreated',
+    TicketsCreationRate = 'ticketsCreationRate',
     TicketsConverted = 'ticketsConverted',
     TicketConversionRate = 'ticketsConversionRate',
-    Conversions = 'uniqueConversions',
-    ConversionRate = 'totalConversionRate',
     RevenueGeneratedTickets = 'ticketsRevenue',
-    RevenueGeneratedCampaignClicks = 'clicksRevenue',
+    // Campaigns
+    NumberOfClicks = 'clicks',
+    ClicksRate = 'clicksRate',
+    ClicksConverted = 'clicksConverted',
+    ClicksConversionRate = 'clicksConversionRate',
+    ClicksRevenue = 'clicksRevenue',
+    // Discount codes
     DiscountCodeUsed = 'discountCodesUsed',
     RevenueGeneratedDiscountCode = 'discountCodesRevenue',
-    TotalRevenue = 'totalRevenue',
-    GmvUplift = 'revenueUplift',
 }
 
 const CAMPAIGN_TABLE_KEYS = Object.values(CampaignTableKeys) as string[]
