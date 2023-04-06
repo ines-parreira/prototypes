@@ -212,12 +212,13 @@ export function isSupportAddress(
     const formattedAddress = _toLower(addressToTest)
 
     for (const supportAddress of supportAddresses as any) {
-        const splitSupportAddress = (supportAddress as string).split('@')
+        const splitSupportAddress = (supportAddress as string)?.split?.('@')
 
         // ex: if support@acme.io is the support address, we search for it but also for support+something@acme.io
         if (
             formattedAddress === supportAddress ||
-            (formattedAddress.startsWith(`${splitSupportAddress[0]}+`) &&
+            (splitSupportAddress?.length &&
+                formattedAddress.startsWith(`${splitSupportAddress[0]}+`) &&
                 formattedAddress.endsWith(`@${splitSupportAddress[1]}`))
         ) {
             return true
@@ -299,9 +300,6 @@ export function guessReceiversFromTicket(
                 return receiver
             })
             .filter((receiver) => {
-                if (isPhoneBasedSource(sourceType)) {
-                    return true
-                }
                 // remove support addresses
                 return !isSupportAddress(
                     receiver!.get('address'),
