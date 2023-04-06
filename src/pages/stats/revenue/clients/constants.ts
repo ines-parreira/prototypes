@@ -16,7 +16,6 @@ export enum FilterOperators {
 
 export enum SharedDimensionNames {
     campaignId = 'campaignId',
-    accountId = 'accountId',
     createdDatetime = 'createdDatetime',
     shopName = 'shopName',
 }
@@ -41,7 +40,6 @@ export const EventsSegments = {
 // Order conversions constants
 export const OrderConversionDimensions = {
     campaignId: `${Cubes.orderConversion}.${SharedDimensionNames.campaignId}`,
-    accountId: `${Cubes.orderConversion}.${SharedDimensionNames.accountId}`,
     createdDatatime: `${Cubes.orderConversion}.createdDatetime`,
 }
 
@@ -59,7 +57,6 @@ export const OrderConversionMeasures = {
 // Campaign order events constants
 export const CampaignOrderEventsDimensions = {
     campaignId: `${Cubes.campaignOrderEvents}.${SharedDimensionNames.campaignId}`,
-    accountId: `${Cubes.campaignOrderEvents}.${SharedDimensionNames.accountId}`,
     createdDatatime: `${Cubes.campaignOrderEvents}.${SharedDimensionNames.createdDatetime}`,
 }
 

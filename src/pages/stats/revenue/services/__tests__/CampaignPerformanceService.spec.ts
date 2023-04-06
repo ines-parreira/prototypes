@@ -38,7 +38,6 @@ describe('Revenue Attribution Service stats methods', () => {
         const campaignOrdersTotalsData = {
             data: [
                 {
-                    [OrderConversionMeasures.gmv]: '3000',
                     [OrderConversionMeasures.influencedRevenueUplift]: '23.45',
                     [OrderConversionMeasures.campaignSales]: '2000',
                 },
@@ -50,9 +49,21 @@ describe('Revenue Attribution Service stats methods', () => {
                 new Promise((resolve) => resolve(campaignOrdersTotalsData))
             )
 
+        const storeTotalData = {
+            data: [
+                {
+                    [OrderConversionMeasures.gmv]: '3000',
+                },
+            ],
+        } as CubeResponse
+        const mockStoreTotalData = jest
+            .spyOn(cubeQueries, 'getStoreRevenueTotalData')
+            .mockReturnValue(new Promise((resolve) => resolve(storeTotalData)))
+
         beforeEach(() => {
             mockCampaignEventsTotals.mockClear()
             mockCampaignOrdersTotals.mockClear()
+            mockStoreTotalData.mockClear()
         })
 
         it('should return prepared data for totals section', async () => {

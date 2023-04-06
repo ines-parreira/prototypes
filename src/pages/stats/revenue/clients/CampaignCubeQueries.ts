@@ -169,7 +169,7 @@ export const getCampaignEventsTotalsData = async ({
     endDate,
 }: CubeFilterParams): Promise<CubeResponse> => {
     return await client.load({
-        dimensions: [CampaignOrderEventsDimensions.accountId],
+        dimensions: [],
         measures: [
             CampaignOrderEventsMeasures.impressions,
             CampaignOrderEventsMeasures.engagement,
@@ -192,9 +192,8 @@ export const getCampaignOrderTotalsData = async ({
     endDate,
 }: CubeFilterParams): Promise<CubeResponse> => {
     return await client.load({
-        dimensions: [OrderConversionDimensions.accountId],
+        dimensions: [],
         measures: [
-            OrderConversionMeasures.gmv,
             OrderConversionMeasures.influencedRevenueUplift,
             OrderConversionMeasures.campaignSales,
         ],
@@ -208,6 +207,23 @@ export const getCampaignOrderTotalsData = async ({
     })
 }
 
+export const getStoreRevenueTotalData = async ({
+    shopName,
+    startDate,
+    endDate,
+}: CubeFilterParams): Promise<CubeResponse> => {
+    return await client.load({
+        dimensions: [],
+        measures: [OrderConversionMeasures.gmv],
+        filters: _getDefaultFilters({
+            startDate,
+            endDate,
+            cubeName: Cubes.orderConversion,
+            shopName,
+        }),
+    })
+}
+
 export const getRevenueUpliftGraphData = async ({
     shopName,
     campaignIds,
@@ -216,7 +232,7 @@ export const getRevenueUpliftGraphData = async ({
     granularity = 'day',
 }: CubeFilterParams): Promise<CubeResponse> => {
     return await client.load({
-        dimensions: [OrderConversionDimensions.accountId],
+        dimensions: [],
         timeDimensions: [
             {
                 dimension: OrderConversionDimensions.createdDatatime,
@@ -244,7 +260,7 @@ export const getCampaignsPerformanceGraphData = async ({
     granularity = 'day',
 }: CubeFilterParams): Promise<CubeResponse> => {
     return await client.load({
-        dimensions: [CampaignOrderEventsDimensions.accountId],
+        dimensions: [],
         timeDimensions: [
             {
                 dimension: CampaignOrderEventsDimensions.createdDatatime,

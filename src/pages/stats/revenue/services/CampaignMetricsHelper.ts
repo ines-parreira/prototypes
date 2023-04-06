@@ -16,6 +16,7 @@ import {
     OrdersTotals,
     RevenueGraphDataPoint,
     StatData,
+    StoreTotal,
     TicketPerformanceData,
 } from 'pages/stats/revenue/services/types'
 import {Stat} from 'models/stat/types'
@@ -82,10 +83,6 @@ export const transformToCampaignOrdersTotals = (
     const metric: CubeMetric = _get(data, '[0]', {})
 
     return {
-        [CampaignsTotalsMetricNames.gmv]: formatCurrency(
-            parseFloat(_get(metric, OrderConversionMeasures.gmv, '0')),
-            currency
-        ),
         [CampaignsTotalsMetricNames.influencedRevenueUplift]: formatPercent(
             _toFixed(
                 parseFloat(
@@ -101,6 +98,20 @@ export const transformToCampaignOrdersTotals = (
             parseFloat(
                 _get(metric, OrderConversionMeasures.campaignSales, '0')
             ),
+            currency
+        ),
+    }
+}
+
+export const transformToStoreTotal = (
+    data: CubeData,
+    currency: string
+): StoreTotal => {
+    const metric: CubeMetric = _get(data, '[0]', {})
+
+    return {
+        [CampaignsTotalsMetricNames.gmv]: formatCurrency(
+            parseFloat(_get(metric, OrderConversionMeasures.gmv, '0')),
             currency
         ),
     }

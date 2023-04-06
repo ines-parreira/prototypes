@@ -6,6 +6,7 @@ import {
     getCampaignOrderTotalsData,
     getCampaignsPerformanceGraphData,
     getRevenueUpliftGraphData,
+    getStoreRevenueTotalData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {
     CampaignChatPerformanceData,
@@ -26,6 +27,7 @@ import {
     transformToCampaignsPerformanceTable,
     transformToChatConversionRateOverTime,
     transformToRevenueUpliftOverTime,
+    transformToStoreTotal,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {
     getCampaignTicketsPerformanceData,
@@ -53,17 +55,20 @@ export const getTotals = async (
         endDate,
     }
 
-    const [eventsTotals, orderTotals] = await Promise.all([
+    const [eventsTotals, orderTotals, storeTotal] = await Promise.all([
         getCampaignEventsTotalsData(attrs),
         getCampaignOrderTotalsData(attrs),
+        getStoreRevenueTotalData(attrs),
     ])
 
     const eventsTotalsData = getDataFromResultSet(eventsTotals)
     const orderTotalsData = getDataFromResultSet(orderTotals)
+    const storeTotalData = getDataFromResultSet(storeTotal)
 
     return {
         ...transformToCampaignEventsTotals(eventsTotalsData),
         ...transformToCampaignOrdersTotals(orderTotalsData, currency),
+        ...transformToStoreTotal(storeTotalData, currency),
     }
 }
 

@@ -83,9 +83,7 @@ exports[`Calling CubeClient functions [Function getCampaignEventsTotalsData] sho
 {
   "query": [
     {
-      "dimensions": [
-        "CampaignOrderEvents.accountId",
-      ],
+      "dimensions": [],
       "filters": [
         {
           "member": "CampaignOrderEvents.createdDatetime",
@@ -165,9 +163,7 @@ exports[`Calling CubeClient functions [Function getCampaignOrderTotalsData] shou
 {
   "query": [
     {
-      "dimensions": [
-        "OrderConversion.accountId",
-      ],
+      "dimensions": [],
       "filters": [
         {
           "member": "OrderConversion.createdDatetime",
@@ -194,7 +190,6 @@ exports[`Calling CubeClient functions [Function getCampaignOrderTotalsData] shou
         },
       ],
       "measures": [
-        "OrderConversion.gmv",
         "OrderConversion.influencedRevenueUplift",
         "OrderConversion.campaignSales",
       ],
@@ -207,9 +202,7 @@ exports[`Calling CubeClient functions [Function getCampaignsPerformanceGraphData
 {
   "query": [
     {
-      "dimensions": [
-        "CampaignOrderEvents.accountId",
-      ],
+      "dimensions": [],
       "filters": [
         {
           "member": "CampaignOrderEvents.createdDatetime",
@@ -264,9 +257,7 @@ exports[`Calling CubeClient functions [Function getRevenueUpliftGraphData] shoul
 {
   "query": [
     {
-      "dimensions": [
-        "OrderConversion.accountId",
-      ],
+      "dimensions": [],
       "filters": [
         {
           "member": "OrderConversion.createdDatetime",
@@ -310,6 +301,36 @@ exports[`Calling CubeClient functions [Function getRevenueUpliftGraphData] shoul
           "dimension": "OrderConversion.createdDatetime",
           "granularity": "day",
         },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Calling CubeClient functions [Function getStoreRevenueTotalData] should call load 1`] = `
+{
+  "query": [
+    {
+      "dimensions": [],
+      "filters": [
+        {
+          "member": "OrderConversion.createdDatetime",
+          "operator": "inDateRange",
+          "values": [
+            "2023-01-01T00:00:00-08:00",
+            "2023-03-15T23:59:59-07:00",
+          ],
+        },
+        {
+          "member": "OrderConversion.shopName",
+          "operator": "equals",
+          "values": [
+            "punched-tires-shop",
+          ],
+        },
+      ],
+      "measures": [
+        "OrderConversion.gmv",
       ],
     },
   ],
