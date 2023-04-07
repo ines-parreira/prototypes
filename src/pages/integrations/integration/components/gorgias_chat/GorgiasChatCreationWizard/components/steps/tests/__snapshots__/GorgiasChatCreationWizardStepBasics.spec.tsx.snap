@@ -10,7 +10,7 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form when updating chat
       "meta": Immutable.Map {
         "shop_integration_id": null,
         "preferences": Immutable.Map {
-          "live_chat_availability": "always-live-during-business-hours",
+          "live_chat_availability": "auto-based-on-agent-availability",
         },
         "language": "en-US",
         "wizard": Immutable.Map {
@@ -58,7 +58,7 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form with default value
       "meta": Immutable.Map {
         "language": "en-US",
         "preferences": Immutable.Map {
-          "live_chat_availability": "always-live-during-business-hours",
+          "live_chat_availability": "auto-based-on-agent-availability",
           "email_capture_enforcement": "optional",
           "auto_responder": Immutable.Map {
             "enabled": true,

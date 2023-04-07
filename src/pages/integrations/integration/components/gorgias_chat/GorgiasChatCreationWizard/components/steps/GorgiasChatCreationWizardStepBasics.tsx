@@ -13,7 +13,7 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
-    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
+    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -112,7 +112,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         useState<Map<any, any>>()
     const [currentLiveChatAvailability, setCurrentLiveChatAvailability] =
         useState<
-            | typeof GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
+            | typeof GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
             | typeof GORGIAS_CHAT_LIVE_CHAT_OFFLINE
         >()
 
@@ -120,7 +120,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         currentLiveChatAvailability ||
         integration.getIn(
             ['meta', 'preferences', 'live_chat_availability'],
-            GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
+            GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
         )
 
     const name = currentName ?? integration.get('name')
@@ -147,7 +147,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const [currentIsStoreRequired, setCurrentIsStoreRequired] =
         useState<boolean>()
 
-    const isStoreRequired = !!(currentIsStoreRequired ?? storeIntegration)
+    const isStoreRequired =
+        currentIsStoreRequired ?? (isUpdate ? !!storeIntegration : true)
 
     const hasIncompleteFields = !name || (isStoreRequired && !storeIntegration)
 
@@ -420,7 +421,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
                                 setCurrentStoreIntegration(storeIntegration)
 
-                                if (!currentName) {
+                                if (!name) {
                                     setCurrentName(storeIntegration.get('name'))
                                 }
                             }}
@@ -439,17 +440,17 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         <div className={css.radioButtonGroup}>
                             <PreviewRadioButton
                                 value={
-                                    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
+                                    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
                                 }
                                 isSelected={
                                     liveChatAvailability ===
-                                    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
+                                    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
                                 }
                                 label="Allow live chat messages"
                                 caption="Creates live chat tickets when an agent is available during business hours."
                                 onClick={() =>
                                     setCurrentLiveChatAvailability(
-                                        GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
+                                        GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
                                     )
                                 }
                             />

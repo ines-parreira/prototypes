@@ -89,7 +89,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         fireEvent.click(getByText('Create & Customize', {selector: 'button'}))
 
-        expect(getAllByText('This field is required.')).toHaveLength(1)
+        expect(getAllByText('This field is required.')).toHaveLength(2)
 
         fireEvent.click(
             getByLabelText('Ecommerce platforms', {selector: 'input'})
