@@ -29,6 +29,7 @@ export function initLaunchDarkly(
                 userId: user.id.toString(),
                 domain: account.domain,
                 cluster: window.GORGIAS_CLUSTER,
+                userImpersonated: window.USER_IMPERSONATED || false,
             },
         }
     }
