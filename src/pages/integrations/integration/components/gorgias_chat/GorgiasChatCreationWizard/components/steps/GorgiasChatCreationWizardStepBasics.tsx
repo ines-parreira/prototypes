@@ -390,9 +390,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                             Connect a store
                         </Label>
                         <div className={css.connectStoreDescription}>
-                            {isStoreRequired
-                                ? 'Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.'
-                                : 'Connect a store to enable Automation Add-on features in chat. You can always connect a store later.'}
+                            Connect a store to use Automation Add-on features in
+                            chat and to enable 1-click install for Shopify.
                         </div>
                         <StoreNameDropdown
                             storeIntegrationId={storeIntegration?.get('id')}
@@ -421,7 +420,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                     </div>
                     <div className={css.section}>
                         <div className={css.sectionHeading}>
-                            Allow customers to send live chat messages
+                            Choose how to connect with customers
                         </div>
                         <div className={css.radioButtonGroup}>
                             <PreviewRadioButton
@@ -446,8 +445,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                     liveChatAvailability ===
                                     GORGIAS_CHAT_LIVE_CHAT_OFFLINE
                                 }
-                                label="Only contact form messages"
-                                caption="Creates contact form tickets that you can reply by email at any moment."
+                                label="Allow only contact form messages"
+                                caption="Creates contact form tickets that you can respond to by email at any moment."
                                 onClick={() =>
                                     setCurrentLiveChatAvailability(
                                         GORGIAS_CHAT_LIVE_CHAT_OFFLINE
