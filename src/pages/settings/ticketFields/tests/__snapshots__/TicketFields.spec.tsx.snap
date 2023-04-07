@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TicketFields/> account has the feature flag should render active ticket fields 1`] = `
+exports[`<TicketFields/> should render active ticket fields 1`] = `
 <div
   class="full-width overflow-auto pageContainer"
 >
@@ -91,7 +91,7 @@ exports[`<TicketFields/> account has the feature flag should render active ticke
 </div>
 `;
 
-exports[`<TicketFields/> account has the feature flag should render archived ticket fields 1`] = `
+exports[`<TicketFields/> should render archived ticket fields 1`] = `
 <div
   class="full-width overflow-auto pageContainer"
 >
@@ -182,7 +182,7 @@ exports[`<TicketFields/> account has the feature flag should render archived tic
 </div>
 `;
 
-exports[`<TicketFields/> account has the feature flag should render get started 1`] = `
+exports[`<TicketFields/> should render get started 1`] = `
 <div
   class="full-width overflow-auto pageContainer"
 >
@@ -235,7 +235,7 @@ exports[`<TicketFields/> account has the feature flag should render get started 
 </div>
 `;
 
-exports[`<TicketFields/> account has the feature flag should render no active ticket fields 1`] = `
+exports[`<TicketFields/> should render no active ticket fields 1`] = `
 <div
   class="full-width overflow-auto pageContainer"
 >
@@ -332,7 +332,7 @@ exports[`<TicketFields/> account has the feature flag should render no active ti
 </div>
 `;
 
-exports[`<TicketFields/> account has the feature flag should render no archived ticket fields 1`] = `
+exports[`<TicketFields/> should render no archived ticket fields 1`] = `
 <div
   class="full-width overflow-auto pageContainer"
 >
@@ -429,7 +429,7 @@ exports[`<TicketFields/> account has the feature flag should render no archived 
 </div>
 `;
 
-exports[`<TicketFields/> account has the feature flag should render no results found 1`] = `
+exports[`<TicketFields/> should render no results found 1`] = `
 <div
   class="full-width overflow-auto pageContainer"
 >

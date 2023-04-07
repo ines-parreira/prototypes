@@ -1,9 +1,7 @@
 import React from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useTitle from 'hooks/useTitle'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -18,12 +16,6 @@ export default function EditTicketField() {
     const {data: field, isLoading} = useGetCustomFieldDefinition(id)
 
     useTitle(field?.label)
-
-    // Only show this page if the ticket fields feature flag is on
-    const ticketFieldsEnabled = useFlags()[FeatureFlagKey.TicketFields]
-    if (!ticketFieldsEnabled) {
-        return null
-    }
 
     if (isLoading || !field) {
         return <Loader />

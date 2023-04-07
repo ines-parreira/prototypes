@@ -34,7 +34,6 @@ export enum FeatureFlagKey {
     SelfServiceArticleRecommendation = 'self-service-article-recommendation',
     SelfServiceAutomatedResponseOrderManagement = 'self-service-automated-response-order-management',
     SpotlightGlobalSearch = 'spotlight-global-search',
-    TicketFields = 'ticket-fields',
     HelpCenterMigrationConfig = 'migration-config',
     ChatLauncherCustomization = 'chat-launcher-customization',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',

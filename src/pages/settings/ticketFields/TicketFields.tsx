@@ -4,8 +4,6 @@ import {Container} from 'reactstrap'
 import {Link, NavLink, useParams} from 'react-router-dom'
 import {useDebounce} from 'react-use'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useIsFlagEnabled} from 'hooks/useIsFlagEnabled'
 import useTitle from 'hooks/useTitle'
 import {
     useGetCustomFieldDefinitions,
@@ -30,7 +28,6 @@ export default function TicketFields() {
     const {activeTab} = useParams<{activeTab: TicketFieldsTab | string}>()
     const [activeCursor, setActiveCursor] = useState<Maybe<string>>(null)
     const [archivedCursor, setArchivedCursor] = useState<Maybe<string>>(null)
-    const isTicketFieldsEnabled = useIsFlagEnabled(FeatureFlagKey.TicketFields)
 
     const [search, setSearch] = useState('')
     const [debouncedSearch, setDebouncedSearch] = useState('')
@@ -45,9 +42,7 @@ export default function TicketFields() {
     const {
         data: {data: activeFields = [], meta: activeFieldsPaginationMeta} = {},
         isLoading: isLoadingActive,
-    } = useGetCustomFieldDefinitions(activeParams, {
-        enabled: isTicketFieldsEnabled,
-    })
+    } = useGetCustomFieldDefinitions(activeParams)
 
     const {mutate: mutateCustomFieldsPriority} =
         useUpdateCustomFields(activeParams)
@@ -58,20 +53,12 @@ export default function TicketFields() {
             meta: archivedFieldsPaginationMeta,
         } = {},
         isLoading: isLoadingArchived,
-    } = useGetCustomFieldDefinitions(
-        {
-            archived: true,
-            object_type: 'Ticket',
-            cursor: archivedCursor,
-            search: debouncedSearch,
-        },
-        {enabled: isTicketFieldsEnabled}
-    )
-
-    // Only show this page if the ticket fields feature flag is on
-    if (!isTicketFieldsEnabled) {
-        return null
-    }
+    } = useGetCustomFieldDefinitions({
+        archived: true,
+        object_type: 'Ticket',
+        cursor: archivedCursor,
+        search: debouncedSearch,
+    })
 
     const ticketFields = activeTab === 'active' ? activeFields : archivedFields
 

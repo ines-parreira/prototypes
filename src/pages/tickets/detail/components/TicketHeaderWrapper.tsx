@@ -1,6 +1,5 @@
 import classnames from 'classnames'
 import React, {useMemo} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {fromJS, Map} from 'immutable'
 import HistoryButton from 'pages/tickets/detail/components/HistoryButton'
@@ -13,7 +12,6 @@ import {
     getOtherAgentsOnTicket,
     getOtherAgentsTypingOnTicket,
 } from 'state/agents/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from './TicketHeaderWrapper.less'
 import TicketFields from './TicketFields/TicketFields'
@@ -107,9 +105,6 @@ const TicketHeaderWrapper = ({
     handleHistoryToggle,
     setStatus,
 }: Props) => {
-    const flags = useFlags()
-    const isTicketFieldsEnabled = flags[FeatureFlagKey.TicketFields]
-
     const ticket = useAppSelector((state) => state.ticket)
     const customers = useAppSelector(getCustomersState)
     const isHistoryDisplayed = useAppSelector(getDisplayHistory)
@@ -149,7 +144,7 @@ const TicketHeaderWrapper = ({
                         className="flex-grow"
                     />
                 </div>
-                {isTicketFieldsEnabled && <TicketFields />}
+                <TicketFields />
                 <CollisionDetection />
             </div>
             {isExistingTicket && <div style={{height: 16}} />}

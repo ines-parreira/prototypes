@@ -19,7 +19,6 @@ import shortcutManager from 'services/shortcutManager'
 import socketManager from 'services/socketManager/socketManager'
 import {JoinEventType} from 'services/socketManager/types'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     DEPRECATED_getActiveCustomer,
     getCustomersState,
@@ -53,7 +52,6 @@ import {getTicketFieldState} from 'state/ticket/selectors'
 import {getActiveView} from 'state/views/selectors'
 import {isMacOs} from 'utils/platform'
 
-import {useIsFlagEnabled} from 'hooks/useIsFlagEnabled'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {RecentItems} from 'hooks/useRecentItems/constants'
 import {Ticket} from 'models/ticket/types'
@@ -102,7 +100,6 @@ export const TicketDetailContainer = ({
     updateCursor,
     fieldsState,
 }: ConnectedProps<typeof connector>) => {
-    const isTicketFieldsEnabled = useIsFlagEnabled(FeatureFlagKey.TicketFields)
     const dispatch = useAppDispatch()
     const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
     const {customer: customerId} = useSearch<{customer?: string}>()
@@ -125,13 +122,10 @@ export const TicketDetailContainer = ({
     const {
         data: {data: fieldDefinitions = []} = {},
         isLoading: isTicketFieldDefinitionLoading,
-    } = useGetCustomFieldDefinitions(
-        {
-            archived: false,
-            object_type: 'Ticket',
-        },
-        {enabled: isTicketFieldsEnabled}
-    )
+    } = useGetCustomFieldDefinitions({
+        archived: false,
+        object_type: 'Ticket',
+    })
 
     const [isTicketHidden, setIsTicketHidden] = useState(false)
 

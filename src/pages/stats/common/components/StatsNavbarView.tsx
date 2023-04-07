@@ -19,8 +19,6 @@ const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
 }
 
 export default function StatsNavbarView() {
-    const hasTicketFields: boolean | undefined =
-        useFlags()[FeatureFlagKey.TicketFields]
     const hasAnalyticsBeta: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
     const isAutomationSettingsRevampEnabled: boolean | undefined =
@@ -80,14 +78,12 @@ export default function StatsNavbarView() {
                         </NavbarLink>
                     )}
 
-                    {hasTicketFields && (
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/ticket-fields"
-                        >
-                            Ticket Fields
-                        </NavbarLink>
-                    )}
+                    <NavbarLink
+                        {...COMMON_NAV_LINK_PROPS}
+                        to="/app/stats/ticket-fields"
+                    >
+                        Ticket Fields
+                    </NavbarLink>
 
                     <NavbarLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/tags">
                         Tags

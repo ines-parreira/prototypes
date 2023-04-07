@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AddTicketField/> should render if the account has the feature flag 1`] = `
+exports[`<AddTicketField/> should render 1`] = `
 <div
   class="full-width"
 >

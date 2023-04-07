@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<EditTicketField/> should render if the account has the feature flag 1`] = `
+exports[`<EditTicketField/> should render 1`] = `
 <div
   class="container"
 >
@@ -16,7 +16,7 @@ exports[`<EditTicketField/> should render if the account has the feature flag 1`
 </div>
 `;
 
-exports[`<EditTicketField/> should render if the account has the feature flag 2`] = `
+exports[`<EditTicketField/> should render 2`] = `
 <div
   class="full-width"
 >

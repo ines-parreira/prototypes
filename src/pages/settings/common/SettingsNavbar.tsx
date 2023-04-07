@@ -128,7 +128,6 @@ const CATEGORIES: Category[] = [
         links: [
             {
                 requiredRole: ADMIN_ROLE,
-                requiredFeatureFlag: FeatureFlagKey.TicketFields,
                 to: 'ticket-fields',
                 text: 'Ticket fields',
                 extra: (

@@ -71,6 +71,13 @@ exports[`StatsNavbarView should render 1`] = `
           <a
             class="link"
             data-active-class-name="active"
+            href="/app/stats/ticket-fields"
+          >
+            Ticket Fields
+          </a>
+          <a
+            class="link"
+            data-active-class-name="active"
             href="/app/stats/tags"
           >
             Tags
@@ -213,6 +220,13 @@ exports[`StatsNavbarView should render 1`] = `
           href="/app/stats/support-performance-overview"
         >
           Overview
+        </a>
+        <a
+          class="link"
+          data-active-class-name="active"
+          href="/app/stats/ticket-fields"
+        >
+          Ticket Fields
         </a>
         <a
           class="link"
