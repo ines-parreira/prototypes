@@ -1,9 +1,12 @@
 import React, {ComponentProps, SyntheticEvent} from 'react'
 import {Provider} from 'react-redux'
+import {Router} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import {mount, shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 import _noop from 'lodash/noop'
+
+import history from 'pages/history'
 
 import {user} from 'fixtures/users'
 import {
@@ -448,9 +451,11 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 <GorgiasChatIntegrationPreferencesComponent {...minProps} />,
                 {
                     wrappingComponent: ({children}) => (
-                        <Provider store={mockStore(defaultState)}>
-                            {children}
-                        </Provider>
+                        <Router history={history}>
+                            <Provider store={mockStore(defaultState)}>
+                                {children}
+                            </Provider>
+                        </Router>
                     ),
                 }
             )

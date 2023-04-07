@@ -157,31 +157,64 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidUpdate() should initia
 `;
 
 exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in loading state because preferences are being submitted 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
-      >
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            to="/app/settings/channels/gorgias_chat"
-          >
-            Chat
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        />
-      </Breadcrumb>
-    }
+<Fragment>
+  <NavigatedSuccessModal
+    buttonLabel="See Chat Settings"
+    icon="party-popper"
+    name="gorgias-chat-auto-installation"
   >
+    <div
+      className="heading-page-semibold mb-2"
+    >
+      All set!
+    </div>
+    <div
+      className="heading-subsection-regular"
+    >
+      Your chat is now available on your website.
+    </div>
+  </NavigatedSuccessModal>
+  <div
+    className="full-width"
+  >
+    <PageHeader
+      title={
+        <Breadcrumb
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
+        >
+          <BreadcrumbItem
+            tag="li"
+          >
+            <Link
+              to="/app/settings/channels/gorgias_chat"
+            >
+              Chat
+            </Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem
+            tag="li"
+          />
+        </Breadcrumb>
+      }
+    >
+      <Component
+        integration={
+          Immutable.Map {
+            "id": 2,
+            "type": "gorgias_chat",
+            "meta": Immutable.Map {
+              "language": "en-US",
+            },
+            "decoration": Immutable.Map {
+              "main_color": "#789c5d",
+              "conversation_color": "#08d123",
+            },
+          }
+        }
+      />
+    </PageHeader>
     <Component
       integration={
         Immutable.Map {
@@ -197,456 +230,474 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
         }
       }
     />
-  </PageHeader>
-  <Component
-    integration={
-      Immutable.Map {
-        "id": 2,
-        "type": "gorgias_chat",
-        "meta": Immutable.Map {
-          "language": "en-US",
-        },
-        "decoration": Immutable.Map {
-          "main_color": "#789c5d",
-          "conversation_color": "#08d123",
-        },
-      }
-    }
-  />
-  <GorgiasChatIntegrationPreviewContainer
-    preview={
-      <ChatIntegrationPreview
-        autoResponderEnabled={false}
-        autoResponderReply="reply-dynamic"
-        avatar={
-          {
-            "companyLogoUrl": undefined,
-            "imageType": "agent-picture",
-            "nameType": "agent-first-name",
-          }
-        }
-        avatarTeamPictureUrl={null}
-        avatarType="team-members"
-        isOnline={true}
-        language="en-US"
-        mainColor="#789c5d"
-        mainFontFamily="Inter"
-        position={
-          {
-            "alignment": "bottom-right",
-            "offsetX": 0,
-            "offsetY": 0,
-          }
-        }
-        renderFooter={true}
-        shouldHideAvatarOnlineMarker={false}
-      >
-        <ChatIntegrationPreviewContent>
-          <ConversationTimestamp />
-          <CustomerInitialMessages
-            conversationColor="#08d123"
-            hideConversationTimestamp={true}
-            messages={
-              [
-                "Hi, could you give me an update on my order status?",
-              ]
+    <GorgiasChatIntegrationPreviewContainer
+      preview={
+        <ChatIntegrationPreview
+          autoResponderEnabled={false}
+          autoResponderReply="reply-dynamic"
+          avatar={
+            {
+              "companyLogoUrl": undefined,
+              "imageType": "agent-picture",
+              "nameType": "agent-first-name",
             }
-          />
-          <AutoResponder
-            autoResponderReply="reply-dynamic"
-            conversationColor="#08d123"
-            language="en-US"
-          />
-        </ChatIntegrationPreviewContent>
-      </ChatIntegrationPreview>
-    }
-  >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <div>
-        <div
-          className="formSection"
+          }
+          avatarTeamPictureUrl={null}
+          avatarType="team-members"
+          isOnline={true}
+          language="en-US"
+          mainColor="#789c5d"
+          mainFontFamily="Inter"
+          position={
+            {
+              "alignment": "bottom-right",
+              "offsetX": 0,
+              "offsetY": 0,
+            }
+          }
+          renderFooter={true}
+          shouldHideAvatarOnlineMarker={false}
         >
-          <h4
-            className="title mb-1"
+          <ChatIntegrationPreviewContent>
+            <ConversationTimestamp />
+            <CustomerInitialMessages
+              conversationColor="#08d123"
+              hideConversationTimestamp={true}
+              messages={
+                [
+                  "Hi, could you give me an update on my order status?",
+                ]
+              }
+            />
+            <AutoResponder
+              autoResponderReply="reply-dynamic"
+              conversationColor="#08d123"
+              language="en-US"
+            />
+          </ChatIntegrationPreviewContent>
+        </ChatIntegrationPreview>
+      }
+    >
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <div>
+          <div
+            className="formSection"
           >
-            Live chat
-          </h4>
-          <div>
+            <h4
+              className="title mb-1"
+            >
+              Live chat
+            </h4>
+            <div>
+              <p
+                className="mb-4"
+              >
+                Choose when customers can send live chat messages to your team during
+                 
+                <Link
+                  to="/app/settings/business-hours"
+                >
+                  business hours
+                </Link>
+                .
+              </p>
+              <RadioFieldSet
+                className="mb-3 radioFieldSet"
+                onChange={[Function]}
+                options={
+                  [
+                    {
+                      "caption": "Customers can only send live chat messages when an agent is available in Gorgias",
+                      "label": "Live when agents are available",
+                      "value": "auto-based-on-agent-availability",
+                    },
+                    {
+                      "caption": "Customers can always send live chat messages during business hours",
+                      "label": "Always live during business hours",
+                      "value": "always-live-during-business-hours",
+                    },
+                    {
+                      "caption": "Customers can only send messages using the contact form",
+                      "label": "Offline",
+                      "value": "offline",
+                    },
+                  ]
+                }
+                selectedValue="auto-based-on-agent-availability"
+              />
+              <p
+                className="mb-3"
+              >
+                Automation Add-on features are always available, if enabled. When live chat is unavailable, customers can message your team with
+                 
+                <a
+                  href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  contact form
+                </a>
+                 
+                to receive an email response. Live chat is always unavailable outside business hours.
+              </p>
+            </div>
+          </div>
+          <div
+            className="formSection"
+          >
+            <h4
+              className="title"
+            >
+              Visibility options
+            </h4>
+            <div
+              className="formGroup d-flex"
+            >
+              <ToggleInput
+                aria-label="Hide chat"
+                isToggled={false}
+                onClick={[Function]}
+              />
+              <div
+                className="toggleInfo ml-1"
+              >
+                <b>
+                  Hide chat
+                </b>
+                <span
+                  className="tooltipIcon"
+                  id="hide-chat-help"
+                >
+                  <i
+                    className="material-icons-outlined"
+                  >
+                    error_outline
+                  </i>
+                </span>
+                <Tooltip
+                  autohide={false}
+                  delay={100}
+                  placement="top-start"
+                  style={
+                    {
+                      "textAlign": "left",
+                    }
+                  }
+                  target="hide-chat-help"
+                >
+                  <div
+                    className="mb-3"
+                  >
+                    Hiding chat removes the widget from your website, but doesn't uninstall it.
+                  </div>
+                  If you're getting too many live chat messages, you can change your live chat settings above.
+                </Tooltip>
+                <div
+                  className="form-text text-muted"
+                >
+                  Remove widget from your website without uninstalling it
+                </div>
+              </div>
+            </div>
+            <div
+              className="formGroup d-flex"
+            >
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
+              />
+              <div
+                className="toggleInfo ml-1"
+              >
+                <b>
+                  Hide outside of business hours
+                </b>
+                <span
+                  className="tooltipIcon"
+                  id="hide-outside-business-hours-help"
+                >
+                  <i
+                    className="material-icons-outlined"
+                  >
+                    info
+                  </i>
+                </span>
+                <Tooltip
+                  arrowClassName="tooltip-arrow"
+                  innerClassName="tooltip-inner"
+                  placement="top-start"
+                  popperClassName="tooltip"
+                  target="hide-outside-business-hours-help"
+                >
+                  Customers with active conversations will be notified 30 minutes before the chat is hidden.
+                </Tooltip>
+                <div
+                  className="form-text text-muted"
+                >
+                  Remove widget from your website after business hours
+                </div>
+              </div>
+            </div>
+            <div
+              className="formGroup d-flex"
+            >
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
+              />
+              <div
+                className="toggleInfo ml-1"
+              >
+                <b>
+                  Hide on mobile
+                </b>
+              </div>
+            </div>
+          </div>
+          <div
+            className="formSection"
+          >
+            <h4
+              className="title mb-1"
+            >
+              Email capture
+            </h4>
             <p
               className="mb-4"
             >
-              Choose when customers can send live chat messages to your team during
-               
-              <Link
-                to="/app/settings/business-hours"
-              >
-                business hours
-              </Link>
-              .
+              Collecting customer emails helps grow your email list and send follow-up messages. However, only around 30% of customers will send a message if they must provide an email.
             </p>
             <RadioFieldSet
-              className="mb-3 radioFieldSet"
               onChange={[Function]}
               options={
                 [
                   {
-                    "caption": "Customers can only send live chat messages when an agent is available in Gorgias",
-                    "label": "Live when agents are available",
-                    "value": "auto-based-on-agent-availability",
+                    "label": "Optional",
+                    "value": "optional",
                   },
                   {
-                    "caption": "Customers can always send live chat messages during business hours",
-                    "label": "Always live during business hours",
-                    "value": "always-live-during-business-hours",
-                  },
-                  {
-                    "caption": "Customers can only send messages using the contact form",
-                    "label": "Offline",
-                    "value": "offline",
+                    "label": "Required",
+                    "value": "always-required",
                   },
                 ]
               }
-              selectedValue="auto-based-on-agent-availability"
+              selectedValue="optional"
             />
+          </div>
+          <div
+            className="formSection"
+          >
+            <h4
+              className="title mb-3"
+            >
+              Autoresponder
+            </h4>
+            <div
+              className="mb-4 d-flex align-items-center"
+            >
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
+              />
+              <div
+                className="ml-1"
+              >
+                <b>
+                  Enable autoresponder
+                </b>
+              </div>
+            </div>
+            <div
+              className="mb-3"
+            >
+              <p
+                className=""
+              >
+                During
+                 
+                <Link
+                  to="/app/settings/business-hours"
+                >
+                  business hours
+                </Link>
+                , let customers know how fast they can expect a response with an autoresponder. A message is sent in new chat tickets after 30 seconds without replies from an agent.
+              </p>
+              <RadioFieldSet
+                className="mb-2 radioFieldSet"
+                isDisabled={false}
+                onChange={[Function]}
+                options={
+                  [
+                    {
+                      "label": <div>
+                        Dynamic wait time (recommended)
+                        <span
+                          className="tooltipIcon"
+                          id="dynamic-wait-time-option"
+                        >
+                          <i
+                            className="material-icons"
+                          >
+                            info_outline
+                          </i>
+                        </span>
+                        <Tooltip
+                          autohide={false}
+                          placement="top"
+                          target="dynamic-wait-time-option"
+                        >
+                          Calculated based on your team's recent live chat response times.
+                           
+                          <a
+                            href="https://docs.gorgias.com/en-US/109858-dc67e62b040a4649aed68bdce7ffa4f5"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            Learn more
+                          </a>
+                        </Tooltip>
+                        <p
+                          className="dynamicDescription"
+                        >
+                          If the wait time is long, customers can choose to wait in the chat or leave a message through contact form
+                        </p>
+                      </div>,
+                      "value": "reply-dynamic",
+                    },
+                    {
+                      "label": "In a few minutes",
+                      "value": "reply-in-minutes",
+                    },
+                    {
+                      "label": "In a few hours",
+                      "value": "reply-in-hours",
+                    },
+                  ]
+                }
+                selectedValue="reply-dynamic"
+              />
+            </div>
+          </div>
+          <div
+            className="formSection"
+          >
+            <h4
+              className="title mb-1"
+            >
+              Forward chat replies to customer emails
+            </h4>
             <p
               className="mb-3"
             >
-              Automation Add-on features are always available, if enabled. When live chat is unavailable, customers can message your team with
-               
-              <a
-                href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                contact form
-              </a>
-               
-              to receive an email response. Live chat is always unavailable outside business hours.
+              When customers don't see your live chat response after an hour, Gorgias will automatically send your message to the customer's email address (if available). Customers also receive satisfaction surveys for chat tickets via email.
             </p>
-          </div>
-        </div>
-        <div
-          className="formSection"
-        >
-          <h4
-            className="title"
-          >
-            Visibility options
-          </h4>
-          <div
-            className="formGroup d-flex"
-          >
-            <ToggleInput
-              aria-label="Hide chat"
-              isToggled={false}
-              onClick={[Function]}
-            />
-            <div
-              className="toggleInfo ml-1"
-            >
-              <b>
-                Hide chat
-              </b>
-              <span
-                className="tooltipIcon"
-                id="hide-chat-help"
-              >
-                <i
-                  className="material-icons-outlined"
-                >
-                  error_outline
-                </i>
-              </span>
-              <Tooltip
-                autohide={false}
-                delay={100}
-                placement="top-start"
-                style={
-                  {
-                    "textAlign": "left",
-                  }
-                }
-                target="hide-chat-help"
-              >
-                <div
-                  className="mb-3"
-                >
-                  Hiding chat removes the widget from your website, but doesn't uninstall it.
-                </div>
-                If you're getting too many live chat messages, you can change your live chat settings above.
-              </Tooltip>
-              <div
-                className="form-text text-muted"
-              >
-                Remove widget from your website without uninstalling it
-              </div>
-            </div>
-          </div>
-          <div
-            className="formGroup d-flex"
-          >
-            <ToggleInput
-              isToggled={false}
-              onClick={[Function]}
-            />
-            <div
-              className="toggleInfo ml-1"
-            >
-              <b>
-                Hide outside of business hours
-              </b>
-              <span
-                className="tooltipIcon"
-                id="hide-outside-business-hours-help"
-              >
-                <i
-                  className="material-icons-outlined"
-                >
-                  info
-                </i>
-              </span>
-              <Tooltip
-                arrowClassName="tooltip-arrow"
-                innerClassName="tooltip-inner"
-                placement="top-start"
-                popperClassName="tooltip"
-                target="hide-outside-business-hours-help"
-              >
-                Customers with active conversations will be notified 30 minutes before the chat is hidden.
-              </Tooltip>
-              <div
-                className="form-text text-muted"
-              >
-                Remove widget from your website after business hours
-              </div>
-            </div>
-          </div>
-          <div
-            className="formGroup d-flex"
-          >
-            <ToggleInput
-              isToggled={false}
-              onClick={[Function]}
-            />
-            <div
-              className="toggleInfo ml-1"
-            >
-              <b>
-                Hide on mobile
-              </b>
-            </div>
-          </div>
-        </div>
-        <div
-          className="formSection"
-        >
-          <h4
-            className="title mb-1"
-          >
-            Email capture
-          </h4>
-          <p
-            className="mb-4"
-          >
-            Collecting customer emails helps grow your email list and send follow-up messages. However, only around 30% of customers will send a message if they must provide an email.
-          </p>
-          <RadioFieldSet
-            onChange={[Function]}
-            options={
-              [
-                {
-                  "label": "Optional",
-                  "value": "optional",
-                },
-                {
-                  "label": "Required",
-                  "value": "always-required",
-                },
-              ]
-            }
-            selectedValue="optional"
-          />
-        </div>
-        <div
-          className="formSection"
-        >
-          <h4
-            className="title mb-3"
-          >
-            Autoresponder
-          </h4>
-          <div
-            className="mb-4 d-flex align-items-center"
-          >
-            <ToggleInput
-              isToggled={true}
-              onClick={[Function]}
-            />
-            <div
-              className="ml-1"
-            >
-              <b>
-                Enable autoresponder
-              </b>
-            </div>
-          </div>
-          <div
-            className="mb-3"
-          >
-            <p
-              className=""
-            >
-              During
-               
-              <Link
-                to="/app/settings/business-hours"
-              >
-                business hours
-              </Link>
-              , let customers know how fast they can expect a response with an autoresponder. A message is sent in new chat tickets after 30 seconds without replies from an agent.
-            </p>
-            <RadioFieldSet
-              className="mb-2 radioFieldSet"
-              isDisabled={false}
-              onChange={[Function]}
-              options={
+            <Label
+              className="control-label"
+              for="linkedEmailIntegration"
+              tag="label"
+              widths={
                 [
-                  {
-                    "label": <div>
-                      Dynamic wait time (recommended)
-                      <span
-                        className="tooltipIcon"
-                        id="dynamic-wait-time-option"
-                      >
-                        <i
-                          className="material-icons"
-                        >
-                          info_outline
-                        </i>
-                      </span>
-                      <Tooltip
-                        autohide={false}
-                        placement="top"
-                        target="dynamic-wait-time-option"
-                      >
-                        Calculated based on your team's recent live chat response times.
-                         
-                        <a
-                          href="https://docs.gorgias.com/en-US/109858-dc67e62b040a4649aed68bdce7ffa4f5"
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          Learn more
-                        </a>
-                      </Tooltip>
-                      <p
-                        className="dynamicDescription"
-                      >
-                        If the wait time is long, customers can choose to wait in the chat or leave a message through contact form
-                      </p>
-                    </div>,
-                    "value": "reply-dynamic",
-                  },
-                  {
-                    "label": "In a few minutes",
-                    "value": "reply-in-minutes",
-                  },
-                  {
-                    "label": "In a few hours",
-                    "value": "reply-in-hours",
-                  },
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
                 ]
               }
-              selectedValue="reply-dynamic"
+            >
+              Select which email address sends these messages
+            </Label>
+            <SelectField
+              allowCustomValue={false}
+              fixedWidth={false}
+              fullWidth={true}
+              id={null}
+              onChange={[Function]}
+              onSearchChange={[Function]}
+              options={[]}
+              placeholder="Select an email integration"
+              required={false}
+              singular="option"
+              style={{}}
+              value={null}
             />
           </div>
         </div>
-        <div
-          className="formSection"
+        <ForwardRef
+          isDisabled={true}
+          isLoading={true}
+          type="submit"
         >
-          <h4
-            className="title mb-1"
-          >
-            Forward chat replies to customer emails
-          </h4>
-          <p
-            className="mb-3"
-          >
-            When customers don't see your live chat response after an hour, Gorgias will automatically send your message to the customer's email address (if available). Customers also receive satisfaction surveys for chat tickets via email.
-          </p>
-          <Label
-            className="control-label"
-            for="linkedEmailIntegration"
-            tag="label"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            Select which email address sends these messages
-          </Label>
-          <SelectField
-            allowCustomValue={false}
-            fixedWidth={false}
-            fullWidth={true}
-            id={null}
-            onChange={[Function]}
-            onSearchChange={[Function]}
-            options={[]}
-            placeholder="Select an email integration"
-            required={false}
-            singular="option"
-            style={{}}
-            value={null}
-          />
-        </div>
-      </div>
-      <ForwardRef
-        isDisabled={true}
-        isLoading={true}
-        type="submit"
-      >
-        Save Changes
-      </ForwardRef>
-    </Form>
-  </GorgiasChatIntegrationPreviewContainer>
-</div>
+          Save Changes
+        </ForwardRef>
+      </Form>
+    </GorgiasChatIntegrationPreviewContainer>
+  </div>
+</Fragment>
 `;
 
 exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat preferences 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
-      >
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            to="/app/settings/channels/gorgias_chat"
-          >
-            Chat
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        />
-      </Breadcrumb>
-    }
+<Fragment>
+  <NavigatedSuccessModal
+    buttonLabel="See Chat Settings"
+    icon="party-popper"
+    name="gorgias-chat-auto-installation"
   >
+    <div
+      className="heading-page-semibold mb-2"
+    >
+      All set!
+    </div>
+    <div
+      className="heading-subsection-regular"
+    >
+      Your chat is now available on your website.
+    </div>
+  </NavigatedSuccessModal>
+  <div
+    className="full-width"
+  >
+    <PageHeader
+      title={
+        <Breadcrumb
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
+        >
+          <BreadcrumbItem
+            tag="li"
+          >
+            <Link
+              to="/app/settings/channels/gorgias_chat"
+            >
+              Chat
+            </Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem
+            tag="li"
+          />
+        </Breadcrumb>
+      }
+    >
+      <Component
+        integration={
+          Immutable.Map {
+            "id": 2,
+            "type": "gorgias_chat",
+            "meta": Immutable.Map {
+              "language": "en-US",
+            },
+            "decoration": Immutable.Map {
+              "main_color": "#789c5d",
+              "conversation_color": "#08d123",
+            },
+          }
+        }
+      />
+    </PageHeader>
     <Component
       integration={
         Immutable.Map {
@@ -662,426 +713,411 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
         }
       }
     />
-  </PageHeader>
-  <Component
-    integration={
-      Immutable.Map {
-        "id": 2,
-        "type": "gorgias_chat",
-        "meta": Immutable.Map {
-          "language": "en-US",
-        },
-        "decoration": Immutable.Map {
-          "main_color": "#789c5d",
-          "conversation_color": "#08d123",
-        },
-      }
-    }
-  />
-  <GorgiasChatIntegrationPreviewContainer
-    preview={
-      <ChatIntegrationPreview
-        autoResponderEnabled={false}
-        autoResponderReply="reply-dynamic"
-        avatar={
-          {
-            "companyLogoUrl": undefined,
-            "imageType": "agent-picture",
-            "nameType": "agent-first-name",
-          }
-        }
-        avatarTeamPictureUrl={null}
-        avatarType="team-members"
-        isOnline={true}
-        language="en-US"
-        mainColor="#789c5d"
-        mainFontFamily="Inter"
-        position={
-          {
-            "alignment": "bottom-right",
-            "offsetX": 0,
-            "offsetY": 0,
-          }
-        }
-        renderFooter={true}
-        shouldHideAvatarOnlineMarker={false}
-      >
-        <ChatIntegrationPreviewContent>
-          <ConversationTimestamp />
-          <CustomerInitialMessages
-            conversationColor="#08d123"
-            hideConversationTimestamp={true}
-            messages={
-              [
-                "Hi, could you give me an update on my order status?",
-              ]
+    <GorgiasChatIntegrationPreviewContainer
+      preview={
+        <ChatIntegrationPreview
+          autoResponderEnabled={false}
+          autoResponderReply="reply-dynamic"
+          avatar={
+            {
+              "companyLogoUrl": undefined,
+              "imageType": "agent-picture",
+              "nameType": "agent-first-name",
             }
-          />
-          <AutoResponder
-            autoResponderReply="reply-dynamic"
-            conversationColor="#08d123"
-            language="en-US"
-          />
-        </ChatIntegrationPreviewContent>
-      </ChatIntegrationPreview>
-    }
-  >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <div>
-        <div
-          className="formSection"
+          }
+          avatarTeamPictureUrl={null}
+          avatarType="team-members"
+          isOnline={true}
+          language="en-US"
+          mainColor="#789c5d"
+          mainFontFamily="Inter"
+          position={
+            {
+              "alignment": "bottom-right",
+              "offsetX": 0,
+              "offsetY": 0,
+            }
+          }
+          renderFooter={true}
+          shouldHideAvatarOnlineMarker={false}
         >
-          <h4
-            className="title mb-1"
+          <ChatIntegrationPreviewContent>
+            <ConversationTimestamp />
+            <CustomerInitialMessages
+              conversationColor="#08d123"
+              hideConversationTimestamp={true}
+              messages={
+                [
+                  "Hi, could you give me an update on my order status?",
+                ]
+              }
+            />
+            <AutoResponder
+              autoResponderReply="reply-dynamic"
+              conversationColor="#08d123"
+              language="en-US"
+            />
+          </ChatIntegrationPreviewContent>
+        </ChatIntegrationPreview>
+      }
+    >
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <div>
+          <div
+            className="formSection"
           >
-            Live chat
-          </h4>
-          <div>
+            <h4
+              className="title mb-1"
+            >
+              Live chat
+            </h4>
+            <div>
+              <p
+                className="mb-4"
+              >
+                Choose when customers can send live chat messages to your team during
+                 
+                <Link
+                  to="/app/settings/business-hours"
+                >
+                  business hours
+                </Link>
+                .
+              </p>
+              <RadioFieldSet
+                className="mb-3 radioFieldSet"
+                onChange={[Function]}
+                options={
+                  [
+                    {
+                      "caption": "Customers can only send live chat messages when an agent is available in Gorgias",
+                      "label": "Live when agents are available",
+                      "value": "auto-based-on-agent-availability",
+                    },
+                    {
+                      "caption": "Customers can always send live chat messages during business hours",
+                      "label": "Always live during business hours",
+                      "value": "always-live-during-business-hours",
+                    },
+                    {
+                      "caption": "Customers can only send messages using the contact form",
+                      "label": "Offline",
+                      "value": "offline",
+                    },
+                  ]
+                }
+                selectedValue="auto-based-on-agent-availability"
+              />
+              <p
+                className="mb-3"
+              >
+                Automation Add-on features are always available, if enabled. When live chat is unavailable, customers can message your team with
+                 
+                <a
+                  href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  contact form
+                </a>
+                 
+                to receive an email response. Live chat is always unavailable outside business hours.
+              </p>
+            </div>
+          </div>
+          <div
+            className="formSection"
+          >
+            <h4
+              className="title"
+            >
+              Visibility options
+            </h4>
+            <div
+              className="formGroup d-flex"
+            >
+              <ToggleInput
+                aria-label="Hide chat"
+                isToggled={false}
+                onClick={[Function]}
+              />
+              <div
+                className="toggleInfo ml-1"
+              >
+                <b>
+                  Hide chat
+                </b>
+                <span
+                  className="tooltipIcon"
+                  id="hide-chat-help"
+                >
+                  <i
+                    className="material-icons-outlined"
+                  >
+                    error_outline
+                  </i>
+                </span>
+                <Tooltip
+                  autohide={false}
+                  delay={100}
+                  placement="top-start"
+                  style={
+                    {
+                      "textAlign": "left",
+                    }
+                  }
+                  target="hide-chat-help"
+                >
+                  <div
+                    className="mb-3"
+                  >
+                    Hiding chat removes the widget from your website, but doesn't uninstall it.
+                  </div>
+                  If you're getting too many live chat messages, you can change your live chat settings above.
+                </Tooltip>
+                <div
+                  className="form-text text-muted"
+                >
+                  Remove widget from your website without uninstalling it
+                </div>
+              </div>
+            </div>
+            <div
+              className="formGroup d-flex"
+            >
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
+              />
+              <div
+                className="toggleInfo ml-1"
+              >
+                <b>
+                  Hide outside of business hours
+                </b>
+                <span
+                  className="tooltipIcon"
+                  id="hide-outside-business-hours-help"
+                >
+                  <i
+                    className="material-icons-outlined"
+                  >
+                    info
+                  </i>
+                </span>
+                <Tooltip
+                  arrowClassName="tooltip-arrow"
+                  innerClassName="tooltip-inner"
+                  placement="top-start"
+                  popperClassName="tooltip"
+                  target="hide-outside-business-hours-help"
+                >
+                  Customers with active conversations will be notified 30 minutes before the chat is hidden.
+                </Tooltip>
+                <div
+                  className="form-text text-muted"
+                >
+                  Remove widget from your website after business hours
+                </div>
+              </div>
+            </div>
+            <div
+              className="formGroup d-flex"
+            >
+              <ToggleInput
+                isToggled={false}
+                onClick={[Function]}
+              />
+              <div
+                className="toggleInfo ml-1"
+              >
+                <b>
+                  Hide on mobile
+                </b>
+              </div>
+            </div>
+          </div>
+          <div
+            className="formSection"
+          >
+            <h4
+              className="title mb-1"
+            >
+              Email capture
+            </h4>
             <p
               className="mb-4"
             >
-              Choose when customers can send live chat messages to your team during
-               
-              <Link
-                to="/app/settings/business-hours"
-              >
-                business hours
-              </Link>
-              .
+              Collecting customer emails helps grow your email list and send follow-up messages. However, only around 30% of customers will send a message if they must provide an email.
             </p>
             <RadioFieldSet
-              className="mb-3 radioFieldSet"
               onChange={[Function]}
               options={
                 [
                   {
-                    "caption": "Customers can only send live chat messages when an agent is available in Gorgias",
-                    "label": "Live when agents are available",
-                    "value": "auto-based-on-agent-availability",
+                    "label": "Optional",
+                    "value": "optional",
                   },
                   {
-                    "caption": "Customers can always send live chat messages during business hours",
-                    "label": "Always live during business hours",
-                    "value": "always-live-during-business-hours",
-                  },
-                  {
-                    "caption": "Customers can only send messages using the contact form",
-                    "label": "Offline",
-                    "value": "offline",
+                    "label": "Required",
+                    "value": "always-required",
                   },
                 ]
               }
-              selectedValue="auto-based-on-agent-availability"
+              selectedValue="optional"
             />
+          </div>
+          <div
+            className="formSection"
+          >
+            <h4
+              className="title mb-3"
+            >
+              Autoresponder
+            </h4>
+            <div
+              className="mb-4 d-flex align-items-center"
+            >
+              <ToggleInput
+                isToggled={true}
+                onClick={[Function]}
+              />
+              <div
+                className="ml-1"
+              >
+                <b>
+                  Enable autoresponder
+                </b>
+              </div>
+            </div>
+            <div
+              className="mb-3"
+            >
+              <p
+                className=""
+              >
+                During
+                 
+                <Link
+                  to="/app/settings/business-hours"
+                >
+                  business hours
+                </Link>
+                , let customers know how fast they can expect a response with an autoresponder. A message is sent in new chat tickets after 30 seconds without replies from an agent.
+              </p>
+              <RadioFieldSet
+                className="mb-2 radioFieldSet"
+                isDisabled={false}
+                onChange={[Function]}
+                options={
+                  [
+                    {
+                      "label": <div>
+                        Dynamic wait time (recommended)
+                        <span
+                          className="tooltipIcon"
+                          id="dynamic-wait-time-option"
+                        >
+                          <i
+                            className="material-icons"
+                          >
+                            info_outline
+                          </i>
+                        </span>
+                        <Tooltip
+                          autohide={false}
+                          placement="top"
+                          target="dynamic-wait-time-option"
+                        >
+                          Calculated based on your team's recent live chat response times.
+                           
+                          <a
+                            href="https://docs.gorgias.com/en-US/109858-dc67e62b040a4649aed68bdce7ffa4f5"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            Learn more
+                          </a>
+                        </Tooltip>
+                        <p
+                          className="dynamicDescription"
+                        >
+                          If the wait time is long, customers can choose to wait in the chat or leave a message through contact form
+                        </p>
+                      </div>,
+                      "value": "reply-dynamic",
+                    },
+                    {
+                      "label": "In a few minutes",
+                      "value": "reply-in-minutes",
+                    },
+                    {
+                      "label": "In a few hours",
+                      "value": "reply-in-hours",
+                    },
+                  ]
+                }
+                selectedValue="reply-dynamic"
+              />
+            </div>
+          </div>
+          <div
+            className="formSection"
+          >
+            <h4
+              className="title mb-1"
+            >
+              Forward chat replies to customer emails
+            </h4>
             <p
               className="mb-3"
             >
-              Automation Add-on features are always available, if enabled. When live chat is unavailable, customers can message your team with
-               
-              <a
-                href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                contact form
-              </a>
-               
-              to receive an email response. Live chat is always unavailable outside business hours.
+              When customers don't see your live chat response after an hour, Gorgias will automatically send your message to the customer's email address (if available). Customers also receive satisfaction surveys for chat tickets via email.
             </p>
-          </div>
-        </div>
-        <div
-          className="formSection"
-        >
-          <h4
-            className="title"
-          >
-            Visibility options
-          </h4>
-          <div
-            className="formGroup d-flex"
-          >
-            <ToggleInput
-              aria-label="Hide chat"
-              isToggled={false}
-              onClick={[Function]}
-            />
-            <div
-              className="toggleInfo ml-1"
-            >
-              <b>
-                Hide chat
-              </b>
-              <span
-                className="tooltipIcon"
-                id="hide-chat-help"
-              >
-                <i
-                  className="material-icons-outlined"
-                >
-                  error_outline
-                </i>
-              </span>
-              <Tooltip
-                autohide={false}
-                delay={100}
-                placement="top-start"
-                style={
-                  {
-                    "textAlign": "left",
-                  }
-                }
-                target="hide-chat-help"
-              >
-                <div
-                  className="mb-3"
-                >
-                  Hiding chat removes the widget from your website, but doesn't uninstall it.
-                </div>
-                If you're getting too many live chat messages, you can change your live chat settings above.
-              </Tooltip>
-              <div
-                className="form-text text-muted"
-              >
-                Remove widget from your website without uninstalling it
-              </div>
-            </div>
-          </div>
-          <div
-            className="formGroup d-flex"
-          >
-            <ToggleInput
-              isToggled={false}
-              onClick={[Function]}
-            />
-            <div
-              className="toggleInfo ml-1"
-            >
-              <b>
-                Hide outside of business hours
-              </b>
-              <span
-                className="tooltipIcon"
-                id="hide-outside-business-hours-help"
-              >
-                <i
-                  className="material-icons-outlined"
-                >
-                  info
-                </i>
-              </span>
-              <Tooltip
-                arrowClassName="tooltip-arrow"
-                innerClassName="tooltip-inner"
-                placement="top-start"
-                popperClassName="tooltip"
-                target="hide-outside-business-hours-help"
-              >
-                Customers with active conversations will be notified 30 minutes before the chat is hidden.
-              </Tooltip>
-              <div
-                className="form-text text-muted"
-              >
-                Remove widget from your website after business hours
-              </div>
-            </div>
-          </div>
-          <div
-            className="formGroup d-flex"
-          >
-            <ToggleInput
-              isToggled={false}
-              onClick={[Function]}
-            />
-            <div
-              className="toggleInfo ml-1"
-            >
-              <b>
-                Hide on mobile
-              </b>
-            </div>
-          </div>
-        </div>
-        <div
-          className="formSection"
-        >
-          <h4
-            className="title mb-1"
-          >
-            Email capture
-          </h4>
-          <p
-            className="mb-4"
-          >
-            Collecting customer emails helps grow your email list and send follow-up messages. However, only around 30% of customers will send a message if they must provide an email.
-          </p>
-          <RadioFieldSet
-            onChange={[Function]}
-            options={
-              [
-                {
-                  "label": "Optional",
-                  "value": "optional",
-                },
-                {
-                  "label": "Required",
-                  "value": "always-required",
-                },
-              ]
-            }
-            selectedValue="optional"
-          />
-        </div>
-        <div
-          className="formSection"
-        >
-          <h4
-            className="title mb-3"
-          >
-            Autoresponder
-          </h4>
-          <div
-            className="mb-4 d-flex align-items-center"
-          >
-            <ToggleInput
-              isToggled={true}
-              onClick={[Function]}
-            />
-            <div
-              className="ml-1"
-            >
-              <b>
-                Enable autoresponder
-              </b>
-            </div>
-          </div>
-          <div
-            className="mb-3"
-          >
-            <p
-              className=""
-            >
-              During
-               
-              <Link
-                to="/app/settings/business-hours"
-              >
-                business hours
-              </Link>
-              , let customers know how fast they can expect a response with an autoresponder. A message is sent in new chat tickets after 30 seconds without replies from an agent.
-            </p>
-            <RadioFieldSet
-              className="mb-2 radioFieldSet"
-              isDisabled={false}
-              onChange={[Function]}
-              options={
+            <Label
+              className="control-label"
+              for="linkedEmailIntegration"
+              tag="label"
+              widths={
                 [
-                  {
-                    "label": <div>
-                      Dynamic wait time (recommended)
-                      <span
-                        className="tooltipIcon"
-                        id="dynamic-wait-time-option"
-                      >
-                        <i
-                          className="material-icons"
-                        >
-                          info_outline
-                        </i>
-                      </span>
-                      <Tooltip
-                        autohide={false}
-                        placement="top"
-                        target="dynamic-wait-time-option"
-                      >
-                        Calculated based on your team's recent live chat response times.
-                         
-                        <a
-                          href="https://docs.gorgias.com/en-US/109858-dc67e62b040a4649aed68bdce7ffa4f5"
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          Learn more
-                        </a>
-                      </Tooltip>
-                      <p
-                        className="dynamicDescription"
-                      >
-                        If the wait time is long, customers can choose to wait in the chat or leave a message through contact form
-                      </p>
-                    </div>,
-                    "value": "reply-dynamic",
-                  },
-                  {
-                    "label": "In a few minutes",
-                    "value": "reply-in-minutes",
-                  },
-                  {
-                    "label": "In a few hours",
-                    "value": "reply-in-hours",
-                  },
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
                 ]
               }
-              selectedValue="reply-dynamic"
+            >
+              Select which email address sends these messages
+            </Label>
+            <SelectField
+              allowCustomValue={false}
+              fixedWidth={false}
+              fullWidth={true}
+              id={null}
+              onChange={[Function]}
+              onSearchChange={[Function]}
+              options={[]}
+              placeholder="Select an email integration"
+              required={false}
+              singular="option"
+              style={{}}
+              value={null}
             />
           </div>
         </div>
-        <div
-          className="formSection"
+        <ForwardRef
+          isDisabled={false}
+          isLoading={false}
+          type="submit"
         >
-          <h4
-            className="title mb-1"
-          >
-            Forward chat replies to customer emails
-          </h4>
-          <p
-            className="mb-3"
-          >
-            When customers don't see your live chat response after an hour, Gorgias will automatically send your message to the customer's email address (if available). Customers also receive satisfaction surveys for chat tickets via email.
-          </p>
-          <Label
-            className="control-label"
-            for="linkedEmailIntegration"
-            tag="label"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            Select which email address sends these messages
-          </Label>
-          <SelectField
-            allowCustomValue={false}
-            fixedWidth={false}
-            fullWidth={true}
-            id={null}
-            onChange={[Function]}
-            onSearchChange={[Function]}
-            options={[]}
-            placeholder="Select an email integration"
-            required={false}
-            singular="option"
-            style={{}}
-            value={null}
-          />
-        </div>
-      </div>
-      <ForwardRef
-        isDisabled={false}
-        isLoading={false}
-        type="submit"
-      >
-        Save Changes
-      </ForwardRef>
-    </Form>
-  </GorgiasChatIntegrationPreviewContainer>
-</div>
+          Save Changes
+        </ForwardRef>
+      </Form>
+    </GorgiasChatIntegrationPreviewContainer>
+  </div>
+</Fragment>
 `;

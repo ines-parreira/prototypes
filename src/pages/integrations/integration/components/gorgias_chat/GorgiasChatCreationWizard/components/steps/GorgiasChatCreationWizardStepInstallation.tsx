@@ -95,7 +95,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                     () => {
                         const redirectUrl = `/app/settings/channels/gorgias_chat/${id}/${
                             isOneClickInstallation
-                                ? Tab.Appearance
+                                ? Tab.Preferences
                                 : Tab.Installation
                         }`
                         const locationState: NavigatedSuccessModalLocationState =

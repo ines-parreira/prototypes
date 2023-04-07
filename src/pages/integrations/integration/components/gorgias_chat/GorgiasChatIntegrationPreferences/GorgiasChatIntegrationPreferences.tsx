@@ -20,6 +20,10 @@ import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import Button from 'pages/common/components/button/Button'
+import NavigatedSuccessModal, {
+    NavigatedSuccessModalName,
+} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
@@ -578,220 +582,98 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             getLDClient().allFlags()[FeatureFlagKey.AutomationSettingsRevamp]
 
         return (
-            <div className="full-width">
-                <PageHeader
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link
-                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                                >
-                                    Chat
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>{chatTitle}</BreadcrumbItem>
-                        </Breadcrumb>
-                    }
+            <>
+                <NavigatedSuccessModal
+                    name={NavigatedSuccessModalName.GorgiasChatAutoInstallation}
+                    icon={SuccessModalIcon.PartyPopper}
+                    buttonLabel="See Chat Settings"
                 >
-                    <GorgiasChatIntegrationConnectedChannel
-                        integration={integration}
-                    />
-                </PageHeader>
+                    <div className="heading-page-semibold mb-2">All set!</div>
+                    <div className="heading-subsection-regular">
+                        Your chat is now available on your website.
+                    </div>
+                </NavigatedSuccessModal>
+                <div className="full-width">
+                    <PageHeader
+                        title={
+                            <Breadcrumb>
+                                <BreadcrumbItem>
+                                    <Link
+                                        to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                                    >
+                                        Chat
+                                    </Link>
+                                </BreadcrumbItem>
+                                <BreadcrumbItem>{chatTitle}</BreadcrumbItem>
+                            </Breadcrumb>
+                        }
+                    >
+                        <GorgiasChatIntegrationConnectedChannel
+                            integration={integration}
+                        />
+                    </PageHeader>
 
-                <ChatIntegrationNavigation integration={integration} />
-                <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>
-                    <Form onSubmit={this._submitPreferences}>
-                        <div>
-                            <div className={css.formSection}>
-                                <h4 className={classnames(css.title, 'mb-1')}>
-                                    Live chat
-                                </h4>
-                                <div>
-                                    <p className="mb-4">
-                                        Choose when customers can send live chat
-                                        messages to your team during{' '}
-                                        <Link to="/app/settings/business-hours">
-                                            business hours
-                                        </Link>
-                                        .
-                                    </p>
-                                    <RadioFieldSet
+                    <ChatIntegrationNavigation integration={integration} />
+                    <GorgiasChatIntegrationPreviewContainer
+                        preview={chatPreview}
+                    >
+                        <Form onSubmit={this._submitPreferences}>
+                            <div>
+                                <div className={css.formSection}>
+                                    <h4
                                         className={classnames(
-                                            'mb-3',
-                                            css.radioFieldSet
-                                        )}
-                                        options={liveChatAvailabilityOptions}
-                                        selectedValue={liveChatAvailability}
-                                        onChange={this._setLiveChatAvailability}
-                                    />
-                                    <p className="mb-3">
-                                        Automation Add-on features are always
-                                        available, if enabled. When live chat is
-                                        unavailable, customers can message your
-                                        team with{' '}
-                                        <a
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
-                                        >
-                                            contact form
-                                        </a>{' '}
-                                        to receive an email response. Live chat
-                                        is always unavailable outside business
-                                        hours.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className={css.formSection}>
-                                <h4 className={css.title}>
-                                    Visibility options
-                                </h4>
-
-                                <div
-                                    className={classnames(
-                                        css.formGroup,
-                                        'd-flex'
-                                    )}
-                                >
-                                    <ToggleInput
-                                        onClick={this._setHide}
-                                        isToggled={hide}
-                                        aria-label="Hide chat"
-                                    />
-                                    <div
-                                        className={classnames(
-                                            css.toggleInfo,
-                                            'ml-1'
+                                            css.title,
+                                            'mb-1'
                                         )}
                                     >
-                                        <b>Hide chat</b>
-                                        <span
-                                            id="hide-chat-help"
-                                            className={css.tooltipIcon}
-                                        >
-                                            <i className="material-icons-outlined">
-                                                error_outline
-                                            </i>
-                                        </span>
-                                        <Tooltip
-                                            autohide={false}
-                                            delay={100}
-                                            target="hide-chat-help"
-                                            placement="top-start"
-                                            style={{textAlign: 'left'}}
-                                        >
-                                            <div className="mb-3">
-                                                Hiding chat removes the widget
-                                                from your website, but doesn't
-                                                uninstall it.
-                                            </div>
-                                            If you're getting too many live chat
-                                            messages, you can change your live
-                                            chat settings above.
-                                        </Tooltip>
-                                        <div className="form-text text-muted">
-                                            Remove widget from your website
-                                            without uninstalling it
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div
-                                    className={classnames(
-                                        css.formGroup,
-                                        'd-flex'
-                                    )}
-                                >
-                                    <ToggleInput
-                                        onClick={
-                                            this._setHideOutsideBusinessHours
-                                        }
-                                        isToggled={hideOutsideBusinessHours}
-                                    />
-
-                                    <div
-                                        className={classnames(
-                                            css.toggleInfo,
-                                            'ml-1'
-                                        )}
-                                    >
-                                        <b>Hide outside of business hours</b>
-                                        <span
-                                            id="hide-outside-business-hours-help"
-                                            className={css.tooltipIcon}
-                                        >
-                                            <i className="material-icons-outlined">
-                                                info
-                                            </i>
-                                        </span>
-                                        <Tooltip
-                                            target="hide-outside-business-hours-help"
-                                            placement="top-start"
-                                            popperClassName={css.tooltip}
-                                            innerClassName={
-                                                css['tooltip-inner']
+                                        Live chat
+                                    </h4>
+                                    <div>
+                                        <p className="mb-4">
+                                            Choose when customers can send live
+                                            chat messages to your team during{' '}
+                                            <Link to="/app/settings/business-hours">
+                                                business hours
+                                            </Link>
+                                            .
+                                        </p>
+                                        <RadioFieldSet
+                                            className={classnames(
+                                                'mb-3',
+                                                css.radioFieldSet
+                                            )}
+                                            options={
+                                                liveChatAvailabilityOptions
                                             }
-                                            arrowClassName={
-                                                css['tooltip-arrow']
+                                            selectedValue={liveChatAvailability}
+                                            onChange={
+                                                this._setLiveChatAvailability
                                             }
-                                        >
-                                            Customers with active conversations
-                                            will be notified 30 minutes before
-                                            the chat is hidden.
-                                        </Tooltip>
-
-                                        <div className="form-text text-muted">
-                                            Remove widget from your website
-                                            after business hours
-                                        </div>
+                                        />
+                                        <p className="mb-3">
+                                            Automation Add-on features are
+                                            always available, if enabled. When
+                                            live chat is unavailable, customers
+                                            can message your team with{' '}
+                                            <a
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
+                                            >
+                                                contact form
+                                            </a>{' '}
+                                            to receive an email response. Live
+                                            chat is always unavailable outside
+                                            business hours.
+                                        </p>
                                     </div>
                                 </div>
-                                <div
-                                    className={classnames(
-                                        css.formGroup,
-                                        'd-flex'
-                                    )}
-                                >
-                                    <ToggleInput
-                                        onClick={this._setHideOnMobile}
-                                        isToggled={hideOnMobile}
-                                    />
 
-                                    <div
-                                        className={classnames(
-                                            css.toggleInfo,
-                                            'ml-1'
-                                        )}
-                                    >
-                                        <b>Hide on mobile</b>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className={classnames(css.formSection)}>
-                                <h4 className={classnames(css.title, 'mb-1')}>
-                                    Email capture
-                                </h4>
-                                <p className="mb-4">
-                                    Collecting customer emails helps grow your
-                                    email list and send follow-up messages.
-                                    However, only around 30% of customers will
-                                    send a message if they must provide an
-                                    email.
-                                </p>
-                                <RadioFieldSet
-                                    options={emailCaptureOptions}
-                                    selectedValue={emailCaptureEnforcement}
-                                    onChange={this._setEmailCaptureEnforcement}
-                                />
-                            </div>
-
-                            {SHOW_CHAT_CONVERSATIONS_SECTION && (
                                 <div className={css.formSection}>
                                     <h4 className={css.title}>
-                                        Chat conversations
+                                        Visibility options
                                     </h4>
+
                                     <div
                                         className={classnames(
                                             css.formGroup,
@@ -799,131 +681,302 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         )}
                                     >
                                         <ToggleInput
-                                            onClick={() =>
-                                                this._setOfflineModeEnabledDatetime(
-                                                    offlineModeEnabledDatetime ===
-                                                        null
-                                                        ? new Date()
-                                                        : null
-                                                )
-                                            }
-                                            isToggled={
-                                                offlineModeEnabledDatetime ===
-                                                null
-                                            }
+                                            onClick={this._setHide}
+                                            isToggled={hide}
+                                            aria-label="Hide chat"
                                         />
-
-                                        <div className="ml-2">
-                                            <b>Live chat</b>
+                                        <div
+                                            className={classnames(
+                                                css.toggleInfo,
+                                                'ml-1'
+                                            )}
+                                        >
+                                            <b>Hide chat</b>
+                                            <span
+                                                id="hide-chat-help"
+                                                className={css.tooltipIcon}
+                                            >
+                                                <i className="material-icons-outlined">
+                                                    error_outline
+                                                </i>
+                                            </span>
+                                            <Tooltip
+                                                autohide={false}
+                                                delay={100}
+                                                target="hide-chat-help"
+                                                placement="top-start"
+                                                style={{textAlign: 'left'}}
+                                            >
+                                                <div className="mb-3">
+                                                    Hiding chat removes the
+                                                    widget from your website,
+                                                    but doesn't uninstall it.
+                                                </div>
+                                                If you're getting too many live
+                                                chat messages, you can change
+                                                your live chat settings above.
+                                            </Tooltip>
                                             <div className="form-text text-muted">
-                                                Let customers start live
-                                                conversations with agents. When
-                                                disabled, customers can interact
-                                                with{' '}
-                                                {isAutomationSettingsRevampEnabled
-                                                    ? 'quick response flows and order management flows'
-                                                    : 'self-service features'}{' '}
-                                                and fill the contact form.
+                                                Remove widget from your website
+                                                without uninstalling it
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            )}
 
-                            <div className={css.formSection}>
-                                <h4 className={classnames(css.title, 'mb-3')}>
-                                    Autoresponder
-                                </h4>
+                                    <div
+                                        className={classnames(
+                                            css.formGroup,
+                                            'd-flex'
+                                        )}
+                                    >
+                                        <ToggleInput
+                                            onClick={
+                                                this
+                                                    ._setHideOutsideBusinessHours
+                                            }
+                                            isToggled={hideOutsideBusinessHours}
+                                        />
 
-                                <div className="mb-4 d-flex align-items-center">
-                                    <ToggleInput
-                                        onClick={this._setAutoResponderEnabled}
-                                        isToggled={autoResponderEnabled}
-                                    />
-                                    <div className="ml-1">
-                                        <b>Enable autoresponder</b>
+                                        <div
+                                            className={classnames(
+                                                css.toggleInfo,
+                                                'ml-1'
+                                            )}
+                                        >
+                                            <b>
+                                                Hide outside of business hours
+                                            </b>
+                                            <span
+                                                id="hide-outside-business-hours-help"
+                                                className={css.tooltipIcon}
+                                            >
+                                                <i className="material-icons-outlined">
+                                                    info
+                                                </i>
+                                            </span>
+                                            <Tooltip
+                                                target="hide-outside-business-hours-help"
+                                                placement="top-start"
+                                                popperClassName={css.tooltip}
+                                                innerClassName={
+                                                    css['tooltip-inner']
+                                                }
+                                                arrowClassName={
+                                                    css['tooltip-arrow']
+                                                }
+                                            >
+                                                Customers with active
+                                                conversations will be notified
+                                                30 minutes before the chat is
+                                                hidden.
+                                            </Tooltip>
+
+                                            <div className="form-text text-muted">
+                                                Remove widget from your website
+                                                after business hours
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className={classnames(
+                                            css.formGroup,
+                                            'd-flex'
+                                        )}
+                                    >
+                                        <ToggleInput
+                                            onClick={this._setHideOnMobile}
+                                            isToggled={hideOnMobile}
+                                        />
+
+                                        <div
+                                            className={classnames(
+                                                css.toggleInfo,
+                                                'ml-1'
+                                            )}
+                                        >
+                                            <b>Hide on mobile</b>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div className="mb-3">
-                                    <p
-                                        className={classnames({
-                                            'text-faded': !autoResponderEnabled,
-                                        })}
+                                <div className={classnames(css.formSection)}>
+                                    <h4
+                                        className={classnames(
+                                            css.title,
+                                            'mb-1'
+                                        )}
                                     >
-                                        During{' '}
-                                        <Link to="/app/settings/business-hours">
-                                            business hours
-                                        </Link>
-                                        , let customers know how fast they can
-                                        expect a response with an autoresponder.
-                                        A message is sent in new chat tickets
-                                        after 30 seconds without replies from an
-                                        agent.
+                                        Email capture
+                                    </h4>
+                                    <p className="mb-4">
+                                        Collecting customer emails helps grow
+                                        your email list and send follow-up
+                                        messages. However, only around 30% of
+                                        customers will send a message if they
+                                        must provide an email.
                                     </p>
                                     <RadioFieldSet
+                                        options={emailCaptureOptions}
+                                        selectedValue={emailCaptureEnforcement}
+                                        onChange={
+                                            this._setEmailCaptureEnforcement
+                                        }
+                                    />
+                                </div>
+
+                                {SHOW_CHAT_CONVERSATIONS_SECTION && (
+                                    <div className={css.formSection}>
+                                        <h4 className={css.title}>
+                                            Chat conversations
+                                        </h4>
+                                        <div
+                                            className={classnames(
+                                                css.formGroup,
+                                                'd-flex'
+                                            )}
+                                        >
+                                            <ToggleInput
+                                                onClick={() =>
+                                                    this._setOfflineModeEnabledDatetime(
+                                                        offlineModeEnabledDatetime ===
+                                                            null
+                                                            ? new Date()
+                                                            : null
+                                                    )
+                                                }
+                                                isToggled={
+                                                    offlineModeEnabledDatetime ===
+                                                    null
+                                                }
+                                            />
+
+                                            <div className="ml-2">
+                                                <b>Live chat</b>
+                                                <div className="form-text text-muted">
+                                                    Let customers start live
+                                                    conversations with agents.
+                                                    When disabled, customers can
+                                                    interact with{' '}
+                                                    {isAutomationSettingsRevampEnabled
+                                                        ? 'quick response flows and order management flows'
+                                                        : 'self-service features'}{' '}
+                                                    and fill the contact form.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className={css.formSection}>
+                                    <h4
                                         className={classnames(
-                                            'mb-2',
-                                            css.radioFieldSet
+                                            css.title,
+                                            'mb-3'
                                         )}
-                                        options={autoResponderOptions}
-                                        selectedValue={autoResponderReply}
-                                        onChange={this._setAutoResponderReply}
-                                        isDisabled={!autoResponderEnabled}
+                                    >
+                                        Autoresponder
+                                    </h4>
+
+                                    <div className="mb-4 d-flex align-items-center">
+                                        <ToggleInput
+                                            onClick={
+                                                this._setAutoResponderEnabled
+                                            }
+                                            isToggled={autoResponderEnabled}
+                                        />
+                                        <div className="ml-1">
+                                            <b>Enable autoresponder</b>
+                                        </div>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <p
+                                            className={classnames({
+                                                'text-faded':
+                                                    !autoResponderEnabled,
+                                            })}
+                                        >
+                                            During{' '}
+                                            <Link to="/app/settings/business-hours">
+                                                business hours
+                                            </Link>
+                                            , let customers know how fast they
+                                            can expect a response with an
+                                            autoresponder. A message is sent in
+                                            new chat tickets after 30 seconds
+                                            without replies from an agent.
+                                        </p>
+                                        <RadioFieldSet
+                                            className={classnames(
+                                                'mb-2',
+                                                css.radioFieldSet
+                                            )}
+                                            options={autoResponderOptions}
+                                            selectedValue={autoResponderReply}
+                                            onChange={
+                                                this._setAutoResponderReply
+                                            }
+                                            isDisabled={!autoResponderEnabled}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className={css.formSection}>
+                                    <h4
+                                        className={classnames(
+                                            css.title,
+                                            'mb-1'
+                                        )}
+                                    >
+                                        Forward chat replies to customer emails
+                                    </h4>
+
+                                    <p className="mb-3">
+                                        When customers don't see your live chat
+                                        response after an hour, Gorgias will
+                                        automatically send your message to the
+                                        customer's email address (if available).
+                                        Customers also receive satisfaction
+                                        surveys for chat tickets via email.
+                                    </p>
+                                    <Label
+                                        className="control-label"
+                                        for="linkedEmailIntegration"
+                                    >
+                                        Select which email address sends these
+                                        messages
+                                    </Label>
+                                    <SelectField
+                                        placeholder="Select an email integration"
+                                        value={linkedEmailIntegration}
+                                        options={emailIntegrations.map(
+                                            (integration) => ({
+                                                label:
+                                                    `${integration.name} ` +
+                                                    `<${integration.meta.address}>`,
+                                                value: integration.id,
+                                            })
+                                        )}
+                                        fullWidth
+                                        onChange={(integrationId) => {
+                                            this._setLinkedEmailIntegration(
+                                                integrationId as number
+                                            )
+                                        }}
                                     />
                                 </div>
                             </div>
-
-                            <div className={css.formSection}>
-                                <h4 className={classnames(css.title, 'mb-1')}>
-                                    Forward chat replies to customer emails
-                                </h4>
-
-                                <p className="mb-3">
-                                    When customers don't see your live chat
-                                    response after an hour, Gorgias will
-                                    automatically send your message to the
-                                    customer's email address (if available).
-                                    Customers also receive satisfaction surveys
-                                    for chat tickets via email.
-                                </p>
-                                <Label
-                                    className="control-label"
-                                    for="linkedEmailIntegration"
-                                >
-                                    Select which email address sends these
-                                    messages
-                                </Label>
-                                <SelectField
-                                    placeholder="Select an email integration"
-                                    value={linkedEmailIntegration}
-                                    options={emailIntegrations.map(
-                                        (integration) => ({
-                                            label:
-                                                `${integration.name} ` +
-                                                `<${integration.meta.address}>`,
-                                            value: integration.id,
-                                        })
-                                    )}
-                                    fullWidth
-                                    onChange={(integrationId) => {
-                                        this._setLinkedEmailIntegration(
-                                            integrationId as number
-                                        )
-                                    }}
-                                />
-                            </div>
-                        </div>
-                        <Button
-                            type="submit"
-                            isLoading={isUpdating}
-                            isDisabled={isUpdating}
-                        >
-                            Save Changes
-                        </Button>
-                    </Form>
-                </GorgiasChatIntegrationPreviewContainer>
-            </div>
+                            <Button
+                                type="submit"
+                                isLoading={isUpdating}
+                                isDisabled={isUpdating}
+                            >
+                                Save Changes
+                            </Button>
+                        </Form>
+                    </GorgiasChatIntegrationPreviewContainer>
+                </div>
+            </>
         )
     }
 }
