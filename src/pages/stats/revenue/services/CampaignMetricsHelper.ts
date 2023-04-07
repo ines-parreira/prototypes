@@ -8,6 +8,7 @@ import _zip from 'lodash/zip'
 import _pickBy from 'lodash/pickBy'
 import moment from 'moment'
 import {
+    CalculatedTotals,
     CampaignGraphData,
     CampaignPerformanceData,
     CampaignsPerformanceDataset,
@@ -53,10 +54,24 @@ export const getDataFromStatResult = (result: Stat): StatData => {
     return _get(result, 'data.data', []) as StatData
 }
 
+const _getMetricFromCubeData = (data: CubeData): CubeMetric => {
+    return _get(data, '[0]', {}) as CubeMetric
+}
+
+const _enrichCubeData = (data: CubeData, metrics: CubeMetric): CubeData => {
+    return data.map((row) => ({...row, ...metrics}))
+}
+
+const _gmvUplift = (gmv: number, campaignSales: number): number => {
+    const initialGMV = gmv - campaignSales
+
+    return initialGMV > 0 ? (campaignSales / initialGMV) * 100 : 0
+}
+
 export const transformToCampaignEventsTotals = (
     data: CubeData
 ): EventsTotals => {
-    const metric: CubeMetric = _get(data, '[0]', {})
+    const metric: CubeMetric = _getMetricFromCubeData(data)
     return {
         [CampaignsTotalsMetricNames.impressions]: formatNumber(
             parseFloat(
@@ -75,20 +90,9 @@ export const transformToCampaignOrdersTotals = (
     data: CubeData,
     currency: string
 ): OrdersTotals => {
-    const metric: CubeMetric = _get(data, '[0]', {})
+    const metric: CubeMetric = _getMetricFromCubeData(data)
 
     return {
-        [CampaignsTotalsMetricNames.influencedRevenueUplift]: formatPercent(
-            _toFixed(
-                parseFloat(
-                    _get(
-                        metric,
-                        OrderConversionMeasures.influencedRevenueUplift,
-                        '0'
-                    )
-                )
-            )
-        ),
         [CampaignsTotalsMetricNames.revenue]: formatCurrency(
             parseFloat(
                 _get(metric, OrderConversionMeasures.campaignSales, '0')
@@ -103,11 +107,32 @@ export const transformToCampaignOrdersTotals = (
     }
 }
 
+export const transformToCampaignCalculatedTotals = (
+    orderData: CubeData,
+    totalData: CubeData
+): CalculatedTotals => {
+    const orderMetric: CubeMetric = _getMetricFromCubeData(orderData)
+    const totalMetric: CubeMetric = _getMetricFromCubeData(totalData)
+
+    const campaignSales = parseFloat(
+        _get(orderMetric, OrderConversionMeasures.campaignSales, '0')
+    )
+    const totalSales = parseFloat(
+        _get(totalMetric, OrderConversionMeasures.gmv, '0')
+    )
+
+    return {
+        [CampaignsTotalsMetricNames.influencedRevenueUplift]: formatPercent(
+            _toFixed(_gmvUplift(totalSales, campaignSales))
+        ),
+    }
+}
+
 export const transformToStoreTotal = (
     data: CubeData,
     currency: string
 ): StoreTotal => {
-    const metric: CubeMetric = _get(data, '[0]', {})
+    const metric: CubeMetric = _getMetricFromCubeData(data)
 
     return {
         [CampaignsTotalsMetricNames.gmv]: formatCurrency(
@@ -233,11 +258,12 @@ export const transformToCampaignsPerformanceTable = (
     eventsData: CubeData,
     ordersData: CubeData,
     campaignsOrdersData: CubeData,
+    storeTotalData: CubeData,
     ticketsData: TicketPerformanceData
 ): CampaignsPerformanceDataset => {
     const eventsDataset = _reduce(eventsData, _eventsPerformanceReducer, {})
     const ordersDataset = _reduce(
-        ordersData,
+        _enrichCubeData(ordersData, _getMetricFromCubeData(storeTotalData)),
         _ordersPerformanceReducer,
         eventsDataset
     )
@@ -284,13 +310,15 @@ const _ordersPerformanceReducer = (
     metric: CubeMetric
 ): CampaignsPerformanceDataset => {
     const campaignId = _get(metric, OrderConversionDimensions.campaignId)
+    const campaignSales = _parseInt(
+        _get(metric, OrderConversionMeasures.campaignSales, '0')
+    )
+    const gmv = _parseInt(_get(metric, OrderConversionMeasures.gmv, '0'))
+
     const orderMetricValue = _mapValues(
         {
-            totalRevenue: _get(metric, OrderConversionMeasures.gmv),
-            revenueUplift: _get(
-                metric,
-                OrderConversionMeasures.influencedRevenueUplift
-            ),
+            totalRevenue: _get(metric, OrderConversionMeasures.campaignSales),
+            revenueUplift: _gmvUplift(gmv, campaignSales),
             ticketsConverted: _get(
                 metric,
                 OrderConversionMeasures.ticketSalesCount

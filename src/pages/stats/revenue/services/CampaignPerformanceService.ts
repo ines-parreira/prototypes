@@ -20,6 +20,7 @@ import {
     backfillGraphData,
     getDataFromResultSet,
     getDataFromStatResult,
+    transformToCampaignCalculatedTotals,
     transformToCampaignConversionRateOverTime,
     transformToCampaignCTROverTime,
     transformToCampaignEventsTotals,
@@ -69,6 +70,7 @@ export const getTotals = async (
         ...transformToCampaignEventsTotals(eventsTotalsData),
         ...transformToCampaignOrdersTotals(orderTotalsData, currency),
         ...transformToStoreTotal(storeTotalData, currency),
+        ...transformToCampaignCalculatedTotals(orderTotalsData, storeTotalData),
     }
 }
 
@@ -157,6 +159,7 @@ export const getCampaignsPerformance = async (
     startDate: string,
     endDate: string,
     campaignIds: string[],
+    shopName: string,
     limit = 100,
     offset = 0
 ): Promise<CampaignsPerformanceDataset> => {
@@ -166,6 +169,7 @@ export const getCampaignsPerformance = async (
         startDate,
         endDate,
         campaignIds,
+        shopName,
         limit,
         offset,
     }
@@ -175,13 +179,16 @@ export const getCampaignsPerformance = async (
         ordersPerformance,
         campaignsOrdersPerformance,
         ticketsPerformance,
+        storeTotal,
     ] = await Promise.all([
         getCampaignEventsPerformanceData(attrs),
         getCampaignOrderPerformanceData(attrs),
         getCampaignEventsOrdersPerformanceData(attrs),
         getCampaignTicketsPerformanceData(attrs),
+        getStoreRevenueTotalData(attrs),
     ])
 
+    const storeTotalData = getDataFromResultSet(storeTotal)
     const eventsPerformanceData = getDataFromResultSet(eventsPerformance)
     const ordersPerformanceData = getDataFromResultSet(ordersPerformance)
     const campaignsOrdersPerformanceData = getDataFromResultSet(
@@ -193,6 +200,7 @@ export const getCampaignsPerformance = async (
         eventsPerformanceData,
         ordersPerformanceData,
         campaignsOrdersPerformanceData,
+        storeTotalData,
         ticketsPerformanceData as TicketPerformanceData
     )
 }

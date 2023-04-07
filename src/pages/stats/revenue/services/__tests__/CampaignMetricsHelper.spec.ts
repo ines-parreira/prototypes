@@ -9,6 +9,7 @@ import {
     transformToCampaignsPerformanceTable,
     transformToChatConversionRateOverTime,
     transformToRevenueUpliftOverTime,
+    transformToCampaignCalculatedTotals,
     transformToStoreTotal,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {CubeResponse} from 'pages/stats/revenue/clients/types'
@@ -106,7 +107,6 @@ describe('Campaign metrics helper tests', () => {
         const currency = 'USD'
         const cubeData = [
             {
-                [OrderConversionMeasures.influencedRevenueUplift]: '4567.8',
                 [OrderConversionMeasures.campaignSales]: '34.56',
                 [OrderConversionMeasures.campaignSalesCount]: '345678',
             },
@@ -121,7 +121,6 @@ describe('Campaign metrics helper tests', () => {
         it('should return correct data', () => {
             const result = transformToCampaignOrdersTotals(cubeData, currency)
             expect(result).toStrictEqual({
-                [CampaignsTotalsMetricNames.influencedRevenueUplift]: '4567.8%',
                 [CampaignsTotalsMetricNames.revenue]: '$34.56',
                 [CampaignsTotalsMetricNames.campaignSalesCount]: '345,678',
             })
@@ -133,7 +132,6 @@ describe('Campaign metrics helper tests', () => {
                 currency
             )
             expect(result).toStrictEqual({
-                [CampaignsTotalsMetricNames.influencedRevenueUplift]: '0%',
                 [CampaignsTotalsMetricNames.revenue]: '$0',
                 [CampaignsTotalsMetricNames.campaignSalesCount]: '0',
             })
@@ -142,9 +140,55 @@ describe('Campaign metrics helper tests', () => {
         it('should return the defaults for wrong data', () => {
             const result = transformToCampaignOrdersTotals([], currency)
             expect(result).toStrictEqual({
-                [CampaignsTotalsMetricNames.influencedRevenueUplift]: '0%',
                 [CampaignsTotalsMetricNames.revenue]: '$0',
                 [CampaignsTotalsMetricNames.campaignSalesCount]: '0',
+            })
+        })
+    })
+
+    describe('transformToCampaignCalculatedTotals', () => {
+        const orderCubeData = [
+            {
+                [OrderConversionMeasures.campaignSales]: '750',
+                [OrderConversionMeasures.campaignSalesCount]: '345678',
+            },
+        ]
+        const totalCubeData = [
+            {
+                [OrderConversionMeasures.gmv]: '1000',
+            },
+        ]
+
+        const cubeDataMissing = [
+            {
+                onlyWrongKeyHere: '12345678',
+            },
+        ]
+
+        it('should return correct data', () => {
+            const result = transformToCampaignCalculatedTotals(
+                orderCubeData,
+                totalCubeData
+            )
+            expect(result).toStrictEqual({
+                [CampaignsTotalsMetricNames.influencedRevenueUplift]: '300%',
+            })
+        })
+
+        it('should return the defaults for missing data', () => {
+            const result = transformToCampaignCalculatedTotals(
+                cubeDataMissing,
+                cubeDataMissing
+            )
+            expect(result).toStrictEqual({
+                [CampaignsTotalsMetricNames.influencedRevenueUplift]: '0%',
+            })
+        })
+
+        it('should return the defaults for wrong data', () => {
+            const result = transformToCampaignCalculatedTotals([], [])
+            expect(result).toStrictEqual({
+                [CampaignsTotalsMetricNames.influencedRevenueUplift]: '0%',
             })
         })
     })
@@ -406,8 +450,7 @@ describe('Campaign metrics helper tests', () => {
         const campaignOrdersPerformanceData = [
             {
                 [OrderConversionDimensions.campaignId]: 'campaign1',
-                [OrderConversionMeasures.gmv]: '12345.67',
-                [OrderConversionMeasures.influencedRevenueUplift]: '65.78',
+                [OrderConversionMeasures.campaignSales]: '12345.67',
                 [OrderConversionMeasures.ticketSales]: '1234.47',
                 [OrderConversionMeasures.ticketSalesCount]: '60',
                 [OrderConversionMeasures.discountSales]: '4567.65',
@@ -418,8 +461,7 @@ describe('Campaign metrics helper tests', () => {
             },
             {
                 [OrderConversionDimensions.campaignId]: 'campaign2',
-                [OrderConversionMeasures.gmv]: '12345.67',
-                [OrderConversionMeasures.influencedRevenueUplift]: '65.78',
+                [OrderConversionMeasures.campaignSales]: '12345.67',
                 [OrderConversionMeasures.ticketSales]: '1234.47',
                 [OrderConversionMeasures.ticketSalesCount]: '80',
                 [OrderConversionMeasures.discountSales]: '4567.65',
@@ -427,6 +469,12 @@ describe('Campaign metrics helper tests', () => {
                 [OrderConversionMeasures.clickSales]: '3596.25',
                 [OrderConversionMeasures.clickSalesCount]: '40',
                 [OrderConversionMeasures.campaignSalesCount]: '358',
+            },
+        ]
+
+        const revenueTotalData = [
+            {
+                [OrderConversionMeasures.gmv]: '52345.67',
             },
         ]
 
@@ -455,6 +503,7 @@ describe('Campaign metrics helper tests', () => {
                 campaignEventsPerformanceData,
                 campaignOrdersPerformanceData,
                 campaignEventsOrdersPerformanceData,
+                revenueTotalData,
                 campaignTicketsPerformanceData as TicketPerformanceData
             )
             expect(result).toMatchSnapshot()
@@ -462,6 +511,7 @@ describe('Campaign metrics helper tests', () => {
 
         it('should return defaults for missing data', () => {
             const result = transformToCampaignsPerformanceTable(
+                [],
                 [],
                 [],
                 [],
@@ -491,6 +541,7 @@ describe('Campaign metrics helper tests', () => {
                         [CampaignOrderEventsDimensions.campaignId]: 'campaign1',
                     },
                 ],
+                [],
                 [['campaign1', 0]] as TicketPerformanceData
             )
             expect(result).toMatchSnapshot()

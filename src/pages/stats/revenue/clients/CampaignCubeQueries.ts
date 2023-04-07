@@ -113,8 +113,7 @@ export const getCampaignOrderPerformanceData = async ({
     return await client.load({
         dimensions: [OrderConversionDimensions.campaignId],
         measures: [
-            OrderConversionMeasures.gmv,
-            OrderConversionMeasures.influencedRevenueUplift,
+            OrderConversionMeasures.campaignSales,
             OrderConversionMeasures.ticketSales,
             OrderConversionMeasures.ticketSalesCount,
             OrderConversionMeasures.discountSales,

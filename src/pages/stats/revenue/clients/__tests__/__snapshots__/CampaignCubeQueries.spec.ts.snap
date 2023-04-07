@@ -143,8 +143,7 @@ exports[`Calling CubeClient functions [Function getCampaignOrderPerformanceData]
       ],
       "limit": 100,
       "measures": [
-        "OrderConversion.gmv",
-        "OrderConversion.influencedRevenueUplift",
+        "OrderConversion.campaignSales",
         "OrderConversion.ticketSales",
         "OrderConversion.ticketSalesCount",
         "OrderConversion.discountSales",

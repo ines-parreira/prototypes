@@ -16,10 +16,14 @@ import {CampaignTableStats} from '../../components/CampaignTableStats'
 import {ITEMS_PER_PAGE} from '../../constants/campaignPerformanceTable'
 
 import {CampaignTableContentCell} from '../../types/CampaignTableContentCell'
+import {useGetNamespacedShopNameForStore} from '../../hooks/useGetNamespacedShopNameForStore'
 
 export const CampaignPerformanceTable = () => {
     const {campaigns, selectedIntegrations, selectedCampaigns, selectedPeriod} =
         useCampaignStatsFilters()
+
+    const namespacedShopName =
+        useGetNamespacedShopNameForStore(selectedIntegrations)
 
     const currency = useGetCurrencyForStore(selectedIntegrations)
     const chatIntegration = useGetChatForStore(selectedIntegrations[0])
@@ -37,7 +41,8 @@ export const CampaignPerformanceTable = () => {
         const data = await getCampaignsPerformance(
             selectedPeriod.start_datetime,
             selectedPeriod.end_datetime,
-            campaignIds
+            campaignIds,
+            namespacedShopName
         )
         setMetrics(data)
     }, [selectedIntegrations, campaignIds, selectedPeriod])

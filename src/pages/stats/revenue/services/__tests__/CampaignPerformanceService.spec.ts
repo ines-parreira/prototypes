@@ -58,7 +58,9 @@ describe('Revenue Attribution Service stats methods', () => {
         } as CubeResponse
         const mockStoreTotalData = jest
             .spyOn(cubeQueries, 'getStoreRevenueTotalData')
-            .mockReturnValue(new Promise((resolve) => resolve(storeTotalData)))
+            .mockReturnValueOnce(
+                new Promise((resolve) => resolve(storeTotalData))
+            )
 
         beforeEach(() => {
             mockCampaignEventsTotals.mockClear()
@@ -215,8 +217,7 @@ describe('Revenue Attribution Service stats methods', () => {
             data: [
                 {
                     [OrderConversionDimensions.campaignId]: 'campaign1',
-                    [OrderConversionMeasures.gmv]: '12345.67',
-                    [OrderConversionMeasures.influencedRevenueUplift]: '65.78',
+                    [OrderConversionMeasures.campaignSales]: '12345.67',
                     [OrderConversionMeasures.ticketSales]: '1234.47',
                     [OrderConversionMeasures.ticketSalesCount]: '78',
                     [OrderConversionMeasures.discountSales]: '4567.65',
@@ -227,8 +228,7 @@ describe('Revenue Attribution Service stats methods', () => {
                 },
                 {
                     [OrderConversionDimensions.campaignId]: 'campaign2',
-                    [OrderConversionMeasures.gmv]: '12345.67',
-                    [OrderConversionMeasures.influencedRevenueUplift]: '65.78',
+                    [OrderConversionMeasures.campaignSales]: '12345.67',
                     [OrderConversionMeasures.ticketSales]: '1234.47',
                     [OrderConversionMeasures.ticketSalesCount]: '78',
                     [OrderConversionMeasures.discountSales]: '4567.65',
@@ -243,6 +243,19 @@ describe('Revenue Attribution Service stats methods', () => {
             .spyOn(cubeQueries, 'getCampaignOrderPerformanceData')
             .mockReturnValue(
                 new Promise((resolve) => resolve(campaignOrdersPerformanceData))
+            )
+
+        const revenueTotalData = {
+            data: [
+                {
+                    [OrderConversionMeasures.gmv]: '52345.67',
+                },
+            ],
+        } as CubeResponse
+        const mockStoreRevenueTotal = jest
+            .spyOn(cubeQueries, 'getStoreRevenueTotalData')
+            .mockReturnValue(
+                new Promise((resolve) => resolve(revenueTotalData))
             )
 
         const campaignEventsOrdersPerformanceData = {
@@ -291,6 +304,7 @@ describe('Revenue Attribution Service stats methods', () => {
         beforeEach(() => {
             mockCampaignEventsPerformance.mockClear()
             mockCampaignOrdersPerformance.mockClear()
+            mockStoreRevenueTotal.mockClear()
             mockCampaignEventsOrdersPerformance.mockClear()
             mockCampaignTicketsPerformance.mockClear()
         })
@@ -300,7 +314,8 @@ describe('Revenue Attribution Service stats methods', () => {
             const result = await getCampaignsPerformance(
                 '2023-01-01T00:00:00-08:00',
                 '2023-02-01T00:00:00-08:00',
-                []
+                [],
+                'shopify:slow-formulas-for-sale'
             )
 
             // assert
@@ -312,7 +327,8 @@ describe('Revenue Attribution Service stats methods', () => {
             const result = await getCampaignsPerformance(
                 '2023-01-01T00:00:00-08:00',
                 '2023-02-01T00:00:00-08:00',
-                ['campaign1', 'campaign2']
+                ['campaign1', 'campaign2'],
+                'shopify:slow-formulas-for-sale'
             )
 
             // assert
@@ -330,7 +346,8 @@ describe('Revenue Attribution Service stats methods', () => {
             const result = await getCampaignsPerformance(
                 '2023-01-01T00:00:00-08:00',
                 '2023-02-01T00:00:00-08:00',
-                ['campaign1', 'campaign2']
+                ['campaign1', 'campaign2'],
+                'shopify:slow-formulas-for-sale'
             )
 
             // assert

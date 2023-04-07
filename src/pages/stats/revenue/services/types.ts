@@ -65,13 +65,19 @@ export type EventsTotals = {
 }
 
 export type OrdersTotals = {
-    [CampaignsTotalsMetricNames.influencedRevenueUplift]: string
     [CampaignsTotalsMetricNames.revenue]: string | number
     [CampaignsTotalsMetricNames.campaignSalesCount]: string
+}
+
+export type CalculatedTotals = {
+    [CampaignsTotalsMetricNames.influencedRevenueUplift]: string
 }
 
 export type StoreTotal = {
     [CampaignsTotalsMetricNames.gmv]: string | number
 }
 
-export type CampaignsTotals = EventsTotals & OrdersTotals & StoreTotal
+export type CampaignsTotals = EventsTotals &
+    OrdersTotals &
+    StoreTotal &
+    CalculatedTotals
