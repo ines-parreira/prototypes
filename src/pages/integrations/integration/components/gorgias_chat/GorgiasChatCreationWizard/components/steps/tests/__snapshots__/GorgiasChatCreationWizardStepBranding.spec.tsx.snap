@@ -24,6 +24,8 @@ exports[`<GorgiasChatCreationWizardStepBranding /> submits form when fields have
     undefined,
     true,
     [Function],
+    true,
+    "Changes saved",
   ],
 ]
 `;

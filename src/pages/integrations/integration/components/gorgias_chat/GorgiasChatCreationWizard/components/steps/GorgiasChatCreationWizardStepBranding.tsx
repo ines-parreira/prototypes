@@ -63,6 +63,8 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
 
     const {goToNextStep, goToPreviousStep} = useNavigateWizardSteps()
 
+    const [hasSubmitted, setHasSubmitted] = useState(false)
+
     const [currentMainColor, setCurrentMainColor] = useState<string>()
     const [currentConversationColor, setCurrentConversationColor] =
         useState<string>()
@@ -135,9 +137,17 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
         }
 
         return dispatch(
-            updateOrCreateIntegration(fromJS(form), undefined, true, () => {
-                shouldGoToNextStep && goToNextStep()
-            })
+            updateOrCreateIntegration(
+                fromJS(form),
+                undefined,
+                true,
+                () => {
+                    setHasSubmitted(true)
+                    shouldGoToNextStep && goToNextStep()
+                },
+                shouldGoToNextStep,
+                'Changes saved'
+            )
         )
     }
 
@@ -153,7 +163,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
         <>
             <UnsavedChangesPrompt
                 onSave={() => onSave()}
-                when={!isPristine}
+                when={!isPristine && !hasSubmitted}
                 shouldRedirectAfterSave
             />
             <GorgiasChatCreationWizardStep

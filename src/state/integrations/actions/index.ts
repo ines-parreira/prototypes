@@ -194,7 +194,9 @@ export function activateOnboardingIntegrations(
 export function onCreateSuccess(
     dispatch: StoreDispatch,
     resp: Integration,
-    disableRedirect = false
+    disableRedirect = false,
+    disableSuccessNotification?: boolean,
+    message?: string
 ) {
     dispatch({
         type: constants.CREATE_INTEGRATION_SUCCESS,
@@ -224,10 +226,14 @@ export function onCreateSuccess(
         )
     }
 
+    if (disableSuccessNotification) {
+        return
+    }
+
     void dispatch(
         notify({
             status: NotificationStatus.Success,
-            message: 'Integration successfully added',
+            message: message || 'Integration successfully added',
         })
     )
 }
@@ -243,7 +249,8 @@ export function onUpdateSuccess(
     dispatch: StoreDispatch,
     resp: Integration,
     notificationId: Maybe<string> = null,
-    didInvalidateCache = false
+    disableSuccessNotification?: boolean,
+    message?: string
 ): Promise<ReturnType<StoreDispatch>> {
     dispatch({
         type: constants.UPDATE_INTEGRATION_SUCCESS,
@@ -252,17 +259,15 @@ export function onUpdateSuccess(
 
     void fetchIntegrations()(dispatch)
 
-    let message = 'Integration successfully updated'
-
-    if (resp.type === IntegrationType.SmoochInside && didInvalidateCache) {
-        message = 'Integration successfully updated.'
+    if (disableSuccessNotification) {
+        return Promise.resolve()
     }
 
     return dispatch(
         notify({
             id: notificationId,
             status: NotificationStatus.Success,
-            message,
+            message: message || 'Integration successfully updated',
         })
     ) as Promise<Record<string, unknown>>
 }
@@ -381,12 +386,12 @@ export function updateOrCreateIntegrationRequest(
     action?: Record<string, unknown>,
     notificationId: Maybe<string> = null,
     disableRedirectOnCreateSuccess = false,
-    onSuccess?: (resp: any) => void
+    onSuccess?: (resp: any) => void,
+    disableSuccessNotification?: boolean,
+    message?: string
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const isUpdate = integration.get('id') as number
-        const oldDecoration =
-            (integration.get('decoration') as Map<any, any>) || fromJS({})
 
         dispatch({
             type: isUpdate
@@ -427,14 +432,17 @@ export function updateOrCreateIntegrationRequest(
                             dispatch,
                             resp,
                             notificationId,
-                            !oldDecoration.isEmpty()
+                            disableSuccessNotification,
+                            message
                         )
                     }
 
                     return onCreateSuccess(
                         dispatch,
                         resp,
-                        disableRedirectOnCreateSuccess
+                        disableRedirectOnCreateSuccess,
+                        disableSuccessNotification,
+                        message
                     )
                 },
                 (error: AxiosError) => {
@@ -633,7 +641,9 @@ export function updateOrCreateIntegration(
     integration: Map<any, any>,
     action?: Record<string, unknown>,
     disableRedirectOnCreateSuccess?: boolean,
-    onSuccess?: (resp: any) => void
+    onSuccess?: (resp: any) => void,
+    disableSuccessNotification?: boolean,
+    message?: string
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return dispatch(
@@ -642,7 +652,9 @@ export function updateOrCreateIntegration(
                 action,
                 null,
                 disableRedirectOnCreateSuccess,
-                onSuccess
+                onSuccess,
+                disableSuccessNotification,
+                message
             )
         )
     }

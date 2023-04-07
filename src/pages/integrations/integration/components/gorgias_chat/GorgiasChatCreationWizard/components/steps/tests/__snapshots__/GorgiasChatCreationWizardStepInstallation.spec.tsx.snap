@@ -19,6 +19,7 @@ exports[`<GorgiasChatCreationWizardStepInstallation /> submits form when using 1
     undefined,
     true,
     [Function],
+    true,
   ],
 ]
 `;

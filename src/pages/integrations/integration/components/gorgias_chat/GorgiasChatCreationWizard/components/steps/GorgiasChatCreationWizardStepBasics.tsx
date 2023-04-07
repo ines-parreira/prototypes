@@ -80,6 +80,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const isAutomationSettingsRevampEnabled =
         useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
 
+    const [hasSubmitted, setHasSubmitted] = useState(false)
     const [hasFailedSubmit, setHasFailedSubmit] = useState(false)
 
     const [currentName, setCurrentName] = useState<string>()
@@ -254,9 +255,17 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         }
 
         return dispatch(
-            updateOrCreateIntegration(fromJS(form), undefined, true, ({id}) => {
-                shouldGoToNextStep && goToNextStep(id)
-            })
+            updateOrCreateIntegration(
+                fromJS(form),
+                undefined,
+                true,
+                ({id}) => {
+                    setHasSubmitted(true)
+                    shouldGoToNextStep && goToNextStep(id)
+                },
+                shouldGoToNextStep,
+                'Changes saved'
+            )
         )
     }
 
@@ -267,7 +276,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         <>
             <UnsavedChangesPrompt
                 onSave={() => onSave()}
-                when={!isPristine}
+                when={!isPristine && !hasSubmitted}
                 shouldRedirectAfterSave
             />
             <GorgiasChatCreationWizardStep

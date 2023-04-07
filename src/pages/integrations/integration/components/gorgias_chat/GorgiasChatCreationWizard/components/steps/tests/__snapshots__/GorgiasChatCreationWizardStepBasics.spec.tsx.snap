@@ -23,6 +23,8 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form when updating chat
     undefined,
     true,
     [Function],
+    true,
+    "Changes saved",
   ],
 ]
 `;
@@ -72,6 +74,8 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form with default value
     undefined,
     true,
     [Function],
+    true,
+    "Changes saved",
   ],
 ]
 `;

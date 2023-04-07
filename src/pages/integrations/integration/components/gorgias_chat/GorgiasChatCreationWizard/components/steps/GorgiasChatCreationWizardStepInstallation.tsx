@@ -88,20 +88,27 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
             }
 
             await dispatch(
-                updateOrCreateIntegration(fromJS(form), undefined, true, () => {
-                    const redirectUrl = `/app/settings/channels/gorgias_chat/${id}/${
-                        isOneClickInstallation
-                            ? Tab.Appearance
-                            : Tab.Installation
-                    }`
-                    const locationState: NavigatedSuccessModalLocationState = {
-                        showModal: isOneClickInstallation
-                            ? NavigatedSuccessModalName.GorgiasChatAutoInstallation
-                            : NavigatedSuccessModalName.GorgiasChatManualInstallation,
-                    }
+                updateOrCreateIntegration(
+                    fromJS(form),
+                    undefined,
+                    true,
+                    () => {
+                        const redirectUrl = `/app/settings/channels/gorgias_chat/${id}/${
+                            isOneClickInstallation
+                                ? Tab.Appearance
+                                : Tab.Installation
+                        }`
+                        const locationState: NavigatedSuccessModalLocationState =
+                            {
+                                showModal: isOneClickInstallation
+                                    ? NavigatedSuccessModalName.GorgiasChatAutoInstallation
+                                    : NavigatedSuccessModalName.GorgiasChatManualInstallation,
+                            }
 
-                    history.push(redirectUrl, locationState)
-                })
+                        history.push(redirectUrl, locationState)
+                    },
+                    true
+                )
             )
         }, [integration, isOneClickInstallation])
 

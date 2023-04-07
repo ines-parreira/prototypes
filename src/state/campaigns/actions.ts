@@ -22,12 +22,7 @@ export function createCampaign(
             .then((json) => json?.data)
             .then(
                 (data) => {
-                    void onUpdateSuccess(
-                        dispatch,
-                        integration.toJS(),
-                        null,
-                        true
-                    )
+                    void onUpdateSuccess(dispatch, integration.toJS(), null)
                     return dispatch(
                         fetchIntegration(
                             integration.get('id'),
@@ -68,12 +63,7 @@ export function updateCampaign(
             .then((json) => json?.data)
             .then(
                 () => {
-                    void onUpdateSuccess(
-                        dispatch,
-                        integration.toJS(),
-                        null,
-                        true
-                    )
+                    void onUpdateSuccess(dispatch, integration.toJS(), null)
                     return dispatch(
                         fetchIntegration(
                             integration.get('id'),
@@ -104,12 +94,7 @@ export function deleteCampaign(
             )
             .then(
                 () => {
-                    void onUpdateSuccess(
-                        dispatch,
-                        integration.toJS(),
-                        null,
-                        true
-                    )
+                    void onUpdateSuccess(dispatch, integration.toJS(), null)
                     return dispatch(
                         fetchIntegration(
                             integration.get('id'),
