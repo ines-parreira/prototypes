@@ -94,6 +94,7 @@ export type Props = {
     canAddVideoPlayer?: boolean
     onInsertVideoAddedFromPastedLink?: () => void
     maxLength?: number
+    countCharacters?: boolean
     minHeight?: string | number
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
@@ -411,6 +412,7 @@ export class RichFieldEditor extends Component<Props, State> {
             ticket,
             header,
             maxLength,
+            countCharacters,
         } = this.props
         // $TsFixMe remove casting after migrating createMentionPlugin
         const {MentionSuggestions} = this.mentionPlugin as {
@@ -507,6 +509,15 @@ export class RichFieldEditor extends Component<Props, State> {
                         canDropFiles={!!this.props.canDropFiles}
                         {...pluginMethods}
                     />
+                )}
+                {countCharacters && (
+                    <span className={css.maxLength}>
+                        {`${
+                            this.props.editorState
+                                .getCurrentContent()
+                                .getPlainText().length
+                        } characters`}
+                    </span>
                 )}
                 {typeof maxLength === 'number' && (
                     <span className={css.maxLength}>

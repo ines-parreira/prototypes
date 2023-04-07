@@ -1,4 +1,5 @@
 import React, {ComponentProps} from 'react'
+import {render} from '@testing-library/react'
 import {mount, shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 import {ContentState, EditorState} from 'draft-js'
@@ -126,5 +127,24 @@ describe('RichField', () => {
             {attachTo: div}
         )
         expect(component).toMatchSnapshot()
+    })
+
+    it('should count the characters in the text', () => {
+        const text = 'This is a text 33 characters long'
+
+        const {getByText} = render(
+            <Provider store={store}>
+                <RichField
+                    {...defaultProps}
+                    countCharacters
+                    value={{
+                        text: text,
+                        html: text,
+                    }}
+                />
+            </Provider>
+        )
+
+        getByText(`${text.length} characters`)
     })
 })

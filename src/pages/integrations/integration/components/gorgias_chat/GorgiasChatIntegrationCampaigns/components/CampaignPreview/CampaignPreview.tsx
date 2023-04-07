@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 
 import {
     GorgiasChatLauncherType,
@@ -20,6 +21,7 @@ type Props = {
     authorAvatarUrl?: string
     avatar?: GorgiasChatAvatarSettings
     chatTitle?: string
+    className?: string
     mainColor?: string
     mainFontFamily: string
     translatedTexts: Record<string, string>
@@ -29,6 +31,7 @@ type Props = {
         type: GorgiasChatLauncherType
         label?: string
     }
+    onCampaignContentChange?: (value: boolean) => void
 }
 
 const CampaignPreview = ({
@@ -37,15 +40,17 @@ const CampaignPreview = ({
     authorAvatarUrl,
     avatar,
     chatTitle,
+    className,
     mainColor,
     mainFontFamily,
     translatedTexts,
     position,
     products = [],
     launcher,
+    onCampaignContentChange,
 }: Props) => (
     <CustomizedChatLauncher
-        className={css.preview}
+        className={classnames(css.preview, className)}
         position={position}
         mainColor={mainColor}
         launcher={launcher}
@@ -59,6 +64,7 @@ const CampaignPreview = ({
             html={html}
             products={products}
             translatedTexts={translatedTexts}
+            onCampaignContentChange={onCampaignContentChange}
         />
     </CustomizedChatLauncher>
 )

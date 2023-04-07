@@ -13,6 +13,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
 import {Option, Value} from 'pages/common/forms/SelectField/types'
 
@@ -29,6 +30,7 @@ type Props = {
     isRevenueBetaTester?: boolean
     text: string
     selectedAgent: string
+    showContentWarning?: boolean
     onSelectAgent: (agent: Value) => void
     onChangeMessage: (value: EditorState) => void
     onDeleteAttachment: (index: number) => void
@@ -43,6 +45,7 @@ export const CampaignMessage = memo(
         isRevenueBetaTester = false,
         text,
         selectedAgent,
+        showContentWarning,
         onSelectAgent,
         onChangeMessage,
         onDeleteAttachment,
@@ -138,6 +141,15 @@ export const CampaignMessage = memo(
                         onChange={onSelectAgent}
                     />
                 </div>
+                {isRevenueBetaTester && showContentWarning && (
+                    <div className="mb-4 mt-4">
+                        <Alert icon type={AlertType.Warning}>
+                            Your campaign might be too large for mobile devices
+                            or small screens. We advise limiting the content to
+                            maximum 170 characters and maximum 5 lines of text.
+                        </Alert>
+                    </div>
+                )}
                 <div className={css.textEditorWrapper}>
                     <TicketRichField
                         ref={(ref) => richAreaRef(ref)}
@@ -149,6 +161,7 @@ export const CampaignMessage = memo(
                         placeholder={'Write your message'}
                         displayedActions={displayedActions}
                         isRequired
+                        countCharacters={isRevenueBetaTester}
                     />
                     <TicketAttachments
                         removable

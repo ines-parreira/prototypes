@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import ReactPlayer from 'react-player'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import useMeasure from 'react-use/lib/useMeasure'
 
 import {extractGorgiasVideoDivFromHtmlContent} from 'utils'
 import {
@@ -9,10 +10,10 @@ import {
     GorgiasChatAvatarSettings,
 } from 'models/integration/types'
 import {AgentDisplayName} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentDisplayName'
-import GorgiasChatPoweredBy from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/GorgiasChatPoweredBy'
 import ChatAvatar from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatAvatar'
 import {FeatureFlagKey} from 'config/featureFlags'
 
+import {CAMPAIGN_MAX_HEIGHT} from '../../../../constants/visuals'
 import {CampaignProduct} from '../../../../types/CampaignProduct'
 
 import {ProductCarousel} from '../ProductCarousel'
@@ -69,6 +70,7 @@ type Props = {
     html: string
     products?: CampaignProduct[]
     translatedTexts: Record<string, string>
+    onCampaignContentChange?: (value: boolean) => void
 }
 
 export const ChatCampaign = ({
@@ -79,7 +81,9 @@ export const ChatCampaign = ({
     html,
     products = [],
     translatedTexts,
+    onCampaignContentChange,
 }: Props) => {
+    const [measureRef, {height}] = useMeasure<HTMLDivElement>()
     const isAgentAvatarCustomizationEnabled =
         useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
 
@@ -87,8 +91,20 @@ export const ChatCampaign = ({
 
     const isAuthorSelected = !!authorName
 
+    useEffect(() => {
+        if (!onCampaignContentChange) {
+            return
+        }
+
+        if (height > CAMPAIGN_MAX_HEIGHT) {
+            onCampaignContentChange(true)
+        } else {
+            onCampaignContentChange(false)
+        }
+    }, [onCampaignContentChange, height])
+
     return (
-        <div className={css.campaign}>
+        <div ref={measureRef} className={css.campaign}>
             <div className={css.content}>
                 <div className={css.header}>
                     <div className={css.author}>
@@ -153,12 +169,10 @@ export const ChatCampaign = ({
                 </div>
             )}
             {products.length > 0 && (
-                <div>
+                <div className={css.carouselContainer}>
                     <ProductCarousel products={products} />
                 </div>
             )}
-
-            <GorgiasChatPoweredBy translatedTexts={translatedTexts} />
 
             <div className={css.footer}>
                 {translatedTexts.campaignClickToReply}

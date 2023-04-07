@@ -8,3 +8,5 @@ export const DEFAULT_CAROUSEL_CONFIGURATION = {
     carouselMaxWidth: CAROUSEL_WIDTH,
     carouselNavigationPadding: (CAROUSEL_WIDTH - FRAME_WIDTH) / 2,
 }
+
+export const CAMPAIGN_MAX_HEIGHT = 560

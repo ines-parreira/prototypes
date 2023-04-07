@@ -94,6 +94,8 @@ export const AdvancedCampaignDetails = memo(
         const isUpdate = id !== 'new'
         const dispatch = useAppDispatch()
 
+        const [showContentWarning, setShowContentWarning] =
+            useState<boolean>(false)
         const [stateInitialized, setStateInitialized] = useState(false)
         const [isActionInProgress, setIsActionInProgress] =
             useState<boolean>(false)
@@ -474,6 +476,7 @@ export const AdvancedCampaignDetails = memo(
                         richArea && (
                             <CampaignPreview
                                 {...chatPreviewProps}
+                                className={css.campaignPreview}
                                 products={shopifyProducts}
                                 html={sanitizeHtmlDefault(campaignMessageHTML)}
                                 authorName={campaignAgent?.name ?? ``}
@@ -486,6 +489,7 @@ export const AdvancedCampaignDetails = memo(
                                     chatPreviewProps.mainFontFamily ??
                                     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
                                 }
+                                onCampaignContentChange={setShowContentWarning}
                             />
                         )
                     }
@@ -541,6 +545,7 @@ export const AdvancedCampaignDetails = memo(
                         {stateInitialized && (
                             <CampaignMessage
                                 richAreaRef={(ref) => setRichArea(ref)}
+                                showContentWarning={showContentWarning}
                                 agents={agents}
                                 attachments={attachments}
                                 html={campaignMessageHTML}
