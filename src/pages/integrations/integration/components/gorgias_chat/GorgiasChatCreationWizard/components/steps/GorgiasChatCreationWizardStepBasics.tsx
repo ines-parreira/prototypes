@@ -49,6 +49,7 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
 import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 
+import DiscardNewChatPrompt from '../DiscardNewChatPrompt'
 import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
 
@@ -281,9 +282,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
     return (
         <>
+            <DiscardNewChatPrompt when={!isUpdate && !isPristine} />
             <UnsavedChangesPrompt
                 onSave={() => onSave()}
-                when={!isPristine && !hasSubmitted}
+                when={isUpdate && !isPristine && !hasSubmitted}
                 shouldRedirectAfterSave
             />
             <GorgiasChatCreationWizardStep
