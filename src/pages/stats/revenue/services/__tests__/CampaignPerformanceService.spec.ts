@@ -25,7 +25,6 @@ describe('Revenue Attribution Service stats methods', () => {
                 {
                     [CampaignOrderEventsMeasures.impressions]: '1000',
                     [CampaignOrderEventsMeasures.engagement]: '100',
-                    [CampaignOrderEventsMeasures.uniqueConversions]: '10',
                 },
             ],
         } as CubeResponse
@@ -40,6 +39,7 @@ describe('Revenue Attribution Service stats methods', () => {
                 {
                     [OrderConversionMeasures.influencedRevenueUplift]: '23.45',
                     [OrderConversionMeasures.campaignSales]: '2000',
+                    [OrderConversionMeasures.campaignSalesCount]: '10',
                 },
             ],
         } as CubeResponse
@@ -222,6 +222,8 @@ describe('Revenue Attribution Service stats methods', () => {
                     [OrderConversionMeasures.discountSales]: '4567.65',
                     [OrderConversionMeasures.discountSalesCount]: '125',
                     [OrderConversionMeasures.clickSales]: '3596.25',
+                    [OrderConversionMeasures.clickSalesCount]: '117',
+                    [OrderConversionMeasures.campaignSalesCount]: '125',
                 },
                 {
                     [OrderConversionDimensions.campaignId]: 'campaign2',
@@ -232,6 +234,8 @@ describe('Revenue Attribution Service stats methods', () => {
                     [OrderConversionMeasures.discountSales]: '4567.65',
                     [OrderConversionMeasures.discountSalesCount]: '125',
                     [OrderConversionMeasures.clickSales]: '3596.25',
+                    [OrderConversionMeasures.clickSalesCount]: '248',
+                    [OrderConversionMeasures.campaignSalesCount]: '358',
                 },
             ],
         } as CubeResponse
@@ -247,19 +251,13 @@ describe('Revenue Attribution Service stats methods', () => {
                     [CampaignOrderEventsDimensions.campaignId]: 'campaign1',
                     [CampaignOrderEventsMeasures.engagement]: '357',
                     [CampaignOrderEventsMeasures.campaignCTR]: '12.78',
-                    [CampaignOrderEventsMeasures.uniqueConversions]: '125',
                     [CampaignOrderEventsMeasures.totalConversionRate]: '7.49',
-                    [CampaignOrderEventsMeasures.uniqueCampaignClicksConverted]:
-                        '117',
                 },
                 {
                     [CampaignOrderEventsDimensions.campaignId]: 'campaign2',
                     [CampaignOrderEventsMeasures.engagement]: '1357',
                     [CampaignOrderEventsMeasures.campaignCTR]: '11.25',
-                    [CampaignOrderEventsMeasures.uniqueConversions]: '358',
                     [CampaignOrderEventsMeasures.totalConversionRate]: '9.87',
-                    [CampaignOrderEventsMeasures.uniqueCampaignClicksConverted]:
-                        '248',
                 },
             ],
         } as CubeResponse

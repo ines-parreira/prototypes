@@ -39,7 +39,7 @@ export type CampaignPerformanceData = {
     uniqueImpressions: number
     engagement: number
     clickThroughRate: number
-    uniqueConversions: number
+    campaignSalesCount: number
     totalConversionRate: number
     ticketsCreated: number
     ticketsCreationRate: number
@@ -62,12 +62,12 @@ export type CampaignsPerformanceDataset = {
 export type EventsTotals = {
     [CampaignsTotalsMetricNames.impressions]: string
     [CampaignsTotalsMetricNames.engagement]: string
-    [CampaignsTotalsMetricNames.uniqueConversions]: string
 }
 
 export type OrdersTotals = {
     [CampaignsTotalsMetricNames.influencedRevenueUplift]: string
     [CampaignsTotalsMetricNames.revenue]: string | number
+    [CampaignsTotalsMetricNames.campaignSalesCount]: string
 }
 
 export type StoreTotal = {

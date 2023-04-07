@@ -9,7 +9,7 @@ export enum CampaignTableKeys {
     Engagement = 'engagement',
     ClickThroughRate = 'clickThroughRate',
     // Orders
-    Conversions = 'uniqueConversions',
+    Conversions = 'campaignSalesCount',
     TotalConversionRate = 'totalConversionRate',
     // Tickets
     TicketsCreated = 'ticketsCreated',

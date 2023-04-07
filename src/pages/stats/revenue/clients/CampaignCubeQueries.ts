@@ -120,6 +120,8 @@ export const getCampaignOrderPerformanceData = async ({
             OrderConversionMeasures.discountSales,
             OrderConversionMeasures.discountSalesCount,
             OrderConversionMeasures.clickSales,
+            OrderConversionMeasures.clickSalesCount,
+            OrderConversionMeasures.campaignSalesCount,
         ],
         filters: _getDefaultFilters({
             startDate,
@@ -146,9 +148,7 @@ export const getCampaignEventsOrdersPerformanceData = async ({
         measures: [
             CampaignOrderEventsMeasures.engagement,
             CampaignOrderEventsMeasures.campaignCTR,
-            CampaignOrderEventsMeasures.uniqueConversions,
             CampaignOrderEventsMeasures.totalConversionRate,
-            CampaignOrderEventsMeasures.uniqueCampaignClicksConverted,
         ],
         filters: _getDefaultFilters({
             startDate,
@@ -173,7 +173,6 @@ export const getCampaignEventsTotalsData = async ({
         measures: [
             CampaignOrderEventsMeasures.impressions,
             CampaignOrderEventsMeasures.engagement,
-            CampaignOrderEventsMeasures.uniqueConversions,
         ],
         filters: _getDefaultFilters({
             startDate,
@@ -196,6 +195,7 @@ export const getCampaignOrderTotalsData = async ({
         measures: [
             OrderConversionMeasures.influencedRevenueUplift,
             OrderConversionMeasures.campaignSales,
+            OrderConversionMeasures.campaignSalesCount,
         ],
         filters: _getDefaultFilters({
             startDate,

@@ -95,6 +95,7 @@ exports[`Campaign metrics helper tests backfillGraphData should backfill graph d
 exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable should not divide by zero for compound metrics 1`] = `
 {
   "campaign1": {
+    "campaignSalesCount": 0,
     "clickThroughRate": 0,
     "clicks": 0,
     "clicksConversionRate": 0,
@@ -114,7 +115,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "totalConversionRate": 0,
     "totalRevenue": 0,
     "traffic": 0,
-    "uniqueConversions": 0,
     "uniqueImpressions": 0,
   },
 }
@@ -123,6 +123,7 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
 exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable should return defaults for missing data 1`] = `
 {
   "campaign1": {
+    "campaignSalesCount": 0,
     "clickThroughRate": 0,
     "clicks": 0,
     "clicksConversionRate": 0,
@@ -142,10 +143,10 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "totalConversionRate": 0,
     "totalRevenue": 0,
     "traffic": 0,
-    "uniqueConversions": 0,
     "uniqueImpressions": 0,
   },
   "campaign2": {
+    "campaignSalesCount": 0,
     "clickThroughRate": 0,
     "clicks": 0,
     "clicksConversionRate": 0,
@@ -165,7 +166,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "totalConversionRate": 0,
     "totalRevenue": 0,
     "traffic": 0,
-    "uniqueConversions": 0,
     "uniqueImpressions": 0,
   },
 }
@@ -174,6 +174,7 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
 exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable should transform data from metrics to table data 1`] = `
 {
   "campaign1": {
+    "campaignSalesCount": 125,
     "clickThroughRate": 12,
     "clicks": 1000,
     "clicksConversionRate": 2,
@@ -193,10 +194,10 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "totalConversionRate": 7,
     "totalRevenue": 12345,
     "traffic": 1234,
-    "uniqueConversions": 125,
     "uniqueImpressions": 34,
   },
   "campaign2": {
+    "campaignSalesCount": 358,
     "clickThroughRate": 11,
     "clicks": 2000,
     "clicksConversionRate": 2,
@@ -216,7 +217,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "totalConversionRate": 9,
     "totalRevenue": 12345,
     "traffic": 4567,
-    "uniqueConversions": 358,
     "uniqueImpressions": 67,
   },
 }

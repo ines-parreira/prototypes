@@ -49,7 +49,7 @@ const METRICS = {
         (clicks on the product link or direct add to cart),
         (4) discount code displayed in a campaign applied to an order`,
     },
-    [CampaignsTotalsMetricNames.uniqueConversions]: {
+    [CampaignsTotalsMetricNames.campaignSalesCount]: {
         title: 'Orders',
         hint: `Number of orders following one of the interactions counted as an engagement`,
     },
@@ -150,11 +150,11 @@ export const CampaignTotalsStat = ({onError}: Props) => {
             <DashboardGridCell size={GRID_SIZE}>
                 {statsVisible && (
                     <MetricCard
-                        title={METRICS.uniqueConversions.title}
-                        hint={METRICS.uniqueConversions.hint}
+                        title={METRICS.campaignSalesCount.title}
+                        hint={METRICS.campaignSalesCount.hint}
                     >
                         <BigNumberMetric>
-                            {totals?.uniqueConversions}
+                            {totals?.campaignSalesCount}
                         </BigNumberMetric>
                     </MetricCard>
                 )}

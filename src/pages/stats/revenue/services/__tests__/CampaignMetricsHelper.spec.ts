@@ -68,7 +68,6 @@ describe('Campaign metrics helper tests', () => {
             {
                 [CampaignOrderEventsMeasures.impressions]: '12345678',
                 [CampaignOrderEventsMeasures.engagement]: '2345678',
-                [CampaignOrderEventsMeasures.uniqueConversions]: '345678',
             },
         ]
 
@@ -83,7 +82,6 @@ describe('Campaign metrics helper tests', () => {
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.impressions]: '12,345,678',
                 [CampaignsTotalsMetricNames.engagement]: '2,345,678',
-                [CampaignsTotalsMetricNames.uniqueConversions]: '345,678',
             })
         })
 
@@ -92,7 +90,6 @@ describe('Campaign metrics helper tests', () => {
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.impressions]: '0',
                 [CampaignsTotalsMetricNames.engagement]: '0',
-                [CampaignsTotalsMetricNames.uniqueConversions]: '0',
             })
         })
 
@@ -101,7 +98,6 @@ describe('Campaign metrics helper tests', () => {
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.impressions]: '0',
                 [CampaignsTotalsMetricNames.engagement]: '0',
-                [CampaignsTotalsMetricNames.uniqueConversions]: '0',
             })
         })
     })
@@ -112,6 +108,7 @@ describe('Campaign metrics helper tests', () => {
             {
                 [OrderConversionMeasures.influencedRevenueUplift]: '4567.8',
                 [OrderConversionMeasures.campaignSales]: '34.56',
+                [OrderConversionMeasures.campaignSalesCount]: '345678',
             },
         ]
 
@@ -126,6 +123,7 @@ describe('Campaign metrics helper tests', () => {
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.influencedRevenueUplift]: '4567.8%',
                 [CampaignsTotalsMetricNames.revenue]: '$34.56',
+                [CampaignsTotalsMetricNames.campaignSalesCount]: '345,678',
             })
         })
 
@@ -137,6 +135,7 @@ describe('Campaign metrics helper tests', () => {
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.influencedRevenueUplift]: '0%',
                 [CampaignsTotalsMetricNames.revenue]: '$0',
+                [CampaignsTotalsMetricNames.campaignSalesCount]: '0',
             })
         })
 
@@ -145,6 +144,7 @@ describe('Campaign metrics helper tests', () => {
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.influencedRevenueUplift]: '0%',
                 [CampaignsTotalsMetricNames.revenue]: '$0',
+                [CampaignsTotalsMetricNames.campaignSalesCount]: '0',
             })
         })
     })
@@ -413,6 +413,8 @@ describe('Campaign metrics helper tests', () => {
                 [OrderConversionMeasures.discountSales]: '4567.65',
                 [OrderConversionMeasures.discountSalesCount]: '125',
                 [OrderConversionMeasures.clickSales]: '3596.25',
+                [OrderConversionMeasures.clickSalesCount]: '20',
+                [OrderConversionMeasures.campaignSalesCount]: '125',
             },
             {
                 [OrderConversionDimensions.campaignId]: 'campaign2',
@@ -423,6 +425,8 @@ describe('Campaign metrics helper tests', () => {
                 [OrderConversionMeasures.discountSales]: '4567.65',
                 [OrderConversionMeasures.discountSalesCount]: '125',
                 [OrderConversionMeasures.clickSales]: '3596.25',
+                [OrderConversionMeasures.clickSalesCount]: '40',
+                [OrderConversionMeasures.campaignSalesCount]: '358',
             },
         ]
 
@@ -431,19 +435,13 @@ describe('Campaign metrics helper tests', () => {
                 [CampaignOrderEventsDimensions.campaignId]: 'campaign1',
                 [CampaignOrderEventsMeasures.engagement]: '357',
                 [CampaignOrderEventsMeasures.campaignCTR]: '12.78',
-                [CampaignOrderEventsMeasures.uniqueConversions]: '125',
                 [CampaignOrderEventsMeasures.totalConversionRate]: '7.49',
-                [CampaignOrderEventsMeasures.uniqueCampaignClicksConverted]:
-                    '20',
             },
             {
                 [CampaignOrderEventsDimensions.campaignId]: 'campaign2',
                 [CampaignOrderEventsMeasures.engagement]: '1357',
                 [CampaignOrderEventsMeasures.campaignCTR]: '11.25',
-                [CampaignOrderEventsMeasures.uniqueConversions]: '358',
                 [CampaignOrderEventsMeasures.totalConversionRate]: '9.87',
-                [CampaignOrderEventsMeasures.uniqueCampaignClicksConverted]:
-                    '40',
             },
         ]
 
@@ -485,13 +483,12 @@ describe('Campaign metrics helper tests', () => {
                     {
                         [OrderConversionDimensions.campaignId]: 'campaign1',
                         [OrderConversionMeasures.ticketSalesCount]: '60',
+                        [OrderConversionMeasures.clickSalesCount]: '20',
                     },
                 ],
                 [
                     {
                         [CampaignOrderEventsDimensions.campaignId]: 'campaign1',
-                        [CampaignOrderEventsMeasures.uniqueCampaignClicksConverted]:
-                            '20',
                     },
                 ],
                 [['campaign1', 0]] as TicketPerformanceData

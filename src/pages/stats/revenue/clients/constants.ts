@@ -51,7 +51,9 @@ export const OrderConversionMeasures = {
     discountSales: `${Cubes.orderConversion}.discountSales`,
     discountSalesCount: `${Cubes.orderConversion}.discountSalesCount`,
     clickSales: `${Cubes.orderConversion}.clickSales`,
+    clickSalesCount: `${Cubes.orderConversion}.clickSalesCount`,
     campaignSales: `${Cubes.orderConversion}.campaignSales`,
+    campaignSalesCount: `${Cubes.orderConversion}.campaignSalesCount`,
 }
 
 // Campaign order events constants
@@ -64,7 +66,5 @@ export const CampaignOrderEventsMeasures = {
     impressions: `${Cubes.campaignOrderEvents}.impressions`,
     engagement: `${Cubes.campaignOrderEvents}.engagement`,
     campaignCTR: `${Cubes.campaignOrderEvents}.campaignCTR`,
-    uniqueConversions: `${Cubes.campaignOrderEvents}.uniqueConversions`,
     totalConversionRate: `${Cubes.campaignOrderEvents}.totalConversionRate`,
-    uniqueCampaignClicksConverted: `${Cubes.campaignOrderEvents}.uniqueCampaignClicksConverted`,
 }

@@ -2,7 +2,7 @@
 export enum CampaignsTotalsMetricNames {
     impressions = 'impressions',
     engagement = 'engagement',
-    uniqueConversions = 'uniqueConversions',
+    campaignSalesCount = 'campaignSalesCount',
     gmv = 'gmv',
     influencedRevenueUplift = 'influencedRevenueUplift',
     revenue = 'revenue',

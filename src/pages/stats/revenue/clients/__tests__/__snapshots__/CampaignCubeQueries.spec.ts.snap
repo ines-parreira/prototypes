@@ -29,9 +29,7 @@ exports[`Calling CubeClient functions [Function getCampaignEventsOrdersPerforman
       "measures": [
         "CampaignOrderEvents.engagement",
         "CampaignOrderEvents.campaignCTR",
-        "CampaignOrderEvents.uniqueConversions",
         "CampaignOrderEvents.totalConversionRate",
-        "CampaignOrderEvents.uniqueCampaignClicksConverted",
       ],
     },
   ],
@@ -112,7 +110,6 @@ exports[`Calling CubeClient functions [Function getCampaignEventsTotalsData] sho
       "measures": [
         "CampaignOrderEvents.impressions",
         "CampaignOrderEvents.engagement",
-        "CampaignOrderEvents.uniqueConversions",
       ],
     },
   ],
@@ -153,6 +150,8 @@ exports[`Calling CubeClient functions [Function getCampaignOrderPerformanceData]
         "OrderConversion.discountSales",
         "OrderConversion.discountSalesCount",
         "OrderConversion.clickSales",
+        "OrderConversion.clickSalesCount",
+        "OrderConversion.campaignSalesCount",
       ],
     },
   ],
@@ -192,6 +191,7 @@ exports[`Calling CubeClient functions [Function getCampaignOrderTotalsData] shou
       "measures": [
         "OrderConversion.influencedRevenueUplift",
         "OrderConversion.campaignSales",
+        "OrderConversion.campaignSalesCount",
       ],
     },
   ],

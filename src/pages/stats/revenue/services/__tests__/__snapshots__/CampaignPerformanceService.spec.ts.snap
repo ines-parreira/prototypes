@@ -50,10 +50,11 @@ exports[`Revenue Attribution Service stats methods getCampaignsAndChatPerformanc
 exports[`Revenue Attribution Service stats methods getCampaignsPerformance should fill default values if data is missing 1`] = `
 {
   "campaign1": {
+    "campaignSalesCount": 0,
     "clickThroughRate": 12,
     "clicks": 24,
-    "clicksConversionRate": 487.5,
-    "clicksConverted": 117,
+    "clicksConversionRate": 0,
+    "clicksConverted": 0,
     "clicksRate": 10,
     "clicksRevenue": 0,
     "discountCodesRevenue": 0,
@@ -69,14 +70,14 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
     "totalConversionRate": 7,
     "totalRevenue": 0,
     "traffic": 1234,
-    "uniqueConversions": 125,
     "uniqueImpressions": 34,
   },
   "campaign2": {
+    "campaignSalesCount": 0,
     "clickThroughRate": 11,
     "clicks": 57,
-    "clicksConversionRate": 435.08771929824564,
-    "clicksConverted": 248,
+    "clicksConversionRate": 0,
+    "clicksConverted": 0,
     "clicksRate": 21,
     "clicksRevenue": 0,
     "discountCodesRevenue": 0,
@@ -92,7 +93,6 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
     "totalConversionRate": 9,
     "totalRevenue": 0,
     "traffic": 4567,
-    "uniqueConversions": 358,
     "uniqueImpressions": 67,
   },
 }
@@ -101,6 +101,7 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
 exports[`Revenue Attribution Service stats methods getCampaignsPerformance should return prepared data for campaign performance table 1`] = `
 {
   "campaign1": {
+    "campaignSalesCount": 125,
     "clickThroughRate": 12,
     "clicks": 24,
     "clicksConversionRate": 487.5,
@@ -120,10 +121,10 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
     "totalConversionRate": 7,
     "totalRevenue": 12345,
     "traffic": 1234,
-    "uniqueConversions": 125,
     "uniqueImpressions": 34,
   },
   "campaign2": {
+    "campaignSalesCount": 358,
     "clickThroughRate": 11,
     "clicks": 57,
     "clicksConversionRate": 435.08771929824564,
@@ -143,7 +144,6 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
     "totalConversionRate": 9,
     "totalRevenue": 12345,
     "traffic": 4567,
-    "uniqueConversions": 358,
     "uniqueImpressions": 67,
   },
 }
@@ -160,11 +160,11 @@ exports[`Revenue Attribution Service stats methods getRevenueUpliftOverTime shou
 
 exports[`Revenue Attribution Service stats methods getTotals should return prepared data for totals section 1`] = `
 {
+  "campaignSalesCount": "10",
   "engagement": "100",
   "gmv": "€3,000",
   "impressions": "1,000",
   "influencedRevenueUplift": "23.45%",
   "revenue": "€2,000",
-  "uniqueConversions": "10",
 }
 `;

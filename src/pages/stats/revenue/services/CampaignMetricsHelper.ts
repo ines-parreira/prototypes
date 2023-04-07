@@ -68,11 +68,6 @@ export const transformToCampaignEventsTotals = (
                 _get(metric, CampaignOrderEventsMeasures.engagement, '0')
             )
         ),
-        [CampaignsTotalsMetricNames.uniqueConversions]: formatNumber(
-            parseFloat(
-                _get(metric, CampaignOrderEventsMeasures.uniqueConversions, '0')
-            )
-        ),
     }
 }
 
@@ -99,6 +94,11 @@ export const transformToCampaignOrdersTotals = (
                 _get(metric, OrderConversionMeasures.campaignSales, '0')
             ),
             currency
+        ),
+        [CampaignsTotalsMetricNames.campaignSalesCount]: formatNumber(
+            parseFloat(
+                _get(metric, OrderConversionMeasures.campaignSalesCount, '0')
+            )
         ),
     }
 }
@@ -297,6 +297,10 @@ const _ordersPerformanceReducer = (
             ),
             ticketsRevenue: _get(metric, OrderConversionMeasures.ticketSales),
             clicksRevenue: _get(metric, OrderConversionMeasures.clickSales),
+            clicksConverted: _get(
+                metric,
+                OrderConversionMeasures.clickSalesCount
+            ),
             discountCodesUsed: _get(
                 metric,
                 OrderConversionMeasures.discountSalesCount
@@ -304,6 +308,10 @@ const _ordersPerformanceReducer = (
             discountCodesRevenue: _get(
                 metric,
                 OrderConversionMeasures.discountSales
+            ),
+            campaignSalesCount: _get(
+                metric,
+                OrderConversionMeasures.campaignSalesCount
             ),
         },
         _parseInt
@@ -329,17 +337,9 @@ const _campaignsOrdersPerformanceReducer = (
                 metric,
                 CampaignOrderEventsMeasures.campaignCTR
             ),
-            uniqueConversions: _get(
-                metric,
-                CampaignOrderEventsMeasures.uniqueConversions
-            ),
             totalConversionRate: _get(
                 metric,
                 CampaignOrderEventsMeasures.totalConversionRate
-            ),
-            clicksConverted: _get(
-                metric,
-                CampaignOrderEventsMeasures.uniqueCampaignClicksConverted
             ),
         },
         _parseInt
@@ -387,7 +387,7 @@ const _addDefaultValues = (
         uniqueImpressions: 0,
         engagement: 0,
         clickThroughRate: 0,
-        uniqueConversions: 0,
+        campaignSalesCount: 0,
         totalConversionRate: 0,
         ticketsCreated: 0,
         ticketsCreationRate: 0,
