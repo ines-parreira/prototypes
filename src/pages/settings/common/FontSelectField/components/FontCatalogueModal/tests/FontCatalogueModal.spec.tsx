@@ -1,7 +1,13 @@
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fireEvent, render, waitFor, within} from '@testing-library/react'
+import {
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@testing-library/react'
 import _noop from 'lodash/noop'
 import thunk from 'redux-thunk'
 import * as hooks from '../../../hooks'
@@ -155,7 +161,7 @@ describe('<FontCatalogueModal />', () => {
     }))
 
     it('should display already added fonts in selected font list', () => {
-        const {getByText} = render(
+        render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal
                     {...defaultProps}
@@ -166,7 +172,7 @@ describe('<FontCatalogueModal />', () => {
         )
 
         const selectedFontsContainer = (
-            getByText('Selected Fonts').closest('div') as HTMLElement
+            screen.getByText('Selected Fonts').closest('div') as HTMLElement
         ).parentNode as HTMLElement
 
         within(selectedFontsContainer).getByText('Roboto')
@@ -187,37 +193,37 @@ describe('<FontCatalogueModal />', () => {
     })
 
     it('should show filtered fonts', async () => {
-        const {getByTestId, getByText, queryByText} = render(
+        render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal {...defaultProps} isModalOpen />
             </Provider>
         )
 
-        getByText('Roboto')
-        getByText('Adriana')
-        getByText('Tambourin')
+        screen.getByText('Roboto')
+        screen.getByText('Adriana')
+        screen.getByText('Tambourin')
 
-        fireEvent.change(getByTestId('Search'), {
+        fireEvent.change(screen.getByTestId('Search'), {
             target: {value: 'a'},
         })
 
-        await waitFor(() => expect(queryByText('Roboto')).toBeNull())
-        getByText('Adriana')
-        getByText('Tambourin')
+        await waitFor(() => expect(screen.queryByText('Roboto')).toBeNull())
+        screen.getByText('Adriana')
+        screen.getByText('Tambourin')
     })
 
     it('should select font on click from the list, and remove it with another click', async () => {
-        const {getByText} = render(
+        render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal {...defaultProps} isModalOpen />
             </Provider>
         )
 
         const selectedFontsContainer = (
-            getByText('Selected Fonts').closest('div') as HTMLElement
+            screen.getByText('Selected Fonts').closest('div') as HTMLElement
         ).parentNode as HTMLElement
 
-        const fontInFontList = getByText('Roboto')
+        const fontInFontList = screen.getByText('Roboto')
 
         fireEvent.click(fontInFontList)
         await waitFor(() => within(selectedFontsContainer).getByText('Roboto'))
@@ -231,7 +237,7 @@ describe('<FontCatalogueModal />', () => {
     })
 
     it('should not remove current primary font on click from the list', () => {
-        const {getByText, getByTestId} = render(
+        render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal
                     {...defaultProps}
@@ -243,10 +249,10 @@ describe('<FontCatalogueModal />', () => {
         )
 
         const selectedFontsContainer = (
-            getByText('Selected Fonts').closest('div') as HTMLElement
+            screen.getByText('Selected Fonts').closest('div') as HTMLElement
         ).parentNode as HTMLElement
 
-        const fontList = getByTestId('font-list')
+        const fontList = screen.getByTestId('font-list')
 
         within(selectedFontsContainer).getByText('Roboto')
 
@@ -255,17 +261,17 @@ describe('<FontCatalogueModal />', () => {
     })
 
     it('should select font on click from the list, and remove it with a click from selected font list', async () => {
-        const {getByText} = render(
+        render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal {...defaultProps} isModalOpen />
             </Provider>
         )
 
         const selectedFontsContainer = (
-            getByText('Selected Fonts').closest('div') as HTMLElement
+            screen.getByText('Selected Fonts').closest('div') as HTMLElement
         ).parentNode as HTMLElement
 
-        const fontInFontList = getByText('Roboto')
+        const fontInFontList = screen.getByText('Roboto')
 
         fireEvent.click(fontInFontList)
 
@@ -282,7 +288,7 @@ describe('<FontCatalogueModal />', () => {
     })
 
     it('should should not show cross to remove current primary font in selected font list', () => {
-        const {getByText} = render(
+        render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal
                     {...defaultProps}
@@ -294,7 +300,7 @@ describe('<FontCatalogueModal />', () => {
         )
 
         const selectedFontsContainer = (
-            getByText('Selected Fonts').closest('div') as HTMLElement
+            screen.getByText('Selected Fonts').closest('div') as HTMLElement
         ).parentNode as HTMLElement
 
         const fontInSelectedList = within(selectedFontsContainer)
@@ -308,15 +314,15 @@ describe('<FontCatalogueModal />', () => {
     it('should save selected fonts in local storage, sorted in alphabetical order', () => {
         const setItem = jest.spyOn(window.localStorage.__proto__, 'setItem')
 
-        const {getByText} = render(
+        render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal {...defaultProps} isModalOpen />
             </Provider>
         )
 
-        fireEvent.click(getByText('Roboto'))
-        fireEvent.click(getByText('Adriana'))
-        fireEvent.click(getByText('Save Selected Fonts'))
+        fireEvent.click(screen.getByText('Roboto'))
+        fireEvent.click(screen.getByText('Adriana'))
+        fireEvent.click(screen.getByText('Save Selected Fonts'))
 
         expect(setItem).toHaveBeenCalledWith(
             AGENT_ADDED_FONTS,
@@ -327,22 +333,22 @@ describe('<FontCatalogueModal />', () => {
     it('should disable save button if no changes have been made, and allow to save otherwise', () => {
         const setItem = jest.spyOn(window.localStorage.__proto__, 'setItem')
 
-        const {getByText} = render(
+        render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal {...defaultProps} isModalOpen />
             </Provider>
         )
 
-        const submitButton = getByText(
+        const submitButton = screen.getByText<HTMLButtonElement>(
             'Save Selected Fonts'
-        ) as HTMLButtonElement
+        )
         expect(submitButton.disabled).toBe(true)
 
-        fireEvent.click(getByText('Adriana'))
+        fireEvent.click(screen.getByText('Adriana'))
         expect(submitButton.disabled).toBe(false)
 
         const selectedFontsContainer = (
-            getByText('Selected Fonts').closest('div') as HTMLElement
+            screen.getByText('Selected Fonts').closest('div') as HTMLElement
         ).parentNode as HTMLElement
         const fontInSelectedList = within(selectedFontsContainer)
             .getByText('Adriana')
@@ -351,7 +357,7 @@ describe('<FontCatalogueModal />', () => {
         fireEvent.click(within(fontInSelectedList).getByText('close'))
         expect(submitButton.disabled).toBe(true)
 
-        fireEvent.click(getByText('Adriana'))
+        fireEvent.click(screen.getByText('Adriana'))
         fireEvent.click(submitButton)
 
         expect(setItem).toHaveBeenCalledWith(AGENT_ADDED_FONTS, '["Adriana"]')

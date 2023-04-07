@@ -15,7 +15,8 @@ import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getL
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {billingState} from 'fixtures/billing'
-import HelpCenterAppearanceView from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
+import {FontCatalogueModal} from 'pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal'
+import {HelpCenterAppearanceView} from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
 import {getHelpCenterTranslationsResponseFixture} from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import {HelpCenterTranslationProvider} from '../../providers/HelpCenterTranslation'
 
@@ -82,6 +83,13 @@ const mockedUseCurrentHelpCenter = (
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
+
+jest.mock(
+    'pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal'
+)
+;(FontCatalogueModal as jest.Mock).mockReturnValue(
+    <div id="FontCatalogueModal-mocked"></div>
+)
 
 const route = {
     path: '/app/settings/help-center/:helpCenterId/appearance',

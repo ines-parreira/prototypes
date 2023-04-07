@@ -713,6 +713,9 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                   </div>
                 </div>
               </div>
+              <div
+                id="FontCatalogueModal-mocked"
+              />
             </div>
             <small
               class="form-text text-muted"
