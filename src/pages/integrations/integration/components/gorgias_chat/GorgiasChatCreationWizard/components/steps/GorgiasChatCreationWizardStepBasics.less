@@ -7,9 +7,12 @@
         margin-bottom: @layout-spacing-xs;
     }
 
-    .inputGroup,
-    .connectStoreDescription {
+    .inputGroup {
         margin-bottom: @layout-spacing-m;
+    }
+
+    .connectStoreDescription {
+        margin-bottom: @layout-spacing-s;
     }
 
     .section {
@@ -40,5 +43,14 @@
         .caption-regular();
         color: @classic-feedback-error;
         margin-top: 4px;
+    }
+
+    .languageSelect :global(.dropdown-toggle) {
+        justify-content: space-between;
+    }
+
+    .languageSelectDropdownMenu {
+        width: 100%;
+        max-width: none;
     }
 }

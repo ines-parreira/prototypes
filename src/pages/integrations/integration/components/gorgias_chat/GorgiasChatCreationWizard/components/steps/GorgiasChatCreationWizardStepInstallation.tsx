@@ -166,6 +166,8 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                             storeIntegration={storeIntegration}
                             storeIntegrations={storeIntegrations}
                             isOneClickInstallation={isOneClickInstallation}
+                            changeButtonLabel="Change store"
+                            allowDisconnect={false}
                         />
                     </div>
                 )}

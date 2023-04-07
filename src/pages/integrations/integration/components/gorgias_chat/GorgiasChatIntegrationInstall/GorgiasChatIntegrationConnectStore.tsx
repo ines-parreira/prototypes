@@ -25,6 +25,8 @@ type Props = {
     storeIntegration: StoreIntegration | undefined
     storeIntegrations: StoreIntegration[]
     isOneClickInstallation: boolean
+    allowDisconnect?: boolean
+    changeButtonLabel?: string
 }
 
 const GorgiasChatIntegrationConnectStore = ({
@@ -32,6 +34,8 @@ const GorgiasChatIntegrationConnectStore = ({
     storeIntegration,
     storeIntegrations,
     isOneClickInstallation,
+    allowDisconnect = true,
+    changeButtonLabel = 'Change',
 }: Props) => {
     const dispatch = useAppDispatch()
 
@@ -125,26 +129,28 @@ const GorgiasChatIntegrationConnectStore = ({
                             intent="secondary"
                             onClick={handleModalOpen}
                         >
-                            Change
+                            {changeButtonLabel}
                         </Button>
-                        <ConfirmButton
-                            confirmationButtonIntent="destructive"
-                            confirmationContent={
-                                isOneClickInstallation
-                                    ? 'Disconnecting this store will remove automation features and uninstall the chat from your store, removing it from all pages.'
-                                    : 'Disconnecting this store will remove automation features from your chat widget.'
-                            }
-                            confirmationTitle={<b>Disconnect store?</b>}
-                            confirmLabel="Disconnect"
-                            fillStyle="ghost"
-                            intent="destructive"
-                            onConfirm={handleDisconnect}
-                            placement="top"
-                            showCancelButton
-                            isDisabled={isDisconnectPending}
-                        >
-                            Disconnect
-                        </ConfirmButton>
+                        {allowDisconnect && (
+                            <ConfirmButton
+                                confirmationButtonIntent="destructive"
+                                confirmationContent={
+                                    isOneClickInstallation
+                                        ? 'Disconnecting this store will remove automation features and uninstall the chat from your store, removing it from all pages.'
+                                        : 'Disconnecting this store will remove automation features from your chat widget.'
+                                }
+                                confirmationTitle={<b>Disconnect store?</b>}
+                                confirmLabel="Disconnect"
+                                fillStyle="ghost"
+                                intent="destructive"
+                                onConfirm={handleDisconnect}
+                                placement="top"
+                                showCancelButton
+                                isDisabled={isDisconnectPending}
+                            >
+                                Disconnect
+                            </ConfirmButton>
+                        )}
                     </div>
                 </div>
             ) : (

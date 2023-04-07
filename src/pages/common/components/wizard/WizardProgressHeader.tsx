@@ -42,7 +42,9 @@ const WizardProgressHeader: React.FC<Props> = ({className, labels}) => {
                         >
                             <span className={css.stepIndex}>
                                 {isPreviousStep ? (
-                                    <i className="material-icons">check</i>
+                                    <span className={css.checkIcon}>
+                                        <i className="material-icons">check</i>
+                                    </span>
                                 ) : (
                                     index + 1
                                 )}

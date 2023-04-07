@@ -353,6 +353,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                     >['onChange']
                                 }
                                 options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
+                                className={css.languageSelect}
+                                dropdownMenuClassName={
+                                    css.languageSelectDropdownMenu
+                                }
                             />
                         </div>
                     </div>
