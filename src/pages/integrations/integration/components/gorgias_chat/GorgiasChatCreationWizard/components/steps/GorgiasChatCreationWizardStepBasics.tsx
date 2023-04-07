@@ -8,7 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
-    GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS,
+    GORGIAS_CHAT_WIDGET_TEXTS,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
@@ -124,7 +124,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
     const name = currentName ?? integration.get('name')
 
-    const language =
+    const language: string =
         currentLanguage ||
         integration.getIn(
             ['meta', 'language'],
@@ -167,6 +167,11 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         currentLiveChatAvailability === undefined &&
         currentIsStoreRequired === undefined
 
+    const introductionText =
+        GORGIAS_CHAT_WIDGET_TEXTS[language]?.introductionText
+    const offlineIntroductionText =
+        GORGIAS_CHAT_WIDGET_TEXTS[language]?.offlineIntroductionText
+
     const onSave = (shouldGoToNextStep = false) => {
         if (hasIncompleteFields) {
             setHasFailedSubmit(true)
@@ -195,6 +200,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                             : GorgiasChatCreationWizardSteps.Basics
                     )
                     .toJS(),
+                decoration: (integration.get('decoration') as Map<any, any>)
+                    .set('introduction_text', introductionText)
+                    .set('offline_introduction_text', offlineIntroductionText)
+                    .toJS(),
             }
         } else {
             form = {
@@ -202,10 +211,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                 decoration: {
                     conversation_color: GORGIAS_CHAT_DEFAULT_COLOR,
                     main_color: GORGIAS_CHAT_DEFAULT_COLOR,
-                    introduction_text:
-                        GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS?.introductionText,
-                    offline_introduction_text:
-                        GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS?.offlineIntroductionText,
+                    introduction_text: introductionText,
+                    offline_introduction_text: offlineIntroductionText,
                     avatar_type: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
                     position: GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
                     avatar: {
@@ -287,9 +294,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         showStatusToggle={false}
                         name={name}
                         language={language}
-                        isOnline={
+                        isOnline
+                        showOfflineMessages={
                             liveChatAvailability ===
-                            GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
+                            GORGIAS_CHAT_LIVE_CHAT_OFFLINE
                         }
                     />
                 }

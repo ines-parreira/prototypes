@@ -5,9 +5,8 @@ import {Map, fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {widgetTexts} from 'config/integrations/widget'
-
 import {
+    GORGIAS_CHAT_WIDGET_TEXTS,
     GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
 } from 'config/integrations/gorgias_chat'
@@ -16,18 +15,17 @@ import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPrevie
 
 const mockStore = configureMockStore([thunk])
 
-const introductionText = 'Online Introduction Text'
-const offlineIntroductionText = 'Offline Introduction Text'
+const language = 'en-US'
+
+const introductionText = GORGIAS_CHAT_WIDGET_TEXTS[language]?.introductionText
+const offlineIntroductionText =
+    GORGIAS_CHAT_WIDGET_TEXTS[language]?.offlineIntroductionText
 
 const integration: Map<any, any> = fromJS({
     id: 1,
     name: 'Test Integration',
     meta: {
-        language: 'en-US',
-    },
-    decoration: {
-        introduction_text: introductionText,
-        offline_introduction_text: offlineIntroductionText,
+        language,
     },
 })
 
@@ -72,7 +70,9 @@ describe('<GorgiasChatCreationWizardPreview />', () => {
             </Provider>
         )
 
-        expect(onlineFirstChild).toHaveTextContent(introductionText)
+        expect(onlineFirstChild).toHaveTextContent(
+            'Hi, could you give me an update on my order status?'
+        )
 
         const {
             container: {firstChild: offlineFirstChild},
@@ -87,7 +87,9 @@ describe('<GorgiasChatCreationWizardPreview />', () => {
             </Provider>
         )
 
-        expect(offlineFirstChild).toHaveTextContent(offlineIntroductionText)
+        expect(offlineFirstChild).toHaveTextContent(
+            GORGIAS_CHAT_WIDGET_TEXTS['en-US']?.contactFormIntro
+        )
     })
 
     it('props override integration values', () => {
@@ -106,10 +108,9 @@ describe('<GorgiasChatCreationWizardPreview />', () => {
             </Provider>
         )
 
-        expect(firstChild).toHaveTextContent(offlineIntroductionText)
-        expect(firstChild).toHaveTextContent(testChatTitle)
         expect(firstChild).toHaveTextContent(
-            widgetTexts['fr-FR'].inputPlaceholder
+            GORGIAS_CHAT_WIDGET_TEXTS['fr-FR']?.offlineIntroductionText
         )
+        expect(firstChild).toHaveTextContent(testChatTitle)
     })
 })

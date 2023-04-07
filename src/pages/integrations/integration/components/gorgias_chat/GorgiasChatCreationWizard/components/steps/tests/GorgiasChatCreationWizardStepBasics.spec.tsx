@@ -29,6 +29,7 @@ const integration = fromJS({
     id: 1,
     name: 'Test Integration',
     meta: {shop_integration_id: 1},
+    decoration: {},
 })
 
 const minProps: React.ComponentProps<

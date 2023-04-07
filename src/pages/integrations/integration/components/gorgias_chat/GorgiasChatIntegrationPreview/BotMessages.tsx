@@ -27,13 +27,12 @@ const BotMessages: React.FC<Props> = ({
         <div>
             <ChatTitle title={chatTitle} />
 
-            {messages?.map((message) => (
+            {messages?.map((message, index) => (
                 <div
                     key={message}
-                    className={classnames(
-                        previewCss.bubble,
-                        previewCss.firstMessageOfAppMaker
-                    )}
+                    className={classnames(previewCss.bubble, {
+                        [previewCss.firstMessageOfAppMaker]: index === 0,
+                    })}
                 >
                     {message}
                 </div>

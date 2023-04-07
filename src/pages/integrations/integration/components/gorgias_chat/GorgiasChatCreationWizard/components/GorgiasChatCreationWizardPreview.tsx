@@ -1,18 +1,22 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {Map} from 'immutable'
 import classnames from 'classnames'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser} from 'state/currentUser/selectors'
 
-import {GorgiasChatLauncherType} from 'models/integration/types'
+import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+    GorgiasChatLauncherType,
+} from 'models/integration/types'
 
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS,
+    GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 
 import * as ToggleButton from 'pages/common/components/ToggleButton'
@@ -25,6 +29,11 @@ import MessageContent from '../../GorgiasChatIntegrationPreview/MessageContent'
 import OfflineMessages from '../../GorgiasChatIntegrationPreview/OfflineMessages'
 
 import css from './GorgiasChatCreationWizardPreview.less'
+
+const avatar = {
+    imageType: GorgiasChatAvatarImageType.AGENT_PICTURE,
+    nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+}
 
 type Props = {
     integration: Map<any, any>
@@ -39,6 +48,7 @@ type Props = {
         type: GorgiasChatLauncherType
         label?: string
     }
+    showOfflineMessages?: boolean
 }
 
 const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
@@ -51,6 +61,7 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
     isOnline: isOnlineProp,
     isOpen,
     launcher,
+    showOfflineMessages: showOfflineMessagesProp,
 }) => {
     const currentUser = useAppSelector(getCurrentUser)
 
@@ -60,17 +71,11 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
         'live_chat_availability',
     ])
 
-    const [currentIsOnline, setCurrentIsOnline] = useState<boolean>(
-        liveChatAvailability === GORGIAS_CHAT_LIVE_CHAT_OFFLINE ? false : true
-    )
+    const showOfflineMessages =
+        showOfflineMessagesProp ??
+        liveChatAvailability === GORGIAS_CHAT_LIVE_CHAT_OFFLINE
 
-    useEffect(() => {
-        setCurrentIsOnline(
-            liveChatAvailability === GORGIAS_CHAT_LIVE_CHAT_OFFLINE
-                ? false
-                : true
-        )
-    }, [liveChatAvailability])
+    const [currentIsOnline, setCurrentIsOnline] = useState(true)
 
     const isOnline = isOnlineProp ?? currentIsOnline
 
@@ -97,22 +102,12 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
             GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
         )
 
-    const language =
+    const language: string =
         languageProp ??
         integration.getIn(
             ['meta', 'language'],
             GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
         )
-
-    const introductionText = integration.getIn(
-        ['decoration', 'introduction_text'],
-        GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS?.introductionText
-    )
-
-    const offlineIntroductionText = integration.getIn(
-        ['decoration', 'offline_introduction_text'],
-        GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS?.offlineIntroductionText
-    )
 
     return (
         <div className={css.wrapper}>
@@ -136,44 +131,50 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
             </div>
 
             <ChatIntegrationPreview
+                avatar={avatar}
                 name={name}
                 language={language}
                 mainColor={mainColor}
                 mainFontFamily={mainFontFamily}
                 isOnline={isOnline}
-                introductionText={introductionText}
-                offlineIntroductionText={offlineIntroductionText}
+                introductionText={
+                    GORGIAS_CHAT_WIDGET_TEXTS[language]?.introductionText
+                }
+                offlineIntroductionText={
+                    GORGIAS_CHAT_WIDGET_TEXTS[language]?.offlineIntroductionText
+                }
                 showBackground={false}
                 isOpen={isOpen}
                 launcher={launcher}
+                renderFooter={!showOfflineMessages && isOnline}
             >
-                <ChatIntegrationPreviewContent>
-                    {isOnline ? (
-                        <MessageContent
-                            conversationColor={conversationColor}
-                            customerInitialMessages={[
-                                'Hi, could you give me an update on my order status?',
-                            ]}
-                            agentMessages={[
-                                {
-                                    content:
-                                        "Hi there, thanks for your patience! Sure, let me check. What's your order number?",
-                                    isHtml: false,
-                                    attachments: [],
-                                },
-                            ]}
-                            currentUser={currentUser}
+                {isOnline && !showOfflineMessages ? (
+                    <MessageContent
+                        className={css.messageContent}
+                        avatar={avatar}
+                        conversationColor={conversationColor}
+                        customerInitialMessages={[
+                            'Hi, could you give me an update on my order status?',
+                        ]}
+                        agentMessages={[
+                            {
+                                content:
+                                    "Hi there, thanks for your patience! Sure, let me check. What's your order number?",
+                                isHtml: false,
+                                attachments: [],
+                            },
+                        ]}
+                        currentUser={currentUser}
+                    />
+                ) : (
+                    <ChatIntegrationPreviewContent>
+                        <ConversationTimestamp />
+                        <OfflineMessages
+                            mainColor={mainColor}
+                            chatTitle={name}
                         />
-                    ) : (
-                        <>
-                            <ConversationTimestamp />
-                            <OfflineMessages
-                                mainColor={mainColor}
-                                chatTitle={name}
-                            />
-                        </>
-                    )}
-                </ChatIntegrationPreviewContent>
+                    </ChatIntegrationPreviewContent>
+                )}
             </ChatIntegrationPreview>
         </div>
     )

@@ -89,10 +89,12 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
 
     const language = integration.getIn(['meta', 'language']) as string
 
-    const launcherLabel =
-        currentLauncherLabel !== undefined
-            ? currentLauncherLabel
-            : GORGIAS_CHAT_WIDGET_TEXTS[language]?.chatWithUs
+    const launcherLabel: string =
+        currentLauncherLabel ??
+        integration.getIn(
+            ['decoration', 'launcher', 'label'],
+            GORGIAS_CHAT_WIDGET_TEXTS[language]?.chatWithUs
+        )
 
     const launcherType =
         currentLauncherType ||

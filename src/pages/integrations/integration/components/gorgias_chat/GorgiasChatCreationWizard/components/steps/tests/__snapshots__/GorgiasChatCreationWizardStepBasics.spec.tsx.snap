@@ -19,6 +19,10 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form when updating chat
         "shop_name": null,
         "shop_type": null,
       },
+      "decoration": Immutable.Map {
+        "introduction_text": "How can we help?",
+        "offline_introduction_text": "We'll be back tomorrow",
+      },
     },
     undefined,
     true,
