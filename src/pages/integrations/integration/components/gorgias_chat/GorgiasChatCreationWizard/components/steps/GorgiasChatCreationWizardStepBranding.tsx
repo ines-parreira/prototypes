@@ -249,7 +249,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                     <div className={css.launcherPreview}>
                                         <ChatLauncher
                                             type={GorgiasChatLauncherType.ICON}
-                                            backgroundColor={currentMainColor}
+                                            backgroundColor={mainColor}
                                             fontFamily={
                                                 GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
                                             }
@@ -278,7 +278,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                             type={
                                                 GorgiasChatLauncherType.ICON_AND_LABEL
                                             }
-                                            backgroundColor={currentMainColor}
+                                            backgroundColor={mainColor}
                                             fontFamily={
                                                 GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
                                             }
