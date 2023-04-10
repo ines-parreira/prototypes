@@ -193,7 +193,7 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "ticketsRevenue": 1234.47,
     "totalConversionRate": 7.49,
     "totalRevenue": 12345.67,
-    "traffic": 1234,
+    "traffic": 5,
     "uniqueImpressions": 34,
   },
   "campaign2": {
@@ -216,7 +216,7 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "ticketsRevenue": 1234.47,
     "totalConversionRate": 9.87,
     "totalRevenue": 12345.67,
-    "traffic": 4567,
+    "traffic": 3,
     "uniqueImpressions": 67,
   },
 }

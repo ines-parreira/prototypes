@@ -83,9 +83,10 @@ export const getCampaignEventsPerformanceData = async ({
     return await client.load({
         dimensions: [EventsDimensions.campaignId],
         measures: [
-            EventsMeasures.traffic,
             EventsMeasures.impressions,
             EventsMeasures.uniqueImpressions,
+            EventsMeasures.firstCampaignDisplay,
+            EventsMeasures.lastCampaignDisplay,
             EventsMeasures.clicks,
             EventsMeasures.clicksRate,
         ],
@@ -99,6 +100,31 @@ export const getCampaignEventsPerformanceData = async ({
         limit: limit,
         // TODO: we need to add support for offset to reporting endpoint first
         // offset: offset,
+    })
+}
+
+export const getTrafficData = async ({
+    shopName,
+    startDate,
+    endDate,
+    granularity = 'day',
+}: CubeFilterParams): Promise<CubeResponse> => {
+    return await client.load({
+        dimensions: [],
+        timeDimensions: [
+            {
+                dimension: EventsDimensions.createdDatetime,
+                dateRange: [startDate, endDate],
+                granularity: granularity,
+            },
+        ],
+        measures: [EventsMeasures.traffic],
+        filters: _getDefaultFilters({
+            startDate,
+            endDate,
+            cubeName: Cubes.events,
+            shopName,
+        }),
     })
 }
 

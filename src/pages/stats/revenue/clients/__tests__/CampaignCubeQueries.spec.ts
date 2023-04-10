@@ -9,6 +9,7 @@ import {
     getCampaignsPerformanceGraphData,
     getRevenueUpliftGraphData,
     getStoreRevenueTotalData,
+    getTrafficData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {REPORTING_ENDPOINT} from 'models/reporting/resources'
 
@@ -37,6 +38,7 @@ describe('Calling CubeClient functions', () => {
         [getStoreRevenueTotalData],
         [getRevenueUpliftGraphData],
         [getCampaignsPerformanceGraphData],
+        [getTrafficData],
     ])('%p should call load', async (cubeFn) => {
         // arrange
         let expectedData

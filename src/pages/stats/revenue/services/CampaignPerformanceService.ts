@@ -7,6 +7,7 @@ import {
     getCampaignsPerformanceGraphData,
     getRevenueUpliftGraphData,
     getStoreRevenueTotalData,
+    getTrafficData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {
     CampaignChatPerformanceData,
@@ -180,12 +181,14 @@ export const getCampaignsPerformance = async (
         campaignsOrdersPerformance,
         ticketsPerformance,
         storeTotal,
+        traffic,
     ] = await Promise.all([
         getCampaignEventsPerformanceData(attrs),
         getCampaignOrderPerformanceData(attrs),
         getCampaignEventsOrdersPerformanceData(attrs),
         getCampaignTicketsPerformanceData(attrs),
         getStoreRevenueTotalData(attrs),
+        getTrafficData(attrs),
     ])
 
     const storeTotalData = getDataFromResultSet(storeTotal)
@@ -194,6 +197,7 @@ export const getCampaignsPerformance = async (
     const campaignsOrdersPerformanceData = getDataFromResultSet(
         campaignsOrdersPerformance
     )
+    const trafficData = getDataFromResultSet(traffic)
     const ticketsPerformanceData = getDataFromStatResult(ticketsPerformance)
 
     return transformToCampaignsPerformanceTable(
@@ -201,6 +205,7 @@ export const getCampaignsPerformance = async (
         ordersPerformanceData,
         campaignsOrdersPerformanceData,
         storeTotalData,
+        trafficData,
         ticketsPerformanceData as TicketPerformanceData
     )
 }

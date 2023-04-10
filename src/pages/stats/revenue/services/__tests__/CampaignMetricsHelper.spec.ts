@@ -431,17 +431,22 @@ describe('Campaign metrics helper tests', () => {
         const campaignEventsPerformanceData = [
             {
                 [EventsDimensions.campaignId]: 'campaign1',
-                [EventsMeasures.traffic]: '1234',
                 [EventsMeasures.impressions]: '2000',
+                [EventsMeasures.uniqueImpressions]: '34',
+                [EventsMeasures.firstCampaignDisplay]:
+                    '2023-03-10T00:00:00.000',
+                [EventsMeasures.lastCampaignDisplay]: '2023-03-11T00:00:00.000',
                 [EventsMeasures.uniqueImpressions]: '34',
                 [EventsMeasures.clicks]: '1000',
                 [EventsMeasures.clicksRate]: '10.20',
             },
             {
                 [EventsDimensions.campaignId]: 'campaign2',
-                [EventsMeasures.traffic]: '4567',
                 [EventsMeasures.impressions]: '4000',
                 [EventsMeasures.uniqueImpressions]: '67',
+                [EventsMeasures.firstCampaignDisplay]:
+                    '2023-03-09T00:00:00.000',
+                [EventsMeasures.lastCampaignDisplay]: '2023-03-10T00:00:00.000',
                 [EventsMeasures.clicks]: '2000',
                 [EventsMeasures.clicksRate]: '21.34',
             },
@@ -478,6 +483,21 @@ describe('Campaign metrics helper tests', () => {
             },
         ]
 
+        const trafficData = [
+            {
+                [EventsDimensions.createdDatetime]: '2023-03-09T00:00:00.000',
+                [EventsMeasures.traffic]: '1',
+            },
+            {
+                [EventsDimensions.createdDatetime]: '2023-03-10T00:00:00.000',
+                [EventsMeasures.traffic]: '2',
+            },
+            {
+                [EventsDimensions.createdDatetime]: '2023-03-11T00:00:00.000',
+                [EventsMeasures.traffic]: '3',
+            },
+        ]
+
         const campaignEventsOrdersPerformanceData = [
             {
                 [CampaignOrderEventsDimensions.campaignId]: 'campaign1',
@@ -504,6 +524,7 @@ describe('Campaign metrics helper tests', () => {
                 campaignOrdersPerformanceData,
                 campaignEventsOrdersPerformanceData,
                 revenueTotalData,
+                trafficData,
                 campaignTicketsPerformanceData as TicketPerformanceData
             )
             expect(result).toMatchSnapshot()
@@ -511,6 +532,7 @@ describe('Campaign metrics helper tests', () => {
 
         it('should return defaults for missing data', () => {
             const result = transformToCampaignsPerformanceTable(
+                [],
                 [],
                 [],
                 [],
@@ -541,6 +563,7 @@ describe('Campaign metrics helper tests', () => {
                         [CampaignOrderEventsDimensions.campaignId]: 'campaign1',
                     },
                 ],
+                [],
                 [],
                 [['campaign1', 0]] as TicketPerformanceData
             )

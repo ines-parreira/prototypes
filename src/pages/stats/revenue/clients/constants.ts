@@ -23,12 +23,15 @@ export enum SharedDimensionNames {
 // Events constants
 export const EventsDimensions = {
     campaignId: `${Cubes.events}.${SharedDimensionNames.campaignId}`,
+    createdDatetime: `${Cubes.events}.${SharedDimensionNames.createdDatetime}`,
 }
 
 export const EventsMeasures = {
     traffic: `${Cubes.events}.traffic`,
     impressions: `${Cubes.events}.impressions`,
     uniqueImpressions: `${Cubes.events}.uniqueImpressions`,
+    firstCampaignDisplay: `${Cubes.events}.firstCampaignDisplay`,
+    lastCampaignDisplay: `${Cubes.events}.lastCampaignDisplay`,
     clicks: `${Cubes.events}.clicks`,
     clicksRate: `${Cubes.events}.clicksRate`,
 }

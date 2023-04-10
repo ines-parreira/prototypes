@@ -191,17 +191,23 @@ describe('Revenue Attribution Service stats methods', () => {
             data: [
                 {
                     [EventsDimensions.campaignId]: 'campaign1',
-                    [EventsMeasures.traffic]: '1234',
                     [EventsMeasures.impressions]: '234',
                     [EventsMeasures.uniqueImpressions]: '34',
+                    [EventsMeasures.firstCampaignDisplay]:
+                        '2023-03-10T00:00:00.000',
+                    [EventsMeasures.lastCampaignDisplay]:
+                        '2023-03-11T00:00:00.000',
                     [EventsMeasures.clicks]: '24',
                     [EventsMeasures.clicksRate]: '10.20',
                 },
                 {
                     [EventsDimensions.campaignId]: 'campaign2',
-                    [EventsMeasures.traffic]: '4567',
                     [EventsMeasures.impressions]: '567',
                     [EventsMeasures.uniqueImpressions]: '67',
+                    [EventsMeasures.firstCampaignDisplay]:
+                        '2023-03-11T00:00:00.000',
+                    [EventsMeasures.lastCampaignDisplay]:
+                        '2023-03-12T00:00:00.000',
                     [EventsMeasures.clicks]: '57',
                     [EventsMeasures.clicksRate]: '21.34',
                 },
@@ -258,6 +264,29 @@ describe('Revenue Attribution Service stats methods', () => {
                 new Promise((resolve) => resolve(revenueTotalData))
             )
 
+        const trafficData = {
+            data: [
+                {
+                    [EventsDimensions.createdDatetime]:
+                        '2023-03-09T00:00:00.000',
+                    [EventsMeasures.traffic]: '1',
+                },
+                {
+                    [EventsDimensions.createdDatetime]:
+                        '2023-03-10T00:00:00.000',
+                    [EventsMeasures.traffic]: '2',
+                },
+                {
+                    [EventsDimensions.createdDatetime]:
+                        '2023-03-11T00:00:00.000',
+                    [EventsMeasures.traffic]: '3',
+                },
+            ],
+        } as CubeResponse
+        const mockTrafficData = jest
+            .spyOn(cubeQueries, 'getTrafficData')
+            .mockReturnValue(new Promise((resolve) => resolve(trafficData)))
+
         const campaignEventsOrdersPerformanceData = {
             data: [
                 {
@@ -305,6 +334,7 @@ describe('Revenue Attribution Service stats methods', () => {
             mockCampaignEventsPerformance.mockClear()
             mockCampaignOrdersPerformance.mockClear()
             mockStoreRevenueTotal.mockClear()
+            mockTrafficData.mockClear()
             mockCampaignEventsOrdersPerformance.mockClear()
             mockCampaignTicketsPerformance.mockClear()
         })

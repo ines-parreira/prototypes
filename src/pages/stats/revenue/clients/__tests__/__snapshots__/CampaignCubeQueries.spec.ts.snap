@@ -63,9 +63,10 @@ exports[`Calling CubeClient functions [Function getCampaignEventsPerformanceData
       ],
       "limit": 100,
       "measures": [
-        "CampaignEvents.traffic",
         "CampaignEvents.impressions",
         "CampaignEvents.uniqueImpressions",
+        "CampaignEvents.firstCampaignDisplay",
+        "CampaignEvents.lastCampaignDisplay",
         "CampaignEvents.clicks",
         "CampaignEvents.clicksRate",
       ],
@@ -330,6 +331,46 @@ exports[`Calling CubeClient functions [Function getStoreRevenueTotalData] should
       ],
       "measures": [
         "OrderConversion.gmv",
+      ],
+    },
+  ],
+}
+`;
+
+exports[`Calling CubeClient functions [Function getTrafficData] should call load 1`] = `
+{
+  "query": [
+    {
+      "dimensions": [],
+      "filters": [
+        {
+          "member": "CampaignEvents.createdDatetime",
+          "operator": "inDateRange",
+          "values": [
+            "2023-01-01T00:00:00-08:00",
+            "2023-03-15T23:59:59-07:00",
+          ],
+        },
+        {
+          "member": "CampaignEvents.shopName",
+          "operator": "equals",
+          "values": [
+            "punched-tires-shop",
+          ],
+        },
+      ],
+      "measures": [
+        "CampaignEvents.traffic",
+      ],
+      "timeDimensions": [
+        {
+          "dateRange": [
+            "2023-01-01T00:00:00-08:00",
+            "2023-03-15T23:59:59-07:00",
+          ],
+          "dimension": "CampaignEvents.createdDatetime",
+          "granularity": "day",
+        },
       ],
     },
   ],

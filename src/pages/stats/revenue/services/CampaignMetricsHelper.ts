@@ -5,6 +5,8 @@ import _unzip from 'lodash/unzip'
 import _values from 'lodash/values'
 import _zip from 'lodash/zip'
 import _pickBy from 'lodash/pickBy'
+import _bind from 'lodash/bind'
+import _sum from 'lodash/sum'
 import moment from 'moment'
 
 import {ensureNumberValue} from 'pages/common/utils/numbers'
@@ -67,6 +69,27 @@ const _gmvUplift = (gmv: number, campaignSales: number): number => {
     const initialGMV = gmv - campaignSales
 
     return initialGMV > 0 ? (campaignSales / initialGMV) * 100 : 0
+}
+
+const _calculateTraffic = (
+    trafficData: CubeData,
+    startDate: string,
+    endDate: string
+): number => {
+    const start = moment(startDate)
+    const end = moment(endDate)
+
+    return _sum(
+        trafficData.map((metric) => {
+            const date = moment(
+                _get(metric, EventsDimensions.createdDatetime)
+            ).date()
+            if (date >= start.date() && date <= end.date()) {
+                return parseInt(_get(metric, EventsMeasures.traffic, '0'))
+            }
+            return 0
+        })
+    )
 }
 
 export const transformToCampaignEventsTotals = (
@@ -260,9 +283,20 @@ export const transformToCampaignsPerformanceTable = (
     ordersData: CubeData,
     campaignsOrdersData: CubeData,
     storeTotalData: CubeData,
+    trafficData: CubeData,
     ticketsData: TicketPerformanceData
 ): CampaignsPerformanceDataset => {
-    const eventsDataset = _reduce(eventsData, _eventsPerformanceReducer, {})
+    const eventsDataset = _reduce(
+        eventsData,
+        _bind(
+            _eventsPerformanceReducer,
+            _bind.placeholder,
+            _bind.placeholder,
+            _bind.placeholder,
+            trafficData
+        ),
+        {}
+    )
     const ordersDataset = _reduce(
         _enrichCubeData(ordersData, _getMetricFromCubeData(storeTotalData)),
         _ordersPerformanceReducer,
@@ -284,12 +318,17 @@ export const transformToCampaignsPerformanceTable = (
 
 const _eventsPerformanceReducer = (
     dataset: CampaignsPerformanceDataset,
-    metric: CubeMetric
+    metric: CubeMetric,
+    trafficData: CubeData
 ): CampaignsPerformanceDataset => {
     const campaignId = _get(metric, EventsDimensions.campaignId)
     const eventMetricValue = _mapValues(
         {
-            traffic: _get(metric, EventsMeasures.traffic),
+            traffic: _calculateTraffic(
+                trafficData,
+                _get(metric, EventsMeasures.firstCampaignDisplay),
+                _get(metric, EventsMeasures.lastCampaignDisplay)
+            ),
             impressions: _get(metric, EventsMeasures.impressions),
             uniqueImpressions: _get(metric, EventsMeasures.uniqueImpressions),
             clicks: _get(metric, EventsMeasures.clicks),
