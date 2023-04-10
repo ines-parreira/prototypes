@@ -125,9 +125,20 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const maxIndex = useMemo(
         () =>
             searchItemsType === ViewType.CustomerList
-                ? customers.length - 1
-                : tickets.length - 1,
-        [customers, searchItemsType, tickets]
+                ? hasSearched
+                    ? customers.length - 1
+                    : recentCustomers.length - 1
+                : hasSearched
+                ? tickets.length - 1
+                : recentTickets.length - 1,
+        [
+            customers,
+            searchItemsType,
+            tickets,
+            hasSearched,
+            recentTickets,
+            recentCustomers,
+        ]
     )
 
     const {
@@ -148,9 +159,21 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const selectedItem = useMemo(
         () =>
             searchItemsType === ViewType.CustomerList
-                ? customers[selectedIndex]
-                : tickets[selectedIndex],
-        [customers, searchItemsType, selectedIndex, tickets]
+                ? hasSearched
+                    ? customers[selectedIndex]
+                    : recentCustomers[selectedIndex]
+                : hasSearched
+                ? tickets[selectedIndex]
+                : recentTickets[selectedIndex],
+        [
+            customers,
+            searchItemsType,
+            selectedIndex,
+            tickets,
+            hasSearched,
+            recentTickets,
+            recentCustomers,
+        ]
     )
 
     const selectedItemUrl = useMemo(
