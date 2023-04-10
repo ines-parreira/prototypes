@@ -2,7 +2,6 @@ import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 import _capitalize from 'lodash/capitalize'
 import _isArray from 'lodash/isArray'
-import _toLower from 'lodash/toLower'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
 import _first from 'lodash/first'
@@ -203,27 +202,35 @@ export function getChannelFromSourceType(
 }
 
 export function isSupportAddress(
-    addressToTest = '',
-    supportAddresses: List<any> = fromJS([])
-) {
-    if (!addressToTest || !supportAddresses.size) {
+    addressToTest: string,
+    supportAddresses: string[] = [],
+    sourceType: TicketMessageSourceType = TicketMessageSourceType.Email
+): boolean {
+    if (!addressToTest) {
         return false
     }
-    const formattedAddress = _toLower(addressToTest)
 
-    for (const supportAddress of supportAddresses as any) {
-        const splitSupportAddress = (supportAddress as string)?.split?.('@')
+    const formattedAddress = normalizeAddress(addressToTest, sourceType)
+
+    for (const supportAddress of supportAddresses
+        .filter(Boolean)
+        .map((address) => normalizeAddress(address, sourceType))) {
+        if (formattedAddress === supportAddress) {
+            return true
+        }
+
+        const splitSupportAddress = supportAddress.split('@')
 
         // ex: if support@acme.io is the support address, we search for it but also for support+something@acme.io
         if (
-            formattedAddress === supportAddress ||
-            (splitSupportAddress?.length &&
-                formattedAddress.startsWith(`${splitSupportAddress[0]}+`) &&
-                formattedAddress.endsWith(`@${splitSupportAddress[1]}`))
+            formattedAddress.startsWith(`${splitSupportAddress[0]}+`) &&
+            formattedAddress.endsWith(`@${splitSupportAddress[1]}`)
         ) {
             return true
         }
     }
+
+    return false
 }
 
 /**
@@ -233,6 +240,32 @@ export function getValuePropFromSourceType(
     sourceType: TicketMessageSourceType
 ) {
     return SOURCE_VALUE_PROP[sourceType]
+}
+
+export function cleanReceivers(
+    receiversList: List<any>,
+    supportAddresses: List<any>,
+    sourceType: TicketMessageSourceType
+): Receiver[] {
+    const receivers = receiversList.toJS() ?? []
+
+    if (!_isArray(receivers)) {
+        return []
+    }
+
+    return receivers
+        .filter(isReceiver)
+        .map((receiver) => ({
+            ...receiver,
+            address: normalizeAddress(receiver.address, sourceType),
+        }))
+        .filter((receiver) => {
+            return !isSupportAddress(
+                receiver.address,
+                supportAddresses.toJS(),
+                sourceType
+            )
+        })
 }
 
 /**
@@ -275,46 +308,15 @@ export function guessReceiversFromTicket(
         ccReceivers = lastMessage.getIn(['source', 'cc'], fromJS([]))
     }
 
-    const cleanReceivers = (
-        receivers: List<any>,
-        sourceType: TicketMessageSourceType
-    ) =>
-        receivers
-            .filter((receiver) => !!receiver) // remove falsy values
-            .map((receiver: Map<any, any>) => {
-                const address = receiver.get('address')
-                // set address to lowercase
-                if (address) {
-                    if (isPhoneBasedSource(sourceType)) {
-                        const parsedNumber = parsePhoneNumber(address)
-                        if (parsedNumber) {
-                            return receiver.set(
-                                'address',
-                                parsedNumber.format('E.164')
-                            )
-                        }
-                    }
-                    return receiver.update('address', _toLower)
-                }
-
-                return receiver
-            })
-            .filter((receiver) => {
-                // remove support addresses
-                return !isSupportAddress(
-                    receiver!.get('address'),
-                    supportAddresses
-                )
-            })
-
     const ret: Receivers = {
-        to: cleanReceivers(toReceivers, newMessageSourceType).toJS(),
+        to: cleanReceivers(toReceivers, supportAddresses, newMessageSourceType),
     }
 
-    const cc: Receiver[] | undefined = cleanReceivers(
+    const cc: Receiver[] = cleanReceivers(
         ccReceivers,
+        supportAddresses,
         newMessageSourceType
-    ).toJS()
+    )
 
     // To avoid setting an empty `cc` field in every source
     if (cc && cc.length) {
@@ -352,7 +354,11 @@ export function guessReceiversFromTicket(
                             ) || '',
                     },
                 ])
-                ret.to = cleanReceivers(receivers, newMessageSourceType).toJS()
+                ret.to = cleanReceivers(
+                    receivers,
+                    supportAddresses,
+                    newMessageSourceType
+                )
             }
         }
     }
@@ -1016,4 +1022,28 @@ export const injectAISuggestionEvents = (
             })
         )
     return newResults
+}
+
+export function isReceiver(receiver: unknown): receiver is Receiver {
+    return (
+        typeof receiver === 'object' &&
+        receiver !== null &&
+        'name' in receiver &&
+        typeof (receiver as Receiver).name === 'string' &&
+        'address' in receiver &&
+        typeof (receiver as Receiver).address === 'string'
+    )
+}
+
+export function normalizeAddress(
+    address: string,
+    sourceType: TicketMessageSourceType = TicketMessageSourceType.Email
+): string {
+    if (isPhoneBasedSource(sourceType)) {
+        const parsedNumber = parsePhoneNumber(address)
+        if (parsedNumber) {
+            return parsedNumber.format('E.164')
+        }
+    }
+    return address.toLowerCase()
 }

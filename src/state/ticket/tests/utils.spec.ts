@@ -38,6 +38,9 @@ import {
     replaceIntegrationVariables,
     mergeInternalNoteActions,
     mergeActions,
+    isSupportAddress,
+    isReceiver,
+    normalizeAddress,
 } from '../utils'
 
 import {
@@ -1298,6 +1301,135 @@ describe('ticket utils', () => {
             expect(
                 mergeActions(oldActions, newActions).toJS()
             ).toMatchSnapshot() //Only keep the last actions values
+        })
+    })
+
+    describe('isSupportAddress', () => {
+        it('should return true for support address (including aliases)', () => {
+            expect(
+                isSupportAddress('test@gorgias.com', ['test@gorgias.com'])
+            ).toBe(true)
+            expect(
+                isSupportAddress('test+1@gorgias.com', ['test@gorgias.com'])
+            ).toBe(true)
+            expect(
+                isSupportAddress('TEST+1@gorgias.com', ['test@gorgias.com'])
+            ).toBe(true)
+            expect(
+                isSupportAddress('test+1@gorgias.com', ['TEST@gorgias.com'])
+            ).toBe(true)
+        })
+
+        it('should return false for non support address', () => {
+            expect(isSupportAddress('test@gorgias.com', [])).toEqual(false)
+            expect(
+                isSupportAddress('test@gorgias.com', ['testing@gorgias.com'])
+            ).toEqual(false)
+        })
+
+        it('should return true for support phone numbers', () => {
+            expect(isSupportAddress('+12133734253', ['+12133734253'])).toBe(
+                true
+            )
+            expect(
+                isSupportAddress(
+                    '+12133734253',
+                    ['+12133734253'],
+                    TicketMessageSourceType.Phone
+                )
+            ).toBe(true)
+            expect(
+                isSupportAddress(
+                    '+1 213 373 4253',
+                    ['+12133734253'],
+                    TicketMessageSourceType.Phone
+                )
+            ).toBe(true)
+            expect(
+                isSupportAddress(
+                    '+12133734253',
+                    ['+1 (213) 373 4253'],
+                    TicketMessageSourceType.Phone
+                )
+            ).toBe(true)
+        })
+    })
+
+    describe('isReceiver', () => {
+        it('should return false when input is not receiver', () => {
+            expect(isReceiver(null)).toBe(false)
+            expect(isReceiver(undefined)).toBe(false)
+            expect(isReceiver('')).toBe(false)
+            expect(isReceiver({})).toBe(false)
+            expect(
+                isReceiver({
+                    name: 'test',
+                })
+            ).toBe(false)
+            expect(
+                isReceiver({
+                    address: 'test',
+                })
+            ).toBe(false)
+            expect(
+                isReceiver({
+                    name: 123,
+                    address: 'test',
+                })
+            ).toBe(false)
+            expect(
+                isReceiver({
+                    name: 'test',
+                    address: 123,
+                })
+            ).toBe(false)
+        })
+
+        it('should return true when input is receiver', () => {
+            expect(
+                isReceiver({
+                    name: 'test',
+                    address: 'test',
+                })
+            ).toBe(true)
+        })
+    })
+
+    describe('normalizeAddress', () => {
+        it('should normalize email addresses', () => {
+            expect(normalizeAddress('test@gorgias.com')).toEqual(
+                'test@gorgias.com'
+            )
+            expect(
+                normalizeAddress(
+                    'test@gorgias.com',
+                    TicketMessageSourceType.Email
+                )
+            ).toEqual('test@gorgias.com')
+            expect(normalizeAddress('TEST@gorgias.com')).toEqual(
+                'test@gorgias.com'
+            )
+            expect(normalizeAddress('TEST+123@gorgias.com')).toEqual(
+                'test+123@gorgias.com'
+            )
+        })
+
+        it('should normalize phone numbers', () => {
+            expect(
+                normalizeAddress(
+                    '+1 213 373 4253',
+                    TicketMessageSourceType.Phone
+                )
+            ).toEqual('+12133734253')
+            expect(
+                normalizeAddress('+12133734253', TicketMessageSourceType.Phone)
+            ).toEqual('+12133734253')
+        })
+
+        it('does not normalize phone number if sourceType is not specified', () => {
+            expect(normalizeAddress('+1 213 373 4253')).toEqual(
+                '+1 213 373 4253'
+            )
         })
     })
 })
