@@ -15,3 +15,10 @@ export function formatPercentage(
         ...optionsWithDefaults,
     }).format(value / 100)
 }
+
+export function ensureNumberValue(value: string | number): number {
+    if (typeof value === 'number') {
+        return value
+    }
+    return parseFloat(value)
+}

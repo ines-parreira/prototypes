@@ -1,12 +1,13 @@
 import _get from 'lodash/get'
 import _reduce from 'lodash/reduce'
-import _parseInt from 'lodash/parseInt'
 import _mapValues from 'lodash/mapValues'
 import _unzip from 'lodash/unzip'
 import _values from 'lodash/values'
 import _zip from 'lodash/zip'
 import _pickBy from 'lodash/pickBy'
 import moment from 'moment'
+
+import {ensureNumberValue} from 'pages/common/utils/numbers'
 import {
     CalculatedTotals,
     CampaignGraphData,
@@ -294,7 +295,7 @@ const _eventsPerformanceReducer = (
             clicks: _get(metric, EventsMeasures.clicks),
             clicksRate: _get(metric, EventsMeasures.clicksRate),
         },
-        _parseInt
+        ensureNumberValue
     )
 
     const value = {
@@ -310,10 +311,12 @@ const _ordersPerformanceReducer = (
     metric: CubeMetric
 ): CampaignsPerformanceDataset => {
     const campaignId = _get(metric, OrderConversionDimensions.campaignId)
-    const campaignSales = _parseInt(
+    const campaignSales = ensureNumberValue(
         _get(metric, OrderConversionMeasures.campaignSales, '0')
     )
-    const gmv = _parseInt(_get(metric, OrderConversionMeasures.gmv, '0'))
+    const gmv = ensureNumberValue(
+        _get(metric, OrderConversionMeasures.gmv, '0')
+    )
 
     const orderMetricValue = _mapValues(
         {
@@ -342,7 +345,7 @@ const _ordersPerformanceReducer = (
                 OrderConversionMeasures.campaignSalesCount
             ),
         },
-        _parseInt
+        ensureNumberValue
     )
 
     const value = {
@@ -370,7 +373,7 @@ const _campaignsOrdersPerformanceReducer = (
                 CampaignOrderEventsMeasures.totalConversionRate
             ),
         },
-        _parseInt
+        ensureNumberValue
     )
 
     const value = {
