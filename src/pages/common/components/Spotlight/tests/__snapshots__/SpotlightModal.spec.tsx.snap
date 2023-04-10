@@ -351,7 +351,7 @@ exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
           <div
             class="body"
           >
-            Try searching for a customer, agent name or ticket title.
+            Try searching for a ticket or customer.
             <button
               class="advancedSearchCta"
             >
@@ -492,7 +492,7 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
           <div
             class="body"
           >
-            Try searching for a customer, agent name or ticket title.
+            Try searching for a ticket or customer.
             <button
               class="advancedSearchCta"
             >
@@ -633,7 +633,7 @@ exports[`<SpotlightModal/> should set customers tab on click 1`] = `
           <div
             class="body"
           >
-            Try searching for a customer, agent name or ticket title.
+            Try searching for a ticket or customer.
             <button
               class="advancedSearchCta"
             >

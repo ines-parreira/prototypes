@@ -559,7 +559,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
             return (
                 <SpotlightNoResults
                     title="No recent results"
-                    bodyText="Try searching for a customer, agent name or ticket title."
+                    bodyText="Try searching for a ticket or customer."
                     handleAdvancedSearch={goToAdvancedSearch}
                 />
             )
