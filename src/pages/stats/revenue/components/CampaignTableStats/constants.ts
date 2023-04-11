@@ -24,17 +24,20 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
     {
         key: CampaignTableKeys.Traffic,
         title: 'Traffic',
+        format: CampaignTableValueFormat.Number,
         tooltip:
             'How often the chat was displayed during the time the campaign was live on your shop',
     },
     {
         key: CampaignTableKeys.Impressions,
         title: 'Impressions',
+        format: CampaignTableValueFormat.Number,
         tooltip: 'How often the campaign was displayed',
     },
     {
         key: CampaignTableKeys.UniqueImpressions,
         title: 'Unique impressions',
+        format: CampaignTableValueFormat.Number,
         tooltip:
             'How often the campaign was displayed by unique visitors (if the same campaign is shown twice during a shopper’s visit, it will count as only one impression)',
         className: 'uniqueImpressions',
@@ -42,6 +45,7 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
     {
         key: CampaignTableKeys.Engagement,
         title: 'Engagement',
+        format: CampaignTableValueFormat.Number,
         tooltip:
             'How often shoppers interacted with the selected campaigns. Campaign interactions include: (1) tickets created after a campaign, (2) clicks on a link displayed in a campaign, (3) clicks on product recommendations displayed in a campaign (clicks on the product link or direct add to cart), (4) discount code displayed in a campaign applied to an order',
     },
@@ -56,6 +60,7 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
     {
         key: CampaignTableKeys.Conversions,
         title: 'Orders',
+        format: CampaignTableValueFormat.Number,
         tooltip: 'Numbers of orders following an engagement with the campaign',
     },
     {
@@ -68,6 +73,7 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
     {
         key: CampaignTableKeys.TicketsCreated,
         title: 'Ticket created',
+        format: CampaignTableValueFormat.Number,
         className: 'ticketCreated',
     },
     {
@@ -80,6 +86,7 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
     {
         key: CampaignTableKeys.TicketsConverted,
         title: 'Tickets converted',
+        format: CampaignTableValueFormat.Number,
         tooltip:
             'A ticket is converted when an order is placed by the shopper less than 5 days after the last message of the ticket',
         className: 'ticketsConverted',
@@ -99,6 +106,7 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
     {
         key: CampaignTableKeys.NumberOfClicks,
         title: 'Number of clicks',
+        format: CampaignTableValueFormat.Number,
         tooltip:
             'Clicks on any content of the campaign (links or product cards)',
         className: 'numberOfClicks',
@@ -112,6 +120,7 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
     {
         key: CampaignTableKeys.ClicksConverted,
         title: 'Clicks converted',
+        format: CampaignTableValueFormat.Number,
         tooltip:
             'A click is considered converted when an order is placed by the shopper during the session',
         className: 'clicksConverted',
@@ -131,6 +140,7 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
     {
         key: CampaignTableKeys.DiscountCodeUsed,
         title: 'Discount Code Used',
+        format: CampaignTableValueFormat.Number,
         tooltip:
             'If a discount code is displayed in the campaign message, the number of times the discount code was applied to an order placed during the selected period',
         className: 'discountCodeUsed',

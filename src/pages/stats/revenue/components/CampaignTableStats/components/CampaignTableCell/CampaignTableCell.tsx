@@ -12,6 +12,7 @@ import {CampaignTableColumn} from 'pages/stats/revenue/types/CampaignTableColumn
 import {CampaignTableContentCell} from 'pages/stats/revenue/types/CampaignTableContentCell'
 import {CampaignTableValueFormat} from 'pages/stats/revenue/types/enums/CampaignTableValueFormat.enum'
 
+import {formatNumber} from 'pages/stats/common/utils'
 import css from '../../CampaignTableStats.less'
 
 type Props = {
@@ -58,6 +59,10 @@ export const CampaignTableCell = ({column, cell, data, isLoading}: Props) => {
 
     if (column.format === CampaignTableValueFormat.Percentage) {
         return <BodyCell>{formatPercentage(data)}</BodyCell>
+    }
+
+    if (column.format === CampaignTableValueFormat.Number) {
+        return <BodyCell>{formatNumber(data)}</BodyCell>
     }
 
     return <BodyCell>{data}</BodyCell>
