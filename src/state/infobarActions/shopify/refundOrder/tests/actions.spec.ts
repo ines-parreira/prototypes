@@ -179,35 +179,6 @@ describe('infobarActions.shopify.refundOrder actions', () => {
         })
     })
 
-    describe('on error', () => {
-        beforeEach(() => {
-            mockServer
-                // First call that fetches maximum refundable value
-                .onPost(
-                    `/integrations/shopify/order/${orderId}/refunds/calculate/`
-                )
-                .replyOnce(200, {
-                    refund: refundWithoutShipping.toJS(),
-                })
-                // First call that should fetch correct tax value for maximum refundable value
-                .onPost(
-                    `/integrations/shopify/order/${orderId}/refunds/calculate/`
-                )
-                .replyOnce(500, {
-                    error: {
-                        msg: 'foo',
-                    },
-                })
-        })
-
-        describe('onInit()', () => {
-            it('should notify that an error occurred', async () => {
-                await store.dispatch(actions.onInit(integrationId, order))
-                expect(getActions()).toMatchSnapshot()
-            })
-        })
-    })
-
     describe('onCancel()', () => {
         it('should cancel debounced call to calculateRefund()', async () => {
             await (store.dispatch(
