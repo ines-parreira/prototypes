@@ -170,11 +170,7 @@ export const getCampaignEventsOrdersPerformanceData = async ({
 }: CubeFilterParams): Promise<CubeResponse> => {
     return await client.load({
         dimensions: [CampaignOrderEventsDimensions.campaignId],
-        measures: [
-            CampaignOrderEventsMeasures.engagement,
-            CampaignOrderEventsMeasures.campaignCTR,
-            CampaignOrderEventsMeasures.totalConversionRate,
-        ],
+        measures: [CampaignOrderEventsMeasures.engagement],
         filters: _getDefaultFilters({
             startDate,
             endDate,

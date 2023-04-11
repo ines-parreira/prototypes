@@ -403,14 +403,6 @@ const _campaignsOrdersPerformanceReducer = (
     const campaignOrderMetricValue = _mapValues(
         {
             engagement: _get(metric, CampaignOrderEventsMeasures.engagement),
-            clickThroughRate: _get(
-                metric,
-                CampaignOrderEventsMeasures.campaignCTR
-            ),
-            totalConversionRate: _get(
-                metric,
-                CampaignOrderEventsMeasures.totalConversionRate
-            ),
         },
         ensureNumberValue
     )
@@ -492,17 +484,27 @@ const _computeCompoundMetrics = (
     const ticketsCreated = _get(campaign, 'ticketsCreated') || 0
     const ticketsConverted = _get(campaign, 'ticketsConverted') || 0
 
+    const orders = _get(campaign, 'campaignSalesCount') || 0
+    const engagement = _get(campaign, 'engagement') || 0
+
     const clicksConversionRate = clicks ? clicksConverted / clicks : 0
     const ticketsCreationRate = impressions ? ticketsCreated / impressions : 0
     const ticketsConversionRate = ticketsCreated
         ? ticketsConverted / ticketsCreated
         : 0
 
+    const totalEngagement = engagement + ticketsCreated
+    const clickThroughRate = impressions ? totalEngagement / impressions : 0
+    const totalConversionRate = totalEngagement ? orders / totalEngagement : 0
+
     return {
         ...campaign,
         clicksConversionRate: clicksConversionRate * 100,
         ticketsCreationRate: ticketsCreationRate * 100,
         ticketsConversionRate: ticketsConversionRate * 100,
+        engagement: totalEngagement,
+        clickThroughRate: clickThroughRate * 100,
+        totalConversionRate: totalConversionRate * 100,
     }
 }
 

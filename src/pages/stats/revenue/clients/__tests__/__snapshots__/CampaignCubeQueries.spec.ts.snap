@@ -28,8 +28,6 @@ exports[`Calling CubeClient functions [Function getCampaignEventsOrdersPerforman
       "limit": 100,
       "measures": [
         "CampaignOrderEvents.engagement",
-        "CampaignOrderEvents.campaignCTR",
-        "CampaignOrderEvents.totalConversionRate",
       ],
     },
   ],
