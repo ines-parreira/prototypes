@@ -325,6 +325,11 @@ export default function reducer(
 
             return state.setIn(['migrations', 'email'], fromJS(newMigrations))
         }
+        case constants.UPDATE_FORWARDING_EMAIL_ADDRESS:
+            return state.setIn(
+                ['authentication', 'email', 'forwarding_email_address'],
+                action.emailForwardingAddress
+            )
         default:
             return state
     }

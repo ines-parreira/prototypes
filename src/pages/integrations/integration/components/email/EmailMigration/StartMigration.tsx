@@ -18,6 +18,7 @@ import {getMoment, stringToDatetime} from 'utils/date'
 import Loader from 'pages/common/components/Loader/Loader'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {EmailIntegration} from 'models/integration/types'
+import {UPDATE_FORWARDING_EMAIL_ADDRESS} from 'state/integrations/constants'
 import {isBaseEmailIntegration} from '../helpers'
 import StartMigrationIntegrationsTable from './StartMigrationIntegrationsTable'
 
@@ -42,7 +43,11 @@ export default function StartMigration() {
 
     const [{loading}, startMigration] = useAsyncFn(async () => {
         try {
-            await startEmailMigration()
+            const response = await startEmailMigration()
+            dispatch({
+                type: UPDATE_FORWARDING_EMAIL_ADDRESS,
+                emailForwardingAddress: response.forwarding_email_address,
+            })
             setEmailMigrationStarted(true)
         } catch (error) {
             const {response} = error as AxiosError<{error: {msg: string}}>

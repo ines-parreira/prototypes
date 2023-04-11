@@ -11,8 +11,16 @@ import {IntegrationType} from 'models/integration/constants'
 import * as dateUtils from 'utils/date'
 import StartMigration from '../EmailMigration/StartMigration'
 
-jest.mock('models/integration/resources/email')
-
+jest.mock(
+    'models/integration/resources/email',
+    () =>
+        ({
+            ...jest.requireActual('models/integration/resources/email'),
+            startEmailMigration: jest.fn(() => ({
+                forwarding_email_address: 'test@gorgias.com',
+            })),
+        } as Record<string, any>)
+)
 const getMomentSpy = jest.spyOn(dateUtils, 'getMoment')
 
 const mockFetchMigrationStatus = jest.fn()

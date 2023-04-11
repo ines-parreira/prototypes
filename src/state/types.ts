@@ -111,6 +111,7 @@ export type GorgiasAction = {
     emailMigrationBannerStatus?: EmailMigrationBannerStatus
     emailMigrations?: EmailMigrationInboundVerification[]
     emailMigrationVerificationStatus?: EmailMigrationInboundVerificationStatus
+    emailForwardingAddress?: string
     response?: Record<string, any>
     integrationId?: number
     appId?: string

@@ -5,9 +5,15 @@ import {
     EmailMigrationOutboundVerification,
 } from '../types'
 
+type StartMigrationResponse = {
+    forwarding_email_address: string
+}
+
 export const startEmailMigration = async () => {
-    const response = await client.post('/integrations/email/migration')
-    return response
+    const response = await client.post<StartMigrationResponse>(
+        '/integrations/email/migration'
+    )
+    return response.data
 }
 
 export const fetchMigrations = async () => {
