@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProvinceInput/> should render with dropdown 1`] = `
+<div
+  class="wrapper"
+>
+  <label
+    class="label label"
+  >
+    State or province
+  </label>
+  <div
+    class="wrapper"
+    role="listbox"
+    tabindex="0"
+  >
+    <div
+      class="inputWrapper"
+    >
+      <div
+        class="input isGreyed"
+      >
+        Select state or province...
+      </div>
+      <i
+        class="affix suffix toggle material-icons"
+      >
+        arrow_drop_down
+      </i>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ProvinceInput/> should render with text input 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="mb-2"
+  >
+    <label
+      class="label label"
+      for="input-text-3"
+    >
+      State or province
+    </label>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        data-1p-ignore="true"
+        id="input-text-3"
+        name="stateOrProvince"
+        placeholder="Type state or province..."
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+</div>
+`;

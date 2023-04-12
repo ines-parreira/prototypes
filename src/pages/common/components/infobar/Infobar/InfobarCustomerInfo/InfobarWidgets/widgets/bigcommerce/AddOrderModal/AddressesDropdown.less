@@ -11,8 +11,11 @@
     }
 
     .dropdown {
-        transform: translateX(1px);
-        width: calc(100% - 7px);
+        width: 100%;
+        overflow: hidden;
+        // TODO: remove after merging
+        //  https://linear.app/gorgias/issue/APPED-1578/remove-the-1px-margin-left-from-the-selectinputbox
+        padding-left: 1px;
     }
 
     .topPadded {

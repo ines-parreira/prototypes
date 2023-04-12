@@ -1,4 +1,4 @@
-import {render, screen} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 import {CustomAddressModal} from '../CustomAddressModal'
@@ -9,7 +9,7 @@ describe('CustomAddressModal', () => {
     const onOpenMock = jest.fn()
 
     it('should add custom address when clicking the `Create Address` button', async () => {
-        const {getByRole} = render(
+        const {getByRole, getByText} = render(
             <CustomAddressModal
                 onAddCustomAddress={onAddCustomAddressMock}
                 addressType="billing"
@@ -43,10 +43,8 @@ describe('CustomAddressModal', () => {
             'test'
         )
 
-        await userEvent.type(
-            getByRole('textbox', {name: 'State or province required'}),
-            'test'
-        )
+        fireEvent.focus(getByText(/Select state or province.../))
+        fireEvent.click(getByText(/Alabama/))
 
         await userEvent.type(
             getByRole('textbox', {name: 'ZIP/Postal code required'}),

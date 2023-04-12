@@ -438,6 +438,7 @@ exports[`OrderModal should render Create Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-4"
                   name="firstName"
                   required=""
@@ -467,6 +468,7 @@ exports[`OrderModal should render Create Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-6"
                   name="lastName"
                   required=""
@@ -489,6 +491,7 @@ exports[`OrderModal should render Create Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-8"
                   name="company"
                   type="text"
@@ -529,6 +532,7 @@ exports[`OrderModal should render Create Order 1`] = `
                 >
                   <input
                     class="input"
+                    data-1p-ignore="true"
                     id="input-text-10"
                     name="input-text-10"
                     type="text"
@@ -558,6 +562,7 @@ exports[`OrderModal should render Create Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-11"
                   name="address1"
                   required=""
@@ -580,6 +585,7 @@ exports[`OrderModal should render Create Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-13"
                   name="address2"
                   type="text"
@@ -608,6 +614,7 @@ exports[`OrderModal should render Create Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-15"
                   name="city"
                   required=""
@@ -656,11 +663,10 @@ exports[`OrderModal should render Create Order 1`] = `
               </div>
             </div>
             <div
-              class="mb-2"
+              class="wrapper"
             >
               <label
                 class="label label"
-                for="input-text-17"
               >
                 State or province
                 <abbr
@@ -673,15 +679,23 @@ exports[`OrderModal should render Create Order 1`] = `
               </label>
               <div
                 class="wrapper"
+                role="listbox"
+                tabindex="0"
               >
-                <input
-                  class="input"
-                  id="input-text-17"
-                  name="stateOrProvince"
-                  required=""
-                  type="text"
-                  value=""
-                />
+                <div
+                  class="inputWrapper"
+                >
+                  <div
+                    class="input isGreyed"
+                  >
+                    Select state or province...
+                  </div>
+                  <i
+                    class="affix suffix toggle material-icons"
+                  >
+                    arrow_drop_down
+                  </i>
+                </div>
               </div>
             </div>
             <div
@@ -705,6 +719,7 @@ exports[`OrderModal should render Create Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-19"
                   name="zip"
                   required=""
@@ -768,6 +783,10 @@ exports[`OrderModal should render Create Order 1`] = `
   <div
     data-floating-ui-portal=""
     id="floating-ui-2"
+  />
+  <div
+    data-floating-ui-portal=""
+    id="floating-ui-5"
   />
 </body>
 `;
@@ -1213,6 +1232,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-26"
                   name="firstName"
                   required=""
@@ -1242,6 +1262,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-28"
                   name="lastName"
                   required=""
@@ -1264,6 +1285,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-30"
                   name="company"
                   type="text"
@@ -1304,6 +1326,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                 >
                   <input
                     class="input"
+                    data-1p-ignore="true"
                     id="input-text-32"
                     name="input-text-32"
                     type="text"
@@ -1333,6 +1356,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-33"
                   name="address1"
                   required=""
@@ -1355,6 +1379,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-35"
                   name="address2"
                   type="text"
@@ -1383,6 +1408,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-37"
                   name="city"
                   required=""
@@ -1431,11 +1457,10 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               </div>
             </div>
             <div
-              class="mb-2"
+              class="wrapper"
             >
               <label
                 class="label label"
-                for="input-text-39"
               >
                 State or province
                 <abbr
@@ -1448,15 +1473,23 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               </label>
               <div
                 class="wrapper"
+                role="listbox"
+                tabindex="0"
               >
-                <input
-                  class="input"
-                  id="input-text-39"
-                  name="stateOrProvince"
-                  required=""
-                  type="text"
-                  value=""
-                />
+                <div
+                  class="inputWrapper"
+                >
+                  <div
+                    class="input isGreyed"
+                  >
+                    Select state or province...
+                  </div>
+                  <i
+                    class="affix suffix toggle material-icons"
+                  >
+                    arrow_drop_down
+                  </i>
+                </div>
               </div>
             </div>
             <div
@@ -1480,6 +1513,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               >
                 <input
                   class="input"
+                  data-1p-ignore="true"
                   id="input-text-41"
                   name="zip"
                   required=""
@@ -1534,15 +1568,19 @@ exports[`OrderModal should render Duplicate Order 1`] = `
   </div>
   <div
     data-floating-ui-portal=""
-    id="floating-ui-7"
-  />
-  <div
-    data-floating-ui-portal=""
     id="floating-ui-8"
   />
   <div
     data-floating-ui-portal=""
     id="floating-ui-9"
+  />
+  <div
+    data-floating-ui-portal=""
+    id="floating-ui-10"
+  />
+  <div
+    data-floating-ui-portal=""
+    id="floating-ui-11"
   />
 </body>
 `;

@@ -18,9 +18,10 @@ import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import CheckBox from 'pages/common/forms/CheckBox'
 import CountryInput from 'pages/common/forms/CountryInput/CountryInput'
 import {getCountryLabel} from 'pages/common/forms/CountryInput/utils'
-import {createCustomAddress} from './utils'
-import cssOrderModal from './OrderModal.less'
+import ProvinceInput from 'pages/common/forms/ProvinceInput/ProvinceInput'
 import cssAddressesDropdown from './AddressesDropdown.less'
+import cssOrderModal from './OrderModal.less'
+import {createCustomAddress} from './utils'
 
 type Props = {
     onAddCustomAddress: (
@@ -86,7 +87,6 @@ export function CustomAddressModal({
         useState(true)
     const [isStateOrProvinceInvalid, setIsStateOrProvinceInvalid] =
         useState(false)
-
     const [performedValidation, setPerformedValidation] = useState(false)
 
     const onClose = () => {
@@ -205,6 +205,7 @@ export function CustomAddressModal({
                                 hasError={
                                     performedValidation && !formState.firstName
                                 }
+                                data-1p-ignore
                             />
                             <InputField
                                 name="lastName"
@@ -216,6 +217,7 @@ export function CustomAddressModal({
                                 hasError={
                                     performedValidation && !formState.lastName
                                 }
+                                data-1p-ignore
                             />
                             <InputField
                                 name="company"
@@ -223,11 +225,13 @@ export function CustomAddressModal({
                                 className="mb-2"
                                 value={formState.company}
                                 onChange={(company) => onChange({company})}
+                                data-1p-ignore
                             />
                             <PhoneNumberInput
                                 label="Phone"
                                 value={formState.phone}
                                 onChange={(phone) => onChange({phone})}
+                                data-1p-ignore
                             />
                             <InputField
                                 name="address1"
@@ -242,6 +246,7 @@ export function CustomAddressModal({
                                 hasError={
                                     performedValidation && !formState.address1
                                 }
+                                data-1p-ignore
                             />
                             <InputField
                                 name="address2"
@@ -249,6 +254,7 @@ export function CustomAddressModal({
                                 className="mb-2"
                                 value={formState.address2}
                                 onChange={(address2) => onChange({address2})}
+                                data-1p-ignore
                             />
                             <InputField
                                 name="city"
@@ -260,24 +266,25 @@ export function CustomAddressModal({
                                 hasError={
                                     performedValidation && !formState.city
                                 }
+                                data-1p-ignore
                             />
                             <CountryInput
                                 label="Country"
                                 value={formState.countryCode}
                                 onChange={(countryCode) =>
                                     onChange({
-                                        countryCode,
+                                        countryCode: countryCode as CountryCode,
                                         country: getCountryLabel(countryCode),
+                                        stateOrProvince: '',
                                     })
                                 }
                                 popularCountries={['AU', 'CA', 'GB', 'US']}
+                                data-1p-ignore
                             />
-                            <InputField
-                                name="stateOrProvince"
+                            <ProvinceInput
                                 label="State or province"
-                                className="mb-2"
-                                value={formState.stateOrProvince}
-                                isRequired
+                                name="stateOrProvince"
+                                country={formState.country}
                                 onChange={(stateOrProvince) =>
                                     onChange({stateOrProvince})
                                 }
@@ -291,6 +298,8 @@ export function CustomAddressModal({
                                         ? 'Invalid state or province'
                                         : ''
                                 }
+                                isRequired
+                                data-1p-ignore
                             />
                             <InputField
                                 name="zip"
@@ -306,6 +315,7 @@ export function CustomAddressModal({
                                     (!formState.postalCode ||
                                         formState.postalCode.length < 2)
                                 }
+                                data-1p-ignore
                             />
                             <CheckBox
                                 isChecked={saveToCustomersAddressBook}

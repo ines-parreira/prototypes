@@ -4,6 +4,7 @@ import React, {
     useRef,
     useCallback,
     ComponentProps,
+    useEffect,
 } from 'react'
 import classnames from 'classnames'
 
@@ -62,6 +63,10 @@ const CountryInput = ({
         [onChange, setCurrentCountry]
     )
 
+    useEffect(() => {
+        setCurrentCountry(value || defaultCountry)
+    }, [defaultCountry, value])
+
     return (
         <div className={classnames(css.wrapper, className)}>
             {label && <Label className={css.label}>{label}</Label>}
@@ -87,6 +92,7 @@ const CountryInput = ({
                             isOpen={isDropdownOpen}
                             ref={floatingRef}
                             onToggle={() => context!.onBlur()}
+                            value={currentCountry}
                             contained
                         >
                             <DropdownSearch autoFocus />
