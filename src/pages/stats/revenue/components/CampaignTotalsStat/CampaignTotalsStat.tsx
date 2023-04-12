@@ -32,8 +32,9 @@ const METRICS = {
     },
     [CampaignsTotalsMetricNames.revenue]: {
         title: 'Campaign Revenue',
-        hint: `Sum of the revenue from all campaigns selected,
-        from both tickets converted from campaigns.`,
+        hint: `Sum of the revenue generated from all campaigns selected,
+        from both tickets converted, clicks on campaigns converted,
+        and discount codes displayed on campaigns applied to orders.`,
     },
     [CampaignsTotalsMetricNames.impressions]: {
         title: 'Impressions',
