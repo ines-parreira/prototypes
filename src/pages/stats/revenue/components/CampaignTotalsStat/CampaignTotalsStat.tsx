@@ -21,17 +21,17 @@ const SKELETON_HEIGHT = 100
 
 const METRICS = {
     [CampaignsTotalsMetricNames.gmv]: {
-        title: 'Total Store Revenue',
+        title: 'Total store revenue',
         hint: `Sum of the order amount for all your store sales
         during the selected period (including taxes, fees, and refunds).`,
     },
     [CampaignsTotalsMetricNames.influencedRevenueUplift]: {
-        title: 'Revenue Uplift',
+        title: 'Revenue uplift',
         hint: `Evolution rate of your total store revenue thanks to the campaigns,
         calculated as: (Campaign revenue)/(Total store revenue - Campaign Revenue).`,
     },
     [CampaignsTotalsMetricNames.revenue]: {
-        title: 'Campaign Revenue',
+        title: 'Campaign revenue',
         hint: `Sum of the revenue generated from all campaigns selected,
         from both tickets converted, clicks on campaigns converted,
         and discount codes displayed on campaigns applied to orders.`,
