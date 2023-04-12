@@ -667,6 +667,10 @@ export const stats = toImmutable<
                 label: 'Facebook Recommendations',
                 color: '#4887cd',
             },
+            'help-center': {
+                label: 'Help Center',
+                color: '#9ce0e0',
+            },
             twitter: {
                 label: 'Twitter',
                 color: '#00aced',
