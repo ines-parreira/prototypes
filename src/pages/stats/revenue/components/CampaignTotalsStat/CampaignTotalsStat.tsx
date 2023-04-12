@@ -93,10 +93,10 @@ export const CampaignTotalsStat = ({onError}: Props) => {
             <DashboardGridCell size={GRID_SIZE}>
                 {statsVisible && (
                     <MetricCard
-                        title={METRICS.gmv.title}
-                        hint={METRICS.gmv.hint}
+                        title={METRICS.revenue.title}
+                        hint={METRICS.revenue.hint}
                     >
-                        <BigNumberMetric>{totals?.gmv}</BigNumberMetric>
+                        <BigNumberMetric>{totals?.revenue}</BigNumberMetric>
                     </MetricCard>
                 )}
                 {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
@@ -117,10 +117,10 @@ export const CampaignTotalsStat = ({onError}: Props) => {
             <DashboardGridCell size={GRID_SIZE}>
                 {statsVisible && (
                     <MetricCard
-                        title={METRICS.revenue.title}
-                        hint={METRICS.revenue.hint}
+                        title={METRICS.gmv.title}
+                        hint={METRICS.gmv.hint}
                     >
-                        <BigNumberMetric>{totals?.revenue}</BigNumberMetric>
+                        <BigNumberMetric>{totals?.gmv}</BigNumberMetric>
                     </MetricCard>
                 )}
                 {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
