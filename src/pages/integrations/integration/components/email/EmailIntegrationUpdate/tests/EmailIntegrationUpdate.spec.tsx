@@ -5,9 +5,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {assumeMock} from 'utils/testing'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {integrationsState} from 'fixtures/integrations'
 
 import {EmailProvider} from 'models/integration/constants'
@@ -38,10 +35,6 @@ const commonProps: ComponentProps<typeof EmailIntegrationUpdateContainer> = {
     updateOrCreateIntegration: jest.fn(),
     deleteIntegration: jest.fn(),
 }
-
-jest.mock('utils/launchDarkly')
-const allFlagsMock = assumeMock(getLDClient().allFlags)
-allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<EmailIntegrationUpdateContainer />', () => {
     const mockStore = configureMockStore([thunk])

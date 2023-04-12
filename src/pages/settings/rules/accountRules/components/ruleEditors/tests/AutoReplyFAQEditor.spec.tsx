@@ -10,14 +10,9 @@ import {ManagedRulesSlugs} from 'state/rules/types'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {integrationsState} from 'fixtures/integrations'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getLDClient} from 'utils/launchDarkly'
 import AutoReplyFAQEditor from '../AutoReplyFAQEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<AutoReplyFAQEditor/>', () => {
     const minProps: ComponentProps<typeof AutoReplyFAQEditor> = {

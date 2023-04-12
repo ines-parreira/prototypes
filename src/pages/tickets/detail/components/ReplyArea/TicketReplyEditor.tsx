@@ -401,13 +401,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             displayedActions = [ActionName.Emoji]
         }
 
-        if (
-            this._isLDFlagActivated(
-                FeatureFlagKey.ChatVideoSharingConversations
-            )
-        ) {
-            displayedActions.push(ActionName.Video)
-        }
+        displayedActions.push(ActionName.Video)
 
         if (
             !this._isLDFlagActivated(

@@ -11,14 +11,9 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {MacroActionName} from 'models/macroAction/types'
 import {integrationsState} from 'fixtures/integrations'
 
-import {getLDClient} from 'utils/launchDarkly'
 import {MacroEdit} from '../MacroEdit'
 
 const mockStore = configureMockStore([thunk])
-
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 // To avoid snapshoting all languages
 jest.mock('constants/languages', () => {

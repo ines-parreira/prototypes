@@ -10,8 +10,6 @@ import {fromJS} from 'immutable'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {convertFromHTML} from 'utils/editor'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getLDClient} from 'utils/launchDarkly'
 import {RichFieldEditor} from '../RichFieldEditor'
 import toolbarPlugin from '../../../draftjs/plugins/toolbar/index'
 import provideToolbarPlugin from '../provideToolbarPlugin'
@@ -19,10 +17,6 @@ import provideToolbarPlugin from '../provideToolbarPlugin'
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 jest.mock('services/shortcutManager/shortcutManager')
-
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('RichFieldEditor', () => {
     const defaultProps: ComponentProps<typeof RichFieldEditor> = {

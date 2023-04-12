@@ -3,10 +3,8 @@ import classnames from 'classnames'
 import {List} from 'immutable'
 
 import {EditorState} from 'draft-js'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {User} from 'config/types/user'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {AgentLabel} from 'pages/common/utils/labels'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -95,9 +93,6 @@ export const CampaignMessage = memo(
             [html, text]
         )
 
-        const allowVideoSharingForCampaigns: boolean | undefined =
-            useFlags()[FeatureFlagKey.ChatVideoSharingCampaigns]
-
         const displayedActions = useMemo(() => {
             const actions = [
                 ActionName.Bold,
@@ -116,16 +111,10 @@ export const CampaignMessage = memo(
                 actions.push(ActionName.ProductPicker)
             }
 
-            if (allowVideoSharingForCampaigns) {
-                actions.push(ActionName.Video)
-            }
+            actions.push(ActionName.Video)
 
             return actions
-        }, [
-            attachments,
-            isAllowedToAddDiscountCode,
-            allowVideoSharingForCampaigns,
-        ])
+        }, [attachments, isAllowedToAddDiscountCode])
 
         return (
             <div className="mb-4">

@@ -15,8 +15,6 @@ import {
 } from 'models/integration/types'
 import {AccountSettingBusinessHours} from 'state/currentAccount/types'
 import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import GorgiasApi from 'services/gorgiasApi'
 import {assetsUrl} from 'utils'
 
@@ -133,11 +131,7 @@ export const computeChatIntegrationStatus = (
     isBusinessHours: boolean,
     installationStatus: InstallationStatus
 ): GorgiasChatStatusEnum | null => {
-    const chatNotIntalledStatusFlag: boolean | undefined =
-        getLDClient().allFlags()[FeatureFlagKey.ChatNotIntalledStatus] as
-            | boolean
-            | undefined
-    if (chatNotIntalledStatusFlag && !installationStatus.installed) {
+    if (!installationStatus.installed) {
         return GorgiasChatStatusEnum.NOT_INSTALLED
     }
 

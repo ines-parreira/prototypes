@@ -3,18 +3,12 @@ import {fireEvent, render, screen} from '@testing-library/react'
 import {shallow} from 'enzyme'
 import {EditorState} from 'draft-js'
 import _noop from 'lodash/noop'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import Button from 'pages/common/components/button/Button'
 
 import * as draftjsPluginsUtils from '../../../utils'
 
 import {AddLinkContainer} from '../AddLink'
-
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<AddLink />', () => {
     const defaultProps = {

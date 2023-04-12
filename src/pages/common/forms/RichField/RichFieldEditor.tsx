@@ -19,8 +19,6 @@ import React, {
 } from 'react'
 
 import {extractUrlsFromString} from 'utils'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {addVideo} from 'pages/common/draftjs/plugins/utils'
 import shortcutManager from 'services/shortcutManager'
 
@@ -107,10 +105,6 @@ type State = {
 }
 
 export class RichFieldEditor extends Component<Props, State> {
-    chatVideoSharingExtraLDFlag: boolean | undefined = getLDClient().allFlags()[
-        FeatureFlagKey.ChatVideoSharingExtra
-    ] as boolean | undefined
-
     static defaultProps: Pick<
         Props,
         | 'emailExtraEnabled'
@@ -339,7 +333,7 @@ export class RichFieldEditor extends Component<Props, State> {
     ): EditorState => {
         let newEditorState = editorState
 
-        if (this.chatVideoSharingExtraLDFlag && this.props.canAddVideoPlayer) {
+        if (this.props.canAddVideoPlayer) {
             const urls =
                 _uniq(
                     extractUrlsFromString(text)?.filter((url) =>

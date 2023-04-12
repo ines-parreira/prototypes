@@ -16,7 +16,6 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 
 import {User} from 'config/types/user'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'
 import {integrationsState} from 'fixtures/integrations'
 
@@ -118,14 +117,10 @@ const shopifyChatIntegration = fromJS({
 
 describe('<AdvancedCampaignDetails />', () => {
     beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.ChatVideoSharingCampaigns]: true,
-        })
+        mockFlags({})
 
         const allFlagsMock = getLDClient().allFlags as jest.Mock
-        allFlagsMock.mockReturnValue({
-            [FeatureFlagKey.ChatVideoSharingExtra]: true,
-        })
+        allFlagsMock.mockReturnValue({})
     })
 
     describe('Creating a campaign as regular merchant', () => {

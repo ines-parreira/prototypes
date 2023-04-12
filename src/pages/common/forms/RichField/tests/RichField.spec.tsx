@@ -9,15 +9,10 @@ import {Provider} from 'react-redux'
 
 import {convertToHTML} from 'utils/editor'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getLDClient} from 'utils/launchDarkly'
 import RichField from '../RichField'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('RichField', () => {
     const mockStore = configureMockStore([thunk])

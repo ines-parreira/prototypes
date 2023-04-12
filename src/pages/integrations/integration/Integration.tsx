@@ -4,7 +4,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS, List, Map} from 'immutable'
 import {useUpdateEffect, useAsyncFn} from 'react-use'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {Container} from 'reactstrap'
 import classNames from 'classnames'
@@ -15,7 +14,6 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType} from 'models/integration/types'
 import {RootState} from 'state/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     getEligibleShopifyIntegrationsFor,
@@ -221,14 +219,7 @@ export const IntegrationDetail = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const enableChatInstallationStatusHint =
-        useFlags()[FeatureFlagKey.ChatNotIntalledStatus]
-
     useUpdateEffect(() => {
-        if (!enableChatInstallationStatusHint) {
-            return
-        }
-
         const appId = integration.getIn(['meta', 'app_id'])
         if (integrationType === IntegrationType.GorgiasChat) {
             if (appId) {

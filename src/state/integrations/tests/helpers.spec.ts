@@ -12,16 +12,8 @@ import {
     AccountSettingBusinessHours,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
 import * as helpers from '../helpers'
-
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({
-    [FeatureFlagKey.ChatNotIntalledStatus]: true,
-})
 
 const neutralInstallationStatus: InstallationStatus = {
     applicationId: 1,

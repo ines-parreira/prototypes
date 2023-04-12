@@ -5,9 +5,6 @@ import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
-
 import {RootState, StoreDispatch} from 'state/types'
 import {submitSetting} from 'state/currentAccount/actions'
 import {integrationsState} from 'fixtures/integrations'
@@ -24,10 +21,6 @@ const mockStore = configureMockStore<MockedRootState, StoreDispatch>([thunk])
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
-
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('SatisfactionSurveyView', () => {
     let store: MockStoreEnhanced

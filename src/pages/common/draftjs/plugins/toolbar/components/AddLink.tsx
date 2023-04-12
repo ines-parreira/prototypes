@@ -3,8 +3,6 @@ import React, {Component, KeyboardEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import ReactPlayer from 'react-player'
 
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {
@@ -40,10 +38,6 @@ type Props = {
     ConnectedProps<typeof connector>
 
 export class AddLinkContainer extends Component<Props> {
-    chatVideoSharingExtraLDFlag: boolean | undefined = getLDClient().allFlags()[
-        FeatureFlagKey.ChatVideoSharingExtra
-    ] as boolean | undefined
-
     componentDidUpdate(prevProps: Props) {
         const {isOpen, linkEditionEnded, linkEditionStarted} = this.props
 
@@ -114,7 +108,6 @@ export class AddLinkContainer extends Component<Props> {
             : this._insertLink()
 
         if (
-            this.chatVideoSharingExtraLDFlag &&
             newEditorState &&
             // Do not append a video if we are in `Update Link` mode.
             !this.props.entityKey
