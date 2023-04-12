@@ -62,7 +62,6 @@ exports[`Calling CubeClient functions [Function getCampaignEventsPerformanceData
       "limit": 100,
       "measures": [
         "CampaignEvents.impressions",
-        "CampaignEvents.uniqueImpressions",
         "CampaignEvents.firstCampaignDisplay",
         "CampaignEvents.lastCampaignDisplay",
         "CampaignEvents.clicks",

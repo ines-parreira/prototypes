@@ -180,18 +180,15 @@ export const getCampaignsPerformance = async (
         ordersPerformance,
         campaignsOrdersPerformance,
         ticketsPerformance,
-        storeTotal,
         traffic,
     ] = await Promise.all([
         getCampaignEventsPerformanceData(attrs),
         getCampaignOrderPerformanceData(attrs),
         getCampaignEventsOrdersPerformanceData(attrs),
         getCampaignTicketsPerformanceData(attrs),
-        getStoreRevenueTotalData(attrs),
         getTrafficData(attrs),
     ])
 
-    const storeTotalData = getDataFromResultSet(storeTotal)
     const eventsPerformanceData = getDataFromResultSet(eventsPerformance)
     const ordersPerformanceData = getDataFromResultSet(ordersPerformance)
     const campaignsOrdersPerformanceData = getDataFromResultSet(
@@ -204,7 +201,6 @@ export const getCampaignsPerformance = async (
         eventsPerformanceData,
         ordersPerformanceData,
         campaignsOrdersPerformanceData,
-        storeTotalData,
         trafficData,
         ticketsPerformanceData as TicketPerformanceData
     )

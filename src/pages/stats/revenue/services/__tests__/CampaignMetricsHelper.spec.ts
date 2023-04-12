@@ -432,18 +432,15 @@ describe('Campaign metrics helper tests', () => {
             {
                 [EventsDimensions.campaignId]: 'campaign1',
                 [EventsMeasures.impressions]: '2000',
-                [EventsMeasures.uniqueImpressions]: '34',
                 [EventsMeasures.firstCampaignDisplay]:
                     '2023-03-10T00:00:00.000',
                 [EventsMeasures.lastCampaignDisplay]: '2023-03-11T00:00:00.000',
-                [EventsMeasures.uniqueImpressions]: '34',
                 [EventsMeasures.clicks]: '1000',
                 [EventsMeasures.clicksRate]: '10.20',
             },
             {
                 [EventsDimensions.campaignId]: 'campaign2',
                 [EventsMeasures.impressions]: '4000',
-                [EventsMeasures.uniqueImpressions]: '67',
                 [EventsMeasures.firstCampaignDisplay]:
                     '2023-03-09T00:00:00.000',
                 [EventsMeasures.lastCampaignDisplay]: '2023-03-10T00:00:00.000',
@@ -474,12 +471,6 @@ describe('Campaign metrics helper tests', () => {
                 [OrderConversionMeasures.clickSales]: '3596.25',
                 [OrderConversionMeasures.clickSalesCount]: '40',
                 [OrderConversionMeasures.campaignSalesCount]: '358',
-            },
-        ]
-
-        const revenueTotalData = [
-            {
-                [OrderConversionMeasures.gmv]: '52345.67',
             },
         ]
 
@@ -523,7 +514,6 @@ describe('Campaign metrics helper tests', () => {
                 campaignEventsPerformanceData,
                 campaignOrdersPerformanceData,
                 campaignEventsOrdersPerformanceData,
-                revenueTotalData,
                 trafficData,
                 campaignTicketsPerformanceData as TicketPerformanceData
             )
@@ -532,7 +522,6 @@ describe('Campaign metrics helper tests', () => {
 
         it('should return defaults for missing data', () => {
             const result = transformToCampaignsPerformanceTable(
-                [],
                 [],
                 [],
                 [],
@@ -563,7 +552,6 @@ describe('Campaign metrics helper tests', () => {
                         [CampaignOrderEventsDimensions.campaignId]: 'campaign1',
                     },
                 ],
-                [],
                 [],
                 [['campaign1', 0]] as TicketPerformanceData
             )

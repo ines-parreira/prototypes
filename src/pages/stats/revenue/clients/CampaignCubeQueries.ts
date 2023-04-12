@@ -84,7 +84,6 @@ export const getCampaignEventsPerformanceData = async ({
         dimensions: [EventsDimensions.campaignId],
         measures: [
             EventsMeasures.impressions,
-            EventsMeasures.uniqueImpressions,
             EventsMeasures.firstCampaignDisplay,
             EventsMeasures.lastCampaignDisplay,
             EventsMeasures.clicks,

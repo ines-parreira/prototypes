@@ -2,10 +2,8 @@ export enum CampaignTableKeys {
     CampaignName = 'campaignName',
     // Core
     TotalRevenue = 'totalRevenue',
-    RevenueUplift = 'revenueUplift',
     Traffic = 'traffic',
     Impressions = 'impressions',
-    UniqueImpressions = 'uniqueImpressions',
     Engagement = 'engagement',
     ClickThroughRate = 'clickThroughRate',
     // Orders

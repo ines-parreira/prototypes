@@ -29,7 +29,6 @@ export const EventsDimensions = {
 export const EventsMeasures = {
     traffic: `${Cubes.events}.traffic`,
     impressions: `${Cubes.events}.impressions`,
-    uniqueImpressions: `${Cubes.events}.uniqueImpressions`,
     firstCampaignDisplay: `${Cubes.events}.firstCampaignDisplay`,
     lastCampaignDisplay: `${Cubes.events}.lastCampaignDisplay`,
     clicks: `${Cubes.events}.clicks`,

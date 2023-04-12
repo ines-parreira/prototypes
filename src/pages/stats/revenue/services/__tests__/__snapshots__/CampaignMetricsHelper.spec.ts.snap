@@ -106,7 +106,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "discountCodesUsed": 0,
     "engagement": 0,
     "impressions": 0,
-    "revenueUplift": 0,
     "ticketsConversionRate": 0,
     "ticketsConverted": 60,
     "ticketsCreated": 0,
@@ -115,7 +114,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "totalConversionRate": 0,
     "totalRevenue": 0,
     "traffic": 0,
-    "uniqueImpressions": 0,
   },
 }
 `;
@@ -134,7 +132,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "discountCodesUsed": 0,
     "engagement": 300,
     "impressions": 0,
-    "revenueUplift": 0,
     "ticketsConversionRate": 0,
     "ticketsConverted": 0,
     "ticketsCreated": 300,
@@ -143,7 +140,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "totalConversionRate": 0,
     "totalRevenue": 0,
     "traffic": 0,
-    "uniqueImpressions": 0,
   },
   "campaign2": {
     "campaignSalesCount": 0,
@@ -157,7 +153,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "discountCodesUsed": 0,
     "engagement": 400,
     "impressions": 0,
-    "revenueUplift": 0,
     "ticketsConversionRate": 0,
     "ticketsConverted": 0,
     "ticketsCreated": 400,
@@ -166,7 +161,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "totalConversionRate": 0,
     "totalRevenue": 0,
     "traffic": 0,
-    "uniqueImpressions": 0,
   },
 }
 `;
@@ -185,7 +179,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "discountCodesUsed": 125,
     "engagement": 657,
     "impressions": 2000,
-    "revenueUplift": 30.864175,
     "ticketsConversionRate": 20,
     "ticketsConverted": 60,
     "ticketsCreated": 300,
@@ -194,7 +187,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "totalConversionRate": 19.025875190258752,
     "totalRevenue": 12345.67,
     "traffic": 5,
-    "uniqueImpressions": 34,
   },
   "campaign2": {
     "campaignSalesCount": 358,
@@ -208,7 +200,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "discountCodesUsed": 125,
     "engagement": 1757,
     "impressions": 4000,
-    "revenueUplift": 30.864175,
     "ticketsConversionRate": 20,
     "ticketsConverted": 80,
     "ticketsCreated": 400,
@@ -217,7 +208,6 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "totalConversionRate": 20.375640295959023,
     "totalRevenue": 12345.67,
     "traffic": 3,
-    "uniqueImpressions": 67,
   },
 }
 `;

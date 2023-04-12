@@ -15,13 +15,6 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
             'Sum of revenue from all potential revenue sources for a campaign: tickets converted, products recommended bought, links visited followed by an order, discount code applied',
     },
     {
-        key: CampaignTableKeys.RevenueUplift,
-        title: 'GMV uplift %',
-        format: CampaignTableValueFormat.Percentage,
-        tooltip:
-            'Evolution rate of your total store revenue thanks to this campaign, calculated as: (Total revenue)/(Total store revenue - Total revenue)',
-    },
-    {
         key: CampaignTableKeys.Traffic,
         title: 'Traffic',
         format: CampaignTableValueFormat.Number,
@@ -33,14 +26,6 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
         title: 'Impressions',
         format: CampaignTableValueFormat.Number,
         tooltip: 'How often the campaign was displayed',
-    },
-    {
-        key: CampaignTableKeys.UniqueImpressions,
-        title: 'Unique impressions',
-        format: CampaignTableValueFormat.Number,
-        tooltip:
-            'How often the campaign was displayed by unique visitors (if the same campaign is shown twice during a shopper’s visit, it will count as only one impression)',
-        className: 'uniqueImpressions',
     },
     {
         key: CampaignTableKeys.Engagement,

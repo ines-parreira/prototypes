@@ -192,7 +192,6 @@ describe('Revenue Attribution Service stats methods', () => {
                 {
                     [EventsDimensions.campaignId]: 'campaign1',
                     [EventsMeasures.impressions]: '234',
-                    [EventsMeasures.uniqueImpressions]: '34',
                     [EventsMeasures.firstCampaignDisplay]:
                         '2023-03-10T00:00:00.000',
                     [EventsMeasures.lastCampaignDisplay]:
@@ -203,7 +202,6 @@ describe('Revenue Attribution Service stats methods', () => {
                 {
                     [EventsDimensions.campaignId]: 'campaign2',
                     [EventsMeasures.impressions]: '567',
-                    [EventsMeasures.uniqueImpressions]: '67',
                     [EventsMeasures.firstCampaignDisplay]:
                         '2023-03-11T00:00:00.000',
                     [EventsMeasures.lastCampaignDisplay]:

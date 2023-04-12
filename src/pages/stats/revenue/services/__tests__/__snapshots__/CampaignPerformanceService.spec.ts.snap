@@ -61,7 +61,6 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
     "discountCodesUsed": 0,
     "engagement": 514,
     "impressions": 234,
-    "revenueUplift": 0,
     "ticketsConversionRate": 0,
     "ticketsConverted": 0,
     "ticketsCreated": 157,
@@ -70,7 +69,6 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
     "totalConversionRate": 0,
     "totalRevenue": 0,
     "traffic": 5,
-    "uniqueImpressions": 34,
   },
   "campaign2": {
     "campaignSalesCount": 0,
@@ -84,7 +82,6 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
     "discountCodesUsed": 0,
     "engagement": 1714,
     "impressions": 567,
-    "revenueUplift": 0,
     "ticketsConversionRate": 0,
     "ticketsConverted": 0,
     "ticketsCreated": 357,
@@ -93,7 +90,6 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
     "totalConversionRate": 0,
     "totalRevenue": 0,
     "traffic": 3,
-    "uniqueImpressions": 67,
   },
 }
 `;
@@ -112,7 +108,6 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
     "discountCodesUsed": 125,
     "engagement": 514,
     "impressions": 234,
-    "revenueUplift": 30.864175,
     "ticketsConversionRate": 49.681528662420384,
     "ticketsConverted": 78,
     "ticketsCreated": 157,
@@ -121,7 +116,6 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
     "totalConversionRate": 24.31906614785992,
     "totalRevenue": 12345.67,
     "traffic": 5,
-    "uniqueImpressions": 34,
   },
   "campaign2": {
     "campaignSalesCount": 358,
@@ -135,7 +129,6 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
     "discountCodesUsed": 125,
     "engagement": 1714,
     "impressions": 567,
-    "revenueUplift": 30.864175,
     "ticketsConversionRate": 21.84873949579832,
     "ticketsConverted": 78,
     "ticketsCreated": 357,
@@ -144,7 +137,6 @@ exports[`Revenue Attribution Service stats methods getCampaignsPerformance shoul
     "totalConversionRate": 20.88681446907818,
     "totalRevenue": 12345.67,
     "traffic": 3,
-    "uniqueImpressions": 67,
   },
 }
 `;

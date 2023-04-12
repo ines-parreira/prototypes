@@ -7,7 +7,6 @@ describe('Calling CubeProxyClient', () => {
         measures: [
             `OrderConversion.traffic`,
             `OrderConversion.impressions`,
-            `OrderConversion.uniqueImpressions`,
             `OrderConversion.clicks`,
             `OrderConversion.clicksRate`,
         ],

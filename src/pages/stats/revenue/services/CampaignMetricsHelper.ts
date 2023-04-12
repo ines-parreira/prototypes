@@ -61,10 +61,6 @@ const _getMetricFromCubeData = (data: CubeData): CubeMetric => {
     return _get(data, '[0]', {}) as CubeMetric
 }
 
-const _enrichCubeData = (data: CubeData, metrics: CubeMetric): CubeData => {
-    return data.map((row) => ({...row, ...metrics}))
-}
-
 const _gmvUplift = (gmv: number, campaignSales: number): number => {
     const initialGMV = gmv - campaignSales
 
@@ -282,7 +278,6 @@ export const transformToCampaignsPerformanceTable = (
     eventsData: CubeData,
     ordersData: CubeData,
     campaignsOrdersData: CubeData,
-    storeTotalData: CubeData,
     trafficData: CubeData,
     ticketsData: TicketPerformanceData
 ): CampaignsPerformanceDataset => {
@@ -298,7 +293,7 @@ export const transformToCampaignsPerformanceTable = (
         {}
     )
     const ordersDataset = _reduce(
-        _enrichCubeData(ordersData, _getMetricFromCubeData(storeTotalData)),
+        ordersData,
         _ordersPerformanceReducer,
         eventsDataset
     )
@@ -330,7 +325,6 @@ const _eventsPerformanceReducer = (
                 _get(metric, EventsMeasures.lastCampaignDisplay)
             ),
             impressions: _get(metric, EventsMeasures.impressions),
-            uniqueImpressions: _get(metric, EventsMeasures.uniqueImpressions),
             clicks: _get(metric, EventsMeasures.clicks),
             clicksRate: _get(metric, EventsMeasures.clicksRate),
         },
@@ -350,17 +344,10 @@ const _ordersPerformanceReducer = (
     metric: CubeMetric
 ): CampaignsPerformanceDataset => {
     const campaignId = _get(metric, OrderConversionDimensions.campaignId)
-    const campaignSales = ensureNumberValue(
-        _get(metric, OrderConversionMeasures.campaignSales, '0')
-    )
-    const gmv = ensureNumberValue(
-        _get(metric, OrderConversionMeasures.gmv, '0')
-    )
 
     const orderMetricValue = _mapValues(
         {
             totalRevenue: _get(metric, OrderConversionMeasures.campaignSales),
-            revenueUplift: _gmvUplift(gmv, campaignSales),
             ticketsConverted: _get(
                 metric,
                 OrderConversionMeasures.ticketSalesCount
@@ -443,10 +430,8 @@ const _addDefaultValues = (
 ): CampaignPerformanceData => {
     const defaultValues = {
         totalRevenue: 0,
-        revenueUplift: 0,
         traffic: 0,
         impressions: 0,
-        uniqueImpressions: 0,
         engagement: 0,
         clickThroughRate: 0,
         campaignSalesCount: 0,

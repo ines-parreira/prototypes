@@ -38,7 +38,6 @@ exports[`Calling CubeProxyClient should call with stringified query 1`] = `
             "measures": [
               "OrderConversion.traffic",
               "OrderConversion.impressions",
-              "OrderConversion.uniqueImpressions",
               "OrderConversion.clicks",
               "OrderConversion.clicksRate",
             ],
