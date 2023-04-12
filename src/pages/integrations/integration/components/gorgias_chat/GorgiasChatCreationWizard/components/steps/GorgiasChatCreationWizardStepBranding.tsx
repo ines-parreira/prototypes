@@ -5,6 +5,8 @@ import history from 'pages/history'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 
+import {SegmentEvent} from 'store/middlewares/segmentTracker'
+
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 
 import {
@@ -31,6 +33,8 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
 import ChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatLauncher'
 
+import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+
 import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
 
@@ -52,6 +56,8 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
     integration,
     isSubmitting,
 }) => {
+    const logWizardEvent = useLogWizardEvent()
+
     const dispatch = useAppDispatch()
 
     const launcherCustomizationRef = useRef<HTMLDivElement>(null)
@@ -109,7 +115,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
         currentLauncherLabel === undefined &&
         currentLauncherType === undefined
 
-    const onSave = (shouldGoToNextStep = false) => {
+    const onSave = (shouldGoToNextStep = false, isContinueLater = false) => {
         const form: SubmitForm = {
             type: IntegrationType.GorgiasChat,
             id: integration.get('id'),
@@ -144,6 +150,15 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                 undefined,
                 true,
                 () => {
+                    logWizardEvent(
+                        isContinueLater
+                            ? SegmentEvent.ChatWidgetWizardSaveLaterClicked
+                            : SegmentEvent.ChatWidgetWizardStepCompleted,
+                        {
+                            launcher_type: launcherType,
+                        }
+                    )
+
                     setHasSubmitted(true)
                     shouldGoToNextStep && goToNextStep()
                 },
@@ -184,7 +199,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                         <Button
                             fillStyle="ghost"
                             onClick={() =>
-                                onSave().then(() => {
+                                onSave(false, true).then(() => {
                                     history.push(
                                         '/app/settings/channels/gorgias_chat'
                                     )

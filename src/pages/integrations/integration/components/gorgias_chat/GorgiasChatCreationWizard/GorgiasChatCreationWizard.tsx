@@ -31,7 +31,7 @@ type Props = {
 
 const steps = Object.values(GorgiasChatCreationWizardSteps)
 
-const GorgiasChatCreation: React.FC<Props> = ({
+const GorgiasChatCreationWizard: React.FC<Props> = ({
     integration,
     loading,
     isUpdate,
@@ -50,8 +50,6 @@ const GorgiasChatCreation: React.FC<Props> = ({
 
     const isSubmitting =
         loading.get('updateIntegration') === integration.get('id', true)
-
-    const hasIntegrationLoaded = !isUpdate || integration.get('id')
 
     return (
         <>
@@ -80,40 +78,36 @@ const GorgiasChatCreation: React.FC<Props> = ({
                     }
                 />
                 <div className={css.wrapper}>
-                    {hasIntegrationLoaded && (
-                        <Wizard steps={steps} startAt={initialStep}>
-                            <WizardStep
-                                name={GorgiasChatCreationWizardSteps.Basics}
-                            >
-                                <GorgiasChatCreationWizardStepBasics
-                                    isUpdate={isUpdate}
-                                    isSubmitting={isSubmitting}
-                                    integration={integration}
-                                />
-                            </WizardStep>
-                            <WizardStep
-                                name={GorgiasChatCreationWizardSteps.Branding}
-                            >
-                                <GorgiasChatCreationWizardStepBranding
-                                    isSubmitting={isSubmitting}
-                                    integration={integration}
-                                />
-                            </WizardStep>
-                            <WizardStep
-                                name={
-                                    GorgiasChatCreationWizardSteps.Installation
-                                }
-                            >
-                                <GorgiasChatCreationWizardStepInstallation
-                                    integration={integration}
-                                />
-                            </WizardStep>
-                        </Wizard>
-                    )}
+                    <Wizard steps={steps} startAt={initialStep}>
+                        <WizardStep
+                            name={GorgiasChatCreationWizardSteps.Basics}
+                        >
+                            <GorgiasChatCreationWizardStepBasics
+                                isUpdate={isUpdate}
+                                isSubmitting={isSubmitting}
+                                integration={integration}
+                            />
+                        </WizardStep>
+                        <WizardStep
+                            name={GorgiasChatCreationWizardSteps.Branding}
+                        >
+                            <GorgiasChatCreationWizardStepBranding
+                                isSubmitting={isSubmitting}
+                                integration={integration}
+                            />
+                        </WizardStep>
+                        <WizardStep
+                            name={GorgiasChatCreationWizardSteps.Installation}
+                        >
+                            <GorgiasChatCreationWizardStepInstallation
+                                integration={integration}
+                            />
+                        </WizardStep>
+                    </Wizard>
                 </div>
             </div>
         </>
     )
 }
 
-export default GorgiasChatCreation
+export default GorgiasChatCreationWizard

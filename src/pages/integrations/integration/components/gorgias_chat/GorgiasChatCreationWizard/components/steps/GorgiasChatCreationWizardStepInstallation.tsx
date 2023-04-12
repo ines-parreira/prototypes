@@ -6,6 +6,8 @@ import classnames from 'classnames'
 import history from 'pages/history'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 
+import {SegmentEvent} from 'store/middlewares/segmentTracker'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -26,12 +28,12 @@ import {
 
 import GorgiasChatIntegrationConnectStore from '../../../GorgiasChatIntegrationInstall/GorgiasChatIntegrationConnectStore'
 
+import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+
 import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
 
 import css from './GorgiasChatCreationWizardStepInstallation.less'
-
-const onLeave = () => history.push('/app/settings/channels/gorgias_chat')
 
 type Props = {
     integration: Map<any, any>
@@ -40,6 +42,8 @@ type Props = {
 const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
     integration,
 }) => {
+    const logWizardEvent = useLogWizardEvent()
+
     const dispatch = useAppDispatch()
 
     const {goToPreviousStep} = useNavigateWizardSteps()
@@ -93,6 +97,15 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                     undefined,
                     true,
                     () => {
+                        logWizardEvent(
+                            SegmentEvent.ChatWidgetWizardStepCompleted,
+                            {
+                                installation_method: isOneClickInstallation
+                                    ? '1-click'
+                                    : 'manual',
+                            }
+                        )
+
                         const redirectUrl = `/app/settings/channels/gorgias_chat/${id}/${
                             isOneClickInstallation
                                 ? Tab.Preferences
@@ -111,6 +124,14 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                 )
             )
         }, [integration, isOneClickInstallation])
+
+    const onLeave = () => {
+        logWizardEvent(SegmentEvent.ChatWidgetWizardSaveLaterClicked, {
+            installation_method: isOneClickInstallation ? '1-click' : 'manual',
+        })
+
+        history.push('/app/settings/channels/gorgias_chat')
+    }
 
     return (
         <GorgiasChatCreationWizardStep

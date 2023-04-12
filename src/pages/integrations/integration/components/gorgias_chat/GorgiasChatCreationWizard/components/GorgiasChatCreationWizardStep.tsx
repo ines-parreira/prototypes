@@ -1,10 +1,15 @@
 import React from 'react'
+import {useEffectOnce} from 'react-use'
+
+import {SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {GorgiasChatCreationWizardSteps} from 'models/integration/types/gorgiasChat'
 
 import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
 
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
+
+import useLogWizardEvent from '../hooks/useLogWizardEvent'
 
 import css from './GorgiasChatCreationWizardStep.less'
 
@@ -33,9 +38,15 @@ const GorgiasChatCreationWizardStep: React.FC<Props> = ({
     preview,
     footer,
 }) => {
+    const logWizardEvent = useLogWizardEvent()
+
     const contentRef = React.useRef<HTMLDivElement>(null)
     const contentIsIntersecting =
         useIsIntersectingWithBrowserViewport(contentRef)
+
+    useEffectOnce(() => {
+        logWizardEvent(SegmentEvent.ChatWidgetWizardStepStarted)
+    })
 
     return (
         <>

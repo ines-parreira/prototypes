@@ -1,4 +1,5 @@
 import React from 'react'
+import {MemoryRouter} from 'react-router-dom'
 import {Provider} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import {fireEvent, render} from '@testing-library/react'
@@ -54,11 +55,15 @@ describe('<GorgiasChatCreationWizardStepInstallation />', () => {
 
     it('renders wizard with default options selected', () => {
         const {getByLabelText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                    <GorgiasChatCreationWizardStepInstallation {...minProps} />
-                </Wizard>
-            </Provider>
+            <MemoryRouter>
+                <Provider store={mockStore(defaultState)}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepInstallation
+                            {...minProps}
+                        />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
         )
 
         expect(
@@ -68,17 +73,19 @@ describe('<GorgiasChatCreationWizardStepInstallation />', () => {
 
     it('renders wizard with default options selected when shopify store is connected', () => {
         const {getByLabelText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                    <GorgiasChatCreationWizardStepInstallation
-                        {...minProps}
-                        integration={integration.setIn(
-                            ['meta', 'shop_integration_id'],
-                            1
-                        )}
-                    />
-                </Wizard>
-            </Provider>
+            <MemoryRouter>
+                <Provider store={mockStore(defaultState)}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepInstallation
+                            {...minProps}
+                            integration={integration.setIn(
+                                ['meta', 'shop_integration_id'],
+                                1
+                            )}
+                        />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
         )
 
         expect(
@@ -90,17 +97,19 @@ describe('<GorgiasChatCreationWizardStepInstallation />', () => {
 
     it('submits form when using 1-click installation for Shopify', () => {
         const {getByText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                    <GorgiasChatCreationWizardStepInstallation
-                        {...minProps}
-                        integration={integration.setIn(
-                            ['meta', 'shop_integration_id'],
-                            1
-                        )}
-                    />
-                </Wizard>
-            </Provider>
+            <MemoryRouter>
+                <Provider store={mockStore(defaultState)}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepInstallation
+                            {...minProps}
+                            integration={integration.setIn(
+                                ['meta', 'shop_integration_id'],
+                                1
+                            )}
+                        />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>
         )
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')

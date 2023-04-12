@@ -31,6 +31,8 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 
+import {SegmentEvent} from 'store/middlewares/segmentTracker'
+
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
@@ -46,6 +48,8 @@ import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+
+import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 
 import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 
@@ -74,6 +78,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     isSubmitting,
     integration,
 }) => {
+    const logWizardEvent = useLogWizardEvent()
+
     const dispatch = useAppDispatch()
 
     const navigateWizardSteps = useNavigateWizardSteps()
@@ -174,7 +180,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const offlineIntroductionText =
         GORGIAS_CHAT_WIDGET_TEXTS[language]?.offlineIntroductionText
 
-    const onSave = (shouldGoToNextStep = false) => {
+    const onSave = (shouldGoToNextStep = false, isContinueLater = false) => {
         if (hasIncompleteFields) {
             setHasFailedSubmit(true)
             return
@@ -269,6 +275,19 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                 undefined,
                 true,
                 ({id}) => {
+                    logWizardEvent(
+                        isContinueLater
+                            ? SegmentEvent.ChatWidgetWizardSaveLaterClicked
+                            : SegmentEvent.ChatWidgetWizardStepCompleted,
+                        {
+                            live_chat_availability: liveChatAvailability,
+                            installation_method: isStoreRequired
+                                ? '1-click'
+                                : 'manual',
+                            shop_type: storeIntegration?.get('type'),
+                        }
+                    )
+
                     setHasSubmitted(true)
                     shouldGoToNextStep && goToNextStep(id)
                 },
