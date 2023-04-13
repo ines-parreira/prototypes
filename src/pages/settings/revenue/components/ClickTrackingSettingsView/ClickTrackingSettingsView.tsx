@@ -3,22 +3,13 @@ import React from 'react'
 import {Container} from 'reactstrap'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {NavLink, Route, Switch} from 'react-router-dom'
-import settingsCss from 'pages/settings/settings.less'
+import css from 'pages/settings/settings.less'
 
 import PageHeader from 'pages/common/components/PageHeader'
-import useTitle from 'hooks/useTitle'
 import {FeatureFlagKey} from 'config/featureFlags'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import Detail from 'pages/common/components/ProductDetail'
 import {ClickTrackingCustomDomain} from '../ClickTrackingCustomDomain'
 
-import {ABOUT_PAGE, CLICK_TRACKING_BASE_PATH} from '../../constants'
-import css from './ClickTrackingSettingsView.less'
-
 export const ClickTrackingSettingsView = () => {
-    useTitle('Click Tracking')
-
     // Only show this page if the click tracking feature flag is on
     const clickTrackingEnabled = useFlags()[FeatureFlagKey.RevenueClickTracking]
     if (!clickTrackingEnabled) {
@@ -26,30 +17,24 @@ export const ClickTrackingSettingsView = () => {
     }
 
     return (
-        <div
-            data-testid="click-tracking-settings"
-            className={css.settingsLayout}
-        >
-            <PageHeader title="Click Tracking" />
-            <SecondaryNavbar>
-                <NavLink exact to={CLICK_TRACKING_BASE_PATH}>
-                    About
-                </NavLink>
-                <NavLink exact to={CLICK_TRACKING_BASE_PATH + '/manage'}>
-                    Manage
-                </NavLink>
-            </SecondaryNavbar>
+        <div data-testid="click-tracking-settings" className="full-width">
+            <PageHeader title="Click tracking" />
 
-            <Switch>
-                <Route exact path={CLICK_TRACKING_BASE_PATH}>
-                    <Detail {...ABOUT_PAGE} />
-                </Route>
-                <Route exact path={CLICK_TRACKING_BASE_PATH + '/manage'}>
-                    <Container fluid className={settingsCss.pageContainer}>
-                        <ClickTrackingCustomDomain />
-                    </Container>
-                </Route>
-            </Switch>
+            <Container fluid className={css.pageContainer}>
+                <div className={css.contentWrapper}>
+                    <p>
+                        With the Gorgias click tracking service you can now
+                        track clicks back to your store from short-links sent
+                        via helpdesk conversations. This feature can be used in
+                        any channel with standard Gorgias branded links or you
+                        can customize your links to match your store’s domain.
+                        Simply edit the DNS/custom domain settings in the
+                        “manage” section above and the links sent to shoppers
+                        will automatically reference your domain!
+                    </p>
+                    <ClickTrackingCustomDomain />
+                </div>
+            </Container>
         </div>
     )
 }
