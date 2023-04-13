@@ -14,12 +14,14 @@ jest.mock(
 describe('<TicketMacrosSearch />', () => {
     const minProps = {
         setFocus: jest.fn(),
-        searchParams: {},
         macrosVisible: false,
-        searchMacros: jest.fn(),
         showMacros: jest.fn(),
         handleSearchKeyDown: jest.fn(),
+        filters: {},
+        query: '',
         requireCustomerSelection: false,
+        onChangeFilters: jest.fn(),
+        onChangeQuery: jest.fn(),
         onClearMacro: jest.fn(),
     }
 

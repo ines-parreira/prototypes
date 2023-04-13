@@ -88,9 +88,13 @@ const minProps = {
         messages: [{id: 1}],
     }),
     cacheAdded: false,
+    filters: {},
     hasShownMacros: false,
     isMacrosActive: false,
+    query: '',
+    onChangeFilters: jest.fn(),
     onChangeMacrosActive: jest.fn(),
+    onChangeQuery: jest.fn(),
 } as unknown as ComponentProps<typeof TicketReplyArea>
 
 describe('<TicketReplyArea/>', () => {

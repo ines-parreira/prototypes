@@ -11,6 +11,7 @@ export const ticket: Ticket = {
     meta: null,
     last_received_message_datetime: null,
     subject: 'Great ticket',
+    language: 'en',
     messages: [
         {
             sent_datetime: '2017-07-31T23:07:36.946068+00:00',

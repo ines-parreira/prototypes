@@ -52,9 +52,13 @@ const CONTENT_STATE_PATH = ['state', 'contentState']
 const PREFILL_TOP_MACRO_SCORE_THRESHOLD = 0.8
 
 type Props = {
+    filters: MacrosProperties
     hasShownMacros: boolean
     isMacrosActive: boolean
+    query: string
+    onChangeFilters: (filters: MacrosProperties) => void
     onChangeMacrosActive: (isActive?: boolean) => void
+    onChangeQuery: (query: string) => void
 } & CancellableRequestInjectedProps<
     'fetchMacrosCancellable',
     'cancelFetchMacrosCancellable',
@@ -64,7 +68,6 @@ type Props = {
 
 type State = {
     isInitialMacrosLoading: boolean
-    searchParams: FetchMacrosOptions
     searchResults: List<Map<any, any>>
     selectedMacroId: number | null
     shouldFocusEditor: boolean
@@ -80,21 +83,7 @@ export class TicketReplyArea extends Component<Props, State> {
     constructor(props: Props) {
         super(props)
 
-        const hasLanguage = (
-            this.props.macroParametersOptions?.toJS() as MacrosProperties
-        )?.languages?.includes(this.props.ticket.get('language'))
-
-        const languages =
-            this.props.ticket.get('language') && hasLanguage
-                ? [this.props.ticket.get('language'), null]
-                : []
-
         this.state = {
-            searchParams: {
-                search: '',
-                languages,
-                orderBy: `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
-            },
             searchResults: fromJS([]),
             selectedMacroId: null,
             isInitialMacrosLoading: false,
@@ -105,11 +94,10 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     async componentDidMount() {
+        const {filters, query} = this.props
         this.bindKeys()
         this.setState({isInitialMacrosLoading: true})
-        await this.loadMacros({
-            ...this.state.searchParams,
-        })
+        await this.loadMacros({...filters, search: query})
         this.setState({isInitialMacrosLoading: false})
 
         this.checkTopRankMacro()
@@ -228,6 +216,27 @@ export class TicketReplyArea extends Component<Props, State> {
 
     componentDidUpdate = (prevProps: Props, prevState: State) => {
         const {shouldFocusEditor} = this.state
+        const {filters, query} = this.props
+
+        if (
+            (filters !== prevProps.filters || query !== prevProps.query) &&
+            query.trim().length !== 1
+        ) {
+            const fields: [string, unknown, unknown][] = [
+                ['search', query, prevProps.query],
+                ['languages', filters.languages, prevProps.filters.languages],
+                ['tags', filters.tags, prevProps.filters.tags],
+            ]
+
+            const changed = fields
+                .filter(([, a, b]) => a !== b)
+                .map(([name]) => name)
+
+            void this.debounceLoadMacrosWithLogEvent(
+                {...filters, search: query},
+                changed
+            )
+        }
 
         if (this.props.cacheAdded && this.cacheAdded !== true) {
             this.showMacrosDefault()
@@ -369,7 +378,7 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     loadMacros = async (
-        searchParams: FetchMacrosOptions = {
+        options: FetchMacrosOptions = {
             search: '',
         },
         retainPreviousResults = false
@@ -391,8 +400,9 @@ export class TicketReplyArea extends Component<Props, State> {
         }
 
         const res = await this.props.fetchMacrosCancellable({
-            ...searchParams,
+            ...options,
             ...filters,
+            orderBy: `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
         })
         if (!res) {
             return
@@ -421,14 +431,11 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     loadMacrosWithLogEvent = async (
-        searchParams: FetchMacrosOptions,
-        changedSearchParams: FetchMacrosOptions
+        options: FetchMacrosOptions,
+        changed: string[]
     ): Promise<void> => {
-        logEvent(SegmentEvent.TicketMacrosSearch, {
-            ...searchParams,
-            changed: Object.keys(changedSearchParams),
-        })
-        return await this.loadMacros(searchParams)
+        logEvent(SegmentEvent.TicketMacrosSearch, {...options, changed})
+        return await this.loadMacros(options)
     }
 
     setSelectedMacroId = (macro: Map<any, any>) =>
@@ -516,27 +523,6 @@ export class TicketReplyArea extends Component<Props, State> {
 
     debounceLoadMacrosWithLogEvent = _debounce(this.loadMacrosWithLogEvent, 350)
 
-    searchMacros = (changedSearchParams: FetchMacrosOptions = {}) => {
-        const searchParams = {
-            ...this.state.searchParams,
-            ...changedSearchParams,
-        }
-
-        this.setState({
-            searchParams,
-        })
-
-        if (
-            !searchParams.search?.trim().length ||
-            searchParams.search.trim().length > 1
-        ) {
-            void this.debounceLoadMacrosWithLogEvent(
-                searchParams,
-                changedSearchParams
-            )
-        }
-    }
-
     showMacros = () => {
         this.props.onChangeMacrosActive(true)
     }
@@ -567,17 +553,20 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     render() {
-        const {
-            searchParams,
-            searchResults,
-            isInitialMacrosLoading,
-            nextCursor,
-        } = this.state
+        const {searchResults, isInitialMacrosLoading, nextCursor} = this.state
         const currentMacro = getCurrentMacro(
             this.state.searchResults,
             this.state.selectedMacroId
         )
-        const {currentTicket, isMacrosActive, newMessageType} = this.props
+        const {
+            currentTicket,
+            filters,
+            isMacrosActive,
+            newMessageType,
+            query,
+            onChangeFilters,
+            onChangeQuery,
+        } = this.props
 
         const requireCustomerSelection =
             !currentTicket.get('id') &&
@@ -592,12 +581,14 @@ export class TicketReplyArea extends Component<Props, State> {
             >
                 <TicketMacrosSearch
                     setFocus={(input) => (this.macroInput = input)}
-                    searchParams={searchParams}
+                    filters={filters}
                     macrosVisible={isMacrosActive}
-                    searchMacros={this.searchMacros}
                     showMacros={this.showMacros}
                     handleSearchKeyDown={this.handleSearchKeyDown}
                     requireCustomerSelection={requireCustomerSelection}
+                    query={query}
+                    onChangeFilters={onChangeFilters}
+                    onChangeQuery={onChangeQuery}
                     onClearMacro={this.hideMacrosAndFocusEditor}
                 />
                 <div className={css.content}>
@@ -629,7 +620,8 @@ export class TicketReplyArea extends Component<Props, State> {
                             selectMacro={this.setSelectedMacroId}
                             fetchMacros={this.loadMacros}
                             searchParams={{
-                                ...searchParams,
+                                ...filters,
+                                search: query,
                                 cursor: this.state.nextCursor,
                             }}
                             applyMacro={this.applyMacro}

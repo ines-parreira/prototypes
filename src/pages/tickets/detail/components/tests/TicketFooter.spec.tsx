@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Editor from 'pages/common/editor/Editor'
+import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFilters'
 import {editorFocused} from 'state/ui/editor/actions'
 
 import TicketFooter from '../TicketFooter'
@@ -14,12 +15,14 @@ import TypingActivity from '../TypingActivity'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('pages/common/editor/Editor', () => jest.fn(() => <p>Editor</p>))
+jest.mock('pages/common/editor/hooks/useInitialMacroFilters', () => jest.fn())
 jest.mock('state/ui/editor/actions', () => ({editorFocused: jest.fn()}))
 jest.mock('../TypingActivity', () => jest.fn(() => <p>TypingActivity</p>))
 
 const mockEditor = Editor as jest.Mock
 const mockEditorFocused = editorFocused as unknown as jest.Mock
 const mockUseAppDispatch = useAppDispatch as jest.Mock
+const mockUseInitialMacroFilters = useInitialMacroFilters as jest.Mock
 
 const mockStore = configureMockStore([thunk])
 
@@ -41,6 +44,7 @@ describe('<TicketFooter />', () => {
 
         dispatch = jest.fn()
         mockUseAppDispatch.mockReturnValue(dispatch)
+        mockUseInitialMacroFilters.mockReturnValue({languages: ['en']})
         mockEditorFocused.mockImplementation((focused: boolean) => ({focused}))
     })
 
@@ -70,6 +74,7 @@ describe('<TicketFooter />', () => {
         expect(mockEditor).toHaveBeenCalledWith(
             {
                 submit,
+                initialMacroFilters: {languages: ['en']},
                 onBlur: expect.any(Function),
                 onFocus: expect.any(Function),
             },

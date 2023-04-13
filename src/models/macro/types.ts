@@ -29,12 +29,11 @@ export enum MacroSortableProperties {
 }
 
 export type FetchMacrosOptions = OrderParams<MacroSortableProperties> &
-    ApiPaginationParams & {
+    ApiPaginationParams &
+    MacrosProperties & {
         messageId?: number
         search?: string
         ticketId?: number
-        languages?: string[]
-        tags?: string[]
         numberPredictions?: number
     }
 

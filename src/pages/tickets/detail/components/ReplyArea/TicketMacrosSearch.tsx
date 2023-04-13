@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import React, {KeyboardEvent as KeyboardEventReact, useRef} from 'react'
 
-import {FetchMacrosOptions} from 'models/macro/types'
+import {MacrosProperties} from 'models/macro/types'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
@@ -9,23 +9,27 @@ import OnbordingMacroPopover from 'pages/tickets/common/macros/components/Onbord
 import css from './TicketMacrosSearch.less'
 
 type Props = {
-    searchParams: FetchMacrosOptions
+    filters: MacrosProperties
     macrosVisible: boolean
+    query: string
     setFocus: (input: HTMLInputElement) => void
     showMacros: () => void
-    searchMacros: (search: FetchMacrosOptions) => void
     handleSearchKeyDown: (e: KeyboardEventReact) => void
+    onChangeFilters: (filters: MacrosProperties) => void
+    onChangeQuery: (query: string) => void
     onClearMacro: () => void
     requireCustomerSelection: boolean
 }
 
 const TicketMacrosSearch = ({
-    searchParams,
+    filters,
     macrosVisible,
     setFocus,
     showMacros,
-    searchMacros,
     handleSearchKeyDown,
+    query,
+    onChangeFilters,
+    onChangeQuery,
     onClearMacro,
     requireCustomerSelection,
 }: Props) => {
@@ -35,11 +39,7 @@ const TicketMacrosSearch = ({
         <div className={classnames(css.component, 'd-flex align-items-center')}>
             <TextInput
                 tabIndex={3}
-                onChange={(search) =>
-                    searchMacros({
-                        search,
-                    })
-                }
+                onChange={onChangeQuery}
                 onKeyDown={handleSearchKeyDown}
                 onFocus={showMacros}
                 placeholder="Search macros by name, tags or body..."
@@ -53,14 +53,12 @@ const TicketMacrosSearch = ({
                         icon="bolt"
                     />
                 }
+                value={query}
             />
             {macrosVisible && (
                 <MacroFilters
-                    selectedProperties={{
-                        languages: searchParams.languages,
-                        tags: searchParams.tags,
-                    }}
-                    onChange={searchMacros}
+                    selectedProperties={filters}
+                    onChange={onChangeFilters}
                     size="sm"
                 />
             )}

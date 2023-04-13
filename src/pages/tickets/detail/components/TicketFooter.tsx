@@ -4,6 +4,7 @@ import React, {useCallback, useMemo} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Editor from 'pages/common/editor/Editor'
+import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFilters'
 import {getTicket} from 'state/ticket/selectors'
 import {editorFocused} from 'state/ui/editor/actions'
 
@@ -23,6 +24,7 @@ type Props = {
 export default function TicketFooter({context}: Props) {
     const dispatch = useAppDispatch()
     const ticket = useAppSelector(getTicket)
+    const initialMacroFilters = useInitialMacroFilters()
 
     const isExistingTicket = useMemo(() => !!ticket.id, [ticket])
 
@@ -41,7 +43,12 @@ export default function TicketFooter({context}: Props) {
     return (
         <div className={cn({'mt-3': !isExistingTicket})}>
             <TypingActivity isTyping={isShopperTyping} name={shopperName} />
-            <Editor submit={submit} onBlur={handleBlur} onFocus={handleFocus} />
+            <Editor
+                initialMacroFilters={initialMacroFilters}
+                submit={submit}
+                onBlur={handleBlur}
+                onFocus={handleFocus}
+            />
         </div>
     )
 }

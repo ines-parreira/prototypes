@@ -108,6 +108,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
           "firstname": "Alex",
           "lastname": "Plugaru",
         },
+        "language": "en",
         "tags": Immutable.List [
           Immutable.Map {
             "id": 1,
@@ -651,6 +652,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
           "firstname": "Alex",
           "lastname": "Plugaru",
         },
+        "language": "en",
         "tags": Immutable.List [
           Immutable.Map {
             "id": 1,
@@ -1201,6 +1203,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
           "firstname": "Alex",
           "lastname": "Plugaru",
         },
+        "language": "en",
         "tags": Immutable.List [
           Immutable.Map {
             "id": 1,
@@ -1769,6 +1772,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
           "firstname": "Alex",
           "lastname": "Plugaru",
         },
+        "language": "en",
         "tags": Immutable.List [
           Immutable.Map {
             "id": 1,
@@ -2312,6 +2316,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
           "firstname": "Alex",
           "lastname": "Plugaru",
         },
+        "language": "en",
         "tags": Immutable.List [
           Immutable.Map {
             "id": 1,
@@ -2862,6 +2867,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
           "firstname": "Alex",
           "lastname": "Plugaru",
         },
+        "language": "en",
         "tags": Immutable.List [
           Immutable.Map {
             "id": 1,

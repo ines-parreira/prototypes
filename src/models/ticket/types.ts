@@ -57,6 +57,7 @@ export type Ticket = {
     via: TicketVia
     is_unread: boolean
     excerpt?: string
+    language: string | null
 }
 
 type InternalTicketEvent = Pick<

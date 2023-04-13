@@ -96,7 +96,6 @@ describe('Config: views', () => {
                         id: 'number',
                         details: 'object',
                         tags: 'object',
-                        language: 'object',
                         customer: 'object', // customer (then passed to RenderLabel)
                         assignee: 'object', // user (then passed to RenderLabel)
                         assignee_team: 'object', // team (then passed to RenderLabel)

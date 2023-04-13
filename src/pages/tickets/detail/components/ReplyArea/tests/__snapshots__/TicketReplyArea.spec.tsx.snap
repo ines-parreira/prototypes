@@ -14,6 +14,7 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
   currentUser={Immutable.Map {}}
   customers={{}}
   fetchMacrosCancellable={[Function]}
+  filters={{}}
   hasShownMacros={false}
   isMacrosActive={false}
   lastMessage={
@@ -31,9 +32,12 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
   }
   newMessageType="internal-note"
   notify={[Function]}
+  onChangeFilters={[MockFunction]}
   onChangeMacrosActive={[MockFunction]}
+  onChangeQuery={[MockFunction]}
   page={1}
   preferences={Immutable.Map {}}
+  query=""
   selectMacro={[MockFunction]}
   ticket={Immutable.Map {}}
   totalPages={1}
@@ -42,18 +46,14 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
     className="component"
   >
     <Component
+      filters={{}}
       handleSearchKeyDown={[Function]}
       macrosVisible={false}
+      onChangeFilters={[MockFunction]}
+      onChangeQuery={[MockFunction]}
       onClearMacro={[Function]}
+      query=""
       requireCustomerSelection={true}
-      searchMacros={[Function]}
-      searchParams={
-        {
-          "languages": [],
-          "orderBy": "name:asc",
-          "search": "",
-        }
-      }
       setFocus={[Function]}
       showMacros={[Function]}
     >
@@ -91,18 +91,14 @@ exports[`<TicketReplyArea/> should render 1`] = `
   className="component"
 >
   <Component
+    filters={{}}
     handleSearchKeyDown={[Function]}
     macrosVisible={false}
+    onChangeFilters={[MockFunction]}
+    onChangeQuery={[MockFunction]}
     onClearMacro={[Function]}
+    query=""
     requireCustomerSelection={false}
-    searchMacros={[Function]}
-    searchParams={
-      {
-        "languages": [],
-        "orderBy": "name:asc",
-        "search": "",
-      }
-    }
     setFocus={[Function]}
     showMacros={[Function]}
   />

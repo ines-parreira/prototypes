@@ -1,6 +1,7 @@
 import cn from 'classnames'
 import React from 'react'
 
+import {MacrosProperties} from 'models/macro/types'
 import ReplyMessageChannel from 'pages/tickets/detail/components/ReplyArea/ReplyMessageChannel'
 import TicketSubmitButtons from 'pages/tickets/detail/components/ReplyArea/TicketSubmitButtons'
 import TicketReplyArea from 'pages/tickets/detail/components/ReplyArea/TicketReplyArea'
@@ -12,14 +13,28 @@ import useMacros from './hooks/useMacros'
 import css from './Editor.less'
 
 type Props = {
+    initialMacroFilters: MacrosProperties
     onBlur?: () => void
     onFocus?: () => void
     submit: (args: SubmitArgs) => any
 }
 
-export default function Editor({onBlur, onFocus, submit}: Props) {
+export default function Editor({
+    initialMacroFilters,
+    onBlur,
+    onFocus,
+    submit,
+}: Props) {
     const {formRef, onSubmit, setTicketStatus} = useForm(submit)
-    const {hasShown, isActive, onChangeActive} = useMacros()
+    const {
+        hasShown,
+        filters,
+        isActive,
+        query,
+        onChangeActive,
+        onChangeFilters,
+        onChangeQuery,
+    } = useMacros({initialFilters: initialMacroFilters})
 
     return (
         <div
@@ -32,8 +47,12 @@ export default function Editor({onBlur, onFocus, submit}: Props) {
                 <ReplyForm>
                     <TicketReplyArea
                         hasShownMacros={hasShown}
+                        filters={filters}
                         isMacrosActive={isActive}
+                        query={query}
+                        onChangeFilters={onChangeFilters}
                         onChangeMacrosActive={onChangeActive}
+                        onChangeQuery={onChangeQuery}
                     />
                     <TicketSubmitButtons setTicketStatus={setTicketStatus} />
                 </ReplyForm>
