@@ -2,7 +2,7 @@ import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 
 import {useGetReporting} from 'models/reporting/queries'
-import {ReportingMeasure} from 'models/reporting/types'
+import {TicketStateMeasure} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 import {useGetMetricTrend} from '../useGetMetricTrend'
@@ -29,7 +29,10 @@ describe('useGetMetricTrend', () => {
 
     it('should return isFetching=false when no queries is fetching', () => {
         const {result} = renderHook(() =>
-            useGetMetricTrend(ReportingMeasure.OpenTickets, defaultFilters)
+            useGetMetricTrend(
+                TicketStateMeasure.FirstResponseTime,
+                defaultFilters
+            )
         )
 
         expect(result.current.isFetching).toBe(false)
@@ -42,7 +45,10 @@ describe('useGetMetricTrend', () => {
         })
 
         const {result} = renderHook(() =>
-            useGetMetricTrend(ReportingMeasure.OpenTickets, defaultFilters)
+            useGetMetricTrend(
+                TicketStateMeasure.FirstResponseTime,
+                defaultFilters
+            )
         )
 
         expect(result.current.isFetching).toBe(true)
@@ -50,7 +56,10 @@ describe('useGetMetricTrend', () => {
 
     it('should return isError=false when no queries errored', () => {
         const {result} = renderHook(() =>
-            useGetMetricTrend(ReportingMeasure.OpenTickets, defaultFilters)
+            useGetMetricTrend(
+                TicketStateMeasure.FirstResponseTime,
+                defaultFilters
+            )
         )
 
         expect(result.current.isError).toBe(false)
@@ -63,7 +72,10 @@ describe('useGetMetricTrend', () => {
         } as UseQueryResult)
 
         const {result} = renderHook(() =>
-            useGetMetricTrend(ReportingMeasure.OpenTickets, defaultFilters)
+            useGetMetricTrend(
+                TicketStateMeasure.FirstResponseTime,
+                defaultFilters
+            )
         )
 
         expect(result.current.isError).toBe(true)
@@ -71,7 +83,10 @@ describe('useGetMetricTrend', () => {
 
     it('should not return data when one the queries does not have data', () => {
         const {result} = renderHook(() =>
-            useGetMetricTrend(ReportingMeasure.OpenTickets, defaultFilters)
+            useGetMetricTrend(
+                TicketStateMeasure.FirstResponseTime,
+                defaultFilters
+            )
         )
 
         expect(result.current.data).toBe(undefined)
@@ -88,7 +103,10 @@ describe('useGetMetricTrend', () => {
         } as UseQueryResult)
 
         const {result} = renderHook(() =>
-            useGetMetricTrend(ReportingMeasure.OpenTickets, defaultFilters)
+            useGetMetricTrend(
+                TicketStateMeasure.FirstResponseTime,
+                defaultFilters
+            )
         )
 
         expect(result.current.data).toEqual({

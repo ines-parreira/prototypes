@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Reporting resources getReporting should serialize query 1`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "data": undefined,
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": {
+        "query": "[{"dimensions":[],"measures":[],"filters":[]}]",
+      },
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "url": "/api/reporting",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+}
+`;

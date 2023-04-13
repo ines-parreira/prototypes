@@ -1,5 +1,5 @@
 import {useGetReporting} from 'models/reporting/queries'
-import {ReportingDimension, ReportingMeasure} from 'models/reporting/types'
+import {ReportingMeasure, TicketStateDimension} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
 const STALE_TIME_MS = 5 * 60 * 1000 // 5 minutes
@@ -20,19 +20,21 @@ export const useGetMetricTrend = (
     _filters: StatsFilters
 ): TrendMetricQuery => {
     const currentPeriod = useGetReporting<[number], number>(
-        {
-            dimensions: [],
-            // todo: compute timeDimensions from filters.period
-            timeDimensions: [
-                {
-                    dimension: ReportingDimension.CreatedDatetime,
-                    dateRange: ['2023-01-02'],
-                },
-            ],
-            measures: [trendMeasure],
-            // todo: compute filters from StatFilters
-            filters: [],
-        },
+        [
+            {
+                dimensions: [],
+                // todo: compute timeDimensions from filters.period
+                timeDimensions: [
+                    {
+                        dimension: TicketStateDimension.CreatedDatetime,
+                        dateRange: ['2023-01-02'],
+                    },
+                ],
+                measures: [trendMeasure],
+                // todo: compute filters from StatFilters
+                filters: [],
+            },
+        ],
         {
             staleTime: STALE_TIME_MS,
             select: (data) => {
@@ -42,18 +44,20 @@ export const useGetMetricTrend = (
     )
 
     const prevPeriod = useGetReporting<[number], number>(
-        {
-            dimensions: [],
-            // todo: compute timeDimensions from filters.period
-            timeDimensions: [
-                {
-                    dimension: ReportingDimension.CreatedDatetime,
-                    dateRange: ['2023-01-01'],
-                },
-            ],
-            measures: [trendMeasure],
-            filters: [], // todo: compute previous period filters
-        },
+        [
+            {
+                dimensions: [],
+                // todo: compute timeDimensions from filters.period
+                timeDimensions: [
+                    {
+                        dimension: TicketStateDimension.CreatedDatetime,
+                        dateRange: ['2023-01-01'],
+                    },
+                ],
+                measures: [trendMeasure],
+                filters: [], // todo: compute previous period filters
+            },
+        ],
         {
             staleTime: STALE_TIME_MS,
             select: (data) => {

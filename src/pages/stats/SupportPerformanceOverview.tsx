@@ -16,7 +16,10 @@ import {
 } from 'state/stats/selectors'
 import blueStar from 'assets/img/icons/blue-star.svg'
 import {ticketsCreatedDataItem} from 'fixtures/chart'
-import {ReportingMeasure} from 'models/reporting/types'
+import {
+    OpenTicketStateMeasure,
+    TicketStateMeasure,
+} from 'models/reporting/types'
 import {useGetMetricTrend} from 'hooks/reporting/useGetMetricTrend'
 
 import BigNumberMetric from './BigNumberMetric'
@@ -78,39 +81,39 @@ export default function SupportPerformanceOverview() {
     }, [integrationsStatsFilter, statsFilters])
 
     const customerSatisfactionTrend = useGetMetricTrend(
-        ReportingMeasure.CustomerSatisfaction,
+        TicketStateMeasure.SurveyScore,
         pageStatsFilters
     )
     const firstResponseTimeTrend = useGetMetricTrend(
-        ReportingMeasure.FirstResponseTime,
+        TicketStateMeasure.FirstResponseTime,
         pageStatsFilters
     )
     const resolutionTimeTrend = useGetMetricTrend(
-        ReportingMeasure.ResolutionTime,
+        TicketStateMeasure.ResolutionTime,
         pageStatsFilters
     )
     const messagePerTicketTrend = useGetMetricTrend(
-        ReportingMeasure.MessagesPerTicket,
+        TicketStateMeasure.MessagesAverage,
         pageStatsFilters
     )
     const openTicketsTrend = useGetMetricTrend(
-        ReportingMeasure.OpenTickets,
+        OpenTicketStateMeasure.TicketCount,
         pageStatsFilters
     )
     const closedTicketsTrend = useGetMetricTrend(
-        ReportingMeasure.ClosedTickets,
+        TicketStateMeasure.TicketCount,
         pageStatsFilters
     )
     const ticketsCreatedTrend = useGetMetricTrend(
-        ReportingMeasure.TicketsCreated,
+        TicketStateMeasure.TicketCount,
         pageStatsFilters
     )
     const ticketsRepliedTrend = useGetMetricTrend(
-        ReportingMeasure.TicketsReplied,
+        TicketStateMeasure.TicketCount,
         pageStatsFilters
     )
     const messagesSentTrend = useGetMetricTrend(
-        ReportingMeasure.MessagesSent,
+        TicketStateMeasure.TicketCount,
         pageStatsFilters
     )
 

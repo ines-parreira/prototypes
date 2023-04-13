@@ -27,12 +27,13 @@ describe('Reporting queries', () => {
 
     describe('useGetReporting', () => {
         it('should call getReporting and return the result', async () => {
-            const params: GetReportingParams = {
-                filters: [],
-                measures: [],
-                dimensions: [],
-                timeDimensions: [],
-            }
+            const params: GetReportingParams = [
+                {
+                    filters: [],
+                    measures: [],
+                    dimensions: [],
+                },
+            ]
 
             const {result, waitForNextUpdate} = renderHook(
                 () => useGetReporting<[number]>(params),

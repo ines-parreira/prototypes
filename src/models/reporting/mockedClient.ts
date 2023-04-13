@@ -4,9 +4,10 @@ import {createClient} from 'models/api/resources'
 
 import {REPORTING_ENDPOINT} from './resources'
 import {
-    ReportingMeasure,
-    GetReportingParams,
+    TicketStateMeasure,
     GetReportingResponse,
+    OpenTicketStateMeasure,
+    ReportingQuery,
 } from './types'
 
 const client = createClient()
@@ -17,16 +18,16 @@ const mock = new MockAdapter(client, {delayResponse: 3000})
 
 mock.onGet(REPORTING_ENDPOINT).reply<GetReportingResponse<[number]>>(
     (config) => {
-        const {
-            measures: [measure],
-        } = config.params as GetReportingParams
+        const query = JSON.parse(
+            (config.params as {query: string}).query
+        ) as ReportingQuery[]
 
-        switch (measure) {
-            case ReportingMeasure.CustomerSatisfaction: {
+        switch (query[0].measures[0]) {
+            case TicketStateMeasure.SurveyScore: {
                 return [
                     200,
                     {
-                        query: 'customer satisfaction query',
+                        query,
                         annotation: {
                             title: 'Customer satisfaction',
                             shortTitle: 'CSAT',
@@ -36,7 +37,7 @@ mock.onGet(REPORTING_ENDPOINT).reply<GetReportingResponse<[number]>>(
                     },
                 ]
             }
-            case ReportingMeasure.FirstResponseTime: {
+            case TicketStateMeasure.FirstResponseTime: {
                 const minResponseTimeSeconds = 30
                 const maxResponseTimeSeconds = 20 * 60
                 const firstResponseTime = Math.round(
@@ -47,7 +48,7 @@ mock.onGet(REPORTING_ENDPOINT).reply<GetReportingResponse<[number]>>(
                 return [
                     200,
                     {
-                        query: 'first response time query',
+                        query,
                         annotation: {
                             title: 'First Response Time',
                             shortTitle: 'FRT',
@@ -57,7 +58,7 @@ mock.onGet(REPORTING_ENDPOINT).reply<GetReportingResponse<[number]>>(
                     },
                 ]
             }
-            case ReportingMeasure.ResolutionTime: {
+            case TicketStateMeasure.ResolutionTime: {
                 const minResolutionTimeSeconds = 5 * 60
                 const maxResolutionTimeSeconds = 3 * 24 * 60 * 60
                 const resolutionTime = Math.round(
@@ -68,7 +69,7 @@ mock.onGet(REPORTING_ENDPOINT).reply<GetReportingResponse<[number]>>(
                 return [
                     200,
                     {
-                        query: 'resolution time query',
+                        query,
                         annotation: {
                             title: 'Resolution Time',
                             shortTitle: 'RT',
@@ -78,11 +79,11 @@ mock.onGet(REPORTING_ENDPOINT).reply<GetReportingResponse<[number]>>(
                     },
                 ]
             }
-            case ReportingMeasure.MessagesPerTicket: {
+            case TicketStateMeasure.MessagesAverage: {
                 return [
                     200,
                     {
-                        query: 'messages per ticket query',
+                        query,
                         annotation: {
                             title: 'Messages per ticket',
                             shortTitle: 'MPT',
@@ -92,11 +93,11 @@ mock.onGet(REPORTING_ENDPOINT).reply<GetReportingResponse<[number]>>(
                     },
                 ]
             }
-            case ReportingMeasure.OpenTickets: {
+            case OpenTicketStateMeasure.TicketCount: {
                 return [
                     200,
                     {
-                        query: 'open tickets query',
+                        query,
                         annotation: {
                             title: 'Open tickets',
                             shortTitle: 'OT',
@@ -106,59 +107,17 @@ mock.onGet(REPORTING_ENDPOINT).reply<GetReportingResponse<[number]>>(
                     },
                 ]
             }
-            case ReportingMeasure.ClosedTickets: {
+            default: {
                 return [
                     200,
                     {
-                        query: 'tickets closed query',
+                        query,
                         annotation: {
                             title: 'Closed tickets',
                             shortTitle: 'CT',
                             type: 'number',
                         },
                         data: [Math.round(Math.random() * 200 + 100)],
-                    },
-                ]
-            }
-            case ReportingMeasure.TicketsCreated: {
-                return [
-                    200,
-                    {
-                        query: 'tickets closed query',
-                        annotation: {
-                            title: 'Closed tickets',
-                            shortTitle: 'CT',
-                            type: 'number',
-                        },
-                        data: [Math.round(Math.random() * 100 + 100)],
-                    },
-                ]
-            }
-            case ReportingMeasure.TicketsReplied: {
-                return [
-                    200,
-                    {
-                        query: 'tickets replied query',
-                        annotation: {
-                            title: 'Replied tickets',
-                            shortTitle: 'RT',
-                            type: 'number',
-                        },
-                        data: [Math.round(Math.random() * 250 + 125)],
-                    },
-                ]
-            }
-            case ReportingMeasure.MessagesSent: {
-                return [
-                    200,
-                    {
-                        query: 'tickets replied query',
-                        annotation: {
-                            title: 'Replied tickets',
-                            shortTitle: 'RT',
-                            type: 'number',
-                        },
-                        data: [Math.round(Math.random() * 450 + 250)],
                     },
                 ]
             }

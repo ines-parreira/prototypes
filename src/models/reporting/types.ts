@@ -1,4 +1,56 @@
-export enum ReportingFilterMember {}
+export enum TicketStateMeasure {
+    SurveyScore = 'TicketState.surveyScore',
+    FirstResponseTime = 'TicketState.firstResponseTime',
+    ResolutionTime = 'TicketState.resolutionTime',
+    MessagesAverage = 'TicketState.messagesAverage',
+    TicketCount = 'TicketState.ticketCount',
+}
+
+export enum TicketStateDimension {
+    CreatedDatetime = 'TicketState.createdDatetime',
+    Channel = 'TicketState.channel',
+}
+
+export enum TicketStateSegment {
+    SurveyScored = 'TicketState.surveyScored',
+    ConversationStarted = 'TicketState.conversationStarted',
+    ClosedTickets = 'TicketState.closedTickets',
+    WorkloadTickets = 'TicketState.workloadTickets',
+}
+
+export enum TicketStateMember {
+    PeriodStart = 'TicketState.periodStart',
+    PeriodEnd = 'TicketState.periodEnd',
+    Channel = 'TicketState.channel',
+    Integration = 'TicketState.integration',
+    AssigneeUserId = 'TicketState.assigneeUserId',
+    IsTrashed = 'TicketState.isTrashed',
+    IsSpam = 'TicketState.isSpam',
+    FirstHelpdeskMessageDatetime = 'TicketState.firstHelpdeskMessageDatetime',
+    FirstHelpdeskMessageUserId = 'TicketState.firstHelpdeskMessageUserId',
+}
+
+export enum OpenTicketStateMeasure {
+    TicketCount = 'OpenTicketState.ticketCount',
+}
+
+export enum OpenTicketStateMember {
+    PeriodStart = 'OpenTicketState.periodStart',
+    PeriodEnd = 'OpenTicketState.periodEnd',
+    Channel = 'OpenTicketState.channel',
+    Integration = 'OpenTicketState.integration',
+    AssigneeUserId = 'OpenTicketState.assigneeUserId',
+    IsTrashed = 'OpenTicketState.isTrashed',
+    IsSpam = 'OpenTicketState.isSpam',
+}
+
+export type ReportingMeasure = TicketStateMeasure | OpenTicketStateMeasure
+
+export type ReportingDimension = TicketStateDimension
+
+export type ReportingSegment = TicketStateSegment
+
+export type ReportingFilterMember = TicketStateMember | OpenTicketStateMember
 
 export enum ReportingFilterOperator {
     Equals = 'equals',
@@ -33,23 +85,7 @@ export type ReportingFilter = {
     values?: string[]
 }
 
-export enum ReportingDimension {
-    CreatedDatetime = 'created_datetime',
-}
-
-export enum ReportingMeasure {
-    CustomerSatisfaction = 'ticketStateCube.CustomerSatisfaction',
-    FirstResponseTime = 'ticketStateCube.TicketFirstResponseTime',
-    ResolutionTime = 'ticketStateCube.ResolutionTime',
-    MessagesPerTicket = 'ticketStateCube.MessagesPerTicket',
-    OpenTickets = 'ticketStateCube.OpenTickets',
-    ClosedTickets = 'ticketStateCube.ClosedTickets',
-    TicketsCreated = 'ticketStateCube.TicketsCreated',
-    TicketsReplied = 'ticketStateCube.TicketsReplied',
-    MessagesSent = 'ticketStateCube.MessagesSent',
-}
-
-export enum ReportingTimeDimensionGranularity {
+export enum ReportingGranularity {
     Quarter = 'quarter',
     Day = 'day',
     Month = 'month',
@@ -68,19 +104,22 @@ export type ReportingOrder = [
 
 export type ReportingTimeDimension = {
     dimension: ReportingDimension
-    granularity?: ReportingTimeDimensionGranularity
+    granularity?: ReportingGranularity
     dateRange?: string[]
 }
 
-export type GetReportingParams = {
+export type ReportingQuery = {
+    measures: ReportingMeasure[]
     dimensions: ReportingDimension[]
     filters: ReportingFilter[]
-    limit?: number
-    measures: ReportingMeasure[]
+    segments?: ReportingSegment[]
     order?: ReportingOrder[]
-    timeDimensions: ReportingTimeDimension[]
+    limit?: number
+    timeDimensions?: ReportingTimeDimension[]
     timezone?: string
 }
+
+export type GetReportingParams = ReportingQuery[]
 
 export type GetReportingResponse<TData extends unknown[]> = {
     annotation: {
@@ -89,5 +128,5 @@ export type GetReportingResponse<TData extends unknown[]> = {
         type: string
     }
     data: TData
-    query: string
+    query: ReportingQuery
 }
