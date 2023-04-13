@@ -188,6 +188,12 @@ exports[`<AddTicketField/> should render 1`] = `
             >
               info
             </span>
+            <button
+              class="wrapper import ghost primary small"
+              type="button"
+            >
+              Import from CSV
+            </button>
           </span>
           <div
             class="lastInput"

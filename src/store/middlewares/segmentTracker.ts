@@ -261,6 +261,8 @@ export enum SegmentEvent {
     CustomFieldTicketValueInputFocused = 'custom-fields/ticket/input-focused',
     CustomFieldTicketValueDropdownFocused = 'custom-fields/ticket/dropdown-focused',
     CustomFieldTicketValueRequiredMissingError = 'custom-fields/ticket/value-required-missing-error',
+    CustomFieldTicketDropdownCsvImportSuccessful = 'custom-fields/ticket/dropdown-csv-import-successful',
+    CustomFieldTicketDropdownCsvImportError = 'custom-fields/ticket/dropdown-csv-import-error',
     TicketCloseAction = 'ticket/close-action',
     TicketSendAndCloseButtonClicked = 'ticket/send-and-close-button-clicked',
     GlobalSearchOpenButtonClick = 'search-open-button-click',

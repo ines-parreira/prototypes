@@ -64,7 +64,7 @@ exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
                     class="wrapper fill secondary small"
                     type="button"
                   >
-                    Change File
+                    Replace File
                   </button>
                 </div>
               </div>

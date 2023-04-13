@@ -19,9 +19,9 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
 import ArchiveConfirmationModal from 'pages/settings/ticketFields/components/ArchiveConfirmationModal'
-import Tooltip from 'pages/common/components/Tooltip'
 import DropdownInput from './DropdownInput'
 import TypeSelectInput from './TypeSelectInput'
+
 import css from './FieldForm.less'
 
 interface FieldFormProps {
@@ -196,21 +196,6 @@ export default function FieldForm(props: FieldFormProps) {
             )}
             {form.definition.input_settings.input_type === 'dropdown' && (
                 <div className={css.formRow}>
-                    <span className={css.formLabelWithTooltip}>
-                        <Label htmlFor="settings.choices" isRequired>
-                            Dropdown values
-                        </Label>
-                        <span
-                            id="custom-field-dropdown-tooltip-id"
-                            className="material-icons-outlined ml-2"
-                        >
-                            info
-                        </span>
-                        <Tooltip target="custom-field-dropdown-tooltip-id">
-                            Max 2,000 values and 5 nested children levels
-                            allowed.
-                        </Tooltip>
-                    </span>
                     <DropdownInput
                         value={form.definition.input_settings.choices}
                         onChange={handleChoiceChange}

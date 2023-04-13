@@ -26,7 +26,7 @@ const FileSelectedArea: React.FC<Props> = ({file, onChangeFileClick}) => {
                         size="small"
                         onClick={onChangeFileClick}
                     >
-                        Change File
+                        Replace File
                     </Button>
                 </div>
             </div>

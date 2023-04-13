@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DropdownCSVImportDropZone/> should render with a file 1`] = `
+<div>
+  <input
+    accept=".csv"
+    style="display: none;"
+    type="file"
+  />
+  <div>
+    <div
+      class="fileSelectedArea"
+    >
+      <div>
+        <i
+          class="material-icons mr-2"
+        >
+          insert_drive_file
+        </i>
+        file.csv
+      </div>
+      <div>
+        <button
+          class="wrapper fill secondary small"
+          type="button"
+        >
+          Replace File
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<DropdownCSVImportDropZone/> should render without file 1`] = `
+<div>
+  <input
+    accept=".csv"
+    style="display: none;"
+    type="file"
+  />
+  <div
+    class="fileDropArea"
+  >
+    <i
+      class="material-icons modalCloudIcon"
+    >
+      cloud_upload
+    </i>
+    <b
+      class="dropAreaText"
+    >
+      Drop your CSV here, or
+       
+      <a
+        href=""
+      >
+        browse
+      </a>
+    </b>
+  </div>
+</div>
+`;

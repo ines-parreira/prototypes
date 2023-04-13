@@ -1,8 +1,10 @@
 import React from 'react'
-import {render, fireEvent} from '@testing-library/react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
+import {fireEvent} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import uniqueId from 'lodash/uniqueId'
+import {renderWithDnD} from 'utils/testing'
 
 import DropdownInput from '../DropdownInput'
 
@@ -10,6 +12,8 @@ let idCount = 1
 jest.mock('lodash/uniqueId')
 const uniqueIdMock = uniqueId as jest.Mock
 uniqueIdMock.mockImplementation((id: string) => `${id || ''}${idCount++}`)
+
+const mockStore = configureMockStore([thunk])()
 
 describe('<DropdownInput/>', () => {
     beforeEach(() => {
@@ -22,10 +26,10 @@ describe('<DropdownInput/>', () => {
             onChange: jest.fn(),
         }
 
-        const {container} = render(
-            <DndProvider backend={HTML5Backend}>
+        const {container} = renderWithDnD(
+            <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </DndProvider>
+            </Provider>
         )
         expect(container).toMatchSnapshot()
     })
@@ -36,10 +40,10 @@ describe('<DropdownInput/>', () => {
             onChange: jest.fn(),
         }
 
-        const {container} = render(
-            <DndProvider backend={HTML5Backend}>
+        const {container} = renderWithDnD(
+            <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </DndProvider>
+            </Provider>
         )
         expect(container).toMatchSnapshot()
     })
@@ -50,10 +54,10 @@ describe('<DropdownInput/>', () => {
             onChange: jest.fn(),
         }
 
-        const {findByTestId} = render(
-            <DndProvider backend={HTML5Backend}>
+        const {findByTestId} = renderWithDnD(
+            <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </DndProvider>
+            </Provider>
         )
 
         const input = await findByTestId('dropdown-choice-2')
@@ -72,10 +76,10 @@ describe('<DropdownInput/>', () => {
             onChange: jest.fn(),
         }
 
-        const {findByTestId} = render(
-            <DndProvider backend={HTML5Backend}>
+        const {findByTestId} = renderWithDnD(
+            <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </DndProvider>
+            </Provider>
         )
 
         const button = await findByTestId('dropdown-choice-2-remove')
@@ -90,10 +94,10 @@ describe('<DropdownInput/>', () => {
             onChange: jest.fn(),
         }
 
-        const {findByTestId} = render(
-            <DndProvider backend={HTML5Backend}>
+        const {findByTestId} = renderWithDnD(
+            <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </DndProvider>
+            </Provider>
         )
 
         const input = await findByTestId('dropdown-choice-4')
@@ -113,10 +117,10 @@ describe('<DropdownInput/>', () => {
             onChange: jest.fn(),
         }
 
-        const {findByTestId} = render(
-            <DndProvider backend={HTML5Backend}>
+        const {findByTestId} = renderWithDnD(
+            <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </DndProvider>
+            </Provider>
         )
 
         const from = await findByTestId('dropdown-choice-3-handle')

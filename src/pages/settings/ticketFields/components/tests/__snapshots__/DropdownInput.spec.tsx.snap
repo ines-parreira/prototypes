@@ -2,6 +2,35 @@
 
 exports[`<DropdownInput/> should render correctly 1`] = `
 <div>
+  <span
+    class="formLabelWithTooltip"
+  >
+    <label
+      class="label"
+      for="settings.choices"
+    >
+      Dropdown values
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <span
+      class="material-icons-outlined ml-2"
+      id="custom-field-dropdown-tooltip-id"
+    >
+      info
+    </span>
+    <button
+      class="wrapper import ghost primary small"
+      type="button"
+    >
+      Import from CSV
+    </button>
+  </span>
   <div
     class="input"
     data-handler-id="T0"
@@ -173,6 +202,35 @@ exports[`<DropdownInput/> should render correctly 1`] = `
 
 exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
 <div>
+  <span
+    class="formLabelWithTooltip"
+  >
+    <label
+      class="label"
+      for="settings.choices"
+    >
+      Dropdown values
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <span
+      class="material-icons-outlined ml-2"
+      id="custom-field-dropdown-tooltip-id"
+    >
+      info
+    </span>
+    <button
+      class="wrapper import ghost primary small"
+      type="button"
+    >
+      Import from CSV
+    </button>
+  </span>
   <div
     class="input"
     data-handler-id="T8"

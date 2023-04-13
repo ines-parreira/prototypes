@@ -12,6 +12,7 @@ export type ConfirmationModalProps = {
     className?: string
     cancelText?: React.ReactNode
     confirmIntent?: ComponentProps<typeof Button>['intent']
+    confirmIsLoading?: boolean
     confirmText: React.ReactNode
     isOpen: boolean
     style?: React.CSSProperties
@@ -25,6 +26,7 @@ export const ConfirmationModal = ({
     className,
     cancelText = 'Cancel',
     confirmIntent = 'destructive',
+    confirmIsLoading,
     confirmText,
     isOpen,
     style,
@@ -47,6 +49,7 @@ export const ConfirmationModal = ({
                     <Button
                         className={classNames('ml-3', css.confirmBtn)}
                         intent={confirmIntent}
+                        isLoading={confirmIsLoading}
                         onClick={onConfirm}
                     >
                         {confirmText}

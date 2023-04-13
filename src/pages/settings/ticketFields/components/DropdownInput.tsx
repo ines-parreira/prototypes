@@ -3,6 +3,10 @@ import uniqueId from 'lodash/uniqueId'
 
 import Caption from 'pages/common/forms/Caption/Caption'
 import {DROPDOWN_NESTING_DELIMITER} from 'models/customField/constants'
+import Button from 'pages/common/components/button/Button'
+import Tooltip from 'pages/common/components/Tooltip'
+import Label from 'pages/common/forms/Label/Label'
+import DropdownCSVImport from './DropdownCSVImport'
 import DropdownInputRow from './DropdownInputRow'
 
 import css from './DropdownInput.less'
@@ -43,6 +47,8 @@ function validate(
 }
 
 export function DropdownInput({value, onChange}: DropdownInputProps) {
+    const [isImportOpen, setImportOpen] = useState(false)
+
     // Generate an internal ID for all values to handle drag and drop
     const [values, setValues] = useState<InternalValue[]>(
         value.concat(['']).map((val: string, index: number) => ({
@@ -126,6 +132,31 @@ export function DropdownInput({value, onChange}: DropdownInputProps) {
 
     return (
         <>
+            <span className={css.formLabelWithTooltip}>
+                <Label htmlFor="settings.choices" isRequired>
+                    Dropdown values
+                </Label>
+
+                <span
+                    id="custom-field-dropdown-tooltip-id"
+                    className="material-icons-outlined ml-2"
+                >
+                    info
+                </span>
+                <Tooltip target="custom-field-dropdown-tooltip-id">
+                    Max 2,000 values and 5 nested children levels allowed.
+                </Tooltip>
+
+                <Button
+                    onClick={() => setImportOpen(true)}
+                    fillStyle="ghost"
+                    size="small"
+                    className={css.import}
+                >
+                    Import from CSV
+                </Button>
+            </span>
+
             {values.map((value, index: number) => (
                 <DropdownInputRow
                     key={value.id}
@@ -151,6 +182,20 @@ export function DropdownInput({value, onChange}: DropdownInputProps) {
                     See examples
                 </a>
             </Caption>
+
+            <DropdownCSVImport
+                isOpen={isImportOpen}
+                onImport={(values) => {
+                    customSetValues(() => {
+                        return values.map((value: string) => ({
+                            value,
+                            id: uniqueId('dropdown-choice-'),
+                        }))
+                    })
+                }}
+                onClose={() => setImportOpen(false)}
+                needsConfirmation={values.length > 1}
+            />
         </>
     )
 }

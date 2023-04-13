@@ -1,4 +1,4 @@
-import {getFileTooLargeError} from '../file'
+import {getFileTooLargeError, getText} from '../file'
 
 describe('file util', () => {
     it('should get error for file too large in MB', () => {
@@ -12,5 +12,13 @@ describe('file util', () => {
             '' +
                 'Failed to upload files. Attached files must be smaller than 500kB.'
         )
+    })
+
+    describe('getText', () => {
+        it('should read the file as text', async () => {
+            const contents = 'Line 1\nLine 2'
+            const file = new File([contents], 'file.csv', {type: 'text/csv'})
+            expect(await getText(file)).toEqual(contents)
+        })
     })
 })
