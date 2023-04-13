@@ -6,15 +6,6 @@ export const LITE_AGENT_ROLE = UserRole.LiteAgent
 export const BASIC_AGENT_ROLE = UserRole.BasicAgent
 export const AGENT_ROLE = UserRole.Agent
 export const ADMIN_ROLE = UserRole.Admin
-export const MAPPED_USER_ROLE = Object.freeze({
-    [UserRole.ObserverAgent]: UserRole.ObserverAgent,
-    [UserRole.LiteAgent]: UserRole.LiteAgent,
-    [UserRole.BasicAgent]: UserRole.BasicAgent,
-    [UserRole.Agent]: UserRole.Agent,
-    [UserRole.Admin]: UserRole.Admin,
-})
-
-export const USER_ROLE = 'user'
 
 export const USER_ROLES_ORDERED_BY_PRIVILEGES = Object.freeze([
     UserRole.ObserverAgent,

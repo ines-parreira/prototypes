@@ -1,5 +1,4 @@
 import {TicketChannel} from 'business/types/ticket'
-import {USER_ROLE} from 'config/user'
 import {IntegrationType} from 'models/integration/types'
 import {Customer} from 'models/customer/types'
 import {
@@ -39,12 +38,6 @@ export const customer: Customer = {
     id: 34,
     firstname: 'Jean',
     email: 'jeanbon@gorgias.io',
-    roles: [
-        {
-            name: USER_ROLE,
-            id: 1,
-        },
-    ],
     customer: null,
     integrations: {
         '2': {

@@ -150,7 +150,7 @@ export const initialState: GorgiasInitialState = {
                     ViewField.Created,
                     ViewField.Updated,
                 ],
-                filters: 'eq(user.roles.name, "user")',
+                filters: '',
                 filters_ast: {},
                 group_by: null,
                 id: 9,
