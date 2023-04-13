@@ -1,7 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import useAsyncFn from 'react-use/lib/useAsyncFn'
 
-import DashboardSection from 'pages/stats/DashboardSection'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 
 import {getCampaignsPerformance} from '../../services/CampaignPerformanceService'
@@ -86,17 +85,15 @@ export const CampaignPerformanceTable = () => {
     useEffect(() => void fetchMetrics(), [fetchMetrics])
 
     return (
-        <DashboardSection title="">
-            <DashboardGridCell size={12}>
-                <CampaignTableStats
-                    chatIntegrationId={chatIntegration?.id}
-                    isLoading={loading}
-                    rows={rows}
-                    offset={offset}
-                    onClickNextPage={handleClickNextPage}
-                    onClickPrevPage={handleClickPrevPage}
-                />
-            </DashboardGridCell>
-        </DashboardSection>
+        <DashboardGridCell size={12}>
+            <CampaignTableStats
+                chatIntegrationId={chatIntegration?.id}
+                isLoading={loading}
+                rows={rows}
+                offset={offset}
+                onClickNextPage={handleClickNextPage}
+                onClickPrevPage={handleClickPrevPage}
+            />
+        </DashboardGridCell>
     )
 }

@@ -1,5 +1,7 @@
 import React from 'react'
 
+import DashboardSection from 'pages/stats/DashboardSection'
+
 import {CampaignTotalsStat} from 'pages/stats/revenue/components/CampaignTotalsStat'
 import {CampaignRevenueUpliftStat} from 'pages/stats/revenue/components/CampaignRevenueUpliftStat'
 import {CampaignChatPerformanceStat} from 'pages/stats/revenue/components/CampaignChatPerformanceStat'
@@ -14,7 +16,7 @@ export const RevenueStatsContent = () => {
     const graphsVisible = false
 
     return (
-        <div>
+        <DashboardSection title="">
             <CampaignTotalsStat onError={handleError} />
             {graphsVisible && (
                 <CampaignRevenueUpliftStat onError={handleError} />
@@ -23,6 +25,6 @@ export const RevenueStatsContent = () => {
                 <CampaignChatPerformanceStat onError={handleError} />
             )}
             <CampaignPerformanceTable />
-        </div>
+        </DashboardSection>
     )
 }

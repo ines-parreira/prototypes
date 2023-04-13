@@ -6,7 +6,6 @@ import {getRevenueUpliftOverTime} from 'pages/stats/revenue/services/CampaignPer
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/LineChart'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import DashboardSection from 'pages/stats/DashboardSection'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/revenue/hooks/useGetNamespacedShopNameForStore'
 
@@ -45,23 +44,21 @@ export const CampaignRevenueUpliftStat = ({onError}: Props) => {
     useEffect(() => void fetchTotals(), [fetchTotals])
 
     return (
-        <DashboardSection title="">
-            <DashboardGridCell size={12}>
-                {!loading && !error && (
-                    <ChartCard title={title} hint={hint}>
-                        <LineChart
-                            data={[
-                                {
-                                    label: 'Revenue uplift',
-                                    values: graphData,
-                                },
-                            ]}
-                            hasBackground={true}
-                        />
-                    </ChartCard>
-                )}
-                {(loading || error) && <Skeleton height={300} />}
-            </DashboardGridCell>
-        </DashboardSection>
+        <DashboardGridCell size={12}>
+            {!loading && !error && (
+                <ChartCard title={title} hint={hint}>
+                    <LineChart
+                        data={[
+                            {
+                                label: 'Revenue uplift',
+                                values: graphData,
+                            },
+                        ]}
+                        hasBackground={true}
+                    />
+                </ChartCard>
+            )}
+            {(loading || error) && <Skeleton height={300} />}
+        </DashboardGridCell>
     )
 }

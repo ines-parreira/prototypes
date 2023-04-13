@@ -6,7 +6,6 @@ import {getCampaignsAndChatPerformanceOverTime} from 'pages/stats/revenue/servic
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/LineChart'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import DashboardSection from 'pages/stats/DashboardSection'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/revenue/hooks/useGetNamespacedShopNameForStore'
 import {useGetFirstValidIntegration} from 'pages/stats/revenue/hooks/useGetFirstValidIntegration'
@@ -78,19 +77,17 @@ export const CampaignChatPerformanceStat = ({onError}: Props) => {
     useEffect(() => void fetchTotals(), [fetchTotals])
 
     return (
-        <DashboardSection title="">
-            <DashboardGridCell size={12}>
-                {!loading && !error && (
-                    <ChartCard title={title} hint={hint}>
-                        <LineChart
-                            data={data}
-                            hasBackground={false}
-                            displayLegend
-                        />
-                    </ChartCard>
-                )}
-                {(loading || error) && <Skeleton height={300} />}
-            </DashboardGridCell>
-        </DashboardSection>
+        <DashboardGridCell size={12}>
+            {!loading && !error && (
+                <ChartCard title={title} hint={hint}>
+                    <LineChart
+                        data={data}
+                        hasBackground={false}
+                        displayLegend
+                    />
+                </ChartCard>
+            )}
+            {(loading || error) && <Skeleton height={300} />}
+        </DashboardGridCell>
     )
 }

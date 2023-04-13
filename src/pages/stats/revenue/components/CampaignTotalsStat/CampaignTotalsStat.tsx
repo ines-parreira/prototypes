@@ -5,7 +5,6 @@ import {CampaignsTotals} from 'pages/stats/revenue/services/types'
 import {getTotals} from 'pages/stats/revenue/services/CampaignPerformanceService'
 import {useGetCurrencyForStore} from 'pages/stats/revenue/hooks/useGetCurrencyForStore'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/revenue/hooks/useGetNamespacedShopNameForStore'
-import DashboardSection from 'pages/stats/DashboardSection'
 import MetricCard from 'pages/stats/MetricCard'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
@@ -90,7 +89,7 @@ export const CampaignTotalsStat = ({onError}: Props) => {
     }, [loading, error, totals])
 
     return (
-        <DashboardSection title="">
+        <React.Fragment>
             <DashboardGridCell size={GRID_SIZE}>
                 {statsVisible && (
                     <MetricCard
@@ -161,6 +160,6 @@ export const CampaignTotalsStat = ({onError}: Props) => {
                 )}
                 {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
             </DashboardGridCell>
-        </DashboardSection>
+        </React.Fragment>
     )
 }
