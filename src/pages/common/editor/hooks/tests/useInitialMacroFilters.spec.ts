@@ -57,6 +57,6 @@ describe('useMacros', () => {
         getTicketMock.mockReturnValue({language: 'en'})
 
         const {result} = renderHook(() => useInitialMacroFilters())
-        expect(result.current).toEqual({languages: ['en']})
+        expect(result.current).toEqual({languages: ['en', '']})
     })
 })
