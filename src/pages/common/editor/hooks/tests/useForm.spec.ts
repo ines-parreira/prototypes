@@ -12,6 +12,8 @@ describe('useForm', () => {
     let submit: jest.Mock
 
     beforeEach(() => {
+        jest.resetAllMocks()
+
         checkValidity = jest.fn(() => false)
         form = {checkValidity} as unknown as HTMLFormElement
         event = {
@@ -65,7 +67,9 @@ describe('useForm', () => {
 
         checkValidity.mockReturnValue(true)
         result.current.formRef.current = form
-        result.current.onSubmit(event)
+        act(() => {
+            result.current.onSubmit(event)
+        })
 
         expect(submit).toHaveBeenCalledWith({status: TicketStatus.Open})
     })
@@ -79,8 +83,30 @@ describe('useForm', () => {
 
         checkValidity.mockReturnValue(true)
         result.current.formRef.current = form
-        result.current.onSubmit(event)
+        act(() => {
+            result.current.onSubmit(event)
+        })
 
         expect(submit).toHaveBeenCalledWith({status: TicketStatus.Closed})
+    })
+
+    it('should reset the ticket status', () => {
+        const {result} = renderHook(() => useForm(submit))
+
+        act(() => {
+            result.current.setTicketStatus(TicketStatus.Closed)
+        })
+
+        checkValidity.mockReturnValue(true)
+        result.current.formRef.current = form
+        act(() => {
+            result.current.onSubmit(event)
+        })
+        expect(submit).toHaveBeenCalledWith({status: TicketStatus.Closed})
+
+        act(() => {
+            result.current.onSubmit(event)
+        })
+        expect(submit).toHaveBeenCalledWith({status: TicketStatus.Open})
     })
 })

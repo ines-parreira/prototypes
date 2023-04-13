@@ -24,6 +24,8 @@ export default function useForm(submit: (args: SubmitArgs) => any) {
             if (form.checkValidity()) {
                 submit({status: ticketStatus})
             }
+
+            setTicketStatus(TicketStatus.Open)
         },
         [ticketStatus, submit]
     )
