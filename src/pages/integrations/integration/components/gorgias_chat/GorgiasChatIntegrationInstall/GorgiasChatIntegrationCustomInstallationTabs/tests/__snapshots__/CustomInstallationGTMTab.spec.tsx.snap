@@ -106,5 +106,10 @@ exports[`<CustomInstallationGTMTab/> should display the custom installation "GTM
       Save and publish.
     </div>
   </div>
+  <Alert
+    type="warning"
+  >
+    Please note that if you install chat through Google Tag Managers, customers using ad-blockers might not be able to see your chat widget.
+  </Alert>
 </div>
 `;

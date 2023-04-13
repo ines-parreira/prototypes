@@ -1,5 +1,7 @@
 import React from 'react'
 
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+
 import InstallationStep from './components/InstallationStep'
 import InstallationTab from './components/InstallationTab'
 
@@ -32,6 +34,11 @@ const ManualInstallationGTMTab = ({applicationId}: Props) => {
                 section
             </InstallationStep>
             <InstallationStep index={6}>Save and publish</InstallationStep>
+            <Alert type={AlertType.Warning}>
+                Please note that if you install chat through Google Tag
+                Managers, customers using ad-blockers might not be able to see
+                your chat widget.
+            </Alert>
         </InstallationTab>
     )
 }

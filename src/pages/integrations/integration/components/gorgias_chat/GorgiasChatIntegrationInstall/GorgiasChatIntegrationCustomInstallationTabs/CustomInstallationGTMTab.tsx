@@ -1,5 +1,7 @@
 import React from 'react'
 
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+
 import css from './CustomInstallationTabs.less'
 
 type Props = {
@@ -58,6 +60,11 @@ export function CustomInstallationGTMTab({code}: Props) {
                 </div>
                 <div className={css['instruction-text']}>Save and publish.</div>
             </div>
+            <Alert type={AlertType.Warning}>
+                Please note that if you install chat through Google Tag
+                Managers, customers using ad-blockers might not be able to see
+                your chat widget.
+            </Alert>
         </div>
     )
 }

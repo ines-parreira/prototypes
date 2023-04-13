@@ -676,6 +676,19 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                         Save and publish.
                       </div>
                     </div>
+                    <div
+                      class="alert warning"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <span
+                          class="label"
+                        >
+                          Please note that if you install chat through Google Tag Managers, customers using ad-blockers might not be able to see your chat widget.
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1059,6 +1072,19 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                         class="instruction-text"
                       >
                         Save and publish.
+                      </div>
+                    </div>
+                    <div
+                      class="alert warning"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <span
+                          class="label"
+                        >
+                          Please note that if you install chat through Google Tag Managers, customers using ad-blockers might not be able to see your chat widget.
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -1620,6 +1646,19 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                         class="instruction-text"
                       >
                         Save and publish.
+                      </div>
+                    </div>
+                    <div
+                      class="alert warning"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <span
+                          class="label"
+                        >
+                          Please note that if you install chat through Google Tag Managers, customers using ad-blockers might not be able to see your chat widget.
+                        </span>
                       </div>
                     </div>
                   </div>
