@@ -2,6 +2,8 @@ import {
     basicMonthlyHelpdeskPrice,
     basicMonthlyAutomationPrice,
     smsProduct,
+    starterHelpdeskPrice,
+    basicYearlyHelpdeskPrice,
 } from 'fixtures/productPrices'
 
 import {
@@ -10,6 +12,7 @@ import {
     getFullPrice,
     isAutomationPrice,
     isHelpdeskPrice,
+    isStarterTierPrice,
 } from '../utils'
 
 describe('getFullPrice', () => {
@@ -50,6 +53,19 @@ describe('isAutomationPrice', () => {
         'should validate if the price is of automation price',
         (price, expectedResult) => {
             expect(isAutomationPrice(price)).toBe(expectedResult)
+        }
+    )
+})
+
+describe('isStarterTierPrice', () => {
+    it.each([
+        [basicMonthlyHelpdeskPrice, false],
+        [basicYearlyHelpdeskPrice, false],
+        [starterHelpdeskPrice, true],
+    ])(
+        'should validate if the price is of Starter tier',
+        (price, expectedResult) => {
+            expect(isStarterTierPrice(price)).toBe(expectedResult)
         }
     )
 })

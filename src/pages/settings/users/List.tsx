@@ -26,7 +26,9 @@ import {getAccessSettings} from 'state/currentAccount/selectors'
 import {AccountSettingAccessSignupMode as SignupMode} from 'state/currentAccount/types'
 import {toImmutable} from 'utils'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 
+import {isStarterTierPrice} from 'models/billing/utils'
 import Row from './Row'
 import css from './List.less'
 import cssRow from './Row.less'
@@ -93,6 +95,9 @@ const UserList = () => {
         meta,
     ])
 
+    const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
+    const isStarterPlan = isStarterTierPrice(helpdeskPrice)
+
     return (
         <div className={classnames('full-width', css.component)}>
             <PageHeader title="Users">
@@ -106,10 +111,17 @@ const UserList = () => {
                     Manage users for your Gorgias account. Users (Ex: Agents,
                     Admins, etc..) can view tickets and respond to them.
                 </p>
-                <p>
-                    You can <strong>add as many users as you want</strong>, at
-                    no additional cost.
-                </p>
+                {isStarterPlan ? (
+                    <p>
+                        You can <strong>add up to 3 users</strong> at no
+                        additional cost.
+                    </p>
+                ) : (
+                    <p>
+                        You can <strong>add as many users as you want</strong>,
+                        at no additional cost.
+                    </p>
+                )}
                 {accessSettings.getIn(['data', 'signup_mode']) ===
                     SignupMode.Invite && (
                     <LinkAlert
@@ -165,7 +177,6 @@ const UserList = () => {
                         })
                     )}
                 </div>
-
                 <Navigation
                     className={css.navigation}
                     hasNextItems={!!meta?.next_cursor}

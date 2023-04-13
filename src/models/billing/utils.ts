@@ -37,6 +37,12 @@ export function isAutomationPrice(
     return 'automation_addon_discount' in price
 }
 
+export function isStarterTierPrice(
+    price: HelpdeskPrice | undefined
+): price is HelpdeskPrice {
+    return !!price?.internal_id.startsWith('starter-')
+}
+
 export function getFormattedAmount(amountInCents: number) {
     return amountInCents / 100
 }
