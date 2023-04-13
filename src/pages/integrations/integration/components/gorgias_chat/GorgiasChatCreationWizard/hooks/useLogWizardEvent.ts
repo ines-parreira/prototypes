@@ -25,7 +25,8 @@ const useLogWizardEvent = () => {
         (event: SegmentEvent, data?: Record<string, any>) => {
             const integration =
                 integrations.find(
-                    (integration) => integration?.get('id') === integrationId
+                    (integration) =>
+                        integration?.get('id') === Number(integrationId)
                 ) || fromJS({})
 
             logEvent(event, {

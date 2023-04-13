@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {Map} from 'immutable'
 import {Link, Redirect} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
@@ -36,6 +36,12 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
     loading,
     isUpdate,
 }) => {
+    const integrationId = integration.get('id')
+
+    const [hasIntegrationLoaded, setHasIntegrationLoaded] = useState(
+        !isUpdate || integrationId
+    )
+
     const isAutomationSettingsRevampEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
 
@@ -45,6 +51,12 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
         ['meta', 'wizard', 'step'],
         GorgiasChatCreationWizardSteps.Basics
     )
+
+    useEffect(() => {
+        if (!isUpdate || integrationId) {
+            setHasIntegrationLoaded(true)
+        }
+    }, [isUpdate, integrationId])
 
     const name = integration.get('name')
 
@@ -78,32 +90,37 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
                     }
                 />
                 <div className={css.wrapper}>
-                    <Wizard steps={steps} startAt={initialStep}>
-                        <WizardStep
-                            name={GorgiasChatCreationWizardSteps.Basics}
-                        >
-                            <GorgiasChatCreationWizardStepBasics
-                                isUpdate={isUpdate}
-                                isSubmitting={isSubmitting}
-                                integration={integration}
-                            />
-                        </WizardStep>
-                        <WizardStep
-                            name={GorgiasChatCreationWizardSteps.Branding}
-                        >
-                            <GorgiasChatCreationWizardStepBranding
-                                isSubmitting={isSubmitting}
-                                integration={integration}
-                            />
-                        </WizardStep>
-                        <WizardStep
-                            name={GorgiasChatCreationWizardSteps.Installation}
-                        >
-                            <GorgiasChatCreationWizardStepInstallation
-                                integration={integration}
-                            />
-                        </WizardStep>
-                    </Wizard>
+                    {hasIntegrationLoaded && (
+                        <Wizard steps={steps} startAt={initialStep}>
+                            <WizardStep
+                                name={GorgiasChatCreationWizardSteps.Basics}
+                            >
+                                <GorgiasChatCreationWizardStepBasics
+                                    isUpdate={isUpdate}
+                                    isSubmitting={isSubmitting}
+                                    integration={integration}
+                                />
+                            </WizardStep>
+                            <WizardStep
+                                name={GorgiasChatCreationWizardSteps.Branding}
+                            >
+                                <GorgiasChatCreationWizardStepBranding
+                                    isSubmitting={isSubmitting}
+                                    integration={integration}
+                                />
+                            </WizardStep>
+                            <WizardStep
+                                name={
+                                    GorgiasChatCreationWizardSteps.Installation
+                                }
+                            >
+                                <GorgiasChatCreationWizardStepInstallation
+                                    isSubmitting={isSubmitting}
+                                    integration={integration}
+                                />
+                            </WizardStep>
+                        </Wizard>
+                    )}
                 </div>
             </div>
         </>

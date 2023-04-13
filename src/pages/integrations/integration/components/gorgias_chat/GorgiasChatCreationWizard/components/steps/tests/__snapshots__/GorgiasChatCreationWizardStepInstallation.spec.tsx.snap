@@ -8,18 +8,20 @@ exports[`<GorgiasChatCreationWizardStepInstallation /> submits form when using 1
       "type": undefined,
       "meta": Immutable.Map {
         "shop_integration_id": 1,
+        "wizard": Immutable.Map {
+          "status": "published",
+          "installation_method": "1-click",
+        },
         "shopify_integration_ids": Immutable.List [
           1,
         ],
-        "wizard": Immutable.Map {
-          "status": "published",
-        },
       },
     },
     undefined,
     true,
     [Function],
     true,
+    "Changes saved",
   ],
 ]
 `;

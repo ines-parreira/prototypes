@@ -146,3 +146,8 @@ export enum GorgiasChatCreationWizardSteps {
     Branding = 'branding',
     Installation = 'installation',
 }
+
+export enum GorgiasChatCreationWizardInstallationMethod {
+    Manual = 'manual',
+    OneClick = '1-click',
+}

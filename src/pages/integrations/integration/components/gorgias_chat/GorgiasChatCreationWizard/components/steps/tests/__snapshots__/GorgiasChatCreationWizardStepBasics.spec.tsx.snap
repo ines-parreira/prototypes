@@ -15,6 +15,7 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form when updating chat
         "language": "en-US",
         "wizard": Immutable.Map {
           "step": "branding",
+          "installation_method": "manual",
         },
         "shop_name": null,
         "shop_type": null,
@@ -69,6 +70,7 @@ exports[`<GorgiasChatCreationWizardStepBasics /> submits form with default value
         "wizard": Immutable.Map {
           "status": "draft",
           "step": "branding",
+          "installation_method": "manual",
         },
         "shop_name": null,
         "shop_type": null,

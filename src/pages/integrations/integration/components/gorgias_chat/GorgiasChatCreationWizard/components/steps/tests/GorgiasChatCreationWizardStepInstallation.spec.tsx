@@ -46,6 +46,7 @@ const minProps: React.ComponentProps<
     typeof GorgiasChatCreationWizardStepInstallation
 > = {
     integration,
+    isSubmitting: false,
 }
 
 describe('<GorgiasChatCreationWizardStepInstallation />', () => {

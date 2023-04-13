@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import {useAsyncFn} from 'react-use'
 import {Map, fromJS} from 'immutable'
 import classnames from 'classnames'
 
@@ -13,12 +12,14 @@ import useAppSelector from 'hooks/useAppSelector'
 import {
     GorgiasChatCreationWizardStatus,
     GorgiasChatCreationWizardSteps,
+    GorgiasChatCreationWizardInstallationMethod,
     IntegrationType,
 } from 'models/integration/types'
 import {getStoreIntegrations} from 'state/integrations/selectors'
 
 import {Tab} from 'pages/integrations/integration/Integration'
 import Button from 'pages/common/components/button/Button'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import {
@@ -37,16 +38,20 @@ import css from './GorgiasChatCreationWizardStepInstallation.less'
 
 type Props = {
     integration: Map<any, any>
+    isSubmitting: boolean
 }
 
 const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
     integration,
+    isSubmitting,
 }) => {
     const logWizardEvent = useLogWizardEvent()
 
     const dispatch = useAppDispatch()
 
     const {goToPreviousStep} = useNavigateWizardSteps()
+
+    const [hasSubmitted, setHasSubmitted] = useState(false)
 
     const storeIntegrations = useAppSelector(getStoreIntegrations)
 
@@ -59,53 +64,67 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
     const isOneClickInstallationAllowed =
         storeIntegration?.type === IntegrationType.Shopify
 
-    const [currentIsOneClickInstallation, setIsOneClickInstallation] =
-        useState<boolean>(isOneClickInstallationAllowed)
+    const [currentInstallationMethod, setCurrentInstallationMethod] =
+        useState<GorgiasChatCreationWizardInstallationMethod>()
 
-    const isOneClickInstallation = isOneClickInstallationAllowed
-        ? currentIsOneClickInstallation
-        : false
+    const installationMethod = isOneClickInstallationAllowed
+        ? currentInstallationMethod ??
+          integration.getIn(
+              ['meta', 'wizard', 'installation_method'],
+              GorgiasChatCreationWizardInstallationMethod.OneClick
+          )
+        : GorgiasChatCreationWizardInstallationMethod.Manual
 
-    const [{loading: isInstallPending}, handleInstall] =
-        useAsyncFn(async () => {
-            const id: number = integration.get('id')
-            let meta = integration.get('meta') as Map<any, any>
+    const isOneClickInstallation =
+        installationMethod ===
+        GorgiasChatCreationWizardInstallationMethod.OneClick
 
-            const shopIntegrationId = integration.getIn([
-                'meta',
-                'shop_integration_id',
-            ])
+    const onSave = async (shouldPublish = false, isContinueLater = false) => {
+        const id: number = integration.get('id')
+        let meta = integration.get('meta') as Map<any, any>
+
+        if (shouldPublish) {
+            meta = meta.setIn(
+                ['wizard', 'status'],
+                GorgiasChatCreationWizardStatus.Published
+            )
 
             if (isOneClickInstallation) {
+                const shopIntegrationId = integration.getIn([
+                    'meta',
+                    'shop_integration_id',
+                ])
+
                 meta = meta.set('shopify_integration_ids', [shopIntegrationId])
             }
+        }
 
-            const form = {
-                id,
-                type: integration.get('type'),
-                meta: meta
-                    .setIn(
-                        ['wizard', 'status'],
-                        GorgiasChatCreationWizardStatus.Published
+        meta = meta.setIn(['wizard', 'installation_method'], installationMethod)
+
+        const form = {
+            id,
+            type: integration.get('type'),
+            meta: meta.toJS(),
+        }
+
+        return dispatch(
+            updateOrCreateIntegration(
+                fromJS(form),
+                undefined,
+                true,
+                () => {
+                    logWizardEvent(
+                        isContinueLater
+                            ? SegmentEvent.ChatWidgetWizardSaveLaterClicked
+                            : SegmentEvent.ChatWidgetWizardStepCompleted,
+                        {
+                            installation_method: installationMethod,
+                        }
                     )
-                    .toJS(),
-            }
 
-            await dispatch(
-                updateOrCreateIntegration(
-                    fromJS(form),
-                    undefined,
-                    true,
-                    () => {
-                        logWizardEvent(
-                            SegmentEvent.ChatWidgetWizardStepCompleted,
-                            {
-                                installation_method: isOneClickInstallation
-                                    ? '1-click'
-                                    : 'manual',
-                            }
-                        )
+                    setHasSubmitted(true)
 
+                    if (shouldPublish) {
                         const redirectUrl = `/app/settings/channels/gorgias_chat/${id}/${
                             isOneClickInstallation
                                 ? Tab.Preferences
@@ -119,103 +138,121 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                             }
 
                         history.push(redirectUrl, locationState)
-                    },
-                    true
-                )
+                    }
+                },
+                shouldPublish,
+                'Changes saved'
             )
-        }, [integration, isOneClickInstallation])
-
-    const onLeave = () => {
-        logWizardEvent(SegmentEvent.ChatWidgetWizardSaveLaterClicked, {
-            installation_method: isOneClickInstallation ? '1-click' : 'manual',
-        })
-
-        history.push('/app/settings/channels/gorgias_chat')
+        )
     }
 
     return (
-        <GorgiasChatCreationWizardStep
-            step={GorgiasChatCreationWizardSteps.Installation}
-            preview={
-                <GorgiasChatCreationWizardPreview integration={integration} />
-            }
-            footer={
+        <>
+            <UnsavedChangesPrompt
+                onSave={() => onSave()}
+                when={!!currentInstallationMethod && !hasSubmitted}
+                shouldRedirectAfterSave
+            />
+            <GorgiasChatCreationWizardStep
+                step={GorgiasChatCreationWizardSteps.Installation}
+                preview={
+                    <GorgiasChatCreationWizardPreview
+                        integration={integration}
+                    />
+                }
+                footer={
+                    <>
+                        <Button
+                            fillStyle="ghost"
+                            onClick={() =>
+                                onSave(false, true)?.then(() => {
+                                    history.push(
+                                        '/app/settings/channels/gorgias_chat'
+                                    )
+                                })
+                            }
+                            isDisabled={isSubmitting}
+                        >
+                            Save &amp; Install Later
+                        </Button>
+                        <div className={css.wizardButtons}>
+                            <Button
+                                intent="secondary"
+                                onClick={goToPreviousStep}
+                                isDisabled={isSubmitting}
+                            >
+                                Back
+                            </Button>
+                            <Button
+                                onClick={() => onSave(true)}
+                                isLoading={isSubmitting}
+                            >
+                                Install{' '}
+                                {isOneClickInstallation ? 'Chat' : 'Manually'}
+                            </Button>
+                        </div>
+                    </>
+                }
+            >
                 <>
-                    <Button
-                        fillStyle="ghost"
-                        onClick={onLeave}
-                        isDisabled={isInstallPending}
-                    >
-                        Save &amp; Install Later
-                    </Button>
-                    <div className={css.wizardButtons}>
-                        <Button
-                            intent="secondary"
-                            onClick={goToPreviousStep}
-                            isDisabled={isInstallPending}
-                        >
-                            Back
-                        </Button>
-                        <Button
-                            onClick={handleInstall}
-                            isLoading={isInstallPending}
-                        >
-                            Install{' '}
-                            {isOneClickInstallation ? 'Chat' : 'Manually'}
-                        </Button>
+                    {shopIntegrationId && (
+                        <div className={css.section}>
+                            <div
+                                className={classnames(
+                                    css.sectionHeading,
+                                    css.sectionHeadingWithLabel
+                                )}
+                            >
+                                Connect store
+                            </div>
+                            <p className={css.sectionHeadingLabel}>
+                                Connect a store to use Automation Add-on
+                                features in chat and to enable 1-click install
+                                for Shopify.
+                            </p>
+                            <GorgiasChatIntegrationConnectStore
+                                integration={integration}
+                                storeIntegration={storeIntegration}
+                                storeIntegrations={storeIntegrations}
+                                isOneClickInstallation={isOneClickInstallation}
+                                changeButtonLabel="Change store"
+                                allowDisconnect={false}
+                            />
+                        </div>
+                    )}
+                    <div className={css.section}>
+                        <div className={css.sectionHeading}>
+                            Installation method
+                        </div>
+                        <div className={css.radioButtonGroup}>
+                            <PreviewRadioButton
+                                isDisabled={!isOneClickInstallationAllowed}
+                                isSelected={isOneClickInstallation}
+                                label="1-click installation for Shopify"
+                                caption="Add the chat widget to your Shopify store in one click."
+                                value="true"
+                                onClick={() =>
+                                    setCurrentInstallationMethod(
+                                        GorgiasChatCreationWizardInstallationMethod.OneClick
+                                    )
+                                }
+                            />
+                            <PreviewRadioButton
+                                isSelected={!isOneClickInstallation}
+                                label="Manual installation"
+                                caption="Add the chat widget to non-Shopify stores, specific pages on a Shopify store, or any other website."
+                                value="false"
+                                onClick={() =>
+                                    setCurrentInstallationMethod(
+                                        GorgiasChatCreationWizardInstallationMethod.Manual
+                                    )
+                                }
+                            />
+                        </div>
                     </div>
                 </>
-            }
-        >
-            <>
-                {shopIntegrationId && (
-                    <div className={css.section}>
-                        <div
-                            className={classnames(
-                                css.sectionHeading,
-                                css.sectionHeadingWithLabel
-                            )}
-                        >
-                            Connect store
-                        </div>
-                        <p className={css.sectionHeadingLabel}>
-                            Connect a store to use Automation Add-on features in
-                            chat and to enable 1-click install for Shopify.
-                        </p>
-                        <GorgiasChatIntegrationConnectStore
-                            integration={integration}
-                            storeIntegration={storeIntegration}
-                            storeIntegrations={storeIntegrations}
-                            isOneClickInstallation={isOneClickInstallation}
-                            changeButtonLabel="Change store"
-                            allowDisconnect={false}
-                        />
-                    </div>
-                )}
-                <div className={css.section}>
-                    <div className={css.sectionHeading}>
-                        Installation method
-                    </div>
-                    <div className={css.radioButtonGroup}>
-                        <PreviewRadioButton
-                            isDisabled={!isOneClickInstallationAllowed}
-                            isSelected={isOneClickInstallation}
-                            label="1-click installation for Shopify"
-                            caption="Add the chat widget to your Shopify store in one click."
-                            value="true"
-                            onClick={() => setIsOneClickInstallation(true)}
-                        />
-                        <PreviewRadioButton
-                            isSelected={!isOneClickInstallation}
-                            label="Manual installation"
-                            caption="Add the chat widget to non-Shopify stores, specific pages on a Shopify store, or any other website."
-                            value="false"
-                            onClick={() => setIsOneClickInstallation(false)}
-                        />
-                    </div>
-                </div>
-            </>
-        </GorgiasChatCreationWizardStep>
+            </GorgiasChatCreationWizardStep>
+        </>
     )
 }
 

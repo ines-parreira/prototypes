@@ -28,6 +28,7 @@ import {
     GorgiasChatAvatarImageType,
     GorgiasChatCreationWizardSteps,
     GorgiasChatCreationWizardStatus,
+    GorgiasChatCreationWizardInstallationMethod,
     IntegrationType,
 } from 'models/integration/types'
 
@@ -114,8 +115,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             : shopifyIntegrations
     ) as List<Map<any, any>>
 
-    const [currentStoreIntegration, setCurrentStoreIntegration] =
-        useState<Map<any, any>>()
+    const [currentStoreIntegration, setCurrentStoreIntegration] = useState<
+        Map<any, any> | false
+    >()
     const [currentLiveChatAvailability, setCurrentLiveChatAvailability] =
         useState<
             | typeof GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
@@ -139,7 +141,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         )
 
     const storeIntegration =
-        currentStoreIntegration ||
+        currentStoreIntegration ??
         (isUpdate
             ? storeIntegrations.find(
                   (storeIntegration) =>
@@ -150,11 +152,19 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             ? storeIntegrations.first()
             : undefined)
 
-    const [currentIsStoreRequired, setCurrentIsStoreRequired] =
-        useState<boolean>()
+    const [currentInstallationMethod, setCurrentInstallationMethod] =
+        useState<GorgiasChatCreationWizardInstallationMethod>()
+
+    const installationMethod =
+        currentInstallationMethod ??
+        integration.getIn(
+            ['meta', 'wizard', 'installation_method'],
+            GorgiasChatCreationWizardInstallationMethod.OneClick
+        )
 
     const isStoreRequired =
-        currentIsStoreRequired ?? (isUpdate ? !!storeIntegration : true)
+        installationMethod ===
+        GorgiasChatCreationWizardInstallationMethod.OneClick
 
     const hasIncompleteFields = !name || (isStoreRequired && !storeIntegration)
 
@@ -173,7 +183,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         currentStoreIntegration === undefined &&
         currentLanguage === undefined &&
         currentLiveChatAvailability === undefined &&
-        currentIsStoreRequired === undefined
+        currentInstallationMethod === undefined
 
     const introductionText =
         GORGIAS_CHAT_WIDGET_TEXTS[language]?.introductionText
@@ -206,6 +216,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         shouldGoToNextStep
                             ? GorgiasChatCreationWizardSteps.Branding
                             : GorgiasChatCreationWizardSteps.Basics
+                    )
+                    .setIn(
+                        ['wizard', 'installation_method'],
+                        installationMethod
                     )
                     .toJS(),
                 decoration: (integration.get('decoration') as Map<any, any>)
@@ -245,28 +259,21 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                     wizard: {
                         status: GorgiasChatCreationWizardStatus.Draft,
                         step: GorgiasChatCreationWizardSteps.Branding,
+                        installation_method: installationMethod,
                     },
                 },
             }
         }
 
-        if (
-            !isUpdate ||
-            storeIntegration !== undefined ||
-            currentIsStoreRequired !== undefined
-        ) {
-            const hasStore = isStoreRequired && storeIntegration
-
-            form.meta = {
-                ...form.meta,
-                shop_name: hasStore
-                    ? getShopNameFromStoreIntegration(storeIntegration?.toJS())
-                    : null,
-                shop_type: hasStore ? storeIntegration?.get('type') : null,
-                shop_integration_id: hasStore
-                    ? storeIntegration?.get('id')
-                    : null,
-            }
+        form.meta = {
+            ...form.meta,
+            shop_name: storeIntegration
+                ? getShopNameFromStoreIntegration(storeIntegration?.toJS())
+                : null,
+            shop_type: storeIntegration ? storeIntegration?.get('type') : null,
+            shop_integration_id: storeIntegration
+                ? storeIntegration?.get('id')
+                : null,
         }
 
         return dispatch(
@@ -281,10 +288,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                             : SegmentEvent.ChatWidgetWizardStepCompleted,
                         {
                             live_chat_availability: liveChatAvailability,
-                            installation_method: isStoreRequired
-                                ? '1-click'
-                                : 'manual',
-                            shop_type: storeIntegration?.get('type'),
+                            installation_method: installationMethod,
+                            shop_type: storeIntegration
+                                ? storeIntegration?.get('type')
+                                : undefined,
                         }
                     )
 
@@ -409,7 +416,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                             storeIntegrations.first()
                                         )
                                     }
-                                    setCurrentIsStoreRequired(true)
+                                    setCurrentInstallationMethod(
+                                        GorgiasChatCreationWizardInstallationMethod.OneClick
+                                    )
                                 }}
                             />
                             <PreviewRadioButton
@@ -417,7 +426,12 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 isSelected={!isStoreRequired}
                                 label="Any other website"
                                 caption="Websites, knowledge bases, etc."
-                                onClick={() => setCurrentIsStoreRequired(false)}
+                                onClick={() => {
+                                    setCurrentInstallationMethod(
+                                        GorgiasChatCreationWizardInstallationMethod.Manual
+                                    )
+                                    setCurrentStoreIntegration(false)
+                                }}
                             />
                         </div>
                         <Label isRequired={isStoreRequired}>
@@ -428,7 +442,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                             chat and to enable 1-click install for Shopify.
                         </div>
                         <StoreNameDropdown
-                            storeIntegrationId={storeIntegration?.get('id')}
+                            storeIntegrationId={
+                                storeIntegration && storeIntegration?.get('id')
+                            }
                             gorgiasChatIntegrations={gorgiasChatIntegrations}
                             storeIntegrations={storeIntegrations}
                             onChange={(storeIntegrationId: number) => {
