@@ -3827,22 +3827,22 @@
   dependencies:
     babel-runtime "^6.26.0"
 
-"@twilio/voice-errors@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@twilio/voice-errors/-/voice-errors-1.1.1.tgz#699848b5b28a35a219785103a1219edf90cbb41f"
-  integrity sha512-3IJzRhgAqsS3uW2PO7crUXEFxuFhggHeLvt/Q4hz7lrTLFChl37hWiImCMIaM5VHiybQi6ECVQsId2X8UdTr2A==
-  dependencies:
-    npm-run-all "^4.1.5"
+"@twilio/voice-errors@1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@twilio/voice-errors/-/voice-errors-1.3.1.tgz#24acb5cb1a5d17cde5114b1a9f3e98f3981a4dfe"
+  integrity sha512-CtozqXquzeUqYkYNus3aOEuS6G007UQK6a31QJYKa28j0tZl8ziwTKVSghj6oeRLlQB2btxiiSQzALMMEh2cug==
 
-"@twilio/voice-sdk@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@twilio/voice-sdk/-/voice-sdk-2.1.1.tgz#b21fcbfc403aaa3625d626f66fd07540f9ca056a"
-  integrity sha512-k96NDlqp5k4thf5a3o5RqzWAGmkd3H/RMl8KSD0ChdQX0QuAW025p7we+QHyhLCkqG5MRGSBMy5FdQtvj/DOog==
+"@twilio/voice-sdk@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@twilio/voice-sdk/-/voice-sdk-2.4.0.tgz#8e8976e0cec1f53899530da5115befa04a5c0664"
+  integrity sha512-zI21ftETlTGEKBywn4ZUdtDfaodXExj+TY5YAYv7ZtqZ3YXFxVNsElPKB83+/P9ZxWN5uNbEJSx31tKMPEb7HQ==
   dependencies:
     "@twilio/audioplayer" "1.0.6"
-    "@twilio/voice-errors" "1.1.1"
+    "@twilio/voice-errors" "1.3.1"
+    "@types/md5" "2.3.2"
     backoff "2.5.0"
     loglevel "1.6.7"
+    md5 "2.3.0"
     rtcpeerconnection-shim "1.2.8"
     ws "7.4.6"
     xmlhttprequest "1.8.0"
@@ -4530,6 +4530,11 @@
   integrity sha512-JN8OVL/wiDlCWTPzplsgMPu0uE9Q6blwp68rYsfk2G8aokRUQ8XD9MEhZwihfAiQvoyE+m31m6i3GFXwYWomKQ==
   dependencies:
     "@types/node" "*"
+
+"@types/md5@2.3.2":
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/@types/md5/-/md5-2.3.2.tgz#529bb3f8a7e9e9f621094eb76a443f585d882528"
+  integrity sha512-v+JFDu96+UYJ3/UWzB0mEglIS//MZXgRaJ4ubUPwOM0gvLc/kcQ3TWNYwENEK7/EcXGQVrW8h/XqednSjBd/Og==
 
 "@types/mdast@^3.0.0":
   version "3.0.10"
@@ -7055,7 +7060,7 @@ character-reference-invalid@^1.0.0:
   resolved "https://registry.yarnpkg.com/character-reference-invalid/-/character-reference-invalid-1.1.4.tgz#083329cda0eae272ab3dbbf37e9a382c13af1560"
   integrity sha512-mKKUkUbhPpQlCOfIuZkvSEgktjPFIsZKRRbC6KWVEMvlzblj3i3asQv5ODsrwt0N3pHAEvjP8KTQPHkp0+6jOg==
 
-charenc@~0.0.1:
+charenc@0.0.2, charenc@~0.0.1:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/charenc/-/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
   integrity sha1-wKHS86cJLgN3S/qD8UwPxXkKhmc=
@@ -7802,7 +7807,7 @@ cross-spawn@^6.0.0, cross-spawn@^6.0.5:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-crypt@~0.0.1:
+crypt@0.0.2, crypt@~0.0.1:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/crypt/-/crypt-0.0.2.tgz#88d7ff7ec0dfb86f713dc87bbb42d044d3e6c41b"
   integrity sha1-iNf/fsDfuG9xPch7u0LQRNPmxBs=
@@ -11457,7 +11462,7 @@ is-boolean-object@^1.0.0, is-boolean-object@^1.1.0:
     call-bind "^1.0.2"
     has-tostringtag "^1.0.0"
 
-is-buffer@^1.1.5, is-buffer@~1.1.1:
+is-buffer@^1.1.5, is-buffer@~1.1.1, is-buffer@~1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
   integrity sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==
@@ -13483,6 +13488,15 @@ md5@2.2.1:
     crypt "~0.0.1"
     is-buffer "~1.1.1"
 
+md5@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/md5/-/md5-2.3.0.tgz#c3da9a6aae3a30b46b7b0c349b87b110dc3bda4f"
+  integrity sha512-T1GITYmFaKuO91vxyoQMFETst+O71VUPEU3ze5GNzDm0OWdP8v1ziTaAEPUr/3kLsY3Sftgz242A1SetQiDL7g==
+  dependencies:
+    charenc "0.0.2"
+    crypt "0.0.2"
+    is-buffer "~1.1.6"
+
 mdast-squeeze-paragraphs@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/mdast-squeeze-paragraphs/-/mdast-squeeze-paragraphs-4.0.0.tgz#7c4c114679c3bee27ef10b58e2e015be79f1ef97"
@@ -14240,7 +14254,7 @@ normalize-url@^6.0.1:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-6.1.0.tgz#40d0885b535deffe3f3147bec877d05fe4c5668a"
   integrity sha512-DlL+XwOy3NxAQ8xuC0okPgK46iuVNAK01YN7RueYBqqFeGsBjV9XmCAzAdgt+667bCl5kPh9EqKKDwnaPG1I7A==
 
-npm-run-all@4.1.5, npm-run-all@^4.1.5:
+npm-run-all@4.1.5:
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/npm-run-all/-/npm-run-all-4.1.5.tgz#04476202a15ee0e2e214080861bff12a51d98fba"
   integrity sha512-Oo82gJDAVcaMdi3nuoKFavkIHBRVqQ1qvMb+9LHk/cF4P6B2m8aP04hGf7oL6wZ9BuGwX1onlLhpuoofSyoQDQ==
