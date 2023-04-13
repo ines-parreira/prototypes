@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import React, {useMemo} from 'react'
 import {useLocalStorage} from 'react-use'
 
@@ -21,6 +22,7 @@ import {
     TicketStateMeasure,
 } from 'models/reporting/types'
 import {useGetMetricTrend} from 'hooks/reporting/useGetMetricTrend'
+import {getTimezone} from 'state/currentUser/selectors'
 
 import BigNumberMetric from './BigNumberMetric'
 import DashboardSection from './DashboardSection'
@@ -60,6 +62,7 @@ const workloadPerChannelMock: OneDimensionalDataItem[] = [
 ]
 
 export default function SupportPerformanceOverview() {
+    const userTimezone = useAppSelector(getTimezone)
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const statsFilters = useAppSelector(getStatsFilters)
     const integrationsStatsFilter = useAppSelector(
@@ -399,6 +402,11 @@ export default function SupportPerformanceOverview() {
                     </ChartCard>
                 </DashboardGridCell>
             </DashboardSection>
+            {userTimezone && (
+                <div className={classnames(css.pageFooter, 'caption-regular')}>
+                    Analytics are in {userTimezone} time
+                </div>
+            )}
         </StatsPage>
     )
 }
