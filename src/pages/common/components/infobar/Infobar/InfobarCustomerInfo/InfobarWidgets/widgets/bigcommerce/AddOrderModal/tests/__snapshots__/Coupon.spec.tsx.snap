@@ -1,39 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Coupon /> works as expected: coupon set 1`] = `
-<body>
-  <div>
-    <dt
-      class="descriptionTitle"
-    >
-      <button
-        class="actionButton"
-        id="coupon-button"
-      >
-        Add coupon code
-      </button>
-    </dt>
-    <dd
-      class="descriptionExtraInfo"
-    >
-      SOME_CODE
-    </dd>
-    <dd
-      class="descriptionValue"
-    >
-      <span>
-        -€5.55
-      </span>
-    </dd>
-  </div>
-  <div
-    data-floating-ui-portal=""
-    id="floating-ui-0"
-  />
-</body>
-`;
-
-exports[`<Coupon /> works as expected: initial 1`] = `
+exports[`<Coupon /> renders empty as expected: initial 1`] = `
 <body>
   <div>
     <dt

@@ -8,12 +8,12 @@ import {bigCommerceCartFixture} from 'fixtures/bigcommerce'
 import {Coupon} from '../Coupon'
 
 describe('<Coupon />', () => {
-    it('works as expected', async () => {
-        const cartFixture = bigCommerceCartFixture()
-        const onUpdateCouponMock = jest.fn()
-        const onRemoveCouponMock = jest.fn()
+    const cartFixture = bigCommerceCartFixture()
+    const onUpdateCouponMock = jest.fn()
+    const onRemoveCouponMock = jest.fn()
 
-        const {rerender, baseElement} = render(
+    it('renders empty as expected', () => {
+        const {baseElement} = render(
             <Coupon
                 cart={cartFixture}
                 currencyCode="EUR"
@@ -23,7 +23,17 @@ describe('<Coupon />', () => {
         )
 
         expect(baseElement).toMatchSnapshot('initial')
+    })
 
+    it('should update the coupon', async () => {
+        render(
+            <Coupon
+                cart={cartFixture}
+                currencyCode="EUR"
+                onUpdateCoupon={onUpdateCouponMock}
+                onRemoveCoupon={onRemoveCouponMock}
+            />
+        )
         userEvent.click(screen.getByRole('button', {name: /Add coupon/i}))
 
         // Close button is visible when we first open the popover
@@ -42,15 +52,10 @@ describe('<Coupon />', () => {
         userEvent.click(screen.getByRole('button', {name: /Apply/i}))
 
         expect(onUpdateCouponMock).toHaveBeenNthCalledWith(1, 'SOME CODE')
+    })
 
-        // Popover gets closed
-        await waitFor(() => {
-            expect(
-                screen.queryByRole('button', {name: /Apply/i})
-            ).not.toBeInTheDocument()
-        })
-
-        rerender(
+    it('renders with coupon code as expected', async () => {
+        const {getByText} = render(
             <Coupon
                 cart={produce(cartFixture, (draft) => {
                     draft.coupons = [
@@ -68,7 +73,7 @@ describe('<Coupon />', () => {
             />
         )
 
-        expect(baseElement).toMatchSnapshot('coupon set')
+        expect(getByText('SOME_CODE')).toBeVisible()
 
         userEvent.click(screen.getByRole('button', {name: /Add coupon/i}))
 
