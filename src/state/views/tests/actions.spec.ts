@@ -5,6 +5,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map, List} from 'immutable'
 import _range from 'lodash/range'
+import {waitFor} from '@testing-library/react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import * as socketConstants from 'config/socketConstants'
@@ -24,6 +25,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {getAST} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
 
+import {FETCH_LIST_VIEW_START} from '../constants'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 import * as viewsSelectors from '../selectors'
@@ -53,6 +55,7 @@ const searchCustomersMock = searchCustomers as jest.Mock
 
 jest.mock('utils/launchDarkly')
 const variationMock = getLDClient().variation as jest.Mock
+;(getLDClient().waitForInitialization as jest.Mock).mockResolvedValue({})
 
 const store = mockStore({
     views: initialState,
@@ -228,7 +231,7 @@ describe('actions', () => {
             expect(store.getActions()).toEqual([])
         })
 
-        it('should fetch tickets', () => {
+        it('should fetch tickets', async () => {
             const state = initialState.set(
                 'active',
                 fromJS({id: 1, type: ViewType.TicketList})
@@ -239,7 +242,16 @@ describe('actions', () => {
             expect(
                 store.dispatch(actions.fetchActiveViewTickets())
             ).not.toEqual(undefined)
-            expect(store.getActions()).toMatchSnapshot()
+
+            await waitFor(() => {
+                expect(store.getActions()).toMatchObject([
+                    {
+                        discreet: true,
+                        type: FETCH_LIST_VIEW_START,
+                        viewId: 1,
+                    },
+                ])
+            })
         })
     })
 

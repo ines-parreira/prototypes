@@ -161,16 +161,6 @@ exports[`actions deleteViewSuccess() should redirect to other view of same type 
 ]
 `;
 
-exports[`actions fetchActiveViewTickets should fetch tickets 1`] = `
-[
-  {
-    "discreet": true,
-    "type": "FETCH_LIST_VIEW_START",
-    "viewId": 1,
-  },
-]
-`;
-
 exports[`actions fetchViewItems should fetch current page with cursor 1`] = `
 [
   {

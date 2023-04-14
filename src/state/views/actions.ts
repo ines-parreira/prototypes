@@ -5,6 +5,7 @@ import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 import _noop from 'lodash/noop'
+import {isEmpty} from 'lodash'
 
 import {search, SEARCH_ENGINE_HEADER} from 'models/search/resources'
 import * as viewsConfig from 'config/views'
@@ -32,7 +33,7 @@ import {fetchViewsPaginated} from 'models/view/resources'
 import {SearchEngine, SearchType} from 'models/search/types'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import GorgiasApi from 'services/gorgiasApi'
-import {getLDClient} from 'utils/launchDarkly'
+import {getLDClient, LDUser} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {searchTickets} from 'models/ticket/resources'
 import {searchCustomers} from 'models/customer/resources'
@@ -405,19 +406,24 @@ export function fetchViewItems(
             return Promise.resolve()
         }
 
+        try {
+            await launchDarklyClient.waitForInitialization()
+        } catch (error) {
+            if (!isEmpty(LDUser)) {
+                throw error
+            }
+        }
+
         const filtersHash = getHashOfObj(
             viewsSelectors.getActiveViewFilters(state)
         )
+        let promise
 
         dispatch({
             type: types.FETCH_LIST_VIEW_START,
             viewId,
             discreet: isPolling,
         })
-
-        let promise
-
-        await launchDarklyClient.waitForInitialization()
 
         const enforceTicketsOnES = launchDarklyClient.variation(
             FeatureFlagKey.EnforceTicketsOnES

@@ -1,19 +1,20 @@
 import {AxiosError} from 'axios'
 import {Map} from 'immutable'
+import {isEmpty} from 'lodash'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {defaultMergeTicketsView} from 'config/views'
+import {BASE_VIEW_ID} from 'constants/view'
+import client from 'models/api/resources'
+import {ApiListResponsePagination, OrderDirection} from 'models/api/types'
 import {searchTickets as modelSearchTickets} from 'models/ticket/resources'
-import {getLDClient} from 'utils/launchDarkly'
-import {StoreDispatch} from '../types'
-import {notify} from '../notifications/actions'
-import {createErrorNotification} from '../utils'
-import {defaultMergeTicketsView} from '../../config/views'
-import {BASE_VIEW_ID} from '../../constants/view'
-import {ApiListResponsePagination, OrderDirection} from '../../models/api/types'
-import {Ticket, TicketSearchSortableProperties} from '../../models/ticket/types'
-import {MoveIndexDirection} from '../../pages/common/utils/keyboard'
-import {NotificationStatus} from '../notifications/types'
-import client from '../../models/api/resources'
+import {Ticket, TicketSearchSortableProperties} from 'models/ticket/types'
+import {MoveIndexDirection} from 'pages/common/utils/keyboard'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {StoreDispatch} from 'state/types'
+import {createErrorNotification} from 'state/utils'
+import {LDUser, getLDClient} from 'utils/launchDarkly'
 
 export const LIMIT = 5
 
@@ -48,7 +49,13 @@ export function searchTickets(
         let promise
 
         const launchDarklyClient = getLDClient()
-        await launchDarklyClient.waitForInitialization()
+        try {
+            await launchDarklyClient.waitForInitialization()
+        } catch (error) {
+            if (!isEmpty(LDUser)) {
+                throw error
+            }
+        }
 
         if (
             launchDarklyClient.variation(
