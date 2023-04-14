@@ -183,7 +183,7 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
             )}
             {action.type === ReturnActionType.LoopReturns && (
                 <Alert className={css.loopReturnsAlert} icon>
-                    When customers click return, the selected return portal will
+                    When customers click return, the selected portal will
                     automatically open in a new tab.
                 </Alert>
             )}
