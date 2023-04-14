@@ -175,4 +175,25 @@ describe('TrendMetricCard', () => {
             })
         }
     )
+
+    it('should not render trend badge when diff is not available', () => {
+        const {queryByTestId} = render(
+            <TrendMetricCard {...minProps} data={{prevValue: null, value: 3}} />
+        )
+        expect(queryByTestId('trend-badge')).not.toBeInTheDocument()
+    })
+
+    it('should render unavailable text when no value is available', () => {
+        const notAvailableText = 'FOO'
+        const {getByText} = render(
+            <TrendMetricCard
+                {...minProps}
+                data={{prevValue: null, value: null}}
+                notAvailableText={notAvailableText}
+            />
+        )
+        expect(
+            getByText(`${notAvailableText} from ${notAvailableText}`)
+        ).toBeInTheDocument()
+    })
 })

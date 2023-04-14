@@ -13,7 +13,18 @@ import {teams} from 'fixtures/teams'
 import {StatsFilters} from 'models/stat/types'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {RootState, StoreDispatch} from 'state/types'
-import {useGetMetricTrend} from 'hooks/reporting/useGetMetricTrend'
+import {
+    useClosedTicketsTrend,
+    useCustomerSatisfactionTrend,
+    useFirstResponseTimeTrend,
+    useMessagesPerTicketTrend,
+    useMessagesSentTrend,
+    useOpenTicketsTrend,
+    useResolutionTimeTrend,
+    useTicketsCreatedTrend,
+    useTicketsRepliedTrend,
+} from 'hooks/reporting/metricTrends'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {assumeMock} from 'utils/testing'
 
 import SupportPerformanceOverview, {
@@ -30,8 +41,18 @@ jest.mock(
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
 
-jest.mock('hooks/reporting/useGetMetricTrend')
-const useGetMetricTrendMock = assumeMock(useGetMetricTrend)
+jest.mock('hooks/reporting/metricTrends')
+const useCustomerSatisfactionTrendMock = assumeMock(
+    useCustomerSatisfactionTrend
+)
+const useFirstResponseTimeTrendMock = assumeMock(useFirstResponseTimeTrend)
+const useResolutionTimeTrendMock = assumeMock(useResolutionTimeTrend)
+const useMessagesPerTicketTrendMock = assumeMock(useMessagesPerTicketTrend)
+const useOpenTicketsTrendMock = assumeMock(useOpenTicketsTrend)
+const useClosedTicketsTrendMock = assumeMock(useClosedTicketsTrend)
+const useTicketsCreatedTrendMock = assumeMock(useTicketsCreatedTrend)
+const useTicketsRepliedTrendMock = assumeMock(useTicketsRepliedTrend)
+const messagesSentTrendMock = assumeMock(useMessagesSentTrend)
 
 describe('<SupportPerformanceOverview />', () => {
     const defaultState = {
@@ -57,17 +78,27 @@ describe('<SupportPerformanceOverview />', () => {
         }),
     } as RootState
 
+    const defaultMetricTrend: MetricTrend = {
+        isFetching: false,
+        isError: true,
+        data: {
+            value: 456,
+            prevValue: 123,
+        },
+    }
+
     beforeEach(() => {
         localStorage.clear()
         jest.resetAllMocks()
-        useGetMetricTrendMock.mockReturnValue({
-            isFetching: false,
-            isError: true,
-            data: {
-                value: 456,
-                prevValue: 123,
-            },
-        })
+        useCustomerSatisfactionTrendMock.mockReturnValue(defaultMetricTrend)
+        useFirstResponseTimeTrendMock.mockReturnValue(defaultMetricTrend)
+        useResolutionTimeTrendMock.mockReturnValue(defaultMetricTrend)
+        useMessagesPerTicketTrendMock.mockReturnValue(defaultMetricTrend)
+        useOpenTicketsTrendMock.mockReturnValue(defaultMetricTrend)
+        useClosedTicketsTrendMock.mockReturnValue(defaultMetricTrend)
+        useTicketsCreatedTrendMock.mockReturnValue(defaultMetricTrend)
+        useTicketsRepliedTrendMock.mockReturnValue(defaultMetricTrend)
+        messagesSentTrendMock.mockReturnValue(defaultMetricTrend)
     })
 
     it('should render the page', () => {

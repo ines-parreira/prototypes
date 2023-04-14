@@ -10,7 +10,7 @@ export const getReportingQueryKey = (params: GetReportingParams) => [
     params,
 ]
 
-type UseGetReportingQueryData<TData extends unknown[]> = AxiosResponse<
+export type UseGetReportingQueryData<TData extends unknown[]> = AxiosResponse<
     GetReportingResponse<TData>
 >
 

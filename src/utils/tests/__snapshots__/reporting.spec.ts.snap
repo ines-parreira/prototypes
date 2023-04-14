@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reporting utils statsFiltersToReportingFilters should convert StatsFilters to an array of ReportingFilter 1`] = `
+[
+  {
+    "member": "TicketState.periodStart",
+    "operator": "afterDate",
+    "values": [
+      "2021-05-29T00:00:00+02:00",
+    ],
+  },
+  {
+    "member": "TicketState.periodEnd",
+    "operator": "beforeDate",
+    "values": [
+      "2021-06-04T23:59:59+02:00",
+    ],
+  },
+  {
+    "member": "TicketState.integration",
+    "operator": "equals",
+    "values": [
+      "1",
+    ],
+  },
+  {
+    "member": "TicketState.channel",
+    "operator": "equals",
+    "values": [
+      "email",
+      "chat",
+    ],
+  },
+  {
+    "member": "TicketState.assigneeUserId",
+    "operator": "equals",
+    "values": [
+      "2",
+    ],
+  },
+]
+`;

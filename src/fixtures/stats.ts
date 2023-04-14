@@ -1,3 +1,4 @@
+import {TicketChannel} from 'business/types/ticket'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {
     SankeyDiagram,
@@ -6,7 +7,19 @@ import {
     Stat,
     StatType,
     TwoDimensionalChart,
+    StatsFilters,
 } from 'models/stat/types'
+
+export const statsFilters: StatsFilters = {
+    period: {
+        start_datetime: '2021-05-29T00:00:00+02:00',
+        end_datetime: '2021-06-04T23:59:59+02:00',
+    },
+    channels: [TicketChannel.Email, TicketChannel.Chat],
+    integrations: [1],
+    agents: [2],
+    tags: [1, 2],
+}
 
 export const totalMessagesSent: Stat<OneDimensionalChart> = {
     data: {

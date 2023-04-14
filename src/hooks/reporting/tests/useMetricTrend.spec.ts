@@ -2,24 +2,23 @@ import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 
 import {useGetReporting} from 'models/reporting/queries'
-import {TicketStateMeasure} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {ReportingQuery, TicketStateMeasure} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
-import {useGetMetricTrend} from '../useGetMetricTrend'
+import useMetricTrend, {ANALYTICS_STALE_TIME_MS} from '../useMetricTrend'
 
 jest.mock('models/reporting/queries')
 const useGetReportingMock = assumeMock(useGetReporting)
 
-describe('useGetMetricTrend', () => {
+describe('useMetricTrend', () => {
     const defaultReporting = {
         isFetching: false,
         isError: false,
     } as UseQueryResult
-    const defaultFilters: StatsFilters = {
-        period: {
-            start_datetime: '2021-01-01T00:00:00.000Z',
-            end_datetime: '2021-01-01T23:59:59.999Z',
-        },
+
+    const defaultQuery: ReportingQuery = {
+        measures: [TicketStateMeasure.FirstResponseTime],
+        dimensions: [],
+        filters: [],
     }
 
     beforeEach(() => {
@@ -27,12 +26,9 @@ describe('useGetMetricTrend', () => {
         useGetReportingMock.mockReturnValue(defaultReporting)
     })
 
-    it('should return isFetching=false when no queries is fetching', () => {
+    it('should return isFetching=false when no queries are fetching', () => {
         const {result} = renderHook(() =>
-            useGetMetricTrend(
-                TicketStateMeasure.FirstResponseTime,
-                defaultFilters
-            )
+            useMetricTrend(defaultQuery, defaultQuery)
         )
 
         expect(result.current.isFetching).toBe(false)
@@ -45,10 +41,7 @@ describe('useGetMetricTrend', () => {
         })
 
         const {result} = renderHook(() =>
-            useGetMetricTrend(
-                TicketStateMeasure.FirstResponseTime,
-                defaultFilters
-            )
+            useMetricTrend(defaultQuery, defaultQuery)
         )
 
         expect(result.current.isFetching).toBe(true)
@@ -56,10 +49,7 @@ describe('useGetMetricTrend', () => {
 
     it('should return isError=false when no queries errored', () => {
         const {result} = renderHook(() =>
-            useGetMetricTrend(
-                TicketStateMeasure.FirstResponseTime,
-                defaultFilters
-            )
+            useMetricTrend(defaultQuery, defaultQuery)
         )
 
         expect(result.current.isError).toBe(false)
@@ -72,10 +62,7 @@ describe('useGetMetricTrend', () => {
         } as UseQueryResult)
 
         const {result} = renderHook(() =>
-            useGetMetricTrend(
-                TicketStateMeasure.FirstResponseTime,
-                defaultFilters
-            )
+            useMetricTrend(defaultQuery, defaultQuery)
         )
 
         expect(result.current.isError).toBe(true)
@@ -83,10 +70,7 @@ describe('useGetMetricTrend', () => {
 
     it('should not return data when one the queries does not have data', () => {
         const {result} = renderHook(() =>
-            useGetMetricTrend(
-                TicketStateMeasure.FirstResponseTime,
-                defaultFilters
-            )
+            useMetricTrend(defaultQuery, defaultQuery)
         )
 
         expect(result.current.data).toBe(undefined)
@@ -99,19 +83,46 @@ describe('useGetMetricTrend', () => {
         } as UseQueryResult)
         useGetReportingMock.mockReturnValueOnce({
             ...defaultReporting,
-            data: 2,
+            data: null,
         } as UseQueryResult)
 
         const {result} = renderHook(() =>
-            useGetMetricTrend(
-                TicketStateMeasure.FirstResponseTime,
-                defaultFilters
-            )
+            useMetricTrend(defaultQuery, defaultQuery)
         )
 
         expect(result.current.data).toEqual({
             value: 1,
-            prevValue: 2,
+            prevValue: null,
         })
+    })
+
+    it('should call useGetReporting with stale time', () => {
+        const prevPeriodQuery = {
+            ...defaultQuery,
+            measures: [TicketStateMeasure.MessagesAverage],
+        }
+        useGetReportingMock.mockReturnValueOnce({
+            ...defaultReporting,
+            data: 1,
+        } as UseQueryResult)
+        useGetReportingMock.mockReturnValueOnce({
+            ...defaultReporting,
+            data: 2,
+        } as UseQueryResult)
+
+        renderHook(() => useMetricTrend(defaultQuery, prevPeriodQuery))
+
+        expect(useGetReportingMock).toHaveBeenCalledWith(
+            [defaultQuery],
+            expect.objectContaining({
+                staleTime: ANALYTICS_STALE_TIME_MS,
+            })
+        )
+        expect(useGetReportingMock).toHaveBeenCalledWith(
+            [prevPeriodQuery],
+            expect.objectContaining({
+                staleTime: ANALYTICS_STALE_TIME_MS,
+            })
+        )
     })
 })

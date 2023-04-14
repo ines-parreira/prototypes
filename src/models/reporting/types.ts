@@ -44,13 +44,32 @@ export enum OpenTicketStateMember {
     IsSpam = 'OpenTicketState.isSpam',
 }
 
-export type ReportingMeasure = TicketStateMeasure | OpenTicketStateMeasure
+export enum MessageStateMeasure {
+    TicketCount = 'MessageState.ticketCount',
+    MessageCount = 'MessageState.messageCount',
+}
+
+export enum MessageStateMember {
+    PeriodStart = 'MessageState.periodStart',
+    PeriodEnd = 'MessageState.periodEnd',
+    Channel = 'MessageState.channel',
+    Integration = 'MessageState.integration',
+    AssigneeUserId = 'MessageState.assigneeUserId',
+}
+
+export type ReportingMeasure =
+    | TicketStateMeasure
+    | OpenTicketStateMeasure
+    | MessageStateMeasure
 
 export type ReportingDimension = TicketStateDimension
 
 export type ReportingSegment = TicketStateSegment
 
-export type ReportingFilterMember = TicketStateMember | OpenTicketStateMember
+export type ReportingFilterMember =
+    | TicketStateMember
+    | OpenTicketStateMember
+    | MessageStateMember
 
 export enum ReportingFilterOperator {
     Equals = 'equals',

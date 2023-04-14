@@ -1,5 +1,6 @@
 import React, {ComponentProps, ReactNode, useMemo} from 'react'
 
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {
     formatMetricValue,
@@ -18,14 +19,12 @@ type RenderValues = {
 type Props = {
     title: string
     hint: string
-    data?: {
-        value: number
-        prevValue: number
-    }
+    data?: MetricTrend['data']
     tooltip?: ReactNode
     valueFormat?: MetricValueFormat
     trendFormat?: MetricTrendFormat
     interpretAs?: 'more-is-better' | 'less-is-better' | 'neutral'
+    notAvailableText?: string
     children: (values: RenderValues) => ReactNode
 }
 
@@ -37,26 +36,32 @@ export default function TrendMetricCard({
     valueFormat = 'decimal',
     trendFormat = valueFormat,
     interpretAs = 'neutral',
+    notAvailableText = 'N/A',
     children,
 }: Props) {
     const {prevValue, value} = data || {}
-    const diff = data ? data.value - data.prevValue : 0
+    const diff =
+        data?.prevValue != null && data?.value != null
+            ? data.value - data.prevValue
+            : 0
 
     const formattedValue = useMemo(() => {
-        return value != null ? formatMetricValue(value, valueFormat) : ''
-    }, [valueFormat, value])
+        return value != null
+            ? formatMetricValue(value, valueFormat)
+            : notAvailableText
+    }, [valueFormat, value, notAvailableText])
 
     const formattedPrevValue = useMemo(() => {
         return prevValue != null
             ? formatMetricValue(prevValue, valueFormat)
-            : ''
-    }, [valueFormat, prevValue])
+            : notAvailableText
+    }, [valueFormat, prevValue, notAvailableText])
 
     const formattedTrend = useMemo(() => {
         return value != null && prevValue != null
             ? formatMetricTrend(value, prevValue, trendFormat)
-            : ''
-    }, [trendFormat, value, prevValue])
+            : notAvailableText
+    }, [trendFormat, value, prevValue, notAvailableText])
 
     let trendColor: ComponentProps<typeof TrendBadge>['color'] = 'neutral'
     if (interpretAs === 'more-is-better') {
@@ -71,16 +76,16 @@ export default function TrendMetricCard({
             hint={hint}
             tooltip={tooltip}
             trendBadge={
-                data ? (
+                !data ? (
+                    <Skeleton height={18} width={50} />
+                ) : data.value != null && data.prevValue != null ? (
                     <TrendBadge
                         color={trendColor}
                         direction={diff > 0 ? 'up' : diff < 0 ? 'down' : 'flat'}
                     >
                         {formattedTrend}
                     </TrendBadge>
-                ) : (
-                    <Skeleton height={18} width={50} />
-                )
+                ) : null
             }
         >
             {!data ? (

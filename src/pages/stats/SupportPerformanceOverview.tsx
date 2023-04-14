@@ -17,12 +17,18 @@ import {
 } from 'state/stats/selectors'
 import blueStar from 'assets/img/icons/blue-star.svg'
 import {ticketsCreatedDataItem} from 'fixtures/chart'
-import {
-    OpenTicketStateMeasure,
-    TicketStateMeasure,
-} from 'models/reporting/types'
-import {useGetMetricTrend} from 'hooks/reporting/useGetMetricTrend'
 import {getTimezone} from 'state/currentUser/selectors'
+import {
+    useClosedTicketsTrend,
+    useCustomerSatisfactionTrend,
+    useFirstResponseTimeTrend,
+    useMessagesPerTicketTrend,
+    useMessagesSentTrend,
+    useOpenTicketsTrend,
+    useResolutionTimeTrend,
+    useTicketsCreatedTrend,
+    useTicketsRepliedTrend,
+} from 'hooks/reporting/metricTrends'
 
 import BigNumberMetric from './BigNumberMetric'
 import DashboardSection from './DashboardSection'
@@ -83,42 +89,16 @@ export default function SupportPerformanceOverview() {
         }
     }, [integrationsStatsFilter, statsFilters])
 
-    const customerSatisfactionTrend = useGetMetricTrend(
-        TicketStateMeasure.SurveyScore,
-        pageStatsFilters
-    )
-    const firstResponseTimeTrend = useGetMetricTrend(
-        TicketStateMeasure.FirstResponseTime,
-        pageStatsFilters
-    )
-    const resolutionTimeTrend = useGetMetricTrend(
-        TicketStateMeasure.ResolutionTime,
-        pageStatsFilters
-    )
-    const messagePerTicketTrend = useGetMetricTrend(
-        TicketStateMeasure.MessagesAverage,
-        pageStatsFilters
-    )
-    const openTicketsTrend = useGetMetricTrend(
-        OpenTicketStateMeasure.TicketCount,
-        pageStatsFilters
-    )
-    const closedTicketsTrend = useGetMetricTrend(
-        TicketStateMeasure.TicketCount,
-        pageStatsFilters
-    )
-    const ticketsCreatedTrend = useGetMetricTrend(
-        TicketStateMeasure.TicketCount,
-        pageStatsFilters
-    )
-    const ticketsRepliedTrend = useGetMetricTrend(
-        TicketStateMeasure.TicketCount,
-        pageStatsFilters
-    )
-    const messagesSentTrend = useGetMetricTrend(
-        TicketStateMeasure.TicketCount,
-        pageStatsFilters
-    )
+    const customerSatisfactionTrend =
+        useCustomerSatisfactionTrend(pageStatsFilters)
+    const firstResponseTimeTrend = useFirstResponseTimeTrend(pageStatsFilters)
+    const resolutionTimeTrend = useResolutionTimeTrend(pageStatsFilters)
+    const messagesPerTicketTrend = useMessagesPerTicketTrend(pageStatsFilters)
+    const openTicketsTrend = useOpenTicketsTrend(pageStatsFilters)
+    const closedTicketsTrend = useClosedTicketsTrend(pageStatsFilters)
+    const ticketsCreatedTrend = useTicketsCreatedTrend(pageStatsFilters)
+    const ticketsRepliedTrend = useTicketsRepliedTrend(pageStatsFilters)
+    const messagesSentTrend = useMessagesSentTrend(pageStatsFilters)
 
     return (
         <StatsPage
@@ -242,7 +222,7 @@ export default function SupportPerformanceOverview() {
                     <TrendMetricCard
                         title="Messages per ticket"
                         hint="Average number of messages exchanged per closed ticket"
-                        data={messagePerTicketTrend.data}
+                        data={messagesPerTicketTrend.data}
                         interpretAs="less-is-better"
                         tooltip={
                             areTipsVisible && (
