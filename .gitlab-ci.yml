@@ -1,6 +1,6 @@
 include:
   - project: 'gorgias/gorgias-ops'
-    ref: 341dcd3f6bca962fce96fe6e75495f736e5bcaec
+    ref: 890978ca3849e1593de5ca4d504907b97214ab75
     file: /.gitlab/ci/common.gitlab-ci.yml
 
 stages:
