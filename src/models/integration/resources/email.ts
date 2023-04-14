@@ -3,6 +3,7 @@ import {
     EmailMigrationInboundVerification,
     EmailMigrationBannerStatus,
     EmailMigrationOutboundVerification,
+    EmailDomain,
 } from '../types'
 
 type StartMigrationResponse = {
@@ -38,8 +39,25 @@ export const verifyMigrationIntegration = async (id: number) => {
 }
 
 export const fetchMigrationDomains = async () => {
-    const response = await client.get<EmailMigrationOutboundVerification[]>(
-        '/integrations/email/migration/domains'
+    const response = await client.get<{
+        data: EmailMigrationOutboundVerification[]
+    }>('/integrations/email/migration/domains')
+    return response.data
+}
+
+export const createDomainVerification = async (
+    domainName: string,
+    dkimKeySize: number,
+    provider?: string
+) => {
+    const params = provider ? `?provider=${provider}` : ''
+
+    const response = await client.put<EmailDomain>(
+        `/api/integrations/domains/${domainName}${params}`,
+        {
+            dkim_key_size: dkimKeySize,
+        }
     )
+
     return response.data
 }

@@ -1,4 +1,5 @@
 import React, {ReactNode} from 'react'
+import classNames from 'classnames'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
@@ -14,8 +15,10 @@ type Instruction = {
 type Tutorial = {
     name: string
     icon?: string
+    iconIdType?: 'name' | 'src'
     helpDocsUrl?: string
     instructions: Instruction[]
+    description?: string
 }
 
 type Props = {
@@ -40,16 +43,31 @@ export default function MigrationTutorialList({
                 {tutorials.map((tutorial) => (
                     <AccordionItem id={tutorial.name} key={tutorial.name}>
                         <AccordionHeader>
-                            {tutorial.icon && (
-                                <img
-                                    src={tutorial.icon}
-                                    alt={tutorial.name}
-                                    className={css.tutorialIcon}
-                                />
-                            )}
+                            {tutorial.icon &&
+                                (tutorial.iconIdType === 'name' ? (
+                                    <i
+                                        className={classNames(
+                                            'material-icons',
+                                            css.tutorialIcon
+                                        )}
+                                    >
+                                        {tutorial.icon}
+                                    </i>
+                                ) : (
+                                    <img
+                                        src={tutorial.icon}
+                                        alt={tutorial.name}
+                                        className={css.tutorialIcon}
+                                    />
+                                ))}
                             {tutorial.name}
                         </AccordionHeader>
                         <AccordionBody>
+                            {tutorial.description && (
+                                <div className={css.tutorialDescription}>
+                                    {tutorial.description}
+                                </div>
+                            )}
                             <NumberedList
                                 items={tutorial.instructions.map(
                                     ({message}) => message

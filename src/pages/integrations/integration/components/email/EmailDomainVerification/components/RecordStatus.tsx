@@ -30,7 +30,7 @@ const RecordStatus = ({isVerified}: Props) => {
                 'material-icons'
             )}
         >
-            cancel
+            close
         </i>
     )
 }

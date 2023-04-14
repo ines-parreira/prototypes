@@ -11,6 +11,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import MigrationTutorialList from './MigrationTutorialList'
+import MigrationDomainList from './MigrationDomainList'
 
 import css from './MigrationOutboundVerification.less'
 
@@ -45,7 +46,7 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
     const [{loading: isLoading}, fetchAllDomains] = useAsyncFn(async () => {
         try {
             const response = await fetchMigrationDomains()
-            setDomains(response)
+            setDomains(response.data)
         } catch (error) {
             const {response} = error as AxiosError<{error: {msg: string}}>
             const errorMsg =
@@ -107,7 +108,12 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
                         </div>
                     )}
                 </div>
-                {domains && <div data-testid="domains-list"></div>}
+                {domains && (
+                    <MigrationDomainList
+                        domains={domains}
+                        refreshMigrationData={handleRefresh}
+                    />
+                )}
                 <div className={css.navigationButtonsWrapper}>
                     <Button
                         fillStyle="ghost"
@@ -128,8 +134,86 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
                 </div>
             </Col>
             <Col>
-                <div>HOW TO - HERE</div>
-                <MigrationTutorialList tutorials={[]} />
+                <MigrationTutorialList
+                    tutorials={[
+                        {
+                            name: 'How to add a new record',
+                            description:
+                                'Exact location of settings may vary based on your hosting provider.',
+                            icon: 'note_add',
+                            iconIdType: 'name',
+                            instructions: [
+                                {
+                                    message: (
+                                        <>
+                                            <strong>Log in</strong> to your
+                                            hosting providers’ website
+                                        </>
+                                    ),
+                                },
+                                {
+                                    message: (
+                                        <>
+                                            Go to your{' '}
+                                            <strong>account settings</strong>{' '}
+                                            and find the{' '}
+                                            <strong>
+                                                DNS Management section
+                                            </strong>
+                                            . This may be called "DNS
+                                            Management", "Domains", "DNS", etc.
+                                        </>
+                                    ),
+                                },
+                                {
+                                    message: (
+                                        <>
+                                            Click to{' '}
+                                            <strong>
+                                                add or create a new DNS
+                                            </strong>{' '}
+                                            record
+                                        </>
+                                    ),
+                                },
+                                {
+                                    message: (
+                                        <>
+                                            Using the details we provided on the
+                                            left under the domain,{' '}
+                                            <strong>
+                                                set the record type to 'TXT'
+                                            </strong>{' '}
+                                            and{' '}
+                                            <strong>
+                                                copy-paste the host and value
+                                            </strong>
+                                        </>
+                                    ),
+                                },
+                                {
+                                    message: (
+                                        <>
+                                            <strong>Repeat step 3 and 4</strong>{' '}
+                                            until all records from the table are
+                                            added.
+                                        </>
+                                    ),
+                                },
+                                {
+                                    message: (
+                                        <>
+                                            All set! Check back later to see if
+                                            it's been successfully verified.
+                                            Verification may take up to 72
+                                            hours.
+                                        </>
+                                    ),
+                                },
+                            ],
+                        },
+                    ]}
+                />
             </Col>
         </div>
     )

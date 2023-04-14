@@ -67,6 +67,7 @@ export type EmailDomain = {
     data: {
         sending_dns_records: Array<DomainDNSRecord>
     }
+    provider?: EmailProvider
 }
 
 export type EmailSignature = {
@@ -87,6 +88,9 @@ export enum EmailMigrationInboundVerificationStatus {
     InboundSuccess = 'inbound_success',
     InboundFailed = 'inbound_failed',
     InboundCriticalFailure = 'inbound_critical_failure',
+    OutboundInitiated = 'outbound_initiated',
+    OutboundPending = 'outbound_pending',
+    OutboundSuccess = 'outbound_success',
 }
 
 export type MigrationIntegration = {
@@ -101,7 +105,7 @@ export type EmailMigrationInboundVerification = {
 
 export enum EmailMigrationOutboundVerificationStatus {
     Verified = 'verified',
-    Unverified = 'not_verified',
+    Unverified = 'unverified',
 }
 
 export type EmailMigrationSenderVerificationIntegration = {
@@ -110,18 +114,14 @@ export type EmailMigrationSenderVerificationIntegration = {
     migration: {
         status: EmailMigrationInboundVerificationStatus
     }
-    sender: SenderInformation
-}
-
-export type EmailMigrationSenderVerification = {
-    integrations: EmailMigrationSenderVerificationIntegration[]
+    sender_verification: Maybe<SenderInformation>
 }
 
 export type EmailMigrationOutboundVerification = {
     name: string
     status: EmailMigrationOutboundVerificationStatus
-    domain: EmailDomain
-    sender_verification: EmailMigrationSenderVerification
+    domain: EmailDomain | Record<string, never>
+    integrations: EmailMigrationSenderVerificationIntegration[]
 }
 
 export const isEmailIntegration = createTypeGuard<

@@ -15,7 +15,7 @@ import CopyButton from './CopyButton'
 
 type Props = {
     record: DomainDNSRecord
-    provider: string
+    provider?: string
 }
 
 const RecordItem = ({record, provider}: Props) => {
@@ -35,8 +35,13 @@ const RecordItem = ({record, provider}: Props) => {
                 </span>
                 <CopyButton clipboardTarget={`#${hostID}`} />
             </BodyCell>
-            <BodyCell className={classnames(css.cell, css['value-cell'])}>
-                <span id={valueID}>{record.value}</span>
+            <BodyCell
+                className={classnames(css.cell, css['value-cell'])}
+                innerClassName={css.valueCellInner}
+            >
+                <div id={valueID} className={css.valueText}>
+                    {record.value}
+                </div>
                 <CopyButton clipboardTarget={`#${valueID}`} />
             </BodyCell>
             {provider !== EmailProvider.Sendgrid && (

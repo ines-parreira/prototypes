@@ -1,10 +1,19 @@
 @import '~css/new/colorTokens';
+@import '~css/new/layout.less';
 
 :local {
     .records-table {
         max-width: 1100px;
         margin-bottom: 24px;
         margin-top: 24px;
+        table-layout: fixed;
+
+        .statusHeader {
+            width: 84px;
+        }
+        .recordTypeHeader {
+            width: 104px;
+        }
     }
     .row {
         :hover {
@@ -24,10 +33,22 @@
     .value-cell {
         max-width: 550px;
         overflow-wrap: break-word;
+        padding: @layout-spacing-s 0;
 
         > div {
             background: @classic-neutral-grey-2;
             border-radius: 10px;
+            position: relative;
+        }
+
+        .valueCellInner {
+            padding-left: @layout-spacing-xs;
+            padding-right: 0 !important;
+        }
+
+        .valueText {
+            height: 64px;
+            overflow-y: scroll;
         }
     }
     .current-values-cell {

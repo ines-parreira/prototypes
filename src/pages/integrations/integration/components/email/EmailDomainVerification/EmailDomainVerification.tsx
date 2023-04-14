@@ -127,10 +127,7 @@ export default function EmailDomainVerification({
                         </div>
                     )}
                     <RecordsTable
-                        records={
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                            emailDomain.data.sending_dns_records
-                        }
+                        records={emailDomain.data.sending_dns_records}
                         provider={provider}
                     />
 

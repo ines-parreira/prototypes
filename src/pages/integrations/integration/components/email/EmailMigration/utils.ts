@@ -1,6 +1,9 @@
+import {isEmpty} from 'lodash'
 import {
     EmailMigrationInboundVerification,
     EmailMigrationInboundVerificationStatus,
+    EmailMigrationOutboundVerification,
+    EmailMigrationOutboundVerificationStatus,
 } from 'models/integration/types'
 import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
 
@@ -17,6 +20,8 @@ export const computeMigrationInboundVerificationStatus = (
         [
             EmailMigrationInboundVerificationStatus.InboundPartialSuccess,
             EmailMigrationInboundVerificationStatus.InboundSuccess,
+            EmailMigrationInboundVerificationStatus.OutboundInitiated,
+            EmailMigrationInboundVerificationStatus.OutboundSuccess,
         ].includes(migration.status)
     ) {
         return EmailVerificationStatus.Success
@@ -40,4 +45,35 @@ export const getInboundUnverifiedMigrations = (
             computeMigrationInboundVerificationStatus(migration) !==
             EmailVerificationStatus.Success
     )
+}
+
+export const computeSingleSenderVerificationStatus = (
+    verification: EmailMigrationOutboundVerification
+) => {
+    const submittedVerifications = verification.integrations.filter(
+        (integration) => !isEmpty(integration.sender_verification)
+    )
+
+    if (!submittedVerifications.length) {
+        return EmailVerificationStatus.Unverified
+    }
+
+    const incompleteVerifications = submittedVerifications.filter(
+        (integration) =>
+            integration.migration.status !==
+            EmailMigrationInboundVerificationStatus.OutboundSuccess
+    )
+
+    return incompleteVerifications.length
+        ? EmailVerificationStatus.Pending
+        : EmailVerificationStatus.Success
+}
+
+export const computeDomainVerificationStatus = (
+    verification: EmailMigrationOutboundVerification
+) => {
+    return verification.status ===
+        EmailMigrationOutboundVerificationStatus.Unverified
+        ? EmailVerificationStatus.Unverified
+        : EmailVerificationStatus.Success
 }

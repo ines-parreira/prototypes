@@ -17,9 +17,16 @@
         }
     }
 
-    .tutorialIcon {
+    /* use i.tutorialIcon to override the icon size */
+    .tutorialIcon,
+    i.tutorialIcon {
         height: 24px;
         margin-right: @layout-spacing-xs;
+        font-size: 24px;
+    }
+
+    .tutorialDescription {
+        margin-bottom: @layout-spacing-m;
     }
 
     .helpDocLink {

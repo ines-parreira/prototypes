@@ -15,7 +15,7 @@ import MigrationOutboundVerification from '../EmailMigration/MigrationOutboundVe
 jest.useFakeTimers()
 
 jest.mock('models/integration/resources/email', () => ({
-    fetchMigrationDomains: jest.fn(() => []),
+    fetchMigrationDomains: jest.fn(() => ({data: []})),
 }))
 
 const getMomentSpy = jest.spyOn(dateUtils, 'getMoment') as jest.Mock
@@ -43,7 +43,7 @@ describe('MigrationOutboundVerification', () => {
         expect(onBackClick).toHaveBeenCalled()
     })
 
-    it('should display and refresh last checked time', async () => {
+    it('should display and refresh last checked time after timeout', async () => {
         getMomentSpy.mockReturnValue({calendar: () => 'Today at 00:00'})
         renderComponent()
         await screen.findByText('Last checked: Today at 00:00')

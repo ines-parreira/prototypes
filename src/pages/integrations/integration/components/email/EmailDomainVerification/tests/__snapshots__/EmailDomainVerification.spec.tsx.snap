@@ -15,29 +15,114 @@ exports[`<EmailDomainVerification/> render() should render a delete button to ac
         class="headerRow"
       >
         <td
-          class="wrapper normal"
+          class="wrapper statusHeader normal"
         >
-          Status
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Status
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper recordTypeHeader normal"
+        >
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Record Type
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
         </td>
         <td
           class="wrapper normal"
         >
-          Record Type
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Host
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
         </td>
         <td
           class="wrapper normal"
         >
-          Host
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Value
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
         </td>
         <td
           class="wrapper normal"
         >
-          Value
-        </td>
-        <td
-          class="wrapper normal"
-        >
-          Current Values
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Current Values
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
         </td>
       </tr>
     </thead>
@@ -107,29 +192,114 @@ exports[`<EmailDomainVerification/> render() should render the page when domain 
         class="headerRow"
       >
         <td
-          class="wrapper normal"
+          class="wrapper statusHeader normal"
         >
-          Status
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Status
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper recordTypeHeader normal"
+        >
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Record Type
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
         </td>
         <td
           class="wrapper normal"
         >
-          Record Type
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Host
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
         </td>
         <td
           class="wrapper normal"
         >
-          Host
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Value
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
         </td>
         <td
           class="wrapper normal"
         >
-          Value
-        </td>
-        <td
-          class="wrapper normal"
-        >
-          Current Values
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Current Values
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
         </td>
       </tr>
     </thead>
@@ -183,29 +353,114 @@ exports[`<EmailDomainVerification/> render() should render the page when domain 
         class="headerRow"
       >
         <td
-          class="wrapper normal"
+          class="wrapper statusHeader normal"
         >
-          Status
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Status
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper recordTypeHeader normal"
+        >
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Record Type
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
         </td>
         <td
           class="wrapper normal"
         >
-          Record Type
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Host
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
         </td>
         <td
           class="wrapper normal"
         >
-          Host
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Value
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
         </td>
         <td
           class="wrapper normal"
         >
-          Value
-        </td>
-        <td
-          class="wrapper normal"
-        >
-          Current Values
+          <div
+            class="content"
+          >
+            <div
+              class="cell"
+            >
+              <span
+                class="title"
+              >
+                Current Values
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
         </td>
       </tr>
     </thead>

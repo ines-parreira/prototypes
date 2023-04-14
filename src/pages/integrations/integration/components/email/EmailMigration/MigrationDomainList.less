@@ -1,0 +1,27 @@
+@import '~css/new/layout.less';
+@import '~css/new/colorTokens';
+
+:local {
+    .title {
+        display: flex;
+        gap: @layout-spacing-xs;
+        align-items: center;
+
+        i.icon {
+            font-size: 16px;
+            color: @classic-neutral-grey-4;
+        }
+    }
+
+    .titleContainer {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .switchMethod {
+        margin-top: @layout-spacing-m;
+        margin-bottom: 0;
+    }
+}
