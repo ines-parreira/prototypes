@@ -168,7 +168,7 @@ class App extends React.Component<Props> {
                                         css.content
                                     )}
                                 >
-                                    <div className="mobile-nav d-md-none d-flex justify-content-between align-items-center">
+                                    <div className="mobile-nav">
                                         <IconButton
                                             className="mr-3"
                                             fillStyle="ghost"

@@ -1,3 +1,7 @@
+.mobile-nav {
+    display: none;
+}
+
 @media @mobiles {
     // hide Smooch chat
     #sk-holder {
@@ -5,6 +9,9 @@
     }
 
     .mobile-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         padding: 10px;
         background-color: @classic-neutral-grey-6;
         color: @classic-neutral-grey-0;
