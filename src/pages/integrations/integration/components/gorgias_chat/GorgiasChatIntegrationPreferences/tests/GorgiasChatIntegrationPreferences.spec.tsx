@@ -38,6 +38,9 @@ const defaultState = {
     agents: fromJS({
         all: [user],
     }),
+    entities: {
+        chatInstallationStatus: {installed: true},
+    },
 } as unknown as RootState
 
 jest.mock('utils/launchDarkly')

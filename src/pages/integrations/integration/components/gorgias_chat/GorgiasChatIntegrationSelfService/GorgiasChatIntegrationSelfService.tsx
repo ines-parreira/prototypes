@@ -20,7 +20,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
-import ChatIntegrationNavigation from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationNavigation'
+import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import useAppSelector from 'hooks/useAppSelector'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
@@ -238,7 +238,7 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                 }
             />
 
-            <ChatIntegrationNavigation integration={integration} />
+            <GorgiasChatIntegrationHeader integration={integration} />
 
             {hasSelfServiceArticleRecommendation && hasAutomationAddOn ? (
                 <GorgiasChatIntegrationPreviewContainer

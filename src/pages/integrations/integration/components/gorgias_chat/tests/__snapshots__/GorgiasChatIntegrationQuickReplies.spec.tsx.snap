@@ -137,7 +137,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
             </div>
           </div>
         </PageHeader>
-        <Component
+        <GorgiasChatIntegrationHeader
           integration={
             Immutable.Map {
               "id": 7,
@@ -151,10 +151,39 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
             }
           }
         >
-          <div
-            data-testid="GorgiasChatIntegrationNavigation"
+          <Component
+            integration={
+              Immutable.Map {
+                "id": 7,
+                "name": "my chat integration",
+                "meta": Immutable.Map {},
+                "decoration": Immutable.Map {
+                  "introduction_text": "this is an intro",
+                  "input_placeholder": "type something please",
+                  "main_color": "#123456",
+                },
+              }
+            }
+          >
+            <div
+              data-testid="GorgiasChatIntegrationNavigation"
+            />
+          </Component>
+          <GorgiasChatIntegrationNotInstalledBanner
+            integration={
+              Immutable.Map {
+                "id": 7,
+                "name": "my chat integration",
+                "meta": Immutable.Map {},
+                "decoration": Immutable.Map {
+                  "introduction_text": "this is an intro",
+                  "input_placeholder": "type something please",
+                  "main_color": "#123456",
+                },
+              }
+            }
           />
-        </Component>
+        </GorgiasChatIntegrationHeader>
         <GorgiasChatIntegrationPreviewContainer
           preview={
             <ChatIntegrationPreview
@@ -1089,7 +1118,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
             </div>
           </div>
         </PageHeader>
-        <Component
+        <GorgiasChatIntegrationHeader
           integration={
             Immutable.Map {
               "id": 7,
@@ -1111,10 +1140,55 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
             }
           }
         >
-          <div
-            data-testid="GorgiasChatIntegrationNavigation"
+          <Component
+            integration={
+              Immutable.Map {
+                "id": 7,
+                "name": "my chat integration",
+                "meta": Immutable.Map {
+                  "quick_replies": Immutable.Map {
+                    "enabled": true,
+                    "replies": Immutable.List [
+                      "foo",
+                      "bar",
+                    ],
+                  },
+                },
+                "decoration": Immutable.Map {
+                  "introduction_text": "this is an intro",
+                  "input_placeholder": "type something please",
+                  "main_color": "#123456",
+                },
+              }
+            }
+          >
+            <div
+              data-testid="GorgiasChatIntegrationNavigation"
+            />
+          </Component>
+          <GorgiasChatIntegrationNotInstalledBanner
+            integration={
+              Immutable.Map {
+                "id": 7,
+                "name": "my chat integration",
+                "meta": Immutable.Map {
+                  "quick_replies": Immutable.Map {
+                    "enabled": true,
+                    "replies": Immutable.List [
+                      "foo",
+                      "bar",
+                    ],
+                  },
+                },
+                "decoration": Immutable.Map {
+                  "introduction_text": "this is an intro",
+                  "input_placeholder": "type something please",
+                  "main_color": "#123456",
+                },
+              }
+            }
           />
-        </Component>
+        </GorgiasChatIntegrationHeader>
         <GorgiasChatIntegrationPreviewContainer
           preview={
             <ChatIntegrationPreview

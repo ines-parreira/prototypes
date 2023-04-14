@@ -22,7 +22,7 @@ import {
 import {IntegrationType} from 'models/integration/constants'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 
-import ChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
@@ -225,7 +225,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                     />
                 </PageHeader>
 
-                <ChatIntegrationNavigation integration={integration} />
+                <GorgiasChatIntegrationHeader integration={integration} />
 
                 <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>
                     <Form onSubmit={this._submit}>

@@ -35,6 +35,9 @@ const defaultState = {
     agents: fromJS({
         all: [user],
     }),
+    entities: {
+        chatInstallationStatus: {installed: true},
+    },
 } as unknown as RootState
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)

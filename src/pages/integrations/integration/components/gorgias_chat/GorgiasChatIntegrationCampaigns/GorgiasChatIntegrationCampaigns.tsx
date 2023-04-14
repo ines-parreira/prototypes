@@ -13,7 +13,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import {IntegrationType} from 'models/integration/constants'
 import CampaignGenerator from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator/CampaignGenerator'
-import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 
 import css from './GorgiasChatIntegrationCampaigns.less'
@@ -75,7 +75,8 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                     </Link>
                 </PageHeader>
 
-                <GorgiasChatIntegrationNavigation integration={integration} />
+                <GorgiasChatIntegrationHeader integration={integration} />
+
                 <Container fluid className={css.pageContainer}>
                     <p>
                         Use campaigns to prompt visitors of your website to

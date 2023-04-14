@@ -35,7 +35,7 @@ import {IntegrationType} from '../../../../../../../models/integration/types'
 import * as integrationSelectors from '../../../../../../../state/integrations/selectors'
 import {NotificationStatus} from '../../../../../../../state/notifications/types'
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
-import GorgiasChatIntegrationNavigation from '../../GorgiasChatIntegrationNavigation'
+import GorgiasChatIntegrationHeader from '../../GorgiasChatIntegrationHeader'
 import useIntegrationPageViewLogEvent from '../../../../hooks/useIntegrationPageViewLogEvent'
 
 import {
@@ -303,7 +303,7 @@ function GorgiasTranslateText({
                 }
             />
 
-            <GorgiasChatIntegrationNavigation integration={integration} />
+            <GorgiasChatIntegrationHeader integration={integration} />
 
             <Container fluid className={css.pageContainer}>
                 <Row>

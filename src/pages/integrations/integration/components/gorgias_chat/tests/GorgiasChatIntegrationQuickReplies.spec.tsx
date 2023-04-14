@@ -44,7 +44,11 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
 
     beforeEach(() => {
-        store = mockStore({})
+        store = mockStore({
+            entities: {
+                chatInstallationStatus: {installed: true},
+            },
+        } as unknown as RootState)
     })
 
     describe('render()', () => {

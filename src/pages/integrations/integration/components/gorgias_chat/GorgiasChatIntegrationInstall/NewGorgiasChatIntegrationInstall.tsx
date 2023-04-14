@@ -6,15 +6,12 @@ import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {deleteIntegration} from 'state/integrations/actions'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
-import {NotificationStatus} from 'state/notifications/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import {getStoreIntegrations} from 'state/integrations/selectors'
 
-import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import GorgiasChatIntegrationOneClickInstallationCard from './NewGorgiasChatIntegrationOneClickInstallationCard'
 import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrationManualInstallationCard'
@@ -37,7 +34,6 @@ const GorgiasChatIntegrationInstall = ({
     isUpdate,
 }: Props) => {
     const storeIntegrations = useAppSelector(getStoreIntegrations)
-    const installationStatus = useAppSelector(getChatInstallationStatus)
     const applicationId = integration.getIn(['meta', 'app_id'])
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
     const shopifyIntegrationIds: List<number> = integration.getIn(
@@ -78,28 +74,11 @@ const GorgiasChatIntegrationInstall = ({
                 />
             </PageHeader>
 
-            <GorgiasChatIntegrationNavigation integration={integration} />
+            <GorgiasChatIntegrationHeader
+                integration={integration}
+                showInstallLink={false}
+            />
 
-            {!installationStatus.installed && (
-                <BannerNotification
-                    status={NotificationStatus.Error}
-                    showIcon
-                    message="Your chat widget was not seen installed on your website
-                        in the past 72 hours. Check its installation and your
-                        website to resolve."
-                    actionHTML={
-                        <a
-                            href="https://docs.gorgias.com/en-US/chat-getting-started-81789#installation-monitoring"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            More Information
-                        </a>
-                    }
-                    borderless
-                    dismissible={false}
-                />
-            )}
             <Container fluid className={css.container}>
                 <div className={css.content}>
                     <div>

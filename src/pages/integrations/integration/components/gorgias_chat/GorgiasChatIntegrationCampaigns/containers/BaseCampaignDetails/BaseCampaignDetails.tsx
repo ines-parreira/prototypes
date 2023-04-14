@@ -6,7 +6,7 @@ import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import PageHeader from 'pages/common/components/PageHeader'
 
-import ChatIntegrationNavigation from '../../../GorgiasChatIntegrationNavigation'
+import GorgiasChatIntegrationHeader from '../../../GorgiasChatIntegrationHeader'
 
 type OwnProps = {
     children: ReactNode
@@ -37,7 +37,7 @@ export const BaseCampaignDetails = ({
                     </Breadcrumb>
                 }
             />
-            <ChatIntegrationNavigation integration={integration} />
+            <GorgiasChatIntegrationHeader integration={integration} />
 
             {children}
         </div>

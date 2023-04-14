@@ -16,9 +16,6 @@ import NavigatedSuccessModal, {
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
-import {ChatInstallationStatusState} from 'state/entities/chatInstallationStatus'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
@@ -31,7 +28,7 @@ import {IntegrationType} from '../../../../../../models/integration/types'
 import PageHeader from '../../../../../common/components/PageHeader'
 
 import {renderChatCodeSnippet} from '../renderChatCodeSnippet'
-import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
 import GorgiasChatIntegrationCustomInstallationCard from './GorgiasChatIntegrationCustomInstallationCard'
@@ -46,7 +43,6 @@ type OwnProps = {
         deleteIntegration: typeof deleteIntegration
     }
     isUpdate: boolean
-    installationStatus: ChatInstallationStatusState
 }
 
 const mapStateToProps = (state: RootState) => {
@@ -61,7 +57,6 @@ const mapStateToProps = (state: RootState) => {
             integrationSelectors.getIntegrationTypeExtraState(
                 GORGIAS_CHAT_INTEGRATION_TYPE as IntegrationType
             )(state),
-        installationStatus: getChatInstallationStatus(state),
     }
 }
 
@@ -77,7 +72,6 @@ function GorgiasChatIntegrationInstall({
     hasAutomationAddOn,
     hasLegacyAutomationAddOnFeatures,
     isUpdate,
-    installationStatus,
 }: OwnProps & ReturnType<typeof mapStateToProps>) {
     const isAutomationSettingsRevampEnabled =
         useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
@@ -157,28 +151,14 @@ function GorgiasChatIntegrationInstall({
                     }
                 />
 
-                <GorgiasChatIntegrationNavigation integration={integration} />
+                <GorgiasChatIntegrationHeader
+                    integration={integration}
+                    showInstallLink={false}
+                />
 
                 <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col className={css.pageColumn} md="8">
-                            {!installationStatus.installed && (
-                                <div className={css.installationStatusIssue}>
-                                    <Alert type={AlertType.Error} icon>
-                                        Your chat widget was not seen installed
-                                        on your website in the past 72 hours.
-                                        Check its installation and your website
-                                        to resolve.{' '}
-                                        <a
-                                            href="https://docs.gorgias.com/en-US/chat-getting-started-81789#installation-monitoring"
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            More information
-                                        </a>
-                                    </Alert>
-                                </div>
-                            )}
                             {isShopifyChat ? (
                                 <GorgiasChatIntegrationOneClickInstallationCard
                                     integration={integration}

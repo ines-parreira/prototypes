@@ -60,7 +60,7 @@ import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import GorgiasChatIntegrationNavigation from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationNavigation'
+import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import ConversationTimestamp from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationTimestamp'
@@ -697,7 +697,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             </PageHeader>
 
             {isUpdate && (
-                <GorgiasChatIntegrationNavigation integration={integration} />
+                <GorgiasChatIntegrationHeader integration={integration} />
             )}
 
             <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>

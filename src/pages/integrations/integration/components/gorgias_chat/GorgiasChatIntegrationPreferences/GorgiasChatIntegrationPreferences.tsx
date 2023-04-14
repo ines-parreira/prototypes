@@ -55,7 +55,7 @@ import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/Chat
 import OfflineMessages from '../GorgiasChatIntegrationPreview/OfflineMessages'
 import CustomerInitialMessages from '../GorgiasChatIntegrationPreview/CustomerInitialMessages'
 import ConversationTimestamp from '../GorgiasChatIntegrationPreview/ConversationTimestamp'
-import ChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import OptionalEmailCapturePreview from '../GorgiasChatIntegrationPreview/OptionalEmailCapture'
 import RequiredEmailCapturePreview from '../GorgiasChatIntegrationPreview/RequiredEmailCapture'
@@ -613,7 +613,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         />
                     </PageHeader>
 
-                    <ChatIntegrationNavigation integration={integration} />
+                    <GorgiasChatIntegrationHeader integration={integration} />
+
                     <GorgiasChatIntegrationPreviewContainer
                         preview={chatPreview}
                     >
