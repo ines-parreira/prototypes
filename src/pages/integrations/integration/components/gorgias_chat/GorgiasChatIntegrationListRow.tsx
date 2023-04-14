@@ -62,13 +62,14 @@ const GorgiasChatIntegrationListRow = ({
     ])
 
     const baseLink = `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}`
+    const preferencesLink = `${baseLink}/${Tab.Preferences}`
+    const installationLink = `${baseLink}/${Tab.Installation}`
     const editLink = `${baseLink}/${
         isChatCreationWizardEnabled &&
         wizardStatus === GorgiasChatCreationWizardStatus.Draft
             ? Tab.CreateWizard
             : Tab.Campaigns
     }`
-    const preferencesLink = `${baseLink}/${Tab.Preferences}}`
     const shopIntegrationId: number | null = chat.getIn(
         ['meta', 'shop_integration_id'],
         null
@@ -82,6 +83,10 @@ const GorgiasChatIntegrationListRow = ({
     const language: string = chat.getIn(['meta', 'language'])
 
     const goToChat = () => history.push(editLink)
+
+    const stopPropagation = (ev: React.MouseEvent) => {
+        ev.stopPropagation()
+    }
 
     return (
         <TableBodyRow onClick={goToChat}>
@@ -182,7 +187,7 @@ const GorgiasChatIntegrationListRow = ({
                                         Chat is{' '}
                                         <NavLink
                                             to={preferencesLink}
-                                            onClick={(e) => e.stopPropagation()}
+                                            onClick={stopPropagation}
                                         >
                                             hidden outside
                                             <br />
@@ -192,25 +197,34 @@ const GorgiasChatIntegrationListRow = ({
                                 </>
                             )}
                             {chatStatus ===
-                                GorgiasChatStatusEnum.NOT_INSTALLED && (
-                                <>
-                                    <Tooltip
-                                        autohide={false}
-                                        delay={100}
-                                        placement="top"
-                                        style={{
-                                            textAlign: 'center',
-                                            width: 180,
-                                        }}
-                                        target={`chat-status-${integrationId}`}
-                                    >
-                                        Chat Widget was not seen installed on
-                                        your website in the past 72 hours. Check
-                                        its installation and your website to
-                                        resolve.
-                                    </Tooltip>
-                                </>
-                            )}
+                                GorgiasChatStatusEnum.NOT_INSTALLED &&
+                                (!isChatCreationWizardEnabled ||
+                                    wizardStatus ===
+                                        GorgiasChatCreationWizardStatus.Published) && (
+                                    <>
+                                        <Tooltip
+                                            autohide={false}
+                                            delay={100}
+                                            placement="top"
+                                            style={{
+                                                textAlign: 'center',
+                                                width: 180,
+                                            }}
+                                            target={`chat-status-${integrationId}`}
+                                        >
+                                            Chat Widget was not seen installed
+                                            on your website in the past 72
+                                            hours. Check its{' '}
+                                            <Link
+                                                to={installationLink}
+                                                onClick={stopPropagation}
+                                            >
+                                                installation
+                                            </Link>{' '}
+                                            and your website to resolve.
+                                        </Tooltip>
+                                    </>
+                                )}
                         </div>
                     )
                 )}
@@ -221,21 +235,11 @@ const GorgiasChatIntegrationListRow = ({
             <BodyCell size="smallest" innerClassName={css.lastColumn}>
                 {isChatCreationWizardEnabled &&
                 wizardStatus === GorgiasChatCreationWizardStatus.Draft ? (
-                    <Link
-                        to={editLink}
-                        onClick={(ev) => {
-                            ev.stopPropagation()
-                        }}
-                    >
+                    <Link to={editLink} onClick={stopPropagation}>
                         Continue Setup
                     </Link>
                 ) : (
-                    <ForwardIcon
-                        href={editLink}
-                        onClick={(ev) => {
-                            ev.stopPropagation()
-                        }}
-                    />
+                    <ForwardIcon href={editLink} onClick={stopPropagation} />
                 )}
             </BodyCell>
         </TableBodyRow>

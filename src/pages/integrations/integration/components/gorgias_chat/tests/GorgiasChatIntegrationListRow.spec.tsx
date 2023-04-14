@@ -3,7 +3,8 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {fromJS, Map, List} from 'immutable'
 import configureMockStore from 'redux-mock-store'
-import {render} from '@testing-library/react'
+import {render, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import LD from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -218,4 +219,86 @@ describe('<GorgiasChatIntegrationListRow />', () => {
             expect(getByText(expected)).toBeDefined()
         }
     )
+
+    it('should not render not installed popover if chat is draft', async () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.ChatCreationWizard]: true,
+        }))
+        jest.spyOn(
+            hookGorgiasChatIntegrationStatusData,
+            'useGorgiasChatIntegrationStatusData'
+        ).mockImplementation(() => ({
+            chatStatus: GorgiasChatStatusEnum.NOT_INSTALLED,
+            isChatStatusLoading: false,
+            isChatStatusError: false,
+        }))
+
+        const {getByText, queryByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TestWrapper>
+                    <GorgiasChatIntegrationListRow
+                        {...defaultProps}
+                        chat={fromJS({
+                            ...defaultChat,
+                            meta: {
+                                ...defaultChat.meta,
+                                wizard: {
+                                    status: GorgiasChatCreationWizardStatus.Draft,
+                                },
+                            },
+                        })}
+                    />
+                </TestWrapper>
+            </Provider>
+        )
+
+        const statusIndicator = getByText('Not Installed')
+
+        userEvent.hover(statusIndicator)
+
+        await waitFor(() => {
+            expect(queryByText(/not seen installed/)).not.toBeInTheDocument()
+        })
+    })
+
+    it('should render not installed popover if chat is published', async () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.ChatCreationWizard]: true,
+        }))
+        jest.spyOn(
+            hookGorgiasChatIntegrationStatusData,
+            'useGorgiasChatIntegrationStatusData'
+        ).mockImplementation(() => ({
+            chatStatus: GorgiasChatStatusEnum.NOT_INSTALLED,
+            isChatStatusLoading: false,
+            isChatStatusError: false,
+        }))
+
+        const {getByText, queryByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TestWrapper>
+                    <GorgiasChatIntegrationListRow
+                        {...defaultProps}
+                        chat={fromJS({
+                            ...defaultChat,
+                            meta: {
+                                ...defaultChat.meta,
+                                wizard: {
+                                    status: GorgiasChatCreationWizardStatus.Published,
+                                },
+                            },
+                        })}
+                    />
+                </TestWrapper>
+            </Provider>
+        )
+
+        const statusIndicator = getByText('Not Installed')
+
+        userEvent.hover(statusIndicator)
+
+        await waitFor(() => {
+            expect(queryByText(/not seen installed/)).toBeInTheDocument()
+        })
+    })
 })
