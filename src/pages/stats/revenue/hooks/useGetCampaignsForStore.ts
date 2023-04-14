@@ -7,11 +7,14 @@ import {getIntegrationsByType} from 'state/integrations/selectors'
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 
 export function useGetCampaignsForStore(selectedIntegrations: number[]) {
-    const chatIntegrations = useAppSelector(
-        getIntegrationsByType<GorgiasChatIntegration>(
-            IntegrationType.GorgiasChat
-        )
+    const getChatIntegrations = useMemo(
+        () =>
+            getIntegrationsByType<GorgiasChatIntegration>(
+                IntegrationType.GorgiasChat
+            ),
+        []
     )
+    const chatIntegrations = useAppSelector(getChatIntegrations)
 
     const campaigns = useMemo(() => {
         return chatIntegrations
