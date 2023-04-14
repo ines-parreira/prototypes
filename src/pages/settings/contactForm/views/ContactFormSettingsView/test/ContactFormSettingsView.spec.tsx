@@ -101,7 +101,7 @@ describe('<ContactFormSettingsView />', () => {
         CONTACT_FORM_APPEARANCE_PATH,
         CONTACT_FORM_PUBLISH_PATH,
     ])(
-        'should redirect to ABOUT page if contact form id is invalid',
+        'should redirect to ABOUT page if contact form id is invalid for %p',
         (path) => {
             const INVALID_ID = 'invalid-number'
             const history = createMemoryHistory({

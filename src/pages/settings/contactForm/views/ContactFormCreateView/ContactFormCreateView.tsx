@@ -57,7 +57,8 @@ const ContactFormCreateView = ({
 
             return {
                 name: `${domain} Contact Form`,
-                locale: CONTACT_FORM_DEFAULT_LOCALE,
+                help_center_id: null,
+                default_locale: CONTACT_FORM_DEFAULT_LOCALE,
                 email_integration: {
                     id: defaultEmailIntegration.id,
                     email: defaultEmailIntegration.meta.address,
@@ -104,7 +105,7 @@ const ContactFormCreateView = ({
     const onChangeLocale = (locale: LocaleCode) => {
         setCreateContactFormDto((prev) => ({
             ...prev,
-            locale,
+            default_locale: locale,
         }))
     }
 
@@ -129,7 +130,7 @@ const ContactFormCreateView = ({
     const isCreateButtonEnabled =
         createContactFormDto.name.length > 1 &&
         createContactFormDto.email_integration &&
-        createContactFormDto.locale !== undefined &&
+        createContactFormDto.default_locale !== undefined &&
         !isNameInvalid &&
         !isLoading
 
@@ -184,13 +185,15 @@ const ContactFormCreateView = ({
                         <EmailIntegrationInputSection
                             isRequiredShown
                             onChange={onChangeEmailIntegration}
-                            integration={createContactFormDto.email_integration}
+                            emailIntegrationId={
+                                createContactFormDto.email_integration.id
+                            }
                         />
                     </section>
 
                     <section>
                         <LanguageInputSection
-                            locale={createContactFormDto.locale}
+                            locale={createContactFormDto.default_locale}
                             onChange={onChangeLocale}
                         />
                     </section>

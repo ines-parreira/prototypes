@@ -15,20 +15,7 @@ const contactFormReducer = createReducer<ContactFormsState>(
     (builder) =>
         builder
             .addCase(contactFormUpdated, (state, {payload: newVersion}) => {
-                const oldVersion =
-                    state.contactFormById[newVersion.id.toString()] || {}
-                state.contactFormById[newVersion.id.toString()] = {
-                    ...oldVersion,
-                    ...newVersion,
-                    subject_lines: {
-                        ...(oldVersion?.subject_lines || {}),
-                        ...(newVersion?.subject_lines || {}),
-                        options: {
-                            ...(oldVersion?.subject_lines?.options || {}),
-                            ...(newVersion?.subject_lines?.options || {}),
-                        },
-                    },
-                }
+                state.contactFormById[newVersion.id.toString()] = newVersion
             })
             .addCase(contactFormsFetched, (state, {payload}) => {
                 payload.map((contactForm) => {

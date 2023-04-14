@@ -1,48 +1,17 @@
+import {Components} from 'rest_api/help_center_api/client.generated'
 import {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
-import {LocaleCode} from 'models/helpCenter/types'
 
 export type ContactFormIntegration =
     | EmailIntegration
     | GmailIntegration
     | OutlookIntegration
 
-export interface ContactForm {
-    id: number
-    name: string
-    default_locale: LocaleCode
-    source: string
-    subject_lines: {
-        options: Record<string, string[]>
-        allow_other: boolean
-        created_datetime: string
-        updated_datetime: string
-    }
-    email_integration: {
-        id: number
-        email: string
-    }
-    uid: string
-    code_snippet_template: string
-    url_template: string
-}
+export type ContactForm = Components.Schemas.ContactFormDto
 
-export type CreateContactFormDto = Pick<
-    ContactForm,
-    'name' | 'email_integration'
-> & {
-    locale: LocaleCode
-}
+export type CreateContactFormDto = Components.Schemas.CreateContactFormDto
 
-export type UpdateContactFormDto = Pick<
-    ContactForm,
-    'name' | 'email_integration' | 'default_locale'
-> & {
-    subject_lines: {
-        options: Record<string, string[]>
-        allow_other: boolean
-    }
-}
+export type UpdateContactFormDto = Components.Schemas.UpdateContactFormDto

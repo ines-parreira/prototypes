@@ -15,13 +15,13 @@ const emailIntegrationsSelector = integrationsSelectors.getIntegrationsByTypes(
 
 type EmailIntegrationInputSectionProps = {
     onChange: (integration: ContactFormIntegration) => void
-    integration: Pick<ContactFormIntegration, 'id'>
+    emailIntegrationId?: number
     isRequiredShown?: boolean
 }
 
 const EmailIntegrationInputSection = ({
     onChange,
-    integration,
+    emailIntegrationId,
     isRequiredShown = false,
 }: EmailIntegrationInputSectionProps): JSX.Element => {
     const integrations = useAppSelector(emailIntegrationsSelector)
@@ -58,7 +58,7 @@ const EmailIntegrationInputSection = ({
                 fullWidth
                 id="email-select"
                 placeholder="Select an email integration"
-                value={integration.id}
+                value={emailIntegrationId}
                 options={emailOptions}
                 onChange={onChangeEmail}
                 icon="email"

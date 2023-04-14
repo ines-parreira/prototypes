@@ -2897,7 +2897,8 @@
         },
         "/api/help-center/contact-forms/name/{input_name}": {
             "head": {
-                "operationId": "checkName",
+                "operationId": "checkContactFormNameExists",
+                "summary": "Check that a contact form with the provided name exists",
                 "parameters": [
                     {
                         "name": "input_name",
@@ -2912,7 +2913,8 @@
         },
         "/api/help-center/contact-forms": {
             "post": {
-                "operationId": "create",
+                "operationId": "createContactForm",
+                "summary": "Create a Contact Form",
                 "parameters": [],
                 "requestBody": {
                     "required": true,
@@ -2939,15 +2941,50 @@
                 "tags": ["contact-forms"]
             },
             "get": {
-                "operationId": "findAll",
-                "parameters": [],
-                "responses": {"200": {"description": ""}},
-                "tags": ["contact-forms"]
+                "operationId": "listContactForms",
+                "summary": "List the contact forms",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormsListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
             }
         },
         "/api/help-center/contact-forms/{id}": {
             "get": {
-                "operationId": "findOne",
+                "operationId": "getContactForm",
+                "summary": "Retrieve a Contact form",
                 "parameters": [
                     {
                         "name": "id",
@@ -2971,7 +3008,8 @@
                 "tags": ["contact-forms"]
             },
             "put": {
-                "operationId": "update",
+                "operationId": "updateContactForm",
+                "summary": "Update a Contact Form",
                 "parameters": [
                     {
                         "name": "id",
@@ -3005,7 +3043,8 @@
                 "tags": ["contact-forms"]
             },
             "delete": {
-                "operationId": "remove",
+                "operationId": "deleteContactForm",
+                "summary": "Delete a Contact Form",
                 "parameters": [
                     {
                         "name": "id",
@@ -3014,7 +3053,7 @@
                         "schema": {"type": "number"}
                     }
                 ],
-                "responses": {"200": {"description": ""}},
+                "responses": {"204": {"description": ""}},
                 "tags": ["contact-forms"]
             }
         }
@@ -3499,16 +3538,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "id": {"type": "number"},
                     "name": {"type": "string"},
@@ -3849,16 +3891,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "help_center_id": {"type": "number"},
                     "banner_text": {"type": "string", "nullable": true},
@@ -3916,16 +3961,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "id": {"type": "number"},
                     "from": {"type": "string"},
@@ -3946,16 +3994,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "id": {"type": "number"},
                     "name": {"type": "string"},
@@ -4426,16 +4477,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "verification_errors": {
                         "type": "array",
@@ -4654,16 +4708,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "category_id": {"type": "number"},
                     "category_unlisted_id": {"type": "string"},
@@ -4724,16 +4781,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "unlisted_id": {"type": "string"},
                     "help_center_id": {"type": "number"},
@@ -4794,16 +4854,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "category_id": {"type": "number"},
                     "category_unlisted_id": {"type": "string"},
@@ -5009,16 +5072,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "unlisted_id": {"type": "string"},
                     "category_id": {"type": "number", "nullable": true},
@@ -5067,16 +5133,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "unlisted_id": {"type": "string"},
                     "help_center_id": {"type": "number"},
@@ -5441,16 +5510,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "category_id": {"type": "number", "nullable": true},
                     "available_locales": {
@@ -5834,16 +5906,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "id": {"type": "number"},
                     "rating": {"enum": ["1", "-1"], "type": "string"},
@@ -5948,16 +6023,19 @@
                 "properties": {
                     "created_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Creation date"
                     },
                     "updated_datetime": {
                         "format": "date-time",
-                        "type": "string"
+                        "type": "string",
+                        "description": "Update date"
                     },
                     "deleted_datetime": {
                         "format": "date-time",
                         "type": "string",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "Deletion date"
                     },
                     "id": {"type": "number"},
                     "label": {"type": "string"},
@@ -6031,43 +6109,56 @@
                 },
                 "required": ["meta", "object", "data"]
             },
+            "EmailIntegrationDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "Identifier",
+                        "minimum": 1
+                    },
+                    "email": {"type": "string", "description": "Email value"}
+                },
+                "required": ["id", "email"]
+            },
+            "CreateSubjectLinesDto": {
+                "type": "object",
+                "properties": {
+                    "options": {
+                        "description": "List of options that will be displayed to the user in the subject line's select dropdown\nEach option can be from 2 to 50 character long\nMax 15 options",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 50,
+                            "minLength": 2
+                        }
+                    },
+                    "allow_other": {
+                        "type": "boolean",
+                        "description": "If true, the \"Other\" subject line option will be made available"
+                    }
+                },
+                "required": ["options", "allow_other"]
+            },
             "CreateContactFormDto": {
                 "type": "object",
                 "properties": {
-                    "name": {"type": "string"},
-                    "locale": {
-                        "type": "string",
-                        "enum": [
-                            "en-US",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
-                            "cs-CZ",
-                            "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE"
-                        ]
+                    "help_center_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Help center id that is serving this contact form",
+                        "example": null
                     },
-                    "email_integration": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"required": true, "type": "number"},
-                            "email": {"required": true, "type": "string"}
-                        }
-                    }
-                },
-                "required": ["name", "locale", "email_integration"]
-            },
-            "ContactFormDto": {
-                "type": "object",
-                "properties": {
-                    "id": {"type": "number"},
-                    "name": {"type": "string"},
-                    "uid": {"type": "string"},
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the Contact Form",
+                        "example": "My Contact Form",
+                        "minLength": 2,
+                        "maxLength": 255
+                    },
                     "default_locale": {
+                        "description": "Contact Form default locale",
+                        "example": "en-US",
                         "enum": [
                             "en-US",
                             "fr-FR",
@@ -6083,71 +6174,103 @@
                         ],
                         "type": "string"
                     },
-                    "source": {"type": "object"},
-                    "subject_lines": {
-                        "type": "object",
-                        "properties": {
-                            "options": {"required": true, "type": "object"},
-                            "allow_other": {
-                                "required": true,
-                                "type": "boolean"
-                            },
-                            "created_datetime": {
-                                "required": true,
-                                "type": "string"
-                            },
-                            "updated_datetime": {
-                                "required": true,
-                                "type": "string"
-                            }
-                        }
-                    },
                     "email_integration": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"required": true, "type": "number"},
-                            "email": {"required": true, "type": "string"}
-                        }
+                        "description": "Email integration used to receive this contact form inquiries",
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
                     },
-                    "code_snippet_template": {"type": "string"},
-                    "url_template": {"type": "string"}
+                    "subject_lines": {
+                        "nullable": true,
+                        "description": "Custom subject lines",
+                        "example": {
+                            "options": [
+                                "Order status",
+                                "Feedback",
+                                "Report an issue",
+                                "Product questions",
+                                "Request refund or discount"
+                            ],
+                            "allow_other": true
+                        },
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateSubjectLinesDto"
+                            }
+                        ]
+                    }
                 },
                 "required": [
-                    "id",
+                    "help_center_id",
                     "name",
-                    "uid",
                     "default_locale",
-                    "source",
-                    "subject_lines",
-                    "email_integration",
-                    "code_snippet_template",
-                    "url_template"
+                    "email_integration"
                 ]
             },
-            "UpdateContactFormDto": {
+            "SubjectLinesDto": {
                 "type": "object",
                 "properties": {
-                    "subject_lines": {
-                        "type": "object",
-                        "properties": {
-                            "options": {"required": true, "type": "object"},
-                            "allow_other": {
-                                "required": true,
-                                "type": "boolean"
-                            },
-                            "created_datetime": {
-                                "required": true,
-                                "type": "string"
-                            },
-                            "updated_datetime": {
-                                "required": true,
-                                "type": "string"
-                            }
-                        }
+                    "options": {
+                        "description": "List of options that will be displayed to the user in the subject line's select dropdown\nEach option can be from 2 to 50 character long\nMax 15 options",
+                        "type": "array",
+                        "items": {"type": "string"}
                     },
-                    "name": {"type": "string"},
-                    "locale": {
+                    "allow_other": {
+                        "type": "boolean",
+                        "description": "If true, the \"Other\" subject line option will be made available"
+                    }
+                },
+                "required": ["options", "allow_other"]
+            },
+            "ContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
                         "type": "string",
+                        "description": "Creation date"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "Update date"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Deletion date"
+                    },
+                    "id": {
+                        "type": "number",
+                        "description": "Identifier",
+                        "example": 1
+                    },
+                    "account_id": {
+                        "type": "number",
+                        "description": "Helpdesk account id",
+                        "example": 1
+                    },
+                    "help_center_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Help center id",
+                        "example": null
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the contact form instance",
+                        "example": "My Contact Form"
+                    },
+                    "uid": {
+                        "type": "string",
+                        "description": "Unique alphanumerical identifier",
+                        "example": "g46hsfy6"
+                    },
+                    "default_locale": {
+                        "description": "Default supported locale",
+                        "example": "en-US",
                         "enum": [
                             "en-US",
                             "fr-FR",
@@ -6160,17 +6283,142 @@
                             "no-NO",
                             "it-IT",
                             "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "source": {
+                        "description": "Source of the creation of the contact form",
+                        "example": "manual",
+                        "enum": ["manual", "help_center", "migration"],
+                        "type": "string"
+                    },
+                    "subject_lines": {
+                        "nullable": true,
+                        "description": "Custom subject lines",
+                        "example": {
+                            "options": [
+                                "Order status",
+                                "Feedback",
+                                "Report an issue",
+                                "Product questions",
+                                "Request refund or discount"
+                            ],
+                            "allow_other": true
+                        },
+                        "allOf": [
+                            {"$ref": "#/components/schemas/SubjectLinesDto"}
                         ]
                     },
                     "email_integration": {
-                        "type": "object",
-                        "properties": {
-                            "id": {"required": true, "type": "number"},
-                            "email": {"required": true, "type": "string"}
-                        }
+                        "nullable": true,
+                        "description": "Email integration details used to create Helpdesk tickets",
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
+                    },
+                    "code_snippet_template": {
+                        "type": "string",
+                        "description": "Code snippet template to use to embed this contact form"
+                    },
+                    "url_template": {
+                        "type": "string",
+                        "description": "Url template to use to construct the shareable Contact form link"
                     }
                 },
-                "required": ["subject_lines", "email_integration"]
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "id",
+                    "account_id",
+                    "help_center_id",
+                    "name",
+                    "uid",
+                    "default_locale",
+                    "source",
+                    "subject_lines",
+                    "email_integration",
+                    "code_snippet_template",
+                    "url_template"
+                ]
+            },
+            "ContactFormsListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {"$ref": "#/components/schemas/ContactFormDto"}
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "UpdateContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "help_center_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Help center id that is serving this contact form",
+                        "example": null
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the Contact Form",
+                        "example": "My Contact Form",
+                        "minLength": 2,
+                        "maxLength": 255
+                    },
+                    "default_locale": {
+                        "description": "Contact Form default locale",
+                        "example": "en-US",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "email_integration": {
+                        "description": "Email integration used to receive this contact form inquiries",
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
+                    },
+                    "subject_lines": {
+                        "nullable": true,
+                        "description": "Custom subject lines",
+                        "example": {
+                            "options": [
+                                "Order status",
+                                "Feedback",
+                                "Report an issue",
+                                "Product questions",
+                                "Request refund or discount"
+                            ],
+                            "allow_other": true
+                        },
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateSubjectLinesDto"
+                            }
+                        ]
+                    }
+                }
             }
         }
     },

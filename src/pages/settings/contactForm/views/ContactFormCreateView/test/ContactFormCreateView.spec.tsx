@@ -125,7 +125,8 @@ describe('<ContactFormCreateView />', () => {
                         email: 'billing@acme.gorgias.io',
                         id: 5,
                     },
-                    locale: 'en-US',
+                    default_locale: 'en-US',
+                    help_center_id: null,
                     name: 'acme Contact Form',
                 })
             })

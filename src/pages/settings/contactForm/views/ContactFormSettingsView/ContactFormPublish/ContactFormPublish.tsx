@@ -50,6 +50,7 @@ const ContactFormPublish = (): JSX.Element => {
                             <Input
                                 id="shareable-link"
                                 type="text"
+                                readOnly
                                 defaultValue={contactForm.url_template}
                             />
                             <InputGroupAddon addonType="append">

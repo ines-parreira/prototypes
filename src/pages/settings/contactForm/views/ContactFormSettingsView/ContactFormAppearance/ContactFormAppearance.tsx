@@ -23,8 +23,8 @@ const initUpdateDto = (
     return {
         subject_lines: {
             [currentLocale]: {
-                allow_other: subject_lines?.allow_other || true,
-                options: subject_lines?.options?.[currentLocale] || [],
+                allow_other: !!subject_lines?.allow_other,
+                options: subject_lines?.options || [],
             },
         },
     }
@@ -61,9 +61,7 @@ const ContactFormAppearance = (): JSX.Element => {
         const payload: Pick<UpdateContactFormDto, 'subject_lines'> = {
             subject_lines: {
                 allow_other,
-                options: {
-                    [contactForm.default_locale]: options,
-                },
+                options,
             },
         }
 

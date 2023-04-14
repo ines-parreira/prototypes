@@ -36,13 +36,7 @@ describe('contactForms reducer', () => {
                     default_locale: 'da-DK',
                     subject_lines: {
                         allow_other: true,
-                        created_datetime:
-                            ContactFormFixture.subject_lines.created_datetime,
-                        updated_datetime:
-                            ContactFormFixture.subject_lines.updated_datetime,
-                        options: {
-                            ['da-DK']: ['TEST'],
-                        },
+                        options: ['TEST'],
                     },
                 })
             )

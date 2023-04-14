@@ -1,6 +1,7 @@
 import {useCallback, useState, useEffect} from 'react'
 import axios from 'axios'
 import {get} from 'lodash'
+import {useHistory} from 'react-router-dom'
 import {
     ContactForm,
     CreateContactFormDto,
@@ -14,11 +15,13 @@ import {
 } from 'state/entities/contactForm/contactForms'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {reportError} from 'utils/errors'
+import {CONTACT_FORM_BASE_PATH} from '../constants'
 
 export const useContactFormApi = () => {
     const dispatch = useAppDispatch()
     const [pendingCount, setPendingCount] = useState(0)
     const {client} = useHelpCenterApi()
+    const history = useHistory()
 
     useEffect(() => {
         if (!client) return
@@ -62,7 +65,7 @@ export const useContactFormApi = () => {
         if (!client) throw new Error('HTTP client not initialized!')
 
         try {
-            const {data} = await client.get(`/api/help-center/contact-forms`)
+            const {data} = await client.listContactForms()
             const contactForms = get(data, 'data') || []
 
             dispatch(contactFormsFetched(contactForms))
@@ -75,7 +78,9 @@ export const useContactFormApi = () => {
                 items: contactForms,
             }
         } catch (error) {
-            reportError(error)
+            if (error instanceof Error) {
+                reportError(error)
+            }
             throw error
         }
     }, [client, dispatch])
@@ -85,13 +90,13 @@ export const useContactFormApi = () => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
-                const {data: contactForm} = await client.get(
-                    `/api/help-center/contact-forms/${contactFormId}`
-                )
+                const {data: contactForm} = await client.getContactForm({
+                    id: contactFormId,
+                })
 
                 dispatch(contactFormUpdated(contactForm))
 
-                return contactForm as ContactForm
+                return contactForm
             } catch (error) {
                 if (
                     axios.isAxiosError(error) &&
@@ -100,7 +105,9 @@ export const useContactFormApi = () => {
                     return null
                 }
 
-                reportError(error)
+                if (error instanceof Error) {
+                    reportError(error)
+                }
                 throw error
             }
         },
@@ -112,13 +119,15 @@ export const useContactFormApi = () => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
-                await client.head(`/api/help-center/contact-forms/name/${name}`)
+                await client.checkContactFormNameExists({input_name: name})
                 return false
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response?.status === 404)
                     return true
 
-                reportError(error as Error)
+                if (error instanceof Error) {
+                    reportError(error)
+                }
                 throw error
             }
         },
@@ -132,16 +141,18 @@ export const useContactFormApi = () => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
-                const {data: contactForm} = await client.post(
-                    `/api/help-center/contact-forms`,
+                const {data: contactForm} = await client.createContactForm(
+                    null,
                     createContactFormDto
                 )
 
                 dispatch(contactFormUpdated(contactForm))
 
-                return contactForm as ContactForm
+                return contactForm
             } catch (error) {
-                reportError(error as Error)
+                if (error instanceof Error) {
+                    reportError(error)
+                }
                 throw error
             }
         },
@@ -156,16 +167,16 @@ export const useContactFormApi = () => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
-                const {data: updatedContactForm} = await client.put(
-                    `/api/help-center/contact-forms/${contactFormId}`,
-                    payload
-                )
+                const {data: updatedContactForm} =
+                    await client.updateContactForm({id: contactFormId}, payload)
 
                 dispatch(contactFormUpdated(updatedContactForm))
 
-                return updatedContactForm as ContactForm
+                return updatedContactForm
             } catch (error) {
-                reportError(error as Error)
+                if (error instanceof Error) {
+                    reportError(error)
+                }
                 throw error
             }
         },
@@ -177,22 +188,23 @@ export const useContactFormApi = () => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
-                await client.delete(
-                    `/api/help-center/contact-forms/${contactFormId}`
-                )
+                await client.deleteContactForm({id: contactFormId})
 
                 dispatch(contactFormDeleted(contactFormId))
 
+                history.push(CONTACT_FORM_BASE_PATH)
                 return true
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response?.status === 404)
                     return true
 
-                reportError(error as Error)
+                if (error instanceof Error) {
+                    reportError(error)
+                }
                 throw error
             }
         },
-        [client, dispatch]
+        [client, dispatch, history]
     )
 
     return {
