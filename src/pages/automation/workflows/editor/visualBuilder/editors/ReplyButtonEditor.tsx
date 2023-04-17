@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Label from 'pages/common/forms/Label/Label'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {ReplyButtonNodeType} from '../types'
@@ -29,6 +29,7 @@ export default function ReplyButtonEditor({
         step_id,
         choice: {label, event_id},
     } = nodeInEdition.data
+    const [value, setValue] = useState(label)
     return (
         <div
             onKeyDown={(event) => {
@@ -45,15 +46,16 @@ export default function ReplyButtonEditor({
                 ref={inputRef}
                 maxLength={textLimit}
                 isRequired
-                onChange={(label) =>
+                onChange={(label) => {
+                    setValue(label)
                     dispatch({
                         type: 'SET_REPLY_BUTTON_LABEL',
                         event_id,
                         label,
                         step_id,
                     })
-                }
-                value={label}
+                }}
+                value={value}
                 isDisabled={isFetchPending || isSavePending}
             />
         </div>
