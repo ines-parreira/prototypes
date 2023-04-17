@@ -125,7 +125,7 @@ describe('<MacrosSettingsTable/>', () => {
             })
             expect(history.push).toHaveBeenNthCalledWith(
                 1,
-                '/app/settings/macros/3'
+                '/app/automation/macros/3'
             )
             done()
         })

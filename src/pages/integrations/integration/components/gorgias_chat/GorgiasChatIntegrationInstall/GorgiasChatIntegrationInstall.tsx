@@ -1,42 +1,29 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {fromJS, List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
-import {
-    getHasAutomationAddOn,
-    getHasLegacyAutomationAddOnFeatures,
-} from 'state/billing/selectors'
 import {deleteIntegration} from 'state/integrations/actions'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/types'
+import PageHeader from 'pages/common/components/PageHeader'
+import {getStoreIntegrations} from 'state/integrations/selectors'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {
-    GORGIAS_CHAT_INTEGRATION_TYPE,
-    SHOPIFY_INTEGRATION_TYPE,
-} from '../../../../../../constants/integration'
-import {notify} from '../../../../../../state/notifications/actions'
-import * as integrationSelectors from '../../../../../../state/integrations/selectors'
-import {RootState} from '../../../../../../state/types'
-import {IntegrationType} from '../../../../../../models/integration/types'
-import PageHeader from '../../../../../common/components/PageHeader'
 
-import {renderChatCodeSnippet} from '../renderChatCodeSnippet'
 import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
-
+import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
-import GorgiasChatIntegrationCustomInstallationCard from './GorgiasChatIntegrationCustomInstallationCard'
-import {GorgiasChatIntegrationConnectToStoreCard} from './GorgiasChatIntegrationConnectToStoreCard'
-import NewGorgiasChatIntegrationInstall from './NewGorgiasChatIntegrationInstall'
+import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrationManualInstallationCard'
+import GorgiasChatIntegrationConnectStore from './GorgiasChatIntegrationConnectStore'
+
 import css from './GorgiasChatIntegrationInstall.less'
 
-type OwnProps = {
+type Props = {
     integration: Map<any, any>
     actions: {
         updateOrCreateIntegration: any
@@ -45,94 +32,42 @@ type OwnProps = {
     isUpdate: boolean
 }
 
-const mapStateToProps = (state: RootState) => {
-    return {
-        domain: state.currentAccount.get('domain'),
-        hasAutomationAddOn: getHasAutomationAddOn(state),
-        hasLegacyAutomationAddOnFeatures:
-            getHasLegacyAutomationAddOnFeatures(state),
-        getIntegrationsByTypes:
-            integrationSelectors.makeGetIntegrationsByTypes(state),
-        gorgiasChatExtraState:
-            integrationSelectors.getIntegrationTypeExtraState(
-                GORGIAS_CHAT_INTEGRATION_TYPE as IntegrationType
-            )(state),
-    }
-}
-
-const mapDispatchToProps = {
-    notify,
-}
-
-function GorgiasChatIntegrationInstall({
+const GorgiasChatIntegrationInstall = ({
     integration,
-    getIntegrationsByTypes,
-    actions,
-    gorgiasChatExtraState,
-    hasAutomationAddOn,
-    hasLegacyAutomationAddOnFeatures,
+    actions: {updateOrCreateIntegration, deleteIntegration},
     isUpdate,
-}: OwnProps & ReturnType<typeof mapStateToProps>) {
-    const isAutomationSettingsRevampEnabled =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
-    // During the chat creation, the user associated this chat to a shopify store.
-    // This chat can only be installed on this specific store
-    // Change to associated_shopify_store_id?
-    const isAssociatedToShopifyStore = Boolean(
-        integration.getIn(['meta', 'shop_name'])
-    )
-
-    const shopifyIntegrationsIds: List<number> = integration.getIn(
+}: Props) => {
+    const storeIntegrations = useAppSelector(getStoreIntegrations)
+    const applicationId = integration.getIn(['meta', 'app_id'])
+    const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
+    const shopifyIntegrationIds: List<number> = integration.getIn(
         ['meta', 'shopify_integration_ids'],
         fromJS([])
     )
-    // Check if the chat has already shopify installations
-    // even if shop_name and shop_type are not set
-    const hasShopifyInstallation = shopifyIntegrationsIds.size > 0
 
-    const shopifyIntegrations = getIntegrationsByTypes(
-        SHOPIFY_INTEGRATION_TYPE as IntegrationType
+    const storeIntegration = storeIntegrations.find(
+        (storeIntegration) => storeIntegration.id === shopIntegrationId
     )
 
-    const gorgiasChatIntegrations = getIntegrationsByTypes(
-        GORGIAS_CHAT_INTEGRATION_TYPE as IntegrationType
-    )
-
-    const isShopifyChat = isAssociatedToShopifyStore || hasShopifyInstallation
-
-    const hasOrderManagement =
-        hasAutomationAddOn || hasLegacyAutomationAddOnFeatures
-
-    const manualInstallationSuccessModal = (
-        <NavigatedSuccessModal
-            name={NavigatedSuccessModalName.GorgiasChatManualInstallation}
-            icon={SuccessModalIcon.PinchingHand}
-            buttonLabel="See instructions"
-        >
-            <div className="heading-page-semibold mb-2">Almost there!</div>
-            <div className="heading-subsection-regular">
-                Install the chat on your website by following the{' '}
-                <b>Manual installation</b> instructions.
-            </div>
-        </NavigatedSuccessModal>
-    )
-
-    if (isAutomationSettingsRevampEnabled) {
-        return (
-            <>
-                {manualInstallationSuccessModal}
-                <NewGorgiasChatIntegrationInstall
-                    integration={integration}
-                    actions={actions}
-                    isUpdate={isUpdate}
-                />
-            </>
-        )
-    }
+    const isConnected = Boolean(storeIntegration)
+    const isConnectedToShopify =
+        storeIntegration?.type === IntegrationType.Shopify
+    const isOneClickInstallation =
+        shopifyIntegrationIds.includes(shopIntegrationId)
 
     return (
         <>
-            {manualInstallationSuccessModal}
+            <NavigatedSuccessModal
+                name={NavigatedSuccessModalName.GorgiasChatManualInstallation}
+                icon={SuccessModalIcon.PinchingHand}
+                buttonLabel="See instructions"
+            >
+                <div className="heading-page-semibold mb-2">Almost there!</div>
+                <div className="heading-subsection-regular">
+                    Install the chat on your website by following the{' '}
+                    <b>Manual installation</b> instructions.
+                </div>
+            </NavigatedSuccessModal>
             <div className="full-width">
                 <PageHeader
                     title={
@@ -149,78 +84,80 @@ function GorgiasChatIntegrationInstall({
                             </BreadcrumbItem>
                         </Breadcrumb>
                     }
-                />
+                >
+                    <GorgiasChatIntegrationConnectedChannel
+                        integration={integration}
+                    />
+                </PageHeader>
 
                 <GorgiasChatIntegrationHeader
                     integration={integration}
                     showInstallLink={false}
                 />
 
-                <Container fluid className={css.pageContainer}>
-                    <Row>
-                        <Col className={css.pageColumn} md="8">
-                            {isShopifyChat ? (
-                                <GorgiasChatIntegrationOneClickInstallationCard
-                                    integration={integration}
-                                    updateOrCreateIntegration={
-                                        actions.updateOrCreateIntegration
-                                    }
-                                    shopifyIntegrations={shopifyIntegrations}
-                                    hasOrderManagement={hasOrderManagement}
-                                />
-                            ) : (
-                                <GorgiasChatIntegrationConnectToStoreCard
-                                    integration={integration}
-                                    updateOrCreateIntegration={
-                                        actions.updateOrCreateIntegration
-                                    }
-                                    shopifyIntegrations={shopifyIntegrations}
-                                    gorgiasChatIntegrations={
-                                        gorgiasChatIntegrations
-                                    }
-                                    hasOrderManagement={hasOrderManagement}
-                                />
-                            )}
-
-                            <GorgiasChatIntegrationCustomInstallationCard
-                                isShopifyChat={isShopifyChat}
-                                code={renderChatCodeSnippet({
-                                    chatAppId: integration.getIn([
-                                        'meta',
-                                        'app_id',
-                                    ]),
-                                    gorgiasChatExtraState:
-                                        gorgiasChatExtraState,
-                                })}
-                                integrationId={integration.get('id')}
-                            />
-                            <div className={css.installationOptions}>
-                                {isUpdate && (
-                                    <ConfirmButton
-                                        className=""
-                                        onConfirm={() =>
-                                            actions.deleteIntegration(
-                                                integration
-                                            ) as unknown as Promise<any>
-                                        }
-                                        confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                        intent="destructive"
-                                    >
-                                        <ButtonIconLabel icon="delete">
-                                            Delete Chat
-                                        </ButtonIconLabel>
-                                    </ConfirmButton>
-                                )}
+                <Container fluid className={css.container}>
+                    <div className={css.content}>
+                        <div>
+                            <div className={css.connectStoreTitle}>
+                                Connect store
                             </div>
-                        </Col>
-                    </Row>
+                            <div className={css.connectStoreDescription}>
+                                A store connection is required to use Automation
+                                Add-on features in chat and to enable 1-click
+                                installation for Shopify stores.
+                            </div>
+                            <GorgiasChatIntegrationConnectStore
+                                integration={integration}
+                                storeIntegration={storeIntegration}
+                                storeIntegrations={storeIntegrations}
+                                isOneClickInstallation={isOneClickInstallation}
+                            />
+                        </div>
+
+                        <div className={css.installationMethodContainer}>
+                            <div className={css.installationMethodTitle}>
+                                Installation method
+                            </div>
+
+                            <div className={css.installationMethods}>
+                                {(!isConnected || isConnectedToShopify) && (
+                                    <GorgiasChatIntegrationOneClickInstallationCard
+                                        integration={integration}
+                                        updateOrCreateIntegration={
+                                            updateOrCreateIntegration
+                                        }
+                                        isConnected={isConnected}
+                                        isInstalled={isOneClickInstallation}
+                                    />
+                                )}
+                                <GorgiasChatIntegrationManualInstallationCard
+                                    applicationId={applicationId}
+                                    isConnected={isConnected}
+                                    isConnectedToShopify={isConnectedToShopify}
+                                />
+                            </div>
+                        </div>
+
+                        {isUpdate && (
+                            <ConfirmButton
+                                className={css.deleteButton}
+                                onConfirm={() => {
+                                    deleteIntegration(integration)
+                                }}
+                                confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                intent="destructive"
+                                fillStyle="ghost"
+                            >
+                                <ButtonIconLabel icon="delete">
+                                    Delete Chat
+                                </ButtonIconLabel>
+                            </ConfirmButton>
+                        )}
+                    </div>
                 </Container>
             </div>
         </>
     )
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(GorgiasChatIntegrationInstall)
+export default GorgiasChatIntegrationInstall

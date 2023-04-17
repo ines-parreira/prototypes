@@ -85,7 +85,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
     const minProps = {
         gorgiasChatIntegrations: fromJS([]),
-        shopifyIntegrations: fromJS([
+        storeIntegrations: fromJS([
             {
                 id: 1,
                 name: 'myStore1',
@@ -359,7 +359,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                     },
                                 },
                             ])}
-                            shopifyIntegrations={fromJS([
+                            storeIntegrations={fromJS([
                                 {
                                     id: 1,
                                     name: 'myStore1',
@@ -508,7 +508,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                     },
                                 },
                             ])}
-                            shopifyIntegrations={fromJS([
+                            storeIntegrations={fromJS([
                                 {
                                     id: 1,
                                     name: 'myStore1',
@@ -627,7 +627,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                 } as unknown as typeof IntegrationsActions
                             }
                             gorgiasChatIntegrations={fromJS([])}
-                            shopifyIntegrations={fromJS([
+                            storeIntegrations={fromJS([
                                 {
                                     id: 1,
                                     name: shopifyStoreName,

@@ -146,7 +146,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
             const {newMessage, newActions} = transformToInternalNote(
                 message,
                 fromJS(actions),
-                `Sent via suggested rule: <a target="_blank" href="/app/settings/rules/library?${suggestion.slug}">${ruleName}</a>`
+                `Sent via suggested rule: <a target="_blank" href="/app/automation/rules/library?${suggestion.slug}">${ruleName}</a>`
             )
             message = {...newMessage, actions: newActions ?? fromJS([])}
         }
@@ -167,7 +167,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
                         <a
                             target="_blank"
                             rel="noreferrer"
-                            href={`/app/settings/rules/library?${suggestion.slug}`}
+                            href={`/app/automation/rules/library?${suggestion.slug}`}
                         >
                             {ruleName}
                         </a>{' '}
@@ -188,7 +188,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
                                     size="small"
                                     onClick={() =>
                                         window.open(
-                                            `/app/settings/rules/library?${suggestion.slug}&install`,
+                                            `/app/automation/rules/library?${suggestion.slug}&install`,
                                             '_blank'
                                         )
                                     }

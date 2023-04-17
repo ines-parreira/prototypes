@@ -219,7 +219,7 @@ describe('global utils', () => {
             expect(utils.isCurrentlyOnChatCampaignDetailsPage()).toBe(false)
             window.location.pathname = '/app/rules'
             expect(utils.isCurrentlyOnChatCampaignDetailsPage()).toBe(false)
-            window.location.pathname = '/app/settings/macros/2'
+            window.location.pathname = '/app/automation/macros/2'
             expect(utils.isCurrentlyOnChatCampaignDetailsPage()).toBe(false)
             window.location.pathname = '/app/ticket/12'
             expect(utils.isCurrentlyOnChatCampaignDetailsPage()).toBe(false)

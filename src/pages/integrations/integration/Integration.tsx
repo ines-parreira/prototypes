@@ -60,7 +60,6 @@ import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatInt
 import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChatIntegrationInstall'
 import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
 import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies'
-import GorgiasChatIntegrationSelfService from './components/gorgias_chat/GorgiasChatIntegrationSelfService'
 
 import HTTPIntegrationList from './components/http/HTTPIntegrationList'
 
@@ -118,7 +117,6 @@ export enum Tab {
     HttpEvents = 'events',
     Installation = 'installation',
     QuickReplies = 'quick_replies',
-    ChatSelfService = 'automation',
     Campaigns = 'campaigns',
     Appearance = 'appearance',
     PhoneVoicemail = 'voicemail',
@@ -424,14 +422,6 @@ export const IntegrationDetail = ({
                 if (extra === Tab.QuickReplies) {
                     return (
                         <GorgiasChatIntegrationQuickReplies
-                            integration={integration}
-                        />
-                    )
-                }
-
-                if (extra === Tab.ChatSelfService) {
-                    return (
-                        <GorgiasChatIntegrationSelfService
                             integration={integration}
                         />
                     )

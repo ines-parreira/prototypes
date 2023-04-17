@@ -2,9 +2,6 @@ import React, {useEffect, useState} from 'react'
 import {Map} from 'immutable'
 import {Link, Redirect} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {IntegrationType} from 'models/integration/types'
 
@@ -42,9 +39,6 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
         !isUpdate || integrationId
     )
 
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
-
     const wizardStatus = integration.getIn(['meta', 'wizard', 'status'])
 
     const initialStep = integration.getIn(
@@ -80,11 +74,7 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>
-                                {isUpdate
-                                    ? name
-                                    : isAutomationSettingsRevampEnabled
-                                    ? 'New Chat'
-                                    : 'New chat integration'}
+                                {isUpdate ? name : 'New Chat'}
                             </BreadcrumbItem>
                         </Breadcrumb>
                     }

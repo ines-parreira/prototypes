@@ -30,12 +30,6 @@ exports[`<IntegrationDetail /> facebook should render the customer chat tab for
 </div>
 `;
 
-exports[`<IntegrationDetail /> gorgias_chat should render the self service tab of a specific integration 1`] = `
-<div>
-  GorgiasChatIntegrationSelfService
-</div>
-`;
-
 exports[`<IntegrationDetail /> http should render the list of events page for a specific integration 1`] = `
 <div
   class="full-width"

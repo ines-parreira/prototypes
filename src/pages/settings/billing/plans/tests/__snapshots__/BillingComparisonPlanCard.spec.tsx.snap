@@ -57,7 +57,7 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
             <span
               id="automation-text-42"
             >
-              Automation
+              Automation Add-on
             </span>
           </div>
         </label>
@@ -407,7 +407,7 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
             <span
               id="automation-text-42"
             >
-              Automation
+              Automation Add-on
             </span>
           </div>
         </label>
@@ -764,7 +764,7 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
             <span
               id="automation-text-42"
             >
-              Automation
+              Automation Add-on
             </span>
           </div>
         </label>
@@ -1115,7 +1115,7 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
             <span
               id="automation-text-42"
             >
-              Automation
+              Automation Add-on
             </span>
           </div>
         </label>
@@ -1467,7 +1467,7 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
             <span
               id="automation-text-42"
             >
-              Automation
+              Automation Add-on
             </span>
           </div>
         </label>
@@ -1812,7 +1812,7 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
             <span
               id="automation-text-42"
             >
-              Automation
+              Automation Add-on
             </span>
           </div>
         </label>
@@ -2190,7 +2190,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -2843,7 +2843,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                             <span
                               id="automation-text-42"
                             >
-                              Automation
+                              Automation Add-on
                             </span>
                           </div>
                         </label>
@@ -3188,7 +3188,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                             <span
                               id="automation-text-42"
                             >
-                              Automation
+                              Automation Add-on
                             </span>
                           </div>
                         </label>

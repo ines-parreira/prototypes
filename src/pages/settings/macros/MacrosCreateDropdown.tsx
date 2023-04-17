@@ -64,7 +64,7 @@ export function MacrosCreateDropdown(): JSX.Element {
                 <Button
                     color="primary"
                     onClick={() => {
-                        history.push('/app/settings/macros/new')
+                        history.push('/app/automation/macros/new')
                     }}
                     type="button"
                     disabled={!hasAgentPrivileges}

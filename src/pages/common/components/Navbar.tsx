@@ -93,6 +93,18 @@ const mainMenu: MenuItem[] = [
         segmentProp: {link: 'tickets'},
     },
     {
+        url: '/app/automation/macros',
+        label: 'Automation',
+        content: (
+            <div className="d-flex flex-fill justify-content-between">
+                Automation
+                <Badge type={ColorType.Blue}>NEW</Badge>
+            </div>
+        ),
+        icon: 'bolt',
+        segmentProp: {link: 'automation'},
+    },
+    {
         url: '/app/customers',
         label: 'Customers',
         icon: 'people',
@@ -112,32 +124,6 @@ const mainMenu: MenuItem[] = [
         segmentProp: {link: 'settings'},
     },
 ]
-
-const getMainMenu = () => {
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        getLDClient().allFlags()[FeatureFlagKey.AutomationSettingsRevamp]
-
-    if (!isAutomationSettingsRevampEnabled) {
-        return mainMenu
-    }
-
-    return [
-        ...mainMenu.slice(0, 1),
-        {
-            url: '/app/automation/macros',
-            label: 'Automation',
-            content: (
-                <div className="d-flex flex-fill justify-content-between">
-                    Automation
-                    <Badge type={ColorType.Blue}>NEW</Badge>
-                </div>
-            ),
-            icon: 'bolt',
-            segmentProp: {link: 'automation'},
-        },
-        ...mainMenu.slice(1),
-    ]
-}
 
 type OwnProps = {
     activeContent: Maybe<string>
@@ -302,7 +288,7 @@ export class Navbar extends Component<Props, State> {
                     </DropdownToggle>
 
                     <DropdownMenu className={css['dropdown-menu']}>
-                        {getMainMenu().map((item) => {
+                        {mainMenu.map((item) => {
                             return (
                                 <DropdownItem
                                     key={item.label}

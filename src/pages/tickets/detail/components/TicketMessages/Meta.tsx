@@ -338,7 +338,7 @@ export default function Meta(props: Props) {
                         <Spinner className={css.spinner} color="dark" />
                     ) : (
                         <Link
-                            to={`/app/settings/rules/${props.ruleId}`}
+                            to={`/app/automation/rules/${props.ruleId}`}
                             title="Rule"
                             target="_blank"
                             rel="noreferrer"
@@ -378,7 +378,7 @@ export default function Meta(props: Props) {
                         <Spinner className={css.spinner} color="dark" />
                     ) : (
                         <Link
-                            to={`/app/settings/rules/library?${meta.rule_suggestion_slug}`}
+                            to={`/app/automation/rules/library?${meta.rule_suggestion_slug}`}
                             title="Rule"
                             target="_blank"
                             rel="noreferrer"

@@ -85,7 +85,7 @@ export const RuleRecipeModal = ({
                 setIsSubscribing(false)
             })
         } else {
-            history.push(`/app/settings/rules/${managedRuleId}`)
+            history.push(`/app/automation/rules/${managedRuleId}`)
         }
     }
 

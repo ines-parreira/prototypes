@@ -27,7 +27,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           <li
             class="breadcrumb-item"
           >
-            New chat integration
+            New Chat
           </li>
         </ol>
       </nav>
@@ -45,166 +45,172 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             class=""
           >
             <div
-              class="selectStoreTypeContainer"
-            >
-              <label
-                class="bold"
-              >
-                Where will you use this chat?
-                <span
-                  class="redStar"
-                >
-                  *
-                </span>
-              </label>
-              <div
-                class="radioButtonGroup"
-              >
-                <div
-                  aria-checked="true"
-                  aria-label="Shopify store"
-                  class="wrapper selected radioButton"
-                  id="store-radio-button-42"
-                  role="radio"
-                  tabindex="0"
-                >
-                  <div>
-                    <label
-                      class="label label"
-                      for="shopify"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        id="shopify"
-                        tabindex="-1"
-                        type="radio"
-                      />
-                      Shopify store
-                    </label>
-                  </div>
-                </div>
-                <div
-                  aria-checked="false"
-                  aria-label="Any other website"
-                  class="wrapper radioButton"
-                  id="store-radio-button-42"
-                  role="radio"
-                  tabindex="0"
-                >
-                  <div>
-                    <label
-                      class="label label"
-                      for="website"
-                    >
-                      <input
-                        class="input"
-                        id="website"
-                        tabindex="-1"
-                        type="radio"
-                      />
-                      Any other website
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
               class="form"
             >
-              <label
-                class="bold"
-              >
-                Select a store
-                <span
-                  class="error"
-                >
-                  *
-                </span>
-                <span
-                  id="select-store"
-                >
-                  <i
-                    class="material-icons neutral"
-                  >
-                    info_outline
-                  </i>
-                </span>
-              </label>
               <div
-                class="wrapper"
+                class="formSection"
               >
-                <div
-                  class="dropdown dropdown"
+                <h2
+                  class="title"
                 >
-                  <button
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    class="dropdown-toggle btn btn-secondary"
-                    type="button"
-                  >
-                    <span
-                      class="dropdownPlaceholder"
-                    >
-                      <i
-                        class="material-icons"
-                        style="margin-right: 8px; font-size: 20px;"
-                      >
-                        store
-                      </i>
-                      Select a store
-                    </span>
-                  </button>
+                  Select a platform type
+                </h2>
+                <div
+                  class="platformTypeContainer"
+                >
                   <div
-                    aria-hidden="true"
-                    class="dropdownMenu dropdown-menu"
-                    role="menu"
-                    tabindex="-1"
+                    aria-checked="true"
+                    aria-label="Ecommerce platforms"
+                    class="wrapper selected"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    <div>
+                      <label
+                        class="label label"
+                        for="ecommerce-platforms"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="ecommerce-platforms"
+                          tabindex="-1"
+                          type="radio"
+                        />
+                        Ecommerce platforms
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        Shopify, Magento, BigCommerce
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    aria-checked="false"
+                    aria-label="Any other website"
+                    class="wrapper"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    <div>
+                      <label
+                        class="label label"
+                        for="any-other-website"
+                      >
+                        <input
+                          class="input"
+                          id="any-other-website"
+                          tabindex="-1"
+                          type="radio"
+                        />
+                        Any other website
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        Websites, knowledge bases, etc.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <label
+                  class="label"
+                >
+                  Connect a store
+                  <abbr
+                    aria-label="required"
+                    class="abbr"
+                    title="required"
+                  >
+                    *
+                  </abbr>
+                </label>
+                <div
+                  class="connectStoreDescription"
+                >
+                  Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="dropdown dropdown"
                   >
                     <button
-                      class="storeRow dropdown-item"
-                      role="menuitem"
-                      tabindex="0"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="dropdown-toggle btn btn-secondary"
                       type="button"
-                      value="1"
                     >
-                      <img
-                        alt="logo"
-                        class="dropdownLogo"
-                        src="/assets/img/integrations/shopify.png"
-                      />
-                      <span>
-                        myStore1
-                      </span>
                       <span
-                        class="dropdownInfo"
-                      />
+                        class="dropdownPlaceholder"
+                      >
+                        <i
+                          class="material-icons"
+                          style="margin-right: 8px; font-size: 20px;"
+                        >
+                          store
+                        </i>
+                        Select a store
+                      </span>
                     </button>
-                    <button
-                      class="storeRow dropdown-item"
-                      role="menuitem"
-                      tabindex="0"
-                      type="button"
-                      value="2"
+                    <div
+                      aria-hidden="true"
+                      class="dropdownMenu dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
                     >
-                      <img
-                        alt="logo"
-                        class="dropdownLogo"
-                        src="/assets/img/integrations/shopify.png"
-                      />
-                      <span>
-                        myStore2
-                      </span>
-                      <span
-                        class="dropdownInfo"
-                      />
-                    </button>
+                      <button
+                        class="storeRow dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                        value="1"
+                      >
+                        <img
+                          alt="logo"
+                          class="dropdownLogo"
+                          src="/assets/img/integrations/shopify.png"
+                        />
+                        <span>
+                          myStore1
+                        </span>
+                        <span
+                          class="dropdownInfo"
+                        />
+                      </button>
+                      <button
+                        class="storeRow dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                        value="2"
+                      >
+                        <img
+                          alt="logo"
+                          class="dropdownLogo"
+                          src="/assets/img/integrations/shopify.png"
+                        />
+                        <span>
+                          myStore2
+                        </span>
+                        <span
+                          class="dropdownInfo"
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
               <div
                 class="formSection"
               >
+                <h2
+                  class="title"
+                >
+                  Preferences
+                </h2>
                 <div
                   class="InputField formGroup required form-group"
                   color=""
@@ -321,7 +327,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text during business hours
+                    During business hours
                   </label>
                   <div
                     class=""
@@ -343,7 +349,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text outside business hours
+                    Outside business hours
                   </label>
                   <div
                     class=""
@@ -1082,7 +1088,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text during business hours
+                    During business hours
                   </label>
                   <div
                     class=""
@@ -1104,7 +1110,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text outside business hours
+                    Outside business hours
                   </label>
                   <div
                     class=""
@@ -1956,7 +1962,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text during business hours
+                    During business hours
                   </label>
                   <div
                     class=""
@@ -1978,7 +1984,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text outside business hours
+                    Outside business hours
                   </label>
                   <div
                     class=""
@@ -2800,7 +2806,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text during business hours
+                    During business hours
                   </label>
                   <div
                     class=""
@@ -2822,7 +2828,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text outside business hours
+                    Outside business hours
                   </label>
                   <div
                     class=""
@@ -3652,7 +3658,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text during business hours
+                    During business hours
                   </label>
                   <div
                     class=""
@@ -3674,7 +3680,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text outside business hours
+                    Outside business hours
                   </label>
                   <div
                     class=""
@@ -4496,7 +4502,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text during business hours
+                    During business hours
                   </label>
                   <div
                     class=""
@@ -4518,7 +4524,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text outside business hours
+                    Outside business hours
                   </label>
                   <div
                     class=""
@@ -5186,7 +5192,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
           <li
             class="breadcrumb-item"
           >
-            New chat integration
+            New Chat
           </li>
         </ol>
       </nav>
@@ -5204,146 +5210,152 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
             class=""
           >
             <div
-              class="selectStoreTypeContainer"
-            >
-              <label
-                class="bold"
-              >
-                Where will you use this chat?
-                <span
-                  class="redStar"
-                >
-                  *
-                </span>
-              </label>
-              <div
-                class="radioButtonGroup"
-              >
-                <div
-                  aria-checked="true"
-                  aria-label="Shopify store"
-                  class="wrapper selected radioButton"
-                  id="store-radio-button-42"
-                  role="radio"
-                  tabindex="0"
-                >
-                  <div>
-                    <label
-                      class="label label"
-                      for="shopify"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        id="shopify"
-                        tabindex="-1"
-                        type="radio"
-                      />
-                      Shopify store
-                    </label>
-                  </div>
-                </div>
-                <div
-                  aria-checked="false"
-                  aria-label="Any other website"
-                  class="wrapper radioButton"
-                  id="store-radio-button-42"
-                  role="radio"
-                  tabindex="0"
-                >
-                  <div>
-                    <label
-                      class="label label"
-                      for="website"
-                    >
-                      <input
-                        class="input"
-                        id="website"
-                        tabindex="-1"
-                        type="radio"
-                      />
-                      Any other website
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
               class="form"
             >
-              <label
-                class="bold"
-              >
-                Select a store
-                <span
-                  class="error"
-                >
-                  *
-                </span>
-                <span
-                  id="select-store"
-                >
-                  <i
-                    class="material-icons neutral"
-                  >
-                    info_outline
-                  </i>
-                </span>
-              </label>
               <div
-                class="wrapper"
+                class="formSection"
               >
-                <div
-                  class="dropdown dropdown"
+                <h2
+                  class="title"
                 >
-                  <button
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    class="dropdown-toggle btn btn-secondary"
-                    type="button"
-                  >
-                    <span
-                      class="dropdownValue"
-                    >
-                      <img
-                        alt="logo"
-                        class="dropdownLogo"
-                        src="/assets/img/integrations/shopify.png"
-                      />
-                      MY ONLY SHOPIFY STORE
-                    </span>
-                  </button>
+                  Select a platform type
+                </h2>
+                <div
+                  class="platformTypeContainer"
+                >
                   <div
-                    aria-hidden="true"
-                    class="dropdownMenu dropdown-menu"
-                    role="menu"
-                    tabindex="-1"
+                    aria-checked="true"
+                    aria-label="Ecommerce platforms"
+                    class="wrapper selected"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    <div>
+                      <label
+                        class="label label"
+                        for="ecommerce-platforms"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="ecommerce-platforms"
+                          tabindex="-1"
+                          type="radio"
+                        />
+                        Ecommerce platforms
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        Shopify, Magento, BigCommerce
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    aria-checked="false"
+                    aria-label="Any other website"
+                    class="wrapper"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    <div>
+                      <label
+                        class="label label"
+                        for="any-other-website"
+                      >
+                        <input
+                          class="input"
+                          id="any-other-website"
+                          tabindex="-1"
+                          type="radio"
+                        />
+                        Any other website
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        Websites, knowledge bases, etc.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <label
+                  class="label"
+                >
+                  Connect a store
+                  <abbr
+                    aria-label="required"
+                    class="abbr"
+                    title="required"
+                  >
+                    *
+                  </abbr>
+                </label>
+                <div
+                  class="connectStoreDescription"
+                >
+                  Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="dropdown dropdown"
                   >
                     <button
-                      class="storeRow dropdown-item"
-                      role="menuitem"
-                      tabindex="0"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="dropdown-toggle btn btn-secondary"
                       type="button"
-                      value="1"
                     >
-                      <img
-                        alt="logo"
-                        class="dropdownLogo"
-                        src="/assets/img/integrations/shopify.png"
-                      />
-                      <span>
+                      <span
+                        class="dropdownValue"
+                      >
+                        <img
+                          alt="logo"
+                          class="dropdownLogo"
+                          src="/assets/img/integrations/shopify.png"
+                        />
                         MY ONLY SHOPIFY STORE
                       </span>
-                      <span
-                        class="dropdownInfo"
-                      />
                     </button>
+                    <div
+                      aria-hidden="true"
+                      class="dropdownMenu dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <button
+                        class="storeRow dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                        value="1"
+                      >
+                        <img
+                          alt="logo"
+                          class="dropdownLogo"
+                          src="/assets/img/integrations/shopify.png"
+                        />
+                        <span>
+                          MY ONLY SHOPIFY STORE
+                        </span>
+                        <span
+                          class="dropdownInfo"
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
               <div
                 class="formSection"
               >
+                <h2
+                  class="title"
+                >
+                  Preferences
+                </h2>
                 <div
                   class="InputField formGroup required form-group"
                   color=""
@@ -5460,7 +5472,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text during business hours
+                    During business hours
                   </label>
                   <div
                     class=""
@@ -5482,7 +5494,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text outside business hours
+                    Outside business hours
                   </label>
                   <div
                     class=""
@@ -6220,7 +6232,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text during business hours
+                    During business hours
                   </label>
                   <div
                     class=""
@@ -6242,7 +6254,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text outside business hours
+                    Outside business hours
                   </label>
                   <div
                     class=""
@@ -7013,7 +7025,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
           <li
             class="breadcrumb-item"
           >
-            New chat integration
+            New Chat
           </li>
         </ol>
       </nav>
@@ -7031,196 +7043,202 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
             class=""
           >
             <div
-              class="selectStoreTypeContainer"
-            >
-              <label
-                class="bold"
-              >
-                Where will you use this chat?
-                <span
-                  class="redStar"
-                >
-                  *
-                </span>
-              </label>
-              <div
-                class="radioButtonGroup"
-              >
-                <div
-                  aria-checked="true"
-                  aria-label="Shopify store"
-                  class="wrapper selected radioButton"
-                  id="store-radio-button-42"
-                  role="radio"
-                  tabindex="0"
-                >
-                  <div>
-                    <label
-                      class="label label"
-                      for="shopify"
-                    >
-                      <input
-                        checked=""
-                        class="input"
-                        id="shopify"
-                        tabindex="-1"
-                        type="radio"
-                      />
-                      Shopify store
-                    </label>
-                  </div>
-                </div>
-                <div
-                  aria-checked="false"
-                  aria-label="Any other website"
-                  class="wrapper radioButton"
-                  id="store-radio-button-42"
-                  role="radio"
-                  tabindex="0"
-                >
-                  <div>
-                    <label
-                      class="label label"
-                      for="website"
-                    >
-                      <input
-                        class="input"
-                        id="website"
-                        tabindex="-1"
-                        type="radio"
-                      />
-                      Any other website
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
               class="form"
             >
-              <label
-                class="bold"
-              >
-                Select a store
-                <span
-                  class="error"
-                >
-                  *
-                </span>
-                <span
-                  id="select-store"
-                >
-                  <i
-                    class="material-icons neutral"
-                  >
-                    info_outline
-                  </i>
-                </span>
-              </label>
               <div
-                class="wrapper"
+                class="formSection"
               >
-                <div
-                  class="dropdown dropdown"
+                <h2
+                  class="title"
                 >
-                  <button
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    class="dropdown-toggle btn btn-secondary"
-                    type="button"
-                  >
-                    <span
-                      class="dropdownPlaceholder"
-                    >
-                      <i
-                        class="material-icons"
-                        style="margin-right: 8px; font-size: 20px;"
-                      >
-                        store
-                      </i>
-                      Select a store
-                    </span>
-                  </button>
+                  Select a platform type
+                </h2>
+                <div
+                  class="platformTypeContainer"
+                >
                   <div
-                    aria-hidden="true"
-                    class="dropdownMenu dropdown-menu"
-                    role="menu"
-                    tabindex="-1"
+                    aria-checked="true"
+                    aria-label="Ecommerce platforms"
+                    class="wrapper selected"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    <div>
+                      <label
+                        class="label label"
+                        for="ecommerce-platforms"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="ecommerce-platforms"
+                          tabindex="-1"
+                          type="radio"
+                        />
+                        Ecommerce platforms
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        Shopify, Magento, BigCommerce
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    aria-checked="false"
+                    aria-label="Any other website"
+                    class="wrapper"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    <div>
+                      <label
+                        class="label label"
+                        for="any-other-website"
+                      >
+                        <input
+                          class="input"
+                          id="any-other-website"
+                          tabindex="-1"
+                          type="radio"
+                        />
+                        Any other website
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        Websites, knowledge bases, etc.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <label
+                  class="label"
+                >
+                  Connect a store
+                  <abbr
+                    aria-label="required"
+                    class="abbr"
+                    title="required"
+                  >
+                    *
+                  </abbr>
+                </label>
+                <div
+                  class="connectStoreDescription"
+                >
+                  Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="dropdown dropdown"
                   >
                     <button
-                      class="storeRow dropdown-item"
-                      role="menuitem"
-                      tabindex="0"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="dropdown-toggle btn btn-secondary"
                       type="button"
-                      value="1"
                     >
-                      <img
-                        alt="logo"
-                        class="dropdownLogo"
-                        src="/assets/img/integrations/shopify.png"
-                      />
-                      <span>
-                        myStore1
-                      </span>
                       <span
-                        class="dropdownInfo"
-                      />
+                        class="dropdownPlaceholder"
+                      >
+                        <i
+                          class="material-icons"
+                          style="margin-right: 8px; font-size: 20px;"
+                        >
+                          store
+                        </i>
+                        Select a store
+                      </span>
                     </button>
-                    <button
-                      class="storeRow dropdown-item"
-                      role="menuitem"
-                      tabindex="0"
-                      type="button"
-                      value="2"
+                    <div
+                      aria-hidden="true"
+                      class="dropdownMenu dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
                     >
-                      <img
-                        alt="logo"
-                        class="dropdownLogo"
-                        src="/assets/img/integrations/shopify.png"
-                      />
-                      <span>
-                        myStore2
-                      </span>
-                      <span
-                        class="dropdownInfo"
-                      />
-                    </button>
-                    <button
-                      class="storeRow dropdown-item"
-                      role="menuitem"
-                      tabindex="0"
-                      type="button"
-                      value="3"
-                    >
-                      <img
-                        alt="logo"
-                        class="dropdownLogo"
-                        src="/assets/img/integrations/shopify.png"
-                      />
-                      <span>
-                        myStore3
-                      </span>
-                      <span
-                        class="dropdownInfo"
+                      <button
+                        class="storeRow dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                        value="1"
                       >
                         <img
-                          alt="warning icon"
-                          class="material-icons warning-icon"
-                          src="test-file-stub"
+                          alt="logo"
+                          class="dropdownLogo"
+                          src="/assets/img/integrations/shopify.png"
                         />
-                        <span
-                          class="dropdownDisconnectedInfo"
-                        >
-                          Disconnected store
+                        <span>
+                          myStore1
                         </span>
-                      </span>
-                    </button>
+                        <span
+                          class="dropdownInfo"
+                        />
+                      </button>
+                      <button
+                        class="storeRow dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                        value="2"
+                      >
+                        <img
+                          alt="logo"
+                          class="dropdownLogo"
+                          src="/assets/img/integrations/shopify.png"
+                        />
+                        <span>
+                          myStore2
+                        </span>
+                        <span
+                          class="dropdownInfo"
+                        />
+                      </button>
+                      <button
+                        class="storeRow dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                        value="3"
+                      >
+                        <img
+                          alt="logo"
+                          class="dropdownLogo"
+                          src="/assets/img/integrations/shopify.png"
+                        />
+                        <span>
+                          myStore3
+                        </span>
+                        <span
+                          class="dropdownInfo"
+                        >
+                          <img
+                            alt="warning icon"
+                            class="material-icons warning-icon"
+                            src="test-file-stub"
+                          />
+                          <span
+                            class="dropdownDisconnectedInfo"
+                          >
+                            Disconnected store
+                          </span>
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
               <div
                 class="formSection"
               >
+                <h2
+                  class="title"
+                >
+                  Preferences
+                </h2>
                 <div
                   class="InputField formGroup required form-group"
                   color=""
@@ -7337,7 +7355,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text during business hours
+                    During business hours
                   </label>
                   <div
                     class=""
@@ -7359,7 +7377,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text outside business hours
+                    Outside business hours
                   </label>
                   <div
                     class=""
@@ -8098,7 +8116,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text during business hours
+                    During business hours
                   </label>
                   <div
                     class=""
@@ -8120,7 +8138,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     class="control-label"
                     for="id-input-42"
                   >
-                    Introduction text outside business hours
+                    Outside business hours
                   </label>
                   <div
                     class=""

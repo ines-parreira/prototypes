@@ -23,7 +23,7 @@ const HelpCenterContactView: React.FC = () => {
             onSaveChanges={updateHelpCenter}
         >
             <ContactFormInfoSection helpCenter={helpCenter} />
-            <ChatApplication helpCenterId={helpCenter.id} />
+            <ChatApplication />
             <PhoneContactInfoSection />
             <FooterActions />
         </HelpCenterPageWrapper>

@@ -132,7 +132,7 @@ describe('<SelfServiceStatsPage />', () => {
 
         await flushPromises()
 
-        expect(getByText(/Self-service volume per flow/)).toBeTruthy()
+        expect(getByText(/Volume per flow/)).toBeTruthy()
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -174,7 +174,7 @@ describe('<SelfServiceStatsPage />', () => {
 
         expect(
             getByText(
-                /There is no Self-service activity. Your Chat or Help Center may not be properly installed./
+                /There is no activity for these features. Your chat or help center may not be properly installed./
             )
         ).toBeTruthy()
         expect(container.firstChild).toMatchSnapshot()

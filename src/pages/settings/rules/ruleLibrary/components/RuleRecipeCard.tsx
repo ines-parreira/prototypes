@@ -286,7 +286,7 @@ function RuleRecipeCard({
                 ...segmentEventProps,
                 views_installed: shouldCreateViews,
             })
-            history.push(`/app/settings/rules/${newRule.id}`)
+            history.push(`/app/automation/rules/${newRule.id}`)
         } catch (error) {
             void dispatch(
                 notify({
@@ -313,7 +313,7 @@ function RuleRecipeCard({
 
     const handleClick = () => {
         if (managedRuleId) {
-            history.push(`/app/settings/rules/${managedRuleId}`)
+            history.push(`/app/automation/rules/${managedRuleId}`)
         } else {
             setModalOpen(true)
         }

@@ -6,8 +6,6 @@ import {Label} from 'reactstrap'
 
 import settingsCss from 'pages/settings/settings.less'
 
-import warningIcon from 'assets/img/icons/warning2.svg'
-
 import {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS} from 'config/integrations/gorgias_chat'
 import {ChatContactInfoDto} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/types'
@@ -19,9 +17,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import {AlertType} from 'pages/common/components/Alert/Alert'
-import {useChatHelpCenterConfiguration} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfService/hooks'
 import TextArea from 'pages/common/forms/TextArea'
 
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
@@ -36,11 +31,7 @@ import {
     getTimezoneAbbreviation,
 } from './formatting.utils'
 
-type Props = {
-    helpCenterId: number
-}
-
-const ChatApplication: React.FC<Props> = ({helpCenterId}) => {
+const ChatApplication = () => {
     const {
         translation: {chatApplicationId, contactInfo},
         updateTranslation,
@@ -48,8 +39,6 @@ const ChatApplication: React.FC<Props> = ({helpCenterId}) => {
     const chatIntegrations = useAppSelector(
         DEPRECATED_getIntegrationsByTypes(IntegrationType.GorgiasChat)
     )
-    const {chatHelpCenterConfiguration} =
-        useChatHelpCenterConfiguration(chatApplicationId)
 
     const chatOptions = useMemo(
         () =>
@@ -150,15 +139,6 @@ const ChatApplication: React.FC<Props> = ({helpCenterId}) => {
         ))
     }
 
-    const chatIntegrationId = chatOptions.find(
-        (el) => el.value === chatApplicationId
-    )?.integrationId
-
-    const chatHelpCenterMismatch =
-        chatHelpCenterConfiguration !== null &&
-        chatHelpCenterConfiguration.enabled &&
-        chatHelpCenterConfiguration.help_center_id !== helpCenterId
-
     return (
         <section className={classnames(css.container, settingsCss.mb40)}>
             <div className={helpCenterContactViewCss.leftColumn}>
@@ -224,24 +204,6 @@ const ChatApplication: React.FC<Props> = ({helpCenterId}) => {
                                 icon="forum"
                             />
                         </>
-                    )}
-
-                    {chatHelpCenterMismatch && chatIntegrationId !== undefined && (
-                        <LinkAlert
-                            actionLabel="Go To Chat Settings"
-                            type={AlertType.Warning}
-                            className={css.alert}
-                            actionHref={`/app/settings/channels/gorgias_chat/${chatIntegrationId}/automation`}
-                        >
-                            <div className={css.alertContent}>
-                                <img src={warningIcon} alt="warning icon" />
-                                <p className={css.alertMessage}>
-                                    The selected chat integration is using a
-                                    different Help Center for article
-                                    recommendations.
-                                </p>
-                            </div>
-                        </LinkAlert>
                     )}
 
                     <div className={css.chatContactCard}>

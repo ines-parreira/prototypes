@@ -1,10 +1,8 @@
 import React, {useState} from 'react'
 import {Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useHistory} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
@@ -19,8 +17,6 @@ type Props = {
 }
 
 const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
-    const isAutomationSettingsRevampEnabled =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const history = useHistory()
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
@@ -28,10 +24,6 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
     const integrationId = integration.get('id') as string
     const shopName = integration.getIn(['meta', 'shop_name']) as string | null
     const shopType = integration.getIn(['meta', 'shop_type']) as string | null
-
-    if (!isAutomationSettingsRevampEnabled) {
-        return null
-    }
 
     if (!hasAutomationAddOn) {
         return (

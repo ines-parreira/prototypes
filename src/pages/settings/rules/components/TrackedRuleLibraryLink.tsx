@@ -21,7 +21,7 @@ const TrackedRuleLibraryLink: React.FC<Props> = ({from, children}) => {
 
     return (
         <Link
-            to="/app/settings/rules/library"
+            to="/app/automation/rules/library"
             onClick={() =>
                 logEvent(SegmentEvent.RuleLibraryVisited, {
                     from,

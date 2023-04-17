@@ -79,7 +79,7 @@ export function MacrosSettingsFormContainer({
                     message: 'Failed to fetch macro',
                     status: NotificationStatus.Error,
                 })
-                history.push('/app/settings/macros')
+                history.push('/app/automation/macros')
             }
         }, [macroId])
     const handleActionsChange = (actions: List<any>) => {
@@ -130,7 +130,7 @@ export function MacrosSettingsFormContainer({
                     } macro.`,
                     status: NotificationStatus.Success,
                 })
-                history.push('/app/settings/macros')
+                history.push('/app/automation/macros')
             } catch (error) {
                 const gorgiasError = error as MacroApiError
                 const message = gorgiasError.response.data.error.msg
@@ -158,7 +158,7 @@ export function MacrosSettingsFormContainer({
                     message: `Successfully duplicated macro.`,
                     status: NotificationStatus.Success,
                 })
-                history.push(`/app/settings/macros/${res.id}`)
+                history.push(`/app/automation/macros/${res.id}`)
             } catch (error) {
                 void notify({
                     message: 'Failed to duplicate macro.',
@@ -179,7 +179,7 @@ export function MacrosSettingsFormContainer({
                 message: 'Successfully deleted macro',
                 status: NotificationStatus.Success,
             })
-            history.push('/app/settings/macros')
+            history.push('/app/automation/macros')
         } catch (error) {
             void notify({
                 title: (error as MacroApiError).response.data.error.msg,
@@ -217,7 +217,7 @@ export function MacrosSettingsFormContainer({
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/macros">Macros</Link>
+                            <Link to="/app/automation/macros">Macros</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
                             {!macroId

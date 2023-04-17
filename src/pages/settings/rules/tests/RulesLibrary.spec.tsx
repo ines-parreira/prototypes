@@ -156,7 +156,7 @@ describe('<RulesLibrary/>', () => {
             </Router>
         )
         expect(historySpy).toBeCalledWith(
-            `/app/settings/rules/${emptyManagedRule.id}`
+            `/app/automation/rules/${emptyManagedRule.id}`
         )
     })
 })

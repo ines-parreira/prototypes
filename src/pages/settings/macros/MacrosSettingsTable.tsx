@@ -95,7 +95,7 @@ export function MacrosSettingsTableContainer({
                 language,
             })
             macroCreated(res)
-            history.push(`/app/settings/macros/${res.id}`)
+            history.push(`/app/automation/macros/${res.id}`)
         } catch (error) {
             void notify({
                 message: 'Failed to duplicate macro',
@@ -182,7 +182,7 @@ export function MacrosSettingsTableContainer({
                         }
 
                         const {name, language, updated_datetime, usage} = macro
-                        const to = `/app/settings/macros/${macroId}`
+                        const to = `/app/automation/macros/${macroId}`
 
                         const tags = macro.actions
                             .filter(

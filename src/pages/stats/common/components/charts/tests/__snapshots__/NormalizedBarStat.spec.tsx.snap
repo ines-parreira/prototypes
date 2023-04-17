@@ -65,7 +65,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
           className="disabled-legend-label-circle mr-2"
         />
         <Link
-          to="/app/settings/self-service"
+          to="/app/automation"
         >
           Enable Quick response flow
         </Link>
@@ -78,7 +78,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
           className="disabled-legend-label-circle mr-2"
         />
         <Link
-          to="/app/settings/self-service"
+          to="/app/automation"
         >
           Enable Article recommendation flow
         </Link>
@@ -91,7 +91,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
           className="disabled-legend-label-circle mr-2"
         />
         <Link
-          to="/app/settings/self-service"
+          to="/app/automation"
         >
           Enable Return order flow
         </Link>

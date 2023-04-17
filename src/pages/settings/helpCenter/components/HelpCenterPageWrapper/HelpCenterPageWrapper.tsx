@@ -1,7 +1,6 @@
 import React, {ReactNode, useMemo, useState} from 'react'
 import classNames from 'classnames'
 import {Container} from 'reactstrap'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useHistory} from 'react-router-dom'
 
 import {HelpCenter} from 'models/helpCenter/types'
@@ -10,7 +9,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import {getViewLanguage, changeViewLanguage} from 'state/ui/helpCenter'
 
 import Button from 'pages/common/components/button/Button'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {validLocaleCode} from 'models/helpCenter/utils'
@@ -60,8 +58,6 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
     const locales = useSupportedLocales()
     const viewLanguage =
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const [showCloseModal, setShowCloseModal] = useState(false)
     const [locale, setLocale] = useState(viewLanguage)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
@@ -121,64 +117,63 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                 }
             >
                 <div className={css.header}>
-                    {isAutomationSettingsRevampEnabled &&
-                        (hasAutomationAddOn ? (
-                            helpCenter.shop_name ? (
-                                <Button
-                                    fillStyle="ghost"
-                                    intent="primary"
-                                    onClick={() => {
-                                        history.push(
-                                            `/app/automation/shopify/${
-                                                helpCenter.shop_name as string
-                                            }/connected-channels?type=${
-                                                TicketChannel.HelpCenter
-                                            }&id=${helpCenter.id}`
-                                        )
-                                    }}
-                                >
-                                    <ButtonIconLabel icon="auto_awesome">
-                                        Edit automation settings
-                                    </ButtonIconLabel>
-                                </Button>
-                            ) : (
-                                <Button
-                                    fillStyle="ghost"
-                                    intent="primary"
-                                    onClick={() => {
-                                        if (isConnectStoreLinkEnabled) {
-                                            history.push(
-                                                `/app/settings/help-center/${helpCenter.id}/preferences`
-                                            )
-                                        }
-                                    }}
-                                >
-                                    <ButtonIconLabel
-                                        icon="warning"
-                                        className={css.connectStoreWarning}
-                                    >
-                                        Connect store to enable automation
-                                    </ButtonIconLabel>
-                                </Button>
-                            )
+                    {hasAutomationAddOn ? (
+                        helpCenter.shop_name ? (
+                            <Button
+                                fillStyle="ghost"
+                                intent="primary"
+                                onClick={() => {
+                                    history.push(
+                                        `/app/automation/shopify/${
+                                            helpCenter.shop_name as string
+                                        }/connected-channels?type=${
+                                            TicketChannel.HelpCenter
+                                        }&id=${helpCenter.id}`
+                                    )
+                                }}
+                            >
+                                <ButtonIconLabel icon="auto_awesome">
+                                    Edit automation settings
+                                </ButtonIconLabel>
+                            </Button>
                         ) : (
-                            <>
-                                <AutomationSubscriptionButton
-                                    fillStyle="ghost"
-                                    label="Get Automation Add-on Features"
-                                    onClick={() => {
-                                        setIsAutomationModalOpened(true)
-                                    }}
-                                />
-                                <AutomationSubscriptionModal
-                                    confirmLabel="Confirm"
-                                    isOpen={isAutomationModalOpened}
-                                    onClose={() =>
-                                        setIsAutomationModalOpened(false)
+                            <Button
+                                fillStyle="ghost"
+                                intent="primary"
+                                onClick={() => {
+                                    if (isConnectStoreLinkEnabled) {
+                                        history.push(
+                                            `/app/settings/help-center/${helpCenter.id}/preferences`
+                                        )
                                     }
-                                />
-                            </>
-                        ))}
+                                }}
+                            >
+                                <ButtonIconLabel
+                                    icon="warning"
+                                    className={css.connectStoreWarning}
+                                >
+                                    Connect store to enable automation
+                                </ButtonIconLabel>
+                            </Button>
+                        )
+                    ) : (
+                        <>
+                            <AutomationSubscriptionButton
+                                fillStyle="ghost"
+                                label="Get Automation Add-on Features"
+                                onClick={() => {
+                                    setIsAutomationModalOpened(true)
+                                }}
+                            />
+                            <AutomationSubscriptionModal
+                                confirmLabel="Confirm"
+                                isOpen={isAutomationModalOpened}
+                                onClose={() =>
+                                    setIsAutomationModalOpened(false)
+                                }
+                            />
+                        </>
+                    )}
                     {showLanguageSelector && (
                         <SelectField
                             value={viewLanguage}

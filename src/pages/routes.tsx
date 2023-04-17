@@ -14,7 +14,6 @@ import {assetsUrl} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {PageSection} from 'config/pages'
 import {currentAccountHasFeature} from 'state/currentAccount/selectors'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
 import {logPageChange} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
@@ -48,7 +47,6 @@ import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
 import TicketNavbar from './tickets/navbar/TicketNavbar'
 import TicketListContainer from './tickets/list/TicketListContainer'
 import TicketPrintContainer from './tickets/detail/TicketPrintContainer'
-import SelfServiceContainer from './settings/selfService/SelfServiceContainer'
 import CustomerListContainer from './customers/list/CustomerListContainer'
 import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer'
 import CustomerDetailContainer from './customers/detail/CustomerDetailContainer'
@@ -95,15 +93,6 @@ import AddTicketField from './settings/ticketFields/AddTicketField'
 import withFeaturePaywall from './common/utils/withFeaturePaywall'
 import CanduContent from './onboarding/CanduContent'
 import ReferralContent from './referral/ReferralContent'
-import SelfServiceQuickResponseFlowsPreferencesContainer from './settings/selfService/components/QuickResponseFlowsPreferences'
-import SelfServiceQuickResponseFlowEditItemContainer from './settings/selfService/components/QuickResponseFlowEditItem'
-import SelfServiceQuickResponseFlowNewItemContainer from './settings/selfService/components/QuickResponseFlowNewItem'
-import SelfServiceOrderManagementFlowsPreferencesContainer from './settings/selfService/components/OrderManagementFlowsPreferences'
-import SelfServiceCancellationsPolicyContainer from './settings/selfService/components/CancellationsPolicyView'
-import SelfServiceReturnsPolicyContainer from './settings/selfService/components/ReturnsPolicyView'
-import SelfServiceReportIssuePolicyContainer from './settings/selfService/components/ReportIssuePolicyView/index'
-import SelfServiceReportIssueCaseEditorContainer from './settings/selfService/components/ReportIssueCaseEditor/index'
-import SelfServiceReportIssueReasonEditorContainer from './settings/selfService/components/ReportIssueReasonEditor/index'
 import HelpCenterStartView from './settings/helpCenter/components/HelpCenterStartView'
 import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewView'
 import CurrentHelpCenter from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
@@ -130,7 +119,7 @@ import SelfServiceStatsPage from './stats/self-service/SelfServiceStatsPage'
 import TwilioSubaccountStatusForm from './tasks/detail/TwilioSubaccountStatusForm'
 import CreditShopifyBillingIntegration from './tasks/detail/CreditShopifyBillingIntegration'
 import EditTicketField from './settings/ticketFields/EditTicketField'
-import MaybeDeprecatedRoute from './common/components/MaybeDeprecatedRoute'
+import DeprecatedRoute from './common/components/DeprecatedRoute'
 import {RevenueAddonApiClientProvider} from './settings/revenue/hooks/useRevenueAddonApi'
 import {ClickTrackingSettingsView} from './settings/revenue/components/ClickTrackingSettingsView'
 import OrderManagementViewContainer from './automation/orderManagement/OrderManagementViewContainer'
@@ -143,12 +132,6 @@ import ArticleRecommendationViewContainer from './automation/articleRecommendati
 import QuickResponsesViewContainer from './automation/quickResponses/QuickResponsesViewContainer'
 import WorkflowsViewContainer from './automation/workflows/WorkflowsViewContainer'
 import WorkflowEditorViewContainer from './automation/workflows/editor/WorkflowEditorViewContainer'
-import PageHeader from './common/components/PageHeader'
-import HeaderTitle from './common/components/HeaderTitle'
-import SelfServiceStatsPageTitle from './stats/self-service/SelfServiceStatsPageTitle'
-import SelfServiceStatsPageDescription from './stats/self-service/SelfServiceStatsPageDescription'
-import {HELP_URL} from './stats/self-service/constants'
-import SelfServiceStatsPagePaywallCustomCta from './stats/self-service/SelfServiceStatsPagePaywallCustomCta'
 import SelfServiceHelpCentersProvider from './automation/common/providers/SelfServiceHelpCentersProvider'
 import QuickResponsesPaywallView from './automation/quickResponses/QuickResponsesPaywallView'
 import OrderManagementPaywallView from './automation/orderManagement/OrderManagementPaywallView'
@@ -177,14 +160,7 @@ export default function Routes() {
     return <Route path="/app" component={AppRoutes} />
 }
 
-type RouteComponentPropsWithNavbar = RouteComponentProps & {
-    navbar?: ComponentType<any>
-}
-
 export function AppRoutes({match: {path}}: RouteComponentProps) {
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
-
     return (
         <Switch>
             <Route
@@ -207,12 +183,10 @@ export function AppRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/stats`}
                 render={(props) => <StatsRoutes {...props} />}
             />
-            {isAutomationSettingsRevampEnabled && (
-                <Route
-                    path={`${path}/automation`}
-                    render={(props) => <AutomationRoutes {...props} />}
-                />
-            )}
+            <Route
+                path={`${path}/automation`}
+                render={() => <AutomationRoutes />}
+            />
             <Route
                 path={`${path}/settings`}
                 render={(props) => <SettingsRoutes {...props} />}
@@ -473,8 +447,6 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
     )
     const hasAnalyticsBeta: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -619,75 +591,20 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                         navbar: StatsNavbarContainer,
                     })}
                 />
-                {isAutomationSettingsRevampEnabled ? (
-                    <Route
-                        exact
-                        path={`${path}/automation-add-on`}
-                        render={appRender({
-                            content: withFeaturePaywall(
-                                AccountFeature.AutomationSelfServiceStatistics,
-                                undefined,
-                                {
-                                    [AccountFeature.AutomationSelfServiceStatistics]:
-                                        {
-                                            ...defaultPaywallConfigs[
-                                                AccountFeature
-                                                    .AutomationSelfServiceStatistics
-                                            ],
-                                            pageHeader: (
-                                                <PageHeader
-                                                    title={
-                                                        <HeaderTitle
-                                                            title={
-                                                                <SelfServiceStatsPageTitle />
-                                                            }
-                                                            description={
-                                                                <SelfServiceStatsPageDescription />
-                                                            }
-                                                            helpUrl={HELP_URL}
-                                                        />
-                                                    }
-                                                />
-                                            ),
-                                            customCta: (
-                                                <SelfServiceStatsPagePaywallCustomCta />
-                                            ),
-                                            header: 'Track Automation Add-on performance',
-                                            description: (
-                                                <div>
-                                                    Monitor automated customer
-                                                    interactions, gain insights
-                                                    to improve your automation
-                                                    rate, and more!
-                                                </div>
-                                            ),
-                                            preview: assetsUrl(
-                                                '/img/paywalls/screens/automation-add-on-statistics.png'
-                                            ),
-                                        },
-                                }
-                            )(SelfServiceStatsPage),
-                            navbar: StatsNavbarContainer,
-                        })}
-                    />
-                ) : (
-                    <Route
-                        exact
-                        path={`${path}/self-service`}
-                        render={appRender({
-                            content: SelfServiceStatsPage,
-                            navbar: StatsNavbarContainer,
-                        })}
-                    />
-                )}
+                <Route
+                    exact
+                    path={`${path}/automation-add-on`}
+                    render={appRender({
+                        content: SelfServiceStatsPage,
+                        navbar: StatsNavbarContainer,
+                    })}
+                />
             </Switch>
         </DefaultStatsFilters>
     )
 }
 
 export function SettingsRoutes({match: {path}}: RouteComponentProps) {
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const isDecoupleContactFormEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.DecoupleContactForm]
     const satisfactionPaywallConfig = {
@@ -737,24 +654,15 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                     render={ContactFormSettingsRoutes}
                 />
             ) : null}
-            <MaybeDeprecatedRoute
+            <DeprecatedRoute
                 path={`${path}/macros`}
-                render={(props) => <MacrosSettingsRoutes {...props} />}
-                isDeprecated={isAutomationSettingsRevampEnabled}
                 redirectTo="/app/automation/macros"
             />
-            <MaybeDeprecatedRoute
+            <DeprecatedRoute
                 path={`${path}/rules`}
-                render={(props) => <RulesSettingsRoute {...props} />}
-                isDeprecated={isAutomationSettingsRevampEnabled}
                 redirectTo="/app/automation/rules"
             />
-            <MaybeDeprecatedRoute
-                path={`${path}/self-service`}
-                render={(props) => <SelfServiceSettingsRoutes {...props} />}
-                isDeprecated={isAutomationSettingsRevampEnabled}
-                redirectTo="/app/automation/self-service"
-            />
+            <Redirect from={`${path}/self-service`} to="/app/automation" />
             <Route
                 path={`${path}/profile`}
                 exact
@@ -854,18 +762,9 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 })}
                 exact
             />
-            <MaybeDeprecatedRoute
+            <DeprecatedRoute
                 path={`${path}/ticket-assignment`}
                 exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        TicketAssignment,
-                        ADMIN_ROLE,
-                        PageSection.TicketAssignment
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-                isDeprecated={isAutomationSettingsRevampEnabled}
                 redirectTo="/app/automation/ticket-assignment"
             />
             <Route path={`${path}/ticket-fields`} render={TicketFieldsRoutes} />
@@ -1117,270 +1016,10 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
     )
 }
 
-export function SelfServiceSettingsRoutes({
-    match: {path},
-    navbar = SettingsNavbar,
-    isDeprecated = false,
-}: RouteComponentPropsWithNavbar & {isDeprecated?: boolean}) {
-    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-
+export function AutomationRoutes() {
     return (
         <HelpCenterApiClientProvider>
             <Switch>
-                <MaybeDeprecatedRoute
-                    path={`${path}/`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            SelfServiceContainer,
-                            ADMIN_ROLE,
-                            PageSection.SelfService
-                        ),
-                        navbar,
-                    })}
-                    isDeprecated={isDeprecated}
-                    redirectTo="/app/automation/macros"
-                />
-                <Redirect
-                    exact
-                    from={`${path}/:integrationType/:shopName/preferences`}
-                    to={`${path}/:integrationType/:shopName/preferences/${
-                        hasAutomationAddOn
-                            ? `quick-response`
-                            : `order-management`
-                    }`}
-                />
-                <MaybeDeprecatedRoute
-                    path={`${path}/:integrationType/:shopName/preferences/quick-response`}
-                    redirectTo="/app/automation/:integrationType/:shopName/quick-responses"
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            SelfServiceQuickResponseFlowsPreferencesContainer,
-                            ADMIN_ROLE,
-                            PageSection.SelfService
-                        ),
-                        navbar,
-                    })}
-                    isDeprecated={isDeprecated}
-                />
-                <Route
-                    path={`${path}/:integrationType/:shopName/preferences/quick-response/new`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            SelfServiceQuickResponseFlowNewItemContainer,
-                            ADMIN_ROLE,
-                            PageSection.SelfService
-                        ),
-                        navbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/:integrationType/:shopName/preferences/quick-response/:quickResponseId`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            SelfServiceQuickResponseFlowEditItemContainer,
-                            ADMIN_ROLE,
-                            PageSection.SelfService
-                        ),
-                        navbar,
-                    })}
-                />
-                <MaybeDeprecatedRoute
-                    path={`${path}/:integrationType/:shopName/preferences/order-management`}
-                    redirectTo="/app/automation/:integrationType/:shopName/order-management"
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            SelfServiceOrderManagementFlowsPreferencesContainer,
-                            ADMIN_ROLE,
-                            PageSection.SelfService
-                        ),
-                        navbar,
-                    })}
-                    isDeprecated={isDeprecated}
-                />
-                <Route
-                    path={`${path}/:integrationType/:shopName/preferences/cancellations`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            SelfServiceCancellationsPolicyContainer,
-                            ADMIN_ROLE,
-                            PageSection.SelfService
-                        ),
-                        navbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/:integrationType/:shopName/preferences/returns`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            SelfServiceReturnsPolicyContainer,
-                            ADMIN_ROLE,
-                            PageSection.SelfService
-                        ),
-                        navbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/:integrationType/:shopName/preferences/report-issue`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            SelfServiceReportIssuePolicyContainer,
-                            ADMIN_ROLE,
-                            PageSection.SelfService
-                        ),
-                        navbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/:integrationType/:shopName/preferences/report-issue/:caseIndex`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            SelfServiceReportIssueCaseEditorContainer,
-                            ADMIN_ROLE,
-                            PageSection.SelfService
-                        ),
-                        navbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/:integrationType/:shopName/preferences/report-issue/:caseIndex/reasons/:reasonIndex`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            SelfServiceReportIssueReasonEditorContainer,
-                            ADMIN_ROLE,
-                            PageSection.SelfService
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
-            </Switch>
-        </HelpCenterApiClientProvider>
-    )
-}
-
-export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
-    return (
-        <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        MacrosSettingsContent,
-                        AGENT_ROLE,
-                        PageSection.Macros
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/new`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        MacrosSettingsForm,
-                        AGENT_ROLE,
-                        PageSection.Macros
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
-                path={`${path}/:macroId`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        MacrosSettingsForm,
-                        AGENT_ROLE,
-                        PageSection.Macros
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-        </Switch>
-    )
-}
-
-export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
-    return (
-        <HelpCenterApiClientProvider>
-            <Switch>
-                <Route
-                    path={`${path}/`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            RulesView,
-                            AGENT_ROLE,
-                            PageSection.Rules
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/library`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            RulesLibrary,
-                            AGENT_ROLE,
-                            PageSection.Rules
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/new`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            RuleDetailForm,
-                            AGENT_ROLE,
-                            PageSection.Rules
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/:ruleId`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            RuleDetailForm,
-                            AGENT_ROLE,
-                            PageSection.Rules
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
-            </Switch>
-        </HelpCenterApiClientProvider>
-    )
-}
-
-export function AutomationRoutes({match: {path}}: RouteComponentProps) {
-    return (
-        <HelpCenterApiClientProvider>
-            <Switch>
-                <Route
-                    path={`${path}/self-service`}
-                    render={(props) => (
-                        <SelfServiceSettingsRoutes
-                            {...props}
-                            navbar={AutomationNavbar}
-                            isDeprecated
-                        />
-                    )}
-                />
                 <Route
                     render={appRender({
                         content: AutomationContent,
@@ -1393,8 +1032,6 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
 }
 
 function AutomationContent() {
-    const isflowsBetaEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.FlowsBeta]
     const {path} = useRouteMatch()
 
     return (
@@ -1443,36 +1080,30 @@ function AutomationContent() {
                     AGENT_ROLE
                 )}
             />
-            {isflowsBetaEnabled && (
-                <Route
-                    path={`${path}/:shopType/:shopName/flows`}
-                    exact
-                    component={memoizedWithUserRoleRequired(
-                        WorkflowsViewContainer,
-                        AGENT_ROLE
-                    )}
-                />
-            )}
-            {isflowsBetaEnabled && (
-                <Route
-                    path={`${path}/:shopType/:shopName/flows/new`}
-                    exact
-                    component={memoizedWithUserRoleRequired(
-                        WorkflowEditorViewContainer,
-                        AGENT_ROLE
-                    )}
-                />
-            )}
-            {isflowsBetaEnabled && (
-                <Route
-                    path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
-                    exact
-                    component={memoizedWithUserRoleRequired(
-                        WorkflowEditorViewContainer,
-                        AGENT_ROLE
-                    )}
-                />
-            )}
+            <Route
+                path={`${path}/:shopType/:shopName/flows`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    WorkflowsViewContainer,
+                    AGENT_ROLE
+                )}
+            />
+            <Route
+                path={`${path}/:shopType/:shopName/flows/new`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    WorkflowEditorViewContainer,
+                    AGENT_ROLE
+                )}
+            />
+            <Route
+                path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    WorkflowEditorViewContainer,
+                    AGENT_ROLE
+                )}
+            />
             <Route
                 path={[
                     `${path}/shopify/:shopName/order-management`,

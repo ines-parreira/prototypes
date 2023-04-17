@@ -73,15 +73,15 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
     },
     [AccountFeature.AutomationSelfServiceStatistics]: {
         paywallTheme: PaywallTheme.Default,
-        header: 'Track self-service performance',
+        header: 'Track Automation Add-on performance',
         description: (
             <div>
-                See how many customer interactions are automated by self-service
-                flows, gain insights to improve your automation rate, and more!
+                Monitor automated customer interactions, gain insights to
+                improve your automation rate, and more!
             </div>
         ),
         preview: assetsUrl(
-            '/img/paywalls/screens/self-service-statistics-v2.png'
+            '/img/paywalls/screens/automation-add-on-statistics.png'
         ),
         requiredUpgrade: 'Automation',
         upgradeType: UpgradeType.AddOn,

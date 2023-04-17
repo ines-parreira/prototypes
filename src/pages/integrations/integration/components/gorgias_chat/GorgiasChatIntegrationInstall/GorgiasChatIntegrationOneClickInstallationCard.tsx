@@ -1,240 +1,88 @@
-import React, {useState, useMemo} from 'react'
-import {Link} from 'react-router-dom'
-import {Card, CardBody, CardHeader} from 'reactstrap'
-import {fromJS, Map, List} from 'immutable'
-import moment from 'moment'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import React from 'react'
+import {useAsyncFn} from 'react-use'
+import {fromJS, Map} from 'immutable'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import Button from 'pages/common/components/button/Button'
 
 import css from './GorgiasChatIntegrationOneClickInstallationCard.less'
-import {OneClickInstallationCardStoreRow} from './OneClickInstallationCardStoreRow'
 
 type Props = {
     integration: Map<any, any>
     updateOrCreateIntegration: (integration: Map<any, any>) => Promise<void>
-    shopifyIntegrations: List<Map<any, any>>
-    hasOrderManagement: boolean
+    isConnected: boolean
+    isInstalled: boolean
 }
 
-export function GorgiasChatIntegrationOneClickInstallationCard({
+const GorgiasChatIntegrationOneClickInstallationCard = ({
     integration,
     updateOrCreateIntegration,
-    shopifyIntegrations,
-    hasOrderManagement,
-}: Props) {
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
-    const [loading, setLoading] = useState<{
-        [key: string]: {installation?: boolean; disconnection?: boolean} | null
-    }>({})
-    const shopifyIntegrationIds: List<number> = integration.getIn(
-        ['meta', 'shopify_integration_ids'],
-        fromJS([])
-    )
+    isConnected,
+    isInstalled,
+}: Props) => {
+    const [{loading: isUninstallPending}, handleUninstall] =
+        useAsyncFn(async () => {
+            const meta: Map<any, any> = integration.get('meta')
 
-    const associatedShopifyStoreName = integration.getIn(['meta', 'shop_name'])
-    const associatedShopifyStoreId: number = useMemo(() => {
-        const associatedShopifyStore: Map<any, any> = shopifyIntegrations.find(
-            (shopifyIntegration: Map<any, any> | undefined) =>
-                shopifyIntegration?.get('name') === associatedShopifyStoreName
-        )
-        return associatedShopifyStore?.get('id') as number
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [shopifyIntegrations, integration])
+            const form = {
+                id: integration.get('id'),
+                type: integration.get('type'),
+                meta: meta.set('shopify_integration_ids', []),
+            }
 
-    const filteredShopifyIntegrations = useMemo(
-        () =>
-            shopifyIntegrations
-                .filter((shopifyIntegration: Map<any, any> | undefined) => {
-                    const shopifyIntegrationId: number =
-                        shopifyIntegration?.get('id')
-                    const installedShopifyIntegrationIds: List<number> =
-                        integration.getIn(
-                            ['meta', 'shopify_integration_ids'],
-                            fromJS([])
-                        )
+            await updateOrCreateIntegration(fromJS(form))
+        }, [integration, updateOrCreateIntegration])
+    const [{loading: isInstallPending}, handleInstall] =
+        useAsyncFn(async () => {
+            const shopIntegrationId = integration.getIn([
+                'meta',
+                'shop_integration_id',
+            ])
 
-                    if (
-                        installedShopifyIntegrationIds.contains(
-                            shopifyIntegrationId
-                        )
-                    ) {
-                        return true
-                    } else if (
-                        shopifyIntegrationId === associatedShopifyStoreId
-                    ) {
-                        return true
-                    }
+            if (!shopIntegrationId) {
+                return
+            }
 
-                    return false
-                })
-                .sortBy((shopifyIntegration: Map<any, any> | undefined) => {
-                    const shopifyIntegrationId: number =
-                        shopifyIntegration?.get('id')
-                    if (shopifyIntegrationId === associatedShopifyStoreId) {
-                        return -Infinity
-                    }
+            const meta: Map<any, any> = integration.get('meta')
 
-                    return -moment(
-                        shopifyIntegration?.get('created_datetime')
-                    ).valueOf()
-                }),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [shopifyIntegrations, integration]
-    )
+            const form = {
+                id: integration.get('id'),
+                type: integration.get('type'),
+                meta: meta.set('shopify_integration_ids', [shopIntegrationId]),
+            }
 
-    const onInstall = async (targetIntegrationId: number) => {
-        setLoading({...loading, [targetIntegrationId]: {installation: true}})
-
-        let targetIntegrationIdsList: List<number> = integration.getIn(
-            ['meta', 'shopify_integration_ids'],
-            fromJS([])
-        )
-
-        if (!targetIntegrationIdsList?.contains(targetIntegrationId)) {
-            targetIntegrationIdsList =
-                targetIntegrationIdsList?.push(targetIntegrationId)
-        }
-
-        const meta: Map<any, any> = integration.get('meta')
-        const updatedMeta = meta.set(
-            'shopify_integration_ids',
-            targetIntegrationIdsList
-        )
-        const form = {
-            id: integration.get('id'),
-            type: integration.get('type'),
-            meta: updatedMeta,
-        }
-
-        await updateOrCreateIntegration(fromJS(form))
-
-        setLoading({...loading, [targetIntegrationId]: null})
-    }
-
-    const onUninstall = async (targetIntegrationId: number) => {
-        setLoading({...loading, [targetIntegrationId]: {installation: true}})
-        const meta: Map<any, any> = integration.get('meta')
-        const indexToDelete: number = shopifyIntegrationIds.findIndex(
-            (value) => value === targetIntegrationId
-        )
-        const updatedMeta = meta
-            .set('shop_name', meta.get('shop_name', null))
-            .deleteIn(['shopify_integration_ids', indexToDelete])
-        const form = {
-            id: integration.get('id'),
-            type: integration.get('type'),
-            meta: updatedMeta,
-        }
-
-        await updateOrCreateIntegration(fromJS(form))
-
-        setLoading({...loading, [targetIntegrationId]: null})
-    }
-
-    const onDisconnect = async (targetIntegrationId: number) => {
-        setLoading({...loading, [targetIntegrationId]: {disconnection: true}})
-        const meta: Map<any, any> = integration.get('meta')
-        const updatedMeta: Map<any, any> = meta
-            .set('shop_name', null)
-            .set('shop_type', null)
-            .set('shop_integration_id', null)
-            .set('shopify_integration_ids', [])
-            .set('self_service_deactivated_datetime', new Date().toISOString())
-        const form = {
-            id: integration.get('id'),
-            type: integration.get('type'),
-            meta: updatedMeta,
-        }
-
-        await updateOrCreateIntegration(fromJS(form))
-
-        setLoading({...loading, [targetIntegrationId]: null})
-    }
+            await updateOrCreateIntegration(fromJS(form))
+        }, [integration, updateOrCreateIntegration])
 
     return (
-        <Card className={css['card']}>
-            <CardHeader className={css['card-header']}>
-                <h3>One-click installation</h3>
-            </CardHeader>
-
-            <CardBody className={css['card-body']}>
-                <p>
-                    Activate the customer chat widget on your Shopify store in
-                    one click.
-                    {hasOrderManagement && (
-                        <span>
-                            {' '}
-                            Note that this will automatically enable{' '}
-                            {isAutomationSettingsRevampEnabled ? (
-                                'order management flows'
-                            ) : (
-                                <Link to="/app/settings/self-service">
-                                    Self-Service
-                                </Link>
-                            )}
-                            .
-                        </span>
-                    )}
-                </p>
-                {!associatedShopifyStoreId ? (
-                    <OneClickInstallationCardStoreRow
-                        key={integration.getIn(['meta', 'shop_integration_id'])}
-                        isChatInstalled={shopifyIntegrationIds.includes(
-                            integration.getIn(['meta', 'shop_integration_id'])
-                        )}
-                        targetIntegrationId={integration.getIn([
-                            'meta',
-                            'shop_integration_id',
-                        ])}
-                        targetIntegrationName={associatedShopifyStoreName}
-                        isLegacyInstallation={false}
-                        isIntegrationDeactivated={true}
-                        onInstall={onInstall}
-                        onUninstall={onUninstall}
-                        onDisconnect={onDisconnect}
-                        loading={loading}
-                    />
-                ) : null}
-                {filteredShopifyIntegrations.map((targetIntegration) => {
-                    const targetIntegrationId: number =
-                        targetIntegration?.get('id')
-                    const targetIntegrationName: string =
-                        targetIntegration?.get('name')
-
-                    const isChatInstalled: boolean =
-                        shopifyIntegrationIds.includes(targetIntegrationId)
-
-                    const isLegacyInstallation: boolean =
-                        targetIntegrationId !== associatedShopifyStoreId
-
-                    const hasLegacyInstallations =
-                        !isLegacyInstallation &&
-                        filteredShopifyIntegrations.size > 1
-
-                    const isIntegrationDeactivated = Boolean(
-                        targetIntegration?.get('deactivated_datetime')
-                    )
-
-                    return (
-                        <OneClickInstallationCardStoreRow
-                            key={targetIntegrationId}
-                            isChatInstalled={isChatInstalled}
-                            targetIntegrationId={targetIntegrationId}
-                            targetIntegrationName={targetIntegrationName}
-                            isLegacyInstallation={isLegacyInstallation}
-                            hasLegacyInstallations={hasLegacyInstallations}
-                            isIntegrationDeactivated={isIntegrationDeactivated}
-                            onInstall={onInstall}
-                            onUninstall={onUninstall}
-                            onDisconnect={onDisconnect}
-                            loading={loading}
-                        />
-                    )
-                })}
-            </CardBody>
-        </Card>
+        <div className={css.container}>
+            <div>
+                <div className={css.title}>
+                    1-click installation for Shopify
+                </div>
+                <div>
+                    Add the chat widget to your Shopify store in one click. Note
+                    that this will automatically enable Automation Add-on
+                    features if available.
+                </div>
+            </div>
+            {isInstalled ? (
+                <Button
+                    intent="secondary"
+                    isDisabled={isUninstallPending}
+                    onClick={handleUninstall}
+                >
+                    Uninstall
+                </Button>
+            ) : (
+                <Button
+                    isDisabled={!isConnected || isInstallPending}
+                    intent={isConnected ? 'primary' : 'secondary'}
+                    onClick={handleInstall}
+                >
+                    Install
+                </Button>
+            )}
+        </div>
     )
 }
 

@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import settingsCss from 'pages/settings/settings.less'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
@@ -25,8 +23,6 @@ export const HelpCenterPreferencesView: React.FC = () => {
         canSavePreferences,
         updatePreferences,
     } = useHelpCenterPreferencesSettings()
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
 
     useEffect(() => {
         void getHelpCenterCustomDomain()
@@ -56,12 +52,10 @@ export const HelpCenterPreferencesView: React.FC = () => {
             isDirty={canSavePreferences}
             isConnectStoreLinkEnabled={false}
         >
-            {isAutomationSettingsRevampEnabled && (
-                <ConnectToShopSection
-                    onUpdate={onConnectedShopChange}
-                    shopName={preferences.connectedShop.shopName}
-                />
-            )}
+            <ConnectToShopSection
+                onUpdate={onConnectedShopChange}
+                shopName={preferences.connectedShop.shopName}
+            />
             <section className={settingsCss.mb40}>
                 <h3>Languages</h3>
                 <DefaultLanguageSelect availableLocales={locales} />

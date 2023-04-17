@@ -143,13 +143,13 @@ describe('<MacrosSettingsForm/>', () => {
             expect(component).toMatchSnapshot()
             expect(history.push).toHaveBeenNthCalledWith(
                 1,
-                '/app/settings/macros'
+                '/app/automation/macros'
             )
             done()
         })
     })
 
-    it('should create macro and redirect to /app/settings/macros', (done) => {
+    it('should create macro and redirect to /app/automation/macros', (done) => {
         const component = mount(<MacrosSettingsFormContainer {...minProps} />)
 
         component.find(Button).at(0).simulate('submit')
@@ -165,7 +165,7 @@ describe('<MacrosSettingsForm/>', () => {
             })
             expect(history.push).toHaveBeenNthCalledWith(
                 1,
-                '/app/settings/macros'
+                '/app/automation/macros'
             )
             done()
         })
@@ -200,7 +200,7 @@ describe('<MacrosSettingsForm/>', () => {
                 })
                 expect(history.push).toHaveBeenNthCalledWith(
                     1,
-                    '/app/settings/macros'
+                    '/app/automation/macros'
                 )
                 done()
             })
@@ -278,7 +278,7 @@ describe('<MacrosSettingsForm/>', () => {
         expect(mockCreateMacro).toHaveBeenCalledTimes(1)
     })
 
-    it('should delete macro and redirect to /app/settings/macros', (done) => {
+    it('should delete macro and redirect to /app/automation/macros', (done) => {
         const component = mount(
             <MacrosSettingsFormContainer
                 {...minProps}
@@ -301,7 +301,7 @@ describe('<MacrosSettingsForm/>', () => {
                 })
                 expect(history.push).toHaveBeenNthCalledWith(
                     1,
-                    '/app/settings/macros'
+                    '/app/automation/macros'
                 )
                 done()
             })
@@ -373,7 +373,7 @@ describe('<MacrosSettingsForm/>', () => {
                 })
                 expect(history.push).toHaveBeenNthCalledWith(
                     2,
-                    '/app/settings/macros/5'
+                    '/app/automation/macros/5'
                 )
                 done()
             })

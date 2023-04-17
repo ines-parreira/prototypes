@@ -21,8 +21,6 @@ const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
 export default function StatsNavbarView() {
     const hasAnalyticsBeta: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const [
         isAutomationSubscriptionModalOpen,
         setIsAutomationSubscriptionModal,
@@ -139,40 +137,31 @@ export default function StatsNavbarView() {
                     >
                         Intents
                     </NavbarLink>
-                    {isAutomationSettingsRevampEnabled ? (
-                        !hasAutomationAddOn ? (
-                            <>
-                                <AutomationNavbarAddOnPaywallNavbarLink
-                                    to="/app/stats/automation-add-on"
-                                    exact
-                                    onSubscribeToAutomationAddOnClick={() => {
-                                        setIsAutomationSubscriptionModal(true)
-                                    }}
-                                >
-                                    Automation Add-on
-                                </AutomationNavbarAddOnPaywallNavbarLink>
-                                <AutomationSubscriptionModal
-                                    confirmLabel="Subscribe"
-                                    isOpen={isAutomationSubscriptionModalOpen}
-                                    onClose={() =>
-                                        setIsAutomationSubscriptionModal(false)
-                                    }
-                                />
-                            </>
-                        ) : (
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
+                    {!hasAutomationAddOn ? (
+                        <>
+                            <AutomationNavbarAddOnPaywallNavbarLink
                                 to="/app/stats/automation-add-on"
+                                exact
+                                onSubscribeToAutomationAddOnClick={() => {
+                                    setIsAutomationSubscriptionModal(true)
+                                }}
                             >
                                 Automation Add-on
-                            </NavbarLink>
-                        )
+                            </AutomationNavbarAddOnPaywallNavbarLink>
+                            <AutomationSubscriptionModal
+                                confirmLabel="Subscribe"
+                                isOpen={isAutomationSubscriptionModalOpen}
+                                onClose={() =>
+                                    setIsAutomationSubscriptionModal(false)
+                                }
+                            />
+                        </>
                     ) : (
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/self-service"
+                            to="/app/stats/automation-add-on"
                         >
-                            Self-service
+                            Automation Add-on
                         </NavbarLink>
                     )}
                 </div>

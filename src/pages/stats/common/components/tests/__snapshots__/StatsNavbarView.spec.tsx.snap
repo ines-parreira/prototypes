@@ -147,11 +147,20 @@ exports[`StatsNavbarView should render 1`] = `
             Intents
           </a>
           <a
-            class="link"
+            class="link item"
             data-active-class-name="active"
-            href="/app/stats/self-service"
+            href="/app/stats/automation-add-on"
           >
-            Self-service
+            <div
+              class="name"
+            >
+              Automation Add-on
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              lock
+            </i>
           </a>
         </div>
       </div>
@@ -300,11 +309,20 @@ exports[`StatsNavbarView should render 1`] = `
           Intents
         </a>
         <a
-          class="link"
+          class="link item"
           data-active-class-name="active"
-          href="/app/stats/self-service"
+          href="/app/stats/automation-add-on"
         >
-          Self-service
+          <div
+            class="name"
+          >
+            Automation Add-on
+          </div>
+          <i
+            class="material-icons md-2 icon"
+          >
+            lock
+          </i>
         </a>
       </div>
     </div>

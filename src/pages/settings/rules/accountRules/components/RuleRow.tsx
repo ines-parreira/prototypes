@@ -102,7 +102,7 @@ export function RuleRow({
                     deactivated_datetime: null,
                 })
                 void dispatch(ruleCreated(newRule))
-                history.push(`/app/settings/rules/${newRule.id}`)
+                history.push(`/app/automation/rules/${newRule.id}`)
                 void dispatch(
                     notify({
                         message: 'Rule duplicated successfully',
@@ -181,7 +181,7 @@ export function RuleRow({
         [rule]
     )
 
-    const link = useMemo(() => `/app/settings/rules/${rule.id}`, [rule])
+    const link = useMemo(() => `/app/automation/rules/${rule.id}`, [rule])
 
     const handleToggleClick = useCallback(
         (onDisplayConfirmation: (event: MouseEvent) => void) =>

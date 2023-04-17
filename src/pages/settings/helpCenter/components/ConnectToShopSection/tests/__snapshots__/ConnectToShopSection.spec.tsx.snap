@@ -5,13 +5,13 @@ exports[`<ConnectToShopSection /> renders in disabled state while fetching data 
   <section
     class="mb40"
   >
-    <h4>
+    <h3>
       Connect to Shopify store
-    </h4>
+    </h3>
     <p
       class="connectDescription"
     >
-      Connect this Help Center to a Shopify store to enable Self-service flows.
+      A store connection is required to use Automation Add-on features in Help Center. Currently only available for Shopify stores.
     </p>
     <button
       class="wrapper fill secondary medium"

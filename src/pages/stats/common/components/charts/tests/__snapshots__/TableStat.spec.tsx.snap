@@ -505,7 +505,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
             %
              
             <Link
-              to="/app/settings/self-service/shopify/test-shop/preferences/quick-response/fakeflowId"
+              to="/app/automation/shopify/test-shop/quick-responses"
             >
               Edit quick response
             </Link>
@@ -826,7 +826,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
             %
              
             <Link
-              to="/app/settings/self-service/shopify/test-shop/preferences/quick-response/fakeflowId"
+              to="/app/automation/shopify/test-shop/quick-responses"
             >
               Edit quick response
             </Link>
@@ -1368,7 +1368,7 @@ exports[`TableStat should render a table chart 1`] = `
             %
              
             <Link
-              to="/app/settings/self-service/shopify/test-shop/preferences/quick-response/fakeflowId"
+              to="/app/automation/shopify/test-shop/quick-responses"
             >
               Edit quick response
             </Link>
@@ -1905,7 +1905,7 @@ exports[`TableStat should render a table with the expand button and one line vis
             %
              
             <Link
-              to="/app/settings/self-service/shopify/test-shop/preferences/quick-response/fakeflowId"
+              to="/app/automation/shopify/test-shop/quick-responses"
             >
               Edit quick response
             </Link>

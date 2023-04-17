@@ -74,7 +74,7 @@ const RuleSuggestionEvent = ({
                 : 'Rule'}
             {' "'}
             <Link
-                to={`/app/settings/rules/library?${slug}`}
+                to={`/app/automation/rules/library?${slug}`}
                 title="Rule"
                 target="_blank"
                 rel="noreferrer"
@@ -232,7 +232,7 @@ export class AuditLogEventContainer extends Component<Props> {
                     <ActionName>
                         Rule "
                         <a
-                            href={`/app/settings/rules/${
+                            href={`/app/automation/rules/${
                                 data.get('id') as number
                             }`}
                             target="_blank"

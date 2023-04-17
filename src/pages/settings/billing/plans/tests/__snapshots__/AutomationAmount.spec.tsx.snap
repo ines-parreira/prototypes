@@ -11,7 +11,7 @@ exports[`<AutomationAmount /> should render a string as amount 1`] = `
       <span
         id="automation-text-1"
       >
-        Automation
+        Automation Add-on
       </span>
     </div>
     <div
@@ -49,7 +49,7 @@ exports[`<AutomationAmount /> should render formatted amount number without disc
           <span
             id="automation-text-5"
           >
-            Automation
+            Automation Add-on
           </span>
         </div>
       </label>
@@ -100,7 +100,7 @@ exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
           <span
             id="automation-text-2"
           >
-            Automation
+            Automation Add-on
           </span>
         </div>
       </label>
@@ -141,7 +141,7 @@ exports[`<AutomationAmount /> should render no addon when plan doesn't include o
     <div
       class="align-middle checkboxLabel"
     >
-      Automation
+      Automation Add-on
     </div>
     <div
       class="amountContainer"
@@ -162,7 +162,7 @@ exports[`<AutomationAmount /> should render not editable variant 1`] = `
     <div
       class="align-middle checkboxLabel"
     >
-      Automation
+      Automation Add-on
     </div>
     <div
       class="amountContainer"
@@ -216,7 +216,7 @@ exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] =
           <span
             id="automation-text-8"
           >
-            Automation
+            Automation Add-on
           </span>
         </div>
       </label>

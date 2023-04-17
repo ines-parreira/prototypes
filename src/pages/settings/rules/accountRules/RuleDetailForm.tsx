@@ -32,7 +32,7 @@ export function RuleDetailForm({
                     message: `Could not find rule with id: ${ruleId}`,
                     status: NotificationStatus.Error,
                 })
-                history.push('/app/settings/rules')
+                history.push('/app/automation/rules')
             }
         },
         []

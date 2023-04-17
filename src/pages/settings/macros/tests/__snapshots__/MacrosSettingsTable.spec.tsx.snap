@@ -43,7 +43,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         className="macroTitle wrapper"
       >
         <Link
-          to="/app/settings/macros/1"
+          to="/app/automation/macros/1"
         >
           <BodyCellContent>
             Waive Fee
@@ -55,7 +55,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       >
         <Link
           tabIndex={-1}
-          to="/app/settings/macros/1"
+          to="/app/automation/macros/1"
         >
           <BodyCellContent>
             <div
@@ -89,7 +89,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       >
         <Link
           tabIndex={-1}
-          to="/app/settings/macros/1"
+          to="/app/automation/macros/1"
         >
           <BodyCellContent>
             -
@@ -101,7 +101,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       >
         <Link
           tabIndex={-1}
-          to="/app/settings/macros/1"
+          to="/app/automation/macros/1"
         >
           <BodyCellContent>
             1
@@ -113,7 +113,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       >
         <Link
           tabIndex={-1}
-          to="/app/settings/macros/1"
+          to="/app/automation/macros/1"
         >
           <BodyCellContent>
             2017-08-01
@@ -168,7 +168,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         className="macroTitle wrapper"
       >
         <Link
-          to="/app/settings/macros/2"
+          to="/app/automation/macros/2"
         >
           <BodyCellContent>
             Do Not Waive Fee
@@ -180,7 +180,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       >
         <Link
           tabIndex={-1}
-          to="/app/settings/macros/2"
+          to="/app/automation/macros/2"
         >
           <BodyCellContent>
             <div
@@ -202,7 +202,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       >
         <Link
           tabIndex={-1}
-          to="/app/settings/macros/2"
+          to="/app/automation/macros/2"
         >
           <BodyCellContent>
             -
@@ -214,7 +214,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       >
         <Link
           tabIndex={-1}
-          to="/app/settings/macros/2"
+          to="/app/automation/macros/2"
         >
           <BodyCellContent>
             3
@@ -226,7 +226,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       >
         <Link
           tabIndex={-1}
-          to="/app/settings/macros/2"
+          to="/app/automation/macros/2"
         >
           <BodyCellContent>
             2017-08-01

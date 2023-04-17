@@ -146,7 +146,7 @@ describe('<RuleDetailForm />', () => {
             })
             expect(history.push).toHaveBeenNthCalledWith(
                 1,
-                '/app/settings/rules'
+                '/app/automation/rules'
             )
         })
     })

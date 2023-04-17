@@ -15,7 +15,6 @@ import {AGENT_ROLE, BASIC_AGENT_ROLE} from 'config/user'
 import {RootState} from 'state/types'
 import {billingState} from 'fixtures/billing'
 import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {integrationsState} from 'fixtures/integrations'
 import {
     legacyBasicAutomationPrice,
@@ -28,7 +27,7 @@ jest.mock('utils/launchDarkly')
 jest.mock('react-router')
 
 const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({[FeatureFlagKey.AutomationSettingsRevamp]: true})
+allFlagsMock.mockReturnValue({})
 const useParamsMock = useParams as jest.Mock
 useParamsMock.mockReturnValue({})
 

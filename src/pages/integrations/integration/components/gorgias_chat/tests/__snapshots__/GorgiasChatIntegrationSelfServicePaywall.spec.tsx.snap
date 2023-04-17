@@ -173,10 +173,29 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
             </div>
           </div>
           <div
-            class="features oldFeatures"
+            class="features"
           >
             <li
-              class="d-flex align-items-center oldFeatureListItem"
+              class="d-flex align-items-center"
+            >
+              <span
+                class="featureIcon mr-3"
+              >
+                <i
+                  class="material-icons-outlined"
+                >
+                  slow_motion_video
+                </i>
+              </span>
+              <span>
+                Provide customers with automated answers to common questions with 
+                <b>
+                  quick response flows
+                </b>
+              </span>
+            </li>
+            <li
+              class="d-flex align-items-center"
             >
               <span
                 class="featureIcon mr-3"
@@ -188,14 +207,15 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
                 </i>
               </span>
               <span>
-                Track, Return, Cancel & Custom 
+                Allow customers to manage their orders with
+                 
                 <b>
-                  workflows
+                  order management flows
                 </b>
               </span>
             </li>
             <li
-              class="d-flex align-items-center oldFeatureListItem"
+              class="d-flex align-items-center"
             >
               <span
                 class="featureIcon mr-3"
@@ -203,22 +223,19 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
                 <i
                   class="material-icons"
                 >
-                  slow_motion_video
+                  article
                 </i>
               </span>
               <span>
-                Self-service features in 
+                Automatically answer customer questions with help center
+                 
                 <b>
-                  chat
-                </b>
-                 and 
-                <b>
-                  help center
+                  article recommendation
                 </b>
               </span>
             </li>
             <li
-              class="d-flex align-items-center oldFeatureListItem"
+              class="d-flex align-items-center"
             >
               <span
                 class="featureIcon mr-3"
@@ -230,9 +247,10 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
                 </i>
               </span>
               <span>
-                Self-service 
+                Track customer interactions and your automation rate with
+                 
                 <b>
-                  statistics
+                  advanced statistics
                 </b>
               </span>
             </li>

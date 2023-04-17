@@ -50,6 +50,33 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
         </ol>
       </nav>
       <div>
+        <div
+          class="automationSubscriptionButton"
+        >
+          <div
+            class="d-flex align-items-center upgradeLink"
+          >
+            <a
+              to="[object Object]"
+            >
+              <button
+                class="wrapper ghost primary medium"
+                type="button"
+              >
+                <span
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    auto_awesome
+                  </i>
+                  Upgrade
+                </span>
+              </button>
+            </a>
+          </div>
+        </div>
         <a
           class="createCampaignLink"
           to="/app/settings/channels/gorgias_chat/118/campaigns/new"
@@ -152,6 +179,33 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
         </ol>
       </nav>
       <div>
+        <div
+          class="automationSubscriptionButton"
+        >
+          <div
+            class="d-flex align-items-center upgradeLink"
+          >
+            <a
+              to="[object Object]"
+            >
+              <button
+                class="wrapper ghost primary medium"
+                type="button"
+              >
+                <span
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    auto_awesome
+                  </i>
+                  Upgrade
+                </span>
+              </button>
+            </a>
+          </div>
+        </div>
         <a
           class="createCampaignLink"
           to="/app/settings/channels/gorgias_chat/118/campaigns/new"

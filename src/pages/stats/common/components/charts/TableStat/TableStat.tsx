@@ -12,9 +12,10 @@ import expandDown from 'assets/img/infobar/expand-down.svg'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'
 
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
-import {Integration} from 'models/integration/types'
+import {Integration, StoreIntegration} from 'models/integration/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import {
@@ -68,10 +69,15 @@ export class TableStat extends Component<
             .replace(/%/g, 'percent')
             .replace(/ /g, '-')}-tooltip`
 
-    _getIsQuickResponseEnabled = (flowId: string, shopName?: string) => {
+    _getIsQuickResponseEnabled = (
+        flowId: string,
+        shopName: string,
+        shopType: string
+    ) => {
         const quickReponsePolicies = this.props.selfServiceConfigurations?.find(
             (selfServiceConfiguration) =>
-                selfServiceConfiguration.shop_name === shopName
+                selfServiceConfiguration.shop_name === shopName &&
+                selfServiceConfiguration.type === shopType
         )?.quick_response_policies
         const quickReponseDeactivatedDatetime = quickReponsePolicies?.find(
             (quickReponsePolicy) => quickReponsePolicy.id === flowId
@@ -305,28 +311,34 @@ export class TableStat extends Component<
                 const shopIntegrationId = metric.get(
                     'shop_integration_id'
                 ) as number
-                const shopName = this.props.integrations?.find(
+                const shopIntegration = this.props.integrations?.find(
                     (integration) => integration.id === shopIntegrationId
-                )?.name
+                )
+
+                if (!shopIntegration) {
+                    return value
+                }
+
+                const shopName = getShopNameFromStoreIntegration(
+                    shopIntegration as StoreIntegration
+                )
+                const shopType = shopIntegration.type
                 const flowId = metric.get('flow_id') as string
                 const isQuickResponseEnabled = this._getIsQuickResponseEnabled(
                     flowId,
-                    shopName
+                    shopName,
+                    shopType
                 )
 
                 return (
                     <>
                         {value}%{' '}
                         {isQuickResponseEnabled && (
-                            <>
-                                {shopName && (
-                                    <Link
-                                        to={`/app/settings/self-service/shopify/${shopName}/preferences/quick-response/${flowId}`}
-                                    >
-                                        Edit quick response
-                                    </Link>
-                                )}
-                            </>
+                            <Link
+                                to={`/app/automation/${shopType}/${shopName}/quick-responses`}
+                            >
+                                Edit quick response
+                            </Link>
                         )}
                     </>
                 )
@@ -440,21 +452,32 @@ export class TableStat extends Component<
                 )
             }
             case StatValueType.QuickResponseTitle: {
+                const value = metric.get('value') as number
                 const shopIntegrationId = metric.get(
                     'shop_integration_id'
                 ) as number
-                const shopName = this.props.integrations?.find(
+                const shopIntegration = this.props.integrations?.find(
                     (integration) => integration.id === shopIntegrationId
-                )?.name
+                )
+
+                if (!shopIntegration) {
+                    return value
+                }
+
+                const shopName = getShopNameFromStoreIntegration(
+                    shopIntegration as StoreIntegration
+                )
+                const shopType = shopIntegration.type
                 const flowId = metric.get('flow_id') as string
                 const isQuickResponseEnabled = this._getIsQuickResponseEnabled(
                     flowId,
-                    shopName
+                    shopName,
+                    shopType
                 )
 
                 return (
                     <>
-                        {metric.get('value')}{' '}
+                        {value}{' '}
                         {isQuickResponseEnabled && (
                             <span
                                 className={classnames(

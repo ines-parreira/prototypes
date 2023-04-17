@@ -38,6 +38,31 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
         >
           <div>
             <div
+              class="d-flex align-items-center upgradeLink"
+            >
+              <a
+                to="[object Object]"
+              >
+                <button
+                  class="wrapper ghost primary medium"
+                  type="button"
+                >
+                  <span
+                    class="wrapper"
+                  >
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      auto_awesome
+                    </i>
+                    Upgrade
+                  </span>
+                </button>
+              </a>
+            </div>
+          </div>
+          <div>
+            <div
               class="dropdown"
             >
               <div
@@ -164,14 +189,6 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
         href="/app/settings/help-center/1/customization"
       >
         Customization
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
-        href="/app/settings/help-center/1/automation"
-      >
-        Automation
       </a>
       <a
         class="link"

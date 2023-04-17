@@ -213,7 +213,7 @@ exports[`<ChangePlanModal /> should render 1`] = `
                           <span
                             id="automation-text-1"
                           >
-                            Automation
+                            Automation Add-on
                           </span>
                         </div>
                       </label>
@@ -419,7 +419,7 @@ exports[`<ChangePlanModal /> should render a discount when discounted prices 1`]
                           <span
                             id="automation-text-13"
                           >
-                            Automation
+                            Automation Add-on
                           </span>
                         </div>
                       </label>
@@ -631,7 +631,7 @@ exports[`<ChangePlanModal /> should render the automation plan features for the 
                           <span
                             id="automation-text-5"
                           >
-                            Automation
+                            Automation Add-on
                           </span>
                         </div>
                       </label>

@@ -30,7 +30,6 @@ import HelpCenterCustomizationView from 'pages/settings/helpCenter/components/He
 import HelpCenterImportCsvColumnMatchingView from 'pages/settings/helpCenter/components/HelpCenterImportCsvColumnMatchingView'
 import HelpCenterPublishAndTrackView from 'pages/settings/helpCenter/components/HelpCenterPublishAndTrackView'
 import HelpCenterPreferencesView from 'pages/settings/helpCenter/components/HelpCenterPreferencesView'
-import HelpCenterAutomationView from 'pages/settings/helpCenter/components/HelpCenterAutomationView'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import {
@@ -164,11 +163,6 @@ const CurrentHelpCenter: React.FC = () => {
                 <Route
                     path={`${path}/import/csv/column-matching`}
                     component={HelpCenterImportCsvColumnMatchingView}
-                />
-                <Route
-                    path={`${path}/automation`}
-                    exact
-                    component={HelpCenterAutomationView}
                 />
             </Switch>
         </CurrentHelpCenterContext.Provider>

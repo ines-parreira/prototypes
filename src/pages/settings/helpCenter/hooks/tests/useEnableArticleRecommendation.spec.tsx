@@ -9,8 +9,8 @@ import {HelpCenter} from 'models/helpCenter/types'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {
-    createChatHelpCenterConfiguration,
-    fetchChatHelpCenterConfiguration,
+    updateSelfServiceConfiguration,
+    fetchSelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/resources'
 
 import {getHasAutomationAddOn} from 'state/billing/selectors'
@@ -36,10 +36,14 @@ const defaultState: Partial<RootState> = {
         integrations: [
             {type: 'gorgias_chat', meta: {app_id: '1', shop_name: 'test-shop'}},
             {type: 'gorgias_chat', meta: {app_id: '2', shop_name: 'test-shop'}},
+            {
+                id: 1,
+                type: 'shopify',
+                meta: {shop_name: 'test-shop'},
+            },
         ],
     }),
 }
-const notify = jest.fn()
 
 const getDependencyWrapper = (state = defaultState) => {
     const dependencyWrapper: React.ComponentType<any> = ({
@@ -56,42 +60,27 @@ describe('useEnableArticleRecommendation', () => {
         jest.resetAllMocks()
     })
 
-    it('Should call createChatHelpCenterConfiguration', async () => {
+    it('Should call updateSelfServiceConfiguration', async () => {
         ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(true)
-        ;(fetchChatHelpCenterConfiguration as jest.Mock).mockRejectedValue({
-            isAxiosError: true,
-            response: {status: 404},
+        ;(fetchSelfServiceConfiguration as jest.Mock).mockResolvedValue({
+            article_recommendation_help_center_id: null,
         })
-        ;(createChatHelpCenterConfiguration as jest.Mock).mockResolvedValue(
-            true
-        )
 
-        const {result} = renderHook(
-            () => useEnableArticleRecommendation(notify),
-            {
-                wrapper: getDependencyWrapper(),
-            }
-        )
+        const {result} = renderHook(() => useEnableArticleRecommendation(), {
+            wrapper: getDependencyWrapper(),
+        })
         void result.current({id: 999, shop_name: 'test-shop'} as HelpCenter)
 
         await waitFor(() => {
-            expect(fetchChatHelpCenterConfiguration).toHaveBeenCalledWith(1)
-            expect(fetchChatHelpCenterConfiguration).toHaveBeenCalledWith(2)
+            expect(fetchSelfServiceConfiguration).toHaveBeenCalledWith(1)
         })
-        expect(createChatHelpCenterConfiguration).toHaveBeenCalledWith({
-            chatApplicationId: 1,
-            helpCenterId: 999,
-        })
-        expect(createChatHelpCenterConfiguration).toHaveBeenCalledWith({
-            chatApplicationId: 2,
-            helpCenterId: 999,
-        })
-        expect(notify).toHaveBeenCalledWith({
-            message:
-                'Activated the article recommendation for 2 chat integrations',
-            status: 'success',
-        })
+        expect(updateSelfServiceConfiguration).toHaveBeenCalledWith(
+            expect.objectContaining({
+                article_recommendation_help_center_id: 999,
+            })
+        )
     })
+
     it('Should not call if there is already a help-center with the same store', async () => {
         ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(true)
 
@@ -113,10 +102,11 @@ describe('useEnableArticleRecommendation', () => {
         void result.current({id: 999, shop_name: 'test-shop'} as HelpCenter)
 
         await waitFor(() => {
-            expect(fetchChatHelpCenterConfiguration).not.toHaveBeenCalled()
+            expect(fetchSelfServiceConfiguration).not.toHaveBeenCalled()
         })
-        expect(createChatHelpCenterConfiguration).not.toHaveBeenCalled()
+        expect(updateSelfServiceConfiguration).not.toHaveBeenCalled()
     })
+
     it('Should not call if AutomationAddOn is not enabled', async () => {
         ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(false)
 
@@ -126,13 +116,16 @@ describe('useEnableArticleRecommendation', () => {
         void result.current({id: 999, shop_name: 'test-shop'} as HelpCenter)
 
         await waitFor(() => {
-            expect(fetchChatHelpCenterConfiguration).not.toHaveBeenCalled()
+            expect(fetchSelfServiceConfiguration).not.toHaveBeenCalled()
         })
-        expect(createChatHelpCenterConfiguration).not.toHaveBeenCalled()
+        expect(updateSelfServiceConfiguration).not.toHaveBeenCalled()
     })
-    it('Should not call if there is already a chatHelpCenterConfiguration', async () => {
+
+    it('Should not call if there is already a article_recommendation_help_center_id', async () => {
         ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(true)
-        ;(fetchChatHelpCenterConfiguration as jest.Mock).mockResolvedValue(true)
+        ;(fetchSelfServiceConfiguration as jest.Mock).mockResolvedValue({
+            article_recommendation_help_center_id: 2,
+        })
 
         const {result} = renderHook(useEnableArticleRecommendation, {
             wrapper: getDependencyWrapper(),
@@ -140,10 +133,11 @@ describe('useEnableArticleRecommendation', () => {
         void result.current({id: 999, shop_name: 'test-shop'} as HelpCenter)
 
         await waitFor(() => {
-            expect(fetchChatHelpCenterConfiguration).toHaveBeenCalledWith(1)
+            expect(fetchSelfServiceConfiguration).toHaveBeenCalledWith(1)
         })
-        expect(createChatHelpCenterConfiguration).not.toHaveBeenCalled()
+        expect(updateSelfServiceConfiguration).not.toHaveBeenCalled()
     })
+
     it('Should not call if they are not related to the same shop', async () => {
         ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(true)
 
@@ -156,8 +150,8 @@ describe('useEnableArticleRecommendation', () => {
         } as HelpCenter)
 
         await waitFor(() => {
-            expect(fetchChatHelpCenterConfiguration).not.toHaveBeenCalledWith(1)
+            expect(fetchSelfServiceConfiguration).not.toHaveBeenCalled()
         })
-        expect(createChatHelpCenterConfiguration).not.toHaveBeenCalled()
+        expect(fetchSelfServiceConfiguration).not.toHaveBeenCalled()
     })
 })

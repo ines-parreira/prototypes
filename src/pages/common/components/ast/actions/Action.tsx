@@ -423,7 +423,7 @@ export default class Action extends React.Component<Props> {
                 value === 'setTeamAssignee' && (
                     <ActionWarning key="warning">
                         To set up team auto-assignment, go to the{' '}
-                        <Link to="/app/settings/ticket-assignment">
+                        <Link to="/app/automation/ticket-assignment">
                             Ticket assignment
                         </Link>{' '}
                         page

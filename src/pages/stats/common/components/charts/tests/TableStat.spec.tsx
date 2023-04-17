@@ -218,13 +218,18 @@ const tableStatNoData = fromJS({
 const integrationsData = [
     {
         id: 1,
+        type: 'shopify',
         name: 'test-shop',
+        meta: {
+            shop_name: 'test-shop',
+        },
     } as Integration,
 ]
 
 const selfServiceConfigurationsData = [
     {
         shop_name: 'test-shop',
+        type: 'shopify',
         quick_response_policies: [
             {
                 id: 'fakeflowId',

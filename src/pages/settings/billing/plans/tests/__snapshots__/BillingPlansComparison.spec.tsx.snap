@@ -93,7 +93,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -444,7 +444,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -795,7 +795,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -1118,7 +1118,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
           <div
             class="align-middle checkboxLabel"
           >
-            Automation
+            Automation Add-on
           </div>
           <div
             class="amountContainer"
@@ -1505,7 +1505,7 @@ exports[`<BillingPlansComparison /> should render a custom plan 1`] = `
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -1922,7 +1922,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -2278,7 +2278,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -2627,7 +2627,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -2977,7 +2977,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -3300,7 +3300,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
           <div
             class="align-middle checkboxLabel"
           >
-            Automation
+            Automation Add-on
           </div>
           <div
             class="amountContainer"
@@ -3657,7 +3657,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -4013,7 +4013,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -4364,7 +4364,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -4687,7 +4687,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
           <div
             class="align-middle checkboxLabel"
           >
-            Automation
+            Automation Add-on
           </div>
           <div
             class="amountContainer"
@@ -5051,7 +5051,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -5430,7 +5430,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -5810,7 +5810,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                 <span
                   id="automation-text-42"
                 >
-                  Automation
+                  Automation Add-on
                 </span>
               </div>
             </label>
@@ -6163,7 +6163,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
           <div
             class="align-middle checkboxLabel"
           >
-            Automation
+            Automation Add-on
           </div>
           <div
             class="amountContainer"

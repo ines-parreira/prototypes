@@ -128,7 +128,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                             message: 'Successfully updated rule',
                         })
                     )
-                    history.push('/app/settings/rules')
+                    history.push('/app/automation/rules')
                 } catch (error) {
                     void dispatch(
                         notify({
@@ -147,7 +147,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                             message: 'Successfully created rule',
                         })
                     )
-                    history.push('/app/settings/rules')
+                    history.push('/app/automation/rules')
                 } catch (error) {
                     void dispatch(
                         notify({
@@ -168,7 +168,7 @@ export const RuleFormEditor = ({rule}: Props) => {
         }
         try {
             await deleteRule(rule.id)
-            history.push('/app/settings/rules')
+            history.push('/app/automation/rules')
             dispatch(ruleDeleted(rule.id))
             void dispatch(
                 notify({
@@ -237,7 +237,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/rules">Rules</Link>
+                            <Link to="/app/automation/rules">Rules</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>{title}</BreadcrumbItem>
                     </Breadcrumb>

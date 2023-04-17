@@ -1515,7 +1515,7 @@ export const stats = toImmutable<
                 pointHoverBorderColor: '#1D786B',
                 pointRadius: 4,
                 pointHoverRadius: 6,
-                disabledLink: '/app/settings/self-service',
+                disabledLink: '/app/automation',
             },
             article_recommendation: {
                 label: 'Article recommendation',
@@ -1527,7 +1527,7 @@ export const stats = toImmutable<
                 pointHoverBorderColor: '#001874',
                 pointRadius: 4,
                 pointHoverRadius: 6,
-                disabledLink: '/app/settings/self-service',
+                disabledLink: '/app/automation',
             },
             track: {
                 label: 'Track order',
@@ -1539,7 +1539,7 @@ export const stats = toImmutable<
                 pointHoverBorderColor: '#4A8DF9',
                 pointRadius: 4,
                 pointHoverRadius: 6,
-                disabledLink: '/app/settings/self-service',
+                disabledLink: '/app/automation',
             },
             report_issues: {
                 label: 'Report order issue',
@@ -1551,7 +1551,7 @@ export const stats = toImmutable<
                 pointHoverBorderColor: '#74B510',
                 pointRadius: 4,
                 pointHoverRadius: 6,
-                disabledLink: '/app/settings/self-service',
+                disabledLink: '/app/automation',
             },
             returns: {
                 label: 'Return order',
@@ -1563,7 +1563,7 @@ export const stats = toImmutable<
                 pointHoverBorderColor: '#8F2CAF',
                 pointRadius: 4,
                 pointHoverRadius: 6,
-                disabledLink: '/app/settings/self-service',
+                disabledLink: '/app/automation',
             },
             cancellations: {
                 label: 'Cancel order',
@@ -1576,7 +1576,7 @@ export const stats = toImmutable<
                 pointHoverBorderColor: '#EB6260',
                 pointRadius: 4,
                 pointHoverRadius: 6,
-                disabledLink: '/app/settings/self-service',
+                disabledLink: '/app/automation',
             },
         },
         options: (legend: Map<any, any>) => ({
@@ -1692,7 +1692,7 @@ export const stats = toImmutable<
                             </h5>
                             <Link
                                 className={css.customizeReportIssues}
-                                to="/app/settings/self-service"
+                                to="/app/automation"
                             >
                                 Customize Report Issues
                                 <span className={classNames('material-icons')}>

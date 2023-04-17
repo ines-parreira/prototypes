@@ -1,21 +1,39 @@
-@import '~css/new/layout.less';
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/typography.less';
 
 :local {
-    .pageContainer {
+    .container {
         padding: @layout-spacing-m;
-        .pageColumn {
-            max-width: 680px;
-        }
     }
 
-    .installationOptions {
-        padding-top: 20px;
+    .content {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        max-width: 680px;
+        row-gap: @layout-spacing-xl;
     }
 
-    .installationStatusIssue {
-        margin-bottom: @layout-spacing-l;
+    .connectStoreTitle,
+    .installationMethodTitle {
+        .heading-section-semibold();
+    }
+
+    .connectStoreTitle {
+        margin-bottom: @layout-spacing-xxs;
+    }
+
+    .installationMethodTitle,
+    .connectStoreDescription {
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .installationMethods {
+        display: flex;
+        flex-direction: column;
+        row-gap: @layout-spacing-s;
+    }
+
+    .deleteButton {
+        margin-left: auto;
     }
 }

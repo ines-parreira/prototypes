@@ -33,7 +33,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
         class="align-items-center"
       >
         <span>
-          Self-service
+          Automation Add-on
         </span>
         <button
           class="wrapper wrapper ml-3 fill secondary medium"
@@ -170,7 +170,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
             <div
               class="label"
             >
-              Total Self-service interactions
+              Total Add-on interactions
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"
@@ -212,7 +212,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
             <div
               class="label"
             >
-              Self-service automation rate
+              Add-on automation rate
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"
@@ -254,7 +254,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
             <div
               class="label"
             >
-              Automated Self-service interactions
+              Automated Add-on interaction
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"
@@ -296,7 +296,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
             <div
               class="label"
             >
-              Served by an agent after Self-service
+              Served by an agent
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"
@@ -343,7 +343,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           <h5
             class="mb-0 d-flex header"
           >
-            Self-service volume per flow
+            Volume per flow
           </h5>
           <button
             class="csvButton btn btn-secondary"
@@ -601,8 +601,6 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                   class="cell-wrapper cell-content"
                 >
                   86
-                  %
-                   
                 </span>
               </td>
               <td
@@ -641,8 +639,6 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                   class="cell-wrapper cell-content"
                 >
                   85
-                  %
-                   
                 </span>
               </td>
               <td
@@ -1228,7 +1224,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
         class="align-items-center"
       >
         <span>
-          Self-service
+          Automation Add-on
         </span>
         <button
           class="wrapper wrapper ml-3 fill secondary medium"
@@ -1365,7 +1361,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="label"
             >
-              Total Self-service interactions
+              Total Add-on interactions
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"
@@ -1407,7 +1403,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="label"
             >
-              Self-service automation rate
+              Add-on automation rate
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"
@@ -1449,7 +1445,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="label"
             >
-              Automated Self-service interactions
+              Automated Add-on interaction
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"
@@ -1491,7 +1487,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="label"
             >
-              Served by an agent after Self-service
+              Served by an agent
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"
@@ -1546,7 +1542,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           <span
             class="label"
           >
-            There is no Self-service activity. Your Chat or Help Center may not be properly installed.
+            There is no activity for these features. Your chat or help center may not be properly installed.
           </span>
         </div>
         <div
@@ -1569,7 +1565,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           <h5
             class="mb-0 d-flex header"
           >
-            Self-service volume per flow
+            Volume per flow
           </h5>
           <button
             class="csvButton btn btn-secondary"
@@ -1758,13 +1754,13 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="description"
             >
-              Enable and customize up to 6 quick response flows at a time in Self-service.
+              Enable and display up to 6 custom Quick Responses to provide customers with automated responses to common questions.
             </div>
             <button
               class="wrapper fill primary medium"
               type="button"
             >
-              Check out quick response
+              Go to quick responses
             </button>
           </div>
         </div>
@@ -1812,13 +1808,13 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="description"
             >
-              Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to customers.
+              Enable Article Recommendation to automatically recommend relevant help center articles to customers.
             </div>
             <button
               class="wrapper fill primary medium"
               type="button"
             >
-              Set up article recommendation
+              Go to article recommendation
             </button>
           </div>
         </div>
@@ -1861,18 +1857,18 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="title"
             >
-              Track order issues by enabling the report issue flow
+              Monitor order issues with the report issue flow
             </div>
             <div
               class="description"
             >
-              Enable and customize the report issue flow in Self-service.
+              Monitor order issues with the report issue flow
             </div>
             <button
               class="wrapper fill primary medium"
               type="button"
             >
-              Customize Report Issue Flow
+              Go to Order Management
             </button>
           </div>
         </div>
@@ -1912,13 +1908,13 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="description"
             >
-              Enable and customize these order management flows in Self-service.
+              Enable and customize these flows in Order Management.
             </div>
             <button
               class="wrapper fill primary medium"
               type="button"
             >
-              Check out order management flows
+              Go to Order Management
             </button>
           </div>
         </div>

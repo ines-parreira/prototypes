@@ -16,8 +16,6 @@ import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
-import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import Button from 'pages/common/components/button/Button'
 import NavigatedSuccessModal, {
@@ -578,9 +576,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             },
         ]
 
-        const isAutomationSettingsRevampEnabled =
-            getLDClient().allFlags()[FeatureFlagKey.AutomationSettingsRevamp]
-
         return (
             <>
                 <NavigatedSuccessModal
@@ -857,11 +852,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                     Let customers start live
                                                     conversations with agents.
                                                     When disabled, customers can
-                                                    interact with{' '}
-                                                    {isAutomationSettingsRevampEnabled
-                                                        ? 'quick response flows and order management flows'
-                                                        : 'self-service features'}{' '}
-                                                    and fill the contact form.
+                                                    interact with quick response
+                                                    flows and order management
+                                                    flows and fill the contact
+                                                    form.
                                                 </div>
                                             </div>
                                         </div>

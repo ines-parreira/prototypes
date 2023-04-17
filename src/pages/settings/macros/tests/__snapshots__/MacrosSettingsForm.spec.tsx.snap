@@ -34,7 +34,7 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
             tag="li"
           >
             <Link
-              to="/app/settings/macros"
+              to="/app/automation/macros"
             >
               Macros
             </Link>
@@ -70,10 +70,10 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
                   className="breadcrumb-item"
                 >
                   <Link
-                    to="/app/settings/macros"
+                    to="/app/automation/macros"
                   >
                     <a
-                      to="/app/settings/macros"
+                      to="/app/automation/macros"
                     >
                       Macros
                     </a>
@@ -188,7 +188,7 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
             tag="li"
           >
             <Link
-              to="/app/settings/macros"
+              to="/app/automation/macros"
             >
               Macros
             </Link>
@@ -224,10 +224,10 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
                   className="breadcrumb-item"
                 >
                   <Link
-                    to="/app/settings/macros"
+                    to="/app/automation/macros"
                   >
                     <a
-                      to="/app/settings/macros"
+                      to="/app/automation/macros"
                     >
                       Macros
                     </a>
@@ -530,7 +530,7 @@ Sincerely,
             tag="li"
           >
             <Link
-              to="/app/settings/macros"
+              to="/app/automation/macros"
             >
               Macros
             </Link>
@@ -566,10 +566,10 @@ Sincerely,
                   className="breadcrumb-item"
                 >
                   <Link
-                    to="/app/settings/macros"
+                    to="/app/automation/macros"
                   >
                     <a
-                      to="/app/settings/macros"
+                      to="/app/automation/macros"
                     >
                       Macros
                     </a>
@@ -754,7 +754,7 @@ exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] 
           tag="li"
         >
           <Link
-            to="/app/settings/macros"
+            to="/app/automation/macros"
           >
             Macros
           </Link>

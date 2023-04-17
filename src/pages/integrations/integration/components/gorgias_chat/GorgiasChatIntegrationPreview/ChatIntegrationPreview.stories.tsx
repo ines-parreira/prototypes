@@ -3,7 +3,6 @@ import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 import {user} from 'fixtures/users'
 
-import QuickResponseReplies from 'pages/settings/selfService/components/QuickResponseFlowItem/components/QuickResponseReplies/QuickResponseReplies'
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
@@ -88,31 +87,6 @@ export const WithoutAutoResponder = Template.bind({})
 WithoutAutoResponder.args = {
     ...defaultProps,
     autoResponderEnabled: false,
-}
-
-export const WithQuickReplies = Template.bind({})
-WithQuickReplies.args = {
-    ...defaultProps,
-    children: (
-        <>
-            <MessageContent
-                conversationColor=""
-                currentUser={fromJS(user)}
-                customerInitialMessages={['Hello']}
-                agentMessages={[
-                    {
-                        content: 'Nice to meet you',
-                        isHtml: false,
-                        attachments: [],
-                    },
-                ]}
-            />
-            <QuickResponseReplies
-                quickReplies={['Yes, thank you', 'No, I need more help']}
-                mainColor={defaultProps.mainColor}
-            />
-        </>
-    ),
 }
 
 export const WithGoBackButton = Template.bind({})

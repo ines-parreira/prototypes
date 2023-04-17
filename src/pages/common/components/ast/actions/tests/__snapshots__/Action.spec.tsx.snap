@@ -67,7 +67,7 @@ exports[`Action render() should render a warning regarding team assignment 1`] =
     To set up team auto-assignment, go to the
      
     <Link
-      to="/app/settings/ticket-assignment"
+      to="/app/automation/ticket-assignment"
     >
       Ticket assignment
     </Link>

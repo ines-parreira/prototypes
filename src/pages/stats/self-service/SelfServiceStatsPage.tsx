@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {assetsUrl} from 'utils'
 import {
@@ -12,7 +11,6 @@ import {
     SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
-    SELF_SERVICE_OVERVIEW_V2,
     AUTOMATION_ADD_ON_OVERVIEW,
 } from 'config/stats'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
@@ -31,7 +29,6 @@ import {NotificationStatus} from 'state/notifications/types'
 import {getStatsFilters} from 'state/stats/selectors'
 import {mergeStatsFilters} from 'state/stats/actions'
 import Loader from 'pages/common/components/Loader/Loader'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {getIntegrations} from 'state/integrations/selectors'
@@ -55,17 +52,17 @@ import useStatResource from '../useStatResource'
 
 import SelfServiceIntegrationsFilter from './SelfServiceIntegrationsFilter'
 import {SelfServiceFeaturePreview} from './SelfServiceFeaturePreview'
-import {useIsArticleRecommendationDisabled} from './self-service-stats.utils'
-import SelfServiceStatsPageDescription from './SelfServiceStatsPageDescription'
-import SelfServiceStatsPageTitle from './SelfServiceStatsPageTitle'
 import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
-import {AUTOMATION_SELF_SERVICE_STAT_NAME, HELP_URL} from './constants'
+import {
+    AUTOMATION_SELF_SERVICE_STAT_NAME,
+    HELP_URL,
+    PAGE_TITLE,
+    PAGE_DESCRIPTION,
+} from './constants'
 
 import css from './SelfServiceStatsPage.less'
 
 export const SelfServiceStatsPage = (): JSX.Element => {
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
         useState(false)
     const dispatch = useAppDispatch()
@@ -120,6 +117,10 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         (config) => !config.return_order_policy.enabled
     )
 
+    const articleRecommendationDisabled = selfServiceConfigurations.every(
+        (config) => !config.article_recommendation_help_center_id
+    )
+
     const [overview, isFetchingOverview] =
         useStatResource<OneDimensionalUnionChart>({
             statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
@@ -170,10 +171,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     const articleRecommendationPerformanceNoData =
         (articleRecommendationPerformance?.data.data.lines.length ?? 0) === 0
 
-    const articleRecommendationDisabled = useIsArticleRecommendationDisabled(
-        articleRecommendationPerformanceNoData
-    )
-
     const [topReportedIssues, isFetchingTopReportedIssues] =
         useStatResource<TwoDimensionalChart>({
             statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
@@ -219,8 +216,8 @@ export const SelfServiceStatsPage = (): JSX.Element => {
 
     return (
         <StatsPage
-            title={<SelfServiceStatsPageTitle />}
-            description={<SelfServiceStatsPageDescription />}
+            title={PAGE_TITLE}
+            description={PAGE_DESCRIPTION}
             helpUrl={HELP_URL}
             filters={
                 pageStatsFilters && (
@@ -241,11 +238,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             data={immutableOverview.getIn(['data', 'data'])}
                             meta={immutableOverview.get('meta')}
                             loading={isFetchingOverview}
-                            config={statsConfig.get(
-                                isAutomationSettingsRevampEnabled
-                                    ? AUTOMATION_ADD_ON_OVERVIEW
-                                    : SELF_SERVICE_OVERVIEW_V2
-                            )}
+                            config={statsConfig.get(AUTOMATION_ADD_ON_OVERVIEW)}
                         />
                     </KeyMetricStatWrapper>
                     {allSectionsNoData && !noActivityAlertDismissed && (
@@ -257,18 +250,13 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 setNoActivityAlertDismissed(true)
                             }}
                         >
-                            {isAutomationSettingsRevampEnabled
-                                ? 'There is no activity for these features. Your chat or help center may not be properly installed.'
-                                : 'There is no Self-service activity. Your Chat or Help Center may not be properly installed.'}
+                            There is no activity for these features. Your chat
+                            or help center may not be properly installed.
                         </Alert>
                     )}
                     <StatWrapper
                         stat={volumePerFlow}
-                        statDataLabelOverride={
-                            isAutomationSettingsRevampEnabled
-                                ? 'Volume per flow'
-                                : undefined
-                        }
+                        statDataLabelOverride="Volume per flow"
                         isFetchingStat={isFetchingVolumePerFlow}
                         resourceName={SELF_SERVICE_VOLUME_PER_FLOW}
                         statsFilters={pageStatsFilters}
@@ -312,20 +300,10 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 {quickResponsePerformanceNoData &&
                                 quickResponseDisabled ? (
                                     <SelfServiceFeaturePreview
-                                        title="Automate up to 14% of
-                                                        interactions with quick
-                                                        response flows"
-                                        description={
-                                            isAutomationSettingsRevampEnabled
-                                                ? 'Enable and display up to 6 custom Quick Responses to provide customers with automated responses to common questions.'
-                                                : 'Enable and customize up to 6 quick response flows at a time in Self-service.'
-                                        }
-                                        buttonText={
-                                            isAutomationSettingsRevampEnabled
-                                                ? 'Go to quick responses'
-                                                : 'Check out quick response'
-                                        }
-                                        buttonRedirectUrl="/app/settings/self-service"
+                                        title="Automate up to 14% of interactions with quick response flows"
+                                        description="Enable and display up to 6 custom Quick Responses to provide customers with automated responses to common questions."
+                                        buttonText="Go to quick responses"
+                                        buttonRedirectUrl="/app/automation"
                                         imageUrl={assetsUrl(
                                             '/img/presentationals/quick-response-preview.png'
                                         )}
@@ -384,17 +362,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 articleRecommendationDisabled ? (
                                     <SelfServiceFeaturePreview
                                         title="Leverage your Help Center to automate tickets"
-                                        description={
-                                            isAutomationSettingsRevampEnabled
-                                                ? 'Enable Article Recommendation to automatically recommend relevant help center articles to customers.'
-                                                : 'Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to customers.'
-                                        }
-                                        buttonText={
-                                            isAutomationSettingsRevampEnabled
-                                                ? 'Go to article recommendation'
-                                                : 'Set up article recommendation'
-                                        }
-                                        buttonRedirectUrl="/app/settings/channels/gorgias_chat"
+                                        description="Enable Article Recommendation to automatically recommend relevant help center articles to customers."
+                                        buttonText="Go to article recommendation"
+                                        buttonRedirectUrl="/app/automation"
                                         imageUrl={assetsUrl(
                                             '/img/presentationals/article-recommendation-preview.png'
                                         )}
@@ -443,22 +413,10 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 {topReportedIssuesNoData &&
                                 reportIssueDisabled ? (
                                     <SelfServiceFeaturePreview
-                                        title={
-                                            isAutomationSettingsRevampEnabled
-                                                ? 'Monitor order issues with the report issue flow'
-                                                : 'Track order issues by enabling the report issue flow'
-                                        }
-                                        description={
-                                            isAutomationSettingsRevampEnabled
-                                                ? 'Monitor order issues with the report issue flow'
-                                                : 'Enable and customize the report issue flow in Self-service.'
-                                        }
-                                        buttonText="Customize Report Issue Flow"
-                                        buttonRedirectUrl={
-                                            isAutomationSettingsRevampEnabled
-                                                ? 'Go to order management'
-                                                : '/app/settings/self-service'
-                                        }
+                                        title="Monitor order issues with the report issue flow"
+                                        description="Monitor order issues with the report issue flow"
+                                        buttonText="Go to Order Management"
+                                        buttonRedirectUrl="/app/automation"
                                         imageUrl={assetsUrl(
                                             '/img/presentationals/report-issue-preview.png'
                                         )}
@@ -497,17 +455,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 reportIssueDisabled ? (
                                     <SelfServiceFeaturePreview
                                         title="Gain product insights by enabling the report issue and return flows"
-                                        description={
-                                            isAutomationSettingsRevampEnabled
-                                                ? 'Enable and customize these flows in Order Management.'
-                                                : 'Enable and customize these order management flows in Self-service.'
-                                        }
-                                        buttonText={
-                                            isAutomationSettingsRevampEnabled
-                                                ? 'Go to Order Management'
-                                                : 'Check out order management flows'
-                                        }
-                                        buttonRedirectUrl="/app/settings/self-service"
+                                        description="Enable and customize these flows in Order Management."
+                                        buttonText="Go to Order Management"
+                                        buttonRedirectUrl="/app/automation"
                                         imageUrl={assetsUrl(
                                             '/img/presentationals/return-order-preview.png'
                                         )}
@@ -544,8 +494,8 @@ export default withFeaturePaywall(
                 <PageHeader
                     title={
                         <HeaderTitle
-                            title={<SelfServiceStatsPageTitle />}
-                            description={<SelfServiceStatsPageDescription />}
+                            title={PAGE_TITLE}
+                            description={PAGE_DESCRIPTION}
                             helpUrl={HELP_URL}
                         />
                     }

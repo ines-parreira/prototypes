@@ -1,7 +1,5 @@
 import React, {useState} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {CurrentAccountState} from 'state/currentAccount/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -11,9 +9,6 @@ import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automat
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 
 const SelfServiceStatsPagePaywallCustomCta = () => {
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
-
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
     const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
@@ -36,11 +31,7 @@ const SelfServiceStatsPagePaywallCustomCta = () => {
                 onClick={() => {
                     setIsAutomationModalOpened(true)
                 }}
-                label={
-                    isAutomationSettingsRevampEnabled
-                        ? 'Get Automation Add-on'
-                        : 'Add Automation Features'
-                }
+                label="Get Automation Add-on"
                 segmentEventToSend={segmentEventToSend}
             />
             <AutomationSubscriptionModal

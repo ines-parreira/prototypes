@@ -1,30 +1,24 @@
-import axios from 'axios'
 import {HelpCenter} from 'models/helpCenter/types'
 
 import {
-    createChatHelpCenterConfiguration,
-    fetchChatHelpCenterConfiguration,
+    fetchSelfServiceConfiguration,
+    updateSelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/resources'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters/selectors'
 import {getIntegrationsByType} from 'state/integrations/selectors'
-import {NotificationStatus, Notification} from 'state/notifications/types'
 
-export const useEnableArticleRecommendation = (
-    notify: (message?: Notification) => Promise<unknown>
-) => {
+export const useEnableArticleRecommendation = () => {
     const helpCenterList = useAppSelector(getHelpCenterList).filter(
         (helpCenter) => !helpCenter.deactivated_datetime
     )
-    const chatIntegrations = useAppSelector(
-        getIntegrationsByType<GorgiasChatIntegration>(
-            IntegrationType.GorgiasChat
-        )
-    )
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const shopifyIntegrations = useAppSelector(
+        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
+    )
 
     return async (newHelpCenter: HelpCenter) => {
         const hasHelpCenterWithSameStore = helpCenterList.find(
@@ -39,71 +33,28 @@ export const useEnableArticleRecommendation = (
             return
         }
 
-        const chatHelpCenterConfigurationsPromises = chatIntegrations.map(
-            async (chatIntegration) => {
-                const areNotRelatedToSameShop =
-                    newHelpCenter.shop_name !== chatIntegration.meta.shop_name
-
-                if (areNotRelatedToSameShop) return
-
-                const chatApplicationId = chatIntegration.meta.app_id
-                    ? parseInt(chatIntegration.meta.app_id, 10)
-                    : null
-
-                try {
-                    if (!chatApplicationId) {
-                        throw Error('Chat Application ID is not defined')
-                    }
-
-                    const chatHelpCenterConfiguration =
-                        await fetchChatHelpCenterConfiguration(
-                            chatApplicationId
-                        )
-                    if (chatHelpCenterConfiguration) {
-                        return
-                    }
-                } catch (err) {
-                    if (
-                        !axios.isAxiosError(err) ||
-                        err.response?.status !== 404
-                    ) {
-                        console.error(err)
-                        return
-                    }
-                }
-
-                try {
-                    if (!chatApplicationId) {
-                        throw Error('Chat Application ID is not defined')
-                    }
-
-                    return await createChatHelpCenterConfiguration({
-                        helpCenterId: newHelpCenter.id,
-                        chatApplicationId: chatApplicationId,
-                    })
-                } catch (err) {
-                    console.error(err)
-                }
-            }
+        const shopifyIntegration = shopifyIntegrations.find(
+            (shopifyIntegration) =>
+                shopifyIntegration.meta.shop_name === newHelpCenter.shop_name
         )
 
-        try {
-            const chatHelpCenterConfigurations = await Promise.all(
-                chatHelpCenterConfigurationsPromises
-            )
-            const chatHelpCenterConfigurationsCount =
-                chatHelpCenterConfigurations.filter((e) => e).length
-            if (chatHelpCenterConfigurationsCount > 0) {
-                void notify({
-                    message: `Activated the article recommendation for ${chatHelpCenterConfigurationsCount} chat ${
-                        chatHelpCenterConfigurationsCount > 1
-                            ? 'integrations'
-                            : 'integration'
-                    }`,
-                    status: NotificationStatus.Success,
-                })
-            }
+        if (!shopifyIntegration) {
             return
+        }
+
+        try {
+            const res = await fetchSelfServiceConfiguration(
+                shopifyIntegration.id
+            )
+
+            if (res.article_recommendation_help_center_id) {
+                return
+            }
+
+            return await updateSelfServiceConfiguration({
+                ...res,
+                article_recommendation_help_center_id: newHelpCenter.id,
+            })
         } catch (err) {
             console.error(err)
         }

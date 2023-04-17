@@ -16,11 +16,7 @@ exports[`<AutomationSubscriptionDescription /> should render a discounted price 
       .
       <br />
       <br />
-      The change in your subscription will take effect at the end of your billing cycle. If you cancel, you will lose access to
-       
-      self-service
-       
-      as soon as the change is effective.
+      The change in your subscription will take effect at the end of your billing cycle. If you cancel, you will lose access to Automation Add-on as soon as the change is effective.
     </div>
     <div
       class="amountWrapper amount"
@@ -62,11 +58,7 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
       .
       <br />
       <br />
-      The change in your subscription will take effect at the end of your billing cycle. If you cancel, you will lose access to
-       
-      self-service
-       
-      as soon as the change is effective.
+      The change in your subscription will take effect at the end of your billing cycle. If you cancel, you will lose access to Automation Add-on as soon as the change is effective.
     </div>
     <div
       class="amountWrapper amount"
@@ -94,10 +86,7 @@ exports[`<AutomationSubscriptionDescription /> should render for customers with 
     class="flex"
   >
     <div>
-      Unlock advanced features of the
-       
-      self-service
-      , and track the performance!
+      Unlock advanced features of the Automation Add-on, and track the performance!
       <br />
       Questions?
        
@@ -125,10 +114,29 @@ exports[`<AutomationSubscriptionDescription /> should render for customers with 
     </div>
   </div>
   <div
-    class="features oldFeatures"
+    class="features"
   >
     <li
-      class="d-flex align-items-center oldFeatureListItem"
+      class="d-flex align-items-center"
+    >
+      <span
+        class="featureIcon mr-3"
+      >
+        <i
+          class="material-icons-outlined"
+        >
+          slow_motion_video
+        </i>
+      </span>
+      <span>
+        Provide customers with automated answers to common questions with 
+        <b>
+          quick response flows
+        </b>
+      </span>
+    </li>
+    <li
+      class="d-flex align-items-center"
     >
       <span
         class="featureIcon mr-3"
@@ -140,14 +148,15 @@ exports[`<AutomationSubscriptionDescription /> should render for customers with 
         </i>
       </span>
       <span>
-        Track, Return, Cancel & Custom 
+        Allow customers to manage their orders with
+         
         <b>
-          workflows
+          order management flows
         </b>
       </span>
     </li>
     <li
-      class="d-flex align-items-center oldFeatureListItem"
+      class="d-flex align-items-center"
     >
       <span
         class="featureIcon mr-3"
@@ -155,22 +164,19 @@ exports[`<AutomationSubscriptionDescription /> should render for customers with 
         <i
           class="material-icons"
         >
-          slow_motion_video
+          article
         </i>
       </span>
       <span>
-        Self-service features in 
+        Automatically answer customer questions with help center
+         
         <b>
-          chat
-        </b>
-         and 
-        <b>
-          help center
+          article recommendation
         </b>
       </span>
     </li>
     <li
-      class="d-flex align-items-center oldFeatureListItem"
+      class="d-flex align-items-center"
     >
       <span
         class="featureIcon mr-3"
@@ -182,9 +188,10 @@ exports[`<AutomationSubscriptionDescription /> should render for customers with 
         </i>
       </span>
       <span>
-        Self-service 
+        Track customer interactions and your automation rate with
+         
         <b>
-          statistics
+          advanced statistics
         </b>
       </span>
     </li>
@@ -238,10 +245,29 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
     </div>
   </div>
   <div
-    class="features oldFeatures"
+    class="features"
   >
     <li
-      class="d-flex align-items-center oldFeatureListItem"
+      class="d-flex align-items-center"
+    >
+      <span
+        class="featureIcon mr-3"
+      >
+        <i
+          class="material-icons-outlined"
+        >
+          slow_motion_video
+        </i>
+      </span>
+      <span>
+        Provide customers with automated answers to common questions with 
+        <b>
+          quick response flows
+        </b>
+      </span>
+    </li>
+    <li
+      class="d-flex align-items-center"
     >
       <span
         class="featureIcon mr-3"
@@ -253,14 +279,15 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
         </i>
       </span>
       <span>
-        Track, Return, Cancel & Custom 
+        Allow customers to manage their orders with
+         
         <b>
-          workflows
+          order management flows
         </b>
       </span>
     </li>
     <li
-      class="d-flex align-items-center oldFeatureListItem"
+      class="d-flex align-items-center"
     >
       <span
         class="featureIcon mr-3"
@@ -268,22 +295,19 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
         <i
           class="material-icons"
         >
-          slow_motion_video
+          article
         </i>
       </span>
       <span>
-        Self-service features in 
+        Automatically answer customer questions with help center
+         
         <b>
-          chat
-        </b>
-         and 
-        <b>
-          help center
+          article recommendation
         </b>
       </span>
     </li>
     <li
-      class="d-flex align-items-center oldFeatureListItem"
+      class="d-flex align-items-center"
     >
       <span
         class="featureIcon mr-3"
@@ -295,9 +319,10 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
         </i>
       </span>
       <span>
-        Self-service 
+        Track customer interactions and your automation rate with
+         
         <b>
-          statistics
+          advanced statistics
         </b>
       </span>
     </li>

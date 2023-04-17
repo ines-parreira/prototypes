@@ -1,12 +1,7 @@
 import React from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/constants'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {StatsFilters} from 'models/stat/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useStoreIntegrations from 'pages/automation/common/hooks/useStoreIntegrations'
 import {getIconFromType} from 'state/integrations/helpers'
 
@@ -20,12 +15,7 @@ type Props = {
 }
 
 const SelfServiceIntegrationsFilter = ({value = [], onChange}: Props) => {
-    const isAutomationSettingsRevampEnabled =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const storeIntegrations = useStoreIntegrations()
-    const shopifyIntegrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.Shopify)
-    )
 
     return (
         <SelectFilter
@@ -34,10 +24,7 @@ const SelfServiceIntegrationsFilter = ({value = [], onChange}: Props) => {
             onChange={onChange as (value: Value[]) => void}
             value={value}
         >
-            {(isAutomationSettingsRevampEnabled
-                ? storeIntegrations
-                : shopifyIntegrations
-            ).map((storeIntegration) => (
+            {storeIntegrations.map((storeIntegration) => (
                 <SelectFilter.Item
                     key={storeIntegration.id}
                     label={storeIntegration.name}

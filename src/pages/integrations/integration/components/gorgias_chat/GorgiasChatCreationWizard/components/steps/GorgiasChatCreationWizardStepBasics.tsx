@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -20,8 +19,6 @@ import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     GorgiasChatAvatarNameType,
@@ -85,9 +82,6 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
     const navigateWizardSteps = useNavigateWizardSteps()
 
-    const isAutomationSettingsRevampEnabled =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
-
     const [hasSubmitted, setHasSubmitted] = useState(false)
     const [hasFailedSubmit, setHasFailedSubmit] = useState(false)
 
@@ -96,9 +90,6 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
     const gorgiasChatIntegrations = useAppSelector(
         DEPRECATED_getIntegrationsByTypes([IntegrationType.GorgiasChat])
-    )
-    const shopifyIntegrations = useAppSelector(
-        DEPRECATED_getIntegrationsByTypes([IntegrationType.Shopify])
     )
 
     const allStoreIntegrations = useAppSelector(
@@ -109,11 +100,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         ])
     )
 
-    const storeIntegrations = (
-        isAutomationSettingsRevampEnabled
-            ? allStoreIntegrations
-            : shopifyIntegrations
-    ) as List<Map<any, any>>
+    const storeIntegrations = allStoreIntegrations as List<Map<any, any>>
 
     const [currentStoreIntegration, setCurrentStoreIntegration] = useState<
         Map<any, any> | false

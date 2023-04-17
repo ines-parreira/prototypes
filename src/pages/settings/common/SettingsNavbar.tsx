@@ -76,32 +76,6 @@ const CATEGORIES: Category[] = [
         ],
     },
     {
-        name: 'Automation',
-        icon: 'bolt',
-        links: [
-            {
-                requiredRole: AGENT_ROLE,
-                to: 'macros',
-                text: 'Macros',
-            },
-            {
-                requiredRole: AGENT_ROLE,
-                to: 'rules',
-                text: 'Rules',
-            },
-            {
-                requiredRole: ADMIN_ROLE,
-                to: 'self-service',
-                text: 'Self-service',
-            },
-            {
-                requiredRole: ADMIN_ROLE,
-                to: 'ticket-assignment',
-                text: 'Ticket assignment',
-            },
-        ],
-    },
-    {
         name: 'App Store',
         icon: 'apps',
         links: [
@@ -239,20 +213,11 @@ const SettingsNavbar = () => {
     const account = useAppSelector(getCurrentAccountState)
     const pathname = useLocation().pathname
     const featureFlags = useFlags()
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        featureFlags[FeatureFlagKey.AutomationSettingsRevamp]
     const isDecoupleContactFormEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.DecoupleContactForm]
 
     const categoriesInUse = React.useMemo<Category[]>(() => {
         return flatMap(CATEGORIES, (category) => {
-            if (
-                isAutomationSettingsRevampEnabled &&
-                category.name === 'Automation'
-            ) {
-                return []
-            }
-
             if (!isDecoupleContactFormEnabled && category.name === 'Channels') {
                 return [
                     {
@@ -266,7 +231,7 @@ const SettingsNavbar = () => {
 
             return [category]
         })
-    }, [isAutomationSettingsRevampEnabled, isDecoupleContactFormEnabled])
+    }, [isDecoupleContactFormEnabled])
 
     return (
         <Navbar activeContent="settings">

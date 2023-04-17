@@ -1,30 +1,19 @@
-@import '~css/new/colorTokens';
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/colorTokens.less';
 
 :local {
-    .card {
-        margin-bottom: 32px;
-        padding: 16px;
-
-        h3 {
-            margin: 0;
-        }
-    }
-    .card-header {
-        padding: 0;
+    .container {
         display: flex;
+        border: 1px solid @classic-neutral-grey-3;
+        border-radius: 4px;
+        padding: 20px;
+        column-gap: @layout-spacing-m;
         align-items: center;
-        justify-content: space-between;
-        background-color: @classic-neutral-grey-0;
-        border-bottom: none;
     }
 
-    .card-body {
-        margin-top: 8px;
-        padding: 0;
-
-        h4,
-        p {
-            margin-bottom: 24px;
-        }
+    .title {
+        .body-semibold();
+        margin-bottom: @layout-spacing-xs;
     }
 }

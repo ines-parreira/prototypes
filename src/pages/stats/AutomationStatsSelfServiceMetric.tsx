@@ -81,8 +81,7 @@ export const AutomationStatsSelfServiceMetric = ({
         },
     }
 
-    const goToSelfServiceSettings = () =>
-        history.push('/app/settings/self-service')
+    const goToSelfServiceSettings = () => history.push('/app/automation')
 
     const configurationLoader = () => {
         return (

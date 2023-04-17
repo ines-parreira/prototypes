@@ -108,7 +108,7 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
                             status: NotificationStatus.Success,
                         })
                     )
-                    history.push(`/app/settings/rules/${newRule.id}`)
+                    history.push(`/app/automation/rules/${newRule.id}`)
                 } catch (error) {
                     void notify({
                         message: `Failed to duplicate rule.`,
@@ -183,7 +183,7 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
                     message: 'Cannot create a new rule: Rule limit reached',
                     status: NotificationStatus.Warning,
                 })
-                history.push('/app/settings/rules/')
+                history.push('/app/automation/rules/')
             }
         }, [rule, limitStatus])
 

@@ -128,7 +128,7 @@ export function RulesLibraryContainer({
                 (rule) => rule.settings?.slug === searchSlug
             )
             if (rule) {
-                history.replace(`/app/settings/rules/${rule.id}`)
+                history.replace(`/app/automation/rules/${rule.id}`)
             }
             setSlug(searchSlug)
         }
@@ -148,7 +148,7 @@ export function RulesLibraryContainer({
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to="/app/settings/rules">Rules</Link>
+                                <Link to="/app/automation/rules">Rules</Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
                                 Rule Templates
@@ -188,7 +188,7 @@ export function RulesLibraryContainer({
                                 !hasAgentPrivileges
                             }
                             onClick={() => {
-                                history.push('/app/settings/rules/new')
+                                history.push('/app/automation/rules/new')
                             }}
                         >
                             Create Custom Rule

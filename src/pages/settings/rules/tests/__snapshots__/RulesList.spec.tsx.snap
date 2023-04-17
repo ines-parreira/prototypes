@@ -45,7 +45,7 @@ exports[`<RulesList/> should render the rules list 1`] = `
             </div>
           </div>
           <a
-            to="/app/settings/rules/library"
+            to="/app/automation/rules/library"
           >
             <button
               class="wrapper float-right fill primary medium"

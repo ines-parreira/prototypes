@@ -1,26 +1,18 @@
 import React from 'react'
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useId from 'hooks/useId'
 import {PlanInterval} from 'models/billing/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import CheckBox from 'pages/common/forms/CheckBox'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from './AutomationAmount.less'
 
 const AutomationLabel = ({id}: {id: string}) => {
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     return (
         <div className={classnames('align-middle', css.checkboxLabel)}>
-            <span id={`automation-text-${id}`}>
-                {isAutomationSettingsRevampEnabled
-                    ? 'Automation Add-on'
-                    : 'Automation'}
-            </span>
+            <span id={`automation-text-${id}`}>Automation Add-on</span>
         </div>
     )
 }
@@ -46,8 +38,6 @@ const AutomationAmount = ({
     editable = true,
     isIntervalAbbreviated = false,
 }: Props) => {
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const checkboxId = useId()
 
     return (
@@ -94,20 +84,9 @@ const AutomationAmount = ({
                         fade={false}
                         autohide={false}
                     >
-                        {isAutomationSettingsRevampEnabled ? (
-                            'Automate up to 20% of all interactions with quick response flows, order management flows, article recommendation, and advanced statistics.'
-                        ) : (
-                            <>
-                                Leverage self-service to provide instant answers
-                                in Gorgias Chat and Help Center, 24/7:
-                                <ul>
-                                    <li>Automated track flow</li>
-                                    <li>Return & cancel flows</li>
-                                    <li>Customized report issue workflows</li>
-                                    <li>Self-service statistics</li>
-                                </ul>
-                            </>
-                        )}
+                        Automate up to 20% of all interactions with quick
+                        response flows, order management flows, article
+                        recommendation, and advanced statistics.
                     </Tooltip>
                 </div>
             ) : (
@@ -118,9 +97,7 @@ const AutomationAmount = ({
                             css.checkboxLabel
                         )}
                     >
-                        {isAutomationSettingsRevampEnabled
-                            ? 'Automation Add-on'
-                            : 'Automation'}
+                        Automation Add-on
                     </div>
                     <div className={css.amountContainer}>
                         {typeof addOnAmount === 'number' &&

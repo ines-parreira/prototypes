@@ -40,14 +40,6 @@ exports[`<GorgiasChatIntegrationNavigation /> should render GorgiasChatIntegrati
       class="link"
       data-active-class-name="active"
       data-exact="true"
-      href="/app/settings/channels/gorgias_chat/16/automation"
-    >
-      Automation
-    </a>
-    <a
-      class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/channels/gorgias_chat/16/installation"
     >
       Installation
@@ -91,14 +83,6 @@ exports[`<GorgiasChatIntegrationNavigation /> should render GorgiasChatIntegrati
       href="/app/settings/channels/gorgias_chat/16/preferences"
     >
       Preferences
-    </a>
-    <a
-      class="link"
-      data-active-class-name="active"
-      data-exact="true"
-      href="/app/settings/channels/gorgias_chat/16/automation"
-    >
-      Automation
     </a>
     <a
       class="link"

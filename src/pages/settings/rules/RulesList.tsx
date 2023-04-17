@@ -88,7 +88,7 @@ export function RulesList() {
 
         if (hash.includes('#rule-library')) {
             history.replace(
-                `/app/settings/rules/library${hash.replace(
+                `/app/automation/rules/library${hash.replace(
                     '#rule-library',
                     ''
                 )}`

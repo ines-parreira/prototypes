@@ -114,10 +114,6 @@ jest.mock(
     '../components/gorgias_chat/GorgiasChatIntegrationQuickReplies',
     () => () => <div>GorgiasChatIntegrationQuickReplies</div>
 )
-jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationSelfService',
-    () => () => <div>GorgiasChatIntegrationSelfService</div>
-)
 
 jest.mock('../components/sms/SmsIntegration', () => () => (
     <div>SmsIntegration</div>
@@ -485,21 +481,6 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Http}/1/${Tab.HttpEvents}/1`,
-                }
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        })
-    })
-
-    describe(`${IntegrationType.GorgiasChat}`, () => {
-        it('should render the self service tab of a specific integration', () => {
-            const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
-                {
-                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/channels/${IntegrationType.GorgiasChat}/1/${Tab.ChatSelfService}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()

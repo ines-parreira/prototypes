@@ -1,7 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import shopify from 'assets/img/integrations/shopify.png'
 
@@ -11,7 +9,6 @@ import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import Tooltip from 'pages/common/components/Tooltip'
 import useAppSelector from 'hooks/useAppSelector'
-import {FeatureFlagKey} from 'config/featureFlags'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import settingsCss from 'pages/settings/settings.less'
@@ -32,8 +29,6 @@ export const ConnectToShopSection = ({
     shopName,
     onUpdate,
 }: Props): JSX.Element | null => {
-    const isAutomationSettingsRevampEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const [disconnectModalOpen, setDisconnectModalOpen] = useState(false)
     const [connectModalOpen, setConnectModalOpen] = useState(false)
     const [selectedShop, setSelectedShop] = useState(shopName)
@@ -54,16 +49,11 @@ export const ConnectToShopSection = ({
 
     return (
         <section className={settingsCss.mb40}>
-            {isAutomationSettingsRevampEnabled ? (
-                <h3>Connect to Shopify store</h3>
-            ) : (
-                <h4>Connect to Shopify store</h4>
-            )}
+            <h3>Connect to Shopify store</h3>
 
             <p className={css.connectDescription}>
-                {isAutomationSettingsRevampEnabled
-                    ? 'A store connection is required to use Automation Add-on features in Help Center. Currently only available for Shopify stores.'
-                    : 'Connect this Help Center to a Shopify store to enable Self-service flows.'}
+                A store connection is required to use Automation Add-on features
+                in Help Center. Currently only available for Shopify stores.
             </p>
 
             {shopName ? (
@@ -75,44 +65,31 @@ export const ConnectToShopSection = ({
                     />
 
                     <span className={css['store-name']}>{shopName}</span>
-
-                    {isAutomationSettingsRevampEnabled ? (
-                        <div className="ml-auto">
-                            <Button
-                                fillStyle="ghost"
-                                intent="secondary"
-                                onClick={() => setConnectModalOpen(true)}
-                            >
-                                Change
-                            </Button>
-                            <ConfirmButton
-                                confirmationButtonIntent="destructive"
-                                confirmationContent="Disconnecting this store will remove automation features from your Help Center."
-                                confirmationTitle={<b>Disconnect store?</b>}
-                                confirmLabel="Disconnect"
-                                fillStyle="ghost"
-                                intent="destructive"
-                                onConfirm={() => {
-                                    setDisconnectModalOpen(false)
-                                    onUpdate({shop_name: null})
-                                }}
-                                placement="top"
-                                showCancelButton
-                            >
-                                Disconnect
-                            </ConfirmButton>
-                        </div>
-                    ) : (
-                        <span
-                            className={classNames(
-                                'ml-auto',
-                                css['disconnect-button']
-                            )}
-                            ref={disconnectButtonRef}
+                    <div className="ml-auto">
+                        <Button
+                            fillStyle="ghost"
+                            intent="secondary"
+                            onClick={() => setConnectModalOpen(true)}
                         >
-                            <i className="material-icons">delete</i>
-                        </span>
-                    )}
+                            Change
+                        </Button>
+                        <ConfirmButton
+                            confirmationButtonIntent="destructive"
+                            confirmationContent="Disconnecting this store will remove automation features from your Help Center."
+                            confirmationTitle={<b>Disconnect store?</b>}
+                            confirmLabel="Disconnect"
+                            fillStyle="ghost"
+                            intent="destructive"
+                            onConfirm={() => {
+                                setDisconnectModalOpen(false)
+                                onUpdate({shop_name: null})
+                            }}
+                            placement="top"
+                            showCancelButton
+                        >
+                            Disconnect
+                        </ConfirmButton>
+                    </div>
 
                     <Tooltip
                         placement="top"
