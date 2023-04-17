@@ -26,6 +26,7 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import Loader from 'pages/common/components/Loader/Loader'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import {getRefundAmount} from 'business/shopify/refund'
 import {InfobarModalProps} from '../../../types'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
 
@@ -130,6 +131,8 @@ export const RefundOrderModalContainer = ({
         [integrationId, onLineItemChange]
     )
 
+    const amount = !!payload ? getRefundAmount(payload) : 0
+
     return integration ? (
         <DEPRECATED_Modal
             header={header}
@@ -187,7 +190,7 @@ export const RefundOrderModalContainer = ({
                     <Button
                         color="primary"
                         type="submit"
-                        disabled={loading}
+                        disabled={loading || amount === 0}
                         tabIndex={0}
                         className={classnames(css.focusable, 'ml-auto')}
                     >

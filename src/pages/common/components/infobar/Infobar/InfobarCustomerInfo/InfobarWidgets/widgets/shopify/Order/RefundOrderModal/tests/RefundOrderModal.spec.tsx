@@ -315,4 +315,29 @@ describe('<RefundOrderModal />', () => {
         expect(minProps.onClose).toHaveBeenCalled()
         expect(minProps.onReset).toHaveBeenCalled()
     })
+
+    it('should not call onSubmit() when amount is 0', () => {
+        const payload: Map<any, any> = fromJS(
+            shopifyRefundOrderPayloadFixture()
+        )
+        const newPayload = payload.setIn(['transactions', 0, 'amount'], '0')
+
+        const {getByText} = render(
+            <IntegrationContext.Provider value={integrationContextValue}>
+                <RefundOrderModalContainer
+                    {...minProps}
+                    payload={newPayload}
+                    lineItems={lineItems}
+                    refund={refund}
+                />
+            </IntegrationContext.Provider>
+        )
+
+        const refundButton = getByText('Refund')
+        expect(refundButton).toBeDisabled()
+
+        fireEvent.click(refundButton)
+
+        expect(minProps.onSubmit).not.toHaveBeenCalled()
+    })
 })
