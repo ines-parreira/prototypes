@@ -9,7 +9,7 @@ import _bind from 'lodash/bind'
 import _sum from 'lodash/sum'
 import moment from 'moment'
 
-import {ensureNumberValue} from 'pages/common/utils/numbers'
+import {ensureNumberValue, formatPercentage} from 'pages/common/utils/numbers'
 import {
     CalculatedTotals,
     CampaignGraphData,
@@ -43,11 +43,7 @@ import {
     COMPARISON_DATA_FORMAT,
     GRAPH_LABEL_DATE_FORMAT,
 } from 'pages/stats/revenue/services/constants'
-import {
-    formatCurrency,
-    formatNumber,
-    formatPercent,
-} from 'pages/stats/common/utils'
+import {formatCurrency, formatNumber} from 'pages/stats/common/utils'
 
 export const getDataFromResultSet = (resultSet: CubeResponse): CubeData => {
     return _get(resultSet, 'data', []) as CubeData
@@ -142,7 +138,7 @@ export const transformToCampaignCalculatedTotals = (
     )
 
     return {
-        [CampaignsTotalsMetricNames.influencedRevenueUplift]: formatPercent(
+        [CampaignsTotalsMetricNames.influencedRevenueUplift]: formatPercentage(
             _toFixed(_gmvUplift(totalSales, campaignSales))
         ),
     }
