@@ -10,6 +10,7 @@ import React from 'react'
 import {act} from 'react-dom/test-utils'
 import {mockStore} from 'utils/testing'
 import * as dateUtils from 'utils/date'
+import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import MigrationOutboundVerification from '../EmailMigration/MigrationOutboundVerification'
 
 jest.useFakeTimers()
@@ -19,6 +20,11 @@ jest.mock('models/integration/resources/email', () => ({
 }))
 
 const getMomentSpy = jest.spyOn(dateUtils, 'getMoment') as jest.Mock
+
+const mockFetchMigrationStatus = jest.fn()
+jest.spyOn(migrationBannerHook, 'default').mockImplementation(
+    () => mockFetchMigrationStatus
+)
 
 describe('MigrationOutboundVerification', () => {
     const onBackClick = jest.fn()
@@ -48,18 +54,27 @@ describe('MigrationOutboundVerification', () => {
         renderComponent()
         await screen.findByText('Last checked: Today at 00:00')
         const getMomentCalls = getMomentSpy.mock.calls.length
+        const fetchMigrationStatusCalls =
+            mockFetchMigrationStatus.mock.calls.length
 
         act(() => {
-            jest.advanceTimersByTime(5 * 60 * 1000)
+            jest.advanceTimersByTime(2 * 60 * 1000)
         })
-        expect(getMomentSpy).toHaveBeenCalledTimes(getMomentCalls + 1)
+
+        await waitFor(() => {
+            expect(mockFetchMigrationStatus).toHaveBeenCalledTimes(
+                fetchMigrationStatusCalls + 1
+            )
+            expect(getMomentSpy).toHaveBeenCalledTimes(getMomentCalls + 1)
+        })
     })
 
     it('should refresh last checked time when clicking Refresh button', async () => {
         getMomentSpy
             .mockReturnValueOnce({calendar: () => 'Today at 00:00'})
-            .mockReturnValueOnce({calendar: () => 'Today at 00:01'})
+            .mockReturnValue({calendar: () => 'Today at 00:01'})
         renderComponent()
+
         const refreshButton = screen.getByRole('button', {
             name: /refresh/i,
         })
@@ -68,6 +83,7 @@ describe('MigrationOutboundVerification', () => {
         act(() => {
             fireEvent.click(refreshButton)
         })
+
         await waitFor(() => expect(refreshButton).not.toBeDisabled())
         expect(screen.getByText('Last checked: Today at 00:01')).toBeVisible()
     })

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {Col} from 'reactstrap'
 import {useHistory} from 'react-router-dom'
 import {useAsyncFn, useEffectOnce} from 'react-use'
@@ -10,6 +10,7 @@ import Button from 'pages/common/components/button/Button'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import MigrationTutorialList from './MigrationTutorialList'
 import MigrationDomainList from './MigrationDomainList'
 
@@ -19,7 +20,7 @@ type Props = {
     onBackClick: () => void
 }
 
-const REFRESH_TIME = 5 * 60 * 1000 // 5 mins
+const REFRESH_TIME = 2 * 60 * 1000 // 5 mins
 
 export default function MigrationOutboundVerification({onBackClick}: Props) {
     const history = useHistory()
@@ -30,11 +31,12 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
     const [domains, setDomains] =
         useState<EmailMigrationOutboundVerification[]>()
 
+    const fetchMigrationStatus = useMigrationBannerStatus()
+
     const dispatch = useAppDispatch()
 
     useEffectOnce(() => {
-        void fetchAllDomains()
-        updateLastChecked()
+        void handleRefresh()
 
         return () => {
             if (lastCheckedInterval.current) {
@@ -42,6 +44,14 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
             }
         }
     })
+
+    useEffect(() => {
+        if (domains) {
+            setLastChecked(getFormattedCurrentTime())
+            void fetchMigrationStatus()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [domains])
 
     const [{loading: isLoading}, fetchAllDomains] = useAsyncFn(async () => {
         try {
@@ -62,21 +72,17 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
         }
     })
 
-    const updateLastChecked = () => {
+    const handleRefresh = async () => {
         if (lastCheckedInterval.current) {
             clearInterval(lastCheckedInterval.current)
         }
 
+        await fetchAllDomains()
         setLastChecked(getFormattedCurrentTime())
 
         lastCheckedInterval.current = setInterval(() => {
-            setLastChecked(getFormattedCurrentTime())
+            void fetchAllDomains()
         }, REFRESH_TIME)
-    }
-
-    const handleRefresh = async () => {
-        await fetchAllDomains()
-        updateLastChecked()
     }
 
     return (
