@@ -1,3 +1,13 @@
+import {
+    CampaignOrderEventsDimension,
+    CampaignOrderEventsMeasure,
+    EventsDimension,
+    EventsMeasure,
+    EventsSegment,
+    OrderConversionDimension,
+    OrderConversionMeasure,
+} from 'pages/stats/revenue/clients/constants'
+
 export enum TicketStateMeasure {
     SurveyScore = 'TicketState.surveyScore',
     FirstResponseTime = 'TicketState.firstResponseTime',
@@ -61,10 +71,17 @@ export type ReportingMeasure =
     | TicketStateMeasure
     | OpenTicketStateMeasure
     | MessageStateMeasure
+    | EventsMeasure
+    | OrderConversionMeasure
+    | CampaignOrderEventsMeasure
 
-export type ReportingDimension = TicketStateDimension
+export type ReportingDimension =
+    | TicketStateDimension
+    | EventsDimension
+    | OrderConversionDimension
+    | CampaignOrderEventsDimension
 
-export type ReportingSegment = TicketStateSegment
+export type ReportingSegment = TicketStateSegment | EventsSegment
 
 export type ReportingFilterMember =
     | TicketStateMember
@@ -138,9 +155,9 @@ export type ReportingQuery = {
     timezone?: string
 }
 
-export type GetReportingParams = ReportingQuery[]
+export type ReportingParams = ReportingQuery[]
 
-export type GetReportingResponse<TData extends unknown[]> = {
+export type ReportingResponse<TData extends unknown[]> = {
     annotation: {
         title: string
         shortTitle: string

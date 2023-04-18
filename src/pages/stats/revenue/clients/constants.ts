@@ -1,72 +1,67 @@
-// Cube names
-export const EVENTS_CUBE = 'CampaignEvents'
-export const ORDER_CUBE = 'OrderConversion'
-export const CAMPAIGN_ORDER_CUBE = 'CampaignOrderEvents'
-
-export enum Cubes {
+export enum Cube {
     events = 'CampaignEvents',
     orderConversion = 'OrderConversion',
     campaignOrderEvents = 'CampaignOrderEvents',
 }
 
-export enum FilterOperators {
+export enum FilterOperator {
     equals = 'equals',
     inDateRange = 'inDateRange',
 }
 
-export enum SharedDimensionNames {
+export enum SharedDimension {
     campaignId = 'campaignId',
     createdDatetime = 'createdDatetime',
     shopName = 'shopName',
 }
 
 // Events constants
-export const EventsDimensions = {
-    campaignId: `${Cubes.events}.${SharedDimensionNames.campaignId}`,
-    createdDatetime: `${Cubes.events}.${SharedDimensionNames.createdDatetime}`,
+export enum EventsDimension {
+    campaignId = `CampaignEvents.campaignId`,
+    createdDatetime = `CampaignEvents.createdDatetime`,
 }
 
-export const EventsMeasures = {
-    traffic: `${Cubes.events}.traffic`,
-    impressions: `${Cubes.events}.impressions`,
-    firstCampaignDisplay: `${Cubes.events}.firstCampaignDisplay`,
-    lastCampaignDisplay: `${Cubes.events}.lastCampaignDisplay`,
-    clicks: `${Cubes.events}.clicks`,
-    clicksRate: `${Cubes.events}.clicksRate`,
+export enum EventsMeasure {
+    traffic = `CampaignEvents.traffic`,
+    impressions = `CampaignEvents.impressions`,
+    firstCampaignDisplay = `CampaignEvents.firstCampaignDisplay`,
+    lastCampaignDisplay = `CampaignEvents.lastCampaignDisplay`,
+    clicks = `CampaignEvents.clicks`,
+    clicksRate = `CampaignEvents.clicksRate`,
 }
 
-export const EventsSegments = {
-    campaignEventsOnly: `${Cubes.events}.campaignEventsOnly`,
+export enum EventsSegment {
+    campaignEventsOnly = `CampaignEvents.campaignEventsOnly`,
 }
 
 // Order conversions constants
-export const OrderConversionDimensions = {
-    campaignId: `${Cubes.orderConversion}.${SharedDimensionNames.campaignId}`,
-    createdDatatime: `${Cubes.orderConversion}.createdDatetime`,
+export enum OrderConversionDimension {
+    campaignId = `OrderConversion.campaignId`,
+    createdDatatime = `OrderConversion.createdDatetime`,
 }
 
-export const OrderConversionMeasures = {
-    gmv: `${Cubes.orderConversion}.gmv`,
-    influencedRevenueUplift: `${Cubes.orderConversion}.influencedRevenueUplift`,
-    ticketSales: `${Cubes.orderConversion}.ticketSales`,
-    ticketSalesCount: `${Cubes.orderConversion}.ticketSalesCount`,
-    discountSales: `${Cubes.orderConversion}.discountSales`,
-    discountSalesCount: `${Cubes.orderConversion}.discountSalesCount`,
-    clickSales: `${Cubes.orderConversion}.clickSales`,
-    clickSalesCount: `${Cubes.orderConversion}.clickSalesCount`,
-    campaignSales: `${Cubes.orderConversion}.campaignSales`,
-    campaignSalesCount: `${Cubes.orderConversion}.campaignSalesCount`,
+export enum OrderConversionMeasure {
+    gmv = `OrderConversion.gmv`,
+    influencedRevenueUplift = `OrderConversion.influencedRevenueUplift`,
+    ticketSales = `OrderConversion.ticketSales`,
+    ticketSalesCount = `OrderConversion.ticketSalesCount`,
+    discountSales = `OrderConversion.discountSales`,
+    discountSalesCount = `OrderConversion.discountSalesCount`,
+    clickSales = `OrderConversion.clickSales`,
+    clickSalesCount = `OrderConversion.clickSalesCount`,
+    campaignSales = `OrderConversion.campaignSales`,
+    campaignSalesCount = `OrderConversion.campaignSalesCount`,
 }
 
 // Campaign order events constants
-export const CampaignOrderEventsDimensions = {
-    campaignId: `${Cubes.campaignOrderEvents}.${SharedDimensionNames.campaignId}`,
-    createdDatatime: `${Cubes.campaignOrderEvents}.${SharedDimensionNames.createdDatetime}`,
+export enum CampaignOrderEventsDimension {
+    campaignId = `CampaignOrderEvents.campaignId`,
+    createdDatatime = `CampaignOrderEvents.createdDatetime`,
 }
 
-export const CampaignOrderEventsMeasures = {
-    impressions: `${Cubes.campaignOrderEvents}.impressions`,
-    engagement: `${Cubes.campaignOrderEvents}.engagement`,
-    campaignCTR: `${Cubes.campaignOrderEvents}.campaignCTR`,
-    totalConversionRate: `${Cubes.campaignOrderEvents}.totalConversionRate`,
+export enum CampaignOrderEventsMeasure {
+    impressions = `CampaignOrderEvents.impressions`,
+    engagement = `CampaignOrderEvents.engagement`,
+    campaignCTR = `CampaignOrderEvents.campaignCTR`,
+    totalConversionRate = `CampaignOrderEvents.totalConversionRate`,
 }

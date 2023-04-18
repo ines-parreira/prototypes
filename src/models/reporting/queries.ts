@@ -1,24 +1,24 @@
 import {useQuery, UseQueryOptions} from '@tanstack/react-query'
 import {AxiosResponse} from 'axios'
 
-import {getReporting} from './resources'
-import {GetReportingParams, GetReportingResponse} from './types'
+import {getReporting, postReporting} from './resources'
+import {ReportingParams, ReportingResponse} from './types'
 
-export const getReportingQueryKey = (params: GetReportingParams) => [
+export const getReportingQueryKey = (params: ReportingParams) => [
     'reporting',
     'get-reporting',
     params,
 ]
 
 export type UseGetReportingQueryData<TData extends unknown[]> = AxiosResponse<
-    GetReportingResponse<TData>
+    ReportingResponse<TData>
 >
 
 export const useGetReporting = <
     TData extends unknown[],
     SelectData = UseGetReportingQueryData<TData>
 >(
-    params: GetReportingParams,
+    params: ReportingParams,
     overrides?: UseQueryOptions<
         UseGetReportingQueryData<TData>,
         unknown,
@@ -28,6 +28,34 @@ export const useGetReporting = <
     return useQuery({
         queryKey: getReportingQueryKey(params),
         queryFn: () => getReporting<TData>(params),
+        ...overrides,
+    })
+}
+
+export const postReportingQueryKey = (data: ReportingParams) => [
+    'reporting',
+    'post-reporting',
+    data,
+]
+
+type UsePostReportingQueryData<TData extends unknown[]> = AxiosResponse<
+    ReportingResponse<TData>
+>
+
+export const usePostReporting = <
+    TData extends unknown[],
+    SelectData = UsePostReportingQueryData<TData>
+>(
+    data: ReportingParams,
+    overrides?: UseQueryOptions<
+        UsePostReportingQueryData<TData>,
+        unknown,
+        SelectData
+    >
+) => {
+    return useQuery({
+        queryKey: postReportingQueryKey(data),
+        queryFn: () => postReporting<TData>(data),
         ...overrides,
     })
 }

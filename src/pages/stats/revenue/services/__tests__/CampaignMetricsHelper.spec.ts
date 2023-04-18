@@ -15,12 +15,12 @@ import {
 import {CubeResponse} from 'pages/stats/revenue/clients/types'
 import {Stat} from 'models/stat/types'
 import {
-    CampaignOrderEventsDimensions,
-    CampaignOrderEventsMeasures,
-    EventsDimensions,
-    EventsMeasures,
-    OrderConversionDimensions,
-    OrderConversionMeasures,
+    CampaignOrderEventsDimension,
+    CampaignOrderEventsMeasure,
+    EventsDimension,
+    EventsMeasure,
+    OrderConversionDimension,
+    OrderConversionMeasure,
 } from 'pages/stats/revenue/clients/constants'
 import {CampaignsTotalsMetricNames} from 'pages/stats/revenue/services/constants'
 import {TicketPerformanceData} from 'pages/stats/revenue/services/types'
@@ -67,8 +67,8 @@ describe('Campaign metrics helper tests', () => {
     describe('transformToCampaignEventsTotals', () => {
         const cubeData = [
             {
-                [CampaignOrderEventsMeasures.impressions]: '12345678',
-                [CampaignOrderEventsMeasures.engagement]: '2345678',
+                [CampaignOrderEventsMeasure.impressions]: '12345678',
+                [CampaignOrderEventsMeasure.engagement]: '2345678',
             },
         ]
 
@@ -107,8 +107,8 @@ describe('Campaign metrics helper tests', () => {
         const currency = 'USD'
         const cubeData = [
             {
-                [OrderConversionMeasures.campaignSales]: '34.56',
-                [OrderConversionMeasures.campaignSalesCount]: '345678',
+                [OrderConversionMeasure.campaignSales]: '34.56',
+                [OrderConversionMeasure.campaignSalesCount]: '345678',
             },
         ]
 
@@ -149,13 +149,13 @@ describe('Campaign metrics helper tests', () => {
     describe('transformToCampaignCalculatedTotals', () => {
         const orderCubeData = [
             {
-                [OrderConversionMeasures.campaignSales]: '750',
-                [OrderConversionMeasures.campaignSalesCount]: '345678',
+                [OrderConversionMeasure.campaignSales]: '750',
+                [OrderConversionMeasure.campaignSalesCount]: '345678',
             },
         ]
         const totalCubeData = [
             {
-                [OrderConversionMeasures.gmv]: '1000',
+                [OrderConversionMeasure.gmv]: '1000',
             },
         ]
 
@@ -197,7 +197,7 @@ describe('Campaign metrics helper tests', () => {
         const currency = 'USD'
         const cubeData = [
             {
-                [OrderConversionMeasures.gmv]: '12345.678',
+                [OrderConversionMeasure.gmv]: '12345.678',
             },
         ]
 
@@ -231,10 +231,10 @@ describe('Campaign metrics helper tests', () => {
 
     describe('transformToRevenueUpliftOverTime', () => {
         const revenueDataPoint = {
-            [OrderConversionMeasures.influencedRevenueUplift]: '67.8',
-            [`${OrderConversionDimensions.createdDatatime}.day`]:
+            [OrderConversionMeasure.influencedRevenueUplift]: '67.8',
+            [`${OrderConversionDimension.createdDatatime}.day`]:
                 '2023-02-28T00:00:00.000',
-            [OrderConversionDimensions.createdDatatime]:
+            [OrderConversionDimension.createdDatatime]:
                 '2023-02-28T00:00:00.000',
         }
 
@@ -252,10 +252,10 @@ describe('Campaign metrics helper tests', () => {
 
     describe('transformToCampaignCTROverTime', () => {
         const ctrDataPoint = {
-            [CampaignOrderEventsMeasures.campaignCTR]: '15.65',
-            [`${CampaignOrderEventsDimensions.createdDatatime}.day`]:
+            [CampaignOrderEventsMeasure.campaignCTR]: '15.65',
+            [`${CampaignOrderEventsDimension.createdDatatime}.day`]:
                 '2023-01-16T07:00:00.000',
-            [CampaignOrderEventsDimensions.createdDatatime]:
+            [CampaignOrderEventsDimension.createdDatatime]:
                 '2023-01-16T07:00:00.000',
         }
 
@@ -270,10 +270,10 @@ describe('Campaign metrics helper tests', () => {
 
     describe('transformToCampaignConversionRateOverTime', () => {
         const conversionDataPoint = {
-            [CampaignOrderEventsMeasures.totalConversionRate]: '7.18',
-            [`${CampaignOrderEventsDimensions.createdDatatime}.day`]:
+            [CampaignOrderEventsMeasure.totalConversionRate]: '7.18',
+            [`${CampaignOrderEventsDimension.createdDatatime}.day`]:
                 '2023-02-01T00:08:00.000',
-            [CampaignOrderEventsDimensions.createdDatatime]:
+            [CampaignOrderEventsDimension.createdDatatime]:
                 '2023-02-01T00:08:00.000',
         }
 
@@ -430,77 +430,75 @@ describe('Campaign metrics helper tests', () => {
     describe('transformToCampaignsPerformanceTable', () => {
         const campaignEventsPerformanceData = [
             {
-                [EventsDimensions.campaignId]: 'campaign1',
-                [EventsMeasures.impressions]: '2000',
-                [EventsMeasures.firstCampaignDisplay]:
-                    '2023-03-10T00:00:00.000',
-                [EventsMeasures.lastCampaignDisplay]: '2023-03-11T00:00:00.000',
-                [EventsMeasures.clicks]: '1000',
-                [EventsMeasures.clicksRate]: '10.20',
+                [EventsDimension.campaignId]: 'campaign1',
+                [EventsMeasure.impressions]: '2000',
+                [EventsMeasure.firstCampaignDisplay]: '2023-03-10T00:00:00.000',
+                [EventsMeasure.lastCampaignDisplay]: '2023-03-11T00:00:00.000',
+                [EventsMeasure.clicks]: '1000',
+                [EventsMeasure.clicksRate]: '10.20',
             },
             {
-                [EventsDimensions.campaignId]: 'campaign2',
-                [EventsMeasures.impressions]: '4000',
-                [EventsMeasures.firstCampaignDisplay]:
-                    '2023-03-09T00:00:00.000',
-                [EventsMeasures.lastCampaignDisplay]: '2023-03-10T00:00:00.000',
-                [EventsMeasures.clicks]: '2000',
-                [EventsMeasures.clicksRate]: '21.34',
+                [EventsDimension.campaignId]: 'campaign2',
+                [EventsMeasure.impressions]: '4000',
+                [EventsMeasure.firstCampaignDisplay]: '2023-03-09T00:00:00.000',
+                [EventsMeasure.lastCampaignDisplay]: '2023-03-10T00:00:00.000',
+                [EventsMeasure.clicks]: '2000',
+                [EventsMeasure.clicksRate]: '21.34',
             },
         ]
 
         const campaignOrdersPerformanceData = [
             {
-                [OrderConversionDimensions.campaignId]: 'campaign1',
-                [OrderConversionMeasures.campaignSales]: '12345.67',
-                [OrderConversionMeasures.ticketSales]: '1234.47',
-                [OrderConversionMeasures.ticketSalesCount]: '60',
-                [OrderConversionMeasures.discountSales]: '4567.65',
-                [OrderConversionMeasures.discountSalesCount]: '125',
-                [OrderConversionMeasures.clickSales]: '3596.25',
-                [OrderConversionMeasures.clickSalesCount]: '20',
-                [OrderConversionMeasures.campaignSalesCount]: '125',
+                [OrderConversionDimension.campaignId]: 'campaign1',
+                [OrderConversionMeasure.campaignSales]: '12345.67',
+                [OrderConversionMeasure.ticketSales]: '1234.47',
+                [OrderConversionMeasure.ticketSalesCount]: '60',
+                [OrderConversionMeasure.discountSales]: '4567.65',
+                [OrderConversionMeasure.discountSalesCount]: '125',
+                [OrderConversionMeasure.clickSales]: '3596.25',
+                [OrderConversionMeasure.clickSalesCount]: '20',
+                [OrderConversionMeasure.campaignSalesCount]: '125',
             },
             {
-                [OrderConversionDimensions.campaignId]: 'campaign2',
-                [OrderConversionMeasures.campaignSales]: '12345.67',
-                [OrderConversionMeasures.ticketSales]: '1234.47',
-                [OrderConversionMeasures.ticketSalesCount]: '80',
-                [OrderConversionMeasures.discountSales]: '4567.65',
-                [OrderConversionMeasures.discountSalesCount]: '125',
-                [OrderConversionMeasures.clickSales]: '3596.25',
-                [OrderConversionMeasures.clickSalesCount]: '40',
-                [OrderConversionMeasures.campaignSalesCount]: '358',
+                [OrderConversionDimension.campaignId]: 'campaign2',
+                [OrderConversionMeasure.campaignSales]: '12345.67',
+                [OrderConversionMeasure.ticketSales]: '1234.47',
+                [OrderConversionMeasure.ticketSalesCount]: '80',
+                [OrderConversionMeasure.discountSales]: '4567.65',
+                [OrderConversionMeasure.discountSalesCount]: '125',
+                [OrderConversionMeasure.clickSales]: '3596.25',
+                [OrderConversionMeasure.clickSalesCount]: '40',
+                [OrderConversionMeasure.campaignSalesCount]: '358',
             },
         ]
 
         const trafficData = [
             {
-                [EventsDimensions.createdDatetime]: '2023-03-09T00:00:00.000',
-                [EventsMeasures.traffic]: '1',
+                [EventsDimension.createdDatetime]: '2023-03-09T00:00:00.000',
+                [EventsMeasure.traffic]: '1',
             },
             {
-                [EventsDimensions.createdDatetime]: '2023-03-10T00:00:00.000',
-                [EventsMeasures.traffic]: '2',
+                [EventsDimension.createdDatetime]: '2023-03-10T00:00:00.000',
+                [EventsMeasure.traffic]: '2',
             },
             {
-                [EventsDimensions.createdDatetime]: '2023-03-11T00:00:00.000',
-                [EventsMeasures.traffic]: '3',
+                [EventsDimension.createdDatetime]: '2023-03-11T00:00:00.000',
+                [EventsMeasure.traffic]: '3',
             },
         ]
 
         const campaignEventsOrdersPerformanceData = [
             {
-                [CampaignOrderEventsDimensions.campaignId]: 'campaign1',
-                [CampaignOrderEventsMeasures.engagement]: '357',
-                [CampaignOrderEventsMeasures.campaignCTR]: '12.78',
-                [CampaignOrderEventsMeasures.totalConversionRate]: '7.49',
+                [CampaignOrderEventsDimension.campaignId]: 'campaign1',
+                [CampaignOrderEventsMeasure.engagement]: '357',
+                [CampaignOrderEventsMeasure.campaignCTR]: '12.78',
+                [CampaignOrderEventsMeasure.totalConversionRate]: '7.49',
             },
             {
-                [CampaignOrderEventsDimensions.campaignId]: 'campaign2',
-                [CampaignOrderEventsMeasures.engagement]: '1357',
-                [CampaignOrderEventsMeasures.campaignCTR]: '11.25',
-                [CampaignOrderEventsMeasures.totalConversionRate]: '9.87',
+                [CampaignOrderEventsDimension.campaignId]: 'campaign2',
+                [CampaignOrderEventsMeasure.engagement]: '1357',
+                [CampaignOrderEventsMeasure.campaignCTR]: '11.25',
+                [CampaignOrderEventsMeasure.totalConversionRate]: '9.87',
             },
         ]
 
@@ -535,21 +533,21 @@ describe('Campaign metrics helper tests', () => {
             const result = transformToCampaignsPerformanceTable(
                 [
                     {
-                        [EventsDimensions.campaignId]: 'campaign1',
-                        [EventsMeasures.impressions]: '0',
-                        [EventsMeasures.clicks]: '0',
+                        [EventsDimension.campaignId]: 'campaign1',
+                        [EventsMeasure.impressions]: '0',
+                        [EventsMeasure.clicks]: '0',
                     },
                 ],
                 [
                     {
-                        [OrderConversionDimensions.campaignId]: 'campaign1',
-                        [OrderConversionMeasures.ticketSalesCount]: '60',
-                        [OrderConversionMeasures.clickSalesCount]: '20',
+                        [OrderConversionDimension.campaignId]: 'campaign1',
+                        [OrderConversionMeasure.ticketSalesCount]: '60',
+                        [OrderConversionMeasure.clickSalesCount]: '20',
                     },
                 ],
                 [
                     {
-                        [CampaignOrderEventsDimensions.campaignId]: 'campaign1',
+                        [CampaignOrderEventsDimension.campaignId]: 'campaign1',
                     },
                 ],
                 [],

@@ -6,16 +6,16 @@ import {
     DefaultFilterParams,
 } from 'pages/stats/revenue/clients/types'
 import {
-    CampaignOrderEventsDimensions,
-    CampaignOrderEventsMeasures,
-    Cubes,
-    EventsDimensions,
-    EventsMeasures,
-    EventsSegments,
-    FilterOperators,
-    OrderConversionDimensions,
-    OrderConversionMeasures,
-    SharedDimensionNames,
+    CampaignOrderEventsDimension,
+    CampaignOrderEventsMeasure,
+    Cube,
+    EventsDimension,
+    EventsMeasure,
+    EventsSegment,
+    FilterOperator,
+    OrderConversionDimension,
+    OrderConversionMeasure,
+    SharedDimension,
 } from 'pages/stats/revenue/clients/constants'
 
 const _getDefaultFilters = ({
@@ -44,8 +44,8 @@ const _inDateRangeFilter = (
     cubeName: string
 ): CubeFilter => {
     return {
-        member: `${cubeName}.${SharedDimensionNames.createdDatetime}`,
-        operator: FilterOperators.inDateRange,
+        member: `${cubeName}.${SharedDimension.createdDatetime}`,
+        operator: FilterOperator.inDateRange,
         values: [startDate, endDate],
     }
 }
@@ -55,8 +55,8 @@ const _shopNameEqualsFilter = (
     cubeName: string
 ): CubeFilter => {
     return {
-        member: `${cubeName}.${SharedDimensionNames.shopName}`,
-        operator: FilterOperators.equals,
+        member: `${cubeName}.${SharedDimension.shopName}`,
+        operator: FilterOperator.equals,
         values: [shopName],
     }
 }
@@ -66,8 +66,8 @@ const _campaignEqualsFilter = (
     cubeName: string
 ): CubeFilter => {
     return {
-        member: `${cubeName}.${SharedDimensionNames.campaignId}`,
-        operator: FilterOperators.equals,
+        member: `${cubeName}.${SharedDimension.campaignId}`,
+        operator: FilterOperator.equals,
         values: campaignIds,
     }
 }
@@ -81,21 +81,21 @@ export const getCampaignEventsPerformanceData = async ({
     offset,
 }: CubeFilterParams): Promise<CubeResponse> => {
     return await client.load({
-        dimensions: [EventsDimensions.campaignId],
+        dimensions: [EventsDimension.campaignId],
         measures: [
-            EventsMeasures.impressions,
-            EventsMeasures.firstCampaignDisplay,
-            EventsMeasures.lastCampaignDisplay,
-            EventsMeasures.clicks,
-            EventsMeasures.clicksRate,
+            EventsMeasure.impressions,
+            EventsMeasure.firstCampaignDisplay,
+            EventsMeasure.lastCampaignDisplay,
+            EventsMeasure.clicks,
+            EventsMeasure.clicksRate,
         ],
         filters: _getDefaultFilters({
             startDate,
             endDate,
-            cubeName: Cubes.events,
+            cubeName: Cube.events,
             campaignIds,
         }),
-        segments: [EventsSegments.campaignEventsOnly],
+        segments: [EventsSegment.campaignEventsOnly],
         limit: limit,
         // TODO: we need to add support for offset to reporting endpoint first
         // offset: offset,
@@ -112,16 +112,16 @@ export const getTrafficData = async ({
         dimensions: [],
         timeDimensions: [
             {
-                dimension: EventsDimensions.createdDatetime,
+                dimension: EventsDimension.createdDatetime,
                 dateRange: [startDate, endDate],
                 granularity: granularity,
             },
         ],
-        measures: [EventsMeasures.traffic],
+        measures: [EventsMeasure.traffic],
         filters: _getDefaultFilters({
             startDate,
             endDate,
-            cubeName: Cubes.events,
+            cubeName: Cube.events,
             shopName,
         }),
     })
@@ -136,21 +136,21 @@ export const getCampaignOrderPerformanceData = async ({
     offset,
 }: CubeFilterParams): Promise<CubeResponse> => {
     return await client.load({
-        dimensions: [OrderConversionDimensions.campaignId],
+        dimensions: [OrderConversionDimension.campaignId],
         measures: [
-            OrderConversionMeasures.campaignSales,
-            OrderConversionMeasures.ticketSales,
-            OrderConversionMeasures.ticketSalesCount,
-            OrderConversionMeasures.discountSales,
-            OrderConversionMeasures.discountSalesCount,
-            OrderConversionMeasures.clickSales,
-            OrderConversionMeasures.clickSalesCount,
-            OrderConversionMeasures.campaignSalesCount,
+            OrderConversionMeasure.campaignSales,
+            OrderConversionMeasure.ticketSales,
+            OrderConversionMeasure.ticketSalesCount,
+            OrderConversionMeasure.discountSales,
+            OrderConversionMeasure.discountSalesCount,
+            OrderConversionMeasure.clickSales,
+            OrderConversionMeasure.clickSalesCount,
+            OrderConversionMeasure.campaignSalesCount,
         ],
         filters: _getDefaultFilters({
             startDate,
             endDate,
-            cubeName: Cubes.orderConversion,
+            cubeName: Cube.orderConversion,
             campaignIds,
         }),
         limit: limit,
@@ -168,12 +168,12 @@ export const getCampaignEventsOrdersPerformanceData = async ({
     offset,
 }: CubeFilterParams): Promise<CubeResponse> => {
     return await client.load({
-        dimensions: [CampaignOrderEventsDimensions.campaignId],
-        measures: [CampaignOrderEventsMeasures.engagement],
+        dimensions: [CampaignOrderEventsDimension.campaignId],
+        measures: [CampaignOrderEventsMeasure.engagement],
         filters: _getDefaultFilters({
             startDate,
             endDate,
-            cubeName: Cubes.campaignOrderEvents,
+            cubeName: Cube.campaignOrderEvents,
             campaignIds,
         }),
         limit: limit,
@@ -191,13 +191,13 @@ export const getCampaignEventsTotalsData = async ({
     return await client.load({
         dimensions: [],
         measures: [
-            CampaignOrderEventsMeasures.impressions,
-            CampaignOrderEventsMeasures.engagement,
+            CampaignOrderEventsMeasure.impressions,
+            CampaignOrderEventsMeasure.engagement,
         ],
         filters: _getDefaultFilters({
             startDate,
             endDate,
-            cubeName: Cubes.campaignOrderEvents,
+            cubeName: Cube.campaignOrderEvents,
             shopName,
             campaignIds,
         }),
@@ -213,14 +213,14 @@ export const getCampaignOrderTotalsData = async ({
     return await client.load({
         dimensions: [],
         measures: [
-            OrderConversionMeasures.influencedRevenueUplift,
-            OrderConversionMeasures.campaignSales,
-            OrderConversionMeasures.campaignSalesCount,
+            OrderConversionMeasure.influencedRevenueUplift,
+            OrderConversionMeasure.campaignSales,
+            OrderConversionMeasure.campaignSalesCount,
         ],
         filters: _getDefaultFilters({
             startDate,
             endDate,
-            cubeName: Cubes.orderConversion,
+            cubeName: Cube.orderConversion,
             shopName,
             campaignIds,
         }),
@@ -234,11 +234,11 @@ export const getStoreRevenueTotalData = async ({
 }: CubeFilterParams): Promise<CubeResponse> => {
     return await client.load({
         dimensions: [],
-        measures: [OrderConversionMeasures.gmv],
+        measures: [OrderConversionMeasure.gmv],
         filters: _getDefaultFilters({
             startDate,
             endDate,
-            cubeName: Cubes.orderConversion,
+            cubeName: Cube.orderConversion,
             shopName,
         }),
     })
@@ -255,17 +255,17 @@ export const getRevenueUpliftGraphData = async ({
         dimensions: [],
         timeDimensions: [
             {
-                dimension: OrderConversionDimensions.createdDatatime,
+                dimension: OrderConversionDimension.createdDatatime,
                 dateRange: [startDate, endDate],
                 granularity: granularity,
             },
         ],
-        measures: [OrderConversionMeasures.influencedRevenueUplift],
-        order: [[OrderConversionDimensions.createdDatatime, 'asc']],
+        measures: [OrderConversionMeasure.influencedRevenueUplift],
+        order: [[OrderConversionDimension.createdDatatime, 'asc']],
         filters: _getDefaultFilters({
             startDate,
             endDate,
-            cubeName: Cubes.orderConversion,
+            cubeName: Cube.orderConversion,
             campaignIds,
             shopName,
         }),
@@ -283,20 +283,20 @@ export const getCampaignsPerformanceGraphData = async ({
         dimensions: [],
         timeDimensions: [
             {
-                dimension: CampaignOrderEventsDimensions.createdDatatime,
+                dimension: CampaignOrderEventsDimension.createdDatatime,
                 dateRange: [startDate, endDate],
                 granularity: granularity,
             },
         ],
         measures: [
-            CampaignOrderEventsMeasures.campaignCTR,
-            CampaignOrderEventsMeasures.totalConversionRate,
+            CampaignOrderEventsMeasure.campaignCTR,
+            CampaignOrderEventsMeasure.totalConversionRate,
         ],
-        order: [[CampaignOrderEventsDimensions.createdDatatime, 'asc']],
+        order: [[CampaignOrderEventsDimension.createdDatatime, 'asc']],
         filters: _getDefaultFilters({
             startDate,
             endDate,
-            cubeName: Cubes.campaignOrderEvents,
+            cubeName: Cube.campaignOrderEvents,
             campaignIds,
             shopName,
         }),

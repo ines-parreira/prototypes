@@ -31,12 +31,12 @@ import {
     TimeGranularity,
 } from 'pages/stats/revenue/clients/types'
 import {
-    CampaignOrderEventsDimensions,
-    CampaignOrderEventsMeasures,
-    EventsDimensions,
-    EventsMeasures,
-    OrderConversionDimensions,
-    OrderConversionMeasures,
+    CampaignOrderEventsDimension,
+    CampaignOrderEventsMeasure,
+    EventsDimension,
+    EventsMeasure,
+    OrderConversionDimension,
+    OrderConversionMeasure,
 } from 'pages/stats/revenue/clients/constants'
 import {
     CampaignsTotalsMetricNames,
@@ -74,10 +74,10 @@ const _calculateTraffic = (
     return _sum(
         trafficData.map((metric) => {
             const date = moment(
-                _get(metric, EventsDimensions.createdDatetime)
+                _get(metric, EventsDimension.createdDatetime)
             ).date()
             if (date >= start.date() && date <= end.date()) {
-                return parseInt(_get(metric, EventsMeasures.traffic, '0'))
+                return parseInt(_get(metric, EventsMeasure.traffic, '0'))
             }
             return 0
         })
@@ -91,13 +91,11 @@ export const transformToCampaignEventsTotals = (
     return {
         [CampaignsTotalsMetricNames.impressions]: formatNumber(
             parseFloat(
-                _get(metric, CampaignOrderEventsMeasures.impressions, '0')
+                _get(metric, CampaignOrderEventsMeasure.impressions, '0')
             )
         ),
         [CampaignsTotalsMetricNames.engagement]: formatNumber(
-            parseFloat(
-                _get(metric, CampaignOrderEventsMeasures.engagement, '0')
-            )
+            parseFloat(_get(metric, CampaignOrderEventsMeasure.engagement, '0'))
         ),
     }
 }
@@ -110,14 +108,12 @@ export const transformToCampaignOrdersTotals = (
 
     return {
         [CampaignsTotalsMetricNames.revenue]: formatCurrency(
-            parseFloat(
-                _get(metric, OrderConversionMeasures.campaignSales, '0')
-            ),
+            parseFloat(_get(metric, OrderConversionMeasure.campaignSales, '0')),
             currency
         ),
         [CampaignsTotalsMetricNames.campaignSalesCount]: formatNumber(
             parseFloat(
-                _get(metric, OrderConversionMeasures.campaignSalesCount, '0')
+                _get(metric, OrderConversionMeasure.campaignSalesCount, '0')
             )
         ),
     }
@@ -131,10 +127,10 @@ export const transformToCampaignCalculatedTotals = (
     const totalMetric: CubeMetric = _getMetricFromCubeData(totalData)
 
     const campaignSales = parseFloat(
-        _get(orderMetric, OrderConversionMeasures.campaignSales, '0')
+        _get(orderMetric, OrderConversionMeasure.campaignSales, '0')
     )
     const totalSales = parseFloat(
-        _get(totalMetric, OrderConversionMeasures.gmv, '0')
+        _get(totalMetric, OrderConversionMeasure.gmv, '0')
     )
 
     return {
@@ -152,7 +148,7 @@ export const transformToStoreTotal = (
 
     return {
         [CampaignsTotalsMetricNames.gmv]: formatCurrency(
-            parseFloat(_get(metric, OrderConversionMeasures.gmv, '0')),
+            parseFloat(_get(metric, OrderConversionMeasure.gmv, '0')),
             currency
         ),
     }
@@ -164,8 +160,8 @@ export const transformToRevenueUpliftOverTime = (
 ): RevenueGraphDataPoint => {
     return _transformToGraphOverTime(
         dataPoint,
-        OrderConversionMeasures.influencedRevenueUplift,
-        `${OrderConversionDimensions.createdDatatime}.${granularityValue}`,
+        OrderConversionMeasure.influencedRevenueUplift,
+        `${OrderConversionDimension.createdDatatime}.${granularityValue}`,
         GRAPH_LABEL_DATE_FORMAT
     )
 }
@@ -176,8 +172,8 @@ export const transformToCampaignCTROverTime = (
 ): RevenueGraphDataPoint => {
     return _transformToGraphOverTime(
         dataPoint,
-        CampaignOrderEventsMeasures.campaignCTR,
-        `${CampaignOrderEventsDimensions.createdDatatime}.${granularityValue}`
+        CampaignOrderEventsMeasure.campaignCTR,
+        `${CampaignOrderEventsDimension.createdDatatime}.${granularityValue}`
     )
 }
 
@@ -187,8 +183,8 @@ export const transformToCampaignConversionRateOverTime = (
 ): RevenueGraphDataPoint => {
     return _transformToGraphOverTime(
         dataPoint,
-        CampaignOrderEventsMeasures.totalConversionRate,
-        `${CampaignOrderEventsDimensions.createdDatatime}.${granularityValue}`
+        CampaignOrderEventsMeasure.totalConversionRate,
+        `${CampaignOrderEventsDimension.createdDatatime}.${granularityValue}`
     )
 }
 
@@ -312,17 +308,17 @@ const _eventsPerformanceReducer = (
     metric: CubeMetric,
     trafficData: CubeData
 ): CampaignsPerformanceDataset => {
-    const campaignId = _get(metric, EventsDimensions.campaignId)
+    const campaignId = _get(metric, EventsDimension.campaignId)
     const eventMetricValue = _mapValues(
         {
             traffic: _calculateTraffic(
                 trafficData,
-                _get(metric, EventsMeasures.firstCampaignDisplay),
-                _get(metric, EventsMeasures.lastCampaignDisplay)
+                _get(metric, EventsMeasure.firstCampaignDisplay),
+                _get(metric, EventsMeasure.lastCampaignDisplay)
             ),
-            impressions: _get(metric, EventsMeasures.impressions),
-            clicks: _get(metric, EventsMeasures.clicks),
-            clicksRate: _get(metric, EventsMeasures.clicksRate),
+            impressions: _get(metric, EventsMeasure.impressions),
+            clicks: _get(metric, EventsMeasure.clicks),
+            clicksRate: _get(metric, EventsMeasure.clicksRate),
         },
         ensureNumberValue
     )
@@ -339,32 +335,32 @@ const _ordersPerformanceReducer = (
     dataset: CampaignsPerformanceDataset,
     metric: CubeMetric
 ): CampaignsPerformanceDataset => {
-    const campaignId = _get(metric, OrderConversionDimensions.campaignId)
+    const campaignId = _get(metric, OrderConversionDimension.campaignId)
 
     const orderMetricValue = _mapValues(
         {
-            totalRevenue: _get(metric, OrderConversionMeasures.campaignSales),
+            totalRevenue: _get(metric, OrderConversionMeasure.campaignSales),
             ticketsConverted: _get(
                 metric,
-                OrderConversionMeasures.ticketSalesCount
+                OrderConversionMeasure.ticketSalesCount
             ),
-            ticketsRevenue: _get(metric, OrderConversionMeasures.ticketSales),
-            clicksRevenue: _get(metric, OrderConversionMeasures.clickSales),
+            ticketsRevenue: _get(metric, OrderConversionMeasure.ticketSales),
+            clicksRevenue: _get(metric, OrderConversionMeasure.clickSales),
             clicksConverted: _get(
                 metric,
-                OrderConversionMeasures.clickSalesCount
+                OrderConversionMeasure.clickSalesCount
             ),
             discountCodesUsed: _get(
                 metric,
-                OrderConversionMeasures.discountSalesCount
+                OrderConversionMeasure.discountSalesCount
             ),
             discountCodesRevenue: _get(
                 metric,
-                OrderConversionMeasures.discountSales
+                OrderConversionMeasure.discountSales
             ),
             campaignSalesCount: _get(
                 metric,
-                OrderConversionMeasures.campaignSalesCount
+                OrderConversionMeasure.campaignSalesCount
             ),
         },
         ensureNumberValue
@@ -382,10 +378,10 @@ const _campaignsOrdersPerformanceReducer = (
     dataset: CampaignsPerformanceDataset,
     metric: CubeMetric
 ): CampaignsPerformanceDataset => {
-    const campaignId = _get(metric, CampaignOrderEventsDimensions.campaignId)
+    const campaignId = _get(metric, CampaignOrderEventsDimension.campaignId)
     const campaignOrderMetricValue = _mapValues(
         {
-            engagement: _get(metric, CampaignOrderEventsMeasures.engagement),
+            engagement: _get(metric, CampaignOrderEventsMeasure.engagement),
         },
         ensureNumberValue
     )

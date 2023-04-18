@@ -2,8 +2,8 @@ import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 
-import {REPORTING_ENDPOINT, getReporting} from '../resources'
-import {GetReportingResponse, ReportingQuery} from '../types'
+import {REPORTING_ENDPOINT, getReporting, postReporting} from '../resources'
+import {ReportingResponse, ReportingQuery} from '../types'
 
 const mockedServer = new MockAdapter(client)
 
@@ -13,7 +13,7 @@ describe('Reporting resources', () => {
         measures: [],
         filters: [],
     }
-    const resFixture: GetReportingResponse<[number]> = {
+    const resFixture: ReportingResponse<[number]> = {
         query,
         data: [1],
         annotation: {
@@ -26,6 +26,7 @@ describe('Reporting resources', () => {
     beforeEach(() => {
         mockedServer.reset()
         mockedServer.onGet(REPORTING_ENDPOINT).reply(200, resFixture)
+        mockedServer.onPost(REPORTING_ENDPOINT).reply(200, resFixture)
     })
 
     describe('getReporting', () => {
@@ -52,6 +53,22 @@ describe('Reporting resources', () => {
                     },
                 ])
             ).rejects.toEqual(new Error('Request failed with status code 503'))
+        })
+    })
+
+    describe('postReporting', () => {
+        it('should resolve with the data on success', async () => {
+            const res = await postReporting<[number]>([query])
+
+            expect(res.data.data).toEqual([1])
+        })
+
+        it('should reject with an error on success', async () => {
+            mockedServer.onPost(REPORTING_ENDPOINT).reply(503)
+
+            return expect(postReporting<[number]>([query])).rejects.toEqual(
+                new Error('Request failed with status code 503')
+            )
         })
     })
 })
