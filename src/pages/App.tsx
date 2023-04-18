@@ -10,6 +10,7 @@ import NotificationsSystem, {
 } from 'reapop'
 import {RouteComponentProps} from 'react-router-dom'
 import {Map} from 'immutable'
+import {Program} from 'estree'
 
 import 'assets/css/main.less'
 import {getAccessSettings} from 'state/currentAccount/selectors'
@@ -25,7 +26,12 @@ import * as viewsActions from 'state/views/actions'
 import {identifyUser} from 'store/middlewares/segmentTracker'
 import {handleUsageBanner} from 'state/notifications/actions'
 import {hasIntegrationOfTypes} from 'state/integrations/selectors'
+import * as viewsSelectors from 'state/views/selectors'
 import {IntegrationType} from 'models/integration/types'
+import {getViewFilters} from 'state/views/utils'
+import {CollectionOperator, EqualityOperator} from 'state/rules/types'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {handle2FAEnforced} from 'state/currentUser/actions'
 import css from './App.less'
@@ -102,6 +108,42 @@ class App extends React.Component<Props> {
         const isNextUserActive = nextProps.currentUser.get('is_active')
 
         if (isUserActive && !isNextUserActive) {
+            const activeView = nextProps.activeView
+
+            if (activeView.get('filters_ast')) {
+                const shouldFetchActiveViewTickets =
+                    nextProps.shouldFetchActiveViewTickets
+                const shouldContinuePollingChatViews =
+                    !!getLDClient().allFlags()[
+                        FeatureFlagKey.ContinuousChatViewsPolling
+                    ]
+
+                if (
+                    !shouldContinuePollingChatViews ||
+                    !shouldFetchActiveViewTickets
+                )
+                    return
+
+                const filtersAST = (
+                    activeView.get('filters_ast') as Map<any, any>
+                ).toJS() as Program
+
+                const viewFilters = getViewFilters(filtersAST)
+
+                const isChatView = viewFilters.some(
+                    (filter) =>
+                        filter.left === 'ticket.channel' &&
+                        (filter.operator === EqualityOperator.Eq ||
+                            CollectionOperator.ContainsAny) &&
+                        (filter.right as string | undefined)?.includes('chat')
+                )
+
+                if (isChatView) {
+                    pollingManager.stopRecentViewCountsInterval()
+                    return
+                }
+            }
+
             // Stop polling when current user becomes inactive
             pollingManager.stop()
         } else if (!isUserActive && isNextUserActive) {
@@ -244,6 +286,9 @@ const connector = connect(
         hasPhoneIntegration: hasIntegrationOfTypes(IntegrationType.Phone)(
             state
         ),
+        activeView: viewsSelectors.getActiveView(state),
+        shouldFetchActiveViewTickets:
+            viewsSelectors.shouldFetchActiveViewTickets(state),
     }),
     {
         fetchVisibleViewsCounts: viewsActions.fetchVisibleViewsCounts,

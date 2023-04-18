@@ -155,76 +155,14 @@ describe('actions', () => {
     })
 
     describe('fetchActiveViewTickets', () => {
+        const shouldFetchActiveViewTicketsMock = jest.spyOn(
+            viewsSelectors,
+            'shouldFetchActiveViewTickets'
+        )
+        beforeEach(() => {
+            shouldFetchActiveViewTicketsMock.mockReturnValue(false)
+        })
         it('should not fetch (no active view)', () => {
-            const store = mockStore({views: initialState})
-            expect(store.dispatch(actions.fetchActiveViewTickets())).toBe(
-                undefined
-            )
-            expect(store.getActions()).toEqual([])
-        })
-
-        it('should not fetch (not on a view)', () => {
-            window.location.pathname = '/app/ticket/12/'
-            const store = mockStore({views: initialState})
-
-            expect(store.dispatch(actions.fetchActiveViewTickets())).toBe(
-                undefined
-            )
-            expect(store.getActions()).toEqual([])
-        })
-
-        it('should not fetch tickets (editing view)', () => {
-            window.location.pathname = '/app/tickets/12/'
-            const state = initialState.set(
-                'active',
-                fromJS({
-                    id: 1,
-                    editMode: true,
-                    type: ViewType.TicketList,
-                })
-            )
-            const store = mockStore({views: state})
-
-            expect(store.dispatch(actions.fetchActiveViewTickets())).toBe(
-                undefined
-            )
-            expect(store.getActions()).toEqual([])
-        })
-
-        it('should not fetch tickets (already fetching tickets)', () => {
-            window.location.pathname = '/app/tickets/12/'
-            const state = initialState.mergeDeep(
-                fromJS({
-                    active: {id: 1, type: ViewType.TicketList},
-                    _internal: {
-                        loading: {
-                            fetchList: true,
-                        },
-                    },
-                })
-            )
-            const store = mockStore({views: state})
-
-            expect(store.dispatch(actions.fetchActiveViewTickets())).toBe(
-                undefined
-            )
-            expect(store.getActions()).toEqual([])
-        })
-
-        it('should not fetch tickets (already fetching tickets)', () => {
-            window.location.pathname = '/app/tickets/12/'
-            const state = initialState.mergeDeep(
-                fromJS({
-                    active: {id: 1},
-                    _internal: {
-                        loading: {
-                            fetchListDiscreet: true,
-                        },
-                    },
-                })
-            )
-            const store = mockStore({views: state})
-
             expect(store.dispatch(actions.fetchActiveViewTickets())).toBe(
                 undefined
             )
@@ -232,11 +170,11 @@ describe('actions', () => {
         })
 
         it('should fetch tickets', async () => {
+            shouldFetchActiveViewTicketsMock.mockReturnValue(true)
             const state = initialState.set(
                 'active',
                 fromJS({id: 1, type: ViewType.TicketList})
             )
-            window.location.pathname = '/app/tickets/12/'
 
             const store = mockStore({views: state})
             expect(

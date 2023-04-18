@@ -50,5 +50,15 @@ describe('services', () => {
             expect(clearInterval).toHaveBeenCalledTimes(2)
             expect(pollingManager.intervals).toEqual({})
         })
+
+        it('should stop only recent views counts polling', () => {
+            pollingManager.start()
+            jest.clearAllTimers()
+            pollingManager.stopRecentViewCountsInterval()
+            expect(clearInterval).toHaveBeenCalledTimes(1)
+            expect(pollingManager.intervals).toEqual({
+                activeViewTickets: expect.any(Number),
+            })
+        })
     })
 })

@@ -456,4 +456,73 @@ describe('selectors', () => {
             } as RootState)
         ).toEqualImmutable(fromJS([1, 3, 2]))
     })
+
+    describe('shouldFetchActiveViewTickets', () => {
+        it('should return false (no active view)', () => {
+            const state = {views: initialState} as RootState
+            expect(selectors.shouldFetchActiveViewTickets(state)).toBe(false)
+        })
+
+        it('should return false (not on a view)', () => {
+            window.location.pathname = '/app/ticket/12/'
+            const state = {views: initialState} as RootState
+            expect(selectors.shouldFetchActiveViewTickets(state)).toBe(false)
+        })
+
+        it('should return false (editing view)', () => {
+            window.location.pathname = '/app/tickets/12/'
+            const viewState = initialState.set(
+                'active',
+                fromJS({
+                    id: 1,
+                    editMode: true,
+                    type: ViewType.TicketList,
+                })
+            )
+            const state = {views: viewState} as RootState
+            expect(selectors.shouldFetchActiveViewTickets(state)).toBe(false)
+        })
+
+        it('should return false (already fetching tickets)', () => {
+            window.location.pathname = '/app/tickets/12/'
+            const viewState = initialState.mergeDeep(
+                fromJS({
+                    active: {id: 1, type: ViewType.TicketList},
+                    _internal: {
+                        loading: {
+                            fetchList: true,
+                        },
+                    },
+                })
+            )
+            const state = {views: viewState} as RootState
+            expect(selectors.shouldFetchActiveViewTickets(state)).toBe(false)
+        })
+
+        it('should return false (already discreet fetching tickets)', () => {
+            window.location.pathname = '/app/tickets/12/'
+            const viewState = initialState.mergeDeep(
+                fromJS({
+                    active: {id: 1},
+                    _internal: {
+                        loading: {
+                            fetchListDiscreet: true,
+                        },
+                    },
+                })
+            )
+            const state = {views: viewState} as RootState
+            expect(selectors.shouldFetchActiveViewTickets(state)).toBe(false)
+        })
+
+        it('return true if conditions are met', () => {
+            window.location.pathname = '/app/tickets/12/'
+            const viewState = initialState.set(
+                'active',
+                fromJS({id: 1, type: ViewType.TicketList})
+            )
+            const state = {views: viewState} as RootState
+            expect(selectors.shouldFetchActiveViewTickets(state)).toBe(true)
+        })
+    })
 })

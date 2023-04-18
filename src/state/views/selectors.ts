@@ -12,7 +12,8 @@ import {
     makeGetSettingsByType,
 } from 'state/currentUser/selectors'
 import {RootState} from 'state/types'
-import {createImmutableSelector} from 'utils'
+import {createImmutableSelector, isCurrentlyOnView} from 'utils'
+import {BASE_VIEW_ID} from 'constants/view'
 
 import {sortViews} from './utils'
 import {ViewsState} from './types'
@@ -344,3 +345,31 @@ export const getExpiredViewsCounts = () =>
                 .map(([viewId]) => parseInt(viewId))
         }
     )
+
+export const shouldFetchActiveViewTickets = createSelector(
+    getViewsState,
+    getActiveView,
+    isLoading('fetchList'),
+    isLoading('fetchListDiscreet'),
+    isOnFirstPage,
+    (
+        viewsState,
+        activeView,
+        isLoadingFetchList,
+        isLoadingFetchListDiscreet,
+        isOnFirstPage
+    ) => {
+        const isFetchingView = isLoadingFetchList || isLoadingFetchListDiscreet
+        const isEditing = activeView.get('editMode') || false
+
+        const shouldUpdateView =
+            activeView.get('id') !== BASE_VIEW_ID &&
+            isCurrentlyOnView(activeView.get('id'), viewsState) &&
+            isOnFirstPage
+
+        if (!shouldUpdateView || isFetchingView || isEditing) {
+            return false
+        }
+        return true
+    }
+)

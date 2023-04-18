@@ -9,7 +9,6 @@ import {isEmpty} from 'lodash'
 
 import {search, SEARCH_ENGINE_HEADER} from 'models/search/resources'
 import * as viewsConfig from 'config/views'
-import {BASE_VIEW_ID} from 'constants/view'
 import {OrderDirection, ApiListResponsePagination} from 'models/api/types'
 import {Job, JobType} from 'models/job/types'
 import {Ticket} from 'models/ticket/types'
@@ -765,21 +764,10 @@ export const fetchActiveViewTickets =
         getState: () => RootState
     ): Maybe<Promise<ReturnType<StoreDispatch>>> => {
         const state = getState()
-        const viewsState = viewsSelectors.getViewsState(state)
-        const activeView = viewsSelectors.getActiveView(state)
-        const isFetchingView =
-            viewsSelectors.isLoading('fetchList')(state) ||
-            viewsSelectors.isLoading('fetchListDiscreet')(state)
-        const isEditing = activeView.get('editMode') || false
+        const shouldFetchActiveViewTickets =
+            viewsSelectors.shouldFetchActiveViewTickets(state)
 
-        const shouldUpdateView =
-            activeView.get('id') !== BASE_VIEW_ID &&
-            isCurrentlyOnView(activeView.get('id'), viewsState) &&
-            viewsSelectors.isOnFirstPage(state)
-
-        if (!shouldUpdateView || isFetchingView || isEditing) {
-            return
-        }
+        if (!shouldFetchActiveViewTickets) return
         return dispatch(fetchViewItems(null, null, true))
     }
 

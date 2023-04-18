@@ -2,6 +2,11 @@ import {fromJS, List, Map, Seq} from 'immutable'
 import moment from 'moment'
 import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
+import _isObject from 'lodash/isObject'
+import _isString from 'lodash/isString'
+import _isNumber from 'lodash/isNumber'
+import {BaseCallExpression, BaseNode} from 'estree'
+import {Syntax} from 'esprima'
 
 import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 import {UserRole} from '../../config/types/user'
@@ -152,7 +157,7 @@ function setIn(
 }
 
 // Get a node (CallExpression)
-function getIn(
+export function getIn(
     ast: Map<any, any>,
     index: number,
     path: Array<string | number>
@@ -459,4 +464,69 @@ export function isViewSharedWithUser(
         (isViewShared && (isAgent || isSharedWithUser || isSharedWithTeam)) ||
         (isViewPrivate && isSharedWithUser)
     )
+}
+
+export function getViewFilters(node: BaseNode = {} as BaseNode) {
+    const findCallExpressions = (nodeObj: BaseNode): BaseCallExpression[] =>
+        Object.entries(nodeObj).reduce(
+            (acc, [key, value]) =>
+                key === 'arguments'
+                    ? acc.concat(nodeObj as BaseCallExpression)
+                    : _isObject(value)
+                    ? acc.concat(findCallExpressions(value as BaseNode))
+                    : acc,
+            [] as BaseCallExpression[]
+        )
+
+    const callExpressions = findCallExpressions(node)
+
+    const args = callExpressions.reduce((acc, expression) => {
+        const [firstExpression, secondExpression] = expression.arguments
+
+        if (!firstExpression || !secondExpression) return acc
+
+        if (
+            firstExpression.type === Syntax.MemberExpression &&
+            (secondExpression.type === Syntax.Literal ||
+                secondExpression.type === Syntax.ArrayExpression)
+        ) {
+            // first check is for composite fields - e.g. ticket.integration.id
+            const objectName =
+                firstExpression.object.type === Syntax.MemberExpression &&
+                firstExpression.object.object.type === Syntax.Identifier &&
+                firstExpression.object.property.type === Syntax.Identifier
+                    ? `${firstExpression.object.object.name}.${firstExpression.object.property.name}`
+                    : firstExpression.object.type === Syntax.Identifier
+                    ? `${firstExpression.object.name}`
+                    : ''
+
+            const fieldName = `${objectName}.${
+                firstExpression.property.type === Syntax.Identifier
+                    ? firstExpression.property.name
+                    : ''
+            }`
+
+            const fieldValue =
+                (secondExpression.type === Syntax.Literal &&
+                    secondExpression.value) ||
+                (secondExpression.type === Syntax.ArrayExpression &&
+                    secondExpression.elements.map(
+                        (element) => 'value' in element && element.value
+                    ))
+
+            return acc.concat({
+                left: fieldName,
+                right:
+                    _isString(fieldValue) || _isNumber(fieldValue)
+                        ? fieldValue
+                        : JSON.stringify(fieldValue),
+                operator:
+                    'name' in expression.callee ? expression.callee.name : '',
+            })
+        }
+
+        return acc
+    }, [] as ViewFilter[])
+
+    return args
 }

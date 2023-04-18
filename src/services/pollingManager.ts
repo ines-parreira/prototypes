@@ -47,6 +47,11 @@ class PollingManager {
         )
     }
 
+    stopRecentViewCountsInterval = () => {
+        !!this.intervals.recentViewsCounts &&
+            this._stopInterval('recentViewsCounts')
+    }
+
     _stopInterval = (interval: keyof PollingManager['intervals']) => {
         clearInterval(this.intervals[interval])
         delete this.intervals[interval]

@@ -32,4 +32,5 @@ export enum FeatureFlagKey {
     DecoupleContactForm = 'decouple-contact-form',
     FlowsBeta = 'flows-beta',
     SpotlightRecentItems = 'spotlight-recent-items',
+    ContinuousChatViewsPolling = 'continuous-chat-views-polling',
 }

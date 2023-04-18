@@ -1,8 +1,10 @@
 import moment from 'moment'
 import {fromJS} from 'immutable'
 
+import {CollectionOperator, EqualityOperator} from 'state/rules/types'
+import {getAST} from 'utils'
+
 import * as utils from '../utils'
-import {getAST} from '../../../utils'
 
 describe('utils', () => {
     describe('RecentViewStorage', () => {
@@ -309,6 +311,53 @@ describe('utils', () => {
         it('should stringify numbers', () => {
             expect(utils.rawify(111)).toEqual('111')
             expect(utils.rawify(100.1)).toEqual('100.1')
+        })
+    })
+
+    describe('getViewFilters', () => {
+        it('should return empty array when no filters are provided', () => {
+            const ast = getAST('and()')
+            expect(utils.getViewFilters(ast)).toEqual([])
+        })
+
+        it('should return empty array when no usable arguments are provided', () => {
+            const ast = getAST('and(42)')
+            expect(utils.getViewFilters(ast)).toEqual([])
+        })
+
+        it('should return filter arguments when filter value is expressed as a Litteral', () => {
+            const ast = getAST("eq(ticket.channel, 'chat')")
+            expect(utils.getViewFilters(ast)).toEqual([
+                {
+                    left: 'ticket.channel',
+                    operator: EqualityOperator.Eq,
+                    right: 'chat',
+                },
+            ])
+        })
+
+        it('should return filter arguments when filter field is a composite', () => {
+            const ast = getAST('eq(ticket.integration.id, 1)')
+            expect(utils.getViewFilters(ast)).toEqual([
+                {
+                    left: 'ticket.integration.id',
+                    operator: EqualityOperator.Eq,
+                    right: 1,
+                },
+            ])
+        })
+
+        it('should return filter arguments when filter value is expressed as an ArrayExpression', () => {
+            const ast = getAST(
+                "containsAny(ticket.channel, ['email', 'phone'])"
+            )
+            expect(utils.getViewFilters(ast)).toEqual([
+                {
+                    left: 'ticket.channel',
+                    operator: CollectionOperator.ContainsAny,
+                    right: JSON.stringify(['email', 'phone']),
+                },
+            ])
         })
     })
 })
