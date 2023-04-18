@@ -260,7 +260,7 @@ const ManageTags = () => {
                             <Link to="/app/stats/tags">here</Link>.
                         </p>
                     </div>
-                    <Video videoId="MHwrVTk6SNQ" legend="Working with tags" />
+                    <Video youtubeId="MHwrVTk6SNQ" legend="Working with tags" />
                 </div>
             </Container>
 

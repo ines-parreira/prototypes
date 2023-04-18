@@ -17,6 +17,7 @@
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
+        background-color: @classic-main-primary-0;
     }
 
     h1 {
@@ -65,9 +66,11 @@
         width: 100%;
         padding: 30px;
         text-align: center;
-
-        a {
-            cursor: pointer;
+        background-color: @classic-main-primary-0;
+        .button {
+            &:hover {
+                background-color: @classic-neutral-grey-0;
+            }
         }
     }
 }

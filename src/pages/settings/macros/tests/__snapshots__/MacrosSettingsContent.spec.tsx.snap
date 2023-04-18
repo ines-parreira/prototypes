@@ -52,7 +52,7 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
     </div>
     <Video
       legend="Working with macros"
-      videoId="RevBOdLYeYo"
+      youtubeId="RevBOdLYeYo"
     />
   </Container>
   <Component

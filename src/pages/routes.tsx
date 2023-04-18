@@ -60,7 +60,7 @@ import APIView from './settings/api/APIView'
 import SettingsNavbar from './settings/common/SettingsNavbar'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
-import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer'
+import OnboardingSidePanel from './tickets/list/OnboardingSidePanel'
 import withUserRoleRequired from './common/utils/withUserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCard'
@@ -169,7 +169,7 @@ export function AppRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer as any,
+                    infobar: OnboardingSidePanel as any,
                 })}
             />
             <Route path={`${path}/customers`} render={CustomersRoutes} />
@@ -406,7 +406,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer,
+                    infobar: OnboardingSidePanel,
                 })}
             />
             <Route
@@ -415,7 +415,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer,
+                    infobar: OnboardingSidePanel,
                 })}
             />
             <Route
@@ -424,7 +424,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer,
+                    infobar: OnboardingSidePanel,
                 })}
             />
             <Route
@@ -433,7 +433,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer,
+                    infobar: OnboardingSidePanel,
                 })}
             />
         </Switch>

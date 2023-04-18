@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Video component should render with default videoPreviewIndex 1`] = `
+exports[`Video component should render with default youtubePreviewIndex 1`] = `
 <div>
   <div>
     <div
@@ -39,7 +39,7 @@ exports[`Video component should render with default videoPreviewIndex 1`] = `
 </div>
 `;
 
-exports[`Video component should render with passed videoPreviewIndex 1`] = `
+exports[`Video component should render with passed youtubePreviewIndex 1`] = `
 <div>
   <div>
     <div

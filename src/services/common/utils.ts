@@ -60,10 +60,10 @@ export function isLocalStorageAvailable() {
     }
 }
 
-export function tryLocalStorage(fn: (arg?: any) => any) {
+export function tryLocalStorage(fn: (arg?: any) => any): any {
     if (isLocalStorageAvailable()) {
         try {
-            fn()
+            return fn()
         } catch (e) {
             if (!(e instanceof DOMException && isQuotaExceededError(e))) {
                 throw e

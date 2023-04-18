@@ -169,7 +169,7 @@ export function RulesList() {
                     </div>
                     <div className="d-flex">
                         <Video
-                            videoId="HFylY2x3T_Y"
+                            youtubeId="HFylY2x3T_Y"
                             legend="Working with rules"
                         />
                         <CourseCard />

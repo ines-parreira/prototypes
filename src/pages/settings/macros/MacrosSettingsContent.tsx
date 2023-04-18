@@ -159,7 +159,7 @@ export function MacrosSettingsContentContainer({
                         </p>
                     </div>
                 </div>
-                <Video videoId="RevBOdLYeYo" legend="Working with macros" />
+                <Video youtubeId="RevBOdLYeYo" legend="Working with macros" />
             </Container>
 
             <MacrosSettingsTable
