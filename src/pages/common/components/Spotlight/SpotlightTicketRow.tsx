@@ -28,6 +28,16 @@ export type PickedTicket = Pick<Ticket, typeof pickedTicketFields[number]> & {
     customer: Pick<Customer, 'id' | 'name' | 'email'>
 }
 
+type SpotlightTicketRowProps = {
+    item: Ticket | PickedTicket
+    onCloseModal: () => void
+    id: number
+    index: number
+    onHover?: ComponentProps<typeof SpotlightRow>['onHover']
+    selected?: boolean
+    onClick: () => void
+}
+
 const SpotlightTicketRow = ({
     item,
     onCloseModal,
@@ -35,14 +45,8 @@ const SpotlightTicketRow = ({
     index,
     onHover,
     selected,
-}: {
-    item: Ticket | PickedTicket
-    onCloseModal: () => void
-    id: number
-    index: number
-    onHover?: ComponentProps<typeof SpotlightRow>['onHover']
-    selected?: boolean
-}) => (
+    onClick,
+}: SpotlightTicketRowProps) => (
     <SpotlightRow
         id={id}
         index={index}
@@ -66,6 +70,7 @@ const SpotlightTicketRow = ({
         onCloseModal={onCloseModal}
         onHover={onHover}
         selected={selected}
+        onClick={onClick}
     />
 )
 

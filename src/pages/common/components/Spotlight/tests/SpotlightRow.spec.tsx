@@ -53,6 +53,15 @@ describe('<SpotlightRow/>', () => {
         })
     })
 
+    it('should call the onClick prop when user clicks on the row', () => {
+        const mockOnClick = jest.fn()
+        const {container} = render(
+            <SpotlightRow {...minProps} onClick={mockOnClick} />
+        )
+        userEvent.click(container.firstChild! as Element)
+        expect(mockOnClick).toHaveBeenCalled()
+    })
+
     it('should close modal on click if user is not pressing on ctrl / cmd', () => {
         const {container} = render(<SpotlightRow {...minProps} />)
         userEvent.click(container.firstChild! as Element)

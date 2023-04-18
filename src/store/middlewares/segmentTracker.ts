@@ -271,6 +271,7 @@ export enum SegmentEvent {
     GlobalSearchAdvancedShortcut = 'search-advanced-shortcut',
     GlobalSearchTicketTabClick = 'ticket-tab-click',
     GlobalSearchCustomerTabClick = 'customer-tab-click',
+    RecentItemAccessed = 'recent-item-accessed',
 }
 
 export enum StatViewLinkClickedStat {

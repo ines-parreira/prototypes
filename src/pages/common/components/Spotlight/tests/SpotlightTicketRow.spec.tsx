@@ -4,22 +4,28 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
+import userEvent from '@testing-library/user-event'
 
 import {TicketStatus} from 'business/types/ticket'
 import {ticket} from 'fixtures/ticket'
 import {agents} from 'fixtures/agents'
+import {user} from 'fixtures/users'
 
 import SpotlightTicketRow from '../SpotlightTicketRow'
 
 const mockStore = configureMockStore([thunk])
 
-const WrappedSpotlightTicketIcon = (
+const WrappedSpotlightTicketRow = (
     props: ComponentProps<typeof SpotlightTicketRow>
 ) => (
-    <Provider store={mockStore({agents: fromJS(agents)})}>
+    <Provider
+        store={mockStore({agents: fromJS(agents), currentUser: fromJS(user)})}
+    >
         <SpotlightTicketRow {...props} />
     </Provider>
 )
+
+const mockOnClick = jest.fn()
 
 describe('<SpotlightTicketRow/>', () => {
     const defaultProps: ComponentProps<typeof SpotlightTicketRow> = {
@@ -27,6 +33,7 @@ describe('<SpotlightTicketRow/>', () => {
         onCloseModal: jest.fn(),
         id: 1,
         index: 1,
+        onClick: mockOnClick,
     }
 
     afterEach(() => {
@@ -35,7 +42,7 @@ describe('<SpotlightTicketRow/>', () => {
 
     it('should render ticket information', () => {
         const {container} = render(
-            <WrappedSpotlightTicketIcon {...defaultProps} />
+            <WrappedSpotlightTicketRow {...defaultProps} />
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -43,7 +50,7 @@ describe('<SpotlightTicketRow/>', () => {
 
     it('should render closed icon', () => {
         const {container} = render(
-            <WrappedSpotlightTicketIcon
+            <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={{...ticket, status: TicketStatus.Closed}}
             />
@@ -55,7 +62,7 @@ describe('<SpotlightTicketRow/>', () => {
     it('should render the open ticket info tooltip on hover', () => {
         jest.useFakeTimers()
         const {getByText, getByRole} = render(
-            <WrappedSpotlightTicketIcon {...defaultProps} />
+            <WrappedSpotlightTicketRow {...defaultProps} />
         )
 
         fireEvent.mouseOver(getByText('email'))
@@ -66,7 +73,7 @@ describe('<SpotlightTicketRow/>', () => {
     it('should render the closed ticket info tooltip on hover', () => {
         jest.useFakeTimers()
         const {getByText, getByRole} = render(
-            <WrappedSpotlightTicketIcon
+            <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={{...ticket, status: TicketStatus.Closed}}
             />
@@ -79,7 +86,7 @@ describe('<SpotlightTicketRow/>', () => {
 
     it('should render without customer name', () => {
         const {container} = render(
-            <WrappedSpotlightTicketIcon
+            <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={{...ticket, customer: {...ticket.customer, name: null}}}
             />
@@ -90,7 +97,7 @@ describe('<SpotlightTicketRow/>', () => {
 
     it('should render without customer name and without email', () => {
         const {container} = render(
-            <WrappedSpotlightTicketIcon
+            <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={{
                     ...ticket,
@@ -108,7 +115,7 @@ describe('<SpotlightTicketRow/>', () => {
         )
 
         const {container} = render(
-            <WrappedSpotlightTicketIcon {...defaultProps} />
+            <WrappedSpotlightTicketRow {...defaultProps} />
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -122,12 +129,20 @@ describe('<SpotlightTicketRow/>', () => {
         )
 
         const {container} = render(
-            <WrappedSpotlightTicketIcon
+            <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={{...ticket, created_datetime: mockPastDate}}
             />
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should call onClick when ticket row is clicked', () => {
+        const {container} = render(
+            <WrappedSpotlightTicketRow {...defaultProps} />
+        )
+        userEvent.click(container.firstChild! as Element)
+        expect(mockOnClick).toHaveBeenCalled()
     })
 })

@@ -19,6 +19,7 @@ type SpotlightRowProps = {
     shrinkInfo?: boolean
     id: number
     index: number
+    onClick?: (e: MouseEvent) => void
 }
 
 const SpotlightRow = ({
@@ -32,10 +33,12 @@ const SpotlightRow = ({
     shrinkInfo = false,
     id,
     index,
+    onClick,
 }: SpotlightRowProps) => {
     const searchRank = useContext(SearchRankScenarioContext)
 
     const handleClick = (e: MouseEvent) => {
+        onClick?.(e)
         searchRank?.registerResultSelection({id, index})
         if (isMacOs ? !e.metaKey : !e.ctrlKey) {
             onCloseModal()

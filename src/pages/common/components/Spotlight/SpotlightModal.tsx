@@ -36,10 +36,12 @@ import {ApiListResponsePagination, CursorMeta} from 'models/api/types'
 import {Ticket} from 'models/ticket/types'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {RecentItems} from 'hooks/useRecentItems/constants'
 import {notify} from 'state/notifications/actions'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {NotificationStatus} from 'state/notifications/types'
 import {Customer} from 'models/customer/types'
 import history from 'pages/history'
@@ -87,6 +89,8 @@ const searchRankScenarioSource = {
 const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const {pathname} = useLocation()
     const dispatch = useAppDispatch()
+    const currentUser = useAppSelector(getCurrentUser)
+
     const virtuosoRef = useRef<VirtuosoHandle>(null)
     const modalBodyRef = useRef<HTMLDivElement>(null)
     const spotlightSearchInputRef = useRef<HTMLInputElement>(null)
@@ -412,6 +416,11 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
             nextIndex()
         } else if (event.key === 'Enter') {
             if (selectedItemUrl) {
+                logRecentlyAccessedSegmentEvent(
+                    searchItemsType === ViewType.CustomerList
+                        ? 'spotlight-customer'
+                        : 'spotlight-ticket'
+                )
                 if ((isMacOs && event.metaKey) || (!isMacOs && event.ctrlKey)) {
                     window.open(selectedItemUrl, '_blank', 'noopener')
                     return
@@ -525,6 +534,18 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         await fetchMoreSearchItems(searchQuery!, searchItemsType, nextCursor)
     }, [fetchMoreSearchItems, searchQuery, searchItemsType, nextCursor])
 
+    const logRecentlyAccessedSegmentEvent = useCallback(
+        (type: 'spotlight-ticket' | 'spotlight-customer') => {
+            if (!hasSearched) {
+                logEvent(SegmentEvent.RecentItemAccessed, {
+                    type,
+                    user_id: currentUser.get('id'),
+                })
+            }
+        },
+        [hasSearched, currentUser]
+    )
+
     const modalContent = useMemo(() => {
         if (isLoading) {
             return <SpotlightLoader className={css.loader} />
@@ -606,6 +627,11 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                                     onCloseModal={onCloseModal}
                                     onHover={handleHover}
                                     selected={index === selectedIndex}
+                                    onClick={() => {
+                                        logRecentlyAccessedSegmentEvent(
+                                            'spotlight-ticket'
+                                        )
+                                    }}
                                 />
                             )
                         } else if (searchItemsType === ViewType.CustomerList) {
@@ -617,6 +643,11 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                                     onCloseModal={onCloseModal}
                                     onHover={handleHover}
                                     selected={index === selectedIndex}
+                                    onClick={() => {
+                                        logRecentlyAccessedSegmentEvent(
+                                            'spotlight-customer'
+                                        )
+                                    }}
                                 />
                             )
                         }
@@ -644,6 +675,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         selectedIndex,
         hasSearched,
         areRecentItemsEnabled,
+        logRecentlyAccessedSegmentEvent,
     ])
 
     const isFooterClean = useMemo(() => {

@@ -9,6 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {createBrowserHistory} from 'history'
 import MockAdapter from 'axios-mock-adapter'
+import {fromJS} from 'immutable'
 
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
@@ -17,6 +18,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import client from 'models/api/resources'
 import {assumeMock, flushPromises, renderWithRouter} from 'utils/testing'
 import {ticket} from 'fixtures/ticket'
+import {user} from 'fixtures/users'
 import history from 'pages/history'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {customer} from 'fixtures/customer'
@@ -26,6 +28,8 @@ import {SearchEngine} from 'models/search/types'
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 
 import SpotlightModal from '../SpotlightModal'
+import SpotlightTicketRow from '../SpotlightTicketRow'
+import SpotlightCustomerRow from '../SpotlightCustomerRow'
 
 jest.mock('pages/history')
 jest.mock('state/notifications/actions')
@@ -34,13 +38,18 @@ jest.mock('pages/common/components/Spotlight/SpotlightLoader', () => () => (
     <div>SpotlightLoader</div>
 ))
 
-jest.mock('pages/common/components/Spotlight/SpotlightTicketRow', () => () => (
-    <div>SpotlightTicketRow</div>
-))
+jest.mock(
+    'pages/common/components/Spotlight/SpotlightTicketRow',
+    () =>
+        ({onClick}: ComponentProps<typeof SpotlightTicketRow>) =>
+            <div onClick={onClick}>SpotlightTicketRow</div>
+)
 
 jest.mock(
     'pages/common/components/Spotlight/SpotlightCustomerRow',
-    () => () => <div>SpotlightCustomerRow</div>
+    () =>
+        ({onClick}: ComponentProps<typeof SpotlightCustomerRow>) =>
+            <div onClick={onClick}>SpotlightCustomerRow</div>
 )
 
 jest.spyOn(ReactDOM, 'createPortal').mockImplementation(
@@ -63,7 +72,7 @@ const mockStore = configureMockStore([thunk])
 const WrappedSpotlightModal = (
     props: ComponentProps<typeof SpotlightModal>
 ) => (
-    <Provider store={mockStore()}>
+    <Provider store={mockStore({currentUser: fromJS(user)})}>
         <SpotlightModal {...props} />
     </Provider>
 )
@@ -843,4 +852,41 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
         expect(queryByText('No recent results')).toEqual(null)
     })
+
+    it.each([
+        ['Tickets', ticket, 'SpotlightTicketRow', 'spotlight-ticket'],
+        ['Customers', customer, 'SpotlightCustomerRow', 'spotlight-customer'],
+    ])(
+        'should log segment event when a recent %s row is clicked',
+        async (name, item, componentName, segmentType) => {
+            mockUseRecentItems.mockReturnValue({
+                items: [item],
+                setRecentItem: jest.fn() as any,
+                isGettingItems: false,
+            })
+
+            const {rerender, getByText} = renderWithRouter(
+                <WrappedSpotlightModal {...minProps} />
+            )
+            await act(flushPromises)
+            rerender(<WrappedSpotlightModal {...minProps} />)
+
+            const tab = getByText(name)
+            tab.parentElement!.focus()
+
+            userEvent.click(getByText(componentName))
+            expect(logEventMock).toHaveBeenNthCalledWith(
+                2,
+                SegmentEvent.RecentItemAccessed,
+                {type: segmentType, user_id: user.id}
+            )
+
+            await userEvent.type(getByText(componentName), '{enter}')
+            expect(logEventMock).toHaveBeenNthCalledWith(
+                3,
+                SegmentEvent.RecentItemAccessed,
+                {type: segmentType, user_id: user.id}
+            )
+        }
+    )
 })
