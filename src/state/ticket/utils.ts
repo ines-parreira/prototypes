@@ -41,7 +41,7 @@ import {EMPTY_SENDER} from './constants'
 import {TicketState} from './types'
 
 export type Receiver = {
-    name: string
+    name: string | null
     address: string
     value?: string
     id?: number
@@ -1029,7 +1029,8 @@ export function isReceiver(receiver: unknown): receiver is Receiver {
         typeof receiver === 'object' &&
         receiver !== null &&
         'name' in receiver &&
-        typeof (receiver as Receiver).name === 'string' &&
+        (typeof (receiver as Receiver).name === 'string' ||
+            (receiver as Receiver).name === null) &&
         'address' in receiver &&
         typeof (receiver as Receiver).address === 'string'
     )

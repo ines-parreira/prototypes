@@ -320,6 +320,47 @@ describe('ticket utils', () => {
             })
         })
 
+        it('guess receivers with source.from.name set to null in chat tickets', () => {
+            const updatedCustomer = {
+                name: 'Patrick',
+                channels: [
+                    {
+                        address: '0987654321',
+                        id: 7,
+                        preferred: true,
+                        type: 'chat',
+                    },
+                    {
+                        address: '1234567890',
+                        id: 8,
+                        preferred: false,
+                        type: 'chat',
+                    },
+                ],
+            }
+            const updatedTicket = fromJS({
+                customer: updatedCustomer,
+                messages: [
+                    {
+                        from_agent: false,
+                        source: {
+                            type: 'chat',
+                            to: [{name: '', address: ''}],
+                            from: {name: null, address: '1234567890'},
+                        },
+                    },
+                ],
+            }) as Map<any, any>
+            const receivers = guessReceiversFromTicket(
+                updatedTicket,
+                TicketMessageSourceType.Chat
+            )
+
+            expect(receivers).toEqual({
+                to: [{name: null, address: '1234567890'}],
+            })
+        })
+
         it('guess receivers chat inverted', () => {
             // invert from_agent property
             const updatedTicket = ticket.setIn(

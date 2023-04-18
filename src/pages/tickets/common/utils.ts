@@ -14,7 +14,7 @@ import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
  * @returns {string|*} the label of the given person
  */
 type Person = {
-    name: string
+    name: string | null
     address?: string
 }
 export function getPersonLabelFromSource(

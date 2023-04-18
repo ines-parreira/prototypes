@@ -58,15 +58,19 @@ const MacroReplyActionRecipient: React.FC<MacroReplyActionRecipientProps> = ({
 
     const onReceiversChange = useCallback(
         (receivers: Receiver[]) => {
-            const receiverNames = receivers
-                .filter(({name}) => name)
-                .reduce<Record<string, string>>(
-                    (previous, {address, name}) => ({
-                        ...previous,
-                        [address]: name,
-                    }),
-                    {}
-                )
+            const receiversWithName = receivers.filter(
+                (receiver): receiver is Receiver & {name: string} =>
+                    !!receiver.name
+            )
+            const receiverNames = receiversWithName.reduce<
+                Record<string, string>
+            >(
+                (previous, {address, name}) => ({
+                    ...previous,
+                    [address]: name,
+                }),
+                {}
+            )
 
             setReceiverNames(receiverNames)
 
