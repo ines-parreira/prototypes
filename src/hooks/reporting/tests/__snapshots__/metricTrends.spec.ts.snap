@@ -22,14 +22,14 @@ exports[`metric trends useClosedTicketsTrend should create reporting filters 1`]
       "member": "TicketState.periodStart",
       "operator": "afterDate",
       "values": [
-        "2021-05-29T00:00:00+02:00",
+        "2021-05-29T00:00:00.000",
       ],
     },
     {
       "member": "TicketState.periodEnd",
       "operator": "beforeDate",
       "values": [
-        "2021-06-04T23:59:59+02:00",
+        "2021-06-04T23:59:59.000",
       ],
     },
     {
@@ -61,6 +61,7 @@ exports[`metric trends useClosedTicketsTrend should create reporting filters 1`]
   "segments": [
     "TicketState.closedTickets",
   ],
+  "timezone": "UTC",
 }
 `;
 
@@ -72,14 +73,14 @@ exports[`metric trends useCustomerSatisfactionTrend should create reporting filt
       "member": "TicketState.periodStart",
       "operator": "afterDate",
       "values": [
-        "2021-05-29T00:00:00+02:00",
+        "2021-05-29T00:00:00.000",
       ],
     },
     {
       "member": "TicketState.periodEnd",
       "operator": "beforeDate",
       "values": [
-        "2021-06-04T23:59:59+02:00",
+        "2021-06-04T23:59:59.000",
       ],
     },
     {
@@ -111,6 +112,7 @@ exports[`metric trends useCustomerSatisfactionTrend should create reporting filt
   "segments": [
     "TicketState.surveyScored",
   ],
+  "timezone": "UTC",
 }
 `;
 
@@ -151,14 +153,14 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
       "member": "TicketState.periodStart",
       "operator": "afterDate",
       "values": [
-        "2021-05-29T00:00:00+02:00",
+        "2021-05-29T00:00:00.000",
       ],
     },
     {
       "member": "TicketState.periodEnd",
       "operator": "beforeDate",
       "values": [
-        "2021-06-04T23:59:59+02:00",
+        "2021-06-04T23:59:59.000",
       ],
     },
     {
@@ -183,6 +185,7 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
   "segments": [
     "TicketState.conversationStarted",
   ],
+  "timezone": "UTC",
 }
 `;
 
@@ -194,14 +197,14 @@ exports[`metric trends useMessagesPerTicketTrend should create reporting filters
       "member": "TicketState.periodStart",
       "operator": "afterDate",
       "values": [
-        "2021-05-29T00:00:00+02:00",
+        "2021-05-29T00:00:00.000",
       ],
     },
     {
       "member": "TicketState.periodEnd",
       "operator": "beforeDate",
       "values": [
-        "2021-06-04T23:59:59+02:00",
+        "2021-06-04T23:59:59.000",
       ],
     },
     {
@@ -234,6 +237,7 @@ exports[`metric trends useMessagesPerTicketTrend should create reporting filters
     "TicketState.closedTickets",
     "TicketState.conversationStarted",
   ],
+  "timezone": "UTC",
 }
 `;
 
@@ -245,14 +249,14 @@ exports[`metric trends useMessagesSentTrend should create reporting filters 1`] 
       "member": "MessageState.periodStart",
       "operator": "afterDate",
       "values": [
-        "2021-05-29T00:00:00+02:00",
+        "2021-05-29T00:00:00.000",
       ],
     },
     {
       "member": "MessageState.periodEnd",
       "operator": "beforeDate",
       "values": [
-        "2021-06-04T23:59:59+02:00",
+        "2021-06-04T23:59:59.000",
       ],
     },
     {
@@ -281,6 +285,7 @@ exports[`metric trends useMessagesSentTrend should create reporting filters 1`] 
   "measures": [
     "MessageState.messageCount",
   ],
+  "timezone": "UTC",
 }
 `;
 
@@ -292,14 +297,14 @@ exports[`metric trends useResolutionTimeTrend should create reporting filters 1`
       "member": "TicketState.periodStart",
       "operator": "afterDate",
       "values": [
-        "2021-05-29T00:00:00+02:00",
+        "2021-05-29T00:00:00.000",
       ],
     },
     {
       "member": "TicketState.periodEnd",
       "operator": "beforeDate",
       "values": [
-        "2021-06-04T23:59:59+02:00",
+        "2021-06-04T23:59:59.000",
       ],
     },
     {
@@ -332,6 +337,7 @@ exports[`metric trends useResolutionTimeTrend should create reporting filters 1`
     "TicketState.closedTickets",
     "TicketState.conversationStarted",
   ],
+  "timezone": "UTC",
 }
 `;
 
@@ -357,14 +363,14 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
       "member": "TicketState.periodStart",
       "operator": "afterDate",
       "values": [
-        "2021-05-29T00:00:00+02:00",
+        "2021-05-29T00:00:00.000",
       ],
     },
     {
       "member": "TicketState.periodEnd",
       "operator": "beforeDate",
       "values": [
-        "2021-06-04T23:59:59+02:00",
+        "2021-06-04T23:59:59.000",
       ],
     },
     {
@@ -393,6 +399,7 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
   "measures": [
     "TicketState.ticketCount",
   ],
+  "timezone": "UTC",
 }
 `;
 
@@ -404,14 +411,14 @@ exports[`metric trends useTicketsRepliedTrend should create reporting filters 1`
       "member": "MessageState.periodStart",
       "operator": "afterDate",
       "values": [
-        "2021-05-29T00:00:00+02:00",
+        "2021-05-29T00:00:00.000",
       ],
     },
     {
       "member": "MessageState.periodEnd",
       "operator": "beforeDate",
       "values": [
-        "2021-06-04T23:59:59+02:00",
+        "2021-06-04T23:59:59.000",
       ],
     },
     {
@@ -440,5 +447,6 @@ exports[`metric trends useTicketsRepliedTrend should create reporting filters 1`
   "measures": [
     "MessageState.ticketCount",
   ],
+  "timezone": "UTC",
 }
 `;

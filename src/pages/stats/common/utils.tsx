@@ -1,8 +1,8 @@
 import {useContext, useMemo} from 'react'
 import moment, {Moment} from 'moment'
 import _isNumber from 'lodash/isNumber'
-
 import {findKey} from 'lodash'
+
 import useAppSelector from 'hooks/useAppSelector'
 import {ViewFilter} from 'state/views/types'
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
@@ -13,9 +13,10 @@ import {
     EqualityOperator,
 } from 'state/rules/types'
 import {RootState} from 'state/types'
-
+import {ReportingGranularity} from 'models/reporting/types'
 import {TicketChannel} from 'business/types/ticket'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
+
 import StatsFiltersContext from '../StatsFiltersContext'
 
 export const DEFAULT_LOCALE = 'en-US'
@@ -219,4 +220,15 @@ export const formatMetricTrend = (
     }
 
     return sign + formattedDiff
+}
+
+export const formatTimeSeriesDate = (
+    date: string,
+    granularity: ReportingGranularity
+) => {
+    let format = 'MMM Do'
+    if (granularity === 'hour') {
+        format = 'LT'
+    }
+    return moment(date).format(format)
 }

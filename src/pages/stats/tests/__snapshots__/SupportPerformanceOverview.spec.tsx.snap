@@ -1594,6 +1594,13 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
           </div>
         </div>
       </div>
+      <div
+        class="pageFooter caption-regular"
+      >
+        Analytics are in 
+        UTC
+         time
+      </div>
     </div>
   </div>
 </div>

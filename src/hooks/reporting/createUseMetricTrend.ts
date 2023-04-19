@@ -17,14 +17,17 @@ const getPreviousPeriod = (
 }
 
 export default function createUseMetricTrend(
-    queryFactory: (filters: StatsFilters) => ReportingQuery
+    queryFactory: (filters: StatsFilters, timezone: string) => ReportingQuery
 ) {
-    return (statsFilters: StatsFilters): MetricTrend => {
-        const currentPeriodQuery = queryFactory(statsFilters)
-        const prevPeriodQuery = queryFactory({
-            ...statsFilters,
-            period: getPreviousPeriod(statsFilters.period),
-        })
+    return (statsFilters: StatsFilters, timezone: string): MetricTrend => {
+        const currentPeriodQuery = queryFactory(statsFilters, timezone)
+        const prevPeriodQuery = queryFactory(
+            {
+                ...statsFilters,
+                period: getPreviousPeriod(statsFilters.period),
+            },
+            timezone
+        )
         return useMetricTrend(currentPeriodQuery, prevPeriodQuery)
     }
 }

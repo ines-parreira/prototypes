@@ -1,0 +1,300 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`time series useMessagesSentTimeSeries should create reporting filters 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "MessageState.periodStart",
+        "operator": "afterDate",
+        "values": [
+          "2021-05-29T00:00:00.000",
+        ],
+      },
+      {
+        "member": "MessageState.periodEnd",
+        "operator": "beforeDate",
+        "values": [
+          "2021-06-04T23:59:59.000",
+        ],
+      },
+      {
+        "member": "MessageState.integration",
+        "operator": "equals",
+        "values": [
+          "1",
+        ],
+      },
+      {
+        "member": "MessageState.channel",
+        "operator": "equals",
+        "values": [
+          "email",
+          "chat",
+        ],
+      },
+      {
+        "member": "MessageState.assigneeUserId",
+        "operator": "equals",
+        "values": [
+          "2",
+        ],
+      },
+    ],
+    "measures": [
+      "MessageState.messageCount",
+    ],
+    "order": [
+      [
+        "MessageState.periodStart",
+        "asc",
+      ],
+    ],
+    "timeDimensions": [
+      {
+        "dateRange": [
+          "2021-05-29T00:00:00.000",
+          "2021-06-04T23:59:59.000",
+        ],
+        "dimension": "MessageState.periodStart",
+        "granularity": "week",
+      },
+    ],
+    "timezone": "America/Los_angeles",
+  },
+]
+`;
+
+exports[`time series useTicketsClosedTimeSeries should create reporting filters 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "TicketState.periodStart",
+        "operator": "afterDate",
+        "values": [
+          "2021-05-29T00:00:00.000",
+        ],
+      },
+      {
+        "member": "TicketState.periodEnd",
+        "operator": "beforeDate",
+        "values": [
+          "2021-06-04T23:59:59.000",
+        ],
+      },
+      {
+        "member": "TicketState.integration",
+        "operator": "equals",
+        "values": [
+          "1",
+        ],
+      },
+      {
+        "member": "TicketState.channel",
+        "operator": "equals",
+        "values": [
+          "email",
+          "chat",
+        ],
+      },
+      {
+        "member": "TicketState.assigneeUserId",
+        "operator": "equals",
+        "values": [
+          "2",
+        ],
+      },
+      {
+        "member": "TicketState.isTrashed",
+        "operator": "equals",
+        "values": [
+          "0",
+        ],
+      },
+      {
+        "member": "TicketState.isSpam",
+        "operator": "equals",
+        "values": [
+          "0",
+        ],
+      },
+    ],
+    "measures": [
+      "TicketState.ticketCount",
+    ],
+    "order": [
+      [
+        "TicketState.closedDatetime",
+        "asc",
+      ],
+    ],
+    "segments": [
+      "TicketState.closedTickets",
+    ],
+    "timeDimensions": [
+      {
+        "dateRange": [
+          "2021-05-29T00:00:00.000",
+          "2021-06-04T23:59:59.000",
+        ],
+        "dimension": "TicketState.closedDatetime",
+        "granularity": "week",
+      },
+    ],
+    "timezone": "America/Los_angeles",
+  },
+]
+`;
+
+exports[`time series useTicketsCreatedTimeSeries should create reporting filters 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "TicketState.periodStart",
+        "operator": "afterDate",
+        "values": [
+          "2021-05-29T00:00:00.000",
+        ],
+      },
+      {
+        "member": "TicketState.periodEnd",
+        "operator": "beforeDate",
+        "values": [
+          "2021-06-04T23:59:59.000",
+        ],
+      },
+      {
+        "member": "TicketState.integration",
+        "operator": "equals",
+        "values": [
+          "1",
+        ],
+      },
+      {
+        "member": "TicketState.channel",
+        "operator": "equals",
+        "values": [
+          "email",
+          "chat",
+        ],
+      },
+      {
+        "member": "TicketState.assigneeUserId",
+        "operator": "equals",
+        "values": [
+          "2",
+        ],
+      },
+      {
+        "member": "TicketState.isTrashed",
+        "operator": "equals",
+        "values": [
+          "0",
+        ],
+      },
+      {
+        "member": "TicketState.isSpam",
+        "operator": "equals",
+        "values": [
+          "0",
+        ],
+      },
+    ],
+    "measures": [
+      "TicketState.ticketCount",
+    ],
+    "order": [
+      [
+        "TicketState.createdDatetime",
+        "asc",
+      ],
+    ],
+    "segments": [
+      "TicketState.conversationStarted",
+      "TicketState.closedTickets",
+    ],
+    "timeDimensions": [
+      {
+        "dateRange": [
+          "2021-05-29T00:00:00.000",
+          "2021-06-04T23:59:59.000",
+        ],
+        "dimension": "TicketState.createdDatetime",
+        "granularity": "week",
+      },
+    ],
+    "timezone": "America/Los_angeles",
+  },
+]
+`;
+
+exports[`time series useTicketsRepliedTimeSeries should create reporting filters 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "MessageState.periodStart",
+        "operator": "afterDate",
+        "values": [
+          "2021-05-29T00:00:00.000",
+        ],
+      },
+      {
+        "member": "MessageState.periodEnd",
+        "operator": "beforeDate",
+        "values": [
+          "2021-06-04T23:59:59.000",
+        ],
+      },
+      {
+        "member": "MessageState.integration",
+        "operator": "equals",
+        "values": [
+          "1",
+        ],
+      },
+      {
+        "member": "MessageState.channel",
+        "operator": "equals",
+        "values": [
+          "email",
+          "chat",
+        ],
+      },
+      {
+        "member": "MessageState.assigneeUserId",
+        "operator": "equals",
+        "values": [
+          "2",
+        ],
+      },
+    ],
+    "measures": [
+      "MessageState.ticketCount",
+    ],
+    "order": [
+      [
+        "MessageState.periodStart",
+        "asc",
+      ],
+    ],
+    "timeDimensions": [
+      {
+        "dateRange": [
+          "2021-05-29T00:00:00.000",
+          "2021-06-04T23:59:59.000",
+        ],
+        "dimension": "MessageState.periodStart",
+        "granularity": "week",
+      },
+    ],
+    "timezone": "America/Los_angeles",
+  },
+]
+`;

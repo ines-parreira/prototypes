@@ -1,9 +1,15 @@
+import moment, {Moment} from 'moment'
+
 import {
     ReportingFilter,
     ReportingFilterMember,
     ReportingFilterOperator,
+    ReportingGranularity,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+
+export const formatReportingQueryDate = (date: string | Moment) =>
+    moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')
 
 type CommonFilterMembers = {
     PeriodStart: string
@@ -22,12 +28,12 @@ export const statsFiltersToReportingFilters = (
         {
             member: members.PeriodStart as ReportingFilterMember,
             operator: ReportingFilterOperator.AfterDate,
-            values: [period.start_datetime],
+            values: [formatReportingQueryDate(period.start_datetime)],
         },
         {
             member: members.PeriodEnd as ReportingFilterMember,
             operator: ReportingFilterOperator.BeforeDate,
-            values: [period.end_datetime],
+            values: [formatReportingQueryDate(period.end_datetime)],
         },
     ]
     if (integrations?.length) {
@@ -54,4 +60,23 @@ export const statsFiltersToReportingFilters = (
         })
     }
     return filters
+}
+
+export const periodToReportingGranularity = (
+    period: StatsFilters['period']
+): ReportingGranularity => {
+    const start = moment(period.start_datetime)
+    const end = moment(period.end_datetime)
+    const diff = moment.duration(end.diff(start) + 1)
+
+    let granularity = ReportingGranularity.Hour
+    if (diff.asMonths() > 3) {
+        granularity = ReportingGranularity.Month
+    } else if (diff.asMonths() >= 1) {
+        granularity = ReportingGranularity.Week
+    } else if (diff.asDays() >= 1) {
+        granularity = ReportingGranularity.Day
+    }
+
+    return granularity
 }

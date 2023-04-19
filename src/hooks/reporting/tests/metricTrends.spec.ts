@@ -16,9 +16,14 @@ import {MetricTrend} from '../useMetricTrend'
 jest.mock(
     '../createUseMetricTrend',
     () =>
-        (queryCreator: (filters: StatsFilters) => MetricTrend) =>
-        (filters: StatsFilters) => {
-            return queryCreator(filters)
+        (
+            queryCreator: (
+                filters: StatsFilters,
+                timezone: string
+            ) => MetricTrend
+        ) =>
+        (filters: StatsFilters, timezone: string) => {
+            return queryCreator(filters, timezone)
         }
 )
 
@@ -35,16 +40,19 @@ describe('metric trends', () => {
     ])('%s', (testName, useTrendFn) => {
         it('should create reporting filters', () => {
             const {result} = renderHook(() =>
-                useTrendFn({
-                    period: {
-                        start_datetime: '2021-05-29T00:00:00+02:00',
-                        end_datetime: '2021-06-04T23:59:59+02:00',
+                useTrendFn(
+                    {
+                        period: {
+                            start_datetime: '2021-05-29T00:00:00+02:00',
+                            end_datetime: '2021-06-04T23:59:59+02:00',
+                        },
+                        channels: [TicketChannel.Email, TicketChannel.Chat],
+                        integrations: [1],
+                        agents: [2],
+                        tags: [1, 2],
                     },
-                    channels: [TicketChannel.Email, TicketChannel.Chat],
-                    integrations: [1],
-                    agents: [2],
-                    tags: [1, 2],
-                })
+                    'UTC'
+                )
             )
             expect(result.current).toMatchSnapshot()
         })

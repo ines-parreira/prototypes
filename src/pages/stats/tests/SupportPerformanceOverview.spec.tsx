@@ -26,6 +26,13 @@ import {
 } from 'hooks/reporting/metricTrends'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {assumeMock} from 'utils/testing'
+import {
+    useMessagesSentTimeSeries,
+    useTicketsClosedTimeSeries,
+    useTicketsCreatedTimeSeries,
+    useTicketsRepliedTimeSeries,
+} from 'hooks/reporting/timeSeries'
+import useTimeSeries from 'hooks/reporting/useTimeSeries'
 
 import SupportPerformanceOverview, {
     STATS_TIPS_VISIBILITY_KEY,
@@ -52,7 +59,13 @@ const useOpenTicketsTrendMock = assumeMock(useOpenTicketsTrend)
 const useClosedTicketsTrendMock = assumeMock(useClosedTicketsTrend)
 const useTicketsCreatedTrendMock = assumeMock(useTicketsCreatedTrend)
 const useTicketsRepliedTrendMock = assumeMock(useTicketsRepliedTrend)
-const messagesSentTrendMock = assumeMock(useMessagesSentTrend)
+const useMessagesSentTrendMock = assumeMock(useMessagesSentTrend)
+
+jest.mock('hooks/reporting/timeSeries')
+const useTicketsCreatedTimeSeriesMock = assumeMock(useTicketsCreatedTimeSeries)
+const useTicketsClosedTimeSeriesMock = assumeMock(useTicketsClosedTimeSeries)
+const useTicketsRepliedTimeSeriesMock = assumeMock(useTicketsRepliedTimeSeries)
+const useMessagesSentTimeSeriesMock = assumeMock(useMessagesSentTimeSeries)
 
 describe('<SupportPerformanceOverview />', () => {
     const defaultState = {
@@ -87,6 +100,17 @@ describe('<SupportPerformanceOverview />', () => {
         },
     }
 
+    const defaultTimeSeries = {
+        data: [
+            [
+                {
+                    dateTime: '2022-02-02T12:45:33.122',
+                    value: 23,
+                },
+            ],
+        ],
+    } as ReturnType<typeof useTimeSeries>
+
     beforeEach(() => {
         localStorage.clear()
         jest.resetAllMocks()
@@ -98,7 +122,11 @@ describe('<SupportPerformanceOverview />', () => {
         useClosedTicketsTrendMock.mockReturnValue(defaultMetricTrend)
         useTicketsCreatedTrendMock.mockReturnValue(defaultMetricTrend)
         useTicketsRepliedTrendMock.mockReturnValue(defaultMetricTrend)
-        messagesSentTrendMock.mockReturnValue(defaultMetricTrend)
+        useMessagesSentTrendMock.mockReturnValue(defaultMetricTrend)
+        useTicketsCreatedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useTicketsClosedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useTicketsRepliedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useMessagesSentTimeSeriesMock.mockReturnValue(defaultTimeSeries)
     })
 
     it('should render the page', () => {

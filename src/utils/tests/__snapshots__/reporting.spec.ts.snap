@@ -6,14 +6,14 @@ exports[`reporting utils statsFiltersToReportingFilters should convert StatsFilt
     "member": "TicketState.periodStart",
     "operator": "afterDate",
     "values": [
-      "2021-05-29T00:00:00+02:00",
+      "2021-05-29T00:00:00.000",
     ],
   },
   {
     "member": "TicketState.periodEnd",
     "operator": "beforeDate",
     "values": [
-      "2021-06-04T23:59:59+02:00",
+      "2021-06-04T23:59:59.000",
     ],
   },
   {

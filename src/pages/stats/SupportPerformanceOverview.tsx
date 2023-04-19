@@ -16,7 +16,6 @@ import {
     getStatsMessagingIntegrations,
 } from 'state/stats/selectors'
 import blueStar from 'assets/img/icons/blue-star.svg'
-import {ticketsCreatedDataItem} from 'fixtures/chart'
 import {getTimezone} from 'state/currentUser/selectors'
 import {
     useClosedTicketsTrend,
@@ -29,6 +28,13 @@ import {
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
+import {
+    useMessagesSentTimeSeries,
+    useTicketsClosedTimeSeries,
+    useTicketsCreatedTimeSeries,
+    useTicketsRepliedTimeSeries,
+} from 'hooks/reporting/timeSeries'
+import {periodToReportingGranularity} from 'utils/reporting'
 
 import BigNumberMetric from './BigNumberMetric'
 import DashboardSection from './DashboardSection'
@@ -37,12 +43,13 @@ import MetricTooltip from './MetricTooltip'
 import TipsToggle from './TipsToggle'
 import css from './SupportPerformanceOverview.less'
 import ChartCard from './ChartCard'
-import LineChart from './LineChart'
 import TrendMetricCard from './TrendMetricCard'
 import GaugeChart from './GaugeChart'
 import {OneDimensionalDataItem} from './types'
+import TimeSeriesChart from './TimeSeriesChart'
 
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
+const DEFAULT_TIMEZONE = 'UTC'
 
 const workloadPerChannelMock: OneDimensionalDataItem[] = [
     {
@@ -68,7 +75,9 @@ const workloadPerChannelMock: OneDimensionalDataItem[] = [
 ]
 
 export default function SupportPerformanceOverview() {
-    const userTimezone = useAppSelector(getTimezone)
+    const userTimezone = useAppSelector(
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+    )
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const statsFilters = useAppSelector(getStatsFilters)
     const integrationsStatsFilter = useAppSelector(
@@ -89,16 +98,61 @@ export default function SupportPerformanceOverview() {
         }
     }, [integrationsStatsFilter, statsFilters])
 
-    const customerSatisfactionTrend =
-        useCustomerSatisfactionTrend(pageStatsFilters)
-    const firstResponseTimeTrend = useFirstResponseTimeTrend(pageStatsFilters)
-    const resolutionTimeTrend = useResolutionTimeTrend(pageStatsFilters)
-    const messagesPerTicketTrend = useMessagesPerTicketTrend(pageStatsFilters)
-    const openTicketsTrend = useOpenTicketsTrend(pageStatsFilters)
-    const closedTicketsTrend = useClosedTicketsTrend(pageStatsFilters)
-    const ticketsCreatedTrend = useTicketsCreatedTrend(pageStatsFilters)
-    const ticketsRepliedTrend = useTicketsRepliedTrend(pageStatsFilters)
-    const messagesSentTrend = useMessagesSentTrend(pageStatsFilters)
+    const customerSatisfactionTrend = useCustomerSatisfactionTrend(
+        pageStatsFilters,
+        userTimezone
+    )
+    const firstResponseTimeTrend = useFirstResponseTimeTrend(
+        pageStatsFilters,
+        userTimezone
+    )
+    const resolutionTimeTrend = useResolutionTimeTrend(
+        pageStatsFilters,
+        userTimezone
+    )
+    const messagesPerTicketTrend = useMessagesPerTicketTrend(
+        pageStatsFilters,
+        userTimezone
+    )
+    const openTicketsTrend = useOpenTicketsTrend(pageStatsFilters, userTimezone)
+    const closedTicketsTrend = useClosedTicketsTrend(
+        pageStatsFilters,
+        userTimezone
+    )
+    const ticketsCreatedTrend = useTicketsCreatedTrend(
+        pageStatsFilters,
+        userTimezone
+    )
+    const ticketsRepliedTrend = useTicketsRepliedTrend(
+        pageStatsFilters,
+        userTimezone
+    )
+    const messagesSentTrend = useMessagesSentTrend(
+        pageStatsFilters,
+        userTimezone
+    )
+
+    const granularity = periodToReportingGranularity(pageStatsFilters.period)
+    const ticketsCreatedTimeSeries = useTicketsCreatedTimeSeries(
+        pageStatsFilters,
+        userTimezone,
+        granularity
+    )
+    const ticketsClosedTimeSeries = useTicketsClosedTimeSeries(
+        pageStatsFilters,
+        userTimezone,
+        granularity
+    )
+    const ticketsRepliedTimeSeries = useTicketsRepliedTimeSeries(
+        pageStatsFilters,
+        userTimezone,
+        granularity
+    )
+    const messagesSentTimeSeries = useMessagesSentTimeSeries(
+        pageStatsFilters,
+        userTimezone,
+        granularity
+    )
 
     return (
         <StatsPage
@@ -319,9 +373,10 @@ export default function SupportPerformanceOverview() {
                         title="Tickets created"
                         hint="Number of new tickets to handle"
                     >
-                        <LineChart
-                            data={[ticketsCreatedDataItem]}
-                            hasBackground
+                        <TimeSeriesChart
+                            timeSeries={ticketsCreatedTimeSeries}
+                            labels={['Tickets created']}
+                            granularity={granularity}
                         />
                     </ChartCard>
                 </DashboardGridCell>
@@ -330,14 +385,10 @@ export default function SupportPerformanceOverview() {
                         title="Tickets closed"
                         hint="Number of opened tickets solved by the end of the period"
                     >
-                        <LineChart
-                            data={[
-                                {
-                                    ...ticketsCreatedDataItem,
-                                    label: 'Tickets closed',
-                                },
-                            ]}
-                            hasBackground
+                        <TimeSeriesChart
+                            timeSeries={ticketsClosedTimeSeries}
+                            labels={['Tickets closed']}
+                            granularity={granularity}
                         />
                     </ChartCard>
                 </DashboardGridCell>
@@ -346,14 +397,10 @@ export default function SupportPerformanceOverview() {
                         title="Tickets replied"
                         hint="Number of tickets where the customer got a response"
                     >
-                        <LineChart
-                            data={[
-                                {
-                                    ...ticketsCreatedDataItem,
-                                    label: 'Tickets replied',
-                                },
-                            ]}
-                            hasBackground
+                        <TimeSeriesChart
+                            timeSeries={ticketsRepliedTimeSeries}
+                            labels={['Tickets replied']}
+                            granularity={granularity}
                         />
                     </ChartCard>
                 </DashboardGridCell>
@@ -362,14 +409,10 @@ export default function SupportPerformanceOverview() {
                         title="Messages sent"
                         hint="Number of messages received by your customer"
                     >
-                        <LineChart
-                            data={[
-                                {
-                                    ...ticketsCreatedDataItem,
-                                    label: 'Messages sent',
-                                },
-                            ]}
-                            hasBackground
+                        <TimeSeriesChart
+                            timeSeries={messagesSentTimeSeries}
+                            labels={['Messages sent']}
+                            granularity={granularity}
                         />
                     </ChartCard>
                 </DashboardGridCell>

@@ -18,6 +18,7 @@ type Props = {
     data: TwoDimensionalDataItem[]
     hasBackground?: boolean
     displayLegend?: boolean
+    _displayLegacyTooltip?: boolean
 }
 
 const LINE_OPTIONS: ChartOptions<'line'> = {
@@ -84,6 +85,9 @@ const LINE_OPTIONS: ChartOptions<'line'> = {
         },
         tooltip: {
             enabled: false,
+            callbacks: {
+                title: () => undefined, // reset legacy tooltip title
+            },
         },
     },
     maintainAspectRatio: false,
@@ -93,6 +97,7 @@ export default function LineChart({
     data,
     hasBackground,
     displayLegend = false,
+    _displayLegacyTooltip = false,
 }: Props) {
     const [chartArea, setChartArea] = useState<ChartArea>()
     const [chartContext, setChartContext] = useState<CanvasRenderingContext2D>()
@@ -134,7 +139,14 @@ export default function LineChart({
             ...LINE_OPTIONS,
             plugins: {
                 ...LINE_OPTIONS.plugins,
-                legend: {display: displayLegend},
+                legend: {
+                    ...LINE_OPTIONS.plugins?.legend,
+                    display: displayLegend,
+                },
+                tooltip: {
+                    ...LINE_OPTIONS.plugins?.tooltip,
+                    enabled: _displayLegacyTooltip,
+                },
             },
             resizeDelay: 1000,
             onResize: (chart) => {
@@ -142,7 +154,7 @@ export default function LineChart({
                 setChartContext(chart.ctx)
             },
         }),
-        [displayLegend]
+        [displayLegend, _displayLegacyTooltip]
     )
 
     return (

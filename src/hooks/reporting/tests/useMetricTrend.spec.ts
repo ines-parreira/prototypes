@@ -4,7 +4,9 @@ import {renderHook} from '@testing-library/react-hooks'
 import {useGetReporting} from 'models/reporting/queries'
 import {ReportingQuery, TicketStateMeasure} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
-import useMetricTrend, {ANALYTICS_STALE_TIME_MS} from '../useMetricTrend'
+
+import {REPORTING_STALE_TIME_MS} from '../constants'
+import useMetricTrend from '../useMetricTrend'
 
 jest.mock('models/reporting/queries')
 const useGetReportingMock = assumeMock(useGetReporting)
@@ -115,13 +117,13 @@ describe('useMetricTrend', () => {
         expect(useGetReportingMock).toHaveBeenCalledWith(
             [defaultQuery],
             expect.objectContaining({
-                staleTime: ANALYTICS_STALE_TIME_MS,
+                staleTime: REPORTING_STALE_TIME_MS,
             })
         )
         expect(useGetReportingMock).toHaveBeenCalledWith(
             [prevPeriodQuery],
             expect.objectContaining({
-                staleTime: ANALYTICS_STALE_TIME_MS,
+                staleTime: REPORTING_STALE_TIME_MS,
             })
         )
     })

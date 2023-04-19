@@ -18,6 +18,7 @@ export enum TicketStateMeasure {
 
 export enum TicketStateDimension {
     CreatedDatetime = 'TicketState.createdDatetime',
+    ClosedDatetime = 'TicketState.closedDatetime',
     Channel = 'TicketState.channel',
 }
 
@@ -67,6 +68,11 @@ export enum MessageStateMember {
     AssigneeUserId = 'MessageState.assigneeUserId',
 }
 
+export enum MessageStateDimension {
+    CreatedDatetime = 'MessageState.createdDatetime',
+    PeriodStart = 'MessageState.periodStart',
+}
+
 export type ReportingMeasure =
     | TicketStateMeasure
     | OpenTicketStateMeasure
@@ -77,6 +83,7 @@ export type ReportingMeasure =
 
 export type ReportingDimension =
     | TicketStateDimension
+    | MessageStateDimension
     | EventsDimension
     | OrderConversionDimension
     | CampaignOrderEventsDimension
@@ -122,15 +129,14 @@ export type ReportingFilter = {
 }
 
 export enum ReportingGranularity {
-    Quarter = 'quarter',
-    Day = 'day',
-    Month = 'month',
     Year = 'year',
+    Quarter = 'quarter',
+    Month = 'month',
     Week = 'week',
+    Day = 'day',
     Hour = 'hour',
     Minute = 'minute',
     Second = 'second',
-    Null = 'null',
 }
 
 export type ReportingOrder = [

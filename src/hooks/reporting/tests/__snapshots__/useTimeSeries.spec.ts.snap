@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useTimeSeries should fill in the missing dates 1`] = `
+[
+  [
+    {
+      "dateTime": "2022-01-02T00:00:00.000",
+      "value": 65,
+    },
+    {
+      "dateTime": "2022-01-02T01:00:00.000",
+      "value": 32,
+    },
+    {
+      "dateTime": "2022-01-02T02:00:00.000",
+      "value": 0,
+    },
+    {
+      "dateTime": "2022-01-02T03:00:00.000",
+      "value": 0,
+    },
+    {
+      "dateTime": "2022-01-02T04:00:00.000",
+      "value": 139,
+    },
+  ],
+  [
+    {
+      "dateTime": "2022-01-02T00:00:00.000",
+      "value": 3.4,
+    },
+    {
+      "dateTime": "2022-01-02T01:00:00.000",
+      "value": 0,
+    },
+    {
+      "dateTime": "2022-01-02T02:00:00.000",
+      "value": 4.1,
+    },
+    {
+      "dateTime": "2022-01-02T03:00:00.000",
+      "value": 0,
+    },
+    {
+      "dateTime": "2022-01-02T04:00:00.000",
+      "value": 1.2,
+    },
+  ],
+]
+`;

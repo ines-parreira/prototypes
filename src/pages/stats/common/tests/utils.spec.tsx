@@ -10,6 +10,7 @@ import {RootState} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {StatsFilters} from 'models/stat/types'
+import {ReportingGranularity} from 'models/reporting/types'
 
 import {
     formatNumber,
@@ -18,6 +19,7 @@ import {
     findChannelNameKey,
     formatMetricValue,
     formatMetricTrend,
+    formatTimeSeriesDate,
 } from '../utils'
 
 const mockStore = configureMockStore([thunk])
@@ -246,6 +248,26 @@ describe('stats components utils', () => {
 
         it('should format trend as percent with no decimal places when format is "percent"', () => {
             expect(formatMetricTrend(2.3, 1.2, 'percent')).toBe('+92%')
+        })
+    })
+
+    describe('formatTimeSeriesDate', () => {
+        it('should format the dates to show month and day', () => {
+            expect(
+                formatTimeSeriesDate(
+                    '2020-01-01T00:00:00.000',
+                    ReportingGranularity.Month
+                )
+            ).toBe('Jan 1st')
+        })
+
+        it('should format the dates to show hour when granularity is "hour"', () => {
+            expect(
+                formatTimeSeriesDate(
+                    '2020-01-01T00:00:00.000',
+                    ReportingGranularity.Hour
+                )
+            ).toBe('12:00 AM')
         })
     })
 })
