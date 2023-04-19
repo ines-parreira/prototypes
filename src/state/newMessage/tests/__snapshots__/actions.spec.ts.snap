@@ -212,6 +212,7 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
           "html": "Cheers, <strong>Steve</strong>",
         },
         "ticket": {
+          "assignee_team": null,
           "assignee_user": {
             "email": "alex@gorgias.io",
             "firstname": "Alex",
@@ -412,7 +413,6 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
                       {
                         "fulfillable_quantity": 1,
                         "fulfillment_service": "manual",
-                        "fulfillment_status": null,
                         "gift_card": false,
                         "grams": 200,
                         "id": 8276448779,
@@ -435,14 +435,13 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
                         "title": "Baskets peu cheres  10.00% Off Auto renew",
                         "total_discount": "0.00",
                         "variant_id": 32994232907,
-                        "variant_inventory_management": null,
                         "variant_title": null,
                         "vendor": "storegorgias3",
                       },
                     ],
                     "location_id": null,
                     "name": "#1202",
-                    "note": null,
+                    "note": "",
                     "note_attributes": [],
                     "number": 202,
                     "order_number": 1202,
@@ -565,7 +564,6 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
                       {
                         "fulfillable_quantity": 1,
                         "fulfillment_service": "manual",
-                        "fulfillment_status": null,
                         "gift_card": false,
                         "grams": 10,
                         "id": 8184387659,
@@ -582,14 +580,13 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
                         "title": "Bonbon acidulé",
                         "total_discount": "0.00",
                         "variant_id": 28442938955,
-                        "variant_inventory_management": null,
                         "variant_title": null,
                         "vendor": "storegorgias3",
                       },
                     ],
                     "location_id": null,
                     "name": "#1199",
-                    "note": null,
+                    "note": "",
                     "note_attributes": [],
                     "number": 199,
                     "order_number": 1199,
@@ -729,11 +726,9 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
           "subject": "Great ticket",
           "tags": [
             {
-              "decoration": null,
+              "decoration": {},
               "id": 1,
               "name": "refund",
-              "uri": "/api/tags/1/",
-              "user_id": 2,
             },
           ],
           "trashed_datetime": null,
@@ -2292,6 +2287,27 @@ exports[`actions new message prepareTicketMessage should prepare next new messag
   "forceUpdate": false,
   "inserted_discounts": [],
 }
+`;
+
+exports[`actions new message restoreNewMessageDraft should inject draft data to newMessage 1`] = `
+[
+  {
+    "payload": {
+      "attachments": Immutable.List [
+        Immutable.Map {
+          "content_type": "image/jpeg",
+          "name": "E-pZxm5XoAAmsSo.jpg",
+          "size": 106372,
+          "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-pZxm5XoAAmsSo-7586849a-2cb8-470e-b941-00065b5d79fc.jpg",
+        },
+      ],
+      "source": Immutable.Map {
+        "type": "email",
+      },
+    },
+    "type": "RESTORE_NEW_MESSAGE_DRAFT",
+  },
+]
 `;
 
 exports[`actions new message sendTicketMessage should submit new message 1`] = `

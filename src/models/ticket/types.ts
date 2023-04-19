@@ -6,10 +6,13 @@ import {
     TicketStatus,
     TicketVia,
 } from 'business/types/ticket'
-import {CustomFields} from 'models/customField/types'
 import {FacebookReactionType} from 'constants/integrations/facebook'
 import {ApiPaginationParams, OrderParams} from 'models/api/types'
+import {Customer} from 'models/customer/types'
+import {CustomFields} from 'models/customField/types'
 import {MacroActionName} from 'models/macroAction/types'
+import {Tag} from 'models/tag/types'
+import {Team} from 'models/team/types'
 
 import {Event} from '../event/types'
 
@@ -31,7 +34,8 @@ export enum TicketSearchSortableProperties {
 
 export type Ticket = {
     id: number
-    assignee_user: TicketAssignee
+    assignee_user: TicketAssignee | null
+    assignee_team: Pick<Team, 'id' | 'name' | 'decoration'> | null
     messages: TicketElement[]
     status: TicketStatus
     subject: string
@@ -39,9 +43,9 @@ export type Ticket = {
     custom_fields?: CustomFields
     receiver: Actor
     sender: Actor
-    tags: unknown[]
+    tags: Pick<Tag, 'name' | 'id' | 'decoration'>[]
     events: InternalTicketEvent[]
-    customer: Record<string, any>
+    customer: Customer | null
     from_agent: boolean
     created_datetime: string
     opened_datetime: string | null

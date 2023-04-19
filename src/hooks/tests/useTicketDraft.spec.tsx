@@ -1,0 +1,77 @@
+import {renderHook} from '@testing-library/react-hooks'
+import React, {ComponentType} from 'react'
+import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
+import LocalForageManager from 'services/localForageManager/localForageManager'
+import {RootState, StoreDispatch} from 'state/types'
+import {flushPromises} from 'utils/testing'
+
+import useTicketDraft from '../useTicketDraft'
+
+const mockStore = configureMockStore<RootState, StoreDispatch>()
+
+const mockSetItem = jest.fn()
+const mockGetItem = jest.fn()
+const mockGetTableObject = {
+    getItem: mockGetItem,
+    setItem: mockSetItem,
+} as unknown as LocalForage
+
+const defaultState = {
+    newMessage: fromJS({
+        newMessage: {
+            attachments: [],
+            body_html: '',
+            body_text: '',
+            source: {},
+        },
+    }),
+    ticket: fromJS({
+        subject: '',
+        tags: [],
+    }),
+} as RootState
+
+describe('useTicketDraft hook', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should not save draft when ticket is not new', () => {
+        renderHook(() => useTicketDraft(false))
+        expect(mockSetItem).not.toHaveBeenCalled()
+    })
+
+    it('should save draft when ticket is new, draft does not exist yet and new ticket state is not empty', async () => {
+        jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(
+            mockGetTableObject
+        )
+
+        renderHook(() => useTicketDraft(true), {
+            wrapper: (({children}: {children: React.ReactNode}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            )) as unknown as ComponentType,
+        })
+
+        await flushPromises()
+        expect(mockSetItem).toHaveBeenCalled()
+    })
+
+    it('should save draft when ticket is new, a draft exists and new ticket state is not empty', async () => {
+        mockGetItem.mockResolvedValue(true)
+        jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(
+            mockGetTableObject
+        )
+
+        renderHook(() => useTicketDraft(true), {
+            wrapper: (({children}: {children: React.ReactNode}) => (
+                <Provider store={mockStore(defaultState)}>{children}</Provider>
+            )) as unknown as ComponentType,
+        })
+        await flushPromises()
+
+        expect(mockSetItem).toHaveBeenCalled()
+    })
+})

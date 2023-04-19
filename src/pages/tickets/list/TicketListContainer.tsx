@@ -1,8 +1,17 @@
-import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
+import React, {
+    ComponentProps,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Link, useLocation, useParams} from 'react-router-dom'
+import {Link, useHistory, useLocation, useParams} from 'react-router-dom'
 import decorateComponentWithProps from 'decorate-component-with-props'
+import _noop from 'lodash/noop'
 
+import LocalForageManager from 'services/localForageManager/localForageManager'
 import Button from 'pages/common/components/button/Button'
 import {RootState} from 'state/types'
 import {fetchTags} from 'state/tags/actions'
@@ -15,10 +24,15 @@ import {
 import {compactInteger} from 'utils'
 import {isCreationUrl, isSearchUrl} from 'pages/common/utils/url'
 import ViewTable from 'pages/common/components/ViewTable/ViewTable'
+import DropdownButton from 'pages/common/components/button/DropdownButton'
+import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import SearchRankScenarioProvider from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider'
 import {SearchRankSource} from 'hooks/useSearchRankScenario'
 import {useTitle} from 'hooks/useTitle'
+import {DRAFT_TICKET_STORE} from 'hooks/useTicketDraft'
 
 import TicketListActions from './components/TicketListActions'
 import css from './TicketListContainer.less'
@@ -30,8 +44,17 @@ export const TicketListContainer = ({
     selectedItemsIds,
     tickets,
 }: ConnectedProps<typeof connector>) => {
+    const localForageRef = useRef<LocalForage>()
+    if (!localForageRef.current) {
+        localForageRef.current = LocalForageManager.getTable(DRAFT_TICKET_STORE)
+    }
+    const localForage = localForageRef.current
+
     const [isMacroModalOpen, setIsMacroModalOpen] = useState(false)
+    const [hasDraft, setHasDraft] = useState(false)
+    const dropdownTargetRef = useRef<HTMLDivElement>(null)
     const {pathname} = useLocation()
+    const history = useHistory()
     const params = useParams<{viewId?: string}>()
     const isSearch = useMemo(() => isSearchUrl(pathname, 'tickets'), [pathname])
     const isUpdate = useMemo(
@@ -70,6 +93,23 @@ export const TicketListContainer = ({
         return title
     }, [activeView, hasActiveView, isSearch, isUpdate])
 
+    useEffect(() => {
+        const checkDraft = async () => {
+            const length = await localForage.length()
+            setHasDraft(!!length)
+        }
+        void checkDraft()
+    }, [localForage])
+
+    const handleResumeDraft = useCallback(() => {
+        history.push('/app/ticket/new')
+    }, [history])
+
+    const handleDiscardDraft = useCallback(async () => {
+        await localForage.clear()
+        history.push('/app/ticket/new')
+    }, [history, localForage])
+
     useTitle(title)
 
     const viewTable = (
@@ -88,11 +128,51 @@ export const TicketListContainer = ({
             })}
             viewButtons={
                 !isEditMode && (
-                    <div className="d-inline-flex align-items-center">
-                        <Link to="/app/ticket/new">
-                            <Button>Create ticket</Button>
-                        </Link>
-                    </div>
+                    <>
+                        {!hasDraft ? (
+                            <div className="d-inline-flex align-items-center">
+                                <Link to="/app/ticket/new">
+                                    <Button>Create ticket</Button>
+                                </Link>
+                            </div>
+                        ) : (
+                            <>
+                                <DropdownButton
+                                    color="primary"
+                                    fillStyle="fill"
+                                    onToggleClick={_noop}
+                                    size="medium"
+                                    ref={dropdownTargetRef}
+                                >
+                                    Create ticket
+                                </DropdownButton>
+                                <UncontrolledDropdown
+                                    target={dropdownTargetRef}
+                                    placement="bottom-end"
+                                >
+                                    <DropdownBody>
+                                        <DropdownItem
+                                            option={{
+                                                label: 'Resume draft',
+                                                value: 'resume',
+                                            }}
+                                            onClick={handleResumeDraft}
+                                            shouldCloseOnSelect
+                                        />
+
+                                        <DropdownItem
+                                            option={{
+                                                label: 'Discard and create new ticket',
+                                                value: 'discard',
+                                            }}
+                                            onClick={handleDiscardDraft}
+                                            shouldCloseOnSelect
+                                        />
+                                    </DropdownBody>
+                                </UncontrolledDropdown>
+                            </>
+                        )}
+                    </>
                 )
             }
         />

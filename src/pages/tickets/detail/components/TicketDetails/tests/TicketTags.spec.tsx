@@ -2,8 +2,9 @@ import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
-import {UserRole} from '../../../../../../config/types/user'
-import {agents} from '../../../../../../fixtures/agents'
+import {UserRole} from 'config/types/user'
+import {agents} from 'fixtures/agents'
+
 import {TicketTags} from '../TicketTags'
 
 describe('TicketTags component', () => {

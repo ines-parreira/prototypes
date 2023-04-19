@@ -86,6 +86,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
           },
         ],
         "uri": "/api/tickets/0/",
+        "assignee_team": null,
         "via": "helpdesk",
         "closed_datetime": null,
         "receiver": Immutable.Map {
@@ -112,10 +113,8 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         "tags": Immutable.List [
           Immutable.Map {
             "id": 1,
-            "user_id": 2,
             "name": "refund",
-            "uri": "/api/tags/1/",
-            "decoration": null,
+            "decoration": Immutable.Map {},
           },
         ],
         "events": Immutable.List [],
@@ -307,7 +306,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                   },
                   "currency": "EUR",
                   "test": false,
-                  "note": null,
+                  "note": "",
                   "order_status_url": null,
                   "fulfillment_status": null,
                   "total_weight": 200,
@@ -319,7 +318,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                   "fulfillments": Immutable.List [],
                   "line_items": Immutable.List [
                     Immutable.Map {
-                      "variant_inventory_management": null,
                       "taxable": true,
                       "vendor": "storegorgias3",
                       "price": "9.00",
@@ -336,7 +334,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                       "product_exists": true,
                       "fulfillable_quantity": 1,
                       "properties": Immutable.List [],
-                      "fulfillment_status": null,
                       "fulfillment_service": "manual",
                       "variant_id": 32994232907,
                       "title": "Baskets peu cheres  10.00% Off Auto renew",
@@ -454,7 +451,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                   "total_tax": "0.00",
                   "currency": "EUR",
                   "test": false,
-                  "note": null,
+                  "note": "",
                   "order_status_url": null,
                   "fulfillment_status": null,
                   "total_weight": null,
@@ -464,7 +461,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                   "fulfillments": Immutable.List [],
                   "line_items": Immutable.List [
                     Immutable.Map {
-                      "variant_inventory_management": null,
                       "taxable": true,
                       "vendor": "storegorgias3",
                       "price": "0.10",
@@ -475,7 +471,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                       "product_exists": true,
                       "fulfillable_quantity": 1,
                       "properties": Immutable.List [],
-                      "fulfillment_status": null,
                       "fulfillment_service": "manual",
                       "variant_id": 28442938955,
                       "title": "Bonbon acidulé",
@@ -630,6 +625,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
           },
         ],
         "uri": "/api/tickets/0/",
+        "assignee_team": null,
         "via": "helpdesk",
         "closed_datetime": null,
         "receiver": Immutable.Map {
@@ -656,10 +652,8 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         "tags": Immutable.List [
           Immutable.Map {
             "id": 1,
-            "user_id": 2,
             "name": "refund",
-            "uri": "/api/tags/1/",
-            "decoration": null,
+            "decoration": Immutable.Map {},
           },
         ],
         "events": Immutable.List [],
@@ -851,7 +845,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                   },
                   "currency": "EUR",
                   "test": false,
-                  "note": null,
+                  "note": "",
                   "order_status_url": null,
                   "fulfillment_status": null,
                   "total_weight": 200,
@@ -863,7 +857,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                   "fulfillments": Immutable.List [],
                   "line_items": Immutable.List [
                     Immutable.Map {
-                      "variant_inventory_management": null,
                       "taxable": true,
                       "vendor": "storegorgias3",
                       "price": "9.00",
@@ -880,7 +873,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                       "product_exists": true,
                       "fulfillable_quantity": 1,
                       "properties": Immutable.List [],
-                      "fulfillment_status": null,
                       "fulfillment_service": "manual",
                       "variant_id": 32994232907,
                       "title": "Baskets peu cheres  10.00% Off Auto renew",
@@ -998,7 +990,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                   "total_tax": "0.00",
                   "currency": "EUR",
                   "test": false,
-                  "note": null,
+                  "note": "",
                   "order_status_url": null,
                   "fulfillment_status": null,
                   "total_weight": null,
@@ -1008,7 +1000,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                   "fulfillments": Immutable.List [],
                   "line_items": Immutable.List [
                     Immutable.Map {
-                      "variant_inventory_management": null,
                       "taxable": true,
                       "vendor": "storegorgias3",
                       "price": "0.10",
@@ -1019,7 +1010,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                       "product_exists": true,
                       "fulfillable_quantity": 1,
                       "properties": Immutable.List [],
-                      "fulfillment_status": null,
                       "fulfillment_service": "manual",
                       "variant_id": 28442938955,
                       "title": "Bonbon acidulé",
@@ -1181,6 +1171,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
           },
         ],
         "uri": "/api/tickets/0/",
+        "assignee_team": null,
         "via": "helpdesk",
         "closed_datetime": null,
         "receiver": Immutable.Map {
@@ -1207,10 +1198,8 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         "tags": Immutable.List [
           Immutable.Map {
             "id": 1,
-            "user_id": 2,
             "name": "refund",
-            "uri": "/api/tags/1/",
-            "decoration": null,
+            "decoration": Immutable.Map {},
           },
         ],
         "events": Immutable.List [],
@@ -1402,7 +1391,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                   },
                   "currency": "EUR",
                   "test": false,
-                  "note": null,
+                  "note": "",
                   "order_status_url": null,
                   "fulfillment_status": null,
                   "total_weight": 200,
@@ -1414,7 +1403,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                   "fulfillments": Immutable.List [],
                   "line_items": Immutable.List [
                     Immutable.Map {
-                      "variant_inventory_management": null,
                       "taxable": true,
                       "vendor": "storegorgias3",
                       "price": "9.00",
@@ -1431,7 +1419,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                       "product_exists": true,
                       "fulfillable_quantity": 1,
                       "properties": Immutable.List [],
-                      "fulfillment_status": null,
                       "fulfillment_service": "manual",
                       "variant_id": 32994232907,
                       "title": "Baskets peu cheres  10.00% Off Auto renew",
@@ -1549,7 +1536,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                   "total_tax": "0.00",
                   "currency": "EUR",
                   "test": false,
-                  "note": null,
+                  "note": "",
                   "order_status_url": null,
                   "fulfillment_status": null,
                   "total_weight": null,
@@ -1559,7 +1546,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                   "fulfillments": Immutable.List [],
                   "line_items": Immutable.List [
                     Immutable.Map {
-                      "variant_inventory_management": null,
                       "taxable": true,
                       "vendor": "storegorgias3",
                       "price": "0.10",
@@ -1570,7 +1556,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
                       "product_exists": true,
                       "fulfillable_quantity": 1,
                       "properties": Immutable.List [],
-                      "fulfillment_status": null,
                       "fulfillment_service": "manual",
                       "variant_id": 28442938955,
                       "title": "Bonbon acidulé",
@@ -1750,6 +1735,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
           },
         ],
         "uri": "/api/tickets/0/",
+        "assignee_team": null,
         "via": "helpdesk",
         "closed_datetime": null,
         "receiver": Immutable.Map {
@@ -1776,10 +1762,8 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         "tags": Immutable.List [
           Immutable.Map {
             "id": 1,
-            "user_id": 2,
             "name": "refund",
-            "uri": "/api/tags/1/",
-            "decoration": null,
+            "decoration": Immutable.Map {},
           },
         ],
         "events": Immutable.List [],
@@ -1971,7 +1955,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                   },
                   "currency": "EUR",
                   "test": false,
-                  "note": null,
+                  "note": "",
                   "order_status_url": null,
                   "fulfillment_status": null,
                   "total_weight": 200,
@@ -1983,7 +1967,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                   "fulfillments": Immutable.List [],
                   "line_items": Immutable.List [
                     Immutable.Map {
-                      "variant_inventory_management": null,
                       "taxable": true,
                       "vendor": "storegorgias3",
                       "price": "9.00",
@@ -2000,7 +1983,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                       "product_exists": true,
                       "fulfillable_quantity": 1,
                       "properties": Immutable.List [],
-                      "fulfillment_status": null,
                       "fulfillment_service": "manual",
                       "variant_id": 32994232907,
                       "title": "Baskets peu cheres  10.00% Off Auto renew",
@@ -2118,7 +2100,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                   "total_tax": "0.00",
                   "currency": "EUR",
                   "test": false,
-                  "note": null,
+                  "note": "",
                   "order_status_url": null,
                   "fulfillment_status": null,
                   "total_weight": null,
@@ -2128,7 +2110,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                   "fulfillments": Immutable.List [],
                   "line_items": Immutable.List [
                     Immutable.Map {
-                      "variant_inventory_management": null,
                       "taxable": true,
                       "vendor": "storegorgias3",
                       "price": "0.10",
@@ -2139,7 +2120,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                       "product_exists": true,
                       "fulfillable_quantity": 1,
                       "properties": Immutable.List [],
-                      "fulfillment_status": null,
                       "fulfillment_service": "manual",
                       "variant_id": 28442938955,
                       "title": "Bonbon acidulé",
@@ -2294,6 +2274,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
           },
         ],
         "uri": "/api/tickets/0/",
+        "assignee_team": null,
         "via": "helpdesk",
         "closed_datetime": null,
         "receiver": Immutable.Map {
@@ -2320,10 +2301,8 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         "tags": Immutable.List [
           Immutable.Map {
             "id": 1,
-            "user_id": 2,
             "name": "refund",
-            "uri": "/api/tags/1/",
-            "decoration": null,
+            "decoration": Immutable.Map {},
           },
         ],
         "events": Immutable.List [],
@@ -2515,7 +2494,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                   },
                   "currency": "EUR",
                   "test": false,
-                  "note": null,
+                  "note": "",
                   "order_status_url": null,
                   "fulfillment_status": null,
                   "total_weight": 200,
@@ -2527,7 +2506,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                   "fulfillments": Immutable.List [],
                   "line_items": Immutable.List [
                     Immutable.Map {
-                      "variant_inventory_management": null,
                       "taxable": true,
                       "vendor": "storegorgias3",
                       "price": "9.00",
@@ -2544,7 +2522,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                       "product_exists": true,
                       "fulfillable_quantity": 1,
                       "properties": Immutable.List [],
-                      "fulfillment_status": null,
                       "fulfillment_service": "manual",
                       "variant_id": 32994232907,
                       "title": "Baskets peu cheres  10.00% Off Auto renew",
@@ -2662,7 +2639,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                   "total_tax": "0.00",
                   "currency": "EUR",
                   "test": false,
-                  "note": null,
+                  "note": "",
                   "order_status_url": null,
                   "fulfillment_status": null,
                   "total_weight": null,
@@ -2672,7 +2649,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                   "fulfillments": Immutable.List [],
                   "line_items": Immutable.List [
                     Immutable.Map {
-                      "variant_inventory_management": null,
                       "taxable": true,
                       "vendor": "storegorgias3",
                       "price": "0.10",
@@ -2683,7 +2659,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                       "product_exists": true,
                       "fulfillable_quantity": 1,
                       "properties": Immutable.List [],
-                      "fulfillment_status": null,
                       "fulfillment_service": "manual",
                       "variant_id": 28442938955,
                       "title": "Bonbon acidulé",
@@ -2845,6 +2820,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
           },
         ],
         "uri": "/api/tickets/0/",
+        "assignee_team": null,
         "via": "helpdesk",
         "closed_datetime": null,
         "receiver": Immutable.Map {
@@ -2871,10 +2847,8 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         "tags": Immutable.List [
           Immutable.Map {
             "id": 1,
-            "user_id": 2,
             "name": "refund",
-            "uri": "/api/tags/1/",
-            "decoration": null,
+            "decoration": Immutable.Map {},
           },
         ],
         "events": Immutable.List [],
@@ -3066,7 +3040,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                   },
                   "currency": "EUR",
                   "test": false,
-                  "note": null,
+                  "note": "",
                   "order_status_url": null,
                   "fulfillment_status": null,
                   "total_weight": 200,
@@ -3078,7 +3052,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                   "fulfillments": Immutable.List [],
                   "line_items": Immutable.List [
                     Immutable.Map {
-                      "variant_inventory_management": null,
                       "taxable": true,
                       "vendor": "storegorgias3",
                       "price": "9.00",
@@ -3095,7 +3068,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                       "product_exists": true,
                       "fulfillable_quantity": 1,
                       "properties": Immutable.List [],
-                      "fulfillment_status": null,
                       "fulfillment_service": "manual",
                       "variant_id": 32994232907,
                       "title": "Baskets peu cheres  10.00% Off Auto renew",
@@ -3213,7 +3185,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                   "total_tax": "0.00",
                   "currency": "EUR",
                   "test": false,
-                  "note": null,
+                  "note": "",
                   "order_status_url": null,
                   "fulfillment_status": null,
                   "total_weight": null,
@@ -3223,7 +3195,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                   "fulfillments": Immutable.List [],
                   "line_items": Immutable.List [
                     Immutable.Map {
-                      "variant_inventory_management": null,
                       "taxable": true,
                       "vendor": "storegorgias3",
                       "price": "0.10",
@@ -3234,7 +3205,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
                       "product_exists": true,
                       "fulfillable_quantity": 1,
                       "properties": Immutable.List [],
-                      "fulfillment_status": null,
                       "fulfillment_service": "manual",
                       "variant_id": 28442938955,
                       "title": "Bonbon acidulé",

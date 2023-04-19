@@ -195,6 +195,8 @@ export type LineItem = {
     price: string
     admin_graphql_api_id: string
     product_exists: boolean
+    variant_inventory_management?: InventoryManagement
+    fulfillable_quantity?: number
 }
 
 export type Address = {

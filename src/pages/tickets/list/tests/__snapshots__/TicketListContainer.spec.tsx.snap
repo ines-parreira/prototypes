@@ -30,6 +30,22 @@ exports[`<TicketListContainer /> should display with default props 1`] = `
       return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
     }
     </div>
+    <div>
+      <div
+        class="d-inline-flex align-items-center"
+      >
+        <a
+          href="/app/ticket/new"
+        >
+          <button
+            class="wrapper fill primary medium"
+            type="button"
+          >
+            Create ticket
+          </button>
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -67,7 +83,118 @@ exports[`<TicketListContainer /> should render SearchRankProvider on search url 
       return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
     }
       </div>
+      <div>
+        <div
+          class="d-inline-flex align-items-center"
+        >
+          <a
+            href="/app/ticket/new"
+          >
+            <button
+              class="wrapper fill primary medium"
+              type="button"
+            >
+              Create ticket
+            </button>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+`;
+
+exports[`<TicketListContainer /> should render draft dropdown when there is a draft 1`] = `
+HTMLCollection [
+  <div>
+    <div
+      class="d-flex flex-column"
+      style="width: 100%;"
+    >
+      <div>
+        ViewTable:
+        <div>
+          items: 
+          []
+        </div>
+        <div>
+          isUpdate: 
+          true
+        </div>
+        <div>
+          isSearch: 
+          false
+        </div>
+        <div>
+          urlViewId: 
+        </div>
+        <div>
+          ActionsComponent:
+          function _class() {
+      _classCallCheck(this, _class);
+
+      return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
+    }
+        </div>
+        <div>
+          <div
+            class="wrapper"
+          >
+            <button
+              class="wrapper mainAction medium fill primary medium"
+              color="primary"
+              type="button"
+            >
+              Create ticket
+            </button>
+            <button
+              class="wrapper toggle medium wrapper fill medium fill primary medium"
+              type="button"
+            >
+              <i
+                class="material-icons icon"
+              >
+                arrow_drop_down
+              </i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  <div
+    data-floating-ui-portal=""
+    id="floating-ui-0"
+  >
+    <div
+      class="overlay"
+      data-testid="floating-overlay"
+      style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
+    >
+      <div
+        class="wrapper"
+        style="position: absolute;"
+      >
+        <div
+          class="wrapper"
+        >
+          <li
+            class="item"
+            role="option"
+            tabindex="0"
+          >
+            Resume draft
+          </li>
+          <li
+            class="item"
+            role="option"
+            tabindex="0"
+          >
+            Discard and create new ticket
+          </li>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
 `;

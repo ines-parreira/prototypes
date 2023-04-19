@@ -1831,12 +1831,28 @@ exports[`ticket actions removeTag() 1`] = `
 ]
 `;
 
+exports[`ticket actions restoreTicketDraft() should dispatch RESTORE_TICKET_DRAFT action 1`] = `
+{
+  "payload": {
+    "assignee_team": null,
+    "assignee_user": null,
+    "customer": null,
+    "subject": "",
+    "tags": [],
+  },
+  "type": "RESTORE_TICKET_DRAFT",
+}
+`;
+
 exports[`ticket actions setAgent() 1`] = `
 [
   {
     "args": Immutable.Map {
       "assignee_user": Immutable.Map {
         "id": 1,
+        "name": "Acme Support",
+        "email": "support@acme.gorgias.io",
+        "meta": Immutable.Map {},
       },
     },
     "type": "setAssignee",
@@ -1956,7 +1972,8 @@ exports[`ticket actions setTeam() 1`] = `
   {
     "args": Immutable.Map {
       "assignee_team": Immutable.Map {
-        "id": 1,
+        "id": 33,
+        "name": "Foo",
       },
     },
     "type": "setTeamAssignee",

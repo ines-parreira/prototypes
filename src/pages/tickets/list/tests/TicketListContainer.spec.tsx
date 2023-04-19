@@ -1,7 +1,10 @@
 import React, {ComponentProps, ReactNode} from 'react'
 import {fromJS} from 'immutable'
+import userEvent from '@testing-library/user-event'
+import {act, waitFor} from '@testing-library/react'
 
-import {renderWithRouter} from 'utils/testing'
+import LocalForageManager from 'services/localForageManager/localForageManager'
+import {flushPromises, renderWithRouter} from 'utils/testing'
 import {view as fixtureView} from 'fixtures/views'
 import ViewTable from 'pages/common/components/ViewTable/ViewTable'
 
@@ -16,6 +19,7 @@ jest.mock(
             isSearch,
             urlViewId,
             ActionsComponent,
+            viewButtons,
         }: ComponentProps<typeof ViewTable>) =>
             (
                 <div>
@@ -31,6 +35,7 @@ jest.mock(
                             ActionsComponent.toString()
                         }
                     </div>
+                    <div>{viewButtons}</div>
                 </div>
             )
 )
@@ -42,6 +47,19 @@ jest.mock(
             <div data-testid="search-rank-scenario-provider">{children}</div>
 )
 
+const mockHistoryPush = jest.fn()
+
+jest.mock(
+    'react-router-dom',
+    () =>
+        ({
+            ...jest.requireActual('react-router-dom'),
+            useHistory: () => ({
+                push: mockHistoryPush,
+            }),
+        } as Record<string, unknown>)
+)
+
 describe('<TicketListContainer />', () => {
     const minProps = {
         activeView: fromJS(fixtureView),
@@ -50,6 +68,10 @@ describe('<TicketListContainer />', () => {
         selectedItemsIds: fromJS([]),
         tickets: fromJS([]),
     } as unknown as ComponentProps<typeof TicketListContainer>
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
 
     it('should display with default props', () => {
         const {container} = renderWithRouter(
@@ -95,5 +117,56 @@ describe('<TicketListContainer />', () => {
             }
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render draft dropdown when there is a draft', async () => {
+        jest.spyOn(LocalForageManager, 'getTable').mockReturnValueOnce({
+            length: jest.fn().mockResolvedValue(10),
+        } as unknown as LocalForage)
+
+        const {getByText} = renderWithRouter(
+            <TicketListContainer {...minProps} />
+        )
+        await act(flushPromises)
+        const createTicketButton = getByText('Create ticket')
+        userEvent.click(createTicketButton)
+        expect(document.body.children).toMatchSnapshot()
+    })
+
+    it('should handle draft resuming', async () => {
+        jest.spyOn(LocalForageManager, 'getTable').mockReturnValueOnce({
+            length: jest.fn().mockResolvedValue(10),
+        } as unknown as LocalForage)
+
+        const {getByText} = renderWithRouter(
+            <TicketListContainer {...minProps} />
+        )
+        await act(flushPromises)
+        const createTicketButton = getByText('Create ticket')
+        userEvent.click(createTicketButton)
+        const resumeDraftButton = getByText('Resume draft')
+        userEvent.click(resumeDraftButton)
+        expect(mockHistoryPush).toHaveBeenCalledWith('/app/ticket/new')
+    })
+
+    it('should handle draft discarding', async () => {
+        const mockClear = jest.fn().mockResolvedValue(true)
+        jest.spyOn(LocalForageManager, 'getTable').mockReturnValueOnce({
+            length: jest.fn().mockResolvedValue(10),
+            clear: mockClear,
+        } as unknown as LocalForage)
+
+        const {getByText} = renderWithRouter(
+            <TicketListContainer {...minProps} />
+        )
+        await act(flushPromises)
+        const createTicketButton = getByText('Create ticket')
+        userEvent.click(createTicketButton)
+        const discardDraftButton = getByText('Discard and create new ticket')
+        userEvent.click(discardDraftButton)
+        await waitFor(() => {
+            expect(mockClear).toHaveBeenCalled()
+            expect(mockHistoryPush).toHaveBeenCalledWith('/app/ticket/new')
+        })
     })
 })
