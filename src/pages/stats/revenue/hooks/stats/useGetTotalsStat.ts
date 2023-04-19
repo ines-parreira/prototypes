@@ -14,10 +14,10 @@ import {
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {CampaignsTotals} from 'pages/stats/revenue/services/types'
 import {usePostReporting} from 'models/reporting/queries'
-import {ANALYTICS_STALE_TIME_MS} from 'hooks/reporting/useMetricTrend'
+import {REPORTING_STALE_TIME_MS} from 'hooks/reporting/constants'
 
 const OVERRIDES = {
-    staleTime: ANALYTICS_STALE_TIME_MS,
+    staleTime: REPORTING_STALE_TIME_MS,
     select: getMetricFromCubeData,
 }
 
