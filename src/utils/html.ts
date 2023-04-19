@@ -255,5 +255,14 @@ export function trimHTML(html: string): string {
     while (shouldTrim(body.lastElementChild)) body.lastElementChild!.remove()
     while (shouldTrim(body.firstElementChild)) body.firstElementChild!.remove()
 
+    if (body.lastElementChild) {
+        body.lastElementChild.innerHTML =
+            body.lastElementChild.innerHTML.trimRight()
+    }
+    if (body.firstElementChild) {
+        body.firstElementChild.innerHTML =
+            body.firstElementChild.innerHTML.trimLeft()
+    }
+
     return body.innerHTML
 }

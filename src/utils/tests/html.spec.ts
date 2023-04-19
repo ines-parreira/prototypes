@@ -371,6 +371,12 @@ describe('html util', () => {
                 '<div></div><div>text</div><figure><img></figure><br>',
                 '<div>text</div><figure><img></figure>',
             ],
+            ['<div>text </div>', '<div>text</div>'],
+            ['<div> text</div>', '<div>text</div>'],
+            [
+                '<div>text </div><div>text</div>',
+                '<div>text </div><div>text</div>',
+            ],
         ])('should return text in html', (html, trimmedHTML) => {
             expect(trimHTML(html)).toBe(trimmedHTML)
         })
