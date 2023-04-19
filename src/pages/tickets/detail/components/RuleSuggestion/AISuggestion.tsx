@@ -1,15 +1,13 @@
 import {fromJS} from 'immutable'
 import React, {useState} from 'react'
 import {Modifier} from 'draft-js'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import {Ticket} from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
+import {Ticket} from 'models/ticket/types'
 import {setMeta, setResponseText} from 'state/newMessage/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {textToHTML} from 'utils/html'
 import {getNewMessageContentState} from 'state/newMessage/selectors'
-
+import useAppSelector from 'hooks/useAppSelector'
 import InTicketSuggestion from './InTicketSuggestion'
 import css from './RuleSuggestion.less'
 

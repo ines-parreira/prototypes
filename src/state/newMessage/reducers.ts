@@ -1,45 +1,41 @@
 import {fromJS, Map, List} from 'immutable'
-import {ContentState} from 'draft-js'
+import {convertToRaw, ContentState} from 'draft-js'
+
 import _pick from 'lodash/pick'
 import _assign from 'lodash/assign'
 import _omit from 'lodash/omit'
+import _forOwn from 'lodash/forOwn'
+import _get from 'lodash/get'
 
 import {DiscountCode} from 'models/discountCodes/types'
 import {AttachmentPosition} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/types/CampaignAttachment'
 
 import {
+    getSourceTypeOfResponse,
+    getChannelFromSourceType,
+} from '../ticket/utils'
+
+import {
     TicketMessageSourceType,
     TicketChannel,
     TicketVia,
-} from 'business/types/ticket'
-import * as ticketConfig from 'config/ticket'
-import * as ticketTypes from 'state/ticket/constants'
-import {
-    getSourceTypeOfResponse,
-    getChannelFromSourceType,
-} from 'state/ticket/utils'
-import {GorgiasAction} from 'state/types'
+} from '../../business/types/ticket'
+import * as ticketTypes from '../ticket/constants'
+import * as ticketConfig from '../../config/ticket'
+import {GorgiasAction} from '../types'
 
-import {addEmailExtra} from './actions'
+import ticketReplyCache from './ticketReplyCache'
+import {getReceiversProperties} from './selectors'
+import * as responseUtils from './responseUtils'
 import * as types from './constants'
+import {NewMessage, NewMessageState, ReplyAreaState} from './types'
+import {addEmailExtra} from './actions'
 import {
     addEmailExtraContent,
     deleteEmailExtraContent,
     hasEmailExtraContent,
     updateEmailExtraOnUserInput,
 } from './emailExtraUtils'
-import ticketReplyCache from './ticketReplyCache'
-import {getReceiversProperties} from './selectors'
-import {
-    addCache,
-    applyMacro,
-    deleteReplyCache,
-    MessageContext,
-    updateCache,
-    updateNewMessageWithContentState,
-} from './responseUtils'
-import {NewMessage, NewMessageState, ReplyAreaState} from './types'
-import {getMentionIds} from './utils'
 
 const defaultSourceExtra = {
     include_thread: false,
@@ -147,8 +143,8 @@ export default function reducer(
             return state.updateIn(
                 ['newMessage', 'attachments'],
                 fromJS([]),
-                (attachments: List<any>) => {
-                    return attachments.concat(action.args?.get('attachments'))
+                (attachements: List<any>) => {
+                    return attachements.concat(action.args?.get('attachments'))
                 }
             )
         }
@@ -259,7 +255,7 @@ export default function reducer(
             const messages = fromJS(action.messages) as List<any>
             const via = action.ticketVia
             // clear the reply cache
-            deleteReplyCache(action.ticketId as unknown as string)
+            responseUtils.deleteReplyCache(action.ticketId as unknown as string)
 
             const newState = resetContentState(state).mergeDeep({
                 state: {
@@ -420,7 +416,7 @@ export default function reducer(
                 forceUpdate = true
             }
 
-            let context: MessageContext = {
+            let context: responseUtils.MessageContext = {
                 state,
                 contentState,
                 selectionState,
@@ -433,17 +429,31 @@ export default function reducer(
                 topRankMacroState,
             }
 
-            context = addCache(context)
-            context = applyMacro(context as any)
-            updateCache(context as any)
+            context = responseUtils.addCache(context)
+            context = responseUtils.applyMacro(context as any)
+            responseUtils.updateCache(context as any)
 
             contentState = context.contentState
             selectionState = context.selectionState
 
-            const ids = getMentionIds(
-                contentState,
+            // get ids of all mentions within any entities in contentState, only if in internal note
+            let ids: List<any> = fromJS([])
+            const isInternalNote = ticketConfig.canLeaveInternalNote(
                 state.getIn(['newMessage', 'source', 'type'])
             )
+
+            if (contentState && isInternalNote) {
+                const entityMap = convertToRaw(contentState).entityMap
+                _forOwn(entityMap, (entity) => {
+                    if (entity.type === 'mention') {
+                        // don't push duplicate ids
+                        const id = _get(entity.data.mention, 'id')
+                        if (!ids.includes(id)) {
+                            ids = ids.push(id)
+                        }
+                    }
+                })
+            }
 
             let dirty = state.getIn(['state', 'dirty'])
             if (!dirty && contentState.hasText()) {
@@ -460,7 +470,7 @@ export default function reducer(
                 context.state
                     .update('newMessage', (newMessage: Map<any, any>) => {
                         return fromJS(
-                            updateNewMessageWithContentState(
+                            responseUtils.updateNewMessageWithContentState(
                                 newMessage.toJS() as NewMessage,
                                 contentState
                             )
@@ -497,7 +507,7 @@ export default function reducer(
             return state
                 .update('newMessage', (newMessage: Map<any, any>) => {
                     return fromJS(
-                        updateNewMessageWithContentState(
+                        responseUtils.updateNewMessageWithContentState(
                             newMessage.toJS() as NewMessage,
                             newContentState
                         )
@@ -575,7 +585,7 @@ export default function reducer(
             // Remove email extra on reset because we always add it on submit
             if (hasEmailExtraContent(contentState)) {
                 contentState = deleteEmailExtraContent(contentState)
-                newMessage = updateNewMessageWithContentState(
+                newMessage = responseUtils.updateNewMessageWithContentState(
                     newMessage,
                     contentState
                 )
@@ -648,65 +658,6 @@ export default function reducer(
             })
 
             return newState
-        }
-
-        case types.RESTORE_NEW_MESSAGE_DRAFT: {
-            const {attachments, source} = action.payload as Pick<
-                NewMessage,
-                'attachments' | 'source'
-            >
-            return state
-                .setIn(['newMessage', 'attachments'], fromJS(attachments))
-                .setIn(['newMessage', 'source'], fromJS(source))
-        }
-
-        case types.RESTORE_NEW_MESSAGE_BODY_TEXT: {
-            const context = action.payload as MessageContext
-            const {
-                contentState,
-                emailExtraAdded,
-                inserted_discounts,
-                selectionState,
-                forceFocus,
-                forceUpdate,
-            } = context
-
-            const ids = getMentionIds(
-                contentState,
-                state.getIn(['newMessage', 'source', 'type'])
-            )
-
-            let dirty = state.getIn(['state', 'dirty'])
-            if (!dirty && contentState.hasText()) {
-                dirty = true
-            }
-
-            return (
-                state
-                    .update(
-                        'newMessage',
-                        (newMessage: Map<any, any>) =>
-                            fromJS(
-                                updateNewMessageWithContentState(
-                                    newMessage.toJS() as NewMessage,
-                                    contentState
-                                )
-                            ) as Map<any, any>
-                    )
-                    .mergeDeep({
-                        state: {
-                            dirty,
-                            emailExtraAdded,
-                            inserted_discounts,
-                            forceFocus,
-                            forceUpdate,
-                        },
-                    })
-                    // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
-                    .setIn(['state', 'contentState'], contentState)
-                    .setIn(['state', 'selectionState'], selectionState)
-                    .setIn(['newMessage', 'mention_ids'], ids)
-            )
         }
 
         default:

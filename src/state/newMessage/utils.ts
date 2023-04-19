@@ -1,10 +1,4 @@
-import {convertToRaw, ContentState} from 'draft-js'
-import {fromJS, Map, List} from 'immutable'
-import _forOwn from 'lodash/forOwn'
-import _get from 'lodash/get'
-
 import {TicketMessageSourceType} from 'business/types/ticket'
-import {canLeaveInternalNote} from 'config/ticket'
 import {MacroActionName} from 'models/macroAction/types'
 import {EMPTY_SENDER} from 'state/ticket/constants'
 import {MacroActions, NewMessage} from './types'
@@ -42,27 +36,4 @@ export function transformToInternalNote(
 
     newMessage.public = false
     return {newMessage, newActions}
-}
-
-export function getMentionIds(
-    contentState: ContentState,
-    sourceType: TicketMessageSourceType
-) {
-    let ids: List<any> = fromJS([])
-    const isInternalNote = canLeaveInternalNote(sourceType)
-
-    if (contentState && isInternalNote) {
-        const entityMap = convertToRaw(contentState).entityMap
-        _forOwn(entityMap, (entity) => {
-            if (entity.type === 'mention') {
-                // don't push duplicate ids
-                const id = _get(entity.data.mention, 'id')
-                if (!ids.includes(id)) {
-                    ids = ids.push(id)
-                }
-            }
-        })
-    }
-
-    return ids
 }

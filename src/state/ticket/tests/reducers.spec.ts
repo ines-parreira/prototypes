@@ -1511,31 +1511,4 @@ describe('ticket reducers', () => {
             })
         })
     })
-
-    describe('action RESTORE_TICKET_DRAFT', () => {
-        it('should hydrate the state with ticket draft data', () => {
-            const payload = {
-                assigneeUser: fromJS({
-                    id: 8,
-                    name: 'Assignee Agent',
-                    email: 'assignee@agent',
-                    meta: {},
-                }),
-                subject: 'Waitint to send that ticket',
-                tags: fromJS([
-                    {
-                        name: 'return',
-                    },
-                ]),
-            }
-
-            const action = {
-                type: types.RESTORE_TICKET_DRAFT,
-                payload,
-            }
-
-            const nextState = reducer(initialState, action)
-            expect(nextState.toJS()).toMatchSnapshot()
-        })
-    })
 })

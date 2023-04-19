@@ -78,7 +78,7 @@ type MessageSource = {
 
 export type Message = {
     actions: Maybe<MacroAction[]>
-    attachments: Attachment[]
+    attachements: Attachment[]
     body_html: string
     body_text: string
     channel: TicketMessageSourceType

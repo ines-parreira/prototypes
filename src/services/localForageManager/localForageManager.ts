@@ -63,10 +63,6 @@ class LocalForageManager {
         })
         return subscription
     }
-
-    clearTable = (name: string) => {
-        void this.tables[name]?.clear()
-    }
 }
 
 export default new LocalForageManager()

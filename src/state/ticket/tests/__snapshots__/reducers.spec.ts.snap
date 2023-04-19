@@ -303,58 +303,6 @@ exports[`ticket reducers action REMOVE_TICKET_AUDIT_LOG_EVENTS should remove aud
 }
 `;
 
-exports[`ticket reducers action RESTORE_TICKET_DRAFT should hydrate the state with ticket draft data 1`] = `
-{
-  "_internal": {
-    "displayHistory": false,
-    "isPartialUpdating": false,
-    "isShopperTyping": false,
-    "isShopperTypingTimeoutId": undefined,
-    "loading": {
-      "deleteMessage": false,
-      "fetchTicket": false,
-      "setSpam": false,
-      "setTrash": false,
-    },
-    "pendingMessages": [],
-    "shouldDisplayAuditLogEvents": false,
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_team": undefined,
-  "assignee_user": undefined,
-  "channel": "email",
-  "custom_fields": {},
-  "customer": null,
-  "events": [],
-  "is_unread": false,
-  "messages": [],
-  "priority": "normal",
-  "reply_options": {
-    "email": {
-      "answerable": true,
-    },
-    "internal-note": {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "Waitint to send that ticket",
-  "tags": [
-    {
-      "name": "return",
-    },
-  ],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
 exports[`ticket reducers action SEND_INTENT_FEEDBACK_SUCCESS should update the intents with the new ones 1`] = `
 {
   "_internal": {

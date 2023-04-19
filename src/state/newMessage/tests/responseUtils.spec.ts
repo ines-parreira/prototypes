@@ -1,24 +1,6 @@
-import draftJS, {
-    ContentState,
-    convertToRaw,
-    SelectionState,
-    EditorState,
-} from 'draft-js'
+import {ContentState, convertToRaw, SelectionState, EditorState} from 'draft-js'
 import {fromJS, Map} from 'immutable'
-//@ts-ignore
-import generateRandomKey from 'draft-js/lib/generateRandomKey'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {ticket} from 'fixtures/ticket'
-import {
-    convertToRawWithoutPredictions,
-    createPrediction,
-    insertPrediction,
-} from 'pages/common/draftjs/plugins/prediction/utils'
-import {convertToHTML, createDraftJSKeyGeneratorMock} from 'utils/editor'
-
-import {addEmailExtraContent} from '../emailExtraUtils'
-import {initialState, initialState as newMessageInitialState} from '../reducers'
 import {
     applyMacro,
     MessageContext,
@@ -26,21 +8,25 @@ import {
     updateCache,
     toReplyAreaState,
     updateNewMessageWithContentState,
-    transformMessageContext,
 } from '../responseUtils'
+import {convertToHTML} from '../../../utils/editor'
+import {TicketMessageSourceType} from '../../../business/types/ticket'
+import {initialState, initialState as newMessageInitialState} from '../reducers'
 import ticketReplyCache, {RawCachedTicket} from '../ticketReplyCache'
+import {
+    convertToRawWithoutPredictions,
+    createPrediction,
+    insertPrediction,
+} from '../../../pages/common/draftjs/plugins/prediction/utils'
+import {addEmailExtraContent} from '../emailExtraUtils'
+import {ticket} from '../../../fixtures/ticket'
 
 import {getMessageContextSnapshot, getReplyAreaStateSnapshot} from './testUtils'
-
-jest.mock('draft-js/lib/generateRandomKey', () =>
-    jest.fn().mockReturnValue('mock-key')
-)
 
 describe('responseUtils', () => {
     let defaultMessageContext: MessageContext
 
     beforeEach(() => {
-        jest.clearAllMocks()
         // Context is mutable, some util functions will modify it directly
         defaultMessageContext = {
             forceFocus: false,
@@ -59,9 +45,6 @@ describe('responseUtils', () => {
                 }),
             },
         }
-        const generateKey = createDraftJSKeyGeneratorMock()
-        const generateRandomKeyFunction = generateRandomKey as jest.SpyInstance
-        generateRandomKeyFunction.mockImplementation(generateKey)
     })
 
     describe('applyMacro', () => {
@@ -512,48 +495,6 @@ describe('responseUtils', () => {
             )
 
             expect(prevNewMessage).toMatchSnapshot()
-        })
-    })
-
-    describe('transformMessageContext', () => {
-        const defaultCachedContentState =
-            ContentState.createFromText('Foo bar baz')
-
-        const rawCachedTicket: RawCachedTicket = {
-            contentState: convertToRaw(defaultCachedContentState),
-            selectionState: SelectionState.createEmpty(
-                defaultCachedContentState.getFirstBlock().getKey()
-            )
-                .set('anchorOffset', '1')
-                .set('focusOffset', '2') as SelectionState,
-            emailExtraAdded: false,
-            macro: null,
-            sourceType: TicketMessageSourceType.Email,
-        }
-
-        it('should return formatted context from cached content', () => {
-            jest.spyOn(draftJS, 'genKey').mockReturnValueOnce('123')
-
-            const result = transformMessageContext(fromJS(rawCachedTicket))
-            expect(result).toMatchSnapshot()
-        })
-
-        it('should mutate formatted passed context param', () => {
-            const mutatedContext: MessageContext = {
-                ...defaultMessageContext,
-                contentState: ContentState.createFromText('Foo bar baz'),
-                selectionState: SelectionState.createEmpty('foo')
-                    .set('anchorOffset', '1')
-                    .set('focusKey', 'bar')
-                    .set('focusOffset', '2') as SelectionState,
-                sourceType: TicketMessageSourceType.Email,
-                action: {
-                    ...defaultMessageContext.action,
-                    ticketId: 'foo-ticket',
-                },
-            }
-            transformMessageContext(fromJS(rawCachedTicket), mutatedContext)
-            expect(getMessageContextSnapshot(mutatedContext)).toMatchSnapshot()
         })
     })
 })

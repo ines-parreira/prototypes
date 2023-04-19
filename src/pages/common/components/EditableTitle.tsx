@@ -45,7 +45,7 @@ export default class EditableTitle extends Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        if (this.state.value !== nextProps.title) {
+        if (!this.state.editMode && this.state.value !== nextProps.title) {
             this.setState({value: nextProps.title})
 
             setTimeout(() => {

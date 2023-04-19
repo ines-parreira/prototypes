@@ -359,8 +359,3 @@ export const getTicketFieldState = createSelector(
     getTicket,
     (state) => state.custom_fields || {}
 )
-
-export const getTicketCustomer = createImmutableSelector(
-    getTicketState,
-    (state) => state.get('customer' || fromJS({})) as Map<any, any>
-)

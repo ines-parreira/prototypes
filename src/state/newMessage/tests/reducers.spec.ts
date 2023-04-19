@@ -2,20 +2,18 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map, List} from 'immutable'
 import {EditorState, ContentState, SelectionState} from 'draft-js'
 
-import {TicketMessageSourceType, TicketChannel} from 'business/types/ticket'
-import {ticket} from 'fixtures/ticket'
-import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
-import {GorgiasAction} from 'state/types'
-
 import {
-    newMessageResetFromMessage,
-    restoreNewMessageBodyText,
-    restoreNewMessageDraft,
-} from '../actions'
-import * as types from '../constants'
-import * as emailExtraUtils from '../emailExtraUtils'
+    TicketMessageSourceType,
+    TicketChannel,
+} from '../../../business/types/ticket'
+import addMention from '../../../pages/common/draftjs/plugins/mentions/modifiers/addMention'
 import reducer, {makeNewMessage, initialState} from '../reducers'
+import * as types from '../constants'
+import {GorgiasAction} from '../../types'
 import * as responseUtils from '../responseUtils'
+import * as emailExtraUtils from '../emailExtraUtils'
+import {ticket} from '../../../fixtures/ticket'
+import {newMessageResetFromMessage} from '../actions'
 import {NewMessage, ReplyAreaState} from '../types'
 
 import {getMessageContextSnapshot} from './testUtils'
@@ -924,65 +922,6 @@ describe('new message reducer', () => {
                     'inserted_discounts',
                 ]) as Map<any, any>
             ).toEqual(expected)
-        })
-    })
-
-    describe('RESTORE_NEW_MESSAGE_DRAFT', () => {
-        it('should set attachments and source', () => {
-            const action = restoreNewMessageDraft({
-                attachments: fromJS([
-                    {
-                        content_type: 'foo_content',
-                        name: 'foo_name',
-                        size: 123,
-                        url: 'foo_URL',
-                    },
-                    {
-                        content_type: 'image/jpeg',
-                        name: 'E-pZxm5XoAAmsSo.jpg',
-                        size: 106372,
-                        url: 'https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-pZxm5XoAAmsSo-7586849a-2cb8-470e-b941-00065b5d79fc.jpg',
-                    },
-                ]),
-                source: fromJS({
-                    type: TicketMessageSourceType.Email,
-                }),
-            })
-
-            expect(
-                (
-                    reducer(initialState, action).get('newMessage') as Map<
-                        any,
-                        any
-                    >
-                ).toJS()
-            ).toMatchSnapshot()
-        })
-    })
-
-    describe('RESTORE_NEW_MESSAGE_BODY_TEXT', () => {
-        it('should set body text', () => {
-            const contentState = ContentState.createFromText('Foo')
-            const selectionState = SelectionState.createEmpty(
-                contentState.getFirstBlock().getKey()
-            )
-
-            const action = restoreNewMessageBodyText({
-                contentState,
-                emailExtraAdded: false,
-                selectionState,
-                forceFocus: false,
-                forceUpdate: false,
-            } as responseUtils.MessageContext)
-
-            expect(
-                (
-                    reducer(initialState, action).get('newMessage') as Map<
-                        any,
-                        any
-                    >
-                ).toJS()
-            ).toMatchSnapshot()
         })
     })
 })

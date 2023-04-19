@@ -2,15 +2,14 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useLocation, useParams} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
-import _pick from 'lodash/pick'
 import {useAsyncFn, useEffectOnce, useKey, usePrevious} from 'react-use'
+import _pick from 'lodash/pick'
 
 import {TicketMessageSourceType, TicketStatus} from 'business/types/ticket'
 import {getInvalidTicketFieldIds} from 'utils/customFields'
 import useSearch from 'hooks/useSearch'
 import {useTitle} from 'hooks/useTitle'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useDraftMessages, {DRAFT_TICKET_STORE} from 'hooks/useTicketDraft'
 import {RootState} from 'state/types'
 import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -19,6 +18,7 @@ import pendingMessageManager from 'services/pendingMessageManager/pendingMessage
 import shortcutManager from 'services/shortcutManager'
 import socketManager from 'services/socketManager/socketManager'
 import {JoinEventType} from 'services/socketManager/types'
+
 import {
     DEPRECATED_getActiveCustomer,
     getCustomersState,
@@ -31,7 +31,6 @@ import {
     setSender,
     submitTicket,
 } from 'state/newMessage/actions'
-import {NEW_MESSAGE_SUBMIT_TICKET_ERROR} from 'state/newMessage/constants'
 import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
@@ -52,7 +51,6 @@ import {updateCursor} from 'state/tickets/actions'
 import {getTicketFieldState} from 'state/ticket/selectors'
 import {getActiveView} from 'state/views/selectors'
 import {isMacOs} from 'utils/platform'
-import LocalForageManager from 'services/localForageManager/localForageManager'
 
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {RecentItems} from 'hooks/useRecentItems/constants'
@@ -116,8 +114,6 @@ export const TicketDetailContainer = ({
         }
     }>()
     const {sender, source, receiver} = location.state ?? {}
-
-    useDraftMessages(ticketIdParam === 'new')
 
     useEffect(() => {
         ticketIdParamRef.current = ticketIdParam
@@ -298,22 +294,11 @@ export const TicketDetailContainer = ({
 
         // The ticket does not exist yet.
         if (!ticket.get('id')) {
-            try {
-                await prepareAndSubmitNewTicket({
-                    status,
-                    action,
-                    resetMessage,
-                })
-
-                LocalForageManager.clearTable(DRAFT_TICKET_STORE)
-            } catch (error) {
-                dispatch({
-                    type: NEW_MESSAGE_SUBMIT_TICKET_ERROR,
-                    error,
-                    verbose: true,
-                    reason: 'Ticket was not created. Please try again in a few moments. If the problem persists contact us',
-                })
-            }
+            await prepareAndSubmitNewTicket({
+                status,
+                action,
+                resetMessage,
+            })
         } else {
             await submitNewMessage({status, action, resetMessage})
         }
@@ -508,7 +493,7 @@ export const TicketDetailContainer = ({
                 'id',
                 'name',
                 'email',
-            ]) as PickedTicket['customer']
+            ])
 
             void setRecentItem({
                 ...pickedTicket,

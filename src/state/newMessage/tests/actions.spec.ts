@@ -1765,30 +1765,6 @@ describe('actions', () => {
                 })
             })
         })
-
-        describe('restoreNewMessageDraft', () => {
-            it('should inject draft data to newMessage', () => {
-                store = mockStore({
-                    newMessage: initialState,
-                })
-                store.dispatch(
-                    actions.restoreNewMessageDraft({
-                        attachments: fromJS([
-                            {
-                                content_type: 'image/jpeg',
-                                name: 'E-pZxm5XoAAmsSo.jpg',
-                                size: 106372,
-                                url: 'https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-pZxm5XoAAmsSo-7586849a-2cb8-470e-b941-00065b5d79fc.jpg',
-                            },
-                        ]),
-                        source: fromJS({
-                            type: TicketMessageSourceType.Email,
-                        }),
-                    })
-                )
-                expect(store.getActions()).toMatchSnapshot()
-            })
-        })
     })
 
     describe('addProductCardAttachments()', () => {

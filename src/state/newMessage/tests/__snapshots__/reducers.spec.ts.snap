@@ -222,64 +222,6 @@ exports[`new message reducer NEW_MESSAGE_SET_SOURCE_EXTRA should set source extr
 }
 `;
 
-exports[`new message reducer RESTORE_NEW_MESSAGE_BODY_TEXT should set body text 1`] = `
-{
-  "attachments": [],
-  "body_html": "<div>Foo</div>",
-  "body_text": "Foo",
-  "channel": "email",
-  "from_agent": true,
-  "macros": [],
-  "mention_ids": [],
-  "public": true,
-  "sender": null,
-  "source": {
-    "bcc": [],
-    "cc": [],
-    "extra": {
-      "include_thread": false,
-    },
-    "from": {},
-    "to": [],
-    "type": "email",
-  },
-  "subject": "",
-  "via": "helpdesk",
-}
-`;
-
-exports[`new message reducer RESTORE_NEW_MESSAGE_DRAFT should set attachments and source 1`] = `
-{
-  "attachments": [
-    {
-      "content_type": "foo_content",
-      "name": "foo_name",
-      "size": 123,
-      "url": "foo_URL",
-    },
-    {
-      "content_type": "image/jpeg",
-      "name": "E-pZxm5XoAAmsSo.jpg",
-      "size": 106372,
-      "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-pZxm5XoAAmsSo-7586849a-2cb8-470e-b941-00065b5d79fc.jpg",
-    },
-  ],
-  "body_html": "",
-  "body_text": "",
-  "channel": "email",
-  "from_agent": true,
-  "macros": [],
-  "mention_ids": [],
-  "public": true,
-  "sender": null,
-  "source": {
-    "type": "email",
-  },
-  "subject": "",
-  "via": "helpdesk",
-}
-`;
-
 exports[`new message reducer SET_NEW_MESSAGE_DISCOUNT_CODE should append to discount codes 1`] = `
 Immutable.List [
   Immutable.Map {

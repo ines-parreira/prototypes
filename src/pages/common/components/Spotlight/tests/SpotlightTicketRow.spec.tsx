@@ -10,7 +10,6 @@ import {TicketStatus} from 'business/types/ticket'
 import {ticket} from 'fixtures/ticket'
 import {agents} from 'fixtures/agents'
 import {user} from 'fixtures/users'
-import {Ticket} from 'models/ticket/types'
 
 import SpotlightTicketRow from '../SpotlightTicketRow'
 
@@ -89,12 +88,7 @@ describe('<SpotlightTicketRow/>', () => {
         const {container} = render(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
-                item={
-                    {
-                        ...ticket,
-                        customer: {...ticket.customer, name: null},
-                    } as unknown as Ticket
-                }
+                item={{...ticket, customer: {...ticket.customer, name: null}}}
             />
         )
 
@@ -105,12 +99,10 @@ describe('<SpotlightTicketRow/>', () => {
         const {container} = render(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
-                item={
-                    {
-                        ...ticket,
-                        customer: {...ticket.customer, name: null, email: null},
-                    } as unknown as Ticket
-                }
+                item={{
+                    ...ticket,
+                    customer: {...ticket.customer, name: null, email: null},
+                }}
             />
         )
 

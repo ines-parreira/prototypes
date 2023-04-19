@@ -3,11 +3,12 @@ import classnames from 'classnames'
 import Lightbox from 'react-images'
 import type {List} from 'immutable'
 
-import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
-import {fileIconFromContentType} from 'pages/tickets/common/utils'
-import shortcutManager from 'services/shortcutManager/index'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import {proxifyURL} from 'utils'
+import {fileIconFromContentType} from '../../../common/utils'
+import shortcutManager from '../../../../../services/shortcutManager/index'
+import MoneyAmount from '../../../../common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import {proxifyURL} from '../../../../../utils'
+
+import {ShopifyProductCardContentType} from '../../../../../constants/integrations/shopify'
 
 import css from './TicketAttachments.less'
 
@@ -46,7 +47,7 @@ export default class TicketAttachments extends Component<Props, State> {
     }
 
     removeAttachment = (idx: number, e: MouseEvent<HTMLElement>) => {
-        this.props.deleteAttachment?.(idx)
+        this.props.deleteAttachment && this.props.deleteAttachment(idx)
         // prevent opening the thumb when clicking the delete button
         e.preventDefault()
         e.stopPropagation()

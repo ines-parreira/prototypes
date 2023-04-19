@@ -1,17 +1,17 @@
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {CustomFieldState} from 'models/customField/types'
 import {TICKET_EVENT_TYPES} from 'models/event/types'
+import {CustomFieldState} from 'models/customField/types'
 import {MacroActionName} from 'models/macroAction/types'
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import * as customerTypes from 'state/customers/constants'
 import * as newMessageTypes from 'state/newMessage/constants'
 import ticketReplyCache from 'state/newMessage/ticketReplyCache'
 import {GorgiasAction} from 'state/types'
 import {compare} from 'utils'
-import {Ticket} from 'models/ticket/types'
 
+import {Ticket} from 'models/ticket/types'
 import {
     getPendingMessageIndex,
     injectAISuggestionEvents,
@@ -766,31 +766,6 @@ export default function reducer(
                 )
             })
             return nextState
-        }
-
-        case types.RESTORE_TICKET_DRAFT: {
-            const {assignee_team, assignee_user, customer, subject, tags} =
-                action.payload as Pick<
-                    Ticket,
-                    | 'assignee_team'
-                    | 'assignee_user'
-                    | 'customer'
-                    | 'subject'
-                    | 'tags'
-                >
-            return state
-                .set('assignee_team', fromJS(assignee_team))
-                .set('assignee_user', fromJS(assignee_user))
-                .set('customer', fromJS(customer) || null)
-                .set('subject', subject)
-                .set('tags', fromJS(tags))
-        }
-
-        case types.RESTORE_TICKET_DRAFT_APPLY_MACRO: {
-            return state.setIn(
-                ['state', 'appliedMacro'],
-                fromJS(action.payload)
-            )
         }
 
         default:
