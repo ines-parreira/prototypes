@@ -5,11 +5,50 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/helpdesk/applications/{applicationId}/agents": {
+            "get": {
+                "tags": ["gorgias-chat-api"],
+                "summary": "Get application agents",
+                "operationId": "getApplicationAgents",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Bearer {{accessToken}}"
+                    },
+                    {
+                        "name": "applicationId",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
         "/applications/{applicationId}/texts": {
             "get": {
-                "tags": [
-                    "gorgias-chat-api"
-                ],
+                "tags": ["gorgias-chat-api"],
                 "summary": "GET application texts",
                 "operationId": "getApplicationTexts",
                 "parameters": [
@@ -48,9 +87,7 @@
                 }
             },
             "put": {
-                "tags": [
-                    "gorgias-chat-api"
-                ],
+                "tags": ["gorgias-chat-api"],
                 "summary": "Update application texts",
                 "operationId": "updateApplicationTexts",
                 "requestBody": {
@@ -101,9 +138,7 @@
         },
         "/applications/{applicationId}/installation-status": {
             "get": {
-                "tags": [
-                    "gorgias-chat-api"
-                ],
+                "tags": ["gorgias-chat-api"],
                 "summary": "GET installation status",
                 "operationId": "getInstallationStatus",
                 "parameters": [
@@ -144,9 +179,7 @@
         },
         "/translations": {
             "get": {
-                "tags": [
-                    "gorgias-chat-api"
-                ],
+                "tags": ["gorgias-chat-api"],
                 "summary": "Get translations",
                 "operationId": "getTranslations",
                 "parameters": [
@@ -186,9 +219,7 @@
         },
         "/applications/{applicationId}/automation-settings": {
             "put": {
-                "tags": [
-                    "gorgias-chat-api"
-                ],
+                "tags": ["gorgias-chat-api"],
                 "summary": "Upsert application automation settings",
                 "operationId": "upsertApplicationAutomationSettings",
                 "requestBody": {
@@ -237,9 +268,7 @@
                 }
             },
             "get": {
-                "tags": [
-                    "gorgias-chat-api"
-                ],
+                "tags": ["gorgias-chat-api"],
                 "summary": "GET application automation settings",
                 "operationId": "getApplicationAutomationSettings",
                 "parameters": [

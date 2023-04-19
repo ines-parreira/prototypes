@@ -3,8 +3,8 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
-import {getGorgiasChatApiClient} from 'rest_api/gorgias_chat_api/client'
-import type {Client} from 'rest_api/gorgias_chat_api/client.generated'
+import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
+import type {Client} from 'rest_api/gorgias_chat_protected_api/client.generated'
 import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
 import * as constants from 'state/integrations/constants'
 import history from '../../../pages/history'
@@ -281,7 +281,7 @@ describe('integrations actions', () => {
         }
 
         beforeEach(async () => {
-            chatClient = await getGorgiasChatApiClient()
+            chatClient = await getGorgiasChatProtectedApiClient()
             jest.resetAllMocks()
         })
 

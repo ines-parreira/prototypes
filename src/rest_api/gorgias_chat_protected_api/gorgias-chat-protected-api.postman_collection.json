@@ -6,209 +6,217 @@
     },
     "item": [
         {
-        "name": "GET application texts",
-        "protocolProfileBehavior": {
-          "disableBodyPruning": true
-        },
-        "request": {
-          "method": "GET",
-          "header": [
-            {
-              "key": "Content-Type",
-              "name": "Content-Type",
-              "value": "application/json",
-              "type": "text"
-            },
-            {
-              "key": "Authorization",
-              "value": "Bearer {{accessToken}}",
-              "type": "text"
-            }
-          ],
-          "body": {
-            "mode": "raw",
-            "raw": "{\n\t\"texts\": {\n        \"texts\": {},\n        \"sspTexts\": {}\n    }\n}\n"
-          },
-          "url": {
-            "raw": "{{baseURL}}/applications/{{applicationId}}/texts",
-            "host": [
-              "{{baseURL}}"
-            ],
-            "path": [
-              "applications",
-              "{{applicationId}}",
-              "texts"
-            ]
-          }
-        },
-        "response": []
-      },
-      {
-        "name": "Update application texts",
-        "request": {
-          "method": "PUT",
-          "header": [
-            {
-              "key": "Content-Type",
-              "name": "Content-Type",
-              "value": "application/json",
-              "type": "text"
-            },
-            {
-              "key": "Authorization",
-              "value": "Bearer {{accessToken}}",
-              "type": "text"
-            }
-          ],
-          "body": {
-            "mode": "raw",
-            "raw": "{\n    \"texts\": {},\n    \"sspTexts\": {}\n}\n"
-          },
-          "url": {
-            "raw": "{{baseURL}}/applications/{{applicationId}}/texts",
-            "host": [
-              "{{baseURL}}"
-            ],
-            "path": [
-              "applications",
-              "{{applicationId}}",
-              "texts"
-            ]
-          }
-        },
-        "response": []
-      },
-      {
-        "name": "GET installation status",
-        "request": {
-          "method": "GET",
-          "header": [
-            {
-              "key": "Content-Type",
-              "name": "Content-Type",
-              "value": "application/json",
-              "type": "text"
-            },
-            {
-              "key": "Authorization",
-              "value": "Bearer {{accessToken}}",
-              "type": "text"
-            }
-          ],
-          "url": {
-            "raw": "{{baseURL}}/applications/{{applicationId}}/installation-status",
-            "host": [
-              "{{baseURL}}"
-            ],
-            "path": [
-              "applications",
-              "{{applicationId}}",
-              "installation-status"
-            ]
-          }
-        },
-        "response": []
-      },
-      {
-        "name": "Get translations",
-        "request": {
-          "method": "GET",
-          "header": [
-            {
-              "key": "Content-Type",
-              "name": "Content-Type",
-              "value": "application/json",
-              "type": "text"
-            },
-            {
-              "key": "Authorization",
-              "value": "Bearer {{accessToken}}",
-              "type": "text"
-            }
-          ],
-          "url": {
-            "raw": "{{baseURL}}/translations?lang=",
-            "host": [
-              "{{baseURL}}"
-            ],
-            "path": [
-              "translations"
-            ],
-            "query": [
-              {
-                "key": "lang",
-                "value": ""
-              }
-            ]
-          }
-        },
-        "response": []
-      },
-      {
-        "name": "Upsert application automation settings",
-        "request": {
-            "method": "PUT",
-            "header": [
-                {
-                    "key": "Content-Type",
-                    "name": "Content-Type",
-                    "value": "application/json",
-                    "type": "text"
-                },
-                {
-                    "key": "Authorization",
-                    "value": "Bearer {{accessToken}}",
-                    "type": "text"
-                }
-            ],
-            "body": {
-                "mode": "raw",
-                "raw": "{\n    \"articleRecommendation\": {\n        \"enabled\": true\n    },\n    \"orderManagement\": {\n        \"enabled\": true\n    },\n    \"quickResponses\": {\n        \"enabled\": true\n    }\n}"
-            },
-            "url": {
-                "raw": "{{baseURL}}/applications/{{applicationId}}/automation-settings",
-                "host": [
-                    "{{baseURL}}"
+            "name": "Get application agents",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "type": "text",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "type": "text",
+                        "value": "Bearer {{accessToken}}"
+                    }
                 ],
-                "path": [
-                    "applications",
-                    "{{applicationId}}",
-                    "automation-settings"
-                ]
-            }
+                "url": {
+                    "raw": "{{baseURL}}/helpdesk/applications/{{applicationId}}/agents",
+                    "host": ["{{baseURL}}"],
+                    "path": [
+                        "helpdesk",
+                        "applications",
+                        "{{applicationId}}",
+                        "agents"
+                    ]
+                }
+            },
+            "response": []
         },
-        "response": []
-      },
-      {
-          "name": "GET application automation settings",
-          "request": {
-              "method": "GET",
-              "header": [
-                  {
-                      "key": "Content-Type",
-                      "name": "Content-Type",
-                      "value": "application/json",
-                      "type": "text"
-                  },
-                  {
-                      "key": "Authorization",
-                      "value": "Bearer {{accessToken}}",
-                      "type": "text"
-                  }
-              ],
-              "url": {
-                  "raw": "{{baseURL}}/applications/{{applicationId}}/automation-settings",
-                  "host": [
-                      "{{baseURL}}"
-                  ],
-                  "path": [
-                      "applications",
-                      "{{applicationId}}",
-                      "automation-settings"
-                  ]
-              }
-          },
-          "response": []
-      }
+        {
+            "name": "GET application texts",
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n\t\"texts\": {\n        \"texts\": {},\n        \"sspTexts\": {}\n    }\n}\n"
+                },
+                "url": {
+                    "raw": "{{baseURL}}/applications/{{applicationId}}/texts",
+                    "host": ["{{baseURL}}"],
+                    "path": ["applications", "{{applicationId}}", "texts"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Update application texts",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"texts\": {},\n    \"sspTexts\": {}\n}\n"
+                },
+                "url": {
+                    "raw": "{{baseURL}}/applications/{{applicationId}}/texts",
+                    "host": ["{{baseURL}}"],
+                    "path": ["applications", "{{applicationId}}", "texts"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "GET installation status",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseURL}}/applications/{{applicationId}}/installation-status",
+                    "host": ["{{baseURL}}"],
+                    "path": [
+                        "applications",
+                        "{{applicationId}}",
+                        "installation-status"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get translations",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseURL}}/translations?lang=",
+                    "host": ["{{baseURL}}"],
+                    "path": ["translations"],
+                    "query": [
+                        {
+                            "key": "lang",
+                            "value": ""
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Upsert application automation settings",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"articleRecommendation\": {\n        \"enabled\": true\n    },\n    \"orderManagement\": {\n        \"enabled\": true\n    },\n    \"quickResponses\": {\n        \"enabled\": true\n    }\n}"
+                },
+                "url": {
+                    "raw": "{{baseURL}}/applications/{{applicationId}}/automation-settings",
+                    "host": ["{{baseURL}}"],
+                    "path": [
+                        "applications",
+                        "{{applicationId}}",
+                        "automation-settings"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "GET application automation settings",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{accessToken}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseURL}}/applications/{{applicationId}}/automation-settings",
+                    "host": ["{{baseURL}}"],
+                    "path": [
+                        "applications",
+                        "{{applicationId}}",
+                        "automation-settings"
+                    ]
+                }
+            },
+            "response": []
+        }
     ]
 }

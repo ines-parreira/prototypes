@@ -6,6 +6,20 @@ import {
 } from 'openapi-client-axios'
 
 declare namespace Paths {
+    namespace GetApplicationAgents {
+        export interface HeaderParameters {
+            'Content-Type'?: Parameters.ContentType
+            Authorization?: Parameters.Authorization
+        }
+        namespace Parameters {
+            export type ApplicationId = string
+            export type Authorization = string
+            export type ContentType = string
+        }
+        export interface PathParameters {
+            applicationId: Parameters.ApplicationId
+        }
+    }
     namespace GetApplicationAutomationSettings {
         export interface HeaderParameters {
             'Content-Type'?: Parameters.ContentType
@@ -94,6 +108,17 @@ declare namespace Paths {
 
 export interface OperationMethods {
     /**
+     * getApplicationAgents - Get application agents
+     */
+    'getApplicationAgents'(
+        parameters?: Parameters<
+            Paths.GetApplicationAgents.PathParameters &
+                Paths.GetApplicationAgents.HeaderParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<any>
+    /**
      * getApplicationTexts - GET application texts
      */
     'getApplicationTexts'(
@@ -162,6 +187,19 @@ export interface OperationMethods {
 }
 
 export interface PathsDictionary {
+    ['/helpdesk/applications/{applicationId}/agents']: {
+        /**
+         * getApplicationAgents - Get application agents
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetApplicationAgents.PathParameters &
+                    Paths.GetApplicationAgents.HeaderParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<any>
+    }
     ['/applications/{applicationId}/texts']: {
         /**
          * getApplicationTexts - GET application texts

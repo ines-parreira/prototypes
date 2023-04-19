@@ -24,8 +24,8 @@ import {NotificationStatus} from 'state/notifications/types'
 import type {StoreDispatch, RootState} from 'state/types'
 import GorgiasApi from 'services/gorgiasApi'
 import {fetchIntegrations as fetchIntegrationsResources} from 'models/integration/resources'
-import {getGorgiasChatApiClient} from 'rest_api/gorgias_chat_api/client'
-import type {AplicationAgentsResponse} from 'rest_api/gorgias_chat_api/types'
+import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
+import type {AplicationAgentsResponse} from 'rest_api/gorgias_chat_protected_api/types'
 import * as helpers from '../helpers'
 import {
     getTranslations as getTranslationsAction,
@@ -1038,7 +1038,8 @@ export function fetchChatIntegrationStatus(integrationId: number) {
             })
 
             const applicationId: string = integration.getIn(['meta', 'app_id'])
-            const client = await getGorgiasChatApiClient()
+            const client = await getGorgiasChatProtectedApiClient()
+
             const {data}: {data: AplicationAgentsResponse} =
                 await client.getApplicationAgents({
                     applicationId,
