@@ -11,6 +11,7 @@ import {
     transformToRevenueUpliftOverTime,
     transformToCampaignCalculatedTotals,
     transformToStoreTotal,
+    getMetricFromCubeData,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {CubeResponse} from 'pages/stats/revenue/clients/types'
 import {Stat} from 'models/stat/types'
@@ -26,6 +27,10 @@ import {CampaignsTotalsMetricNames} from 'pages/stats/revenue/services/constants
 import {TicketPerformanceData} from 'pages/stats/revenue/services/types'
 
 describe('Campaign metrics helper tests', () => {
+    const cubeDataMissing = {
+        onlyWrongKeyHere: '12345678',
+    }
+
     describe('getDataFromResultSet', () => {
         const cubeResponse = {
             data: [{metricKey: 'metricValue'}],
@@ -64,19 +69,32 @@ describe('Campaign metrics helper tests', () => {
         })
     })
 
-    describe('transformToCampaignEventsTotals', () => {
-        const cubeData = [
-            {
-                [CampaignOrderEventsMeasure.impressions]: '12345678',
-                [CampaignOrderEventsMeasure.engagement]: '2345678',
+    describe('getMetricFromCubeData', () => {
+        const cubeResponse = {
+            data: {
+                data: [{someKey: 'someVal'}],
             },
-        ]
+        }
 
-        const cubeDataMissing = [
-            {
-                onlyWrongKeyHere: '12345678',
-            },
-        ]
+        it.each([
+            [cubeResponse, {someKey: 'someVal'}],
+            [{data: 'need one more'}, {}],
+            [{data: {nodata: 'no metric'}}, {}],
+            [{nodata: 'no metric'}, {}],
+            [{}, {}],
+            [null, {}],
+            [undefined, {}],
+        ])('For data %p should return %p', (data, expected) => {
+            const result = getMetricFromCubeData(data)
+            expect(result).toEqual(expected)
+        })
+    })
+
+    describe('transformToCampaignEventsTotals', () => {
+        const cubeData = {
+            [CampaignOrderEventsMeasure.impressions]: '12345678',
+            [CampaignOrderEventsMeasure.engagement]: '2345678',
+        }
 
         it('should return correct data', () => {
             const result = transformToCampaignEventsTotals(cubeData)
@@ -95,7 +113,7 @@ describe('Campaign metrics helper tests', () => {
         })
 
         it('should return the defaults for wrong data', () => {
-            const result = transformToCampaignEventsTotals([])
+            const result = transformToCampaignEventsTotals(undefined)
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.impressions]: '0',
                 [CampaignsTotalsMetricNames.engagement]: '0',
@@ -105,18 +123,10 @@ describe('Campaign metrics helper tests', () => {
 
     describe('transformToCampaignOrdersTotals', () => {
         const currency = 'USD'
-        const cubeData = [
-            {
-                [OrderConversionMeasure.campaignSales]: '34.56',
-                [OrderConversionMeasure.campaignSalesCount]: '345678',
-            },
-        ]
-
-        const cubeDataMissing = [
-            {
-                onlyWrongKeyHere: '12345678',
-            },
-        ]
+        const cubeData = {
+            [OrderConversionMeasure.campaignSales]: '34.56',
+            [OrderConversionMeasure.campaignSalesCount]: '345678',
+        }
 
         it('should return correct data', () => {
             const result = transformToCampaignOrdersTotals(cubeData, currency)
@@ -138,7 +148,7 @@ describe('Campaign metrics helper tests', () => {
         })
 
         it('should return the defaults for wrong data', () => {
-            const result = transformToCampaignOrdersTotals([], currency)
+            const result = transformToCampaignOrdersTotals(undefined, currency)
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.revenue]: '$0',
                 [CampaignsTotalsMetricNames.campaignSalesCount]: '0',
@@ -147,23 +157,13 @@ describe('Campaign metrics helper tests', () => {
     })
 
     describe('transformToCampaignCalculatedTotals', () => {
-        const orderCubeData = [
-            {
-                [OrderConversionMeasure.campaignSales]: '750',
-                [OrderConversionMeasure.campaignSalesCount]: '345678',
-            },
-        ]
-        const totalCubeData = [
-            {
-                [OrderConversionMeasure.gmv]: '1000',
-            },
-        ]
-
-        const cubeDataMissing = [
-            {
-                onlyWrongKeyHere: '12345678',
-            },
-        ]
+        const orderCubeData = {
+            [OrderConversionMeasure.campaignSales]: '750',
+            [OrderConversionMeasure.campaignSalesCount]: '345678',
+        }
+        const totalCubeData = {
+            [OrderConversionMeasure.gmv]: '1000',
+        }
 
         it('should return correct data', () => {
             const result = transformToCampaignCalculatedTotals(
@@ -186,7 +186,10 @@ describe('Campaign metrics helper tests', () => {
         })
 
         it('should return the defaults for wrong data', () => {
-            const result = transformToCampaignCalculatedTotals([], [])
+            const result = transformToCampaignCalculatedTotals(
+                undefined,
+                undefined
+            )
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.influencedRevenueUplift]: '0%',
             })
@@ -195,17 +198,9 @@ describe('Campaign metrics helper tests', () => {
 
     describe('transformToStoreTotal', () => {
         const currency = 'USD'
-        const cubeData = [
-            {
-                [OrderConversionMeasure.gmv]: '12345.678',
-            },
-        ]
-
-        const cubeDataMissing = [
-            {
-                onlyWrongKeyHere: '12345678',
-            },
-        ]
+        const cubeData = {
+            [OrderConversionMeasure.gmv]: '12345.678',
+        }
 
         it('should return correct data', () => {
             const result = transformToStoreTotal(cubeData, currency)
@@ -222,7 +217,7 @@ describe('Campaign metrics helper tests', () => {
         })
 
         it('should return the defaults for wrong data', () => {
-            const result = transformToStoreTotal([], currency)
+            const result = transformToStoreTotal(undefined, currency)
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.gmv]: '$0',
             })

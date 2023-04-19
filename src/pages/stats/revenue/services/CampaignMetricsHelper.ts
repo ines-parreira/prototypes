@@ -53,8 +53,12 @@ export const getDataFromStatResult = (result: Stat): StatData => {
     return _get(result, 'data.data', []) as StatData
 }
 
-const _getMetricFromCubeData = (data: CubeData): CubeMetric => {
-    return _get(data, '[0]', {}) as CubeMetric
+export const getMetricFromCubeData = (data: any): CubeMetric => {
+    return _get(data, 'data.data[0]', {}) as CubeMetric
+}
+
+const _getMetricOrDefault = (data: CubeMetric | undefined): CubeMetric => {
+    return data || {}
 }
 
 const _gmvUplift = (gmv: number, campaignSales: number): number => {
@@ -85,9 +89,9 @@ const _calculateTraffic = (
 }
 
 export const transformToCampaignEventsTotals = (
-    data: CubeData
+    data: CubeMetric | undefined
 ): EventsTotals => {
-    const metric: CubeMetric = _getMetricFromCubeData(data)
+    const metric: CubeMetric = _getMetricOrDefault(data)
     return {
         [CampaignsTotalsMetricNames.impressions]: formatNumber(
             parseFloat(
@@ -101,10 +105,10 @@ export const transformToCampaignEventsTotals = (
 }
 
 export const transformToCampaignOrdersTotals = (
-    data: CubeData,
+    data: CubeMetric | undefined,
     currency: string
 ): OrdersTotals => {
-    const metric: CubeMetric = _getMetricFromCubeData(data)
+    const metric: CubeMetric = _getMetricOrDefault(data)
 
     return {
         [CampaignsTotalsMetricNames.revenue]: formatCurrency(
@@ -120,11 +124,11 @@ export const transformToCampaignOrdersTotals = (
 }
 
 export const transformToCampaignCalculatedTotals = (
-    orderData: CubeData,
-    totalData: CubeData
+    orderData: CubeMetric | undefined,
+    totalData: CubeMetric | undefined
 ): CalculatedTotals => {
-    const orderMetric: CubeMetric = _getMetricFromCubeData(orderData)
-    const totalMetric: CubeMetric = _getMetricFromCubeData(totalData)
+    const orderMetric: CubeMetric = _getMetricOrDefault(orderData)
+    const totalMetric: CubeMetric = _getMetricOrDefault(totalData)
 
     const campaignSales = parseFloat(
         _get(orderMetric, OrderConversionMeasure.campaignSales, '0')
@@ -141,10 +145,10 @@ export const transformToCampaignCalculatedTotals = (
 }
 
 export const transformToStoreTotal = (
-    data: CubeData,
+    data: CubeMetric | undefined,
     currency: string
 ): StoreTotal => {
-    const metric: CubeMetric = _getMetricFromCubeData(data)
+    const metric: CubeMetric = data || {}
 
     return {
         [CampaignsTotalsMetricNames.gmv]: formatCurrency(

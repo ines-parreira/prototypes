@@ -33,9 +33,6 @@ describe('Calling CubeClient functions', () => {
         [getCampaignEventsPerformanceData],
         [getCampaignOrderPerformanceData],
         [getCampaignEventsOrdersPerformanceData],
-        [getCampaignEventsTotalsData],
-        [getCampaignOrderTotalsData],
-        [getStoreRevenueTotalData],
         [getRevenueUpliftGraphData],
         [getCampaignsPerformanceGraphData],
         [getTrafficData],
@@ -55,5 +52,28 @@ describe('Calling CubeClient functions', () => {
         // assert
         expect(expectedResponse).toStrictEqual(expectedResponse)
         expect(JSON.parse(expectedData || '{}')).toMatchSnapshot()
+    })
+})
+
+describe('Getting Cube queries', () => {
+    const props = {
+        startDate: '2023-01-01T00:00:00-08:00',
+        endDate: '2023-03-15T23:59:59-07:00',
+        shopName: 'punched-tires-shop',
+        campaignIds: ['1', '2'],
+        limit: 100,
+        offset: 200,
+    }
+
+    it.each([
+        [getCampaignEventsTotalsData],
+        [getCampaignOrderTotalsData],
+        [getStoreRevenueTotalData],
+    ])('%p should call load', (cubeFn) => {
+        // act
+        const query = cubeFn(props)
+
+        // assert
+        expect(query).toMatchSnapshot()
     })
 })

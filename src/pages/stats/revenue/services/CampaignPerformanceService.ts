@@ -1,19 +1,15 @@
 import {
     getCampaignEventsOrdersPerformanceData,
     getCampaignEventsPerformanceData,
-    getCampaignEventsTotalsData,
     getCampaignOrderPerformanceData,
-    getCampaignOrderTotalsData,
     getCampaignsPerformanceGraphData,
     getRevenueUpliftGraphData,
-    getStoreRevenueTotalData,
     getTrafficData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {
     CampaignChatPerformanceData,
     CampaignGraphData,
     CampaignsPerformanceDataset,
-    CampaignsTotals,
     RevenueGraphDataPoint,
     TicketPerformanceData,
 } from 'pages/stats/revenue/services/types'
@@ -21,59 +17,22 @@ import {
     backfillGraphData,
     getDataFromResultSet,
     getDataFromStatResult,
-    transformToCampaignCalculatedTotals,
     transformToCampaignConversionRateOverTime,
     transformToCampaignCTROverTime,
-    transformToCampaignEventsTotals,
-    transformToCampaignOrdersTotals,
     transformToCampaignsPerformanceTable,
     transformToChatConversionRateOverTime,
     transformToRevenueUpliftOverTime,
-    transformToStoreTotal,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {
     getCampaignTicketsPerformanceData,
     getTicketsPerformanceData,
 } from 'pages/stats/revenue/clients/RevenueAttributionClient'
 import {
-    CubeFilterParams,
     CubeMetric,
     FilterParams,
     TimeGranularity,
 } from 'pages/stats/revenue/clients/types'
 import {TicketChannel} from 'business/types/ticket'
-
-export const getTotals = async (
-    namespacedShopName: string,
-    campaignIds: string[],
-    currency: string,
-    startDate: string,
-    endDate: string
-): Promise<CampaignsTotals> => {
-    const attrs: CubeFilterParams = {
-        shopName: namespacedShopName,
-        campaignIds,
-        startDate,
-        endDate,
-    }
-
-    const [eventsTotals, orderTotals, storeTotal] = await Promise.all([
-        getCampaignEventsTotalsData(attrs),
-        getCampaignOrderTotalsData(attrs),
-        getStoreRevenueTotalData(attrs),
-    ])
-
-    const eventsTotalsData = getDataFromResultSet(eventsTotals)
-    const orderTotalsData = getDataFromResultSet(orderTotals)
-    const storeTotalData = getDataFromResultSet(storeTotal)
-
-    return {
-        ...transformToCampaignEventsTotals(eventsTotalsData),
-        ...transformToCampaignOrdersTotals(orderTotalsData, currency),
-        ...transformToStoreTotal(storeTotalData, currency),
-        ...transformToCampaignCalculatedTotals(orderTotalsData, storeTotalData),
-    }
-}
 
 export const getRevenueUpliftOverTime = async (
     startDate: string,

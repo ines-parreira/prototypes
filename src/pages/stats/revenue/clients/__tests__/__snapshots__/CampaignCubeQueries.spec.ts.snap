@@ -75,45 +75,6 @@ exports[`Calling CubeClient functions [Function getCampaignEventsPerformanceData
 }
 `;
 
-exports[`Calling CubeClient functions [Function getCampaignEventsTotalsData] should call load 1`] = `
-{
-  "query": [
-    {
-      "dimensions": [],
-      "filters": [
-        {
-          "member": "CampaignOrderEvents.createdDatetime",
-          "operator": "inDateRange",
-          "values": [
-            "2023-01-01T00:00:00-08:00",
-            "2023-03-15T23:59:59-07:00",
-          ],
-        },
-        {
-          "member": "CampaignOrderEvents.campaignId",
-          "operator": "equals",
-          "values": [
-            "1",
-            "2",
-          ],
-        },
-        {
-          "member": "CampaignOrderEvents.shopName",
-          "operator": "equals",
-          "values": [
-            "punched-tires-shop",
-          ],
-        },
-      ],
-      "measures": [
-        "CampaignOrderEvents.impressions",
-        "CampaignOrderEvents.engagement",
-      ],
-    },
-  ],
-}
-`;
-
 exports[`Calling CubeClient functions [Function getCampaignOrderPerformanceData] should call load 1`] = `
 {
   "query": [
@@ -148,46 +109,6 @@ exports[`Calling CubeClient functions [Function getCampaignOrderPerformanceData]
         "OrderConversion.discountSalesCount",
         "OrderConversion.clickSales",
         "OrderConversion.clickSalesCount",
-        "OrderConversion.campaignSalesCount",
-      ],
-    },
-  ],
-}
-`;
-
-exports[`Calling CubeClient functions [Function getCampaignOrderTotalsData] should call load 1`] = `
-{
-  "query": [
-    {
-      "dimensions": [],
-      "filters": [
-        {
-          "member": "OrderConversion.createdDatetime",
-          "operator": "inDateRange",
-          "values": [
-            "2023-01-01T00:00:00-08:00",
-            "2023-03-15T23:59:59-07:00",
-          ],
-        },
-        {
-          "member": "OrderConversion.campaignId",
-          "operator": "equals",
-          "values": [
-            "1",
-            "2",
-          ],
-        },
-        {
-          "member": "OrderConversion.shopName",
-          "operator": "equals",
-          "values": [
-            "punched-tires-shop",
-          ],
-        },
-      ],
-      "measures": [
-        "OrderConversion.influencedRevenueUplift",
-        "OrderConversion.campaignSales",
         "OrderConversion.campaignSalesCount",
       ],
     },
@@ -304,36 +225,6 @@ exports[`Calling CubeClient functions [Function getRevenueUpliftGraphData] shoul
 }
 `;
 
-exports[`Calling CubeClient functions [Function getStoreRevenueTotalData] should call load 1`] = `
-{
-  "query": [
-    {
-      "dimensions": [],
-      "filters": [
-        {
-          "member": "OrderConversion.createdDatetime",
-          "operator": "inDateRange",
-          "values": [
-            "2023-01-01T00:00:00-08:00",
-            "2023-03-15T23:59:59-07:00",
-          ],
-        },
-        {
-          "member": "OrderConversion.shopName",
-          "operator": "equals",
-          "values": [
-            "punched-tires-shop",
-          ],
-        },
-      ],
-      "measures": [
-        "OrderConversion.gmv",
-      ],
-    },
-  ],
-}
-`;
-
 exports[`Calling CubeClient functions [Function getTrafficData] should call load 1`] = `
 {
   "query": [
@@ -372,4 +263,107 @@ exports[`Calling CubeClient functions [Function getTrafficData] should call load
     },
   ],
 }
+`;
+
+exports[`Getting Cube queries [Function getCampaignEventsTotalsData] should call load 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "CampaignOrderEvents.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T00:00:00-08:00",
+          "2023-03-15T23:59:59-07:00",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.campaignId",
+        "operator": "equals",
+        "values": [
+          "1",
+          "2",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.shopName",
+        "operator": "equals",
+        "values": [
+          "punched-tires-shop",
+        ],
+      },
+    ],
+    "measures": [
+      "CampaignOrderEvents.impressions",
+      "CampaignOrderEvents.engagement",
+    ],
+  },
+]
+`;
+
+exports[`Getting Cube queries [Function getCampaignOrderTotalsData] should call load 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "OrderConversion.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T00:00:00-08:00",
+          "2023-03-15T23:59:59-07:00",
+        ],
+      },
+      {
+        "member": "OrderConversion.campaignId",
+        "operator": "equals",
+        "values": [
+          "1",
+          "2",
+        ],
+      },
+      {
+        "member": "OrderConversion.shopName",
+        "operator": "equals",
+        "values": [
+          "punched-tires-shop",
+        ],
+      },
+    ],
+    "measures": [
+      "OrderConversion.influencedRevenueUplift",
+      "OrderConversion.campaignSales",
+      "OrderConversion.campaignSalesCount",
+    ],
+  },
+]
+`;
+
+exports[`Getting Cube queries [Function getStoreRevenueTotalData] should call load 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "OrderConversion.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T00:00:00-08:00",
+          "2023-03-15T23:59:59-07:00",
+        ],
+      },
+      {
+        "member": "OrderConversion.shopName",
+        "operator": "equals",
+        "values": [
+          "punched-tires-shop",
+        ],
+      },
+    ],
+    "measures": [
+      "OrderConversion.gmv",
+    ],
+  },
+]
 `;

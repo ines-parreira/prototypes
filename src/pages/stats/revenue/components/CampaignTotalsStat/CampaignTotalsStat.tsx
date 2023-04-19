@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {useAsyncFn} from 'react-use'
 import {useCampaignStatsFilters} from 'pages/stats/revenue/hooks/useCampaignStatsFilters'
-import {CampaignsTotals} from 'pages/stats/revenue/services/types'
-import {getTotals} from 'pages/stats/revenue/services/CampaignPerformanceService'
 import {useGetCurrencyForStore} from 'pages/stats/revenue/hooks/useGetCurrencyForStore'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/revenue/hooks/useGetNamespacedShopNameForStore'
 import MetricCard from 'pages/stats/MetricCard'
@@ -10,10 +7,7 @@ import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {CampaignsTotalsMetricNames} from 'pages/stats/revenue/services/constants'
-
-type Props = {
-    onError: (error: Error) => void
-}
+import {useGetTotalsStat} from 'pages/stats/revenue/hooks/stats/useGetTotalsStat'
 
 const GRID_SIZE = 4
 const SKELETON_HEIGHT = 100
@@ -55,9 +49,7 @@ const METRICS = {
     },
 }
 
-export const CampaignTotalsStat = ({onError}: Props) => {
-    const [totals, setTotals] = useState<CampaignsTotals | null>(null)
-    const [error, setError] = useState<Error | null>(null)
+export const CampaignTotalsStat = () => {
     const [statsVisible, setStatsVisible] = useState(false)
 
     const {selectedIntegrations, selectedCampaigns, selectedPeriod} =
@@ -66,27 +58,17 @@ export const CampaignTotalsStat = ({onError}: Props) => {
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
 
-    const [{loading}, fetchTotals] = useAsyncFn(async () => {
-        try {
-            const data = await getTotals(
-                namespacedShopName,
-                selectedCampaigns,
-                currency,
-                selectedPeriod.start_datetime,
-                selectedPeriod.end_datetime
-            )
-            setTotals(data)
-        } catch (error) {
-            onError(error)
-            setError(error)
-        }
-    }, [namespacedShopName, selectedCampaigns, selectedPeriod, currency])
-
-    useEffect(() => void fetchTotals(), [fetchTotals])
+    const {isFetching, isError, data} = useGetTotalsStat(
+        namespacedShopName,
+        selectedCampaigns,
+        currency,
+        selectedPeriod.start_datetime,
+        selectedPeriod.end_datetime
+    )
 
     useEffect(() => {
-        setStatsVisible(!loading && !error && totals !== null)
-    }, [loading, error, totals])
+        setStatsVisible(!isFetching && !isError && data !== null)
+    }, [isFetching, isError, data])
 
     return (
         <React.Fragment>
@@ -96,7 +78,7 @@ export const CampaignTotalsStat = ({onError}: Props) => {
                         title={METRICS.revenue.title}
                         hint={METRICS.revenue.hint}
                     >
-                        <BigNumberMetric>{totals?.revenue}</BigNumberMetric>
+                        <BigNumberMetric>{data?.revenue}</BigNumberMetric>
                     </MetricCard>
                 )}
                 {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
@@ -108,7 +90,7 @@ export const CampaignTotalsStat = ({onError}: Props) => {
                         hint={METRICS.influencedRevenueUplift.hint}
                     >
                         <BigNumberMetric>
-                            {totals?.influencedRevenueUplift}
+                            {data?.influencedRevenueUplift}
                         </BigNumberMetric>
                     </MetricCard>
                 )}
@@ -120,7 +102,7 @@ export const CampaignTotalsStat = ({onError}: Props) => {
                         title={METRICS.gmv.title}
                         hint={METRICS.gmv.hint}
                     >
-                        <BigNumberMetric>{totals?.gmv}</BigNumberMetric>
+                        <BigNumberMetric>{data?.gmv}</BigNumberMetric>
                     </MetricCard>
                 )}
                 {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
@@ -131,7 +113,7 @@ export const CampaignTotalsStat = ({onError}: Props) => {
                         title={METRICS.impressions.title}
                         hint={METRICS.impressions.hint}
                     >
-                        <BigNumberMetric>{totals?.impressions}</BigNumberMetric>
+                        <BigNumberMetric>{data?.impressions}</BigNumberMetric>
                     </MetricCard>
                 )}
                 {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
@@ -142,7 +124,7 @@ export const CampaignTotalsStat = ({onError}: Props) => {
                         title={METRICS.engagement.title}
                         hint={METRICS.engagement.hint}
                     >
-                        <BigNumberMetric>{totals?.engagement}</BigNumberMetric>
+                        <BigNumberMetric>{data?.engagement}</BigNumberMetric>
                     </MetricCard>
                 )}
                 {!statsVisible && <Skeleton height={SKELETON_HEIGHT} />}
@@ -154,7 +136,7 @@ export const CampaignTotalsStat = ({onError}: Props) => {
                         hint={METRICS.campaignSalesCount.hint}
                     >
                         <BigNumberMetric>
-                            {totals?.campaignSalesCount}
+                            {data?.campaignSalesCount}
                         </BigNumberMetric>
                     </MetricCard>
                 )}

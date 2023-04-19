@@ -17,6 +17,7 @@ import {
     OrderConversionMeasure,
     SharedDimension,
 } from 'pages/stats/revenue/clients/constants'
+import {ReportingParams} from 'models/reporting/types'
 
 const _getDefaultFilters = ({
     startDate,
@@ -182,66 +183,72 @@ export const getCampaignEventsOrdersPerformanceData = async ({
     })
 }
 
-export const getCampaignEventsTotalsData = async ({
+export const getCampaignEventsTotalsData = ({
     shopName,
     campaignIds,
     startDate,
     endDate,
-}: CubeFilterParams): Promise<CubeResponse> => {
-    return await client.load({
-        dimensions: [],
-        measures: [
-            CampaignOrderEventsMeasure.impressions,
-            CampaignOrderEventsMeasure.engagement,
-        ],
-        filters: _getDefaultFilters({
-            startDate,
-            endDate,
-            cubeName: Cube.campaignOrderEvents,
-            shopName,
-            campaignIds,
-        }),
-    })
+}: CubeFilterParams): ReportingParams => {
+    return [
+        {
+            dimensions: [],
+            measures: [
+                CampaignOrderEventsMeasure.impressions,
+                CampaignOrderEventsMeasure.engagement,
+            ],
+            filters: _getDefaultFilters({
+                startDate,
+                endDate,
+                cubeName: Cube.campaignOrderEvents,
+                shopName,
+                campaignIds,
+            }),
+        },
+    ]
 }
 
-export const getCampaignOrderTotalsData = async ({
+export const getCampaignOrderTotalsData = ({
     shopName,
     campaignIds,
     startDate,
     endDate,
-}: CubeFilterParams): Promise<CubeResponse> => {
-    return await client.load({
-        dimensions: [],
-        measures: [
-            OrderConversionMeasure.influencedRevenueUplift,
-            OrderConversionMeasure.campaignSales,
-            OrderConversionMeasure.campaignSalesCount,
-        ],
-        filters: _getDefaultFilters({
-            startDate,
-            endDate,
-            cubeName: Cube.orderConversion,
-            shopName,
-            campaignIds,
-        }),
-    })
+}: CubeFilterParams): ReportingParams => {
+    return [
+        {
+            dimensions: [],
+            measures: [
+                OrderConversionMeasure.influencedRevenueUplift,
+                OrderConversionMeasure.campaignSales,
+                OrderConversionMeasure.campaignSalesCount,
+            ],
+            filters: _getDefaultFilters({
+                startDate,
+                endDate,
+                cubeName: Cube.orderConversion,
+                shopName,
+                campaignIds,
+            }),
+        },
+    ]
 }
 
-export const getStoreRevenueTotalData = async ({
+export const getStoreRevenueTotalData = ({
     shopName,
     startDate,
     endDate,
-}: CubeFilterParams): Promise<CubeResponse> => {
-    return await client.load({
-        dimensions: [],
-        measures: [OrderConversionMeasure.gmv],
-        filters: _getDefaultFilters({
-            startDate,
-            endDate,
-            cubeName: Cube.orderConversion,
-            shopName,
-        }),
-    })
+}: CubeFilterParams): ReportingParams => {
+    return [
+        {
+            dimensions: [],
+            measures: [OrderConversionMeasure.gmv],
+            filters: _getDefaultFilters({
+                startDate,
+                endDate,
+                cubeName: Cube.orderConversion,
+                shopName,
+            }),
+        },
+    ]
 }
 
 export const getRevenueUpliftGraphData = async ({

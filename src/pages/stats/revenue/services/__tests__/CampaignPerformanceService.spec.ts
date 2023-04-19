@@ -5,7 +5,6 @@ import {
     getCampaignsAndChatPerformanceOverTime,
     getCampaignsPerformance,
     getRevenueUpliftOverTime,
-    getTotals,
 } from 'pages/stats/revenue/services/CampaignPerformanceService'
 import {Stat} from 'models/stat/types'
 import {CubeResponse} from 'pages/stats/revenue/clients/types'
@@ -19,69 +18,6 @@ import {
 } from 'pages/stats/revenue/clients/constants'
 
 describe('Revenue Attribution Service stats methods', () => {
-    describe('getTotals', () => {
-        const campaignEventsTotalsData = {
-            data: [
-                {
-                    [CampaignOrderEventsMeasure.impressions]: '1000',
-                    [CampaignOrderEventsMeasure.engagement]: '100',
-                },
-            ],
-        } as CubeResponse
-        const mockCampaignEventsTotals = jest
-            .spyOn(cubeQueries, 'getCampaignEventsTotalsData')
-            .mockReturnValue(
-                new Promise((resolve) => resolve(campaignEventsTotalsData))
-            )
-
-        const campaignOrdersTotalsData = {
-            data: [
-                {
-                    [OrderConversionMeasure.influencedRevenueUplift]: '23.45',
-                    [OrderConversionMeasure.campaignSales]: '2000',
-                    [OrderConversionMeasure.campaignSalesCount]: '10',
-                },
-            ],
-        } as CubeResponse
-        const mockCampaignOrdersTotals = jest
-            .spyOn(cubeQueries, 'getCampaignOrderTotalsData')
-            .mockReturnValue(
-                new Promise((resolve) => resolve(campaignOrdersTotalsData))
-            )
-
-        const storeTotalData = {
-            data: [
-                {
-                    [OrderConversionMeasure.gmv]: '3000',
-                },
-            ],
-        } as CubeResponse
-        const mockStoreTotalData = jest
-            .spyOn(cubeQueries, 'getStoreRevenueTotalData')
-            .mockReturnValueOnce(
-                new Promise((resolve) => resolve(storeTotalData))
-            )
-
-        beforeEach(() => {
-            mockCampaignEventsTotals.mockClear()
-            mockCampaignOrdersTotals.mockClear()
-            mockStoreTotalData.mockClear()
-        })
-
-        it('should return prepared data for totals section', async () => {
-            // act
-            const result = await getTotals(
-                'shopify:slow-formulas-for-sale',
-                ['campaign231', 'campaign232'],
-                'EUR',
-                '2023-01-01T00:00:00-08:00',
-                '2023-02-01T00:00:00-08:00'
-            )
-
-            // assert
-            expect(result).toMatchSnapshot()
-        })
-    })
     describe('getRevenueUpliftOverTime', () => {
         const revenueUpliftGraphData = {
             data: [
@@ -249,19 +185,6 @@ describe('Revenue Attribution Service stats methods', () => {
                 new Promise((resolve) => resolve(campaignOrdersPerformanceData))
             )
 
-        const revenueTotalData = {
-            data: [
-                {
-                    [OrderConversionMeasure.gmv]: '52345.67',
-                },
-            ],
-        } as CubeResponse
-        const mockStoreRevenueTotal = jest
-            .spyOn(cubeQueries, 'getStoreRevenueTotalData')
-            .mockReturnValue(
-                new Promise((resolve) => resolve(revenueTotalData))
-            )
-
         const trafficData = {
             data: [
                 {
@@ -331,7 +254,6 @@ describe('Revenue Attribution Service stats methods', () => {
         beforeEach(() => {
             mockCampaignEventsPerformance.mockClear()
             mockCampaignOrdersPerformance.mockClear()
-            mockStoreRevenueTotal.mockClear()
             mockTrafficData.mockClear()
             mockCampaignEventsOrdersPerformance.mockClear()
             mockCampaignTicketsPerformance.mockClear()

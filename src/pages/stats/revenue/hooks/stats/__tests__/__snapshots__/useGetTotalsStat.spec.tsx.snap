@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
+[
+  [
+    [
+      {
+        "dimensions": [],
+        "filters": [
+          {
+            "member": "CampaignOrderEvents.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-01-01T00:00:00-08:00",
+              "2023-02-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "CampaignOrderEvents.campaignId",
+            "operator": "equals",
+            "values": [
+              "campaign231",
+              "campaign232",
+            ],
+          },
+          {
+            "member": "CampaignOrderEvents.shopName",
+            "operator": "equals",
+            "values": [
+              "shopify:slow-formulas-for-sale",
+            ],
+          },
+        ],
+        "measures": [
+          "CampaignOrderEvents.impressions",
+          "CampaignOrderEvents.engagement",
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+  [
+    [
+      {
+        "dimensions": [],
+        "filters": [
+          {
+            "member": "OrderConversion.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-01-01T00:00:00-08:00",
+              "2023-02-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "OrderConversion.campaignId",
+            "operator": "equals",
+            "values": [
+              "campaign231",
+              "campaign232",
+            ],
+          },
+          {
+            "member": "OrderConversion.shopName",
+            "operator": "equals",
+            "values": [
+              "shopify:slow-formulas-for-sale",
+            ],
+          },
+        ],
+        "measures": [
+          "OrderConversion.influencedRevenueUplift",
+          "OrderConversion.campaignSales",
+          "OrderConversion.campaignSalesCount",
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+  [
+    [
+      {
+        "dimensions": [],
+        "filters": [
+          {
+            "member": "OrderConversion.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-01-01T00:00:00-08:00",
+              "2023-02-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "OrderConversion.shopName",
+            "operator": "equals",
+            "values": [
+              "shopify:slow-formulas-for-sale",
+            ],
+          },
+        ],
+        "measures": [
+          "OrderConversion.gmv",
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+]
+`;
+
+exports[`useGetTotalsStat should return prepared data for totals section 2`] = `
+{
+  "data": {
+    "campaignSalesCount": "10",
+    "engagement": "100",
+    "gmv": "€3,000",
+    "impressions": "1,000",
+    "influencedRevenueUplift": "200%",
+    "revenue": "€2,000",
+  },
+  "isError": false,
+  "isFetching": false,
+}
+`;
