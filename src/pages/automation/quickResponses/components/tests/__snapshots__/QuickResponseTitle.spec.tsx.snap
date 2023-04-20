@@ -3,17 +3,19 @@
 exports[`<QuickResponseTitle /> should render the title component 1`] = `
 <div>
   <div
-    class="wrapper input"
+    class="input"
   >
-    <input
-      class="input"
-      id="input-text-1"
+    <textarea
+      class="textarea"
+      id="textarea-1"
       maxlength="50"
-      name="input-text-1"
+      name="textarea-1"
       placeholder="Button text"
-      type="text"
-      value="How do I choose the right size?"
-    />
+      rows="1"
+      style="height: 2px;"
+    >
+      How do I choose the right size?
+    </textarea>
   </div>
 </div>
 `;

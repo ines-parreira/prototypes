@@ -1,16 +1,26 @@
-@import '~css/new/layout.less';
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/mixins.less';
 
 :local {
     .container {
         padding: @layout-spacing-m;
         display: flex;
-        flex-wrap: wrap;
         column-gap: 56px;
         row-gap: @layout-spacing-xl;
+
+        @media @mobiles {
+            flex-wrap: wrap;
+        }
     }
 
     .content {
-        flex-basis: 680px;
+        min-width: 432px;
+        max-width: 680px;
+        flex: 1;
+
+        @media @mobiles {
+            max-width: unset;
+        }
     }
 
     .buttonsContainer {

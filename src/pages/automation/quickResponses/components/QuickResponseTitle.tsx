@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import classnames from 'classnames'
+import _noop from 'lodash/noop'
 
-import TextInput from 'pages/common/forms/input/TextInput'
+import TextArea from 'pages/common/forms/TextArea'
 import {useAccordionItemContext} from 'pages/common/components/accordion/AccordionItemContext'
 
 import {usePropagateError} from '../QuickResponsesViewContext'
@@ -15,7 +16,7 @@ type Props = {
 }
 
 const QuickResponseTitle = ({title, onChange}: Props) => {
-    const [ref, setRef] = useState<HTMLInputElement | null>(null)
+    const [ref, setRef] = useState<HTMLTextAreaElement | null>(null)
     const {isExpanded} = useAccordionItemContext()
 
     const hasError =
@@ -30,16 +31,19 @@ const QuickResponseTitle = ({title, onChange}: Props) => {
     }, [ref, isExpanded])
 
     return (
-        <TextInput
+        <TextArea
+            key={isExpanded ? 1 : 0} // force rerender to trigger height re-computation
             ref={setRef}
             className={classnames(css.input, {
                 [css.isExpanded]: isExpanded,
+                [css.hasError]: hasError,
             })}
             value={title}
-            onChange={isExpanded ? onChange : undefined}
+            onChange={isExpanded ? onChange : _noop}
             placeholder="Button text"
             maxLength={QUICK_RESPONSE_TITLE_MAX_LENGTH}
-            hasError={hasError}
+            rows={1}
+            autoRowHeight
         />
     )
 }

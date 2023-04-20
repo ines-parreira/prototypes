@@ -139,14 +139,14 @@ describe('<QuickResponsesView />', () => {
             </Provider>
         )
 
-        const input = screen.getByDisplayValue(quickResponse1.title)
-
         act(() => {
-            fireEvent.click(input)
+            const textarea = screen.getByDisplayValue(quickResponse1.title)
+            fireEvent.click(textarea)
         })
 
         act(() => {
-            fireEvent.change(input, {target: {value: newTitle}})
+            const textarea = screen.getByDisplayValue(quickResponse1.title)
+            fireEvent.change(textarea, {target: {value: newTitle}})
         })
 
         const submitButton = screen.getByText('Save changes')
@@ -185,14 +185,14 @@ describe('<QuickResponsesView />', () => {
             </Provider>
         )
 
-        const input = screen.getByDisplayValue(quickResponse1.title)
-
         act(() => {
-            fireEvent.click(input)
+            const textarea = screen.getByDisplayValue(quickResponse1.title)
+            fireEvent.click(textarea)
         })
 
         act(() => {
-            fireEvent.change(input, {
+            const textarea = screen.getByDisplayValue(quickResponse1.title)
+            fireEvent.change(textarea, {
                 target: {value: 'What is your shipping policy?'},
             })
         })
@@ -203,7 +203,9 @@ describe('<QuickResponsesView />', () => {
             fireEvent.click(cancelButton)
         })
 
-        expect(input).toHaveDisplayValue(quickResponse1.title)
+        expect(
+            screen.getByDisplayValue(quickResponse1.title)
+        ).toBeInTheDocument()
     })
 
     it('should allow to reorder quick response', () => {

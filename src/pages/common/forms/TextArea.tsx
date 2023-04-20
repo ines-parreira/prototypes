@@ -4,9 +4,9 @@ import React, {
     ReactNode,
     Ref,
     useCallback,
-    useLayoutEffect,
     useRef,
     useImperativeHandle,
+    useEffect,
 } from 'react'
 import classnames from 'classnames'
 
@@ -54,13 +54,40 @@ function TextArea(
 
     useImperativeHandle(ref, () => innerTextAreaRef.current)
 
-    useLayoutEffect(() => {
-        if (autoRowHeight && !!innerTextAreaRef.current) {
-            // Based on: https://stackoverflow.com/a/53426195
-            innerTextAreaRef.current.style.height = 'inherit'
-            innerTextAreaRef.current.style.height = `${innerTextAreaRef.current.scrollHeight}px`
+    const adjustRowHeight = useCallback(() => {
+        if (!innerTextAreaRef.current) {
+            return
         }
-    }, [props.value, autoRowHeight])
+
+        // Based on: https://stackoverflow.com/a/53426195
+        innerTextAreaRef.current.style.height = 'inherit'
+
+        const computed = window.getComputedStyle(innerTextAreaRef.current)
+        const height =
+            parseInt(computed.getPropertyValue('border-top-width'), 10) +
+            innerTextAreaRef.current.scrollHeight +
+            parseInt(computed.getPropertyValue('border-bottom-width'), 10)
+
+        innerTextAreaRef.current.style.height = `${height}px`
+    }, [])
+
+    useEffect(() => {
+        if (autoRowHeight) {
+            adjustRowHeight()
+        }
+    }, [props.value, autoRowHeight, adjustRowHeight])
+
+    useEffect(() => {
+        if (!autoRowHeight) {
+            return
+        }
+
+        window.addEventListener('resize', adjustRowHeight)
+
+        return () => {
+            window.removeEventListener('resize', adjustRowHeight)
+        }
+    }, [autoRowHeight, adjustRowHeight])
 
     const onChangeHandler = useCallback(
         (event: React.ChangeEvent<HTMLTextAreaElement>) => {
