@@ -52,6 +52,7 @@ import {
     chatTicket,
     chatContactFormTicket,
     helpCenterContactFormTicket,
+    helpCenterContactFormTicketWithInternalNote,
 } from './fixtures'
 
 jest.mock('../../../config/ticket', () => {
@@ -496,6 +497,25 @@ describe('ticket utils', () => {
             expect(
                 getNewMessageSender(
                     helpCenterContactFormTicket,
+                    TicketMessageSourceType.HelpCenterContactForm,
+                    channels,
+                    integrations
+                )
+            ).toEqualImmutable(expected)
+        })
+
+        it('should return `to` field from second message from shopper when first is internal note (help center contact form)', () => {
+            /* first message is an internal note, second message is from shopper */
+            const expected = helpCenterContactFormTicketWithInternalNote.getIn([
+                'messages',
+                1,
+                'source',
+                'to',
+                0,
+            ])
+            expect(
+                getNewMessageSender(
+                    helpCenterContactFormTicketWithInternalNote,
                     TicketMessageSourceType.HelpCenterContactForm,
                     channels,
                     integrations

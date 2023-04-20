@@ -553,7 +553,20 @@ export function getNewMessageSender(
         ticket.get('channel') === TicketChannel.HelpCenter &&
         ticket.get('via') === TicketVia.ContactForm
     ) {
-        return ticket.getIn(['messages', 0, 'source', 'to', 0]) as Map<any, any>
+        const firstContactFormMessage = (
+            ticket.get('messages') as List<any>
+        ).find(
+            (message: Map<any, any>) =>
+                message.getIn(['source', 'type']) ===
+                TicketMessageSourceType.HelpCenterContactForm
+        ) as Map<any, any> | undefined
+
+        if (firstContactFormMessage) {
+            return firstContactFormMessage.getIn(['source', 'to', 0]) as Map<
+                any,
+                any
+            >
+        }
     }
 
     const preferredChannel =

@@ -543,3 +543,46 @@ export const helpCenterContactFormTicket = fromJS({
     ],
     via: 'contact_form',
 }) as Map<any, any>
+
+export const helpCenterContactFormTicketWithInternalNote = fromJS({
+    channel: 'help-center',
+    messages: [
+        {
+            source: {
+                from: {
+                    address: 'internal-note@gorgias.rehab',
+                    name: 'Internal Note',
+                },
+                type: 'internal-note',
+                to: [
+                    {
+                        address: 'customer-name@gorgias.com',
+                        name: 'Customer Name',
+                    },
+                ],
+            },
+            id: 153,
+            from_agent: false,
+            integration_id: 8,
+        },
+        {
+            source: {
+                from: {
+                    address: 'help-center-contact-form@gorgias.rehab',
+                    name: 'Help Center Contact Form',
+                },
+                type: 'help-center-contact-form',
+                to: [
+                    {
+                        address: 'contact-form@gorgias.com',
+                        name: 'Contact Form',
+                    },
+                ],
+            },
+            id: 153,
+            from_agent: false,
+            integration_id: 8,
+        },
+    ],
+    via: 'contact_form',
+}) as Map<any, any>
