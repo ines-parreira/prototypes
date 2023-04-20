@@ -1,0 +1,30 @@
+@import (reference) '~css/new/colorTokens';
+@import (reference) '~css/new/layout';
+
+:local {
+    .dragIndicator {
+        width: 22px;
+        text-align: center;
+    }
+
+    .dragIndicatorActive {
+        &:hover {
+            cursor: grab;
+        }
+
+        &:active {
+            cursor: grabbing;
+        }
+    }
+
+    .dragIndicatorDisabled {
+        &:hover {
+            cursor: not-allowed;
+        }
+    }
+
+    .bodyCell {
+        width: @layout-spacing-m;
+        padding: 0;
+    }
+}

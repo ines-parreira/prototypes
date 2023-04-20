@@ -7,35 +7,43 @@ import IconButton from 'pages/common/components/button/IconButton'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import ArchiveConfirmationModal from 'pages/settings/ticketFields/components/ArchiveConfirmationModal'
+import {TableBodyRowDraggable} from 'pages/common/components/table/TableBodyRowDraggable'
+import {Callbacks} from 'pages/common/hooks/useReorderDnD'
 import css from './Row.less'
 
 export type Props = {
+    position: number
     ticketField: CustomField
     canReorder: boolean
+    onMoveEntity: Callbacks['onHover']
+    onDropEntity: Callbacks['onDrop']
 }
-export default function Row({ticketField, canReorder}: Props) {
+export default function Row({
+    position,
+    ticketField,
+    canReorder,
+    onMoveEntity,
+    onDropEntity,
+}: Props) {
     const {mutate, isLoading} = useUpdateCustomFieldStatus(ticketField.id)
 
     const link = `/app/settings/ticket-fields/${ticketField.id}/edit`
     const [archiveModalVisible, setArchiveModalVisible] = useState(false)
 
     return (
-        <tr
-            id={ticketField.id.toString()}
-            key={ticketField.id}
-            data-id={ticketField.id} // dragging info
+        <TableBodyRowDraggable
             className={classnames('draggable', css.row)}
+            dragItem={{
+                id: ticketField.id,
+                position,
+                type: 'ticket-fields-row',
+            }}
+            shouldRenderDragHandle={
+                canReorder && !ticketField.deactivated_datetime
+            }
+            onMoveEntity={onMoveEntity}
+            onDropEntity={onDropEntity}
         >
-            {canReorder && !ticketField.deactivated_datetime && (
-                <td
-                    className="smallest align-middle"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <i className={'material-icons text-faded drag-handle'}>
-                        drag_indicator
-                    </i>
-                </td>
-            )}
             <td
                 className={classnames('link-full-td align-middle')}
                 id={`ticket-field-label-${ticketField.id}`}
@@ -113,6 +121,6 @@ export default function Row({ticketField, canReorder}: Props) {
                     </IconButton>
                 )}
             </td>
-        </tr>
+        </TableBodyRowDraggable>
     )
 }

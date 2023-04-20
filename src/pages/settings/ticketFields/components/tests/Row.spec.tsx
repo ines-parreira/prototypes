@@ -1,5 +1,4 @@
 import React, {ComponentProps} from 'react'
-import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
@@ -8,6 +7,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {customField} from 'fixtures/customField'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
+import {renderWithDnD} from 'utils/testing'
 import Row from '../Row'
 
 const mockStore = configureMockStore([thunk])
@@ -33,9 +33,12 @@ describe('<Row />', () => {
             const props = {
                 ticketField: customField,
                 canReorder,
+                position: 0,
+                onMoveEntity: jest.fn(),
+                onDropEntity: jest.fn(),
             }
 
-            const {container} = render(
+            const {container} = renderWithDnD(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore({})}>
                         <table>
@@ -59,9 +62,12 @@ describe('<Row />', () => {
                     required: true,
                 },
                 canReorder,
+                position: 0,
+                onMoveEntity: jest.fn(),
+                onDropEntity: jest.fn(),
             }
 
-            const {container} = render(
+            const {container} = renderWithDnD(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore({})}>
                         <table>
@@ -69,7 +75,7 @@ describe('<Row />', () => {
                                 <Row {...props} />
                             </tbody>
                         </table>
-                    </Provider>{' '}
+                    </Provider>
                 </QueryClientProvider>
             )
             expect(container.firstChild).toMatchSnapshot()
@@ -86,9 +92,12 @@ describe('<Row />', () => {
                     deactivated_datetime: '2022-01-02T03:04:05.123456+00:00',
                 },
                 canReorder,
+                position: 0,
+                onMoveEntity: jest.fn(),
+                onDropEntity: jest.fn(),
             }
 
-            const {container} = render(
+            const {container} = renderWithDnD(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore({})}>
                         <table>
@@ -96,7 +105,7 @@ describe('<Row />', () => {
                                 <Row {...props} />
                             </tbody>
                         </table>
-                    </Provider>{' '}
+                    </Provider>
                 </QueryClientProvider>
             )
             expect(container.firstChild).toMatchSnapshot()
