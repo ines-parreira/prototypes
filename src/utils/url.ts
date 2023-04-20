@@ -1,3 +1,5 @@
+import _trim from 'lodash/trim'
+
 export function ensureHTTPS(url = ''): string {
     if (url.startsWith('https://') || url.startsWith('/')) {
         return url
@@ -18,7 +20,7 @@ export function attachSearchParamsToUrl(
         const url = new URL(baseUrl)
 
         Object.entries(params).forEach(([key, value]) => {
-            url.searchParams.set(key, value)
+            url.searchParams.set(_trim(key), _trim(value))
         })
 
         return decodeURI(url.toString())

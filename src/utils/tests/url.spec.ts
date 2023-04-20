@@ -70,4 +70,13 @@ describe('attachSearchParamsToUrl', () => {
 
         spy.mockRestore()
     })
+
+    it('should trim the values', () => {
+        expect(
+            attachSearchParamsToUrl('http://acme.gorgias.docker', {
+                ref: ' internal ',
+                isTest: ' true ',
+            })
+        ).toEqual('http://acme.gorgias.docker/?ref=internal&isTest=true')
+    })
 })
