@@ -7,15 +7,16 @@ import {CampaignProduct} from '../types/CampaignProduct'
 
 import {extractLinksFromText} from './extractLinksFromText'
 
+export function isRevenueAddonSubscriber() {
+    return Boolean(getLDClient().allFlags()[FeatureFlagKey.RevenueBetaTesters])
+}
+
 export function shouldAppendUtmParam(): boolean {
     const shouldDisableUtmParams = Boolean(
         getLDClient().allFlags()[FeatureFlagKey.RevenueDisableUtmParams]
     )
-    const isRevenueAddon = Boolean(
-        getLDClient().allFlags()[FeatureFlagKey.RevenueBetaTesters]
-    )
 
-    return isRevenueAddon && !shouldDisableUtmParams
+    return isRevenueAddonSubscriber() && !shouldDisableUtmParams
 }
 
 export function removeRevenueUtmFromUrl(url: string): string {
@@ -46,6 +47,10 @@ export function attachUtmToCampaignProduct(
 export function replaceUrlsWithUtmUrl(html: string, campaignName: string) {
     let output = html
     const links = extractLinksFromText(html)
+
+    if (!isRevenueAddonSubscriber()) {
+        return output
+    }
 
     if (shouldAppendUtmParam()) {
         const linksWithUtm = links.map((url) =>
