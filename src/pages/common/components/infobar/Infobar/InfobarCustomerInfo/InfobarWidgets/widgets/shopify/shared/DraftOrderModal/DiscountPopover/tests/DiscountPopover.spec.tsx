@@ -124,7 +124,7 @@ describe('<DiscountPopover/>', () => {
                 expect(logEvent).toHaveBeenCalledWith(openEvent)
 
                 // Change form values
-                component.instance()._onDiscountValueChange('5.99')
+                component.instance()._onDiscountValueChange(5.99)
                 component
                     .find({id: 'title'})
                     .simulate('change', {target: {value: 'foo'}})
@@ -176,7 +176,7 @@ describe('<DiscountPopover/>', () => {
                 .at(1)
                 .find(Button)
                 .simulate('click', {preventDefault: _noop})
-            component.instance()._onDiscountValueChange('15')
+            component.instance()._onDiscountValueChange(15)
             component
                 .find({id: 'title'})
                 .simulate('change', {target: {value: 'bar'}})

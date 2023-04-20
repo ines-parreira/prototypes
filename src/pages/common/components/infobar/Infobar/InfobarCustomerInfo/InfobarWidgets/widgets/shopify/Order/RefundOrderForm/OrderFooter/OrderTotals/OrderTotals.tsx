@@ -27,27 +27,25 @@ type Props = {
 }
 
 type State = {
-    shipping: string
+    shipping: number
 }
 
 export default class OrderTotals extends React.PureComponent<Props, State> {
     state = {
-        shipping: this.props.payload.getIn(['shipping', 'amount']),
+        shipping: Number(this.props.payload.getIn(['shipping', 'amount'])),
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
-        if (
-            parseFloat(prevState.shipping) !== parseFloat(this.state.shipping)
-        ) {
+        if (prevState.shipping !== this.state.shipping) {
             this._updatePayload()
         }
     }
 
-    _onShippingChange = (value: string) => {
-        const {refund, currencyCode} = this.props
-        const max = parseFloat(refund.getIn(['shipping', 'maximum_refundable']))
-        const newValue = parseFloat(value) > max ? max : value
-        const newShipping = newValue.toString() || formatPrice(0, currencyCode)
+    _onShippingChange = (value: number) => {
+        const {refund} = this.props
+        const max = Number(refund.getIn(['shipping', 'maximum_refundable']))
+        const newValue = value > max ? max : value
+        const newShipping = newValue
 
         this.setState({shipping: newShipping})
     }

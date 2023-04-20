@@ -148,22 +148,49 @@ exports[`<OrderTotals/> render() should render with shipping line 1`] = `
       class="container text-right"
     >
       <span
-        class="leftLabel"
-        style="width: 2rem;"
+        class="wrapper group horizontal"
       >
-        $
+        <span
+          class="prefix"
+        >
+          $
+        </span>
+        <input
+          class="input"
+          id="shipping"
+          max="9.99"
+          min="0"
+          required=""
+          step="0.01"
+          type="number"
+          value="9.99"
+        />
+        <span
+          class="controls group vertical"
+        >
+          <button
+            class="wrapper button wrapper small fill secondary small top isDisabled"
+            disabled=""
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_up
+            </i>
+          </button>
+          <button
+            class="wrapper button wrapper small fill secondary small bottom"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
+        </span>
       </span>
-      <input
-        class="input form-control"
-        id="shipping"
-        max="9.99"
-        min="0"
-        required=""
-        step="0.01"
-        style="padding-left: 2rem;"
-        type="number"
-        value="9.99"
-      />
     </div>
   </dd>
   <dt

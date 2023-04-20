@@ -46,9 +46,9 @@ const OrderFooter = ({
     onReasonChange,
     onNotifyChange,
 }: Props) => {
-    const _onAmountChange = (value: string) => {
+    const _onAmountChange = (value: number) => {
         const max = getTotalAvailableToRefund(refund)
-        const newAmount = parseFloat(value) > max ? max : value
+        const newAmount = value > max ? max : value
         const newPayload = payload.setIn(
             ['transactions', 0, 'amount'],
             newAmount
@@ -112,13 +112,13 @@ const OrderFooter = ({
         )
     }
 
-    const amount = payload.getIn(['transactions', 0, 'amount'], '')
+    const amount = Number(payload.getIn(['transactions', 0, 'amount'], ''))
     const amountMax = refund.isEmpty()
         ? undefined
         : getTotalAvailableToRefund(refund)
     const totalQuantities = getTotalQuantities(payload, refund)
     const discrepancyLimit = getRefundAmount(refund)
-    const hasDiscrepancy = !loading && parseFloat(amount) !== discrepancyLimit
+    const hasDiscrepancy = !loading && amount !== discrepancyLimit
 
     return (
         <Container fluid className={css.container}>

@@ -22,7 +22,7 @@ export type CardMeta = {
 }
 
 export type ListMeta = {
-    limit: string
+    limit: number | string
     orderBy: string
 }
 

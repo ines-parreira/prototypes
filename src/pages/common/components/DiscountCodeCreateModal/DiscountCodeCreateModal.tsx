@@ -1,11 +1,10 @@
-import React, {ChangeEvent, FormEvent, memo, useCallback, useState} from 'react'
+import React, {FormEvent, memo, useCallback, useState} from 'react'
 import {
     Form as ReactStrapForm,
     FormGroup,
     FormText,
     Input,
     InputGroup,
-    InputGroupText,
     Label,
     ModalBody,
     ModalHeader,
@@ -24,6 +23,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import client from 'models/api/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {DiscountCode} from 'models/discountCodes/types'
+import NumberInput from 'pages/common/forms/input/NumberInput'
 import {PreviewRadioButton} from '../PreviewRadioButton'
 
 type Props = {
@@ -104,13 +104,8 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
         )
     }
 
-    const handleChangeDiscountValue = (
-        event: ChangeEvent<HTMLInputElement>
-    ) => {
-        const value = event.target.valueAsNumber
-        if (value) {
-            setDiscountValue(value / 100)
-        }
+    const handleChangeDiscountValue = (value?: number | undefined) => {
+        value && setDiscountValue(value / 100)
     }
 
     const handleChangeDiscountType = (value: string) => {
@@ -161,17 +156,15 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                         <FormGroup>
                             <Label for="discount_value">Percentage value</Label>
                             <InputGroup>
-                                <Input
+                                <NumberInput
                                     name="discount_value"
                                     value={discountValue && discountValue * 100}
                                     onChange={handleChangeDiscountValue}
-                                    type="number"
                                     min={1}
                                     max={100}
                                     step={0.01}
-                                    required={true}
+                                    prefix="%"
                                 />
-                                <InputGroupText>%</InputGroupText>
                             </InputGroup>
                             <FormText color="muted">
                                 The percentage value of the discount.
@@ -182,21 +175,15 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                         <FormGroup>
                             <Label for="discount_value">Fixed amount</Label>
                             <InputGroup>
-                                <InputGroupText>
-                                    {integration.get('currency')}
-                                </InputGroupText>
-                                <Input
+                                <NumberInput
                                     name="discount_value"
                                     value={discountValue}
-                                    onChange={(event) =>
-                                        setDiscountValue(
-                                            event.target.valueAsNumber
-                                        )
+                                    onChange={(value) =>
+                                        setDiscountValue(value || 0)
                                     }
-                                    type="number"
                                     min={0}
                                     step={0.01}
-                                    required={true}
+                                    prefix={integration.get('currency')}
                                 />
                             </InputGroup>
                             <FormText color="muted">

@@ -30,10 +30,7 @@ import {
     AppliedDiscount,
     DiscountType,
 } from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import {
-    formatPercentage,
-    formatPrice,
-} from '../../../../../../../../../../../../business/shopify/number'
+import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
 import getShopifyMoneySymbol from '../../helpers'
 import AmountInput from '../../AmountInput/AmountInput'
@@ -57,7 +54,7 @@ type Props = {
 type State = {
     isOpen: boolean
     type: DiscountType
-    discountValue: string
+    discountValue: number
     title: string
 }
 
@@ -75,8 +72,8 @@ export default class DiscountPopover extends PureComponent<Props, State> {
             ? this.props.value.get('value_type') || 'fixed_amount'
             : 'fixed_amount',
         discountValue: this.props.value
-            ? this.props.value.get('value') || ''
-            : '',
+            ? Number(this.props.value.get('value')) || 0
+            : 0,
         title: this.props.value ? this.props.value.get('title') || '' : '',
     }
 
@@ -126,12 +123,11 @@ export default class DiscountPopover extends PureComponent<Props, State> {
     _onFixedAmountClicked = (event: MouseEvent) => {
         event.preventDefault()
 
-        const {currencyCode} = this.props
         const {discountValue} = this.state
 
         this.setState({
             type: DiscountType.FixedAmount,
-            discountValue: formatPrice(discountValue, currencyCode),
+            discountValue: discountValue,
         })
     }
 
@@ -142,7 +138,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
 
         this.setState({
             type: DiscountType.Percentage,
-            discountValue: formatPercentage(discountValue),
+            discountValue: discountValue,
         })
     }
 
@@ -154,7 +150,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
         this._inputElement = inputRef
     }
 
-    _onDiscountValueChange = (discountValue: string) => {
+    _onDiscountValueChange = (discountValue: number) => {
         this.setState({discountValue})
     }
 
@@ -206,7 +202,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
 
         this.setState({
             type: DiscountType.FixedAmount,
-            discountValue: '',
+            discountValue: 0,
             title: '',
         })
 

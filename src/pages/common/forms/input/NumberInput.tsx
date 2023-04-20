@@ -36,6 +36,7 @@ type Props = {
     suffix?: ReactNode
     value?: number
     step?: number
+    nameRef?: string
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     | 'disabled'
@@ -68,6 +69,7 @@ function NumberInput(
         suffix,
         value,
         step = 1,
+        nameRef,
         ...other
     }: Props,
     ref: ForwardedRef<HTMLInputElement>
@@ -178,6 +180,7 @@ function NumberInput(
                 </span>
             )}
             <input
+                id={nameRef}
                 autoFocus={autoFocus}
                 className={classnames(css.input, {
                     [css.isAlignedRight]: !!suffix,

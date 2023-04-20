@@ -1,17 +1,17 @@
-import React, {FocusEvent, ChangeEvent, PureComponent} from 'react'
-import {Input} from 'reactstrap'
+import React, {PureComponent} from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
+import NumberInput from 'pages/common/forms/input/NumberInput'
+
 import {NON_FRACTIONAL_CURRENCIES} from '../../../../../../../../../../../constants/integrations/shopify'
-import {formatPrice} from '../../../../../../../../../../../business/shopify/number'
 import getShopifyMoneySymbol from '../helpers'
 
 import css from './AmountInput.less'
 
 type Props = {
     id: string
-    value: string
+    value: number
     min: number
     max?: number
     className: string | null
@@ -20,7 +20,7 @@ type Props = {
     currencyCode: string
     symbol: string | null
     saveInputRef: (inputRef: HTMLInputElement) => void
-    onChange: (value: string) => void
+    onChange: (value: number) => void
 }
 
 export default class AmountInput extends PureComponent<Props> {
@@ -43,22 +43,10 @@ export default class AmountInput extends PureComponent<Props> {
         saveInputRef: _noop,
     }
 
-    _onBlur = (event: FocusEvent<HTMLInputElement>) => {
-        const {currencyCode, onChange} = this.props
-        const {value} = event.target
-        const formattedValue = formatPrice(value || 0, currencyCode)
-
-        if (value !== formattedValue) {
-            event.target.value = formattedValue
-            onChange(formattedValue)
-        }
-    }
-
-    _onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    _onChange = (nextValue?: number) => {
         const {onChange} = this.props
-        const {value} = event.target
 
-        onChange(value)
+        onChange(nextValue || 0)
     }
 
     render() {
@@ -72,7 +60,6 @@ export default class AmountInput extends PureComponent<Props> {
             required,
             disabled,
             className,
-            saveInputRef,
         } = this.props
         const step =
             symbol !== '%' && NON_FRACTIONAL_CURRENCIES.includes(currencyCode)
@@ -80,39 +67,19 @@ export default class AmountInput extends PureComponent<Props> {
                 : 0.01
         const hasRightLabel = symbol === '%'
         const label = symbol || getShopifyMoneySymbol(currencyCode, true)
-        const labelWidth = label.length === 1 ? '2rem' : '3rem'
-        const labelStyle = {width: labelWidth}
-        const inputStyle = hasRightLabel
-            ? {paddingRight: labelWidth}
-            : {paddingLeft: labelWidth}
-
         return (
             <div className={classnames(css.container, className)}>
-                {!hasRightLabel && (
-                    <span className={css.leftLabel} style={labelStyle}>
-                        {label}
-                    </span>
-                )}
-                <Input
-                    type="number"
+                <NumberInput
                     id={id}
                     value={value}
                     min={min}
                     max={max}
                     step={step}
-                    required={required}
-                    disabled={disabled}
+                    isRequired={required}
+                    isDisabled={disabled}
                     onChange={this._onChange}
-                    onBlur={this._onBlur}
-                    innerRef={saveInputRef}
-                    className={css.input}
-                    style={inputStyle}
+                    {...(hasRightLabel ? {suffix: label} : {prefix: label})}
                 />
-                {hasRightLabel && (
-                    <span className={css.rightLabel} style={labelStyle}>
-                        {label}
-                    </span>
-                )}
             </div>
         )
     }

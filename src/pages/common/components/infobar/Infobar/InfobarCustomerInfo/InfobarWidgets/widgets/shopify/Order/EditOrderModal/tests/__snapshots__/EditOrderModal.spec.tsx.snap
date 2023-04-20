@@ -189,12 +189,42 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
             <td
               class="quantityCol"
             >
-              <input
-                class="form-control"
-                min="0"
-                type="number"
-                value="1"
-              />
+              <span
+                class="numberInput wrapper group horizontal"
+              >
+                <input
+                  class="input"
+                  max="Infinity"
+                  min="0"
+                  step="1"
+                  type="number"
+                  value="1"
+                />
+                <span
+                  class="controls group vertical"
+                >
+                  <button
+                    class="wrapper button wrapper small fill secondary small top"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_up
+                    </i>
+                  </button>
+                  <button
+                    class="wrapper button wrapper small fill secondary small bottom"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </button>
+                </span>
+              </span>
             </td>
             <td
               class="numberCol"
@@ -297,12 +327,42 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
             <td
               class="quantityCol"
             >
-              <input
-                class="form-control"
-                min="0"
-                type="number"
-                value="4"
-              />
+              <span
+                class="numberInput wrapper group horizontal"
+              >
+                <input
+                  class="input"
+                  max="Infinity"
+                  min="0"
+                  step="1"
+                  type="number"
+                  value="4"
+                />
+                <span
+                  class="controls group vertical"
+                >
+                  <button
+                    class="wrapper button wrapper small fill secondary small top"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_up
+                    </i>
+                  </button>
+                  <button
+                    class="wrapper button wrapper small fill secondary small bottom"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </button>
+                </span>
+              </span>
             </td>
             <td
               class="numberCol"
@@ -609,12 +669,42 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
             <td
               class="quantityCol"
             >
-              <input
-                class="form-control"
-                min="0"
-                type="number"
-                value="1"
-              />
+              <span
+                class="numberInput wrapper group horizontal"
+              >
+                <input
+                  class="input"
+                  max="Infinity"
+                  min="0"
+                  step="1"
+                  type="number"
+                  value="1"
+                />
+                <span
+                  class="controls group vertical"
+                >
+                  <button
+                    class="wrapper button wrapper small fill secondary small top"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_up
+                    </i>
+                  </button>
+                  <button
+                    class="wrapper button wrapper small fill secondary small bottom"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </button>
+                </span>
+              </span>
             </td>
             <td
               class="numberCol"
@@ -717,12 +807,42 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
             <td
               class="quantityCol"
             >
-              <input
-                class="form-control"
-                min="0"
-                type="number"
-                value="4"
-              />
+              <span
+                class="numberInput wrapper group horizontal"
+              >
+                <input
+                  class="input"
+                  max="Infinity"
+                  min="0"
+                  step="1"
+                  type="number"
+                  value="4"
+                />
+                <span
+                  class="controls group vertical"
+                >
+                  <button
+                    class="wrapper button wrapper small fill secondary small top"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_up
+                    </i>
+                  </button>
+                  <button
+                    class="wrapper button wrapper small fill secondary small bottom"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </button>
+                </span>
+              </span>
             </td>
             <td
               class="numberCol"

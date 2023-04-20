@@ -1,5 +1,4 @@
-import React, {ChangeEvent, memo, useCallback, useEffect, useState} from 'react'
-import {Input} from 'reactstrap'
+import React, {memo, useCallback, useEffect, useState} from 'react'
 import {Map, List} from 'immutable'
 import {getSizedImageUrl} from '@shopify/theme-images'
 import classnames from 'classnames'
@@ -14,6 +13,7 @@ import {
 } from 'business/shopify/lineItem'
 import {formatPrice} from 'business/shopify/number'
 import CheckBox from 'pages/common/forms/CheckBox'
+import NumberInput from 'pages/common/forms/input/NumberInput'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import MoneyAmount from '../../../../MoneyAmount'
 import {ShopifyActionType} from '../../../types'
@@ -108,11 +108,11 @@ function DraftOrderLineItemRow({
     )
 
     const handleQuantityChange = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => {
+        (value?: number) => {
             const min =
                 !lineItem.get('newly_added') && isShownInEditOrder ? 0 : 1
-            const value = Number.parseInt(event.target.value, 10)
-            let newQuantity = Number.isNaN(value) ? 1 : value
+
+            let newQuantity = value || 1
             if (newQuantity < min) newQuantity = min
             setQuantity(newQuantity)
             debouncedUpdateLineItem(
@@ -308,11 +308,11 @@ function DraftOrderLineItemRow({
         const min = !lineItem.get('newly_added') && isShownInEditOrder ? 0 : 1
         return (
             <td className={css.quantityCol}>
-                <Input
-                    type="number"
+                <NumberInput
                     min={min}
                     value={quantity}
                     onChange={handleQuantityChange}
+                    className={css.numberInput}
                 />
             </td>
         )

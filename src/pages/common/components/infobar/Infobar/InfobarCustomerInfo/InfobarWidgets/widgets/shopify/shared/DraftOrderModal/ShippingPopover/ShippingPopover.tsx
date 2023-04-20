@@ -37,7 +37,7 @@ type State = {
     isOpen: boolean
     handle: string | null
     title: string
-    price: string
+    price?: number
 }
 
 export default class ShippingPopover extends Component<Props, State> {
@@ -68,7 +68,7 @@ export default class ShippingPopover extends Component<Props, State> {
             return {
                 handle: null,
                 title: '',
-                price: '',
+                price: undefined,
             }
         }
 
@@ -76,14 +76,14 @@ export default class ShippingPopover extends Component<Props, State> {
             return {
                 handle: 'free',
                 title: '',
-                price: '',
+                price: undefined,
             }
         }
 
         return {
             handle: 'custom',
             title: value.get('title'),
-            price: value.get('price'),
+            price: Number(value.get('price')),
         }
     }
 
@@ -159,7 +159,7 @@ export default class ShippingPopover extends Component<Props, State> {
         this.setState({title})
     }
 
-    _onPriceChange = (price: string) => {
+    _onPriceChange = (price: number) => {
         this.setState({price})
     }
 
@@ -186,7 +186,7 @@ export default class ShippingPopover extends Component<Props, State> {
                     fromJS({
                         custom: true,
                         handle: null,
-                        price: formatPrice(price, currencyCode),
+                        price: price,
                         title: title || 'Custom',
                     })
                 )
@@ -220,7 +220,7 @@ export default class ShippingPopover extends Component<Props, State> {
         this.setState({
             handle: null,
             title: '',
-            price: '',
+            price: undefined,
         })
 
         logEvent(
@@ -349,7 +349,7 @@ export default class ShippingPopover extends Component<Props, State> {
                                     onChange={this._onTitleChange}
                                 />
                                 <AmountInput
-                                    value={price}
+                                    value={price || 0}
                                     currencyCode={currencyCode}
                                     required={handle === 'custom'}
                                     disabled={handle !== 'custom'}

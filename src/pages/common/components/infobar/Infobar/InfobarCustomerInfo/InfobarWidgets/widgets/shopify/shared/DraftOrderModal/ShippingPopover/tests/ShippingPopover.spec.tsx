@@ -111,7 +111,7 @@ describe('<ShippingPopover/>', () => {
                     target: {value: 'Test'},
                 })
                 fireEvent.change(document.getElementsByTagName('input')[1], {
-                    target: {value: '12'},
+                    target: {value: 12},
                 })
                 // Submit
                 userEvent.click(getByText('Apply'))
@@ -120,7 +120,7 @@ describe('<ShippingPopover/>', () => {
                     fromJS({
                         custom: true,
                         handle: null,
-                        price: '12.00',
+                        price: 12.0,
                         title: 'Test',
                     })
                 )

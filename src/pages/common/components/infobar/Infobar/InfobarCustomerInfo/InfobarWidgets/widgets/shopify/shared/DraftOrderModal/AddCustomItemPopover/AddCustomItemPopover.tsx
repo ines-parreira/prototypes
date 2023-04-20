@@ -18,6 +18,7 @@ import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
 import CheckBox from 'pages/common/forms/CheckBox'
+import NumberInput from 'pages/common/forms/input/NumberInput'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {formatPrice} from 'business/shopify/number'
 import {focusElement} from 'utils/html'
@@ -38,7 +39,7 @@ type Props = {
 type State = {
     isOpen: boolean
     title: string
-    price: string
+    price: number
     quantity: number
     taxable: boolean
     requiresShipping: boolean
@@ -56,7 +57,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
     state = {
         isOpen: false,
         title: '',
-        price: '',
+        price: 0,
         quantity: 1,
         taxable: false,
         requiresShipping: false,
@@ -109,12 +110,12 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
         this.setState({title})
     }
 
-    _onPriceChange = (price: string) => {
+    _onPriceChange = (price: number) => {
         this.setState({price})
     }
 
-    _onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const quantity = parseInt(event.target.value) || 1
+    _onQuantityChange = (value?: number) => {
+        const quantity = value || 1
         this.setState({quantity})
     }
 
@@ -169,7 +170,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
     _resetValues() {
         this.setState({
             title: '',
-            price: '',
+            price: 0,
             quantity: 1,
         })
     }
@@ -219,7 +220,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
                                     <AmountInput
                                         id="price"
                                         required
-                                        value={price}
+                                        value={Number(price)}
                                         className={css.priceInput}
                                         currencyCode={currencyCode}
                                         onChange={this._onPriceChange}
@@ -227,11 +228,9 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
                                 </FormGroup>
                                 <FormGroup>
                                     <Label for="quantity">Quantity</Label>
-                                    <Input
-                                        type="number"
+                                    <NumberInput
                                         id="quantity"
                                         min={1}
-                                        required
                                         value={quantity}
                                         className={css.quantityInput}
                                         onChange={this._onQuantityChange}

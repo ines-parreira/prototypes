@@ -101,11 +101,11 @@ describe('<OrderFooter/>', () => {
             )
 
             fireEvent.change(getByLabelText(/Refund with: Manual/i), {
-                target: {value: '0.20'},
+                target: {value: 0.2},
             })
 
             expect(setPayload).toHaveBeenCalledWith(
-                payload.setIn(['transactions', 0, 'amount'], '0.20')
+                payload.setIn(['transactions', 0, 'amount'], 0.2)
             )
         })
 
@@ -134,7 +134,7 @@ describe('<OrderFooter/>', () => {
             )
 
             fireEvent.change(getByLabelText(/Refund with: Manual/i), {
-                target: {value: '99.99'},
+                target: {value: 99.99},
             })
             expect(setPayload).toHaveBeenCalledWith(
                 payload.setIn(['transactions', 0, 'amount'], 1.2)
@@ -169,7 +169,7 @@ describe('<OrderFooter/>', () => {
 
             // Use custom amount to display discrepancy field
             fireEvent.change(getByLabelText(/Refund with: Manual/i), {
-                target: {value: '0.20'},
+                target: {value: 0.2},
             })
             fireEvent.change(
                 getByLabelText(/Reason for custom refund amount/i),

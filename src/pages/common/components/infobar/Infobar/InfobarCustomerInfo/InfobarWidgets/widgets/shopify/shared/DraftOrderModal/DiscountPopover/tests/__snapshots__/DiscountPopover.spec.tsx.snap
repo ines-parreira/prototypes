@@ -101,7 +101,7 @@ exports[`<DiscountPopover/> render() should render with value 1`] = `
               required={true}
               saveInputRef={[Function]}
               symbol={null}
-              value="5.99"
+              value={5.99}
             />
           </InputGroup>
         </FormGroup>
@@ -262,7 +262,7 @@ exports[`<DiscountPopover/> render() should render without value 1`] = `
               required={true}
               saveInputRef={[Function]}
               symbol={null}
-              value=""
+              value={0}
             />
           </InputGroup>
         </FormGroup>

@@ -16,7 +16,7 @@ describe('<AmountInput/>', () => {
                 <AmountInput
                     currencyCode="USD"
                     onChange={onChange}
-                    value="9.99"
+                    value={9.99}
                 />
             )
 
@@ -28,7 +28,7 @@ describe('<AmountInput/>', () => {
                 <AmountInput
                     currencyCode="USD"
                     onChange={onChange}
-                    value="25"
+                    value={25}
                     symbol="%"
                     max={100}
                 />
@@ -44,46 +44,12 @@ describe('<AmountInput/>', () => {
                 <AmountInput
                     currencyCode="USD"
                     onChange={onChange}
-                    value="9.99"
+                    value={9.99}
                 />
             )
 
-            component
-                .find({id: 'amount'})
-                .simulate('change', {target: {value: '10'}})
-            expect(onChange).toHaveBeenCalledWith('10')
-        })
-    })
-
-    describe('_onBlur()', () => {
-        it('should update value with formatted price', () => {
-            const component = shallow(
-                <AmountInput
-                    currencyCode="USD"
-                    onChange={onChange}
-                    value="9.99"
-                />
-            )
-
-            const target = {value: '10'}
-            component.find({id: 'amount'}).simulate('blur', {target})
-            expect(target.value).toBe('10.00')
-            expect(onChange).toHaveBeenCalledWith('10.00')
-        })
-
-        it('should update value with formatted price when input is empty', () => {
-            const component = shallow(
-                <AmountInput
-                    currencyCode="USD"
-                    onChange={onChange}
-                    value="9.99"
-                />
-            )
-
-            const target = {value: ''}
-            component.find({id: 'amount'}).simulate('blur', {target})
-            expect(target.value).toBe('0.00')
-            expect(onChange).toHaveBeenCalledWith('0.00')
+            component.find({id: 'amount'}).simulate('change', 10)
+            expect(onChange).toHaveBeenCalledWith(10)
         })
     })
 })

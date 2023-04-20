@@ -25,6 +25,8 @@ import {
     STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {WidgetType} from 'state/widgets/types'
+import NumberInput from 'pages/common/forms/input/NumberInput'
+import Label from 'pages/common/forms/Label/Label'
 
 type EditionHiddenField = 'link' | 'displayCard'
 
@@ -43,7 +45,7 @@ type FormState = {
     pictureUrl: string
     color: string
     displayCard: boolean
-    limit: string
+    limit?: number | string // existing data might have it stored as a string, though it should always be a number
     orderBy: string
 }
 
@@ -62,8 +64,10 @@ const WidgetEdit = ({
         link: template.getIn(['meta', 'link'], ''),
         pictureUrl: template.getIn(['meta', 'pictureUrl'], ''),
         color: template.getIn(['meta', 'color'], ''),
-        displayCard: template.getIn(['meta', 'displayCard'], true),
-        limit: isParentList ? parent.getIn(['meta', 'limit'], '') : '',
+        displayCard: true,
+        limit: isParentList
+            ? parent.getIn(['meta', 'limit'], undefined) || undefined
+            : undefined,
         orderBy: isParentList ? parent.getIn(['meta', 'orderBy'], '') : '',
     })
 
@@ -209,13 +213,18 @@ const WidgetEdit = ({
                 )}
                 {isParentList && (
                     <>
-                        <DEPRECATED_InputField
+                        <Label htmlFor="list.meta.limit">Limit</Label>
+                        <NumberInput
                             key="limit"
-                            type="number"
-                            name="list.meta.limit"
-                            label="Limit"
-                            placeholder="ex: 0"
-                            value={formState.limit}
+                            id="list.meta.limit"
+                            className="mt-2, mb-2"
+                            min={0}
+                            value={
+                                formState.limit
+                                    ? Number(formState.limit)
+                                    : undefined
+                            }
+                            placeholder="0"
                             onChange={(limit) =>
                                 setFormState((formState) => ({
                                     ...formState,

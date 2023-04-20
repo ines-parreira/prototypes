@@ -408,21 +408,49 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                   class="container amountInput"
                 >
                   <span
-                    class="leftLabel"
-                    style="width: 2rem;"
+                    class="wrapper group horizontal"
                   >
-                    $
+                    <span
+                      class="prefix"
+                    >
+                      $
+                    </span>
+                    <input
+                      class="input"
+                      id="amount"
+                      max="Infinity"
+                      min="0"
+                      required=""
+                      step="0.01"
+                      type="number"
+                      value="0.00"
+                    />
+                    <span
+                      class="controls group vertical"
+                    >
+                      <button
+                        class="wrapper button wrapper small fill secondary small top"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_up
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small bottom isDisabled"
+                        disabled=""
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </button>
+                    </span>
                   </span>
-                  <input
-                    class="input form-control"
-                    id="amount"
-                    min="0"
-                    required=""
-                    step="0.01"
-                    style="padding-left: 2rem;"
-                    type="number"
-                    value=""
-                  />
                 </div>
               </div>
             </div>
@@ -448,54 +476,6 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                   class="form-text text-muted"
                 >
                   Only you and other staff can see this reason.
-                </small>
-              </div>
-            </div>
-          </div>
-          <div
-            class="row"
-          >
-            <div
-              class="col-12"
-            >
-              <div
-                class="form-group"
-              >
-                <label
-                  class="label"
-                  for="discrepancy-reason"
-                >
-                  Reason for custom refund amount
-                </label>
-                <select
-                  class="discrepancyReasonInput form-control"
-                  id="discrepancy-reason"
-                >
-                  <option
-                    value="restock"
-                  >
-                    Restocking fee
-                  </option>
-                  <option
-                    value="damage"
-                  >
-                    Damaged goods
-                  </option>
-                  <option
-                    value="customer"
-                  >
-                    Customer satisfaction
-                  </option>
-                  <option
-                    value="other"
-                  >
-                    Other
-                  </option>
-                </select>
-                <small
-                  class="form-text text-muted"
-                >
-                  The amount being refunded is different from the value of items being returned.
                 </small>
               </div>
             </div>
@@ -710,21 +690,49 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                   class="container amountInput"
                 >
                   <span
-                    class="leftLabel"
-                    style="width: 2rem;"
+                    class="wrapper group horizontal"
                   >
-                    $
+                    <span
+                      class="prefix"
+                    >
+                      $
+                    </span>
+                    <input
+                      class="input"
+                      id="amount"
+                      max="Infinity"
+                      min="0"
+                      required=""
+                      step="0.01"
+                      type="number"
+                      value="0.00"
+                    />
+                    <span
+                      class="controls group vertical"
+                    >
+                      <button
+                        class="wrapper button wrapper small fill secondary small top"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_up
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small bottom isDisabled"
+                        disabled=""
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </button>
+                    </span>
                   </span>
-                  <input
-                    class="input form-control"
-                    id="amount"
-                    min="0"
-                    required=""
-                    step="0.01"
-                    style="padding-left: 2rem;"
-                    type="number"
-                    value=""
-                  />
                 </div>
               </div>
             </div>
@@ -750,54 +758,6 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                   class="form-text text-muted"
                 >
                   Only you and other staff can see this reason.
-                </small>
-              </div>
-            </div>
-          </div>
-          <div
-            class="row"
-          >
-            <div
-              class="col-12"
-            >
-              <div
-                class="form-group"
-              >
-                <label
-                  class="label"
-                  for="discrepancy-reason"
-                >
-                  Reason for custom refund amount
-                </label>
-                <select
-                  class="discrepancyReasonInput form-control"
-                  id="discrepancy-reason"
-                >
-                  <option
-                    value="restock"
-                  >
-                    Restocking fee
-                  </option>
-                  <option
-                    value="damage"
-                  >
-                    Damaged goods
-                  </option>
-                  <option
-                    value="customer"
-                  >
-                    Customer satisfaction
-                  </option>
-                  <option
-                    value="other"
-                  >
-                    Other
-                  </option>
-                </select>
-                <small
-                  class="form-text text-muted"
-                >
-                  The amount being refunded is different from the value of items being returned.
                 </small>
               </div>
             </div>
