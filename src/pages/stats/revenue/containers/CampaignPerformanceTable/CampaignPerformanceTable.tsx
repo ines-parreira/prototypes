@@ -1,10 +1,8 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import useAsyncFn from 'react-use/lib/useAsyncFn'
-
+import _get from 'lodash/get'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 
-import {getCampaignsPerformance} from '../../services/CampaignPerformanceService'
-import {CampaignsPerformanceDataset} from '../../services/types'
+import {useGetTableStat} from 'pages/stats/revenue/hooks/stats/useGetTableStat'
 
 import {useCampaignStatsFilters} from '../../hooks/useCampaignStatsFilters'
 import {useGetChatForStore} from '../../hooks/useGetChatForStore'
@@ -28,7 +26,6 @@ export const CampaignPerformanceTable = () => {
     const chatIntegration = useGetChatForStore(selectedIntegrations[0])
 
     const [offset, setOffset] = useState(0)
-    const [metrics, setMetrics] = useState<CampaignsPerformanceDataset>({})
 
     const campaignIds = useMemo(() => {
         return selectedCampaigns.length > 0
@@ -36,15 +33,12 @@ export const CampaignPerformanceTable = () => {
             : campaigns.map((campaign) => campaign.id)
     }, [campaigns, selectedCampaigns])
 
-    const [{loading}, fetchMetrics] = useAsyncFn(async () => {
-        const data = await getCampaignsPerformance(
-            selectedPeriod.start_datetime,
-            selectedPeriod.end_datetime,
-            campaignIds,
-            namespacedShopName
-        )
-        setMetrics(data)
-    }, [selectedIntegrations, campaignIds, selectedPeriod])
+    const {isFetching, data} = useGetTableStat(
+        namespacedShopName,
+        campaignIds,
+        selectedPeriod.start_datetime,
+        selectedPeriod.end_datetime
+    )
 
     const rows = useMemo<CampaignTableContentCell[]>(() => {
         const selectedCampaigns = campaigns.filter((campaign) =>
@@ -55,9 +49,9 @@ export const CampaignPerformanceTable = () => {
             campaign,
             chatIntegration: chatIntegration,
             currency,
-            metrics: metrics[campaign.id] ?? {},
+            metrics: _get(data, campaign.id, {}),
         }))
-    }, [campaigns, campaignIds, chatIntegration, currency, metrics])
+    }, [campaigns, campaignIds, chatIntegration, currency, data])
 
     const handleClickNextPage = () => {
         let nextValue = offset + ITEMS_PER_PAGE
@@ -82,13 +76,11 @@ export const CampaignPerformanceTable = () => {
         setOffset(0)
     }, [selectedIntegrations, campaigns])
 
-    useEffect(() => void fetchMetrics(), [fetchMetrics])
-
     return (
         <DashboardGridCell size={12}>
             <CampaignTableStats
                 chatIntegrationId={chatIntegration?.id}
-                isLoading={loading}
+                isLoading={isFetching}
                 rows={rows}
                 offset={offset}
                 onClickNextPage={handleClickNextPage}

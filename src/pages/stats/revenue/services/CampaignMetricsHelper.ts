@@ -57,8 +57,20 @@ export const getMetricFromCubeData = (data: any): CubeMetric => {
     return _get(data, 'data.data[0]', {}) as CubeMetric
 }
 
+export const getDataFromResult = (data: any): CubeData => {
+    return _get(data, 'data.data', []) as CubeData
+}
+
 const _getMetricOrDefault = (data: CubeMetric | undefined): CubeMetric => {
     return data || {}
+}
+
+const _getCubeDataOrDefault = (data: CubeData | undefined): CubeData => {
+    return data || []
+}
+
+const _getStatDataOrDefault = (data: StatData | undefined): StatData => {
+    return data || []
 }
 
 const _gmvUplift = (gmv: number, campaignSales: number): number => {
@@ -271,35 +283,35 @@ const _getDefaultsForAllDates = (
 }
 
 export const transformToCampaignsPerformanceTable = (
-    eventsData: CubeData,
-    ordersData: CubeData,
-    campaignsOrdersData: CubeData,
-    trafficData: CubeData,
-    ticketsData: TicketPerformanceData
+    eventsData: CubeData | undefined,
+    ordersData: CubeData | undefined,
+    campaignsOrdersData: CubeData | undefined,
+    trafficData: CubeData | undefined,
+    ticketsData: TicketPerformanceData | undefined
 ): CampaignsPerformanceDataset => {
     const eventsDataset = _reduce(
-        eventsData,
+        _getCubeDataOrDefault(eventsData),
         _bind(
             _eventsPerformanceReducer,
             _bind.placeholder,
             _bind.placeholder,
             _bind.placeholder,
-            trafficData
+            _getCubeDataOrDefault(trafficData)
         ),
         {}
     )
     const ordersDataset = _reduce(
-        ordersData,
+        _getCubeDataOrDefault(ordersData),
         _ordersPerformanceReducer,
         eventsDataset
     )
     const campaignsOrdersDataset = _reduce(
-        campaignsOrdersData,
+        _getCubeDataOrDefault(campaignsOrdersData),
         _campaignsOrdersPerformanceReducer,
         ordersDataset
     )
     const ticketsDataset = _reduce(
-        ticketsData,
+        _getStatDataOrDefault(ticketsData),
         _ticketsPerformanceReducer,
         campaignsOrdersDataset
     )

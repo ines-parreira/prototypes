@@ -1,0 +1,427 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useGetTableStat should fill default values if data is missing 1`] = `
+[
+  [
+    [
+      {
+        "dimensions": [
+          "CampaignEvents.campaignId",
+        ],
+        "filters": [
+          {
+            "member": "CampaignEvents.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-02-01T00:00:00-08:00",
+              "2023-04-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "CampaignEvents.campaignId",
+            "operator": "equals",
+            "values": [
+              "campaign1",
+              "campaign2",
+            ],
+          },
+        ],
+        "measures": [
+          "CampaignEvents.impressions",
+          "CampaignEvents.firstCampaignDisplay",
+          "CampaignEvents.lastCampaignDisplay",
+          "CampaignEvents.clicks",
+          "CampaignEvents.clicksRate",
+        ],
+        "segments": [
+          "CampaignEvents.campaignEventsOnly",
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+  [
+    [
+      {
+        "dimensions": [
+          "OrderConversion.campaignId",
+        ],
+        "filters": [
+          {
+            "member": "OrderConversion.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-02-01T00:00:00-08:00",
+              "2023-04-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "OrderConversion.campaignId",
+            "operator": "equals",
+            "values": [
+              "campaign1",
+              "campaign2",
+            ],
+          },
+        ],
+        "measures": [
+          "OrderConversion.campaignSales",
+          "OrderConversion.ticketSales",
+          "OrderConversion.ticketSalesCount",
+          "OrderConversion.discountSales",
+          "OrderConversion.discountSalesCount",
+          "OrderConversion.clickSales",
+          "OrderConversion.clickSalesCount",
+          "OrderConversion.campaignSalesCount",
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+  [
+    [
+      {
+        "dimensions": [
+          "CampaignOrderEvents.campaignId",
+        ],
+        "filters": [
+          {
+            "member": "CampaignOrderEvents.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-02-01T00:00:00-08:00",
+              "2023-04-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "CampaignOrderEvents.campaignId",
+            "operator": "equals",
+            "values": [
+              "campaign1",
+              "campaign2",
+            ],
+          },
+        ],
+        "measures": [
+          "CampaignOrderEvents.engagement",
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+  [
+    [
+      {
+        "dimensions": [],
+        "filters": [
+          {
+            "member": "CampaignEvents.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-02-01T00:00:00-08:00",
+              "2023-04-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "CampaignEvents.shopName",
+            "operator": "equals",
+            "values": [
+              "shopify:slow-formulas-for-sale",
+            ],
+          },
+        ],
+        "measures": [
+          "CampaignEvents.traffic",
+        ],
+        "timeDimensions": [
+          {
+            "dateRange": [
+              "2023-02-01T00:00:00-08:00",
+              "2023-04-01T00:00:00-08:00",
+            ],
+            "dimension": "CampaignEvents.createdDatetime",
+            "granularity": "day",
+          },
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+]
+`;
+
+exports[`useGetTableStat should fill default values if data is missing 2`] = `
+{
+  "data": {
+    "campaign1": {
+      "campaignSalesCount": 0,
+      "clickThroughRate": 67.09401709401709,
+      "clicks": 24,
+      "clicksConversionRate": 0,
+      "clicksConverted": 0,
+      "clicksRate": 10.2,
+      "clicksRevenue": 0,
+      "discountCodesRevenue": 0,
+      "discountCodesUsed": 0,
+      "engagement": 157,
+      "impressions": 234,
+      "ticketsConversionRate": 0,
+      "ticketsConverted": 0,
+      "ticketsCreated": 157,
+      "ticketsCreationRate": 67.09401709401709,
+      "ticketsRevenue": 0,
+      "totalConversionRate": 0,
+      "totalRevenue": 0,
+      "traffic": 0,
+    },
+    "campaign2": {
+      "campaignSalesCount": 0,
+      "clickThroughRate": 62.96296296296296,
+      "clicks": 57,
+      "clicksConversionRate": 0,
+      "clicksConverted": 0,
+      "clicksRate": 21.34,
+      "clicksRevenue": 0,
+      "discountCodesRevenue": 0,
+      "discountCodesUsed": 0,
+      "engagement": 357,
+      "impressions": 567,
+      "ticketsConversionRate": 0,
+      "ticketsConverted": 0,
+      "ticketsCreated": 357,
+      "ticketsCreationRate": 62.96296296296296,
+      "ticketsRevenue": 0,
+      "totalConversionRate": 0,
+      "totalRevenue": 0,
+      "traffic": 0,
+    },
+  },
+  "isError": false,
+  "isFetching": false,
+}
+`;
+
+exports[`useGetTableStat should return prepared data for campaign performance table 1`] = `
+[
+  [
+    [
+      {
+        "dimensions": [
+          "CampaignEvents.campaignId",
+        ],
+        "filters": [
+          {
+            "member": "CampaignEvents.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-02-01T00:00:00-08:00",
+              "2023-04-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "CampaignEvents.campaignId",
+            "operator": "equals",
+            "values": [
+              "campaign1",
+              "campaign2",
+            ],
+          },
+        ],
+        "measures": [
+          "CampaignEvents.impressions",
+          "CampaignEvents.firstCampaignDisplay",
+          "CampaignEvents.lastCampaignDisplay",
+          "CampaignEvents.clicks",
+          "CampaignEvents.clicksRate",
+        ],
+        "segments": [
+          "CampaignEvents.campaignEventsOnly",
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+  [
+    [
+      {
+        "dimensions": [
+          "OrderConversion.campaignId",
+        ],
+        "filters": [
+          {
+            "member": "OrderConversion.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-02-01T00:00:00-08:00",
+              "2023-04-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "OrderConversion.campaignId",
+            "operator": "equals",
+            "values": [
+              "campaign1",
+              "campaign2",
+            ],
+          },
+        ],
+        "measures": [
+          "OrderConversion.campaignSales",
+          "OrderConversion.ticketSales",
+          "OrderConversion.ticketSalesCount",
+          "OrderConversion.discountSales",
+          "OrderConversion.discountSalesCount",
+          "OrderConversion.clickSales",
+          "OrderConversion.clickSalesCount",
+          "OrderConversion.campaignSalesCount",
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+  [
+    [
+      {
+        "dimensions": [
+          "CampaignOrderEvents.campaignId",
+        ],
+        "filters": [
+          {
+            "member": "CampaignOrderEvents.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-02-01T00:00:00-08:00",
+              "2023-04-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "CampaignOrderEvents.campaignId",
+            "operator": "equals",
+            "values": [
+              "campaign1",
+              "campaign2",
+            ],
+          },
+        ],
+        "measures": [
+          "CampaignOrderEvents.engagement",
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+  [
+    [
+      {
+        "dimensions": [],
+        "filters": [
+          {
+            "member": "CampaignEvents.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-02-01T00:00:00-08:00",
+              "2023-04-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "CampaignEvents.shopName",
+            "operator": "equals",
+            "values": [
+              "shopify:slow-formulas-for-sale",
+            ],
+          },
+        ],
+        "measures": [
+          "CampaignEvents.traffic",
+        ],
+        "timeDimensions": [
+          {
+            "dateRange": [
+              "2023-02-01T00:00:00-08:00",
+              "2023-04-01T00:00:00-08:00",
+            ],
+            "dimension": "CampaignEvents.createdDatetime",
+            "granularity": "day",
+          },
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+]
+`;
+
+exports[`useGetTableStat should return prepared data for campaign performance table 2`] = `
+{
+  "data": {
+    "campaign1": {
+      "campaignSalesCount": 125,
+      "clickThroughRate": 219.6581196581197,
+      "clicks": 24,
+      "clicksConversionRate": 487.5,
+      "clicksConverted": 117,
+      "clicksRate": 10.2,
+      "clicksRevenue": 3596.25,
+      "discountCodesRevenue": 4567.65,
+      "discountCodesUsed": 125,
+      "engagement": 514,
+      "impressions": 234,
+      "ticketsConversionRate": 49.681528662420384,
+      "ticketsConverted": 78,
+      "ticketsCreated": 157,
+      "ticketsCreationRate": 67.09401709401709,
+      "ticketsRevenue": 1234.47,
+      "totalConversionRate": 24.31906614785992,
+      "totalRevenue": 12345.67,
+      "traffic": 5,
+    },
+    "campaign2": {
+      "campaignSalesCount": 358,
+      "clickThroughRate": 302.29276895943565,
+      "clicks": 57,
+      "clicksConversionRate": 435.08771929824564,
+      "clicksConverted": 248,
+      "clicksRate": 21.34,
+      "clicksRevenue": 3596.25,
+      "discountCodesRevenue": 4567.65,
+      "discountCodesUsed": 125,
+      "engagement": 1714,
+      "impressions": 567,
+      "ticketsConversionRate": 21.84873949579832,
+      "ticketsConverted": 78,
+      "ticketsCreated": 357,
+      "ticketsCreationRate": 62.96296296296296,
+      "ticketsRevenue": 1234.47,
+      "totalConversionRate": 20.88681446907818,
+      "totalRevenue": 12345.67,
+      "traffic": 3,
+    },
+  },
+  "isError": false,
+  "isFetching": false,
+}
+`;

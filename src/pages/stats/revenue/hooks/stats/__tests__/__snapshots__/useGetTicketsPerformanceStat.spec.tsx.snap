@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useGetTableStat should return data in correct format 1`] = `
+{
+  "data": [
+    [
+      "campaign1",
+      157,
+    ],
+    [
+      "campaign2",
+      357,
+    ],
+  ],
+  "isError": false,
+  "isFetching": false,
+}
+`;

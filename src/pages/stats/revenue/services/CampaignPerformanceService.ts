@@ -1,17 +1,11 @@
 import {
-    getCampaignEventsOrdersPerformanceData,
-    getCampaignEventsPerformanceData,
-    getCampaignOrderPerformanceData,
     getCampaignsPerformanceGraphData,
     getRevenueUpliftGraphData,
-    getTrafficData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {
     CampaignChatPerformanceData,
     CampaignGraphData,
-    CampaignsPerformanceDataset,
     RevenueGraphDataPoint,
-    TicketPerformanceData,
 } from 'pages/stats/revenue/services/types'
 import {
     backfillGraphData,
@@ -19,19 +13,11 @@ import {
     getDataFromStatResult,
     transformToCampaignConversionRateOverTime,
     transformToCampaignCTROverTime,
-    transformToCampaignsPerformanceTable,
     transformToChatConversionRateOverTime,
     transformToRevenueUpliftOverTime,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
-import {
-    getCampaignTicketsPerformanceData,
-    getTicketsPerformanceData,
-} from 'pages/stats/revenue/clients/RevenueAttributionClient'
-import {
-    CubeMetric,
-    FilterParams,
-    TimeGranularity,
-} from 'pages/stats/revenue/clients/types'
+import {getTicketsPerformanceData} from 'pages/stats/revenue/clients/RevenueAttributionClient'
+import {CubeMetric, TimeGranularity} from 'pages/stats/revenue/clients/types'
 import {TicketChannel} from 'business/types/ticket'
 
 export const getRevenueUpliftOverTime = async (
@@ -113,54 +99,4 @@ export const getCampaignsAndChatPerformanceOverTime = async (
         campaignConversionRate: bfCampaignConversionRate,
         chatConversionRate: bfChatConversionRate,
     }
-}
-
-export const getCampaignsPerformance = async (
-    startDate: string,
-    endDate: string,
-    campaignIds: string[],
-    shopName: string,
-    limit = 100,
-    offset = 0
-): Promise<CampaignsPerformanceDataset> => {
-    if (campaignIds?.length === 0) return {}
-
-    const attrs: FilterParams = {
-        startDate,
-        endDate,
-        campaignIds,
-        shopName,
-        limit,
-        offset,
-    }
-
-    const [
-        eventsPerformance,
-        ordersPerformance,
-        campaignsOrdersPerformance,
-        ticketsPerformance,
-        traffic,
-    ] = await Promise.all([
-        getCampaignEventsPerformanceData(attrs),
-        getCampaignOrderPerformanceData(attrs),
-        getCampaignEventsOrdersPerformanceData(attrs),
-        getCampaignTicketsPerformanceData(attrs),
-        getTrafficData(attrs),
-    ])
-
-    const eventsPerformanceData = getDataFromResultSet(eventsPerformance)
-    const ordersPerformanceData = getDataFromResultSet(ordersPerformance)
-    const campaignsOrdersPerformanceData = getDataFromResultSet(
-        campaignsOrdersPerformance
-    )
-    const trafficData = getDataFromResultSet(traffic)
-    const ticketsPerformanceData = getDataFromStatResult(ticketsPerformance)
-
-    return transformToCampaignsPerformanceTable(
-        eventsPerformanceData,
-        ordersPerformanceData,
-        campaignsOrdersPerformanceData,
-        trafficData,
-        ticketsPerformanceData as TicketPerformanceData
-    )
 }

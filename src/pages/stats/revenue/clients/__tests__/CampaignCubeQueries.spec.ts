@@ -29,30 +29,26 @@ describe('Calling CubeClient functions', () => {
         mockedServer.reset()
     })
 
-    it.each([
-        [getCampaignEventsPerformanceData],
-        [getCampaignOrderPerformanceData],
-        [getCampaignEventsOrdersPerformanceData],
-        [getRevenueUpliftGraphData],
-        [getCampaignsPerformanceGraphData],
-        [getTrafficData],
-    ])('%p should call load', async (cubeFn) => {
-        // arrange
-        let expectedData
-        const expectedResponse = {hello: cubeFn.toString()}
+    it.each([[getRevenueUpliftGraphData], [getCampaignsPerformanceGraphData]])(
+        '%p should call load',
+        async (cubeFn) => {
+            // arrange
+            let expectedData
+            const expectedResponse = {hello: cubeFn.toString()}
 
-        mockedServer.onPost(REPORTING_ENDPOINT).reply((config) => {
-            expectedData = config.data
-            return [200, expectedResponse]
-        })
+            mockedServer.onPost(REPORTING_ENDPOINT).reply((config) => {
+                expectedData = config.data
+                return [200, expectedResponse]
+            })
 
-        // act
-        await cubeFn(props)
+            // act
+            await cubeFn(props)
 
-        // assert
-        expect(expectedResponse).toStrictEqual(expectedResponse)
-        expect(JSON.parse(expectedData || '{}')).toMatchSnapshot()
-    })
+            // assert
+            expect(expectedResponse).toStrictEqual(expectedResponse)
+            expect(JSON.parse(expectedData || '{}')).toMatchSnapshot()
+        }
+    )
 })
 
 describe('Getting Cube queries', () => {
@@ -69,6 +65,10 @@ describe('Getting Cube queries', () => {
         [getCampaignEventsTotalsData],
         [getCampaignOrderTotalsData],
         [getStoreRevenueTotalData],
+        [getCampaignEventsPerformanceData],
+        [getCampaignOrderPerformanceData],
+        [getCampaignEventsOrdersPerformanceData],
+        [getTrafficData],
     ])('%p should call load', (cubeFn) => {
         // act
         const query = cubeFn(props)

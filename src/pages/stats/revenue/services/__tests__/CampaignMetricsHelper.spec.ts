@@ -12,6 +12,7 @@ import {
     transformToCampaignCalculatedTotals,
     transformToStoreTotal,
     getMetricFromCubeData,
+    getDataFromResult,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {CubeResponse} from 'pages/stats/revenue/clients/types'
 import {Stat} from 'models/stat/types'
@@ -65,6 +66,27 @@ describe('Campaign metrics helper tests', () => {
             [undefined, []],
         ])('For data %p should return %p', (data, expected) => {
             const result = getDataFromStatResult(data as Stat)
+            expect(result).toEqual(expected)
+        })
+    })
+
+    describe('getDataFromResult', () => {
+        const response = {
+            data: {
+                data: [1, 2, 3, 4],
+            },
+        }
+
+        it.each([
+            [response, [1, 2, 3, 4]],
+            [{data: 'need one more'}, []],
+            [{data: {nodata: 'no metric'}}, []],
+            [{nodata: 'no metric'}, []],
+            [{}, []],
+            [null, []],
+            [undefined, []],
+        ])('For data %p should return %p', (data, expected) => {
+            const result = getDataFromResult(data)
             expect(result).toEqual(expected)
         })
     })

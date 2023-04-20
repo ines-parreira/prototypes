@@ -1,4 +1,5 @@
 import {TicketChannel} from 'business/types/ticket'
+import {ReportingGranularity} from 'models/reporting/types'
 
 type KeyValuePair = {
     [key: string]: string | string[]
@@ -41,7 +42,7 @@ export type DefaultFilterParams = {
 export type FilterParams = {
     shopName?: string
     campaignIds?: string[]
-    granularity?: TimeGranularity
+    granularity?: ReportingGranularity | TimeGranularity
     limit?: number
     offset?: number
 } & RequiredFilterParams
