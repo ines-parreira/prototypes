@@ -275,7 +275,7 @@ exports[`metric trends useMessagesSentTrend should create reporting filters 1`] 
       ],
     },
     {
-      "member": "MessageState.assigneeUserId",
+      "member": "MessageState.senderId",
       "operator": "equals",
       "values": [
         "2",
@@ -437,7 +437,7 @@ exports[`metric trends useTicketsRepliedTrend should create reporting filters 1`
       ],
     },
     {
-      "member": "MessageState.assigneeUserId",
+      "member": "MessageState.senderId",
       "operator": "equals",
       "values": [
         "2",

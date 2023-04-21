@@ -65,7 +65,7 @@ export enum MessageStateMember {
     PeriodEnd = 'MessageState.periodEnd',
     Channel = 'MessageState.channel',
     Integration = 'MessageState.integration',
-    AssigneeUserId = 'MessageState.assigneeUserId',
+    SenderId = 'MessageState.senderId',
 }
 
 export enum MessageStateDimension {

@@ -35,7 +35,7 @@ exports[`time series useMessagesSentTimeSeries should create reporting filters 1
         ],
       },
       {
-        "member": "MessageState.assigneeUserId",
+        "member": "MessageState.senderId",
         "operator": "equals",
         "values": [
           "2",
@@ -268,7 +268,7 @@ exports[`time series useTicketsRepliedTimeSeries should create reporting filters
         ],
       },
       {
-        "member": "MessageState.assigneeUserId",
+        "member": "MessageState.senderId",
         "operator": "equals",
         "values": [
           "2",

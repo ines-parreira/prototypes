@@ -1,7 +1,6 @@
 import {
     MessageStateDimension,
     MessageStateMeasure,
-    MessageStateMember,
     ReportingFilterOperator,
     ReportingGranularity,
     TicketStateDimension,
@@ -12,7 +11,9 @@ import {
 import {StatsFilters} from 'models/stat/types'
 import {
     formatReportingQueryDate,
+    MessageStateStatsFiltersMembers,
     statsFiltersToReportingFilters,
+    TicketStateStatsFiltersMembers,
 } from 'utils/reporting'
 
 import useTimeSeries from './useTimeSeries'
@@ -42,7 +43,10 @@ export function useTicketsCreatedTimeSeries(
             TicketStateSegment.ClosedTickets,
         ],
         filters: [
-            ...statsFiltersToReportingFilters(TicketStateMember, filters),
+            ...statsFiltersToReportingFilters(
+                TicketStateStatsFiltersMembers,
+                filters
+            ),
             {
                 member: TicketStateMember.IsTrashed,
                 operator: ReportingFilterOperator.Equals,
@@ -79,7 +83,10 @@ export function useTicketsClosedTimeSeries(
         order: [[TicketStateDimension.ClosedDatetime, 'asc']],
         segments: [TicketStateSegment.ClosedTickets],
         filters: [
-            ...statsFiltersToReportingFilters(TicketStateMember, filters),
+            ...statsFiltersToReportingFilters(
+                TicketStateStatsFiltersMembers,
+                filters
+            ),
             {
                 member: TicketStateMember.IsTrashed,
                 operator: ReportingFilterOperator.Equals,
@@ -114,7 +121,10 @@ export function useTicketsRepliedTimeSeries(
         timezone,
         dimensions: [],
         order: [[MessageStateDimension.PeriodStart, 'asc']],
-        filters: statsFiltersToReportingFilters(MessageStateMember, filters),
+        filters: statsFiltersToReportingFilters(
+            MessageStateStatsFiltersMembers,
+            filters
+        ),
     })
 }
 
@@ -138,6 +148,9 @@ export function useMessagesSentTimeSeries(
         timezone,
         dimensions: [],
         order: [[MessageStateDimension.PeriodStart, 'asc']],
-        filters: statsFiltersToReportingFilters(MessageStateMember, filters),
+        filters: statsFiltersToReportingFilters(
+            MessageStateStatsFiltersMembers,
+            filters
+        ),
     })
 }

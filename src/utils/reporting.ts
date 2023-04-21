@@ -1,44 +1,69 @@
 import moment, {Moment} from 'moment'
 
 import {
+    MessageStateMember,
+    OpenTicketStateMember,
     ReportingFilter,
     ReportingFilterMember,
     ReportingFilterOperator,
     ReportingGranularity,
+    TicketStateMember,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
 export const formatReportingQueryDate = (date: string | Moment) =>
     moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')
 
-type CommonFilterMembers = {
-    PeriodStart: string
-    PeriodEnd: string
-    Channel: string
-    Integration: string
-    AssigneeUserId: string
+type StatsFiltersMembers = Record<
+    'periodStart' | 'periodEnd',
+    ReportingFilterMember
+> &
+    Partial<Record<keyof Omit<StatsFilters, 'period'>, ReportingFilterMember>>
+
+export const TicketStateStatsFiltersMembers: StatsFiltersMembers = {
+    periodStart: TicketStateMember.PeriodStart,
+    periodEnd: TicketStateMember.PeriodEnd,
+    channels: TicketStateMember.Channel,
+    integrations: TicketStateMember.Integration,
+    agents: TicketStateMember.AssigneeUserId,
+}
+
+export const OpenTicketStateStatsFiltersMembers: StatsFiltersMembers = {
+    periodStart: OpenTicketStateMember.PeriodStart,
+    periodEnd: OpenTicketStateMember.PeriodEnd,
+    channels: OpenTicketStateMember.Channel,
+    integrations: OpenTicketStateMember.Integration,
+    agents: OpenTicketStateMember.AssigneeUserId,
+}
+
+export const MessageStateStatsFiltersMembers: StatsFiltersMembers = {
+    periodStart: MessageStateMember.PeriodStart,
+    periodEnd: MessageStateMember.PeriodEnd,
+    channels: MessageStateMember.Channel,
+    integrations: MessageStateMember.Integration,
+    agents: MessageStateMember.SenderId,
 }
 
 export const statsFiltersToReportingFilters = (
-    members: CommonFilterMembers,
+    members: StatsFiltersMembers,
     statsFilters: StatsFilters
 ): ReportingFilter[] => {
     const {period, integrations, channels, agents} = statsFilters
     const filters: ReportingFilter[] = [
         {
-            member: members.PeriodStart as ReportingFilterMember,
+            member: members.periodStart,
             operator: ReportingFilterOperator.AfterDate,
             values: [formatReportingQueryDate(period.start_datetime)],
         },
         {
-            member: members.PeriodEnd as ReportingFilterMember,
+            member: members.periodEnd,
             operator: ReportingFilterOperator.BeforeDate,
             values: [formatReportingQueryDate(period.end_datetime)],
         },
     ]
     if (integrations?.length) {
         filters.push({
-            member: members.Integration as ReportingFilterMember,
+            member: members.integrations,
             operator: ReportingFilterOperator.Equals,
             values: integrations.map((integrationId) =>
                 integrationId.toString()
@@ -47,14 +72,14 @@ export const statsFiltersToReportingFilters = (
     }
     if (channels?.length) {
         filters.push({
-            member: members.Channel as ReportingFilterMember,
+            member: members.channels,
             operator: ReportingFilterOperator.Equals,
             values: channels,
         })
     }
     if (agents?.length) {
         filters.push({
-            member: members.AssigneeUserId as ReportingFilterMember,
+            member: members.agents,
             operator: ReportingFilterOperator.Equals,
             values: agents.map((agent) => agent.toString()),
         })

@@ -1,6 +1,5 @@
 import {
     MessageStateMeasure,
-    MessageStateMember,
     OpenTicketStateMeasure,
     OpenTicketStateMember,
     ReportingFilter,
@@ -9,7 +8,12 @@ import {
     TicketStateMember,
     TicketStateSegment,
 } from 'models/reporting/types'
-import {statsFiltersToReportingFilters} from 'utils/reporting'
+import {
+    MessageStateStatsFiltersMembers,
+    OpenTicketStateStatsFiltersMembers,
+    statsFiltersToReportingFilters,
+    TicketStateStatsFiltersMembers,
+} from 'utils/reporting'
 
 import createUseMetricTrend from './createUseMetricTrend'
 
@@ -19,7 +23,10 @@ export const useCustomerSatisfactionTrend = createUseMetricTrend(
         dimensions: [],
         timezone,
         segments: [TicketStateSegment.SurveyScored],
-        filters: statsFiltersToReportingFilters(TicketStateMember, filters),
+        filters: statsFiltersToReportingFilters(
+            TicketStateStatsFiltersMembers,
+            filters
+        ),
     })
 )
 
@@ -62,7 +69,7 @@ export const useFirstResponseTimeTrend = createUseMetricTrend(
             filters: [
                 ...commonFilters,
                 ...statsFiltersToReportingFilters(
-                    TicketStateMember,
+                    TicketStateStatsFiltersMembers,
                     statFiltersWithoutAgents
                 ),
             ],
@@ -79,7 +86,10 @@ export const useMessagesPerTicketTrend = createUseMetricTrend(
             TicketStateSegment.ClosedTickets,
             TicketStateSegment.ConversationStarted,
         ],
-        filters: statsFiltersToReportingFilters(TicketStateMember, filters),
+        filters: statsFiltersToReportingFilters(
+            TicketStateStatsFiltersMembers,
+            filters
+        ),
     })
 )
 
@@ -92,7 +102,10 @@ export const useResolutionTimeTrend = createUseMetricTrend(
             TicketStateSegment.ClosedTickets,
             TicketStateSegment.ConversationStarted,
         ],
-        filters: statsFiltersToReportingFilters(TicketStateMember, filters),
+        filters: statsFiltersToReportingFilters(
+            TicketStateStatsFiltersMembers,
+            filters
+        ),
     })
 )
 
@@ -112,7 +125,14 @@ export const useOpenTicketsTrend = createUseMetricTrend(
                 operator: ReportingFilterOperator.Equals,
                 values: ['0'],
             },
-            ...statsFiltersToReportingFilters(OpenTicketStateMember, filters),
+            ...statsFiltersToReportingFilters(
+                OpenTicketStateStatsFiltersMembers,
+                filters
+            ).filter(
+                (filter) =>
+                    filter.member !==
+                    OpenTicketStateStatsFiltersMembers.periodStart
+            ),
         ],
     })
 )
@@ -134,7 +154,10 @@ export const useClosedTicketsTrend = createUseMetricTrend(
                 operator: ReportingFilterOperator.Equals,
                 values: ['0'],
             },
-            ...statsFiltersToReportingFilters(TicketStateMember, filters),
+            ...statsFiltersToReportingFilters(
+                TicketStateStatsFiltersMembers,
+                filters
+            ),
         ],
     })
 )
@@ -155,7 +178,10 @@ export const useTicketsCreatedTrend = createUseMetricTrend(
                 operator: ReportingFilterOperator.Equals,
                 values: ['0'],
             },
-            ...statsFiltersToReportingFilters(TicketStateMember, filters),
+            ...statsFiltersToReportingFilters(
+                TicketStateStatsFiltersMembers,
+                filters
+            ),
         ],
     })
 )
@@ -165,7 +191,10 @@ export const useTicketsRepliedTrend = createUseMetricTrend(
         measures: [MessageStateMeasure.TicketCount],
         dimensions: [],
         timezone,
-        filters: statsFiltersToReportingFilters(MessageStateMember, filters),
+        filters: statsFiltersToReportingFilters(
+            MessageStateStatsFiltersMembers,
+            filters
+        ),
     })
 )
 
@@ -174,6 +203,9 @@ export const useMessagesSentTrend = createUseMetricTrend(
         measures: [MessageStateMeasure.MessageCount],
         dimensions: [],
         timezone,
-        filters: statsFiltersToReportingFilters(MessageStateMember, filters),
+        filters: statsFiltersToReportingFilters(
+            MessageStateStatsFiltersMembers,
+            filters
+        ),
     })
 )
