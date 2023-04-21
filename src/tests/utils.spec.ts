@@ -1024,6 +1024,14 @@ describe('global utils', () => {
                     output: true,
                 },
                 {
+                    input: `dailymotion.co.uk`,
+                    output: true,
+                },
+                {
+                    input: `sub.dailymotion.co.uk`,
+                    output: true,
+                },
+                {
                     input: `https://www.dailymotion.com`,
                     output: false,
                 },
