@@ -43,7 +43,7 @@ exports[`<EditTicketField/> should render 2`] = `
           aria-current="page"
           class="active breadcrumb-item"
         >
-          Test field
+          Input field
         </li>
       </ol>
     </nav>
@@ -96,7 +96,7 @@ exports[`<EditTicketField/> should render 2`] = `
               placeholder="e.g. Contact Reason"
               required=""
               type="text"
-              value="Test field"
+              value="Input field"
             />
           </div>
           <div
@@ -210,7 +210,7 @@ exports[`<EditTicketField/> should render 2`] = `
               id="input-text-5"
               name="settings.placeholder"
               type="text"
-              value="Test placeholder"
+              value="Some placeholder"
             />
           </div>
         </div>

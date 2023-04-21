@@ -10,7 +10,10 @@ import thunk from 'redux-thunk'
 import {createMemoryHistory} from 'history'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import {customField, customFieldInput} from 'fixtures/customField'
+import {
+    ticketInputFieldDefinition,
+    customFieldInputDefinition,
+} from 'fixtures/customField'
 import {CustomFieldInput} from 'models/customField/types'
 import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
 import {renderWithRouter} from 'utils/testing'
@@ -28,7 +31,7 @@ describe('<FieldForm/>', () => {
 
     it('should render correctly', () => {
         const props = {
-            field: customFieldInput,
+            field: customFieldInputDefinition,
             onSubmit: jest.fn(),
             onClose: jest.fn(),
         }
@@ -45,7 +48,7 @@ describe('<FieldForm/>', () => {
 
     it('should show archiving status and disable type change on edit', () => {
         const props = {
-            field: customField,
+            field: ticketInputFieldDefinition,
             onSubmit: jest.fn(),
             onClose: jest.fn(),
         }
@@ -62,7 +65,7 @@ describe('<FieldForm/>', () => {
 
     it('should disable the save button if the form is not valid', async () => {
         const props = {
-            field: {...customFieldInput, label: ''},
+            field: {...customFieldInputDefinition, label: ''},
             onSubmit: jest.fn(),
             onClose: jest.fn(),
         }
@@ -84,7 +87,7 @@ describe('<FieldForm/>', () => {
     it('should disable the save button if the form has duplicates', async () => {
         const props = {
             field: {
-                ...customFieldInput,
+                ...customFieldInputDefinition,
                 definition: {
                     data_type: 'text',
                     input_settings: {
@@ -116,7 +119,7 @@ describe('<FieldForm/>', () => {
     it('should disable the save button if a dropdown choice has more than 5 levels of nesting', async () => {
         const props = {
             field: {
-                ...customFieldInput,
+                ...customFieldInputDefinition,
                 definition: {
                     data_type: 'text',
                     input_settings: {
@@ -149,7 +152,7 @@ describe('<FieldForm/>', () => {
 
     it('should call onSubmit if the form is valid and the save button is clicked', async () => {
         const props = {
-            field: customFieldInput,
+            field: customFieldInputDefinition,
             onSubmit: jest.fn(),
             onClose: jest.fn(),
         }
@@ -167,13 +170,13 @@ describe('<FieldForm/>', () => {
 
         expect(props.onSubmit).toHaveBeenCalledTimes(1)
         expect(props.onSubmit).toHaveBeenCalledWith(
-            omit(customFieldInput, ['priority'])
+            omit(customFieldInputDefinition, ['priority'])
         )
     })
 
     it('should call onClose if the cancel button is clicked', async () => {
         const props = {
-            field: customFieldInput,
+            field: customFieldInputDefinition,
             onSubmit: jest.fn(),
             onClose: jest.fn(),
         }
@@ -195,7 +198,7 @@ describe('<FieldForm/>', () => {
     it('should prompt for confirmation when closing the page with unsaved changes', async () => {
         const history = createMemoryHistory()
         const props = {
-            field: customFieldInput,
+            field: customFieldInputDefinition,
             onSubmit: jest.fn(),
             onClose: jest.fn(),
         }

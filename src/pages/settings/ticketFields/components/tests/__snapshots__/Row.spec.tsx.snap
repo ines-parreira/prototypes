@@ -33,7 +33,7 @@ exports[`<Row /> should render correctly active field 1`] = `
             <span
               class="mr-2 label"
             >
-              Test field
+              Input field
             </span>
           </div>
         </a>
@@ -92,7 +92,7 @@ exports[`<Row /> should render correctly active field 2`] = `
             <span
               class="mr-2 label"
             >
-              Test field
+              Input field
             </span>
           </div>
         </a>
@@ -165,7 +165,7 @@ exports[`<Row /> should render correctly active required field 1`] = `
             <span
               class="mr-2 label"
             >
-              Test field
+              Input field
             </span>
           </div>
         </a>
@@ -230,7 +230,7 @@ exports[`<Row /> should render correctly active required field 2`] = `
             <span
               class="mr-2 label"
             >
-              Test field
+              Input field
             </span>
           </div>
         </a>
@@ -295,7 +295,7 @@ exports[`<Row /> should render correctly archived required field 1`] = `
             <span
               class="mr-2 label"
             >
-              Test field
+              Input field
             </span>
           </div>
         </a>
@@ -354,7 +354,7 @@ exports[`<Row /> should render correctly archived required field 2`] = `
             <span
               class="mr-2 label"
             >
-              Test field
+              Input field
             </span>
           </div>
         </a>

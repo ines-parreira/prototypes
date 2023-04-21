@@ -1,7 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TicketDetailContainer component should render container for new ticket 1`] = `
-<div
-  data-testid="TicketView-close"
-/>
+<div>
+  <div
+    data-testid="TicketView-submit"
+  />
+  <div
+    data-testid="TicketView-change-status"
+  />
+</div>
 `;

@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import {customField} from 'fixtures/customField'
+import {ticketInputFieldDefinition} from 'fixtures/customField'
 import client from 'models/api/resources'
 import {renderWithRouter} from 'utils/testing'
 
@@ -23,7 +23,9 @@ describe('<EditTicketField/>', () => {
     })
 
     it('should render', async () => {
-        mockedServer.onGet('/api/custom-fields/123').reply(200, customField)
+        mockedServer
+            .onGet('/api/custom-fields/123')
+            .reply(200, ticketInputFieldDefinition)
 
         const {container, findByText} = renderWithRouter(
             <QueryClientProvider client={queryClient}>
@@ -39,7 +41,7 @@ describe('<EditTicketField/>', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
 
-        await findByText(customField.label)
+        await findByText(ticketInputFieldDefinition.label)
         expect(container.firstChild).toMatchSnapshot()
     })
 })

@@ -1,4 +1,4 @@
-import {customField} from 'fixtures/customField'
+import {ticketInputFieldDefinition} from 'fixtures/customField'
 import {
     isCustomFieldValueEmpty,
     isFieldErrored,
@@ -24,11 +24,14 @@ describe('isFieldErrored', () => {
         ...fieldStateWithValue,
         value: undefined,
     }
-    const requiredCustomField = {...customField, required: true}
+    const requiredCustomField = {...ticketInputFieldDefinition, required: true}
     it.each([
         [{}, false],
         [
-            {fieldState: fieldStateWithValue, fieldDefinition: customField},
+            {
+                fieldState: fieldStateWithValue,
+                fieldDefinition: ticketInputFieldDefinition,
+            },
             false,
         ],
         [
@@ -41,7 +44,7 @@ describe('isFieldErrored', () => {
         [
             {
                 fieldState: fieldStateWithoutValue,
-                fieldDefinition: customField,
+                fieldDefinition: ticketInputFieldDefinition,
             },
             false,
         ],
@@ -63,7 +66,10 @@ describe('getInvalidTicketFieldIds', () => {
             1: {id: 1, value: 'ok'},
             2: {id: 2, value: 'ok'},
         }
-        const fieldDefinitions = [customField, {...customField, id: 2}]
+        const fieldDefinitions = [
+            ticketInputFieldDefinition,
+            {...ticketInputFieldDefinition, id: 2},
+        ]
         expect(
             getInvalidTicketFieldIds({fieldsState, fieldDefinitions})
         ).toEqual([])
@@ -74,8 +80,8 @@ describe('getInvalidTicketFieldIds', () => {
             2: {id: 2, value: undefined},
         }
         const fieldDefinitions = [
-            customField,
-            {...customField, id: 2, required: true},
+            ticketInputFieldDefinition,
+            {...ticketInputFieldDefinition, id: 2, required: true},
         ]
         expect(
             getInvalidTicketFieldIds({fieldsState, fieldDefinitions})

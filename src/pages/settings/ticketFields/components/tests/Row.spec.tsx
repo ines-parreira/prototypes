@@ -4,7 +4,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import {customField} from 'fixtures/customField'
+import {ticketInputFieldDefinition} from 'fixtures/customField'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithDnD} from 'utils/testing'
@@ -31,7 +31,7 @@ describe('<Row />', () => {
         'should render correctly active field',
         (canReorder) => {
             const props = {
-                ticketField: customField,
+                ticketField: ticketInputFieldDefinition,
                 canReorder,
                 position: 0,
                 onMoveEntity: jest.fn(),
@@ -58,7 +58,7 @@ describe('<Row />', () => {
         (canReorder) => {
             const props = {
                 ticketField: {
-                    ...customField,
+                    ...ticketInputFieldDefinition,
                     required: true,
                 },
                 canReorder,
@@ -87,7 +87,7 @@ describe('<Row />', () => {
         (canReorder) => {
             const props = {
                 ticketField: {
-                    ...customField,
+                    ...ticketInputFieldDefinition,
                     required: true,
                     deactivated_datetime: '2022-01-02T03:04:05.123456+00:00',
                 },

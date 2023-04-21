@@ -214,7 +214,7 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
         placeholder="e.g. Contact Reason"
         required=""
         type="text"
-        value="Test field"
+        value="Input field"
       />
     </div>
     <div
@@ -328,7 +328,7 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
         id="input-text-11"
         name="settings.placeholder"
         type="text"
-        value="Test placeholder"
+        value="Some placeholder"
       />
     </div>
   </div>

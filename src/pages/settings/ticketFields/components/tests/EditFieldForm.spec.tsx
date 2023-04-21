@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import {customField} from 'fixtures/customField'
+import {ticketInputFieldDefinition} from 'fixtures/customField'
 import client from 'models/api/resources'
 import history from 'pages/history'
 import {renderWithRouter} from 'utils/testing'
@@ -33,7 +33,7 @@ describe('<EditFieldForm/>', () => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
-                        <EditFieldForm field={customField} />
+                        <EditFieldForm field={ticketInputFieldDefinition} />
                     </DndProvider>
                 </Provider>
             </QueryClientProvider>
@@ -43,14 +43,14 @@ describe('<EditFieldForm/>', () => {
 
     it('should create custom field if the save button is clicked', async () => {
         mockedServer
-            .onPut(`/api/custom-fields/${customField.id}`)
-            .reply(200, customField)
+            .onPut(`/api/custom-fields/${ticketInputFieldDefinition.id}`)
+            .reply(200, ticketInputFieldDefinition)
 
         const {findByTestId, findByLabelText} = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
-                        <EditFieldForm field={customField} />
+                        <EditFieldForm field={ticketInputFieldDefinition} />
                     </DndProvider>
                 </Provider>
             </QueryClientProvider>
@@ -78,7 +78,7 @@ describe('<EditFieldForm/>', () => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
-                        <EditFieldForm field={customField} />
+                        <EditFieldForm field={ticketInputFieldDefinition} />
                     </DndProvider>
                 </Provider>{' '}
             </QueryClientProvider>

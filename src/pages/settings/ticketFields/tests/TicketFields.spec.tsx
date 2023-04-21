@@ -14,7 +14,7 @@ import {user} from 'fixtures/users'
 import client from 'models/api/resources'
 import {renderWithRouter} from 'utils/testing'
 import {CustomField} from 'models/customField/types'
-import {customField} from 'fixtures/customField'
+import {ticketInputFieldDefinition} from 'fixtures/customField'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import TicketFields from '../TicketFields'
 
@@ -75,7 +75,7 @@ describe('<TicketFields/>', () => {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 const data: CustomField[] = !config.params.archived
                     ? []
-                    : [customField]
+                    : [ticketInputFieldDefinition]
 
                 return [
                     200,
@@ -119,7 +119,7 @@ describe('<TicketFields/>', () => {
             .reply((config: AxiosRequestConfig) => {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 const data: CustomField[] = !config.params.archived
-                    ? [customField]
+                    ? [ticketInputFieldDefinition]
                     : []
                 return [
                     200,
@@ -159,7 +159,7 @@ describe('<TicketFields/>', () => {
             .onGet('/api/custom-fields/')
             .reply((config: AxiosRequestConfig) => {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                let data: CustomField[] = [customField]
+                let data: CustomField[] = [ticketInputFieldDefinition]
 
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 if (config.params.search) {
@@ -218,7 +218,7 @@ describe('<TicketFields/>', () => {
             .reply((config: AxiosRequestConfig) => {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 const data: CustomField[] = !config.params.archived
-                    ? [customField]
+                    ? [ticketInputFieldDefinition]
                     : []
                 return [
                     200,
@@ -263,7 +263,7 @@ describe('<TicketFields/>', () => {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 const data: CustomField[] = !config.params.archived
                     ? []
-                    : [customField]
+                    : [ticketInputFieldDefinition]
                 return [
                     200,
                     {

@@ -19,7 +19,7 @@ exports[`<TicketHeaderWrapper/> should hide history button when on a new ticket 
 </div>
 `;
 
-exports[`<TicketHeaderWrapper/> should render history button, ticket header and separator 1`] = `
+exports[`<TicketHeaderWrapper/> should render history button, ticket header and separator, and ticket fields 1`] = `
 <div>
   <div
     class="headerContainer"
@@ -37,6 +37,48 @@ exports[`<TicketHeaderWrapper/> should render history button, ticket header and 
       <div>
         TicketHeader
       </div>
+    </div>
+    <div
+      class="wrapper"
+    >
+      <label
+        class="labelWrapper"
+      >
+        <span
+          class="label"
+        >
+          Dropdown field
+          :
+        </span>
+        <input
+          autocomplete="off"
+          class="baseStyles stealth isPlaceholding"
+          id="ticket-123-custom-field-value-input-2"
+          name="Dropdown field"
+          placeholder="+Add"
+          type="text"
+          value=""
+        />
+      </label>
+      <label
+        class="labelWrapper"
+      >
+        <span
+          class="label"
+        >
+          Input field
+          :
+        </span>
+        <input
+          autocomplete="off"
+          class="baseStyles stealth isPlaceholding"
+          id="ticket-123-custom-field-value-input-123"
+          name="Input field"
+          placeholder="Some placeholder"
+          type="text"
+          value=""
+        />
+      </label>
     </div>
     <div
       class="viewersBanner hidden"

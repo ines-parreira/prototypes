@@ -1,6 +1,9 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {customField, customFieldInput} from 'fixtures/customField'
+import {
+    ticketInputFieldDefinition,
+    customFieldInputDefinition,
+} from 'fixtures/customField'
 import client from 'models/api/resources'
 
 import {
@@ -23,7 +26,7 @@ describe('custom field resources', () => {
         it('should resolve with a list of paginated CustomFields on success', async () => {
             mockedServer
                 .onGet('/api/custom-fields/')
-                .reply(200, {data: [customField]})
+                .reply(200, {data: [ticketInputFieldDefinition]})
             const res = await getCustomFields({
                 archived: false,
                 object_type: 'Ticket',
@@ -47,7 +50,9 @@ describe('custom field resources', () => {
 
     describe('getCustomField', () => {
         it('should resolve with an existing CustomField on success', async () => {
-            mockedServer.onGet('/api/custom-fields/123').reply(200, customField)
+            mockedServer
+                .onGet('/api/custom-fields/123')
+                .reply(200, ticketInputFieldDefinition)
             const res = await getCustomField(123)
 
             expect(res).toMatchSnapshot()
@@ -66,8 +71,10 @@ describe('custom field resources', () => {
 
     describe('createCustomField', () => {
         it('should resolve with a new CustomField on success', async () => {
-            mockedServer.onPost('/api/custom-fields').reply(200, customField)
-            const res = await createCustomField(customFieldInput)
+            mockedServer
+                .onPost('/api/custom-fields')
+                .reply(200, ticketInputFieldDefinition)
+            const res = await createCustomField(customFieldInputDefinition)
 
             expect(res).toMatchSnapshot()
             expect(mockedServer.history).toMatchSnapshot()
@@ -77,16 +84,18 @@ describe('custom field resources', () => {
             mockedServer
                 .onPost('/api/custom-fields')
                 .reply(503, {message: 'error'})
-            return expect(createCustomField(customFieldInput)).rejects.toEqual(
-                new Error('Request failed with status code 503')
-            )
+            return expect(
+                createCustomField(customFieldInputDefinition)
+            ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
 
     describe('updateCustomField', () => {
         it('should resolve with an updated CustomField on success', async () => {
-            mockedServer.onPut('/api/custom-fields/123').reply(200, customField)
-            const res = await updateCustomField(123, customFieldInput)
+            mockedServer
+                .onPut('/api/custom-fields/123')
+                .reply(200, ticketInputFieldDefinition)
+            const res = await updateCustomField(123, customFieldInputDefinition)
 
             expect(res).toMatchSnapshot()
             expect(mockedServer.history).toMatchSnapshot()
@@ -97,7 +106,7 @@ describe('custom field resources', () => {
                 .onPut('/api/custom-fields/123')
                 .reply(503, {message: 'error'})
             return expect(
-                updateCustomField(123, customFieldInput)
+                updateCustomField(123, customFieldInputDefinition)
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -106,10 +115,10 @@ describe('custom field resources', () => {
         it('should resolve with a list of updated CustomFields on success', async () => {
             mockedServer
                 .onPut('/api/custom-fields/')
-                .reply(200, {data: [customField]})
+                .reply(200, {data: [ticketInputFieldDefinition]})
             const res = await updateCustomFields([
                 {
-                    id: customField.id,
+                    id: ticketInputFieldDefinition.id,
                     priority: 999,
                 },
             ])
@@ -125,7 +134,7 @@ describe('custom field resources', () => {
             return expect(
                 updateCustomFields([
                     {
-                        id: customField.id,
+                        id: ticketInputFieldDefinition.id,
                         priority: 999,
                     },
                 ])
@@ -135,8 +144,13 @@ describe('custom field resources', () => {
 
     describe('updatePartialCustomField', () => {
         it('should resolve with an updated CustomField on success', async () => {
-            mockedServer.onPut('/api/custom-fields/123').reply(200, customField)
-            const res = await updatePartialCustomField(123, customFieldInput)
+            mockedServer
+                .onPut('/api/custom-fields/123')
+                .reply(200, ticketInputFieldDefinition)
+            const res = await updatePartialCustomField(
+                123,
+                customFieldInputDefinition
+            )
 
             expect(res).toMatchSnapshot()
             expect(mockedServer.history).toMatchSnapshot()
@@ -147,7 +161,7 @@ describe('custom field resources', () => {
                 .onPut('/api/custom-fields/123')
                 .reply(503, {message: 'error'})
             return expect(
-                updatePartialCustomField(123, customFieldInput)
+                updatePartialCustomField(123, customFieldInputDefinition)
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })

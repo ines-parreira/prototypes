@@ -9,7 +9,9 @@ import _noop from 'lodash/noop'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import MockAdapter from 'axios-mock-adapter'
 
+import client from 'models/api/resources'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     flushPromises,
@@ -25,9 +27,15 @@ import {
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
+import {
+    ticketDropdownFieldDefinition,
+    ticketInputFieldDefinition,
+} from 'fixtures/customField'
+import {triggerTicketFieldsErrors} from 'state/ticket/actions'
 import {TicketDetailContainer} from '../TicketDetailContainer'
 import TicketView from '../components/TicketView'
 
+const mockedServer = new MockAdapter(client)
 const queryClient = createTestQueryClient()
 jest.useFakeTimers()
 
@@ -35,14 +43,23 @@ jest.mock('services/shortcutManager/shortcutManager')
 jest.mock('../components/TicketView', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const {TicketStatus} = require('business/types/ticket')
-    return ({submit}: ComponentProps<typeof TicketView>) => (
-        <div
-            data-testid="TicketView-close"
-            onClick={() => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                submit({status: TicketStatus.Closed})
-            }}
-        />
+    return ({submit, setStatus}: ComponentProps<typeof TicketView>) => (
+        <div>
+            <div
+                data-testid="TicketView-submit"
+                onClick={() => {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                    submit({status: TicketStatus.Closed})
+                }}
+            />
+            <div
+                data-testid="TicketView-change-status"
+                onClick={() => {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                    setStatus(TicketStatus.Closed)
+                }}
+            />
+        </div>
     )
 })
 
@@ -52,9 +69,13 @@ jest.mock('services/pendingMessageManager/pendingMessageManager', () => ({
 }))
 
 jest.mock('store/middlewares/segmentTracker')
+jest.mock('state/ticket/actions', () => ({
+    ...jest.requireActual<Record<string, unknown>>('state/ticket/actions'),
+    triggerTicketFieldsErrors: jest.fn(),
+}))
 
 const mockStore = configureMockStore([thunk])
-const mockedStore = mockStore({})
+let mockedStore = mockStore({})
 
 const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager
@@ -69,10 +90,12 @@ describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
     const newTicket = fromJS({
         messages: [],
+        custom_fields: {},
     }) as Map<any, any>
     const existingTicket = fromJS({
         id: 1,
         messages: [],
+        custom_fields: {},
     }) as Map<any, any>
     const setStatusMock = jest.fn() as jest.Mock<unknown, [string, () => void]>
     const minProps = {
@@ -152,6 +175,9 @@ describe('TicketDetailContainer component', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockedServer.reset()
+        mockedStore = mockStore({})
+        mockedStore.dispatch = jest.fn()
         prepareTicketMessageMock.mockReturnValue(preparedData)
         setStatusMock.mockImplementation((status, callback) => {
             act(callback)
@@ -270,7 +296,7 @@ describe('TicketDetailContainer component', () => {
             }
         )
 
-        userEvent.click(getByTestId('TicketView-close'))
+        userEvent.click(getByTestId('TicketView-submit'))
         expect(minProps.goToNextTicket).not.toHaveBeenCalled()
     })
 
@@ -303,7 +329,7 @@ describe('TicketDetailContainer component', () => {
             }
         )
 
-        userEvent.click(getByTestId('TicketView-close'))
+        userEvent.click(getByTestId('TicketView-submit'))
         await waitFor(() => expect(minProps.goToNextTicket).toHaveBeenCalled())
     })
 
@@ -798,7 +824,7 @@ describe('TicketDetailContainer component', () => {
             }
         )
 
-        userEvent.click(getByTestId('TicketView-close'))
+        userEvent.click(getByTestId('TicketView-submit'))
         await waitFor(() =>
             expect(pendingMessageManager.sendMessage).toHaveBeenNthCalledWith(
                 1,
@@ -856,7 +882,7 @@ describe('TicketDetailContainer component', () => {
             }
         )
 
-        userEvent.click(getByTestId('TicketView-close'))
+        userEvent.click(getByTestId('TicketView-submit'))
         await waitFor(() =>
             expect(minProps.sendTicketMessage).toHaveBeenNthCalledWith(
                 1,
@@ -886,8 +912,8 @@ describe('TicketDetailContainer component', () => {
             }
         )
 
-        userEvent.click(getByTestId('TicketView-close'))
-        userEvent.click(getByTestId('TicketView-close'))
+        userEvent.click(getByTestId('TicketView-submit'))
+        userEvent.click(getByTestId('TicketView-submit'))
         await waitFor(() =>
             expect(pendingMessageManager.sendMessage).toHaveBeenNthCalledWith(
                 1,
@@ -940,7 +966,7 @@ describe('TicketDetailContainer component', () => {
                 }
             )
 
-            userEvent.click(getByTestId('TicketView-close'))
+            userEvent.click(getByTestId('TicketView-submit'))
             act(() => {
                 history.push('/foo/123')
                 resolveSubmit?.()
@@ -983,7 +1009,7 @@ describe('TicketDetailContainer component', () => {
             }
         )
 
-        userEvent.click(getByTestId('TicketView-close'))
+        userEvent.click(getByTestId('TicketView-submit'))
         await flushPromises()
     })
 
@@ -1135,5 +1161,50 @@ describe('TicketDetailContainer component', () => {
                 customer: mockCustomer,
             })
         )
+    })
+
+    describe('ticket fields', () => {
+        it('should not allow ticket to be set to close if errored', async () => {
+            mockedServer.onGet('/api/custom-fields/').reply(200, {
+                data: [
+                    ticketDropdownFieldDefinition,
+                    {...ticketInputFieldDefinition, required: true},
+                ],
+            })
+            const {getByTestId} = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...{
+                                ...minProps,
+                                canSendMessage: true,
+                                fieldsState: {},
+                            }}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/new',
+                }
+            )
+            await waitFor(() => {
+                expect(queryClient.isFetching()).toBe(0)
+            })
+            userEvent.click(getByTestId('TicketView-submit'))
+            expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(1, [
+                ticketInputFieldDefinition.id,
+            ])
+            userEvent.click(getByTestId('TicketView-change-status'))
+            expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(2, [
+                ticketInputFieldDefinition.id,
+            ])
+            makeExecuteKeyboardAction(shortcutManagerMock)(
+                'SUBMIT_CLOSE_TICKET'
+            )
+            expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(3, [
+                ticketInputFieldDefinition.id,
+            ])
+        })
     })
 })

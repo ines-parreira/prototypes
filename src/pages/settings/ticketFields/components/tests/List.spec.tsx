@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import {customField} from 'fixtures/customField'
+import {ticketInputFieldDefinition} from 'fixtures/customField'
 import List from '../List'
 import {Props} from '../Row'
 
@@ -18,7 +18,7 @@ describe('<List />', () => {
         'should render correctly based on active tab',
         (canReorder) => {
             const props = {
-                ticketFields: [customField],
+                ticketFields: [ticketInputFieldDefinition],
                 canReorder: canReorder,
                 onFieldChange: jest.fn(),
                 onReorder: jest.fn(),

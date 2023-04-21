@@ -17,7 +17,10 @@ import {
     useUpdateCustomFields,
     useUpdateCustomFieldStatus,
 } from 'models/customField/queries'
-import {customField, customFieldInput} from 'fixtures/customField'
+import {
+    ticketInputFieldDefinition,
+    customFieldInputDefinition,
+} from 'fixtures/customField'
 import {NotificationStatus} from 'state/notifications/types'
 import {ListParams} from 'models/customField/resources'
 
@@ -35,7 +38,7 @@ describe('queries.spec.tsx', () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer
                 .onGet('/api/custom-fields/')
-                .reply(200, {data: [customField]})
+                .reply(200, {data: [ticketInputFieldDefinition]})
             const {result, waitFor} = renderHook(
                 () =>
                     useGetCustomFieldDefinitions({
@@ -95,7 +98,9 @@ describe('queries.spec.tsx', () => {
     describe('useGetCustomFieldDefinition', () => {
         it('successful query hook', async () => {
             const mockStore = configureMockStore([thunk])()
-            mockedServer.onGet('/api/custom-fields/123').reply(200, customField)
+            mockedServer
+                .onGet('/api/custom-fields/123')
+                .reply(200, ticketInputFieldDefinition)
             const {result, waitFor} = renderHook(
                 () => useGetCustomFieldDefinition(123),
                 {
@@ -150,7 +155,9 @@ describe('queries.spec.tsx', () => {
                 queryClient,
                 'invalidateQueries'
             )
-            mockedServer.onPost('/api/custom-fields').reply(200, customField)
+            mockedServer
+                .onPost('/api/custom-fields')
+                .reply(200, ticketInputFieldDefinition)
             const {result, waitFor} = renderHook(() => useCreateCustomField(), {
                 wrapper: ({children}) => (
                     <QueryClientProvider client={queryClient}>
@@ -160,7 +167,7 @@ describe('queries.spec.tsx', () => {
             })
 
             act(() => {
-                result.current.mutate(customFieldInput)
+                result.current.mutate(customFieldInputDefinition)
             })
 
             await waitFor(() => {
@@ -200,7 +207,7 @@ describe('queries.spec.tsx', () => {
             })
 
             act(() => {
-                result.current.mutate(customFieldInput)
+                result.current.mutate(customFieldInputDefinition)
             })
 
             await waitFor(() => {
@@ -228,7 +235,9 @@ describe('queries.spec.tsx', () => {
                 queryClient,
                 'invalidateQueries'
             )
-            mockedServer.onPut('/api/custom-fields/123').reply(200, customField)
+            mockedServer
+                .onPut('/api/custom-fields/123')
+                .reply(200, ticketInputFieldDefinition)
             const {result, waitFor} = renderHook(
                 () => useUpdateCustomField(123),
                 {
@@ -241,7 +250,7 @@ describe('queries.spec.tsx', () => {
             )
 
             act(() => {
-                result.current.mutate(customFieldInput)
+                result.current.mutate(customFieldInputDefinition)
             })
 
             await waitFor(() => {
@@ -284,7 +293,7 @@ describe('queries.spec.tsx', () => {
             )
 
             act(() => {
-                result.current.mutate(customFieldInput)
+                result.current.mutate(customFieldInputDefinition)
             })
 
             await waitFor(() => {
@@ -318,7 +327,7 @@ describe('queries.spec.tsx', () => {
             }
             mockedServer
                 .onPut('/api/custom-fields/')
-                .reply(200, {data: [customField]})
+                .reply(200, {data: [ticketInputFieldDefinition]})
             const {result, waitFor} = renderHook(
                 () => useUpdateCustomFields(activeParams),
                 {
@@ -333,7 +342,7 @@ describe('queries.spec.tsx', () => {
             act(() => {
                 result.current.mutate([
                     {
-                        id: customField.id,
+                        id: ticketInputFieldDefinition.id,
                         priority: 999,
                     },
                 ])
@@ -377,7 +386,7 @@ describe('queries.spec.tsx', () => {
             act(() => {
                 result.current.mutate([
                     {
-                        id: customField.id,
+                        id: ticketInputFieldDefinition.id,
                         priority: 999,
                     },
                 ])
@@ -408,7 +417,9 @@ describe('queries.spec.tsx', () => {
                 queryClient,
                 'invalidateQueries'
             )
-            mockedServer.onPut('/api/custom-fields/123').reply(200, customField)
+            mockedServer
+                .onPut('/api/custom-fields/123')
+                .reply(200, ticketInputFieldDefinition)
             const {result, waitFor} = renderHook(
                 () => useUpdateCustomFieldStatus(123),
                 {
