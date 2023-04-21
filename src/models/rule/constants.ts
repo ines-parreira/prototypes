@@ -138,11 +138,6 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             label: IdentifierSubCategoryValue.Sender,
             children: [
                 {
-                    label: 'Sender customer',
-                    text: 'message sender customer',
-                    value: 'message.sender.customer',
-                },
-                {
                     label: 'Sender email',
                     text: 'message sender email',
                     value: 'message.sender.email',
