@@ -212,7 +212,7 @@ export const formatMetricTrend = (
         formattedDiff = new Intl.NumberFormat(DEFAULT_LOCALE, {
             style: 'percent',
             maximumFractionDigits: 0,
-        }).format(absDiff / prevValue)
+        }).format(absDiff / prevValue || 0)
     } else {
         formattedDiff = Intl.NumberFormat(DEFAULT_LOCALE, {
             maximumFractionDigits: 1,

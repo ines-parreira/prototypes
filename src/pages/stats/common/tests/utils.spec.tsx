@@ -249,6 +249,14 @@ describe('stats components utils', () => {
         it('should format trend as percent with no decimal places when format is "percent"', () => {
             expect(formatMetricTrend(2.3, 1.2, 'percent')).toBe('+92%')
         })
+
+        it('should format trend as +∞ when current value is non-zero and prev value is zero and the format is percent', () => {
+            expect(formatMetricTrend(2.3, 0, 'percent')).toBe('+∞%')
+        })
+
+        it('should format trend as 0 when current value is zero and prev value is zero and the format is percent', () => {
+            expect(formatMetricTrend(0, 0, 'percent')).toBe('0%')
+        })
     })
 
     describe('formatTimeSeriesDate', () => {
