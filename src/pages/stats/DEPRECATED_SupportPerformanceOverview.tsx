@@ -1,5 +1,8 @@
-import React, {ComponentProps, useMemo} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {ComponentProps, useMemo, useState} from 'react'
+import {Link} from 'react-router-dom'
 
+import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import {
     getMessagingIntegrationsStatsFilter,
     getStatsFilters,
@@ -11,6 +14,7 @@ import {
     StatsFilters,
     TwoDimensionalChart,
 } from 'models/stat/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     FIRST_RESPONSE_TIME,
     MEDIAN_FIRST_RESPONSE_TIME,
@@ -46,6 +50,9 @@ import KeyMetricStatWrapper from './KeyMetricStatWrapper'
 const SUPPORT_PERFORMANCE_OVERVIEW_STAT_NAME = 'support-performance-overview'
 
 export default function DEPRECATED_SupportPerformanceOverview() {
+    const hasAnalyticsBeta: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
+    const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(true)
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
@@ -212,109 +219,142 @@ export default function DEPRECATED_SupportPerformanceOverview() {
     })
 
     return (
-        <StatsPage
-            title="Performance overview"
-            description="Get an overview of the most important statistics about your customer service.
+        <div className="full-width">
+            {hasAnalyticsBeta && isVersionBannerVisible ? (
+                <BannerNotification
+                    actionHTML={
+                        <Link to="/app/stats/support-performance-overview">
+                            <i className="material-icons">refresh</i> Switch To
+                            New Version
+                        </Link>
+                    }
+                    closable
+                    dismissible={false}
+                    message="This is the old Statistics Overview, which uses our old method of calculating data and may not fully represent your workload."
+                    onClose={() => setIsVersionBannerVisible(false)}
+                />
+            ) : null}
+            <StatsPage
+                title="Performance overview"
+                description="Get an overview of the most important statistics about your customer service.
 Metrics such as volume of tickets, first response time and resolution time are key when it comes to
 providing excellent customer support."
-            helpUrl="https://docs.gorgias.com/statistics/statistics#overview"
-            filters={
-                pageStatsFilters && (
+                helpUrl="https://docs.gorgias.com/statistics/statistics#overview"
+                filters={
+                    pageStatsFilters && (
+                        <>
+                            <IntegrationsStatsFilter
+                                value={pageStatsFilters.integrations}
+                                integrations={messagingIntegrations}
+                                isMultiple
+                            />
+                            <ChannelsStatsFilter
+                                value={pageStatsFilters.channels}
+                                channels={Object.values(TicketChannel)}
+                            />
+                            <AgentsStatsFilter
+                                value={pageStatsFilters.agents}
+                            />
+                            <TagsStatsFilter value={pageStatsFilters.tags} />
+                            <PeriodStatsFilter
+                                value={pageStatsFilters.period}
+                            />
+                        </>
+                    )
+                }
+            >
+                {pageStatsFilters && (
                     <>
-                        <IntegrationsStatsFilter
-                            value={pageStatsFilters.integrations}
-                            integrations={messagingIntegrations}
-                            isMultiple
-                        />
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters.channels}
-                            channels={Object.values(TicketChannel)}
-                        />
-                        <AgentsStatsFilter value={pageStatsFilters.agents} />
-                        <TagsStatsFilter value={pageStatsFilters.tags} />
-                        <PeriodStatsFilter value={pageStatsFilters.period} />
+                        <KeyMetricStatWrapper>
+                            <MultiResourceKeyMetricStat
+                                resourceStats={overviewResourceStats}
+                                config={statsConfig.get(OVERVIEW)}
+                            />
+                        </KeyMetricStatWrapper>
+                        <StatWrapper
+                            stat={supportVolume}
+                            isFetchingStat={isFetchingSupportVolume}
+                            resourceName={SUPPORT_VOLUME}
+                            statsFilters={pageStatsFilters}
+                            helpText="Number of tickets created, replied by agents and closed per day"
+                            isDownloadable
+                        >
+                            {(stat) => (
+                                <BarStat
+                                    data={stat.getIn(['data', 'data'])}
+                                    legend={stat.getIn(
+                                        ['data', 'legend'],
+                                        null
+                                    )}
+                                    config={statsConfig.get(SUPPORT_VOLUME)}
+                                />
+                            )}
+                        </StatWrapper>
+                        <StatWrapper
+                            stat={resolutionTime}
+                            isFetchingStat={isFetchingResolutionTime}
+                            resourceName={RESOLUTION_TIME}
+                            statsFilters={pageStatsFilters}
+                            helpText="Time between the first message from a customer and the moment a ticket with at least one response is closed by an agent or a rule"
+                            isDownloadable
+                        >
+                            {(stat) => (
+                                <LineStat
+                                    data={stat.getIn(['data', 'data'])}
+                                    meta={stat.get('meta')}
+                                    legend={stat.getIn(
+                                        ['data', 'legend'],
+                                        null
+                                    )}
+                                    config={statsConfig.get(RESOLUTION_TIME)}
+                                />
+                            )}
+                        </StatWrapper>
+                        <StatWrapper
+                            stat={firstResponseTime}
+                            isFetchingStat={isFetchingFirstResponseTime}
+                            resourceName={FIRST_RESPONSE_TIME}
+                            statsFilters={pageStatsFilters}
+                            helpText="Time between the first message from a customer and the first response from an agent (messages sent by rules don't count)"
+                            isDownloadable
+                        >
+                            {(stat) => (
+                                <LineStat
+                                    data={stat.getIn(['data', 'data'])}
+                                    meta={stat.get('meta')}
+                                    legend={stat.getIn(
+                                        ['data', 'legend'],
+                                        null
+                                    )}
+                                    config={statsConfig.get(
+                                        FIRST_RESPONSE_TIME
+                                    )}
+                                />
+                            )}
+                        </StatWrapper>
+                        <StatWrapper
+                            stat={ticketsCreatedPerHourPerWeekday}
+                            isFetchingStat={
+                                isFetchingTicketsCreatedPerHourPerWeekday
+                            }
+                            resourceName={TICKETS_CREATED_PER_HOUR_PER_WEEKDAY}
+                            statsFilters={pageStatsFilters}
+                            helpText="Tickets created per hour per day of the week"
+                            isDownloadable
+                        >
+                            {(stat) => (
+                                <PerHourPerWeekTableStat
+                                    data={stat.getIn(['data', 'data'])}
+                                    meta={stat.get('meta')}
+                                    config={statsConfig.get(
+                                        FIRST_RESPONSE_TIME
+                                    )}
+                                />
+                            )}
+                        </StatWrapper>
                     </>
-                )
-            }
-        >
-            {pageStatsFilters && (
-                <>
-                    <KeyMetricStatWrapper>
-                        <MultiResourceKeyMetricStat
-                            resourceStats={overviewResourceStats}
-                            config={statsConfig.get(OVERVIEW)}
-                        />
-                    </KeyMetricStatWrapper>
-                    <StatWrapper
-                        stat={supportVolume}
-                        isFetchingStat={isFetchingSupportVolume}
-                        resourceName={SUPPORT_VOLUME}
-                        statsFilters={pageStatsFilters}
-                        helpText="Number of tickets created, replied by agents and closed per day"
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <BarStat
-                                data={stat.getIn(['data', 'data'])}
-                                legend={stat.getIn(['data', 'legend'], null)}
-                                config={statsConfig.get(SUPPORT_VOLUME)}
-                            />
-                        )}
-                    </StatWrapper>
-                    <StatWrapper
-                        stat={resolutionTime}
-                        isFetchingStat={isFetchingResolutionTime}
-                        resourceName={RESOLUTION_TIME}
-                        statsFilters={pageStatsFilters}
-                        helpText="Time between the first message from a customer and the moment a ticket with at least one response is closed by an agent or a rule"
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <LineStat
-                                data={stat.getIn(['data', 'data'])}
-                                meta={stat.get('meta')}
-                                legend={stat.getIn(['data', 'legend'], null)}
-                                config={statsConfig.get(RESOLUTION_TIME)}
-                            />
-                        )}
-                    </StatWrapper>
-                    <StatWrapper
-                        stat={firstResponseTime}
-                        isFetchingStat={isFetchingFirstResponseTime}
-                        resourceName={FIRST_RESPONSE_TIME}
-                        statsFilters={pageStatsFilters}
-                        helpText="Time between the first message from a customer and the first response from an agent (messages sent by rules don't count)"
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <LineStat
-                                data={stat.getIn(['data', 'data'])}
-                                meta={stat.get('meta')}
-                                legend={stat.getIn(['data', 'legend'], null)}
-                                config={statsConfig.get(FIRST_RESPONSE_TIME)}
-                            />
-                        )}
-                    </StatWrapper>
-                    <StatWrapper
-                        stat={ticketsCreatedPerHourPerWeekday}
-                        isFetchingStat={
-                            isFetchingTicketsCreatedPerHourPerWeekday
-                        }
-                        resourceName={TICKETS_CREATED_PER_HOUR_PER_WEEKDAY}
-                        statsFilters={pageStatsFilters}
-                        helpText="Tickets created per hour per day of the week"
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <PerHourPerWeekTableStat
-                                data={stat.getIn(['data', 'data'])}
-                                meta={stat.get('meta')}
-                                config={statsConfig.get(FIRST_RESPONSE_TIME)}
-                            />
-                        )}
-                    </StatWrapper>
-                </>
-            )}
-        </StatsPage>
+                )}
+            </StatsPage>
+        </div>
     )
 }

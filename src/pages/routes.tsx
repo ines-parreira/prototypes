@@ -504,6 +504,16 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                 {hasAnalyticsBeta && (
                     <Route
                         exact
+                        path={`${path}/support-performance-overview-legacy`}
+                        render={appRender({
+                            content: DEPRECATED_SupportPerformanceOverview,
+                            navbar: StatsNavbarContainer,
+                        })}
+                    />
+                )}
+                {hasAnalyticsBeta && (
+                    <Route
+                        exact
                         path={`${path}/weekly-ticket-load`}
                         render={appRender({
                             content: SupportPerformanceWeeklyTicketLoad,

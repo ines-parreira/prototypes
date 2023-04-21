@@ -1,6 +1,7 @@
 import classnames from 'classnames'
-import React, {useMemo} from 'react'
+import React, {useMemo, useState} from 'react'
 import {useLocalStorage} from 'react-use'
+import {Link} from 'react-router-dom'
 
 import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
@@ -35,6 +36,7 @@ import {
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import {periodToReportingGranularity} from 'utils/reporting'
+import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 
 import BigNumberMetric from './BigNumberMetric'
 import DashboardSection from './DashboardSection'
@@ -78,6 +80,7 @@ export default function SupportPerformanceOverview() {
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
+    const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(true)
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const statsFilters = useAppSelector(getStatsFilters)
     const integrationsStatsFilter = useAppSelector(
@@ -155,281 +158,310 @@ export default function SupportPerformanceOverview() {
     )
 
     return (
-        <StatsPage
-            title="Overview"
-            filters={
-                pageStatsFilters && (
-                    <>
-                        <IntegrationsStatsFilter
-                            value={pageStatsFilters.integrations}
-                            integrations={messagingIntegrations}
-                            isMultiple
-                            variant="ghost"
-                        />
-                        <ChannelsStatsFilter
-                            value={pageStatsFilters.channels}
-                            channels={Object.values(TicketChannel)}
-                            variant="ghost"
-                        />
-                        <AgentsStatsFilter
-                            value={pageStatsFilters.agents}
-                            variant="ghost"
-                        />
-                        <PeriodStatsFilter
-                            value={pageStatsFilters.period}
-                            variant="ghost"
-                        />
-                    </>
-                )
-            }
-        >
-            <DashboardSection
-                title="Customer experience"
-                titleExtra={
-                    <TipsToggle
-                        isVisible={!!areTipsVisible}
-                        onClick={() => setAreTipsVisible(!areTipsVisible)}
-                    />
+        <div className="full-width">
+            {isVersionBannerVisible ? (
+                <BannerNotification
+                    actionHTML={
+                        <Link to="/app/stats/support-performance-overview-legacy">
+                            <i className="material-icons">refresh</i> Switch To
+                            Old Version
+                        </Link>
+                    }
+                    closable
+                    dismissible={false}
+                    message="Welcome to the new Statistics Overview! It calculates data in a new way to represent your workload more accurately."
+                    onClose={() => setIsVersionBannerVisible(false)}
+                />
+            ) : null}
+
+            <StatsPage
+                title="Overview"
+                filters={
+                    pageStatsFilters && (
+                        <>
+                            <IntegrationsStatsFilter
+                                value={pageStatsFilters.integrations}
+                                integrations={messagingIntegrations}
+                                isMultiple
+                                variant="ghost"
+                            />
+                            <ChannelsStatsFilter
+                                value={pageStatsFilters.channels}
+                                channels={Object.values(TicketChannel)}
+                                variant="ghost"
+                            />
+                            <AgentsStatsFilter
+                                value={pageStatsFilters.agents}
+                                variant="ghost"
+                            />
+                            <PeriodStatsFilter
+                                value={pageStatsFilters.period}
+                                variant="ghost"
+                            />
+                        </>
+                    )
                 }
             >
-                <DashboardGridCell size={3}>
-                    <TrendMetricCard
-                        title="Customer satisfaction"
-                        hint="Average CSAT score for tickets which received a survey during the period"
-                        data={customerSatisfactionTrend.data}
-                        interpretAs="more-is-better"
-                        tooltip={
-                            areTipsVisible && (
-                                <MetricTooltip
-                                    type="error"
-                                    title="Poor performance: 4.3"
-                                >
-                                    Tip: you're not often using macros, using
-                                    them could help you decrease Resolution
-                                    Time.
-                                </MetricTooltip>
-                            )
-                        }
-                    >
-                        {({formattedValue}) => (
-                            <BigNumberMetric>
-                                {formattedValue}{' '}
-                                <img
-                                    className={css.customerSatisfactionStar}
-                                    src={blueStar}
-                                    alt="Blue star"
-                                />
-                            </BigNumberMetric>
-                        )}
-                    </TrendMetricCard>
-                </DashboardGridCell>
-                <DashboardGridCell size={3}>
-                    <TrendMetricCard
-                        title="First response time"
-                        hint="Median time between 1st customer message and 1st human agent response"
-                        data={firstResponseTimeTrend.data}
-                        interpretAs="less-is-better"
-                        valueFormat="duration"
-                        tooltip={
-                            areTipsVisible && (
-                                <MetricTooltip
-                                    type="neutral"
-                                    title="Neutral: 5m"
-                                >
-                                    Tip: Sending cute animal GIFs can boost the
-                                    mood in a conversation
-                                </MetricTooltip>
-                            )
-                        }
-                    >
-                        {({formattedValue}) => (
-                            <BigNumberMetric>{formattedValue}</BigNumberMetric>
-                        )}
-                    </TrendMetricCard>
-                </DashboardGridCell>
-                <DashboardGridCell size={3}>
-                    <TrendMetricCard
-                        title="Resolution time"
-                        hint="Median time between the 1st customer message and the last time the ticket was closed"
-                        data={resolutionTimeTrend.data}
-                        valueFormat="duration"
-                        interpretAs="less-is-better"
-                        tooltip={
-                            areTipsVisible && (
-                                <MetricTooltip
-                                    type="light-error"
-                                    title="Underperforming: 48m"
-                                >
-                                    Tip: you're not often using macros, using
-                                    them could help you decrease Resolution
-                                    Time.
-                                </MetricTooltip>
-                            )
-                        }
-                    >
-                        {({formattedValue}) => (
-                            <BigNumberMetric>{formattedValue}</BigNumberMetric>
-                        )}
-                    </TrendMetricCard>
-                </DashboardGridCell>
-                <DashboardGridCell size={3}>
-                    <TrendMetricCard
-                        title="Messages per ticket"
-                        hint="Average number of messages exchanged per closed ticket"
-                        data={messagesPerTicketTrend.data}
-                        interpretAs="less-is-better"
-                        tooltip={
-                            areTipsVisible && (
-                                <MetricTooltip
-                                    type="light-success"
-                                    title="Overperforming: 9"
-                                >
-                                    You're doing great, keep up the good work!
-                                </MetricTooltip>
-                            )
-                        }
-                    >
-                        {({formattedValue}) => (
-                            <BigNumberMetric>{formattedValue}</BigNumberMetric>
-                        )}
-                    </TrendMetricCard>
-                </DashboardGridCell>
-            </DashboardSection>
-            <DashboardSection title="Workload">
-                <DashboardGridCell size={6}>
-                    <TrendMetricCard
-                        title="Open tickets"
-                        hint="Number of tickets with the status “open” at the end of the period"
-                        data={openTicketsTrend.data}
-                        trendFormat="percent"
-                    >
-                        {({formattedValue, formattedPrevValue}) => (
-                            <BigNumberMetric from={formattedPrevValue}>
-                                {formattedValue}
-                            </BigNumberMetric>
-                        )}
-                    </TrendMetricCard>
-                </DashboardGridCell>
-                <DashboardGridCell size={6}>
-                    <TrendMetricCard
-                        title="Closed tickets"
-                        hint="Number of unique tickets closed during the period (and that did not reopen)"
-                        data={closedTicketsTrend.data}
-                        trendFormat="percent"
-                        interpretAs="more-is-better"
-                    >
-                        {({formattedValue, formattedPrevValue}) => (
-                            <BigNumberMetric from={formattedPrevValue}>
-                                {formattedValue}
-                            </BigNumberMetric>
-                        )}
-                    </TrendMetricCard>
-                </DashboardGridCell>
-                <DashboardGridCell size={4}>
-                    <TrendMetricCard
-                        title="Tickets created"
-                        hint="Number of new tickets to handle"
-                        data={ticketsCreatedTrend.data}
-                        trendFormat="percent"
-                    >
-                        {({formattedValue, formattedPrevValue}) => (
-                            <BigNumberMetric from={formattedPrevValue}>
-                                {formattedValue}
-                            </BigNumberMetric>
-                        )}
-                    </TrendMetricCard>
-                </DashboardGridCell>
-                <DashboardGridCell size={4}>
-                    <TrendMetricCard
-                        title="Tickets replied"
-                        hint="Number of tickets where the customer got a response"
-                        data={ticketsRepliedTrend.data}
-                        trendFormat="percent"
-                        interpretAs="more-is-better"
-                    >
-                        {({formattedValue, formattedPrevValue}) => (
-                            <BigNumberMetric from={formattedPrevValue}>
-                                {formattedValue}
-                            </BigNumberMetric>
-                        )}
-                    </TrendMetricCard>
-                </DashboardGridCell>
-                <DashboardGridCell size={4}>
-                    <TrendMetricCard
-                        title="Messages sent"
-                        hint="Number of messages received by your customer"
-                        data={messagesSentTrend.data}
-                        trendFormat="percent"
-                    >
-                        {({formattedValue, formattedPrevValue}) => (
-                            <BigNumberMetric from={formattedPrevValue}>
-                                {formattedValue}
-                            </BigNumberMetric>
-                        )}
-                    </TrendMetricCard>
-                </DashboardGridCell>
-                <DashboardGridCell size={6}>
-                    <ChartCard
-                        title="Tickets created"
-                        hint="Number of new tickets to handle"
-                    >
-                        <TimeSeriesChart
-                            timeSeries={ticketsCreatedTimeSeries}
-                            labels={['Tickets created']}
-                            granularity={granularity}
+                <DashboardSection
+                    title="Customer experience"
+                    titleExtra={
+                        <TipsToggle
+                            isVisible={!!areTipsVisible}
+                            onClick={() => setAreTipsVisible(!areTipsVisible)}
                         />
-                    </ChartCard>
-                </DashboardGridCell>
-                <DashboardGridCell size={6}>
-                    <ChartCard
-                        title="Tickets closed"
-                        hint="Number of opened tickets solved by the end of the period"
+                    }
+                >
+                    <DashboardGridCell size={3}>
+                        <TrendMetricCard
+                            title="Customer satisfaction"
+                            hint="Average CSAT score for tickets which received a survey during the period"
+                            data={customerSatisfactionTrend.data}
+                            interpretAs="more-is-better"
+                            tooltip={
+                                areTipsVisible && (
+                                    <MetricTooltip
+                                        type="error"
+                                        title="Poor performance: 4.3"
+                                    >
+                                        Tip: you're not often using macros,
+                                        using them could help you decrease
+                                        Resolution Time.
+                                    </MetricTooltip>
+                                )
+                            }
+                        >
+                            {({formattedValue}) => (
+                                <BigNumberMetric>
+                                    {formattedValue}{' '}
+                                    <img
+                                        className={css.customerSatisfactionStar}
+                                        src={blueStar}
+                                        alt="Blue star"
+                                    />
+                                </BigNumberMetric>
+                            )}
+                        </TrendMetricCard>
+                    </DashboardGridCell>
+                    <DashboardGridCell size={3}>
+                        <TrendMetricCard
+                            title="First response time"
+                            hint="Median time between 1st customer message and 1st human agent response"
+                            data={firstResponseTimeTrend.data}
+                            interpretAs="less-is-better"
+                            valueFormat="duration"
+                            tooltip={
+                                areTipsVisible && (
+                                    <MetricTooltip
+                                        type="neutral"
+                                        title="Neutral: 5m"
+                                    >
+                                        Tip: Sending cute animal GIFs can boost
+                                        the mood in a conversation
+                                    </MetricTooltip>
+                                )
+                            }
+                        >
+                            {({formattedValue}) => (
+                                <BigNumberMetric>
+                                    {formattedValue}
+                                </BigNumberMetric>
+                            )}
+                        </TrendMetricCard>
+                    </DashboardGridCell>
+                    <DashboardGridCell size={3}>
+                        <TrendMetricCard
+                            title="Resolution time"
+                            hint="Median time between the 1st customer message and the last time the ticket was closed"
+                            data={resolutionTimeTrend.data}
+                            valueFormat="duration"
+                            interpretAs="less-is-better"
+                            tooltip={
+                                areTipsVisible && (
+                                    <MetricTooltip
+                                        type="light-error"
+                                        title="Underperforming: 48m"
+                                    >
+                                        Tip: you're not often using macros,
+                                        using them could help you decrease
+                                        Resolution Time.
+                                    </MetricTooltip>
+                                )
+                            }
+                        >
+                            {({formattedValue}) => (
+                                <BigNumberMetric>
+                                    {formattedValue}
+                                </BigNumberMetric>
+                            )}
+                        </TrendMetricCard>
+                    </DashboardGridCell>
+                    <DashboardGridCell size={3}>
+                        <TrendMetricCard
+                            title="Messages per ticket"
+                            hint="Average number of messages exchanged per closed ticket"
+                            data={messagesPerTicketTrend.data}
+                            interpretAs="less-is-better"
+                            tooltip={
+                                areTipsVisible && (
+                                    <MetricTooltip
+                                        type="light-success"
+                                        title="Overperforming: 9"
+                                    >
+                                        You're doing great, keep up the good
+                                        work!
+                                    </MetricTooltip>
+                                )
+                            }
+                        >
+                            {({formattedValue}) => (
+                                <BigNumberMetric>
+                                    {formattedValue}
+                                </BigNumberMetric>
+                            )}
+                        </TrendMetricCard>
+                    </DashboardGridCell>
+                </DashboardSection>
+                <DashboardSection title="Workload">
+                    <DashboardGridCell size={6}>
+                        <TrendMetricCard
+                            title="Open tickets"
+                            hint="Number of tickets with the status “open” at the end of the period"
+                            data={openTicketsTrend.data}
+                            trendFormat="percent"
+                        >
+                            {({formattedValue, formattedPrevValue}) => (
+                                <BigNumberMetric from={formattedPrevValue}>
+                                    {formattedValue}
+                                </BigNumberMetric>
+                            )}
+                        </TrendMetricCard>
+                    </DashboardGridCell>
+                    <DashboardGridCell size={6}>
+                        <TrendMetricCard
+                            title="Closed tickets"
+                            hint="Number of unique tickets closed during the period (and that did not reopen)"
+                            data={closedTicketsTrend.data}
+                            trendFormat="percent"
+                            interpretAs="more-is-better"
+                        >
+                            {({formattedValue, formattedPrevValue}) => (
+                                <BigNumberMetric from={formattedPrevValue}>
+                                    {formattedValue}
+                                </BigNumberMetric>
+                            )}
+                        </TrendMetricCard>
+                    </DashboardGridCell>
+                    <DashboardGridCell size={4}>
+                        <TrendMetricCard
+                            title="Tickets created"
+                            hint="Number of new tickets to handle"
+                            data={ticketsCreatedTrend.data}
+                            trendFormat="percent"
+                        >
+                            {({formattedValue, formattedPrevValue}) => (
+                                <BigNumberMetric from={formattedPrevValue}>
+                                    {formattedValue}
+                                </BigNumberMetric>
+                            )}
+                        </TrendMetricCard>
+                    </DashboardGridCell>
+                    <DashboardGridCell size={4}>
+                        <TrendMetricCard
+                            title="Tickets replied"
+                            hint="Number of tickets where the customer got a response"
+                            data={ticketsRepliedTrend.data}
+                            trendFormat="percent"
+                            interpretAs="more-is-better"
+                        >
+                            {({formattedValue, formattedPrevValue}) => (
+                                <BigNumberMetric from={formattedPrevValue}>
+                                    {formattedValue}
+                                </BigNumberMetric>
+                            )}
+                        </TrendMetricCard>
+                    </DashboardGridCell>
+                    <DashboardGridCell size={4}>
+                        <TrendMetricCard
+                            title="Messages sent"
+                            hint="Number of messages received by your customer"
+                            data={messagesSentTrend.data}
+                            trendFormat="percent"
+                        >
+                            {({formattedValue, formattedPrevValue}) => (
+                                <BigNumberMetric from={formattedPrevValue}>
+                                    {formattedValue}
+                                </BigNumberMetric>
+                            )}
+                        </TrendMetricCard>
+                    </DashboardGridCell>
+                    <DashboardGridCell size={6}>
+                        <ChartCard
+                            title="Tickets created"
+                            hint="Number of new tickets to handle"
+                        >
+                            <TimeSeriesChart
+                                timeSeries={ticketsCreatedTimeSeries}
+                                labels={['Tickets created']}
+                                granularity={granularity}
+                            />
+                        </ChartCard>
+                    </DashboardGridCell>
+                    <DashboardGridCell size={6}>
+                        <ChartCard
+                            title="Tickets closed"
+                            hint="Number of opened tickets solved by the end of the period"
+                        >
+                            <TimeSeriesChart
+                                timeSeries={ticketsClosedTimeSeries}
+                                labels={['Tickets closed']}
+                                granularity={granularity}
+                            />
+                        </ChartCard>
+                    </DashboardGridCell>
+                    <DashboardGridCell size={6}>
+                        <ChartCard
+                            title="Tickets replied"
+                            hint="Number of tickets where the customer got a response"
+                        >
+                            <TimeSeriesChart
+                                timeSeries={ticketsRepliedTimeSeries}
+                                labels={['Tickets replied']}
+                                granularity={granularity}
+                            />
+                        </ChartCard>
+                    </DashboardGridCell>
+                    <DashboardGridCell size={6}>
+                        <ChartCard
+                            title="Messages sent"
+                            hint="Number of messages received by your customer"
+                        >
+                            <TimeSeriesChart
+                                timeSeries={messagesSentTimeSeries}
+                                labels={['Messages sent']}
+                                granularity={granularity}
+                            />
+                        </ChartCard>
+                    </DashboardGridCell>
+                    <DashboardGridCell size={12}>
+                        <ChartCard
+                            title="Workload per channel"
+                            hint="Distribution of all tickets of the period (both “open” and “closed”) per channel"
+                        >
+                            <GaugeChart data={workloadPerChannelMock} />
+                        </ChartCard>
+                    </DashboardGridCell>
+                </DashboardSection>
+                {userTimezone && (
+                    <div
+                        className={classnames(
+                            css.pageFooter,
+                            'caption-regular'
+                        )}
                     >
-                        <TimeSeriesChart
-                            timeSeries={ticketsClosedTimeSeries}
-                            labels={['Tickets closed']}
-                            granularity={granularity}
-                        />
-                    </ChartCard>
-                </DashboardGridCell>
-                <DashboardGridCell size={6}>
-                    <ChartCard
-                        title="Tickets replied"
-                        hint="Number of tickets where the customer got a response"
-                    >
-                        <TimeSeriesChart
-                            timeSeries={ticketsRepliedTimeSeries}
-                            labels={['Tickets replied']}
-                            granularity={granularity}
-                        />
-                    </ChartCard>
-                </DashboardGridCell>
-                <DashboardGridCell size={6}>
-                    <ChartCard
-                        title="Messages sent"
-                        hint="Number of messages received by your customer"
-                    >
-                        <TimeSeriesChart
-                            timeSeries={messagesSentTimeSeries}
-                            labels={['Messages sent']}
-                            granularity={granularity}
-                        />
-                    </ChartCard>
-                </DashboardGridCell>
-                <DashboardGridCell size={12}>
-                    <ChartCard
-                        title="Workload per channel"
-                        hint="Distribution of all tickets of the period (both “open” and “closed”) per channel"
-                    >
-                        <GaugeChart data={workloadPerChannelMock} />
-                    </ChartCard>
-                </DashboardGridCell>
-            </DashboardSection>
-            {userTimezone && (
-                <div className={classnames(css.pageFooter, 'caption-regular')}>
-                    Analytics are in {userTimezone} time
-                </div>
-            )}
-        </StatsPage>
+                        Analytics are in {userTimezone} time
+                    </div>
+                )}
+            </StatsPage>
+        </div>
     )
 }

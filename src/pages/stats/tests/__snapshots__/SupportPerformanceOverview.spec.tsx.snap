@@ -2,799 +2,882 @@
 
 exports[`<SupportPerformanceOverview /> should render the page 1`] = `
 <div
-  class="full-width wrapper"
+  class="full-width"
 >
   <div
-    class="header"
-    data-candu-id="stat-header-container"
+    class="bannerNotification info"
   >
     <div
-      class="page-header pageHeader mb-0"
+      class="messageContainer"
     >
-      <h1
-        class="align-items-center"
+      <span
+        class="messageText"
       >
         <span>
-          Overview
+          Welcome to the new Statistics Overview! It calculates data in a new way to represent your workload more accurately.
         </span>
-      </h1>
-      <div>
-        <div
-          class="d-flex flex-wrap float-right"
+        <a
+          to="/app/stats/support-performance-overview-legacy"
         >
-          <div
-            class="dropdown"
+          <i
+            class="material-icons"
           >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
-              type="button"
-            >
-              <span>
-                All integrations
-              </span>
-            </button>
+            refresh
+          </i>
+           Switch To Old Version
+        </a>
+      </span>
+    </div>
+    <span
+      class="closeIconContainer"
+    >
+      <img
+        alt="close-icon"
+        class="closeIcon"
+        src="test-file-stub"
+      />
+    </span>
+  </div>
+  <div
+    class="full-width wrapper"
+  >
+    <div
+      class="header"
+      data-candu-id="stat-header-container"
+    >
+      <div
+        class="page-header pageHeader mb-0"
+      >
+        <h1
+          class="align-items-center"
+        >
+          <span>
+            Overview
+          </span>
+        </h1>
+        <div>
+          <div
+            class="d-flex flex-wrap float-right"
+          >
             <div
-              aria-hidden="true"
-              class="dropdown dropdown-menu dropdown-menu-right"
-              role="menu"
-              tabindex="-1"
+              class="dropdown"
             >
-              <h6
-                class="dropdown-item-input dropdownItemInput dropdown-header"
-                tabindex="-1"
-              >
-                <input
-                  class="form-control"
-                  placeholder="Search integrations..."
-                  type="text"
-                  value=""
-                />
-              </h6>
               <button
-                class="component dropdown-item"
-                role="menuitem"
-                tabindex="0"
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
+                type="button"
               >
-                <div
-                  class="checkbox"
-                >
-                  <label
-                    class="label label quickSelectionOption"
-                    for="checkbox-1"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-1"
-                      name="checkbox-1"
-                      type="checkbox"
-                    />
-                    Select all
-                    <div
-                      class="badge"
-                    >
-                      7
-                    </div>
-                  </label>
-                </div>
+                <span>
+                  All integrations
+                </span>
               </button>
               <div
-                class="dropdownDivider dropdown-divider"
+                aria-hidden="true"
+                class="dropdown dropdown-menu dropdown-menu-right"
+                role="menu"
                 tabindex="-1"
-              />
-              <div
-                class="content"
-              >
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-2"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-2"
-                      name="checkbox-2"
-                      type="checkbox"
-                    />
-                    <img
-                      alt="logo-gmail"
-                      class="integrationIcon"
-                      src="test-file-stub"
-                    />
-                     Acme Billing
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-3"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-3"
-                      name="checkbox-3"
-                      type="checkbox"
-                    />
-                    <img
-                      alt="logo-gmail"
-                      class="integrationIcon"
-                      src="test-file-stub"
-                    />
-                     Deactivated gmail
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-4"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-4"
-                      name="checkbox-4"
-                      type="checkbox"
-                    />
-                    <i
-                      class="icon material-icons icon"
-                    >
-                      email
-                    </i>
-                     Acme Support
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-5"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-5"
-                      name="checkbox-5"
-                      type="checkbox"
-                    />
-                    <i
-                      class="icon material-icons icon"
-                    >
-                      email
-                    </i>
-                     Acme Contact
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-6"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-6"
-                      name="checkbox-6"
-                      type="checkbox"
-                    />
-                    <i
-                      class="icon material-icons icon"
-                    >
-                      email
-                    </i>
-                     Acme Unverified
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-7"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-7"
-                      name="checkbox-7"
-                      type="checkbox"
-                    />
-                    <i
-                      class="icon material-icons icon"
-                    >
-                      email
-                    </i>
-                     Sendgrid Integration
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-8"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-8"
-                      name="checkbox-8"
-                      type="checkbox"
-                    />
-                    <i
-                      class="icon material-icons icon"
-                    >
-                      chat
-                    </i>
-                     Chitty chatty
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="dropdown"
-          >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
-              type="button"
-            >
-              <span>
-                1 channel
-              </span>
-            </button>
-            <div
-              aria-hidden="true"
-              class="dropdown dropdown-menu dropdown-menu-right"
-              role="menu"
-              tabindex="-1"
-            >
-              <h6
-                class="dropdown-item-input dropdownItemInput dropdown-header"
-                tabindex="-1"
-              >
-                <input
-                  class="form-control"
-                  placeholder="Search channels..."
-                  type="text"
-                  value=""
-                />
-              </h6>
-              <button
-                class="component dropdown-item"
-                role="menuitem"
-                tabindex="0"
-              >
-                <div
-                  class="checkbox"
-                >
-                  <label
-                    class="label label quickSelectionOption"
-                    for="checkbox-9"
-                  >
-                    <input
-                      checked=""
-                      class="input"
-                      id="checkbox-9"
-                      name="checkbox-9"
-                      type="checkbox"
-                    />
-                    Deselect
-                    <div
-                      class="badge badge--unselect"
-                    >
-                      1
-                    </div>
-                  </label>
-                </div>
-              </button>
-              <div
-                class="dropdownDivider dropdown-divider"
-                tabindex="-1"
-              />
-              <div
-                class="content"
-              >
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-10"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-10"
-                      name="checkbox-10"
-                      type="checkbox"
-                    />
-                     Aircall
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-11"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-11"
-                      name="checkbox-11"
-                      type="checkbox"
-                    />
-                     Api
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-12"
-                  >
-                    <input
-                      checked=""
-                      class="input"
-                      id="checkbox-12"
-                      name="checkbox-12"
-                      type="checkbox"
-                    />
-                     Chat
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-13"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-13"
-                      name="checkbox-13"
-                      type="checkbox"
-                    />
-                     Email
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-14"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-14"
-                      name="checkbox-14"
-                      type="checkbox"
-                    />
-                     Facebook
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-15"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-15"
-                      name="checkbox-15"
-                      type="checkbox"
-                    />
-                     Facebook Mention
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-16"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-16"
-                      name="checkbox-16"
-                      type="checkbox"
-                    />
-                     Facebook Messenger
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-17"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-17"
-                      name="checkbox-17"
-                      type="checkbox"
-                    />
-                     Facebook Recommendations
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-18"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-18"
-                      name="checkbox-18"
-                      type="checkbox"
-                    />
-                     Help Center
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-19"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-19"
-                      name="checkbox-19"
-                      type="checkbox"
-                    />
-                     Instagram Ad Comment
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-20"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-20"
-                      name="checkbox-20"
-                      type="checkbox"
-                    />
-                     Instagram Comment
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-21"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-21"
-                      name="checkbox-21"
-                      type="checkbox"
-                    />
-                     Instagram Mention
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-22"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-22"
-                      name="checkbox-22"
-                      type="checkbox"
-                    />
-                     Instagram Direct Message
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-23"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-23"
-                      name="checkbox-23"
-                      type="checkbox"
-                    />
-                     Phone
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-24"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-24"
-                      name="checkbox-24"
-                      type="checkbox"
-                    />
-                     SMS
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-25"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-25"
-                      name="checkbox-25"
-                      type="checkbox"
-                    />
-                     Twitter
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-26"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-26"
-                      name="checkbox-26"
-                      type="checkbox"
-                    />
-                     Twitter Direct Message
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-27"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-27"
-                      name="checkbox-27"
-                      type="checkbox"
-                    />
-                     Yotpo Review
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-28"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-28"
-                      name="checkbox-28"
-                      type="checkbox"
-                    />
-                     WhatsApp
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="dropdown"
-          >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
-              type="button"
-            >
-              <span>
-                1 agent
-              </span>
-            </button>
-            <div
-              aria-hidden="true"
-              class="dropdown dropdown-menu dropdown-menu-right"
-              role="menu"
-              tabindex="-1"
-            >
-              <h6
-                class="dropdown-item-input dropdownItemInput dropdown-header"
-                tabindex="-1"
-              >
-                <input
-                  class="form-control"
-                  placeholder="Search agents..."
-                  type="text"
-                  value=""
-                />
-              </h6>
-              <button
-                class="component dropdown-item"
-                role="menuitem"
-                tabindex="0"
-              >
-                <div
-                  class="checkbox"
-                >
-                  <label
-                    class="label label quickSelectionOption"
-                    for="checkbox-29"
-                  >
-                    <input
-                      checked=""
-                      class="input"
-                      id="checkbox-29"
-                      name="checkbox-29"
-                      type="checkbox"
-                    />
-                    Deselect
-                    <div
-                      class="badge badge--unselect"
-                    >
-                      1
-                    </div>
-                  </label>
-                </div>
-              </button>
-              <div
-                class="dropdownDivider dropdown-divider"
-                tabindex="-1"
-              />
-              <div
-                class="content"
               >
                 <h6
-                  class="dropdownHeader dropdown-header"
+                  class="dropdown-item-input dropdownItemInput dropdown-header"
                   tabindex="-1"
                 >
-                  Teams
+                  <input
+                    class="form-control"
+                    placeholder="Search integrations..."
+                    type="text"
+                    value=""
+                  />
                 </h6>
-                <div>
+                <button
+                  class="component dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                >
                   <div
-                    class="wrapperItem"
+                    class="checkbox"
                   >
                     <label
-                      class="label label labelItem"
-                      for="checkbox-30"
+                      class="label label quickSelectionOption"
+                      for="checkbox-1"
                     >
                       <input
                         class="input"
-                        id="checkbox-30"
-                        name="checkbox-30"
+                        id="checkbox-1"
+                        name="checkbox-1"
                         type="checkbox"
                       />
-                      Foo
+                      Select all
+                      <div
+                        class="badge"
+                      >
+                        7
+                      </div>
                     </label>
                   </div>
-                  <div
-                    class="wrapperItem"
-                  >
-                    <label
-                      class="label label labelItem"
-                      for="checkbox-31"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-31"
-                        name="checkbox-31"
-                        type="checkbox"
-                      />
-                      Phone team - +1 205-396-3441
-                    </label>
-                  </div>
-                  <div
-                    class="wrapperItem"
-                  >
-                    <label
-                      class="label label labelItem"
-                      for="checkbox-32"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-32"
-                        name="checkbox-32"
-                        type="checkbox"
-                      />
-                      Team: user meta null
-                    </label>
-                  </div>
-                  <div
-                    class="wrapperItem"
-                  >
-                    <label
-                      class="label label labelItem"
-                      for="checkbox-33"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-33"
-                        name="checkbox-33"
-                        type="checkbox"
-                      />
-                      Test
-                    </label>
-                  </div>
-                </div>
+                </button>
                 <div
                   class="dropdownDivider dropdown-divider"
                   tabindex="-1"
                 />
-                <h6
-                  class="dropdownHeader dropdown-header"
-                  tabindex="-1"
-                >
-                  Users
-                </h6>
                 <div
-                  class="wrapperItem"
+                  class="content"
                 >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-34"
+                  <div
+                    class="wrapperItem"
                   >
-                    <input
-                      checked=""
-                      class="input"
-                      id="checkbox-34"
-                      name="checkbox-34"
-                      type="checkbox"
-                    />
-                     Acme Support
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-35"
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-2"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-2"
+                        name="checkbox-2"
+                        type="checkbox"
+                      />
+                      <img
+                        alt="logo-gmail"
+                        class="integrationIcon"
+                        src="test-file-stub"
+                      />
+                       Acme Billing
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
                   >
-                    <input
-                      class="input"
-                      id="checkbox-35"
-                      name="checkbox-35"
-                      type="checkbox"
-                    />
-                     Bob Smith
-                  </label>
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-3"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-3"
+                        name="checkbox-3"
+                        type="checkbox"
+                      />
+                      <img
+                        alt="logo-gmail"
+                        class="integrationIcon"
+                        src="test-file-stub"
+                      />
+                       Deactivated gmail
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-4"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-4"
+                        name="checkbox-4"
+                        type="checkbox"
+                      />
+                      <i
+                        class="icon material-icons icon"
+                      >
+                        email
+                      </i>
+                       Acme Support
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-5"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-5"
+                        name="checkbox-5"
+                        type="checkbox"
+                      />
+                      <i
+                        class="icon material-icons icon"
+                      >
+                        email
+                      </i>
+                       Acme Contact
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-6"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-6"
+                        name="checkbox-6"
+                        type="checkbox"
+                      />
+                      <i
+                        class="icon material-icons icon"
+                      >
+                        email
+                      </i>
+                       Acme Unverified
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-7"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-7"
+                        name="checkbox-7"
+                        type="checkbox"
+                      />
+                      <i
+                        class="icon material-icons icon"
+                      >
+                        email
+                      </i>
+                       Sendgrid Integration
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-8"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-8"
+                        name="checkbox-8"
+                        type="checkbox"
+                      />
+                      <i
+                        class="icon material-icons icon"
+                      >
+                        chat
+                      </i>
+                       Chitty chatty
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
+            <div
+              class="dropdown"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                <span>
+                  1 channel
+                </span>
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown dropdown-menu dropdown-menu-right"
+                role="menu"
+                tabindex="-1"
+              >
+                <h6
+                  class="dropdown-item-input dropdownItemInput dropdown-header"
+                  tabindex="-1"
+                >
+                  <input
+                    class="form-control"
+                    placeholder="Search channels..."
+                    type="text"
+                    value=""
+                  />
+                </h6>
+                <button
+                  class="component dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <div
+                    class="checkbox"
+                  >
+                    <label
+                      class="label label quickSelectionOption"
+                      for="checkbox-9"
+                    >
+                      <input
+                        checked=""
+                        class="input"
+                        id="checkbox-9"
+                        name="checkbox-9"
+                        type="checkbox"
+                      />
+                      Deselect
+                      <div
+                        class="badge badge--unselect"
+                      >
+                        1
+                      </div>
+                    </label>
+                  </div>
+                </button>
+                <div
+                  class="dropdownDivider dropdown-divider"
+                  tabindex="-1"
+                />
+                <div
+                  class="content"
+                >
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-10"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-10"
+                        name="checkbox-10"
+                        type="checkbox"
+                      />
+                       Aircall
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-11"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-11"
+                        name="checkbox-11"
+                        type="checkbox"
+                      />
+                       Api
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-12"
+                    >
+                      <input
+                        checked=""
+                        class="input"
+                        id="checkbox-12"
+                        name="checkbox-12"
+                        type="checkbox"
+                      />
+                       Chat
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-13"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-13"
+                        name="checkbox-13"
+                        type="checkbox"
+                      />
+                       Email
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-14"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-14"
+                        name="checkbox-14"
+                        type="checkbox"
+                      />
+                       Facebook
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-15"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-15"
+                        name="checkbox-15"
+                        type="checkbox"
+                      />
+                       Facebook Mention
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-16"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-16"
+                        name="checkbox-16"
+                        type="checkbox"
+                      />
+                       Facebook Messenger
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-17"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-17"
+                        name="checkbox-17"
+                        type="checkbox"
+                      />
+                       Facebook Recommendations
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-18"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-18"
+                        name="checkbox-18"
+                        type="checkbox"
+                      />
+                       Help Center
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-19"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-19"
+                        name="checkbox-19"
+                        type="checkbox"
+                      />
+                       Instagram Ad Comment
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-20"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-20"
+                        name="checkbox-20"
+                        type="checkbox"
+                      />
+                       Instagram Comment
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-21"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-21"
+                        name="checkbox-21"
+                        type="checkbox"
+                      />
+                       Instagram Mention
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-22"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-22"
+                        name="checkbox-22"
+                        type="checkbox"
+                      />
+                       Instagram Direct Message
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-23"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-23"
+                        name="checkbox-23"
+                        type="checkbox"
+                      />
+                       Phone
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-24"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-24"
+                        name="checkbox-24"
+                        type="checkbox"
+                      />
+                       SMS
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-25"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-25"
+                        name="checkbox-25"
+                        type="checkbox"
+                      />
+                       Twitter
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-26"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-26"
+                        name="checkbox-26"
+                        type="checkbox"
+                      />
+                       Twitter Direct Message
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-27"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-27"
+                        name="checkbox-27"
+                        type="checkbox"
+                      />
+                       Yotpo Review
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-28"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-28"
+                        name="checkbox-28"
+                        type="checkbox"
+                      />
+                       WhatsApp
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="dropdown"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="mr-2 toggle dropdownToggle dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                <span>
+                  1 agent
+                </span>
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown dropdown-menu dropdown-menu-right"
+                role="menu"
+                tabindex="-1"
+              >
+                <h6
+                  class="dropdown-item-input dropdownItemInput dropdown-header"
+                  tabindex="-1"
+                >
+                  <input
+                    class="form-control"
+                    placeholder="Search agents..."
+                    type="text"
+                    value=""
+                  />
+                </h6>
+                <button
+                  class="component dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                >
+                  <div
+                    class="checkbox"
+                  >
+                    <label
+                      class="label label quickSelectionOption"
+                      for="checkbox-29"
+                    >
+                      <input
+                        checked=""
+                        class="input"
+                        id="checkbox-29"
+                        name="checkbox-29"
+                        type="checkbox"
+                      />
+                      Deselect
+                      <div
+                        class="badge badge--unselect"
+                      >
+                        1
+                      </div>
+                    </label>
+                  </div>
+                </button>
+                <div
+                  class="dropdownDivider dropdown-divider"
+                  tabindex="-1"
+                />
+                <div
+                  class="content"
+                >
+                  <h6
+                    class="dropdownHeader dropdown-header"
+                    tabindex="-1"
+                  >
+                    Teams
+                  </h6>
+                  <div>
+                    <div
+                      class="wrapperItem"
+                    >
+                      <label
+                        class="label label labelItem"
+                        for="checkbox-30"
+                      >
+                        <input
+                          class="input"
+                          id="checkbox-30"
+                          name="checkbox-30"
+                          type="checkbox"
+                        />
+                        Foo
+                      </label>
+                    </div>
+                    <div
+                      class="wrapperItem"
+                    >
+                      <label
+                        class="label label labelItem"
+                        for="checkbox-31"
+                      >
+                        <input
+                          class="input"
+                          id="checkbox-31"
+                          name="checkbox-31"
+                          type="checkbox"
+                        />
+                        Phone team - +1 205-396-3441
+                      </label>
+                    </div>
+                    <div
+                      class="wrapperItem"
+                    >
+                      <label
+                        class="label label labelItem"
+                        for="checkbox-32"
+                      >
+                        <input
+                          class="input"
+                          id="checkbox-32"
+                          name="checkbox-32"
+                          type="checkbox"
+                        />
+                        Team: user meta null
+                      </label>
+                    </div>
+                    <div
+                      class="wrapperItem"
+                    >
+                      <label
+                        class="label label labelItem"
+                        for="checkbox-33"
+                      >
+                        <input
+                          class="input"
+                          id="checkbox-33"
+                          name="checkbox-33"
+                          type="checkbox"
+                        />
+                        Test
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    class="dropdownDivider dropdown-divider"
+                    tabindex="-1"
+                  />
+                  <h6
+                    class="dropdownHeader dropdown-header"
+                    tabindex="-1"
+                  >
+                    Users
+                  </h6>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-34"
+                    >
+                      <input
+                        checked=""
+                        class="input"
+                        id="checkbox-34"
+                        name="checkbox-34"
+                        type="checkbox"
+                      />
+                       Acme Support
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-35"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-35"
+                        name="checkbox-35"
+                        type="checkbox"
+                      />
+                       Bob Smith
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <button
+                class="wrapper ghost secondary medium"
+                type="button"
+              >
+                <span
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    calendar_today
+                  </i>
+                  <span
+                    class="wrapper"
+                  >
+                    Feb 03, 2021
+                    <i
+                      class="material-icons icon isRight medium"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </span>
+                </span>
+              </button>
+            </div>
           </div>
-          <div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="statsWrapper"
+    >
+      <div
+        class="statsContainer container-fluid"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="title"
+          >
+            <div
+              class="titleText heading-page-semibold"
+            >
+              Customer experience
+            </div>
             <button
-              class="wrapper ghost secondary medium"
+              class="wrapper ghost primary medium"
               type="button"
             >
               <span
@@ -803,803 +886,758 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 <i
                   class="material-icons icon isLeft medium"
                 >
-                  calendar_today
+                  visibility_off
                 </i>
-                <span
-                  class="wrapper"
-                >
-                  Feb 03, 2021
-                  <i
-                    class="material-icons icon isRight medium"
-                  >
-                    arrow_drop_down
-                  </i>
-                </span>
+                Hide tips
               </span>
             </button>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    class="statsWrapper"
-  >
-    <div
-      class="statsContainer container-fluid"
-    >
-      <div
-        class="wrapper"
-      >
-        <div
-          class="title"
-        >
           <div
-            class="titleText heading-page-semibold"
-          >
-            Customer experience
-          </div>
-          <button
-            class="wrapper ghost primary medium"
-            type="button"
-          >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                visibility_off
-              </i>
-              Hide tips
-            </span>
-          </button>
-        </div>
-        <div
-          class="wrapper"
-        >
-          <div
-            class="cell"
-            style="grid-column: span 3 / span 3;"
+            class="wrapper"
           >
             <div
-              class="wrapper card"
+              class="cell"
+              style="grid-column: span 3 / span 3;"
             >
               <div
-                class="title"
+                class="wrapper card"
               >
-                Customer satisfaction
                 <div
-                  class="wrapper"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-36"
-                  >
-                    info
-                  </i>
-                </div>
-                <div
-                  class="trendBadge"
-                >
+                  Customer satisfaction
                   <div
-                    class="trend positive"
+                    class="wrapper"
                   >
                     <i
-                      class="material-icons trendIcon"
+                      class="material-icons-outlined icon"
+                      id="tooltip-36"
                     >
-                      trending_up
+                      info
                     </i>
-                    +333
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div
+                      class="trend positive"
+                    >
+                      <i
+                        class="material-icons trendIcon"
+                      >
+                        trending_up
+                      </i>
+                      +333
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                456
-                 
-                <img
-                  alt="Blue star"
-                  class="customerSatisfactionStar"
-                  src="test-file-stub"
-                />
-              </div>
-              <div
-                class="tooltip"
-              >
                 <div
-                  class="wrapper error"
+                  class="wrapper heading-page-semibold"
+                >
+                  456
+                   
+                  <img
+                    alt="Blue star"
+                    class="customerSatisfactionStar"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div
+                  class="tooltip"
                 >
                   <div
-                    class="body-semibold title"
+                    class="wrapper error"
                   >
-                    Poor performance: 4.3
-                  </div>
-                  <div
-                    class="body-regular"
-                  >
-                    Tip: you're not often using macros, using them could help you decrease Resolution Time.
+                    <div
+                      class="body-semibold title"
+                    >
+                      Poor performance: 4.3
+                    </div>
+                    <div
+                      class="body-regular"
+                    >
+                      Tip: you're not often using macros, using them could help you decrease Resolution Time.
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="cell"
-            style="grid-column: span 3 / span 3;"
-          >
             <div
-              class="wrapper card"
+              class="cell"
+              style="grid-column: span 3 / span 3;"
             >
               <div
-                class="title"
+                class="wrapper card"
               >
-                First response time
                 <div
-                  class="wrapper"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-37"
-                  >
-                    info
-                  </i>
-                </div>
-                <div
-                  class="trendBadge"
-                >
+                  First response time
                   <div
-                    class="trend negative"
+                    class="wrapper"
                   >
                     <i
-                      class="material-icons trendIcon"
+                      class="material-icons-outlined icon"
+                      id="tooltip-37"
                     >
-                      trending_up
+                      info
                     </i>
-                    +5m
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div
+                      class="trend negative"
+                    >
+                      <i
+                        class="material-icons trendIcon"
+                      >
+                        trending_up
+                      </i>
+                      +5m
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                7m 36s
-              </div>
-              <div
-                class="tooltip"
-              >
                 <div
-                  class="wrapper neutral"
+                  class="wrapper heading-page-semibold"
+                >
+                  7m 36s
+                </div>
+                <div
+                  class="tooltip"
                 >
                   <div
-                    class="body-semibold title"
+                    class="wrapper neutral"
                   >
-                    Neutral: 5m
-                  </div>
-                  <div
-                    class="body-regular"
-                  >
-                    Tip: Sending cute animal GIFs can boost the mood in a conversation
+                    <div
+                      class="body-semibold title"
+                    >
+                      Neutral: 5m
+                    </div>
+                    <div
+                      class="body-regular"
+                    >
+                      Tip: Sending cute animal GIFs can boost the mood in a conversation
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="cell"
-            style="grid-column: span 3 / span 3;"
-          >
             <div
-              class="wrapper card"
+              class="cell"
+              style="grid-column: span 3 / span 3;"
             >
               <div
-                class="title"
+                class="wrapper card"
               >
-                Resolution time
                 <div
-                  class="wrapper"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-38"
-                  >
-                    info
-                  </i>
-                </div>
-                <div
-                  class="trendBadge"
-                >
+                  Resolution time
                   <div
-                    class="trend negative"
+                    class="wrapper"
                   >
                     <i
-                      class="material-icons trendIcon"
+                      class="material-icons-outlined icon"
+                      id="tooltip-38"
                     >
-                      trending_up
+                      info
                     </i>
-                    +5m
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div
+                      class="trend negative"
+                    >
+                      <i
+                        class="material-icons trendIcon"
+                      >
+                        trending_up
+                      </i>
+                      +5m
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                7m 36s
-              </div>
-              <div
-                class="tooltip"
-              >
                 <div
-                  class="wrapper light-error"
+                  class="wrapper heading-page-semibold"
+                >
+                  7m 36s
+                </div>
+                <div
+                  class="tooltip"
                 >
                   <div
-                    class="body-semibold title"
+                    class="wrapper light-error"
                   >
-                    Underperforming: 48m
-                  </div>
-                  <div
-                    class="body-regular"
-                  >
-                    Tip: you're not often using macros, using them could help you decrease Resolution Time.
+                    <div
+                      class="body-semibold title"
+                    >
+                      Underperforming: 48m
+                    </div>
+                    <div
+                      class="body-regular"
+                    >
+                      Tip: you're not often using macros, using them could help you decrease Resolution Time.
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="cell"
-            style="grid-column: span 3 / span 3;"
-          >
             <div
-              class="wrapper card"
+              class="cell"
+              style="grid-column: span 3 / span 3;"
             >
               <div
-                class="title"
+                class="wrapper card"
               >
-                Messages per ticket
                 <div
-                  class="wrapper"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-39"
-                  >
-                    info
-                  </i>
-                </div>
-                <div
-                  class="trendBadge"
-                >
+                  Messages per ticket
                   <div
-                    class="trend negative"
+                    class="wrapper"
                   >
                     <i
-                      class="material-icons trendIcon"
+                      class="material-icons-outlined icon"
+                      id="tooltip-39"
                     >
-                      trending_up
+                      info
                     </i>
-                    +333
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div
+                      class="trend negative"
+                    >
+                      <i
+                        class="material-icons trendIcon"
+                      >
+                        trending_up
+                      </i>
+                      +333
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                456
-              </div>
-              <div
-                class="tooltip"
-              >
                 <div
-                  class="wrapper light-success"
+                  class="wrapper heading-page-semibold"
+                >
+                  456
+                </div>
+                <div
+                  class="tooltip"
                 >
                   <div
-                    class="body-semibold title"
+                    class="wrapper light-success"
                   >
-                    Overperforming: 9
-                  </div>
-                  <div
-                    class="body-regular"
-                  >
-                    You're doing great, keep up the good work!
+                    <div
+                      class="body-semibold title"
+                    >
+                      Overperforming: 9
+                    </div>
+                    <div
+                      class="body-regular"
+                    >
+                      You're doing great, keep up the good work!
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="wrapper"
-      >
-        <div
-          class="title"
-        >
-          <div
-            class="titleText heading-page-semibold"
-          >
-            Workload
           </div>
         </div>
         <div
           class="wrapper"
         >
           <div
-            class="cell"
-            style="grid-column: span 6 / span 6;"
+            class="title"
           >
             <div
-              class="wrapper card"
+              class="titleText heading-page-semibold"
             >
-              <div
-                class="title"
-              >
-                Open tickets
-                <div
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-40"
-                  >
-                    info
-                  </i>
-                </div>
-                <div
-                  class="trendBadge"
-                >
-                  <div
-                    class="trend neutral"
-                  >
-                    <i
-                      class="material-icons trendIcon"
-                    >
-                      trending_up
-                    </i>
-                    +271%
-                  </div>
-                </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                456
-                <span
-                  class="from caption-regular"
-                >
-                  from 
-                  123
-                </span>
-              </div>
+              Workload
             </div>
           </div>
           <div
-            class="cell"
-            style="grid-column: span 6 / span 6;"
+            class="wrapper"
           >
             <div
-              class="wrapper card"
+              class="cell"
+              style="grid-column: span 6 / span 6;"
             >
               <div
-                class="title"
+                class="wrapper card"
               >
-                Closed tickets
                 <div
-                  class="wrapper"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-41"
-                  >
-                    info
-                  </i>
-                </div>
-                <div
-                  class="trendBadge"
-                >
+                  Open tickets
                   <div
-                    class="trend positive"
+                    class="wrapper"
                   >
                     <i
-                      class="material-icons trendIcon"
+                      class="material-icons-outlined icon"
+                      id="tooltip-40"
                     >
-                      trending_up
+                      info
                     </i>
-                    +271%
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div
+                      class="trend neutral"
+                    >
+                      <i
+                        class="material-icons trendIcon"
+                      >
+                        trending_up
+                      </i>
+                      +271%
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                456
-                <span
-                  class="from caption-regular"
+                <div
+                  class="wrapper heading-page-semibold"
                 >
-                  from 
-                  123
-                </span>
+                  456
+                  <span
+                    class="from caption-regular"
+                  >
+                    from 
+                    123
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            class="cell"
-            style="grid-column: span 4 / span 4;"
-          >
             <div
-              class="wrapper card"
+              class="cell"
+              style="grid-column: span 6 / span 6;"
             >
               <div
-                class="title"
+                class="wrapper card"
               >
-                Tickets created
                 <div
-                  class="wrapper"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-42"
-                  >
-                    info
-                  </i>
-                </div>
-                <div
-                  class="trendBadge"
-                >
+                  Closed tickets
                   <div
-                    class="trend neutral"
+                    class="wrapper"
                   >
                     <i
-                      class="material-icons trendIcon"
+                      class="material-icons-outlined icon"
+                      id="tooltip-41"
                     >
-                      trending_up
+                      info
                     </i>
-                    +271%
                   </div>
-                </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                456
-                <span
-                  class="from caption-regular"
-                >
-                  from 
-                  123
-                </span>
-              </div>
-            </div>
-          </div>
-          <div
-            class="cell"
-            style="grid-column: span 4 / span 4;"
-          >
-            <div
-              class="wrapper card"
-            >
-              <div
-                class="title"
-              >
-                Tickets replied
-                <div
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-43"
-                  >
-                    info
-                  </i>
-                </div>
-                <div
-                  class="trendBadge"
-                >
                   <div
-                    class="trend positive"
+                    class="trendBadge"
                   >
-                    <i
-                      class="material-icons trendIcon"
+                    <div
+                      class="trend positive"
                     >
-                      trending_up
-                    </i>
-                    +271%
+                      <i
+                        class="material-icons trendIcon"
+                      >
+                        trending_up
+                      </i>
+                      +271%
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                456
-                <span
-                  class="from caption-regular"
-                >
-                  from 
-                  123
-                </span>
-              </div>
-            </div>
-          </div>
-          <div
-            class="cell"
-            style="grid-column: span 4 / span 4;"
-          >
-            <div
-              class="wrapper card"
-            >
-              <div
-                class="title"
-              >
-                Messages sent
                 <div
-                  class="wrapper"
+                  class="wrapper heading-page-semibold"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-44"
+                  456
+                  <span
+                    class="from caption-regular"
                   >
-                    info
-                  </i>
-                </div>
-                <div
-                  class="trendBadge"
-                >
-                  <div
-                    class="trend neutral"
-                  >
-                    <i
-                      class="material-icons trendIcon"
-                    >
-                      trending_up
-                    </i>
-                    +271%
-                  </div>
+                    from 
+                    123
+                  </span>
                 </div>
               </div>
-              <div
-                class="wrapper heading-page-semibold"
-              >
-                456
-                <span
-                  class="from caption-regular"
-                >
-                  from 
-                  123
-                </span>
-              </div>
             </div>
-          </div>
-          <div
-            class="cell"
-            style="grid-column: span 6 / span 6;"
-          >
             <div
-              class="wrapper card"
+              class="cell"
+              style="grid-column: span 4 / span 4;"
             >
               <div
-                class="title"
+                class="wrapper card"
               >
-                <span
-                  class="heading-section-semibold"
+                <div
+                  class="title"
                 >
                   Tickets created
-                </span>
-                <div
-                  class="wrapper tooltip"
-                >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-45"
+                  <div
+                    class="wrapper"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-42"
+                    >
+                      info
+                    </i>
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div
+                      class="trend neutral"
+                    >
+                      <i
+                        class="material-icons trendIcon"
+                      >
+                        trending_up
+                      </i>
+                      +271%
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  456
+                  <span
+                    class="from caption-regular"
+                  >
+                    from 
+                    123
+                  </span>
                 </div>
               </div>
-              <div
-                class="wrapper"
-              />
             </div>
-          </div>
-          <div
-            class="cell"
-            style="grid-column: span 6 / span 6;"
-          >
             <div
-              class="wrapper card"
+              class="cell"
+              style="grid-column: span 4 / span 4;"
             >
               <div
-                class="title"
+                class="wrapper card"
               >
-                <span
-                  class="heading-section-semibold"
-                >
-                  Tickets closed
-                </span>
                 <div
-                  class="wrapper tooltip"
-                >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-46"
-                  >
-                    info
-                  </i>
-                </div>
-              </div>
-              <div
-                class="wrapper"
-              />
-            </div>
-          </div>
-          <div
-            class="cell"
-            style="grid-column: span 6 / span 6;"
-          >
-            <div
-              class="wrapper card"
-            >
-              <div
-                class="title"
-              >
-                <span
-                  class="heading-section-semibold"
+                  class="title"
                 >
                   Tickets replied
-                </span>
-                <div
-                  class="wrapper tooltip"
-                >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-47"
+                  <div
+                    class="wrapper"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-43"
+                    >
+                      info
+                    </i>
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div
+                      class="trend positive"
+                    >
+                      <i
+                        class="material-icons trendIcon"
+                      >
+                        trending_up
+                      </i>
+                      +271%
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  456
+                  <span
+                    class="from caption-regular"
+                  >
+                    from 
+                    123
+                  </span>
                 </div>
               </div>
-              <div
-                class="wrapper"
-              />
             </div>
-          </div>
-          <div
-            class="cell"
-            style="grid-column: span 6 / span 6;"
-          >
             <div
-              class="wrapper card"
+              class="cell"
+              style="grid-column: span 4 / span 4;"
             >
               <div
-                class="title"
+                class="wrapper card"
               >
-                <span
-                  class="heading-section-semibold"
+                <div
+                  class="title"
                 >
                   Messages sent
-                </span>
-                <div
-                  class="wrapper tooltip"
-                >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-48"
+                  <div
+                    class="wrapper"
                   >
-                    info
-                  </i>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-44"
+                    >
+                      info
+                    </i>
+                  </div>
+                  <div
+                    class="trendBadge"
+                  >
+                    <div
+                      class="trend neutral"
+                    >
+                      <i
+                        class="material-icons trendIcon"
+                      >
+                        trending_up
+                      </i>
+                      +271%
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  456
+                  <span
+                    class="from caption-regular"
+                  >
+                    from 
+                    123
+                  </span>
                 </div>
               </div>
-              <div
-                class="wrapper"
-              />
             </div>
-          </div>
-          <div
-            class="cell"
-            style="grid-column: span 12 / span 12;"
-          >
             <div
-              class="wrapper card"
+              class="cell"
+              style="grid-column: span 6 / span 6;"
             >
               <div
-                class="title"
+                class="wrapper card"
               >
-                <span
-                  class="heading-section-semibold"
-                >
-                  Workload per channel
-                </span>
                 <div
-                  class="wrapper tooltip"
+                  class="title"
                 >
-                  <i
-                    class="material-icons-outlined icon"
-                    id="tooltip-49"
+                  <span
+                    class="heading-section-semibold"
                   >
-                    info
-                  </i>
+                    Tickets created
+                  </span>
+                  <div
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-45"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
+                <div
+                  class="wrapper"
+                />
               </div>
-              <div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 6 / span 6;"
+            >
+              <div
+                class="wrapper card"
+              >
                 <div
-                  class="chart"
+                  class="title"
                 >
+                  <span
+                    class="heading-section-semibold"
+                  >
+                    Tickets closed
+                  </span>
                   <div
-                    style="background-color: rgb(51, 115, 219); flex-grow: 0.6620450606585788;"
-                  />
-                  <div
-                    style="background-color: rgb(85, 104, 133); flex-grow: 0.12478336221837089;"
-                  />
-                  <div
-                    style="background-color: rgb(148, 17, 181); flex-grow: 0.09358752166377816;"
-                  />
-                  <div
-                    style="background-color: rgb(214, 56, 77); flex-grow: 0.07452339688041594;"
-                  />
-                  <div
-                    style="background-color: rgb(253, 171, 64); flex-grow: 0.045060658578856154;"
-                  />
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-46"
+                    >
+                      info
+                    </i>
+                  </div>
                 </div>
                 <div
-                  class="legend legend"
+                  class="wrapper"
+                />
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 6 / span 6;"
+            >
+              <div
+                class="wrapper card"
+              >
+                <div
+                  class="title"
                 >
+                  <span
+                    class="heading-section-semibold"
+                  >
+                    Tickets replied
+                  </span>
                   <div
-                    class="legendItem"
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-47"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                />
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 6 / span 6;"
+            >
+              <div
+                class="wrapper card"
+              >
+                <div
+                  class="title"
+                >
+                  <span
+                    class="heading-section-semibold"
+                  >
+                    Messages sent
+                  </span>
+                  <div
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-48"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                />
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 12 / span 12;"
+            >
+              <div
+                class="wrapper card"
+              >
+                <div
+                  class="title"
+                >
+                  <span
+                    class="heading-section-semibold"
+                  >
+                    Workload per channel
+                  </span>
+                  <div
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-49"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div>
+                  <div
+                    class="chart"
                   >
                     <div
-                      class="legendCaret"
-                      style="background-color: rgb(51, 115, 219);"
+                      style="background-color: rgb(51, 115, 219); flex-grow: 0.6620450606585788;"
                     />
-                    Chat
+                    <div
+                      style="background-color: rgb(85, 104, 133); flex-grow: 0.12478336221837089;"
+                    />
+                    <div
+                      style="background-color: rgb(148, 17, 181); flex-grow: 0.09358752166377816;"
+                    />
+                    <div
+                      style="background-color: rgb(214, 56, 77); flex-grow: 0.07452339688041594;"
+                    />
+                    <div
+                      style="background-color: rgb(253, 171, 64); flex-grow: 0.045060658578856154;"
+                    />
                   </div>
                   <div
-                    class="legendItem"
+                    class="legend legend"
                   >
                     <div
-                      class="legendCaret"
-                      style="background-color: rgb(214, 56, 77);"
-                    />
-                    Email
-                  </div>
-                  <div
-                    class="legendItem"
-                  >
+                      class="legendItem"
+                    >
+                      <div
+                        class="legendCaret"
+                        style="background-color: rgb(51, 115, 219);"
+                      />
+                      Chat
+                    </div>
                     <div
-                      class="legendCaret"
-                      style="background-color: rgb(253, 171, 64);"
-                    />
-                    Instagram DM
-                  </div>
-                  <div
-                    class="legendItem"
-                  >
+                      class="legendItem"
+                    >
+                      <div
+                        class="legendCaret"
+                        style="background-color: rgb(214, 56, 77);"
+                      />
+                      Email
+                    </div>
                     <div
-                      class="legendCaret"
-                      style="background-color: rgb(148, 17, 181);"
-                    />
-                    Phone
-                  </div>
-                  <div
-                    class="legendItem"
-                  >
+                      class="legendItem"
+                    >
+                      <div
+                        class="legendCaret"
+                        style="background-color: rgb(253, 171, 64);"
+                      />
+                      Instagram DM
+                    </div>
                     <div
-                      class="legendCaret"
-                      style="background-color: rgb(85, 104, 133);"
-                    />
-                    Others
+                      class="legendItem"
+                    >
+                      <div
+                        class="legendCaret"
+                        style="background-color: rgb(148, 17, 181);"
+                      />
+                      Phone
+                    </div>
+                    <div
+                      class="legendItem"
+                    >
+                      <div
+                        class="legendCaret"
+                        style="background-color: rgb(85, 104, 133);"
+                      />
+                      Others
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div
-        class="pageFooter caption-regular"
-      >
-        Analytics are in 
-        UTC
-         time
+        <div
+          class="pageFooter caption-regular"
+        >
+          Analytics are in 
+          UTC
+           time
+        </div>
       </div>
     </div>
   </div>
