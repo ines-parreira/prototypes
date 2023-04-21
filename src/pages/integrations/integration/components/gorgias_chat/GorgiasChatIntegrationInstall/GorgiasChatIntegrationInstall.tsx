@@ -14,6 +14,7 @@ import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
+import {Tab} from 'pages/integrations/integration/Integration'
 
 import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
@@ -92,7 +93,7 @@ const GorgiasChatIntegrationInstall = ({
 
                 <GorgiasChatIntegrationHeader
                     integration={integration}
-                    showInstallLink={false}
+                    tab={Tab.Installation}
                 />
 
                 <Container fluid className={css.container}>

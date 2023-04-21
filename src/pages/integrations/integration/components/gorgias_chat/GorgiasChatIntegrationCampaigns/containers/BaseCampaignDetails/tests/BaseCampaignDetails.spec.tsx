@@ -15,7 +15,9 @@ const integration = fromJS({
 })
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-const defaultState = {entities: entitiesInitialState} as RootState
+const defaultState = {
+    entities: entitiesInitialState,
+} as RootState
 const store = mockStore(defaultState)
 
 describe('<BaseCampaignDetails />', () => {

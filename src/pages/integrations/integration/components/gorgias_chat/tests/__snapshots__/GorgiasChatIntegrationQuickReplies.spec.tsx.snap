@@ -169,20 +169,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
               data-testid="GorgiasChatIntegrationNavigation"
             />
           </Component>
-          <GorgiasChatIntegrationNotInstalledBanner
-            integration={
-              Immutable.Map {
-                "id": 7,
-                "name": "my chat integration",
-                "meta": Immutable.Map {},
-                "decoration": Immutable.Map {
-                  "introduction_text": "this is an intro",
-                  "input_placeholder": "type something please",
-                  "main_color": "#123456",
-                },
-              }
-            }
-          />
         </GorgiasChatIntegrationHeader>
         <GorgiasChatIntegrationPreviewContainer
           preview={
@@ -1166,28 +1152,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
               data-testid="GorgiasChatIntegrationNavigation"
             />
           </Component>
-          <GorgiasChatIntegrationNotInstalledBanner
-            integration={
-              Immutable.Map {
-                "id": 7,
-                "name": "my chat integration",
-                "meta": Immutable.Map {
-                  "quick_replies": Immutable.Map {
-                    "enabled": true,
-                    "replies": Immutable.List [
-                      "foo",
-                      "bar",
-                    ],
-                  },
-                },
-                "decoration": Immutable.Map {
-                  "introduction_text": "this is an intro",
-                  "input_placeholder": "type something please",
-                  "main_color": "#123456",
-                },
-              }
-            }
-          />
         </GorgiasChatIntegrationHeader>
         <GorgiasChatIntegrationPreviewContainer
           preview={

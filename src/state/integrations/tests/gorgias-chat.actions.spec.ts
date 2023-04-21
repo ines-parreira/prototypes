@@ -218,6 +218,7 @@ describe('gorgias-chat.actions', () => {
                 applicationId: 1,
                 hasBeenRequestedOnce: false,
                 installed: false,
+                minimumSnippetVersion: null,
             }
             const applicationId = '1'
             let mockServer: MockAdapter

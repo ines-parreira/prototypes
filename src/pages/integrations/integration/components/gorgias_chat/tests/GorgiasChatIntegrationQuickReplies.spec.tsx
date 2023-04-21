@@ -6,6 +6,7 @@ import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {RootState, StoreDispatch} from 'state/types'
+import {entitiesInitialState} from 'fixtures/entities'
 
 import GorgiasChatIntegrationQuickReplies, {
     GorgiasChatIntegrationQuickRepliesComponent,
@@ -45,9 +46,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
 
     beforeEach(() => {
         store = mockStore({
-            entities: {
-                chatInstallationStatus: {installed: true},
-            },
+            entities: entitiesInitialState,
         } as unknown as RootState)
     })
 

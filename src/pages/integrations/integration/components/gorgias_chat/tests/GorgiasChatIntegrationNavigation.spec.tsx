@@ -28,7 +28,10 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
     const storeInstallationIssue = mockStore({
         entities: {
             ...entitiesInitialState,
-            chatInstallationStatus: {installed: false},
+            chatInstallationStatus: {
+                installed: false,
+                minimumSnippetVersion: null,
+            },
         },
     })
 

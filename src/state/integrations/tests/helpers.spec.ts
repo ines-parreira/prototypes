@@ -19,6 +19,7 @@ const neutralInstallationStatus: InstallationStatus = {
     applicationId: 1,
     hasBeenRequestedOnce: true,
     installed: true,
+    minimumSnippetVersion: null,
 }
 
 describe('integrations helpers', () => {

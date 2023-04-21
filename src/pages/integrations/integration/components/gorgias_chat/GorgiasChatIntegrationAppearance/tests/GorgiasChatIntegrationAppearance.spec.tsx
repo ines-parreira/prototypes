@@ -9,6 +9,7 @@ import {mockFlags} from 'jest-launchdarkly-mock'
 import history from 'pages/history'
 
 import {user} from 'fixtures/users'
+import {entitiesInitialState} from 'fixtures/entities'
 import {RootState, StoreDispatch} from 'state/types'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {
@@ -35,9 +36,7 @@ const defaultState = {
     agents: fromJS({
         all: [user],
     }),
-    entities: {
-        chatInstallationStatus: {installed: true},
-    },
+    entities: entitiesInitialState,
 } as unknown as RootState
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)

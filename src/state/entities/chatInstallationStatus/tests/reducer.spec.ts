@@ -1,3 +1,5 @@
+import {GorgiasChatMinimumSnippetVersion} from 'models/integration/types'
+
 import reducer, {
     initialState as chatInstallationStatusInitialState,
 } from '../reducer'
@@ -7,22 +9,34 @@ import {
 } from '../actions'
 
 describe('chatInstallationStatus reducer', () => {
-    it.each([true, false])(
-        'chatInstallationStatusFetched (to installed:%s)',
-        (state) => {
-            const newState = reducer(
-                chatInstallationStatusInitialState,
-                chatInstallationStatusFetched({installed: state})
-            )
-            expect(newState).toEqual({installed: state})
-        }
-    )
+    it.each([
+        {
+            installed: true,
+            minimumSnippetVersion: GorgiasChatMinimumSnippetVersion.V1,
+        },
+        {
+            installed: false,
+            minimumSnippetVersion: null,
+        },
+    ])('chatInstallationStatusFetched', (state) => {
+        const newState = reducer(
+            chatInstallationStatusInitialState,
+            chatInstallationStatusFetched(state)
+        )
+        expect(newState).toEqual(state)
+    })
 
     it('resetChatInstallationStatus', () => {
         const newState = reducer(
-            {installed: !chatInstallationStatusInitialState.installed},
+            {
+                installed: !chatInstallationStatusInitialState.installed,
+                minimumSnippetVersion: null,
+            },
             resetChatInstallationStatus()
         )
-        expect(newState).toEqual({installed: true})
+        expect(newState).toEqual({
+            installed: true,
+            minimumSnippetVersion: GorgiasChatMinimumSnippetVersion.V3,
+        })
     })
 })

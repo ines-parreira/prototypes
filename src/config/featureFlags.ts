@@ -5,6 +5,7 @@ export enum FeatureFlagKey {
     ChatEnableTranslationEdit = 'enable-translations-edit',
     ChatFontCustomization = 'chat-font-customization',
     ChatCreationWizard = 'chat-creation-wizard',
+    ChatSnippetV3Banner = 'chat-snippet-v3-banner',
     EarlyAdopter = 'early-adopter',
     EnableWhatsAppMigrations = 'enable-whatsapp-migrations',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
