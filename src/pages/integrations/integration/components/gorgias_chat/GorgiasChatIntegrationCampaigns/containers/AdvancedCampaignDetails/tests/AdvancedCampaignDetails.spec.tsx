@@ -115,6 +115,11 @@ const shopifyChatIntegration = fromJS({
     },
 })
 
+const shopifyIntegration = fromJS({
+    type: 'shopify',
+    id: '1',
+})
+
 describe('<AdvancedCampaignDetails />', () => {
     beforeEach(() => {
         mockFlags({})
@@ -143,6 +148,7 @@ describe('<AdvancedCampaignDetails />', () => {
                         campaign={{} as ChatCampaign}
                         agents={agents as User[]}
                         integration={shopifyChatIntegration}
+                        shopifyIntegration={shopifyIntegration}
                         createCampaign={jest.fn()}
                         updateCampaign={jest.fn()}
                         deleteCampaign={jest.fn()}
@@ -176,6 +182,7 @@ describe('<AdvancedCampaignDetails />', () => {
                             name: '',
                         }}
                         agents={agents as User[]}
+                        shopifyIntegration={shopifyIntegration}
                         integration={shopifyChatIntegration}
                         createCampaign={jest.fn()}
                         updateCampaign={jest.fn()}
@@ -204,6 +211,7 @@ describe('<AdvancedCampaignDetails />', () => {
                             },
                         }}
                         agents={agents as User[]}
+                        shopifyIntegration={shopifyIntegration}
                         integration={shopifyChatIntegration}
                         createCampaign={jest.fn()}
                         updateCampaign={jest.fn()}
@@ -302,6 +310,7 @@ describe('<AdvancedCampaignDetails />', () => {
                         id={regularMerchantCampaign.id}
                         campaign={regularMerchantCampaign}
                         agents={agents as User[]}
+                        shopifyIntegration={shopifyIntegration}
                         integration={shopifyChatIntegration}
                         createCampaign={jest.fn()}
                         updateCampaign={jest.fn()}
@@ -402,6 +411,7 @@ describe('<AdvancedCampaignDetails />', () => {
                         id="new"
                         campaign={{} as ChatCampaign}
                         agents={agents as User[]}
+                        shopifyIntegration={shopifyIntegration}
                         integration={shopifyChatIntegration}
                         createCampaign={jest.fn()}
                         updateCampaign={jest.fn()}
@@ -482,6 +492,7 @@ describe('<AdvancedCampaignDetails />', () => {
                         id={revenueMerchantCampaign.id}
                         campaign={revenueMerchantCampaign}
                         agents={agents as User[]}
+                        shopifyIntegration={shopifyIntegration}
                         integration={shopifyChatIntegration}
                         createCampaign={jest.fn()}
                         updateCampaign={jest.fn()}
@@ -660,6 +671,7 @@ describe('<AdvancedCampaignDetails />', () => {
                         id={revenueMerchantCampaign.id}
                         campaign={revenueMerchantCampaign}
                         agents={agents as User[]}
+                        shopifyIntegration={shopifyIntegration}
                         integration={shopifyChatIntegration}
                         createCampaign={jest.fn()}
                         updateCampaign={jest.fn()}

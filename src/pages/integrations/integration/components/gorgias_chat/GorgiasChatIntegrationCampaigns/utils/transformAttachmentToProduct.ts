@@ -20,14 +20,17 @@ type AttachmentImmutable = {
     }
 }
 
-export function transformAttachmentToProduct(attachments: List<any>) {
+export function transformAttachmentToProduct(
+    attachments: List<any>,
+    context: {currency?: string}
+) {
     return (attachments.toJS() as AttachmentImmutable[]).map((attachment) => {
         return {
             id: attachment.extra?.product_id,
             title: attachment.name,
             url: attachment.extra.product_link,
             price: parseFloat(attachment.extra?.price),
-            currency: attachment.extra?.currency,
+            currency: attachment.extra?.currency ?? context.currency ?? 'USD',
             featured_image: attachment.extra?.featured_image,
             variant_name: attachment.extra?.variant_name,
             position: attachment.extra?.position,

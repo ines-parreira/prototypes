@@ -74,6 +74,7 @@ type Props = {
     campaign: ChatCampaign
     id: string
     integration: Map<any, any>
+    shopifyIntegration: Map<any, any>
     isRevenueBetaTester: boolean
     createCampaign: (form: any, integration: Map<any, any>) => Promise<unknown>
     updateCampaign: (form: any, integration: Map<any, any>) => Promise<unknown>
@@ -87,6 +88,7 @@ export const AdvancedCampaignDetails = memo(
         integration,
         id,
         isRevenueBetaTester = false,
+        shopifyIntegration,
         createCampaign,
         updateCampaign,
         deleteCampaign,
@@ -114,8 +116,10 @@ export const AdvancedCampaignDetails = memo(
         const attachments = useAppSelector(getNewMessageAttachments)
 
         const shopifyProducts = useMemo<CampaignProduct[]>(() => {
-            return transformAttachmentToProduct(attachments)
-        }, [attachments])
+            return transformAttachmentToProduct(attachments, {
+                currency: shopifyIntegration.getIn(['meta', 'currency']),
+            })
+        }, [attachments, shopifyIntegration])
 
         // makes sure editor and preview are in sync on initial load of HTML
         useEffect(() => {
@@ -319,6 +323,10 @@ export const AdvancedCampaignDetails = memo(
                     payload['attachments'] = shopifyProducts.map((product) => {
                         return transformProductToAttachment(product, {
                             campaignName,
+                            currency: shopifyIntegration.getIn([
+                                'meta',
+                                'currency',
+                            ]),
                         })
                     })
                 }

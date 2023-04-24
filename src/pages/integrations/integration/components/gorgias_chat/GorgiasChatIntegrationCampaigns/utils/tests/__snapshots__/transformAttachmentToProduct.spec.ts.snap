@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`transformAttachmentToProduct() adds the integration currency code for products without one 1`] = `
+[
+  {
+    "currency": "GBP",
+    "featured_image": "https://cdn.shopify.com/s/files/1/0572/7505/6294/products/mbp-digitalmat-gallery-4-202206.png?v=1664370856",
+    "id": 7545464062118,
+    "position": undefined,
+    "price": 1299,
+    "title": "MacBook Pro 13-inch",
+    "url": "https://robertpmf.myshopify.com/products/macbook-pro-13-inch?variant=43508854358182&utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=Test+1",
+    "variant_name": " Color: Space Gray",
+  },
+  {
+    "currency": "USD",
+    "featured_image": "https://cdn.shopify.com/s/files/1/0572/7505/6294/products/watch-ultra-digitalmat-gallery-1-202209.jpg?v=1664371058",
+    "id": 7545470910630,
+    "position": undefined,
+    "price": 799,
+    "title": "Apple Watch Ultra",
+    "url": "https://robertpmf.myshopify.com/products/apple-watch-ultra?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=Test+1",
+    "variant_name": undefined,
+  },
+]
+`;

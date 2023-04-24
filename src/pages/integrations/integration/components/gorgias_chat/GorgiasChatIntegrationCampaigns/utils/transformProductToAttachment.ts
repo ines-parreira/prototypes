@@ -6,6 +6,7 @@ export function transformProductToAttachment(
     product: CampaignProduct,
     context: {
         campaignName: string
+        currency?: string
     }
 ) {
     return {
@@ -15,7 +16,7 @@ export function transformProductToAttachment(
         size: 0,
         extra: {
             price: product.price,
-            currency: product?.currency,
+            currency: product?.currency ?? context.currency ?? 'USD',
             product_id: product.id,
             product_link: attachUtmToCampaignProduct(
                 product,

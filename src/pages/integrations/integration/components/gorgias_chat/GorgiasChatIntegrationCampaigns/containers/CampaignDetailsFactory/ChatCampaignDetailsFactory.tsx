@@ -7,7 +7,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import {getAgents} from 'state/agents/selectors'
-import {getChatIntegrationCampaignById} from 'state/integrations/selectors'
+import {
+    getChatIntegrationCampaignById,
+    getIntegrationById,
+} from 'state/integrations/selectors'
 
 import {
     createCampaign,
@@ -37,6 +40,10 @@ export const ChatCampaignDetailsFactory = ({
     const campaign = useAppSelector(
         getChatIntegrationCampaignById(integration.get('id'), id)
     )
+    const shopify = useAppSelector(
+        getIntegrationById(integration.getIn(['meta', 'shop_integration_id']))
+    )
+
     const agents = useAppSelector(getAgents)
 
     const handleCreateCampaign = async (
@@ -77,6 +84,7 @@ export const ChatCampaignDetailsFactory = ({
                 agents={memoAgents}
                 id={id}
                 integration={integration}
+                shopifyIntegration={shopify}
                 isRevenueBetaTester={isRevenueBetaTester}
                 campaign={memoCampaign}
                 createCampaign={handleCreateCampaign}
