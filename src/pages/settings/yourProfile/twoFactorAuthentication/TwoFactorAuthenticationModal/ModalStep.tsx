@@ -31,6 +31,14 @@ export default function ModalStep({
     setIsRecoveryCodesSaved,
 }: OwnProps) {
     switch (currentStep) {
+        case 0:
+            return (
+                <ValidateVerificationCodeStep
+                    setVerificationCode={setVerificationCode}
+                    setErrorText={setErrorText}
+                    isUpdate={true}
+                />
+            )
         case 1:
             return (
                 <QRCodeStep

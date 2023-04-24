@@ -16,9 +16,17 @@ export const fetchAuthenticatorDataRenewed =
     async (): Promise<AuthenticatorData> => await fetchAuthenticatorData(true)
 
 export const validateVerificationCode = async (
-    verificationCode: string
+    verificationCode: string,
+    existing = false
 ): Promise<void> => {
-    await client.get<void>(`/api/2fa/verification-code/${verificationCode}`)
+    const params: Record<string, any> = {}
+    if (existing) {
+        params['existing'] = existing
+    }
+
+    await client.get<void>(`/api/2fa/verification-code/${verificationCode}`, {
+        params,
+    })
 }
 
 export const saveTwoFASecret = async (): Promise<void> => {

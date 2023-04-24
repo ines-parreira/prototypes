@@ -17,6 +17,7 @@ export default function ModalContinueButton({
     onFinish,
 }: OwnProps) {
     switch (currentStep) {
+        case 0:
         case 1:
         case 2:
             return (

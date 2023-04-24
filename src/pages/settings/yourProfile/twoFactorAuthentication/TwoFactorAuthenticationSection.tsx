@@ -90,6 +90,7 @@ export default function TwoFactorAuthenticationSection() {
                     onFinish={() => {
                         setIs2FASetupModalOpen(false)
                     }}
+                    isUpdate={has2FAEnabled}
                 />
             )}
 

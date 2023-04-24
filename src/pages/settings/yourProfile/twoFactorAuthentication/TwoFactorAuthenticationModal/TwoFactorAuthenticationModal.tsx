@@ -34,6 +34,7 @@ export type OwnProps = {
     onFinish?: () => void
     initialBannerText?: string
     initialBannerType?: 'info' | 'error'
+    isUpdate?: boolean
 }
 
 export default function TwoFactorAuthenticationModal({
@@ -42,6 +43,7 @@ export default function TwoFactorAuthenticationModal({
     onFinish,
     initialBannerText,
     initialBannerType,
+    isUpdate,
 }: OwnProps) {
     const dispatch = useAppDispatch()
 
@@ -51,7 +53,7 @@ export default function TwoFactorAuthenticationModal({
         return check2FARequired(twoFAEnforcedDatetime, has2FAEnabled)
     }, [twoFAEnforcedDatetime, has2FAEnabled])
 
-    const [step, setStep] = useState(1)
+    const [step, setStep] = useState(isUpdate ? 0 : 1)
     const [authenticatorData, setAuthenticatorData] = useState(
         {} as AuthenticatorData
     )
@@ -99,23 +101,29 @@ export default function TwoFactorAuthenticationModal({
         resetModalState()
     }, [step, resetModalState])
 
-    const validateVerificationCode = useCallback(async () => {
-        try {
-            setErrorText('')
+    const validateVerificationCode = useCallback(
+        async (useExistingSecret = false) => {
+            try {
+                setErrorText('')
 
-            await validateVerificationCodeResource(verificationCode)
+                await validateVerificationCodeResource(
+                    verificationCode,
+                    useExistingSecret
+                )
 
-            return true
-        } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
-            if (response) {
-                setErrorText(response.data.error.msg)
+                return true
+            } catch (error) {
+                const {response} = error as AxiosError<{error: {msg: string}}>
+                if (response) {
+                    setErrorText(response.data.error.msg)
+                }
+
+                console.error(error)
+                return
             }
-
-            console.error(error)
-            return
-        }
-    }, [verificationCode])
+        },
+        [verificationCode]
+    )
 
     const createRecoveryCodes = useCallback(async () => {
         try {
@@ -159,6 +167,16 @@ export default function TwoFactorAuthenticationModal({
     const handleContinue = useCallback(async () => {
         if (step > 2) {
             return
+        }
+
+        if (step === 0) {
+            setIsLoading(true)
+            const isVerificationCodeValid = await validateVerificationCode(true)
+            setIsLoading(false)
+
+            if (!isVerificationCodeValid) {
+                return
+            }
         }
 
         if (step === 2) {
@@ -258,6 +276,7 @@ export default function TwoFactorAuthenticationModal({
                         isLoading={isLoading}
                         hasError={
                             !!errorText ||
+                            (step === 0 && !verificationCode) ||
                             (step === 2 && !verificationCode) ||
                             (step === 3 && !isRecoveryCodesSaved)
                         }

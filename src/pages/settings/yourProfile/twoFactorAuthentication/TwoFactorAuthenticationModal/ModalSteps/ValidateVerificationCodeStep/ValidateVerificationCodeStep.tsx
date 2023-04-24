@@ -8,15 +8,20 @@ import css from '../ModalSteps.less'
 type OwnProps = {
     setVerificationCode: Dispatch<SetStateAction<string>>
     setErrorText: Dispatch<SetStateAction<string>>
+    isUpdate?: boolean
 }
 
 export default function ValidateVerificationCodeStep({
     setVerificationCode,
     setErrorText,
+    isUpdate,
 }: OwnProps) {
     return (
         <>
-            <div className={css.headingBold}>Step 3: Verify your code</div>
+            <div className={css.headingBold}>
+                {!isUpdate && 'Step 3: '}
+                Verify your code
+            </div>
             <div className={classnames(css.textSection, settingsCss.mb16)}>
                 Enter the 6-digit verification code generated from your
                 authenticator app.

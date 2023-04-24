@@ -17,6 +17,7 @@ describe('<ValidateVerificationCodeStep />', () => {
 
             expect(container).toMatchSnapshot()
         })
+
         it('should trigger actions on input change', () => {
             const {getByPlaceholderText} = render(
                 <ValidateVerificationCodeStep
@@ -33,6 +34,18 @@ describe('<ValidateVerificationCodeStep />', () => {
 
             expect(setVerificationCodeMock).toHaveBeenCalled()
             expect(setErrorTextMock).toHaveBeenCalled()
+        })
+
+        it('should show a different title when used as the first step of an update', () => {
+            const {container} = render(
+                <ValidateVerificationCodeStep
+                    setVerificationCode={setVerificationCodeMock}
+                    setErrorText={setErrorTextMock}
+                    isUpdate={true}
+                />
+            )
+
+            expect(container).toMatchSnapshot()
         })
     })
 })

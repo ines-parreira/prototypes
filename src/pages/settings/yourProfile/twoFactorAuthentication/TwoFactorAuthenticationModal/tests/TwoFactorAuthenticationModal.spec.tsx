@@ -48,11 +48,15 @@ const createRecoveryCodesMock = createRecoveryCodes as jest.MockedFunction<
 jest.mock('store/middlewares/segmentTracker')
 const logEventMock = logEvent as jest.Mock
 
-const renderInitialModal = async (baseElement: HTMLElement) => {
-    // Wait until the show class is added to the modal
+const waitForModal = async (baseElement: HTMLElement) => {
     await waitFor(() =>
         expect(baseElement.getElementsByClassName('modal show').length).toBe(1)
     )
+}
+
+const renderInitialModal = async (baseElement: HTMLElement) => {
+    // Wait until the show class is added to the modal
+    await waitForModal(baseElement)
 
     // wait for the loading elements to disappear
     await waitFor(() => {
@@ -65,16 +69,20 @@ const validateInput = async (baseElement: HTMLElement) => {
     await renderInitialModal(baseElement)
 
     // Navigate to step 2
-    let continueButton = screen.getByText(/Continue/)
+    const continueButton = screen.getByText(/Continue/)
     fireEvent.click(continueButton)
 
+    await fillVerificationCode()
+}
+
+const fillVerificationCode = async () => {
     const inputField = screen.getByPlaceholderText<HTMLInputElement>(
         'Enter 6-digit verification code from app'
     )
     fireEvent.change(inputField, {target: {value: '123456'}})
 
     // Try to navigate to step 3 in order to trigger validation
-    continueButton = screen.getByText(/Continue/)
+    const continueButton = screen.getByText(/Continue/)
     fireEvent.click(continueButton)
 
     // wait for the loading spinners to disappear
@@ -430,6 +438,67 @@ describe('<TwoFactorAuthenticationModal />', () => {
             await renderInitialModal(baseElement)
 
             expect(screen.queryByText(/Cancel/)).toBeNull()
+        })
+
+        it('should render the modal with a validation code step first on update before other steps', async () => {
+            const {baseElement} = render(
+                <Provider store={mockStore()}>
+                    <TwoFactorAuthenticationModal
+                        {...minProps}
+                        isUpdate={true}
+                    />
+                </Provider>
+            )
+
+            await screen.findByText('Verify your code')
+            expect(baseElement).toMatchSnapshot()
+        })
+
+        it('should render the modal with an error banner because the code is not valid', async () => {
+            validateVerificationCodeMock.mockRejectedValue({
+                response: {
+                    data: {
+                        error: {
+                            msg: 'Test error invalid code',
+                        },
+                    },
+                },
+            })
+
+            const {baseElement} = render(
+                <Provider store={mockStore()}>
+                    <TwoFactorAuthenticationModal
+                        {...minProps}
+                        isUpdate={true}
+                    />
+                </Provider>
+            )
+
+            await waitForModal(baseElement)
+            await fillVerificationCode()
+
+            await handleInputValidationFailed(baseElement)
+        })
+
+        it('should render modal with the QR code step because the code is valid', async () => {
+            validateVerificationCodeMock.mockResolvedValue()
+
+            const {baseElement} = render(
+                <Provider store={mockStore()}>
+                    <TwoFactorAuthenticationModal
+                        {...minProps}
+                        isUpdate={true}
+                    />
+                </Provider>
+            )
+
+            await waitForModal(baseElement)
+            await fillVerificationCode()
+
+            // Wait for the qrcode library to render the image
+            await screen.findByAltText('The QR Code to scan')
+
+            expect(baseElement).toMatchSnapshot()
         })
     })
 })
