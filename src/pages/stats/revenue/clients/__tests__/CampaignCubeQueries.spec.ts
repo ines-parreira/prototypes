@@ -29,7 +29,7 @@ describe('Calling CubeClient functions', () => {
         mockedServer.reset()
     })
 
-    it.each([[getRevenueUpliftGraphData], [getCampaignsPerformanceGraphData]])(
+    it.each([[getCampaignsPerformanceGraphData]])(
         '%p should call load',
         async (cubeFn) => {
             // arrange
@@ -69,6 +69,7 @@ describe('Getting Cube queries', () => {
         [getCampaignOrderPerformanceData],
         [getCampaignEventsOrdersPerformanceData],
         [getTrafficData],
+        [getRevenueUpliftGraphData],
     ])('%p should call load', (cubeFn) => {
         // act
         const query = cubeFn(props)

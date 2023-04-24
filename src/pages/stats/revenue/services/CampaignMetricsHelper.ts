@@ -44,6 +44,7 @@ import {
     GRAPH_LABEL_DATE_FORMAT,
 } from 'pages/stats/revenue/services/constants'
 import {formatCurrency, formatNumber} from 'pages/stats/common/utils'
+import {ReportingGranularity} from 'models/reporting/types'
 
 export const getDataFromResultSet = (resultSet: CubeResponse): CubeData => {
     return _get(resultSet, 'data', []) as CubeData
@@ -77,6 +78,23 @@ const _gmvUplift = (gmv: number, campaignSales: number): number => {
     const initialGMV = gmv - campaignSales
 
     return initialGMV > 0 ? (campaignSales / initialGMV) * 100 : 0
+}
+
+const _getGmvUpliftFromMetrics = (
+    orderData: CubeMetric | undefined,
+    totalData: CubeMetric | undefined
+): number => {
+    const orderMetric: CubeMetric = _getMetricOrDefault(orderData)
+    const totalMetric: CubeMetric = _getMetricOrDefault(totalData)
+
+    const campaignSales = parseFloat(
+        _get(orderMetric, OrderConversionMeasure.campaignSales, '0')
+    )
+    const totalSales = parseFloat(
+        _get(totalMetric, OrderConversionMeasure.gmv, '0')
+    )
+
+    return _toFixed(_gmvUplift(totalSales, campaignSales))
 }
 
 const _calculateTraffic = (
@@ -139,20 +157,11 @@ export const transformToCampaignCalculatedTotals = (
     orderData: CubeMetric | undefined,
     totalData: CubeMetric | undefined
 ): CalculatedTotals => {
-    const orderMetric: CubeMetric = _getMetricOrDefault(orderData)
-    const totalMetric: CubeMetric = _getMetricOrDefault(totalData)
-
-    const campaignSales = parseFloat(
-        _get(orderMetric, OrderConversionMeasure.campaignSales, '0')
-    )
-    const totalSales = parseFloat(
-        _get(totalMetric, OrderConversionMeasure.gmv, '0')
-    )
+    const gmvUplift = _getGmvUpliftFromMetrics(orderData, totalData)
 
     return {
-        [CampaignsTotalsMetricNames.influencedRevenueUplift]: formatPercentage(
-            _toFixed(_gmvUplift(totalSales, campaignSales))
-        ),
+        [CampaignsTotalsMetricNames.influencedRevenueUplift]:
+            formatPercentage(gmvUplift),
     }
 }
 
@@ -172,10 +181,17 @@ export const transformToStoreTotal = (
 
 export const transformToRevenueUpliftOverTime = (
     dataPoint: CubeMetric,
-    granularityValue: TimeGranularity
+    totalData: CubeMetric | undefined,
+    granularityValue: ReportingGranularity
 ): RevenueGraphDataPoint => {
+    const gmvUplift = _getGmvUpliftFromMetrics(dataPoint, totalData)
+
     return _transformToGraphOverTime(
-        dataPoint,
+        {
+            ...dataPoint,
+            [OrderConversionMeasure.influencedRevenueUplift]:
+                gmvUplift.toString(),
+        },
         OrderConversionMeasure.influencedRevenueUplift,
         `${OrderConversionDimension.createdDatatime}.${granularityValue}`,
         GRAPH_LABEL_DATE_FORMAT

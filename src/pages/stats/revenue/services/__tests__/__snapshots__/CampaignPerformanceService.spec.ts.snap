@@ -46,12 +46,3 @@ exports[`Revenue Attribution Service stats methods getCampaignsAndChatPerformanc
   ],
 }
 `;
-
-exports[`Revenue Attribution Service stats methods getRevenueUpliftOverTime should return prepared data for chart 1`] = `
-[
-  {
-    "x": "Feb 28th",
-    "y": 43.32,
-  },
-]
-`;

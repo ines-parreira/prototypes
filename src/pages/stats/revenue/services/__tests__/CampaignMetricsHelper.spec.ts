@@ -1,7 +1,10 @@
 import {
     backfillGraphData,
+    getDataFromResult,
     getDataFromResultSet,
     getDataFromStatResult,
+    getMetricFromCubeData,
+    transformToCampaignCalculatedTotals,
     transformToCampaignConversionRateOverTime,
     transformToCampaignCTROverTime,
     transformToCampaignEventsTotals,
@@ -9,10 +12,7 @@ import {
     transformToCampaignsPerformanceTable,
     transformToChatConversionRateOverTime,
     transformToRevenueUpliftOverTime,
-    transformToCampaignCalculatedTotals,
     transformToStoreTotal,
-    getMetricFromCubeData,
-    getDataFromResult,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {CubeResponse} from 'pages/stats/revenue/clients/types'
 import {Stat} from 'models/stat/types'
@@ -26,6 +26,7 @@ import {
 } from 'pages/stats/revenue/clients/constants'
 import {CampaignsTotalsMetricNames} from 'pages/stats/revenue/services/constants'
 import {TicketPerformanceData} from 'pages/stats/revenue/services/types'
+import {ReportingGranularity} from 'models/reporting/types'
 
 describe('Campaign metrics helper tests', () => {
     const cubeDataMissing = {
@@ -248,21 +249,26 @@ describe('Campaign metrics helper tests', () => {
 
     describe('transformToRevenueUpliftOverTime', () => {
         const revenueDataPoint = {
-            [OrderConversionMeasure.influencedRevenueUplift]: '67.8',
+            [OrderConversionMeasure.campaignSales]: '1234.56',
             [`${OrderConversionDimension.createdDatatime}.day`]:
                 '2023-02-28T00:00:00.000',
             [OrderConversionDimension.createdDatatime]:
                 '2023-02-28T00:00:00.000',
         }
 
+        const storeTotalData = {
+            [OrderConversionMeasure.gmv]: '4567.89',
+        }
+
         it('should return correct data', () => {
             const result = transformToRevenueUpliftOverTime(
                 revenueDataPoint,
-                'day'
+                storeTotalData,
+                ReportingGranularity.Day
             )
             expect(result).toStrictEqual({
                 x: 'Feb 28th',
-                y: 67.8,
+                y: 37.04,
             })
         })
     })

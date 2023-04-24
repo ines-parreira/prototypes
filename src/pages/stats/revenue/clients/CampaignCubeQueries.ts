@@ -241,32 +241,34 @@ export const getStoreRevenueTotalData = ({
     ]
 }
 
-export const getRevenueUpliftGraphData = async ({
+export const getRevenueUpliftGraphData = ({
     shopName,
     campaignIds,
     startDate,
     endDate,
-    granularity = 'day',
-}: CubeFilterParams): Promise<CubeResponse> => {
-    return await client.load({
-        dimensions: [],
-        timeDimensions: [
-            {
-                dimension: OrderConversionDimension.createdDatatime,
-                dateRange: [startDate, endDate],
-                granularity: granularity,
-            },
-        ],
-        measures: [OrderConversionMeasure.influencedRevenueUplift],
-        order: [[OrderConversionDimension.createdDatatime, 'asc']],
-        filters: _getDefaultFilters({
-            startDate,
-            endDate,
-            cubeName: Cube.orderConversion,
-            campaignIds,
-            shopName,
-        }),
-    })
+    granularity = ReportingGranularity.Day,
+}: CubeFilterParams): ReportingParams => {
+    return [
+        {
+            dimensions: [],
+            timeDimensions: [
+                {
+                    dimension: OrderConversionDimension.createdDatatime,
+                    dateRange: [startDate, endDate],
+                    granularity: granularity as ReportingGranularity,
+                },
+            ],
+            measures: [OrderConversionMeasure.campaignSales],
+            order: [[OrderConversionDimension.createdDatatime, 'asc']],
+            filters: _getDefaultFilters({
+                startDate,
+                endDate,
+                cubeName: Cube.orderConversion,
+                campaignIds,
+                shopName,
+            }),
+        },
+    ]
 }
 
 export const getCampaignsPerformanceGraphData = async ({

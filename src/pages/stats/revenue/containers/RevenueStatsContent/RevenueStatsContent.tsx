@@ -18,9 +18,7 @@ export const RevenueStatsContent = () => {
     return (
         <DashboardSection title="">
             <CampaignTotalsStat />
-            {graphsVisible && (
-                <CampaignRevenueUpliftStat onError={handleError} />
-            )}
+            <CampaignRevenueUpliftStat />
             {graphsVisible && (
                 <CampaignChatPerformanceStat onError={handleError} />
             )}

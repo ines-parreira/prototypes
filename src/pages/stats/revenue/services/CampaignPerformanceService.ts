@@ -1,11 +1,7 @@
-import {
-    getCampaignsPerformanceGraphData,
-    getRevenueUpliftGraphData,
-} from 'pages/stats/revenue/clients/CampaignCubeQueries'
+import {getCampaignsPerformanceGraphData} from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {
     CampaignChatPerformanceData,
     CampaignGraphData,
-    RevenueGraphDataPoint,
 } from 'pages/stats/revenue/services/types'
 import {
     backfillGraphData,
@@ -14,34 +10,10 @@ import {
     transformToCampaignConversionRateOverTime,
     transformToCampaignCTROverTime,
     transformToChatConversionRateOverTime,
-    transformToRevenueUpliftOverTime,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {getTicketsPerformanceData} from 'pages/stats/revenue/clients/RevenueAttributionClient'
 import {CubeMetric, TimeGranularity} from 'pages/stats/revenue/clients/types'
 import {TicketChannel} from 'business/types/ticket'
-
-export const getRevenueUpliftOverTime = async (
-    startDate: string,
-    endDate: string,
-    namespacedShopName: string,
-    campaignIds: string[],
-    timeGranularity: TimeGranularity = 'day'
-): Promise<RevenueGraphDataPoint[]> => {
-    const attrs = {
-        shopName: namespacedShopName,
-        campaignIds,
-        startDate,
-        endDate,
-        granularity: timeGranularity,
-    }
-
-    const revenueGraph = await getRevenueUpliftGraphData(attrs)
-    const revenueGraphData = getDataFromResultSet(revenueGraph)
-
-    return revenueGraphData.map((dataPoint: CubeMetric) =>
-        transformToRevenueUpliftOverTime(dataPoint, timeGranularity)
-    )
-}
 
 export const getCampaignsAndChatPerformanceOverTime = async (
     startDate: string,

@@ -1,4 +1,11 @@
-import {Chart, ChartArea, ChartData, ChartOptions, Point} from 'chart.js'
+import {
+    Chart,
+    ChartArea,
+    ChartData,
+    ChartOptions,
+    Point,
+    TooltipItem,
+} from 'chart.js'
 import React, {useMemo, useState} from 'react'
 import {Line} from 'react-chartjs-2'
 
@@ -19,6 +26,7 @@ type Props = {
     hasBackground?: boolean
     displayLegend?: boolean
     _displayLegacyTooltip?: boolean
+    _renderLegacyTooltipLabel?: (tooltipItem: TooltipItem<'line'>) => string
 }
 
 const LINE_OPTIONS: ChartOptions<'line'> = {
@@ -98,6 +106,7 @@ export default function LineChart({
     hasBackground,
     displayLegend = false,
     _displayLegacyTooltip = false,
+    _renderLegacyTooltipLabel,
 }: Props) {
     const [chartArea, setChartArea] = useState<ChartArea>()
     const [chartContext, setChartContext] = useState<CanvasRenderingContext2D>()
@@ -146,6 +155,10 @@ export default function LineChart({
                 tooltip: {
                     ...LINE_OPTIONS.plugins?.tooltip,
                     enabled: _displayLegacyTooltip,
+                    callbacks: {
+                        ...LINE_OPTIONS.plugins?.tooltip?.callbacks,
+                        label: _renderLegacyTooltipLabel,
+                    },
                 },
             },
             resizeDelay: 1000,
@@ -154,7 +167,7 @@ export default function LineChart({
                 setChartContext(chart.ctx)
             },
         }),
-        [displayLegend, _displayLegacyTooltip]
+        [displayLegend, _displayLegacyTooltip, _renderLegacyTooltipLabel]
     )
 
     return (

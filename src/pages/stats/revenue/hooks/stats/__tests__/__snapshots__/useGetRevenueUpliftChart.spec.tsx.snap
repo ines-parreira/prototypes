@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
+[
+  [
+    [
+      {
+        "dimensions": [],
+        "filters": [
+          {
+            "member": "OrderConversion.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-01-01T00:00:00-08:00",
+              "2023-03-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "OrderConversion.campaignId",
+            "operator": "equals",
+            "values": [
+              "campaign1",
+              "campaign2",
+            ],
+          },
+          {
+            "member": "OrderConversion.shopName",
+            "operator": "equals",
+            "values": [
+              "shopify:square-wheels-company",
+            ],
+          },
+        ],
+        "measures": [
+          "OrderConversion.campaignSales",
+        ],
+        "order": [
+          [
+            "OrderConversion.createdDatetime",
+            "asc",
+          ],
+        ],
+        "timeDimensions": [
+          {
+            "dateRange": [
+              "2023-01-01T00:00:00-08:00",
+              "2023-03-01T00:00:00-08:00",
+            ],
+            "dimension": "OrderConversion.createdDatetime",
+            "granularity": "day",
+          },
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+  [
+    [
+      {
+        "dimensions": [],
+        "filters": [
+          {
+            "member": "OrderConversion.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-01-01T00:00:00-08:00",
+              "2023-03-01T00:00:00-08:00",
+            ],
+          },
+          {
+            "member": "OrderConversion.shopName",
+            "operator": "equals",
+            "values": [
+              "shopify:square-wheels-company",
+            ],
+          },
+        ],
+        "measures": [
+          "OrderConversion.gmv",
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+]
+`;
+
+exports[`useGetTotalsStat should return prepared data for totals section 2`] = `
+{
+  "data": [
+    {
+      "x": "Feb 28th",
+      "y": 50,
+    },
+  ],
+  "isError": false,
+  "isFetching": false,
+}
+`;
