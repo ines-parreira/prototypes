@@ -20,6 +20,7 @@ describe('<PriceComponent/>', () => {
                 lineItem={bigCommerceCustomLineItemFixture}
                 currencyCode="EUR"
                 handleDiscount={jest.fn()}
+                hasDiscount={false}
             />
         )
 
@@ -32,6 +33,7 @@ describe('<PriceComponent/>', () => {
                 lineItem={bigCommerceLineItemFixture()}
                 currencyCode="EUR"
                 handleDiscount={jest.fn()}
+                hasDiscount={false}
             />
         )
 
@@ -52,6 +54,7 @@ describe('<PriceComponent/>', () => {
                 lineItem={initialLineItem}
                 currencyCode="EUR"
                 handleDiscount={jest.fn()}
+                hasDiscount={true}
             />
         )
 
@@ -64,6 +67,7 @@ describe('<PriceComponent/>', () => {
                 lineItem={updatedLineItem}
                 currencyCode="EUR"
                 handleDiscount={jest.fn()}
+                hasDiscount={true}
             />
         )
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Table} from 'reactstrap'
 
 import {
@@ -69,6 +69,8 @@ export default function OrderTable({
     onLineItemDelete,
     onLineItemDiscount,
 }: Props) {
+    const [discounts, setDiscounts] = useState<Set<string>>(new Set())
+
     return (
         <Table hover={!!lineItems.length} className={css.table}>
             <thead>
@@ -92,6 +94,7 @@ export default function OrderTable({
                         computeLineItemErrorKey({lineItem: lineItem})
                     )
                     const hasError = !!lineItemErrorMessage
+                    const hasDiscount = discounts.has(lineItem.id)
 
                     const {uid, product} = getOrderLineItemInfo(
                         lineItem,
@@ -114,6 +117,9 @@ export default function OrderTable({
                             onLineItemDiscount={onLineItemDiscount}
                             hasError={hasError}
                             errorMessage={lineItemErrorMessage}
+                            hasDiscount={hasDiscount}
+                            discounts={discounts}
+                            setDiscounts={setDiscounts}
                         />
                     )
                 })}

@@ -21,6 +21,7 @@ type Props = {
     lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
     currencyCode: Maybe<string>
     handleDiscount: (newPrice: number, action: 'add' | 'remove') => void
+    hasDiscount: boolean
 }
 
 const Amount = ({
@@ -43,6 +44,7 @@ export default function PriceComponent({
     lineItem,
     currencyCode,
     handleDiscount,
+    hasDiscount,
 }: Props) {
     // Keep a reference to initial line item before any discounts are applied
     // After a discount is applied to `lineItem` the `id` stays the same
@@ -55,7 +57,7 @@ export default function PriceComponent({
     const buttonRef = useRef<HTMLButtonElement>(null)
 
     const fullPrice = originalLineItem.list_price
-    const discountedPrice = Math.round(lineItem.list_price * 100) / 100
+    const discountedPrice = lineItem.list_price
 
     const onPopoverToggle = () =>
         setIsPopoverOpen((isDropdownOpen) => !isDropdownOpen)
@@ -73,7 +75,7 @@ export default function PriceComponent({
     return (
         <>
             <td className={css.numberCol}>
-                {canAddDiscount && currentDiscountAmount > 0 ? (
+                {canAddDiscount && hasDiscount ? (
                     <div className={css.striked}>
                         <Amount
                             amount={fullPrice}
@@ -160,7 +162,7 @@ export default function PriceComponent({
                                         discountAmount
                                             ? fullPrice - discountAmount
                                             : fullPrice,
-                                        'add'
+                                        discountAmount ? 'add' : 'remove'
                                     )
                                 } catch (error) {
                                     console.error(error)
