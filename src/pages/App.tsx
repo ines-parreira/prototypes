@@ -119,28 +119,29 @@ class App extends React.Component<Props> {
                     ]
 
                 if (
-                    !shouldContinuePollingChatViews ||
-                    !shouldFetchActiveViewTickets
-                )
-                    return
+                    shouldContinuePollingChatViews &&
+                    shouldFetchActiveViewTickets
+                ) {
+                    const filtersAST = (
+                        activeView.get('filters_ast') as Map<any, any>
+                    ).toJS() as Program
 
-                const filtersAST = (
-                    activeView.get('filters_ast') as Map<any, any>
-                ).toJS() as Program
+                    const viewFilters = getViewFilters(filtersAST)
 
-                const viewFilters = getViewFilters(filtersAST)
+                    const isChatView = viewFilters.some(
+                        (filter) =>
+                            filter.left === 'ticket.channel' &&
+                            (filter.operator === EqualityOperator.Eq ||
+                                CollectionOperator.ContainsAny) &&
+                            (filter.right as string | undefined)?.includes(
+                                'chat'
+                            )
+                    )
 
-                const isChatView = viewFilters.some(
-                    (filter) =>
-                        filter.left === 'ticket.channel' &&
-                        (filter.operator === EqualityOperator.Eq ||
-                            CollectionOperator.ContainsAny) &&
-                        (filter.right as string | undefined)?.includes('chat')
-                )
-
-                if (isChatView) {
-                    pollingManager.stopRecentViewCountsInterval()
-                    return
+                    if (isChatView) {
+                        pollingManager.stopRecentViewCountsInterval()
+                        return
+                    }
                 }
             }
 
