@@ -45,6 +45,7 @@ import {
 } from 'pages/stats/revenue/services/constants'
 import {formatCurrency, formatNumber} from 'pages/stats/common/utils'
 import {ReportingGranularity} from 'models/reporting/types'
+import {getMetricValue} from 'pages/stats/revenue/services/utils'
 
 export const getDataFromResultSet = (resultSet: CubeResponse): CubeData => {
     return _get(resultSet, 'data', []) as CubeData
@@ -87,12 +88,11 @@ const _getGmvUpliftFromMetrics = (
     const orderMetric: CubeMetric = _getMetricOrDefault(orderData)
     const totalMetric: CubeMetric = _getMetricOrDefault(totalData)
 
-    const campaignSales = parseFloat(
-        _get(orderMetric, OrderConversionMeasure.campaignSales, '0')
+    const campaignSales = getMetricValue(
+        orderMetric,
+        OrderConversionMeasure.campaignSales
     )
-    const totalSales = parseFloat(
-        _get(totalMetric, OrderConversionMeasure.gmv, '0')
-    )
+    const totalSales = getMetricValue(totalMetric, OrderConversionMeasure.gmv)
 
     return _toFixed(_gmvUplift(totalSales, campaignSales))
 }
@@ -111,7 +111,12 @@ const _calculateTraffic = (
                 _get(metric, EventsDimension.createdDatetime)
             ).date()
             if (date >= start.date() && date <= end.date()) {
-                return parseInt(_get(metric, EventsMeasure.traffic, '0'))
+                return getMetricValue(
+                    metric,
+                    EventsMeasure.traffic,
+                    '0',
+                    parseInt
+                )
             }
             return 0
         })
@@ -124,12 +129,10 @@ export const transformToCampaignEventsTotals = (
     const metric: CubeMetric = _getMetricOrDefault(data)
     return {
         [CampaignsTotalsMetricNames.impressions]: formatNumber(
-            parseFloat(
-                _get(metric, CampaignOrderEventsMeasure.impressions, '0')
-            )
+            getMetricValue(metric, CampaignOrderEventsMeasure.impressions)
         ),
         [CampaignsTotalsMetricNames.engagement]: formatNumber(
-            parseFloat(_get(metric, CampaignOrderEventsMeasure.engagement, '0'))
+            getMetricValue(metric, CampaignOrderEventsMeasure.engagement)
         ),
     }
 }
@@ -142,13 +145,11 @@ export const transformToCampaignOrdersTotals = (
 
     return {
         [CampaignsTotalsMetricNames.revenue]: formatCurrency(
-            parseFloat(_get(metric, OrderConversionMeasure.campaignSales, '0')),
+            getMetricValue(metric, OrderConversionMeasure.campaignSales),
             currency
         ),
         [CampaignsTotalsMetricNames.campaignSalesCount]: formatNumber(
-            parseFloat(
-                _get(metric, OrderConversionMeasure.campaignSalesCount, '0')
-            )
+            getMetricValue(metric, OrderConversionMeasure.campaignSalesCount)
         ),
     }
 }
@@ -173,7 +174,7 @@ export const transformToStoreTotal = (
 
     return {
         [CampaignsTotalsMetricNames.gmv]: formatCurrency(
-            parseFloat(_get(metric, OrderConversionMeasure.gmv, '0')),
+            getMetricValue(metric, OrderConversionMeasure.gmv),
             currency
         ),
     }
@@ -227,7 +228,7 @@ const _transformToGraphOverTime = (
     dateFormat: string = COMPARISON_DATA_FORMAT
 ): RevenueGraphDataPoint => {
     return {
-        y: parseFloat(_get(dataPoint, yColname, '0')),
+        y: getMetricValue(dataPoint, yColname),
         x: moment(_get(dataPoint, xDateColname)).format(dateFormat),
     }
 }
