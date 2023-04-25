@@ -6,6 +6,7 @@ export interface ChatCampaign {
     id: string
     meta?: {
         delay: number
+        noReply?: boolean
     }
     message: {
         author?: CampaignAuthor
