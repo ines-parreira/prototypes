@@ -1,3 +1,4 @@
+import moment from 'moment'
 import client from 'pages/stats/revenue/clients/CubeProxyClient'
 import {
     CubeFilter,
@@ -9,6 +10,7 @@ import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
     Cube,
+    CUBE_DATETIME_FORMAT,
     EventsDimension,
     EventsMeasure,
     EventsSegment,
@@ -18,6 +20,7 @@ import {
     SharedDimension,
 } from 'pages/stats/revenue/clients/constants'
 import {ReportingGranularity, ReportingParams} from 'models/reporting/types'
+import {formatDatetime} from 'utils'
 
 const _getDefaultFilters = ({
     startDate,
@@ -47,8 +50,21 @@ const _inDateRangeFilter = (
     return {
         member: `${cubeName}.${SharedDimension.createdDatetime}`,
         operator: FilterOperator.inDateRange,
-        values: [startDate, endDate],
+        values: _getDateRange(startDate, endDate),
     }
+}
+
+const _formatDatetime = (datetime: string): string => {
+    return formatDatetime(datetime, 'UTC', CUBE_DATETIME_FORMAT).toString()
+}
+
+const _getDateRange = (startDate: string, endDate: string): string[] => {
+    const startDateUtc = _formatDatetime(startDate)
+    const endDateUtc = _formatDatetime(endDate)
+    return [
+        moment(startDateUtc).startOf('day').format(CUBE_DATETIME_FORMAT),
+        moment(endDateUtc).endOf('day').format(CUBE_DATETIME_FORMAT),
+    ]
 }
 
 const _shopNameEqualsFilter = (
@@ -111,7 +127,7 @@ export const getTrafficData = ({
             timeDimensions: [
                 {
                     dimension: EventsDimension.createdDatetime,
-                    dateRange: [startDate, endDate],
+                    dateRange: _getDateRange(startDate, endDate),
                     granularity: granularity as ReportingGranularity,
                 },
             ],
@@ -254,7 +270,7 @@ export const getRevenueUpliftGraphData = ({
             timeDimensions: [
                 {
                     dimension: OrderConversionDimension.createdDatatime,
-                    dateRange: [startDate, endDate],
+                    dateRange: _getDateRange(startDate, endDate),
                     granularity: granularity as ReportingGranularity,
                 },
             ],
@@ -283,7 +299,7 @@ export const getCampaignsPerformanceGraphData = async ({
         timeDimensions: [
             {
                 dimension: CampaignOrderEventsDimension.createdDatatime,
-                dateRange: [startDate, endDate],
+                dateRange: _getDateRange(startDate, endDate),
                 granularity: granularity,
             },
         ],

@@ -65,3 +65,5 @@ export enum CampaignOrderEventsMeasure {
     campaignCTR = `CampaignOrderEvents.campaignCTR`,
     totalConversionRate = `CampaignOrderEvents.totalConversionRate`,
 }
+
+export const CUBE_DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSS'

@@ -10,8 +10,8 @@ exports[`Calling CubeClient functions [Function getCampaignsPerformanceGraphData
           "member": "CampaignOrderEvents.createdDatetime",
           "operator": "inDateRange",
           "values": [
-            "2023-01-01T00:00:00-08:00",
-            "2023-03-15T23:59:59-07:00",
+            "2023-01-02T00:00:00.000",
+            "2023-03-14T23:59:59.999",
           ],
         },
         {
@@ -43,8 +43,8 @@ exports[`Calling CubeClient functions [Function getCampaignsPerformanceGraphData
       "timeDimensions": [
         {
           "dateRange": [
-            "2023-01-01T00:00:00-08:00",
-            "2023-03-15T23:59:59-07:00",
+            "2023-01-02T00:00:00.000",
+            "2023-03-14T23:59:59.999",
           ],
           "dimension": "CampaignOrderEvents.createdDatetime",
           "granularity": "day",
@@ -66,8 +66,8 @@ exports[`Getting Cube queries [Function getCampaignEventsOrdersPerformanceData] 
         "member": "CampaignOrderEvents.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T00:00:00-08:00",
-          "2023-03-15T23:59:59-07:00",
+          "2023-01-02T00:00:00.000",
+          "2023-03-14T23:59:59.999",
         ],
       },
       {
@@ -97,8 +97,8 @@ exports[`Getting Cube queries [Function getCampaignEventsPerformanceData] should
         "member": "CampaignEvents.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T00:00:00-08:00",
-          "2023-03-15T23:59:59-07:00",
+          "2023-01-02T00:00:00.000",
+          "2023-03-14T23:59:59.999",
         ],
       },
       {
@@ -133,8 +133,8 @@ exports[`Getting Cube queries [Function getCampaignEventsTotalsData] should call
         "member": "CampaignOrderEvents.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T00:00:00-08:00",
-          "2023-03-15T23:59:59-07:00",
+          "2023-01-02T00:00:00.000",
+          "2023-03-14T23:59:59.999",
         ],
       },
       {
@@ -172,8 +172,8 @@ exports[`Getting Cube queries [Function getCampaignOrderPerformanceData] should 
         "member": "OrderConversion.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T00:00:00-08:00",
-          "2023-03-15T23:59:59-07:00",
+          "2023-01-02T00:00:00.000",
+          "2023-03-14T23:59:59.999",
         ],
       },
       {
@@ -208,8 +208,8 @@ exports[`Getting Cube queries [Function getCampaignOrderTotalsData] should call 
         "member": "OrderConversion.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T00:00:00-08:00",
-          "2023-03-15T23:59:59-07:00",
+          "2023-01-02T00:00:00.000",
+          "2023-03-14T23:59:59.999",
         ],
       },
       {
@@ -246,8 +246,8 @@ exports[`Getting Cube queries [Function getRevenueUpliftGraphData] should call l
         "member": "OrderConversion.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T00:00:00-08:00",
-          "2023-03-15T23:59:59-07:00",
+          "2023-01-02T00:00:00.000",
+          "2023-03-14T23:59:59.999",
         ],
       },
       {
@@ -278,8 +278,8 @@ exports[`Getting Cube queries [Function getRevenueUpliftGraphData] should call l
     "timeDimensions": [
       {
         "dateRange": [
-          "2023-01-01T00:00:00-08:00",
-          "2023-03-15T23:59:59-07:00",
+          "2023-01-02T00:00:00.000",
+          "2023-03-14T23:59:59.999",
         ],
         "dimension": "OrderConversion.createdDatetime",
         "granularity": "day",
@@ -298,8 +298,8 @@ exports[`Getting Cube queries [Function getStoreRevenueTotalData] should call lo
         "member": "OrderConversion.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T00:00:00-08:00",
-          "2023-03-15T23:59:59-07:00",
+          "2023-01-02T00:00:00.000",
+          "2023-03-14T23:59:59.999",
         ],
       },
       {
@@ -326,8 +326,8 @@ exports[`Getting Cube queries [Function getTrafficData] should call load 1`] = `
         "member": "CampaignEvents.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T00:00:00-08:00",
-          "2023-03-15T23:59:59-07:00",
+          "2023-01-02T00:00:00.000",
+          "2023-03-14T23:59:59.999",
         ],
       },
       {
@@ -344,8 +344,8 @@ exports[`Getting Cube queries [Function getTrafficData] should call load 1`] = `
     "timeDimensions": [
       {
         "dateRange": [
-          "2023-01-01T00:00:00-08:00",
-          "2023-03-15T23:59:59-07:00",
+          "2023-01-02T00:00:00.000",
+          "2023-03-14T23:59:59.999",
         ],
         "dimension": "CampaignEvents.createdDatetime",
         "granularity": "day",
