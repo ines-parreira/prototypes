@@ -3,7 +3,7 @@ import React, {ReactNode, useEffect, useState} from 'react'
 import useSearch from 'hooks/useSearch'
 import {getCheapestPriceNameForFeature} from 'utils/paywalls'
 import {fetchApps} from 'models/integration/resources'
-import {Integration, IntegrationType} from 'models/integration/types'
+import {Integration} from 'models/integration/types'
 import {
     AppListItem,
     Category as CategoryType,
@@ -40,10 +40,7 @@ import {
     CATEGORY_DATA,
 } from './constants'
 import css from './All.less'
-import {
-    hasTwitterIntegrations,
-    filterOutDeprecatedIntegrations,
-} from './filters'
+import {filterOutDeprecatedIntegrations} from './filters'
 import CategoryFilter from './CategoryFilter'
 import LimitWarning from './LimitWarning'
 import Loader from './Loader'
@@ -66,18 +63,10 @@ export function addRequiredPlanToIntegrations(
         if (!requiredFeature) return integration
         if (features[requiredFeature]?.enabled) return integration
 
-        let requiredPriceName = getCheapestPriceNameForFeature(
+        const requiredPriceName = getCheapestPriceNameForFeature(
             requiredFeature,
             prices
         )
-        // `prices` variable doesn't contain the custom plans and the
-        // most similar plan would be the enterprise one
-        if (
-            integration.type === IntegrationType.Twitter &&
-            !hasTwitterIntegrations(integrations)
-        ) {
-            requiredPriceName = 'Enterprise'
-        }
         return {
             ...integration,
             requiredPriceName,

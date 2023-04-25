@@ -28,7 +28,12 @@ export function filterOutDeprecatedIntegrations(
         ) {
             return false
         }
-
+        if (
+            integration.type === IntegrationType.Twitter &&
+            !hasTwitterIntegrations(integrations)
+        ) {
+            return false
+        }
         return true
     })
 }

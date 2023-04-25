@@ -80,24 +80,6 @@ const prices = [
 ]
 
 describe('addRequiredPlanToIntegrations()', () => {
-    it('should return the "Enterprise" plan for twitter', () => {
-        const twitterConf = INTEGRATION_TYPE_CONFIG.find(
-            (conf) => conf.type === IntegrationType.Twitter
-        )
-        expect(
-            addRequiredPlanToIntegrations(
-                [twitterConf as unknown as IntegrationListItem],
-                [{} as Integration],
-                {
-                    [AccountFeature.MagentoIntegration]: {
-                        enabled: false,
-                    } as AccountFeatureMetadata,
-                },
-                prices
-            )[0].requiredPriceName
-        ).toBe('Enterprise')
-    })
-
     it('should return the required plan', () => {
         const magentoConf = INTEGRATION_TYPE_CONFIG.find(
             (conf) => conf.type === IntegrationType.Magento2
