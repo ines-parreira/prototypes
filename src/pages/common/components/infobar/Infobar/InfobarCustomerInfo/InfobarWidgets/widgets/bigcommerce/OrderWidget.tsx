@@ -165,6 +165,8 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                 order: source,
                 customer: {
                     id: source.get('customer_id'),
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+                    email: customer.get('email'),
                 },
             },
         },

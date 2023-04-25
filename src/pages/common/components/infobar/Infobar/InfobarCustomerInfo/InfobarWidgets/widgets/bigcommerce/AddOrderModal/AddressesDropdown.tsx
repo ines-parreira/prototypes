@@ -197,15 +197,6 @@ export function AddressesDropdown({
                         Set currency to select the address.
                     </Tooltip>
                 )}
-                {hasError && (
-                    <p
-                        className={classnames(cssOrderModal.caption, {
-                            [cssOrderModal.hasError]: hasError,
-                        })}
-                    >
-                        {errorMessage}
-                    </p>
-                )}
                 <CustomAddressModal
                     currencyCode={currencyCode}
                     isOpen={isCustomAddressModalOpen}
@@ -218,6 +209,15 @@ export function AddressesDropdown({
                     customerEmail={customerEmail}
                 />
             </div>
+            {hasError && (
+                <p
+                    className={classnames(cssOrderModal.caption, {
+                        [cssOrderModal.hasError]: hasError,
+                    })}
+                >
+                    {errorMessage}
+                </p>
+            )}
         </>
     )
 }

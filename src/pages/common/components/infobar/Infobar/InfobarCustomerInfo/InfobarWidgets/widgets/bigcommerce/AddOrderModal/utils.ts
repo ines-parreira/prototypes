@@ -1123,6 +1123,8 @@ export const addCheckoutBillingAddress = async ({
     selectedAddress: BigCommerceCustomerAddress
     cart: BigCommerceCart
 }) => {
+    delete selectedAddress.custom_fields
+
     return addBigCommerceCheckoutBillingAddress(
         integrationId,
         cart.id,
@@ -1153,6 +1155,8 @@ export async function upsertCheckoutConsignment({
     if (!lineItems.length) {
         return null
     }
+
+    delete shippingAddress.custom_fields
 
     const singleConsignmentPayload = {
         address: shippingAddress,

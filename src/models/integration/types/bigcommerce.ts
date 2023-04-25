@@ -150,7 +150,6 @@ export type BigCommerceBillingAddress = {
     country_code: string
     postal_code: string
     phone: string
-    custom_fields: Array<any>
 }
 
 /**
@@ -325,6 +324,7 @@ export type BigCommerceCustomerAddress = {
     postal_code: Maybe<string>
     state_or_province: Maybe<string>
     state_or_province_code?: Maybe<string>
+    custom_fields?: Maybe<Array<any>>
 }
 
 export type BigCommerceCustomAddress = BigCommerceCustomerAddress & {

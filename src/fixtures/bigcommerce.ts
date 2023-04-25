@@ -543,7 +543,6 @@ export const bigCommerceConsignmentFixture: BigCommerceConsignment = {
         state_or_province: 'Paris',
         state_or_province_code: '',
         email: 'test2@gorgias.com',
-        custom_fields: [],
     },
     line_item_ids: [],
     selected_shipping_option: undefined,
@@ -587,7 +586,6 @@ export const bigCommerceConsignmentWithSelectedShippingMethodFixture: BigCommerc
             state_or_province: 'Paris',
             state_or_province_code: '',
             email: 'test2@gorgias.com',
-            custom_fields: [],
         },
         line_item_ids: [],
         selected_shipping_option: {
@@ -619,7 +617,6 @@ export const bigCommerceCheckoutFixture: BigCommerceCheckout = {
         ...bigCommerceShippingAddressesFixture[0],
         id: 'a-billing-address',
         state_or_province_code: '',
-        custom_fields: [],
     } as BigCommerceBillingAddress,
     shipping_cost_total_ex_tax: 333,
     shipping_cost_total_inc_tax: 444,
