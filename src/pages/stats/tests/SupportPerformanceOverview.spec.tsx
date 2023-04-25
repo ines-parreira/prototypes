@@ -4,6 +4,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
+import {UseQueryResult} from '@tanstack/react-query'
 
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
@@ -33,6 +34,7 @@ import {
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import useTimeSeries from 'hooks/reporting/useTimeSeries'
+import {useGetReporting} from 'models/reporting/queries'
 
 import SupportPerformanceOverview, {
     STATS_TIPS_VISIBILITY_KEY,
@@ -66,6 +68,9 @@ const useTicketsCreatedTimeSeriesMock = assumeMock(useTicketsCreatedTimeSeries)
 const useTicketsClosedTimeSeriesMock = assumeMock(useTicketsClosedTimeSeries)
 const useTicketsRepliedTimeSeriesMock = assumeMock(useTicketsRepliedTimeSeries)
 const useMessagesSentTimeSeriesMock = assumeMock(useMessagesSentTimeSeries)
+
+jest.mock('models/reporting/queries')
+const useGetReportingMock = assumeMock(useGetReporting)
 
 describe('<SupportPerformanceOverview />', () => {
     const defaultState = {
@@ -127,6 +132,18 @@ describe('<SupportPerformanceOverview />', () => {
         useTicketsClosedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useTicketsRepliedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useMessagesSentTimeSeriesMock.mockReturnValue(defaultTimeSeries)
+        useGetReportingMock.mockReturnValue({
+            data: [
+                {
+                    value: 200,
+                    label: TicketChannel.Email,
+                },
+                {
+                    value: 34,
+                    label: TicketChannel.Chat,
+                },
+            ],
+        } as UseQueryResult)
     })
 
     it('should render the page', () => {

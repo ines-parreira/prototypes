@@ -35,8 +35,23 @@ import {
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {periodToReportingGranularity} from 'utils/reporting'
+import {
+    periodToReportingGranularity,
+    statsFiltersToReportingFilters,
+    TicketStateStatsFiltersMembers,
+} from 'utils/reporting'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import {
+    ReportingFilterOperator,
+    TicketStateDimension,
+    TicketStateMeasure,
+    TicketStateMember,
+    TicketStateSegment,
+} from 'models/reporting/types'
+import {useGetReporting} from 'models/reporting/queries'
+import {REPORTING_STALE_TIME_MS} from 'hooks/reporting/constants'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 
 import BigNumberMetric from './BigNumberMetric'
 import DashboardSection from './DashboardSection'
@@ -52,29 +67,6 @@ import TimeSeriesChart from './TimeSeriesChart'
 
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 const DEFAULT_TIMEZONE = 'UTC'
-
-const workloadPerChannelMock: OneDimensionalDataItem[] = [
-    {
-        label: 'Chat',
-        value: 382,
-    },
-    {
-        label: 'Email',
-        value: 43,
-    },
-    {
-        label: 'Instagram DM',
-        value: 26,
-    },
-    {
-        label: 'Phone',
-        value: 54,
-    },
-    {
-        label: 'Others',
-        value: 72,
-    },
-]
 
 export default function SupportPerformanceOverview() {
     const userTimezone = useAppSelector(
@@ -155,6 +147,50 @@ export default function SupportPerformanceOverview() {
         pageStatsFilters,
         userTimezone,
         granularity
+    )
+
+    const workloadPerChannel = useGetReporting<
+        {
+            [TicketStateMeasure.TicketCount]: string
+            [TicketStateDimension.Channel]: TicketChannel
+        }[],
+        OneDimensionalDataItem[]
+    >(
+        [
+            {
+                measures: [TicketStateMeasure.TicketCount],
+                order: [[TicketStateMeasure.TicketCount, 'desc']],
+                dimensions: [TicketStateDimension.Channel],
+                segments: [TicketStateSegment.WorkloadTickets],
+                filters: [
+                    {
+                        member: TicketStateMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketStateMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    ...statsFiltersToReportingFilters(
+                        TicketStateStatsFiltersMembers,
+                        statsFilters
+                    ),
+                ],
+            },
+        ],
+        {
+            staleTime: REPORTING_STALE_TIME_MS,
+            select: (data) => {
+                return data.data.data.map((item) => ({
+                    label: TICKET_CHANNEL_NAMES[
+                        item[TicketStateDimension.Channel]
+                    ],
+                    value: parseFloat(item[TicketStateMeasure.TicketCount]),
+                }))
+            },
+        }
     )
 
     return (
@@ -447,7 +483,11 @@ export default function SupportPerformanceOverview() {
                             title="Workload per channel"
                             hint="Distribution of all tickets of the period (both “open” and “closed”) per channel"
                         >
-                            <GaugeChart data={workloadPerChannelMock} />
+                            {workloadPerChannel.data ? (
+                                <GaugeChart data={workloadPerChannel.data} />
+                            ) : (
+                                <Skeleton />
+                            )}
                         </ChartCard>
                     </DashboardGridCell>
                 </DashboardSection>

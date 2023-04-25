@@ -16,38 +16,58 @@ const STAT_COLORS = Object.freeze([
 type Props = {
     className?: string
     data: OneDimensionalDataItem[]
+    restLabel?: string
 }
 
-export default function GaugeChart({className, data}: Props) {
+export default function GaugeChart({
+    className,
+    data,
+    restLabel = 'Others',
+}: Props) {
     const total = useMemo(
         () => data.reduce((acc, {value}) => acc + value, 0),
         [data]
     )
-    const orderedItems = useMemo(
-        () =>
-            data
-                .reduce(
-                    (
-                        acc: (OneDimensionalDataItem & {
-                            color: string
-                            size: number
-                        })[],
-                        item,
-                        index
-                    ) => {
-                        acc.push({
-                            ...item,
-                            color: STAT_COLORS[index],
-                            size: item.value / total,
-                        })
-
-                        return acc
-                    },
-                    []
-                )
-                .sort((a, b) => b.value - a.value),
-        [data, total]
-    )
+    const displayItems = useMemo(() => {
+        if (data.length <= STAT_COLORS.length) {
+            return data.map((item, index) => ({
+                ...item,
+                color: STAT_COLORS[index],
+            }))
+        }
+        const sortedItems = [...data].sort((a, b) => b.value - a.value)
+        const displayLabels = sortedItems
+            .slice(0, STAT_COLORS.length - 1)
+            .map((item) => item.label)
+        return [
+            ...data.reduce((acc, item) => {
+                if (displayLabels.includes(item.label)) {
+                    acc.push({
+                        ...item,
+                        color: STAT_COLORS[acc.length],
+                    })
+                }
+                return acc
+            }, [] as (OneDimensionalDataItem & {color: string})[]),
+            {
+                label: restLabel,
+                value: sortedItems
+                    .slice(STAT_COLORS.length - 1)
+                    .reduce((acc, item) => acc + item.value, 0),
+                color: STAT_COLORS[STAT_COLORS.length - 1],
+            },
+        ]
+    }, [data, restLabel])
+    const orderedItems = useMemo(() => {
+        return [...displayItems]
+            .sort((a, b) => b.value - a.value)
+            .map((item) => {
+                return {
+                    ...item,
+                    size: item.value / total,
+                }
+            })
+    }, [total, displayItems])
 
     return (
         <div className={className}>
@@ -64,9 +84,9 @@ export default function GaugeChart({className, data}: Props) {
             </div>
             <Legend
                 className={css.legend}
-                items={data.map(({label}, index) => ({
+                items={displayItems.map(({label, color}) => ({
                     label,
-                    color: STAT_COLORS[index],
+                    color,
                 }))}
             />
         </div>
