@@ -598,6 +598,7 @@ export type ActionTemplate = {
                 step?: number
                 options?: any
                 allowCustomValue?: boolean
+                min?: number
             }
             label?: string | null
             type?: string
@@ -1251,6 +1252,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
                 input: {
                     type: 'number',
                     step: 0.01,
+                    min: 0,
                 },
             },
         },
@@ -1456,6 +1458,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
                 input: {
                     type: 'number',
                     step: 0.01,
+                    min: 0,
                 },
             },
         },
@@ -1508,6 +1511,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
                 input: {
                     type: 'number',
                     step: 0.01,
+                    min: 0,
                 },
             },
         },

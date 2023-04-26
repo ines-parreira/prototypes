@@ -45,40 +45,24 @@ describe('<TicketReplyActions/>', () => {
 
         expect(container.firstChild).toMatchSnapshot()
     })
+
     it('should render the ticket reply macro actions collapsed', () => {
         const props: ComponentProps<typeof TicketReplyActions> = {
             ticketId: 1,
             appliedMacro: fromJS({
-                actions: [
-                    ACTION_TEMPLATES.find(
-                        (action) =>
-                            action.name === MacroActionName.ForwardByEmail
-                    ),
-                    ACTION_TEMPLATES.find(
-                        (action) =>
-                            action.name === MacroActionName.AddInternalNote
-                    ),
-                    ACTION_TEMPLATES.find(
-                        (action) =>
-                            action.name ===
-                            MacroActionName.ShopifyCancelLastOrder
-                    ),
-                    ACTION_TEMPLATES.find(
-                        (action) =>
-                            action.name ===
-                            MacroActionName.ShopifyDuplicateLastOrder
-                    ),
-                    ACTION_TEMPLATES.find(
-                        (action) =>
-                            action.name ===
-                            MacroActionName.ShopifyPartialRefundLastOrder
-                    ),
-                    ACTION_TEMPLATES.find(
-                        (action) =>
-                            action.name ===
-                            MacroActionName.ShopifyRefundShippingCostLastOrder
-                    ),
-                ],
+                actions: ACTION_TEMPLATES.filter((action) => {
+                    const actions = [
+                        MacroActionName.ForwardByEmail,
+                        MacroActionName.AddInternalNote,
+                        MacroActionName.ShopifyCancelLastOrder,
+                        MacroActionName.ShopifyDuplicateLastOrder,
+                        MacroActionName.ShopifyPartialRefundLastOrder,
+                        MacroActionName.ShopifyRefundShippingCostLastOrder,
+                        MacroActionName.RechargeRefundLastCharge,
+                        MacroActionName.RechargeRefundLastOrder,
+                    ]
+                    return actions.includes(action.name)
+                }),
             }),
             onDelete: jest.fn(),
         }
