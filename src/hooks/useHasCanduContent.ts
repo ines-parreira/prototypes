@@ -37,30 +37,25 @@ const useHasCanduContent = <T extends HTMLElement>(canduId: string) => {
         }
 
         const observer = new MutationObserver((mutations) => {
-            const mutation = mutations[0]
-            if (!mutation) {
-                return
-            }
-
-            const addedNode = mutation.addedNodes.item(0)
-            if (!addedNode || addedNode.nodeType !== Node.ELEMENT_NODE) {
-                return
-            }
-
-            const element = addedNode as HTMLElement
-
-            if (
-                element.querySelector(CONTENT_SELECTOR) ||
-                element.hasAttribute(CONTENT_ATTRIBUTE_NAME)
-            ) {
-                setHasCanduContent(true)
-            } else if (element.shadowRoot) {
-                if (element.shadowRoot.querySelector(CONTENT_SELECTOR)) {
-                    setHasCanduContent(true)
-                } else {
-                    observer.observe(element.shadowRoot, {childList: true})
+            mutations.forEach((mutation) => {
+                const element = mutation.addedNodes.item(0)
+                if (!(element instanceof Element)) {
+                    return
                 }
-            }
+
+                if (
+                    element.querySelector(CONTENT_SELECTOR) ||
+                    element.hasAttribute(CONTENT_ATTRIBUTE_NAME)
+                ) {
+                    setHasCanduContent(true)
+                } else if (element.shadowRoot) {
+                    if (element.shadowRoot.querySelector(CONTENT_SELECTOR)) {
+                        setHasCanduContent(true)
+                    } else {
+                        observer.observe(element.shadowRoot, {childList: true})
+                    }
+                }
+            })
         })
 
         observer.observe(ref.current, {
