@@ -1,6 +1,7 @@
-import {ChartArea} from 'chart.js'
+import {ChartArea, TooltipItem} from 'chart.js'
 
 import {toRGBA} from 'utils'
+import {formatPercentage} from 'pages/common/utils/numbers'
 
 export const NUMBER_TICK_FORMATTER = new Intl.NumberFormat('en-US', {
     notation: 'compact',
@@ -25,4 +26,31 @@ export function getGradient(
     gradient.addColorStop(1, toRGBA(color, 0))
 
     return gradient
+}
+
+export const renderTooltipLabelAsPercentage = (
+    context: TooltipItem<'line'>
+) => {
+    const label = context?.dataset?.label || ''
+    if (typeof context.parsed.y === 'number') {
+        const formattedValue = formatPercentage(context.parsed.y)
+        return label ? `${label}: ${formattedValue}` : formattedValue
+    }
+
+    return label
+}
+
+export const renderTickLabelAsPercentage = (value: string | number) => {
+    if (typeof value === 'number') {
+        const sign = value <= 0 ? '' : '+'
+        return sign + formatPercentage(value)
+    }
+    return value
+}
+
+export const renderTickLabelAsNumber = (value: string | number) => {
+    if (typeof value === 'number') {
+        return NUMBER_TICK_FORMATTER.format(value)
+    }
+    return value
 }

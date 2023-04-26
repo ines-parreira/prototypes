@@ -1,5 +1,4 @@
 import React from 'react'
-import {TooltipItem} from 'chart.js/dist/types'
 import {useCampaignStatsFilters} from 'pages/stats/revenue/hooks/useCampaignStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/LineChart'
@@ -7,19 +6,15 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/revenue/hooks/useGetNamespacedShopNameForStore'
 import {useGetRevenueUpliftChart} from 'pages/stats/revenue/hooks/stats/useGetRevenueUpliftChart'
-import {formatPercentage} from 'pages/common/utils/numbers'
+import {
+    renderTickLabelAsPercentage,
+    renderTooltipLabelAsPercentage,
+} from 'pages/stats/utils'
 
 const title = 'Revenue uplift'
+const yAxisLabel = 'Total store revenue growth rate'
 const hint = `Evolution rate of your total store revenue thanks to the campaigns,
     calculated as: (Campaign revenue)/(Total store revenue - Campaign Revenue)`
-
-const renderTooltipLabel = (context: TooltipItem<'line'>) => {
-    let label = context.dataset.label || ''
-    if (context.parsed.y !== null) {
-        label += `: ${formatPercentage(context.parsed.y)}`
-    }
-    return label
-}
 
 export const CampaignRevenueUpliftStat = () => {
     const {selectedIntegrations, selectedCampaigns, selectedPeriod} =
@@ -47,9 +42,13 @@ export const CampaignRevenueUpliftStat = () => {
                                 values: data || [],
                             },
                         ]}
-                        hasBackground={true}
+                        hasBackground
+                        yLabel={yAxisLabel}
+                        renderYTickLabel={renderTickLabelAsPercentage}
                         _displayLegacyTooltip
-                        _renderLegacyTooltipLabel={renderTooltipLabel}
+                        _renderLegacyTooltipLabel={
+                            renderTooltipLabelAsPercentage
+                        }
                     />
                 </ChartCard>
             )}

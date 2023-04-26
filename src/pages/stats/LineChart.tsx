@@ -13,7 +13,7 @@ import colors from 'assets/tokens/colors.json'
 import Legend from 'pages/stats/Legend'
 import css from './LineChart.less'
 import {TwoDimensionalDataItem} from './types'
-import {getGradient, NUMBER_TICK_FORMATTER} from './utils'
+import {getGradient, renderTickLabelAsNumber} from './utils'
 
 const STAT_COLORS = Object.freeze([
     colors['📺 Classic'].Main.Primary.value,
@@ -25,6 +25,8 @@ const STAT_COLORS = Object.freeze([
 type Props = {
     data: TwoDimensionalDataItem[]
     hasBackground?: boolean
+    yLabel?: string
+    renderYTickLabel?: (value: number | string) => string
     displayLegend?: boolean
     _displayLegacyTooltip?: boolean
     _renderLegacyTooltipLabel?: (tooltipItem: TooltipItem<'line'>) => string
@@ -62,6 +64,9 @@ const LINE_OPTIONS: ChartOptions<'line'> = {
             },
         },
         y: {
+            title: {
+                display: false,
+            },
             border: {
                 display: false,
             },
@@ -71,12 +76,6 @@ const LINE_OPTIONS: ChartOptions<'line'> = {
                 tickLength: 16,
             },
             ticks: {
-                callback: (value) => {
-                    if (typeof value === 'number') {
-                        return NUMBER_TICK_FORMATTER.format(value)
-                    }
-                    return value
-                },
                 color: colors['📺 Classic'].Neutral.Grey_5.value,
                 font: {
                     size: 12,
@@ -105,6 +104,8 @@ const LINE_OPTIONS: ChartOptions<'line'> = {
 export default function LineChart({
     data,
     hasBackground,
+    yLabel,
+    renderYTickLabel = renderTickLabelAsNumber,
     displayLegend = false,
     _displayLegacyTooltip = false,
     _renderLegacyTooltipLabel,
@@ -147,6 +148,21 @@ export default function LineChart({
     const options = useMemo<ChartOptions<'line'>>(
         () => ({
             ...LINE_OPTIONS,
+            scales: {
+                ...LINE_OPTIONS.scales,
+                y: {
+                    ...LINE_OPTIONS.scales?.y,
+                    title: {
+                        ...LINE_OPTIONS.scales?.y?.title,
+                        display: !!yLabel,
+                        text: yLabel,
+                    },
+                    ticks: {
+                        ...LINE_OPTIONS.scales?.y?.ticks,
+                        callback: renderYTickLabel,
+                    },
+                },
+            },
             plugins: {
                 ...LINE_OPTIONS.plugins,
                 tooltip: {
@@ -164,7 +180,12 @@ export default function LineChart({
                 setChartContext(chart.ctx)
             },
         }),
-        [_displayLegacyTooltip, _renderLegacyTooltipLabel]
+        [
+            yLabel,
+            renderYTickLabel,
+            _displayLegacyTooltip,
+            _renderLegacyTooltipLabel,
+        ]
     )
 
     return (

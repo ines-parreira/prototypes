@@ -9,6 +9,7 @@ import {useGetNamespacedShopNameForStore} from 'pages/stats/revenue/hooks/useGet
 import {useGetFirstValidIntegration} from 'pages/stats/revenue/hooks/useGetFirstValidIntegration'
 import {useGetCampaignsAndChatChart} from 'pages/stats/revenue/hooks/stats/useGetCampaignsAndChatChart'
 import {formatPercentage} from 'pages/common/utils/numbers'
+import {renderTickLabelAsPercentage} from 'pages/stats/utils'
 
 const title = 'Campaign versus chat performance'
 const hint = `Compare the conversion rates of your chat tickets in general versus campaign conversion,
@@ -71,6 +72,7 @@ export const CampaignChatPerformanceStat = () => {
                         data={graphData}
                         hasBackground={false}
                         displayLegend
+                        renderYTickLabel={renderTickLabelAsPercentage}
                         _displayLegacyTooltip
                         _renderLegacyTooltipLabel={renderTooltipLabel}
                     />
