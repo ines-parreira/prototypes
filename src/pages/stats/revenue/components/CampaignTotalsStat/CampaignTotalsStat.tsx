@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {useCampaignStatsFilters} from 'pages/stats/revenue/hooks/useCampaignStatsFilters'
 import {useGetCurrencyForStore} from 'pages/stats/revenue/hooks/useGetCurrencyForStore'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/revenue/hooks/useGetNamespacedShopNameForStore'
@@ -50,8 +50,6 @@ const METRICS = {
 }
 
 export const CampaignTotalsStat = () => {
-    const [statsVisible, setStatsVisible] = useState(false)
-
     const {selectedIntegrations, selectedCampaigns, selectedPeriod} =
         useCampaignStatsFilters()
     const currency = useGetCurrencyForStore(selectedIntegrations)
@@ -66,9 +64,7 @@ export const CampaignTotalsStat = () => {
         selectedPeriod.end_datetime
     )
 
-    useEffect(() => {
-        setStatsVisible(!isFetching && !isError && data !== null)
-    }, [isFetching, isError, data])
+    const statsVisible = !isFetching && !isError && data !== null
 
     return (
         <React.Fragment>

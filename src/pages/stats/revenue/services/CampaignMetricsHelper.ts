@@ -24,12 +24,7 @@ import {
     TicketPerformanceData,
 } from 'pages/stats/revenue/services/types'
 import {Stat} from 'models/stat/types'
-import {
-    CubeData,
-    CubeMetric,
-    CubeResponse,
-    TimeGranularity,
-} from 'pages/stats/revenue/clients/types'
+import {CubeData, CubeMetric} from 'pages/stats/revenue/clients/types'
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
@@ -46,10 +41,6 @@ import {
 import {formatCurrency, formatNumber} from 'pages/stats/common/utils'
 import {ReportingGranularity} from 'models/reporting/types'
 import {getMetricValue} from 'pages/stats/revenue/services/utils'
-
-export const getDataFromResultSet = (resultSet: CubeResponse): CubeData => {
-    return _get(resultSet, 'data', []) as CubeData
-}
 
 export const getDataFromStatResult = (result: Stat): StatData => {
     return _get(result, 'data.data', []) as StatData
@@ -201,7 +192,7 @@ export const transformToRevenueUpliftOverTime = (
 
 export const transformToCampaignCTROverTime = (
     dataPoint: CubeMetric,
-    granularityValue: TimeGranularity
+    granularityValue: ReportingGranularity
 ): RevenueGraphDataPoint => {
     return _transformToGraphOverTime(
         dataPoint,
@@ -212,7 +203,7 @@ export const transformToCampaignCTROverTime = (
 
 export const transformToCampaignConversionRateOverTime = (
     dataPoint: CubeMetric,
-    granularityValue: TimeGranularity
+    granularityValue: ReportingGranularity
 ): RevenueGraphDataPoint => {
     return _transformToGraphOverTime(
         dataPoint,
@@ -234,8 +225,10 @@ const _transformToGraphOverTime = (
 }
 
 export const transformToChatConversionRateOverTime = (
-    data: CampaignGraphData
+    data: CampaignGraphData | undefined
 ): RevenueGraphDataPoint[] => {
+    if (data === undefined) return []
+
     const combinedData = _zip(
         data.axes.x, // timestamps
         data.lines[0].data, // tickets created

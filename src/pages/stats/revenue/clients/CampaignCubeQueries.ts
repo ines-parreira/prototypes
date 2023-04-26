@@ -1,9 +1,7 @@
 import moment from 'moment'
-import client from 'pages/stats/revenue/clients/CubeProxyClient'
 import {
     CubeFilter,
     CubeFilterParams,
-    CubeResponse,
     DefaultFilterParams,
 } from 'pages/stats/revenue/clients/types'
 import {
@@ -128,7 +126,7 @@ export const getTrafficData = ({
                 {
                     dimension: EventsDimension.createdDatetime,
                     dateRange: _getDateRange(startDate, endDate),
-                    granularity: granularity as ReportingGranularity,
+                    granularity: granularity,
                 },
             ],
             measures: [EventsMeasure.traffic],
@@ -271,7 +269,7 @@ export const getRevenueUpliftGraphData = ({
                 {
                     dimension: OrderConversionDimension.createdDatatime,
                     dateRange: _getDateRange(startDate, endDate),
-                    granularity: granularity as ReportingGranularity,
+                    granularity: granularity,
                 },
             ],
             measures: [OrderConversionMeasure.campaignSales],
@@ -287,33 +285,35 @@ export const getRevenueUpliftGraphData = ({
     ]
 }
 
-export const getCampaignsPerformanceGraphData = async ({
+export const getCampaignsPerformanceGraphData = ({
     shopName,
     campaignIds,
     startDate,
     endDate,
-    granularity = 'day',
-}: CubeFilterParams): Promise<CubeResponse> => {
-    return await client.load({
-        dimensions: [],
-        timeDimensions: [
-            {
-                dimension: CampaignOrderEventsDimension.createdDatatime,
-                dateRange: _getDateRange(startDate, endDate),
-                granularity: granularity,
-            },
-        ],
-        measures: [
-            CampaignOrderEventsMeasure.campaignCTR,
-            CampaignOrderEventsMeasure.totalConversionRate,
-        ],
-        order: [[CampaignOrderEventsDimension.createdDatatime, 'asc']],
-        filters: _getDefaultFilters({
-            startDate,
-            endDate,
-            cubeName: Cube.campaignOrderEvents,
-            campaignIds,
-            shopName,
-        }),
-    })
+    granularity = ReportingGranularity.Day,
+}: CubeFilterParams): ReportingParams => {
+    return [
+        {
+            dimensions: [],
+            timeDimensions: [
+                {
+                    dimension: CampaignOrderEventsDimension.createdDatatime,
+                    dateRange: _getDateRange(startDate, endDate),
+                    granularity: granularity,
+                },
+            ],
+            measures: [
+                CampaignOrderEventsMeasure.campaignCTR,
+                CampaignOrderEventsMeasure.totalConversionRate,
+            ],
+            order: [[CampaignOrderEventsDimension.createdDatatime, 'asc']],
+            filters: _getDefaultFilters({
+                startDate,
+                endDate,
+                cubeName: Cube.campaignOrderEvents,
+                campaignIds,
+                shopName,
+            }),
+        },
+    ]
 }

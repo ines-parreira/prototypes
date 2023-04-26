@@ -1,7 +1,6 @@
 import {
     backfillGraphData,
     getDataFromResult,
-    getDataFromResultSet,
     getDataFromStatResult,
     getMetricFromCubeData,
     transformToCampaignCalculatedTotals,
@@ -14,7 +13,6 @@ import {
     transformToRevenueUpliftOverTime,
     transformToStoreTotal,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
-import {CubeResponse} from 'pages/stats/revenue/clients/types'
 import {Stat} from 'models/stat/types'
 import {
     CampaignOrderEventsDimension,
@@ -32,23 +30,6 @@ describe('Campaign metrics helper tests', () => {
     const cubeDataMissing = {
         onlyWrongKeyHere: '12345678',
     }
-
-    describe('getDataFromResultSet', () => {
-        const cubeResponse = {
-            data: [{metricKey: 'metricValue'}],
-        }
-
-        it.each([
-            [cubeResponse, [{metricKey: 'metricValue'}]],
-            [{nodata: 'no metric'}, []],
-            [{}, []],
-            [null, []],
-            [undefined, []],
-        ])('For data %p should return %p', (data, expected) => {
-            const result = getDataFromResultSet(data as CubeResponse)
-            expect(result).toEqual(expected)
-        })
-    })
 
     describe('getDataFromStatResult', () => {
         const statResponse = {
@@ -283,7 +264,10 @@ describe('Campaign metrics helper tests', () => {
         }
 
         it('should return correct data', () => {
-            const result = transformToCampaignCTROverTime(ctrDataPoint, 'day')
+            const result = transformToCampaignCTROverTime(
+                ctrDataPoint,
+                ReportingGranularity.Day
+            )
             expect(result).toStrictEqual({
                 x: '2023-01-16',
                 y: 15.65,
@@ -303,7 +287,7 @@ describe('Campaign metrics helper tests', () => {
         it('should return correct data', () => {
             const result = transformToCampaignConversionRateOverTime(
                 conversionDataPoint,
-                'day'
+                ReportingGranularity.Day
             )
             expect(result).toStrictEqual({
                 x: '2023-02-01',

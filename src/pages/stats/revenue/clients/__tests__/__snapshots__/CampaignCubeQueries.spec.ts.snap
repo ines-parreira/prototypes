@@ -1,60 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Calling CubeClient functions [Function getCampaignsPerformanceGraphData] should call load 1`] = `
-{
-  "query": [
-    {
-      "dimensions": [],
-      "filters": [
-        {
-          "member": "CampaignOrderEvents.createdDatetime",
-          "operator": "inDateRange",
-          "values": [
-            "2023-01-02T00:00:00.000",
-            "2023-03-14T23:59:59.999",
-          ],
-        },
-        {
-          "member": "CampaignOrderEvents.campaignId",
-          "operator": "equals",
-          "values": [
-            "1",
-            "2",
-          ],
-        },
-        {
-          "member": "CampaignOrderEvents.shopName",
-          "operator": "equals",
-          "values": [
-            "punched-tires-shop",
-          ],
-        },
-      ],
-      "measures": [
-        "CampaignOrderEvents.campaignCTR",
-        "CampaignOrderEvents.totalConversionRate",
-      ],
-      "order": [
-        [
-          "CampaignOrderEvents.createdDatetime",
-          "asc",
-        ],
-      ],
-      "timeDimensions": [
-        {
-          "dateRange": [
-            "2023-01-02T00:00:00.000",
-            "2023-03-14T23:59:59.999",
-          ],
-          "dimension": "CampaignOrderEvents.createdDatetime",
-          "granularity": "day",
-        },
-      ],
-    },
-  ],
-}
-`;
-
 exports[`Getting Cube queries [Function getCampaignEventsOrdersPerformanceData] should call load 1`] = `
 [
   {
@@ -232,6 +177,59 @@ exports[`Getting Cube queries [Function getCampaignOrderTotalsData] should call 
       "OrderConversion.influencedRevenueUplift",
       "OrderConversion.campaignSales",
       "OrderConversion.campaignSalesCount",
+    ],
+  },
+]
+`;
+
+exports[`Getting Cube queries [Function getCampaignsPerformanceGraphData] should call load 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "CampaignOrderEvents.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-02T00:00:00.000",
+          "2023-03-14T23:59:59.999",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.campaignId",
+        "operator": "equals",
+        "values": [
+          "1",
+          "2",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.shopName",
+        "operator": "equals",
+        "values": [
+          "punched-tires-shop",
+        ],
+      },
+    ],
+    "measures": [
+      "CampaignOrderEvents.campaignCTR",
+      "CampaignOrderEvents.totalConversionRate",
+    ],
+    "order": [
+      [
+        "CampaignOrderEvents.createdDatetime",
+        "asc",
+      ],
+    ],
+    "timeDimensions": [
+      {
+        "dateRange": [
+          "2023-01-02T00:00:00.000",
+          "2023-03-14T23:59:59.999",
+        ],
+        "dimension": "CampaignOrderEvents.createdDatetime",
+        "granularity": "day",
+      },
     ],
   },
 ]

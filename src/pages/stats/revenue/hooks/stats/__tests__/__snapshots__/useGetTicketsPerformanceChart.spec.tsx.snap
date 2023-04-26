@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useTicketsPerformanceChart should return data in correct format 1`] = `
+{
+  "data": {
+    "axes": {
+      "x": [
+        1677542400,
+        1677628800,
+      ],
+      "y": [
+        "Day is 28.2.2023",
+        "Day is 1.3.2023",
+      ],
+    },
+    "lines": [
+      {
+        "data": [
+          125,
+          68,
+        ],
+      },
+      {
+        "data": [
+          12,
+          2,
+        ],
+      },
+    ],
+  },
+  "isError": false,
+  "isFetching": false,
+}
+`;

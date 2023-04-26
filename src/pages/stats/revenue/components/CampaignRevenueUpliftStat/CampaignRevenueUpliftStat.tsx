@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {TooltipItem} from 'chart.js/dist/types'
 import {useCampaignStatsFilters} from 'pages/stats/revenue/hooks/useCampaignStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
@@ -13,7 +13,7 @@ const title = 'Revenue uplift'
 const hint = `Evolution rate of your total store revenue thanks to the campaigns,
     calculated as: (Campaign revenue)/(Total store revenue - Campaign Revenue)`
 
-const tooltipLabelCallback = (context: TooltipItem<'line'>) => {
+const renderTooltipLabel = (context: TooltipItem<'line'>) => {
     let label = context.dataset.label || ''
     if (context.parsed.y !== null) {
         label += `: ${formatPercentage(context.parsed.y)}`
@@ -22,8 +22,6 @@ const tooltipLabelCallback = (context: TooltipItem<'line'>) => {
 }
 
 export const CampaignRevenueUpliftStat = () => {
-    const [statsVisible, setStatsVisible] = useState(false)
-
     const {selectedIntegrations, selectedCampaigns, selectedPeriod} =
         useCampaignStatsFilters()
     const namespacedShopName =
@@ -36,9 +34,7 @@ export const CampaignRevenueUpliftStat = () => {
         selectedPeriod.end_datetime
     )
 
-    useEffect(() => {
-        setStatsVisible(!isFetching && !isError)
-    }, [isFetching, isError, data])
+    const statsVisible = !isFetching && !isError
 
     return (
         <DashboardGridCell size={12}>
@@ -53,7 +49,7 @@ export const CampaignRevenueUpliftStat = () => {
                         ]}
                         hasBackground={true}
                         _displayLegacyTooltip
-                        _renderLegacyTooltipLabel={tooltipLabelCallback}
+                        _renderLegacyTooltipLabel={renderTooltipLabel}
                     />
                 </ChartCard>
             )}

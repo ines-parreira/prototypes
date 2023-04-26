@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
+[
+  [
+    [
+      {
+        "dimensions": [],
+        "filters": [
+          {
+            "member": "CampaignOrderEvents.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2023-02-28T00:00:00.000",
+              "2023-03-02T23:59:59.999",
+            ],
+          },
+          {
+            "member": "CampaignOrderEvents.campaignId",
+            "operator": "equals",
+            "values": [
+              "campaign1",
+              "campaign2",
+            ],
+          },
+          {
+            "member": "CampaignOrderEvents.shopName",
+            "operator": "equals",
+            "values": [
+              "shopify:square-wheels-company",
+            ],
+          },
+        ],
+        "measures": [
+          "CampaignOrderEvents.campaignCTR",
+          "CampaignOrderEvents.totalConversionRate",
+        ],
+        "order": [
+          [
+            "CampaignOrderEvents.createdDatetime",
+            "asc",
+          ],
+        ],
+        "timeDimensions": [
+          {
+            "dateRange": [
+              "2023-02-28T00:00:00.000",
+              "2023-03-02T23:59:59.999",
+            ],
+            "dimension": "CampaignOrderEvents.createdDatetime",
+            "granularity": "day",
+          },
+        ],
+      },
+    ],
+    {
+      "select": [Function],
+      "staleTime": 300000,
+    },
+  ],
+]
+`;
+
+exports[`useGetTotalsStat should return prepared data for totals section 2`] = `
+{
+  "data": {
+    "campaignCTR": [
+      {
+        "x": "Feb 28th",
+        "y": 12.32,
+      },
+      {
+        "x": "Mar 1st",
+        "y": 0,
+      },
+      {
+        "x": "Mar 2nd",
+        "y": 0,
+      },
+    ],
+    "campaignConversionRate": [
+      {
+        "x": "Feb 28th",
+        "y": 13.25,
+      },
+      {
+        "x": "Mar 1st",
+        "y": 0,
+      },
+      {
+        "x": "Mar 2nd",
+        "y": 0,
+      },
+    ],
+    "chatConversionRate": [
+      {
+        "x": "Feb 28th",
+        "y": 9.6,
+      },
+      {
+        "x": "Mar 1st",
+        "y": 2.9411764705882355,
+      },
+      {
+        "x": "Mar 2nd",
+        "y": 0,
+      },
+    ],
+  },
+  "isError": false,
+  "isFetching": false,
+}
+`;
