@@ -69,8 +69,7 @@ export function useWorkflowConfiguration(
 ): WorkflowConfigurationContext {
     const {
         fetchWorkflowConfiguration,
-        createWorkflowConfiguration,
-        updateWorkflowConfiguration,
+        upsertWorkflowConfiguration,
         workflowConfigurationFactory,
     } = useWorkflowApi()
     const [isFetchPending, setIsFetchPending] = useState(!isNew)
@@ -95,6 +94,7 @@ export function useWorkflowConfiguration(
                 setIsFetchPending(false)
             }
         }
+
         void fetch()
     }, [workflowId, isNew, fetchWorkflowConfiguration])
 
@@ -122,24 +122,14 @@ export function useWorkflowConfiguration(
         if (!isDirty) return
         setIsSavePending(true)
         try {
-            if (isNew) {
-                await createWorkflowConfiguration(localConfiguration)
-            } else {
-                await updateWorkflowConfiguration(localConfiguration)
-            }
+            await upsertWorkflowConfiguration(localConfiguration)
         } catch (e) {
             setIsSavePending(false)
             throw e
         }
         setRemoteConfiguration(localConfiguration)
         setIsSavePending(false)
-    }, [
-        isDirty,
-        isNew,
-        createWorkflowConfiguration,
-        updateWorkflowConfiguration,
-        localConfiguration,
-    ])
+    }, [isDirty, upsertWorkflowConfiguration, localConfiguration])
 
     const handleDiscard = useCallback(() => {
         dispatch({

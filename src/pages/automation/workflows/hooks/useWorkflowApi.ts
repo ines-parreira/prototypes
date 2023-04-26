@@ -80,10 +80,7 @@ type WorkflowApi = {
     fetchWorkflowConfiguration: (
         id: string
     ) => Promise<Maybe<WorkflowConfiguration>>
-    createWorkflowConfiguration: (
-        data: WorkflowConfiguration
-    ) => Promise<WorkflowConfiguration>
-    updateWorkflowConfiguration: (
+    upsertWorkflowConfiguration: (
         data: WorkflowConfiguration
     ) => Promise<WorkflowConfiguration>
     workflowConfigurationFactory: (
@@ -116,19 +113,7 @@ export default function useWorkflowApi(): WorkflowApi {
                     return res.data
                 })
         }, []),
-        createWorkflowConfiguration: useCallback(
-            (data: WorkflowConfiguration) => {
-                setIsFetchPending(true)
-                return apiClient
-                    .post<WorkflowConfiguration>('/configurations', data)
-                    .then((res) => {
-                        setIsFetchPending(false)
-                        return res.data
-                    })
-            },
-            []
-        ),
-        updateWorkflowConfiguration: useCallback(
+        upsertWorkflowConfiguration: useCallback(
             (data: WorkflowConfiguration) => {
                 setIsUpdatePending(true)
                 return apiClient

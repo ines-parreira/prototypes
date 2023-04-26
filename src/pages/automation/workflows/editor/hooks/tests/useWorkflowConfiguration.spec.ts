@@ -11,7 +11,7 @@ const {workflowConfigurationFactory} = jest.requireActual(
 )
 
 const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
-    updateWorkflowConfiguration: (data: WorkflowConfiguration) => {
+    upsertWorkflowConfiguration: (data: WorkflowConfiguration) => {
         mockStore[data.id] = data
         return Promise.resolve(data)
     },
