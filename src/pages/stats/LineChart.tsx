@@ -10,6 +10,7 @@ import React, {useMemo, useState} from 'react'
 import {Line} from 'react-chartjs-2'
 
 import colors from 'assets/tokens/colors.json'
+import Legend from 'pages/stats/Legend'
 import css from './LineChart.less'
 import {TwoDimensionalDataItem} from './types'
 import {getGradient, NUMBER_TICK_FORMATTER} from './utils'
@@ -148,10 +149,6 @@ export default function LineChart({
             ...LINE_OPTIONS,
             plugins: {
                 ...LINE_OPTIONS.plugins,
-                legend: {
-                    ...LINE_OPTIONS.plugins?.legend,
-                    display: displayLegend,
-                },
                 tooltip: {
                     ...LINE_OPTIONS.plugins?.tooltip,
                     enabled: _displayLegacyTooltip,
@@ -167,7 +164,7 @@ export default function LineChart({
                 setChartContext(chart.ctx)
             },
         }),
-        [displayLegend, _displayLegacyTooltip, _renderLegacyTooltipLabel]
+        [_displayLegacyTooltip, _renderLegacyTooltipLabel]
     )
 
     return (
@@ -180,6 +177,15 @@ export default function LineChart({
                     setChartArea(chart?.chartArea)
                 }}
             />
+            {displayLegend && (
+                <Legend
+                    className={css.legend}
+                    items={data.map(({label}, index) => ({
+                        label,
+                        color: STAT_COLORS[index],
+                    }))}
+                />
+            )}
         </div>
     )
 }
