@@ -25,7 +25,7 @@ type Props = {
 }
 const StockNotAvailable = () => <span className="text-muted">N/A</span>
 
-const Modifiers = ({
+export const Modifiers = ({
     lineItem,
     product,
     onOpenModifiers,
@@ -62,19 +62,19 @@ const Modifiers = ({
 
             // Display checkbox value as name of the checkbox, instead of yes/no
             if (modifier.type === 'checkbox') {
-                return modifier.display_name
+                return {id: modifier.id, value: modifier.display_name}
             }
 
-            return option.value
+            return {id: modifier.id, value: option.value}
         })
-        .filter((value): value is string => Boolean(value))
+        .filter(<T,>(value: T): value is NonNullable<T> => value !== null)
 
     return (
         <>
             {viewableModifiers.length ? (
                 <ul className={css.modifiersList}>
-                    {viewableModifiers.map((value) => (
-                        <li key={value}>{value}</li>
+                    {viewableModifiers.map((modifier) => (
+                        <li key={modifier.id}>{modifier.value}</li>
                     ))}
                 </ul>
             ) : null}

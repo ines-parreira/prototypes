@@ -1,5 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Modifiers /> should render correctly 1`] = `
+<div>
+  <button
+    class="modifierButton"
+  >
+    <i
+      class="material-icons"
+    >
+      tune
+    </i>
+    Modify
+  </button>
+</div>
+`;
+
 exports[`<ProductComponent/> should render correctly 1`] = `
 <div>
   <td

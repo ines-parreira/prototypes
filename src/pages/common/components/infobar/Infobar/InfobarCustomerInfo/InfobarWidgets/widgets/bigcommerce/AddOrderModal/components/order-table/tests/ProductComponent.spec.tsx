@@ -9,7 +9,7 @@ import {
     bigCommerceVariantFixture,
 } from 'fixtures/bigcommerce'
 
-import ProductComponent, {getVariant} from '../ProductComponent'
+import ProductComponent, {getVariant, Modifiers} from '../ProductComponent'
 
 const defaultProps: ComponentProps<typeof ProductComponent> = {
     product: bigCommerceProductFixture(),
@@ -194,5 +194,84 @@ describe('<ProductComponent/>', () => {
         render(<ProductComponent {...props} />)
 
         expect(screen.getByText('error message')).toBeVisible()
+    })
+})
+
+describe('<Modifiers />', () => {
+    it('should render correctly', () => {
+        const {container} = render(<Modifiers {...defaultProps} />)
+
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should render nothing if not a BigcommerceCartLine', () => {
+        const lineItem = bigCommerceCustomLineItemFixture
+
+        const props = {...defaultProps, lineItem}
+        const {container} = render(<Modifiers {...props} />)
+        expect(container.childElementCount).toEqual(0)
+    })
+
+    it.each([undefined, bigCommerceCustomProductFixture])(
+        'should render nothing if not a BigCommerceProduct pruduct',
+        (product) => {
+            const props = {...defaultProps, product}
+            const {container} = render(<Modifiers {...props} />)
+            screen.debug()
+            expect(container.childElementCount).toEqual(0)
+        }
+    )
+
+    it.each([
+        [
+            {
+                nameId: 163,
+                value: 'test nameId',
+            },
+            'test nameId',
+        ],
+        [
+            {
+                name_id: 165,
+                value: 'test name_id',
+            },
+            'test name_id',
+        ],
+        [
+            {
+                nameId: 164,
+                value: 'checkbox',
+            },
+            'Include Insurance?',
+        ],
+    ])('should render option %s', (option, title) => {
+        const lineItem = {
+            ...bigCommerceLineItemFixture(),
+            options: [option],
+        }
+
+        const props = {...defaultProps, lineItem}
+        const {getByRole} = render(<Modifiers {...props} />)
+        screen.debug()
+        const item = getByRole('listitem')
+        expect(item.textContent).toEqual(title)
+    })
+
+    it('should not render option without modifier', () => {
+        const lineItem = {
+            ...bigCommerceLineItemFixture(),
+            options: [
+                {
+                    nameId: 0,
+                    value: 'not existing modifier',
+                },
+            ],
+        }
+
+        const props = {...defaultProps, lineItem}
+        const {queryAllByRole} = render(<Modifiers {...props} />)
+        screen.debug()
+        const item = queryAllByRole('listitem')
+        expect(item.length).toEqual(0)
     })
 })
