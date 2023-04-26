@@ -1,4 +1,9 @@
-import {useQuery, useMutation, useQueryClient} from '@tanstack/react-query'
+import {
+    useQuery,
+    useMutation,
+    useQueryClient,
+    UseMutationOptions,
+} from '@tanstack/react-query'
 import moment from 'moment'
 
 import {
@@ -16,7 +21,6 @@ import {
 import {isCustomFieldValueEmpty} from 'utils/customFields'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
-import {updateCustomFieldState} from 'state/ticket/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {
     ApiListResponseCursorPagination,
@@ -25,21 +29,26 @@ import {
 import {
     CustomField,
     CustomFieldInput,
-    CustomFieldState,
     PartialCustomFieldWithId,
 } from 'models/customField/types'
 import {errorToChildren} from 'utils'
+import {StoreDispatch} from 'state/types'
 
 export const customFieldDefinitionKeys = {
-    all: ['customFieldDefinition'] as const,
-    lists: () => [...customFieldDefinitionKeys.all, 'list'] as const,
+    all: () => ['customFieldDefinition'] as const,
+    lists: () => [...customFieldDefinitionKeys.all(), 'list'] as const,
     list: (params: ListParams) => [
         ...customFieldDefinitionKeys.lists(),
         params,
     ],
-    details: () => [...customFieldDefinitionKeys.all, 'detail'] as const,
+    details: () => [...customFieldDefinitionKeys.all(), 'detail'] as const,
     detail: (id: number) =>
         [...customFieldDefinitionKeys.details(), id] as const,
+}
+
+export const customFieldValueKeys = {
+    all: () => ['customFieldValues'] as const,
+    value: (id: number) => [...customFieldValueKeys.all(), id] as const,
 }
 
 export const useGetCustomFieldDefinitions = (
@@ -87,7 +96,7 @@ export const useCreateCustomField = () => {
         mutationFn: (field: CustomFieldInput) => createCustomField(field),
         onSuccess: () => {
             void queryClient.invalidateQueries({
-                queryKey: customFieldDefinitionKeys.all,
+                queryKey: customFieldDefinitionKeys.all(),
             })
             void dispatch(
                 notify({
@@ -117,7 +126,7 @@ export const useUpdateCustomField = (id: number) => {
         mutationFn: (field: CustomFieldInput) => updateCustomField(id, field),
         onSuccess: () => {
             void queryClient.invalidateQueries({
-                queryKey: customFieldDefinitionKeys.all,
+                queryKey: customFieldDefinitionKeys.all(),
             })
             void dispatch(
                 notify({
@@ -216,7 +225,7 @@ export const useUpdateCustomFieldStatus = (id: number) => {
             }),
         onSuccess: (_, {archived}) => {
             void queryClient.invalidateQueries({
-                queryKey: customFieldDefinitionKeys.all,
+                queryKey: customFieldDefinitionKeys.all(),
             })
             void dispatch(
                 notify({
@@ -242,46 +251,106 @@ export const useUpdateCustomFieldStatus = (id: number) => {
     })
 }
 
-export type OnMutateSettings = {
-    previousState?: CustomFieldState
-    onError?: () => void
+export type MutationOverrides<
+    Action extends (...args: any) => unknown,
+    SkipReturnType extends boolean = false
+> = Omit<
+    SkipReturnType extends true
+        ? UseMutationOptions<
+              unknown,
+              Record<string, unknown>,
+              Parameters<Action>
+          >
+        : UseMutationOptions<
+              Awaited<ReturnType<Action>>,
+              Record<string, unknown>,
+              Parameters<Action>
+          >,
+    'mutationFn'
+>
+
+export const useUpdateCustomFieldValue = (
+    overrides?: MutationOverrides<typeof updateCustomFieldValue>
+) => {
+    return useMutation({
+        mutationFn: (params) => updateCustomFieldValue(...params),
+        ...overrides,
+    })
 }
 
-export const useUpdateOrDeleteTicketFieldValue = (ticketId: number) => {
-    const dispatch = useAppDispatch()
-    // there is no simple way to cancel a mutation yet
-    // to avoid race conditions
+export const useDeleteCustomFieldValue = (
+    overrides?: MutationOverrides<typeof deleteCustomFieldValue>
+) => {
     return useMutation({
-        mutationFn: ({
-            id,
-            value,
-        }: CustomFieldState & {settings?: OnMutateSettings}) => {
-            const params = {
-                fieldType: 'Ticket',
-                holderId: ticketId,
-                fieldId: id,
-                value,
-            } as const
+        mutationFn: (params) => deleteCustomFieldValue(...params),
+        ...overrides,
+    })
+}
 
-            if (isCustomFieldValueEmpty(value)) {
-                return deleteCustomFieldValue(params)
-            }
-            return updateCustomFieldValue(params)
-        },
-        onError: (error: GorgiasApiError, {settings}) => {
-            void dispatch(
-                notify({
-                    title: `Failed to update ticket field value. Please try again in a few seconds.`,
-                    message: errorToChildren(error) || undefined,
-                    allowHTML: true,
-                    status: NotificationStatus.Error,
-                })
+// Service layer - To be tested
+const onErrorCreator =
+    (dispatch: StoreDispatch) => (error: Record<string, unknown>) => {
+        void dispatch(
+            notify({
+                title: `Failed to update ticket field value. Please try again in a few seconds.`,
+                message: errorToChildren(error) || undefined,
+                allowHTML: true,
+                status: NotificationStatus.Error,
+            })
+        )
+    }
+
+// This is only doable because we know that delete extends update params
+// And we don’t need to type the return value because we don’t use it
+export const useUpdateOrDeleteTicketFieldValue = (
+    overrides: MutationOverrides<
+        typeof updateCustomFieldValue & typeof deleteCustomFieldValue,
+        true
+    >
+) => {
+    const dispatch = useAppDispatch()
+    const queryClient = useQueryClient()
+    const internalErrorHandler = onErrorCreator(dispatch)
+    const {mutate: updateMutate} = useUpdateCustomFieldValue({
+        onSuccess: (data, params) => {
+            // queryClient.setQueryData(customFieldValueKeys.value(params[0].id), {...})
+            // or the following if we ever fetch value with react query
+            void queryClient.invalidateQueries(
+                customFieldValueKeys.value(params[0].fieldId)
             )
-            const previousState = settings?.previousState
-            if (previousState) {
-                dispatch(updateCustomFieldState(previousState))
-            }
-            settings?.onError?.()
+        },
+        ...overrides,
+        // this onError should not be overridden
+        onError: (...args) => {
+            internalErrorHandler(args[0])
+            overrides.onError?.(...args)
         },
     })
+    const {mutate: deleteMutate} = useDeleteCustomFieldValue({
+        onSuccess: (data, params) => {
+            // queryClient.setQueryData(customFieldValueKeys.value(params[0].id), {...})
+            // or the following if we ever fetch value with react query
+            void queryClient.invalidateQueries(
+                customFieldValueKeys.value(params[0].fieldId)
+            )
+        },
+        ...overrides,
+        // this onError should not be overridden
+        onError: (...args) => {
+            internalErrorHandler(args[0])
+            overrides.onError?.(...args)
+        },
+    })
+
+    return {
+        mutate: (
+            params: Parameters<typeof updateCustomFieldValue> &
+                Parameters<typeof deleteCustomFieldValue>
+        ) => {
+            if (isCustomFieldValueEmpty(params[0].value)) {
+                return deleteMutate(params)
+            }
+            return updateMutate(params)
+        },
+    }
 }

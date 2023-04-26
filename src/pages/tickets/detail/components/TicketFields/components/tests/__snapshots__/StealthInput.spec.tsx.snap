@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<StealthInput /> should render correctly 1`] = `
+<input
+  autocomplete="off"
+  class="baseStyles isPlaceholding valid"
+  id="1"
+  placeholder="+Add"
+  type="text"
+  value=""
+/>
+`;

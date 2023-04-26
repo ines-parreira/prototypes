@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketField /> should render the appropriate field 1`] = `
+<label
+  class="labelWrapper"
+>
+  <span
+    class="label"
+  >
+    Input field
+    :
+  </span>
+  <input
+    autocomplete="off"
+    class="baseStyles stealth"
+    id="ticket-whateva-custom-field-value-input-123"
+    name="Input field"
+    placeholder="Some placeholder"
+    type="text"
+    value="some value"
+  />
+</label>
+`;
+
+exports[`<TicketField /> should render the appropriate field 2`] = `
+<label
+  class="labelWrapper"
+>
+  <span
+    class="label"
+  >
+    Dropdown field
+    :
+  </span>
+  <input
+    autocomplete="off"
+    class="baseStyles stealth"
+    id="ticket-whateva-custom-field-value-input-2"
+    name="Dropdown field"
+    placeholder="+Add"
+    type="text"
+    value="some value"
+  />
+</label>
+`;

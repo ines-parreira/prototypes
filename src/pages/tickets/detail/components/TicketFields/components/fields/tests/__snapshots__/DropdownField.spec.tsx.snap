@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DropdownField /> should call onChange with correct params and dismiss modal when clearing the value 1`] = `
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+}
+`;
+
+exports[`<DropdownField /> should render the dropdown component correctly 1`] = `
+<body>
+  <div>
+    <label
+      class="labelWrapper"
+    >
+      <span
+        class="label"
+      >
+        dropdown
+        :
+      </span>
+      <sup
+        class="asterisk"
+      >
+        *
+      </sup>
+      <input
+        autocomplete="off"
+        class="baseStyles valid"
+        id="ticket-whateva-custom-field-value-input-1"
+        name="dropdown"
+        placeholder="+Add"
+        type="text"
+        value="c2"
+      />
+    </label>
+    )
+  </div>
+  <div
+    data-floating-ui-portal=""
+    id="floating-ui-0"
+  >
+    <div
+      class="overlay"
+      data-testid="floating-overlay"
+      style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
+    >
+      <div
+        class="wrapper dropdown"
+        style="position: absolute;"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="content"
+          >
+            <button
+              class="wrapper backButton ghost primary medium"
+              id="previous-dropdown-modal-id"
+              type="button"
+            >
+              <span
+                class="ellipsis"
+              >
+                <span
+                  class="material-icons backIcon"
+                >
+                  arrow_back
+                </span>
+                ss2
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          class="wrapper"
+        >
+          <button
+            class="item"
+            role="option"
+            tabindex="0"
+          >
+            <span
+              class="choiceButton"
+            >
+              <span
+                class="ellipsis"
+              >
+                c1
+              </span>
+            </span>
+          </button>
+          <button
+            class="item"
+            role="option"
+            tabindex="0"
+          >
+            <span
+              class="choiceButton"
+            >
+              <span
+                class="ellipsis"
+              >
+                c2
+              </span>
+            </span>
+            <span
+              class="material-icons checkIcon"
+            >
+              check
+            </span>
+          </button>
+        </div>
+        <div
+          class="wrapper"
+        >
+          <button
+            class="wrapper clearButton ghost primary medium"
+            type="button"
+          >
+            <span
+              class="ellipsis"
+            >
+              Clear
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

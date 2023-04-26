@@ -1,28 +1,16 @@
-import React, {memo, useCallback} from 'react'
+import React, {memo} from 'react'
 
 import {CustomField, CustomFieldState} from 'models/customField/types'
-import {OnMutateSettings} from 'models/customField/queries'
 import TextField from './components/fields/TextField'
 import DropdownField from './components/fields/DropdownField'
 
 type Props = {
     fieldDefinition: CustomField
     fieldState?: CustomFieldState
-    onChange: (
-        id: CustomFieldState['id'],
-        value: CustomFieldState['value'],
-        settings?: OnMutateSettings
-    ) => void
 }
 
-function TicketField({fieldDefinition, fieldState, onChange}: Props) {
+function TicketField({fieldDefinition, fieldState}: Props) {
     const {id, label, required, definition} = fieldDefinition
-
-    const handleChange = useCallback(
-        (value: CustomFieldState['value'], settings) =>
-            onChange(id, value, settings),
-        [id, onChange]
-    )
 
     if (definition.input_settings.input_type === 'input') {
         const textFieldProps = {
@@ -31,7 +19,6 @@ function TicketField({fieldDefinition, fieldState, onChange}: Props) {
             fieldState,
             isRequired: required,
             placeholder: definition.input_settings.placeholder,
-            onChange: handleChange,
         }
         return <TextField {...textFieldProps} />
     } else if (definition.input_settings.input_type === 'dropdown') {
@@ -41,7 +28,6 @@ function TicketField({fieldDefinition, fieldState, onChange}: Props) {
             fieldState,
             choices: definition.input_settings.choices,
             isRequired: required,
-            onChange: handleChange,
         }
         return <DropdownField {...dropdownProps} />
     }

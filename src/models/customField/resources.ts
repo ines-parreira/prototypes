@@ -81,8 +81,11 @@ export async function updateCustomFieldValue({
     holderId: number
     fieldId: CustomField['id']
     value: CustomFieldState['value']
-}): Promise<CustomField> {
-    const response = await client.put<CustomField>(
+}): Promise<{field: CustomField; value: CustomFieldState['value']}> {
+    const response = await client.put<{
+        field: CustomField
+        value: CustomFieldState['value']
+    }>(
         `/api/${
             fieldType === 'Ticket' ? 'tickets' : 'customers'
         }/${holderId}/custom-fields/${fieldId}`,

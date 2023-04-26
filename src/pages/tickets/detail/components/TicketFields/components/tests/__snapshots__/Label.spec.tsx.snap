@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Label /> should render correctly 1`] = `
+<label
+  class="labelWrapper"
+>
+  <span
+    class="label"
+  >
+    My label
+    :
+  </span>
+  <input
+    name="test"
+    value="yeaboy"
+  />
+</label>
+`;

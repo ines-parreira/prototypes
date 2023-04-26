@@ -10,9 +10,10 @@ import React, {
 import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomFieldState} from 'models/customField/types'
 import {DROPDOWN_NESTING_DELIMITER} from 'models/customField/constants'
-import {OnMutateSettings} from 'models/customField/queries'
+import {useUpdateOrDeleteTicketFieldValue} from 'models/customField/queries'
 import {
     updateCustomFieldError,
+    updateCustomFieldState,
     updateCustomFieldValue,
 } from 'state/ticket/actions'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -33,8 +34,8 @@ import css from './DropdownField.less'
 const CHOICE_VALUES_SYMBOL = Symbol('value')
 const PREVIOUS_BUTTON_ID = 'previous-dropdown-modal-id'
 
-// Symbol prevents admin settings to override the key of the Set of end values
-// Set removes duplicate end values
+// CHOICE_VALUES_SYMBOL prevents an admin to accidentally override the key of leaf values
+// While the use of a Set removes duplicate end values
 type ChoicesTree = {
     [key: string]: ChoicesTree
     [CHOICE_VALUES_SYMBOL]: Set<string>
@@ -47,10 +48,6 @@ type Props = {
     choices: string[]
     placeholder?: string
     isRequired?: boolean
-    onChange: (
-        newValue: CustomFieldState['value'],
-        settings?: OnMutateSettings
-    ) => void
 }
 
 export default function DropdownField({
@@ -58,7 +55,6 @@ export default function DropdownField({
     label,
     fieldState,
     choices,
-    onChange,
     isRequired,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -77,6 +73,29 @@ export default function DropdownField({
             : []
     )
 
+    const choicesTree = useMemo(() => {
+        const choicesTree: ChoicesTree = {[CHOICE_VALUES_SYMBOL]: new Set()}
+        choices.forEach((choice) => {
+            recursivelyMapChoice(
+                choicesTree,
+                choice.split(DROPDOWN_NESTING_DELIMITER)
+            )
+        })
+        return choicesTree
+    }, [choices])
+
+    let currentBranch = choicesTree
+    currentPath.forEach(
+        (nextBranchPath) =>
+            (currentBranch = currentBranch[nextBranchPath] || currentBranch)
+    )
+
+    const [isActive, setActive] = useA11yDropdown(
+        currentPath,
+        inputRef,
+        modalRef
+    )
+
     const goPrevious = useCallback(() => {
         setCurrentPath((currentPath) => {
             return currentPath.slice(0, -1)
@@ -89,58 +108,57 @@ export default function DropdownField({
         })
     }, [])
 
-    const [isActive, setActive] = useA11yDropdown(
-        currentPath,
-        inputRef,
-        modalRef
-    )
-
+    const onError = useCallback(() => {
+        dispatch(
+            updateCustomFieldState({
+                id,
+                hasError: Boolean((isRequired && !value) || hasError),
+                value,
+            })
+        )
+    }, [value, dispatch, id, isRequired, hasError])
+    // Only on blur
+    const {mutate} = useUpdateOrDeleteTicketFieldValue({onError})
     const handleChange = useCallback(
         (newValue: string) => {
-            onChange(newValue, {
-                previousState: {
-                    id,
-                    hasError: Boolean((isRequired && !value) || hasError),
-                    value,
-                },
-            })
             setActive(false)
             dispatch(updateCustomFieldValue(id, newValue))
             dispatch(updateCustomFieldError(id, false))
+            mutate([
+                {
+                    fieldType: 'Ticket',
+                    holderId: ticketId,
+                    fieldId: id,
+                    value: newValue,
+                },
+            ])
         },
-        [dispatch, id, onChange, setActive, isRequired, value, hasError]
+        [dispatch, id, mutate, setActive, ticketId]
     )
 
     const resetValue = useCallback(() => {
         dispatch(updateCustomFieldValue(id, ''))
-        onChange('')
+        dispatch(updateCustomFieldError(id, false))
+        mutate([
+            {
+                fieldType: 'Ticket',
+                holderId: ticketId,
+                fieldId: id,
+                value: '',
+            },
+        ])
         setCurrentPath([])
         setActive(false)
-    }, [dispatch, id, onChange, setActive])
+    }, [dispatch, id, mutate, setActive, ticketId])
 
-    const choicesTree = useMemo(() => {
-        const choicesTree: ChoicesTree = {[CHOICE_VALUES_SYMBOL]: new Set()}
-        choices.forEach((choice) => {
-            recursivelyMapChoice(
-                choicesTree,
-                choice.split(DROPDOWN_NESTING_DELIMITER)
-            )
-        })
-        return choicesTree
-    }, [choices])
-
-    // Must be inside an useEffect to avoid concurrency
-    // issues with other dispatch
+    // This piece of code ensures the current value still exists in the choices
+    // Must be inside an useEffect to avoid concurrency issues with other dispatches
     useEffect(() => {
-        // value is outdated
         if (value && !choices.includes(value)) {
             dispatch(updateCustomFieldError(id, true))
+            setCurrentPath([])
         }
     }, [dispatch, value, choices, id])
-
-    const currentBranch = currentPath.reduce((currentBranch, nextBranch) => {
-        return currentBranch[nextBranch] || currentBranch
-    }, choicesTree)
 
     return (
         <>

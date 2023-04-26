@@ -1,12 +1,7 @@
-import React, {memo, useCallback} from 'react'
+import React, {memo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {CustomFieldState} from 'models/customField/types'
-import {
-    useGetCustomFieldDefinitions,
-    useUpdateOrDeleteTicketFieldValue,
-    OnMutateSettings,
-} from 'models/customField/queries'
+import {useGetCustomFieldDefinitions} from 'models/customField/queries'
 
 import {getTicket, getTicketFieldState} from 'state/ticket/selectors'
 import TicketField from './TicketField'
@@ -16,22 +11,12 @@ function TicketFields() {
     const ticketState = useAppSelector(getTicket)
     const ticketId = ticketState.id
     const ticketFieldState = useAppSelector(getTicketFieldState)
-    const {mutate} = useUpdateOrDeleteTicketFieldValue(ticketId)
 
     const {data: {data: ticketFieldDefinitions = []} = {}, isLoading} =
         useGetCustomFieldDefinitions({
             archived: false,
             object_type: 'Ticket',
         })
-
-    const handleChange = useCallback(
-        (
-            id: CustomFieldState['id'],
-            value: CustomFieldState['value'],
-            settings?: OnMutateSettings
-        ) => mutate({id, value, settings}),
-        [mutate]
-    )
 
     // @TODO remove the ticket id check once the issue below is solved
     // https://linear.app/gorgias/issue/APPED-1514/custom-field-value-cannot-be-set-in-a-new-ticket
@@ -47,7 +32,6 @@ function TicketFields() {
                         key={fieldDefinition.id}
                         fieldDefinition={fieldDefinition}
                         fieldState={ticketFieldState[fieldDefinition.id]}
-                        onChange={handleChange}
                     />
                 )
             })}

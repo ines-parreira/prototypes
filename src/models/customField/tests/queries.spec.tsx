@@ -11,11 +11,13 @@ import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     customFieldDefinitionKeys,
     useCreateCustomField,
+    useDeleteCustomFieldValue,
     useGetCustomFieldDefinition,
     useGetCustomFieldDefinitions,
     useUpdateCustomField,
     useUpdateCustomFields,
     useUpdateCustomFieldStatus,
+    useUpdateCustomFieldValue,
 } from 'models/customField/queries'
 import {
     ticketInputFieldDefinition,
@@ -174,7 +176,7 @@ describe('queries.spec.tsx', () => {
                 expect(result.current.isSuccess).toBe(true)
                 expect(result.current.data).toMatchSnapshot()
                 expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                    queryKey: customFieldDefinitionKeys.all,
+                    queryKey: customFieldDefinitionKeys.all(),
                 })
                 expect(mockStore.getActions()).toMatchObject([
                     {
@@ -257,7 +259,7 @@ describe('queries.spec.tsx', () => {
                 expect(result.current.isSuccess).toBe(true)
                 expect(result.current.data).toMatchSnapshot()
                 expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                    queryKey: customFieldDefinitionKeys.all,
+                    queryKey: customFieldDefinitionKeys.all(),
                 })
                 expect(mockStore.getActions()).toMatchObject([
                     {
@@ -439,7 +441,7 @@ describe('queries.spec.tsx', () => {
                 expect(result.current.isSuccess).toBe(true)
                 expect(result.current.data).toMatchSnapshot()
                 expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                    queryKey: customFieldDefinitionKeys.all,
+                    queryKey: customFieldDefinitionKeys.all(),
                 })
                 expect(mockStore.getActions()).toMatchObject([
                     {
@@ -493,6 +495,93 @@ describe('queries.spec.tsx', () => {
             })
 
             invalidateQueriesSpy.mockRestore()
+        })
+    })
+
+    describe('useUpdateCustomFieldValue', () => {
+        const ticketId = 123
+        const fieldValue = 'foo'
+
+        it('succeed', async () => {
+            const mockStore = configureMockStore([thunk])()
+
+            mockedServer
+                .onPut(
+                    `/api/tickets/${ticketId}/custom-fields/${ticketInputFieldDefinition.id}`
+                )
+                .reply(200, {
+                    field: ticketInputFieldDefinition,
+                    value: fieldValue,
+                })
+
+            const {result, waitFor} = renderHook(
+                () => useUpdateCustomFieldValue(),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+
+            act(() => {
+                result.current.mutate([
+                    {
+                        fieldType: 'Ticket',
+                        holderId: ticketId,
+                        fieldId: ticketInputFieldDefinition.id,
+                        value: fieldValue,
+                    },
+                ])
+            })
+
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+            })
+            //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            expect(result.current.data?.value).toEqual(fieldValue)
+        })
+    })
+
+    describe('useDeleteCustomFieldValue', () => {
+        const ticketId = 123
+
+        it('succeed', async () => {
+            const mockStore = configureMockStore([thunk])()
+
+            mockedServer
+                .onDelete(
+                    `/api/tickets/${ticketId}/custom-fields/${ticketInputFieldDefinition.id}`
+                )
+                .reply(204)
+
+            const {result, waitFor} = renderHook(
+                () => useDeleteCustomFieldValue(),
+                {
+                    wrapper: ({children}) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                }
+            )
+
+            act(() => {
+                result.current.mutate([
+                    {
+                        fieldType: 'Ticket',
+                        holderId: ticketId,
+                        fieldId: ticketInputFieldDefinition.id,
+                    },
+                ])
+            })
+
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+            })
+
+            expect(result.current.data).toEqual(undefined)
         })
     })
 })

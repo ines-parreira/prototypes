@@ -2,9 +2,10 @@ import React, {useCallback, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomFieldState} from 'models/customField/types'
-import {OnMutateSettings} from 'models/customField/queries'
+import {useUpdateOrDeleteTicketFieldValue} from 'models/customField/queries'
 import {
     updateCustomFieldError,
+    updateCustomFieldState,
     updateCustomFieldValue,
 } from 'state/ticket/actions'
 
@@ -21,10 +22,6 @@ type Props = {
     fieldState?: CustomFieldState
     placeholder?: string
     isRequired?: boolean
-    onChange: (
-        value: CustomFieldState['value'],
-        settings: OnMutateSettings
-    ) => void
 }
 
 export default function TextField({
@@ -32,7 +29,6 @@ export default function TextField({
     label,
     fieldState,
     placeholder,
-    onChange,
     isRequired,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -41,9 +37,9 @@ export default function TextField({
     const initialValue = fieldState?.value?.toString() || ''
     const hasError = fieldState?.hasError
 
-    const inputId = `ticket-${ticketId}-custom-field-value-input-${id}`
-
     const [currentValue, setCurrentValue] = useState(initialValue)
+    const [isActive, setActive] = useState(false)
+
     const handleChange = useCallback(
         (newValue: string) => {
             if (hasError && newValue !== '') {
@@ -54,7 +50,20 @@ export default function TextField({
         [dispatch, id, hasError]
     )
 
-    const [isActive, setActive] = useState(false)
+    const onError = useCallback(() => {
+        setCurrentValue(initialValue)
+        dispatch(
+            updateCustomFieldState({
+                id,
+                hasError: Boolean(isRequired && !initialValue),
+                value: initialValue,
+            })
+        )
+    }, [initialValue, dispatch, id, isRequired])
+    // Only on blur
+    const {mutate} = useUpdateOrDeleteTicketFieldValue({onError})
+
+    const inputId = `ticket-${ticketId}-custom-field-value-input-${id}`
 
     return (
         <Label label={label} isRequired={isRequired}>
@@ -81,17 +90,18 @@ export default function TextField({
                 }}
                 onBlur={() => {
                     setActive(false)
-                    setCurrentValue(currentValue.trim())
-                    dispatch(updateCustomFieldValue(id, currentValue))
-                    if (currentValue !== initialValue) {
-                        onChange(currentValue, {
-                            previousState: {
-                                id,
-                                hasError: Boolean(isRequired && !initialValue),
-                                value: initialValue,
+                    const trimmedCurrentValue = currentValue.trim()
+                    setCurrentValue(trimmedCurrentValue)
+                    dispatch(updateCustomFieldValue(id, trimmedCurrentValue))
+                    if (trimmedCurrentValue !== initialValue) {
+                        mutate([
+                            {
+                                fieldType: 'Ticket',
+                                holderId: ticketId,
+                                fieldId: id,
+                                value: trimmedCurrentValue,
                             },
-                            onError: () => setCurrentValue(initialValue),
-                        })
+                        ])
                     }
                 }}
             />
