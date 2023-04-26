@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 
-import {CampaignCollisionForm} from '../../components/CampaignCollisionForm'
+import {CampaignPreferences} from '../CampaignPreferences/CampaignPreferences'
 
 import {CampaignTriggerMap} from '../../types/CampaignTriggerMap'
 import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
@@ -66,22 +66,22 @@ export const CampaignDisplaySettings = ({
         <WithRevenuePaywall showPaywall={!isRevenueBetaTester}>
             <h3 style={{marginTop: 32}}>Display</h3>
             <div className={css.settingsContainer}>
-                <div className="mb-4">
+                <div className={css.sectionItem}>
                     <CampaignDelay
                         delay={delay}
                         onChangeDelay={onChangeDelay}
                     />
                 </div>
-                <div className="mb-4">
+                <div className={css.sectionItem}>
                     <CampaignDeviceType
                         trigger={deviceTypeTrigger}
                         onChange={handleChangeDeviceType}
                     />
                 </div>
-                <div className="mb-4">
-                    <CampaignCollisionForm
+                <div className={css.sectionItem}>
+                    <CampaignPreferences
                         triggers={triggers}
-                        onChange={onChangeCollision}
+                        onChangeCollision={onChangeCollision}
                     />
                 </div>
             </div>
