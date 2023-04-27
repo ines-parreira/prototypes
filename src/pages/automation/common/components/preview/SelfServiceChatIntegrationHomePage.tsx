@@ -111,7 +111,10 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
                     sspTexts={sspTexts}
                 />
             ) : (
-                <SelfServiceChatIntegrationFooter sspTexts={sspTexts} />
+                <SelfServiceChatIntegrationFooter
+                    sspTexts={sspTexts}
+                    color={integration.decoration.main_color}
+                />
             )}
         </div>
     )

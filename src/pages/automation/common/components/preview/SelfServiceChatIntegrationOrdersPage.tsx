@@ -169,7 +169,10 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                     </div>
                 </div>
             </div>
-            <SelfServiceChatIntegrationFooter sspTexts={sspTexts} />
+            <SelfServiceChatIntegrationFooter
+                sspTexts={sspTexts}
+                color={integration.decoration.main_color}
+            />
         </div>
     )
 }
