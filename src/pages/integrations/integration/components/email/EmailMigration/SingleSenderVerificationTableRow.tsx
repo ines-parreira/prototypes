@@ -8,6 +8,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import EmailVerificationStatusLabel, {
     EmailVerificationStatus,
 } from '../EmailVerificationStatusLabel'
+import useDeleteSingleSenderVerification from '../hooks/useDeleteSingleSenderVerification'
 import DeleteVerificationModal from '../DeleteVerificationModal'
 import {computeSingleSenderVerificationStatus} from './utils'
 import EmailVerificationButton from './EmailVerificationButton'
@@ -18,15 +19,20 @@ import css from './SingleSenderVerificationTable.less'
 export type Props = {
     integration: EmailMigrationSenderVerificationIntegration
     hasSubmittedBulkVerification: boolean
+    refreshMigrationData: () => void
 }
 
 export default function SingleSenderVerificationTableRow({
     integration,
     hasSubmittedBulkVerification,
+    refreshMigrationData,
 }: Props) {
     const [isExpanded, setIsExpanded] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const [isFormModalOpen, setIsFormModalOpen] = useState(false)
+
+    const {isLoading: isDeleteInProgress, deleteVerification} =
+        useDeleteSingleSenderVerification()
 
     const status = computeSingleSenderVerificationStatus(integration)
     const isCollapsible =
@@ -39,8 +45,9 @@ export default function SingleSenderVerificationTableRow({
 
     const canDeleteVerification = isCollapsible && isExpanded
 
-    const handleConfirmDelete = () => {
-        // TODO
+    const handleConfirmDelete = async () => {
+        await deleteVerification(integration.id)
+        refreshMigrationData()
     }
 
     return (
@@ -123,6 +130,7 @@ export default function SingleSenderVerificationTableRow({
                     isOpen={isDeleteModalOpen}
                     setIsOpen={setIsDeleteModalOpen}
                     onConfirm={handleConfirmDelete}
+                    isLoading={isDeleteInProgress}
                 >
                     If you delete verification, you will not be able to send
                     outbound messages with this email and complete migration.

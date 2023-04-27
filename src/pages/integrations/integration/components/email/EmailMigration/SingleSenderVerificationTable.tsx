@@ -13,11 +13,13 @@ import SingleSenderVerificationTableRow from './SingleSenderVerificationTableRow
 export type Props = {
     integrations: EmailMigrationSenderVerificationIntegration[]
     hasSubmittedBulkVerification: boolean
+    refreshMigrationData: () => void
 }
 
 export default function SingleSenderVerificationTable({
     integrations,
     hasSubmittedBulkVerification,
+    refreshMigrationData,
 }: Props) {
     const {paginatedItems, ...pagination} = useClientSidePagination({
         items: integrations,
@@ -42,6 +44,7 @@ export default function SingleSenderVerificationTable({
                                 hasSubmittedBulkVerification={
                                     hasSubmittedBulkVerification
                                 }
+                                refreshMigrationData={refreshMigrationData}
                             />
                         </TableBodyRow>
                     ))}

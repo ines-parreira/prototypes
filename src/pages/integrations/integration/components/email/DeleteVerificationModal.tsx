@@ -10,6 +10,7 @@ type Props = {
     children: ReactNode
     setIsOpen: (value: boolean) => void
     onConfirm: () => void
+    isLoading?: boolean
     title?: string
 }
 
@@ -18,6 +19,7 @@ export default function DeleteVerificationModal({
     children,
     setIsOpen,
     onConfirm,
+    isLoading,
     title = 'Delete verification?',
 }: Props) {
     const handleDeleteClick = () => {
@@ -32,7 +34,11 @@ export default function DeleteVerificationModal({
                 <Button intent="secondary" onClick={() => setIsOpen(false)}>
                     Close
                 </Button>
-                <Button onClick={handleDeleteClick} intent="destructive">
+                <Button
+                    onClick={handleDeleteClick}
+                    isLoading={isLoading}
+                    intent="destructive"
+                >
                     Delete
                 </Button>
             </ModalActionsFooter>

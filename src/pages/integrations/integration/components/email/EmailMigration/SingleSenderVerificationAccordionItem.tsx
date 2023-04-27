@@ -28,12 +28,14 @@ type Props = {
     onBulkSubmitClick: (
         unverifiedIntegrations: EmailMigrationSenderVerificationIntegration[]
     ) => void
+    refreshMigrationData: () => void
 }
 
 export default function SingleSenderVerificationAccordionItem({
     verification,
     onVerificationMethodSwitch,
     onBulkSubmitClick,
+    refreshMigrationData,
 }: Props) {
     const handleSwitchMethod = (event: React.MouseEvent) => {
         event.preventDefault()
@@ -97,6 +99,7 @@ export default function SingleSenderVerificationAccordionItem({
                             hasSubmittedBulkVerification={
                                 hasSubmittedBulkVerification
                             }
+                            refreshMigrationData={refreshMigrationData}
                         />
                         <p className={css.switchMethod}>
                             Want to verify all emails using DNS records?{' '}

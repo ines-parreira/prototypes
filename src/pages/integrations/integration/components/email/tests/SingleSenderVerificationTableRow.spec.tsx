@@ -30,6 +30,7 @@ describe('SingleSenderVerificationTableRow', () => {
         render(
             <Provider store={mockStore({} as any)}>
                 <SingleSenderVerificationTableRow
+                    refreshMigrationData={jest.fn()}
                     hasSubmittedBulkVerification={false}
                     integration={unverifiedIntegration}
                     {...props}

@@ -102,6 +102,7 @@ export default function MigrationDomainList({
                                 setIsBulkSubmitFormModalOpen(true)
                                 setIntegrationsToBulkSubmit(integrations)
                             }}
+                            refreshMigrationData={refreshMigrationData}
                         />
                     )
                 })}

@@ -13,6 +13,7 @@ describe('SingleSenderVerificationTable', () => {
         render(
             <Provider store={mockStore({} as any)}>
                 <SingleSenderVerificationTable
+                    refreshMigrationData={jest.fn()}
                     integrations={Array(10).fill(integrations[0])}
                     hasSubmittedBulkVerification={false}
                 />

@@ -39,6 +39,7 @@ const mockVerification = {
     email: emailAddress,
     city: 'San Francisco',
     country: 'United States',
+    integration_id: integration.id,
 }
 
 describe('DeleteVerificationButton', () => {
@@ -104,7 +105,9 @@ describe('DeleteVerificationButton', () => {
             })
         )
 
-        await waitFor(() => expect(deleteVerification).toHaveBeenCalled())
+        await waitFor(() =>
+            expect(deleteVerification).toHaveBeenCalledWith(integration.id)
+        )
         expect(onConfirm).toHaveBeenCalled()
     })
 })
