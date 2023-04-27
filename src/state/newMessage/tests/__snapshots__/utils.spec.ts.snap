@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Utils getMentionIds should return array of ids for internal note source type 1`] = `
+Immutable.List [
+  8,
+]
+`;
+
+exports[`Utils getMentionIds should return empty array for source type other than internal note 1`] = `Immutable.List []`;

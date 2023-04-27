@@ -5,37 +5,30 @@ import {fromJS, Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import {connect, ConnectedProps} from 'react-redux'
-
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import Tooltip from 'pages/common/components/Tooltip'
+
+import {humanize} from 'business/format'
+import {canAddAttachments} from 'business/ticket'
+import {TicketMessageSourceType} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {RootState} from '../../../../../state/types'
-import {canLeaveInternalNote, isRichType} from '../../../../../config/ticket'
-import {humanize} from '../../../../../business/format'
-import {getOtherAgents} from '../../../../../state/agents/selectors'
-import {
-    addAttachments,
-    setResponseText,
-} from '../../../../../state/newMessage/actions'
+import {canLeaveInternalNote, isRichType} from 'config/ticket'
+import Tooltip from 'pages/common/components/Tooltip'
+import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import RichField from 'pages/common/forms/RichField/RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import {getOtherAgents} from 'state/agents/selectors'
+import {addAttachments, setResponseText} from 'state/newMessage/actions'
 import {
     getNewMessageType,
     getNewMessageAttachments,
     isNewMessagePublic,
-} from '../../../../../state/newMessage/selectors'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {
-    getFileTooLargeError,
-    getMaxAttachmentSize,
-} from '../../../../../utils/file'
-import TicketRichField from '../../../../common/forms/RichField/TicketRichField'
-import RichField from '../../../../common/forms/RichField/RichField'
-import {getContext} from '../../../../../state/prediction/selectors'
-import {canAddAttachments} from '../../../../../business/ticket'
-import {TicketMessageSourceType} from '../../../../../business/types/ticket'
-
-import {ActionName} from '../../../../common/draftjs/plugins/toolbar/types'
+} from 'state/newMessage/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getContext} from 'state/prediction/selectors'
+import {RootState} from 'state/types'
+import {getFileTooLargeError, getMaxAttachmentSize} from 'utils/file'
 
 import MacrosQuickReply from './MacrosQuickReply/MacrosQuickReply'
 

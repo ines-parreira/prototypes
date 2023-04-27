@@ -68,7 +68,13 @@ import {DiscountCode} from 'models/discountCodes/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
-import * as responseUtils from './responseUtils'
+import {
+    MessageContext,
+    selectionAfter,
+    setSourceTypeCache,
+    toReplyAreaState,
+    updateNewMessageWithContentState,
+} from './responseUtils'
 import * as selectors from './selectors'
 import * as constants from './constants'
 import {MacroActions, Message, NewMessage, ReplyAreaState} from './types'
@@ -321,7 +327,7 @@ export const setActiveCustomerAsReceiver =
         const name = ticket.getIn(['customer', 'name'])
 
         if (address && name) {
-            dispatch(setReceivers({to: [{name, address}]}, false))
+            void dispatch(setReceivers({to: [{name, address}]}, false))
         }
     }
 
@@ -465,7 +471,7 @@ export const prepare =
         const state = getState()
         const currentTicket = ticketSelectors.DEPRECATED_getTicket(state)
         // cache source type when changed
-        responseUtils.setSourceTypeCache(currentTicket.get('id'), sourceType)
+        setSourceTypeCache(currentTicket.get('id'), sourceType)
 
         //Clean up productCard attachments for unsupported channels
         if (
@@ -520,7 +526,7 @@ export const prepare =
                 if (changesFound && contentBlocks) {
                     const newContentState =
                         ContentState.createFromBlockArray(contentBlocks)
-                    const newSelectionState = responseUtils.selectionAfter(
+                    const newSelectionState = selectionAfter(
                         newContentState.getBlocksAsArray() as any
                     )
 
@@ -581,7 +587,7 @@ export const prepare =
                 dispatch(setSourceType(TicketMessageSourceType.Email))
                 dispatch(setSourceExtra({forward: true}))
                 dispatch(setSender())
-                dispatch(setReceivers())
+                void dispatch(setReceivers())
                 dispatch({
                     type: constants.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
                     resp: attachments,
@@ -636,7 +642,7 @@ export const prepare =
                 const newContentState = ContentState.createFromText(
                     `@${receiverName} `
                 )
-                const newSelectionState = responseUtils.selectionAfter(
+                const newSelectionState = selectionAfter(
                     newContentState.getBlocksAsArray() as any
                 )
 
@@ -725,7 +731,7 @@ export function prepareTicketDataToSend(
     replyAreaState: ReplyAreaState
 }> {
     const ticket = toJS<FullTicketStateWithoutImmutable>(ticketState)
-    const replyAreaState = responseUtils.toReplyAreaState(
+    const replyAreaState = toReplyAreaState(
         newMessageState.get('state') as Map<any, any>
     )
     let newMessage = (
@@ -793,7 +799,7 @@ export function prepareTicketDataToSend(
                 isForwarded: selectors.isForward(state),
             })
 
-            newMessage = responseUtils.updateNewMessageWithContentState(
+            newMessage = updateNewMessageWithContentState(
                 newMessage,
                 newContentState
             )
@@ -1065,9 +1071,7 @@ export function prepareTicketMessage({
             // temporary message id
             let messageId = getMomentNow()
             let messageToSend: NewMessage
-            let replyAreaState = responseUtils.toReplyAreaState(
-                newMessage.get('state')
-            )
+            let replyAreaState = toReplyAreaState(newMessage.get('state'))
 
             // message already parsed
             if (!!retryMessage) {
@@ -1360,41 +1364,31 @@ export function submitTicket(
         return client
             .post<TicketResponse>('/api/tickets/', ticketToSend)
             .then((json) => json?.data)
-            .then(
-                (resp) => {
-                    onMessageSent(dispatch)
+            .then((resp) => {
+                onMessageSent(dispatch)
 
-                    history.push(`/app/ticket/${resp.id}`)
+                history.push(`/app/ticket/${resp.id}`)
 
-                    const state = getState()
-                    const {ticket} = state
+                const state = getState()
+                const {ticket} = state
 
-                    if (resp.id !== ticket.get('id') && ticket.get('id')) {
-                        return Promise.resolve({resp})
-                    }
-
-                    // dispatch for newMessage and ticket reducer branch
-                    dispatch({
-                        type: constants.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,
-                        resetMessage,
-                        resp,
-                    })
-
-                    dispatch(resetReceiversAndSender)
-
-                    return Promise.resolve(resp) as unknown as Promise<
-                        ReturnType<StoreDispatch>
-                    >
-                },
-                (error) => {
-                    return dispatch({
-                        type: constants.NEW_MESSAGE_SUBMIT_TICKET_ERROR,
-                        error,
-                        verbose: true,
-                        reason: 'Ticket was not created. Please try again in a few moments. If the problem persists contact us',
-                    })
+                if (resp.id !== ticket.get('id') && ticket.get('id')) {
+                    return Promise.resolve({resp})
                 }
-            )
+
+                // dispatch for newMessage and ticket reducer branch
+                dispatch({
+                    type: constants.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,
+                    resetMessage,
+                    resp,
+                })
+
+                dispatch(resetReceiversAndSender)
+
+                return Promise.resolve(resp) as unknown as Promise<
+                    ReturnType<StoreDispatch>
+                >
+            })
     }
 }
 
@@ -1422,7 +1416,7 @@ export function resetReceiversAndSender(
         integrationSelectors.getChannelsByType(type)(state)
     )
     const receiversValues = receiversValueFromState(receivers, type)
-    dispatch(setReceivers(receiversStateFromValue(receiversValues, type)))
+    void dispatch(setReceivers(receiversStateFromValue(receiversValues, type)))
     // set sender according to last sent message
     return dispatch(setSender())
 }
@@ -1445,3 +1439,11 @@ export const setNewMessageForChatCampaign = createAction<{
     channel?: TicketChannel
     sourceType?: TicketMessageSourceType
 }>(constants.SET_NEW_MESSAGE_CHAT_CAMPAIGN)
+
+export const restoreNewMessageDraft = createAction<
+    Pick<NewMessage, 'attachments' | 'source'>
+>(constants.RESTORE_NEW_MESSAGE_DRAFT)
+
+export const restoreNewMessageBodyText = createAction<MessageContext>(
+    constants.RESTORE_NEW_MESSAGE_BODY_TEXT
+)

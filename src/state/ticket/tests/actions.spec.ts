@@ -6,6 +6,8 @@ import {fromJS, Map} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {dismissNotification} from 'reapop'
 
+import {agents} from 'fixtures/agents'
+import {teams} from 'fixtures/teams'
 import {notify} from 'state/notifications/actions'
 import {initialState as newMessageState} from 'state/newMessage/reducers'
 import {Event, EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
@@ -361,14 +363,26 @@ describe('ticket actions', () => {
     it('setAgent()', () => {
         mockServer.onPut(endpointMatchers.anyTicket).reply(202, {data: {}})
         return store
-            .dispatch(actions.setAgent({id: 1}))
+            .dispatch(
+                actions.setAgent({
+                    id: agents[0].id,
+                    name: agents[0].name,
+                    email: agents[0].email,
+                    meta: {},
+                })
+            )
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('setTeam()', () => {
         mockServer.onPut(endpointMatchers.anyTicket).reply(202, {data: {}})
         return store
-            .dispatch(actions.setTeam({id: 1}))
+            .dispatch(
+                actions.setTeam({
+                    id: teams[0].id,
+                    name: teams[0].name,
+                })
+            )
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -1159,6 +1173,19 @@ describe('ticket actions', () => {
         it('should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED and notify action', () => {
             store.dispatch(actions.triggerTicketFieldsErrors([1, 2, 3]))
             expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('restoreTicketDraft()', () => {
+        it('should dispatch RESTORE_TICKET_DRAFT action', () => {
+            const ticketDraft = {
+                assignee_team: null,
+                assignee_user: null,
+                customer: null,
+                subject: '',
+                tags: [],
+            }
+            expect(actions.restoreTicketDraft(ticketDraft)).toMatchSnapshot()
         })
     })
 })

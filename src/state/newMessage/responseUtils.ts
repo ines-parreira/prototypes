@@ -79,42 +79,54 @@ const getCache = (context: MessageContext): MessageContext => {
 
     // We're fetching the cached state from the localStorage here
     const cachedContent = ticketReplyCache.get(action.ticketId)
+
+    return transformMessageContext(cachedContent, context)
+}
+
+export const transformMessageContext = (
+    cachedContent: Map<any, any>,
+    context?: MessageContext
+) => {
+    const contextResult = context || ({} as MessageContext)
+
     if (cachedContent && !cachedContent.isEmpty()) {
         const cachedContentState = cachedContent.get(
             'contentState'
         ) as ContentState
         if (cachedContentState) {
-            context.contentState = convertFromRaw(cachedContentState.toJS())
-            context.forceFocus = true
-            context.forceUpdate = true
-            context.emailExtraAdded = cachedContent.get(
+            contextResult.contentState = convertFromRaw(
+                cachedContentState.toJS()
+            )
+            contextResult.forceFocus = true
+            contextResult.forceUpdate = true
+            contextResult.emailExtraAdded = cachedContent.get(
                 'emailExtraAdded',
                 false
             )
             const cachedSelectionState = cachedContent.get('selectionState')
             if (cachedSelectionState) {
                 // create a new selection and just copy the props from the cached state
-                context.selectionState =
+                contextResult.selectionState =
                     //@ts-ignore
                     SelectionState.createEmpty().merge(cachedSelectionState)
             }
 
-            if (hasEmailExtraContent(context.contentState)) {
-                context.contentState = deleteEmailExtraContent(
-                    context.contentState
+            if (hasEmailExtraContent(contextResult.contentState)) {
+                contextResult.contentState = deleteEmailExtraContent(
+                    contextResult.contentState
                 )
-                context.emailExtraAdded = false
+                contextResult.emailExtraAdded = false
                 if (
-                    context.selectionState &&
-                    (!context.contentState.getBlockForKey(
-                        context.selectionState.getAnchorKey()
+                    contextResult.selectionState &&
+                    (!contextResult.contentState.getBlockForKey(
+                        contextResult.selectionState.getAnchorKey()
                     ) ||
-                        !context.contentState.getBlockForKey(
-                            context.selectionState.getFocusKey()
+                        !contextResult.contentState.getBlockForKey(
+                            contextResult.selectionState.getFocusKey()
                         ))
                 ) {
-                    const lastBlock = context.contentState.getLastBlock()
-                    context.selectionState = SelectionState.createEmpty(
+                    const lastBlock = contextResult.contentState.getLastBlock()
+                    contextResult.selectionState = SelectionState.createEmpty(
                         lastBlock.getKey()
                     )
                         .set('anchorOffset', lastBlock.getLength())
@@ -130,15 +142,15 @@ const getCache = (context: MessageContext): MessageContext => {
             any
         >
         if (topRankMacroState && !topRankMacroState.isEmpty()) {
-            context.topRankMacroState = fromJS(topRankMacroState)
+            contextResult.topRankMacroState = fromJS(topRankMacroState)
         }
-        context.inserted_discounts = cachedContent.get(
+        contextResult.inserted_discounts = cachedContent.get(
             'inserted_discounts',
             fromJS([])
         )
     }
 
-    return context
+    return contextResult
 }
 
 /**

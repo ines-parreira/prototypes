@@ -4,15 +4,12 @@ import {createSelector} from 'reselect'
 import {isAccountActive} from 'state/currentAccount/selectors'
 import {hasContentlessAction} from 'state/ticket/selectors'
 
-import {
-    TicketMessageSourceType,
-    TicketChannel,
-} from '../../business/types/ticket'
-import {IntegrationType} from '../../models/integration/types'
-import {isImmutable, createImmutableSelector} from '../../utils'
-import {getChannelSignature} from '../integrations/selectors'
-import {isForwardedMessage} from '../ticket/utils'
-import {RootState} from '../types'
+import {TicketMessageSourceType, TicketChannel} from 'business/types/ticket'
+import {IntegrationType} from 'models/integration/types'
+import {getChannelSignature} from 'state/integrations/selectors'
+import {isForwardedMessage} from 'state/ticket/utils'
+import {RootState} from 'state/types'
+import {isImmutable, createImmutableSelector} from 'utils'
 
 import {NewMessageState, ReceiverProperty} from './types'
 

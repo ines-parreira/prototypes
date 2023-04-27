@@ -389,6 +389,174 @@ exports[`responseUtils toReplyAreaStateJS should convert immutable state to obje
 }
 `;
 
+exports[`responseUtils transformMessageContext should mutate formatted passed context param 1`] = `
+{
+  "action": {
+    "args": Immutable.Map {
+      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div><em>should be good now</em></div>",
+      "body_text": "Hello, check this out
+
+ 
+
+should be good now",
+    },
+    "currentUser": Immutable.Map {},
+    "fromMacro": false,
+    "signature": Immutable.Map {},
+    "ticket": Immutable.Map {},
+    "ticketId": "foo-ticket",
+  },
+  "contentState": "<div>Foo bar baz</div>",
+  "emailExtraAdded": false,
+  "forceFocus": true,
+  "forceUpdate": true,
+  "inserted_discounts": Immutable.List [],
+  "selectionState": {
+    "anchorBlockText": "Foo bar baz",
+    "anchorOffset": "1",
+    "focusBlockText": "Foo bar baz",
+    "focusOffset": "2",
+    "hasFocus": false,
+    "isBackward": false,
+  },
+  "sourceType": "email",
+  "state": Immutable.Map {
+    "state": Immutable.Map {
+      "selectionState": null,
+      "inserted_discounts": Immutable.List [],
+      "emailExtraAdded": false,
+      "forceFocus": false,
+      "appliedMacro": null,
+      "dirty": false,
+      "forceUpdate": false,
+      "firstNewMessage": true,
+      "contentState": "<div><br></div>",
+      "cacheAdded": false,
+    },
+    "_internal": Immutable.Map {
+      "loading": Immutable.Map {
+        "addAttachment": false,
+        "submitMessage": false,
+      },
+    },
+    "newMessage": Immutable.Map {
+      "channel": "email",
+      "mention_ids": Immutable.List [],
+      "macros": Immutable.List [],
+      "body_html": "",
+      "public": true,
+      "body_text": "",
+      "subject": "",
+      "via": "helpdesk",
+      "from_agent": true,
+      "attachments": Immutable.List [],
+      "sender": null,
+      "source": Immutable.Map {
+        "type": "email",
+        "from": Immutable.Map {},
+        "to": Immutable.List [],
+        "cc": Immutable.List [],
+        "bcc": Immutable.List [],
+        "extra": Immutable.Map {
+          "include_thread": false,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`responseUtils transformMessageContext should return formatted context from cached content 1`] = `
+{
+  "contentState": Immutable.Record {
+    "entityMap": {},
+    "blockMap": Immutable.OrderedMap {
+      "mock-key": Immutable.Record {
+        "key": "mock-key",
+        "type": "unstyled",
+        "text": "Foo bar baz",
+        "characterList": Immutable.List [
+          Immutable.Record {
+            "style": Immutable.OrderedSet [],
+            "entity": null,
+          },
+          Immutable.Record {
+            "style": Immutable.OrderedSet [],
+            "entity": null,
+          },
+          Immutable.Record {
+            "style": Immutable.OrderedSet [],
+            "entity": null,
+          },
+          Immutable.Record {
+            "style": Immutable.OrderedSet [],
+            "entity": null,
+          },
+          Immutable.Record {
+            "style": Immutable.OrderedSet [],
+            "entity": null,
+          },
+          Immutable.Record {
+            "style": Immutable.OrderedSet [],
+            "entity": null,
+          },
+          Immutable.Record {
+            "style": Immutable.OrderedSet [],
+            "entity": null,
+          },
+          Immutable.Record {
+            "style": Immutable.OrderedSet [],
+            "entity": null,
+          },
+          Immutable.Record {
+            "style": Immutable.OrderedSet [],
+            "entity": null,
+          },
+          Immutable.Record {
+            "style": Immutable.OrderedSet [],
+            "entity": null,
+          },
+          Immutable.Record {
+            "style": Immutable.OrderedSet [],
+            "entity": null,
+          },
+        ],
+        "depth": 0,
+        "data": Immutable.Map {},
+      },
+    },
+    "selectionBefore": Immutable.Record {
+      "anchorKey": "mock-key",
+      "anchorOffset": 0,
+      "focusKey": "mock-key",
+      "focusOffset": 0,
+      "isBackward": false,
+      "hasFocus": false,
+    },
+    "selectionAfter": Immutable.Record {
+      "anchorKey": "mock-key",
+      "anchorOffset": 0,
+      "focusKey": "mock-key",
+      "focusOffset": 0,
+      "isBackward": false,
+      "hasFocus": false,
+    },
+  },
+  "emailExtraAdded": false,
+  "forceFocus": true,
+  "forceUpdate": true,
+  "inserted_discounts": Immutable.List [],
+  "selectionState": Immutable.Record {
+    "anchorKey": "mock-key",
+    "anchorOffset": "1",
+    "focusKey": "mock-key",
+    "focusOffset": "2",
+    "isBackward": false,
+    "hasFocus": false,
+  },
+}
+`;
+
 exports[`responseUtils updateNewMessageWithContentState should not mutate the arguments 1`] = `
 {
   "attachments": [],

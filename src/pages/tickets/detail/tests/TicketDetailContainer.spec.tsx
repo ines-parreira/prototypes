@@ -12,32 +12,43 @@ import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
+import localForageManager from 'services/localForageManager/localForageManager'
+import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {initialState as currentUser} from 'state/currentUser/reducers'
+import {NEW_MESSAGE_SUBMIT_TICKET_ERROR} from 'state/newMessage/constants'
+import {
+    TicketMessageActionValidationError,
+    TicketMessageInvalidSendDataError,
+} from 'state/newMessage/errors'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     flushPromises,
     makeExecuteKeyboardAction,
     renderWithRouter,
 } from 'utils/testing'
-import {initialState as currentUser} from 'state/currentUser/reducers'
-import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
-import {
-    TicketMessageActionValidationError,
-    TicketMessageInvalidSendDataError,
-} from 'state/newMessage/errors'
-import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import {triggerTicketFieldsErrors} from 'state/ticket/actions'
-import {TicketDetailContainer} from '../TicketDetailContainer'
 import TicketView from '../components/TicketView'
+import {TicketDetailContainer} from '../TicketDetailContainer'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = createTestQueryClient()
 jest.useFakeTimers()
+
+const mockSetItem = jest.fn().mockResolvedValue(true)
+const mockGetItem = jest.fn()
+const mockGetTableObject = {
+    getItem: mockGetItem,
+    setItem: mockSetItem,
+} as unknown as LocalForage
+jest.spyOn(localForageManager, 'getTable').mockReturnValue(mockGetTableObject)
+jest.spyOn(localForageManager, 'clearTable')
 
 jest.mock('services/shortcutManager/shortcutManager')
 jest.mock('../components/TicketView', () => {
@@ -75,7 +86,11 @@ jest.mock('state/ticket/actions', () => ({
 }))
 
 const mockStore = configureMockStore([thunk])
-let mockedStore = mockStore({})
+let mockedStore = mockStore({
+    ticket: fromJS({
+        tags: [],
+    }),
+})
 
 const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager
@@ -85,6 +100,9 @@ const mockSetRecentItem = jest.fn()
 jest.mock('hooks/useRecentItems/useRecentItems', () => () => ({
     setRecentItem: mockSetRecentItem,
 }))
+
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
@@ -176,7 +194,11 @@ describe('TicketDetailContainer component', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockedServer.reset()
-        mockedStore = mockStore({})
+        mockedStore = mockStore({
+            ticket: fromJS({
+                tags: [],
+            }),
+        })
         mockedStore.dispatch = jest.fn()
         prepareTicketMessageMock.mockReturnValue(preparedData)
         setStatusMock.mockImplementation((status, callback) => {
@@ -1161,6 +1183,60 @@ describe('TicketDetailContainer component', () => {
                 customer: mockCustomer,
             })
         )
+    })
+
+    it('should clear ticket draft stored in local forage when current ticket is new and successfully created', async () => {
+        const {getByTestId} = renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        canSendMessage={true}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/new',
+            }
+        )
+
+        userEvent.click(getByTestId('TicketView-submit'))
+        await flushPromises()
+        expect(localForageManager.clearTable).toHaveBeenCalled()
+    })
+
+    it('should not clear ticket draft stored in local forage when current ticket is new but sending has failed', async () => {
+        const error = new Error('ticket not created')
+
+        const {getByTestId} = renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer
+                        {...minProps}
+                        canSendMessage={true}
+                        submitTicket={() => {
+                            throw error
+                        }}
+                    />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/new',
+            }
+        )
+
+        userEvent.click(getByTestId('TicketView-submit'))
+        await flushPromises()
+        expect(localForageManager.clearTable).not.toHaveBeenCalled()
+
+        expect(mockedDispatch).toHaveBeenCalledWith({
+            error: error,
+            reason: 'Ticket was not created. Please try again in a few moments. If the problem persists contact us',
+            type: NEW_MESSAGE_SUBMIT_TICKET_ERROR,
+            verbose: true,
+        })
     })
 
     describe('ticket fields', () => {

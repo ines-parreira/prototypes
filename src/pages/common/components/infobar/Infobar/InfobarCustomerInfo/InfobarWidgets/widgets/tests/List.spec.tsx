@@ -10,7 +10,7 @@ import ListInfobarWidget from '../List'
 describe('Infobar::Widgets::List', () => {
     const source = fromJS(
         (
-            ticketFixtures.ticket.customer.integrations as Record<
+            ticketFixtures.ticket.customer!.integrations as Record<
                 string,
                 {orders: unknown}
             >

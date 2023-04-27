@@ -1,10 +1,17 @@
-import {Ticket} from '../models/ticket/types'
+import {
+    CustomerState,
+    FinancialStatus,
+} from 'constants/integrations/types/shopify'
+import {Customer} from 'models/customer/types'
+import {IntegrationType} from 'models/integration/constants'
+
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketStatus,
     TicketVia,
 } from '../business/types/ticket'
+import {Ticket} from '../models/ticket/types'
 
 export const ticket: Ticket = {
     channel: TicketChannel.Email,
@@ -96,10 +103,8 @@ export const ticket: Ticket = {
     tags: [
         {
             id: 1,
-            user_id: 2,
             name: 'refund',
-            uri: '/api/tags/1/',
-            decoration: null,
+            decoration: {},
         },
     ],
     events: [],
@@ -110,6 +115,7 @@ export const ticket: Ticket = {
         firstname: 'Alex',
         lastname: 'Plugaru',
     },
+    assignee_team: null,
     id: 152,
     last_message_datetime: '2017-07-31T23:07:35.150000+00:00',
     custom_fields: {},
@@ -122,7 +128,7 @@ export const ticket: Ticket = {
         channels: [
             {
                 id: 55,
-                type: 'email',
+                type: TicketChannel.Email,
                 address: 'jeanbon@gorgias.io',
                 preferred: true,
                 created_datetime: '2017-07-31T21:45:03.399819+00:00',
@@ -131,7 +137,7 @@ export const ticket: Ticket = {
             },
             {
                 id: 56,
-                type: 'phone',
+                type: TicketChannel.Phone,
                 address: '+1 415-548-9999',
                 preferred: true,
                 created_datetime: '2017-07-31T21:45:03.416965+00:00',
@@ -156,7 +162,7 @@ export const ticket: Ticket = {
                     Host: 'httpbin.org',
                     'Accept-Encoding': 'gzip, deflate',
                 },
-                __integration_type__: 'http',
+                __integration_type__: IntegrationType.Http,
             },
             '5': {
                 // shopify
@@ -250,7 +256,7 @@ export const ticket: Ticket = {
                         location_id: null,
                         buyer_accepts_marketing: false,
                         closed_at: null,
-                        financial_status: 'paid',
+                        financial_status: FinancialStatus.Paid,
                         discount_codes: [],
                         number: 202,
                         cancel_reason: null,
@@ -294,7 +300,7 @@ export const ticket: Ticket = {
                         },
                         currency: 'EUR',
                         test: false,
-                        note: null,
+                        note: '',
                         order_status_url: null,
                         fulfillment_status: null,
                         total_weight: 200,
@@ -304,7 +310,6 @@ export const ticket: Ticket = {
                         fulfillments: [],
                         line_items: [
                             {
-                                variant_inventory_management: null,
                                 taxable: true,
                                 vendor: 'storegorgias3',
                                 price: '9.00',
@@ -321,7 +326,6 @@ export const ticket: Ticket = {
                                 product_exists: true,
                                 fulfillable_quantity: 1,
                                 properties: [],
-                                fulfillment_status: null,
                                 fulfillment_service: 'manual',
                                 variant_id: 32994232907,
                                 title: 'Baskets peu cheres  10.00% Off Auto renew',
@@ -353,7 +357,7 @@ export const ticket: Ticket = {
                             verified_email: true,
                             created_at: '2017-03-17T21:26:16-04:00',
                             phone: '+14155489999',
-                            state: 'disabled',
+                            state: CustomerState.Disabled,
                             accepts_marketing: false,
                             note: 'Un grand jambon',
                             total_spent: '131.50',
@@ -418,7 +422,7 @@ export const ticket: Ticket = {
                         location_id: null,
                         buyer_accepts_marketing: false,
                         closed_at: null,
-                        financial_status: 'paid',
+                        financial_status: FinancialStatus.Paid,
                         discount_codes: [],
                         number: 199,
                         cancel_reason: null,
@@ -439,7 +443,7 @@ export const ticket: Ticket = {
                         total_tax: '0.00',
                         currency: 'EUR',
                         test: false,
-                        note: null,
+                        note: '',
                         order_status_url: null,
                         fulfillment_status: null,
                         total_weight: null,
@@ -449,7 +453,6 @@ export const ticket: Ticket = {
                         fulfillments: [],
                         line_items: [
                             {
-                                variant_inventory_management: null,
                                 taxable: true,
                                 vendor: 'storegorgias3',
                                 price: '0.10',
@@ -460,7 +463,6 @@ export const ticket: Ticket = {
                                 product_exists: true,
                                 fulfillable_quantity: 1,
                                 properties: [],
-                                fulfillment_status: null,
                                 fulfillment_service: 'manual',
                                 variant_id: 28442938955,
                                 title: 'Bonbon acidulé',
@@ -492,7 +494,7 @@ export const ticket: Ticket = {
                             verified_email: true,
                             created_at: '2017-03-17T21:26:16-04:00',
                             phone: '+14155489999',
-                            state: 'disabled',
+                            state: CustomerState.Disabled,
                             accepts_marketing: false,
                             note: 'Un grand jambon',
                             total_spent: '131.50',
@@ -529,10 +531,10 @@ export const ticket: Ticket = {
                         confirmed: true,
                     },
                 ],
-                __integration_type__: 'shopify',
+                __integration_type__: IntegrationType.Shopify,
             },
         },
-    },
+    } as unknown as Customer,
     updated_datetime: '2017-07-31T23:07:37.253131+00:00',
     is_unread: true,
 }

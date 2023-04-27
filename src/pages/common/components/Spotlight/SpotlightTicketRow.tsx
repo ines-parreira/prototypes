@@ -59,9 +59,9 @@ const SpotlightTicketRow = ({
         title={item.subject || item.excerpt || ''}
         info={
             <SpotlightTicketInfo
-                customerName={item.customer.name}
-                customerEmail={item.customer.email}
-                customerId={item.customer.id}
+                customerName={item.customer!.name}
+                customerEmail={item.customer!.email}
+                customerId={item.customer!.id}
                 assignee={item.assignee_user}
                 date={item.created_datetime}
             />

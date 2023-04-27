@@ -59,6 +59,8 @@ import client from 'models/api/resources'
 import {RootState, StoreDispatch, StoreState} from 'state/types'
 import {Macro} from 'state/macro/types'
 import {getCustomer} from 'models/customer/resources'
+import {Member, Team} from 'models/team/types'
+import {Macro as MacroModel} from 'models/macro/types'
 
 import {
     buildPartialUpdateFromAction,
@@ -355,7 +357,7 @@ export const setTrashed =
     }
 
 export const setAgent =
-    (assigneeUser: Maybe<Record<string, unknown>>) =>
+    (assigneeUser: Member | null) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -373,7 +375,7 @@ export const setAgent =
     }
 
 export const setTeam =
-    (assigneeTeam: Maybe<Record<string, unknown>>) =>
+    (assigneeTeam: Pick<Team, 'id' | 'name' | 'decoration'> | null) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -1363,3 +1365,14 @@ export function triggerTicketFieldsErrors(
         )
     }
 }
+
+export const restoreTicketDraft = createAction<
+    Pick<
+        Ticket,
+        'assignee_team' | 'assignee_user' | 'customer' | 'subject' | 'tags'
+    >
+>(types.RESTORE_TICKET_DRAFT)
+
+export const restoreTicketDraftApplyMacro = createAction<MacroModel | null>(
+    types.RESTORE_TICKET_DRAFT_APPLY_MACRO
+)

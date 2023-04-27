@@ -6,15 +6,18 @@ import {List, Map} from 'immutable'
 import {RootState} from 'state/types'
 import {canReply} from 'business/ticket'
 
-import {deleteActionOnApplied} from '../../../../../state/ticket/actions'
-import {deleteAttachment} from '../../../../../state/newMessage/actions'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import RichField from '../../../../common/forms/RichField/RichField'
+import RichField from 'pages/common/forms/RichField/RichField'
+import {deleteAttachment} from 'state/newMessage/actions'
+import {
+    getNewMessageAttachments,
+    getNewMessageType,
+} from 'state/newMessage/selectors'
+import {deleteActionOnApplied} from 'state/ticket/actions'
 
 import TicketAttachments from './TicketAttachments'
-import css from './TicketReply.less'
 import TicketReplyEditor from './TicketReplyEditor'
 import TicketReplyActions from './TicketReplyActions'
+import css from './TicketReply.less'
 
 type Props = {
     replyAreaHeader?: ReactNode
@@ -85,9 +88,8 @@ export function TicketReplyContainer({
 const connector = connect(
     (state: RootState) => {
         return {
-            newMessageAttachments:
-                newMessageSelectors.getNewMessageAttachments(state),
-            newMessageType: newMessageSelectors.getNewMessageType(state),
+            newMessageAttachments: getNewMessageAttachments(state),
+            newMessageType: getNewMessageType(state),
         }
     },
     {
