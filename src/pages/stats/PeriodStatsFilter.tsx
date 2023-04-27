@@ -1,5 +1,7 @@
 import moment from 'moment-timezone'
 import React, {ComponentProps, useCallback} from 'react'
+import {Options as InitialSettings} from 'daterangepicker'
+import {useEffectOnce} from 'react-use'
 
 import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -8,13 +10,25 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import PeriodPicker from './common/PeriodPicker'
 
+const MAX_SPAN = 90
+
 type Props = {
+    initialSettings?: InitialSettings
     value: StatsFilters['period']
     variant?: 'fill' | 'ghost'
 }
 
-export default function PeriodStatsFilter({value, variant = 'fill'}: Props) {
+export default function PeriodStatsFilter({
+    initialSettings: initialSettingsProp,
+    value,
+    variant = 'fill',
+}: Props) {
     const dispatch = useAppDispatch()
+    const initialSettings = {
+        maxDate: moment(),
+        maxSpan: MAX_SPAN,
+        ...initialSettingsProp,
+    }
 
     const handleFilterChange: ComponentProps<typeof PeriodPicker>['onChange'] =
         useCallback(
@@ -37,6 +51,28 @@ export default function PeriodStatsFilter({value, variant = 'fill'}: Props) {
             [dispatch]
         )
 
+    useEffectOnce(() => {
+        if (
+            moment(value.end_datetime).diff(
+                moment(value.start_datetime),
+                'days'
+            ) > (initialSettings.maxSpan || MAX_SPAN)
+        ) {
+            handleFilterChange({
+                startDatetime: value.start_datetime,
+                endDatetime: moment(value.start_datetime)
+                    .add(
+                        typeof initialSettings.maxSpan === 'number'
+                            ? initialSettings.maxSpan
+                            : MAX_SPAN,
+                        'days'
+                    )
+                    .subtract(1, 'seconds')
+                    .format(),
+            })
+        }
+    })
+
     return (
         <PeriodPicker
             toggleProps={
@@ -48,10 +84,7 @@ export default function PeriodStatsFilter({value, variant = 'fill'}: Props) {
             }
             startDatetime={moment(value.start_datetime)}
             endDatetime={moment(value.end_datetime)}
-            initialSettings={{
-                maxDate: moment(),
-                maxSpan: 90,
-            }}
+            initialSettings={initialSettings}
             onChange={handleFilterChange}
             formatMaxSpan={(maxSpan) =>
                 moment.duration({

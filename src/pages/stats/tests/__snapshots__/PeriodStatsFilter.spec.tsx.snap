@@ -42,3 +42,17 @@ exports[`PeriodStatsFilter should render period stats filter 1`] = `
   </button>
 </div>
 `;
+
+exports[`PeriodStatsFilter should update the period if the period is value is greater than the expected max span 1`] = `
+[
+  {
+    "filters": Immutable.Map {
+      "period": Immutable.Map {
+        "start_datetime": "2020-05-02T00:00:00Z",
+        "end_datetime": "2020-07-31T23:59:59Z",
+      },
+    },
+    "type": "MERGE_STATS_FILTERS",
+  },
+]
+`;

@@ -231,6 +231,9 @@ export default function SupportPerformanceOverview() {
                                 variant="ghost"
                             />
                             <PeriodStatsFilter
+                                initialSettings={{
+                                    maxSpan: 365,
+                                }}
                                 value={pageStatsFilters.period}
                                 variant="ghost"
                             />

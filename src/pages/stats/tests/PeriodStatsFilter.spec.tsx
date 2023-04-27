@@ -90,4 +90,19 @@ describe('PeriodStatsFilter', () => {
             }
         )
     })
+
+    it('should update the period if the period is value is greater than the expected max span', () => {
+        const store = mockStore(defaultState)
+        const value = {
+            start_datetime: '2020-05-02T19:22:43.000Z',
+            end_datetime: '2021-05-03T19:22:43.000Z',
+        }
+        render(
+            <Provider store={store}>
+                <PeriodStatsFilter value={value} />
+            </Provider>
+        )
+
+        expect(store.getActions()).toMatchSnapshot()
+    })
 })
