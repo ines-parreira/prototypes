@@ -5,7 +5,7 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {migrationOutboundVerificationUnverifiedDomain} from 'fixtures/emailMigration'
 import {EmailMigrationOutboundVerification} from 'models/integration/types'
 import DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
@@ -25,20 +25,24 @@ describe('DomainVerificationAccordionItem', () => {
     const refreshMigrationData = jest.fn()
 
     const renderComponent = (
-        verification: EmailMigrationOutboundVerification
+        verification: EmailMigrationOutboundVerification,
+        props: Partial<
+            ComponentProps<typeof DomainVerificationAccordionItem>
+        > = {}
     ) =>
         render(
             <DomainVerificationAccordionItem
                 verification={verification}
                 refreshMigrationData={refreshMigrationData}
                 onVerificationMethodSwitch={onVerificationMethodSwitch}
+                isSingleSenderEnabled={true}
+                {...props}
             />
         )
 
     afterEach(cleanup)
 
-    // TODO unskip when single sender verification will be available
-    it.skip('should display records table and "switch verification type" button', () => {
+    it('should display records table and "switch verification type" button', () => {
         renderComponent(migrationOutboundVerificationUnverifiedDomain)
 
         expect(screen.getByTestId('records-table')).toBeVisible()
@@ -48,6 +52,18 @@ describe('DomainVerificationAccordionItem', () => {
             })
         )
         expect(onVerificationMethodSwitch).toHaveBeenCalled()
+    })
+
+    it('should not display switch verification type button when single sender is disabled', () => {
+        renderComponent(migrationOutboundVerificationUnverifiedDomain, {
+            isSingleSenderEnabled: false,
+        })
+
+        expect(
+            screen.queryByRole('link', {
+                name: /verify emails with your business address/i,
+            })
+        ).not.toBeInTheDocument()
     })
 
     it('should display "Verify Domain" button when domain verification has not started', async () => {

@@ -97,7 +97,7 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
                     inboxes, authenticate the domain associated with your email
                     addresses.{' '}
                     <a
-                        // href="TODO"
+                        href="https://docs.gorgias.com/en-US/email---domain-verification-(spf-&-dkim)-81757"
                         target="_blank"
                         rel="noopener noreferrer"
                     >

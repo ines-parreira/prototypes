@@ -5,15 +5,13 @@ import {
     EmailMigrationInboundVerification,
     EmailMigrationInboundVerificationStatus,
 } from 'models/integration/types'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {verifyMigrationIntegration} from 'models/integration/resources/email'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import {UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS} from 'state/integrations/constants'
-import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
 import {computeMigrationInboundVerificationStatus} from './utils'
+import EmailVerificationButton from './EmailVerificationButton'
 
 type Props = {
     migration: EmailMigrationInboundVerification
@@ -71,29 +69,12 @@ export default function EmailForwardingButton({migration}: Props) {
         void verifyIntegration(migration)
     }
 
-    if (isLoading || verificationStatus === EmailVerificationStatus.Pending) {
-        return (
-            <Button fillStyle="ghost" isLoading={true}>
-                Verifying
-            </Button>
-        )
-    }
-
-    if (verificationStatus === EmailVerificationStatus.Unverified) {
-        return (
-            <Button fillStyle="ghost" onClick={handleVerifyClick}>
-                Verify forwarding
-            </Button>
-        )
-    }
-
     return (
-        <Button
-            fillStyle="ghost"
-            intent="secondary"
-            onClick={handleVerifyClick}
-        >
-            <ButtonIconLabel icon="refresh">Retry verification</ButtonIconLabel>
-        </Button>
+        <EmailVerificationButton
+            status={verificationStatus}
+            isLoading={isLoading}
+            onLinkButtonClick={handleVerifyClick}
+            onRetryClick={handleVerifyClick}
+        />
     )
 }

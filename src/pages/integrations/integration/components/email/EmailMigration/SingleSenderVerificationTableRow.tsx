@@ -1,0 +1,133 @@
+import React, {useState} from 'react'
+import {isEmpty} from 'lodash'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import {EmailMigrationSenderVerificationIntegration} from 'models/integration/types'
+import IconButton from 'pages/common/components/button/IconButton'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import EmailVerificationStatusLabel, {
+    EmailVerificationStatus,
+} from '../EmailVerificationStatusLabel'
+import DeleteVerificationModal from '../DeleteVerificationModal'
+import {computeSingleSenderVerificationStatus} from './utils'
+import EmailVerificationButton from './EmailVerificationButton'
+import SingleSenderVerificationFormModal from './SingleSenderVerificationFormModal'
+
+import css from './SingleSenderVerificationTable.less'
+
+export type Props = {
+    integration: EmailMigrationSenderVerificationIntegration
+    hasSubmittedBulkVerification: boolean
+}
+
+export default function SingleSenderVerificationTableRow({
+    integration,
+    hasSubmittedBulkVerification,
+}: Props) {
+    const [isExpanded, setIsExpanded] = useState(false)
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [isFormModalOpen, setIsFormModalOpen] = useState(false)
+
+    const status = computeSingleSenderVerificationStatus(integration)
+    const isCollapsible =
+        status === EmailVerificationStatus.Failed ||
+        status === EmailVerificationStatus.Pending
+
+    const {address, city, state, zip, country} =
+        integration.sender_verification ?? {}
+    const stateAndZipString = [state, zip].filter(Boolean).join(' ')
+
+    const canDeleteVerification = isCollapsible && isExpanded
+
+    const handleConfirmDelete = () => {
+        // TODO
+    }
+
+    return (
+        <>
+            <BodyCell colSpan={3} innerClassName={css.rowContent}>
+                <div className={css.rowSummary}>
+                    <div className={css.emailAddress}>
+                        {integration.meta.address}
+                    </div>
+
+                    <div className={css.status}>
+                        <EmailVerificationStatusLabel status={status} />
+                    </div>
+                    <div className={css.actionContainer}>
+                        {hasSubmittedBulkVerification && (
+                            <EmailVerificationButton
+                                status={status}
+                                isLoading={false}
+                                linkButtonText="Submit address"
+                                onLinkButtonClick={() =>
+                                    setIsFormModalOpen(true)
+                                }
+                                // onRetryClick={handleVerifyClick}
+                            />
+                        )}
+                        {isCollapsible && (
+                            <IconButton
+                                fillStyle="ghost"
+                                intent="secondary"
+                                onClick={() =>
+                                    setIsExpanded((current) => !current)
+                                }
+                                data-testid="toggle-sender-details-visible"
+                            >
+                                {isExpanded
+                                    ? 'arrow_drop_up'
+                                    : 'arrow_drop_down'}
+                            </IconButton>
+                        )}
+                    </div>
+                </div>
+                {canDeleteVerification && (
+                    <div className={css.collapsibleContent}>
+                        <div data-testid="address-container">
+                            <div>{address}</div>
+                            <div>
+                                {[city, stateAndZipString]
+                                    .filter(Boolean)
+                                    .join(', ')}
+                            </div>
+                            <div>{country}</div>
+                        </div>
+                        <Button
+                            intent="destructive"
+                            fillStyle="ghost"
+                            onClick={() => setIsDeleteModalOpen(true)}
+                            data-testid="delete-verification-button"
+                        >
+                            <ButtonIconLabel icon="delete">
+                                Delete verification
+                            </ButtonIconLabel>
+                        </Button>
+                    </div>
+                )}
+            </BodyCell>
+            {isEmpty(integration.sender_verification) && (
+                <SingleSenderVerificationFormModal
+                    isOpen={isFormModalOpen}
+                    setIsOpen={setIsFormModalOpen}
+                    initialValues={{
+                        email: integration.meta.address,
+                    }}
+                    onConfirm={() => {
+                        // TODO
+                    }}
+                />
+            )}
+            {canDeleteVerification && (
+                <DeleteVerificationModal
+                    isOpen={isDeleteModalOpen}
+                    setIsOpen={setIsDeleteModalOpen}
+                    onConfirm={handleConfirmDelete}
+                >
+                    If you delete verification, you will not be able to send
+                    outbound messages with this email and complete migration.
+                </DeleteVerificationModal>
+            )}
+        </>
+    )
+}

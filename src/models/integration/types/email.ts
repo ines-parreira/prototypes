@@ -1,6 +1,6 @@
 // g/integrations/email/schemas.py
 
-import {SenderInformation} from 'models/singleSenderVerification/types'
+import {SenderVerification} from 'models/singleSenderVerification/types'
 import {createTypeGuard} from '../../../utils'
 
 import {EmailProvider, IntegrationType} from '../constants'
@@ -91,6 +91,7 @@ export enum EmailMigrationInboundVerificationStatus {
     OutboundInitiated = 'outbound_initiated',
     OutboundPending = 'outbound_pending',
     OutboundSuccess = 'outbound_success',
+    OutboundFailed = 'outbound_failed',
 }
 
 export type MigrationIntegration = {
@@ -114,7 +115,7 @@ export type EmailMigrationSenderVerificationIntegration = {
     migration: {
         status: EmailMigrationInboundVerificationStatus
     }
-    sender_verification: Maybe<SenderInformation>
+    sender_verification: Maybe<SenderVerification>
 }
 
 export type EmailMigrationOutboundVerification = {

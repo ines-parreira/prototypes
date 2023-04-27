@@ -4,7 +4,9 @@ import {
     EmailMigrationInboundVerificationStatus,
     EmailMigrationOutboundVerification,
     EmailMigrationOutboundVerificationStatus,
+    EmailMigrationSenderVerificationIntegration,
 } from 'models/integration/types'
+import {VerificationStatus} from 'models/singleSenderVerification/types'
 import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
 
 export const computeMigrationInboundVerificationStatus = (
@@ -47,24 +49,70 @@ export const getInboundUnverifiedMigrations = (
     )
 }
 
-export const computeSingleSenderVerificationStatus = (
+export const getSingleSenderUnverifiedIntegrations = (
     verification: EmailMigrationOutboundVerification
 ) => {
-    const submittedVerifications = verification.integrations.filter(
+    return verification.integrations.filter(
+        (integration) =>
+            computeSingleSenderVerificationStatus(integration) !==
+            EmailVerificationStatus.Success
+    )
+}
+
+export const getSubmittedSingleSenderVerificationsForDomain = (
+    verification: EmailMigrationOutboundVerification
+) => {
+    return verification.integrations.filter(
         (integration) => !isEmpty(integration.sender_verification)
     )
+}
 
-    if (!submittedVerifications.length) {
+export const getSubmittedIncompleteVerifications = (
+    verification: EmailMigrationOutboundVerification
+) => {
+    return verification.integrations.filter(
+        (integration) =>
+            !isEmpty(integration.sender_verification) &&
+            [
+                EmailVerificationStatus.Pending,
+                EmailVerificationStatus.Failed,
+            ].includes(computeSingleSenderVerificationStatus(integration))
+    )
+}
+
+/* single sender verification status for an individual domain */
+export const computeSingleSenderVerificationStatus = (
+    integration: EmailMigrationSenderVerificationIntegration
+) => {
+    const status = integration.sender_verification?.status
+
+    if (status === VerificationStatus.Verified) {
+        return EmailVerificationStatus.Success
+    }
+
+    if (status === VerificationStatus.Failed) {
+        return EmailVerificationStatus.Failed
+    }
+
+    return isEmpty(integration.sender_verification)
+        ? EmailVerificationStatus.Unverified
+        : EmailVerificationStatus.Pending
+}
+
+/* single sender verification status for a specific domain */
+export const computeDomainSingleSenderVerificationStatus = (
+    verification: EmailMigrationOutboundVerification
+) => {
+    const allSubmittedVerifications =
+        getSubmittedSingleSenderVerificationsForDomain(verification)
+    const submittedIncompleteVerifications =
+        getSubmittedIncompleteVerifications(verification)
+
+    if (!allSubmittedVerifications.length) {
         return EmailVerificationStatus.Unverified
     }
 
-    const incompleteVerifications = submittedVerifications.filter(
-        (integration) =>
-            integration.migration.status !==
-            EmailMigrationInboundVerificationStatus.OutboundSuccess
-    )
-
-    return incompleteVerifications.length
+    return submittedIncompleteVerifications.length
         ? EmailVerificationStatus.Pending
         : EmailVerificationStatus.Success
 }
@@ -76,4 +124,13 @@ export const computeDomainVerificationStatus = (
         EmailMigrationOutboundVerificationStatus.Unverified
         ? EmailVerificationStatus.Unverified
         : EmailVerificationStatus.Success
+}
+
+export const listAddressDetailsInline = (
+    integration: EmailMigrationSenderVerificationIntegration
+) => {
+    const {address, city, state, zip, country} =
+        integration.sender_verification ?? {}
+    const stateAndZip = [state, zip].filter(Boolean).join(' ')
+    return [address, city, stateAndZip, country].filter(Boolean).join(', ')
 }

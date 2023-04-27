@@ -3,8 +3,6 @@ import moment from 'moment'
 import {fromJS, Map} from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _sortBy from 'lodash/sortBy'
-
-import {stringify} from 'qs'
 import {isChannel} from 'config'
 import client from 'models/api/resources'
 import {ApiListResponsePagination, GorgiasApiError} from 'models/api/types'
@@ -930,11 +928,7 @@ export function fetchEmailDomain(domainName: string) {
     }
 }
 
-export function createEmailDomain(
-    domainName: string,
-    dkimKeySize: number,
-    provider?: string
-) {
+export function createEmailDomain(domainName: string, dkimKeySize: number) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.CREATE_EMAIL_DOMAIN_START,
@@ -943,8 +937,6 @@ export function createEmailDomain(
         return client
             .put<void>(`/api/integrations/domains/${domainName}`, {
                 dkim_key_size: dkimKeySize,
-                params: {provider},
-                paramsSerializer: stringify,
             })
             .then(
                 (response) => {

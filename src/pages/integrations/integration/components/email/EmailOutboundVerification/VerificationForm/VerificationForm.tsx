@@ -1,24 +1,17 @@
 import React, {useState} from 'react'
 import {Form, FormGroup, Label} from 'reactstrap'
 import classNames from 'classnames'
-import {useAsyncFn} from 'react-use'
-import {AxiosError} from 'axios'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import Button from 'pages/common/components/button/Button'
 import {states as countries} from 'fixtures/states'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {createVerification} from 'models/singleSenderVerification/resources'
-import {setVerification} from 'state/entities/singleSenderVerification/actions'
 import {SenderInformation} from 'models/singleSenderVerification/types'
 import allStates from 'pages/phoneNumbers/options/states.json'
 
 import css from './VerificationForm.less'
 
 type InitialValues = {
-    email: string
+    email?: string
     address?: string
     city?: string
     country?: string
@@ -28,16 +21,20 @@ type InitialValues = {
 
 export type Props = {
     isFormDisabled?: boolean
-    initialValues: InitialValues
-    id?: number
-    onVerificationUpdate?: () => void
+    isLoading?: boolean
+    showSubmitButton?: boolean
+    initialValues?: InitialValues
+    onSubmit?: (values: SenderInformation) => void
 }
+
+export const FORM_ID = 'single-sender-verification-form'
 
 export default function VerificationForm({
     isFormDisabled,
-    initialValues,
-    id,
-    onVerificationUpdate,
+    isLoading,
+    showSubmitButton,
+    initialValues = {},
+    onSubmit,
 }: Props) {
     const [address, setAddress] = useState(initialValues.address ?? '')
     const [city, setCity] = useState(initialValues.city ?? '')
@@ -45,49 +42,15 @@ export default function VerificationForm({
     const [stateValue, setStateValue] = useState(initialValues.state ?? '')
     const [zip, setZip] = useState(initialValues.zip ?? '')
 
-    const dispatch = useAppDispatch()
-
     const {email} = initialValues
 
-    const [{loading: isLoading}, handleVerificationCreate] = useAsyncFn(
-        async (values: SenderInformation) => {
-            if (!id) return
-
-            try {
-                const verification = await createVerification(id, values)
-                onVerificationUpdate?.()
-                dispatch(setVerification(verification))
-                void dispatch(
-                    notify({
-                        message: 'Verification created successfully',
-                        status: NotificationStatus.Success,
-                    })
-                )
-            } catch (error) {
-                const {response} = error as AxiosError<{error: {msg: string}}>
-                const errorMsg =
-                    response && response.data.error
-                        ? response.data.error.msg
-                        : 'Failed to create verification'
-
-                void dispatch(
-                    notify({
-                        message: errorMsg,
-                        status: NotificationStatus.Error,
-                    })
-                )
-            }
-        },
-        [dispatch, email, city, country, address, id]
-    )
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        await handleVerificationCreate({
+        onSubmit?.({
             address,
             city,
             country,
-            email,
+            email: email ?? '',
             state: stateValue,
             zip,
         })
@@ -107,16 +70,19 @@ export default function VerificationForm({
             data-testid={`verification-form-${
                 isFormDisabled ? 'disabled' : 'enabled'
             }`}
+            id={FORM_ID}
         >
-            <FormGroup>
-                <InputField
-                    id="email"
-                    label="Email address"
-                    isDisabled
-                    isRequired={false}
-                    value={email}
-                />
-            </FormGroup>
+            {email && (
+                <FormGroup>
+                    <InputField
+                        id="email"
+                        label="Email address"
+                        isDisabled
+                        isRequired={false}
+                        value={email}
+                    />
+                </FormGroup>
+            )}
             <FormGroup>
                 <InputField
                     id="address"
@@ -202,7 +168,7 @@ export default function VerificationForm({
                     />
                 </FormGroup>
             </div>
-            {!isFormDisabled && (
+            {showSubmitButton && (
                 <Button type="submit" className="mt-4" isLoading={isLoading}>
                     Submit
                 </Button>

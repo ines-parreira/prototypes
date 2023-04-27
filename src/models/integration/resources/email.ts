@@ -1,3 +1,4 @@
+import {stringify} from 'qs'
 import client from 'models/api/resources'
 import {
     EmailMigrationInboundVerification,
@@ -50,12 +51,12 @@ export const createDomainVerification = async (
     dkimKeySize: number,
     provider?: string
 ) => {
-    const params = provider ? `?provider=${provider}` : ''
-
     const response = await client.put<EmailDomain>(
-        `/api/integrations/domains/${domainName}${params}`,
+        `/api/integrations/domains/${domainName}`,
         {
             dkim_key_size: dkimKeySize,
+            params: {provider},
+            paramsSerializer: stringify,
         }
     )
 

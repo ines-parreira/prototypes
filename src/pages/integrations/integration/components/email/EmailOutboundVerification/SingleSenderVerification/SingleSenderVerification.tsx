@@ -18,6 +18,7 @@ import {fetchIntegration, fetchIntegrations} from 'state/integrations/actions'
 import VerificationForm from '../VerificationForm/VerificationForm'
 import DeleteVerificationButton from '../DeleteVerificationButton'
 import BackButton from '../BackButton'
+import useCreateSingleSenderVerification from '../../hooks/useCreateSingleSenderVerification'
 import VerificationEmailSent from './VerificationEmailSent'
 
 export type Props = {
@@ -29,6 +30,9 @@ export default function SingleSenderVerification({
     baseURL,
     integration,
 }: Props) {
+    const {createVerification, isLoading} = useCreateSingleSenderVerification(
+        integration.id
+    )
     const verification = useAppSelector(
         getSingleSenderVerification(integration.id)
     )
@@ -93,8 +97,12 @@ export default function SingleSenderVerification({
                     </p>
                     <VerificationForm
                         initialValues={{email: integration.meta.address}}
-                        id={integration.id}
-                        onVerificationUpdate={refreshIntegration}
+                        isLoading={isLoading}
+                        showSubmitButton
+                        onSubmit={async (values) => {
+                            await createVerification(values)
+                            refreshIntegration()
+                        }}
                     />
                 </div>
             )}

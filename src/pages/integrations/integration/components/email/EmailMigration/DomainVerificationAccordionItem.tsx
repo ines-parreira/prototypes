@@ -17,20 +17,22 @@ type Props = {
     verification: EmailMigrationOutboundVerification
     onVerificationMethodSwitch: (name: string) => void
     refreshMigrationData: () => void
+    isSingleSenderEnabled: boolean
 }
 
 export default function DomainVerificationAccordionItem({
     verification,
-    // onVerificationMethodSwitch,
+    onVerificationMethodSwitch,
     refreshMigrationData,
+    isSingleSenderEnabled,
 }: Props) {
     const {name} = verification
     const {isLoading, createDomainVerification} = useCreateDomainVerification()
 
-    // const handleSwitchMethod = (event: React.MouseEvent) => {
-    //     event.preventDefault()
-    //     onVerificationMethodSwitch(verification.name)
-    // }
+    const handleSwitchMethod = (event: React.MouseEvent) => {
+        event.preventDefault()
+        onVerificationMethodSwitch(verification.name)
+    }
 
     const handleVerifyDomain = async () => {
         await createDomainVerification(verification.name, 1024, 'sendgrid')
@@ -84,13 +86,14 @@ export default function DomainVerificationAccordionItem({
                             />
                         </>
                     )}
-                    {/* TODO uncomment when single sender verification is ready */}
-                    {/* <p className={css.switchMethod}>
-                        Don't have access to your domain?{' '}
-                        <a onClick={handleSwitchMethod} href="#">
-                            Verify emails with your business address
-                        </a>
-                    </p> */}
+                    {isSingleSenderEnabled && (
+                        <p className={css.switchMethod}>
+                            Don't have access to your domain?{' '}
+                            <a onClick={handleSwitchMethod} href="#">
+                                Verify emails with your business address
+                            </a>
+                        </p>
+                    )}
                 </div>
             </AccordionBody>
         </AccordionItem>

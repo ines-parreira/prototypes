@@ -34,5 +34,6 @@ export enum FeatureFlagKey {
     DecoupleContactForm = 'decouple-contact-form',
     FlowsBeta = 'flows-beta',
     SpotlightRecentItems = 'spotlight-recent-items',
+    SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ContinuousChatViewsPolling = 'continuous-chat-views-polling',
 }

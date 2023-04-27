@@ -1,13 +1,15 @@
 import React from 'react'
 import {useLocalStorage} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import {
     EmailMigrationOutboundVerification,
     OutboundVerificationType,
 } from 'models/integration/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import DomainVerificationAccordionItem from './DomainVerificationAccordionItem'
 
-// import SingleSenderVerificationAccordionItem from './SingleSenderVerificationAccordionItem'
+import SingleSenderVerificationAccordionItem from './SingleSenderVerificationAccordionItem'
 
 type Props = {
     domains: EmailMigrationOutboundVerification[]
@@ -29,6 +31,9 @@ export default function MigrationDomainList({
         {}
     )
 
+    const singleSenderEnabled =
+        useFlags()[FeatureFlagKey.SendgridMigrationSingleSender]
+
     const handleSwitchSelectedVerificationType = (name: string) => {
         setSelectedOutboundVerificationType({
             ...selectedOutboundVerificationType,
@@ -41,34 +46,31 @@ export default function MigrationDomainList({
     }
 
     return (
-        // TODO remove expandedItem
-        <Accordion defaultExpandedItem={domains[0]?.name}>
+        <Accordion>
             {domains.map((item) => {
-                // TODO uncomment when single sender verification is ready
-                // const isDomainVerification =
-                //     selectedOutboundVerificationType?.[item.name] !==
-                //     OutboundVerificationType.SingleSender
+                const isDomainVerification =
+                    selectedOutboundVerificationType?.[item.name] !==
+                    OutboundVerificationType.SingleSender
 
-                // return isDomainVerification ? (
-                return (
+                return isDomainVerification || !singleSenderEnabled ? (
                     <DomainVerificationAccordionItem
+                        key={item.name}
                         verification={item}
                         onVerificationMethodSwitch={
                             handleSwitchSelectedVerificationType
                         }
                         refreshMigrationData={refreshMigrationData}
+                        isSingleSenderEnabled={singleSenderEnabled}
+                    />
+                ) : (
+                    <SingleSenderVerificationAccordionItem
                         key={item.name}
+                        verification={item}
+                        onVerificationMethodSwitch={
+                            handleSwitchSelectedVerificationType
+                        }
                     />
                 )
-                // ) : (
-                //     <SingleSenderVerificationAccordionItem
-                //         key={item.name}
-                //         verification={item}
-                //         onVerificationMethodSwitch={
-                //             handleSwitchSelectedVerificationType
-                //         }
-                //     />
-                // )
             })}
         </Accordion>
     )

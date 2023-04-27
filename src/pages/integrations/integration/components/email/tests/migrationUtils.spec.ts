@@ -1,15 +1,22 @@
 import {
     migrationOutboundVerificationNotStarted,
+    migrationOutboundVerificationUnverifiedSingleSender,
     migrationOutboundVerificationVerifiedDomain,
+    migrationOutboundVerificationVerifiedSingleSender,
 } from 'fixtures/emailMigration'
 import {
     EmailMigrationInboundVerification,
     EmailMigrationInboundVerificationStatus,
 } from 'models/integration/types'
+import {VerificationStatus} from 'models/singleSenderVerification/types'
 import {
     computeMigrationInboundVerificationStatus,
+    computeDomainSingleSenderVerificationStatus,
     computeDomainVerificationStatus,
     getInboundUnverifiedMigrations,
+    getSingleSenderUnverifiedIntegrations,
+    computeSingleSenderVerificationStatus,
+    listAddressDetailsInline,
 } from '../EmailMigration/utils'
 import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
 
@@ -103,6 +110,122 @@ describe('migration utils', () => {
                 )
                 expect(result).toBe(EmailVerificationStatus.Success)
             })
+        })
+    })
+
+    describe('getSingleSenderUnverifiedIntegrations', () => {
+        it('should return only unverified integrations', () => {
+            const unverifiedIntegration = {
+                sender_verification: {},
+            }
+            const verifiedIntegration = {
+                sender_verification: {status: VerificationStatus.Verified},
+            }
+
+            const result = getSingleSenderUnverifiedIntegrations({
+                integrations: [unverifiedIntegration, verifiedIntegration],
+            } as any)
+            expect(result).toHaveLength(1)
+            expect(result).toContainEqual(unverifiedIntegration)
+        })
+    })
+
+    describe('computeSingleSenderVerificationStatus', () => {
+        it('should return Success when status is verified', () => {
+            const result = computeSingleSenderVerificationStatus({
+                sender_verification: {
+                    status: VerificationStatus.Verified,
+                },
+            } as any)
+            expect(result).toBe(EmailVerificationStatus.Success)
+        })
+
+        it('should return Unverified when sender information is not available', () => {
+            const result = computeSingleSenderVerificationStatus({
+                sender_verification: {},
+            } as any)
+            expect(result).toBe(EmailVerificationStatus.Unverified)
+        })
+
+        it('should return Pending when sender information is available', () => {
+            const result = computeSingleSenderVerificationStatus({
+                sender_verification: {
+                    email: 'abc@gorgias.com',
+                },
+            } as any)
+            expect(result).toBe(EmailVerificationStatus.Pending)
+        })
+
+        it('should return Failed when status is failed', () => {
+            const result = computeSingleSenderVerificationStatus({
+                sender_verification: {
+                    status: VerificationStatus.Failed,
+                },
+            } as any)
+            expect(result).toBe(EmailVerificationStatus.Failed)
+        })
+    })
+
+    describe('computeDomainSingleSenderVerificationStatus', () => {
+        it('should return Unverified when no single sender verifications are submitted', () => {
+            const result = computeDomainSingleSenderVerificationStatus(
+                migrationOutboundVerificationNotStarted
+            )
+            expect(result).toBe(EmailVerificationStatus.Unverified)
+        })
+
+        it('should return Pending when single sender verifications are submitted and they are not verified yet', () => {
+            const result = computeDomainSingleSenderVerificationStatus(
+                migrationOutboundVerificationUnverifiedSingleSender
+            )
+            expect(result).toBe(EmailVerificationStatus.Pending)
+        })
+
+        it('should return Success when single sender verifications are submitted and they are verified', () => {
+            const result = computeDomainSingleSenderVerificationStatus(
+                migrationOutboundVerificationVerifiedSingleSender
+            )
+            expect(result).toBe(EmailVerificationStatus.Success)
+        })
+    })
+
+    describe('listAddressDetailsInline', () => {
+        it('should return a string with all the addresses', () => {
+            const result = listAddressDetailsInline({
+                sender_verification: {
+                    address: '611 Mission Street',
+                    city: 'San Francisco',
+                    state: 'CA',
+                    zip: '94105',
+                    country: 'US',
+                },
+            } as any)
+            expect(result).toBe(
+                '611 Mission Street, San Francisco, CA 94105, US'
+            )
+        })
+
+        it('should return a string with all the addresses except the state', () => {
+            const result = listAddressDetailsInline({
+                sender_verification: {
+                    address: '611 Mission Street',
+                    city: 'San Francisco',
+                    zip: '94105',
+                    country: 'US',
+                },
+            } as any)
+            expect(result).toBe('611 Mission Street, San Francisco, 94105, US')
+        })
+
+        it('should return a string with all the addresses except the state and the zip', () => {
+            const result = listAddressDetailsInline({
+                sender_verification: {
+                    address: '611 Mission Street',
+                    city: 'San Francisco',
+                    country: 'US',
+                },
+            } as any)
+            expect(result).toBe('611 Mission Street, San Francisco, US')
         })
     })
 })

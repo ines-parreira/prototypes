@@ -1,4 +1,4 @@
-import {cleanup, render, RenderResult} from '@testing-library/react'
+import {cleanup, fireEvent, render, RenderResult} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,7 +9,7 @@ const mockStore = configureMockStore<RootState, StoreDispatch>()
 const store = mockStore({} as RootState)
 
 const getFields = ({getByLabelText, queryByLabelText}: RenderResult) => ({
-    emailAddress: getByLabelText(/email address/i),
+    emailAddress: queryByLabelText(/email address/i),
     address: getByLabelText(/^address/i),
     city: getByLabelText(/city/i),
     country: getByLabelText(/country/i),
@@ -23,36 +23,55 @@ describe('VerificationForm', () => {
 
         return render(
             <Provider store={store}>
-                <VerificationForm
-                    initialValues={{
-                        email: 'email@email.com',
-                    }}
-                    {...props}
-                />
+                <VerificationForm {...props} />
             </Provider>
         )
     }
 
     describe('Enabled form - visible fields', () => {
-        const container = renderComponent()
-
-        const {emailAddress, address, city, country, zip} = getFields(container)
-
         it('should display submit button', () => {
-            expect(
-                container.getByRole('button', {
-                    name: /submit/i,
-                })
-            ).toBeTruthy()
+            const container = renderComponent({
+                showSubmitButton: true,
+                initialValues: {email: 'email@email.com'},
+            })
+
+            const submitButton = container.getByRole('button', {
+                name: /submit/i,
+            })
+            expect(submitButton).toBeVisible()
+            fireEvent.click(submitButton)
+        })
+
+        it('calls onSubmit', () => {
+            const onSubmit = jest.fn()
+            const container = renderComponent({
+                onSubmit,
+            })
+
+            fireEvent.submit(container.getByTestId(/verification-form/i))
+            expect(onSubmit).toHaveBeenCalled()
         })
 
         it('displays email field as disabled', () => {
+            const container = renderComponent({
+                showSubmitButton: true,
+                initialValues: {email: 'email@email.com'},
+            })
+            const {emailAddress} = getFields(container)
             expect(emailAddress).toBeDisabled()
         })
 
-        it.each([address, city, country, zip])(
+        it.each(['address', 'city', 'country', 'zip'])(
             'displays other fields as enabled',
-            (field) => {
+            (fieldName) => {
+                const container = renderComponent({
+                    showSubmitButton: true,
+                    initialValues: {email: 'email@email.com'},
+                })
+                const field = (getFields(container) as Record<any, any>)[
+                    fieldName
+                ]
+
                 expect(field).toBeEnabled()
             }
         )
@@ -90,6 +109,21 @@ describe('VerificationForm', () => {
             const {state} = getFields(container)
 
             expect(state).not.toBeInTheDocument()
+        })
+
+        it('does not display submit button if showSubmitButton is not passed', () => {
+            const {queryByRole} = renderComponent()
+            expect(
+                queryByRole('button', {
+                    name: /submit/i,
+                })
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not display email address field if emailAddress is not passed', () => {
+            const container = renderComponent()
+            const {emailAddress} = getFields(container)
+            expect(emailAddress).not.toBeInTheDocument()
         })
     })
 
@@ -134,15 +168,6 @@ describe('VerificationForm', () => {
             expect(
                 container.getByDisplayValue(props.initialValues.zip)
             ).toBeVisible()
-        })
-
-        it('does not display submit button', () => {
-            const {queryByRole} = renderComponent(props)
-            expect(
-                queryByRole('button', {
-                    name: /submit/i,
-                })
-            ).not.toBeInTheDocument()
         })
     })
 })
