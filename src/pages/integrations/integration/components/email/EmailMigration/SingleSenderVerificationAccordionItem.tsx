@@ -1,16 +1,17 @@
-import React, {useState} from 'react'
+import React from 'react'
 import classNames from 'classnames'
-import {EmailMigrationOutboundVerification} from 'models/integration/types'
+import {
+    EmailMigrationOutboundVerification,
+    EmailMigrationSenderVerificationIntegration,
+} from 'models/integration/types'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import Button from 'pages/common/components/button/Button'
 import Card from 'pages/stats/Card'
-import IconButton from 'pages/common/components/button/IconButton'
 import EmailVerificationStatusLabel, {
     EmailVerificationStatus,
 } from '../EmailVerificationStatusLabel'
-import DeleteVerificationModal from '../DeleteVerificationModal'
 import {
     computeDomainSingleSenderVerificationStatus,
     getSingleSenderUnverifiedIntegrations,
@@ -18,22 +19,22 @@ import {
     listAddressDetailsInline,
 } from './utils'
 import SingleSenderVerificationTable from './SingleSenderVerificationTable'
-import SingleSenderVerificationFormModal from './SingleSenderVerificationFormModal'
 
 import css from './MigrationDomainList.less'
 
 type Props = {
     verification: EmailMigrationOutboundVerification
     onVerificationMethodSwitch: (name: string) => void
+    onBulkSubmitClick: (
+        unverifiedIntegrations: EmailMigrationSenderVerificationIntegration[]
+    ) => void
 }
 
 export default function SingleSenderVerificationAccordionItem({
     verification,
     onVerificationMethodSwitch,
+    onBulkSubmitClick,
 }: Props) {
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-    const [isFormModalOpen, setIsFormModalOpen] = useState(false)
-
     const handleSwitchMethod = (event: React.MouseEvent) => {
         event.preventDefault()
         onVerificationMethodSwitch(verification.name)
@@ -58,10 +59,6 @@ export default function SingleSenderVerificationAccordionItem({
 
     const hasSubmittedBulkVerification = !!submittedVerifications.length
 
-    const handleConfirmBulkDelete = () => {
-        // TODO
-    }
-
     if (verificationStatus === EmailVerificationStatus.Success) {
         return <Card className={css.singleSenderVerifiedCard}>{header}</Card>
     }
@@ -74,18 +71,9 @@ export default function SingleSenderVerificationAccordionItem({
                     <div>
                         {hasSubmittedBulkVerification ? (
                             <div className={css.addressSubmission}>
-                                <div>
-                                    {listAddressDetailsInline(
-                                        submittedVerifications[0]
-                                    )}
-                                </div>
-                                <IconButton
-                                    fillStyle="ghost"
-                                    intent="destructive"
-                                    onClick={() => setIsDeleteModalOpen(true)}
-                                >
-                                    delete
-                                </IconButton>
+                                {listAddressDetailsInline(
+                                    submittedVerifications[0]
+                                )}
                             </div>
                         ) : (
                             <div className={css.addressSubmission}>
@@ -94,9 +82,11 @@ export default function SingleSenderVerificationAccordionItem({
                                     verify the emails.
                                 </div>
                                 <Button
-                                    onClick={() => {
-                                        setIsFormModalOpen(true)
-                                    }}
+                                    onClick={() =>
+                                        onBulkSubmitClick(
+                                            unverifiedIntegrations
+                                        )
+                                    }
                                 >
                                     Submit address
                                 </Button>
@@ -117,22 +107,6 @@ export default function SingleSenderVerificationAccordionItem({
                     </div>
                 </AccordionBody>
             </AccordionItem>
-            <SingleSenderVerificationFormModal
-                isOpen={isFormModalOpen}
-                setIsOpen={setIsFormModalOpen}
-                onConfirm={() => {
-                    // TODO
-                }}
-            />
-            <DeleteVerificationModal
-                isOpen={isDeleteModalOpen}
-                setIsOpen={setIsDeleteModalOpen}
-                onConfirm={handleConfirmBulkDelete}
-            >
-                Deleting verification will remove it for{' '}
-                <strong>all email addresses</strong> associated with this
-                domain.
-            </DeleteVerificationModal>
         </>
     )
 }

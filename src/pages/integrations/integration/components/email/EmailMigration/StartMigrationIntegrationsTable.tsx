@@ -23,11 +23,10 @@ type Props = {
 }
 
 export default function StartMigrationIntegrationsTable({integrations}: Props) {
-    const {page, pageCount, paginatedItems, onPageChange} =
-        useClientSidePagination({
-            items: integrations,
-            itemsPerPage: 5,
-        })
+    const {paginatedItems, ...pagination} = useClientSidePagination({
+        items: integrations,
+        itemsPerPage: 5,
+    })
 
     const dispatch = useAppDispatch()
 
@@ -88,11 +87,7 @@ export default function StartMigrationIntegrationsTable({integrations}: Props) {
                     </TableBody>
                 </TableWrapper>
             </div>
-            <Pagination
-                pageCount={pageCount}
-                onChange={onPageChange}
-                currentPage={page}
-            />
+            <Pagination {...pagination} />
         </div>
     )
 }

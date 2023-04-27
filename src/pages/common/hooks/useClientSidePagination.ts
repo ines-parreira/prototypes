@@ -16,9 +16,9 @@ export default function useClientSidePagination<T>({
     )
 
     return {
-        page,
+        currentPage: page,
         pageCount,
-        onPageChange: setPage,
+        onChange: setPage,
         paginatedItems,
     }
 }

@@ -19,11 +19,10 @@ export default function SingleSenderVerificationTable({
     integrations,
     hasSubmittedBulkVerification,
 }: Props) {
-    const {page, pageCount, paginatedItems, onPageChange} =
-        useClientSidePagination({
-            items: integrations,
-            itemsPerPage: 5,
-        })
+    const {paginatedItems, ...pagination} = useClientSidePagination({
+        items: integrations,
+        itemsPerPage: 5,
+    })
 
     return (
         <>
@@ -48,11 +47,7 @@ export default function SingleSenderVerificationTable({
                     ))}
                 </TableBody>
             </TableWrapper>
-            <Pagination
-                pageCount={pageCount}
-                onChange={onPageChange}
-                currentPage={page}
-            />
+            <Pagination {...pagination} />
         </>
     )
 }

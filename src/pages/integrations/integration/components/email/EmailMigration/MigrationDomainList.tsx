@@ -1,15 +1,18 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useLocalStorage} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import {
     EmailMigrationOutboundVerification,
+    EmailMigrationSenderVerificationIntegration,
     OutboundVerificationType,
 } from 'models/integration/types'
+import {SenderInformation} from 'models/singleSenderVerification/types'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useBulkCreateSingleSenderVerification from '../hooks/useBulkCreateSingleSenderVerification'
 import DomainVerificationAccordionItem from './DomainVerificationAccordionItem'
-
 import SingleSenderVerificationAccordionItem from './SingleSenderVerificationAccordionItem'
+import SingleSenderVerificationFormModal from './SingleSenderVerificationFormModal'
 
 type Props = {
     domains: EmailMigrationOutboundVerification[]
@@ -23,6 +26,14 @@ export default function MigrationDomainList({
     domains,
     refreshMigrationData,
 }: Props) {
+    const [isBulkSubmitFormModalOpen, setIsBulkSubmitFormModalOpen] =
+        useState(false)
+    const [integrationsToBulkSubmit, setIntegrationsToBulkSubmit] =
+        useState<EmailMigrationSenderVerificationIntegration[]>()
+
+    const {isLoading: isBulkSubmitLoading, bulkCreateSingleSenderVerification} =
+        useBulkCreateSingleSenderVerification()
+
     const [
         selectedOutboundVerificationType,
         setSelectedOutboundVerificationType,
@@ -45,33 +56,62 @@ export default function MigrationDomainList({
         })
     }
 
-    return (
-        <Accordion>
-            {domains.map((item) => {
-                const isDomainVerification =
-                    selectedOutboundVerificationType?.[item.name] !==
-                    OutboundVerificationType.SingleSender
+    const handleBulkSubmitConfirm = async (
+        values: Omit<SenderInformation, 'email'>
+    ) => {
+        if (!integrationsToBulkSubmit) {
+            return
+        }
 
-                return isDomainVerification || !singleSenderEnabled ? (
-                    <DomainVerificationAccordionItem
-                        key={item.name}
-                        verification={item}
-                        onVerificationMethodSwitch={
-                            handleSwitchSelectedVerificationType
-                        }
-                        refreshMigrationData={refreshMigrationData}
-                        isSingleSenderEnabled={singleSenderEnabled}
-                    />
-                ) : (
-                    <SingleSenderVerificationAccordionItem
-                        key={item.name}
-                        verification={item}
-                        onVerificationMethodSwitch={
-                            handleSwitchSelectedVerificationType
-                        }
-                    />
-                )
-            })}
-        </Accordion>
+        await bulkCreateSingleSenderVerification(
+            integrationsToBulkSubmit,
+            values
+        )
+        setIsBulkSubmitFormModalOpen(false)
+        refreshMigrationData()
+    }
+
+    return (
+        <>
+            <Accordion>
+                {domains.map((item) => {
+                    const isDomainVerification =
+                        selectedOutboundVerificationType?.[item.name] !==
+                        OutboundVerificationType.SingleSender
+
+                    return isDomainVerification || !singleSenderEnabled ? (
+                        <DomainVerificationAccordionItem
+                            key={item.name}
+                            verification={item}
+                            onVerificationMethodSwitch={
+                                handleSwitchSelectedVerificationType
+                            }
+                            refreshMigrationData={refreshMigrationData}
+                            isSingleSenderEnabled={singleSenderEnabled}
+                        />
+                    ) : (
+                        <SingleSenderVerificationAccordionItem
+                            key={item.name}
+                            verification={item}
+                            onVerificationMethodSwitch={
+                                handleSwitchSelectedVerificationType
+                            }
+                            onBulkSubmitClick={(
+                                integrations: EmailMigrationSenderVerificationIntegration[]
+                            ) => {
+                                setIsBulkSubmitFormModalOpen(true)
+                                setIntegrationsToBulkSubmit(integrations)
+                            }}
+                        />
+                    )
+                })}
+            </Accordion>
+            <SingleSenderVerificationFormModal
+                isOpen={isBulkSubmitFormModalOpen}
+                setIsOpen={setIsBulkSubmitFormModalOpen}
+                onConfirm={handleBulkSubmitConfirm}
+                isLoading={isBulkSubmitLoading}
+            />
+        </>
     )
 }

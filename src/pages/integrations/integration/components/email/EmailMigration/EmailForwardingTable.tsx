@@ -24,11 +24,10 @@ type Props = {
 }
 
 export default function EmailForwardingTable({migrations}: Props) {
-    const {page, pageCount, paginatedItems, onPageChange} =
-        useClientSidePagination({
-            items: migrations,
-            itemsPerPage: 5,
-        })
+    const {paginatedItems, ...pagination} = useClientSidePagination({
+        items: migrations,
+        itemsPerPage: 5,
+    })
 
     return (
         <div className={css.container}>
@@ -85,11 +84,7 @@ export default function EmailForwardingTable({migrations}: Props) {
                     )}
                 </TableBody>
             </TableWrapper>
-            <Pagination
-                pageCount={pageCount}
-                onChange={onPageChange}
-                currentPage={page}
-            />
+            <Pagination {...pagination} />
         </div>
     )
 }

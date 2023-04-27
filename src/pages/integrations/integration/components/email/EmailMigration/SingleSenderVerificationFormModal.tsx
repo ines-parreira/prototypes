@@ -4,6 +4,7 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Button from 'pages/common/components/button/Button'
+import {SenderInformation} from 'models/singleSenderVerification/types'
 import VerificationForm, {
     FORM_ID,
 } from '../EmailOutboundVerification/VerificationForm/VerificationForm'
@@ -14,17 +15,26 @@ type Props = Pick<
 > & {
     isOpen: boolean
     setIsOpen: (value: boolean) => void
-    onConfirm: () => void
+    onConfirm: (values: SenderInformation) => void
+    onClose?: () => void
+    isLoading?: boolean
 }
 
 export default function SingleSenderVerificationFormModal({
     isOpen,
     setIsOpen,
     onConfirm,
+    onClose,
     initialValues,
+    isLoading,
 }: Props) {
+    const handleClose = () => {
+        onClose?.()
+        setIsOpen(false)
+    }
+
     return (
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <Modal isOpen={isOpen} onClose={handleClose}>
             {/* keep condition to prevent form from being rendered
              *  and submitted multiple times */}
             {isOpen && (
@@ -37,13 +47,14 @@ export default function SingleSenderVerificationFormModal({
                         />
                     </ModalBody>
                     <ModalActionsFooter>
-                        <Button
-                            intent="secondary"
-                            onClick={() => setIsOpen(false)}
-                        >
+                        <Button intent="secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button type="submit" form={FORM_ID}>
+                        <Button
+                            type="submit"
+                            form={FORM_ID}
+                            isLoading={isLoading}
+                        >
                             Submit
                         </Button>
                     </ModalActionsFooter>
