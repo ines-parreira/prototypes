@@ -123,4 +123,14 @@ describe('getRestockType()', () => {
 
         expect(restockType).toBe('cancel')
     })
+
+    it('should return `"no_restock"` because the line item its not eligible to restock', () => {
+        const lineItem = (
+            fromJS(shopifyLineItemFixture()) as Map<any, any>
+        ).set('fulfillment_status', 'not_eligible')
+        const restock = true
+        const restockType = getRestockType(lineItem, restock)
+
+        expect(restockType).toBe('no_restock')
+    })
 })

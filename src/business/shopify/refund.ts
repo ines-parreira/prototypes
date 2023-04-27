@@ -72,10 +72,10 @@ export function getRestockType(
     lineItem: Map<any, any>,
     restock = true
 ): string {
-    if (restock) {
-        const isFulfilled = lineItem.get('fulfillment_status') === 'fulfilled'
-        return isFulfilled ? 'return' : 'cancel'
+    if (!restock || lineItem.get('fulfillment_status') === 'not_eligible') {
+        return 'no_restock'
     }
 
-    return 'no_restock'
+    const isFulfilled = lineItem.get('fulfillment_status') === 'fulfilled'
+    return isFulfilled ? 'return' : 'cancel'
 }
