@@ -214,10 +214,6 @@ exports[`time series useTicketsCreatedTimeSeries should create reporting filters
         "asc",
       ],
     ],
-    "segments": [
-      "TicketState.conversationStarted",
-      "TicketState.closedTickets",
-    ],
     "timeDimensions": [
       {
         "dateRange": [

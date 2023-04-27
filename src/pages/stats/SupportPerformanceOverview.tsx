@@ -498,7 +498,7 @@ export default function SupportPerformanceOverview() {
                             'caption-regular'
                         )}
                     >
-                        Analytics are in {userTimezone} time
+                        Analytics are using {userTimezone} timezone
                     </div>
                 )}
             </StatsPage>

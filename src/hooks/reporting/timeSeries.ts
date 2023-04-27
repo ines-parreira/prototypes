@@ -38,10 +38,6 @@ export function useTicketsCreatedTimeSeries(
         ],
         timezone,
         order: [[TicketStateDimension.CreatedDatetime, 'asc']],
-        segments: [
-            TicketStateSegment.ConversationStarted,
-            TicketStateSegment.ClosedTickets,
-        ],
         filters: [
             ...statsFiltersToReportingFilters(
                 TicketStateStatsFiltersMembers,
