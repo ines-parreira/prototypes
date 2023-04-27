@@ -26,6 +26,7 @@ export enum FeatureFlagKey {
     RevenueClickTracking = 'revenue-click-tracking',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
+    CampaignWithNoReply = 'campaign-with-no-reply',
     SpotlightGlobalSearch = 'spotlight-global-search',
     HelpCenterMigrationConfig = 'migration-config',
     ChatLauncherCustomization = 'chat-launcher-customization',

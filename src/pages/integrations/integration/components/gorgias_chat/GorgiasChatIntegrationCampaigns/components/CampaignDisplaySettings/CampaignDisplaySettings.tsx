@@ -14,10 +14,12 @@ import css from './CampaignDisplaySettings.less'
 type Props = {
     isRevenueBetaTester?: boolean
     delay?: number
+    isNoReply: boolean
     triggers: CampaignTriggerMap
     onChangeCollision: (triggerId: string, value: boolean) => void
     onChangeDelay: (value: number) => void
     onChangeDeviceType: (triggerId: string, value: string) => void
+    onChangeNoReply: (value: boolean) => void
 }
 
 function getTriggerIdByKey(
@@ -35,8 +37,10 @@ function getTriggerIdByKey(
 export const CampaignDisplaySettings = ({
     isRevenueBetaTester,
     delay,
+    isNoReply,
     triggers,
     onChangeCollision,
+    onChangeNoReply,
     onChangeDelay,
     onChangeDeviceType,
 }: Props): JSX.Element => {
@@ -81,6 +85,8 @@ export const CampaignDisplaySettings = ({
                 <div className={css.sectionItem}>
                     <CampaignPreferences
                         triggers={triggers}
+                        isNoReply={isNoReply}
+                        onChangeNoReply={onChangeNoReply}
                         onChangeCollision={onChangeCollision}
                     />
                 </div>

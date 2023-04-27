@@ -107,6 +107,7 @@ export const AdvancedCampaignDetails = memo(
         )
         const [campaignDelay, setCampaignDelay] = useState<number>(0)
         const [campaignAgent, setCampaignAgent] = useState<CampaignAuthor>()
+        const [campaignWithNoReply, setCampaignWithNoReply] = useState(false)
         const [campaignMessageHTML, setCampaignMessageHTML] =
             useState<string>('')
         const [campaignMessageText, setCampaignMessageText] =
@@ -286,6 +287,13 @@ export const AdvancedCampaignDetails = memo(
             [triggers, updateTriggers]
         )
 
+        const handleChangeNoReply = useCallback(
+            (value: boolean) => {
+                setCampaignWithNoReply(value)
+            },
+            [setCampaignWithNoReply]
+        )
+
         const handleSaveCampaign = async () => {
             setIsActionInProgress(true)
 
@@ -315,6 +323,7 @@ export const AdvancedCampaignDetails = memo(
                         meta: {
                             ...payload?.meta,
                             delay: campaignDelay,
+                            noReply: campaignWithNoReply,
                         },
                     }
                 }
@@ -402,8 +411,14 @@ export const AdvancedCampaignDetails = memo(
 
                 setCampaignName(campaign.name)
 
-                if (campaign.meta && campaign.meta.delay >= 0) {
-                    setCampaignDelay(campaign.meta.delay)
+                if (campaign.meta) {
+                    if (campaign.meta.delay >= 0) {
+                        setCampaignDelay(campaign.meta.delay)
+                    }
+
+                    if (typeof campaign.meta.noReply === 'boolean') {
+                        setCampaignWithNoReply(campaign.meta.noReply)
+                    }
                 }
 
                 if (campaign.message) {
@@ -543,10 +558,12 @@ export const AdvancedCampaignDetails = memo(
                         <CampaignDisplaySettings
                             isRevenueBetaTester={isRevenueBetaTester}
                             triggers={triggers}
+                            isNoReply={campaignWithNoReply}
                             delay={campaignDelay}
                             onChangeCollision={handleToggleSingleCampaignInView}
                             onChangeDelay={setCampaignDelay}
                             onChangeDeviceType={handleChangeDeviceType}
+                            onChangeNoReply={handleChangeNoReply}
                         />
 
                         <h3 className={css.section}>Write your message</h3>
