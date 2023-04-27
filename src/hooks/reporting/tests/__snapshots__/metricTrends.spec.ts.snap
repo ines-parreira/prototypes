@@ -281,6 +281,14 @@ exports[`metric trends useMessagesSentTrend should create reporting filters 1`] 
         "2",
       ],
     },
+    {
+      "member": "MessageState.sentDatetime",
+      "operator": "inDateRange",
+      "values": [
+        "2021-05-29T00:00:00+02:00",
+        "2021-06-04T23:59:59+02:00",
+      ],
+    },
   ],
   "measures": [
     "MessageState.messageCount",
@@ -345,6 +353,14 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
 {
   "dimensions": [],
   "filters": [
+    {
+      "member": "TicketState.createdDatetime",
+      "operator": "inDateRange",
+      "values": [
+        "2021-05-29T00:00:00+02:00",
+        "2021-06-04T23:59:59+02:00",
+      ],
+    },
     {
       "member": "TicketState.isTrashed",
       "operator": "equals",
@@ -441,6 +457,14 @@ exports[`metric trends useTicketsRepliedTrend should create reporting filters 1`
       "operator": "equals",
       "values": [
         "2",
+      ],
+    },
+    {
+      "member": "MessageState.sentDatetime",
+      "operator": "inDateRange",
+      "values": [
+        "2021-05-29T00:00:00+02:00",
+        "2021-06-04T23:59:59+02:00",
       ],
     },
   ],

@@ -1,5 +1,6 @@
 import {
     MessageStateMeasure,
+    MessageStateMember,
     OpenTicketStateMeasure,
     OpenTicketStateMember,
     ReportingFilter,
@@ -169,6 +170,14 @@ export const useTicketsCreatedTrend = createUseMetricTrend(
         timezone,
         filters: [
             {
+                member: TicketStateMember.CreatedDatetime,
+                operator: ReportingFilterOperator.InDateRange,
+                values: [
+                    filters.period.start_datetime,
+                    filters.period.end_datetime,
+                ],
+            },
+            {
                 member: TicketStateMember.IsTrashed,
                 operator: ReportingFilterOperator.Equals,
                 values: ['0'],
@@ -191,10 +200,20 @@ export const useTicketsRepliedTrend = createUseMetricTrend(
         measures: [MessageStateMeasure.TicketCount],
         dimensions: [],
         timezone,
-        filters: statsFiltersToReportingFilters(
-            MessageStateStatsFiltersMembers,
-            filters
-        ),
+        filters: [
+            ...statsFiltersToReportingFilters(
+                MessageStateStatsFiltersMembers,
+                filters
+            ),
+            {
+                member: MessageStateMember.SentDatetime,
+                operator: ReportingFilterOperator.InDateRange,
+                values: [
+                    filters.period.start_datetime,
+                    filters.period.end_datetime,
+                ],
+            },
+        ],
     })
 )
 
@@ -203,9 +222,19 @@ export const useMessagesSentTrend = createUseMetricTrend(
         measures: [MessageStateMeasure.MessageCount],
         dimensions: [],
         timezone,
-        filters: statsFiltersToReportingFilters(
-            MessageStateStatsFiltersMembers,
-            filters
-        ),
+        filters: [
+            ...statsFiltersToReportingFilters(
+                MessageStateStatsFiltersMembers,
+                filters
+            ),
+            {
+                member: MessageStateMember.SentDatetime,
+                operator: ReportingFilterOperator.InDateRange,
+                values: [
+                    filters.period.start_datetime,
+                    filters.period.end_datetime,
+                ],
+            },
+        ],
     })
 )

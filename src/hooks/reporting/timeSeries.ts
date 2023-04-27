@@ -110,7 +110,7 @@ export function useTicketsRepliedTimeSeries(
         measures: [MessageStateMeasure.TicketCount],
         timeDimensions: [
             {
-                dimension: MessageStateDimension.PeriodStart,
+                dimension: MessageStateDimension.SentDatetime,
                 granularity,
                 dateRange: [
                     formatReportingQueryDate(filters.period.start_datetime),
@@ -137,7 +137,7 @@ export function useMessagesSentTimeSeries(
         measures: [MessageStateMeasure.MessageCount],
         timeDimensions: [
             {
-                dimension: MessageStateDimension.PeriodStart,
+                dimension: MessageStateDimension.SentDatetime,
                 granularity,
                 dateRange: [
                     formatReportingQueryDate(filters.period.start_datetime),

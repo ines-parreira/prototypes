@@ -33,6 +33,7 @@ export enum TicketStateMember {
     PeriodStart = 'TicketState.periodStart',
     PeriodEnd = 'TicketState.periodEnd',
     Channel = 'TicketState.channel',
+    CreatedDatetime = 'TicketState.createdDatetime',
     Integration = 'TicketState.integration',
     AssigneeUserId = 'TicketState.assigneeUserId',
     IsTrashed = 'TicketState.isTrashed',
@@ -66,11 +67,13 @@ export enum MessageStateMember {
     Channel = 'MessageState.channel',
     Integration = 'MessageState.integration',
     SenderId = 'MessageState.senderId',
+    SentDatetime = 'MessageState.sentDatetime',
 }
 
 export enum MessageStateDimension {
     CreatedDatetime = 'MessageState.createdDatetime',
     PeriodStart = 'MessageState.periodStart',
+    SentDatetime = 'MessageState.sentDatetime',
 }
 
 export type ReportingMeasure =
