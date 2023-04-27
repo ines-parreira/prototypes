@@ -1,6 +1,5 @@
 import classnames from 'classnames'
 import React, {useMemo, useState} from 'react'
-import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
 
 import {TicketChannel} from 'business/types/ticket'
@@ -56,8 +55,6 @@ import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import BigNumberMetric from './BigNumberMetric'
 import DashboardSection from './DashboardSection'
 import DashboardGridCell from './DashboardGridCell'
-import MetricTooltip from './MetricTooltip'
-import TipsToggle from './TipsToggle'
 import css from './SupportPerformanceOverview.less'
 import ChartCard from './ChartCard'
 import TrendMetricCard from './TrendMetricCard'
@@ -65,7 +62,6 @@ import GaugeChart from './GaugeChart'
 import {OneDimensionalDataItem} from './types'
 import TimeSeriesChart from './TimeSeriesChart'
 
-export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 const DEFAULT_TIMEZONE = 'UTC'
 
 export default function SupportPerformanceOverview() {
@@ -77,10 +73,6 @@ export default function SupportPerformanceOverview() {
     const statsFilters = useAppSelector(getStatsFilters)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
-    )
-    const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
-        STATS_TIPS_VISIBILITY_KEY,
-        true
     )
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
@@ -241,33 +233,13 @@ export default function SupportPerformanceOverview() {
                     )
                 }
             >
-                <DashboardSection
-                    title="Customer experience"
-                    titleExtra={
-                        <TipsToggle
-                            isVisible={!!areTipsVisible}
-                            onClick={() => setAreTipsVisible(!areTipsVisible)}
-                        />
-                    }
-                >
+                <DashboardSection title="Customer experience">
                     <DashboardGridCell size={3}>
                         <TrendMetricCard
                             title="Customer satisfaction"
                             hint="Average CSAT score for tickets which received a survey during the period"
                             data={customerSatisfactionTrend.data}
                             interpretAs="more-is-better"
-                            tooltip={
-                                areTipsVisible && (
-                                    <MetricTooltip
-                                        type="error"
-                                        title="Poor performance: 4.3"
-                                    >
-                                        Tip: you're not often using macros,
-                                        using them could help you decrease
-                                        Resolution Time.
-                                    </MetricTooltip>
-                                )
-                            }
                         >
                             {({formattedValue}) => (
                                 <BigNumberMetric>
@@ -288,17 +260,6 @@ export default function SupportPerformanceOverview() {
                             data={firstResponseTimeTrend.data}
                             interpretAs="less-is-better"
                             valueFormat="duration"
-                            tooltip={
-                                areTipsVisible && (
-                                    <MetricTooltip
-                                        type="neutral"
-                                        title="Neutral: 5m"
-                                    >
-                                        Tip: Sending cute animal GIFs can boost
-                                        the mood in a conversation
-                                    </MetricTooltip>
-                                )
-                            }
                         >
                             {({formattedValue}) => (
                                 <BigNumberMetric>
@@ -314,18 +275,6 @@ export default function SupportPerformanceOverview() {
                             data={resolutionTimeTrend.data}
                             valueFormat="duration"
                             interpretAs="less-is-better"
-                            tooltip={
-                                areTipsVisible && (
-                                    <MetricTooltip
-                                        type="light-error"
-                                        title="Underperforming: 48m"
-                                    >
-                                        Tip: you're not often using macros,
-                                        using them could help you decrease
-                                        Resolution Time.
-                                    </MetricTooltip>
-                                )
-                            }
                         >
                             {({formattedValue}) => (
                                 <BigNumberMetric>
@@ -340,17 +289,6 @@ export default function SupportPerformanceOverview() {
                             hint="Average number of messages exchanged per closed ticket"
                             data={messagesPerTicketTrend.data}
                             interpretAs="less-is-better"
-                            tooltip={
-                                areTipsVisible && (
-                                    <MetricTooltip
-                                        type="light-success"
-                                        title="Overperforming: 9"
-                                    >
-                                        You're doing great, keep up the good
-                                        work!
-                                    </MetricTooltip>
-                                )
-                            }
                         >
                             {({formattedValue}) => (
                                 <BigNumberMetric>
