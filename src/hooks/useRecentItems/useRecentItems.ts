@@ -94,7 +94,7 @@ const useRecentItems = <T extends {id: number}>(
     })
 
     useEffect(() => {
-        let subscription: Subscription
+        let subscription: Subscription | undefined
         const setupSubscription = async () => {
             await localForage.ready()
             subscription = LocalForageManager.observeTable(
@@ -106,7 +106,7 @@ const useRecentItems = <T extends {id: number}>(
         void setupSubscription()
 
         return () => {
-            subscription.unsubscribe()
+            subscription?.unsubscribe()
         }
     }, [itemType, localForage, setRecentItems])
 
