@@ -1,9 +1,10 @@
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {useAsyncFn, useEffectOnce} from 'react-use'
 import _debounce from 'lodash/debounce'
 import _isEmpty from 'lodash/isEmpty'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import _noop from 'lodash/noop'
+import _isEqual from 'lodash/isEqual'
 
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import {DEBOUNCE_TIME, RecentItems} from 'hooks/useRecentItems/constants'
@@ -16,6 +17,7 @@ const useRecentItems = <T extends {id: number}>(
     maxItems: number = MAX_RECENT_ITEMS
 ) => {
     const isEnabled = useFlags()[FeatureFlagKey.SpotlightRecentItems]
+    const previousItemRef = useRef<T>()
 
     const localForage = useMemo(
         () => LocalForageManager.getTable(`recent-${itemType}`),
@@ -46,6 +48,10 @@ const useRecentItems = <T extends {id: number}>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const setRecentItem = useCallback(
         _debounce(async (item: T) => {
+            if (_isEqual(previousItemRef.current, item)) {
+                return
+            }
+
             await localForage.ready()
             const itemCount = await localForage.length()
 
@@ -59,6 +65,12 @@ const useRecentItems = <T extends {id: number}>(
                 )
 
                 if (!!existingItemKey) {
+                    if (previousItemRef.current?.id === item.id) {
+                        await localForage.setItem(existingItemKey, item)
+                        previousItemRef.current = item
+                        return
+                    }
+
                     await localForage.removeItem(existingItemKey)
                 } else if (itemCount >= maxItems) {
                     const keyIndexes = await localForage.keys()
@@ -72,6 +84,7 @@ const useRecentItems = <T extends {id: number}>(
             }
 
             await localForage.setItem(Date.now().toString(), item)
+            previousItemRef.current = item
         }, DEBOUNCE_TIME),
         [localForage, maxItems]
     )
