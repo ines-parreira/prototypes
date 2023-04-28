@@ -8,7 +8,6 @@ import settingsCss from 'pages/settings/settings.less'
 
 import {HelpCenter, Locale} from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {changeHelpCenterId, changeViewLanguage} from 'state/ui/helpCenter'
@@ -36,7 +35,6 @@ export type ManageHelpCentersProps = {
     standaloneHelpCenters: HelpCenter[]
     helpCenterList: HelpCenter[]
     isButtonDisabled: boolean
-    isHelpCenterLimitReached: boolean
     isLoading: boolean
     fetchMore: () => Promise<void>
     hasMore: boolean
@@ -46,7 +44,6 @@ export const ManageHelpCenters = ({
     standaloneHelpCenters,
     helpCenterList,
     isButtonDisabled,
-    isHelpCenterLimitReached,
     isLoading,
     fetchMore,
     hasMore,
@@ -235,7 +232,7 @@ export const ManageHelpCenters = ({
                     onClick={handleAddHelpCenter}
                 >
                     <div className={css.createNewButton}>
-                        <i className="material-icons mr-2">add</i>Create New
+                        Create Help Center
                     </div>
                 </Button>
             </Container>
@@ -270,33 +267,6 @@ export const ManageHelpCenters = ({
                     </div>
                 </div>
             </InfiniteScroll>
-            {isLoading ? null : (
-                <>
-                    <div className={css.addHelpCenter}>
-                        <Button
-                            id="add-new-help-center-button"
-                            isDisabled={isButtonDisabled}
-                            onClick={handleAddHelpCenter}
-                        >
-                            <div className={css.createNewButton}>
-                                <i className="material-icons mr-2">add</i>Create
-                                New
-                            </div>
-                        </Button>
-                    </div>
-                    <Tooltip
-                        disabled={!isHelpCenterLimitReached}
-                        placement="top-start"
-                        target="add-new-help-center-button"
-                        style={{
-                            textAlign: 'start',
-                            width: 180,
-                        }}
-                    >
-                        Please contact us to create more Help Centers.
-                    </Tooltip>
-                </>
-            )}
         </div>
     )
 }

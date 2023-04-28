@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import {Link, NavLink, Route, Switch} from 'react-router-dom'
+import {Link, NavLink, Route, Switch, useHistory} from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 
@@ -14,6 +14,7 @@ import Detail from 'pages/common/components/ProductDetail'
 import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
 import Button from 'pages/common/components/button/Button'
+import Tooltip from 'pages/common/components/Tooltip'
 import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import {
     HELP_CENTER_MAX_CREATION,
@@ -26,6 +27,8 @@ import {useStandaloneHelpCenterAfterDismiss} from '../../hooks/useStandaloneHelp
 import HelpCenterPaywall from '../Paywalls/HelpCenterPaywall'
 import {ABOUT_PAGE} from './constants'
 import ManageHelpCenters from './ManageHelpCenters'
+
+import css from './HelpCenterStartView.less'
 
 const HelpCenterStartView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -61,6 +64,10 @@ const HelpCenterStartView: React.FC = () => {
         dispatch(changeHelpCenterId(null))
     }, [dispatch])
 
+    const history = useHistory()
+    const handleAddHelpCenter = () =>
+        history.push(`${HELP_CENTER_BASE_PATH}/new`)
+
     const isHelpCenterLimitReached =
         helpCenterList.length >= HELP_CENTER_MAX_CREATION
 
@@ -92,13 +99,44 @@ const HelpCenterStartView: React.FC = () => {
     const detailsProps = {...ABOUT_PAGE}
     detailsProps.infocard.CTA = (
         <Link to={`${HELP_CENTER_BASE_PATH}/new`}>
-            <Button className="full-width">Create New</Button>
+            <Button className="full-width">Create Help Center</Button>
         </Link>
     )
 
     return (
         <div className="full-width">
-            <PageHeader title="Help Center" />
+            <PageHeader title="Help Center">
+                {isLoading || helpCenterList.length <= 0 ? null : (
+                    <Route exact path={pathManage}>
+                        <Button
+                            id="add-new-help-center-button"
+                            isDisabled={
+                                isPassingRulesCheck(({can}) =>
+                                    can('create', 'HelpCenterEntity')
+                                )
+                                    ? isHelpCenterLimitReached
+                                    : true
+                            }
+                            onClick={handleAddHelpCenter}
+                        >
+                            <div className={css.createNewButton}>
+                                Create Help Center
+                            </div>
+                        </Button>
+                        <Tooltip
+                            disabled={!isHelpCenterLimitReached}
+                            placement="top-start"
+                            target="add-new-help-center-button"
+                            style={{
+                                textAlign: 'start',
+                                width: 180,
+                            }}
+                        >
+                            Please contact us to create more Help Centers.
+                        </Tooltip>
+                    </Route>
+                )}
+            </PageHeader>
             <SecondaryNavbar>
                 <NavLink exact to={navAbout}>
                     About
@@ -127,7 +165,6 @@ const HelpCenterStartView: React.FC = () => {
                         helpCenterList={helpCenterList}
                         standaloneHelpCenters={standaloneHelpCenters}
                         isLoading={isLoading}
-                        isHelpCenterLimitReached={isHelpCenterLimitReached}
                         hasMore={hasMore}
                         fetchMore={fetchMore}
                         isButtonDisabled={

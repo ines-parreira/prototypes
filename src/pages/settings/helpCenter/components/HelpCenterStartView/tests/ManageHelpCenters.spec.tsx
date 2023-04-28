@@ -1,6 +1,5 @@
 import React from 'react'
-import {fireEvent, screen} from '@testing-library/react'
-import {createBrowserHistory} from 'history'
+import {screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -37,8 +36,6 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
-const mockedHistory = {...createBrowserHistory(), push: jest.fn()}
-
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
@@ -55,7 +52,6 @@ const props: ManageHelpCentersProps = {
     helpCenterList: helpCenters,
     standaloneHelpCenters: [],
     isButtonDisabled: false,
-    isHelpCenterLimitReached: false,
     isLoading: false,
     fetchMore: jest.fn(),
     hasMore: false,
@@ -90,7 +86,7 @@ describe('<ManageHelpCenters />', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should not render the "Create New" button while loading in still in progress', () => {
+    it('should not render the "create help center" button while loading in still in progress', () => {
         renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
                 <ManageHelpCenters
@@ -101,7 +97,7 @@ describe('<ManageHelpCenters />', () => {
             </Provider>
         )
 
-        expect(screen.queryByText(/create new/i)).toBeNull()
+        expect(screen.queryByText(/create help center/i)).toBeNull()
     })
 
     it('should render the empty list state when the component is loaded and the help center list is empty', () => {
@@ -116,21 +112,6 @@ describe('<ManageHelpCenters />', () => {
         )
 
         screen.getByText(/You have no Help Centers at the moment./i)
-        screen.getByText(/create new/i)
-    })
-
-    it('should navigate to the creation page when clicking on the new button', () => {
-        renderWithRouter(
-            <Provider store={mockedStore(defaultState)}>
-                <ManageHelpCenters {...props} />
-            </Provider>,
-            {history: mockedHistory}
-        )
-        const newBtn = screen.getByText(/create new/i)
-        fireEvent.click(newBtn)
-
-        expect(mockedHistory.push).toHaveBeenCalledWith(
-            '/app/settings/help-center/new'
-        )
+        screen.getByText(/create help center/i)
     })
 })

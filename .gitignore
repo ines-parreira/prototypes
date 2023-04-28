@@ -19,6 +19,7 @@ npm-debug.log
 .yarnclean
 .babel.json
 node_modules
+.history
 
 # Translations
 *.mo

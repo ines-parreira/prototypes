@@ -133,7 +133,7 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
                 class="wrapper full-width fill primary medium"
                 type="button"
               >
-                Create New
+                Create Help Center
               </button>
             </a>
           </div>
@@ -220,6 +220,19 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
       >
         Help Center
       </h1>
+      <div>
+        <button
+          class="wrapper fill primary medium"
+          id="add-new-help-center-button"
+          type="button"
+        >
+          <div
+            class="createNewButton"
+          >
+            Create Help Center
+          </div>
+        </button>
+      </div>
     </div>
     <nav
       class="navbar navbar"
@@ -801,26 +814,6 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
             />
           </div>
         </div>
-      </div>
-      <div
-        class="addHelpCenter"
-      >
-        <button
-          class="wrapper fill primary medium"
-          id="add-new-help-center-button"
-          type="button"
-        >
-          <div
-            class="createNewButton"
-          >
-            <i
-              class="material-icons mr-2"
-            >
-              add
-            </i>
-            Create New
-          </div>
-        </button>
       </div>
     </div>
   </div>

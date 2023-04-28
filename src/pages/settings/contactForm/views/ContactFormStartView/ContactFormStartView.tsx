@@ -21,7 +21,6 @@ import {usePaginatedContactForms} from 'pages/settings/contactForm/hooks/usePagi
 import ManageContactForms from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms'
 import {Props} from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms/ManageContactForms'
 import {CONTACT_FORM_APP_DETAIL} from 'pages/settings/contactForm/views/ContactFormStartView/constants'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 const navLinks = {
     About: CONTACT_FORM_ABOUT_PATH,
@@ -57,9 +56,7 @@ const ContactFormStartView: React.FC = () => {
                             aria-label="create-form-nav"
                             onClick={handleAddHelpCenter}
                         >
-                            <ButtonIconLabel icon="add">
-                                Create Form
-                            </ButtonIconLabel>
+                            Create Contact Form
                         </Button>
                     </Route>
                 )}

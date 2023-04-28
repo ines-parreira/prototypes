@@ -41,7 +41,7 @@ const ManageContactForms = ({isLoading, contactForms = []}: Props) => {
                     aria-label="create-form-bottom"
                 >
                     <div className={css.createNewButton}>
-                        <i className="material-icons mr-2">add</i>Create Form
+                        Create Contact Form
                     </div>
                 </Button>
             </Container>

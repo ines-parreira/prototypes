@@ -240,12 +240,7 @@ exports[`<ContactFormStartView /> \`Forms\` section should render ManageContactF
         <div
           class="createNewButton"
         >
-          <i
-            class="material-icons mr-2"
-          >
-            add
-          </i>
-          Create Form
+          Create Contact Form
         </div>
       </button>
     </div>

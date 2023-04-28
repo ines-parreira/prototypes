@@ -136,7 +136,7 @@ describe('<HelpCenterStartView />', () => {
                 route: `${HELP_CENTER_BASE_PATH}/manage`,
             }
         )
-        const newBtn = screen.getByText(/create new/i)
+        const newBtn = screen.getByText(/create help center/i)
         fireEvent.click(newBtn)
 
         expect(mockHistoryPush).toHaveBeenLastCalledWith(
