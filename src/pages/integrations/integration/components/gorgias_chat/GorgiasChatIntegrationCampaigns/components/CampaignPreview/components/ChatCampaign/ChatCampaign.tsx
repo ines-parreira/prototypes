@@ -69,6 +69,7 @@ type Props = {
     chatTitle?: string
     html: string
     products?: CampaignProduct[]
+    shouldHideReplyInput?: boolean
     translatedTexts: Record<string, string>
     onCampaignContentChange?: (value: boolean) => void
 }
@@ -80,6 +81,7 @@ export const ChatCampaign = ({
     chatTitle,
     html,
     products = [],
+    shouldHideReplyInput = false,
     translatedTexts,
     onCampaignContentChange,
 }: Props) => {
@@ -174,9 +176,11 @@ export const ChatCampaign = ({
                 </div>
             )}
 
-            <div className={css.footer}>
-                {translatedTexts.campaignClickToReply}
-            </div>
+            {!shouldHideReplyInput && (
+                <div className={css.footer}>
+                    {translatedTexts.campaignClickToReply}
+                </div>
+            )}
         </div>
     )
 }

@@ -512,6 +512,7 @@ export const AdvancedCampaignDetails = memo(
                                     chatPreviewProps.mainFontFamily ??
                                     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
                                 }
+                                shouldHideReplyInput={campaignWithNoReply}
                                 onCampaignContentChange={setShowContentWarning}
                             />
                         )

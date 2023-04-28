@@ -31,6 +31,7 @@ type Props = {
         type: GorgiasChatLauncherType
         label?: string
     }
+    shouldHideReplyInput?: boolean
     onCampaignContentChange?: (value: boolean) => void
 }
 
@@ -47,6 +48,7 @@ const CampaignPreview = ({
     position,
     products = [],
     launcher,
+    shouldHideReplyInput,
     onCampaignContentChange,
 }: Props) => (
     <CustomizedChatLauncher
@@ -63,6 +65,7 @@ const CampaignPreview = ({
             chatTitle={chatTitle}
             html={html}
             products={products}
+            shouldHideReplyInput={shouldHideReplyInput}
             translatedTexts={translatedTexts}
             onCampaignContentChange={onCampaignContentChange}
         />
