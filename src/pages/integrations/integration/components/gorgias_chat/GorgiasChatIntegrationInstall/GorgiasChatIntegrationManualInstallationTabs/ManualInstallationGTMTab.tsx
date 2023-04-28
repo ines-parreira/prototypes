@@ -1,4 +1,7 @@
 import React from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
@@ -6,10 +9,18 @@ import InstallationStep from './components/InstallationStep'
 import InstallationTab from './components/InstallationTab'
 
 type Props = {
-    applicationId: string
+    applicationId?: string
+    appKey?: string
 }
 
-const ManualInstallationGTMTab = ({applicationId}: Props) => {
+const ManualInstallationGTMTab = ({applicationId, appKey}: Props) => {
+    const isChatSnippetV3DefaultManualEnabled =
+        useFlags()[FeatureFlagKey.ChatSnippetV3DefaultManual]
+
+    const parameterToEnter = isChatSnippetV3DefaultManualEnabled
+        ? appKey || 'Could not retrieve ID, please retry later'
+        : applicationId || ''
+
     return (
         <InstallationTab>
             <div>
@@ -27,7 +38,7 @@ const ManualInstallationGTMTab = ({applicationId}: Props) => {
                 Search for <b>Gorgias Chat</b> and select it
             </InstallationStep>
             <InstallationStep index={4}>
-                Enter your <b>Gorgias Chat App ID : {applicationId}</b>
+                Enter your <b>Gorgias Chat App ID : {parameterToEnter}</b>
             </InstallationStep>
             <InstallationStep index={5}>
                 Select <b>All Pages - Page view</b> in the <b>Trigger</b>{' '}

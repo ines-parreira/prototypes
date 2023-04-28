@@ -7,11 +7,20 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import css from './InstallationCodeSnippet.less'
 
 type Props = {
-    code: string
+    code?: string
 }
 
 const InstallationCodeSnippet = ({code}: Props) => {
     const [state, copyToClipboard] = useCopyToClipboard()
+
+    if (!code) {
+        return (
+            <>
+                Could not generate the chat widget installation snippet, please
+                retry later.
+            </>
+        )
+    }
 
     const handleCopyCode = () => {
         copyToClipboard(code)
@@ -21,7 +30,7 @@ const InstallationCodeSnippet = ({code}: Props) => {
 
     return (
         <div className={css.container}>
-            <code className={css.code}>{code}</code>
+            <code className={css.code}>{code.trim()}</code>
             <Button intent="secondary" size="small" onClick={handleCopyCode}>
                 <ButtonIconLabel icon={isCopied ? 'check' : 'content_copy'}>
                     {isCopied ? 'Copied' : 'Copy Code'}

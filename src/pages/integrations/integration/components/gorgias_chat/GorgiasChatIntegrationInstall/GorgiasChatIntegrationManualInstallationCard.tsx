@@ -1,13 +1,9 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import classnames from 'classnames'
 
+import {useGetInstallationSnippet} from 'models/integration/queries'
 import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
-import {IntegrationType} from 'models/integration/constants'
-import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationTypeExtraState} from 'state/integrations/selectors'
-
-import {renderChatCodeSnippet} from '../renderChatCodeSnippet'
 import ManualInstallationShopifyWebsiteTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationShopifyWebsiteTab'
 import ManualInstallationOtherWebsiteTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationOtherWebsiteTab'
 import ManualInstallationGTMTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationGTMTab'
@@ -15,7 +11,7 @@ import ManualInstallationGTMTab from './GorgiasChatIntegrationManualInstallation
 import css from './GorgiasChatIntegrationManualInstallationCard.less'
 
 type Props = {
-    applicationId: string
+    applicationId?: string
     isConnected: boolean
     isConnectedToShopify: boolean
 }
@@ -31,18 +27,9 @@ const GorgiasChatIntegrationManualInstallationCard = ({
     isConnected,
     isConnectedToShopify,
 }: Props) => {
-    const getGorgiasChatExtraState = useMemo(
-        () => getIntegrationTypeExtraState(IntegrationType.GorgiasChat),
-        []
-    )
-    const gorgiasChatExtraState = useAppSelector(getGorgiasChatExtraState)
-    const code = useMemo(
-        () =>
-            renderChatCodeSnippet({
-                chatAppId: applicationId,
-                gorgiasChatExtraState,
-            }),
-        [applicationId, gorgiasChatExtraState]
+    const {data} = useGetInstallationSnippet(
+        {applicationId: applicationId!},
+        {enabled: !!applicationId}
     )
 
     const [isOpen, setIsOpen] = useState(!isConnected || !isConnectedToShopify)
@@ -55,10 +42,17 @@ const GorgiasChatIntegrationManualInstallationCard = ({
         setActiveTab(isConnectedToShopify ? Tab.SHOPIFY : Tab.OTHER)
     }, [isConnected, isConnectedToShopify])
 
+    const {snippet, appKey} = data || {}
+
     const tabs = {
-        [Tab.OTHER]: <ManualInstallationOtherWebsiteTab code={code} />,
-        [Tab.GTM]: <ManualInstallationGTMTab applicationId={applicationId} />,
-        [Tab.SHOPIFY]: <ManualInstallationShopifyWebsiteTab code={code} />,
+        [Tab.OTHER]: <ManualInstallationOtherWebsiteTab code={snippet} />,
+        [Tab.GTM]: (
+            <ManualInstallationGTMTab
+                applicationId={applicationId}
+                appKey={appKey}
+            />
+        ),
+        [Tab.SHOPIFY]: <ManualInstallationShopifyWebsiteTab code={snippet} />,
     }
     const tabItems = [
         ...(!isConnected || isConnectedToShopify

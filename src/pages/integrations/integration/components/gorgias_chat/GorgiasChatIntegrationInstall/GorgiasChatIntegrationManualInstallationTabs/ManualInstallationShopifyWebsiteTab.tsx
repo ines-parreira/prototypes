@@ -7,7 +7,7 @@ import InstallationTab from './components/InstallationTab'
 import InstallationCodeSnippet from './components/InstallationCodeSnippet'
 
 type Props = {
-    code: string
+    code?: string
 }
 
 const ManualInstallationShopifyWebsiteTab = ({code}: Props) => {

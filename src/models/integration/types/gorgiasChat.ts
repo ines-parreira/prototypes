@@ -159,3 +159,13 @@ export enum GorgiasChatMinimumSnippetVersion {
 }
 
 export const latestSnippetVersion = GorgiasChatMinimumSnippetVersion.V3
+
+export type GetInstallationSnippetParams = {
+    applicationId: string
+}
+
+export type GetInstallationSnippetResponse = {
+    snippet: string
+    snippetVersion: GorgiasChatMinimumSnippetVersion
+    appKey: string
+}

@@ -1,5 +1,9 @@
 import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
 import {
+    GetInstallationSnippetParams,
+    GetInstallationSnippetResponse,
+} from 'models/integration/types'
+import {
     Texts,
     Translations,
     InstallationStatus,
@@ -44,5 +48,14 @@ export async function getInstallationStatus(applicationId: string) {
         await client.getInstallationStatus({
             applicationId,
         })
+    return data
+}
+
+export async function getInstallationSnippet(
+    params: GetInstallationSnippetParams
+) {
+    const client = await getGorgiasChatProtectedApiClient()
+    const {data}: {data: GetInstallationSnippetResponse} =
+        await client.getInstallationSnippet(params)
     return data
 }

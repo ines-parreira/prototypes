@@ -48,6 +48,20 @@ declare namespace Paths {
             applicationId: Parameters.ApplicationId
         }
     }
+    namespace GetInstallationSnippet {
+        export interface HeaderParameters {
+            'Content-Type'?: Parameters.ContentType
+            Authorization?: Parameters.Authorization
+        }
+        namespace Parameters {
+            export type ApplicationId = string
+            export type Authorization = string
+            export type ContentType = string
+        }
+        export interface PathParameters {
+            applicationId: Parameters.ApplicationId
+        }
+    }
     namespace GetInstallationStatus {
         export interface HeaderParameters {
             'Content-Type'?: Parameters.ContentType
@@ -107,6 +121,17 @@ declare namespace Paths {
 }
 
 export interface OperationMethods {
+    /**
+     * getInstallationSnippet - Get installation snippet
+     */
+    'getInstallationSnippet'(
+        parameters?: Parameters<
+            Paths.GetInstallationSnippet.PathParameters &
+                Paths.GetInstallationSnippet.HeaderParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<any>
     /**
      * getApplicationAgents - Get application agents
      */
@@ -187,6 +212,19 @@ export interface OperationMethods {
 }
 
 export interface PathsDictionary {
+    ['/helpdesk/applications/{applicationId}/installation-snippet/manual']: {
+        /**
+         * getInstallationSnippet - Get installation snippet
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetInstallationSnippet.PathParameters &
+                    Paths.GetInstallationSnippet.HeaderParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<any>
+    }
     ['/helpdesk/applications/{applicationId}/agents']: {
         /**
          * getApplicationAgents - Get application agents

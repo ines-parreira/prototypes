@@ -1,5 +1,10 @@
 import MockAdapter from 'axios-mock-adapter'
 
+import {
+    GetInstallationSnippetResponse,
+    GorgiasChatMinimumSnippetVersion,
+} from 'models/integration/types'
+
 import {getGorgiasChatProtectedApiClient} from '../../../rest_api/gorgias_chat_protected_api/client'
 import {Client} from '../../../rest_api/gorgias_chat_protected_api/client.generated'
 import {
@@ -7,6 +12,7 @@ import {
     getApplicationTexts,
     updateApplicationTexts,
     getInstallationStatus,
+    getInstallationSnippet,
 } from '../actions/gorgias-chat.actions'
 import client from '../../../models/api/resources'
 import {
@@ -260,6 +266,62 @@ describe('gorgias-chat.actions', () => {
             it('it should throw error', async () => {
                 await expect(
                     getInstallationStatus(applicationId)
+                ).rejects.toThrow()
+            })
+        })
+    })
+
+    describe('"getInstallationSnippet"', () => {
+        describe('when it works', () => {
+            const okApiResponse: GetInstallationSnippetResponse = {
+                appKey: 'test',
+                snippet: '<script>1</script>',
+                snippetVersion: GorgiasChatMinimumSnippetVersion.V3,
+            }
+            const applicationId = '1'
+            let mockServer: MockAdapter
+
+            beforeAll(() => {
+                mockServer = new MockAdapter(chatClient)
+
+                mockServer
+                    .onGet(
+                        `/helpdesk/applications/${applicationId}/installation-snippet/manual`
+                    )
+                    .reply(200, okApiResponse)
+            })
+            afterAll(() => {
+                mockServer.reset()
+            })
+
+            it('it should return correct data', async () => {
+                const response = await getInstallationSnippet({applicationId})
+                expect(JSON.stringify(response)).toBe(
+                    JSON.stringify(okApiResponse)
+                )
+            })
+        })
+
+        describe('when it fails', () => {
+            const applicationId = '1'
+            let mockServer: MockAdapter
+
+            beforeAll(() => {
+                mockServer = new MockAdapter(chatClient)
+
+                mockServer
+                    .onGet(
+                        `/helpdesk/applications/${applicationId}/installation-snippet/manual`
+                    )
+                    .reply(500, {error: 'Error'})
+            })
+            afterAll(() => {
+                mockServer.reset()
+            })
+
+            it('it should throw error', async () => {
+                await expect(
+                    getInstallationSnippet({applicationId})
                 ).rejects.toThrow()
             })
         })

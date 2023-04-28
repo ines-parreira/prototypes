@@ -6,6 +6,36 @@
     },
     "item": [
         {
+            "name": "Get installation snippet",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "name": "Content-Type",
+                        "type": "text",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "type": "text",
+                        "value": "Bearer {{accessToken}}"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseURL}}/helpdesk/applications/{{applicationId}}/installation-snippet/manual",
+                    "host": ["{{baseURL}}"],
+                    "path": [
+                        "helpdesk",
+                        "applications",
+                        "{{applicationId}}",
+                        "agents"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
             "name": "Get application agents",
             "request": {
                 "method": "GET",

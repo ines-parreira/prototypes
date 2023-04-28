@@ -5,6 +5,47 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/helpdesk/applications/{applicationId}/installation-snippet/manual": {
+            "get": {
+                "tags": ["gorgias-chat-api"],
+                "summary": "Get installation snippet",
+                "operationId": "getInstallationSnippet",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Bearer {{accessToken}}"
+                    },
+                    {
+                        "name": "applicationId",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
         "/helpdesk/applications/{applicationId}/agents": {
             "get": {
                 "tags": ["gorgias-chat-api"],
