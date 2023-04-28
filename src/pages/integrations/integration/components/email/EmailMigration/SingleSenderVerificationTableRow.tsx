@@ -1,14 +1,17 @@
 import React, {useState} from 'react'
 import {isEmpty} from 'lodash'
+import classNames from 'classnames'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {EmailMigrationSenderVerificationIntegration} from 'models/integration/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {SenderInformation} from 'models/singleSenderVerification/types'
 import EmailVerificationStatusLabel, {
     EmailVerificationStatus,
 } from '../EmailVerificationStatusLabel'
 import useDeleteSingleSenderVerification from '../hooks/useDeleteSingleSenderVerification'
+import useCreateSingleSenderVerification from '../hooks/useCreateSingleSenderVerification'
 import DeleteVerificationModal from '../DeleteVerificationModal'
 import {computeSingleSenderVerificationStatus} from './utils'
 import EmailVerificationButton from './EmailVerificationButton'
@@ -33,6 +36,8 @@ export default function SingleSenderVerificationTableRow({
 
     const {isLoading: isDeleteInProgress, deleteVerification} =
         useDeleteSingleSenderVerification()
+    const {isLoading: isCreateInProgress, createVerification} =
+        useCreateSingleSenderVerification()
 
     const status = computeSingleSenderVerificationStatus(integration)
     const isCollapsible =
@@ -50,11 +55,46 @@ export default function SingleSenderVerificationTableRow({
         refreshMigrationData()
     }
 
+    const handleRetryClick = async () => {
+        const email = integration.meta.address
+
+        if (
+            isEmpty(integration.sender_verification) ||
+            !address ||
+            !city ||
+            !country
+        ) {
+            setIsFormModalOpen(true)
+            return
+        }
+
+        await createVerification(integration.id, {
+            address,
+            city,
+            country,
+            state,
+            zip,
+            email,
+        })
+        refreshMigrationData()
+    }
+
+    const handleConfirmSubmit = async (values: SenderInformation) => {
+        await createVerification(integration.id, values)
+        setIsFormModalOpen(false)
+        refreshMigrationData()
+    }
+
     return (
         <>
             <BodyCell colSpan={3} innerClassName={css.rowContent}>
                 <div className={css.rowSummary}>
-                    <div className={css.emailAddress}>
+                    <div
+                        className={classNames(css.emailAddress, {
+                            [css.error]:
+                                status === EmailVerificationStatus.Failed,
+                        })}
+                    >
                         {integration.meta.address}
                     </div>
 
@@ -65,12 +105,14 @@ export default function SingleSenderVerificationTableRow({
                         {hasSubmittedBulkVerification && (
                             <EmailVerificationButton
                                 status={status}
-                                isLoading={false}
+                                isLoading={
+                                    isCreateInProgress || isDeleteInProgress
+                                }
                                 linkButtonText="Submit address"
                                 onLinkButtonClick={() =>
                                     setIsFormModalOpen(true)
                                 }
-                                // onRetryClick={handleVerifyClick}
+                                onRetryClick={handleRetryClick}
                             />
                         )}
                         {isCollapsible && (
@@ -120,9 +162,8 @@ export default function SingleSenderVerificationTableRow({
                     initialValues={{
                         email: integration.meta.address,
                     }}
-                    onConfirm={() => {
-                        // TODO
-                    }}
+                    onConfirm={handleConfirmSubmit}
+                    isLoading={isCreateInProgress}
                 />
             )}
             {canDeleteVerification && (

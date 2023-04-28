@@ -2,6 +2,10 @@
 @import '~css/new/colorTokens.less';
 
 :local {
+    .tableWrapper {
+        table-layout: fixed;
+    }
+
     .rowContent {
         display: block;
         cursor: auto;
@@ -15,7 +19,14 @@
     }
 
     .emailAddress {
-        width: 200px;
+        width: 250px;
+        word-break: break-all;
+        padding-right: @layout-spacing-m;
+
+        &.error {
+            color: @classic-feedback-error;
+            font-weight: 600;
+        }
     }
 
     .status {

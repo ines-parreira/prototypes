@@ -30,9 +30,7 @@ export default function SingleSenderVerification({
     baseURL,
     integration,
 }: Props) {
-    const {createVerification, isLoading} = useCreateSingleSenderVerification(
-        integration.id
-    )
+    const {createVerification, isLoading} = useCreateSingleSenderVerification()
     const verification = useAppSelector(
         getSingleSenderVerification(integration.id)
     )
@@ -100,7 +98,7 @@ export default function SingleSenderVerification({
                         isLoading={isLoading}
                         showSubmitButton
                         onSubmit={async (values) => {
-                            await createVerification(values)
+                            await createVerification(integration.id, values)
                             refreshIntegration()
                         }}
                     />

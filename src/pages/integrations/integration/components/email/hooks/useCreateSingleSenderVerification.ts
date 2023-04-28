@@ -7,11 +7,11 @@ import {createVerification} from 'models/singleSenderVerification/resources'
 import {setVerification} from 'state/entities/singleSenderVerification/actions'
 import {SenderInformation} from 'models/singleSenderVerification/types'
 
-export default function useCreateSingleSenderVerification(id?: number) {
+export default function useCreateSingleSenderVerification() {
     const dispatch = useAppDispatch()
 
     const [{loading: isLoading}, handleVerificationCreate] = useAsyncFn(
-        async (values: SenderInformation) => {
+        async (id: number, values: SenderInformation) => {
             if (!id) return
 
             try {
@@ -38,7 +38,7 @@ export default function useCreateSingleSenderVerification(id?: number) {
                 )
             }
         },
-        [dispatch, id]
+        [dispatch]
     )
 
     return {

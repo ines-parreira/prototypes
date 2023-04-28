@@ -105,7 +105,7 @@ export type EmailMigrationInboundVerification = {
 }
 
 export enum EmailMigrationOutboundVerificationStatus {
-    Verified = 'verified',
+    Verified = 'success',
     Unverified = 'unverified',
 }
 

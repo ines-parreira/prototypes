@@ -112,6 +112,17 @@ export const computeDomainSingleSenderVerificationStatus = (
         return EmailVerificationStatus.Unverified
     }
 
+    /* if any of the submitted verifications failed, status is failed */
+    if (
+        allSubmittedVerifications.some(
+            (integration) =>
+                computeSingleSenderVerificationStatus(integration) ===
+                EmailVerificationStatus.Failed
+        )
+    ) {
+        return EmailVerificationStatus.Failed
+    }
+
     return submittedIncompleteVerifications.length
         ? EmailVerificationStatus.Pending
         : EmailVerificationStatus.Success

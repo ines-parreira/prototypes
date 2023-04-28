@@ -1,11 +1,15 @@
 import React from 'react'
 import {isEmpty} from 'lodash'
 import classNames from 'classnames'
-import {EmailMigrationOutboundVerification} from 'models/integration/types'
+import {
+    EmailMigrationOutboundVerification,
+    EmailMigrationOutboundVerificationStatus,
+} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
+import Card from 'pages/stats/Card'
 import RecordsTable from '../EmailDomainVerification/components/RecordsTable'
 import EmailVerificationStatusLabel from '../EmailVerificationStatusLabel'
 import useCreateDomainVerification from '../hooks/useCreateDomainVerification'
@@ -39,21 +43,30 @@ export default function DomainVerificationAccordionItem({
         refreshMigrationData()
     }
 
+    const header = (
+        <div className={css.titleContainer}>
+            <div className={css.title}>
+                <i className={classNames('material-icons', css.icon)}>
+                    language
+                </i>
+                <strong>{verification.name}</strong>
+            </div>
+            <EmailVerificationStatusLabel
+                status={computeDomainVerificationStatus(verification)}
+            />
+        </div>
+    )
+
+    if (
+        verification.status ===
+        EmailMigrationOutboundVerificationStatus.Verified
+    ) {
+        return <Card className={css.singleSenderVerifiedCard}>{header}</Card>
+    }
+
     return (
         <AccordionItem key={name} id={name}>
-            <AccordionHeader>
-                <div className={css.titleContainer}>
-                    <div className={css.title}>
-                        <i className={classNames('material-icons', css.icon)}>
-                            language
-                        </i>
-                        <strong>{verification.name}</strong>
-                    </div>
-                    <EmailVerificationStatusLabel
-                        status={computeDomainVerificationStatus(verification)}
-                    />
-                </div>
-            </AccordionHeader>
+            <AccordionHeader>{header}</AccordionHeader>
             <AccordionBody>
                 <div>
                     {isEmpty(verification.domain) ? (

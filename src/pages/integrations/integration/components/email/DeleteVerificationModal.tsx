@@ -38,6 +38,7 @@ export default function DeleteVerificationModal({
                     onClick={handleDeleteClick}
                     isLoading={isLoading}
                     intent="destructive"
+                    data-testid="confirm-delete-button"
                 >
                     Delete
                 </Button>

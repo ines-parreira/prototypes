@@ -6,12 +6,19 @@ import {
     waitFor,
 } from '@testing-library/react'
 import React, {ComponentProps} from 'react'
-import {migrationOutboundVerificationUnverifiedDomain} from 'fixtures/emailMigration'
+import {
+    migrationOutboundVerificationUnverifiedDomain,
+    migrationOutboundVerificationVerifiedDomain,
+} from 'fixtures/emailMigration'
 import {EmailMigrationOutboundVerification} from 'models/integration/types'
 import DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
 
 jest.mock('../EmailDomainVerification/components/RecordsTable', () => () => (
     <div data-testid="records-table" />
+))
+
+jest.mock('pages/stats/Card', () => () => (
+    <div data-testid="verified-domain-card" />
 ))
 
 const mockCreateDomainVerification = jest.fn()
@@ -52,6 +59,13 @@ describe('DomainVerificationAccordionItem', () => {
             })
         )
         expect(onVerificationMethodSwitch).toHaveBeenCalled()
+    })
+
+    it('should display verified domain card when single sender is verified', () => {
+        renderComponent(migrationOutboundVerificationVerifiedDomain, {
+            isSingleSenderEnabled: false,
+        })
+        expect(screen.getByTestId('verified-domain-card')).toBeVisible()
     })
 
     it('should not display switch verification type button when single sender is disabled', () => {

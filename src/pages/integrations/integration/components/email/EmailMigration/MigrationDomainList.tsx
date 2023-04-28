@@ -4,6 +4,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import {
     EmailMigrationOutboundVerification,
+    EmailMigrationOutboundVerificationStatus,
     EmailMigrationSenderVerificationIntegration,
     OutboundVerificationType,
 } from 'models/integration/types'
@@ -71,10 +72,16 @@ export default function MigrationDomainList({
         refreshMigrationData()
     }
 
+    const sortedDomains = domains.sort((a) => {
+        return a.status === EmailMigrationOutboundVerificationStatus.Verified
+            ? -1
+            : 1
+    })
+
     return (
         <>
             <Accordion>
-                {domains.map((item) => {
+                {sortedDomains.map((item) => {
                     const isDomainVerification =
                         selectedOutboundVerificationType?.[item.name] !==
                         OutboundVerificationType.SingleSender

@@ -1,4 +1,5 @@
 import {
+    migrationOutboundVerificationFailedSingleSender,
     migrationOutboundVerificationNotStarted,
     migrationOutboundVerificationUnverifiedSingleSender,
     migrationOutboundVerificationVerifiedDomain,
@@ -179,6 +180,13 @@ describe('migration utils', () => {
                 migrationOutboundVerificationUnverifiedSingleSender
             )
             expect(result).toBe(EmailVerificationStatus.Pending)
+        })
+
+        it('should return Failed when single sender verifications are submitted and some of them failed', () => {
+            const result = computeDomainSingleSenderVerificationStatus(
+                migrationOutboundVerificationFailedSingleSender
+            )
+            expect(result).toBe(EmailVerificationStatus.Failed)
         })
 
         it('should return Success when single sender verifications are submitted and they are verified', () => {

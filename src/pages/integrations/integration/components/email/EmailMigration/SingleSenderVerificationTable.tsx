@@ -10,6 +10,8 @@ import useClientSidePagination from 'pages/common/hooks/useClientSidePagination'
 import Pagination from 'pages/common/components/Pagination'
 import SingleSenderVerificationTableRow from './SingleSenderVerificationTableRow'
 
+import css from './SingleSenderVerificationTable.less'
+
 export type Props = {
     integrations: EmailMigrationSenderVerificationIntegration[]
     hasSubmittedBulkVerification: boolean
@@ -28,7 +30,7 @@ export default function SingleSenderVerificationTable({
 
     return (
         <>
-            <TableWrapper>
+            <TableWrapper className={css.tableWrapper}>
                 <TableHead>
                     <HeaderCellProperty title="Unverified emails" />
                     <HeaderCell />

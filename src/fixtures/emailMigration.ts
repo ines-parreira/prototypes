@@ -107,7 +107,7 @@ export const migrationOutboundVerificationUnverifiedDomain = {
 
 export const migrationOutboundVerificationVerifiedDomain = {
     name: 'test-verified-domain.com',
-    status: 'verified',
+    status: 'success',
     domain: {
         name: 'toto.com',
         verified: false,
@@ -164,7 +164,7 @@ export const migrationOutboundVerificationUnverifiedSingleSender = {
         {
             id: 11,
             meta: {
-                address: 'test@toto.com',
+                address: 'user@gorgias.com',
             },
             sender_verification: {
                 email: 'user@gorgias.com',
@@ -183,9 +183,55 @@ export const migrationOutboundVerificationUnverifiedSingleSender = {
     ],
 } as unknown as EmailMigrationOutboundVerification
 
+export const migrationOutboundVerificationFailedSingleSender = {
+    name: 'test-single-sender-unverified.com',
+    status: EmailMigrationOutboundVerificationStatus.Unverified,
+    domain: {},
+    integrations: [
+        {
+            id: 11,
+            meta: {
+                address: 'user@gorgias.com',
+            },
+            sender_verification: {
+                email: 'user@gorgias.com',
+                verified_at: null,
+                created_datetime: '2023-03-02T14:13:03.339896+00:00',
+                updated_datetime: '2023-03-02T14:13:03.701012+00:00',
+                last_email_sent_at: '2023-03-02T14:13:03.700752+00:00',
+                address: 'Some address',
+                state: '',
+                city: 'Paris',
+                zip: '75000',
+                country: 'France',
+                status: 'unverified',
+            },
+        },
+        {
+            id: 12,
+            meta: {
+                address: 'user2@gorgias.com',
+            },
+            sender_verification: {
+                email: 'user2@gorgias.com',
+                verified_at: null,
+                created_datetime: '2023-03-02T14:13:03.339896+00:00',
+                updated_datetime: '2023-03-02T14:13:03.701012+00:00',
+                last_email_sent_at: '2023-03-02T14:13:03.700752+00:00',
+                address: 'Some address',
+                state: '',
+                city: 'Paris',
+                zip: '75000',
+                country: 'France',
+                status: 'failed',
+            },
+        },
+    ],
+} as unknown as EmailMigrationOutboundVerification
+
 export const migrationOutboundVerificationVerifiedSingleSender = {
     name: 'single-sender-verified.com',
-    status: 'not_verified',
+    status: 'success',
     domain: {},
     integrations: [
         {
@@ -194,7 +240,7 @@ export const migrationOutboundVerificationVerifiedSingleSender = {
                 address: 'test@toto.com',
             },
             sender_verification: {
-                email: 'user@gorgias.com',
+                email: 'test@toto.com',
                 verified_at: null,
                 created_datetime: '2023-03-02T14:13:03.339896+00:00',
                 updated_datetime: '2023-03-02T14:13:03.701012+00:00',

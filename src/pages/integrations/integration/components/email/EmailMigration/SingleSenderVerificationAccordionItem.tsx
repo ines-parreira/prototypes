@@ -2,6 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import {
     EmailMigrationOutboundVerification,
+    EmailMigrationOutboundVerificationStatus,
     EmailMigrationSenderVerificationIntegration,
 } from 'models/integration/types'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
@@ -9,9 +10,7 @@ import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import Button from 'pages/common/components/button/Button'
 import Card from 'pages/stats/Card'
-import EmailVerificationStatusLabel, {
-    EmailVerificationStatus,
-} from '../EmailVerificationStatusLabel'
+import EmailVerificationStatusLabel from '../EmailVerificationStatusLabel'
 import {
     computeDomainSingleSenderVerificationStatus,
     getSingleSenderUnverifiedIntegrations,
@@ -61,7 +60,10 @@ export default function SingleSenderVerificationAccordionItem({
 
     const hasSubmittedBulkVerification = !!submittedVerifications.length
 
-    if (verificationStatus === EmailVerificationStatus.Success) {
+    if (
+        verification.status ===
+        EmailMigrationOutboundVerificationStatus.Verified
+    ) {
         return <Card className={css.singleSenderVerifiedCard}>{header}</Card>
     }
 
