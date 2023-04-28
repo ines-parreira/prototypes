@@ -11,8 +11,8 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
             "member": "CampaignOrderEvents.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-01-01T00:00:00.000",
-              "2023-02-01T23:59:59.999",
+              "2023-01-01T08:00:00.000",
+              "2023-02-02T07:59:59.999",
             ],
           },
           {
@@ -51,8 +51,8 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
             "member": "OrderConversion.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-01-01T00:00:00.000",
-              "2023-02-01T23:59:59.999",
+              "2023-01-01T08:00:00.000",
+              "2023-02-02T07:59:59.999",
             ],
           },
           {
@@ -92,8 +92,8 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
             "member": "OrderConversion.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-01-01T00:00:00.000",
-              "2023-02-01T23:59:59.999",
+              "2023-01-01T08:00:00.000",
+              "2023-02-02T07:59:59.999",
             ],
           },
           {

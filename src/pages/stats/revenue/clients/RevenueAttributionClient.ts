@@ -2,16 +2,18 @@ import {Stat, StatsFilters} from 'models/stat/types'
 import {fetchStat} from 'models/stat/resources'
 import {MESSAGES_PER_CAMPAIGN, REVENUE_PER_DAY} from 'config/stats'
 import {RevenueAttributionFilterParams} from 'pages/stats/revenue/clients/types'
+import {getDateRange} from 'pages/stats/revenue/clients/utils'
 
 export const getCampaignTicketsPerformanceData = async ({
     startDate,
     endDate,
     campaignIds,
 }: RevenueAttributionFilterParams): Promise<Stat> => {
+    const [startDateUtc, endDateUtc] = getDateRange(startDate, endDate)
     const filters: StatsFilters = {
         period: {
-            start_datetime: startDate,
-            end_datetime: endDate,
+            start_datetime: startDateUtc,
+            end_datetime: endDateUtc,
         },
         campaigns: campaignIds,
     }
@@ -26,10 +28,11 @@ export const getTicketsPerformanceData = async ({
     integrationIds,
     channels,
 }: RevenueAttributionFilterParams): Promise<Stat> => {
+    const [startDateUtc, endDateUtc] = getDateRange(startDate, endDate)
     const filters: StatsFilters = {
         period: {
-            start_datetime: startDate,
-            end_datetime: endDate,
+            start_datetime: startDateUtc,
+            end_datetime: endDateUtc,
         },
         campaigns: campaignIds,
         integrations: integrationIds,
