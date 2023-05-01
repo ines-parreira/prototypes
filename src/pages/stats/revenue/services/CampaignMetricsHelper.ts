@@ -18,6 +18,7 @@ import {
     CampaignStat,
     EventsTotals,
     OrdersTotals,
+    RevenueByDate,
     RevenueGraphDataPoint,
     StatData,
     StoreTotal,
@@ -171,12 +172,44 @@ export const transformToStoreTotal = (
     }
 }
 
+export const transformToRevenueByDate = (
+    data: CubeData | undefined
+): RevenueByDate => {
+    return _reduce(
+        data || [],
+        (acc, revenuePoint) => {
+            const date = _get(
+                revenuePoint,
+                OrderConversionDimension.createdDatatime
+            )
+            if (date !== undefined) {
+                acc[date] = getMetricValue(
+                    revenuePoint,
+                    OrderConversionMeasure.gmv
+                )
+            }
+            return acc
+        },
+        {} as RevenueByDate
+    )
+}
+
 export const transformToRevenueUpliftOverTime = (
     dataPoint: CubeMetric,
-    totalData: CubeMetric | undefined,
+    revenueData: RevenueByDate,
     granularityValue: ReportingGranularity
 ): RevenueGraphDataPoint => {
-    const gmvUplift = _getGmvUpliftFromMetrics(dataPoint, totalData)
+    const createdDatetime = _get(
+        dataPoint,
+        OrderConversionDimension.createdDatatime
+    )
+    const totalSales = _get(revenueData, createdDatetime, 0)
+    const campaignSales = getMetricValue(
+        dataPoint,
+        OrderConversionMeasure.campaignSales
+    )
+
+    const gmvUplift = _toFixed(_gmvUplift(totalSales, campaignSales))
 
     return _transformToGraphOverTime(
         {

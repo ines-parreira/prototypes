@@ -5,12 +5,12 @@ import {
     CubeMetric,
 } from 'pages/stats/revenue/clients/types'
 import {
+    getRevenueGraphData,
     getRevenueUpliftGraphData,
-    getStoreRevenueTotalData,
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {
     getDataFromResult,
-    getMetricFromCubeData,
+    transformToRevenueByDate,
     transformToRevenueUpliftOverTime,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {RevenueGraphDataPoint} from 'pages/stats/revenue/services/types'
@@ -51,30 +51,29 @@ export const useGetRevenueUpliftChart = (
         () => getRevenueUpliftGraphData(attrs),
         [attrs]
     )
-    const storeTotalQuery = useMemo(
-        () => getStoreRevenueTotalData(attrs),
-        [attrs]
-    )
+    const revenueQuery = useMemo(() => getRevenueGraphData(attrs), [attrs])
 
     const revenueUpliftChart = usePostReporting<[CubeData], CubeData>(
         revenueUpliftChartQuery,
-        {...OVERRIDES, select: getDataFromResult}
+        OVERRIDES
     )
-    const storeTotal = usePostReporting<[CubeMetric], CubeMetric>(
-        storeTotalQuery,
-        {...OVERRIDES, select: getMetricFromCubeData}
+    const revenue = usePostReporting<[CubeData], CubeData>(
+        revenueQuery,
+        OVERRIDES
     )
 
     const data = useMemo(() => {
+        const revenueData = transformToRevenueByDate(revenue.data)
+
         const data = revenueUpliftChart.data || []
         return data.map((dataPoint: CubeMetric) =>
             transformToRevenueUpliftOverTime(
                 dataPoint,
-                storeTotal.data,
+                revenueData,
                 timeGranularity
             )
         )
-    }, [revenueUpliftChart.data, storeTotal.data, timeGranularity])
+    }, [revenueUpliftChart.data, revenue.data, timeGranularity])
 
     return {
         isFetching: revenueUpliftChart.isFetching,

@@ -35,9 +35,15 @@ describe('useGetTotalsStat', () => {
         },
     ]
 
-    const storeTotalData = {
-        [OrderConversionMeasure.gmv]: '3000',
-    }
+    const revenueData = [
+        {
+            [OrderConversionMeasure.gmv]: '3000',
+            [OrderConversionDimension.createdDatatime]:
+                '2023-02-28T00:00:00.000',
+            [`${OrderConversionDimension.createdDatatime}.day`]:
+                '2023-02-28T00:00:00.000',
+        },
+    ]
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -75,7 +81,7 @@ describe('useGetTotalsStat', () => {
 
         usePostReportingMock.mockReturnValueOnce({
             ...defaultReporting,
-            data: storeTotalData,
+            data: revenueData,
         } as UseQueryResult)
 
         // act

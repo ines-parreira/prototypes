@@ -5,6 +5,7 @@ import {
     getCampaignOrderPerformanceData,
     getCampaignOrderTotalsData,
     getCampaignsPerformanceGraphData,
+    getRevenueGraphData,
     getRevenueUpliftGraphData,
     getStoreRevenueTotalData,
     getTrafficData,
@@ -32,6 +33,7 @@ describe('Getting Cube queries', () => {
         [getTrafficData],
         [getRevenueUpliftGraphData],
         [getCampaignsPerformanceGraphData],
+        [getRevenueGraphData],
     ])('%p should call load', (cubeFn) => {
         // act
         const query = cubeFn(props)

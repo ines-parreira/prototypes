@@ -24,6 +24,7 @@ export enum FeatureFlagKey {
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueAttributionModel = 'revenue-attribution-model',
     RevenueAttributionModelHideDashboard = 'revenue-attribution-model-hide-dashboard',
+    RevenueAttributionHideUpliftChart = 'revenue-attribution-hide-uplift-chart',
     RevenueClickTracking = 'revenue-click-tracking',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',

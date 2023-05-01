@@ -235,6 +235,50 @@ exports[`Getting Cube queries [Function getCampaignsPerformanceGraphData] should
 ]
 `;
 
+exports[`Getting Cube queries [Function getRevenueGraphData] should call load 1`] = `
+[
+  {
+    "dimensions": [],
+    "filters": [
+      {
+        "member": "OrderConversion.createdDatetime",
+        "operator": "inDateRange",
+        "values": [
+          "2023-01-01T08:00:00.000",
+          "2023-03-15T15:59:59.999",
+        ],
+      },
+      {
+        "member": "OrderConversion.shopName",
+        "operator": "equals",
+        "values": [
+          "punched-tires-shop",
+        ],
+      },
+    ],
+    "measures": [
+      "OrderConversion.gmv",
+    ],
+    "order": [
+      [
+        "OrderConversion.createdDatetime",
+        "asc",
+      ],
+    ],
+    "timeDimensions": [
+      {
+        "dateRange": [
+          "2023-01-01T08:00:00.000",
+          "2023-03-15T15:59:59.999",
+        ],
+        "dimension": "OrderConversion.createdDatetime",
+        "granularity": "day",
+      },
+    ],
+  },
+]
+`;
+
 exports[`Getting Cube queries [Function getRevenueUpliftGraphData] should call load 1`] = `
 [
   {

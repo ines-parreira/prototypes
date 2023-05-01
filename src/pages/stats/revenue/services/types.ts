@@ -79,3 +79,7 @@ export type CampaignsTotals = EventsTotals &
     OrdersTotals &
     StoreTotal &
     CalculatedTotals
+
+export type RevenueByDate = {
+    [key: string]: number
+}

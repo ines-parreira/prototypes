@@ -240,6 +240,34 @@ export const getStoreRevenueTotalData = ({
     ]
 }
 
+export const getRevenueGraphData = ({
+    shopName,
+    startDate,
+    endDate,
+    granularity = ReportingGranularity.Day,
+}: CubeFilterParams): ReportingParams => {
+    return [
+        {
+            dimensions: [],
+            timeDimensions: [
+                {
+                    dimension: OrderConversionDimension.createdDatatime,
+                    dateRange: getDateRange(startDate, endDate),
+                    granularity: granularity,
+                },
+            ],
+            measures: [OrderConversionMeasure.gmv],
+            order: [[OrderConversionDimension.createdDatatime, 'asc']],
+            filters: _getDefaultFilters({
+                startDate,
+                endDate,
+                cubeName: Cube.orderConversion,
+                shopName,
+            }),
+        },
+    ]
+}
+
 export const getRevenueUpliftGraphData = ({
     shopName,
     campaignIds,

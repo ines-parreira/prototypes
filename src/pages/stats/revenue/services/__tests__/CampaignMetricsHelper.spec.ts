@@ -10,6 +10,7 @@ import {
     transformToCampaignOrdersTotals,
     transformToCampaignsPerformanceTable,
     transformToChatConversionRateOverTime,
+    transformToRevenueByDate,
     transformToRevenueUpliftOverTime,
     transformToStoreTotal,
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
@@ -23,7 +24,10 @@ import {
     OrderConversionMeasure,
 } from 'pages/stats/revenue/clients/constants'
 import {CampaignsTotalsMetricNames} from 'pages/stats/revenue/services/constants'
-import {TicketPerformanceData} from 'pages/stats/revenue/services/types'
+import {
+    RevenueByDate,
+    TicketPerformanceData,
+} from 'pages/stats/revenue/services/types'
 import {ReportingGranularity} from 'models/reporting/types'
 
 describe('Campaign metrics helper tests', () => {
@@ -228,7 +232,39 @@ describe('Campaign metrics helper tests', () => {
         })
     })
 
+    describe('transformToRevenueByDate', () => {
+        const cubeData = [
+            {
+                [OrderConversionMeasure.gmv]: '1234.56',
+                [`${OrderConversionDimension.createdDatatime}.day`]:
+                    '2023-02-28T00:00:00.000',
+                [OrderConversionDimension.createdDatatime]:
+                    '2023-02-28T00:00:00.000',
+            },
+        ]
+
+        it('should return correct data', () => {
+            const result = transformToRevenueByDate(cubeData)
+            expect(result).toStrictEqual({
+                '2023-02-28T00:00:00.000': 1234.56,
+            })
+        })
+
+        it('should return defaults if no revenue data', () => {
+            const result = transformToRevenueByDate([cubeDataMissing])
+            expect(result).toStrictEqual({})
+        })
+
+        it('should return defaults if no data', () => {
+            const result = transformToRevenueByDate(undefined)
+            expect(result).toStrictEqual({})
+        })
+    })
+
     describe('transformToRevenueUpliftOverTime', () => {
+        const revenueByDate: RevenueByDate = {
+            '2023-02-28T00:00:00.000': 4567.89,
+        }
         const revenueDataPoint = {
             [OrderConversionMeasure.campaignSales]: '1234.56',
             [`${OrderConversionDimension.createdDatatime}.day`]:
@@ -237,19 +273,27 @@ describe('Campaign metrics helper tests', () => {
                 '2023-02-28T00:00:00.000',
         }
 
-        const storeTotalData = {
-            [OrderConversionMeasure.gmv]: '4567.89',
-        }
-
         it('should return correct data', () => {
             const result = transformToRevenueUpliftOverTime(
                 revenueDataPoint,
-                storeTotalData,
+                revenueByDate,
                 ReportingGranularity.Day
             )
             expect(result).toStrictEqual({
                 x: 'Feb 28th',
                 y: 37.04,
+            })
+        })
+
+        it('should return defaults if no revenue data', () => {
+            const result = transformToRevenueUpliftOverTime(
+                revenueDataPoint,
+                {},
+                ReportingGranularity.Day
+            )
+            expect(result).toStrictEqual({
+                x: 'Feb 28th',
+                y: 0,
             })
         })
     })
