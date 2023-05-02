@@ -301,7 +301,7 @@ export function ShippingMethod({
                         [css.isDisabled]: !selectedShippingMethod,
                     })}
                 >
-                    {selectedShippingMethod
+                    {hasShippingAddress && selectedShippingMethod
                         ? selectedShippingMethod.description
                         : '⎯'}
                 </dd>

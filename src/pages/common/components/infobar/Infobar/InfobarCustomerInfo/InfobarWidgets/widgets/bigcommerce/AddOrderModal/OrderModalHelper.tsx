@@ -111,9 +111,11 @@ export const useValidationStatus = ({
 const getTotals = ({
     checkout,
     cart,
+    shippingAddress,
 }: {
     checkout: Maybe<BigCommerceCheckout>
     cart: Maybe<BigCommerceCart>
+    shippingAddress: Maybe<BigCommerceCustomerAddress>
 }) => {
     if (cart) {
         const cartAmountWithTax =
@@ -126,6 +128,7 @@ const getTotals = ({
             0
         )
         const shipping =
+            shippingAddress &&
             checkout?.consignments?.length &&
             checkout.consignments[0].selected_shipping_option &&
             checkout?.consignments[0].available_shipping_options.find(
@@ -477,8 +480,13 @@ export const useCheckout = ({
     }
 
     const totals = useMemo(
-        () => getTotals({checkout, cart: checkout?.cart ?? cart}),
-        [cart, checkout]
+        () =>
+            getTotals({
+                checkout,
+                cart: checkout?.cart ?? cart,
+                shippingAddress: shippingAddress,
+            }),
+        [cart, checkout, shippingAddress]
     )
 
     function setModalErrors(
