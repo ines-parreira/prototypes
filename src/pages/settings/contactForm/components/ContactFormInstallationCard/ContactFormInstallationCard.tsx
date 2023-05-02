@@ -26,7 +26,7 @@ export function ContactFormInstallationCard({
     const toggleIsOpen = () => setIsOpen(!isOpen)
 
     return (
-        <Card className={css.card}>
+        <Card data-is-open={isOpen} className={css.card}>
             <CardHeader className={css.cardHeader}>
                 <div>
                     <h3 className={contactFormCss.mbXs}>{title}</h3>

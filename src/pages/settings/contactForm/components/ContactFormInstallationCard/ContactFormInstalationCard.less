@@ -2,7 +2,10 @@
 
 :local {
     .card {
-        border: @classic-main-primary 2px solid;
+        border: @classic-neutral-grey-3 1px solid;
+        &[data-is-open='true'] {
+            border-color: @classic-main-primary;
+        }
     }
 
     .cardHeader {
