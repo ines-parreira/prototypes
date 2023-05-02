@@ -5,7 +5,7 @@ import {Integration} from 'models/integration/types'
 import {Value} from 'pages/common/forms/SelectField/types'
 import shopifyIcon from 'assets/img/integrations/shopify.png'
 
-import SelectFilter from '../../../common/SelectFilter'
+import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
 
 import css from './IntegrationMultiSelect.less'
 
@@ -14,7 +14,7 @@ type Props = {
     selected: Value[]
     isMultiple?: boolean
     isRequired?: boolean
-    onChangeItem: ComponentProps<typeof SelectFilter>['onChange']
+    onChangeItem: ComponentProps<typeof SelectStatsFilter>['onChange']
 }
 
 export const IntegrationMultiSelect = ({
@@ -25,7 +25,7 @@ export const IntegrationMultiSelect = ({
     onChangeItem,
 }: Props) => {
     return (
-        <SelectFilter
+        <SelectStatsFilter
             plural="integrations"
             singular="integration"
             isMultiple={isMultiple}
@@ -35,7 +35,7 @@ export const IntegrationMultiSelect = ({
         >
             {integrations.map((integration) => {
                 return (
-                    <SelectFilter.Item
+                    <SelectStatsFilter.Item
                         key={integration.id}
                         icon={
                             <img
@@ -49,6 +49,6 @@ export const IntegrationMultiSelect = ({
                     />
                 )
             })}
-        </SelectFilter>
+        </SelectStatsFilter>
     )
 }

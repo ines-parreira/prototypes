@@ -4,12 +4,12 @@ import {Campaign} from 'models/integration/types'
 
 import {Value} from 'pages/common/forms/SelectField/types'
 
-import SelectFilter from '../../../common/SelectFilter'
+import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
 
 type Props = {
     campaigns: Campaign[]
     selected: Value[]
-    onChangeItem: ComponentProps<typeof SelectFilter>['onChange']
+    onChangeItem: ComponentProps<typeof SelectStatsFilter>['onChange']
 }
 
 export const CampaignMultiSelect = ({
@@ -18,7 +18,7 @@ export const CampaignMultiSelect = ({
     onChangeItem,
 }: Props) => {
     return (
-        <SelectFilter
+        <SelectStatsFilter
             plural="campaigns"
             singular="campaign"
             onChange={onChangeItem}
@@ -26,13 +26,13 @@ export const CampaignMultiSelect = ({
         >
             {campaigns.map((campaign) => {
                 return (
-                    <SelectFilter.Item
+                    <SelectStatsFilter.Item
                         key={campaign.id}
                         label={campaign.name}
                         value={campaign.id}
                     />
                 )
             })}
-        </SelectFilter>
+        </SelectStatsFilter>
     )
 }

@@ -40,7 +40,13 @@ export const RevenueFilters = () => {
             </div>
 
             <div className={css.filterItem}>
-                <PeriodStatsFilter value={selectedPeriod} />
+                <PeriodStatsFilter
+                    initialSettings={{
+                        maxSpan: 365,
+                    }}
+                    value={selectedPeriod}
+                    variant="ghost"
+                />
             </div>
         </div>
     )
