@@ -10,6 +10,7 @@ import {
     fetchApps,
     fetchAppErrorLogs,
     fetchIntegrations,
+    fetchInstalledApps,
 } from '../resources'
 
 const mockedServer = new MockAdapter(client)
@@ -32,6 +33,39 @@ describe('integration resource', () => {
         it('should reject an error on fail', () => {
             mockedServer.onGet('/api/apps/').reply(503, {message: 'error'})
             return expect(fetchApps()).rejects.toEqual(
+                new Error('Request failed with status code 503')
+            )
+        })
+    })
+
+    describe('fetchInstalledApps', () => {
+        it('should return installed formatted apps', async () => {
+            mockedServer.onGet('/api/apps/installed/').reply(200, {
+                data: [
+                    {
+                        ...dummyAppListData,
+                        is_installed: true,
+                    },
+                ],
+            })
+            const res = await fetchInstalledApps()
+            expect(res).toStrictEqual([
+                {
+                    appId: 'someid',
+                    categories: ['Quality Assurance'],
+                    description: 'Some tagline here',
+                    image: 'https://ok.com/1.png',
+                    isConnected: true,
+                    title: 'My test app',
+                    type: 'app',
+                },
+            ])
+        })
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onGet('/api/apps/installed/')
+                .reply(503, {message: 'error'})
+            return expect(fetchInstalledApps()).rejects.toEqual(
                 new Error('Request failed with status code 503')
             )
         })

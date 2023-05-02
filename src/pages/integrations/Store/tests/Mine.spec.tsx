@@ -1,6 +1,5 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import produce from 'immer'
 import {render, screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
@@ -40,15 +39,16 @@ describe('<Mine />', () => {
 
     it('should show installed integrations and apps only', async () => {
         const installedTitle = 'same same'
-        const installedAppData = produce(appData, (draftAppData) => {
-            draftAppData.name = installedTitle
-            draftAppData.is_installed = true
-        })
+        const installedAppData = {
+            ...appData,
+            categories: [],
+            is_installed: true,
+            name: installedTitle,
+        }
 
         mockApi
-            .onGet('/api/apps/')
-            .reply(200, {data: [appData, installedAppData]})
-
+            .onGet('/api/apps/installed/')
+            .reply(200, {data: [installedAppData]})
         render(
             <Provider store={store}>
                 <Mine />
@@ -60,7 +60,6 @@ describe('<Mine />', () => {
         expect(screen.getByText('Shopify'))
         expect(screen.getByText(installedTitle))
         expect(screen.queryByText('BigCommerce')).toBe(null)
-        expect(screen.queryByText(appData.name)).toBe(null)
     })
 
     it('should show a message when no apps are installed yet', async () => {

@@ -63,6 +63,13 @@ export const fetchApps = async (): Promise<AppListItem[]> => {
     return (response.data?.data || []).map(appListDataToAppListMapper)
 }
 
+export const fetchInstalledApps = async (): Promise<AppListItem[]> => {
+    const response = await client.get<ApiListResponse<AppListData[], never>>(
+        '/api/apps/installed/'
+    )
+    return (response.data?.data || []).map(appListDataToAppListMapper)
+}
+
 export const fetchApp = async (
     appId: string,
     preview?: boolean

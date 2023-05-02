@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
 
-import {fetchApps} from 'models/integration/resources'
+import {fetchInstalledApps} from 'models/integration/resources'
 import {AppListItem} from 'models/integration/types/app'
 import {fetchIntegrations} from 'state/integrations/actions'
 import {IntegrationListItem} from 'state/integrations/types'
@@ -44,8 +44,8 @@ export default function Mine() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const res = await fetchApps()
-                setConnectedApps(res.filter((app) => app.isConnected))
+                const res = await fetchInstalledApps()
+                setConnectedApps(res)
             } catch {
                 void dispatch(
                     notify({
