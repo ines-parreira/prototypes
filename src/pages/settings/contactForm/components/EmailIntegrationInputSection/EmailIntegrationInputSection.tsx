@@ -17,12 +17,14 @@ type EmailIntegrationInputSectionProps = {
     onChange: (integration: ContactFormIntegration) => void
     emailIntegrationId?: number
     isRequiredShown?: boolean
+    customLabel?: string
 }
 
 const EmailIntegrationInputSection = ({
     onChange,
     emailIntegrationId,
     isRequiredShown = false,
+    customLabel = 'Email that will receive submissions',
 }: EmailIntegrationInputSectionProps): JSX.Element => {
     const integrations = useAppSelector(emailIntegrationsSelector)
     const emailIntegrations = integrations.filter(isGenericEmailIntegration)
@@ -51,7 +53,7 @@ const EmailIntegrationInputSection = ({
                 isRequired={isRequiredShown}
                 htmlFor="email-select"
             >
-                Select email that will receive form submissions
+                {customLabel}
             </Label>
             <SelectField
                 required

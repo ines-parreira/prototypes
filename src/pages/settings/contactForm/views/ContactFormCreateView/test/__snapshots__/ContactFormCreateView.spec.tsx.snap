@@ -223,7 +223,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
             class="label mbXs"
             for="locale-select"
           >
-            Select form language
+            Select default language
             <abbr
               aria-label="required"
               class="abbr"

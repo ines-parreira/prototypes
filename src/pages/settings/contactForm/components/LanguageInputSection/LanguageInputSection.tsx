@@ -10,11 +10,13 @@ import {validLocaleCode} from 'models/helpCenter/utils'
 type LanguageInputSectionProps = {
     onChange: (locale: LocaleCode) => void
     locale: LocaleCode
+    customLabel?: string
 }
 
 const LanguageInputSection = ({
     onChange,
     locale,
+    customLabel = 'Language',
 }: LanguageInputSectionProps): JSX.Element => {
     const locales = useSupportedLocales()
     const localeOptions = useMemo(() => {
@@ -33,7 +35,7 @@ const LanguageInputSection = ({
                 isRequired
                 htmlFor="locale-select"
             >
-                Select form language
+                {customLabel}
             </Label>
             <SelectField
                 required

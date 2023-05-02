@@ -188,6 +188,9 @@ const ContactFormCreateView = ({
                             emailIntegrationId={
                                 createContactFormDto.email_integration.id
                             }
+                            customLabel={
+                                'Select email that will receive form submissions'
+                            }
                         />
                     </section>
 
@@ -195,6 +198,7 @@ const ContactFormCreateView = ({
                         <LanguageInputSection
                             locale={createContactFormDto.default_locale}
                             onChange={onChangeLocale}
+                            customLabel={'Select default language'}
                         />
                     </section>
 
