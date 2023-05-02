@@ -188,7 +188,8 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
                                             Using the details we provided on the
                                             left under the domain,{' '}
                                             <strong>
-                                                set the record type to 'TXT'
+                                                set the record type (either
+                                                "TXT" or "MX")
                                             </strong>{' '}
                                             and{' '}
                                             <strong>
