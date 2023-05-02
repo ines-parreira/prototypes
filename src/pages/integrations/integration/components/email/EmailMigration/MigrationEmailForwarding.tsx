@@ -28,6 +28,8 @@ export default function MigrationEmailForwarding({
     const {copyButtonText} = useClipboard('#copy-email-address')
     const history = useHistory()
 
+    const isNextButtonDisabled = !!migrations.length
+
     return (
         <div
             className={css.layoutWrapper}
@@ -70,11 +72,12 @@ export default function MigrationEmailForwarding({
                         onClick={() => {
                             history.push('/app/settings/channels/email')
                         }}
+                        intent={isNextButtonDisabled ? 'primary' : 'secondary'}
                     >
                         Finish later
                     </Button>
                     <Button
-                        isDisabled={!!migrations.length}
+                        isDisabled={isNextButtonDisabled}
                         onClick={onNextClick}
                     >
                         Next

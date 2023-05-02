@@ -126,6 +126,7 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
                         onClick={() => {
                             history.push('/app/settings/channels/email')
                         }}
+                        intent="secondary"
                     >
                         Finish later
                     </Button>
