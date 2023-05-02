@@ -5,9 +5,8 @@ import {render, waitFor} from '@testing-library/react'
 
 import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
 
-import {renderWithRouter, assumeMock} from 'utils/testing'
+import {renderWithRouter, assumeMock, mockStore} from 'utils/testing'
 import {IntegrationType, EmailProvider} from 'models/integration/constants'
 import EmailIntegrationList from '../EmailIntegrationList'
 import {fetchEmailDomains} from '../resources'
@@ -39,7 +38,7 @@ describe('<EmailIntegrationList/>', () => {
         }
     }
 
-    const store = configureMockStore()({})
+    const store = mockStore({} as any)
     const commonProps = {
         integrations: fromJS([getEmailIntegration(1)]),
         loading: fromJS({}),

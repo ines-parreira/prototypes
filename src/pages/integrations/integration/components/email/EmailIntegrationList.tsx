@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
+import {useEffectOnce} from 'react-use'
 import Button from 'pages/common/components/button/Button'
 
 import gmailImg from 'assets/img/integrations/gmail.png'
@@ -13,6 +14,8 @@ import {EmailDomain, IntegrationType} from 'models/integration/types'
 import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import {getIntegrationsByTypes} from 'state/integrations/helpers'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {fetchIntegrations} from 'state/integrations/actions'
 import IntegrationList from '../IntegrationList'
 import {fetchEmailDomains} from './resources'
 import {
@@ -38,6 +41,8 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
     const [isLoadingDomains, setIsLoadingDomains] = useState(false)
     const [emailDomains, setEmailDomains] = useState<EmailDomain[]>([])
 
+    const dispatch = useAppDispatch()
+
     useEffect(() => {
         setIsLoadingDomains(true)
         fetchEmailDomains().then(
@@ -48,6 +53,10 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             () => setIsLoadingDomains(false)
         )
     }, [])
+
+    useEffectOnce(() => {
+        void dispatch(fetchIntegrations())
+    })
 
     if (isLoadingDomains) {
         return <Loader />
