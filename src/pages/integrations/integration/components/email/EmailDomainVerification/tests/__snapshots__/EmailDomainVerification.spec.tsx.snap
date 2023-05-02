@@ -48,7 +48,7 @@ exports[`<EmailDomainVerification/> render() should render a delete button to ac
               <span
                 class="title"
               >
-                Record Type
+                Type
               </span>
               <i
                 class="material-icons md-1 directionIcon"
@@ -225,7 +225,7 @@ exports[`<EmailDomainVerification/> render() should render the page when domain 
               <span
                 class="title"
               >
-                Record Type
+                Type
               </span>
               <i
                 class="material-icons md-1 directionIcon"
@@ -386,7 +386,7 @@ exports[`<EmailDomainVerification/> render() should render the page when domain 
               <span
                 class="title"
               >
-                Record Type
+                Type
               </span>
               <i
                 class="material-icons md-1 directionIcon"

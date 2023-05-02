@@ -24,7 +24,7 @@ const RecordsTable = ({records, provider}: Props) => {
                     className={css.statusHeader}
                 />
                 <HeaderCellProperty
-                    title="Record Type"
+                    title="Type"
                     className={css.recordTypeHeader}
                 />
                 <HeaderCellProperty title="Host" />

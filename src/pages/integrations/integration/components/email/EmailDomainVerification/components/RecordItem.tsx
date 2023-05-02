@@ -29,7 +29,7 @@ const RecordItem = ({record, provider}: Props) => {
                 <RecordStatus isVerified={record.verified} />
             </BodyCell>
             <BodyCell className="text-uppercase">{record.record_type}</BodyCell>
-            <BodyCell>
+            <BodyCell innerClassName={css.hostCellInner}>
                 <span id={hostID}>
                     <strong>{record.host}</strong>
                 </span>
