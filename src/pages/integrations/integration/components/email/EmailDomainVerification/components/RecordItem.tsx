@@ -33,7 +33,7 @@ const RecordItem = ({record, provider}: Props) => {
                 <span id={hostID}>
                     <strong>{record.host}</strong>
                 </span>
-                <CopyButton clipboardTarget={`#${hostID}`} />
+                <CopyButton clipboardTarget={`#${hostID}`} fillStyle="ghost" />
             </BodyCell>
             <BodyCell
                 className={classnames(css.cell, css['value-cell'])}

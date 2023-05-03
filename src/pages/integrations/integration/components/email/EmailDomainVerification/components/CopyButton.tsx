@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import Clipboard from 'clipboard'
 
 import IconButton from 'pages/common/components/button/IconButton'
@@ -10,6 +10,7 @@ import css from '../EmailDomainVerification.less'
 
 type Props = {
     clipboardTarget: string
+    fillStyle?: ComponentProps<typeof IconButton>['fillStyle']
 }
 
 const clipboardCopy = (button: HTMLButtonElement) => {
@@ -28,7 +29,7 @@ const clipboardCopy = (button: HTMLButtonElement) => {
     })
 }
 
-const CopyButton = ({clipboardTarget}: Props) => {
+const CopyButton = ({clipboardTarget, fillStyle}: Props) => {
     return (
         <IconButton
             iconClassName="material-icons-outlined"
@@ -36,6 +37,7 @@ const CopyButton = ({clipboardTarget}: Props) => {
             data-clipboard-target={clipboardTarget}
             ref={clipboardCopy}
             className={css['copy-button']}
+            fillStyle={fillStyle}
         >
             content_copy
         </IconButton>
