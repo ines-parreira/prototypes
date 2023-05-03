@@ -14,7 +14,15 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
         class="messageText"
       >
         <span>
-          Welcome to the new Statistics Overview! It calculates data in a new way to represent your workload more accurately.
+          <span>
+            Welcome to the new Statistics Overview! It calculates data in a new way to represent your workload more accurately.
+             
+            <a
+              href="https://docs.gorgias.com/en-US/226700-5b26beb8fd254af181bd50281c5bbde6"
+            >
+              Learn more.
+            </a>
+          </span>
         </span>
         <a
           to="/app/stats/support-performance-overview-legacy"

@@ -63,6 +63,8 @@ import {OneDimensionalDataItem} from './types'
 import TimeSeriesChart from './TimeSeriesChart'
 
 const DEFAULT_TIMEZONE = 'UTC'
+const LEARN_MORE_URL =
+    'https://docs.gorgias.com/en-US/226700-5b26beb8fd254af181bd50281c5bbde6'
 
 export default function SupportPerformanceOverview() {
     const userTimezone = useAppSelector(
@@ -197,7 +199,14 @@ export default function SupportPerformanceOverview() {
                     }
                     closable
                     dismissible={false}
-                    message="Welcome to the new Statistics Overview! It calculates data in a new way to represent your workload more accurately."
+                    message={
+                        <span>
+                            Welcome to the new Statistics Overview! It
+                            calculates data in a new way to represent your
+                            workload more accurately.{' '}
+                            <a href={LEARN_MORE_URL}>Learn more.</a>
+                        </span>
+                    }
                     onClose={() => setIsVersionBannerVisible(false)}
                 />
             ) : null}
