@@ -74,8 +74,8 @@ const ContactFormPublish = (): JSX.Element => {
                         alert={`Make sure to insert the code on <b>all pages</b> you wish to display the contact form.`}
                         description={`Use HTML to manually display the contact form on specific pages of your website. <br /> Note: You must have access to your site theme.`}
                         instructions={[
-                            'Edit the source code of your website which contains the closing HTML tag </body>',
-                            'Just above this tag, copy and paste the code snippet below',
+                            'Edit the source code of your website',
+                            'Place the Contact Form code snippet within a <body> tag',
                             'Save the file and commit changes',
                         ]}
                     />

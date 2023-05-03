@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactFormPublish Code snippet should provide correct manual embed instructions 1`] = `
+<div
+  class="card card"
+  data-is-open="true"
+>
+  <div
+    class="cardHeader card-header"
+  >
+    <div>
+      <h3
+        class="mbXs"
+      >
+        Manually embed to website
+      </h3>
+      <p>
+        Use HTML to manually display the contact form on specific pages of your website. 
+        <br />
+         Note: You must have access to your site theme.
+      </p>
+    </div>
+    <button
+      aria-label="collapse card"
+    >
+      <i
+        class="material-icons"
+      >
+        keyboard_arrow_up
+      </i>
+    </button>
+  </div>
+  <div
+    class="collapse show"
+  >
+    <div
+      class="cardBody card-body"
+    >
+      <div
+        class="wrapper mbM"
+      >
+        <div
+          class="instruction"
+        >
+          <div>
+            <div
+              class="instruction-number"
+            >
+              1
+            </div>
+          </div>
+          <div>
+            Edit the source code of your website
+          </div>
+        </div>
+        <div
+          class="instruction"
+        >
+          <div>
+            <div
+              class="instruction-number"
+            >
+              2
+            </div>
+          </div>
+          <div>
+            Place the Contact Form code snippet within a &lt;body&gt; tag
+          </div>
+        </div>
+        <div
+          class="instruction"
+        >
+          <div>
+            <div
+              class="instruction-number"
+            >
+              3
+            </div>
+          </div>
+          <div>
+            Save the file and commit changes
+          </div>
+        </div>
+      </div>
+      <div
+        class="alert warning mbM"
+      >
+        <div
+          class="content"
+        >
+          <span
+            class="label"
+          >
+            <span>
+              Make sure to insert the code on 
+              <b>
+                all pages
+              </b>
+               you wish to display the contact form.
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="container"
+      >
+        <div
+          class="wrapper alert alert-success"
+          role="alert"
+        >
+          <pre
+            class="code"
+            id="code-snippet-1"
+          >
+            &lt;script...&gt;&lt;/script&gt;&lt;div&gt;&lt;/div&gt;
+          </pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
