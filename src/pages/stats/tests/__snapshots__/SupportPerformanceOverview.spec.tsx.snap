@@ -1481,7 +1481,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   <span
                     class="heading-section-semibold"
                   >
-                    Workload per channel
+                    Total workload by channel
                   </span>
                   <div
                     class="wrapper tooltip"

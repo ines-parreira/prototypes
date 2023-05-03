@@ -430,8 +430,8 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={12}>
                         <ChartCard
-                            title="Workload per channel"
-                            hint="Distribution of all tickets of the period (both “open” and “closed”) per channel"
+                            title="Total workload by channel"
+                            hint="Distribution of all tickets of the period (both “open” and “closed”) by channel"
                         >
                             {workloadPerChannel.data ? (
                                 <GaugeChart data={workloadPerChannel.data} />
