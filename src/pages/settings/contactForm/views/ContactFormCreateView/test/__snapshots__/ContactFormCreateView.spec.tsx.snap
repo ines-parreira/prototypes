@@ -140,7 +140,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
                     class="label"
                     style="min-width: 10px; opacity: 1;"
                   >
-                    Acme Billing &lt;billing@acme.gorgias.io&gt;
+                    Acme Unverified &lt;unverified@gorgias.io&gt;
                   </span>
                   <input
                     autocomplete="chrome-off"
@@ -171,6 +171,16 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
                   type="button"
                 >
                   <span>
+                    Acme Billing &lt;billing@acme.gorgias.io&gt;
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
                     Deactivated gmail &lt;billing+1@acme.gorgias.io&gt;
                   </span>
                 </button>
@@ -192,16 +202,6 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
                 >
                   <span>
                     Acme Contact &lt;contact@acme.com&gt;
-                  </span>
-                </button>
-                <button
-                  class="option dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  <span>
-                    Acme Unverified &lt;unverified@gorgias.io&gt;
                   </span>
                 </button>
                 <button

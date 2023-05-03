@@ -11,6 +11,7 @@ import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import css from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences/ContactFormPreferences.less'
 import settingsCss from 'pages/settings/settings.less'
+import {useDefaultEmailSelectedBanner} from 'pages/settings/contactForm/hooks/useDefaultEmailSelectedBanner'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     ContactFormIntegration,
@@ -28,6 +29,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import {CONTACT_FORM_BASE_PATH} from 'pages/settings/contactForm/constants'
 import {LocaleCode} from 'models/helpCenter/types'
+import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
 const ContactFormPreferences = (): JSX.Element => {
     const {
@@ -59,6 +61,7 @@ const ContactFormPreferences = (): JSX.Element => {
     }
 
     const onChangeEmailIntegration = (integration: ContactFormIntegration) => {
+        resetAcknowledgement()
         setUpdateContactFormDto((prev) => ({
             ...prev,
             email_integration: {
@@ -142,6 +145,16 @@ const ContactFormPreferences = (): JSX.Element => {
         !isLoading &&
         isDirty
 
+    const {defaultIntegration} = useEmailIntegrations()
+    const isDefaultIntegrationSelected =
+        (
+            updateContactFormDto?.email_integration ||
+            contactForm.email_integration
+        )?.id === defaultIntegration?.id
+
+    const {BannerComponent, resetAcknowledgement} =
+        useDefaultEmailSelectedBanner({isDefaultIntegrationSelected})
+
     return (
         <Container fluid className={settingsCss.pageContainer}>
             <PendingChangesModal
@@ -207,6 +220,12 @@ const ContactFormPreferences = (): JSX.Element => {
                         isApiReady={isReady}
                     />
                 </section>
+
+                {BannerComponent && (
+                    <section className={contactFormCss.mbL}>
+                        {BannerComponent}
+                    </section>
+                )}
 
                 <section className={contactFormCss.mbL}>
                     <EmailIntegrationInputSection

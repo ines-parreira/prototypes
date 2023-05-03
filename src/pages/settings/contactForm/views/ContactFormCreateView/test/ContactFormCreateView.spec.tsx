@@ -48,6 +48,16 @@ describe('<ContactFormCreateView />', () => {
         jest.mocked(useSupportedLocales).mockReturnValue(
             getLocalesResponseFixture
         )
+
+        window.GORGIAS_STATE = {
+            integrations: {
+                authentication: {
+                    email: {
+                        forwarding_email_address: 'sendgrid@gorgias.io',
+                    },
+                },
+            },
+        } as any
     })
 
     it('should preserve valid classnames to have proper distances between sections', () => {
@@ -122,8 +132,8 @@ describe('<ContactFormCreateView />', () => {
 
                 expect(mockCreateContactForm).toHaveBeenLastCalledWith({
                     email_integration: {
-                        email: 'billing@acme.gorgias.io',
-                        id: 5,
+                        email: 'unverified@gorgias.io',
+                        id: 13,
                     },
                     default_locale: 'en-US',
                     help_center_id: null,

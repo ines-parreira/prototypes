@@ -4,17 +4,10 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import EmailIntegrationInputSection from 'pages/settings/contactForm/components/EmailIntegrationInputSection'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-import {
-    isBaseEmailIntegration,
-    isGenericEmailIntegration,
-} from 'pages/integrations/integration/components/email/helpers'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import * as integrationsSelectors from 'state/integrations/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import settingsCss from 'pages/settings/settings.less'
@@ -32,38 +25,39 @@ import ContactFormNameInputSection from 'pages/settings/contactForm/components/C
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'
 import {LocaleCode} from 'models/helpCenter/types'
+import {useDefaultEmailSelectedBanner} from 'pages/settings/contactForm/hooks/useDefaultEmailSelectedBanner'
+import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import contactFormCss from '../../contactForm.less'
-
-const emailIntegrationsSelector = integrationsSelectors.getIntegrationsByTypes(
-    EMAIL_INTEGRATION_TYPES
-)
 
 const ContactFormCreateView = ({
     notify,
 }: ConnectedProps<typeof connector>): JSX.Element => {
     const history = useHistory()
     const domain: string = useAppSelector(getCurrentAccountState).get('domain')
-    const integrations = useAppSelector(emailIntegrationsSelector)
-    const emailIntegrations = integrations.filter(isGenericEmailIntegration)
+    const {defaultIntegration, emailIntegrations} = useEmailIntegrations()
     const {checkContactFormName, createContactForm, isReady, isLoading} =
         useContactFormApi()
-    const [isAlertAcknowledged, setIsAlertAcknowledged] = useState(false)
     const [isNameInvalid, setIsNameInvalid] = useState(false)
     const [createContactFormDto, setCreateContactFormDto] =
         useState<CreateContactFormDto>(() => {
-            const defaultEmailIntegration =
-                emailIntegrations.find(isBaseEmailIntegration) ??
-                emailIntegrations[0]
-
+            const integration = defaultIntegration ?? emailIntegrations[0]
             return {
                 name: `${domain} Contact Form`,
                 help_center_id: null,
                 default_locale: CONTACT_FORM_DEFAULT_LOCALE,
                 email_integration: {
-                    id: defaultEmailIntegration.id,
-                    email: defaultEmailIntegration.meta.address,
+                    id: integration.id,
+                    email: integration.meta.address,
                 },
             }
+        })
+
+    const isDefaultIntegrationSelected =
+        createContactFormDto.email_integration.id === defaultIntegration?.id
+
+    const {BannerComponent, resetAcknowledgement} =
+        useDefaultEmailSelectedBanner({
+            isDefaultIntegrationSelected,
         })
 
     const navigateToStartView = useCallback(
@@ -83,8 +77,6 @@ const ContactFormCreateView = ({
         [history]
     )
 
-    const onInfoClose = () => setIsAlertAcknowledged(true)
-
     const onChangeName = (name: string) => {
         setCreateContactFormDto((prev) => ({
             ...prev,
@@ -93,6 +85,7 @@ const ContactFormCreateView = ({
     }
 
     const onChangeEmailIntegration = (integration: ContactFormIntegration) => {
+        resetAcknowledgement()
         setCreateContactFormDto((prev) => ({
             ...prev,
             email_integration: {
@@ -167,19 +160,7 @@ const ContactFormCreateView = ({
                         />
                     </section>
 
-                    {!isAlertAcknowledged && (
-                        <section>
-                            <Alert
-                                icon
-                                data-testid="alert"
-                                type={AlertType.Info}
-                                onClose={onInfoClose}
-                            >
-                                The default Gorgias email is selected. Make sure
-                                to set the desired email for your form.
-                            </Alert>
-                        </section>
-                    )}
+                    {BannerComponent && <section>{BannerComponent}</section>}
 
                     <section>
                         <EmailIntegrationInputSection

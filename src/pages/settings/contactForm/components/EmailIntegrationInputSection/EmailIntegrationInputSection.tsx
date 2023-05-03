@@ -1,17 +1,10 @@
 import React, {useMemo} from 'react'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import useAppSelector from 'hooks/useAppSelector'
 import Label from 'pages/common/forms/Label/Label'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
-import {isGenericEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
-import * as integrationsSelectors from 'state/integrations/selectors'
 import {ContactFormIntegration} from 'models/contactForm/types'
-
-const emailIntegrationsSelector = integrationsSelectors.getIntegrationsByTypes(
-    EMAIL_INTEGRATION_TYPES
-)
+import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
 type EmailIntegrationInputSectionProps = {
     onChange: (integration: ContactFormIntegration) => void
@@ -26,8 +19,7 @@ const EmailIntegrationInputSection = ({
     isRequiredShown = false,
     customLabel = 'Email that will receive submissions',
 }: EmailIntegrationInputSectionProps): JSX.Element => {
-    const integrations = useAppSelector(emailIntegrationsSelector)
-    const emailIntegrations = integrations.filter(isGenericEmailIntegration)
+    const {emailIntegrations} = useEmailIntegrations()
 
     const onChangeEmail = (integrationId: Value) => {
         const selectedIntegration = emailIntegrations.find(
