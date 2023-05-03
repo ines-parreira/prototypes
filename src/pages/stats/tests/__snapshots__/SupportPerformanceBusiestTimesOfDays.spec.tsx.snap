@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
+exports[`<SupportPerformanceBusiestTimesOfDays /> should render the page 1`] = `
 <div
   class="full-width wrapper"
 >
@@ -15,7 +15,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
         class="align-items-center"
       >
         <span>
-          Weekly Ticket Load
+          Busiest times of days
         </span>
       </h1>
       <div>

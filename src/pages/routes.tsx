@@ -109,7 +109,7 @@ import SupportPerformanceRevenue from './stats/SupportPerformanceRevenue'
 import RevenueCampaignsStats from './stats/revenue/pages/CampaignsStats'
 import SupportPerformanceOverview from './stats/SupportPerformanceOverview'
 import DEPRECATED_SupportPerformanceOverview from './stats/DEPRECATED_SupportPerformanceOverview'
-import SupportPerformanceWeeklyTicketLoad from './stats/SupportPerformanceWeeklyTicketLoad'
+import SupportPerformanceBusiestTimesOfDays from './stats/SupportPerformanceBusiestTimesOfDays'
 import LiveOverview from './stats/LiveOverview'
 import LiveAgents from './stats/LiveAgents'
 import AutomationOverview from './stats/AutomationOverview'
@@ -514,9 +514,9 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                 {hasAnalyticsBeta && (
                     <Route
                         exact
-                        path={`${path}/weekly-ticket-load`}
+                        path={`${path}/busiest-times-of-days`}
                         render={appRender({
-                            content: SupportPerformanceWeeklyTicketLoad,
+                            content: SupportPerformanceBusiestTimesOfDays,
                             navbar: StatsNavbarContainer,
                         })}
                     />

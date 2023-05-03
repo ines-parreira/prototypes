@@ -25,7 +25,7 @@ import {
 
 const SUPPORT_PERFORMANCE_OVERVIEW_STAT_NAME = 'support-performance-overview'
 
-export default function SupportPerformanceWeeklyTicketLoad() {
+export default function SupportPerformanceBusiestTimesOfDays() {
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
@@ -54,7 +54,7 @@ export default function SupportPerformanceWeeklyTicketLoad() {
 
     return (
         <StatsPage
-            title="Weekly Ticket Load"
+            title="Busiest times of days"
             filters={
                 pageStatsFilters && (
                     <>

@@ -46,7 +46,7 @@ describe('StatsNavbarView', () => {
         expect(screen.getByText('new')).toBeInTheDocument()
     })
 
-    it('should render the link to Weekly ticket load when having access to the beta', () => {
+    it('should render the link to busiest times of days when having access to the beta', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AnalyticsBetaTesters]: true,
         }))
@@ -56,7 +56,7 @@ describe('StatsNavbarView', () => {
             </Provider>
         )
 
-        expect(screen.getByText('Weekly ticket load')).toBeInTheDocument()
+        expect(screen.getByText('Busiest times of days')).toBeInTheDocument()
     })
 
     it('should render the link to the Revenue Campaign when having access to the beta', () => {

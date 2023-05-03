@@ -16,7 +16,7 @@ import {StatsFilters} from 'models/stat/types'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import useStatResource from 'pages/stats/useStatResource'
 import {RootState, StoreDispatch} from 'state/types'
-import SupportPerformanceWeeklyTicketLoad from '../SupportPerformanceWeeklyTicketLoad'
+import SupportPerformanceBusiestTimesOfDays from '../SupportPerformanceBusiestTimesOfDays'
 
 jest.mock(
     'pages/stats/TagsStatsFilter',
@@ -27,7 +27,7 @@ jest.mock(
 jest.mock('pages/stats/useStatResource')
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 
-describe('<SupportPerformanceWeeklyTicketLoad />', () => {
+describe('<SupportPerformanceBusiestTimesOfDays />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
@@ -68,7 +68,7 @@ describe('<SupportPerformanceWeeklyTicketLoad />', () => {
         })
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <SupportPerformanceWeeklyTicketLoad />
+                <SupportPerformanceBusiestTimesOfDays />
             </Provider>
         )
 

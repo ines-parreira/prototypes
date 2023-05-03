@@ -70,9 +70,9 @@ export default function StatsNavbarView() {
                     {hasAnalyticsBeta && (
                         <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/weekly-ticket-load"
+                            to="/app/stats/busiest-times-of-days"
                         >
-                            Weekly ticket load
+                            Busiest times of days
                         </NavbarLink>
                     )}
 
