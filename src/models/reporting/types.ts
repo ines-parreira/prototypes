@@ -68,6 +68,8 @@ export enum MessageStateMember {
     Integration = 'MessageState.integration',
     SenderId = 'MessageState.senderId',
     SentDatetime = 'MessageState.sentDatetime',
+    IsOnTrashedTicket = 'MessageState.isOnTrashedTicket',
+    IsOnSpamTicket = 'MessageState.isOnSpamTicket',
 }
 
 export enum MessageStateDimension {

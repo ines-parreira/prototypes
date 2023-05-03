@@ -1,6 +1,7 @@
 import {
     MessageStateDimension,
     MessageStateMeasure,
+    MessageStateMember,
     ReportingFilterOperator,
     ReportingGranularity,
     TicketStateDimension,
@@ -116,11 +117,27 @@ export function useTicketsRepliedTimeSeries(
         ],
         timezone,
         dimensions: [],
-        order: [[MessageStateDimension.PeriodStart, 'asc']],
-        filters: statsFiltersToReportingFilters(
-            MessageStateStatsFiltersMembers,
-            filters
-        ),
+        filters: [
+            ...statsFiltersToReportingFilters(
+                MessageStateStatsFiltersMembers,
+                filters
+            ),
+            {
+                member: MessageStateMember.IsOnTrashedTicket,
+                operator: ReportingFilterOperator.Equals,
+                values: ['0'],
+            },
+            {
+                member: MessageStateMember.IsOnSpamTicket,
+                operator: ReportingFilterOperator.Equals,
+                values: ['0'],
+            },
+            {
+                member: MessageStateMember.Channel,
+                operator: ReportingFilterOperator.NotEquals,
+                values: ['internal-note'],
+            },
+        ],
     })
 }
 

@@ -213,6 +213,21 @@ export const useTicketsRepliedTrend = createUseMetricTrend(
                     filters.period.end_datetime,
                 ],
             },
+            {
+                member: MessageStateMember.IsOnTrashedTicket,
+                operator: ReportingFilterOperator.Equals,
+                values: ['0'],
+            },
+            {
+                member: MessageStateMember.IsOnSpamTicket,
+                operator: ReportingFilterOperator.Equals,
+                values: ['0'],
+            },
+            {
+                member: MessageStateMember.Channel,
+                operator: ReportingFilterOperator.NotEquals,
+                values: ['internal-note'],
+            },
         ],
     })
 )

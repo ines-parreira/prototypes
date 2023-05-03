@@ -467,6 +467,27 @@ exports[`metric trends useTicketsRepliedTrend should create reporting filters 1`
         "2021-06-04T23:59:59+02:00",
       ],
     },
+    {
+      "member": "MessageState.isOnTrashedTicket",
+      "operator": "equals",
+      "values": [
+        "0",
+      ],
+    },
+    {
+      "member": "MessageState.isOnSpamTicket",
+      "operator": "equals",
+      "values": [
+        "0",
+      ],
+    },
+    {
+      "member": "MessageState.channel",
+      "operator": "notEquals",
+      "values": [
+        "internal-note",
+      ],
+    },
   ],
   "measures": [
     "MessageState.ticketCount",

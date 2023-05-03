@@ -270,15 +270,30 @@ exports[`time series useTicketsRepliedTimeSeries should create reporting filters
           "2",
         ],
       },
+      {
+        "member": "MessageState.isOnTrashedTicket",
+        "operator": "equals",
+        "values": [
+          "0",
+        ],
+      },
+      {
+        "member": "MessageState.isOnSpamTicket",
+        "operator": "equals",
+        "values": [
+          "0",
+        ],
+      },
+      {
+        "member": "MessageState.channel",
+        "operator": "notEquals",
+        "values": [
+          "internal-note",
+        ],
+      },
     ],
     "measures": [
       "MessageState.ticketCount",
-    ],
-    "order": [
-      [
-        "MessageState.periodStart",
-        "asc",
-      ],
     ],
     "timeDimensions": [
       {
