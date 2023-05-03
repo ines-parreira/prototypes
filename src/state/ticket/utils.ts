@@ -550,7 +550,9 @@ export function getNewMessageSender(
     }
 
     if (
-        ticket.get('channel') === TicketChannel.HelpCenter &&
+        [TicketChannel.HelpCenter, TicketChannel.ContactForm].includes(
+            ticket.get('channel')
+        ) &&
         ticket.get('via') === TicketVia.ContactForm
     ) {
         const firstContactFormMessage = (

@@ -363,7 +363,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-13"
                       type="checkbox"
                     />
-                     Email
+                     Contact Form
                   </label>
                 </div>
                 <div
@@ -379,7 +379,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-14"
                       type="checkbox"
                     />
-                     Facebook
+                     Email
                   </label>
                 </div>
                 <div
@@ -395,7 +395,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-15"
                       type="checkbox"
                     />
-                     Facebook Mention
+                     Facebook
                   </label>
                 </div>
                 <div
@@ -411,7 +411,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-16"
                       type="checkbox"
                     />
-                     Facebook Messenger
+                     Facebook Mention
                   </label>
                 </div>
                 <div
@@ -427,7 +427,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-17"
                       type="checkbox"
                     />
-                     Facebook Recommendations
+                     Facebook Messenger
                   </label>
                 </div>
                 <div
@@ -443,7 +443,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-18"
                       type="checkbox"
                     />
-                     Help Center
+                     Facebook Recommendations
                   </label>
                 </div>
                 <div
@@ -459,7 +459,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-19"
                       type="checkbox"
                     />
-                     Instagram Ad Comment
+                     Help Center
                   </label>
                 </div>
                 <div
@@ -475,7 +475,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-20"
                       type="checkbox"
                     />
-                     Instagram Comment
+                     Instagram Ad Comment
                   </label>
                 </div>
                 <div
@@ -491,7 +491,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-21"
                       type="checkbox"
                     />
-                     Instagram Mention
+                     Instagram Comment
                   </label>
                 </div>
                 <div
@@ -507,7 +507,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-22"
                       type="checkbox"
                     />
-                     Instagram Direct Message
+                     Instagram Mention
                   </label>
                 </div>
                 <div
@@ -523,7 +523,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-23"
                       type="checkbox"
                     />
-                     Phone
+                     Instagram Direct Message
                   </label>
                 </div>
                 <div
@@ -539,7 +539,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-24"
                       type="checkbox"
                     />
-                     SMS
+                     Phone
                   </label>
                 </div>
                 <div
@@ -555,7 +555,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-25"
                       type="checkbox"
                     />
-                     Twitter
+                     SMS
                   </label>
                 </div>
                 <div
@@ -571,7 +571,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-26"
                       type="checkbox"
                     />
-                     Twitter Direct Message
+                     Twitter
                   </label>
                 </div>
                 <div
@@ -587,7 +587,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       name="checkbox-27"
                       type="checkbox"
                     />
-                     Yotpo Review
+                     Twitter Direct Message
                   </label>
                 </div>
                 <div
@@ -601,6 +601,22 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                       class="input"
                       id="checkbox-28"
                       name="checkbox-28"
+                      type="checkbox"
+                    />
+                     Yotpo Review
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-29"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-29"
+                      name="checkbox-29"
                       type="checkbox"
                     />
                      WhatsApp
@@ -649,13 +665,13 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-29"
+                    for="checkbox-30"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-29"
-                      name="checkbox-29"
+                      id="checkbox-30"
+                      name="checkbox-30"
                       type="checkbox"
                     />
                     Deselect
@@ -686,22 +702,6 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-30"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-30"
-                        name="checkbox-30"
-                        type="checkbox"
-                      />
-                      Foo
-                    </label>
-                  </div>
-                  <div
-                    class="wrapperItem"
-                  >
-                    <label
-                      class="label label labelItem"
                       for="checkbox-31"
                     >
                       <input
@@ -710,7 +710,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                         name="checkbox-31"
                         type="checkbox"
                       />
-                      Phone team - +1 205-396-3441
+                      Foo
                     </label>
                   </div>
                   <div
@@ -726,7 +726,7 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                         name="checkbox-32"
                         type="checkbox"
                       />
-                      Team: user meta null
+                      Phone team - +1 205-396-3441
                     </label>
                   </div>
                   <div
@@ -740,6 +740,22 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                         class="input"
                         id="checkbox-33"
                         name="checkbox-33"
+                        type="checkbox"
+                      />
+                      Team: user meta null
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-34"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-34"
+                        name="checkbox-34"
                         type="checkbox"
                       />
                       Test
@@ -761,13 +777,13 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-34"
+                    for="checkbox-35"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-34"
-                      name="checkbox-34"
+                      id="checkbox-35"
+                      name="checkbox-35"
                       type="checkbox"
                     />
                      Acme Support
@@ -778,12 +794,12 @@ exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-35"
+                    for="checkbox-36"
                   >
                     <input
                       class="input"
-                      id="checkbox-35"
-                      name="checkbox-35"
+                      id="checkbox-36"
+                      name="checkbox-36"
                       type="checkbox"
                     />
                      Bob Smith

@@ -351,8 +351,11 @@ export function sourceTypeToChannel(
     }
 
     if (
-        sourceType === TicketMessageSourceType.ChatContactForm ||
-        sourceType === TicketMessageSourceType.HelpCenterContactForm
+        [
+            TicketMessageSourceType.HelpCenterContactForm,
+            TicketMessageSourceType.ChatContactForm,
+            TicketMessageSourceType.ContactForm,
+        ].includes(sourceType)
     ) {
         return TicketChannel.Email
     }

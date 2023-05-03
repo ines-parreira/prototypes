@@ -109,6 +109,7 @@ export const SOURCE_VALUE_PROP: Partial<
     [TicketMessageSourceType.Chat]: 'address',
     [TicketMessageSourceType.ChatContactForm]: 'address',
     [TicketMessageSourceType.HelpCenterContactForm]: 'address',
+    [TicketMessageSourceType.ContactForm]: 'address',
     [TicketMessageSourceType.Aircall]: 'address',
     [TicketMessageSourceType.Api]: null,
     [TicketMessageSourceType.FacebookMessage]: 'address',

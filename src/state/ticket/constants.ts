@@ -100,6 +100,7 @@ export const TICKET_CHANNEL_NAMES: Record<TicketChannel, string> =
         [TicketChannel.TwitterDirectMessage]: 'Twitter Direct Message',
         [TicketChannel.YotpoReview]: 'Yotpo Review',
         [TicketChannel.HelpCenter]: 'Help Center',
+        [TicketChannel.ContactForm]: 'Contact Form',
         [TicketChannel.WhatsApp]: 'WhatsApp',
     })
 

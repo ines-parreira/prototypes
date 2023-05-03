@@ -164,7 +164,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-5"
                       type="checkbox"
                     />
-                     Email
+                     Contact Form
                   </label>
                 </div>
                 <div
@@ -180,7 +180,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-6"
                       type="checkbox"
                     />
-                     Facebook
+                     Email
                   </label>
                 </div>
                 <div
@@ -196,7 +196,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-7"
                       type="checkbox"
                     />
-                     Facebook Mention
+                     Facebook
                   </label>
                 </div>
                 <div
@@ -212,7 +212,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-8"
                       type="checkbox"
                     />
-                     Facebook Messenger
+                     Facebook Mention
                   </label>
                 </div>
                 <div
@@ -228,7 +228,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-9"
                       type="checkbox"
                     />
-                     Facebook Recommendations
+                     Facebook Messenger
                   </label>
                 </div>
                 <div
@@ -244,7 +244,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-10"
                       type="checkbox"
                     />
-                     Help Center
+                     Facebook Recommendations
                   </label>
                 </div>
                 <div
@@ -260,7 +260,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-11"
                       type="checkbox"
                     />
-                     Instagram Ad Comment
+                     Help Center
                   </label>
                 </div>
                 <div
@@ -276,7 +276,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-12"
                       type="checkbox"
                     />
-                     Instagram Comment
+                     Instagram Ad Comment
                   </label>
                 </div>
                 <div
@@ -292,7 +292,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-13"
                       type="checkbox"
                     />
-                     Instagram Mention
+                     Instagram Comment
                   </label>
                 </div>
                 <div
@@ -308,7 +308,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-14"
                       type="checkbox"
                     />
-                     Instagram Direct Message
+                     Instagram Mention
                   </label>
                 </div>
                 <div
@@ -324,7 +324,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-15"
                       type="checkbox"
                     />
-                     Phone
+                     Instagram Direct Message
                   </label>
                 </div>
                 <div
@@ -340,7 +340,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-16"
                       type="checkbox"
                     />
-                     SMS
+                     Phone
                   </label>
                 </div>
                 <div
@@ -356,7 +356,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-17"
                       type="checkbox"
                     />
-                     Twitter
+                     SMS
                   </label>
                 </div>
                 <div
@@ -372,7 +372,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-18"
                       type="checkbox"
                     />
-                     Twitter Direct Message
+                     Twitter
                   </label>
                 </div>
                 <div
@@ -388,7 +388,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-19"
                       type="checkbox"
                     />
-                     Yotpo Review
+                     Twitter Direct Message
                   </label>
                 </div>
                 <div
@@ -402,6 +402,22 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       class="input"
                       id="checkbox-20"
                       name="checkbox-20"
+                      type="checkbox"
+                    />
+                     Yotpo Review
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-21"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-21"
+                      name="checkbox-21"
                       type="checkbox"
                     />
                      WhatsApp
@@ -450,13 +466,13 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-21"
+                    for="checkbox-22"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-21"
-                      name="checkbox-21"
+                      id="checkbox-22"
+                      name="checkbox-22"
                       type="checkbox"
                     />
                     Deselect
@@ -487,22 +503,6 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-22"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-22"
-                        name="checkbox-22"
-                        type="checkbox"
-                      />
-                      Foo
-                    </label>
-                  </div>
-                  <div
-                    class="wrapperItem"
-                  >
-                    <label
-                      class="label label labelItem"
                       for="checkbox-23"
                     >
                       <input
@@ -511,7 +511,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                         name="checkbox-23"
                         type="checkbox"
                       />
-                      Phone team - +1 205-396-3441
+                      Foo
                     </label>
                   </div>
                   <div
@@ -527,7 +527,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                         name="checkbox-24"
                         type="checkbox"
                       />
-                      Team: user meta null
+                      Phone team - +1 205-396-3441
                     </label>
                   </div>
                   <div
@@ -541,6 +541,22 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                         class="input"
                         id="checkbox-25"
                         name="checkbox-25"
+                        type="checkbox"
+                      />
+                      Team: user meta null
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-26"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-26"
+                        name="checkbox-26"
                         type="checkbox"
                       />
                       Test
@@ -562,13 +578,13 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-26"
+                    for="checkbox-27"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-26"
-                      name="checkbox-26"
+                      id="checkbox-27"
+                      name="checkbox-27"
                       type="checkbox"
                     />
                      Acme Support
@@ -579,12 +595,12 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-27"
+                    for="checkbox-28"
                   >
                     <input
                       class="input"
-                      id="checkbox-27"
-                      name="checkbox-27"
+                      id="checkbox-28"
+                      name="checkbox-28"
                       type="checkbox"
                     />
                      Bob Smith

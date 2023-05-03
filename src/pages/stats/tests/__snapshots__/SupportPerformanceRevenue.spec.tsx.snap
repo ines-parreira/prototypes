@@ -327,7 +327,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-9"
                       type="checkbox"
                     />
-                     Email
+                     Contact Form
                   </label>
                 </div>
                 <div
@@ -343,7 +343,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-10"
                       type="checkbox"
                     />
-                     Facebook
+                     Email
                   </label>
                 </div>
                 <div
@@ -359,7 +359,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-11"
                       type="checkbox"
                     />
-                     Facebook Mention
+                     Facebook
                   </label>
                 </div>
                 <div
@@ -375,7 +375,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-12"
                       type="checkbox"
                     />
-                     Facebook Messenger
+                     Facebook Mention
                   </label>
                 </div>
                 <div
@@ -391,7 +391,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-13"
                       type="checkbox"
                     />
-                     Facebook Recommendations
+                     Facebook Messenger
                   </label>
                 </div>
                 <div
@@ -407,7 +407,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-14"
                       type="checkbox"
                     />
-                     Help Center
+                     Facebook Recommendations
                   </label>
                 </div>
                 <div
@@ -423,7 +423,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-15"
                       type="checkbox"
                     />
-                     Instagram Ad Comment
+                     Help Center
                   </label>
                 </div>
                 <div
@@ -439,7 +439,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-16"
                       type="checkbox"
                     />
-                     Instagram Comment
+                     Instagram Ad Comment
                   </label>
                 </div>
                 <div
@@ -455,7 +455,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-17"
                       type="checkbox"
                     />
-                     Instagram Mention
+                     Instagram Comment
                   </label>
                 </div>
                 <div
@@ -471,7 +471,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-18"
                       type="checkbox"
                     />
-                     Instagram Direct Message
+                     Instagram Mention
                   </label>
                 </div>
                 <div
@@ -487,7 +487,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-19"
                       type="checkbox"
                     />
-                     Phone
+                     Instagram Direct Message
                   </label>
                 </div>
                 <div
@@ -503,7 +503,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-20"
                       type="checkbox"
                     />
-                     SMS
+                     Phone
                   </label>
                 </div>
                 <div
@@ -519,7 +519,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-21"
                       type="checkbox"
                     />
-                     Twitter
+                     SMS
                   </label>
                 </div>
                 <div
@@ -535,7 +535,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-22"
                       type="checkbox"
                     />
-                     Twitter Direct Message
+                     Twitter
                   </label>
                 </div>
                 <div
@@ -551,7 +551,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-23"
                       type="checkbox"
                     />
-                     Yotpo Review
+                     Twitter Direct Message
                   </label>
                 </div>
                 <div
@@ -565,6 +565,22 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       class="input"
                       id="checkbox-24"
                       name="checkbox-24"
+                      type="checkbox"
+                    />
+                     Yotpo Review
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-25"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-25"
+                      name="checkbox-25"
                       type="checkbox"
                     />
                      WhatsApp

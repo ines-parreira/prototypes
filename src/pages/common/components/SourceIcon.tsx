@@ -32,6 +32,8 @@ const sourceTypeToIcon = (
         case IntegrationType.Gmail:
         case IntegrationType.Outlook:
         case TicketMessageSourceType.HelpCenterContactForm:
+        case TicketChannel.ContactForm:
+        case TicketMessageSourceType.ContactForm:
             icon.name = 'email'
             break
         case TicketMessageSourceType.EmailForward:
