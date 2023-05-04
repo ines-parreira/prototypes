@@ -9,11 +9,10 @@ export const getCampaignTicketsPerformanceData = async ({
     endDate,
     campaignIds,
 }: RevenueAttributionFilterParams): Promise<Stat> => {
-    const [startDateUtc, endDateUtc] = getDateRange(startDate, endDate)
     const filters: StatsFilters = {
         period: {
-            start_datetime: startDateUtc,
-            end_datetime: endDateUtc,
+            start_datetime: startDate,
+            end_datetime: endDate,
         },
         campaigns: campaignIds,
     }
