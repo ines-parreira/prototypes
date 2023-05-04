@@ -11,7 +11,6 @@ type ContactFormNameInputSectionProps = {
     contactFormName: string
     isRequiredShown?: boolean
     checkContactFormName: (name: string) => Promise<boolean>
-    domain: string
     isApiReady: boolean
     isNameCheckEnabled?: boolean
     setIsNameInvalid?: (isValid: boolean) => void
@@ -24,7 +23,6 @@ const ContactFormNameInputSection = ({
     contactFormName,
     checkContactFormName,
     isApiReady,
-    domain,
     isRequiredShown = false,
     isNameCheckEnabled = true,
     setIsNameInvalid,
@@ -40,8 +38,13 @@ const ContactFormNameInputSection = ({
 
         setIsNameInvalid && setIsNameInvalid(Boolean(error))
 
-        return error
-    }, [setIsNameInvalid, contactFormName, isFormNameAvailable])
+        return isNameCheckEnabled ? error : undefined
+    }, [
+        setIsNameInvalid,
+        contactFormName,
+        isFormNameAvailable,
+        isNameCheckEnabled,
+    ])
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const checkNameAvailability = useCallback(
@@ -75,11 +78,12 @@ const ContactFormNameInputSection = ({
                 Contact form name
             </Label>
             <InputField
+                autoFocus
                 isRequired={isRequiredShown}
                 data-testid="name"
                 type="text"
                 name="name"
-                placeholder={`${domain} Contact Form`}
+                placeholder={`Contact Form Name`}
                 value={contactFormName}
                 onChange={onNameChange}
                 error={nameError}

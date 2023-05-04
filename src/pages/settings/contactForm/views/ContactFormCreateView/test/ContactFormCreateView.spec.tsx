@@ -1,4 +1,4 @@
-import {fireEvent, screen, act} from '@testing-library/react'
+import {fireEvent, screen, act, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
@@ -65,16 +65,11 @@ describe('<ContactFormCreateView />', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should use subdomain as default form name', async () => {
+    it('should not pre-fill default form name', async () => {
         renderView({state: defaultState})
 
-        const EXPECTED_DOMAIN: string =
-            defaultState.currentAccount?.get('domain')
-
         const nameInput = await screen.findByTestId('name')
-        expect(nameInput.getAttribute('value')).toEqual(
-            `${EXPECTED_DOMAIN} Contact Form`
-        )
+        expect(nameInput.getAttribute('value')).toEqual('')
     })
 
     it('should hide alert after alert is acknowledged', async () => {
@@ -118,14 +113,21 @@ describe('<ContactFormCreateView />', () => {
             screen.getByText(/Name should be at least 2 characters long/i)
         })
 
-        it('should call API on submit', () => {
+        it('should call API on submit', async () => {
+            const TEST_NAME = 'Test name'
             renderView({state: defaultState})
 
             const submitButton = screen.getByRole('button', {
                 name: /Create Contact Form/,
             })
 
-            act(() => {
+            await act(async () => {
+                await waitFor(() =>
+                    fireEvent.change(screen.getByTestId('name'), {
+                        target: {value: TEST_NAME},
+                    })
+                )
+
                 expect(submitButton.className).not.toMatch(/disabled/i)
 
                 fireEvent.click(submitButton)
@@ -137,7 +139,7 @@ describe('<ContactFormCreateView />', () => {
                     },
                     default_locale: 'en-US',
                     help_center_id: null,
-                    name: 'acme Contact Form',
+                    name: TEST_NAME,
                 })
             })
         })

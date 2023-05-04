@@ -3,7 +3,6 @@ import React, {useState} from 'react'
 import {Container} from 'reactstrap'
 import {useDispatch} from 'react-redux'
 import {useHistory} from 'react-router-dom'
-import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import EmailIntegrationInputSection from 'pages/settings/contactForm/components/EmailIntegrationInputSection'
@@ -12,7 +11,6 @@ import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrent
 import css from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences/ContactFormPreferences.less'
 import settingsCss from 'pages/settings/settings.less'
 import {useDefaultEmailSelectedBanner} from 'pages/settings/contactForm/hooks/useDefaultEmailSelectedBanner'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     ContactFormIntegration,
     UpdateContactFormDto,
@@ -45,7 +43,6 @@ const ContactFormPreferences = (): JSX.Element => {
     const [isNameInvalid, setIsNameInvalid] = useState(false)
     const [isDeletionModalShown, setIsDeletionModalShown] = useState(false)
     const [isChangesModalShown, setIsChangesModalShown] = useState(false)
-    const domain: string = useAppSelector(getCurrentAccountState).get('domain')
     const [updateContactFormDto, setUpdateContactFormDto] = useState<
         Pick<
             UpdateContactFormDto,
@@ -213,10 +210,9 @@ const ContactFormPreferences = (): JSX.Element => {
                         setIsNameInvalid={setIsNameInvalid}
                         onChange={onChangeName}
                         contactFormName={
-                            updateContactFormDto.name || contactForm.name
+                            updateContactFormDto.name ?? contactForm.name
                         }
                         checkContactFormName={checkContactFormName}
-                        domain={domain}
                         isApiReady={isReady}
                     />
                 </section>

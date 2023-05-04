@@ -56,17 +56,17 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
           </label>
           <div>
             <div
-              class="wrapper"
+              class="wrapper isFocused"
             >
               <input
                 class="input"
                 data-testid="name"
                 id="input-text-1"
                 name="name"
-                placeholder="acme Contact Form"
+                placeholder="Contact Form Name"
                 required=""
                 type="text"
-                value="acme Contact Form"
+                value=""
               />
             </div>
           </div>
@@ -381,7 +381,8 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
           class="mtXl"
         >
           <button
-            class="wrapper fill primary medium"
+            class="wrapper fill primary medium isDisabled"
+            disabled=""
             type="button"
           >
             Create Contact Form

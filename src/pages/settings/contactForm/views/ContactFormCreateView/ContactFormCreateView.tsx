@@ -4,10 +4,8 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import EmailIntegrationInputSection from 'pages/settings/contactForm/components/EmailIntegrationInputSection'
-import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import settingsCss from 'pages/settings/settings.less'
@@ -33,7 +31,6 @@ const ContactFormCreateView = ({
     notify,
 }: ConnectedProps<typeof connector>): JSX.Element => {
     const history = useHistory()
-    const domain: string = useAppSelector(getCurrentAccountState).get('domain')
     const {defaultIntegration, emailIntegrations} = useEmailIntegrations()
     const {checkContactFormName, createContactForm, isReady, isLoading} =
         useContactFormApi()
@@ -42,7 +39,7 @@ const ContactFormCreateView = ({
         useState<CreateContactFormDto>(() => {
             const integration = defaultIntegration ?? emailIntegrations[0]
             return {
-                name: `${domain} Contact Form`,
+                name: '',
                 help_center_id: null,
                 default_locale: CONTACT_FORM_DEFAULT_LOCALE,
                 email_integration: {
@@ -156,7 +153,9 @@ const ContactFormCreateView = ({
                             onChange={onChangeName}
                             setIsNameInvalid={setIsNameInvalid}
                             contactFormName={createContactFormDto.name}
-                            domain={domain}
+                            isNameCheckEnabled={
+                                !!createContactFormDto.name.length
+                            }
                         />
                     </section>
 
