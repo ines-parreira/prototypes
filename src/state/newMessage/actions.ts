@@ -68,6 +68,7 @@ import {DiscountCode} from 'models/discountCodes/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import {mapNormalizedToArray} from 'models/ticket/mappers'
 import {
     MessageContext,
     selectionAfter,
@@ -1362,7 +1363,12 @@ export function submitTicket(
         ticketToSend.messages.push(dataToSend.newMessage)
 
         return client
-            .post<TicketResponse>('/api/tickets/', ticketToSend)
+            .post<TicketResponse>('/api/tickets/', {
+                ...ticketToSend,
+                custom_fields:
+                    ticketToSend.custom_fields &&
+                    mapNormalizedToArray(ticketToSend.custom_fields),
+            })
             .then((json) => json?.data)
             .then((resp) => {
                 onMessageSent(dispatch)

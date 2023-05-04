@@ -18,7 +18,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'
 import {MacroActionName} from 'models/macroAction/types'
 import {InTicketSuggestionState} from 'state/entities/rules/types'
-import {CustomFieldState} from 'models/customField/types'
+import {CustomFields, CustomFieldState} from 'models/customField/types'
 import browserNotification from 'services/browserNotification'
 import GorgiasApi from 'services/gorgiasApi'
 import socketManager from 'services/socketManager/socketManager'
@@ -62,6 +62,7 @@ import {getCustomer} from 'models/customer/resources'
 import {Member, Team} from 'models/team/types'
 import {Macro as MacroModel} from 'models/macro/types'
 
+import {mapNormalizedToArray} from 'models/ticket/mappers'
 import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,
@@ -161,7 +162,12 @@ export const fetchTicketReplyMacro = () => ({
 })
 
 export const ticketPartialUpdate =
-    (args: Record<string, unknown>, id?: number) =>
+    (
+        args: Record<string, unknown> & {
+            custom_fields?: CustomFields
+        },
+        id?: number
+    ) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -184,7 +190,12 @@ export const ticketPartialUpdate =
         })
 
         return client
-            .put<Ticket>(`/api/tickets/${ticketId}/`, args)
+            .put<Ticket>(`/api/tickets/${ticketId}/`, {
+                ...args,
+                custom_fields:
+                    args.custom_fields &&
+                    mapNormalizedToArray(args.custom_fields),
+            })
             .then((json) => json?.data)
             .then(
                 (resp) => {

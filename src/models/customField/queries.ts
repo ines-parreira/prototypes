@@ -303,50 +303,43 @@ const onErrorCreator =
 // This is only doable because we know that delete extends update params
 // And we don’t need to type the return value because we don’t use it
 export const useUpdateOrDeleteTicketFieldValue = (
-    overrides: MutationOverrides<
+    providedOverrides: MutationOverrides<
         typeof updateCustomFieldValue & typeof deleteCustomFieldValue,
         true
-    >
+    >,
+    {isDisabled = false}
 ) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
     const internalErrorHandler = onErrorCreator(dispatch)
-    const {mutate: updateMutate} = useUpdateCustomFieldValue({
-        onSuccess: (data, params) => {
+    const overrides = {
+        onSuccess: (data: unknown, params: {fieldId: number}[]) => {
             // queryClient.setQueryData(customFieldValueKeys.value(params[0].id), {...})
             // or the following if we ever fetch value with react query
             void queryClient.invalidateQueries(
                 customFieldValueKeys.value(params[0].fieldId)
             )
         },
-        ...overrides,
-        // this onError should not be overridden
-        onError: (...args) => {
+        ...providedOverrides,
+        // this onError should not be overridden because it has custom logic
+        onError: (
+            ...args: Parameters<
+                Exclude<typeof providedOverrides.onError, undefined>
+            >
+        ) => {
             internalErrorHandler(args[0])
-            overrides.onError?.(...args)
+            providedOverrides.onError?.(...args)
         },
-    })
-    const {mutate: deleteMutate} = useDeleteCustomFieldValue({
-        onSuccess: (data, params) => {
-            // queryClient.setQueryData(customFieldValueKeys.value(params[0].id), {...})
-            // or the following if we ever fetch value with react query
-            void queryClient.invalidateQueries(
-                customFieldValueKeys.value(params[0].fieldId)
-            )
-        },
-        ...overrides,
-        // this onError should not be overridden
-        onError: (...args) => {
-            internalErrorHandler(args[0])
-            overrides.onError?.(...args)
-        },
-    })
+    }
+    const {mutate: updateMutate} = useUpdateCustomFieldValue(overrides)
+    const {mutate: deleteMutate} = useDeleteCustomFieldValue(overrides)
 
     return {
         mutate: (
             params: Parameters<typeof updateCustomFieldValue> &
                 Parameters<typeof deleteCustomFieldValue>
         ) => {
+            if (isDisabled) return
             if (isCustomFieldValueEmpty(params[0].value)) {
                 return deleteMutate(params)
             }

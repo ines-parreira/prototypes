@@ -175,7 +175,7 @@ describe('<DropdownField />', () => {
         })
     })
 
-    it('should call onChange with correct params and dismiss modal when clearing the value', () => {
+    it('should call onChange with correct params and dismiss modal when clearing the value', async () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
@@ -186,8 +186,26 @@ describe('<DropdownField />', () => {
 
         userEvent.click(screen.getByRole('textbox'))
         userEvent.click(screen.getByText('Clear'))
-        expect(mockedServer.history).toMatchSnapshot()
+        await waitFor(() => {
+            expect(mockedServer.history.delete[0]).toBeDefined()
+        })
         expect(screen.queryByTestId('floating-overlay')).toBe(null)
+    })
+
+    it('should not http update value onChange when on a new ticket', async () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore({ticket: fromJS({})})}>
+                    <DropdownField {...initialProps} />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        userEvent.click(screen.getByRole('textbox'))
+        userEvent.click(screen.getByText('Clear'))
+        await waitFor(() => {
+            expect(mockedServer.history.delete).toHaveLength(0)
+        })
     })
 
     // TODO(@Manuel): add accessibility tests once we update userEvent

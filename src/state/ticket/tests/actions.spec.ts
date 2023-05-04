@@ -174,6 +174,39 @@ describe('ticket actions', () => {
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
+        it('should format custom fields correctly', () => {
+            mockServer
+                .onPut(endpointMatchers.ticket1)
+                .reply(200, {data: {id: 1}})
+
+            store = mockStore({
+                ticket: fromJS({
+                    id: 1,
+                }),
+            })
+
+            const customFields = {
+                1: {
+                    id: 1,
+                    value: 'hello',
+                },
+            }
+
+            return store
+                .dispatch(
+                    actions.ticketPartialUpdate({
+                        custom_fields: customFields,
+                    })
+                )
+                .then(() =>
+                    expect(mockServer.history.put[0].data).toEqual(
+                        JSON.stringify({
+                            custom_fields: [customFields[1]],
+                        })
+                    )
+                )
+        })
+
         it('success', () => {
             mockServer
                 .onPut(endpointMatchers.ticket1)

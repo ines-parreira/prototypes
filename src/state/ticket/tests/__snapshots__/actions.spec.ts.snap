@@ -2076,7 +2076,7 @@ exports[`ticket actions setTypingActivityShopper() should dispatch SET_TYPING_AC
   {
     "payload": {
       "isShopperTyping": true,
-      "isShopperTypingTimeoutId": 233,
+      "isShopperTypingTimeoutId": 236,
     },
     "type": "SET_TYPING_ACTIVITY_SHOPPER",
   },

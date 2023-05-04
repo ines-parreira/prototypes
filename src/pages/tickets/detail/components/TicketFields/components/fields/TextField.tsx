@@ -61,7 +61,10 @@ export default function TextField({
         )
     }, [initialValue, dispatch, id, isRequired])
     // Only on blur
-    const {mutate} = useUpdateOrDeleteTicketFieldValue({onError})
+    const {mutate} = useUpdateOrDeleteTicketFieldValue(
+        {onError},
+        {isDisabled: !ticketId}
+    )
 
     const inputId = `ticket-${ticketId}-custom-field-value-input-${id}`
 

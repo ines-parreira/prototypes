@@ -1941,5 +1941,48 @@ describe('actions', () => {
             store.dispatch(actions.setActiveCustomerAsReceiver())
             expect(store.getActions()).toEqual([])
         })
+        // })
+
+        describe('submitTicket()', () => {
+            it('should format custom fields correctly', async () => {
+                mockServer.onPost('/api/tickets/').reply(200, {data: {id: 1}})
+
+                const customFields = {
+                    1: {
+                        id: 1,
+                        value: 'hello',
+                    },
+                }
+
+                store = mockStore({
+                    ticket: fromJS({
+                        ...ticketInitialState.toJS(),
+                        custom_fields: customFields,
+                    }),
+                    newMessage: initialState,
+                })
+
+                await store.dispatch(
+                    actions.submitTicket(
+                        fromJS({
+                            ...ticketInitialState.toJS(),
+                            custom_fields: customFields,
+                        }),
+                        TicketStatus.Open,
+                        undefined,
+                        fromJS({}),
+                        true
+                    )
+                )
+
+                expect(
+                    (
+                        JSON.parse(mockServer.history.post[0].data) as {
+                            custom_fields: unknown
+                        }
+                    ).custom_fields
+                ).toEqual([customFields[1]])
+            })
+        })
     })
 })

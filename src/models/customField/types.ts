@@ -46,7 +46,7 @@ export type CustomFieldState = {
 }
 
 export type CustomFields = {
-    [id: number]: CustomFieldState | undefined
+    [id: number]: CustomFieldState
 }
 
 export function isCustomField(

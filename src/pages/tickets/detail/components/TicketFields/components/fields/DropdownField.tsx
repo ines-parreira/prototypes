@@ -118,7 +118,10 @@ export default function DropdownField({
         )
     }, [value, dispatch, id, isRequired, hasError])
     // Only on blur
-    const {mutate} = useUpdateOrDeleteTicketFieldValue({onError})
+    const {mutate} = useUpdateOrDeleteTicketFieldValue(
+        {onError},
+        {isDisabled: !ticketId}
+    )
     const handleChange = useCallback(
         (newValue: string) => {
             setActive(false)

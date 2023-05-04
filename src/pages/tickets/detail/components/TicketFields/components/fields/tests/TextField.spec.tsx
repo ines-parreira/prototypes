@@ -120,6 +120,34 @@ describe('<TextField />', () => {
         expect(store.dispatch).toHaveBeenCalledTimes(3)
     })
 
+    it('should not http update value when blurred on a new ticket', async () => {
+        mockedServer
+            .onPut(`/api/tickets/${ticketId}/custom-fields/${fieldState.id}`)
+            .reply(200, {
+                data: 'not used, don’t care',
+            })
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore({ticket: fromJS({})})}>
+                    <TextField
+                        {...{
+                            ...initialProps,
+                            fieldState: {...fieldState, hasError: true},
+                        }}
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        const input = screen.getByRole('textbox')
+        userEvent.clear(input)
+        await userEvent.type(input, 'a')
+        fireEvent.blur(input)
+        await waitFor(() => {
+            expect(mockedServer.history.put).toHaveLength(0)
+        })
+    })
+
     it('should have onError to revert to a previous state', async () => {
         mockedServer
             .onPut(`/api/tickets/${ticketId}/custom-fields/${fieldState.id}`)
@@ -127,12 +155,7 @@ describe('<TextField />', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
-                    <TextField
-                        {...{
-                            ...initialProps,
-                            fieldState: {...fieldState, hasError: true},
-                        }}
-                    />
+                    <TextField {...initialProps} />
                 </Provider>
             </QueryClientProvider>
         )

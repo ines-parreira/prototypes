@@ -1,18 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DropdownField /> should call onChange with correct params and dismiss modal when clearing the value 1`] = `
-{
-  "delete": [],
-  "get": [],
-  "head": [],
-  "list": [],
-  "options": [],
-  "patch": [],
-  "post": [],
-  "put": [],
-}
-`;
-
 exports[`<DropdownField /> should render the dropdown component correctly 1`] = `
 <body>
   <div>
