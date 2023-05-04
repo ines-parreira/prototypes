@@ -1,11 +1,13 @@
 import React, {useEffect, useMemo, useRef} from 'react'
 import {EditorState} from 'draft-js'
-import {fromJS} from 'immutable'
+import Immutable from 'immutable'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import {convertToHTML} from 'utils/editor'
 import RichField from 'pages/common/forms/RichField/RichField'
 import Label from 'pages/common/forms/Label/Label'
+import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 import {IntegrationType} from 'models/integration/constants'
+import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {AutomatedMessageNodeType} from '../types'
 import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
 import {useWorkflowEntrypointContext} from '../../hooks/useWorkflowEntrypoint'
@@ -51,6 +53,32 @@ export default function AutomatedMessageEditor({
             content: {
                 html: convertToHTML(content),
                 text: text,
+                attachments: nodeInEdition.data.message.content.attachments,
+            },
+        })
+    }
+    const handleAddAttachment = (attachment: ProductCardAttachment) => {
+        dispatch({
+            type: 'SET_AUTOMATED_MESSAGE_CONTENT',
+            step_id: nodeInEdition.data.step_id,
+            content: {
+                ...nodeContent,
+                attachments: [
+                    ...(nodeInEdition.data.message.content.attachments ?? []),
+                    attachment,
+                ],
+            },
+        })
+    }
+    const handleDeleteAttachment = (index: number) => {
+        dispatch({
+            type: 'SET_AUTOMATED_MESSAGE_CONTENT',
+            step_id: nodeInEdition.data.step_id,
+            content: {
+                ...nodeContent,
+                attachments: (
+                    nodeInEdition.data.message.content.attachments ?? []
+                ).filter((_, i) => i !== index),
             },
         })
     }
@@ -60,10 +88,11 @@ export default function AutomatedMessageEditor({
                 Automated message
             </Label>
             <ToolbarProvider
-                canAddProductCard={false}
+                canAddProductCard={true}
+                onAddProductCardAttachment={handleAddAttachment}
                 canAddDiscountCodeLink={false}
                 canAddVideoPlayer={false}
-                shopifyIntegrations={fromJS(
+                shopifyIntegrations={Immutable.fromJS(
                     storeIntegration?.type === IntegrationType.Shopify
                         ? [storeIntegration]
                         : []
@@ -76,6 +105,17 @@ export default function AutomatedMessageEditor({
                     value={nodeContent}
                     allowExternalChanges
                     onChange={handleChange}
+                    attachments={Immutable.fromJS(
+                        nodeInEdition.data.message.content.attachments ?? []
+                    )}
+                />
+                <TicketAttachments
+                    className={css.attachments}
+                    removable
+                    attachments={Immutable.fromJS(
+                        nodeInEdition.data.message.content.attachments ?? []
+                    )}
+                    deleteAttachment={handleDeleteAttachment}
                 />
             </ToolbarProvider>
         </>

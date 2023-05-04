@@ -1,4 +1,5 @@
 import {Node} from 'reactflow'
+import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 
 export type TriggerButtonNodeType = Node<
     {
@@ -15,6 +16,7 @@ export type AutomatedMessageNodeType = Node<
             content: {
                 html: string
                 text: string
+                attachments?: ProductCardAttachment[] | null
             }
         }
         shouldShowErrors?: Maybe<boolean>

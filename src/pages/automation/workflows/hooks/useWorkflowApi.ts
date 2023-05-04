@@ -3,6 +3,7 @@ import {ulid} from 'ulidx'
 import axios from 'axios'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 import {isProduction, isStaging} from 'utils/environment'
+import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 
 const baseURL = isProduction()
     ? `https://api.gorgias.work`
@@ -21,6 +22,7 @@ apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
 export type MessageContent = {
     html: string
     text: string
+    attachments?: ProductCardAttachment[] | null
 }
 
 export type WorkflowStepMessages = {
