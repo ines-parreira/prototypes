@@ -12,7 +12,7 @@ import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import settingsCss from 'pages/settings/settings.less'
 import {
-    CONTACT_FORM_APPEARANCE_PATH,
+    CONTACT_FORM_CUSTOMIZATION_PATH,
     CONTACT_FORM_BASE_PATH,
     CONTACT_FORM_DEFAULT_LOCALE,
 } from 'pages/settings/contactForm/constants'
@@ -65,11 +65,11 @@ const ContactFormCreateView = ({
         [history]
     )
 
-    const navigateToContactFormAppearance = useCallback(
+    const navigateToContactFormCustomization = useCallback(
         (contactFormId: number) => {
             return history.push(
                 insertContactFormIdParam(
-                    CONTACT_FORM_APPEARANCE_PATH,
+                    CONTACT_FORM_CUSTOMIZATION_PATH,
                     contactFormId
                 )
             )
@@ -107,7 +107,7 @@ const ContactFormCreateView = ({
 
         try {
             const contactForm = await createContactForm(createContactFormDto)
-            navigateToContactFormAppearance(contactForm.id)
+            navigateToContactFormCustomization(contactForm.id)
             void notify({
                 message: 'Contact Form successfully created',
                 status: NotificationStatus.Success,

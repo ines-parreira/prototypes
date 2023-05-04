@@ -30,7 +30,7 @@ const initUpdateDto = (
     }
 }
 
-const ContactFormAppearance = (): JSX.Element => {
+const ContactFormCustomization = (): JSX.Element => {
     const dispatch = useDispatch()
     const {updateContactForm, isLoading} = useContactFormApi()
     const contactForm = useCurrentContactForm()
@@ -111,7 +111,7 @@ const ContactFormAppearance = (): JSX.Element => {
                             contactFormCss.mbM
                         )}
                     >
-                        Appearance
+                        Customization
                     </h2>
                     <SubjectLines
                         title="Contact form subject"
@@ -145,4 +145,4 @@ const ContactFormAppearance = (): JSX.Element => {
     )
 }
 
-export default ContactFormAppearance
+export default ContactFormCustomization

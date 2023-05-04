@@ -11,7 +11,7 @@ import {useSupportedLocales} from 'pages/settings/helpCenter/providers/Supported
 import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormSettingsView'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import {
-    CONTACT_FORM_APPEARANCE_PATH,
+    CONTACT_FORM_CUSTOMIZATION_PATH,
     CONTACT_FORM_BASE_PATH,
     CONTACT_FORM_PREFERENCES_PATH,
     CONTACT_FORM_PUBLISH_PATH,
@@ -78,7 +78,7 @@ describe('<ContactFormSettingsView />', () => {
         )
     })
 
-    it('should redirect to APPEARANCE page if just form id provided', () => {
+    it('should redirect to CUSTOMIZATION page if just form id provided', () => {
         const history = createMemoryHistory({
             initialEntries: [
                 insertContactFormIdParam(CONTACT_FORM_SETTINGS_PATH, FORM_ID),
@@ -91,14 +91,14 @@ describe('<ContactFormSettingsView />', () => {
         })
 
         expect(history.location.pathname).toEqual(
-            insertContactFormIdParam(CONTACT_FORM_APPEARANCE_PATH, FORM_ID)
+            insertContactFormIdParam(CONTACT_FORM_CUSTOMIZATION_PATH, FORM_ID)
         )
     })
 
     it.each([
         CONTACT_FORM_SETTINGS_PATH,
         CONTACT_FORM_PREFERENCES_PATH,
-        CONTACT_FORM_APPEARANCE_PATH,
+        CONTACT_FORM_CUSTOMIZATION_PATH,
         CONTACT_FORM_PUBLISH_PATH,
     ])(
         'should redirect to ABOUT page if contact form id is invalid for %p',
@@ -118,7 +118,7 @@ describe('<ContactFormSettingsView />', () => {
     )
 
     it.each([
-        CONTACT_FORM_APPEARANCE_PATH,
+        CONTACT_FORM_CUSTOMIZATION_PATH,
         CONTACT_FORM_PREFERENCES_PATH,
         CONTACT_FORM_PUBLISH_PATH,
     ])(
@@ -141,7 +141,7 @@ describe('<ContactFormSettingsView />', () => {
     )
 
     it.each([
-        CONTACT_FORM_APPEARANCE_PATH,
+        CONTACT_FORM_CUSTOMIZATION_PATH,
         CONTACT_FORM_PREFERENCES_PATH,
         CONTACT_FORM_PUBLISH_PATH,
     ])('should display preview button', async (path) => {

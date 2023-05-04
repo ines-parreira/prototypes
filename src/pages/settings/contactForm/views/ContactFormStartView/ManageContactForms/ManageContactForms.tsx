@@ -9,7 +9,7 @@ import Button from 'pages/common/components/button/Button'
 import settingsCss from 'pages/settings/settings.less'
 import {
     CONTACT_FORM_CREATE_PATH,
-    CONTACT_FORM_APPEARANCE_PATH,
+    CONTACT_FORM_CUSTOMIZATION_PATH,
 } from 'pages/settings/contactForm/constants'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -29,8 +29,10 @@ const ManageContactForms = ({isLoading, contactForms = []}: Props) => {
     const history = useHistory()
     const navigateToCreateContactForm = () =>
         history.push(CONTACT_FORM_CREATE_PATH)
-    const navigateToContactFormAppearance = (id: number) =>
-        history.push(insertContactFormIdParam(CONTACT_FORM_APPEARANCE_PATH, id))
+    const navigateToContactFormCustomization = (id: number) =>
+        history.push(
+            insertContactFormIdParam(CONTACT_FORM_CUSTOMIZATION_PATH, id)
+        )
 
     if (!isLoading && !contactForms.length) {
         return (
@@ -70,7 +72,7 @@ const ManageContactForms = ({isLoading, contactForms = []}: Props) => {
                             <TableBodyRow
                                 key={form.id}
                                 onClick={() =>
-                                    navigateToContactFormAppearance(form.id)
+                                    navigateToContactFormCustomization(form.id)
                                 }
                             >
                                 <BodyCell>

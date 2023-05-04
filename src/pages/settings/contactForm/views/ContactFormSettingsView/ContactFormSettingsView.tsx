@@ -14,7 +14,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import {
-    CONTACT_FORM_APPEARANCE_PATH,
+    CONTACT_FORM_CUSTOMIZATION_PATH,
     CONTACT_FORM_BASE_PATH,
     CONTACT_FORM_PAGE_TITLE,
     CONTACT_FORM_PREFERENCES_PATH,
@@ -23,7 +23,7 @@ import {
 import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import {useContactFormIdParam} from 'pages/settings/contactForm/hooks/useCurrentContactFormId'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
-import ContactFormAppearance from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormAppearance'
+import ContactFormCustomization from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormCustomization'
 import ContactFormPreferences from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences'
 import ContactFormPublish from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish'
 import {notify} from 'state/notifications/actions'
@@ -38,7 +38,7 @@ import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 
 const navLinks = {
     Preferences: CONTACT_FORM_PREFERENCES_PATH,
-    Appearance: CONTACT_FORM_APPEARANCE_PATH,
+    Customization: CONTACT_FORM_CUSTOMIZATION_PATH,
     Publish: CONTACT_FORM_PUBLISH_PATH,
 }
 
@@ -149,8 +149,8 @@ const ContactFormSettingsView = (): JSX.Element => {
                     />
                     <Route
                         exact
-                        path={CONTACT_FORM_APPEARANCE_PATH}
-                        component={ContactFormAppearance}
+                        path={CONTACT_FORM_CUSTOMIZATION_PATH}
+                        component={ContactFormCustomization}
                     />
                     <Route
                         exact
@@ -162,7 +162,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                             component={() => (
                                 <Redirect
                                     to={insertContactFormIdParam(
-                                        CONTACT_FORM_APPEARANCE_PATH,
+                                        CONTACT_FORM_CUSTOMIZATION_PATH,
                                         contactFormId
                                     )}
                                 />
