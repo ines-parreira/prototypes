@@ -1,8 +1,5 @@
 import React from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
-
 import {CampaignCollisionForm} from '../CampaignCollisionForm'
 import {CampaignWithNoReply} from '../CampaignWithNoReply'
 
@@ -23,18 +20,14 @@ export const CampaignPreferences = ({
     onChangeCollision,
     onChangeNoReply,
 }: Props) => {
-    const allowNoReply = useFlags()[FeatureFlagKey.CampaignWithNoReply]
-
     return (
         <>
             <h5>Campaign preferences</h5>
             <div className={css.items}>
-                {allowNoReply && (
-                    <CampaignWithNoReply
-                        value={isNoReply}
-                        onChange={onChangeNoReply}
-                    />
-                )}
+                <CampaignWithNoReply
+                    value={isNoReply}
+                    onChange={onChangeNoReply}
+                />
                 <CampaignCollisionForm
                     triggers={triggers}
                     onChange={onChangeCollision}
