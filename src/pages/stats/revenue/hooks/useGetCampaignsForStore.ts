@@ -5,6 +5,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
+import {getSortByName} from 'pages/stats/revenue/utils/getSortByName'
 
 export function useGetCampaignsForStore(selectedIntegrations: number[]) {
     const getChatIntegrations = useMemo(
@@ -30,6 +31,7 @@ export function useGetCampaignsForStore(selectedIntegrations: number[]) {
                 (acc, currentIntegration) => acc.concat(currentIntegration),
                 []
             )
+            .sort(getSortByName)
     }, [selectedIntegrations, chatIntegrations])
 
     return campaigns

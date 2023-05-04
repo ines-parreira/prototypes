@@ -17,10 +17,17 @@ const defaultState = {
         integrations: [
             {
                 id: 1,
+                name: 'Microsoft',
                 type: IntegrationType.Gmail,
             },
             {
                 id: 2,
+                name: 'Meta',
+                type: IntegrationType.Shopify,
+            },
+            {
+                id: 3,
+                name: 'Alphabet',
                 type: IntegrationType.Shopify,
             },
         ],
@@ -29,7 +36,7 @@ const defaultState = {
 
 describe('useShopifyIntegrations', () => {
     describe('customer has several integrations', () => {
-        it('returns only the shopify integrations', () => {
+        it('returns only the ordered shopify integrations', () => {
             const store = createStore(
                 (state) => state as RootState,
                 defaultState
@@ -46,7 +53,13 @@ describe('useShopifyIntegrations', () => {
 
             expect(result.current).toStrictEqual([
                 {
+                    id: 3,
+                    name: 'Alphabet',
+                    type: IntegrationType.Shopify,
+                },
+                {
                     id: 2,
+                    name: 'Meta',
                     type: IntegrationType.Shopify,
                 },
             ])

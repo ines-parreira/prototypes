@@ -90,7 +90,7 @@ describe('useGetCampaignsForStore', () => {
     })
 
     describe('a shopify integration with chat is selected', () => {
-        it('returns the campaigns from the chat', () => {
+        it('returns the ordered campaigns from the chat', () => {
             const store = createStore(
                 (state) => state as RootState,
                 defaultState
@@ -107,12 +107,12 @@ describe('useGetCampaignsForStore', () => {
 
             expect(result.current).toEqual([
                 {
-                    id: '123',
-                    name: 'some campaign',
-                },
-                {
                     id: '456',
                     name: 'another campaign',
+                },
+                {
+                    id: '123',
+                    name: 'some campaign',
                 },
             ])
         })
