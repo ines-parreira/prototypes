@@ -10,6 +10,7 @@ import {
 import {humanizeString} from 'utils'
 import {Integration} from 'models/integration/types'
 import {WidgetType} from 'state/widgets/types'
+import {renderTemplate} from 'pages/common/utils/template'
 
 const LABELS: {[key: string]: string} = {
     [IntegrationType.Http]: 'HTTP',
@@ -100,7 +101,17 @@ export function getWidgetName({
             STANDALONE_WIDGET_TYPE,
         ].includes(widgetType)
     ) {
-        return widgetTitle
+        let context = source.getIn(templatePath)
+        if (!context && source.getIn([THIRD_PARTY_APP_NAME_KEY])) {
+            context = source
+        }
+
+        return context
+            ? renderTemplate(
+                  widgetTitle,
+                  (context as Map<string, unknown>).toJS()
+              )
+            : widgetTitle
     }
 
     const thirdPartyAppName = getWidgetNameForThirdPartyApp(

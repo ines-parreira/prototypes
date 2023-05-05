@@ -8,6 +8,7 @@ import {
     HTTP_WIDGET_TYPE,
     SHOPIFY_WIDGET_TYPE,
     SMOOCH_INSIDE_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
 } from '../constants'
 
@@ -32,8 +33,9 @@ describe('predicates tests', () => {
     })
 
     describe('getWidgetName()', () => {
-        it('should render widget title', () => {
-            const myCustomWidgetTitle = 'my-custom-widget-title'
+        it('should render widget title without replacing the template variable', () => {
+            const myCustomWidgetTitle =
+                'my-custom-widget-title {{template_var_no_render}}'
             const source = fromJS({})
             const widget = {
                 type: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE as WidgetType,
@@ -49,6 +51,78 @@ describe('predicates tests', () => {
                 widgetTitle: myCustomWidgetTitle,
             })
             expect(widgetName).toEqual(myCustomWidgetTitle)
+        })
+
+        it('should render widget title for standalone widgets', () => {
+            const myCustomWidgetTitle = 'my-custom-widget-title'
+            const source = fromJS({})
+            const widget = {
+                type: STANDALONE_WIDGET_TYPE as WidgetType,
+            } as Widget
+            const templatePath = ['doesntMatter']
+
+            const widgetName = getWidgetName({
+                source,
+                widgetType: widget.type,
+                widgetAppId: widget?.app_id,
+                templatePath,
+                integration: {} as Integration,
+                widgetTitle: myCustomWidgetTitle,
+            })
+            expect(widgetName).toEqual(myCustomWidgetTitle)
+        })
+
+        it('should render widget title template variable with root data source', () => {
+            const myCustomWidgetTitle = 'my-custom-widget-title {{foo}}'
+            const source = fromJS({
+                [THIRD_PARTY_APP_NAME_KEY]: 'the-best-app-name yooo',
+                foo: 'bar',
+            })
+            const widget = {
+                type: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE as WidgetType,
+            } as Widget
+            const templatePath = ['ticket', 'customer', 'external_data', '123']
+
+            const widgetName = getWidgetName({
+                source,
+                widgetType: widget.type,
+                widgetAppId: widget?.app_id,
+                templatePath,
+                integration: {} as Integration,
+                widgetTitle: myCustomWidgetTitle,
+            })
+            expect(widgetName).toEqual('my-custom-widget-title bar')
+        })
+
+        it('should render widget title template variable with nested data source', () => {
+            const myCustomWidgetTitle = 'my-custom-widget-title {{foo}}'
+            const source = fromJS({
+                ticket: {
+                    customer: {
+                        external_data: {
+                            '123': {
+                                [THIRD_PARTY_APP_NAME_KEY]:
+                                    'the-best-app-name yooo',
+                                foo: 'bar',
+                            },
+                        },
+                    },
+                },
+            })
+            const widget = {
+                type: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE as WidgetType,
+            } as Widget
+            const templatePath = ['ticket', 'customer', 'external_data', '123']
+
+            const widgetName = getWidgetName({
+                source,
+                widgetType: widget.type,
+                widgetAppId: widget?.app_id,
+                templatePath,
+                integration: {} as Integration,
+                widgetTitle: myCustomWidgetTitle,
+            })
+            expect(widgetName).toEqual('my-custom-widget-title bar')
         })
 
         it('should render third party app name because it has it as a key in the source', () => {
