@@ -161,7 +161,7 @@ export function Editor({
             </Button>
             <Modal
                 isOpen={isFormOpen}
-                onClose={handleCloseForm}
+                toggle={handleCloseForm}
                 backdrop="static"
                 size="lg"
                 // it has to be above popover which is currently set to 1560

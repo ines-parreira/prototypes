@@ -243,7 +243,7 @@ export default function DiscountCodeResults({
             </div>
             <Modal
                 isOpen={discountModal.isOpen()}
-                onClose={handleCloseModal}
+                toggle={handleCloseModal}
                 autoFocus={true}
                 backdrop="static"
                 size="lg"

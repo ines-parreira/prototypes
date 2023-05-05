@@ -38,6 +38,7 @@ function ActionEditor({action, onSubmit, onClose}: Props) {
                 if (!editable) return null
                 return (
                     <DEPRECATED_InputField
+                        autoFocus={index === 0}
                         type="text"
                         key={index}
                         name={key}

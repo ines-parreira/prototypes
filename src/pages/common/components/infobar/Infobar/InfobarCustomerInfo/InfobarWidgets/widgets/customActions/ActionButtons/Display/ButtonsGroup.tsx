@@ -164,8 +164,11 @@ function ButtonsGroup({buttons, source}: Props) {
             </Group>
             <Modal
                 isOpen={isEditorOpen}
-                onClose={handleCloseEditor}
+                toggle={handleCloseEditor}
                 backdrop="static"
+                // prevent the Modal's default autofocus so that we
+                // manually focus the first input of the editor
+                autoFocus={false}
             >
                 <ActionEditor
                     onSubmit={handleSubmit!}
