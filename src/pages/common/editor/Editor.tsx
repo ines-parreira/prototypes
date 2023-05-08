@@ -1,6 +1,7 @@
 import cn from 'classnames'
 import React from 'react'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {MacrosProperties} from 'models/macro/types'
 import ReplyMessageChannel from 'pages/tickets/detail/components/ReplyArea/ReplyMessageChannel'
 import TicketSubmitButtons from 'pages/tickets/detail/components/ReplyArea/TicketSubmitButtons'
@@ -8,6 +9,7 @@ import TicketReplyArea from 'pages/tickets/detail/components/ReplyArea/TicketRep
 import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
 import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useForm from './hooks/useForm'
 import useMacros from './hooks/useMacros'
 import css from './Editor.less'
@@ -35,6 +37,8 @@ export default function Editor({
         onChangeFilters,
         onChangeQuery,
     } = useMacros({initialFilters: initialMacroFilters})
+    const whatsAppTemplatesEnabled =
+        useFlags()[FeatureFlagKey.WhatsappTemplates]
 
     return (
         <div
@@ -43,7 +47,9 @@ export default function Editor({
             onFocus={onFocus}
         >
             <form ref={formRef} id="ticket-reply-editor" onSubmit={onSubmit}>
-                <ReplyMessageChannel />
+                <ReplyMessageChannel
+                    whatsAppTemplatesEnabled={whatsAppTemplatesEnabled}
+                />
                 <ReplyForm>
                     <TicketReplyArea
                         hasShownMacros={hasShown}

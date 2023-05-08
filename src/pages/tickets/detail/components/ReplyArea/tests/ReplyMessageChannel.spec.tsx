@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
+import {render} from '@testing-library/react'
 import {
     CHAT_SOURCE,
     EMAIL_SOURCE,
@@ -23,6 +23,13 @@ import {TicketMessageSourceType} from 'business/types/ticket'
 
 import {ReplyMessageChannelContainer} from '../ReplyMessageChannel'
 
+jest.mock('../MessageSourceFields/MessageSourceFields', () => () => (
+    <div>MessageSourceFields</div>
+))
+jest.mock('../ConvertToForwardPopover', () => () => (
+    <div>ConvertToForwardPopover</div>
+))
+
 const baseReply = {
     email: {answerable: true},
     ['internal-note']: {answerable: true},
@@ -39,10 +46,11 @@ describe('ReplyMessageChannel component', () => {
         hasSmsIntegration: false,
         hasWhatsAppIntegration: false,
         prepareNewMessage: jest.fn(),
+        whatsAppTemplatesEnabled: false,
     }
 
     it('new ticket', () => {
-        const component = shallow(
+        const {container} = render(
             <ReplyMessageChannelContainer
                 {...minProps}
                 ticket={fromJS({
@@ -55,11 +63,11 @@ describe('ReplyMessageChannel component', () => {
                 isNewMessagePublic
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 
     it('existing ticket without messages', () => {
-        const component = shallow(
+        const {container} = render(
             <ReplyMessageChannelContainer
                 {...minProps}
                 ticket={fromJS({
@@ -68,7 +76,7 @@ describe('ReplyMessageChannel component', () => {
                 })}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 
     const types = [
@@ -108,7 +116,7 @@ describe('ReplyMessageChannel component', () => {
                 [newMessageType]: {answerable: true},
             }
 
-            const component = shallow(
+            const {container} = render(
                 <ReplyMessageChannelContainer
                     {...minProps}
                     ticket={fromJS({
@@ -118,12 +126,12 @@ describe('ReplyMessageChannel component', () => {
                     sourceType={newMessageType}
                 />
             )
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
     })
 
     it('existing ticket with last message as chat message', () => {
-        const component = shallow(
+        const {container} = render(
             <ReplyMessageChannelContainer
                 {...minProps}
                 ticket={fromJS({
@@ -136,11 +144,11 @@ describe('ReplyMessageChannel component', () => {
                 sourceType={TicketMessageSourceType.Chat}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 
     it('should render option "Make outbound call" for existing phone ticket', () => {
-        const component = shallow(
+        const {getByText} = render(
             <ReplyMessageChannelContainer
                 {...minProps}
                 ticket={fromJS({
@@ -152,11 +160,11 @@ describe('ReplyMessageChannel component', () => {
                 hasPhoneIntegration
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(getByText(/make outbound call/i)).toBeVisible()
     })
 
     it('should render option "Make outbound call" for new ticket', () => {
-        const component = shallow(
+        const {getByText} = render(
             <ReplyMessageChannelContainer
                 {...minProps}
                 ticket={fromJS({
@@ -165,6 +173,40 @@ describe('ReplyMessageChannel component', () => {
                 hasPhoneIntegration
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(getByText(/make outbound call/i)).toBeVisible()
+    })
+
+    it('should render option for sending WhatsApp templates for new ticket', () => {
+        const {getByText} = render(
+            <ReplyMessageChannelContainer
+                {...minProps}
+                ticket={fromJS({
+                    reply_options: {},
+                })}
+                isNewMessagePublic
+                hasWhatsAppIntegration
+                whatsAppTemplatesEnabled
+            />
+        )
+        expect(getByText(/whatsapp/i)).toBeVisible()
+    })
+
+    it('should render option for replying to WhatsApp message for existing ticket', () => {
+        const {getByText} = render(
+            <ReplyMessageChannelContainer
+                {...minProps}
+                ticket={fromJS({
+                    id: 12,
+                    reply_options: {
+                        [TicketMessageSourceType.WhatsAppMessage]: {
+                            answerable: true,
+                        },
+                    },
+                })}
+                isNewMessagePublic
+                hasWhatsAppIntegration
+            />
+        )
+        expect(getByText(/whatsapp/i)).toBeVisible()
     })
 })
