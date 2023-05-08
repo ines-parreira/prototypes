@@ -248,7 +248,8 @@ export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
     children,
 }) => {
     const {integrationId, integration} = useContext(IntegrationContext)
-    const isCancelled = !!order.get('cancelled_at')
+    const isCancelled =
+        !!order.get('cancelled_at') || order.get('status') === 'CANCELLED'
     return (
         <OrderContext.Provider
             value={{

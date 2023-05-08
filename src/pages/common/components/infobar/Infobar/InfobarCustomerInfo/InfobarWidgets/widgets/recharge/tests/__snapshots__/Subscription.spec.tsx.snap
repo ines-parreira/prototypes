@@ -1,47 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Subscription AfterTitle should display only the activate action because the subscription is cancelled 1`] = `
-<div>
-  <span
-    class="container group horizontal"
-  >
-    <button
-      class="wrapper actionButton fill secondary small"
-      id="action-button-2"
-      type="button"
-    >
-      <span
-        id="action-button-2-tooltip-target"
-      />
-      <span
-        class="wrapper"
-      >
-        <i
-          class="material-icons icon isLeft small"
-        >
-          attach_money
-        </i>
-      </span>
-       Activate
-    </button>
-  </span>
-  <div
-    class="widgetField staticWidgetField"
-  >
-    <span
-      class="widgetFieldLabel"
-    >
-      Created
-      :
-       
-    </span>
-    <span
-      class="widgetFieldValue"
-    />
-  </div>
-</div>
-`;
-
 exports[`Subscription AfterTitle should display only the cancel action because the subscription is not cancelled 1`] = `
 <div>
   <span

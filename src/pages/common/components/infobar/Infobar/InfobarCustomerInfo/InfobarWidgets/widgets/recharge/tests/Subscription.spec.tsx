@@ -28,8 +28,8 @@ describe('Subscription', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should display only the activate action because the subscription is cancelled', () => {
-            const {container} = render(
+        it('should display only the activate action because the subscription is cancelled with cancelled_at', () => {
+            const {getByText} = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper source={fromJS({cancelled_at: true})}>
@@ -38,8 +38,20 @@ describe('Subscription', () => {
                     </IntegrationContext.Provider>
                 </Provider>
             )
+            expect(getByText('Activate')).toBeVisible()
+        })
 
-            expect(container).toMatchSnapshot()
+        it('should display only the activate action because the subscription is cancelled status cancelled', () => {
+            const {getByText} = render(
+                <Provider store={mockStore({})}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <Wrapper source={fromJS({status: 'CANCELLED'})}>
+                            <AfterTitle isEditing={false} source={fromJS({})} />
+                        </Wrapper>
+                    </IntegrationContext.Provider>
+                </Provider>
+            )
+            expect(getByText('Activate')).toBeVisible()
         })
     })
 
