@@ -11,9 +11,8 @@ export const CONTACT_FORM_APP_DETAIL: ProductDetail = {
     screenshots: ['/img/integrations/screenshots/contactform-1.png'],
     infocard: {
         resources: {
-            // TODO: update setupGuide link after it's available
             documentationLink:
-                'https://docs.gorgias.com/en-US/help-center---contact-form-117132',
+                'https://docs.gorgias.com/en-US/standalone-contact-form-242018',
         },
         support: {
             email: 'support@gorgias.com',

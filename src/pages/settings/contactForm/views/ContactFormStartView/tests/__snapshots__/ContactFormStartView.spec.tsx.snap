@@ -147,7 +147,7 @@ exports[`<ContactFormStartView /> \`About\` section should display description 1
             <li>
               <a
                 class="actionLink"
-                href="https://docs.gorgias.com/en-US/help-center---contact-form-117132"
+                href="https://docs.gorgias.com/en-US/standalone-contact-form-242018"
                 rel="noopener noreferrer"
                 target="_blank"
               >

@@ -104,17 +104,26 @@ exports[`ContactFormPublish Code snippet should provide correct manual embed ins
       <div
         class="container"
       >
-        <div
-          class="wrapper alert alert-success"
-          role="alert"
+        <code
+          class="code"
         >
-          <pre
-            class="code"
-            id="code-snippet-1"
+          &lt;script...&gt;&lt;/script&gt;&lt;div&gt;&lt;/div&gt;
+        </code>
+        <button
+          class="wrapper fill secondary small"
+          type="button"
+        >
+          <span
+            class="wrapper"
           >
-            &lt;script...&gt;&lt;/script&gt;&lt;div&gt;&lt;/div&gt;
-          </pre>
-        </div>
+            <i
+              class="material-icons icon isLeft small"
+            >
+              content_copy
+            </i>
+            Copy Code
+          </span>
+        </button>
       </div>
     </div>
   </div>

@@ -1,10 +1,10 @@
 import React from 'react'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 
 import InstallationStep from './components/InstallationStep'
 import InstallationTab from './components/InstallationTab'
-import InstallationCodeSnippet from './components/InstallationCodeSnippet'
 
 type Props = {
     code?: string

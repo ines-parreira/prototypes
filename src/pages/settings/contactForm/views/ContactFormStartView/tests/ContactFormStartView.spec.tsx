@@ -26,6 +26,7 @@ describe('<ContactFormStartView />', () => {
         jest.clearAllMocks()
 
         mockedUsePaginatedContactForms.mockReturnValue({
+            hasLoadedOnce: true,
             contactForms: [],
             isLoading: false,
             fetchMore: jest.fn(),
@@ -74,6 +75,7 @@ describe('<ContactFormStartView />', () => {
                 initialEntries: [HELP_CENTER_BASE_PATH],
             })
             mockedUsePaginatedContactForms.mockReturnValue({
+                hasLoadedOnce: true,
                 isLoading: false,
                 fetchMore: jest.fn(),
                 hasMore: false,
@@ -142,6 +144,7 @@ describe('<ContactFormStartView />', () => {
 
         it('should display `Create Form` button in the container when there is no forms', () => {
             mockedUsePaginatedContactForms.mockReturnValue({
+                hasLoadedOnce: true,
                 isLoading: false,
                 fetchMore: jest.fn(),
                 hasMore: false,
@@ -173,6 +176,7 @@ describe('<ContactFormStartView />', () => {
         it('should display `Create Form` button in the header when there is at least one form', () => {
             mockedUsePaginatedContactForms.mockReturnValue({
                 contactForms: [ContactFormFixture],
+                hasLoadedOnce: true,
                 isLoading: false,
                 fetchMore: jest.fn(),
                 hasMore: false,

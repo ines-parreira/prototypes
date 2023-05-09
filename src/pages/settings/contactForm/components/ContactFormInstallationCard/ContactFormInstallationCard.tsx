@@ -2,8 +2,8 @@ import classNames from 'classnames'
 import React, {useState} from 'react'
 import {Card, CardBody, CardHeader, Collapse} from 'reactstrap'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import CodeSnippet from 'pages/common/components/CodeSnippet'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
+import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 import css from './ContactFormInstalationCard.less'
 
 type Props = {
@@ -72,7 +72,7 @@ export function ContactFormInstallationCard({
                         <span dangerouslySetInnerHTML={{__html: alert}} />
                     </Alert>
 
-                    <CodeSnippet code={code} />
+                    <InstallationCodeSnippet code={code} />
                 </CardBody>
             </Collapse>
         </Card>

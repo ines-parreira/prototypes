@@ -4,7 +4,7 @@ import {useCopyToClipboard} from 'react-use'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-import css from './InstallationCodeSnippet.less'
+import css from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet.less'
 
 type Props = {
     code?: string

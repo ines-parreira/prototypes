@@ -100,7 +100,7 @@ const ContactFormCreateView = ({
     }
 
     const onSubmit = async () => {
-        if (!isReady) return
+        if (!isReady && !isLoading) return
 
         try {
             const contactForm = await createContactForm(createContactFormDto)
@@ -121,8 +121,7 @@ const ContactFormCreateView = ({
         createContactFormDto.name.length > 1 &&
         createContactFormDto.email_integration &&
         createContactFormDto.default_locale !== undefined &&
-        !isNameInvalid &&
-        !isLoading
+        !isNameInvalid
 
     return (
         <div className="full-width">

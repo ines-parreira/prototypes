@@ -12,6 +12,7 @@ type ContactFormListHook = {
     isLoading: boolean
     hasMore: boolean
     fetchMore: () => Promise<void>
+    hasLoadedOnce: boolean
 }
 
 type Pagination = {
@@ -21,6 +22,7 @@ type Pagination = {
 
 export const usePaginatedContactForms = (): ContactFormListHook => {
     const dispatch = useDispatch()
+    const [hasLoadedOnce, setHasLoadedOnce] = useState(false)
     const contactForms = Object.values(useAppSelector(getContactForms))
     const {isReady, isLoading, fetchPaginatedContactForms} = useContactFormApi()
     const [pagination, setPagination] = useState<Pagination>({
@@ -46,6 +48,8 @@ export const usePaginatedContactForms = (): ContactFormListHook => {
                     status: NotificationStatus.Error,
                 })
             )
+        } finally {
+            if (!hasLoadedOnce) setHasLoadedOnce(true)
         }
     }
 
@@ -62,5 +66,11 @@ export const usePaginatedContactForms = (): ContactFormListHook => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isReady])
 
-    return {contactForms, isLoading, hasMore, fetchMore}
+    return {
+        contactForms,
+        isLoading,
+        hasMore,
+        fetchMore,
+        hasLoadedOnce,
+    }
 }

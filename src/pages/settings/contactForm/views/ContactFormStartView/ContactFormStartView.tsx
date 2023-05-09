@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {
     Link,
     NavLink,
@@ -30,10 +30,15 @@ const navLinks = {
 const ContactFormStartView: React.FC = () => {
     const history = useHistory()
     const handleAddHelpCenter = () => history.push(CONTACT_FORM_CREATE_PATH)
-    const {contactForms = [], isLoading} = usePaginatedContactForms()
-    const defaultSectionPath = contactForms.length
-        ? CONTACT_FORM_FORMS_PATH
-        : CONTACT_FORM_ABOUT_PATH
+    const {contactForms, isLoading, hasLoadedOnce} = usePaginatedContactForms()
+
+    const defaultSectionPath = useMemo(() => {
+        if (!hasLoadedOnce) return null
+
+        return contactForms.length
+            ? CONTACT_FORM_FORMS_PATH
+            : CONTACT_FORM_ABOUT_PATH
+    }, [contactForms.length, hasLoadedOnce])
 
     const manageContactFormProps: Props = {
         contactForms,
@@ -75,10 +80,12 @@ const ContactFormStartView: React.FC = () => {
                 <Route exact path={CONTACT_FORM_FORMS_PATH}>
                     <ManageContactForms {...manageContactFormProps} />
                 </Route>
-                <Route
-                    exact
-                    render={() => <Redirect to={defaultSectionPath} />}
-                />
+                {defaultSectionPath && (
+                    <Route
+                        exact
+                        render={() => <Redirect to={defaultSectionPath} />}
+                    />
+                )}
             </Switch>
         </div>
     )
