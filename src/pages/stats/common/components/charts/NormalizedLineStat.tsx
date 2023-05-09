@@ -19,6 +19,9 @@ type Props = {
 
 const NormalizedLineStat = ({data, config, legend}: Props) => {
     const datasets = (data.get('lines') as List<any>)
+        .filter((line: Map<any, any>) =>
+            config.hasIn(['lines', line.get('name')])
+        )
         .map((line: Map<any, any>, index) => {
             const lineName: string = line.get('name')
             const {label, backgroundColor, ...lineConfig} = (
