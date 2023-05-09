@@ -18,11 +18,12 @@ describe('useGetTotalsStat', () => {
         isError: false,
     } as UseQueryResult
 
-    const hookArgs: [string, string[], string, string] = [
+    const hookArgs: [string, string[], string, string, string] = [
         'shopify:square-wheels-company',
         ['campaign1', 'campaign2'],
         '2023-01-01T00:00:00-08:00',
         '2023-03-01T00:00:00-08:00',
+        'America/Los_Angeles',
     ]
 
     const revenueUpliftData = [

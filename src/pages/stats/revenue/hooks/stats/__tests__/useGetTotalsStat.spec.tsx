@@ -18,12 +18,13 @@ describe('useGetTotalsStat', () => {
         isError: false,
     } as UseQueryResult
 
-    const hookArgs: [string, string[], string, string, string] = [
+    const hookArgs: [string, string[], string, string, string, string] = [
         'shopify:slow-formulas-for-sale',
         ['campaign231', 'campaign232'],
         'EUR',
         '2023-01-01T00:00:00-08:00',
         '2023-02-01T00:00:00-08:00',
+        'America/Los_Angeles',
     ]
 
     const campaignEventsTotalsData = {

@@ -2,7 +2,7 @@ import moment from 'moment'
 import {getDateRange} from 'pages/stats/revenue/clients/utils'
 
 describe('getDateRange', () => {
-    it('should return date range in Cube format and timezone', () => {
+    it('should return date range in Cube format and without timezone', () => {
         // arrange
         const startDate = '2022-04-01T20:00:00-08:00'
         const endDate = '2022-05-15T06:00:00+08:00'
@@ -12,8 +12,8 @@ describe('getDateRange', () => {
 
         // assert
         expect(result).toEqual([
-            '2022-04-01T08:00:00.000',
-            '2022-05-15T15:59:59.999',
+            '2022-04-01T20:00:00.000',
+            '2022-05-15T06:00:00.000',
         ])
     })
 
@@ -27,6 +27,6 @@ describe('getDateRange', () => {
 
         // assert
         const diff = moment(endDateUtc).diff(moment(startDateUtc))
-        expect(diff).toEqual(24 * 60 * 60 * 1000 - 1) // 24 hours minus 1ms
+        expect(diff).toEqual(10 * 60 * 60 * 1000) // 10 hours
     })
 })

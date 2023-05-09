@@ -26,6 +26,7 @@ export type FilterParams = {
     granularity?: ReportingGranularity
     limit?: number
     offset?: number
+    timezone?: string
 } & RequiredFilterParams
 
 export type CubeFilterParams = FilterParams

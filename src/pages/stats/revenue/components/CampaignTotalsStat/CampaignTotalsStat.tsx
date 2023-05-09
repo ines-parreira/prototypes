@@ -8,6 +8,9 @@ import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {CampaignsTotalsMetricNames} from 'pages/stats/revenue/services/constants'
 import {useGetTotalsStat} from 'pages/stats/revenue/hooks/stats/useGetTotalsStat'
+import useAppSelector from 'hooks/useAppSelector'
+import {getTimezone} from 'state/currentUser/selectors'
+import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 
 const GRID_SIZE = 4
 const SKELETON_HEIGHT = 100
@@ -55,13 +58,17 @@ export const CampaignTotalsStat = () => {
     const currency = useGetCurrencyForStore(selectedIntegrations)
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
+    const userTimezone = useAppSelector(
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+    )
 
     const {isFetching, isError, data} = useGetTotalsStat(
         namespacedShopName,
         selectedCampaigns,
         currency,
         selectedPeriod.start_datetime,
-        selectedPeriod.end_datetime
+        selectedPeriod.end_datetime,
+        userTimezone
     )
 
     const statsVisible = !isFetching && !isError && data !== null

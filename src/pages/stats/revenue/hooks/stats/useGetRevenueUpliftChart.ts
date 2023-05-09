@@ -34,6 +34,7 @@ export const useGetRevenueUpliftChart = (
     campaignIds: string[],
     startDate: string,
     endDate: string,
+    timezone: string,
     timeGranularity = ReportingGranularity.Day
 ): GetRevenueUpliftChartQuery => {
     const attrs: CubeFilterParams = useMemo(
@@ -43,8 +44,16 @@ export const useGetRevenueUpliftChart = (
             startDate,
             endDate,
             granularity: timeGranularity,
+            timezone,
         }),
-        [namespacedShopName, campaignIds, startDate, endDate, timeGranularity]
+        [
+            namespacedShopName,
+            campaignIds,
+            startDate,
+            endDate,
+            timeGranularity,
+            timezone,
+        ]
     )
 
     const revenueUpliftChartQuery = useMemo(

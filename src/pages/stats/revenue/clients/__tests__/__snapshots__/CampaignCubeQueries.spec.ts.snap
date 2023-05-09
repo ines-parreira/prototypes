@@ -11,8 +11,8 @@ exports[`Getting Cube queries [Function getCampaignEventsOrdersPerformanceData] 
         "member": "CampaignOrderEvents.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
       },
       {
@@ -27,6 +27,7 @@ exports[`Getting Cube queries [Function getCampaignEventsOrdersPerformanceData] 
     "measures": [
       "CampaignOrderEvents.engagement",
     ],
+    "timezone": "America/San_Francisco",
   },
 ]
 `;
@@ -42,8 +43,8 @@ exports[`Getting Cube queries [Function getCampaignEventsPerformanceData] should
         "member": "CampaignEvents.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
       },
       {
@@ -65,6 +66,7 @@ exports[`Getting Cube queries [Function getCampaignEventsPerformanceData] should
     "segments": [
       "CampaignEvents.campaignEventsOnly",
     ],
+    "timezone": "America/San_Francisco",
   },
 ]
 `;
@@ -78,8 +80,8 @@ exports[`Getting Cube queries [Function getCampaignEventsTotalsData] should call
         "member": "CampaignOrderEvents.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
       },
       {
@@ -102,6 +104,7 @@ exports[`Getting Cube queries [Function getCampaignEventsTotalsData] should call
       "CampaignOrderEvents.impressions",
       "CampaignOrderEvents.engagement",
     ],
+    "timezone": "America/San_Francisco",
   },
 ]
 `;
@@ -117,8 +120,8 @@ exports[`Getting Cube queries [Function getCampaignOrderPerformanceData] should 
         "member": "OrderConversion.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
       },
       {
@@ -140,6 +143,7 @@ exports[`Getting Cube queries [Function getCampaignOrderPerformanceData] should 
       "OrderConversion.clickSalesCount",
       "OrderConversion.campaignSalesCount",
     ],
+    "timezone": "America/San_Francisco",
   },
 ]
 `;
@@ -153,8 +157,8 @@ exports[`Getting Cube queries [Function getCampaignOrderTotalsData] should call 
         "member": "OrderConversion.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
       },
       {
@@ -178,6 +182,7 @@ exports[`Getting Cube queries [Function getCampaignOrderTotalsData] should call 
       "OrderConversion.campaignSales",
       "OrderConversion.campaignSalesCount",
     ],
+    "timezone": "America/San_Francisco",
   },
 ]
 `;
@@ -191,8 +196,8 @@ exports[`Getting Cube queries [Function getCampaignsPerformanceGraphData] should
         "member": "CampaignOrderEvents.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
       },
       {
@@ -224,13 +229,14 @@ exports[`Getting Cube queries [Function getCampaignsPerformanceGraphData] should
     "timeDimensions": [
       {
         "dateRange": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
         "dimension": "CampaignOrderEvents.createdDatetime",
         "granularity": "day",
       },
     ],
+    "timezone": "America/San_Francisco",
   },
 ]
 `;
@@ -244,8 +250,8 @@ exports[`Getting Cube queries [Function getRevenueGraphData] should call load 1`
         "member": "OrderConversion.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
       },
       {
@@ -268,13 +274,14 @@ exports[`Getting Cube queries [Function getRevenueGraphData] should call load 1`
     "timeDimensions": [
       {
         "dateRange": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
         "dimension": "OrderConversion.createdDatetime",
         "granularity": "day",
       },
     ],
+    "timezone": "America/San_Francisco",
   },
 ]
 `;
@@ -288,8 +295,8 @@ exports[`Getting Cube queries [Function getRevenueUpliftGraphData] should call l
         "member": "OrderConversion.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
       },
       {
@@ -320,13 +327,14 @@ exports[`Getting Cube queries [Function getRevenueUpliftGraphData] should call l
     "timeDimensions": [
       {
         "dateRange": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
         "dimension": "OrderConversion.createdDatetime",
         "granularity": "day",
       },
     ],
+    "timezone": "America/San_Francisco",
   },
 ]
 `;
@@ -340,8 +348,8 @@ exports[`Getting Cube queries [Function getStoreRevenueTotalData] should call lo
         "member": "OrderConversion.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
       },
       {
@@ -355,6 +363,7 @@ exports[`Getting Cube queries [Function getStoreRevenueTotalData] should call lo
     "measures": [
       "OrderConversion.gmv",
     ],
+    "timezone": "America/San_Francisco",
   },
 ]
 `;
@@ -368,8 +377,8 @@ exports[`Getting Cube queries [Function getTrafficData] should call load 1`] = `
         "member": "CampaignEvents.createdDatetime",
         "operator": "inDateRange",
         "values": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
       },
       {
@@ -386,13 +395,14 @@ exports[`Getting Cube queries [Function getTrafficData] should call load 1`] = `
     "timeDimensions": [
       {
         "dateRange": [
-          "2023-01-01T08:00:00.000",
-          "2023-03-15T15:59:59.999",
+          "2023-01-01T20:00:00.000",
+          "2023-03-15T06:00:00.000",
         ],
         "dimension": "CampaignEvents.createdDatetime",
         "granularity": "day",
       },
     ],
+    "timezone": "America/San_Francisco",
   },
 ]
 `;

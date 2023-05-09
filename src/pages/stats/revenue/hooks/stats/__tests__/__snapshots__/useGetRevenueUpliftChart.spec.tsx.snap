@@ -11,8 +11,8 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
             "member": "OrderConversion.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-01-01T08:00:00.000",
-              "2023-03-02T07:59:59.999",
+              "2023-01-01T00:00:00.000",
+              "2023-03-01T00:00:00.000",
             ],
           },
           {
@@ -43,13 +43,14 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
         "timeDimensions": [
           {
             "dateRange": [
-              "2023-01-01T08:00:00.000",
-              "2023-03-02T07:59:59.999",
+              "2023-01-01T00:00:00.000",
+              "2023-03-01T00:00:00.000",
             ],
             "dimension": "OrderConversion.createdDatetime",
             "granularity": "day",
           },
         ],
+        "timezone": "America/Los_Angeles",
       },
     ],
     {
@@ -66,8 +67,8 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
             "member": "OrderConversion.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-01-01T08:00:00.000",
-              "2023-03-02T07:59:59.999",
+              "2023-01-01T00:00:00.000",
+              "2023-03-01T00:00:00.000",
             ],
           },
           {
@@ -90,13 +91,14 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
         "timeDimensions": [
           {
             "dateRange": [
-              "2023-01-01T08:00:00.000",
-              "2023-03-02T07:59:59.999",
+              "2023-01-01T00:00:00.000",
+              "2023-03-01T00:00:00.000",
             ],
             "dimension": "OrderConversion.createdDatetime",
             "granularity": "day",
           },
         ],
+        "timezone": "America/Los_Angeles",
       },
     ],
     {

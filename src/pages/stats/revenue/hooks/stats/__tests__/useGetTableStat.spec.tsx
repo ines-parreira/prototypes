@@ -27,11 +27,12 @@ describe('useGetTableStat', () => {
         isError: false,
     } as UseQueryResult
 
-    const hookArgs: [string, string[], string, string] = [
+    const hookArgs: [string, string[], string, string, string] = [
         'shopify:slow-formulas-for-sale',
         ['campaign1', 'campaign2'],
         '2023-02-01T00:00:00-08:00',
         '2023-04-01T00:00:00-08:00',
+        'America/Los_Angeles',
     ]
 
     const campaignEventsPerformanceData = [

@@ -16,11 +16,12 @@ describe('Getting Cube queries', () => {
         // in UTC is already next day
         startDate: '2023-01-01T20:00:00-08:00',
         // in UTC is still prev day
-        endDate: '2023-03-15T06:00:00+08:00',
+        endDate: '2023-03-15T06:00:00-08:00',
         shopName: 'punched-tires-shop',
         campaignIds: ['1', '2'],
         limit: 100,
         offset: 200,
+        timezone: 'America/San_Francisco',
     }
 
     it.each([

@@ -32,7 +32,8 @@ export const useGetTotalsStat = (
     campaignIds: string[],
     currency: string,
     startDate: string,
-    endDate: string
+    endDate: string,
+    timezone: string
 ): GetTotalsQuery => {
     const attrs: CubeFilterParams = useMemo(
         () => ({
@@ -40,8 +41,9 @@ export const useGetTotalsStat = (
             campaignIds,
             startDate,
             endDate,
+            timezone,
         }),
-        [namespacedShopName, campaignIds, startDate, endDate]
+        [namespacedShopName, campaignIds, startDate, endDate, timezone]
     )
 
     const campaignEventsTotalsQuery = useMemo(

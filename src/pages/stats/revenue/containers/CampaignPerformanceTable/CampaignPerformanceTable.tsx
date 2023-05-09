@@ -4,6 +4,9 @@ import DashboardGridCell from 'pages/stats/DashboardGridCell'
 
 import {useGetTableStat} from 'pages/stats/revenue/hooks/stats/useGetTableStat'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {getTimezone} from 'state/currentUser/selectors'
+import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 import {useCampaignStatsFilters} from '../../hooks/useCampaignStatsFilters'
 import {useGetChatForStore} from '../../hooks/useGetChatForStore'
 import {useGetCurrencyForStore} from '../../hooks/useGetCurrencyForStore'
@@ -22,6 +25,10 @@ export const CampaignPerformanceTable = () => {
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
 
+    const userTimezone = useAppSelector(
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+    )
+
     const currency = useGetCurrencyForStore(selectedIntegrations)
     const chatIntegration = useGetChatForStore(selectedIntegrations[0])
 
@@ -37,7 +44,8 @@ export const CampaignPerformanceTable = () => {
         namespacedShopName,
         campaignIds,
         selectedPeriod.start_datetime,
-        selectedPeriod.end_datetime
+        selectedPeriod.end_datetime,
+        userTimezone
     )
 
     const rows = useMemo<CampaignTableContentCell[]>(() => {

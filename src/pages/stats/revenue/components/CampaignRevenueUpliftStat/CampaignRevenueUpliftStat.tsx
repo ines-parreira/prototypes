@@ -10,6 +10,9 @@ import {
     renderTickLabelAsPercentage,
     renderTooltipLabelAsPercentage,
 } from 'pages/stats/utils'
+import useAppSelector from 'hooks/useAppSelector'
+import {getTimezone} from 'state/currentUser/selectors'
+import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 
 const title = 'Revenue uplift'
 const yAxisLabel = 'Total store revenue growth rate'
@@ -21,12 +24,16 @@ export const CampaignRevenueUpliftStat = () => {
         useCampaignStatsFilters()
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
+    const userTimezone = useAppSelector(
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+    )
 
     const {isFetching, isError, data} = useGetRevenueUpliftChart(
         namespacedShopName,
         selectedCampaigns,
         selectedPeriod.start_datetime,
-        selectedPeriod.end_datetime
+        selectedPeriod.end_datetime,
+        userTimezone
     )
 
     const statsVisible = !isFetching && !isError

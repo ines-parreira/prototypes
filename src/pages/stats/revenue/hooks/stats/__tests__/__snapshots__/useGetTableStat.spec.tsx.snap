@@ -13,8 +13,8 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
             "member": "CampaignEvents.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-02-01T08:00:00.000",
-              "2023-04-02T07:59:59.999",
+              "2023-02-01T00:00:00.000",
+              "2023-04-01T00:00:00.000",
             ],
           },
           {
@@ -36,6 +36,7 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
         "segments": [
           "CampaignEvents.campaignEventsOnly",
         ],
+        "timezone": "America/Los_Angeles",
       },
     ],
     {
@@ -54,8 +55,8 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
             "member": "OrderConversion.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-02-01T08:00:00.000",
-              "2023-04-02T07:59:59.999",
+              "2023-02-01T00:00:00.000",
+              "2023-04-01T00:00:00.000",
             ],
           },
           {
@@ -77,6 +78,7 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
           "OrderConversion.clickSalesCount",
           "OrderConversion.campaignSalesCount",
         ],
+        "timezone": "America/Los_Angeles",
       },
     ],
     {
@@ -95,8 +97,8 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
             "member": "CampaignOrderEvents.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-02-01T08:00:00.000",
-              "2023-04-02T07:59:59.999",
+              "2023-02-01T00:00:00.000",
+              "2023-04-01T00:00:00.000",
             ],
           },
           {
@@ -111,6 +113,7 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
         "measures": [
           "CampaignOrderEvents.engagement",
         ],
+        "timezone": "America/Los_Angeles",
       },
     ],
     {
@@ -127,8 +130,8 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
             "member": "CampaignEvents.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-02-01T08:00:00.000",
-              "2023-04-02T07:59:59.999",
+              "2023-02-01T00:00:00.000",
+              "2023-04-01T00:00:00.000",
             ],
           },
           {
@@ -145,13 +148,14 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
         "timeDimensions": [
           {
             "dateRange": [
-              "2023-02-01T08:00:00.000",
-              "2023-04-02T07:59:59.999",
+              "2023-02-01T00:00:00.000",
+              "2023-04-01T00:00:00.000",
             ],
             "dimension": "CampaignEvents.createdDatetime",
             "granularity": "day",
           },
         ],
+        "timezone": "America/Los_Angeles",
       },
     ],
     {
@@ -226,8 +230,8 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
             "member": "CampaignEvents.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-02-01T08:00:00.000",
-              "2023-04-02T07:59:59.999",
+              "2023-02-01T00:00:00.000",
+              "2023-04-01T00:00:00.000",
             ],
           },
           {
@@ -249,6 +253,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
         "segments": [
           "CampaignEvents.campaignEventsOnly",
         ],
+        "timezone": "America/Los_Angeles",
       },
     ],
     {
@@ -267,8 +272,8 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
             "member": "OrderConversion.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-02-01T08:00:00.000",
-              "2023-04-02T07:59:59.999",
+              "2023-02-01T00:00:00.000",
+              "2023-04-01T00:00:00.000",
             ],
           },
           {
@@ -290,6 +295,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
           "OrderConversion.clickSalesCount",
           "OrderConversion.campaignSalesCount",
         ],
+        "timezone": "America/Los_Angeles",
       },
     ],
     {
@@ -308,8 +314,8 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
             "member": "CampaignOrderEvents.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-02-01T08:00:00.000",
-              "2023-04-02T07:59:59.999",
+              "2023-02-01T00:00:00.000",
+              "2023-04-01T00:00:00.000",
             ],
           },
           {
@@ -324,6 +330,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
         "measures": [
           "CampaignOrderEvents.engagement",
         ],
+        "timezone": "America/Los_Angeles",
       },
     ],
     {
@@ -340,8 +347,8 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
             "member": "CampaignEvents.createdDatetime",
             "operator": "inDateRange",
             "values": [
-              "2023-02-01T08:00:00.000",
-              "2023-04-02T07:59:59.999",
+              "2023-02-01T00:00:00.000",
+              "2023-04-01T00:00:00.000",
             ],
           },
           {
@@ -358,13 +365,14 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
         "timeDimensions": [
           {
             "dateRange": [
-              "2023-02-01T08:00:00.000",
-              "2023-04-02T07:59:59.999",
+              "2023-02-01T00:00:00.000",
+              "2023-04-01T00:00:00.000",
             ],
             "dimension": "CampaignEvents.createdDatetime",
             "granularity": "day",
           },
         ],
+        "timezone": "America/Los_Angeles",
       },
     ],
     {

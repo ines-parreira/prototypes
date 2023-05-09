@@ -30,7 +30,8 @@ export const useGetTableStat = (
     namespacedShopName: string,
     campaignIds: string[],
     startDate: string,
-    endDate: string
+    endDate: string,
+    timezone: string
 ): GetTableQuery => {
     const attrs: CubeFilterParams = useMemo(
         () => ({
@@ -38,8 +39,9 @@ export const useGetTableStat = (
             campaignIds,
             startDate,
             endDate,
+            timezone,
         }),
-        [namespacedShopName, campaignIds, startDate, endDate]
+        [namespacedShopName, campaignIds, startDate, endDate, timezone]
     )
 
     const eventsQuery = useMemo(

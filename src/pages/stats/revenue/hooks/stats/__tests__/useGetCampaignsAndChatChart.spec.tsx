@@ -34,6 +34,7 @@ describe('useGetTotalsStat', () => {
         string,
         string,
         number,
+        string,
         ReportingGranularity
     ] = [
         'shopify:square-wheels-company',
@@ -41,6 +42,7 @@ describe('useGetTotalsStat', () => {
         startDate,
         endDate,
         42,
+        'America/Los_Angeles',
         ReportingGranularity.Day,
     ]
 

@@ -76,6 +76,7 @@ export const getCampaignEventsPerformanceData = ({
     startDate,
     endDate,
     campaignIds,
+    timezone,
 }: CubeFilterParams): ReportingParams => {
     return [
         {
@@ -87,6 +88,7 @@ export const getCampaignEventsPerformanceData = ({
                 EventsMeasure.clicks,
                 EventsMeasure.clicksRate,
             ],
+            timezone: timezone,
             filters: _getDefaultFilters({
                 startDate,
                 endDate,
@@ -103,6 +105,7 @@ export const getTrafficData = ({
     startDate,
     endDate,
     granularity = ReportingGranularity.Day,
+    timezone,
 }: CubeFilterParams): ReportingParams => {
     return [
         {
@@ -114,6 +117,7 @@ export const getTrafficData = ({
                     granularity: granularity,
                 },
             ],
+            timezone: timezone,
             measures: [EventsMeasure.traffic],
             filters: _getDefaultFilters({
                 startDate,
@@ -129,6 +133,7 @@ export const getCampaignOrderPerformanceData = ({
     startDate,
     endDate,
     campaignIds,
+    timezone,
 }: CubeFilterParams): ReportingParams => {
     return [
         {
@@ -143,6 +148,7 @@ export const getCampaignOrderPerformanceData = ({
                 OrderConversionMeasure.clickSalesCount,
                 OrderConversionMeasure.campaignSalesCount,
             ],
+            timezone: timezone,
             filters: _getDefaultFilters({
                 startDate,
                 endDate,
@@ -157,11 +163,13 @@ export const getCampaignEventsOrdersPerformanceData = ({
     startDate,
     endDate,
     campaignIds,
+    timezone,
 }: CubeFilterParams): ReportingParams => {
     return [
         {
             dimensions: [CampaignOrderEventsDimension.campaignId],
             measures: [CampaignOrderEventsMeasure.engagement],
+            timezone: timezone,
             filters: _getDefaultFilters({
                 startDate,
                 endDate,
@@ -177,6 +185,7 @@ export const getCampaignEventsTotalsData = ({
     campaignIds,
     startDate,
     endDate,
+    timezone,
 }: CubeFilterParams): ReportingParams => {
     return [
         {
@@ -185,6 +194,7 @@ export const getCampaignEventsTotalsData = ({
                 CampaignOrderEventsMeasure.impressions,
                 CampaignOrderEventsMeasure.engagement,
             ],
+            timezone: timezone,
             filters: _getDefaultFilters({
                 startDate,
                 endDate,
@@ -201,6 +211,7 @@ export const getCampaignOrderTotalsData = ({
     campaignIds,
     startDate,
     endDate,
+    timezone,
 }: CubeFilterParams): ReportingParams => {
     return [
         {
@@ -210,6 +221,7 @@ export const getCampaignOrderTotalsData = ({
                 OrderConversionMeasure.campaignSales,
                 OrderConversionMeasure.campaignSalesCount,
             ],
+            timezone: timezone,
             filters: _getDefaultFilters({
                 startDate,
                 endDate,
@@ -225,11 +237,13 @@ export const getStoreRevenueTotalData = ({
     shopName,
     startDate,
     endDate,
+    timezone,
 }: CubeFilterParams): ReportingParams => {
     return [
         {
             dimensions: [],
             measures: [OrderConversionMeasure.gmv],
+            timezone: timezone,
             filters: _getDefaultFilters({
                 startDate,
                 endDate,
@@ -245,6 +259,7 @@ export const getRevenueGraphData = ({
     startDate,
     endDate,
     granularity = ReportingGranularity.Day,
+    timezone,
 }: CubeFilterParams): ReportingParams => {
     return [
         {
@@ -256,6 +271,7 @@ export const getRevenueGraphData = ({
                     granularity: granularity,
                 },
             ],
+            timezone: timezone,
             measures: [OrderConversionMeasure.gmv],
             order: [[OrderConversionDimension.createdDatatime, 'asc']],
             filters: _getDefaultFilters({
@@ -274,6 +290,7 @@ export const getRevenueUpliftGraphData = ({
     startDate,
     endDate,
     granularity = ReportingGranularity.Day,
+    timezone,
 }: CubeFilterParams): ReportingParams => {
     return [
         {
@@ -285,6 +302,7 @@ export const getRevenueUpliftGraphData = ({
                     granularity: granularity,
                 },
             ],
+            timezone: timezone,
             measures: [OrderConversionMeasure.campaignSales],
             order: [[OrderConversionDimension.createdDatatime, 'asc']],
             filters: _getDefaultFilters({
@@ -304,6 +322,7 @@ export const getCampaignsPerformanceGraphData = ({
     startDate,
     endDate,
     granularity = ReportingGranularity.Day,
+    timezone,
 }: CubeFilterParams): ReportingParams => {
     return [
         {
@@ -315,6 +334,7 @@ export const getCampaignsPerformanceGraphData = ({
                     granularity: granularity,
                 },
             ],
+            timezone: timezone,
             measures: [
                 CampaignOrderEventsMeasure.campaignCTR,
                 CampaignOrderEventsMeasure.totalConversionRate,

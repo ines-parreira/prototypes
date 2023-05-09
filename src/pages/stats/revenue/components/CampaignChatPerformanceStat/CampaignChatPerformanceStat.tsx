@@ -10,6 +10,9 @@ import {useGetFirstValidIntegration} from 'pages/stats/revenue/hooks/useGetFirst
 import {useGetCampaignsAndChatChart} from 'pages/stats/revenue/hooks/stats/useGetCampaignsAndChatChart'
 import {formatPercentage} from 'pages/common/utils/numbers'
 import {renderTickLabelAsPercentage} from 'pages/stats/utils'
+import useAppSelector from 'hooks/useAppSelector'
+import {getTimezone} from 'state/currentUser/selectors'
+import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
 
 const title = 'Campaign versus chat performance'
 const hint = `Compare the conversion rates of your chat tickets in general versus campaign conversion,
@@ -35,13 +38,17 @@ export const CampaignChatPerformanceStat = () => {
         useGetFirstValidIntegration(selectedIntegrations)
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
+    const userTimezone = useAppSelector(
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+    )
 
     const {isFetching, isError, data} = useGetCampaignsAndChatChart(
         namespacedShopName,
         selectedCampaigns,
         selectedPeriod.start_datetime,
         selectedPeriod.end_datetime,
-        selectedIntegration?.id || null
+        selectedIntegration?.id || null,
+        userTimezone
     )
 
     const graphData = useMemo(
