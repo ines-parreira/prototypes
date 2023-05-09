@@ -211,3 +211,29 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
   },
 }
 `;
+
+exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable traffic calculation should calculate only for matching dates 1`] = `
+{
+  "campaign1": {
+    "campaignSalesCount": 0,
+    "clickThroughRate": 0,
+    "clicks": 0,
+    "clicksConversionRate": 0,
+    "clicksConverted": 0,
+    "clicksRate": 0,
+    "clicksRevenue": 0,
+    "discountCodesRevenue": 0,
+    "discountCodesUsed": 0,
+    "engagement": 0,
+    "impressions": 0,
+    "ticketsConversionRate": 0,
+    "ticketsConverted": 0,
+    "ticketsCreated": 0,
+    "ticketsCreationRate": 0,
+    "ticketsRevenue": 0,
+    "totalConversionRate": 0,
+    "totalRevenue": 0,
+    "traffic": 6,
+  },
+}
+`;

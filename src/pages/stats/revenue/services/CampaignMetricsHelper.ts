@@ -94,15 +94,16 @@ const _calculateTraffic = (
     startDate: string,
     endDate: string
 ): number => {
-    const start = moment(startDate)
-    const end = moment(endDate)
+    const start = moment(startDate).startOf('day').valueOf()
+    const end = moment(endDate).endOf('day').valueOf()
 
     return _sum(
         trafficData.map((metric) => {
-            const date = moment(
+            const dateTime = moment(
                 _get(metric, EventsDimension.createdDatetime)
-            ).date()
-            if (date >= start.date() && date <= end.date()) {
+            ).valueOf()
+
+            if (dateTime >= start && dateTime <= end) {
                 return getMetricValue(
                     metric,
                     EventsMeasure.traffic,
