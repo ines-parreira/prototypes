@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import classnames from 'classnames'
 import Button from 'pages/common/components/button/Button'
@@ -31,6 +31,37 @@ export const useShippingMethods = ({
     const [selectedShippingMethod, setSelectedShippingMethod] =
         useState<BigCommerceShippingOption | null>(null)
 
+    const selectSimilarShippingOption = useCallback(
+        async (shippingOption: Maybe<BigCommerceShippingOption>) => {
+            if (!consignment || !shippingOption) {
+                return
+            }
+            const similarShippingOptions =
+                consignment.available_shipping_options.filter(
+                    ({type, description}) =>
+                        type === shippingOption.type &&
+                        description === shippingOption.description
+                )
+
+            // Update consignment and set local shipping method _only_ if we have single match
+            // based on type and description
+            if (similarShippingOptions.length === 1) {
+                setIsUpdatingConsignment(true)
+                try {
+                    await onUpdateConsignmentShippingMethod(
+                        similarShippingOptions[0].id
+                    )
+                    return setSelectedShippingMethod(similarShippingOptions[0])
+                } catch (error) {
+                    console.error(error)
+                } finally {
+                    setIsUpdatingConsignment(false)
+                }
+            }
+        },
+        [consignment, onUpdateConsignmentShippingMethod]
+    )
+
     /**
      * We need to track whether the `selected_shipping_option` in the consignment
      * corresponds to what user has selected in the UI. Changes to consignment, such
@@ -45,11 +76,20 @@ export const useShippingMethods = ({
                 return
             }
 
-            if (!consignment.selected_shipping_option) {
-                if (!selectedShippingMethod) {
-                    return
-                }
+            // Shipping method from checkout and shipping method from state are both not selected.
+            if (
+                !consignment.selected_shipping_option &&
+                !selectedShippingMethod
+            )
+                return
 
+            // Shipping method from checkout is not selected, but shipping method from state is selected.
+            if (
+                !consignment.selected_shipping_option &&
+                selectedShippingMethod
+            ) {
+                // Shipping method id from state exists in the available shipping methods from checkout,
+                // and it has to be re-selected.
                 const hasAvailableSelectedShippingMethod =
                     consignment.available_shipping_options.find(
                         ({id}) => id === selectedShippingMethod.id
@@ -69,54 +109,15 @@ export const useShippingMethods = ({
                     return setIsUpdatingConsignment(false)
                 }
 
-                const similarShippingOptions =
-                    consignment.available_shipping_options.filter(
-                        ({type, description}) =>
-                            type === selectedShippingMethod.type &&
-                            description === selectedShippingMethod.description
-                    )
-
-                // Update consignment and set local shipping method _only_ if we have single match
-                // based on type and description
-                if (similarShippingOptions.length === 1) {
-                    setIsUpdatingConsignment(true)
-                    try {
-                        await onUpdateConsignmentShippingMethod(
-                            similarShippingOptions[0].id
-                        )
-                        return setSelectedShippingMethod(
-                            similarShippingOptions[0]
-                        )
-                    } catch (error) {
-                        console.error(error)
-                    } finally {
-                        setIsUpdatingConsignment(false)
-                    }
-                }
-
-                return setSelectedShippingMethod(null)
+                // Shipping method from state has to be selected from available shipping methods.
+                return await selectSimilarShippingOption(selectedShippingMethod)
             }
 
-            if (selectedShippingMethod) {
-                if (
-                    consignment.selected_shipping_option.id !==
-                    selectedShippingMethod?.id
-                ) {
-                    void onUpdateConsignmentShippingMethod(
-                        selectedShippingMethod.id
-                    )
-                } else if (
-                    consignment.selected_shipping_option.id ===
-                        selectedShippingMethod?.id &&
-                    !consignment.available_shipping_options.find(
-                        ({id}) => id === selectedShippingMethod.id
-                    )
-                ) {
-                    return setSelectedShippingMethod(null)
-                }
-            }
-
-            if (!selectedShippingMethod) {
+            // Shipping method from checkout is selected, but shipping method from state is not selected.
+            if (
+                consignment.selected_shipping_option &&
+                !selectedShippingMethod
+            ) {
                 if (
                     consignment.selected_shipping_option.id &&
                     consignment.available_shipping_options.find(
@@ -128,11 +129,49 @@ export const useShippingMethods = ({
                         consignment.selected_shipping_option
                     )
                 }
+                return await selectSimilarShippingOption(
+                    consignment.selected_shipping_option
+                )
+            }
+
+            // Shipping method from checkout and shipping method from state are both selected.
+            if (
+                consignment.selected_shipping_option &&
+                selectedShippingMethod
+            ) {
+                // Shipping method from checkout is different from the shipping method from state. This happens when
+                // the shipping method is changed while the address remains the same.
+                if (
+                    consignment.selected_shipping_option.id !==
+                    selectedShippingMethod?.id
+                ) {
+                    return await onUpdateConsignmentShippingMethod(
+                        selectedShippingMethod.id
+                    )
+                }
+
+                // Shipping method from checkout is different from the shipping method have the same id, but the
+                // shipping method is not available for this consignment. This happens when the shipping method remains
+                // from a previous address, and it's not invalidated by the API
+                if (
+                    consignment.selected_shipping_option.id ===
+                        selectedShippingMethod?.id &&
+                    !consignment.available_shipping_options.find(
+                        ({id}) => id === selectedShippingMethod.id
+                    )
+                ) {
+                    return setSelectedShippingMethod(null)
+                }
             }
         }
 
         void consignmentSync()
-    }, [consignment, selectedShippingMethod, onUpdateConsignmentShippingMethod])
+    }, [
+        consignment,
+        selectedShippingMethod,
+        onUpdateConsignmentShippingMethod,
+        selectSimilarShippingOption,
+    ])
 
     const shippingMethodOptions: Array<RadioFieldOption> = useMemo(
         () =>

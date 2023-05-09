@@ -206,9 +206,8 @@ describe('ShippingMethod', () => {
 })
 
 describe('useShippingMethods', () => {
+    const onUpdateConsignmentShippingMethodMock = jest.fn()
     it('works as expected', async () => {
-        const onUpdateConsignmentShippingMethodMock = jest.fn()
-
         const {result, rerender} = renderHook(
             (props: Partial<Parameters<typeof useShippingMethods>[0]>) =>
                 useShippingMethods({
@@ -298,21 +297,71 @@ describe('useShippingMethods', () => {
                     {
                         ...bigCommerceConsignmentFixture
                             .available_shipping_options[0],
-                        id: 'modified-available-shipping-option-1',
+                        id: 'available-shipping-option-1',
                     },
                 ],
             },
         })
         expect(onUpdateConsignmentShippingMethodMock).toHaveBeenNthCalledWith(
             3,
-            'modified-available-shipping-option-1'
+            'available-shipping-option-1'
         )
 
         await waitFor(() => {
             expect(result.current.selectedShippingMethod).toEqual({
                 ...bigCommerceConsignmentFixture.available_shipping_options[0],
-                id: 'modified-available-shipping-option-1',
+                id: 'available-shipping-option-1',
             })
         })
+
+        /**
+         * Consignment with `selected_shipping_option` arrives, but the selected shipping method is undefined
+         * call to `onUpdateConsignmentShippingMethodMock` is triggered with new ID
+         */
+        act(() => {
+            result.current.onSelectShippingMethod('')
+        })
+        rerender({
+            consignment: {
+                ...bigCommerceConsignmentFixture,
+                available_shipping_options: [
+                    {
+                        ...bigCommerceConsignmentFixture
+                            .available_shipping_options[0],
+                    },
+                ],
+                selected_shipping_option:
+                    bigCommerceConsignmentFixture.available_shipping_options[0],
+            },
+        })
+        expect(result.current.selectedShippingMethod).toEqual(
+            bigCommerceConsignmentFixture.available_shipping_options[0]
+        )
+
+        /**
+         * Consignment with `selected_shipping_option` arrives, but the selected shipping method is not among
+         * `available_shipping_options`, but there's an option that matches the `type` and `description`
+         */
+        act(() => {
+            result.current.onSelectShippingMethod('')
+        })
+        const option =
+            bigCommerceConsignmentFixture.available_shipping_options[1]
+        option.description = 'Description One'
+        rerender({
+            consignment: {
+                ...bigCommerceConsignmentFixture,
+                available_shipping_options: [
+                    {
+                        ...bigCommerceConsignmentFixture
+                            .available_shipping_options[0],
+                    },
+                ],
+                selected_shipping_option: option,
+            },
+        })
+        expect(result.current.selectedShippingMethod).toEqual(
+            bigCommerceConsignmentFixture.available_shipping_options[0]
+        )
     })
 })
