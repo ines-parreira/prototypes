@@ -234,6 +234,8 @@ export type Meta = {
     rule_suggestion_slug?: string
     ai_suggestion?: boolean
     discount_codes?: string[]
+    body_text_truncated?: boolean
+    body_html_truncated?: boolean
 }
 
 export type FacebookPrivateReply = {

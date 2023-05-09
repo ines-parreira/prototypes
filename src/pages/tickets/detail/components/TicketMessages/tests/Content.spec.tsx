@@ -36,6 +36,7 @@ const sharedProps: ComponentProps<typeof ContentComponent> = {
     toggleQuote: jest.fn(),
     isMessageExpanded: false,
     messageId: 1,
+    meta: null,
 }
 
 describe('Content', () => {
@@ -258,5 +259,40 @@ describe('Content', () => {
               </div>
             </div>
         `)
+    })
+
+    it('should not display disclaimer when message is not truncated', () => {
+        const component = mount(
+            <ContentComponent {...sharedProps} text="text" />
+        )
+        expect(component).not.toIncludeText(
+            'This message is too large to display'
+        )
+    })
+
+    it('should display disclaimer when html of message is truncated', () => {
+        const component = mount(
+            <ContentComponent
+                {...sharedProps}
+                html="Thank you <3 you are the best"
+                meta={{
+                    body_html_truncated: true,
+                }}
+            />
+        )
+        expect(component).toIncludeText('This message is too large to display')
+    })
+
+    it('should display disclaimer when text of message is truncated', () => {
+        const component = mount(
+            <ContentComponent
+                {...sharedProps}
+                text="Thank you <3 you are the best"
+                meta={{
+                    body_text_truncated: true,
+                }}
+            />
+        )
+        expect(component).toIncludeText('This message is too large to display')
     })
 })

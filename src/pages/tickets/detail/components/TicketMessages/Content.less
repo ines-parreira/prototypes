@@ -1,3 +1,6 @@
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/colorTokens.less';
+
 :local {
     .content > * {
         position: inherit;
@@ -5,5 +8,22 @@
 
     .white-space {
         white-space: pre-line;
+    }
+
+    .disclaimer-truncated-message {
+        color: @classic-neutral-grey-5;
+        display: flex;
+        margin-top: 8px;
+
+        i {
+            font-size: 16px;
+            width: 16px;
+            margin-right: 8px;
+        }
+
+        p {
+            .caption-regular();
+            margin-bottom: 0;
+        }
     }
 }

@@ -1,9 +1,9 @@
 import React, {Component, useContext, useMemo} from 'react'
 import classNames from 'classnames'
 import _trim from 'lodash/trim'
-
 import ReactPlayer from 'react-player'
 
+import {TicketMessage} from 'models/ticket/types'
 import MessageQuoteContext from 'pages/tickets/detail/components/MessageQuoteContext'
 import Ellipsis from 'pages/common/components/Ellipsis'
 import {linkifyHtml, linkifyString, sanitizeHtmlDefault} from 'utils/html'
@@ -19,6 +19,7 @@ type Props = {
     strippedHtml?: string | null
     strippedText?: string | null
     isMessageExpanded: boolean
+    meta: TicketMessage['meta']
 }
 
 type State = {
@@ -56,6 +57,7 @@ export class ContentComponent extends Component<Props, State> {
 
     render() {
         let {html, text, strippedHtml, strippedText} = this.props
+        const {isMessageExpanded, meta} = this.props
 
         // trim values so we avoid displaying space only values
         html = _trim(html)
@@ -75,9 +77,16 @@ export class ContentComponent extends Component<Props, State> {
             strippedContent.replace(/\s+/g, '') !== content.replace(/\s+/g, '')
 
         const contentToRender =
-            isStripped && !this.props.isMessageExpanded
-                ? strippedContent || ''
-                : content
+            isStripped && !isMessageExpanded ? strippedContent || '' : content
+
+        const isTruncated =
+            isStripped && !isMessageExpanded
+                ? html && strippedHtml
+                    ? meta?.body_html_truncated
+                    : meta?.body_text_truncated
+                : html
+                ? meta?.body_html_truncated
+                : meta?.body_text_truncated
 
         let displayContent = this._getDisplayContent(contentToRender, isHtml)
 
@@ -99,7 +108,16 @@ export class ContentComponent extends Component<Props, State> {
                         [css['white-space']]: !isHtml,
                     })}
                     dangerouslySetInnerHTML={{__html: displayContent!}}
-                />
+                ></div>
+                {isTruncated && (
+                    <span className={css['disclaimer-truncated-message']}>
+                        <i className="material-icons">info_outlined</i>
+                        <p>
+                            This message is too large to display. To see the
+                            entire message, open it in the original provider.
+                        </p>
+                    </span>
+                )}
                 {isStripped && (
                     <Ellipsis
                         title="Show full content"
