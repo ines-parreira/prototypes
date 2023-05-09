@@ -28,15 +28,23 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        overflow: hidden;
+        margin-right: 0.4375rem;
 
         .title {
             font-weight: 500;
             color: @classic-neutral-grey-6;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .subtitle {
             font-weight: normal;
             color: @classic-neutral-grey-4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 
