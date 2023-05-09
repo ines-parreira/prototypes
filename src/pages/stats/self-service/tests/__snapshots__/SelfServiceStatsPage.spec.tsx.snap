@@ -600,7 +600,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                 <span
                   class="cell-wrapper cell-content"
                 >
-                  86
+                  86%
                 </span>
               </td>
               <td
@@ -638,7 +638,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                 <span
                   class="cell-wrapper cell-content"
                 >
-                  85
+                  85%
                 </span>
               </td>
               <td

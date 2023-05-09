@@ -96,6 +96,19 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
           Enable Return order flow
         </Link>
       </span>
+      <span
+        className="disabled-legend-label mr-4 mb-2"
+        key="multisteps"
+      >
+        <span
+          className="disabled-legend-label-circle mr-2"
+        />
+        <Link
+          to="/app/automation"
+        >
+          Enable Flows flow
+        </Link>
+      </span>
     </Col>
   </Row>
   <Row

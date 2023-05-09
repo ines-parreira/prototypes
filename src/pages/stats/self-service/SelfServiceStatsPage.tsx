@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {assetsUrl} from 'utils'
 import {
@@ -12,6 +13,7 @@ import {
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
     AUTOMATION_ADD_ON_OVERVIEW,
+    SELF_SERVICE_WORKFLOWS_PERFORMANCE,
 } from 'config/stats'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {
@@ -40,6 +42,10 @@ import {
 } from 'config/paywalls'
 import PageHeader from 'pages/common/components/PageHeader'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
+import {FeatureFlagKey} from 'config/featureFlags'
+import useWorkflowApi, {
+    WorkflowConfiguration,
+} from 'pages/automation/workflows/hooks/useWorkflowApi'
 
 import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'
@@ -65,10 +71,13 @@ import css from './SelfServiceStatsPage.less'
 export const SelfServiceStatsPage = (): JSX.Element => {
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
         useState(false)
+    const [workflowConfigurations, setWorkflowConfigurations] = useState<
+        WorkflowConfiguration[]
+    >([])
     const dispatch = useAppDispatch()
     const integrations = useAppSelector(getIntegrations)
     const statsFilters = useAppSelector(getStatsFilters)
-
+    const isFlowsBetaEnabled = useFlags()[FeatureFlagKey.FlowsBeta]
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {period, integrations} = statsFilters
         return {
@@ -76,28 +85,48 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             integrations,
         }
     }, [statsFilters])
-
-    const [{loading}, retrieveSelfServiceConfigurations] =
+    const {fetchWorkflowConfigurations} = useWorkflowApi()
+    const [
+        {loading: isSelfServiceFetchPending},
+        retrieveSelfServiceConfigurations,
+    ] = useAsyncFn(async () => {
+        try {
+            const res = await fetchSelfServiceConfigurations()
+            void dispatch(selfServiceConfigurationsFetched(res.data))
+        } catch (error) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Could not fetch Self-service configurations, please try again later.',
+                })
+            )
+        }
+    }, [])
+    const [{loading: isWorkflowsFetchPending}, retrieveWorkflowConfigurations] =
         useAsyncFn(async () => {
             try {
-                const res = await fetchSelfServiceConfigurations()
-                void dispatch(selfServiceConfigurationsFetched(res.data))
+                const res = await fetchWorkflowConfigurations()
+                setWorkflowConfigurations(res)
             } catch (error) {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
                         message:
-                            'Could not fetch Self-service configurations, please try again later.',
+                            'Could not fetch Flows, please try again later.',
                     })
                 )
             }
         }, [])
 
     useEffect(() => {
-        void (async () => {
-            await retrieveSelfServiceConfigurations()
-        })()
+        void retrieveSelfServiceConfigurations()
     }, [retrieveSelfServiceConfigurations])
+    useEffect(() => {
+        if (isFlowsBetaEnabled) {
+            void retrieveWorkflowConfigurations()
+        }
+    }, [isFlowsBetaEnabled, retrieveWorkflowConfigurations])
 
     const selfServiceConfigurations = useAppSelector(
         getSelfServiceConfigurations
@@ -148,6 +177,17 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         volumePerFlow?.data.data.lines.every((line) =>
             line.data.every((data) => data === 0)
         ) || false
+
+    const [workflowsPerformance, isFetchingWorkflowsPerformance] =
+        useStatResource<TwoDimensionalChart>({
+            statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
+            resourceName: SELF_SERVICE_WORKFLOWS_PERFORMANCE,
+            statsFilters: pageStatsFilters,
+        })
+
+    const workflowsPerformanceNoData =
+        !isFlowsBetaEnabled ||
+        (workflowsPerformance?.data.data.lines.length ?? 0) === 0
 
     const [quickResponsePerformance, isFetchingQuickResponsePerformance] =
         useStatResource<TwoDimensionalChart>({
@@ -205,12 +245,13 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     const allSectionsNoData =
         overviewNoData &&
         volumePerFlowNoData &&
+        workflowsPerformanceNoData &&
         quickResponsePerformanceNoData &&
         articleRecommendationPerformanceNoData &&
         topReportedIssuesNoData &&
         productsWithMostIssuesAndReturnRequestsNoData
 
-    if (loading) {
+    if (isSelfServiceFetchPending || isWorkflowsFetchPending) {
         return <Loader />
     }
 
@@ -272,6 +313,34 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             />
                         )}
                     </StatWrapper>
+                    {isFlowsBetaEnabled && (
+                        <StatWrapper
+                            stat={workflowsPerformance}
+                            isFetchingStat={isFetchingWorkflowsPerformance}
+                            resourceName={SELF_SERVICE_WORKFLOWS_PERFORMANCE}
+                            statsFilters={pageStatsFilters}
+                            isDownloadable={!workflowsPerformanceNoData}
+                        >
+                            {(stat) => (
+                                <TableStat
+                                    context={{tagColors: null}}
+                                    data={stat.getIn(['data', 'data'])}
+                                    meta={stat.get('meta')}
+                                    config={statsConfig.get(
+                                        SELF_SERVICE_WORKFLOWS_PERFORMANCE
+                                    )}
+                                    name={SELF_SERVICE_WORKFLOWS_PERFORMANCE}
+                                    integrations={integrations}
+                                    selfServiceConfigurations={
+                                        selfServiceConfigurations
+                                    }
+                                    workflowConfigurations={
+                                        workflowConfigurations
+                                    }
+                                />
+                            )}
+                        </StatWrapper>
+                    )}
                     <StatWrapper
                         stat={quickResponsePerformance}
                         isFetchingStat={isFetchingQuickResponsePerformance}

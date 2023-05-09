@@ -16,6 +16,7 @@ import {Integration, StoreIntegration} from 'models/integration/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import {WorkflowConfiguration} from 'pages/automation/workflows/hooks/useWorkflowApi'
 import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import {
@@ -50,6 +51,7 @@ type OwnProps = {
     }
     integrations?: Integration[]
     selfServiceConfigurations?: SelfServiceConfiguration[]
+    workflowConfigurations?: WorkflowConfiguration[]
 }
 
 type State = {
@@ -85,6 +87,21 @@ export class TableStat extends Component<
         const isQuickResponseEnabled = quickReponseDeactivatedDatetime === null
 
         return isQuickResponseEnabled
+    }
+
+    _getShopTypeAndShopName = (shopIntegrationId: number) => {
+        const shopIntegration = this.props.integrations?.find(
+            (integration) => integration.id === shopIntegrationId
+        ) as Maybe<StoreIntegration>
+
+        if (!shopIntegration) {
+            return [null, null] as const
+        }
+
+        return [
+            shopIntegration.type,
+            getShopNameFromStoreIntegration(shopIntegration),
+        ] as const
     }
 
     // Render a table cell depending on its value type (percent, date, delta, etc.)
@@ -308,21 +325,14 @@ export class TableStat extends Component<
             }
             case StatValueType.QuickResponseAutomationRate: {
                 const value = metric.get('value') as number
-                const shopIntegrationId = metric.get(
-                    'shop_integration_id'
-                ) as number
-                const shopIntegration = this.props.integrations?.find(
-                    (integration) => integration.id === shopIntegrationId
+                const [shopType, shopName] = this._getShopTypeAndShopName(
+                    metric.get('shop_integration_id')
                 )
 
-                if (!shopIntegration) {
-                    return value
+                if (!shopType || !shopName) {
+                    return `${value}%`
                 }
 
-                const shopName = getShopNameFromStoreIntegration(
-                    shopIntegration as StoreIntegration
-                )
-                const shopType = shopIntegration.type
                 const flowId = metric.get('flow_id') as string
                 const isQuickResponseEnabled = this._getIsQuickResponseEnabled(
                     flowId,
@@ -368,6 +378,41 @@ export class TableStat extends Component<
                                 </Tooltip>
                             </>
                         )}
+                    </>
+                )
+            }
+            case StatValueType.WorkflowName: {
+                const value = metric.get('value') as string
+
+                return (
+                    this.props.workflowConfigurations?.find(
+                        (configuration) => configuration.id === value
+                    )?.name ?? value
+                )
+            }
+            case StatValueType.WorkflowAutomationRate: {
+                const value = metric.get('value') as number
+                const [shopType, shopName] = this._getShopTypeAndShopName(
+                    metric.get('shop_integration_id')
+                )
+                const configurationId = metric.get('configuration_id') as string
+                const workflowConfiguration =
+                    this.props.workflowConfigurations?.find(
+                        (configuration) => configuration.id === configurationId
+                    )
+
+                if (!workflowConfiguration || !shopType || !shopName) {
+                    return `${value}%`
+                }
+
+                return (
+                    <>
+                        {value}%&nbsp;
+                        <Link
+                            to={`/app/automation/${shopType}/${shopName}/flows/edit/${configurationId}`}
+                        >
+                            Edit flow
+                        </Link>
                     </>
                 )
             }
@@ -453,21 +498,14 @@ export class TableStat extends Component<
             }
             case StatValueType.QuickResponseTitle: {
                 const value = metric.get('value') as number
-                const shopIntegrationId = metric.get(
-                    'shop_integration_id'
-                ) as number
-                const shopIntegration = this.props.integrations?.find(
-                    (integration) => integration.id === shopIntegrationId
+                const [shopType, shopName] = this._getShopTypeAndShopName(
+                    metric.get('shop_integration_id')
                 )
 
-                if (!shopIntegration) {
+                if (!shopType || !shopName) {
                     return value
                 }
 
-                const shopName = getShopNameFromStoreIntegration(
-                    shopIntegration as StoreIntegration
-                )
-                const shopType = shopIntegration.type
                 const flowId = metric.get('flow_id') as string
                 const isQuickResponseEnabled = this._getIsQuickResponseEnabled(
                     flowId,

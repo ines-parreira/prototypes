@@ -91,6 +91,8 @@ export const SELF_SERVICE_SECTION_RETURN = 'self-service-section-return'
 export const SELF_SERVICE_TICKETS_DEFLECTED = 'self-service-tickets-deflected'
 export const SELF_SERVICE_TICKETS_CREATED = 'self-service-tickets-created'
 export const SELF_SERVICE_USAGE = 'self-service-usage'
+export const SELF_SERVICE_WORKFLOWS_PERFORMANCE =
+    'self-service-workflows-performance'
 
 const mainBlue = '#152065'
 export const colors = [
@@ -266,6 +268,8 @@ export enum StatValueType {
     Title = 'title',
     TitleWithLink = 'title-with-link',
     User = 'user',
+    WorkflowAutomationRate = 'workflow-automation-rate',
+    WorkflowName = 'workflow-name',
 }
 
 export type StatConfigCellCallbackData = {
@@ -1578,6 +1582,19 @@ export const stats = toImmutable<
                 pointHoverRadius: 6,
                 disabledLink: '/app/automation',
             },
+            multisteps: {
+                label: 'Flows',
+                color: '#A5E5AB',
+                backgroundColor: '#A5E5AB',
+                borderColor: '#A5E5AB',
+                borderWidth: 1,
+                fill: false,
+                pointHoverBackgroundColor: '#A5E5AB',
+                pointHoverBorderColor: '#A5E5AB',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                disabledLink: '/app/automation',
+            },
         },
         options: (legend: Map<any, any>) => ({
             plugins: {
@@ -1635,7 +1652,7 @@ export const stats = toImmutable<
             cell: ({value}) => {
                 return value
             },
-        } as StatConfigCallbacks<ReactNode>,
+        },
     },
     [SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE]: {
         style: 'table',
@@ -1653,7 +1670,7 @@ export const stats = toImmutable<
             cell: ({value}) => {
                 return value
             },
-        } as StatConfigCallbacks<ReactNode>,
+        },
     },
     [SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS]: {
         style: 'table',
@@ -1707,7 +1724,27 @@ export const stats = toImmutable<
 
                 return value
             },
-        } as StatConfigCallbacks<ReactNode>,
+        },
+    },
+    [SELF_SERVICE_WORKFLOWS_PERFORMANCE]: {
+        style: 'table',
+        downloadable: true,
+        tableOptions: {
+            showLines: 6,
+        },
+        axisHelpers: {
+            'Automation rate':
+                'Number of interactions resolved by a Flow divided by the total number of times a user has started a Flow.',
+            'Served by an agent after article rec':
+                'If a customer is not satisfied with the automated response, a ticket is created.',
+            'Drop off':
+                "Number of times a customer has started the flow, but hasn't reached the end.",
+        },
+        callbacks: {
+            cell: ({value}) => {
+                return value
+            },
+        },
     },
     [SELF_SERVICE_SECTION_REPORT_ISSUE]: {
         style: 'element',

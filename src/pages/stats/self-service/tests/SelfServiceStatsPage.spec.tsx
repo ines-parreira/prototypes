@@ -44,6 +44,12 @@ jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 jest.mock('models/selfServiceConfiguration/resources', () => ({
     fetchSelfServiceConfigurations: jest.fn(() => Promise.resolve([])),
 }))
+jest.mock('pages/automation/workflows/hooks/useWorkflowApi', () => ({
+    __esModule: true,
+    default: jest.fn(() => ({
+        fetchWorkflowConfigurations: jest.fn(() => Promise.resolve([])),
+    })),
+}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<
