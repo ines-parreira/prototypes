@@ -52,6 +52,16 @@ export type TicketCustomerUpdatedEventData = {
     }
 }
 
+export type TicketEventPrivateReplyData = {
+    payload: {
+        private_reply_event_type: string
+    }
+    facebook_comment_ticket_id?: string // deprecated
+    instagram_comment_ticket_id?: string // deprecated
+    messenger_ticket_id?: string // deprecated
+    instagram_direct_message_ticket_id?: string // deprecated
+}
+
 export type EventData =
     | TicketTagsAddedEventData
     | TicketTagsRemovedEventData
@@ -64,6 +74,7 @@ export type EventData =
     | TicketMessageSummaryCreatedEventData
     | TicketSubjectUpdatedEventData
     | TicketCustomerUpdatedEventData
+    | TicketEventPrivateReplyData
 
 export enum EventType {
     AccountCreated = 'account-created',

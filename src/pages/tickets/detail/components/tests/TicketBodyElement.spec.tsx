@@ -8,7 +8,10 @@ import thunk from 'redux-thunk'
 import {INCOMING_PHONE_CALL} from 'constants/event'
 import {message as defaultMessage} from 'models/ticket/tests/mocks'
 import {TicketElement} from 'models/ticket/types'
-import {FACEBOOK_PRIVATE_REPLY_ACTION} from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
+import {
+    FACEBOOK_PRIVATE_REPLY_ACTION,
+    MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
+} from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
 import {RootState} from 'state/types'
 import {reportError} from 'utils/errors'
@@ -186,7 +189,14 @@ describe('TicketBodyElement', () => {
                     element={
                         {
                             isEvent: true,
-                            data: {action_name: FACEBOOK_PRIVATE_REPLY_ACTION},
+                            data: {
+                                action_name: FACEBOOK_PRIVATE_REPLY_ACTION,
+                                payload: {
+                                    private_reply_event_type:
+                                        MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
+                                },
+                                facebook_comment_ticket_id: 1,
+                            },
                         } as unknown as TicketElement
                     }
                 />
@@ -194,6 +204,30 @@ describe('TicketBodyElement', () => {
         )
 
         expect(getByText('PrivateReplyEvent')).toBeInTheDocument()
+    })
+
+    it('should ignore a private reply event for the new format (Missing facebook_comment_ticket_id)', () => {
+        const {queryByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketBodyElement
+                    {...defaultProps}
+                    element={
+                        {
+                            isEvent: true,
+                            data: {
+                                action_name: FACEBOOK_PRIVATE_REPLY_ACTION,
+                                payload: {
+                                    private_reply_event_type:
+                                        MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
+                                },
+                            },
+                        } as unknown as TicketElement
+                    }
+                />
+            </Provider>
+        )
+
+        expect(queryByText('PrivateReplyEvent')).toBeNull()
     })
 
     it('should display a generic event', () => {

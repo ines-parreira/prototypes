@@ -10,14 +10,18 @@ import {
     isTicketRuleSuggestion,
     isTicketSatisfactionSurvey,
 } from 'models/ticket/predicates'
-import {TicketElement, TicketMessage} from 'models/ticket/types'
+import {TicketElement, TicketEvent, TicketMessage} from 'models/ticket/types'
 import AuditLogEvent, {
     contentfulEventTypesValues,
     HighlightedElements,
 } from 'pages/tickets/detail/components/AuditLogEvent'
 import Event from 'pages/tickets/detail/components/Event'
 import PhoneEvent from 'pages/tickets/detail/components/PhoneEvent/PhoneEvent'
-import {PRIVATE_REPLY_ACTIONS} from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
+import {
+    COMMENT_TICKET_PRIVATE_REPLY_EVENT,
+    MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
+    PRIVATE_REPLY_ACTIONS,
+} from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
 import PrivateReplyEvent from 'pages/tickets/detail/components/PrivateReplyEvent/PrivateReplyEvent'
 import AISuggestion from 'pages/tickets/detail/components/RuleSuggestion/AISuggestion'
 import RuleSuggestion from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
@@ -30,6 +34,7 @@ import {
     getTicketState,
 } from 'state/ticket/selectors'
 import {reportError} from 'utils/errors'
+import {TicketEventPrivateReplyData} from '../../../../models/event/types'
 
 interface Props {
     element: TicketElement | TicketMessage[]
@@ -56,6 +61,29 @@ const TicketBodyElement = ({
     const lastCustomerMessage = useAppSelector(getLastCustomerMessage)
     const lastReadMessage = useAppSelector(getLastReadMessage)
     const ticket = useAppSelector(getTicketState)
+
+    const isDeprecatedPrivateEvent = (ticketEvent: TicketEvent) => {
+        if (!ticketEvent.data) {
+            return false
+        }
+        const eventData = ticketEvent.data as TicketEventPrivateReplyData
+        const eventType = eventData.payload.private_reply_event_type
+        if (
+            eventType === MESSAGING_TICKET_PRIVATE_REPLY_EVENT &&
+            (eventData.facebook_comment_ticket_id ||
+                eventData.instagram_comment_ticket_id)
+        ) {
+            return true
+        }
+        if (
+            eventType === COMMENT_TICKET_PRIVATE_REPLY_EVENT &&
+            (eventData.messenger_ticket_id ||
+                eventData.instagram_direct_message_ticket_id)
+        ) {
+            return true
+        }
+        return false
+    }
 
     if (Array.isArray(element)) {
         return (
@@ -120,7 +148,9 @@ const TicketBodyElement = ({
 
     const actionName = elementMap.getIn(['data', 'action_name'])
     if (!!actionName && PRIVATE_REPLY_ACTIONS.includes(actionName)) {
-        return <PrivateReplyEvent event={elementMap} isLast={isLast} />
+        if (isDeprecatedPrivateEvent(element))
+            return <PrivateReplyEvent event={elementMap} isLast={isLast} />
+        return null // Private Reply will be handled in TicketMessage
     }
 
     return <Event event={elementMap} isLast={isLast} />
