@@ -19,6 +19,7 @@ import {
     SET_TWILIO_WARNING,
     INCREMENT_TWILIO_RECONNECT_ATTEMPTS,
     SET_TWILIO_IS_CONNECTING,
+    RESET_TWILIO_RECONNECT_ATTEMPTS,
 } from './constants'
 import {TwilioState} from './types'
 
@@ -85,6 +86,11 @@ export default function reducer(
             return {
                 ...state,
                 reconnectAttempts: state.reconnectAttempts + 1,
+            }
+        case RESET_TWILIO_RECONNECT_ATTEMPTS:
+            return {
+                ...state,
+                reconnectAttempts: 0,
             }
         default:
             return state

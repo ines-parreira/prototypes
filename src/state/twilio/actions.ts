@@ -10,6 +10,7 @@ import {
     SET_TWILIO_ERROR,
     SET_TWILIO_WARNING,
     INCREMENT_TWILIO_RECONNECT_ATTEMPTS,
+    RESET_TWILIO_RECONNECT_ATTEMPTS,
 } from './constants'
 
 export type SetDeviceAction = {
@@ -50,6 +51,9 @@ export type SetWarningAction = {
     payload: string | null
 }
 export type IncrementReconnectAttemptsAction = {
+    type: string
+}
+export type ResetReconnectAttemptsAction = {
     type: string
 }
 
@@ -119,5 +123,11 @@ export function setWarning(warning: string | null): SetWarningAction {
 export function incrementReconnectAttempts(): IncrementReconnectAttemptsAction {
     return {
         type: INCREMENT_TWILIO_RECONNECT_ATTEMPTS,
+    }
+}
+
+export function resetReconnectAttempts(): ResetReconnectAttemptsAction {
+    return {
+        type: RESET_TWILIO_RECONNECT_ATTEMPTS,
     }
 }

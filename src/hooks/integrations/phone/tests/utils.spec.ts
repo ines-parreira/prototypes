@@ -25,6 +25,7 @@ import {
     getCallSid,
     refreshToken,
     connectDevice,
+    disconnectDevice,
     registerDevice,
     handleDeviceEvents,
     handleCallEvents,
@@ -165,6 +166,66 @@ describe('connectDevice', () => {
             expect(dispatch).toHaveBeenCalledWith(setDevice(device))
             expect(dispatch).toHaveBeenCalledWith(setIsConnecting(false))
             expect(register).toHaveBeenCalledWith(device, dispatch)
+        })
+    })
+})
+
+describe('disconnectDevice', () => {
+    const device = {
+        disconnectAll: jest.fn(),
+        unregister: jest.fn(),
+        destroy: jest.fn(),
+        removeAllListeners: jest.fn(),
+    } as unknown as Device
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should disconnect, unregister, destroy device and remove listeners', async () => {
+        void disconnectDevice(dispatch, {
+            ...device,
+            state: Device.State.Registered,
+        } as Device)
+
+        await waitFor(() => {
+            expect(device.disconnectAll).toHaveBeenCalledTimes(1)
+            expect(device.unregister).toHaveBeenCalledTimes(1)
+            expect(device.destroy).toHaveBeenCalledTimes(1)
+            expect(device.removeAllListeners).toHaveBeenCalledTimes(1)
+            expect(dispatch).toHaveBeenCalledWith(setDevice(null))
+        })
+    })
+
+    it('should not call disconnect and unregister if the device is unregistered', async () => {
+        void disconnectDevice(dispatch, {
+            ...device,
+            state: Device.State.Unregistered,
+        } as Device)
+
+        await waitFor(() => {
+            expect(device.disconnectAll).toHaveBeenCalledTimes(0)
+            expect(device.unregister).toHaveBeenCalledTimes(0)
+
+            expect(device.destroy).toHaveBeenCalledTimes(1)
+            expect(device.removeAllListeners).toHaveBeenCalledTimes(1)
+            expect(dispatch).toHaveBeenCalledWith(setDevice(null))
+        })
+    })
+
+    it('should only remove listeners and clear the redux state if the device is already destroyed', async () => {
+        void disconnectDevice(dispatch, {
+            ...device,
+            state: Device.State.Destroyed,
+        } as Device)
+
+        await waitFor(() => {
+            expect(device.disconnectAll).toHaveBeenCalledTimes(0)
+            expect(device.unregister).toHaveBeenCalledTimes(0)
+            expect(device.destroy).toHaveBeenCalledTimes(0)
+
+            expect(device.removeAllListeners).toHaveBeenCalledTimes(1)
+            expect(dispatch).toHaveBeenCalledWith(setDevice(null))
         })
     })
 })

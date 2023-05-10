@@ -7,11 +7,10 @@ import {useErrorHandling} from 'hooks/integrations/phone/useErrorHandling'
 
 import {
     connectDevice,
-    destroyDevice,
     disconnectDevice,
     isRecoverableError,
 } from 'hooks/integrations/phone/utils'
-import {setDevice} from 'state/twilio/actions'
+import {isActive} from 'state/currentUser/selectors'
 
 export function useDevice(useNewErrorHandling: boolean | undefined) {
     useErrorHandling()
@@ -19,6 +18,7 @@ export function useDevice(useNewErrorHandling: boolean | undefined) {
     const {device, isConnecting, reconnectAttempts, error} = useAppSelector(
         (state) => state.twilio
     )
+    const isAgentActive = useAppSelector(isActive)
 
     useEffect(() => {
         if (useNewErrorHandling !== true) {
@@ -44,28 +44,19 @@ export function useDevice(useNewErrorHandling: boolean | undefined) {
                 break
 
             case Device.State.Unregistered:
-                destroyDevice(device)
-                break
-
             case Device.State.Destroyed:
-                dispatch(setDevice(null))
+                void disconnectDevice(dispatch, device)
                 break
 
             default:
                 break
         }
-
-        return () => {
-            if (device) {
-                void disconnectDevice(device)
-                dispatch(setDevice(null))
-            }
-        }
     }, [
         device,
-        dispatch,
         error,
+        dispatch,
         isConnecting,
+        isAgentActive,
         reconnectAttempts,
         useNewErrorHandling,
     ])

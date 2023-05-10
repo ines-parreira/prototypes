@@ -17,6 +17,7 @@ import {
 import {StoreDispatch} from 'state/types'
 import {
     incrementReconnectAttempts,
+    resetReconnectAttempts,
     setCall,
     setDevice,
     setError,
@@ -87,6 +88,7 @@ export async function connectDevice(
     const device = utils.createDevice(token)
     await utils.registerDevice(device, dispatch)
     dispatch(setDevice(device))
+    dispatch(resetReconnectAttempts())
     dispatch(setIsConnecting(false))
 }
 
@@ -121,8 +123,18 @@ export function handleDeviceEvents(device: Device, dispatch: StoreDispatch) {
             },
         })
 
-        reportError(error)
         dispatch(setError(error))
+
+        switch (error.code) {
+            case TwilioErrorCode.AuthorizationAccessTokenExpired:
+            case TwilioErrorCode.AuthorizationAccessTokenInvalid:
+                void disconnectDevice(dispatch, device)
+                break
+
+            default:
+                reportError(error)
+                break
+        }
     })
 
     device.on(Device.EventName.Unregistered, () => {
@@ -269,25 +281,30 @@ export function handleAcceptedCallEvent(call: Call, dispatch: StoreDispatch) {
     }
 }
 
-export async function disconnectDevice(device: Device) {
-    if (device.state !== Device.State.Registered) {
-        return
-    }
+export async function disconnectDevice(
+    dispatch: StoreDispatch,
+    device: Device
+) {
     try {
-        device.disconnectAll()
-        await device.unregister()
-        destroyDevice(device)
+        if (
+            device.state === Device.State.Registered ||
+            device.state === Device.State.Registering
+        ) {
+            device.disconnectAll()
+            await device.unregister()
+        }
+
+        if (device.state !== Device.State.Destroyed) {
+            device.destroy()
+        }
+
+        device.removeAllListeners()
     } catch (error) {
         if (error instanceof Error) {
             reportError(error)
         }
-    }
-}
-
-export function destroyDevice(device: Device) {
-    device.removeAllListeners()
-    if (device.state !== Device.State.Destroyed) {
-        device.destroy()
+    } finally {
+        dispatch(setDevice(null))
     }
 }
 
