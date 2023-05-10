@@ -15,7 +15,6 @@ import * as Sentry from '@sentry/react'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -95,12 +94,6 @@ const mainMenu: MenuItem[] = [
     {
         url: '/app/automation/macros',
         label: 'Automation',
-        content: (
-            <div className="d-flex flex-fill justify-content-between">
-                Automation
-                <Badge type={ColorType.Blue}>NEW</Badge>
-            </div>
-        ),
         icon: 'bolt',
         segmentProp: {link: 'automation'},
     },
