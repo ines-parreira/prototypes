@@ -127,6 +127,7 @@ const ManageTags = () => {
         void fetchPage({
             orderBy: sort,
             orderDir: reverse ? OrderDirection.Desc : OrderDirection.Asc,
+            search,
         })
     }
 
@@ -169,7 +170,7 @@ const ManageTags = () => {
     const toggleCreationPopup = () => setShowCreationPopup(!showCreationPopup)
 
     const handlePageChange = (direction: CursorDirection) => {
-        void fetchPage({direction})
+        void fetchPage({direction, search})
         areAllTagsSelected && handleSelectAll()
     }
 
