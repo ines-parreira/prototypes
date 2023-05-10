@@ -10,6 +10,8 @@ const lineItems = [bigCommerceLineItemFixture()]
 const product = bigCommerceProductFixture()
 const storeHash = 'testHash'
 const currencyCode = 'USD'
+const discounts = new Map()
+const setDiscounts = jest.fn()
 const onLineItemUpdate = jest.fn()
 const onLineItemDelete = jest.fn()
 const onLineItemDiscount = jest.fn()
@@ -26,6 +28,8 @@ const minProps: ComponentProps<typeof OrderTable> = {
     onLineItemDelete,
     onLineItemDiscount,
     onLineItemModifiersUpdate,
+    discounts,
+    setDiscounts,
 }
 
 jest.mock('../../../utils', () => ({

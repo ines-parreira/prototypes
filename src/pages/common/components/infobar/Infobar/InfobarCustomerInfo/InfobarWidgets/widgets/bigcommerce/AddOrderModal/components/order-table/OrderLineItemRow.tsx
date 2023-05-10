@@ -31,8 +31,9 @@ type Props = {
         index: number
         quantity: number
         optionSelections: OptionSelection[]
+        discounts: Map<string, number>
+        setDiscounts: (value: Map<string, number>) => void
     }) => Promise<void>
-
     hasError: boolean
     errorMessage?: Maybe<string>
     onLineItemDiscount: (
@@ -40,9 +41,8 @@ type Props = {
         discountAmount: number,
         action: 'add' | 'remove'
     ) => void
-    hasDiscount: boolean
-    discounts: Set<string>
-    setDiscounts: (value: Set<string>) => void
+    discounts: Map<string, number>
+    setDiscounts: (value: Map<string, number>) => void
 }
 
 export default function OrderLineItemRow({
@@ -58,7 +58,6 @@ export default function OrderLineItemRow({
     hasError,
     errorMessage,
     onLineItemDiscount,
-    hasDiscount,
     discounts,
     setDiscounts,
 }: Props) {
@@ -107,6 +106,8 @@ export default function OrderLineItemRow({
             index,
             quantity: lineItem.quantity,
             optionSelections,
+            discounts,
+            setDiscounts,
         })
     })
 
@@ -126,11 +127,11 @@ export default function OrderLineItemRow({
     }
 
     const handleDiscount = (newPrice: number, action: 'add' | 'remove') => {
-        const lineItemId = lineItem.id
-        if (action === 'add' && !discounts.has(lineItemId)) {
-            discounts.add(lineItemId)
-        } else if (action === 'remove' && discounts.has(lineItemId)) {
-            discounts.delete(lineItemId)
+        const lineItemID = lineItem.id
+        if (action === 'add' && !discounts.has(lineItemID)) {
+            discounts.set(lineItemID, lineItem.list_price)
+        } else if (action === 'remove' && discounts.has(lineItemID)) {
+            discounts.delete(lineItemID)
         }
         setDiscounts(discounts)
         onLineItemDiscount(index, newPrice, action)
@@ -155,7 +156,7 @@ export default function OrderLineItemRow({
                 lineItem={lineItem}
                 currencyCode={currencyCode}
                 handleDiscount={handleDiscount}
-                hasDiscount={hasDiscount}
+                discounts={discounts}
             />
             <QuantityComponent
                 quantity={quantity}

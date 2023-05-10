@@ -24,9 +24,8 @@ const defaultProps: ComponentProps<typeof OrderLineItemRow> = {
     lineItem,
     product,
     onChangeModifiers: jest.fn(),
-    discounts: new Set(),
+    discounts: new Map(),
     setDiscounts: jest.fn(),
-    hasDiscount: false,
 }
 
 jest.mock('../../../utils', () => ({

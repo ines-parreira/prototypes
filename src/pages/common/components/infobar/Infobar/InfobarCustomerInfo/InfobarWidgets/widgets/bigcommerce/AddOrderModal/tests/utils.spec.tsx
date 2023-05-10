@@ -339,6 +339,8 @@ describe('utils', () => {
                 ...defaultProps,
                 setIsLoading: setIsLoadingMock,
                 setCart: setCartMock,
+                discounts: new Map(),
+                setDiscounts: jest.fn(),
             })
 
             expect(setIsLoadingMock).toHaveBeenCalled()
@@ -362,6 +364,8 @@ describe('utils', () => {
                     ...defaultProps,
                     setIsLoading: setIsLoadingMock,
                     setModalErrors: setModalErrorsMock,
+                    discounts: new Map(),
+                    setDiscounts: jest.fn(),
                 })
             ).rejects.toThrow(
                 new BigCommerceLineItemError('Product could not be updated.')

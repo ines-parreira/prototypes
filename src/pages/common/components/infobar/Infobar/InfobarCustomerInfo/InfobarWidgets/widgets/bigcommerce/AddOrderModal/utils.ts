@@ -823,6 +823,8 @@ export const updateLineItemModifiers = async ({
     cart,
     setCart,
     setModalErrors,
+    discounts,
+    setDiscounts,
 }: {
     integrationId: number
     index: number
@@ -836,6 +838,8 @@ export const updateLineItemModifiers = async ({
         errorMessage: string | null,
         errorKey?: string | undefined
     ) => void
+    discounts: Map<string, number>
+    setDiscounts: (value: Map<string, number>) => void
 }) => {
     if (!cart) {
         return
@@ -843,11 +847,14 @@ export const updateLineItemModifiers = async ({
 
     setIsLoading(true)
 
-    const lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem = [
+    const lineItems = [
         ...cart.line_items.physical_items,
         ...cart.line_items.digital_items,
         ...cart.line_items.custom_items,
-    ][index]
+    ]
+    const lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem =
+        lineItems[index]
+    const lineItemID = lineItem.id
 
     try {
         if (!isBigCommerceCartLineItem(lineItem)) {
@@ -862,6 +869,25 @@ export const updateLineItemModifiers = async ({
             optionSelections,
             quantity,
         })
+        const fullLineItemPrice = discounts.get(lineItemID)
+
+        // set the discount of the to-be-modified line item on the new line item, so we don't lose it
+        if (discounts.has(lineItemID) && fullLineItemPrice) {
+            const newLineItems = [
+                ...newCart.line_items.physical_items,
+                ...newCart.line_items.digital_items,
+            ]
+            let newLineItemID = ''
+            newLineItems.forEach((element) => {
+                if (!lineItems.find((item) => element.id === item.id)) {
+                    newLineItemID = element.id
+                }
+            })
+
+            discounts.delete(lineItemID)
+            discounts.set(newLineItemID, fullLineItemPrice)
+            setDiscounts(discounts)
+        }
 
         setCart(newCart)
 

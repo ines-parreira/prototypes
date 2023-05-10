@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {Table} from 'reactstrap'
 
 import {
@@ -8,9 +8,10 @@ import {
 } from 'models/integration/types'
 
 import {OptionSelection} from 'models/integration/resources/bigcommerce'
-import {computeLineItemErrorKey, isBigCommerceCartLineItem} from '../../utils'
+import {computeLineItemErrorKey} from '../../utils'
 
 import OrderLineItemRow from './OrderLineItemRow'
+import {getOrderLineItemInfo} from './utils'
 import css from './OrderTable.less'
 
 type Props = {
@@ -34,28 +35,11 @@ type Props = {
         index: number
         quantity: number
         optionSelections: OptionSelection[]
+        discounts: Map<string, number>
+        setDiscounts: (value: Map<string, number>) => void
     }) => Promise<void>
-}
-
-function getOrderLineItemInfo(
-    lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem,
-    products: BigCommerceProductsListType
-) {
-    let uid, product
-
-    if (isBigCommerceCartLineItem(lineItem)) {
-        // Line Item
-        const productId = lineItem.product_id
-        const variantId = lineItem.variant_id
-        uid = `${productId}${variantId ? `_${variantId}` : ''}`
-        product = products.get(lineItem.product_id)!
-    } else {
-        // Custom Line Item
-        uid = lineItem.id
-        product = products.get(lineItem.id)!
-    }
-
-    return {uid, product}
+    discounts: Map<string, number>
+    setDiscounts: (value: Map<string, number>) => void
 }
 
 export default function OrderTable({
@@ -68,9 +52,9 @@ export default function OrderTable({
     onLineItemModifiersUpdate,
     onLineItemDelete,
     onLineItemDiscount,
+    discounts,
+    setDiscounts,
 }: Props) {
-    const [discounts, setDiscounts] = useState<Set<string>>(new Set())
-
     return (
         <Table hover={!!lineItems.length} className={css.table}>
             <thead>
@@ -94,8 +78,6 @@ export default function OrderTable({
                         computeLineItemErrorKey({lineItem: lineItem})
                     )
                     const hasError = !!lineItemErrorMessage
-                    const hasDiscount = discounts.has(lineItem.id)
-
                     const {uid, product} = getOrderLineItemInfo(
                         lineItem,
                         products
@@ -117,7 +99,6 @@ export default function OrderTable({
                             onLineItemDiscount={onLineItemDiscount}
                             hasError={hasError}
                             errorMessage={lineItemErrorMessage}
-                            hasDiscount={hasDiscount}
                             discounts={discounts}
                             setDiscounts={setDiscounts}
                         />

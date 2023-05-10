@@ -20,7 +20,7 @@ describe('<PriceComponent/>', () => {
                 lineItem={bigCommerceCustomLineItemFixture}
                 currencyCode="EUR"
                 handleDiscount={jest.fn()}
-                hasDiscount={false}
+                discounts={new Map()}
             />
         )
 
@@ -33,7 +33,7 @@ describe('<PriceComponent/>', () => {
                 lineItem={bigCommerceLineItemFixture()}
                 currencyCode="EUR"
                 handleDiscount={jest.fn()}
-                hasDiscount={false}
+                discounts={new Map()}
             />
         )
 
@@ -48,13 +48,15 @@ describe('<PriceComponent/>', () => {
                 draft.variant_id = 1
             }
         )
-
+        const discounts = new Map([
+            [initialLineItem.id, initialLineItem.list_price],
+        ])
         const {rerender} = render(
             <PriceComponent
                 lineItem={initialLineItem}
                 currencyCode="EUR"
                 handleDiscount={jest.fn()}
-                hasDiscount={true}
+                discounts={discounts}
             />
         )
 
@@ -67,7 +69,7 @@ describe('<PriceComponent/>', () => {
                 lineItem={updatedLineItem}
                 currencyCode="EUR"
                 handleDiscount={jest.fn()}
-                hasDiscount={true}
+                discounts={discounts}
             />
         )
 

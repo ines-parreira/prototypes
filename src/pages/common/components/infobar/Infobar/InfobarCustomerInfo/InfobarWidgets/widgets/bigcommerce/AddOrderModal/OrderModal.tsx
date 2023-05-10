@@ -369,6 +369,7 @@ export function OrderModal({
     )
 
     const containerElement = document.getElementById('App') as Element
+    const [discounts, setDiscounts] = useState<Map<string, number>>(new Map())
 
     return (
         <>
@@ -567,6 +568,8 @@ export function OrderModal({
                                         index,
                                         quantity,
                                         optionSelections,
+                                        discounts: discounts,
+                                        setDiscounts: setDiscounts,
                                     }) =>
                                         await updateLineItemModifiers({
                                             integrationId: integration.id,
@@ -577,6 +580,8 @@ export function OrderModal({
                                             cart,
                                             setCart,
                                             setModalErrors,
+                                            discounts,
+                                            setDiscounts,
                                         })
                                     }
                                     onLineItemDelete={(index) => {
@@ -590,6 +595,8 @@ export function OrderModal({
                                             setModalErrors,
                                         })
                                     }}
+                                    discounts={discounts}
+                                    setDiscounts={setDiscounts}
                                 />
                             )}
                             {isLoading && (
