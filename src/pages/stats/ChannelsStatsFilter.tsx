@@ -1,12 +1,11 @@
 import React, {ComponentProps, useCallback} from 'react'
-import _upperFirst from 'lodash/upperFirst'
 
 import {TicketChannel} from 'business/types/ticket'
 import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {StatsFilters} from 'models/stat/types'
+import {humanizeChannel} from 'state/ticket/utils'
 
-import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import SelectFilter from './common/SelectFilter'
 import SelectStatsFilter from './common/SelectStatsFilter'
 
@@ -44,10 +43,7 @@ export default function ChannelsStatsFilter({
             {channels.map((channel) => (
                 <Component.Item
                     key={channel}
-                    label={
-                        TICKET_CHANNEL_NAMES[channel] ??
-                        _upperFirst(channel.replace(/-/g, ' '))
-                    }
+                    label={humanizeChannel(channel)}
                     value={channel}
                 />
             ))}

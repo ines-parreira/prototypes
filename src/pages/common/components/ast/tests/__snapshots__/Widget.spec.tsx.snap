@@ -149,3 +149,64 @@ exports[`ast Widget should render case-insensitive MultiSelectField (containsAll
   }
 />
 `;
+
+exports[`ast Widget should render humanized labels for ticket channel selection 1`] = `
+<Select
+  deprecatedOptions={[]}
+  description="The channel used to communicate with the user on this ticket.If not specified, it will be filled with the channel of the first [TicketMessage](#TicketMessage-object) of this ticket."
+  hiddenOptions={[]}
+  onChange={[Function]}
+  onSearchChange={[Function]}
+  options={
+    [
+      {
+        "label": "Aircall",
+        "value": "aircall",
+      },
+      {
+        "label": "Api",
+        "value": "api",
+      },
+      {
+        "label": "Chat",
+        "value": "chat",
+      },
+      {
+        "label": "Email",
+        "value": "email",
+      },
+      {
+        "label": "Facebook",
+        "value": "facebook",
+      },
+      {
+        "label": "Facebook Messenger",
+        "value": "facebook-messenger",
+      },
+      {
+        "label": "Internal note",
+        "value": "internal-note",
+      },
+      {
+        "label": "Instagram Comment",
+        "value": "instagram-comment",
+      },
+      {
+        "label": "Phone",
+        "value": "phone",
+      },
+      {
+        "label": "SMS",
+        "value": "sms",
+      },
+      {
+        "label": "Twitter",
+        "value": "twitter",
+      },
+    ]
+  }
+  sortOptions={true}
+  type="select"
+  value="contact_form"
+/>
+`;

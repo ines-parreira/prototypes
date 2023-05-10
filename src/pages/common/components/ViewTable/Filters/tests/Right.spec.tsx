@@ -3,6 +3,7 @@ import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Identifier} from 'estree'
 
+import {CHANNELS} from 'config/ticket'
 import {RightContainer} from '../Right'
 
 jest.mock('moment-timezone', () => () => {
@@ -77,6 +78,30 @@ describe('<Right />', () => {
                     type: 'Literal',
                     value: '2021-12-1T06:00:00.000Z',
                 }}
+            />
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render humanized label if ticket channel is selected', () => {
+        const {container} = render(
+            <RightContainer
+                {...minProps}
+                operator={{
+                    name: 'eq',
+                    type: 'Identifier',
+                }}
+                node={{
+                    raw: "'contact_form'",
+                    type: 'Literal',
+                    value: 'contact_form',
+                }}
+                field={fromJS({
+                    name: 'channel',
+                    title: 'Channel',
+                    enum: CHANNELS,
+                })}
             />
         )
 

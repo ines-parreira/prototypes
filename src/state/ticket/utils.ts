@@ -36,8 +36,9 @@ import {getActionTemplate, isImmutable, toImmutable} from 'utils'
 import {unescapeQuoteEntities} from 'utils/html'
 
 import {EventType} from 'models/event/types'
+import {humanize} from 'business/format'
 import {getProperty} from './selectors'
-import {EMPTY_SENDER} from './constants'
+import {EMPTY_SENDER, TICKET_CHANNEL_NAMES} from './constants'
 import {TicketState} from './types'
 
 export type Receiver = {
@@ -1062,4 +1063,11 @@ export function normalizeAddress(
         }
     }
     return address.toLowerCase()
+}
+
+export function humanizeChannel(channel: string) {
+    const existing = TICKET_CHANNEL_NAMES[channel as TicketChannel]
+    if (existing) return existing
+
+    return humanize(channel)
 }

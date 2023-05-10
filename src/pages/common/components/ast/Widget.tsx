@@ -10,6 +10,7 @@ import {Input} from 'reactstrap'
 import {InputType} from 'reactstrap/lib/Input'
 
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {humanizeChannel} from 'state/ticket/utils'
 import DatePicker from '../../../common/forms/DatePicker'
 
 import {humanizeString} from '../../../../utils'
@@ -478,9 +479,17 @@ export class Widget extends Component<Props, State> {
             }
 
             if (right) {
-                widget.options = (
+                const options: string[] = (
                     right.getIn(['meta', 'enum'], List([])) as List<string>
                 ).toJS()
+
+                widget.options =
+                    left.last() === 'channel'
+                        ? options.map((option: string) => ({
+                              value: option,
+                              label: humanizeChannel(option),
+                          }))
+                        : options
 
                 widget.hiddenOptions = (
                     right.getIn(

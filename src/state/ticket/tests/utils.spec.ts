@@ -23,6 +23,7 @@ import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
 import {getEmailChannels} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
 
+import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {
     getNewMessageSender,
     getOutboundCallFrom,
@@ -41,6 +42,7 @@ import {
     isSupportAddress,
     isReceiver,
     normalizeAddress,
+    humanizeChannel,
 } from '../utils'
 
 import {
@@ -1491,6 +1493,20 @@ describe('ticket utils', () => {
             expect(normalizeAddress('+1 213 373 4253')).toEqual(
                 '+1 213 373 4253'
             )
+        })
+    })
+
+    describe('humanizeChannel', () => {
+        it('should return the preserved channel name for known channels', () => {
+            for (const channel in TICKET_CHANNEL_NAMES) {
+                expect(humanizeChannel(channel)).toEqual(
+                    TICKET_CHANNEL_NAMES[channel as TicketChannel]
+                )
+            }
+        })
+
+        it('should return the human readable string from unknown channel-like string', () => {
+            expect(humanizeChannel('test-test_test')).toEqual('Test test test')
         })
     })
 })

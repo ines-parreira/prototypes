@@ -6,6 +6,7 @@ import {RenderLabel} from 'pages/common/utils/labels'
 import {getDisplayName} from 'state/customers/helpers'
 import {getLanguageDisplayName, isImmutable} from 'utils'
 
+import {humanizeChannel} from 'state/ticket/utils'
 import css from './FilterDropdownItems.less'
 
 type Props = {
@@ -57,6 +58,8 @@ export default function FilterDropdownItems({
             renderValue = getLanguageDisplayName(value as string)
         } else if (typeof value === 'object' || field.get('name') === 'role') {
             renderValue = <RenderLabel field={field} value={value} />
+        } else if (field.get('name') === 'channel') {
+            renderValue = humanizeChannel(value)
         }
 
         const passedValue = isImmutable(value)

@@ -10,3 +10,15 @@ exports[`<Right /> should default the current datetime when the date value is in
   />
 </div>
 `;
+
+exports[`<Right /> should render humanized label if ticket channel is selected 1`] = `
+<div>
+  <div>
+    <div
+      class="btn btn-light btn-sm dropdown-toggle clickable"
+    >
+      Contact Form
+    </div>
+  </div>
+</div>
+`;

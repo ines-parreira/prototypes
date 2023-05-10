@@ -304,5 +304,28 @@ describe('ast', () => {
                 )
             })
         })
+
+        it('should render humanized labels for ticket channel selection', () => {
+            const leftsiblings = fromJS([
+                'definitions',
+                'Ticket',
+                'properties',
+                'channel',
+            ])
+            const value = 'contact_form'
+            const rule = fromJS({
+                code_ast: astCodeEq,
+            })
+            expect(
+                shallow(
+                    <Widget
+                        {...commonProps}
+                        value={value}
+                        leftsiblings={leftsiblings}
+                        rule={rule}
+                    />
+                )
+            ).toMatchSnapshot()
+        })
     })
 })

@@ -5,6 +5,7 @@ import {List, Map, Seq} from 'immutable'
 import moment from 'moment-timezone'
 import {Input} from 'reactstrap'
 
+import {humanizeChannel} from 'state/ticket/utils'
 import {IntegrationsDetailLabel} from '../../../utils/labels'
 import {getLanguageDisplayName} from '../../../../../utils'
 import {stringToDatetime} from '../../../../../utils/date'
@@ -262,6 +263,10 @@ export class RightContainer extends Component<Props, State> {
                 )
             }
         } else if (field.get('name') === 'channel') {
+            if (typeof displayedValue === 'string') {
+                displayedValue = humanizeChannel(displayedValue)
+            }
+
             if (node.type === 'ArrayExpression') {
                 const selectedOptions = node.elements.map(
                     (opt) => (opt as Literal).value
@@ -269,7 +274,7 @@ export class RightContainer extends Component<Props, State> {
                 const options = (
                     (field.getIn(['filter', 'enum']) as List<any>).map(
                         (val: string) => ({
-                            label: val,
+                            label: humanizeChannel(val),
                             value: val,
                         })
                     ) as unknown as List<Map<any, any>>
