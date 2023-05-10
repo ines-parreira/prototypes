@@ -66,7 +66,7 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
             >
               <button
                 class="wrapper fill destructive medium"
-                id="confirm-1611509400000"
+                id="confirm-42"
                 type="button"
               >
                 <span

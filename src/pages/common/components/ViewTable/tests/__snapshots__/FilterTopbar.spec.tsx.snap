@@ -531,7 +531,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
           >
             <button
               class="wrapper fill primary medium left"
-              id="confirm-0"
+              id="confirm-1"
               type="button"
             >
               Update View

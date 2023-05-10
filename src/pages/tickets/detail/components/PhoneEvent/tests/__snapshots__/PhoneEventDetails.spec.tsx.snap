@@ -106,7 +106,7 @@ exports[`<PhoneEventDetails/> render() should render call recording event 1`] = 
         </button>
         <button
           class="wrapper float-right fill destructive medium"
-          id="confirm-42"
+          id="confirm-2"
           type="button"
         >
           <i
@@ -299,7 +299,7 @@ exports[`<PhoneEventDetails/> render() should render voicemail event details 1`]
         </button>
         <button
           class="wrapper float-right fill destructive medium"
-          id="confirm-42"
+          id="confirm-1"
           type="button"
         >
           <i

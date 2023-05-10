@@ -669,7 +669,7 @@ exports[`<Magento2/> New should render 1`] = `
             aria-checked="false"
             aria-label="Connect manually"
             class="wrapper selectionButton"
-            id="magento-manual-connect2"
+            id="magento-manual-connect3"
             role="radio"
             tabindex="0"
           >

@@ -2,13 +2,15 @@ import classNames from 'classnames'
 import React from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
 import _isEqual from 'lodash/isEqual'
+
 import Label from 'pages/common/forms/Label/Label'
 
 import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
 import {WorkflowStepChoices} from '../../../hooks/useWorkflowApi'
+import EdgeButton from '../components/EdgeButton'
 import {AutomatedMessageNodeType} from '../types'
+
 import css from './Node.less'
-import NodeMenuDropdown from './NodeMenuDropdown'
 
 const maxChildrenChoices = 6
 
@@ -26,6 +28,31 @@ function AutomatedMessageNode({
 
     const {shouldShowErrors, isGreyedOut} = data
     const isErrored = data.message.content.text.length === 0
+
+    const addNode = childrenChoices.length > 0 && (
+        <div
+            className={css.addNodeIconContainer}
+            onClick={(e) => {
+                e.stopPropagation()
+            }}
+            style={{bottom: childrenChoices.length > 1 ? -28 : -34}}
+        >
+            <EdgeButton
+                icon="add"
+                onClick={() => {
+                    dispatch({
+                        type: 'ADD_REPLY_BUTTON',
+                        step_id: data.step_id,
+                    })
+                }}
+                isDisabled={childrenChoices.length >= maxChildrenChoices}
+                disabledTooltip="You have reached the maximum number of buttons."
+            >
+                Button
+            </EdgeButton>
+        </div>
+    )
+
     return (
         <div
             className={classNames(css.node, {
@@ -53,43 +80,13 @@ function AutomatedMessageNode({
                         <span className={css.clickToAdd}>Click to add</span>
                     )}
                 </div>
-                {childrenChoices.length > 0 && (
-                    <NodeMenuDropdown
-                        isDisabled={
-                            childrenChoices.length >= maxChildrenChoices
-                        }
-                        disabledText="You have added the maximum number of reply buttons allowed following this message."
-                        options={[
-                            {
-                                onSelect: () => {
-                                    dispatch({
-                                        type: 'ADD_REPLY_BUTTON',
-                                        step_id: data.step_id,
-                                    })
-                                },
-                                content: (
-                                    <>
-                                        <i
-                                            className={classNames(
-                                                'material-icons',
-                                                css['treeDotMenuItemIcon']
-                                            )}
-                                        >
-                                            add
-                                        </i>
-                                        Add reply button below
-                                    </>
-                                ),
-                            },
-                        ]}
-                    />
-                )}
             </div>
             <Handle
                 type="source"
                 position={Position.Bottom}
                 className={classNames(css.targetHandle)}
             />
+            {addNode}
         </div>
     )
 }

@@ -254,15 +254,15 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
               <label
                 aria-checked="true"
                 class="label label"
-                for="toggle-button-10"
+                for="toggle-button-11"
                 role="switch"
               >
                 <input
                   checked=""
                   class="input"
                   disabled=""
-                  id="toggle-button-10"
-                  name="toggle-button-10"
+                  id="toggle-button-11"
+                  name="toggle-button-11"
                   type="checkbox"
                 />
                 <div

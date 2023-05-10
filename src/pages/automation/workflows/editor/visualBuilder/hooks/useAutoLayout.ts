@@ -53,6 +53,7 @@ const fitViewDuration = 300
 const nodeWidth = 300
 const nodeHeight = 72
 const nodeGap = 24
+const denseNodeGap = 4
 
 function useAutoLayout() {
     const minZoom = useStore((store: ReactFlowState) => store.minZoom)
@@ -77,12 +78,25 @@ function useAutoLayout() {
             // the node size configures the spacing between the nodes ([width, height])
             // a node is 264 x 72
             nodeSize: (node) => {
-                const hasSeveralChildren = (node.children?.length ?? 0) > 1
-                const isChildrenPlaceholder =
-                    node.children?.[0].data.type === 'placeholder'
-                if (hasSeveralChildren || isChildrenPlaceholder) {
+                if (
+                    node.data.type === 'trigger_button' ||
+                    node.data.type === 'reply_button'
+                ) {
+                    return [nodeWidth, nodeHeight + denseNodeGap]
+                }
+
+                if (node.children?.[0].data.type === 'placeholder') {
+                    return [nodeWidth, nodeHeight + nodeGap * 3]
+                }
+
+                if (node.data.type === 'automated_message') {
+                    if ((node.children?.length ?? 0) > 1) {
+                        return [nodeWidth, nodeHeight + nodeGap * 3]
+                    }
+
                     return [nodeWidth, nodeHeight + nodeGap * 2]
                 }
+
                 return [nodeWidth, nodeHeight + nodeGap]
             },
             // this is needed for creating equal space between all nodes

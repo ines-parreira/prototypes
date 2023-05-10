@@ -217,15 +217,15 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                       <label
                         aria-checked="true"
                         class="label label"
-                        for="toggle-button-2"
+                        for="toggle-button-3"
                         role="switch"
                       >
                         <input
                           checked=""
                           class="input"
                           disabled=""
-                          id="toggle-button-2"
-                          name="toggle-button-2"
+                          id="toggle-button-3"
+                          name="toggle-button-3"
                           type="checkbox"
                         />
                         <div
@@ -332,15 +332,15 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                       <label
                         aria-checked="true"
                         class="label label"
-                        for="toggle-button-3"
+                        for="toggle-button-5"
                         role="switch"
                       >
                         <input
                           checked=""
                           class="input"
                           disabled=""
-                          id="toggle-button-3"
-                          name="toggle-button-3"
+                          id="toggle-button-5"
+                          name="toggle-button-5"
                           type="checkbox"
                         />
                         <div
@@ -447,14 +447,14 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                       <label
                         aria-checked="false"
                         class="label label"
-                        for="toggle-button-4"
+                        for="toggle-button-7"
                         role="switch"
                       >
                         <input
                           class="input"
                           disabled=""
-                          id="toggle-button-4"
-                          name="toggle-button-4"
+                          id="toggle-button-7"
+                          name="toggle-button-7"
                           type="checkbox"
                         />
                         <div

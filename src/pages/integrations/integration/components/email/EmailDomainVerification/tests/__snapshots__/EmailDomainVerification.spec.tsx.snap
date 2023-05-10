@@ -132,7 +132,7 @@ exports[`<EmailDomainVerification/> render() should render a delete button to ac
   </table>
   <button
     class="wrapper fill destructive medium"
-    id="confirm-42"
+    id="confirm-1"
     type="button"
   >
     <span

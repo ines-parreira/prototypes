@@ -2,12 +2,14 @@ import classNames from 'classnames'
 import React from 'react'
 import {Handle, Position, NodeProps, useReactFlow} from 'reactflow'
 import _isEqual from 'lodash/isEqual'
+
 import Label from 'pages/common/forms/Label/Label'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
 import {ReplyButtonNodeType} from '../types'
+
 import css from './Node.less'
-import NodeMenuDropdown from './NodeMenuDropdown'
 
 function ReplyButtonNode({id, data}: NodeProps<ReplyButtonNodeType['data']>) {
     const {dispatch} = useWorkflowConfigurationContext()
@@ -48,7 +50,7 @@ function ReplyButtonNode({id, data}: NodeProps<ReplyButtonNodeType['data']>) {
             />
             <div className={css.nodeContainer}>
                 <div className={css.nodeTitle}>
-                    <Label>Reply button</Label>
+                    <Label>Button</Label>
                 </div>
                 <div
                     className={classNames(css.nodeContent, {
@@ -61,43 +63,40 @@ function ReplyButtonNode({id, data}: NodeProps<ReplyButtonNodeType['data']>) {
                         <span className={css.clickToAdd}>Click to add</span>
                     )}
                 </div>
-                <NodeMenuDropdown
-                    options={[
-                        {
-                            onSelect: () => {
-                                dispatch({
-                                    type: 'DELETE_CHOICE',
-                                    step_id: data.step_id,
-                                    choice_event_id: data.choice.event_id,
-                                })
-                            },
-                            askConfirmation: true,
-                            confirmationTitle: 'Delete step?',
-                            confirmationText:
-                                'Deleting this step will also delete any steps added below and cannot be undone',
-                            onConfirmationAsk: () => {
+                <ConfirmationPopover
+                    placement="top"
+                    buttonProps={{
+                        intent: 'destructive',
+                    }}
+                    title="Delete step?"
+                    content="Deleting this step will also delete any steps added below and cannot be undone"
+                    onConfirm={() => {
+                        dispatch({
+                            type: 'DELETE_CHOICE',
+                            step_id: data.step_id,
+                            choice_event_id: data.choice.event_id,
+                        })
+                    }}
+                    onCancel={() => {
+                        setIsGreyedOutChildren(false)
+                    }}
+                    cancelButtonProps={{intent: 'secondary'}}
+                    showCancelButton
+                >
+                    {({uid, onDisplayConfirmation}) => (
+                        <div
+                            id={uid}
+                            className={css.itemDeleteIcon}
+                            onClick={(e) => {
+                                e.stopPropagation()
                                 setIsGreyedOutChildren(true)
-                            },
-                            onConfirmationCancel: () => {
-                                setIsGreyedOutChildren(false)
-                            },
-                            content: (
-                                <>
-                                    <i
-                                        className={classNames(
-                                            'material-icons',
-                                            css['treeDotMenuItemIcon'],
-                                            css['treeDotMenuItemDeleteIcon']
-                                        )}
-                                    >
-                                        delete
-                                    </i>
-                                    Delete
-                                </>
-                            ),
-                        },
-                    ]}
-                />
+                                onDisplayConfirmation()
+                            }}
+                        >
+                            <i className="material-icons">delete</i>
+                        </div>
+                    )}
+                </ConfirmationPopover>
             </div>
             <Handle
                 type="source"

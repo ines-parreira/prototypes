@@ -39,7 +39,7 @@ export default function ReplyButtonEditor({
             }}
         >
             <Label isRequired={true} className={css.label}>
-                Reply button
+                Button
             </Label>
             <TextInput
                 className={css.textInput}

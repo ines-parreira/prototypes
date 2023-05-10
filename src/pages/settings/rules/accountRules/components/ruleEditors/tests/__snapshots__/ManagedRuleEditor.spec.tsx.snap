@@ -287,7 +287,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                 >
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-30"
+                    id="toolbar-button-33"
                     type="button"
                   >
                     <i
@@ -298,7 +298,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-31"
+                    id="toolbar-button-34"
                     type="button"
                   >
                     <i
@@ -309,7 +309,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-32"
+                    id="toolbar-button-35"
                     type="button"
                   >
                     <i
@@ -323,7 +323,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-33"
+                      id="toolbar-button-36"
                       type="button"
                     >
                       <i
@@ -341,7 +341,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-34"
+                      id="toolbar-button-37"
                       type="button"
                     >
                       <i
@@ -359,7 +359,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-35"
+                      id="toolbar-button-38"
                       type="button"
                     >
                       <i
@@ -377,7 +377,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-36"
+                      id="toolbar-button-39"
                       type="button"
                     >
                       <i
@@ -599,7 +599,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                 >
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-37"
+                    id="toolbar-button-40"
                     type="button"
                   >
                     <i
@@ -610,7 +610,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-38"
+                    id="toolbar-button-41"
                     type="button"
                   >
                     <i
@@ -621,7 +621,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-39"
+                    id="toolbar-button-42"
                     type="button"
                   >
                     <i
@@ -635,7 +635,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-40"
+                      id="toolbar-button-43"
                       type="button"
                     >
                       <i
@@ -653,7 +653,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-41"
+                      id="toolbar-button-44"
                       type="button"
                     >
                       <i
@@ -671,7 +671,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-42"
+                      id="toolbar-button-45"
                       type="button"
                     >
                       <i
@@ -689,7 +689,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-43"
+                      id="toolbar-button-46"
                       type="button"
                     >
                       <i
@@ -722,15 +722,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
           <label
             aria-checked="true"
             class="label label"
-            for="toggle-button-29"
+            for="toggle-button-31"
             role="switch"
           >
             <input
               checked=""
               class="input"
               disabled=""
-              id="toggle-button-29"
-              name="toggle-button-29"
+              id="toggle-button-31"
+              name="toggle-button-31"
               type="checkbox"
             />
             <div
@@ -877,7 +877,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-44"
+                        id="toolbar-button-47"
                         type="button"
                       >
                         <i
@@ -888,7 +888,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-45"
+                        id="toolbar-button-48"
                         type="button"
                       >
                         <i
@@ -899,7 +899,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-46"
+                        id="toolbar-button-49"
                         type="button"
                       >
                         <i
@@ -913,7 +913,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-47"
+                          id="toolbar-button-50"
                           type="button"
                         >
                           <i
@@ -931,7 +931,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-48"
+                          id="toolbar-button-51"
                           type="button"
                         >
                           <i
@@ -949,7 +949,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-49"
+                          id="toolbar-button-52"
                           type="button"
                         >
                           <i
@@ -1100,7 +1100,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-50"
+                        id="toolbar-button-53"
                         type="button"
                       >
                         <i
@@ -1111,7 +1111,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-51"
+                        id="toolbar-button-54"
                         type="button"
                       >
                         <i
@@ -1122,7 +1122,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-52"
+                        id="toolbar-button-55"
                         type="button"
                       >
                         <i
@@ -1136,7 +1136,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-53"
+                          id="toolbar-button-56"
                           type="button"
                         >
                           <i
@@ -1154,7 +1154,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-54"
+                          id="toolbar-button-57"
                           type="button"
                         >
                           <i
@@ -1172,7 +1172,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-55"
+                          id="toolbar-button-58"
                           type="button"
                         >
                           <i
@@ -1222,7 +1222,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
         <div>
           <label
             class="label label"
-            for="input-text-56"
+            for="input-text-59"
           >
             Return portal URL
             <abbr
@@ -1237,10 +1237,10 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
             class="wrapper hasError"
           >
             <input
-              aria-describedby="input-text-56-caption"
+              aria-describedby="input-text-59-caption"
               class="input"
-              id="input-text-56"
-              name="input-text-56"
+              id="input-text-59"
+              name="input-text-59"
               required=""
               type="url"
               value=""
@@ -1248,7 +1248,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           </div>
           <div
             class="caption error"
-            id="input-text-56-caption"
+            id="input-text-59-caption"
           >
             Enter a valid URL.
           </div>
@@ -1504,7 +1504,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                 >
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-59"
+                    id="toolbar-button-63"
                     type="button"
                   >
                     <i
@@ -1515,7 +1515,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-60"
+                    id="toolbar-button-64"
                     type="button"
                   >
                     <i
@@ -1526,7 +1526,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-61"
+                    id="toolbar-button-65"
                     type="button"
                   >
                     <i
@@ -1540,7 +1540,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-62"
+                      id="toolbar-button-66"
                       type="button"
                     >
                       <i
@@ -1558,7 +1558,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-63"
+                      id="toolbar-button-67"
                       type="button"
                     >
                       <i
@@ -1576,7 +1576,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-64"
+                      id="toolbar-button-68"
                       type="button"
                     >
                       <i
@@ -1594,7 +1594,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-65"
+                      id="toolbar-button-69"
                       type="button"
                     >
                       <i
@@ -1816,7 +1816,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                 >
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-66"
+                    id="toolbar-button-70"
                     type="button"
                   >
                     <i
@@ -1827,7 +1827,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-67"
+                    id="toolbar-button-71"
                     type="button"
                   >
                     <i
@@ -1838,7 +1838,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-68"
+                    id="toolbar-button-72"
                     type="button"
                   >
                     <i
@@ -1852,7 +1852,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-69"
+                      id="toolbar-button-73"
                       type="button"
                     >
                       <i
@@ -1870,7 +1870,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-70"
+                      id="toolbar-button-74"
                       type="button"
                     >
                       <i
@@ -1888,7 +1888,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-71"
+                      id="toolbar-button-75"
                       type="button"
                     >
                       <i
@@ -1906,7 +1906,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-72"
+                      id="toolbar-button-76"
                       type="button"
                     >
                       <i
@@ -1939,15 +1939,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           <label
             aria-checked="true"
             class="label label"
-            for="toggle-button-58"
+            for="toggle-button-61"
             role="switch"
           >
             <input
               checked=""
               class="input"
               disabled=""
-              id="toggle-button-58"
-              name="toggle-button-58"
+              id="toggle-button-61"
+              name="toggle-button-61"
               type="checkbox"
             />
             <div
@@ -2094,7 +2094,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-73"
+                        id="toolbar-button-77"
                         type="button"
                       >
                         <i
@@ -2105,7 +2105,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-74"
+                        id="toolbar-button-78"
                         type="button"
                       >
                         <i
@@ -2116,7 +2116,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-75"
+                        id="toolbar-button-79"
                         type="button"
                       >
                         <i
@@ -2130,7 +2130,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-76"
+                          id="toolbar-button-80"
                           type="button"
                         >
                           <i
@@ -2148,7 +2148,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-77"
+                          id="toolbar-button-81"
                           type="button"
                         >
                           <i
@@ -2166,7 +2166,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-78"
+                          id="toolbar-button-82"
                           type="button"
                         >
                           <i
@@ -2266,7 +2266,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-79"
+                        id="toolbar-button-83"
                         type="button"
                       >
                         <i
@@ -2277,7 +2277,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-80"
+                        id="toolbar-button-84"
                         type="button"
                       >
                         <i
@@ -2288,7 +2288,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-81"
+                        id="toolbar-button-85"
                         type="button"
                       >
                         <i
@@ -2302,7 +2302,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-82"
+                          id="toolbar-button-86"
                           type="button"
                         >
                           <i
@@ -2320,7 +2320,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-83"
+                          id="toolbar-button-87"
                           type="button"
                         >
                           <i
@@ -2338,7 +2338,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-84"
+                          id="toolbar-button-88"
                           type="button"
                         >
                           <i
@@ -2632,7 +2632,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                 >
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-3"
+                    id="toolbar-button-5"
                     type="button"
                   >
                     <i
@@ -2643,7 +2643,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-4"
+                    id="toolbar-button-6"
                     type="button"
                   >
                     <i
@@ -2654,7 +2654,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-5"
+                    id="toolbar-button-7"
                     type="button"
                   >
                     <i
@@ -2668,7 +2668,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-6"
+                      id="toolbar-button-8"
                       type="button"
                     >
                       <i
@@ -2686,7 +2686,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-7"
+                      id="toolbar-button-9"
                       type="button"
                     >
                       <i
@@ -2704,7 +2704,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-8"
+                      id="toolbar-button-10"
                       type="button"
                     >
                       <i
@@ -2722,7 +2722,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-9"
+                      id="toolbar-button-11"
                       type="button"
                     >
                       <i
@@ -2944,7 +2944,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                 >
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-10"
+                    id="toolbar-button-12"
                     type="button"
                   >
                     <i
@@ -2955,7 +2955,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-11"
+                    id="toolbar-button-13"
                     type="button"
                   >
                     <i
@@ -2966,7 +2966,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   </button>
                   <button
                     class="wrapper button wrapper small fill secondary small"
-                    id="toolbar-button-12"
+                    id="toolbar-button-14"
                     type="button"
                   >
                     <i
@@ -2980,7 +2980,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-13"
+                      id="toolbar-button-15"
                       type="button"
                     >
                       <i
@@ -2998,7 +2998,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-14"
+                      id="toolbar-button-16"
                       type="button"
                     >
                       <i
@@ -3016,7 +3016,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-15"
+                      id="toolbar-button-17"
                       type="button"
                     >
                       <i
@@ -3034,7 +3034,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   >
                     <button
                       class="wrapper button wrapper small fill secondary small"
-                      id="toolbar-button-16"
+                      id="toolbar-button-18"
                       type="button"
                     >
                       <i
@@ -3067,15 +3067,15 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
           <label
             aria-checked="true"
             class="label label"
-            for="toggle-button-2"
+            for="toggle-button-3"
             role="switch"
           >
             <input
               checked=""
               class="input"
               disabled=""
-              id="toggle-button-2"
-              name="toggle-button-2"
+              id="toggle-button-3"
+              name="toggle-button-3"
               type="checkbox"
             />
             <div
@@ -3222,7 +3222,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-17"
+                        id="toolbar-button-19"
                         type="button"
                       >
                         <i
@@ -3233,7 +3233,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-18"
+                        id="toolbar-button-20"
                         type="button"
                       >
                         <i
@@ -3244,7 +3244,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-19"
+                        id="toolbar-button-21"
                         type="button"
                       >
                         <i
@@ -3258,7 +3258,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-20"
+                          id="toolbar-button-22"
                           type="button"
                         >
                           <i
@@ -3276,7 +3276,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-21"
+                          id="toolbar-button-23"
                           type="button"
                         >
                           <i
@@ -3294,7 +3294,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-22"
+                          id="toolbar-button-24"
                           type="button"
                         >
                           <i
@@ -3466,7 +3466,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-23"
+                        id="toolbar-button-25"
                         type="button"
                       >
                         <i
@@ -3477,7 +3477,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-24"
+                        id="toolbar-button-26"
                         type="button"
                       >
                         <i
@@ -3488,7 +3488,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        id="toolbar-button-25"
+                        id="toolbar-button-27"
                         type="button"
                       >
                         <i
@@ -3502,7 +3502,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-26"
+                          id="toolbar-button-28"
                           type="button"
                         >
                           <i
@@ -3520,7 +3520,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-27"
+                          id="toolbar-button-29"
                           type="button"
                         >
                           <i
@@ -3538,7 +3538,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          id="toolbar-button-28"
+                          id="toolbar-button-30"
                           type="button"
                         >
                           <i

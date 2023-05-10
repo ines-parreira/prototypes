@@ -110,12 +110,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         <div>
           <label
             class="label label"
-            for="checkbox-2"
+            for="checkbox-4"
           >
             <input
               class="input"
-              id="checkbox-2"
-              name="checkbox-2"
+              id="checkbox-4"
+              name="checkbox-4"
               type="checkbox"
             />
           </label>
@@ -188,12 +188,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         <div>
           <label
             class="label label"
-            for="checkbox-3"
+            for="checkbox-6"
           >
             <input
               class="input"
-              id="checkbox-3"
-              name="checkbox-3"
+              id="checkbox-6"
+              name="checkbox-6"
               type="checkbox"
             />
           </label>
@@ -266,12 +266,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         <div>
           <label
             class="label label"
-            for="checkbox-4"
+            for="checkbox-8"
           >
             <input
               class="input"
-              id="checkbox-4"
-              name="checkbox-4"
+              id="checkbox-8"
+              name="checkbox-8"
               type="checkbox"
             />
           </label>
@@ -344,12 +344,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         <div>
           <label
             class="label label"
-            for="checkbox-5"
+            for="checkbox-10"
           >
             <input
               class="input"
-              id="checkbox-5"
-              name="checkbox-5"
+              id="checkbox-10"
+              name="checkbox-10"
               type="checkbox"
             />
           </label>

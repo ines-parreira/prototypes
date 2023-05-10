@@ -167,7 +167,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
               </button>
               <button
                 class="wrapper float-right fill destructive medium"
-                id="confirm-1615240000000"
+                id="confirm-4"
                 type="button"
               >
                 <span

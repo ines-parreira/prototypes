@@ -22,15 +22,15 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
       <label
         aria-checked="true"
         class="label label"
-        for="toggle-button-2"
+        for="toggle-button-5"
         role="switch"
       >
         <input
           checked=""
           class="input"
           disabled=""
-          id="toggle-button-2"
-          name="toggle-button-2"
+          id="toggle-button-5"
+          name="toggle-button-5"
           type="checkbox"
         />
         <div
@@ -127,15 +127,15 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
       <label
         aria-checked="true"
         class="label label"
-        for="toggle-button-1"
+        for="toggle-button-2"
         role="switch"
       >
         <input
           checked=""
           class="input"
           disabled=""
-          id="toggle-button-1"
-          name="toggle-button-1"
+          id="toggle-button-2"
+          name="toggle-button-2"
           type="checkbox"
         />
         <div
@@ -231,15 +231,15 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
       <label
         aria-checked="true"
         class="label label"
-        for="toggle-button-3"
+        for="toggle-button-8"
         role="switch"
       >
         <input
           checked=""
           class="input"
           disabled=""
-          id="toggle-button-3"
-          name="toggle-button-3"
+          id="toggle-button-8"
+          name="toggle-button-8"
           type="checkbox"
         />
         <div

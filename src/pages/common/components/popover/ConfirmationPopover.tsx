@@ -16,6 +16,7 @@ import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 import {GroupPositionContext} from 'pages/common/components/layout/Group'
+import useId from 'hooks/useId'
 
 import css from './ConfirmationPopover.less'
 
@@ -55,8 +56,8 @@ export default function ConfirmationPopover({
     ...other
 }: Props) {
     const isMounted = useMountedState()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const uid = useMemo(() => id || `confirm-${Date.now()}`, [])
+    const randomId = useId()
+    const uid = id || `confirm-${randomId}`
     const [isOpened, setIsOpened] = useState(false)
     const elementRef = useRef<HTMLElement | null>(null)
     const hideTimeoutRef = useRef<number | null>(null)
