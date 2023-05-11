@@ -11,12 +11,14 @@ import AutomatedMessageEditor from './editors/AutomatedMessageEditor'
 
 type NodeEditorDrawerProps = {
     nodeInEdition: VisualBuilderNode | null
+    open: boolean
     onClose: () => void
 }
 
 // allow to edit trigger button, automated message and reply button in a right-side panel
 export default function NodeEditorDrawer({
     nodeInEdition,
+    open,
     onClose,
 }: NodeEditorDrawerProps) {
     return (
@@ -25,7 +27,7 @@ export default function NodeEditorDrawer({
                 [css.drawerWide]: nodeInEdition?.type === 'automated_message',
             })}
             name="visual-builder-node-edition"
-            open={!!nodeInEdition}
+            open={open}
             fullscreen={false}
             isLoading={false}
             portalRootId="app-root"

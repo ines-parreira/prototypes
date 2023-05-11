@@ -49,6 +49,7 @@ export function WorkflowVisualBuilderWrapped({
     const [edges, _setEdges, onEdgesChange] = useEdgesState([])
     const [visualBuilderNodeIdEditing, setVisualBuilderNodeIdEditing] =
         useState<VisualBuilderNode['id'] | null>(null)
+    const [nodeEditorDrawerOpen, setNodeEditorDrawerOpen] = useState(false)
     const visualBuilderNodeEditing = visualBuilderNodeIdEditing
         ? (nodes.find(
               (n) => n.id === visualBuilderNodeIdEditing
@@ -88,8 +89,10 @@ export function WorkflowVisualBuilderWrapped({
                 nodesConnectable={false}
                 zoomOnDoubleClick={false}
                 onNodeClick={(_e, node) => {
-                    if (node.type !== 'placeholder')
+                    if (node.type !== 'placeholder') {
                         setVisualBuilderNodeIdEditing(node.id)
+                        setNodeEditorDrawerOpen(true)
+                    }
                 }}
                 elementsSelectable={false}
                 nodesFocusable={false}
@@ -107,8 +110,14 @@ export function WorkflowVisualBuilderWrapped({
                 <Background />
             </ReactFlow>
             <NodeEditorDrawer
+                open={nodeEditorDrawerOpen}
                 nodeInEdition={visualBuilderNodeEditing}
-                onClose={() => setVisualBuilderNodeIdEditing(null)}
+                onClose={() => {
+                    setNodeEditorDrawerOpen(false)
+                    setTimeout(() => {
+                        setVisualBuilderNodeIdEditing(null)
+                    }, 300)
+                }}
             />
         </>
     )
