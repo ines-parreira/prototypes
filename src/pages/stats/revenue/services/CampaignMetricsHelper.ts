@@ -117,17 +117,35 @@ const _calculateTraffic = (
 }
 
 export const transformToCampaignEventsTotals = (
-    data: CubeMetric | undefined
+    data: CubeMetric | undefined,
+    campaignTicketsCount: number
 ): EventsTotals => {
     const metric: CubeMetric = _getMetricOrDefault(data)
+
     return {
         [CampaignsTotalsMetricNames.impressions]: formatNumber(
             getMetricValue(metric, CampaignOrderEventsMeasure.impressions)
         ),
         [CampaignsTotalsMetricNames.engagement]: formatNumber(
-            getMetricValue(metric, CampaignOrderEventsMeasure.engagement)
+            getMetricValue(metric, CampaignOrderEventsMeasure.engagement) +
+                campaignTicketsCount
         ),
     }
+}
+
+export const reduceTicketPerformanceData = (
+    data: TicketPerformanceData | undefined
+): number => {
+    return _reduce(
+        data || [],
+        (acc, dataPoint) => {
+            if (dataPoint.length > 1) {
+                return acc + dataPoint[1]
+            }
+            return acc
+        },
+        0
+    )
 }
 
 export const transformToCampaignOrdersTotals = (

@@ -7,6 +7,7 @@ import {
 } from 'pages/stats/revenue/clients/CampaignCubeQueries'
 import {
     getMetricFromCubeData,
+    reduceTicketPerformanceData,
     transformToCampaignCalculatedTotals,
     transformToCampaignEventsTotals,
     transformToCampaignOrdersTotals,
@@ -15,6 +16,7 @@ import {
 import {CampaignsTotals} from 'pages/stats/revenue/services/types'
 import {usePostReporting} from 'models/reporting/queries'
 import {REPORTING_STALE_TIME_MS} from 'hooks/reporting/constants'
+import {useTicketsPerformanceStat} from 'pages/stats/revenue/hooks/stats/useGetTicketsPerformanceStat'
 
 const OVERRIDES = {
     staleTime: REPORTING_STALE_TIME_MS,
@@ -30,6 +32,7 @@ export type GetTotalsQuery = {
 export const useGetTotalsStat = (
     namespacedShopName: string,
     campaignIds: string[],
+    allCampaignIds: string[],
     currency: string,
     startDate: string,
     endDate: string,
@@ -45,6 +48,12 @@ export const useGetTotalsStat = (
         }),
         [namespacedShopName, campaignIds, startDate, endDate, timezone]
     )
+    const campaignsForTicketQuery = useMemo(() => {
+        if (campaignIds.length) {
+            return campaignIds
+        }
+        return allCampaignIds
+    }, [campaignIds, allCampaignIds])
 
     const campaignEventsTotalsQuery = useMemo(
         () => getCampaignEventsTotalsData(attrs),
@@ -71,10 +80,21 @@ export const useGetTotalsStat = (
         storeTotalQuery,
         OVERRIDES
     )
+    const {
+        isFetching,
+        isError,
+        data: ticketsPerformance,
+    } = useTicketsPerformanceStat(campaignsForTicketQuery, startDate, endDate)
 
     const data = useMemo(() => {
+        const totalCampaignTickets =
+            reduceTicketPerformanceData(ticketsPerformance)
+
         return {
-            ...transformToCampaignEventsTotals(eventsTotals.data),
+            ...transformToCampaignEventsTotals(
+                eventsTotals.data,
+                totalCampaignTickets
+            ),
             ...transformToCampaignOrdersTotals(orderTotals.data, currency),
             ...transformToStoreTotal(storeTotal.data, currency),
             ...transformToCampaignCalculatedTotals(
@@ -82,15 +102,25 @@ export const useGetTotalsStat = (
                 storeTotal.data
             ),
         }
-    }, [eventsTotals.data, orderTotals.data, storeTotal.data, currency])
+    }, [
+        eventsTotals.data,
+        orderTotals.data,
+        storeTotal.data,
+        ticketsPerformance,
+        currency,
+    ])
 
     return {
         isFetching:
+            isFetching ||
             eventsTotals.isFetching ||
             orderTotals.isFetching ||
             storeTotal.isFetching,
         isError:
-            eventsTotals.isError || orderTotals.isError || storeTotal.isError,
+            isError ||
+            eventsTotals.isError ||
+            orderTotals.isError ||
+            storeTotal.isError,
         data: data,
     }
 }

@@ -124,7 +124,7 @@ exports[`useGetTotalsStat should return prepared data for totals section 2`] = `
 {
   "data": {
     "campaignSalesCount": "10",
-    "engagement": "100",
+    "engagement": "500",
     "gmv": "€3,000",
     "impressions": "1,000",
     "influencedRevenueUplift": "200%",

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {useCampaignStatsFilters} from 'pages/stats/revenue/hooks/useCampaignStatsFilters'
 import {useGetCurrencyForStore} from 'pages/stats/revenue/hooks/useGetCurrencyForStore'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/revenue/hooks/useGetNamespacedShopNameForStore'
@@ -53,7 +53,7 @@ const METRICS = {
 }
 
 export const CampaignTotalsStat = () => {
-    const {selectedIntegrations, selectedCampaigns, selectedPeriod} =
+    const {campaigns, selectedIntegrations, selectedCampaigns, selectedPeriod} =
         useCampaignStatsFilters()
     const currency = useGetCurrencyForStore(selectedIntegrations)
     const namespacedShopName =
@@ -62,9 +62,14 @@ export const CampaignTotalsStat = () => {
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
 
+    const allCampaignIds = useMemo(() => {
+        return campaigns.map((campaign) => campaign.id)
+    }, [campaigns])
+
     const {isFetching, isError, data} = useGetTotalsStat(
         namespacedShopName,
         selectedCampaigns,
+        allCampaignIds,
         currency,
         selectedPeriod.start_datetime,
         selectedPeriod.end_datetime,

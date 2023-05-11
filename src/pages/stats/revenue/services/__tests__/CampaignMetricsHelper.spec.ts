@@ -3,6 +3,7 @@ import {
     getDataFromResult,
     getDataFromStatResult,
     getMetricFromCubeData,
+    reduceTicketPerformanceData,
     transformToCampaignCalculatedTotals,
     transformToCampaignConversionRateOverTime,
     transformToCampaignCTROverTime,
@@ -104,17 +105,21 @@ describe('Campaign metrics helper tests', () => {
             [CampaignOrderEventsMeasure.impressions]: '12345678',
             [CampaignOrderEventsMeasure.engagement]: '2345678',
         }
+        const campaignTicketCount = 21
 
         it('should return correct data', () => {
-            const result = transformToCampaignEventsTotals(cubeData)
+            const result = transformToCampaignEventsTotals(
+                cubeData,
+                campaignTicketCount
+            )
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.impressions]: '12,345,678',
-                [CampaignsTotalsMetricNames.engagement]: '2,345,678',
+                [CampaignsTotalsMetricNames.engagement]: '2,345,699',
             })
         })
 
         it('should return the defaults for missing data', () => {
-            const result = transformToCampaignEventsTotals(cubeDataMissing)
+            const result = transformToCampaignEventsTotals(cubeDataMissing, 0)
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.impressions]: '0',
                 [CampaignsTotalsMetricNames.engagement]: '0',
@@ -122,11 +127,34 @@ describe('Campaign metrics helper tests', () => {
         })
 
         it('should return the defaults for wrong data', () => {
-            const result = transformToCampaignEventsTotals(undefined)
+            const result = transformToCampaignEventsTotals(undefined, 0)
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.impressions]: '0',
                 [CampaignsTotalsMetricNames.engagement]: '0',
             })
+        })
+    })
+
+    describe('reduceTicketPerformanceData', () => {
+        const ticketPerformanceData = [
+            ['campaign1', 2],
+            ['campaign2', 1],
+            ['campaign3', 6],
+        ] as TicketPerformanceData
+
+        it('should return correct data', () => {
+            const result = reduceTicketPerformanceData(ticketPerformanceData)
+            expect(result).toBe(9)
+        })
+
+        it('should return 0 for no data', () => {
+            const result = reduceTicketPerformanceData([])
+            expect(result).toBe(0)
+        })
+
+        it('should return 0 for missing data', () => {
+            const result = reduceTicketPerformanceData(undefined)
+            expect(result).toBe(0)
         })
     })
 
