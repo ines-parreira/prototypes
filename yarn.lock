@@ -2701,27 +2701,27 @@
   resolved "https://registry.yarnpkg.com/@react-dnd/shallowequal/-/shallowequal-2.0.0.tgz#a3031eb54129f2c66b2753f8404266ec7bf67f0a"
   integrity sha512-Pc/AFTdwZwEKJxFJvlxrSmGe/di+aAOBn60sremrpLo6VI/6cmiUYNNwlI5KNYttg7uypzA3ILPMPgxB2GYZEg==
 
-"@reactflow/background@11.1.8":
-  version "11.1.8"
-  resolved "https://registry.yarnpkg.com/@reactflow/background/-/background-11.1.8.tgz#e804eb82ade6f70ab5f218dc767051083497c0f7"
-  integrity sha512-NYZwiEeKVc1qJbDRrRX5RgHbMMzofhzOAqz3teWtUIGju5d+kEf/vcx/35bLM+CZuhucL+OvJpRgCjKmViiTIw==
+"@reactflow/background@11.2.0":
+  version "11.2.0"
+  resolved "https://registry.yarnpkg.com/@reactflow/background/-/background-11.2.0.tgz#2a6f89d4f4837d488629d32a2bd5f01708018115"
+  integrity sha512-Fd8Few2JsLuE/2GaIM6fkxEBaAJvfzi2Lc106HKi/ddX+dZs8NUsSwMsJy1Ajs8b4GbiX8v8axfKpbK6qFMV8w==
   dependencies:
-    "@reactflow/core" "11.5.5"
+    "@reactflow/core" "11.7.0"
     classcat "^5.0.3"
     zustand "^4.3.1"
 
-"@reactflow/controls@11.1.8":
-  version "11.1.8"
-  resolved "https://registry.yarnpkg.com/@reactflow/controls/-/controls-11.1.8.tgz#43c3756a53479382e34d495f4b123f45b8cf658f"
-  integrity sha512-QCG4q52HS/zmuBAFzmTFh4wkR6thmNDxSKHQPxTwfVIuQtV/oGpfz7zMaoU0ZSN84qSWl5UdzmV4PAC50tOAkQ==
+"@reactflow/controls@11.1.11":
+  version "11.1.11"
+  resolved "https://registry.yarnpkg.com/@reactflow/controls/-/controls-11.1.11.tgz#d58e1bd9ddc2ee83fbf96130a7c54f44ca068c09"
+  integrity sha512-g6WrsszhNkQjzkJ9HbVUBkGGoUy2z8dQVgH6CYQEjuoonD15cWAPGvjyg8vx8oGG7CuktUhWu5JPivL6qjECow==
   dependencies:
-    "@reactflow/core" "11.5.5"
+    "@reactflow/core" "11.7.0"
     classcat "^5.0.3"
 
-"@reactflow/core@11.5.5":
-  version "11.5.5"
-  resolved "https://registry.yarnpkg.com/@reactflow/core/-/core-11.5.5.tgz#bced11d76fc200b4dc301f2f2b882c4f4ec3dad3"
-  integrity sha512-/FPnpvO9I4E6/mmfZInbsVusR214gzIZ2e2xgl9XJdBo90cWaqHgo0c5F2YPXX19R3mItzxveN+WlENFEOvdPg==
+"@reactflow/core@11.7.0", "@reactflow/core@^11.6.0":
+  version "11.7.0"
+  resolved "https://registry.yarnpkg.com/@reactflow/core/-/core-11.7.0.tgz#6d9bdc0b1de1c9251dd3651135450ab2d42c6562"
+  integrity sha512-UJcpbNRSupSSoMWh5UmRp6UUr0ug7xVKmMvadnkKKiNi9584q57nz4HMfkqwN3/ESbre7LD043yh2n678d/5FQ==
   dependencies:
     "@types/d3" "^7.4.0"
     "@types/d3-drag" "^3.0.1"
@@ -2733,12 +2733,12 @@
     d3-zoom "^3.0.0"
     zustand "^4.3.1"
 
-"@reactflow/minimap@11.3.8":
-  version "11.3.8"
-  resolved "https://registry.yarnpkg.com/@reactflow/minimap/-/minimap-11.3.8.tgz#f2324c2f038d75bf9f8b27d46d782f488038f341"
-  integrity sha512-hOW3FVP/ObRK3oZxvKSSKIIR/DRe1OR4KU+3AIHxTK6K2kt/D48zQU37fOmEasfohjBjsqEopK7Ux8tapTT0EA==
+"@reactflow/minimap@11.5.0":
+  version "11.5.0"
+  resolved "https://registry.yarnpkg.com/@reactflow/minimap/-/minimap-11.5.0.tgz#ddce263a41c2e65dd2febc09c26e93764ce76bfc"
+  integrity sha512-n/3tlaknLpi3zaqCC+tDDPvUTOjd6jglto9V3RB1F2wlaUEbCwmuoR2GYTkiRyZMvuskKyAoQW8+0DX0+cWwsA==
   dependencies:
-    "@reactflow/core" "11.5.5"
+    "@reactflow/core" "11.7.0"
     "@types/d3-selection" "^3.0.3"
     "@types/d3-zoom" "^3.0.1"
     classcat "^5.0.3"
@@ -2746,12 +2746,23 @@
     d3-zoom "^3.0.0"
     zustand "^4.3.1"
 
-"@reactflow/node-toolbar@1.1.8":
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/@reactflow/node-toolbar/-/node-toolbar-1.1.8.tgz#36a97fb390b8c622fa98e7ffaf1b03c2f75f812a"
-  integrity sha512-/Aj5dfarrBRvPeyDk+CZef7InP4LXlhMnlMPw6hnT/P9lVVChe02knzzkeKiVGmiWKXWL/gOCDXBFp9tMtIAsQ==
+"@reactflow/node-resizer@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@reactflow/node-resizer/-/node-resizer-2.1.0.tgz#7764211a7e00f873eab652937cffba8df7c02b6a"
+  integrity sha512-DVL8nnWsltP8/iANadAcTaDB4wsEkx2mOLlBEPNE3yc5loSm3u9l5m4enXRcBym61MiMuTtDPzZMyYYQUjuYIg==
   dependencies:
-    "@reactflow/core" "11.5.5"
+    "@reactflow/core" "^11.6.0"
+    classcat "^5.0.4"
+    d3-drag "^3.0.0"
+    d3-selection "^3.0.0"
+    zustand "^4.3.1"
+
+"@reactflow/node-toolbar@1.1.11":
+  version "1.1.11"
+  resolved "https://registry.yarnpkg.com/@reactflow/node-toolbar/-/node-toolbar-1.1.11.tgz#174b235d85de37cffba387af8f6fb315ec1d31d7"
+  integrity sha512-+hKtx+cvXwfCa9paGxE+G34rWRIIVEh68ZOqAtivClVmfqGzH/sEoGWtIOUyg9OEDNE1nEmZ1NrnpBGSmHHXFg==
+  dependencies:
+    "@reactflow/core" "11.7.0"
     classcat "^5.0.3"
     zustand "^4.3.1"
 
@@ -4094,9 +4105,9 @@
     "@types/d3-time" "*"
 
 "@types/d3-selection@*", "@types/d3-selection@^3.0.3":
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/@types/d3-selection/-/d3-selection-3.0.4.tgz#923d7f8985718116de56f55307d26e5f00728dc5"
-  integrity sha512-ZeykX7286BCyMg9sH5fIAORyCB6hcATPSRQpN47jwBA2bMbAT0s+EvtDP5r1FZYJ95R8QoEE1CKJX+n0/M5Vhg==
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/@types/d3-selection/-/d3-selection-3.0.5.tgz#27cd53b7672d405025e2414d98532d7934c16ebd"
+  integrity sha512-xCB0z3Hi8eFIqyja3vW8iV01+OHGYR2di/+e+AiOcXIOrY82lcvWW8Ke1DYE/EUVMsBl4Db9RppSBS3X1U6J0w==
 
 "@types/d3-shape@*":
   version "3.1.1"
@@ -7208,7 +7219,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classcat@^5.0.3:
+classcat@^5.0.3, classcat@^5.0.4:
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/classcat/-/classcat-5.0.4.tgz#e12d1dfe6df6427f260f03b80dc63571a5107ba6"
   integrity sha512-sbpkOw6z413p+HDGcBENe498WM9woqWHiJxCq7nvmxe9WmrUmqfAcxpIwAiMtM5Q3AhYkzXcNQHqsWq0mND51g==
@@ -16444,16 +16455,17 @@ react@16.14.0, react@^16.4.2:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
 
-reactflow@^11.5.6:
-  version "11.5.6"
-  resolved "https://registry.yarnpkg.com/reactflow/-/reactflow-11.5.6.tgz#744e2aa6cfb2c376b560633377063c2a576f3eec"
-  integrity sha512-my4LUKT7H7t2mK/qy4n+bfAMgjqhHOhYGYrvzSWB4yPhOhamPGjs0Ted9G8JWEw15Svn7pHf8DppTHUfk5zH2g==
+reactflow@^11.7.0:
+  version "11.7.0"
+  resolved "https://registry.yarnpkg.com/reactflow/-/reactflow-11.7.0.tgz#821642ce9ce4a3a2fa6469053520cb032ff03ef4"
+  integrity sha512-bjfJV1iQZ+VwIlvsnd4TbXNs6kuJ5ONscud6fNkF8RY/oU2VUZpdjA3q1zwmgnjmJcIhxuBiBI5VLGajYx/Ozg==
   dependencies:
-    "@reactflow/background" "11.1.8"
-    "@reactflow/controls" "11.1.8"
-    "@reactflow/core" "11.5.5"
-    "@reactflow/minimap" "11.3.8"
-    "@reactflow/node-toolbar" "1.1.8"
+    "@reactflow/background" "11.2.0"
+    "@reactflow/controls" "11.1.11"
+    "@reactflow/core" "11.7.0"
+    "@reactflow/minimap" "11.5.0"
+    "@reactflow/node-resizer" "2.1.0"
+    "@reactflow/node-toolbar" "1.1.11"
 
 reactstrap@8.9.0:
   version "8.9.0"
@@ -20115,9 +20127,9 @@ zen-observable@^0.2.1:
   integrity sha512-dstAXEmjFV5pzik4qtDxwawNH8NnBuL0q8MblyWisq9FWW21RpEiUSTJJH1r6useHv09nrRJdia1aJQX5ZbGaQ==
 
 zustand@^4.3.1:
-  version "4.3.6"
-  resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.3.6.tgz#ce7804eb75361af0461a2d0536b65461ec5de86f"
-  integrity sha512-6J5zDxjxLE+yukC2XZWf/IyWVKnXT9b9HUv09VJ/bwGCpKNcaTqp7Ws28Xr8jnbvnZcdRaidztAPsXFBIqufiw==
+  version "4.3.8"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.3.8.tgz#37113df8e9e1421b0be1b2dca02b49b76210e7c4"
+  integrity sha512-4h28KCkHg5ii/wcFFJ5Fp+k1J3gJoasaIbppdgZFO4BPJnsNxL0mQXBSFgOgAdCdBj35aDTPvdAJReTMntFPGg==
   dependencies:
     use-sync-external-store "1.2.0"
 

@@ -43,7 +43,7 @@ export function WorkflowVisualBuilderWrapped({
     const {isFetchPending: isWorkflowConfigurationFetchPending} =
         useWorkflowConfigurationContext()
     useSyncWorkflowToReactFlow()
-    useAutoLayout()
+    const {minZoom, maxZoom} = useAutoLayout()
     const [nodes, setNodes, onNodesChange] = useNodesState([])
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [edges, _setEdges, onEdgesChange] = useEdgesState([])
@@ -82,8 +82,8 @@ export function WorkflowVisualBuilderWrapped({
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 nodeTypes={nodeTypes}
-                minZoom={0.75}
-                maxZoom={1}
+                minZoom={minZoom}
+                maxZoom={maxZoom}
                 nodesDraggable={false}
                 nodesConnectable={false}
                 zoomOnDoubleClick={false}
@@ -94,6 +94,9 @@ export function WorkflowVisualBuilderWrapped({
                 elementsSelectable={false}
                 nodesFocusable={false}
                 edgesFocusable={false}
+                zoomOnPinch={true}
+                zoomOnScroll={false}
+                panOnScroll={true}
             >
                 <MiniMap zoomable pannable position="top-left" />
                 <Controls

@@ -16,9 +16,9 @@ const nodesInitializedSelector = (state: ReactFlowState) =>
         (node) => node.width && node.height
     )
 
-function useCanNodesFitInView() {
-    const {width, height, minZoom} = useStore(({width, height, minZoom}) => {
-        return {width, height, minZoom}
+function useCanNodesFitInView(minZoomTreshold: number) {
+    const {width, height} = useStore(({width, height}) => {
+        return {width, height}
     }, shallow)
     return useCallback(
         (nodes: Node[]) => {
@@ -40,13 +40,76 @@ function useCanNodesFitInView() {
                 (righMostNode.position.x +
                     righMostNode.width! -
                     leftMostNode.position.x) *
-                minZoom
+                minZoomTreshold
             const nodesHeight =
-                (bottomMostNode.position.y + bottomMostNode.height!) * minZoom
+                (bottomMostNode.position.y + bottomMostNode.height!) *
+                minZoomTreshold
             return nodesWidth < width && nodesHeight < height
         },
-        [height, width, minZoom]
+        [height, width, minZoomTreshold]
     )
+}
+
+const minZoomTresholds = {
+    lowerBound: 0.2,
+    readable: 0.5,
+} as const
+
+function useAutoFitView() {
+    const {fitView, setViewport, getZoom} = useReactFlow()
+    const viewportWidth = useStore((store: ReactFlowState) => store.width)
+    const canNodesFitInReadableZoomLevel = useCanNodesFitInView(
+        minZoomTresholds.readable
+    )
+    const isFirstTimeFittingView = useRef(true)
+
+    const autoFitView = useCallback(
+        (nextNodes: Node[], newNodes: Node[]) => {
+            // on first load, when nodes don't fit in view, we make sure the first nodes are visible
+            if (isFirstTimeFittingView.current) {
+                if (!canNodesFitInReadableZoomLevel(nextNodes)) {
+                    setTimeout(() => {
+                        setViewport({
+                            zoom: 1,
+                            x: (viewportWidth - nodeWidth) / 2,
+                            y: nodeGap * 2,
+                        })
+                    })
+                } else {
+                    setTimeout(() => {
+                        fitView({
+                            duration: 0,
+                        })
+                    })
+                }
+            } else {
+                // center the view on the newly added nodes
+                if (newNodes.length > 0) {
+                    setTimeout(() => {
+                        fitView({
+                            duration: fitViewDuration,
+                            nodes: newNodes,
+                            minZoom: getZoom(),
+                            maxZoom: getZoom(),
+                        })
+                    })
+                }
+            }
+            if (isFirstTimeFittingView.current) {
+                setTimeout(() => {
+                    isFirstTimeFittingView.current = false
+                }, fitViewDuration)
+            }
+        },
+        [
+            canNodesFitInReadableZoomLevel,
+            fitView,
+            getZoom,
+            setViewport,
+            viewportWidth,
+        ]
+    )
+    return {autoFitView}
 }
 
 const fitViewDuration = 300
@@ -57,14 +120,11 @@ const nodeGap = 24
 const denseNodeGap = 4
 
 function useAutoLayout() {
-    const minZoom = useStore((store: ReactFlowState) => store.minZoom)
-    const viewportWidth = useStore((store: ReactFlowState) => store.width)
     const nodeCount = useStore(nodeCountSelector)
     const nodesInitialized = useStore(nodesInitializedSelector)
-    const {getNodes, getEdges, setNodes, fitView, setViewport} = useReactFlow()
-    const canNodesFitInView = useCanNodesFitInView()
+    const {getNodes, getEdges, setNodes} = useReactFlow()
+    const {autoFitView} = useAutoFitView()
     const previousNodes = useRef<Node[]>([])
-    const isFirstTimeFittingView = useRef(true)
 
     useEffect(() => {
         // only run the layout if there are nodes and they have been initialized with their dimensions
@@ -136,64 +196,15 @@ function useAutoLayout() {
             }
         })
         setNodes(nextNodes)
+        const previousNodesIds = new Set(previousNodes.current.map((n) => n.id))
+        const newNodes = nextNodes.filter((n) => !previousNodesIds.has(n.id))
 
-        // fit view
-        if (!canNodesFitInView(nextNodes)) {
-            // nodes do not fit in the view, so we zoom on the new nodes only
-            const previousNodesIds = new Set(
-                previousNodes.current.map((n) => n.id)
-            )
-            const newNodes = nextNodes.filter(
-                (n) => !previousNodesIds.has(n.id)
-            )
-            // do not try to fit view if nodes have been deleted but nodes won't fit in the viewport
-            if (newNodes.length > 0) {
-                if (isFirstTimeFittingView.current) {
-                    // on first load, when nodes don't fit in view, we make sure the first nodes are visible
-                    setTimeout(() => {
-                        setViewport({
-                            zoom: 1,
-                            x: (viewportWidth - nodeWidth) / 2,
-                            y: nodeGap * 2,
-                        })
-                    })
-                } else {
-                    setTimeout(() => {
-                        fitView({
-                            duration: fitViewDuration,
-                            nodes: newNodes,
-                            maxZoom: minZoom,
-                        })
-                    })
-                }
-            }
-        } else {
-            setTimeout(() => {
-                fitView({
-                    duration: isFirstTimeFittingView.current
-                        ? 0
-                        : fitViewDuration,
-                })
-            })
-        }
-        if (isFirstTimeFittingView.current) {
-            setTimeout(() => {
-                isFirstTimeFittingView.current = false
-            }, fitViewDuration)
-        }
+        // fit view logic
+        autoFitView(nextNodes, newNodes)
+
         previousNodes.current = getNodes()
-    }, [
-        nodeCount,
-        nodesInitialized,
-        getNodes,
-        getEdges,
-        setNodes,
-        fitView,
-        canNodesFitInView,
-        minZoom,
-        setViewport,
-        viewportWidth,
-    ])
+    }, [nodeCount, nodesInitialized, getNodes, getEdges, setNodes, autoFitView])
+    return {minZoom: minZoomTresholds.lowerBound, maxZoom: 1}
 }
 
 export default useAutoLayout

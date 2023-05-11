@@ -1,0 +1,28 @@
+diff --git a/node_modules/@reactflow/core/dist/esm/components/Handle/index.d.ts b/node_modules/@reactflow/core/dist/esm/components/Handle/index.d.ts
+index a6d2532..cdb25f7 100644
+--- a/node_modules/@reactflow/core/dist/esm/components/Handle/index.d.ts
++++ b/node_modules/@reactflow/core/dist/esm/components/Handle/index.d.ts
+@@ -1,5 +1,5 @@
+ import { HTMLAttributes } from 'react';
+-import { type HandleProps } from '../../types';
++import { HandleProps } from '../../types';
+ export type HandleComponentProps = HandleProps & Omit<HTMLAttributes<HTMLDivElement>, 'id'>;
+ declare const _default: import("react").MemoExoticComponent<import("react").ForwardRefExoticComponent<HandleProps & Omit<HTMLAttributes<HTMLDivElement>, "id"> & import("react").RefAttributes<HTMLDivElement>>>;
+ export default _default;
+diff --git a/node_modules/@reactflow/core/dist/esm/index.d.ts b/node_modules/@reactflow/core/dist/esm/index.d.ts
+index a8a8e9a..a4ceebe 100644
+--- a/node_modules/@reactflow/core/dist/esm/index.d.ts
++++ b/node_modules/@reactflow/core/dist/esm/index.d.ts
+@@ -22,9 +22,9 @@ export { default as useViewport } from './hooks/useViewport';
+ export { default as useKeyPress } from './hooks/useKeyPress';
+ export * from './hooks/useNodesEdgesState';
+ export { useStore, useStoreApi } from './hooks/useStore';
+-export { default as useOnViewportChange, type UseOnViewportChangeOptions } from './hooks/useOnViewportChange';
+-export { default as useOnSelectionChange, type UseOnSelectionChangeOptions } from './hooks/useOnSelectionChange';
+-export { default as useNodesInitialized, type UseNodesInitializedOptions } from './hooks/useNodesInitialized';
++export { default as useOnViewportChange, UseOnViewportChangeOptions } from './hooks/useOnViewportChange';
++export { default as useOnSelectionChange, UseOnSelectionChangeOptions } from './hooks/useOnSelectionChange';
++export { default as useNodesInitialized, UseNodesInitializedOptions } from './hooks/useNodesInitialized';
+ export { default as useGetPointerPosition } from './hooks/useGetPointerPosition';
+ export { useNodeId } from './contexts/NodeIdContext';
+ export * from './types';
