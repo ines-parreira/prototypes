@@ -10,7 +10,7 @@ import {
     SET_ORDER_ID,
     SET_PAYLOAD,
     SET_REFUND,
-    SET_REFUND_AMOUNT,
+    SET_TRANSACTIONS,
     SET_RESTOCK,
 } from './constants'
 
@@ -40,12 +40,9 @@ export default function reducer(
             return state.set('lineItems', action.lineItems)
         case SET_REFUND:
             return state.set('refund', action.refund)
-        case SET_REFUND_AMOUNT:
+        case SET_TRANSACTIONS:
             return state.get('payload')
-                ? state.setIn(
-                      ['payload', 'transactions', 0, 'amount'],
-                      action.amount
-                  )
+                ? state.setIn(['payload', 'transactions'], action.transactions)
                 : state
         case SET_RESTOCK:
             return state.get('payload')

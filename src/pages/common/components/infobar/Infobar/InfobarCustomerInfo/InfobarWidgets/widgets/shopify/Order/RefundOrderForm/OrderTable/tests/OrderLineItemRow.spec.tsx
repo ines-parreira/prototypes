@@ -34,6 +34,7 @@ describe('<LineItemRow/>', () => {
                 currencyCode="USD"
                 shopCurrencyCode="USD"
                 onChange={onChange}
+                hasMultipleGateways={false}
             />
         )
 
@@ -69,6 +70,7 @@ describe('<LineItemRow/>', () => {
                 currencyCode="JPY"
                 shopCurrencyCode="USD"
                 onChange={onChange}
+                hasMultipleGateways={false}
             />
         )
 
@@ -95,6 +97,7 @@ describe('<LineItemRow/>', () => {
                 currencyCode="USD"
                 shopCurrencyCode="USD"
                 onChange={onChange}
+                hasMultipleGateways={false}
             />
         )
 
@@ -115,6 +118,7 @@ describe('<LineItemRow/>', () => {
                 currencyCode="USD"
                 shopCurrencyCode="USD"
                 onChange={onChange}
+                hasMultipleGateways={false}
             />
         )
 
@@ -141,6 +145,7 @@ describe('<LineItemRow/>', () => {
                 currencyCode="USD"
                 shopCurrencyCode="USD"
                 onChange={onChange}
+                hasMultipleGateways={false}
             />
         )
 
@@ -160,6 +165,7 @@ describe('<LineItemRow/>', () => {
                 shopCurrencyCode="USD"
                 onChange={onChange}
                 keepLineItemQuantityAsDefault={false}
+                hasMultipleGateways={false}
             />
         )
 
@@ -182,6 +188,7 @@ describe('<LineItemRow/>', () => {
                     currencyCode="USD"
                     shopCurrencyCode="USD"
                     onChange={onChange}
+                    hasMultipleGateways={false}
                 />
             )
 
@@ -210,6 +217,7 @@ describe('<LineItemRow/>', () => {
                     currencyCode="USD"
                     shopCurrencyCode="USD"
                     onChange={onChange}
+                    hasMultipleGateways={false}
                 />
             )
 
@@ -239,6 +247,7 @@ describe('<LineItemRow/>', () => {
                     currencyCode="USD"
                     shopCurrencyCode="USD"
                     onChange={onChange}
+                    hasMultipleGateways={false}
                 />
             )
 
@@ -265,6 +274,7 @@ describe('<LineItemRow/>', () => {
                 currencyCode="USD"
                 shopCurrencyCode="USD"
                 onChange={onChange}
+                hasMultipleGateways={false}
             />
         )
         fireEvent.click(screen.getByText('▲'))
@@ -287,6 +297,7 @@ describe('<LineItemRow/>', () => {
                 currencyCode="USD"
                 shopCurrencyCode="USD"
                 onChange={onChange}
+                hasMultipleGateways={false}
             />
         )
         fireEvent.change(screen.getByRole('textbox'), {
@@ -316,6 +327,7 @@ describe('<LineItemRow/>', () => {
                 currencyCode="USD"
                 shopCurrencyCode="USD"
                 onChange={onChange}
+                hasMultipleGateways={false}
             />
         )
         fireEvent.click(screen.getByText('▼'))
@@ -324,5 +336,25 @@ describe('<LineItemRow/>', () => {
             lineItem.set('quantity', 0),
             index
         )
+    })
+
+    it('should disable the inputs when hasMultipleGateways', () => {
+        const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD'}))
+        render(
+            <OrderLineItemRow
+                lineItem={lineItem}
+                index={0}
+                isRestockable
+                shopName="storegorgias3"
+                currencyCode="USD"
+                shopCurrencyCode="USD"
+                onChange={onChange}
+                hasMultipleGateways={true}
+            />
+        )
+
+        expect(screen.getByRole('textbox')).toBeDisabled()
+        expect(screen.getByText('▼')).toBeDisabled()
+        expect(screen.getByText('▲')).toBeDisabled()
     })
 })

@@ -485,7 +485,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
           class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
         >
           <dl
-            class="row text-right mb-0"
+            class="row text-left mb-0"
           >
             <dt
               class="col-7 mb-2 grey"
@@ -493,7 +493,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
               Subtotal
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               <span>
                 $0.00
@@ -511,7 +511,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
               </label>
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               —
             </dd>
@@ -521,7 +521,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
               Discounts
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               —
             </dd>
@@ -531,17 +531,19 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
               Tax
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               —
             </dd>
             <dt
               class="col-7 mb-2 grey"
             >
-              Total available to refund
+              <span>
+                Total available to refund
+              </span>
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               <span>
                 $0.00
@@ -562,13 +564,16 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
         Cancel
       </button>
       <button
-        class="focusable ml-auto btn btn-primary"
+        class="focusable ml-auto btn btn-primary disabled"
+        disabled=""
         tabindex="0"
         type="submit"
       >
         Refund
          
-        —
+        <span>
+          $0.00
+        </span>
       </button>
     </div>
   </form>
@@ -767,7 +772,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
           class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
         >
           <dl
-            class="row text-right mb-0"
+            class="row text-left mb-0"
           >
             <dt
               class="col-7 mb-2 grey"
@@ -775,7 +780,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
               Subtotal
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               <span>
                 $0.00
@@ -793,7 +798,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
               </label>
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               —
             </dd>
@@ -803,7 +808,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
               Discounts
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               —
             </dd>
@@ -813,17 +818,19 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
               Tax
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               —
             </dd>
             <dt
               class="col-7 mb-2 grey"
             >
-              Total available to refund
+              <span>
+                Total available to refund
+              </span>
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               <span>
                 $0.00
@@ -844,13 +851,16 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
         Cancel
       </button>
       <button
-        class="focusable ml-auto btn btn-primary"
+        class="focusable ml-auto btn btn-primary disabled"
+        disabled=""
         tabindex="0"
         type="submit"
       >
         Refund
          
-        —
+        <span>
+          $0.00
+        </span>
       </button>
     </div>
   </form>

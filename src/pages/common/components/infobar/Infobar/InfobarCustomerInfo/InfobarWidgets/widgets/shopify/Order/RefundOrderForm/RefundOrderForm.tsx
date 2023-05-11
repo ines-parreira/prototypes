@@ -1,6 +1,7 @@
 import React, {ChangeEvent} from 'react'
 import {List, Map} from 'immutable'
 
+import {aggregateMaximumRefundableByGateway} from 'business/shopify/refund'
 import OrderTable from './OrderTable/OrderTable'
 import OrderFooter from './OrderFooter/OrderFooter'
 
@@ -45,6 +46,8 @@ export default function RefundOrderForm({
         'shop_money',
         'currency_code',
     ]) as string
+    const hasMultipleGateways =
+        aggregateMaximumRefundableByGateway(refund).keySeq().count() > 1
 
     return (
         <React.Fragment>
@@ -57,6 +60,7 @@ export default function RefundOrderForm({
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={order.get('fulfillment_status')}
                 keepLineItemQuantityAsDefault={keepLineItemQuantityAsDefault}
+                hasMultipleGateways={hasMultipleGateways}
             />
             <OrderFooter
                 editable
@@ -72,6 +76,7 @@ export default function RefundOrderForm({
                 onPayloadChange={onPayloadChange}
                 onReasonChange={onReasonChange}
                 onNotifyChange={onNotifyChange}
+                hasMultipleGateways={hasMultipleGateways}
             />
         </React.Fragment>
     )

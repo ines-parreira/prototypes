@@ -28,13 +28,82 @@ export function getTotalTax(refund: Map<any, any>): number {
 }
 
 export function getRefundAmount(refund: Map<any, any>): number {
-    return parseFloat(refund.getIn(['transactions', 0, 'amount'], 0))
+    const max = getTotalAvailableToRefund(refund)
+    const amount =
+        (refund.get('transactions', Map()) as List<any>).reduce(
+            (total = 0, transaction: Map<any, any>) =>
+                total + parseFloat(transaction.get('amount')) * 100,
+            0
+        ) / 100
+    return amount > max ? max : amount
 }
 
 export function getTotalAvailableToRefund(refund: Map<any, any>): number {
-    return parseFloat(
-        refund.getIn(['transactions', 0, 'maximum_refundable'], 0)
+    const buckets = aggregateMaximumRefundableByGateway(refund)
+
+    return buckets
+        .valueSeq()
+        .reduce((total, next) => (total || 0) + (next || 0), 0)
+}
+
+export function distributeRefund(
+    transactions: List<any>,
+    amounts: Map<string, number>
+): List<any> {
+    const head: Map<any, any> | undefined = transactions.first()
+    if (!head) {
+        return transactions
+    }
+
+    const gateway = head.get('gateway')
+    const amount = amounts.get(gateway, 0)
+
+    const max = parseFloat(head.get('maximum_refundable'))
+    const toRefund = amount > max ? max : amount
+    const rest = amounts.set(gateway, amount - toRefund)
+    const transaction = head.set('amount', toRefund.toFixed(2))
+    return distributeRefund(transactions.rest() as List<any>, rest).unshift(
+        transaction
     )
+}
+
+export function aggregateMaximumRefundableByGateway(
+    refund: Map<any, any>
+): Map<string, number> {
+    const transactions = refund.get('transactions', List()) as List<any>
+    const amounts = transactions.reduce(
+        (gateways: Map<string, number> = Map(), transaction: Map<any, any>) => {
+            const maximum_refundable: string =
+                transaction.get('maximum_refundable')
+            const gateway: string = transaction.get('gateway')
+            const amount = gateways.get(gateway) || 0
+            return gateways.set(
+                gateway,
+                amount + parseFloat(maximum_refundable)
+            )
+        },
+        Map()
+    )
+
+    return amounts.delete('gift_card')
+}
+
+export function getTransactionToRefund(
+    refund: Map<any, any>,
+    amount: number
+): List<any> {
+    const transactions = refund.get('transactions', List()) as List<any>
+    const buckets = aggregateMaximumRefundableByGateway(refund)
+
+    const gateways = buckets.keySeq()
+    if (gateways.count() > 1) {
+        throw new Error('Refund with multiple transaction is not supported')
+    }
+
+    const gateway = gateways.first()
+    const amounts = Map({[gateway]: amount})
+
+    return distributeRefund(transactions, amounts)
 }
 
 export function getTotalQuantities(

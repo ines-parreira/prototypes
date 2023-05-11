@@ -18,6 +18,7 @@ type Props = {
     lineItems: List<Map<string, any>>
     onLineItemChange: (lineItem: Map<string, any>, index: number) => void
     keepLineItemQuantityAsDefault?: boolean
+    hasMultipleGateways: boolean
 }
 
 function OrderTable({
@@ -29,6 +30,7 @@ function OrderTable({
     currencyCode,
     shopCurrencyCode,
     keepLineItemQuantityAsDefault = true,
+    hasMultipleGateways,
 }: Props) {
     // if an order item is in the refund list and has no location_id,
     // then it is not possible to restock it. Otherwise yes
@@ -106,6 +108,7 @@ function OrderTable({
                             keepLineItemQuantityAsDefault={
                                 keepLineItemQuantityAsDefault
                             }
+                            hasMultipleGateways={hasMultipleGateways}
                         />
                     )
                 })}

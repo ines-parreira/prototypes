@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
 import {
@@ -37,6 +37,7 @@ describe('<OrderTotals/>', () => {
                     payload={payload}
                     refund={refund}
                     onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
                 />
             )
 
@@ -53,6 +54,7 @@ describe('<OrderTotals/>', () => {
                     payload={payload}
                     refund={refund}
                     onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
                 />
             )
 
@@ -74,10 +76,61 @@ describe('<OrderTotals/>', () => {
                     payload={payload}
                     refund={refund}
                     onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
                 />
             )
 
             expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should disable all the inputs when hasMultipleGateways', () => {
+            payload = payload.setIn(['shipping', 'amount'], '9.99')
+            refund = refund
+                .setIn(['shipping', 'amount'], '9.99')
+                .setIn(['shipping', 'maximum_refundable'], '9.99')
+
+            render(
+                <OrderTotals
+                    editable
+                    hasShippingLine
+                    currencyCode="USD"
+                    loading={false}
+                    payload={payload}
+                    refund={refund}
+                    onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={true}
+                />
+            )
+
+            screen.getAllByRole('spinbutton').forEach((textbox) => {
+                expect(textbox).toBeDisabled()
+            })
+            screen.getAllByRole('button').forEach((button) => {
+                expect(button).toBeDisabled()
+            })
+        })
+
+        it('should show an informative tooltip when hasMultipleGateways', async () => {
+            render(
+                <OrderTotals
+                    editable
+                    hasShippingLine
+                    currencyCode="USD"
+                    loading={false}
+                    payload={payload}
+                    refund={refund}
+                    onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={true}
+                />
+            )
+
+            fireEvent.mouseOver(
+                screen.getByLabelText('Order with multiple gateways warning')
+            )
+
+            await waitFor(() => {
+                expect(screen.getByRole('tooltip')).toMatchSnapshot()
+            })
         })
     })
 
@@ -97,6 +150,7 @@ describe('<OrderTotals/>', () => {
                     payload={payload}
                     refund={refund}
                     onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
                 />
             )
 
@@ -123,6 +177,7 @@ describe('<OrderTotals/>', () => {
                     payload={payload}
                     refund={refund}
                     onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
                 />
             )
 

@@ -36,6 +36,7 @@ describe('<OrderTable/>', () => {
                 refund={refund}
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
+                hasMultipleGateways={false}
             />
         )
 
@@ -54,6 +55,7 @@ describe('<OrderTable/>', () => {
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
                 keepLineItemQuantityAsDefault={false}
+                hasMultipleGateways={false}
             />
         )
 
@@ -71,6 +73,7 @@ describe('<OrderTable/>', () => {
                 refund={refund}
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Fulfilled}
+                hasMultipleGateways={false}
             />
         )
 
@@ -87,6 +90,7 @@ describe('<OrderTable/>', () => {
                 refund={refund}
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
+                hasMultipleGateways={false}
             />
         )
 
@@ -108,6 +112,7 @@ describe('<OrderTable/>', () => {
                     .setIn(['refund_line_items', 0, 'location_id'], null)}
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
+                hasMultipleGateways={false}
             />
         )
         expect(screen.getByText("This product can't be restocked."))
@@ -123,6 +128,7 @@ describe('<OrderTable/>', () => {
                 refund={refund}
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
+                hasMultipleGateways={false}
             />
         )
         fireEvent.change(screen.getAllByRole('textbox')[0], {
@@ -144,6 +150,7 @@ describe('<OrderTable/>', () => {
                 refund={refund}
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
+                hasMultipleGateways={false}
             />
         )
         fireEvent.click(screen.getAllByText('▼')[0])
@@ -155,5 +162,30 @@ describe('<OrderTable/>', () => {
             lineItems.get(0).set('quantity', 2),
             0
         )
+    })
+
+    it('should disable the inputs when hasMultipleGateways', () => {
+        render(
+            <OrderTable
+                shopName="storegorgias3"
+                currencyCode="USD"
+                shopCurrencyCode="USD"
+                lineItems={lineItems}
+                refund={refund}
+                onLineItemChange={onLineItemChange}
+                fulfillmentStatus={FulfillmentStatus.Partial}
+                hasMultipleGateways={true}
+            />
+        )
+
+        screen.getAllByRole('textbox').forEach((textbox) => {
+            expect(textbox).toBeDisabled()
+        })
+        screen.getAllByText('▼').forEach((button) => {
+            expect(button).toBeDisabled()
+        })
+        screen.getAllByText('▲').forEach((button) => {
+            expect(button).toBeDisabled()
+        })
     })
 })

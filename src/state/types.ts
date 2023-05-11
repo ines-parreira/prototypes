@@ -192,6 +192,7 @@ export type GorgiasAction = {
     chatStatus?: GorgiasChatStatusEnum
     hasError?: boolean
     discountCode?: DiscountCode
+    transactions?: List<Map<any, any>>
 }
 
 export type CurrentUser = Map<any, any>

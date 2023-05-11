@@ -6,15 +6,11 @@ import {
     initRefundOrderLineItems,
     initRefundOrderPayload,
 } from '../../../../business/shopify/order'
-import {
-    getRefundAmount,
-    getTotalQuantities,
-} from '../../../../business/shopify/refund'
+import {getTotalQuantities} from '../../../../business/shopify/refund'
 import {
     logEvent,
     SegmentEvent,
 } from '../../../../store/middlewares/segmentTracker'
-import {formatPrice} from '../../../../business/shopify/number'
 import type {StoreDispatch, RootState} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
 import {onApiError} from '../../../utils'
@@ -26,7 +22,7 @@ import {
     SET_ORDER_ID,
     SET_PAYLOAD,
     SET_REFUND,
-    SET_REFUND_AMOUNT,
+    SET_TRANSACTIONS,
     SET_RESTOCK,
 } from './constants'
 import {getRefundOrderState} from './selectors'
@@ -77,9 +73,9 @@ const setRefund = (refund: Map<any, any>) => ({
     refund,
 })
 
-const setRefundAmount = (amount: number) => ({
-    type: SET_REFUND_AMOUNT,
-    amount,
+const setTransactions = (transactions: Map<any, any>) => ({
+    type: SET_TRANSACTIONS,
+    transactions,
 })
 
 const setRestock = (restock: boolean) => ({
@@ -173,22 +169,16 @@ export const calculateRefund = _debounce(
             const payload = (
                 getRefundOrderState(state).get('payload') as Map<any, any>
             ).delete('transactions')
-            const currencyCode = payload.get('currency') as string
             const suggestedRefund = await api.calculateRefund(
                 integrationId,
                 orderId,
                 payload
             )
-            const amount = getRefundAmount(suggestedRefund)
 
             const promises = [
                 dispatch(setRefund(suggestedRefund)),
                 //$TsFixMe remove casting once formatPrice is migrated
-                dispatch(
-                    setRefundAmount(
-                        formatPrice(amount, currencyCode) as unknown as number
-                    )
-                ),
+                dispatch(setTransactions(suggestedRefund.get('transactions'))),
                 dispatch(setLoading(false)),
             ]
 

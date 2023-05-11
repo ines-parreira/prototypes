@@ -219,7 +219,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
       class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
     >
       <dl
-        class="row text-right mb-0"
+        class="row text-left mb-0"
       >
         <dt
           class="col-7 mb-2 grey"
@@ -227,7 +227,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
           Subtotal
         </dt>
         <dd
-          class="col-5 mb-2 value"
+          class="col-5 mb-2 text-right value"
         >
           <span>
             $1.00
@@ -253,7 +253,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
           </label>
         </dt>
         <dd
-          class="col-5 mb-2 value"
+          class="col-5 mb-2 text-right value"
         >
           <div
             class="container text-right"
@@ -310,7 +310,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
           Discounts
         </dt>
         <dd
-          class="col-5 mb-2 value"
+          class="col-5 mb-2 text-right value"
         >
           —
         </dd>
@@ -320,7 +320,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
           Tax
         </dt>
         <dd
-          class="col-5 mb-2 value"
+          class="col-5 mb-2 text-right value"
         >
           <span>
             $0.20
@@ -329,10 +329,12 @@ exports[`<OrderFooter/> render() should render 1`] = `
         <dt
           class="col-7 mb-2 grey"
         >
-          Total available to refund
+          <span>
+            Total available to refund
+          </span>
         </dt>
         <dd
-          class="col-5 mb-2 value"
+          class="col-5 mb-2 text-right value"
         >
           <span>
             $1.20
@@ -544,7 +546,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
       class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
     >
       <dl
-        class="row text-right mb-0"
+        class="row text-left mb-0"
       >
         <dt
           class="col-7 mb-2 grey"
@@ -552,7 +554,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
           Subtotal
         </dt>
         <dd
-          class="col-5 mb-2 value"
+          class="col-5 mb-2 text-right value"
         >
           <span>
             $1.00
@@ -578,7 +580,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
           </label>
         </dt>
         <dd
-          class="col-5 mb-2 value"
+          class="col-5 mb-2 text-right value"
         >
           <div
             class="container text-right"
@@ -635,7 +637,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
           Discounts
         </dt>
         <dd
-          class="col-5 mb-2 value"
+          class="col-5 mb-2 text-right value"
         >
           —
         </dd>
@@ -645,7 +647,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
           Tax
         </dt>
         <dd
-          class="col-5 mb-2 value"
+          class="col-5 mb-2 text-right value"
         >
           <span>
             $0.20
@@ -654,10 +656,12 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
         <dt
           class="col-7 mb-2 grey"
         >
-          Total available to refund
+          <span>
+            Total available to refund
+          </span>
         </dt>
         <dd
-          class="col-5 mb-2 value"
+          class="col-5 mb-2 text-right value"
         >
           <span>
             $1.20

@@ -11,6 +11,7 @@ import {
     getTotalCartDiscountAmount,
     getTotalTax,
 } from 'business/shopify/refund'
+import Tooltip from 'pages/common/components/Tooltip'
 import MoneyAmount from '../../../../../MoneyAmount'
 import AmountInput from '../../../../shared/AmountInput/AmountInput'
 
@@ -24,6 +25,7 @@ type Props = {
     payload: Map<any, any>
     refund: Map<any, any>
     onPayloadChange: (payload: Map<any, any>) => void
+    hasMultipleGateways: boolean
 }
 
 type State = {
@@ -62,8 +64,14 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
     }, 250)
 
     render() {
-        const {editable, hasShippingLine, loading, refund, currencyCode} =
-            this.props
+        const {
+            editable,
+            hasShippingLine,
+            loading,
+            refund,
+            currencyCode,
+            hasMultipleGateways,
+        } = this.props
         const {shipping} = this.state
         const shippingMaximumRefundable = refund.getIn([
             'shipping',
@@ -71,10 +79,10 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
         ])
 
         return (
-            <dl className="row text-right mb-0">
+            <dl className="row text-left mb-0">
                 <dt className={classnames('col-7 mb-2', css.grey)}>Subtotal</dt>
                 <dd
-                    className={classnames('col-5 mb-2', css.value, {
+                    className={classnames('col-5 mb-2 text-right', css.value, {
                         'text-muted': loading,
                     })}
                 >
@@ -113,9 +121,13 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                 )}
                 {hasShippingLine && (
                     <dd
-                        className={classnames('col-5 mb-2', css.value, {
-                            'text-muted': loading,
-                        })}
+                        className={classnames(
+                            'col-5 mb-2 text-right',
+                            css.value,
+                            {
+                                'text-muted': loading,
+                            }
+                        )}
                     >
                         {!shippingMaximumRefundable ||
                         parseFloat(shippingMaximumRefundable) === 0 ? (
@@ -124,7 +136,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                             <AmountInput
                                 id="shipping"
                                 required
-                                disabled={!editable}
+                                disabled={!editable || hasMultipleGateways}
                                 max={parseFloat(shippingMaximumRefundable)}
                                 value={shipping}
                                 currencyCode={currencyCode}
@@ -139,7 +151,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                     Discounts
                 </dt>
                 <dd
-                    className={classnames('col-5 mb-2', css.value, {
+                    className={classnames('col-5 mb-2 text-right', css.value, {
                         'text-muted': loading,
                     })}
                 >
@@ -155,7 +167,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
 
                 <dt className={classnames('col-7 mb-2', css.grey)}>Tax</dt>
                 <dd
-                    className={classnames('col-5 mb-2', css.value, {
+                    className={classnames('col-5 mb-2 text-right', css.value, {
                         'text-muted': loading,
                     })}
                 >
@@ -166,9 +178,32 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                 </dd>
 
                 <dt className={classnames('col-7 mb-2', css.grey)}>
-                    Total available to refund
+                    <span>Total available to refund</span>
+                    {hasMultipleGateways && (
+                        <>
+                            <span
+                                className={classnames(
+                                    'material-icons red ml-2',
+                                    css.tooltip
+                                )}
+                                id="gateways-warning-icon"
+                                aria-label="Order with multiple gateways warning"
+                            >
+                                info_outlined
+                            </span>
+                            <Tooltip
+                                placement="top"
+                                target="gateways-warning-icon"
+                            >
+                                This order has multiple transactions with
+                                different payment providers. To issue a full
+                                refund, please go to Shopify.
+                            </Tooltip>
+                        </>
+                    )}
                 </dt>
-                <dd className={classnames('col-5 mb-2', css.value)}>
+
+                <dd className={classnames('col-5 mb-2 text-right', css.value)}>
                     <MoneyAmount
                         amount={formatPrice(
                             getTotalAvailableToRefund(refund),

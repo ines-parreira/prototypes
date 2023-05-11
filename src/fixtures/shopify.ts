@@ -1168,7 +1168,9 @@ export const shopifyRefundOrderPayloadFixture = ({notify = true} = {}) =>
         shipping: {
             amount: '0.00',
         },
-        transactions: [{amount: '1.00'}],
+        transactions: [
+            {gateway: 'bogus', amount: '1.00', maximum_refundable: '1.20'},
+        ],
     } as unknown as RefundOrderPayload)
 
 export const shopifySuggestedRefundFixture = ({

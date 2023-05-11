@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
 
@@ -46,6 +46,7 @@ describe('<OrderFooter/>', () => {
                     onReasonChange={onReasonChange}
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
                 />
             )
 
@@ -68,10 +69,42 @@ describe('<OrderFooter/>', () => {
                     onReasonChange={onReasonChange}
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
                 />
             )
 
             expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should disable all the inputs when hasMultipleGateways', () => {
+            render(
+                <OrderFooter
+                    editable
+                    hasShippingLine
+                    currencyCode="USD"
+                    actionName={ShopifyActionType.RefundOrder}
+                    reason={null}
+                    notify={true}
+                    loading={false}
+                    payload={fromJS(shopifyRefundOrderPayloadFixture())}
+                    refund={fromJS(shopifySuggestedRefundFixture())}
+                    setPayload={setPayload}
+                    onReasonChange={onReasonChange}
+                    onNotifyChange={onNotifyChange}
+                    onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={true}
+                />
+            )
+
+            screen.getAllByRole('textbox').forEach((textbox) => {
+                expect(textbox).toBeDisabled()
+            })
+            screen.getAllByRole('checkbox').forEach((checkbox) => {
+                expect(checkbox).toBeDisabled()
+            })
+            screen.getAllByRole('button').forEach((button) => {
+                expect(button).toBeDisabled()
+            })
         })
     })
 
@@ -81,36 +114,7 @@ describe('<OrderFooter/>', () => {
                 any,
                 any
             >
-
-            const {getByLabelText} = render(
-                <OrderFooter
-                    editable
-                    hasShippingLine
-                    currencyCode="USD"
-                    actionName={ShopifyActionType.CancelOrder}
-                    reason={null}
-                    notify={true}
-                    loading={false}
-                    payload={payload}
-                    refund={fromJS(shopifySuggestedRefundFixture())}
-                    setPayload={setPayload}
-                    onReasonChange={onReasonChange}
-                    onNotifyChange={onNotifyChange}
-                    onPayloadChange={onPayloadChange}
-                />
-            )
-
-            fireEvent.change(getByLabelText(/Refund with: Manual/i), {
-                target: {value: 0.2},
-            })
-
-            expect(setPayload).toHaveBeenCalledWith(
-                payload.setIn(['transactions', 0, 'amount'], 0.2)
-            )
-        })
-
-        it('should call setPayload() with maximum amount', () => {
-            const payload = fromJS(shopifyRefundOrderPayloadFixture()) as Map<
+            const refund = fromJS(shopifySuggestedRefundFixture()) as Map<
                 any,
                 any
             >
@@ -125,19 +129,62 @@ describe('<OrderFooter/>', () => {
                     notify={true}
                     loading={false}
                     payload={payload}
-                    refund={fromJS(shopifySuggestedRefundFixture())}
+                    refund={refund}
                     setPayload={setPayload}
                     onReasonChange={onReasonChange}
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
+                />
+            )
+
+            fireEvent.change(getByLabelText(/Refund with: Manual/i), {
+                target: {value: 0.2},
+            })
+
+            const transaction: Map<any, any> = refund.getIn(['transactions', 0])
+            const newTransaction = transaction.set('amount', '0.20')
+            expect(setPayload).toHaveBeenCalledWith(
+                payload.setIn(['transactions', 0], newTransaction)
+            )
+        })
+
+        it('should call setPayload() with maximum amount', () => {
+            const payload = fromJS(shopifyRefundOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
+            const refund = fromJS(shopifySuggestedRefundFixture()) as Map<
+                any,
+                any
+            >
+
+            const {getByLabelText} = render(
+                <OrderFooter
+                    editable
+                    hasShippingLine
+                    currencyCode="USD"
+                    actionName={ShopifyActionType.CancelOrder}
+                    reason={null}
+                    notify={true}
+                    loading={false}
+                    payload={payload}
+                    refund={refund}
+                    setPayload={setPayload}
+                    onReasonChange={onReasonChange}
+                    onNotifyChange={onNotifyChange}
+                    onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
                 />
             )
 
             fireEvent.change(getByLabelText(/Refund with: Manual/i), {
                 target: {value: 99.99},
             })
+            const transaction: Map<any, any> = refund.getIn(['transactions', 0])
+            const newTransaction = transaction.set('amount', '1.20')
             expect(setPayload).toHaveBeenCalledWith(
-                payload.setIn(['transactions', 0, 'amount'], 1.2)
+                payload.setIn(['transactions', 0], newTransaction)
             )
         })
     })
@@ -164,6 +211,7 @@ describe('<OrderFooter/>', () => {
                     onReasonChange={onReasonChange}
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
                 />
             )
 
@@ -206,6 +254,7 @@ describe('<OrderFooter/>', () => {
                     onReasonChange={onReasonChange}
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
                 />
             )
 
@@ -236,6 +285,7 @@ describe('<OrderFooter/>', () => {
                     onReasonChange={onReasonChange}
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
                 />
             )
 

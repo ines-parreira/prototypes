@@ -6,6 +6,7 @@ import {
     getRefundAmount,
     getTotalAvailableToRefund,
     getTotalQuantities,
+    getTransactionToRefund,
 } from 'business/shopify/refund'
 import CheckBox from 'pages/common/forms/CheckBox'
 import Label from 'pages/common/forms/Label/Label'
@@ -29,6 +30,7 @@ type Props = {
     onPayloadChange: (payload: Map<any, any>) => void
     onReasonChange: (event: ChangeEvent<HTMLInputElement>) => void
     onNotifyChange: (newValue: boolean) => void
+    hasMultipleGateways: boolean
 }
 
 const OrderFooter = ({
@@ -45,14 +47,11 @@ const OrderFooter = ({
     onPayloadChange,
     onReasonChange,
     onNotifyChange,
+    hasMultipleGateways,
 }: Props) => {
     const _onAmountChange = (value: number) => {
-        const max = getTotalAvailableToRefund(refund)
-        const newAmount = value > max ? max : value
-        const newPayload = payload.setIn(
-            ['transactions', 0, 'amount'],
-            newAmount
-        )
+        const transactions = getTransactionToRefund(refund, value)
+        const newPayload = payload.set('transactions', transactions)
 
         setPayload(newPayload)
     }
@@ -84,6 +83,7 @@ const OrderFooter = ({
                         id="reason"
                         value={reason || 'customer'}
                         onChange={onReasonChange}
+                        disabled={hasMultipleGateways}
                     >
                         <option value="customer">
                             Customer changed/canceled order
@@ -104,6 +104,7 @@ const OrderFooter = ({
                     id="reason"
                     value={reason || ''}
                     onChange={onReasonChange}
+                    disabled={hasMultipleGateways}
                 />
                 <FormText color="muted">
                     Only you and other staff can see this reason.
@@ -112,7 +113,7 @@ const OrderFooter = ({
         )
     }
 
-    const amount = Number(payload.getIn(['transactions', 0, 'amount'], ''))
+    const amount = getRefundAmount(payload)
     const amountMax = refund.isEmpty()
         ? undefined
         : getTotalAvailableToRefund(refund)
@@ -129,7 +130,9 @@ const OrderFooter = ({
                             <CheckBox
                                 className="mb-3"
                                 isChecked={payload.get('restock', false)}
-                                isDisabled={totalQuantities === 0}
+                                isDisabled={
+                                    totalQuantities === 0 || hasMultipleGateways
+                                }
                                 onChange={_onRestockItemsChange}
                                 caption="The claimed quantity will be restocked back to your store. Note that custom items can’t be restocked."
                             >
@@ -140,6 +143,7 @@ const OrderFooter = ({
                                 name="notify-customer"
                                 isChecked={notify}
                                 onChange={onNotifyChange}
+                                isDisabled={hasMultipleGateways}
                             >
                                 Send notification to customer
                             </CheckBox>
@@ -154,7 +158,7 @@ const OrderFooter = ({
                                 <AmountInput
                                     id="amount"
                                     required
-                                    disabled={loading}
+                                    disabled={loading || hasMultipleGateways}
                                     value={amount}
                                     max={amountMax}
                                     currencyCode={currencyCode}
@@ -183,6 +187,7 @@ const OrderFooter = ({
                                         )}
                                         className={css.discrepancyReasonInput}
                                         onChange={_onDiscrepancyReasonChange}
+                                        disabled={hasMultipleGateways}
                                     >
                                         <option value="restock">
                                             Restocking fee
@@ -217,6 +222,7 @@ const OrderFooter = ({
                         payload={payload}
                         refund={refund}
                         onPayloadChange={onPayloadChange}
+                        hasMultipleGateways={hasMultipleGateways}
                     />
                 </Col>
             </Row>

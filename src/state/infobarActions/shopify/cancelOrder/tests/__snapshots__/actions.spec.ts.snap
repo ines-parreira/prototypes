@@ -36,11 +36,7 @@ exports[`infobarActions.shopify.cancelOrder actions on error onInit() should not
         "shipping": Immutable.Map {
           "amount": "10.00",
         },
-        "transactions": Immutable.List [
-          Immutable.Map {
-            "amount": "",
-          },
-        ],
+        "transactions": Immutable.List [],
       },
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
@@ -177,11 +173,7 @@ exports[`infobarActions.shopify.cancelOrder actions on not restockable onInit() 
         "shipping": Immutable.Map {
           "amount": "2.00",
         },
-        "transactions": Immutable.List [
-          Immutable.Map {
-            "amount": "",
-          },
-        ],
+        "transactions": Immutable.List [],
       },
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
@@ -347,11 +339,7 @@ exports[`infobarActions.shopify.cancelOrder actions on restockable onInit() shou
         "shipping": Immutable.Map {
           "amount": "2.00",
         },
-        "transactions": Immutable.List [
-          Immutable.Map {
-            "amount": "",
-          },
-        ],
+        "transactions": Immutable.List [],
       },
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
@@ -538,7 +526,9 @@ exports[`infobarActions.shopify.cancelOrder actions on success on initialized on
         },
         "transactions": Immutable.List [
           Immutable.Map {
+            "gateway": "bogus",
             "amount": "1.00",
+            "maximum_refundable": "1.20",
           },
         ],
       },
@@ -626,7 +616,9 @@ exports[`infobarActions.shopify.cancelOrder actions on success on initialized on
         },
         "transactions": Immutable.List [
           Immutable.Map {
+            "gateway": "bogus",
             "amount": "1.00",
+            "maximum_refundable": "1.20",
           },
         ],
       },
@@ -727,11 +719,7 @@ exports[`infobarActions.shopify.cancelOrder actions on success onInit() should i
         "shipping": Immutable.Map {
           "amount": "10.00",
         },
-        "transactions": Immutable.List [
-          Immutable.Map {
-            "amount": "",
-          },
-        ],
+        "transactions": Immutable.List [],
       },
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",

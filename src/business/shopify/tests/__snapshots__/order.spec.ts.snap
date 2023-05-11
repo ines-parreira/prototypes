@@ -217,11 +217,7 @@ Immutable.Map {
     "shipping": Immutable.Map {
       "amount": "0.00",
     },
-    "transactions": Immutable.List [
-      Immutable.Map {
-        "amount": "",
-      },
-    ],
+    "transactions": Immutable.List [],
   },
 }
 `;

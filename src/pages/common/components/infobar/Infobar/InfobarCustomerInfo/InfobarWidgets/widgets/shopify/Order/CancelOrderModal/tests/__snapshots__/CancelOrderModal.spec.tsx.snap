@@ -500,7 +500,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
           class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
         >
           <dl
-            class="row text-right mb-0"
+            class="row text-left mb-0"
           >
             <dt
               class="col-7 mb-2 grey"
@@ -508,7 +508,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               Subtotal
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               <span>
                 $0.00
@@ -526,7 +526,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               </label>
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               —
             </dd>
@@ -536,7 +536,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               Discounts
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               —
             </dd>
@@ -546,17 +546,19 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               Tax
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               —
             </dd>
             <dt
               class="col-7 mb-2 grey"
             >
-              Total available to refund
+              <span>
+                Total available to refund
+              </span>
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               <span>
                 $0.00
@@ -799,7 +801,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
           class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
         >
           <dl
-            class="row text-right mb-0"
+            class="row text-left mb-0"
           >
             <dt
               class="col-7 mb-2 grey"
@@ -807,7 +809,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
               Subtotal
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               <span>
                 $0.00
@@ -825,7 +827,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
               </label>
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               —
             </dd>
@@ -835,7 +837,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
               Discounts
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               —
             </dd>
@@ -845,17 +847,19 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
               Tax
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               —
             </dd>
             <dt
               class="col-7 mb-2 grey"
             >
-              Total available to refund
+              <span>
+                Total available to refund
+              </span>
             </dt>
             <dd
-              class="col-5 mb-2 value"
+              class="col-5 mb-2 text-right value"
             >
               <span>
                 $0.00

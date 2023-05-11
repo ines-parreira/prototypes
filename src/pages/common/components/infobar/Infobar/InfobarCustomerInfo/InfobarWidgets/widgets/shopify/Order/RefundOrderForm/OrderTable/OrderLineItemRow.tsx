@@ -23,6 +23,7 @@ type Props = {
     shopCurrencyCode: string
     keepLineItemQuantityAsDefault?: boolean
     onChange: (lineItem: Map<string, any>, index: number) => void
+    hasMultipleGateways: boolean
 }
 
 function OrderLineItemRow({
@@ -34,6 +35,7 @@ function OrderLineItemRow({
     shopCurrencyCode,
     onChange,
     keepLineItemQuantityAsDefault = true,
+    hasMultipleGateways,
 }: Props) {
     const [quantity, setQuantity] = useState<number>(
         keepLineItemQuantityAsDefault ? lineItem.get('quantity') : 0
@@ -187,6 +189,7 @@ function OrderLineItemRow({
                             value={quantity}
                             className={css.quantityInput}
                             onChange={onQuantityChange}
+                            disabled={hasMultipleGateways}
                         />
                         <span className={css.quantityMax}>/ {maxQuantity}</span>
                     </span>
@@ -202,7 +205,9 @@ function OrderLineItemRow({
                                 css.quantityBtnUp
                             )}
                             intent="secondary"
-                            isDisabled={quantity === maxQuantity}
+                            isDisabled={
+                                quantity === maxQuantity || hasMultipleGateways
+                            }
                             onClick={onQuantityUp}
                         >
                             &#9650;
@@ -215,7 +220,7 @@ function OrderLineItemRow({
                                 css.quantityBtnDown
                             )}
                             intent="secondary"
-                            isDisabled={quantity === 0}
+                            isDisabled={quantity === 0 || hasMultipleGateways}
                             onClick={onQuantityDown}
                         >
                             &#9660;
@@ -224,7 +229,14 @@ function OrderLineItemRow({
                 </InputGroup>
             </td>
         )
-    }, [maxQuantity, quantity, onQuantityChange, onQuantityDown, onQuantityUp])
+    }, [
+        maxQuantity,
+        quantity,
+        onQuantityChange,
+        onQuantityDown,
+        onQuantityUp,
+        hasMultipleGateways,
+    ])
 
     const renderTotal = useCallback(() => {
         const discountedPrice = getOrderLineItemDiscountedPrice(

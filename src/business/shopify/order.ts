@@ -1,6 +1,6 @@
 import {fromJS, List, Map} from 'immutable'
 
-import {getRefundAmount, getRestockType} from './refund'
+import {getRefundAmount, getRestockType, getTransactionToRefund} from './refund'
 import {formatPrice} from './number'
 
 export function initCancelOrderPayload(order: Map<any, any>): Map<any, any> {
@@ -37,7 +37,7 @@ export function initRefundOrderPayload(
         shipping: {
             amount: '0.00',
         },
-        transactions: [{amount: ''}],
+        transactions: [],
     }) as Map<any, any>
 }
 
@@ -95,8 +95,9 @@ export function getFinalCancelOrderPayload(
 
 export const getFormattedRefundAmount = (payload: Map<any, any>) => {
     const currency = payload.get('currency')
+    const amount = getRefundAmount(payload)
 
-    return formatPrice(payload.getIn(['transactions', 0, 'amount']), currency)
+    return formatPrice(amount, currency)
 }
 
 export function getFinalRefundOrderPayload(
@@ -105,11 +106,10 @@ export function getFinalRefundOrderPayload(
 ): Map<any, any> {
     let finalPayload = payload
 
-    // Format amount
-    const amount = getFormattedRefundAmount(finalPayload)
+    const amount = getRefundAmount(finalPayload)
     // Remove discrepancy reason if there is no discrepancy
     const discrepancyLimit = getRefundAmount(refund)
-    const hasDiscrepancy = parseFloat(amount) !== discrepancyLimit
+    const hasDiscrepancy = amount !== discrepancyLimit
 
     if (!hasDiscrepancy) {
         finalPayload = finalPayload.delete('discrepancy_reason')
@@ -157,16 +157,15 @@ export function getFinalRefundOrderPayload(
                 })
         )
 
+    const transactions = getTransactionToRefund(refund, amount)
+
     // Update transactions
-    finalPayload = finalPayload
-        .set(
-            'transactions',
-            (refund.get('transactions', []) as List<any>).map(
-                (transaction: Map<any, any>) =>
-                    transaction.set('kind', 'refund')
-            )
+    finalPayload = finalPayload.set(
+        'transactions',
+        transactions.map((transaction: Map<any, any>) =>
+            transaction.set('kind', 'refund')
         )
-        .setIn(['transactions', 0, 'amount'], amount)
+    )
 
     return finalPayload
 }
