@@ -52,6 +52,7 @@ function useCanNodesFitInView() {
 const fitViewDuration = 300
 const nodeWidth = 300
 const nodeHeight = 72
+const triggerButtonNodeHeight = 98
 const nodeGap = 24
 const denseNodeGap = 4
 
@@ -76,17 +77,17 @@ function useAutoLayout() {
 
         const layout = flextree<Node>({
             // the node size configures the spacing between the nodes ([width, height])
-            // a node is 264 x 72
+            // a node is 274 x 72
             nodeSize: (node) => {
-                if (
-                    node.data.type === 'trigger_button' ||
-                    node.data.type === 'reply_button'
-                ) {
+                if (node.data.type === 'reply_button') {
                     return [nodeWidth, nodeHeight + denseNodeGap]
                 }
 
+                if (node.data.type === 'trigger_button') {
+                    return [nodeWidth, triggerButtonNodeHeight + denseNodeGap]
+                }
                 if (node.children?.[0].data.type === 'placeholder') {
-                    return [nodeWidth, nodeHeight + nodeGap * 3]
+                    return [nodeWidth, nodeHeight + nodeGap * 2]
                 }
 
                 if (node.data.type === 'automated_message') {

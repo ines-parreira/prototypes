@@ -2,53 +2,34 @@ import classNames from 'classnames'
 import React, {useRef, useState} from 'react'
 import {Handle, Position} from 'reactflow'
 import _isEqual from 'lodash/isEqual'
+import colors from 'assets/tokens/colors.json'
 
 import useId from 'hooks/useId'
-import Badge from 'pages/common/components/Badge/Badge'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Tooltip from 'pages/common/components/Tooltip'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 
+import Button from 'pages/common/components/button/Button'
 import EdgeIconButton from '../components/EdgeIconButton'
 import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
 
 import css from './Node.less'
 
 function PlaceholderNode({data}: {data: {parentStepId: string}}) {
-    const badgeInfoId = `workflow-placeholder-${useId()}`
+    const tooltipId = `workflow-placeholder-${useId()}`
     const {dispatch} = useWorkflowConfigurationContext()
     const edgeRef = useRef<HTMLDivElement>(null)
     const [isNodeMenuDropdownOpen, setIsNodeMenuDropdownOpen] = useState(false)
 
-    const badge = (
-        <div
-            className={css.badgeContainer}
-            style={{top: -21}}
-            onClick={(e) => {
-                e.stopPropagation()
-            }}
-        >
-            <Badge className={css.badge}>
-                end of flow{' '}
-                <i className="material-icons" id={badgeInfoId}>
-                    info
-                </i>
-                <Tooltip target={badgeInfoId} placement="top">
-                    Customers will be asked if the message was helpful or if
-                    they need more help. A ticket will be created if they ask
-                    for more help.
-                </Tooltip>
-            </Badge>
-        </div>
-    )
     const addNode = (
         <div
             className={css.addNodeIconContainer}
             onClick={(e) => {
                 e.stopPropagation()
             }}
-            style={{top: -55}}
+            style={{top: -34}}
         >
             <EdgeIconButton
                 ref={edgeRef}
@@ -82,16 +63,45 @@ function PlaceholderNode({data}: {data: {parentStepId: string}}) {
         </div>
     )
 
+    const buttonProps = {
+        size: 'small',
+        intent: 'secondary',
+        style: {
+            textTransform: 'none',
+            color: colors['📺 Classic'].Neutral.Grey_6.value,
+        },
+        isDisabled: true,
+    } as const
+
     return (
         <div>
             {addNode}
-            {badge}
-            <div
-                className={classNames(css.node, css.placeholderNode)}
-                style={{
-                    visibility: 'hidden', // TODO: bring back once solution for "Clarify end of flow behavior" is defined
-                }}
-            >
+            <div className={classNames(css.node, css.placeholderNode)}>
+                <div className={'w-100'}>
+                    <Badge type={ColorType.Blue}>end flow</Badge>
+                </div>
+                <span>
+                    Was this helpful?{' '}
+                    <i
+                        className={classNames(
+                            css.placeholderTooltipIcon,
+                            'material-icons'
+                        )}
+                        id={tooltipId}
+                    >
+                        info
+                    </i>
+                </span>
+                <span>
+                    <Button {...buttonProps} className="mr-2">
+                        Yes, thank you
+                    </Button>
+                    <Button {...buttonProps}>No, I need more help</Button>
+                </span>
+                <Tooltip target={tooltipId} placement="top">
+                    If customers click yes, the flow ends. If customers click
+                    no, a ticket will be created.
+                </Tooltip>
                 <Handle
                     type="target"
                     position={Position.Top}

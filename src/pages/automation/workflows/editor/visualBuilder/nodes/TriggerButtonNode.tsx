@@ -3,7 +3,7 @@ import React from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
 import _isEqual from 'lodash/isEqual'
 import Label from 'pages/common/forms/Label/Label'
-import Badge from 'pages/common/components/Badge/Badge'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import {TriggerButtonNodeType} from '../types'
 import css from './Node.less'
@@ -12,24 +12,13 @@ function TriggerButtonNode({data}: NodeProps<TriggerButtonNodeType['data']>) {
     const {shouldShowErrors} = data
     const isErrored = data.entrypoint_label.length === 0
 
-    const badge = (
-        <div
-            className={css.badgeContainer}
-            onClick={(e) => {
-                e.stopPropagation()
-            }}
-        >
-            <Badge className={css.badge}>start of flow</Badge>
-        </div>
-    )
-
     return (
         <div>
-            {badge}
             <div
                 className={classNames(css.node, {
                     [css.nodeErrored]: shouldShowErrors && isErrored,
                 })}
+                style={{height: 98}}
             >
                 <Handle
                     type="target"
@@ -37,6 +26,9 @@ function TriggerButtonNode({data}: NodeProps<TriggerButtonNodeType['data']>) {
                     className={css.sourceHandle}
                 />
                 <div className={css.nodeContainer}>
+                    <div className={'w-100, mb-2'}>
+                        <Badge type={ColorType.Blue}>start flow</Badge>
+                    </div>
                     <div className={css.nodeTitle}>
                         <Label>Trigger button</Label>
                     </div>
