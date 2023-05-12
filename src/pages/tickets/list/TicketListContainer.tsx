@@ -37,6 +37,9 @@ import {
     TicketDraft,
 } from 'hooks/useTicketDraft'
 import {useTitle} from 'hooks/useTitle'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import TicketListActions from './components/TicketListActions'
 import css from './TicketListContainer.less'
@@ -69,6 +72,7 @@ export const TicketListContainer = ({
         () => activeView.get('editMode') as boolean,
         [activeView]
     )
+    const currentUser = useAppSelector(getCurrentUser)
 
     useEffect(() => {
         void fetchTags()
@@ -107,12 +111,20 @@ export const TicketListContainer = ({
 
     const handleResumeDraft = useCallback(() => {
         history.push('/app/ticket/new')
-    }, [history])
+        logEvent(SegmentEvent.DraftTicket, {
+            type: 'resume',
+            user_id: currentUser.get('id'),
+        })
+    }, [currentUser, history])
 
     const handleDiscardDraft = useCallback(async () => {
         await localForage.clear()
         history.push('/app/ticket/new')
-    }, [history, localForage])
+        logEvent(SegmentEvent.DraftTicket, {
+            type: 'discard',
+            user_id: currentUser.get('id'),
+        })
+    }, [currentUser, history, localForage])
 
     useTitle(title)
 

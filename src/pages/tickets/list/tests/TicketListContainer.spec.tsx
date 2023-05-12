@@ -2,11 +2,16 @@ import React, {ComponentProps, ReactNode} from 'react'
 import {fromJS} from 'immutable'
 import userEvent from '@testing-library/user-event'
 import {act, waitFor} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import LocalForageManager from 'services/localForageManager/localForageManager'
-import {flushPromises, renderWithRouter} from 'utils/testing'
+import {user} from 'fixtures/users'
 import {view as fixtureView} from 'fixtures/views'
 import ViewTable from 'pages/common/components/ViewTable/ViewTable'
+import LocalForageManager from 'services/localForageManager/localForageManager'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {flushPromises, renderWithRouter} from 'utils/testing'
 
 import {TicketListContainer} from '../TicketListContainer'
 
@@ -69,6 +74,15 @@ jest.mock(
         } as Record<string, unknown>)
 )
 
+jest.mock('store/middlewares/segmentTracker')
+
+const logEventMock = logEvent as jest.Mock
+
+const mockStore = configureMockStore([thunk])
+const store = mockStore({
+    currentUser: fromJS(user),
+})
+
 describe('<TicketListContainer />', () => {
     const minProps = {
         activeView: fromJS(fixtureView),
@@ -84,42 +98,64 @@ describe('<TicketListContainer />', () => {
 
     it('should display with default props', () => {
         const {container} = renderWithRouter(
-            <TicketListContainer {...minProps} />
+            <Provider store={store}>
+                <TicketListContainer {...minProps} />
+            </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should fetch the tags on load', () => {
-        renderWithRouter(<TicketListContainer {...minProps} />)
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketListContainer {...minProps} />
+            </Provider>
+        )
         expect(minProps.fetchTags).toHaveBeenCalled()
     })
 
     it('should display "New view" as title', () => {
-        renderWithRouter(<TicketListContainer {...minProps} />, {
-            path: 'app/tickets/',
-            route: 'app/tickets/new',
-        })
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketListContainer {...minProps} />
+            </Provider>,
+            {
+                path: 'app/tickets/',
+                route: 'app/tickets/new',
+            }
+        )
         expect(document.title).toEqual('New view')
     })
 
     it(`should display "${
         minProps.activeView.get('name') as string
     }" as title`, () => {
-        renderWithRouter(<TicketListContainer {...minProps} />)
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketListContainer {...minProps} />
+            </Provider>
+        )
         expect(document.title).toEqual(minProps.activeView.get('name'))
     })
 
     it('should display Search as title', () => {
-        renderWithRouter(<TicketListContainer {...minProps} />, {
-            path: 'app/tickets/',
-            route: 'app/tickets/search',
-        })
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketListContainer {...minProps} />
+            </Provider>,
+            {
+                path: 'app/tickets/',
+                route: 'app/tickets/search',
+            }
+        )
         expect(document.title).toEqual('Search')
     })
 
     it('should render SearchRankProvider on search url', () => {
         const {container} = renderWithRouter(
-            <TicketListContainer {...minProps} />,
+            <Provider store={store}>
+                <TicketListContainer {...minProps} />
+            </Provider>,
             {
                 path: 'app/tickets/',
                 route: 'app/tickets/search',
@@ -135,7 +171,9 @@ describe('<TicketListContainer />', () => {
         })
 
         const {getByText} = renderWithRouter(
-            <TicketListContainer {...minProps} />
+            <Provider store={store}>
+                <TicketListContainer {...minProps} />
+            </Provider>
         )
         await act(flushPromises)
         const createTicketButton = getByText('Create ticket')
@@ -150,7 +188,9 @@ describe('<TicketListContainer />', () => {
         })
 
         const {getByText} = renderWithRouter(
-            <TicketListContainer {...minProps} />
+            <Provider store={store}>
+                <TicketListContainer {...minProps} />
+            </Provider>
         )
         await act(flushPromises)
         const createTicketButton = getByText('Create ticket')
@@ -158,6 +198,13 @@ describe('<TicketListContainer />', () => {
         const resumeDraftButton = getByText('Resume draft')
         userEvent.click(resumeDraftButton)
         expect(mockHistoryPush).toHaveBeenCalledWith('/app/ticket/new')
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.DraftTicket,
+            expect.objectContaining({
+                type: 'resume',
+                user_id: user.id,
+            })
+        )
     })
 
     it('should handle draft discarding', async () => {
@@ -169,7 +216,9 @@ describe('<TicketListContainer />', () => {
         })
 
         const {getByText} = renderWithRouter(
-            <TicketListContainer {...minProps} />
+            <Provider store={store}>
+                <TicketListContainer {...minProps} />
+            </Provider>
         )
         await act(flushPromises)
         const createTicketButton = getByText('Create ticket')
@@ -180,5 +229,12 @@ describe('<TicketListContainer />', () => {
             expect(mockClear).toHaveBeenCalled()
             expect(mockHistoryPush).toHaveBeenCalledWith('/app/ticket/new')
         })
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.DraftTicket,
+            expect.objectContaining({
+                type: 'discard',
+                user_id: user.id,
+            })
+        )
     })
 })
