@@ -1,9 +1,7 @@
-import React, {useMemo, useRef, useCallback, useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {useLocalStorage} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {noop as _noop} from 'lodash'
 import classnames from 'classnames'
-import {ModalBody} from 'reactstrap'
 import settingsCss from 'pages/settings/settings.less'
 
 import * as integrationsSelectors from 'state/integrations/selectors'
@@ -15,7 +13,6 @@ import TextArea from 'pages/common/forms/TextArea'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import Button from 'pages/common/components/button/Button'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {
     CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY,
@@ -23,13 +20,6 @@ import {
 } from 'pages/settings/helpCenter/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getViewLanguage} from 'state/ui/helpCenter'
-import {
-    getAbsoluteUrl,
-    getHelpCenterDomain,
-} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import Tooltip from 'pages/common/components/Tooltip'
 import {
     isBaseEmailAddress,
@@ -49,9 +39,6 @@ type ContactFormInfoSectionProps = {
 
 const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
     const [isDescriptionTooLong, setIsDescriptionTooLong] = useState(false)
-    const [isEmbedModalOpen, setIsEmbedModalOpen] = useState(false)
-    const [isCopied, setIsCopied] = useState(false)
-    const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
     const {
         translation: {contactInfo},
@@ -72,12 +59,6 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
 
     const viewLanguage =
         useAppSelector(getViewLanguage) ?? HELP_CENTER_DEFAULT_LOCALE
-
-    const embeddedContactFormUrl = useMemo(() => {
-        const domain = getHelpCenterDomain(helpCenter)
-
-        return `${getAbsoluteUrl({domain, locale: viewLanguage})}embed/contact`
-    }, [helpCenter, viewLanguage])
 
     const isSubjectLinesAvailable =
         useFlags()[FeatureFlagKey.HelpCenterSubjectLines]
@@ -112,18 +93,6 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
         setIsAlertAcknowledged(true)
     }
 
-    const getTextToCopy = () => {
-        const domain = getHelpCenterDomain(helpCenter)
-        const absoluteUrl = getAbsoluteUrl({domain})
-        return `<script defer type="text/javascript" src="${absoluteUrl}api/contact-form-loader.js?source=${encodeURI(
-            embeddedContactFormUrl
-        )}"></script>
-<link rel="stylesheet" href="${absoluteUrl}api/contact-form-loader.css" />
-<div id="gorgias-contact-form-wrapper">
-    <div id="gorgias-contact-form-loader"></div>
-</div>`
-    }
-
     const onChangeContactFormIntegration = useCallback(
         (integrationId: number | string) => {
             const selectedIntegration = emailIntegrations.find(
@@ -144,35 +113,9 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
         [emailIntegrations, updateContactForm, setIsAlertAcknowledged]
     )
 
-    const handleGetCodeModal = () => {
-        setIsEmbedModalOpen(true)
-    }
-
-    const handleCopy = async () => {
-        if (!textAreaRef.current) {
-            return
-        }
-
-        textAreaRef.current.focus()
-        textAreaRef.current.select()
-
-        if (!navigator.clipboard) {
-            document.execCommand('copy')
-        } else {
-            await navigator.clipboard.writeText(getTextToCopy())
-        }
-
-        setIsCopied(true)
-    }
-
-    const handleModalClose = () => {
-        setIsEmbedModalOpen(false)
-        setIsCopied(false)
-    }
-
     return (
         <>
-            <section className={classnames(css.container, settingsCss.mb40)}>
+            <section className={classnames(css.container, settingsCss.mb16)}>
                 <div className={helpCenterContactViewCss.leftColumn}>
                     <section
                         className={classnames(
@@ -290,36 +233,6 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                         className={css.embedWrapper}
                         id="embedded-contact-form"
                     >
-                        <h4>Embed contact form</h4>
-
-                        <p>
-                            Get the code to embed Gorgias contact form as part
-                            of your web site.
-                        </p>
-                        <div className={css.embedButtons}>
-                            <Button
-                                intent="secondary"
-                                className={css.embedButton}
-                                onClick={handleGetCodeModal}
-                                isDisabled={!isEmailIntegrationSelected}
-                            >
-                                <i className="material-icons">code</i>Get Code
-                            </Button>
-                            <a
-                                className={classnames(css.embedPreview, {
-                                    [css.embedPreviewDisabled]:
-                                        !isEmailIntegrationSelected,
-                                })}
-                                onClick={() => {
-                                    window
-                                        .open(embeddedContactFormUrl, '_blank')!
-                                        .focus()
-                                }}
-                            >
-                                <i className="material-icons">open_in_new</i>
-                                <span>Preview Contact Form</span>
-                            </a>
-                        </div>
                         {!isEmailIntegrationSelected && (
                             <Tooltip
                                 target="embedded-contact-form"
@@ -349,43 +262,6 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                     <div>{description}</div>
                 </ContactCard>
             </section>
-            <Modal
-                isOpen={isEmbedModalOpen}
-                onClose={handleModalClose}
-                classNameContent={css.modalContent}
-            >
-                <>
-                    <ModalHeader title="Embed contact form" />
-                    <ModalBody className={css.modalBody}>
-                        <div className={css.modalInfo}>
-                            Copy the code below and place it into your page's
-                            HTML where you want Gorgias contact form to appear.
-                        </div>
-                        <TextArea
-                            onChange={_noop}
-                            readOnly
-                            ref={textAreaRef}
-                            rows={6}
-                            value={getTextToCopy()}
-                        />
-                    </ModalBody>
-                    <ModalFooter className={css.modalFooter}>
-                        <Button intent="secondary" onClick={handleModalClose}>
-                            Cancel
-                        </Button>
-                        <Button onClick={handleCopy} intent="primary">
-                            {!isCopied ? (
-                                `Copy Code`
-                            ) : (
-                                <span className={css.copied}>
-                                    <i className="material-icons">check</i>
-                                    <span>Copied</span>
-                                </span>
-                            )}
-                        </Button>
-                    </ModalFooter>
-                </>
-            </Modal>
         </>
     )
 }
