@@ -1500,9 +1500,11 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <div
                       style="background-color: rgb(51, 115, 219); flex-grow: 0.8547008547008547;"
+                      title="email"
                     />
                     <div
                       style="background-color: rgb(214, 56, 77); flex-grow: 0.1452991452991453;"
+                      title="chat"
                     />
                   </div>
                   <div

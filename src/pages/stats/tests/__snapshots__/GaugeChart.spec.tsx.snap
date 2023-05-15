@@ -8,18 +8,23 @@ exports[`<GaugeChart /> should render the gauge chart 1`] = `
     >
       <div
         style="background-color: rgb(51, 115, 219); flex-grow: 0.4347637059258293;"
+        title="Chat"
       />
       <div
         style="background-color: rgb(148, 17, 181); flex-grow: 0.2608582235554976;"
+        title="Phone"
       />
       <div
         style="background-color: rgb(214, 56, 77); flex-grow: 0.17390548237033174;"
+        title="Email"
       />
       <div
         style="background-color: rgb(253, 171, 64); flex-grow: 0.08695274118516587;"
+        title="Instagram DM"
       />
       <div
         style="background-color: rgb(85, 104, 133); flex-grow: 0.04351984696317551;"
+        title="Others"
       />
     </div>
     <div

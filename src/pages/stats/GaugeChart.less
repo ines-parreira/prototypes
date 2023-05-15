@@ -14,4 +14,29 @@
     .legend {
         float: right;
     }
+
+    .tooltip {
+        :global .tooltip-inner {
+            background-color: #fff;
+            border: 1px solid #e2e3ec;
+            color: #152065;
+            font-size: 14px;
+            padding: 16px;
+            box-shadow: none;
+        }
+
+        :global .bs-tooltip-auto[x-placement^='top'] .arrow::before {
+            border-top-color: #e2e3ec !important;
+        }
+
+        :global .bs-tooltip-auto[x-placement^='top'] .arrow::after {
+            content: '';
+            margin-top: 0;
+            border-width: 0.4rem 0.4rem 0;
+            position: absolute;
+            top: -1px;
+            border-color: #fff transparent transparent transparent;
+            border-style: solid;
+        }
+    }
 }

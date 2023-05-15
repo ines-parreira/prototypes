@@ -1,9 +1,11 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useRef} from 'react'
 
 import colors from 'assets/tokens/colors.json'
+import Tooltip from 'pages/common/components/Tooltip'
 import css from './GaugeChart.less'
 import {OneDimensionalDataItem} from './types'
 import Legend from './Legend'
+import {DEFAULT_LOCALE, formatNumber} from './common/utils'
 
 const STAT_COLORS = Object.freeze([
     colors['📺 Classic'].Main.Variations.Primary_3.value,
@@ -59,27 +61,14 @@ export default function GaugeChart({
         ]
     }, [data, restLabel])
     const orderedItems = useMemo(() => {
-        return [...displayItems]
-            .sort((a, b) => b.value - a.value)
-            .map((item) => {
-                return {
-                    ...item,
-                    size: item.value / total,
-                }
-            })
-    }, [total, displayItems])
+        return [...displayItems].sort((a, b) => b.value - a.value)
+    }, [displayItems])
 
     return (
         <div className={className}>
             <div className={css.chart}>
-                {orderedItems.map(({color, label, size}) => (
-                    <div
-                        key={label}
-                        style={{
-                            backgroundColor: color,
-                            flexGrow: size,
-                        }}
-                    />
+                {orderedItems.map((item) => (
+                    <BarSegment key={item.label} total={total} {...item} />
                 ))}
             </div>
             <Legend
@@ -90,5 +79,51 @@ export default function GaugeChart({
                 }))}
             />
         </div>
+    )
+}
+
+type BarSegmentProps = {
+    color: string
+    value: number
+    total: number
+    label: string
+}
+
+function BarSegment({color, label, value, total}: BarSegmentProps) {
+    const ref = useRef<HTMLDivElement>(null)
+    return (
+        <>
+            <div
+                ref={ref}
+                title={label}
+                style={{
+                    backgroundColor: color,
+                    flexGrow: value / total,
+                }}
+            />
+            <Tooltip target={ref} className={css.tooltip} aria-label={label}>
+                <TooltipContent label={label} value={value} total={total} />
+            </Tooltip>
+        </>
+    )
+}
+
+type TooltipContentProps = {
+    label: string
+    value: number
+    total: number
+}
+const TooltipContent = ({label, value, total}: TooltipContentProps) => {
+    return (
+        <>
+            {label}:{' '}
+            <strong>
+                {formatNumber(value)} (
+                {new Intl.NumberFormat(DEFAULT_LOCALE, {
+                    maximumFractionDigits: 0,
+                }).format((value / total) * 100)}
+                %)
+            </strong>
+        </>
     )
 }

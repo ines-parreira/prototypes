@@ -1,6 +1,7 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {act, render, screen} from '@testing-library/react'
 
+import userEvent from '@testing-library/user-event'
 import {
     ChatWorkload,
     EmailWorkload,
@@ -31,5 +32,19 @@ describe('<GaugeChart />', () => {
         )
 
         expect(container).toMatchSnapshot()
+    })
+
+    it('should have segment tooltip', async () => {
+        const chartItem = {
+            label: 'Foo workload',
+            value: 1000,
+        }
+
+        render(<GaugeChart data={[chartItem]} />)
+        act(() => {
+            userEvent.hover(screen.getByTitle(chartItem.label))
+        })
+
+        expect(await screen.findByRole('tooltip')).toBeInTheDocument()
     })
 })
