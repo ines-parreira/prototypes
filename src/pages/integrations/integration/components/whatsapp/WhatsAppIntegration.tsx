@@ -18,10 +18,12 @@ import useAppSelector from 'hooks/useAppSelector'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import {getIntegrationById} from 'state/integrations/selectors'
+import WhatsAppTemplatesList from './WhatsAppTemplatesList'
 
 export default function WhatsAppIntegration() {
     const {integrationId} = useParams<{integrationId: string}>()
     const enableMigration = useFlags()[FeatureFlagKey.EnableWhatsAppMigrations]
+    const enableTemplates = useFlags()[FeatureFlagKey.WhatsappTemplates]
 
     const currentIntegration = useAppSelector((state) => {
         if (integrationId) {
@@ -53,6 +55,7 @@ export default function WhatsAppIntegration() {
 
             <WhatsAppIntegrationSecondaryNavigation
                 integration={currentIntegration}
+                enableTemplates={enableTemplates}
             />
 
             <Switch>
@@ -66,6 +69,14 @@ export default function WhatsAppIntegration() {
                                 integration={currentIntegration}
                             />
                         </Route>
+                        {enableTemplates && (
+                            <Route
+                                path={`${baseURL}/:integrationId/templates`}
+                                exact
+                            >
+                                <WhatsAppTemplatesList />
+                            </Route>
+                        )}
                     </>
                 )}
                 <Route path={`${baseURL}/integrations`} exact>

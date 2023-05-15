@@ -50,3 +50,37 @@ export enum WhatsAppCodeVerificationMethod {
     Voice = 'VOICE',
     Sms = 'SMS',
 }
+
+export type WhatsAppTemplateComponents = {
+    body: {
+        type: string
+        value: string
+    }
+}
+
+export type WhatsAppTemplate = {
+    components: WhatsAppTemplateComponents
+    category: WhatsAppTemplateCategory
+    id: string
+    external_id: string
+    language: string
+    name: string
+    status: WhatsAppTemplateStatus
+    waba_id: string
+}
+
+export enum WhatsAppTemplateCategory {
+    Utility = 'UTILITY',
+    Marketing = 'MARKETING',
+    Authentication = 'AUTHENTICATION',
+}
+
+export enum WhatsAppTemplateStatus {
+    Approved = 'APPROVED',
+    Rejected = 'REJECTED',
+    Pending = 'PENDING',
+    InAppeal = 'IN_APPEAL',
+    Disabled = 'DISABLED',
+    Paused = 'PAUSED',
+    Unsupported = 'UNSUPPORTED',
+}

@@ -6,6 +6,7 @@ export enum StatusIntent {
     Warning = 'warning',
     Success = 'success',
     Neutral = 'neutral',
+    Error = 'error',
 }
 
 type Props = {
