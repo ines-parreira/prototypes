@@ -51,6 +51,7 @@ import {useGetReporting} from 'models/reporting/queries'
 import {REPORTING_STALE_TIME_MS} from 'hooks/reporting/constants'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
+import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 
 import BigNumberMetric from './BigNumberMetric'
 import DashboardSection from './DashboardSection'
@@ -87,58 +88,63 @@ export default function SupportPerformanceOverview() {
         }
     }, [integrationsStatsFilter, statsFilters])
 
+    const requestStatsFilters = useCleanStatsFilters(pageStatsFilters)
+
     const customerSatisfactionTrend = useCustomerSatisfactionTrend(
-        pageStatsFilters,
+        requestStatsFilters,
         userTimezone
     )
     const firstResponseTimeTrend = useFirstResponseTimeTrend(
-        pageStatsFilters,
+        requestStatsFilters,
         userTimezone
     )
     const resolutionTimeTrend = useResolutionTimeTrend(
-        pageStatsFilters,
+        requestStatsFilters,
         userTimezone
     )
     const messagesPerTicketTrend = useMessagesPerTicketTrend(
-        pageStatsFilters,
+        requestStatsFilters,
         userTimezone
     )
-    const openTicketsTrend = useOpenTicketsTrend(pageStatsFilters, userTimezone)
+    const openTicketsTrend = useOpenTicketsTrend(
+        requestStatsFilters,
+        userTimezone
+    )
     const closedTicketsTrend = useClosedTicketsTrend(
-        pageStatsFilters,
+        requestStatsFilters,
         userTimezone
     )
     const ticketsCreatedTrend = useTicketsCreatedTrend(
-        pageStatsFilters,
+        requestStatsFilters,
         userTimezone
     )
     const ticketsRepliedTrend = useTicketsRepliedTrend(
-        pageStatsFilters,
+        requestStatsFilters,
         userTimezone
     )
     const messagesSentTrend = useMessagesSentTrend(
-        pageStatsFilters,
+        requestStatsFilters,
         userTimezone
     )
 
-    const granularity = periodToReportingGranularity(pageStatsFilters.period)
+    const granularity = periodToReportingGranularity(requestStatsFilters.period)
     const ticketsCreatedTimeSeries = useTicketsCreatedTimeSeries(
-        pageStatsFilters,
+        requestStatsFilters,
         userTimezone,
         granularity
     )
     const ticketsClosedTimeSeries = useTicketsClosedTimeSeries(
-        pageStatsFilters,
+        requestStatsFilters,
         userTimezone,
         granularity
     )
     const ticketsRepliedTimeSeries = useTicketsRepliedTimeSeries(
-        pageStatsFilters,
+        requestStatsFilters,
         userTimezone,
         granularity
     )
     const messagesSentTimeSeries = useMessagesSentTimeSeries(
-        pageStatsFilters,
+        requestStatsFilters,
         userTimezone,
         granularity
     )
@@ -214,32 +220,30 @@ export default function SupportPerformanceOverview() {
             <StatsPage
                 title="Overview"
                 filters={
-                    pageStatsFilters && (
-                        <>
-                            <IntegrationsStatsFilter
-                                value={pageStatsFilters.integrations}
-                                integrations={messagingIntegrations}
-                                isMultiple
-                                variant="ghost"
-                            />
-                            <ChannelsStatsFilter
-                                value={pageStatsFilters.channels}
-                                channels={Object.values(TicketChannel)}
-                                variant="ghost"
-                            />
-                            <AgentsStatsFilter
-                                value={pageStatsFilters.agents}
-                                variant="ghost"
-                            />
-                            <PeriodStatsFilter
-                                initialSettings={{
-                                    maxSpan: 365,
-                                }}
-                                value={pageStatsFilters.period}
-                                variant="ghost"
-                            />
-                        </>
-                    )
+                    <>
+                        <IntegrationsStatsFilter
+                            value={pageStatsFilters.integrations}
+                            integrations={messagingIntegrations}
+                            isMultiple
+                            variant="ghost"
+                        />
+                        <ChannelsStatsFilter
+                            value={pageStatsFilters.channels}
+                            channels={Object.values(TicketChannel)}
+                            variant="ghost"
+                        />
+                        <AgentsStatsFilter
+                            value={pageStatsFilters.agents}
+                            variant="ghost"
+                        />
+                        <PeriodStatsFilter
+                            initialSettings={{
+                                maxSpan: 365,
+                            }}
+                            value={pageStatsFilters.period}
+                            variant="ghost"
+                        />
+                    </>
                 }
             >
                 <DashboardSection title="Customer experience">

@@ -1,45 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`useStatResource debouncing fetch requests should debounce requests when stat filter change 1`] = `
-{
-  "delete": [],
-  "get": [],
-  "head": [],
-  "list": [],
-  "options": [],
-  "patch": [],
-  "post": [
-    {
-      "cancelToken": CancelToken {
-        "promise": Promise {},
-      },
-      "data": "{"filters":{"period":{"start_datetime":"2021-04-02T00:00:00.000Z","end_datetime":"2021-04-02T23:59:59.999Z"},"channels":["email"],"tags":[2]}}",
-      "headers": {
-        "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
-      },
-      "maxBodyLength": -1,
-      "maxContentLength": -1,
-      "method": "post",
-      "timeout": 180000,
-      "transformRequest": [
-        [Function],
-      ],
-      "transformResponse": [
-        [Function],
-      ],
-      "url": "/api/stats/first-response-time/",
-      "validateStatus": [Function],
-      "xsrfCookieName": "XSRF-TOKEN",
-      "xsrfHeaderName": "X-XSRF-TOKEN",
-    },
-  ],
-  "put": [],
-}
-`;
-
 exports[`useStatResource should display error message on server response error 1`] = `
 [
   {
@@ -67,46 +27,6 @@ exports[`useStatResource should display error message on server response error 1
 `;
 
 exports[`useStatResource should fetch and save the stat 1`] = `
-{
-  "delete": [],
-  "get": [],
-  "head": [],
-  "list": [],
-  "options": [],
-  "patch": [],
-  "post": [
-    {
-      "cancelToken": CancelToken {
-        "promise": Promise {},
-      },
-      "data": "{"filters":{"period":{"start_datetime":"2021-04-02T00:00:00.000Z","end_datetime":"2021-04-02T23:59:59.999Z"},"channels":["email"]}}",
-      "headers": {
-        "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
-      },
-      "maxBodyLength": -1,
-      "maxContentLength": -1,
-      "method": "post",
-      "timeout": 180000,
-      "transformRequest": [
-        [Function],
-      ],
-      "transformResponse": [
-        [Function],
-      ],
-      "url": "/api/stats/first-response-time/",
-      "validateStatus": [Function],
-      "xsrfCookieName": "XSRF-TOKEN",
-      "xsrfHeaderName": "X-XSRF-TOKEN",
-    },
-  ],
-  "put": [],
-}
-`;
-
-exports[`useStatResource should fetch and save the stat 2`] = `
 [
   {
     "payload": {
@@ -190,46 +110,6 @@ exports[`useStatResource should fetch and save the stat 2`] = `
 `;
 
 exports[`useStatResource should fetch the page with cursor when fetchPage is called 1`] = `
-{
-  "delete": [],
-  "get": [],
-  "head": [],
-  "list": [],
-  "options": [],
-  "patch": [],
-  "post": [
-    {
-      "cancelToken": CancelToken {
-        "promise": Promise {},
-      },
-      "data": "{"filters":{"period":{"start_datetime":"2021-04-02T00:00:00.000Z","end_datetime":"2021-04-02T23:59:59.999Z"},"channels":["email"]},"cursor":"foo-cursor"}",
-      "headers": {
-        "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
-      },
-      "maxBodyLength": -1,
-      "maxContentLength": -1,
-      "method": "post",
-      "timeout": 180000,
-      "transformRequest": [
-        [Function],
-      ],
-      "transformResponse": [
-        [Function],
-      ],
-      "url": "/api/stats/first-response-time/",
-      "validateStatus": [Function],
-      "xsrfCookieName": "XSRF-TOKEN",
-      "xsrfHeaderName": "X-XSRF-TOKEN",
-    },
-  ],
-  "put": [],
-}
-`;
-
-exports[`useStatResource should fetch the page with cursor when fetchPage is called 2`] = `
 [
   {
     "payload": {

@@ -35,6 +35,7 @@ import {
 } from 'hooks/reporting/timeSeries'
 import useTimeSeries from 'hooks/reporting/useTimeSeries'
 import {useGetReporting} from 'models/reporting/queries'
+import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 
 import SupportPerformanceOverview from '../SupportPerformanceOverview'
 
@@ -70,21 +71,25 @@ const useMessagesSentTimeSeriesMock = assumeMock(useMessagesSentTimeSeries)
 jest.mock('models/reporting/queries')
 const useGetReportingMock = assumeMock(useGetReporting)
 
+jest.mock('hooks/reporting/useCleanStatsFilters')
+const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
+
 describe('<SupportPerformanceOverview />', () => {
+    const defaultStatsFilters: StatsFilters = {
+        period: {
+            start_datetime: '2021-02-03T00:00:00.000Z',
+            end_datetime: '2021-02-03T23:59:59.999Z',
+        },
+        channels: [TicketChannel.Chat],
+        integrations: [integrationsState.integrations[0].id],
+        agents: [agents[0].id],
+        tags: [1],
+    }
     const defaultState = {
         currentAccount: fromJS(account),
         integrations: fromJS(integrationsState),
         stats: fromJS({
-            filters: {
-                period: {
-                    start_datetime: '2021-02-03T00:00:00.000Z',
-                    end_datetime: '2021-02-03T23:59:59.999Z',
-                },
-                channels: [TicketChannel.Chat],
-                integrations: [integrationsState.integrations[0].id],
-                agents: [agents[0].id],
-                tags: [1],
-            } as StatsFilters,
+            filters: defaultStatsFilters,
         }),
         agents: fromJS({
             all: agents,
@@ -141,6 +146,7 @@ describe('<SupportPerformanceOverview />', () => {
                 },
             ],
         } as UseQueryResult)
+        useCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
     })
 
     it('should render the page', () => {

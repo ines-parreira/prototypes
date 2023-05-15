@@ -3,17 +3,16 @@ import {renderHook} from '@testing-library/react-hooks'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import MockAdapter from 'axios-mock-adapter'
 import {act, render} from '@testing-library/react'
 import {produce} from 'immer'
 
 import {Stat, StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {TicketChannel} from 'business/types/ticket'
-import client from 'models/api/resources'
 import {RootState} from 'state/types'
 import {firstResponseTime} from 'fixtures/stats'
 import {FIRST_RESPONSE_TIME} from 'config/stats'
-import {flushPromises} from 'utils/testing'
+import {assumeMock, flushPromises} from 'utils/testing'
+import {fetchStat} from 'models/stat/resources'
 
 import useStatResource from '../useStatResource'
 
@@ -24,10 +23,13 @@ jest.mock('state/notifications/actions', () => ({
     }),
 }))
 
-const serverMock = new MockAdapter(client)
+jest.mock('models/stat/resources')
+const fetchStatMock = assumeMock(fetchStat)
+
 const mockStore = configureMockStore<RootState>([thunk])
 
 describe('useStatResource', () => {
+    const defaultResourceName = FIRST_RESPONSE_TIME
     const defaultState = {
         ui: {
             stats: {
@@ -55,10 +57,7 @@ describe('useStatResource', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        serverMock.reset()
-        serverMock
-            .onAny(`/api/stats/${FIRST_RESPONSE_TIME}/`)
-            .reply(200, firstResponseTime)
+        fetchStatMock.mockResolvedValue(firstResponseTime)
     })
 
     it('should fetch and save the stat', async () => {
@@ -68,7 +67,7 @@ describe('useStatResource', () => {
             () => {
                 return useStatResource<TwoDimensionalChart>({
                     statName: 'stat',
-                    resourceName: FIRST_RESPONSE_TIME,
+                    resourceName: defaultResourceName,
                     statsFilters: defaultStatsFilters,
                 })
             },
@@ -78,15 +77,21 @@ describe('useStatResource', () => {
         )
         await flushPromises()
 
-        expect(serverMock.history).toMatchSnapshot()
+        expect(fetchStatMock).toHaveBeenLastCalledWith(
+            defaultResourceName,
+            {
+                filters: defaultStatsFilters,
+                cursor: undefined,
+            },
+            {cancelToken: expect.anything()}
+        )
         expect(store.getActions()).toMatchSnapshot()
     })
 
     it('should display error message on server response error', async () => {
         const store = mockStore(defaultState)
         const errorMessage = 'Some error'
-        serverMock.reset()
-        serverMock.onAny(`/api/stats/${FIRST_RESPONSE_TIME}/`).reply(403, {
+        fetchStatMock.mockRejectedValue({
             data: {
                 error: {
                     msg: errorMessage,
@@ -98,7 +103,7 @@ describe('useStatResource', () => {
             () => {
                 return useStatResource<TwoDimensionalChart>({
                     statName: 'stat',
-                    resourceName: FIRST_RESPONSE_TIME,
+                    resourceName: defaultResourceName,
                     statsFilters: defaultStatsFilters,
                 })
             },
@@ -123,7 +128,7 @@ describe('useStatResource', () => {
             () => {
                 return useStatResource<TwoDimensionalChart>({
                     statName: 'stat',
-                    resourceName: FIRST_RESPONSE_TIME,
+                    resourceName: defaultResourceName,
                     statsFilters: defaultStatsFilters,
                 })
             },
@@ -132,7 +137,7 @@ describe('useStatResource', () => {
                     mockStore(
                         produce(defaultState, (state) => {
                             state.entities.stats[
-                                `stat/${FIRST_RESPONSE_TIME}`
+                                `stat/${defaultResourceName}`
                             ] = storeValue
                         })
                     )
@@ -163,7 +168,7 @@ describe('useStatResource', () => {
             () => {
                 return useStatResource<TwoDimensionalChart>({
                     statName: 'stat',
-                    resourceName: FIRST_RESPONSE_TIME,
+                    resourceName: defaultResourceName,
                     statsFilters: defaultStatsFilters,
                 })
             },
@@ -172,7 +177,7 @@ describe('useStatResource', () => {
                     mockStore(
                         produce(defaultState, (state) => {
                             state.ui.stats.fetchingMap[
-                                `stat/${FIRST_RESPONSE_TIME}`
+                                `stat/${defaultResourceName}`
                             ] = storeValue
                         })
                     )
@@ -189,7 +194,7 @@ describe('useStatResource', () => {
             () => {
                 return useStatResource<TwoDimensionalChart>({
                     statName: 'stat',
-                    resourceName: FIRST_RESPONSE_TIME,
+                    resourceName: defaultResourceName,
                     statsFilters: defaultStatsFilters,
                 })
             },
@@ -198,7 +203,6 @@ describe('useStatResource', () => {
             }
         )
         await flushPromises()
-        serverMock.resetHistory()
         store.clearActions()
 
         const [, , fetchPage] = result.current
@@ -208,8 +212,60 @@ describe('useStatResource', () => {
         rerender()
         await flushPromises()
 
-        expect(serverMock.history).toMatchSnapshot()
+        expect(fetchStatMock).toHaveBeenLastCalledWith(
+            defaultResourceName,
+            {
+                filters: defaultStatsFilters,
+                cursor: 'foo-cursor',
+            },
+            {cancelToken: expect.anything()}
+        )
         expect(store.getActions()).toMatchSnapshot()
+    })
+
+    it('should fetch the stats with empty cursor when filters change', async () => {
+        const store = mockStore(defaultState)
+        const updatedStatsFilters = {
+            ...defaultStatsFilters,
+            channels: [TicketChannel.Facebook],
+        }
+
+        const {result, rerender, waitForNextUpdate} = renderHook(
+            ({statsFilters}) => {
+                return useStatResource<TwoDimensionalChart>({
+                    statName: 'stat',
+                    resourceName: defaultResourceName,
+                    statsFilters,
+                })
+            },
+            {
+                initialProps: {
+                    statsFilters: defaultStatsFilters,
+                },
+                wrapper: createStoreWrapper(store),
+            }
+        )
+        await flushPromises()
+        const [, , fetchPage] = result.current
+        act(() => {
+            fetchPage('foo-cursor')
+        })
+        rerender()
+        await flushPromises()
+        rerender({
+            statsFilters: updatedStatsFilters,
+        })
+        await flushPromises()
+        await waitForNextUpdate()
+
+        expect(fetchStatMock).toHaveBeenLastCalledWith(
+            defaultResourceName,
+            {
+                filters: updatedStatsFilters,
+                cursor: undefined,
+            },
+            {cancelToken: expect.anything()}
+        )
     })
 
     describe('debouncing fetch requests', () => {
@@ -222,7 +278,7 @@ describe('useStatResource', () => {
         }) => {
             useStatResource({
                 statName: 'stat',
-                resourceName: FIRST_RESPONSE_TIME,
+                resourceName: defaultResourceName,
                 statsFilters,
             })
             return null
@@ -238,6 +294,14 @@ describe('useStatResource', () => {
 
         it('should debounce requests when stat filter change', async () => {
             const store = mockStore(defaultState)
+            const tagsStatsFilters = {
+                ...defaultStatsFilters,
+                tags: [1],
+            }
+            const channelsStatsFilters = {
+                ...defaultStatsFilters,
+                channels: [TicketChannel.FacebookMention],
+            }
 
             const {rerender} = render(
                 <Provider store={store}>
@@ -246,16 +310,10 @@ describe('useStatResource', () => {
             )
             await flushPromises()
             store.clearActions()
-            serverMock.resetHistory()
 
             rerender(
                 <Provider store={store}>
-                    <TestComponent
-                        statsFilters={{
-                            ...defaultStatsFilters,
-                            tags: [1],
-                        }}
-                    />
+                    <TestComponent statsFilters={tagsStatsFilters} />
                 </Provider>
             )
             act(() => {
@@ -263,12 +321,7 @@ describe('useStatResource', () => {
             })
             rerender(
                 <Provider store={store}>
-                    <TestComponent
-                        statsFilters={{
-                            ...defaultStatsFilters,
-                            tags: [2],
-                        }}
-                    />
+                    <TestComponent statsFilters={channelsStatsFilters} />
                 </Provider>
             )
             act(() => {
@@ -276,7 +329,14 @@ describe('useStatResource', () => {
             })
             await flushPromises()
 
-            expect(serverMock.history).toMatchSnapshot()
+            expect(fetchStatMock).toHaveBeenLastCalledWith(
+                defaultResourceName,
+                {
+                    filters: channelsStatsFilters,
+                    cursor: undefined,
+                },
+                {cancelToken: expect.anything()}
+            )
         })
 
         it('should not fetch the stat when statsFilters changed to the same value', async () => {
@@ -289,7 +349,6 @@ describe('useStatResource', () => {
             )
             await flushPromises()
             store.clearActions()
-            serverMock.resetHistory()
 
             rerender(
                 <Provider store={store}>
@@ -301,7 +360,7 @@ describe('useStatResource', () => {
             })
             await flushPromises()
 
-            expect(serverMock.history.post).toHaveLength(0)
+            expect(fetchStatMock.mock.calls).toHaveLength(1)
         })
 
         it('should not fetch the stat when statsFilters is dirty changed to the same value', async () => {
@@ -320,7 +379,6 @@ describe('useStatResource', () => {
             )
             await flushPromises()
             store.clearActions()
-            serverMock.resetHistory()
 
             rerender(
                 <Provider store={store}>
@@ -337,7 +395,7 @@ describe('useStatResource', () => {
             })
             await flushPromises()
 
-            expect(serverMock.history.post).toHaveLength(0)
+            expect(fetchStatMock.mock.calls).toHaveLength(1)
         })
     })
 })

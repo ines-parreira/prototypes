@@ -15,6 +15,7 @@ import {StatsState} from 'state/entities/stats/types'
 import {StatsState as StatsUIState} from 'state/ui/stats/types'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAppSelector from 'hooks/useAppSelector'
+import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 
 type Params = {
     statName: string
@@ -36,23 +37,26 @@ export default function useStatResource<T>({
     const statsFetchingState = useAppSelector<StatsUIState['fetchingMap']>(
         (state) => state.ui.stats.fetchingMap
     )
-    const isFilterDirty = useAppSelector<boolean>(
-        (state) => state.ui.stats.isFilterDirty
-    )
     const statKey = `${statName}/${resourceName}`
-    const [fetchParams, setFetchParams] = useState<{
-        filters: StatsFilters
-        cursor?: string
-    }>({filters: statsFilters})
+    const cleanStatsFilters = useCleanStatsFilters(statsFilters)
+    const [cursor, setCursor] = useState<string | undefined>()
+    const [filters, setFilters] = useState(cleanStatsFilters)
 
     const createFetchStat = useCallback(
         (cancelToken: CancelToken) => {
             return async () => {
                 dispatch(fetchStatStarted({statName, resourceName}))
                 try {
-                    const stat = await fetchStat(resourceName, fetchParams, {
-                        cancelToken,
-                    })
+                    const stat = await fetchStat(
+                        resourceName,
+                        {
+                            filters,
+                            cursor,
+                        },
+                        {
+                            cancelToken,
+                        }
+                    )
                     dispatch(
                         statFetched({
                             resourceName,
@@ -86,7 +90,7 @@ export default function useStatResource<T>({
                 }
             }
         },
-        [dispatch, resourceName, statName, fetchParams]
+        [dispatch, resourceName, statName, cursor, filters]
     )
 
     const [handleFetchStat] = useCancellableRequest(createFetchStat)
@@ -97,20 +101,17 @@ export default function useStatResource<T>({
 
     useDebounce(
         () => {
-            if (
-                !isFilterDirty &&
-                statsFilters &&
-                !_isEqual(statsFilters, fetchParams.filters)
-            ) {
-                setFetchParams({filters: statsFilters})
+            if (cleanStatsFilters && !_isEqual(cleanStatsFilters, filters)) {
+                setFilters(cleanStatsFilters)
+                setCursor(undefined)
             }
         },
         fetchDebounceDelay,
-        [statsFilters, fetchParams, isFilterDirty]
+        [cleanStatsFilters, filters]
     )
 
     const fetchPage = useCallback((cursor: string) => {
-        setFetchParams((params) => params && {...params, cursor})
+        setCursor(cursor)
     }, [])
 
     return [
