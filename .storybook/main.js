@@ -70,6 +70,7 @@ module.exports = {
     webpackFinal: async (config) => {
         config.module.rules.push({
             test: /\.css$/i,
+            exclude: /node_modules/,
             use: [
                 MiniCssExtractPlugin.loader,
                 {
@@ -80,6 +81,7 @@ module.exports = {
         })
         config.module.rules.push({
             test: /\.less$/i,
+            exclude: /node_modules/,
             use: [
                 {
                     loader: MiniCssExtractPlugin.loader,
