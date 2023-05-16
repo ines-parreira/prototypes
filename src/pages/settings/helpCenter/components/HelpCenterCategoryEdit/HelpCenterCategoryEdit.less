@@ -173,10 +173,25 @@
         padding: 0;
     }
 
+    // TODO: (@ulad) After remove FF "HelpCenterImagesForCategories" we can merge this with ".inlineLanguageSelect" styles
+    // https://linear.app/gorgias/issue/AUTHC-2587/remove-feature-flag-for-images-for-categories
+    .inlineLanguageSelectForm {
+        width: 140px;
+
+        :global(.dropdown-options) {
+            // stick dropdown container to the left side to avoid overflow
+            left: 0;
+            right: auto;
+        }
+    }
+
+    .inlineLanguageSelectHeader {
+        width: 100%;
+    }
+
     .inlineLanguageSelect {
         display: block;
         position: relative;
-        width: 100%;
         line-height: 1.25;
         padding: 0 6px 0 14px;
         border: 1px solid @classic-neutral-grey-3;

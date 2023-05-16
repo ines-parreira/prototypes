@@ -405,7 +405,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               </div>
             </div>
             <div
-              class="wrapper inlineLanguageSelect"
+              class="wrapper inlineLanguageSelect inlineLanguageSelectHeader"
             >
               <button
                 class="trigger"
@@ -516,7 +516,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             <small
               class="form-text text-muted"
             >
-              This is your category’s link.
+              Category link.
             </small>
           </div>
           <div
@@ -539,7 +539,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             <small
               class="form-text text-muted"
             >
-              Category description is displayed in search engines to help people find it.
+              Category description (optional)
             </small>
           </div>
           <div
@@ -570,7 +570,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               <small
                 class="form-text text-muted"
               >
-                SEO Title tag is how your category is going to be displayed in Search Engines.
+                Category title displayed in search engine results.
               </small>
             </div>
             <div>
@@ -616,7 +616,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               <small
                 class="form-text text-muted"
               >
-                Category description is displayed in search engines to help people find it.
+                Category description displayed in search engines results.
               </small>
             </div>
             <div>
@@ -673,7 +673,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             <small
               class="form-text text-muted"
             >
-              This is a preview of how your category is going to look like in search engines (e.g. Google, Duckduckgo, Bing...)
+              Category preview in search engine results.
             </small>
           </div>
         </div>

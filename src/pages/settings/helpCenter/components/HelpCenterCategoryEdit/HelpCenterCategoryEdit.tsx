@@ -589,7 +589,10 @@ export const HelpCenterCategoryEdit = ({
                             list={localeOptions}
                             onSelect={handleOnChangeLocale}
                             onActionClick={handleOnClickAction}
-                            className={css.inlineLanguageSelect}
+                            className={classNames(
+                                css.inlineLanguageSelect,
+                                css.inlineLanguageSelectHeader
+                            )}
                         />
                     )}
                 </div>
@@ -632,7 +635,10 @@ export const HelpCenterCategoryEdit = ({
                                 list={localeOptions}
                                 onSelect={handleOnChangeLocale}
                                 onActionClick={handleOnClickAction}
-                                className={css.inlineLanguageSelect}
+                                className={classNames(
+                                    css.inlineLanguageSelect,
+                                    css.inlineLanguageSelectForm
+                                )}
                             />
                         </FormGroup>
                     </div>
@@ -696,7 +702,7 @@ export const HelpCenterCategoryEdit = ({
                             </InputGroupAddon>
                         )}
                     </InputGroup>
-                    <FormText>This is your category’s link.</FormText>
+                    <FormText>Category link.</FormText>
                 </FormGroup>
                 <FormGroup className={css.textfield}>
                     <Label for="description">Description</Label>
@@ -713,10 +719,7 @@ export const HelpCenterCategoryEdit = ({
                         onChange={handleChangeDescription}
                         maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
                     />
-                    <FormText>
-                        Category description is displayed in search engines to
-                        help people find it.
-                    </FormText>
+                    <FormText>Category description (optional)</FormText>
                 </FormGroup>
                 <AutoPopulateInput
                     type="text"
@@ -726,7 +729,7 @@ export const HelpCenterCategoryEdit = ({
                     onChange={handleChangeMetaTitle}
                     populateLabel="Use the same as Title"
                     populateValue={title}
-                    help="SEO Title tag is how your category is going to be displayed in Search Engines."
+                    help="Category title displayed in search engine results."
                     required
                 />
                 <AutoPopulateInput
@@ -737,7 +740,7 @@ export const HelpCenterCategoryEdit = ({
                     onChange={handleChangeMetaDescription}
                     populateLabel="Use the same as Description"
                     populateValue={description}
-                    help="Category description is displayed in search engines to help people find it."
+                    help="Category description displayed in search engines results."
                     rows="2"
                     required
                 />
@@ -746,7 +749,7 @@ export const HelpCenterCategoryEdit = ({
                     title={metaTitle ?? title}
                     description={metaDescription ?? description}
                     urlItems={['articles', `${slug}${slugSuffix}`]}
-                    help="This is a preview of how your category is going to look like in search engines (e.g. Google, Duckduckgo, Bing...)"
+                    help="Category preview in search engine results."
                 />
             </Drawer.Content>
             <Drawer.Footer>
