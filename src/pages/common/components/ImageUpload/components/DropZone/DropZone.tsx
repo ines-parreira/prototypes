@@ -178,6 +178,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
                 accept={accept}
                 type="file"
                 id={id}
+                data-testid={`input-${id}`}
                 name={name}
                 style={{display: 'none'}}
                 onChange={(...args) => {

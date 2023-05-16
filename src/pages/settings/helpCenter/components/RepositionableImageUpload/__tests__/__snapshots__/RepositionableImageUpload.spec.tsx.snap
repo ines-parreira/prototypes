@@ -43,6 +43,7 @@ exports[`<RepositionableImageUpload /> matches snapshot with preview 1`] = `
     </label>
     <input
       accept="image/jpeg,image/png"
+      data-testid="input-banner_image"
       id="banner_image"
       style="display: none;"
       type="file"

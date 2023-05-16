@@ -48,7 +48,11 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
     } = useLocalImage({file, onChangeFile, isTouched})
 
     const closeSpan = (
-        <span className={css.close} onClickCapture={handleOnRemoveFile}>
+        <span
+            className={css.close}
+            onClickCapture={handleOnRemoveFile}
+            data-testid="image-upload-remove"
+        >
             <i className="material-icons-outlined">close</i>
         </span>
     )

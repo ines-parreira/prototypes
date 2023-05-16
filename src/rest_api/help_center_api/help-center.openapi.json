@@ -205,8 +205,7 @@
                         }
                     }
                 },
-                "tags": ["help-centers"],
-                "security": [{"ApiKey": []}]
+                "tags": ["help-centers"]
             },
             "get": {
                 "operationId": "listHelpCenters",
@@ -277,12 +276,7 @@
                         }
                     }
                 },
-                "tags": ["help-centers"],
-                "security": [
-                    {"ApiKey": []},
-                    {"ApiKey": []},
-                    {"AgentBasicAuth": []}
-                ]
+                "tags": ["help-centers"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/submit-contact-form": {
@@ -302,14 +296,13 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/SubmitHelpCenterContactFormDto"
+                                "$ref": "#/components/schemas/ContactFormSubmissionDto"
                             }
                         }
                     }
                 },
                 "responses": {"204": {"description": ""}},
-                "tags": ["help-centers"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["help-centers"]
             }
         },
         "/api/help-center/help-centers/account": {
@@ -343,8 +336,7 @@
                         }
                     }
                 },
-                "tags": ["help-centers"],
-                "security": [{"ApiKey": []}]
+                "tags": ["help-centers"]
             }
         },
         "/api/help-center/help-centers/subdomain/{subdomain}": {
@@ -360,8 +352,7 @@
                     }
                 ],
                 "responses": {"204": {"description": ""}},
-                "tags": ["help-centers"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["help-centers"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}": {
@@ -395,12 +386,7 @@
                         }
                     }
                 },
-                "tags": ["help-centers"],
-                "security": [
-                    {"ApiKey": []},
-                    {"ApiKey": []},
-                    {"AgentBasicAuth": []}
-                ]
+                "tags": ["help-centers"]
             },
             "put": {
                 "operationId": "updateHelpCenter",
@@ -435,8 +421,7 @@
                         }
                     }
                 },
-                "tags": ["help-centers"],
-                "security": [{"ApiKey": []}]
+                "tags": ["help-centers"]
             },
             "delete": {
                 "operationId": "deleteHelpCenter",
@@ -450,8 +435,7 @@
                     }
                 ],
                 "responses": {"200": {"description": ""}},
-                "tags": ["help-centers"],
-                "security": [{"ApiKey": []}]
+                "tags": ["help-centers"]
             }
         },
         "/api/help-center/help-centers/delete-account": {
@@ -490,8 +474,7 @@
                     }
                 },
                 "responses": {"204": {"description": ""}},
-                "tags": ["help-centers"],
-                "security": [{"ApiKey": []}]
+                "tags": ["help-centers"]
             }
         },
         "/api/help-center/help-centers/shop-name/{shop_name}/purge-cache": {
@@ -507,8 +490,7 @@
                     }
                 ],
                 "responses": {"201": {"description": ""}},
-                "tags": ["help-centers"],
-                "security": [{"ApiKey": []}]
+                "tags": ["help-centers"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/duplicate": {
@@ -577,8 +559,7 @@
                         }
                     }
                 },
-                "tags": ["help-center-translations"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["help-center-translations"]
             },
             "post": {
                 "operationId": "createHelpCenterTranslation",
@@ -717,8 +698,7 @@
                         }
                     }
                 },
-                "tags": ["custom-domains"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["custom-domains"]
             },
             "post": {
                 "operationId": "createCustomDomain",
@@ -839,8 +819,7 @@
                         }
                     }
                 },
-                "tags": ["custom-domains"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["custom-domains"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/extra-html": {
@@ -873,8 +852,7 @@
                         }
                     }
                 },
-                "tags": ["extra-html"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["extra-html"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/extra-html/{locale}": {
@@ -940,8 +918,7 @@
                         }
                     }
                 },
-                "tags": ["locales"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["locales"]
             }
         },
         "/api/help-center/locales/{locale}": {
@@ -968,8 +945,7 @@
                         }
                     }
                 },
-                "tags": ["locales"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["locales"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/redirects": {
@@ -1037,8 +1013,7 @@
                         }
                     }
                 },
-                "tags": ["redirects"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["redirects"]
             },
             "delete": {
                 "operationId": "deleteRedirect",
@@ -1059,6 +1034,214 @@
                 ],
                 "responses": {"200": {"description": ""}},
                 "tags": ["redirects"]
+            }
+        },
+        "/api/help-center/contact-forms/name/{input_name}": {
+            "head": {
+                "operationId": "checkContactFormNameExists",
+                "summary": "Check that a contact form with the provided name exists",
+                "parameters": [
+                    {
+                        "name": "input_name",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {"204": {"description": ""}},
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms": {
+            "post": {
+                "operationId": "createContactForm",
+                "summary": "Create a Contact Form",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateContactFormDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            },
+            "get": {
+                "operationId": "listContactForms",
+                "summary": "List the contact forms",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormsListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms/{id}": {
+            "get": {
+                "operationId": "getContactForm",
+                "summary": "Retrieve a Contact form",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            },
+            "put": {
+                "operationId": "updateContactForm",
+                "summary": "Update a Contact Form",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateContactFormDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            },
+            "delete": {
+                "operationId": "deleteContactForm",
+                "summary": "Delete a Contact Form",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"204": {"description": ""}},
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms/uid/{uid}": {
+            "get": {
+                "operationId": "getContactFormByUid",
+                "summary": "Retrieve a Contact form by uid",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms/uid/{uid}/submit": {
+            "post": {
+                "operationId": "submitContactFormByUid",
+                "summary": "Submit a Contact Form by uid",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContactFormSubmissionDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"204": {"description": ""}},
+                "tags": ["contact-forms"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/categories": {
@@ -1179,8 +1362,7 @@
                         }
                     }
                 },
-                "tags": ["categories"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["categories"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/categories/positions": {
@@ -1208,8 +1390,7 @@
                         }
                     }
                 },
-                "tags": ["categories"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["categories"]
             },
             "put": {
                 "operationId": "setCategoriesPositions",
@@ -1247,8 +1428,7 @@
                         }
                     }
                 },
-                "tags": ["categories"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["categories"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/categories/{id}": {
@@ -1309,8 +1489,7 @@
                         }
                     }
                 },
-                "tags": ["categories"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["categories"]
             },
             "delete": {
                 "operationId": "deleteCategory",
@@ -1377,8 +1556,7 @@
                         }
                     }
                 },
-                "tags": ["category-translations"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["category-translations"]
             },
             "post": {
                 "operationId": "createCategoryTranslation",
@@ -1583,8 +1761,7 @@
                         }
                     }
                 },
-                "tags": ["categories"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["categories"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/categories/{parent_category_id}/positions": {
@@ -1619,8 +1796,7 @@
                         }
                     }
                 },
-                "tags": ["categories"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["categories"]
             },
             "put": {
                 "operationId": "setSubCategoriesPositions",
@@ -1664,8 +1840,7 @@
                         }
                     }
                 },
-                "tags": ["categories"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["categories"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles": {
@@ -1766,8 +1941,7 @@
                         }
                     }
                 },
-                "tags": ["articles"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["articles"]
             },
             "delete": {
                 "operationId": "deleteCategoryArticles",
@@ -1821,8 +1995,7 @@
                         }
                     }
                 },
-                "tags": ["articles"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["articles"]
             },
             "put": {
                 "operationId": "setArticlesPositionsInCategory",
@@ -1866,8 +2039,7 @@
                         }
                     }
                 },
-                "tags": ["articles"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["articles"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/articles": {
@@ -1969,12 +2141,7 @@
                         }
                     }
                 },
-                "tags": ["articles"],
-                "security": [
-                    {"ApiKey": []},
-                    {"ApiKey": []},
-                    {"AgentBasicAuth": []}
-                ]
+                "tags": ["articles"]
             },
             "post": {
                 "operationId": "createArticle",
@@ -2038,8 +2205,7 @@
                         }
                     }
                 },
-                "tags": ["articles"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["articles"]
             },
             "put": {
                 "operationId": "setUncategorizedArticlesPositions",
@@ -2077,8 +2243,7 @@
                         }
                     }
                 },
-                "tags": ["articles"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["articles"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/articles/{id}": {
@@ -2149,8 +2314,7 @@
                         }
                     }
                 },
-                "tags": ["articles"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["articles"]
             },
             "put": {
                 "operationId": "updateArticle",
@@ -2268,8 +2432,7 @@
                         }
                     }
                 },
-                "tags": ["article-translations"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["article-translations"]
             },
             "post": {
                 "operationId": "createArticleTranslation",
@@ -2567,8 +2730,37 @@
                         }
                     }
                 },
-                "tags": ["attachment"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["attachment"]
+            }
+        },
+        "/api/help-center/attachments": {
+            "post": {
+                "operationId": "getAttachmentUploadPolicy",
+                "summary": "Generate a signed url to upload a file based on the declared policy",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UploadAttachmentDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SignedPostPolicyDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["attachments"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/navigation-links": {
@@ -2690,8 +2882,7 @@
                         }
                     }
                 },
-                "tags": ["navigation-links"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["navigation-links"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/navigation-links/{id}": {
@@ -2812,8 +3003,7 @@
                         }
                     }
                 },
-                "tags": ["navigation-links"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["navigation-links"]
             },
             "put": {
                 "operationId": "setNavigationLinksPositions",
@@ -2881,8 +3071,7 @@
                         }
                     }
                 },
-                "tags": ["navigation-links"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "tags": ["navigation-links"]
             }
         },
         "/api/help-center/google-fonts": {
@@ -2891,170 +3080,7 @@
                 "summary": "List google fonts",
                 "parameters": [],
                 "responses": {"200": {"description": ""}},
-                "tags": ["google-fonts"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
-            }
-        },
-        "/api/help-center/contact-forms/name/{input_name}": {
-            "head": {
-                "operationId": "checkContactFormNameExists",
-                "summary": "Check that a contact form with the provided name exists",
-                "parameters": [
-                    {
-                        "name": "input_name",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "string"}
-                    }
-                ],
-                "responses": {"204": {"description": ""}},
-                "tags": ["contact-forms"]
-            }
-        },
-        "/api/help-center/contact-forms": {
-            "post": {
-                "operationId": "createContactForm",
-                "summary": "Create a Contact Form",
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateContactFormDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ContactFormDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["contact-forms"]
-            },
-            "get": {
-                "operationId": "listContactForms",
-                "summary": "List the contact forms",
-                "parameters": [
-                    {
-                        "name": "uid",
-                        "required": false,
-                        "in": "query",
-                        "schema": {"type": "string"}
-                    },
-                    {
-                        "name": "per_page",
-                        "required": false,
-                        "in": "query",
-                        "description": "The number of resources to retrieve per request. E.g: 20",
-                        "schema": {}
-                    },
-                    {
-                        "name": "page",
-                        "required": false,
-                        "in": "query",
-                        "description": "The index of the page to retrieve. E.g: 3",
-                        "schema": {}
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ContactFormsListPageDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["contact-forms"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
-            }
-        },
-        "/api/help-center/contact-forms/{id}": {
-            "get": {
-                "operationId": "getContactForm",
-                "summary": "Retrieve a Contact form",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ContactFormDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["contact-forms"]
-            },
-            "put": {
-                "operationId": "updateContactForm",
-                "summary": "Update a Contact Form",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateContactFormDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ContactFormDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["contact-forms"]
-            },
-            "delete": {
-                "operationId": "deleteContactForm",
-                "summary": "Delete a Contact Form",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "responses": {"204": {"description": ""}},
-                "tags": ["contact-forms"]
+                "tags": ["google-fonts"]
             }
         }
     },
@@ -3674,37 +3700,64 @@
             "ContactFormAttachmentDto": {
                 "type": "object",
                 "properties": {
-                    "filename": {"type": "string"},
-                    "size": {"type": "number", "minimum": 1},
-                    "url": {"type": "string"}
+                    "filename": {
+                        "type": "string",
+                        "description": "The filename of the attachment",
+                        "example": "image.png"
+                    },
+                    "size": {
+                        "type": "number",
+                        "description": "The size of the attachment in bytes",
+                        "example": 123456,
+                        "minimum": 1
+                    },
+                    "url": {
+                        "type": "string",
+                        "description": "The url of the attachment",
+                        "example": "https://example.com/image.png"
+                    }
                 },
                 "required": ["filename", "size", "url"]
             },
-            "SubmitHelpCenterContactFormDto": {
+            "ContactFormSubmissionDto": {
                 "type": "object",
                 "properties": {
                     "full_name": {
                         "type": "string",
+                        "description": "The full name of the user",
                         "minLength": 1,
                         "maxLength": 255
                     },
                     "email": {
                         "type": "string",
+                        "description": "The email of the user",
+                        "example": "test@test.com",
                         "minLength": 3,
                         "maxLength": 320
                     },
                     "subject": {
                         "type": "string",
+                        "description": "The subject of the message",
+                        "example": "Feedback",
                         "minLength": 1,
                         "maxLength": 1000
                     },
                     "message": {
                         "type": "string",
+                        "description": "The message of the user",
                         "minLength": 1,
                         "maxLength": 10000
                     },
-                    "url": {"type": "string"},
-                    "is_embedded": {"type": "boolean"},
+                    "url": {
+                        "type": "string",
+                        "description": "The url of the page where the form was submitted",
+                        "example": "https://contact.gorgias.help/forms/abcde12345"
+                    },
+                    "is_embedded": {
+                        "type": "boolean",
+                        "description": "Whether the form was embedded or not",
+                        "example": true
+                    },
                     "attachments": {
                         "type": "array",
                         "items": {
@@ -4279,7 +4332,6 @@
                         "example": 2
                     },
                     "fallback_integration": {
-                        "nullable": true,
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/FallbackIntegrationDto"
@@ -4287,7 +4339,11 @@
                         ]
                     }
                 },
-                "required": ["account_id", "deactivated_integration_id"]
+                "required": [
+                    "account_id",
+                    "deactivated_integration_id",
+                    "fallback_integration"
+                ]
             },
             "HelpCenterTranslationsListPageDto": {
                 "type": "object",
@@ -4600,6 +4656,317 @@
                 },
                 "required": ["from", "to"]
             },
+            "EmailIntegrationDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "Identifier",
+                        "minimum": 1
+                    },
+                    "email": {"type": "string", "description": "Email value"}
+                },
+                "required": ["id", "email"]
+            },
+            "CreateSubjectLinesDto": {
+                "type": "object",
+                "properties": {
+                    "options": {
+                        "description": "List of options that will be displayed to the user in the subject line's select dropdown\nEach option can be from 2 to 50 character long\nMax 15 options",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 50,
+                            "minLength": 2
+                        }
+                    },
+                    "allow_other": {
+                        "type": "boolean",
+                        "description": "If true, the \"Other\" subject line option will be made available"
+                    }
+                },
+                "required": ["options", "allow_other"]
+            },
+            "CreateContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "help_center_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Help center id that is serving this contact form",
+                        "example": null
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the Contact Form",
+                        "example": "My Contact Form",
+                        "minLength": 2,
+                        "maxLength": 255
+                    },
+                    "default_locale": {
+                        "description": "Contact Form default locale",
+                        "example": "en-US",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "email_integration": {
+                        "description": "Email integration used to receive this contact form inquiries",
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
+                    },
+                    "subject_lines": {
+                        "nullable": true,
+                        "description": "Custom subject lines",
+                        "example": {
+                            "options": [
+                                "Order status",
+                                "Feedback",
+                                "Report an issue",
+                                "Product questions",
+                                "Request refund or discount"
+                            ],
+                            "allow_other": true
+                        },
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateSubjectLinesDto"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "help_center_id",
+                    "name",
+                    "default_locale",
+                    "email_integration"
+                ]
+            },
+            "SubjectLinesDto": {
+                "type": "object",
+                "properties": {
+                    "options": {
+                        "description": "List of options that will be displayed to the user in the subject line's select dropdown\nEach option can be from 2 to 50 character long\nMax 15 options",
+                        "type": "array",
+                        "items": {"type": "string"}
+                    },
+                    "allow_other": {
+                        "type": "boolean",
+                        "description": "If true, the \"Other\" subject line option will be made available"
+                    }
+                },
+                "required": ["options", "allow_other"]
+            },
+            "ContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "Creation date"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "Update date"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Deletion date"
+                    },
+                    "id": {
+                        "type": "number",
+                        "description": "Identifier",
+                        "example": 1
+                    },
+                    "account_id": {
+                        "type": "number",
+                        "description": "Helpdesk account id",
+                        "example": 1
+                    },
+                    "help_center_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Help center id",
+                        "example": null
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the contact form instance",
+                        "example": "My Contact Form"
+                    },
+                    "uid": {
+                        "type": "string",
+                        "description": "Unique alphanumerical identifier",
+                        "example": "g46hsfy6"
+                    },
+                    "default_locale": {
+                        "description": "Default supported locale",
+                        "example": "en-US",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "source": {
+                        "description": "Source of the creation of the contact form",
+                        "example": "manual",
+                        "enum": ["manual", "help_center", "migration"],
+                        "type": "string"
+                    },
+                    "subject_lines": {
+                        "nullable": true,
+                        "description": "Custom subject lines",
+                        "example": {
+                            "options": [
+                                "Order status",
+                                "Feedback",
+                                "Report an issue",
+                                "Product questions",
+                                "Request refund or discount"
+                            ],
+                            "allow_other": true
+                        },
+                        "allOf": [
+                            {"$ref": "#/components/schemas/SubjectLinesDto"}
+                        ]
+                    },
+                    "email_integration": {
+                        "nullable": true,
+                        "description": "Email integration details used to create Helpdesk tickets",
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
+                    },
+                    "code_snippet_template": {
+                        "type": "string",
+                        "description": "Code snippet template to use to embed this contact form"
+                    },
+                    "url_template": {
+                        "type": "string",
+                        "description": "Url template to use to construct the shareable Contact form link"
+                    }
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "id",
+                    "account_id",
+                    "help_center_id",
+                    "name",
+                    "uid",
+                    "default_locale",
+                    "source",
+                    "subject_lines",
+                    "email_integration",
+                    "code_snippet_template",
+                    "url_template"
+                ]
+            },
+            "ContactFormsListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {"$ref": "#/components/schemas/ContactFormDto"}
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "UpdateContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "help_center_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Help center id that is serving this contact form",
+                        "example": null
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the Contact Form",
+                        "example": "My Contact Form",
+                        "minLength": 2,
+                        "maxLength": 255
+                    },
+                    "default_locale": {
+                        "description": "Contact Form default locale",
+                        "example": "en-US",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "email_integration": {
+                        "description": "Email integration used to receive this contact form inquiries",
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
+                    },
+                    "subject_lines": {
+                        "nullable": true,
+                        "description": "Custom subject lines",
+                        "example": {
+                            "options": [
+                                "Order status",
+                                "Feedback",
+                                "Report an issue",
+                                "Product questions",
+                                "Request refund or discount"
+                            ],
+                            "allow_other": true
+                        },
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateSubjectLinesDto"
+                            }
+                        ]
+                    }
+                }
+            },
             "CreateCategoryTranslationSeoMetaDto": {
                 "type": "object",
                 "properties": {
@@ -4671,6 +5038,11 @@
                         "description": "The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.",
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Category image URL"
                     }
                 },
                 "required": [
@@ -4753,6 +5125,7 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
+                    "image_url": {"type": "string", "nullable": true},
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
                         "enum": ["default", "available"],
@@ -4899,6 +5272,7 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
+                    "image_url": {"type": "string", "nullable": true},
                     "title": {"type": "string"},
                     "description": {"type": "string", "nullable": true},
                     "slug": {"type": "string"}
@@ -4972,6 +5346,11 @@
                         "description": "The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.",
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Category image URL"
                     }
                 }
             },
@@ -5970,6 +6349,55 @@
                 },
                 "required": ["url", "fields"]
             },
+            "AttachmentFileDto": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "File name",
+                        "example": "file.pdf"
+                    },
+                    "size": {
+                        "type": "number",
+                        "description": "File size in bytes",
+                        "example": 123456,
+                        "minimum": 1
+                    },
+                    "mimetype": {
+                        "type": "string",
+                        "description": "File mimetype",
+                        "example": "application/pdf"
+                    }
+                },
+                "required": ["name", "size", "mimetype"]
+            },
+            "AttachmentChannelDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "Channel ID",
+                        "example": 1
+                    },
+                    "type": {
+                        "description": "Channel type",
+                        "example": "CF",
+                        "enum": ["HC", "CF"],
+                        "type": "string"
+                    }
+                },
+                "required": ["id", "type"]
+            },
+            "UploadAttachmentDto": {
+                "type": "object",
+                "properties": {
+                    "file": {"$ref": "#/components/schemas/AttachmentFileDto"},
+                    "channel": {
+                        "$ref": "#/components/schemas/AttachmentChannelDto"
+                    }
+                },
+                "required": ["file", "channel"]
+            },
             "NavigationLinkMeta": {
                 "type": "object",
                 "properties": {
@@ -6108,317 +6536,6 @@
                     }
                 },
                 "required": ["meta", "object", "data"]
-            },
-            "EmailIntegrationDto": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "number",
-                        "description": "Identifier",
-                        "minimum": 1
-                    },
-                    "email": {"type": "string", "description": "Email value"}
-                },
-                "required": ["id", "email"]
-            },
-            "CreateSubjectLinesDto": {
-                "type": "object",
-                "properties": {
-                    "options": {
-                        "description": "List of options that will be displayed to the user in the subject line's select dropdown\nEach option can be from 2 to 50 character long\nMax 15 options",
-                        "type": "array",
-                        "items": {
-                            "type": "string",
-                            "maxLength": 50,
-                            "minLength": 2
-                        }
-                    },
-                    "allow_other": {
-                        "type": "boolean",
-                        "description": "If true, the \"Other\" subject line option will be made available"
-                    }
-                },
-                "required": ["options", "allow_other"]
-            },
-            "CreateContactFormDto": {
-                "type": "object",
-                "properties": {
-                    "help_center_id": {
-                        "type": "number",
-                        "nullable": true,
-                        "description": "Help center id that is serving this contact form",
-                        "example": null
-                    },
-                    "name": {
-                        "type": "string",
-                        "description": "Name of the Contact Form",
-                        "example": "My Contact Form",
-                        "minLength": 2,
-                        "maxLength": 255
-                    },
-                    "default_locale": {
-                        "description": "Contact Form default locale",
-                        "example": "en-US",
-                        "enum": [
-                            "en-US",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
-                            "cs-CZ",
-                            "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE"
-                        ],
-                        "type": "string"
-                    },
-                    "email_integration": {
-                        "description": "Email integration used to receive this contact form inquiries",
-                        "example": {"id": 1, "email": "jonh@example.com"},
-                        "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
-                        ]
-                    },
-                    "subject_lines": {
-                        "nullable": true,
-                        "description": "Custom subject lines",
-                        "example": {
-                            "options": [
-                                "Order status",
-                                "Feedback",
-                                "Report an issue",
-                                "Product questions",
-                                "Request refund or discount"
-                            ],
-                            "allow_other": true
-                        },
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/CreateSubjectLinesDto"
-                            }
-                        ]
-                    }
-                },
-                "required": [
-                    "help_center_id",
-                    "name",
-                    "default_locale",
-                    "email_integration"
-                ]
-            },
-            "SubjectLinesDto": {
-                "type": "object",
-                "properties": {
-                    "options": {
-                        "description": "List of options that will be displayed to the user in the subject line's select dropdown\nEach option can be from 2 to 50 character long\nMax 15 options",
-                        "type": "array",
-                        "items": {"type": "string"}
-                    },
-                    "allow_other": {
-                        "type": "boolean",
-                        "description": "If true, the \"Other\" subject line option will be made available"
-                    }
-                },
-                "required": ["options", "allow_other"]
-            },
-            "ContactFormDto": {
-                "type": "object",
-                "properties": {
-                    "created_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "description": "Creation date"
-                    },
-                    "updated_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "description": "Update date"
-                    },
-                    "deleted_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": true,
-                        "description": "Deletion date"
-                    },
-                    "id": {
-                        "type": "number",
-                        "description": "Identifier",
-                        "example": 1
-                    },
-                    "account_id": {
-                        "type": "number",
-                        "description": "Helpdesk account id",
-                        "example": 1
-                    },
-                    "help_center_id": {
-                        "type": "number",
-                        "nullable": true,
-                        "description": "Help center id",
-                        "example": null
-                    },
-                    "name": {
-                        "type": "string",
-                        "description": "Name of the contact form instance",
-                        "example": "My Contact Form"
-                    },
-                    "uid": {
-                        "type": "string",
-                        "description": "Unique alphanumerical identifier",
-                        "example": "g46hsfy6"
-                    },
-                    "default_locale": {
-                        "description": "Default supported locale",
-                        "example": "en-US",
-                        "enum": [
-                            "en-US",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
-                            "cs-CZ",
-                            "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE"
-                        ],
-                        "type": "string"
-                    },
-                    "source": {
-                        "description": "Source of the creation of the contact form",
-                        "example": "manual",
-                        "enum": ["manual", "help_center", "migration"],
-                        "type": "string"
-                    },
-                    "subject_lines": {
-                        "nullable": true,
-                        "description": "Custom subject lines",
-                        "example": {
-                            "options": [
-                                "Order status",
-                                "Feedback",
-                                "Report an issue",
-                                "Product questions",
-                                "Request refund or discount"
-                            ],
-                            "allow_other": true
-                        },
-                        "allOf": [
-                            {"$ref": "#/components/schemas/SubjectLinesDto"}
-                        ]
-                    },
-                    "email_integration": {
-                        "nullable": true,
-                        "description": "Email integration details used to create Helpdesk tickets",
-                        "example": {"id": 1, "email": "jonh@example.com"},
-                        "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
-                        ]
-                    },
-                    "code_snippet_template": {
-                        "type": "string",
-                        "description": "Code snippet template to use to embed this contact form"
-                    },
-                    "url_template": {
-                        "type": "string",
-                        "description": "Url template to use to construct the shareable Contact form link"
-                    }
-                },
-                "required": [
-                    "created_datetime",
-                    "updated_datetime",
-                    "id",
-                    "account_id",
-                    "help_center_id",
-                    "name",
-                    "uid",
-                    "default_locale",
-                    "source",
-                    "subject_lines",
-                    "email_integration",
-                    "code_snippet_template",
-                    "url_template"
-                ]
-            },
-            "ContactFormsListPageDto": {
-                "type": "object",
-                "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
-                    "object": {
-                        "type": "string",
-                        "default": "list",
-                        "enum": ["list"]
-                    },
-                    "data": {
-                        "type": "array",
-                        "items": {"$ref": "#/components/schemas/ContactFormDto"}
-                    }
-                },
-                "required": ["meta", "object", "data"]
-            },
-            "UpdateContactFormDto": {
-                "type": "object",
-                "properties": {
-                    "help_center_id": {
-                        "type": "number",
-                        "nullable": true,
-                        "description": "Help center id that is serving this contact form",
-                        "example": null
-                    },
-                    "name": {
-                        "type": "string",
-                        "description": "Name of the Contact Form",
-                        "example": "My Contact Form",
-                        "minLength": 2,
-                        "maxLength": 255
-                    },
-                    "default_locale": {
-                        "description": "Contact Form default locale",
-                        "example": "en-US",
-                        "enum": [
-                            "en-US",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
-                            "cs-CZ",
-                            "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE"
-                        ],
-                        "type": "string"
-                    },
-                    "email_integration": {
-                        "description": "Email integration used to receive this contact form inquiries",
-                        "example": {"id": 1, "email": "jonh@example.com"},
-                        "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
-                        ]
-                    },
-                    "subject_lines": {
-                        "nullable": true,
-                        "description": "Custom subject lines",
-                        "example": {
-                            "options": [
-                                "Order status",
-                                "Feedback",
-                                "Report an issue",
-                                "Product questions",
-                                "Request refund or discount"
-                            ],
-                            "allow_other": true
-                        },
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/CreateSubjectLinesDto"
-                            }
-                        ]
-                    }
-                }
             }
         }
     },

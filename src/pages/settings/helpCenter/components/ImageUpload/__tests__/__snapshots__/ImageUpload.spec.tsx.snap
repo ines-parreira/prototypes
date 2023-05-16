@@ -57,6 +57,7 @@ exports[`<ImageUpload /> matches snapshot 1`] = `
     </label>
     <input
       accept="image/jpeg,image/png"
+      data-testid="input-jest-file"
       id="jest-file"
       style="display: none;"
       type="file"

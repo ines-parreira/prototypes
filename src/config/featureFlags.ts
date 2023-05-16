@@ -37,4 +37,5 @@ export enum FeatureFlagKey {
     SpotlightRecentItems = 'spotlight-recent-items',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ContinuousChatViewsPolling = 'continuous-chat-views-polling',
+    HelpCenterImagesForCategories = 'help-center-images-for-categories',
 }

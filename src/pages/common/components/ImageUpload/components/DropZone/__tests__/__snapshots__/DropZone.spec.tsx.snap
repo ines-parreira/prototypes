@@ -38,6 +38,7 @@ exports[`<DropZone> matches snapshot 1`] = `
     </div>
   </label>
   <input
+    data-testid="input-dropZone"
     id="dropZone"
     style="display: none;"
     type="file"

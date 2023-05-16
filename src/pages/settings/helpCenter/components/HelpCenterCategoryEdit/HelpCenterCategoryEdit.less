@@ -109,6 +109,14 @@
         font-size: 14px;
     }
 
+    .languageSelect {
+        label {
+            color: @classic-neutral-grey-6;
+            font-size: 14px;
+            font-weight: 600;
+        }
+    }
+
     .parentDropdown {
         padding: 4px 0 0 0;
         max-height: 240px;
@@ -254,5 +262,15 @@
         display: flex;
         margin-top: 16px;
         column-gap: 8px;
+    }
+
+    .imageUpload {
+        font-size: 14px;
+
+        :global(.hd-help-text-text),
+        :global(.hd-help-text-actions),
+        :global(.hd-help-text-actions) div {
+            display: inline;
+        }
     }
 }

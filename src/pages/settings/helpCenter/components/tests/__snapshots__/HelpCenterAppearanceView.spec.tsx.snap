@@ -246,6 +246,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </label>
               <input
                 accept="image/jpeg,image/png"
+                data-testid="input-primary_logo"
                 id="primary_logo"
                 style="display: none;"
                 type="file"
@@ -324,6 +325,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </label>
               <input
                 accept="image/jpeg,image/png"
+                data-testid="input-light_logo"
                 id="light_logo"
                 style="display: none;"
                 type="file"
@@ -401,6 +403,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </label>
               <input
                 accept="image/png,image/jpeg,image/x-icon"
+                data-testid="input-favicon"
                 id="favicon"
                 style="display: none;"
                 type="file"
@@ -937,6 +940,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             </label>
             <input
               accept="image/jpeg,image/png"
+              data-testid="input-banner_image"
               id="banner_image"
               style="display: none;"
               type="file"

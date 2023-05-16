@@ -110,6 +110,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                     locale,
                     title: payload.title || '',
                     description: payload.description || '',
+                    image_url: payload.image_url,
                     parent_category_id: payload.parent_category_id || null,
                     slug: payload.slug || '',
                     seo_meta: {

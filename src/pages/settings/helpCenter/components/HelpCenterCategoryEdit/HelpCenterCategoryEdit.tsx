@@ -10,6 +10,8 @@ import {
     Label,
 } from 'reactstrap'
 
+import {useAsyncFn} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
@@ -60,6 +62,9 @@ import {ConfirmationModal} from '../ConfirmationModal'
 import {SearchEnginePreview} from '../SearchEnginePreview'
 import {CloseModal} from '../articles/CloseModal'
 import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
+import {ImageUpload} from '../ImageUpload'
+import {FileUpload, useFileUpload} from '../../hooks/useFileUpload'
+import {FeatureFlagKey} from '../../../../../config/featureFlags'
 import {eligibleParentCategories, isOneOfParentsUnlisted} from './utils'
 
 import css from './HelpCenterCategoryEdit.less'
@@ -131,6 +136,44 @@ export const HelpCenterCategoryEdit = ({
     )
     const [hasPendingChanges, setHasPendingChanges] = useState(false)
     const [isAttemptingToClose, setIsAttemptingToClose] = useState(false)
+
+    const isHelpCenterImagesForCategoriesEnabled =
+        useFlags()[FeatureFlagKey.HelpCenterImagesForCategories]
+    const categoryImage = useFileUpload()
+
+    /**
+     * We check here few cases
+     * - process the image as user uploaded image locally (by checking file.payload)
+     * - The user can also "remove image"; in this case, file.payload will be empty but file.isTouched=true.
+     * - and third case user didn't touch the field and we shouldn't provide any value to the server
+     * */
+    const getFileUploadURL = async (file: FileUpload) => {
+        if (file.payload) {
+            const uploadedFile = await file.uploadFile()
+
+            return uploadedFile?.url
+        } else if (file.isTouched) {
+            return null
+        }
+
+        return undefined
+    }
+
+    const getImageUploadHighlightText = (
+        upload: FileUpload,
+        currentImage?: string | null
+    ) => {
+        return (upload.isTouched && upload.payload) ||
+            (!upload.isTouched && currentImage)
+            ? 'Replace image'
+            : 'Upload image'
+    }
+
+    useEffect(() => {
+        // Discard to reset image state (isTouched and upload file) when the preview image changes.
+        categoryImage.discardFile()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [category?.translation?.image_url])
 
     const domain = useMemo(() => getHelpCenterDomain(helpCenter), [helpCenter])
 
@@ -290,34 +333,28 @@ export const HelpCenterCategoryEdit = ({
         setHasPendingChanges(true)
     }
 
-    const attemptSave = () => {
-        setIsAttemptingToClose(false)
-
-        const hasChildren =
-            articlesCount > 0 || (category && category.children.length > 0)
-
-        if (
-            !isCreate &&
-            hasChildren &&
-            category?.translation?.visibility_status === 'PUBLIC' &&
-            visibilityStatus === 'UNLISTED'
-        ) {
-            setPendingSaveCategory(true)
-
-            return
-        }
-        handleOnSave()
-    }
-
-    const handleOnSave = () => {
+    const handleOnSave = async () => {
         setIsAttemptingToClose(false)
         setHasPendingChanges(false)
         setPendingSaveCategory(false)
+
+        let categoryImageUrl: string | undefined | null = undefined
+        try {
+            categoryImageUrl = await getFileUploadURL(categoryImage)
+        } catch (e) {
+            void dispatch(
+                notify({
+                    message: 'Error during image upload',
+                    status: NotificationStatus.Error,
+                })
+            )
+        }
 
         if (isCreate) {
             onCreate?.({
                 translation: {
                     locale: viewLanguage,
+                    image_url: categoryImageUrl,
                     title,
                     parent_category_id: parentCategory,
                     visibility_status: visibilityStatus,
@@ -338,6 +375,7 @@ export const HelpCenterCategoryEdit = ({
                 title,
                 slug,
                 description,
+                image_url: categoryImageUrl,
                 parent_category_id: parentCategory,
                 visibility_status: visibilityStatus,
                 seo_meta: {
@@ -349,10 +387,30 @@ export const HelpCenterCategoryEdit = ({
         )
     }
 
+    const [{loading: isSaveProcessing}, attemptSave] = useAsyncFn(async () => {
+        setIsAttemptingToClose(false)
+
+        const hasChildren =
+            articlesCount > 0 || (category && category.children.length > 0)
+        if (
+            !isCreate &&
+            hasChildren &&
+            category?.translation?.visibility_status === 'PUBLIC' &&
+            visibilityStatus === 'UNLISTED'
+        ) {
+            setPendingSaveCategory(true)
+
+            return
+        }
+
+        await handleOnSave()
+    }, [category, visibilityStatus, articlesCount, isCreate, handleOnSave])
+
     const handleDiscard = () => {
         onClose()
         setHasPendingChanges(false)
         setIsAttemptingToClose(false)
+        categoryImage.discardFile()
     }
 
     const handleCloseModalAttempt = () => {
@@ -525,16 +583,60 @@ export const HelpCenterCategoryEdit = ({
                         setShowNotification={setShowNotification}
                         type="category"
                     />
-                    <ArticleLanguageSelect
-                        selected={viewLanguage}
-                        list={localeOptions}
-                        onSelect={handleOnChangeLocale}
-                        onActionClick={handleOnClickAction}
-                        className={css.inlineLanguageSelect}
-                    />
+                    {!isHelpCenterImagesForCategoriesEnabled && (
+                        <ArticleLanguageSelect
+                            selected={viewLanguage}
+                            list={localeOptions}
+                            onSelect={handleOnChangeLocale}
+                            onActionClick={handleOnClickAction}
+                            className={css.inlineLanguageSelect}
+                        />
+                    )}
                 </div>
             </Drawer.Header>
             <Drawer.Content>
+                {isHelpCenterImagesForCategoriesEnabled && (
+                    <div
+                        className={css.groupedFormGroups}
+                        data-testid="image-upload"
+                    >
+                        <FormGroup>
+                            <ImageUpload
+                                id="image"
+                                title="Image"
+                                imageRole="default"
+                                file={categoryImage.payload}
+                                defaultPreview={
+                                    category?.translation?.image_url ?? ''
+                                }
+                                onChangeFile={categoryImage.changeFile}
+                                isTouched={categoryImage.isTouched}
+                                helpTextProps={{
+                                    highlight: getImageUploadHighlightText(
+                                        categoryImage,
+                                        category?.translation?.image_url
+                                    ),
+                                    text: ' - Recommended file size: 318 x 160px, 500KB or less.  Max file size: 10MB.',
+                                    className: css.imageUpload,
+                                }}
+                            />
+                        </FormGroup>
+                    </div>
+                )}
+                {isHelpCenterImagesForCategoriesEnabled && (
+                    <div className={css.groupedFormGroups}>
+                        <FormGroup className={classNames(css.languageSelect)}>
+                            <Label for="title">Language</Label>
+                            <ArticleLanguageSelect
+                                selected={viewLanguage}
+                                list={localeOptions}
+                                onSelect={handleOnChangeLocale}
+                                onActionClick={handleOnClickAction}
+                                className={css.inlineLanguageSelect}
+                            />
+                        </FormGroup>
+                    </div>
+                )}
                 <div className={css.groupedFormGroups}>
                     <FormGroup
                         className={classNames(css.textfield, css.required)}
@@ -652,6 +754,7 @@ export const HelpCenterCategoryEdit = ({
                     data-testid="button-save"
                     isDisabled={!canSaveCategory}
                     onClick={attemptSave}
+                    isLoading={isSaveProcessing}
                 >
                     Save
                 </Button>

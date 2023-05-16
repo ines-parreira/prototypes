@@ -1,10 +1,19 @@
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
+import {act, fireEvent, render, waitFor, screen} from '@testing-library/react'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {HelpCenter} from 'models/helpCenter/types'
+import LD from 'launchdarkly-react-client-sdk'
+import userEvent from '@testing-library/user-event'
+import {
+    Category,
+    CreateCategoryDto,
+    HelpCenter,
+    LocalCategoryTranslation,
+    LocaleCode,
+    UpdateCategoryTranslationDto,
+} from 'models/helpCenter/types'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
@@ -14,6 +23,8 @@ import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixt
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {HelpCenterCategoryEdit} from '../HelpCenterCategoryEdit'
+import {FeatureFlagKey} from '../../../../../../config/featureFlags'
+import {getSingleCategoryEnglish} from '../../../fixtures/getCategoriesResponse.fixtures'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -34,6 +45,16 @@ const store = mockStore(defaultState)
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
+jest.mock('utils', () => {
+    const mockedUtils = jest.requireActual('utils')
+    return {
+        ...mockedUtils,
+        uploadFiles: jest.fn(
+            (files: FileList) => Promise.resolve([{url: files[0].name}]) // Use this just for testing purposes to see which exact image was "uploaded"
+        ),
+    } as unknown
+})
+
 const onLocaleChange = jest.fn()
 
 const wrapper = ({children}: {children?: React.ReactNode}) => (
@@ -43,13 +64,26 @@ const wrapper = ({children}: {children?: React.ReactNode}) => (
 type Props = {
     isOpen?: boolean
     canSave?: boolean
+    isCreate?: boolean
     helpCenter?: HelpCenter
+    onSave?: (
+        translation: UpdateCategoryTranslationDto,
+        locale: LocaleCode
+    ) => void
+    onCreate?: (payload: CreateCategoryDto) => void
+    category?: Category
+    translation?: LocalCategoryTranslation
 }
 
 const Example = ({
     isOpen = false,
     canSave = true,
     helpCenter = getSingleHelpCenterResponseFixture,
+    onSave = jest.fn(),
+    onCreate = jest.fn(),
+    isCreate = false,
+    category,
+    translation,
 }: Props) => {
     const [open, setOpen] = React.useState(isOpen)
 
@@ -60,12 +94,17 @@ const Example = ({
             </button>
             <HelpCenterCategoryEdit
                 isOpen={open}
+                isCreate={isCreate}
+                translation={translation}
+                onSave={onSave}
+                onCreate={onCreate}
                 isLoading={false}
                 canSave={canSave}
                 helpCenter={helpCenter}
                 onClose={() => setOpen(false)}
                 onLocaleChange={onLocaleChange}
                 onDeleteTranslation={jest.fn()}
+                category={category}
             />
         </Provider>
     )
@@ -224,6 +263,88 @@ describe('<HelpCenterCategoryEdit />', () => {
             fireEvent.click(getByTestId('toggle-btn'))
 
             expect(titleInput.value).toEqual('')
+        })
+    })
+
+    describe('image upload', () => {
+        beforeEach(() => {
+            window.URL.createObjectURL = jest.fn() // avoid upload image error
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.HelpCenterImagesForCategories]: true,
+            }))
+        })
+
+        it('should displays Image field', () => {
+            render(<Example isOpen />)
+
+            expect(screen.getByTestId('image-upload')).toBeInTheDocument()
+        })
+
+        it('should create category with image and title', async () => {
+            const file = new File(['hello'], 'hello.png', {type: 'image/png'})
+            const fakeOnCreate = jest.fn()
+            render(<Example onCreate={fakeOnCreate} isOpen isCreate />)
+
+            await userEvent.type(screen.getByTestId('title-input'), 'Title')
+
+            userEvent.upload(screen.getByTestId('input-image'), file)
+
+            userEvent.click(screen.getByTestId('button-save'))
+
+            await waitFor(() =>
+                expect(fakeOnCreate).toHaveBeenCalledWith({
+                    translation: {
+                        description: '',
+                        title: 'Title',
+                        image_url: 'hello.png',
+                        locale: 'en-US',
+                        parent_category_id: undefined,
+                        seo_meta: {description: null, title: null},
+                        slug: 'title',
+                        visibility_status: 'PUBLIC',
+                    },
+                })
+            )
+        })
+
+        it('should update category with null for image when user remove the image', async () => {
+            const fakeOnSave = jest.fn()
+            const translation = {
+                ...getSingleCategoryEnglish.translation,
+                image_url: 'https//example.com/hello.png',
+            } as LocalCategoryTranslation // required because problem of property destructuring with type mapping
+            const category = {
+                ...getSingleCategoryEnglish,
+                translation,
+            }
+            render(
+                <Example
+                    onSave={fakeOnSave}
+                    isOpen
+                    isCreate={false}
+                    category={category}
+                    translation={translation}
+                />
+            )
+
+            userEvent.click(screen.getByTestId('image-upload-remove'))
+
+            userEvent.click(screen.getByTestId('button-save'))
+
+            await waitFor(() =>
+                expect(fakeOnSave).toHaveBeenCalledWith(
+                    {
+                        description: translation.description,
+                        image_url: null,
+                        slug: translation.slug,
+                        title: translation.title,
+                        parent_category_id: 0,
+                        seo_meta: translation.seo_meta,
+                        visibility_status: translation.visibility_status,
+                    },
+                    'en-US'
+                )
+            )
         })
     })
 })
