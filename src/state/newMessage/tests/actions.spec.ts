@@ -45,6 +45,7 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
+import {NEW_MESSAGE_SUBMIT_TICKET_ERROR} from 'state/newMessage/constants'
 import client from 'models/api/resources'
 import {SearchType} from 'models/search/types'
 import {SEARCH_ENDPOINT} from 'models/search/resources'
@@ -54,10 +55,10 @@ import {
     setOpenStatusAction,
     setSubjectAction,
 } from 'fixtures/macro'
-
 import * as segmentTracker from 'store/middlewares/segmentTracker'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+
 import {getReplyAreaStateSnapshot} from './testUtils'
 
 type MockedRootState = {
@@ -1982,6 +1983,24 @@ describe('actions', () => {
                         }
                     ).custom_fields
                 ).toEqual([customFields[1]])
+            })
+
+            it('should catch error and dispatch NEW_MESSAGE_SUBMIT_TICKET_ERROR action', async () => {
+                mockServer.onPost('/api/tickets/').reply(400, undefined)
+
+                await store.dispatch(
+                    actions.submitTicket(
+                        ticketInitialState,
+                        TicketStatus.Open,
+                        undefined,
+                        fromJS({}),
+                        true
+                    )
+                )
+
+                expect((store.getActions().pop() as {type: string}).type).toBe(
+                    NEW_MESSAGE_SUBMIT_TICKET_ERROR
+                )
             })
         })
     })

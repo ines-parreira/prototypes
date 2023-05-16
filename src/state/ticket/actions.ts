@@ -13,6 +13,7 @@ import {
     TicketStatus,
     TicketChannel,
 } from 'business/types/ticket'
+import {appQueryClient} from 'init'
 import {DEFAULT_ACTIONS} from 'config'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'
@@ -41,6 +42,7 @@ import {
     TicketMessageIntent,
 } from 'models/ticket/types'
 import {View, ViewType} from 'models/view/types'
+import {customFieldDefinitionKeys} from 'models/customField/queries'
 
 import {getChannelsByType} from 'state/integrations/selectors'
 import {
@@ -61,8 +63,11 @@ import {Macro} from 'state/macro/types'
 import {getCustomer} from 'models/customer/resources'
 import {Member, Team} from 'models/team/types'
 import {Macro as MacroModel} from 'models/macro/types'
-
 import {mapNormalizedToArray} from 'models/ticket/mappers'
+import {getCustomFields} from 'models/customField/resources'
+
+import {getInvalidTicketFieldIds} from 'utils/customFields'
+
 import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,
@@ -70,6 +75,7 @@ import {
     guessReceiversFromTicket,
 } from './utils'
 import * as types from './constants'
+import {getTicketFieldState} from './selectors'
 
 export const mergeTicket =
     (ticket: Ticket) =>
@@ -205,6 +211,7 @@ export const ticketPartialUpdate =
                     })
                 },
                 (error: AxiosError) => {
+                    void dispatch(triggerTicketFieldsRefreshAndInvalidation())
                     return dispatch({
                         type: types.TICKET_PARTIAL_UPDATE_ERROR,
                         error,
@@ -1387,3 +1394,23 @@ export const restoreTicketDraft = createAction<
 export const restoreTicketDraftApplyMacro = createAction<MacroModel | null>(
     types.RESTORE_TICKET_DRAFT_APPLY_MACRO
 )
+
+export const triggerTicketFieldsRefreshAndInvalidation =
+    () => async (dispatch: StoreDispatch, getState: () => RootState) => {
+        await appQueryClient.invalidateQueries({
+            queryKey: customFieldDefinitionKeys.all(),
+        })
+        const invalidFields = getInvalidTicketFieldIds({
+            fieldsState: getTicketFieldState(getState()),
+            fieldDefinitions:
+                appQueryClient.getQueryData<
+                    Awaited<ReturnType<typeof getCustomFields>>
+                >(
+                    customFieldDefinitionKeys.list({
+                        archived: false,
+                        object_type: 'Ticket',
+                    })
+                )?.data || [],
+        })
+        dispatch(setInvalidCustomFieldsToErrored(invalidFields))
+    }

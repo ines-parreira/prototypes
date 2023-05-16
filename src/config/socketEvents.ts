@@ -2,6 +2,7 @@ import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 import * as Sentry from '@sentry/react'
 
+import {appQueryClient, store as reduxStore} from 'init'
 import browserNotification from 'services/browserNotification'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {setIsAvailable} from 'state/currentUser/actions'
@@ -10,6 +11,8 @@ import {fetchNewPhoneNumbers} from 'models/phoneNumber/resources'
 import {newPhoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {isMigrationInProgress} from 'hooks/useWhatsAppMigration'
 import {getEmailMigrations} from 'state/integrations/selectors'
+import {customFieldDefinitionKeys} from 'models/customField/queries'
+
 import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
 
 import * as agentsActions from '../state/agents/actions'
@@ -30,7 +33,6 @@ import * as currentUserSelectors from '../state/currentUser/selectors'
 import {getTeams} from '../state/teams/selectors'
 
 import {isCurrentlyOnTicket} from '../utils'
-import {store as reduxStore} from '../init'
 import {isViewSharedWithUser} from '../state/views/utils'
 import {SocketManager} from '../services/socketManager/socketManager'
 import {
@@ -343,6 +345,9 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'ticket-message-action-failed',
         onReceive: function (json) {
+            void appQueryClient.invalidateQueries({
+                queryKey: customFieldDefinitionKeys.all(),
+            })
             reduxStore.dispatch(
                 ticketActions.handleMessageActionError(
                     (json as TicketMessageActionFailedEvent)

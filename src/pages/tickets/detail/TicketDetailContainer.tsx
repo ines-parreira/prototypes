@@ -31,7 +31,6 @@ import {
     setSender,
     submitTicket,
 } from 'state/newMessage/actions'
-import {NEW_MESSAGE_SUBMIT_TICKET_ERROR} from 'state/newMessage/constants'
 import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
@@ -192,10 +191,7 @@ export const TicketDetailContainer = ({
             [ticketIdParam]
         )
 
-    const prepareAndSubmitNewTicket = async ({
-        status,
-        resetMessage,
-    }: SubmitArgs) => {
+    const prepareAndSubmitNewTicket = ({status, resetMessage}: SubmitArgs) => {
         let submittedTicket
         const receiver = newMessage.getIn(['newMessage', 'receiver'])
         const sender = {id: currentUser.get('id')}
@@ -208,7 +204,7 @@ export const TicketDetailContainer = ({
             submittedTicket = ticket.set('customer', receiver)
         }
 
-        await submitTicket(
+        return submitTicket(
             submittedTicket,
             status,
             ticket.getIn(['state', 'appliedMacro', 'actions']),
@@ -298,22 +294,16 @@ export const TicketDetailContainer = ({
 
         // The ticket does not exist yet.
         if (!ticket.get('id')) {
-            try {
-                await prepareAndSubmitNewTicket({
-                    status,
-                    action,
-                    resetMessage,
-                })
+            const {error} = ((await prepareAndSubmitNewTicket({
+                status,
+                action,
+                resetMessage,
+            })) || {}) as {error: unknown}
 
-                LocalForageManager.clearTable(DRAFT_TICKET_STORE)
-            } catch (error) {
-                dispatch({
-                    type: NEW_MESSAGE_SUBMIT_TICKET_ERROR,
-                    error,
-                    verbose: true,
-                    reason: 'Ticket was not created. Please try again in a few moments. If the problem persists contact us',
-                })
+            if (error) {
+                return
             }
+            LocalForageManager.clearTable(DRAFT_TICKET_STORE)
         } else {
             await submitNewMessage({status, action, resetMessage})
         }

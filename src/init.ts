@@ -15,6 +15,7 @@ import {
     Filler,
 } from 'chart.js'
 import {SankeyController, Flow} from 'chartjs-chart-sankey'
+import {QueryClient} from '@tanstack/react-query'
 
 import './polyfills'
 
@@ -42,6 +43,8 @@ import {
     getCurrentHelpdeskProduct,
 } from 'state/billing/selectors'
 import {RootState} from 'state/types'
+
+export const appQueryClient = new QueryClient()
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone

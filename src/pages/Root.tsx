@@ -9,9 +9,10 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import Immutable from 'immutable'
 import installDevTools from 'immutable-devtools'
 import {Store} from 'redux'
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {QueryClientProvider} from '@tanstack/react-query'
 
 import {getLDClient, LDUser} from 'utils/launchDarkly'
+import {appQueryClient} from 'init'
 import {RootState} from '../state/types'
 
 import history from './history'
@@ -28,8 +29,6 @@ type State = {
 if (process.env.NODE_ENV !== 'production') {
     installDevTools(Immutable)
 }
-
-const queryClient = new QueryClient()
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
@@ -49,7 +48,7 @@ class Root extends Component<Props, State> {
         const {LDClient} = this.state
 
         return (
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={appQueryClient}>
                 <Provider store={store}>
                     <DndProvider manager={manager}>
                         <LDProvider

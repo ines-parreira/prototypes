@@ -32,10 +32,12 @@ import {
     getSourceTypeOfResponse,
     persistLastSenderChannel,
 } from 'state/ticket/utils'
+import {NEW_MESSAGE_SUBMIT_TICKET_ERROR} from 'state/newMessage/constants'
 import * as integrationSelectors from 'state/integrations/selectors'
 import * as ticketSelectors from 'state/ticket/selectors'
 import * as agentSelectors from 'state/agents/selectors'
 import socketManager from 'services/socketManager/socketManager'
+import {triggerTicketFieldsRefreshAndInvalidation} from 'state/ticket/actions'
 import {Attachment} from 'types'
 import type {CurrentUser, RootState, StoreDispatch} from 'state/types'
 import {getMomentNow} from 'utils/date'
@@ -1330,10 +1332,10 @@ export function submitTicket(
     currentUser: CurrentUser,
     resetMessage = true
 ) {
-    return (
+    return async (
         dispatch: StoreDispatch,
         getState: () => RootState
-    ): Maybe<Promise<ReturnType<StoreDispatch>>> => {
+    ): Promise<ReturnType<StoreDispatch>> => {
         const {newMessage} = getState()
 
         dispatch({
@@ -1356,45 +1358,52 @@ export function submitTicket(
             return null
         }
 
-        const ticketToSend = dataToSend.ticket
-        // Types are so so wrong in there
-        //$TsFixMe
-        //@ts-ignore
-        ticketToSend.messages.push(dataToSend.newMessage)
+        try {
+            const ticketToSend = dataToSend.ticket
+            // Types are so so wrong in there
+            //$TsFixMe
+            //@ts-ignore
+            ticketToSend.messages.push(dataToSend.newMessage)
 
-        return client
-            .post<TicketResponse>('/api/tickets/', {
-                ...ticketToSend,
-                custom_fields:
-                    ticketToSend.custom_fields &&
-                    mapNormalizedToArray(ticketToSend.custom_fields),
-            })
-            .then((json) => json?.data)
-            .then((resp) => {
-                onMessageSent(dispatch)
-
-                history.push(`/app/ticket/${resp.id}`)
-
-                const state = getState()
-                const {ticket} = state
-
-                if (resp.id !== ticket.get('id') && ticket.get('id')) {
-                    return Promise.resolve({resp})
+            const response = await client.post<TicketResponse>(
+                '/api/tickets/',
+                {
+                    ...ticketToSend,
+                    custom_fields:
+                        ticketToSend.custom_fields &&
+                        mapNormalizedToArray(ticketToSend.custom_fields),
                 }
+            )
 
-                // dispatch for newMessage and ticket reducer branch
-                dispatch({
-                    type: constants.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,
-                    resetMessage,
-                    resp,
-                })
+            const data = response?.data
 
-                dispatch(resetReceiversAndSender)
+            onMessageSent(dispatch)
 
-                return Promise.resolve(resp) as unknown as Promise<
-                    ReturnType<StoreDispatch>
-                >
+            history.push(`/app/ticket/${data.id}`)
+
+            const state = getState()
+            const {ticket} = state
+
+            if (data.id !== ticket.get('id') && ticket.get('id')) {
+                return Promise.resolve({resp: data})
+            }
+
+            dispatch(resetReceiversAndSender)
+            // dispatch for newMessage and ticket reducer branch
+            return dispatch({
+                type: constants.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,
+                resetMessage,
+                resp: data,
             })
+        } catch (error) {
+            void dispatch(triggerTicketFieldsRefreshAndInvalidation())
+            return dispatch({
+                type: NEW_MESSAGE_SUBMIT_TICKET_ERROR,
+                error,
+                verbose: true,
+                reason: 'Ticket was not created. Please try again in a few moments. If the problem persists contact us',
+            })
+        }
     }
 }
 

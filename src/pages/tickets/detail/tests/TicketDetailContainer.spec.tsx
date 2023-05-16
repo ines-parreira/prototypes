@@ -16,7 +16,6 @@ import localForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {initialState as currentUser} from 'state/currentUser/reducers'
-import {NEW_MESSAGE_SUBMIT_TICKET_ERROR} from 'state/newMessage/constants'
 import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
@@ -1216,7 +1215,7 @@ describe('TicketDetailContainer component', () => {
                         {...minProps}
                         canSendMessage={true}
                         submitTicket={() => {
-                            throw error
+                            return Promise.resolve({error})
                         }}
                     />
                 </Provider>
@@ -1230,13 +1229,6 @@ describe('TicketDetailContainer component', () => {
         userEvent.click(getByTestId('TicketView-submit'))
         await flushPromises()
         expect(localForageManager.clearTable).not.toHaveBeenCalled()
-
-        expect(mockedDispatch).toHaveBeenCalledWith({
-            error: error,
-            reason: 'Ticket was not created. Please try again in a few moments. If the problem persists contact us',
-            type: NEW_MESSAGE_SUBMIT_TICKET_ERROR,
-            verbose: true,
-        })
     })
 
     describe('ticket fields', () => {

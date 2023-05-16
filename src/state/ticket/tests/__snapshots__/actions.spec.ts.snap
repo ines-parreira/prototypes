@@ -2170,6 +2170,17 @@ exports[`ticket actions triggerTicketFieldsErrors() should dispatch SET_INVALID_
 ]
 `;
 
+exports[`ticket actions triggerTicketFieldsRefreshAndInvalidation() should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED with correct errored fields 1`] = `
+[
+  {
+    "payload": [
+      123,
+    ],
+    "type": "SET_INVALID_CUSTOM_FIELDS_TO_ERRORED",
+  },
+]
+`;
+
 exports[`ticket actions updateActionArgsOnApplied() 1`] = `
 [
   {
