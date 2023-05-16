@@ -81,6 +81,7 @@ export const INTEGRATION_COMPONENTS_TYPES: {
           '3503769485p2': IntegrationType.Yotpo,
           ccg4qppx1spl: IntegrationType.Recharge,
           nd755d0bdslv: IntegrationType.Twitter,
+          tjf8pv3fncvs: IntegrationType.WhatsApp,
       })
     : Object.freeze({
           ykr08lvqnb66: IntegrationType.Aircall,
