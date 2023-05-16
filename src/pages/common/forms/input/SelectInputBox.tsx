@@ -142,7 +142,11 @@ const SelectInputBox = forwardRef(
         return (
             <SelectInputBoxContext.Provider value={contextValue}>
                 <div
-                    className={classnames(css.wrapper, className)}
+                    className={classnames(
+                        css.wrapper,
+                        {[css.leftMargin]: appendPosition === 'left'},
+                        className
+                    )}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     ref={inputElement}

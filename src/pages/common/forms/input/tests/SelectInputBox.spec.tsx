@@ -1,6 +1,7 @@
 import {render, fireEvent} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
+import {GroupPositionContext} from 'pages/common/components/layout/Group'
 import SelectInputBox, {SelectInputBoxContext} from '../SelectInputBox'
 
 describe('<SelectInputBox />', () => {
@@ -104,5 +105,23 @@ describe('<SelectInputBox />', () => {
         fireEvent.focus(getByText(defaultProps.label as string))
         fireEvent.click(getByText(/click/))
         expect(defaultProps.onToggle).toHaveBeenNthCalledWith(2, false)
+    })
+
+    it('should render with a left margin of 1px', () => {
+        const {container} = render(
+            <GroupPositionContext.Provider value={'left'}>
+                <SelectInputBox {...defaultProps} label={null} />
+            </GroupPositionContext.Provider>
+        )
+        expect(container.getElementsByClassName('leftMargin').length).toBe(1)
+    })
+
+    it('should render without a left margin of 1px', () => {
+        const {container} = render(
+            <GroupPositionContext.Provider value={'middle'}>
+                <SelectInputBox {...defaultProps} label={null} />
+            </GroupPositionContext.Provider>
+        )
+        expect(container.getElementsByClassName('leftMargin').length).toBe(0)
     })
 })
