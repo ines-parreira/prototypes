@@ -2,7 +2,10 @@ import {useQuery} from '@tanstack/react-query'
 
 import {reportError} from 'utils/errors'
 
-import {getInstallationSnippet} from 'state/integrations/actions/gorgias-chat.actions'
+import {
+    getApplications,
+    getInstallationSnippet,
+} from 'state/integrations/actions/gorgias-chat.actions'
 
 import {GetInstallationSnippetParams} from './types'
 
@@ -26,4 +29,13 @@ export const useGetInstallationSnippet = (
             )
         },
         ...overrides,
+    })
+
+export const useApplications = () =>
+    useQuery({
+        queryKey: ['integration', 'gorgias-chat', 'getApplications'],
+        queryFn: getApplications,
+        onError: () => {
+            reportError(new Error('Failed to fetch chat applications'))
+        },
     })

@@ -48,6 +48,16 @@ declare namespace Paths {
             applicationId: Parameters.ApplicationId
         }
     }
+    namespace GetApplications {
+        export interface HeaderParameters {
+            'Content-Type'?: Parameters.ContentType
+            Authorization?: Parameters.Authorization
+        }
+        namespace Parameters {
+            export type Authorization = string
+            export type ContentType = string
+        }
+    }
     namespace GetInstallationSnippet {
         export interface HeaderParameters {
             'Content-Type'?: Parameters.ContentType
@@ -129,6 +139,14 @@ export interface OperationMethods {
             Paths.GetInstallationSnippet.PathParameters &
                 Paths.GetInstallationSnippet.HeaderParameters
         > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<any>
+    /**
+     * getApplications - Get applications
+     */
+    'getApplications'(
+        parameters?: Parameters<Paths.GetApplications.HeaderParameters> | null,
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<any>
@@ -221,6 +239,16 @@ export interface PathsDictionary {
                 Paths.GetInstallationSnippet.PathParameters &
                     Paths.GetInstallationSnippet.HeaderParameters
             > | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<any>
+    }
+    ['/helpdesk/applications']: {
+        /**
+         * getApplications - Get applications
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetApplications.HeaderParameters> | null,
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<any>

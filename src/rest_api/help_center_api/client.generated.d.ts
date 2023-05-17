@@ -310,6 +310,10 @@ declare namespace Components {
         description: string | null;
       };
       visibility_status: "PUBLIC" | "UNLISTED";
+      /**
+       * example:
+       * https://cdn.shopify.com/image.jpg
+       */
       image_url?: string | null;
       title: string;
       description: string | null;
@@ -457,6 +461,10 @@ declare namespace Components {
           description: string | null;
         };
         visibility_status: "PUBLIC" | "UNLISTED";
+        /**
+         * example:
+         * https://cdn.shopify.com/image.jpg
+         */
         image_url?: string | null;
         title: string;
         description: string | null;
@@ -928,6 +936,8 @@ declare namespace Components {
         visibility_status?: "PUBLIC" | "UNLISTED";
         /**
          * Category image URL
+         * example:
+         * https://cdn.shopify.com/image.jpg
          */
         image_url?: string | null;
       };
@@ -986,6 +996,8 @@ declare namespace Components {
       visibility_status?: "PUBLIC" | "UNLISTED";
       /**
        * Category image URL
+       * example:
+       * https://cdn.shopify.com/image.jpg
        */
       image_url?: string | null;
     }
@@ -1088,6 +1100,7 @@ declare namespace Components {
         description: string | null;
       };
       chat_application_id?: number | null;
+      chat_app_key?: string | null;
     }
     export interface CreateHelpCenterTranslationSeoMetaDto {
       /**
@@ -1474,6 +1487,7 @@ declare namespace Components {
         custom_footer_deactivated_datetime: string | null; // date-time
       };
       chat_application_id: number | null;
+      chat_app_key: string | null;
     }
     export interface HelpCenterTranslationSeoMeta {
       title: string | null;
@@ -1558,6 +1572,10 @@ declare namespace Components {
         description: string | null;
       };
       visibility_status: "PUBLIC" | "UNLISTED";
+      /**
+       * example:
+       * https://cdn.shopify.com/image.jpg
+       */
       image_url?: string | null;
       /**
        * Gives details on how the translation fallback was chosen:
@@ -1884,6 +1902,8 @@ declare namespace Components {
       visibility_status?: "PUBLIC" | "UNLISTED";
       /**
        * Category image URL
+       * example:
+       * https://cdn.shopify.com/image.jpg
        */
       image_url?: string | null;
     }
@@ -2118,6 +2138,7 @@ declare namespace Components {
         description: string | null;
       };
       chat_application_id?: number | null;
+      chat_app_key?: string | null;
       /**
        * The banner text of the help center in the `locale`'s translation.
        */

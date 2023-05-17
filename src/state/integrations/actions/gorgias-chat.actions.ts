@@ -2,6 +2,7 @@ import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_
 import {
     GetInstallationSnippetParams,
     GetInstallationSnippetResponse,
+    GetApplicationsResponse,
 } from 'models/integration/types'
 import {
     Texts,
@@ -57,5 +58,12 @@ export async function getInstallationSnippet(
     const client = await getGorgiasChatProtectedApiClient()
     const {data}: {data: GetInstallationSnippetResponse} =
         await client.getInstallationSnippet(params)
+    return data
+}
+
+export async function getApplications() {
+    const client = await getGorgiasChatProtectedApiClient()
+    const {data}: {data: GetApplicationsResponse} =
+        await client.getApplications()
     return data
 }

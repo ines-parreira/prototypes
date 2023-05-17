@@ -1,5 +1,6 @@
 import React from 'react'
 import {fireEvent, waitFor} from '@testing-library/react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,7 +11,10 @@ import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/Help
 
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
+import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import ChatApplication from '../ChatApplication'
+
+const queryClient = createTestQueryClient()
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
@@ -167,7 +171,8 @@ const route = {
 }
 
 describe('<ChatApplication />', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
+        await queryClient.invalidateQueries()
         jest.resetAllMocks()
         ;(useHelpCenterTranslation as jest.Mock).mockReturnValue({
             translation: {
@@ -180,9 +185,11 @@ describe('<ChatApplication />', () => {
 
     it('allows to enable chat widget and selects the first chat by default', async () => {
         const {container, getByLabelText} = renderWithRouter(
-            <Provider store={mockedStore(defaultState)}>
-                <ChatApplication />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore(defaultState)}>
+                    <ChatApplication />
+                </Provider>
+            </QueryClientProvider>,
             route
         )
 
@@ -192,23 +199,27 @@ describe('<ChatApplication />', () => {
             fireEvent.click(getByLabelText('Enable chat widget'))
         })
 
-        expect(mockedUpdateTranslation).toHaveBeenLastCalledWith({
-            chatApplicationId: 1,
-        })
+        expect(mockedUpdateTranslation).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                chatApplicationId: 1,
+            })
+        )
     })
 
     it('is disabled if there are no chat integrations', () => {
         const {container} = renderWithRouter(
-            <Provider
-                store={mockedStore({
-                    ...defaultState,
-                    integrations: fromJS({
-                        integrations: [],
-                    }),
-                })}
-            >
-                <ChatApplication />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider
+                    store={mockedStore({
+                        ...defaultState,
+                        integrations: fromJS({
+                            integrations: [],
+                        }),
+                    })}
+                >
+                    <ChatApplication />
+                </Provider>
+            </QueryClientProvider>,
             route
         )
 

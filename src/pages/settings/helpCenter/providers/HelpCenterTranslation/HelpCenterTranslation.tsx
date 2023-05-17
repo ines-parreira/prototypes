@@ -25,6 +25,7 @@ import {reportError} from 'utils/errors'
 import {getGenericMessageFromError} from '../../utils'
 
 export type HelpCenterTranslationState = {
+    chatAppKey: string | null
     chatApplicationId: number | null
     contactInfo: ContactInfoDto
 }
@@ -47,6 +48,7 @@ type HelpCenterTranslationContext = {
 }
 
 const defaultTranslation: HelpCenterTranslationState = {
+    chatAppKey: null,
     chatApplicationId: null,
     contactInfo: {
         email: {
@@ -118,7 +120,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
         }
 
         try {
-            const {chatApplicationId, contactInfo} = translation
+            const {chatApplicationId, chatAppKey, contactInfo} = translation
 
             await client.updateHelpCenterTranslation(
                 {
@@ -126,6 +128,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                     locale: viewLanguage,
                 },
                 {
+                    chat_app_key: chatAppKey,
                     chat_application_id: chatApplicationId,
                     contact_info: contactInfo,
                 }

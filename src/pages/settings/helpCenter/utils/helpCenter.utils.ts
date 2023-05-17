@@ -57,6 +57,7 @@ export const getNewHelpCenterTranslation = (
         description: null,
     },
     chat_application_id: null,
+    chat_app_key: null,
 })
 
 // Translate all the "common accented characters" from this list : https://practicaltypography.com/common-accented-characters.html

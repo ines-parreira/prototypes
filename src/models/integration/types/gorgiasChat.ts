@@ -169,3 +169,13 @@ export type GetInstallationSnippetResponse = {
     snippetVersion: GorgiasChatMinimumSnippetVersion
     appKey: string
 }
+
+export type GorgiasChatApplicationBaseInfo = {
+    id: number
+    appKey: string
+    name: string
+}
+
+export type GetApplicationsResponse = {
+    applications: GorgiasChatApplicationBaseInfo[]
+}

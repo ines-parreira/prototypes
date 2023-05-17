@@ -3994,7 +3994,8 @@
                         "nullable": false,
                         "allOf": [{"$ref": "#/components/schemas/ExtraHTML"}]
                     },
-                    "chat_application_id": {"type": "number", "nullable": true}
+                    "chat_application_id": {"type": "number", "nullable": true},
+                    "chat_app_key": {"type": "string", "nullable": true}
                 },
                 "required": [
                     "created_datetime",
@@ -4006,7 +4007,8 @@
                     "seo_meta",
                     "contact_info",
                     "extra_html",
-                    "chat_application_id"
+                    "chat_application_id",
+                    "chat_app_key"
                 ]
             },
             "RedirectDto": {
@@ -4408,7 +4410,8 @@
                             }
                         ]
                     },
-                    "chat_application_id": {"type": "number", "nullable": true}
+                    "chat_application_id": {"type": "number", "nullable": true},
+                    "chat_app_key": {"type": "string", "nullable": true}
                 },
                 "required": ["locale", "seo_meta"]
             },
@@ -4511,6 +4514,7 @@
                         ]
                     },
                     "chat_application_id": {"type": "number", "nullable": true},
+                    "chat_app_key": {"type": "string", "nullable": true},
                     "banner_text": {
                         "type": "string",
                         "nullable": true,
@@ -5042,7 +5046,8 @@
                     "image_url": {
                         "type": "string",
                         "nullable": true,
-                        "description": "Category image URL"
+                        "description": "Category image URL",
+                        "example": "https://cdn.shopify.com/image.jpg"
                     }
                 },
                 "required": [
@@ -5125,7 +5130,11 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
-                    "image_url": {"type": "string", "nullable": true},
+                    "image_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "https://cdn.shopify.com/image.jpg"
+                    },
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
                         "enum": ["default", "available"],
@@ -5272,7 +5281,11 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
-                    "image_url": {"type": "string", "nullable": true},
+                    "image_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "https://cdn.shopify.com/image.jpg"
+                    },
                     "title": {"type": "string"},
                     "description": {"type": "string", "nullable": true},
                     "slug": {"type": "string"}
@@ -5350,7 +5363,8 @@
                     "image_url": {
                         "type": "string",
                         "nullable": true,
-                        "description": "Category image URL"
+                        "description": "Category image URL",
+                        "example": "https://cdn.shopify.com/image.jpg"
                     }
                 }
             },

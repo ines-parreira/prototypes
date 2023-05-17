@@ -9,6 +9,7 @@ import settingsCss from 'pages/settings/settings.less'
 import {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS} from 'config/integrations/gorgias_chat'
 import {ChatContactInfoDto} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/types'
+import {useApplications} from 'models/integration/queries'
 import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {getViewLanguage} from 'state/ui/helpCenter'
@@ -32,6 +33,11 @@ import {
 } from './formatting.utils'
 
 const ChatApplication = () => {
+    const {
+        data: {applications} = {applications: []},
+        isSuccess: hasFetchedApplications,
+    } = useApplications()
+
     const {
         translation: {chatApplicationId, contactInfo},
         updateTranslation,
@@ -104,7 +110,11 @@ const ChatApplication = () => {
     const handleChatApplicationIdChange = (
         chatApplicationId: number | null
     ) => {
-        updateTranslation({chatApplicationId})
+        const chatAppKey =
+            applications.find(({id}) => id === chatApplicationId)?.appKey ||
+            null
+
+        updateTranslation({chatApplicationId, chatAppKey})
     }
 
     const toggleChatEnabled = () => {
@@ -200,7 +210,10 @@ const ChatApplication = () => {
                                 }
                                 placeholder="Select a chat"
                                 fullWidth
-                                disabled={!chatApplicationId}
+                                disabled={
+                                    !chatApplicationId ||
+                                    !hasFetchedApplications
+                                }
                                 icon="forum"
                             />
                         </>

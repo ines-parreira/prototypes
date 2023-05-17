@@ -1,6 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import {
+    GetApplicationsResponse,
     GetInstallationSnippetResponse,
     GorgiasChatMinimumSnippetVersion,
 } from 'models/integration/types'
@@ -13,6 +14,7 @@ import {
     updateApplicationTexts,
     getInstallationStatus,
     getInstallationSnippet,
+    getApplications,
 } from '../actions/gorgias-chat.actions'
 import client from '../../../models/api/resources'
 import {
@@ -323,6 +325,58 @@ describe('gorgias-chat.actions', () => {
                 await expect(
                     getInstallationSnippet({applicationId})
                 ).rejects.toThrow()
+            })
+        })
+    })
+
+    describe('"getApplications"', () => {
+        describe('when it works', () => {
+            const okApiResponse: GetApplicationsResponse = {
+                applications: [
+                    {
+                        id: 1,
+                        appKey: 'test',
+                        name: 'Test',
+                    },
+                ],
+            }
+            let mockServer: MockAdapter
+
+            beforeAll(() => {
+                mockServer = new MockAdapter(chatClient)
+
+                mockServer
+                    .onGet(`/helpdesk/applications`)
+                    .reply(200, okApiResponse)
+            })
+            afterAll(() => {
+                mockServer.reset()
+            })
+
+            it('it should return correct data', async () => {
+                const response = await getApplications()
+                expect(JSON.stringify(response)).toBe(
+                    JSON.stringify(okApiResponse)
+                )
+            })
+        })
+
+        describe('when it fails', () => {
+            let mockServer: MockAdapter
+
+            beforeAll(() => {
+                mockServer = new MockAdapter(chatClient)
+
+                mockServer
+                    .onGet(`/helpdesk/applications`)
+                    .reply(500, {error: 'Error'})
+            })
+            afterAll(() => {
+                mockServer.reset()
+            })
+
+            it('it should throw error', async () => {
+                await expect(getApplications()).rejects.toThrow()
             })
         })
     })
