@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import uniqueId from 'lodash/uniqueId'
 import {renderWithDnD} from 'utils/testing'
 
+import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
 import DropdownInput from '../DropdownInput'
 
 let idCount = 1
@@ -22,7 +23,34 @@ describe('<DropdownInput/>', () => {
 
     it('should render correctly', () => {
         const props = {
-            value: ['Option 1', 'Option 2', 'Option 3'],
+            value: [
+                'Option 1',
+                'Option 2',
+                `Option 3${delimiter}Sub 2${delimiter}Sub 3${delimiter}Sub 4${delimiter}Sub 5`,
+                0,
+                1,
+                123,
+                true,
+                false,
+            ],
+            onChange: jest.fn(),
+        }
+
+        const {container} = renderWithDnD(
+            <Provider store={mockStore}>
+                <DropdownInput {...props} />
+            </Provider>
+        )
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should show an error for too much nesting', () => {
+        const props = {
+            value: [
+                'Option 1',
+                'Option 2',
+                `Option 3${delimiter}Sub 2${delimiter}Sub 3${delimiter}Sub 4${delimiter}Sub 5${delimiter}Sub 6`,
+            ],
             onChange: jest.fn(),
         }
 

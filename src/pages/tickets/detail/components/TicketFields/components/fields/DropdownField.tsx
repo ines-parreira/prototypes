@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {CustomFieldState} from 'models/customField/types'
+import {CustomFieldState, CustomFieldValue} from 'models/customField/types'
 import {DROPDOWN_NESTING_DELIMITER} from 'models/customField/constants'
 import {useUpdateOrDeleteTicketFieldValue} from 'models/customField/queries'
 import {
@@ -27,6 +27,7 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTicket} from 'state/ticket/selectors'
 import Tooltip from 'pages/common/components/Tooltip'
+import {isCustomFieldValueEmpty} from 'utils/customFields'
 import Label from '../Label'
 import StealthInput from '../StealthInput'
 import css from './DropdownField.less'
@@ -38,16 +39,46 @@ const PREVIOUS_BUTTON_ID = 'previous-dropdown-modal-id'
 // While the use of a Set removes duplicate end values
 type ChoicesTree = {
     [key: string]: ChoicesTree
-    [CHOICE_VALUES_SYMBOL]: Set<string>
+    [CHOICE_VALUES_SYMBOL]: Set<CustomFieldValue>
 }
 
 type Props = {
     id: CustomFieldState['id']
     label: string
     fieldState?: CustomFieldState
-    choices: string[]
+    choices: CustomFieldValue[]
     placeholder?: string
     isRequired?: boolean
+}
+
+function getLabel(choice?: CustomFieldValue) {
+    if (isCustomFieldValueEmpty(choice)) return ''
+    if (typeof choice === 'boolean') {
+        return choice ? 'Yes' : 'No'
+    }
+
+    return choice.toString()
+}
+
+function getStealthLabel(choice?: CustomFieldValue) {
+    const _choice =
+        typeof choice === 'string'
+            ? (choice.split(DROPDOWN_NESTING_DELIMITER).pop() as string)
+            : choice
+
+    return getLabel(_choice)
+}
+
+function getFullValueFromCurrentPath(
+    currentPath: string[],
+    choice: CustomFieldValue
+) {
+    let value = choice
+    if (typeof choice === 'string') {
+        value = [...currentPath, choice].join(DROPDOWN_NESTING_DELIMITER)
+    }
+
+    return value
 }
 
 export default function DropdownField({
@@ -62,32 +93,37 @@ export default function DropdownField({
     const modalRef = useRef<HTMLDivElement>(null)
 
     const ticketId = useAppSelector(getTicket).id
-    const value = fieldState?.value?.toString() || ''
+    const value = fieldState?.value
+    const isValueEmpty = isCustomFieldValueEmpty(value)
     const hasError = fieldState?.hasError
 
     const inputId = `ticket-${ticketId}-custom-field-value-input-${id}`
 
     const [currentPath, setCurrentPath] = useState<string[]>(
-        value.includes(DROPDOWN_NESTING_DELIMITER)
+        typeof value === 'string' && value.includes(DROPDOWN_NESTING_DELIMITER)
             ? value.split(DROPDOWN_NESTING_DELIMITER).slice(0, -1)
             : []
     )
 
-    const choicesTree = useMemo(() => {
-        const choicesTree: ChoicesTree = {[CHOICE_VALUES_SYMBOL]: new Set()}
+    let choicesTree = useMemo(() => {
+        const tree: ChoicesTree = {[CHOICE_VALUES_SYMBOL]: new Set()}
         choices.forEach((choice) => {
-            recursivelyMapChoice(
-                choicesTree,
-                choice.split(DROPDOWN_NESTING_DELIMITER)
-            )
-        })
-        return choicesTree
-    }, [choices])
+            if (['boolean', 'number'].includes(typeof choice)) {
+                tree[CHOICE_VALUES_SYMBOL].add(choice)
+            }
 
-    let currentBranch = choicesTree
+            if (typeof choice === 'string') {
+                recursivelyMapChoice(
+                    tree,
+                    choice.split(DROPDOWN_NESTING_DELIMITER)
+                )
+            }
+        })
+        return tree
+    }, [choices])
     currentPath.forEach(
         (nextBranchPath) =>
-            (currentBranch = currentBranch[nextBranchPath] || currentBranch)
+            (choicesTree = choicesTree[nextBranchPath] || choicesTree)
     )
 
     const [isActive, setActive] = useA11yDropdown(
@@ -112,18 +148,18 @@ export default function DropdownField({
         dispatch(
             updateCustomFieldState({
                 id,
-                hasError: Boolean((isRequired && !value) || hasError),
+                hasError: Boolean((isRequired && isValueEmpty) || hasError),
                 value,
             })
         )
-    }, [value, dispatch, id, isRequired, hasError])
+    }, [value, isValueEmpty, dispatch, id, isRequired, hasError])
     // Only on blur
     const {mutate} = useUpdateOrDeleteTicketFieldValue(
         {onError},
         {isDisabled: !ticketId}
     )
     const handleChange = useCallback(
-        (newValue: string) => {
+        (newValue: CustomFieldValue) => {
             setActive(false)
             dispatch(updateCustomFieldValue(id, newValue))
             dispatch(updateCustomFieldError(id, false))
@@ -157,25 +193,25 @@ export default function DropdownField({
     // This piece of code ensures the current value still exists in the choices
     // Must be inside an useEffect to avoid concurrency issues with other dispatches
     useEffect(() => {
-        if (value && !choices.includes(value)) {
+        if (typeof value !== 'undefined' && !choices.includes(value)) {
             dispatch(updateCustomFieldError(id, true))
             setCurrentPath([])
         }
-    }, [dispatch, value, choices, id])
+    }, [dispatch, value, isValueEmpty, choices, id])
 
     return (
         <>
             <Label label={label} isRequired={isRequired}>
-                {!!value && !isActive && (
+                {!isValueEmpty && !isActive && (
                     <Tooltip placement="left" target={inputId} autohide={false}>
-                        {value}
+                        {getLabel(value)}
                     </Tooltip>
                 )}
                 <StealthInput
                     id={inputId}
                     ref={inputRef}
                     name={label}
-                    value={value.split(DROPDOWN_NESTING_DELIMITER).pop()}
+                    value={getStealthLabel(value) || ''}
                     isActive={isActive}
                     onFocus={() => {
                         logEvent(
@@ -219,45 +255,56 @@ export default function DropdownField({
                     </DropdownHeader>
                 )}
                 <DropdownBody>
-                    {Object.keys(currentBranch).map((key) => (
-                        <DropdownItem
-                            key={key}
-                            tag="button"
-                            onClick={() => goNext(key)}
-                            option={{label: key, value: key}}
-                        >
-                            <span className={css.choiceButton}>
-                                <span className={css.ellipsis}>{key}</span>
-                                <span
-                                    className={`material-icons ${css.nextIcon}`}
-                                >
-                                    navigate_next
+                    {Object.keys(choicesTree).map((key) => {
+                        const label = getLabel(key)
+                        return (
+                            <DropdownItem
+                                key={key}
+                                tag="button"
+                                onClick={() => goNext(key)}
+                                option={{label, value: key}}
+                            >
+                                <span className={css.choiceButton}>
+                                    <span className={css.ellipsis}>
+                                        {label}
+                                    </span>
+                                    <span
+                                        className={`material-icons ${css.nextIcon}`}
+                                    >
+                                        navigate_next
+                                    </span>
                                 </span>
-                            </span>
-                        </DropdownItem>
-                    ))}
-                    {Array.from(currentBranch[CHOICE_VALUES_SYMBOL]).map(
+                            </DropdownItem>
+                        )
+                    })}
+                    {Array.from(choicesTree[CHOICE_VALUES_SYMBOL]).map(
                         (choice) => {
+                            const label = getLabel(choice)
                             return (
                                 <DropdownItem
-                                    key={choice}
+                                    key={choice.toString()}
                                     tag="button"
-                                    onClick={() =>
+                                    onClick={() => {
                                         handleChange(
-                                            [...currentPath, choice].join(
-                                                DROPDOWN_NESTING_DELIMITER
+                                            getFullValueFromCurrentPath(
+                                                currentPath,
+                                                choice
                                             )
                                         )
-                                    }
-                                    option={{label: choice, value: choice}}
+                                    }}
+                                    option={{
+                                        label,
+                                        value: choice,
+                                    }}
                                 >
                                     <span className={css.choiceButton}>
-                                        <span
-                                            className={css.ellipsis}
-                                        >{`${choice}`}</span>
+                                        <span className={css.ellipsis}>
+                                            {label}
+                                        </span>
                                     </span>
-                                    {[...currentPath, choice].join(
-                                        DROPDOWN_NESTING_DELIMITER
+                                    {getFullValueFromCurrentPath(
+                                        currentPath,
+                                        choice
                                     ) === value && (
                                         <span
                                             className={`material-icons ${css.checkIcon}`}
@@ -270,7 +317,7 @@ export default function DropdownField({
                         }
                     )}
                 </DropdownBody>
-                {Boolean(value) && (
+                {!isValueEmpty && (
                     <DropdownFooter>
                         <Button
                             onClick={resetValue}

@@ -15,6 +15,7 @@ import {
     updateCustomFieldValue,
 } from 'state/ticket/actions'
 
+import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
 import DropdownField from '../DropdownField'
 
 const mockStore = configureMockStore()
@@ -55,10 +56,26 @@ describe('<DropdownField />', () => {
     })
 
     it('should render the dropdown component correctly', () => {
+        const props = {
+            ...initialProps,
+            choices: [
+                'Option 1',
+                'Option 2',
+                `Option 3${delimiter}Sub 2${delimiter}Sub 3${delimiter}Sub 4${delimiter}Sub 5`,
+                0,
+                1,
+                123,
+                true,
+                false,
+                // this should be ignored with no errors as we are not supporting objects
+                {foo: 'bar'},
+            ],
+        }
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
-                    <DropdownField {...initialProps} />)
+                    {/*@ts-ignore - we are testing an unsupported object*/}
+                    <DropdownField {...props} />)
                 </Provider>
             </QueryClientProvider>
         )

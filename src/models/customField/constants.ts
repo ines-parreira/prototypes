@@ -1,15 +1,21 @@
 export const VALUE_TYPES = [
     {
-        value: 'dropdown',
+        value: 'dropdown_text',
         icon: 'arrow_drop_down',
         name: 'Dropdown',
         description: 'Choose one option from a list',
     },
     {
-        value: 'input',
+        value: 'input_text',
         icon: 'title',
         name: 'Text',
         description: 'Add descriptions, notes, or other text',
+    },
+    {
+        value: 'dropdown_boolean',
+        icon: 'check_box',
+        name: 'Yes/No',
+        description: 'Mark the ticket as one of two states',
     },
 ]
 

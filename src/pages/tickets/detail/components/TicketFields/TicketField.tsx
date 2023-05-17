@@ -12,7 +12,10 @@ type Props = {
 function TicketField({fieldDefinition, fieldState}: Props) {
     const {id, label, required, definition} = fieldDefinition
 
-    if (definition.input_settings.input_type === 'input') {
+    if (
+        definition.input_settings.input_type === 'input' &&
+        definition.data_type === 'text'
+    ) {
         const textFieldProps = {
             id,
             label,
@@ -21,7 +24,10 @@ function TicketField({fieldDefinition, fieldState}: Props) {
             placeholder: definition.input_settings.placeholder,
         }
         return <TextField {...textFieldProps} />
-    } else if (definition.input_settings.input_type === 'dropdown') {
+    } else if (
+        definition.input_settings.input_type === 'dropdown' &&
+        ['text', 'boolean'].includes(definition.data_type)
+    ) {
         const dropdownProps = {
             id,
             label,

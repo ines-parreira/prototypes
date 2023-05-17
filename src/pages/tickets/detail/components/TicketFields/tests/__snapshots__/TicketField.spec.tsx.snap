@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<TicketField /> should render coming soon for unsupported fields 1`] = `
+<div>
+  Coming soon
+</div>
+`;
+
+exports[`<TicketField /> should render coming soon for unsupported fields 2`] = `
+<div>
+  Coming soon
+</div>
+`;
+
 exports[`<TicketField /> should render the appropriate field 1`] = `
 <label
   class="labelWrapper"
@@ -37,6 +49,28 @@ exports[`<TicketField /> should render the appropriate field 2`] = `
     class="baseStyles stealth"
     id="ticket-whateva-custom-field-value-input-2"
     name="Dropdown field"
+    placeholder="+Add"
+    type="text"
+    value="some value"
+  />
+</label>
+`;
+
+exports[`<TicketField /> should render the appropriate field 3`] = `
+<label
+  class="labelWrapper"
+>
+  <span
+    class="label"
+  >
+    Yes/No field
+    :
+  </span>
+  <input
+    autocomplete="off"
+    class="baseStyles stealth"
+    id="ticket-whateva-custom-field-value-input-2"
+    name="Yes/No field"
     placeholder="+Add"
     type="text"
     value="some value"

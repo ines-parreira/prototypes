@@ -138,7 +138,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
           name="dropdown-choice-3"
           placeholder="e.g. Shipping issue::Delay"
           type="text"
-          value="Option 3"
+          value="Option 3::Sub 2::Sub 3::Sub 4::Sub 5"
         />
       </div>
       <button
@@ -155,8 +155,213 @@ exports[`<DropdownInput/> should render correctly 1`] = `
     </div>
   </div>
   <div
-    class="lastInput"
+    class="input"
     data-handler-id="T6"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator dragIndicatorActive"
+        data-testid="dropdown-choice-4-handle"
+        draggable="true"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-4"
+          id="dropdown-choice-4"
+          name="dropdown-choice-4"
+          placeholder="e.g. Shipping issue::Delay"
+          type="text"
+          value="0"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-4-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
+  </div>
+  <div
+    class="input"
+    data-handler-id="T8"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator dragIndicatorActive"
+        data-testid="dropdown-choice-5-handle"
+        draggable="true"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-5"
+          id="dropdown-choice-5"
+          name="dropdown-choice-5"
+          placeholder="e.g. Shipping issue::Delay"
+          type="text"
+          value="1"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-5-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
+  </div>
+  <div
+    class="input"
+    data-handler-id="T10"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator dragIndicatorActive"
+        data-testid="dropdown-choice-6-handle"
+        draggable="true"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-6"
+          id="dropdown-choice-6"
+          name="dropdown-choice-6"
+          placeholder="e.g. Shipping issue::Delay"
+          type="text"
+          value="123"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-6-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
+  </div>
+  <div
+    class="input"
+    data-handler-id="T12"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator dragIndicatorActive"
+        data-testid="dropdown-choice-7-handle"
+        draggable="true"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-7"
+          id="dropdown-choice-7"
+          name="dropdown-choice-7"
+          placeholder="e.g. Shipping issue::Delay"
+          type="text"
+          value="true"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-7-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
+  </div>
+  <div
+    class="input"
+    data-handler-id="T14"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator dragIndicatorActive"
+        data-testid="dropdown-choice-8-handle"
+        draggable="true"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-8"
+          id="dropdown-choice-8"
+          name="dropdown-choice-8"
+          placeholder="e.g. Shipping issue::Delay"
+          type="text"
+          value="false"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-8-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
+  </div>
+  <div
+    class="lastInput"
+    data-handler-id="T16"
     style="opacity: 1;"
   >
     <div
@@ -172,9 +377,9 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       >
         <input
           class="input"
-          data-testid="dropdown-choice-4"
-          id="dropdown-choice-4"
-          name="dropdown-choice-4"
+          data-testid="dropdown-choice-9"
+          id="dropdown-choice-9"
+          name="dropdown-choice-9"
           placeholder="e.g. Shipping issue::Delay"
           type="text"
           value=""
@@ -233,7 +438,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
   </span>
   <div
     class="input"
-    data-handler-id="T8"
+    data-handler-id="T26"
     style="opacity: 1;"
   >
     <div
@@ -279,7 +484,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
   </div>
   <div
     class="input"
-    data-handler-id="T10"
+    data-handler-id="T28"
     style="opacity: 1;"
   >
     <div
@@ -320,7 +525,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
   </div>
   <div
     class="input"
-    data-handler-id="T12"
+    data-handler-id="T30"
     style="opacity: 1;"
   >
     <div
@@ -366,7 +571,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
   </div>
   <div
     class="input"
-    data-handler-id="T14"
+    data-handler-id="T32"
     style="opacity: 1;"
   >
     <div
@@ -407,7 +612,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
   </div>
   <div
     class="lastInput"
-    data-handler-id="T16"
+    data-handler-id="T34"
     style="opacity: 1;"
   >
     <div
@@ -426,6 +631,211 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
           data-testid="dropdown-choice-5"
           id="dropdown-choice-5"
           name="dropdown-choice-5"
+          placeholder="e.g. Shipping issue::Delay"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="caption lastInput"
+  >
+    Type 
+    ::
+     symbol to add a new child level.
+     
+    <a
+      href="https://docs.gorgias.com/en-US/215327-755feceee342410d80f5cde55e8e4f46#how-to-define-your-fields-to-generate-insights-efficiently"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      See examples
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<DropdownInput/> should show an error for too much nesting 1`] = `
+<div>
+  <span
+    class="formLabelWithTooltip"
+  >
+    <label
+      class="label"
+      for="settings.choices"
+    >
+      Dropdown values
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <span
+      class="material-icons-outlined ml-2"
+      id="custom-field-dropdown-tooltip-id"
+    >
+      info
+    </span>
+    <button
+      class="wrapper import ghost primary small"
+      type="button"
+    >
+      Import from CSV
+    </button>
+  </span>
+  <div
+    class="input"
+    data-handler-id="T18"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator dragIndicatorActive"
+        data-testid="dropdown-choice-1-handle"
+        draggable="true"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-1"
+          id="dropdown-choice-1"
+          name="dropdown-choice-1"
+          placeholder="e.g. Shipping issue::Delay"
+          type="text"
+          value="Option 1"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-1-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
+  </div>
+  <div
+    class="input"
+    data-handler-id="T20"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator dragIndicatorActive"
+        data-testid="dropdown-choice-2-handle"
+        draggable="true"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-2"
+          id="dropdown-choice-2"
+          name="dropdown-choice-2"
+          placeholder="e.g. Shipping issue::Delay"
+          type="text"
+          value="Option 2"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-2-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
+  </div>
+  <div
+    class="input"
+    data-handler-id="T22"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator dragIndicatorActive"
+        data-testid="dropdown-choice-3-handle"
+        draggable="true"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper hasError"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-3"
+          id="dropdown-choice-3"
+          name="dropdown-choice-3"
+          placeholder="e.g. Shipping issue::Delay"
+          type="text"
+          value="Option 3::Sub 2::Sub 3::Sub 4::Sub 5::Sub 6"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-3-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
+    <div
+      class="caption error lastInput"
+    >
+      Choices cannot have more than 5 levels of nesting.
+    </div>
+  </div>
+  <div
+    class="lastInput"
+    data-handler-id="T24"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator dragIndicatorDisabled"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-4"
+          id="dropdown-choice-4"
+          name="dropdown-choice-4"
           placeholder="e.g. Shipping issue::Delay"
           type="text"
           value=""

@@ -6,13 +6,14 @@ import {DROPDOWN_NESTING_DELIMITER} from 'models/customField/constants'
 import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'
 import Label from 'pages/common/forms/Label/Label'
+import {CustomFieldValue} from 'models/customField/types'
 import DropdownCSVImport from './DropdownCSVImport'
 import DropdownInputRow from './DropdownInputRow'
 
 import css from './DropdownInput.less'
 
 interface DropdownInputProps {
-    value: string[]
+    value: CustomFieldValue[]
     onChange: (value: string[]) => void
 }
 
@@ -23,9 +24,9 @@ interface InternalValue {
 }
 
 function validate(
-    value: string,
+    value: CustomFieldValue,
     index: number,
-    values: string[]
+    values: CustomFieldValue[]
 ): string | undefined {
     // Empty strings are considered valid
     if (!value) {
@@ -33,7 +34,10 @@ function validate(
     }
 
     // Maximum 5 levels of nesting for individual choices
-    if (value.split(DROPDOWN_NESTING_DELIMITER).length > 5) {
+    if (
+        typeof value === 'string' &&
+        value.split(DROPDOWN_NESTING_DELIMITER).length > 5
+    ) {
         return 'Choices cannot have more than 5 levels of nesting.'
     }
 
@@ -51,8 +55,8 @@ export function DropdownInput({value, onChange}: DropdownInputProps) {
 
     // Generate an internal ID for all values to handle drag and drop
     const [values, setValues] = useState<InternalValue[]>(
-        value.concat(['']).map((val: string, index: number) => ({
-            value: val,
+        value.concat(['']).map((val: CustomFieldValue, index: number) => ({
+            value: val.toString(),
             id: uniqueId('dropdown-choice-'),
             error: validate(val, index, value),
         }))

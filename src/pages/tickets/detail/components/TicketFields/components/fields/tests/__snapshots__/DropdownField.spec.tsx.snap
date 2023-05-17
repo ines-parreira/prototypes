@@ -45,30 +45,6 @@ exports[`<DropdownField /> should render the dropdown component correctly 1`] = 
         <div
           class="wrapper"
         >
-          <div
-            class="content"
-          >
-            <button
-              class="wrapper backButton ghost primary medium"
-              id="previous-dropdown-modal-id"
-              type="button"
-            >
-              <span
-                class="ellipsis"
-              >
-                <span
-                  class="material-icons backIcon"
-                >
-                  arrow_back
-                </span>
-                ss2
-              </span>
-            </button>
-          </div>
-        </div>
-        <div
-          class="wrapper"
-        >
           <button
             class="item"
             role="option"
@@ -80,7 +56,12 @@ exports[`<DropdownField /> should render the dropdown component correctly 1`] = 
               <span
                 class="ellipsis"
               >
-                c1
+                Option 3
+              </span>
+              <span
+                class="material-icons nextIcon"
+              >
+                navigate_next
               </span>
             </span>
           </button>
@@ -95,13 +76,98 @@ exports[`<DropdownField /> should render the dropdown component correctly 1`] = 
               <span
                 class="ellipsis"
               >
-                c2
+                Option 1
               </span>
             </span>
+          </button>
+          <button
+            class="item"
+            role="option"
+            tabindex="0"
+          >
             <span
-              class="material-icons checkIcon"
+              class="choiceButton"
             >
-              check
+              <span
+                class="ellipsis"
+              >
+                Option 2
+              </span>
+            </span>
+          </button>
+          <button
+            class="item"
+            role="option"
+            tabindex="0"
+          >
+            <span
+              class="choiceButton"
+            >
+              <span
+                class="ellipsis"
+              >
+                0
+              </span>
+            </span>
+          </button>
+          <button
+            class="item"
+            role="option"
+            tabindex="0"
+          >
+            <span
+              class="choiceButton"
+            >
+              <span
+                class="ellipsis"
+              >
+                1
+              </span>
+            </span>
+          </button>
+          <button
+            class="item"
+            role="option"
+            tabindex="0"
+          >
+            <span
+              class="choiceButton"
+            >
+              <span
+                class="ellipsis"
+              >
+                123
+              </span>
+            </span>
+          </button>
+          <button
+            class="item"
+            role="option"
+            tabindex="0"
+          >
+            <span
+              class="choiceButton"
+            >
+              <span
+                class="ellipsis"
+              >
+                Yes
+              </span>
+            </span>
+          </button>
+          <button
+            class="item"
+            role="option"
+            tabindex="0"
+          >
+            <span
+              class="choiceButton"
+            >
+              <span
+                class="ellipsis"
+              >
+                No
+              </span>
             </span>
           </button>
         </div>

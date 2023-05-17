@@ -13,8 +13,9 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {
     ticketInputFieldDefinition,
     customFieldInputDefinition,
+    ticketFieldDefinitions,
 } from 'fixtures/customField'
-import {CustomFieldInput} from 'models/customField/types'
+import {CustomField, CustomFieldInput} from 'models/customField/types'
 import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
 import {renderWithRouter} from 'utils/testing'
 
@@ -29,22 +30,27 @@ describe('<FieldForm/>', () => {
         await queryClient.invalidateQueries()
     })
 
-    it('should render correctly', () => {
-        const props = {
-            field: customFieldInputDefinition,
-            onSubmit: jest.fn(),
-            onClose: jest.fn(),
-        }
+    it.each(ticketFieldDefinitions)(
+        'should render correctly',
+        (customField: CustomField) => {
+            const props = {
+                field: customField,
+                onSubmit: jest.fn(),
+                onClose: jest.fn(),
+            }
 
-        const {container} = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore}>
-                    <FieldForm {...props} />
-                </Provider>
-            </QueryClientProvider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
+            const {container} = render(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore}>
+                        <DndProvider backend={HTML5Backend}>
+                            <FieldForm {...props} />
+                        </DndProvider>
+                    </Provider>
+                </QueryClientProvider>
+            )
+            expect(container.firstChild).toMatchSnapshot()
+        }
+    )
 
     it('should show archiving status and disable type change on edit', () => {
         const props = {

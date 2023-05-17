@@ -6,6 +6,20 @@ exports[`<FieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
+      class="label formLabel"
+    >
+      Status
+    </label>
+    <div
+      class="badge"
+    >
+      ACTIVE
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
       class="label label"
       for="input-text-1"
     >
@@ -29,7 +43,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
         placeholder="e.g. Contact Reason"
         required=""
         type="text"
-        value="Test field"
+        value="Input field"
       />
     </div>
     <div
@@ -103,13 +117,13 @@ exports[`<FieldForm/> should render correctly 1`] = `
     <div
       class="wrapper"
       role="listbox"
-      tabindex="0"
+      tabindex="-1"
     >
       <div
-        class="inputWrapper"
+        class="inputWrapper isDisabled"
       >
         <div
-          class="input"
+          class="input isGreyed"
         >
           Text
         </div>
@@ -143,7 +157,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
         id="input-text-5"
         name="settings.placeholder"
         type="text"
-        value="Test placeholder"
+        value="Some placeholder"
       />
     </div>
   </div>
@@ -167,11 +181,21 @@ exports[`<FieldForm/> should render correctly 1`] = `
         Cancel
       </button>
     </div>
+    <div
+      class="rightGroup"
+    >
+      <button
+        class="wrapper fill secondary medium"
+        type="button"
+      >
+        Archive field
+      </button>
+    </div>
   </div>
 </form>
 `;
 
-exports[`<FieldForm/> should show archiving status and disable type change on edit 1`] = `
+exports[`<FieldForm/> should render correctly 2`] = `
 <form>
   <div
     class="formRow"
@@ -214,7 +238,7 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
         placeholder="e.g. Contact Reason"
         required=""
         type="text"
-        value="Input field"
+        value="Dropdown field"
       />
     </div>
     <div
@@ -296,6 +320,553 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
         <div
           class="input isGreyed"
         >
+          Dropdown
+        </div>
+        <i
+          class="affix suffix toggle material-icons"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+    <div
+      class="caption"
+    >
+      Field type can't be changed once it's been saved.
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <span
+      class="formLabelWithTooltip"
+    >
+      <label
+        class="label"
+        for="settings.choices"
+      >
+        Dropdown values
+        <abbr
+          aria-label="required"
+          class="abbr"
+          title="required"
+        >
+          *
+        </abbr>
+      </label>
+      <span
+        class="material-icons-outlined ml-2"
+        id="custom-field-dropdown-tooltip-id"
+      >
+        info
+      </span>
+      <button
+        class="wrapper import ghost primary small"
+        type="button"
+      >
+        Import from CSV
+      </button>
+    </span>
+    <div
+      class="input"
+      data-handler-id="T0"
+      style="opacity: 1;"
+    >
+      <div
+        class="inputContainer"
+      >
+        <div
+          class="material-icons dragIndicator dragIndicatorActive"
+          data-testid="dropdown-choice-11-handle"
+          draggable="true"
+        >
+          drag_indicator
+        </div>
+        <div
+          class="wrapper"
+        >
+          <input
+            class="input"
+            data-testid="dropdown-choice-11"
+            id="dropdown-choice-11"
+            name="dropdown-choice-11"
+            placeholder="e.g. Shipping issue::Delay"
+            type="text"
+            value="Choice 1"
+          />
+        </div>
+        <button
+          class="wrapper deleteButton wrapper ghost ghost destructive medium"
+          data-testid="dropdown-choice-11-remove"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            clear
+          </i>
+        </button>
+      </div>
+    </div>
+    <div
+      class="input"
+      data-handler-id="T2"
+      style="opacity: 1;"
+    >
+      <div
+        class="inputContainer"
+      >
+        <div
+          class="material-icons dragIndicator dragIndicatorActive"
+          data-testid="dropdown-choice-12-handle"
+          draggable="true"
+        >
+          drag_indicator
+        </div>
+        <div
+          class="wrapper"
+        >
+          <input
+            class="input"
+            data-testid="dropdown-choice-12"
+            id="dropdown-choice-12"
+            name="dropdown-choice-12"
+            placeholder="e.g. Shipping issue::Delay"
+            type="text"
+            value="Choice 2"
+          />
+        </div>
+        <button
+          class="wrapper deleteButton wrapper ghost ghost destructive medium"
+          data-testid="dropdown-choice-12-remove"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            clear
+          </i>
+        </button>
+      </div>
+    </div>
+    <div
+      class="input"
+      data-handler-id="T4"
+      style="opacity: 1;"
+    >
+      <div
+        class="inputContainer"
+      >
+        <div
+          class="material-icons dragIndicator dragIndicatorActive"
+          data-testid="dropdown-choice-13-handle"
+          draggable="true"
+        >
+          drag_indicator
+        </div>
+        <div
+          class="wrapper"
+        >
+          <input
+            class="input"
+            data-testid="dropdown-choice-13"
+            id="dropdown-choice-13"
+            name="dropdown-choice-13"
+            placeholder="e.g. Shipping issue::Delay"
+            type="text"
+            value="Choice 3::Sub 2::Sub 3::Sub 4::Sub 5"
+          />
+        </div>
+        <button
+          class="wrapper deleteButton wrapper ghost ghost destructive medium"
+          data-testid="dropdown-choice-13-remove"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            clear
+          </i>
+        </button>
+      </div>
+    </div>
+    <div
+      class="lastInput"
+      data-handler-id="T6"
+      style="opacity: 1;"
+    >
+      <div
+        class="inputContainer"
+      >
+        <div
+          class="material-icons dragIndicator dragIndicatorDisabled"
+        >
+          drag_indicator
+        </div>
+        <div
+          class="wrapper"
+        >
+          <input
+            class="input"
+            data-testid="dropdown-choice-14"
+            id="dropdown-choice-14"
+            name="dropdown-choice-14"
+            placeholder="e.g. Shipping issue::Delay"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="caption lastInput"
+    >
+      Type 
+      ::
+       symbol to add a new child level.
+       
+      <a
+        href="https://docs.gorgias.com/en-US/215327-755feceee342410d80f5cde55e8e4f46#how-to-define-your-fields-to-generate-insights-efficiently"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        See examples
+      </a>
+    </div>
+  </div>
+  <div
+    class="buttons"
+  >
+    <div
+      class="leftGroup"
+    >
+      <button
+        class="wrapper fill primary medium"
+        data-testid="save-button"
+        type="submit"
+      >
+        Save Changes
+      </button>
+      <button
+        class="wrapper fill secondary medium"
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+    <div
+      class="rightGroup"
+    >
+      <button
+        class="wrapper fill secondary medium"
+        type="button"
+      >
+        Archive field
+      </button>
+    </div>
+  </div>
+</form>
+`;
+
+exports[`<FieldForm/> should render correctly 3`] = `
+<form>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label formLabel"
+    >
+      Status
+    </label>
+    <div
+      class="badge"
+    >
+      ACTIVE
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="input-text-20"
+    >
+      Name
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper"
+    >
+      <input
+        aria-describedby="input-text-20-caption"
+        class="input"
+        id="input-text-20"
+        name="label"
+        placeholder="e.g. Contact Reason"
+        required=""
+        type="text"
+        value="Yes/No field"
+      />
+    </div>
+    <div
+      class="caption"
+      id="input-text-20-caption"
+    >
+      Visible to agents
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="textarea-22"
+    >
+      Description
+    </label>
+    <textarea
+      aria-describedby="textarea-22-caption"
+      class="textarea"
+      id="textarea-22"
+      name="description"
+      placeholder="e.g. Reasons why customers reach out to us"
+      rows="1"
+    />
+    <div
+      class="caption"
+      id="textarea-22-caption"
+    >
+      Not visible to agents
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="checkbox-23"
+    >
+      <input
+        class="input"
+        id="checkbox-23"
+        name="checkbox-23"
+        type="checkbox"
+      />
+      Required to close ticket
+    </label>
+    <div
+      class="caption caption"
+    >
+      Enable to prevent agents from closing the ticket if the field is left empty. Snooze and Send actions will still work.
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label formLabel"
+      for="type"
+    >
+      Type
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper"
+      role="listbox"
+      tabindex="-1"
+    >
+      <div
+        class="inputWrapper isDisabled"
+      >
+        <div
+          class="input isGreyed"
+        >
+          Yes/No
+        </div>
+        <i
+          class="affix suffix toggle material-icons"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+    <div
+      class="caption"
+    >
+      Field type can't be changed once it's been saved.
+    </div>
+  </div>
+  <div
+    class="buttons"
+  >
+    <div
+      class="leftGroup"
+    >
+      <button
+        class="wrapper fill primary medium"
+        data-testid="save-button"
+        type="submit"
+      >
+        Save Changes
+      </button>
+      <button
+        class="wrapper fill secondary medium"
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+    <div
+      class="rightGroup"
+    >
+      <button
+        class="wrapper fill secondary medium"
+        type="button"
+      >
+        Archive field
+      </button>
+    </div>
+  </div>
+</form>
+`;
+
+exports[`<FieldForm/> should show archiving status and disable type change on edit 1`] = `
+<form>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label formLabel"
+    >
+      Status
+    </label>
+    <div
+      class="badge"
+    >
+      ACTIVE
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="input-text-24"
+    >
+      Name
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper"
+    >
+      <input
+        aria-describedby="input-text-24-caption"
+        class="input"
+        id="input-text-24"
+        name="label"
+        placeholder="e.g. Contact Reason"
+        required=""
+        type="text"
+        value="Input field"
+      />
+    </div>
+    <div
+      class="caption"
+      id="input-text-24-caption"
+    >
+      Visible to agents
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="textarea-26"
+    >
+      Description
+    </label>
+    <textarea
+      aria-describedby="textarea-26-caption"
+      class="textarea"
+      id="textarea-26"
+      name="description"
+      placeholder="e.g. Reasons why customers reach out to us"
+      rows="1"
+    />
+    <div
+      class="caption"
+      id="textarea-26-caption"
+    >
+      Not visible to agents
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="checkbox-27"
+    >
+      <input
+        class="input"
+        id="checkbox-27"
+        name="checkbox-27"
+        type="checkbox"
+      />
+      Required to close ticket
+    </label>
+    <div
+      class="caption caption"
+    >
+      Enable to prevent agents from closing the ticket if the field is left empty. Snooze and Send actions will still work.
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label formLabel"
+      for="type"
+    >
+      Type
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper"
+      role="listbox"
+      tabindex="-1"
+    >
+      <div
+        class="inputWrapper isDisabled"
+      >
+        <div
+          class="input isGreyed"
+        >
           Text
         </div>
         <i
@@ -316,7 +887,7 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
   >
     <label
       class="label label"
-      for="input-text-11"
+      for="input-text-28"
     >
       Placeholder
     </label>
@@ -325,7 +896,7 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
     >
       <input
         class="input"
-        id="input-text-11"
+        id="input-text-28"
         name="settings.placeholder"
         type="text"
         value="Some placeholder"

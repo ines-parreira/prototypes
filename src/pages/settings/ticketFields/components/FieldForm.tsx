@@ -156,7 +156,7 @@ export default function FieldForm(props: FieldFormProps) {
                 placeholder="e.g. Reasons why customers reach out to us"
                 caption="Not visible to agents"
                 rows={1}
-                value={form.description}
+                value={form.description || undefined}
                 onChange={(val) => setValue('description', val)}
                 className={css.formRow}
             />
@@ -173,10 +173,15 @@ export default function FieldForm(props: FieldFormProps) {
                     Type
                 </Label>
                 <TypeSelectInput
-                    value={form.definition.input_settings.input_type}
-                    onChange={(val) =>
-                        setValue('definition.input_settings.input_type', val)
-                    }
+                    value={`${form.definition.input_settings.input_type}_${form.definition.data_type}`}
+                    onChange={(val) => {
+                        const [inputType, dataType] = val.split('_')
+                        setValue(
+                            'definition.input_settings.input_type',
+                            inputType
+                        )
+                        setValue('definition.data_type', dataType)
+                    }}
                     isDisabled={isCustomField(props.field)}
                 />
                 <Caption>
@@ -194,14 +199,15 @@ export default function FieldForm(props: FieldFormProps) {
                     className={css.formRow}
                 />
             )}
-            {form.definition.input_settings.input_type === 'dropdown' && (
-                <div className={css.formRow}>
-                    <DropdownInput
-                        value={form.definition.input_settings.choices}
-                        onChange={handleChoiceChange}
-                    />
-                </div>
-            )}
+            {form.definition.data_type !== 'boolean' &&
+                form.definition.input_settings.input_type === 'dropdown' && (
+                    <div className={css.formRow}>
+                        <DropdownInput
+                            value={form.definition.input_settings.choices}
+                            onChange={handleChoiceChange}
+                        />
+                    </div>
+                )}
 
             <div className={css.buttons}>
                 <div className={css.leftGroup}>

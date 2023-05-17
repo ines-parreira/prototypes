@@ -89,7 +89,7 @@ export async function updateCustomFieldValue({
         `/api/${
             fieldType === 'Ticket' ? 'tickets' : 'customers'
         }/${holderId}/custom-fields/${fieldId}`,
-        `"${value || ''}"`,
+        JSON.stringify(value),
         {
             headers: {
                 'Content-Type': 'application/json',

@@ -49,7 +49,31 @@ export const ticketDropdownFieldDefinition: CustomField = {
         data_type: 'text',
         input_settings: {
             input_type: 'dropdown',
-            choices: ['Choice 1', 'Choice 2'],
+            choices: [
+                'Choice 1',
+                'Choice 2',
+                'Choice 3::Sub 2::Sub 3::Sub 4::Sub 5',
+            ],
         },
     },
 }
+
+export const ticketBooleanDefinition: CustomField = {
+    ...ticketFieldBaseDefinition,
+    id: 2,
+    priority: 2,
+    label: 'Yes/No field',
+    definition: {
+        data_type: 'boolean',
+        input_settings: {
+            input_type: 'dropdown',
+            choices: [true, false],
+        },
+    },
+}
+
+export const ticketFieldDefinitions: CustomField[] = [
+    ticketInputFieldDefinition,
+    ticketDropdownFieldDefinition,
+    ticketBooleanDefinition,
+]

@@ -12,6 +12,7 @@ import {
     getCustomFields,
     updateCustomField,
     updateCustomFields,
+    updateCustomFieldValue,
     updatePartialCustomField,
 } from '../resources'
 
@@ -162,6 +163,41 @@ describe('custom field resources', () => {
                 .reply(503, {message: 'error'})
             return expect(
                 updatePartialCustomField(123, customFieldInputDefinition)
+            ).rejects.toEqual(new Error('Request failed with status code 503'))
+        })
+    })
+
+    describe('updateCustomFieldValue', () => {
+        it.each([true, false, 0, 1, 123, 'foo_bar'])(
+            'should resolve with an updated CustomField on success',
+            async (value) => {
+                mockedServer.onPut('/api/tickets/1/custom-fields/1').reply(200)
+
+                await updateCustomFieldValue({
+                    fieldType: 'Ticket',
+                    holderId: 1,
+                    fieldId: 1,
+                    value: value,
+                })
+
+                expect(mockedServer.history.put.length).toBe(1)
+                expect(mockedServer.history.put[0].data).toBe(
+                    JSON.stringify(value)
+                )
+            }
+        )
+
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onPut('/api/tickets/1/custom-fields/1')
+                .reply(503, {message: 'error'})
+            return expect(
+                updateCustomFieldValue({
+                    fieldType: 'Ticket',
+                    holderId: 1,
+                    fieldId: 1,
+                    value: '123',
+                })
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
