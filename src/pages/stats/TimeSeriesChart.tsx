@@ -9,7 +9,7 @@ import {formatTimeSeriesDate} from './common/utils'
 
 type Props = {
     labels: string[]
-    timeSeries: ReturnType<typeof useTimeSeries>
+    timeSeries: {data: ReturnType<typeof useTimeSeries>['data']}
     granularity: ReportingGranularity
 }
 

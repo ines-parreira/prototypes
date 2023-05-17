@@ -75,11 +75,11 @@ describe('TimeSeriesChart', () => {
                 label: 'first',
                 values: [
                     {
-                        x: 'Jan 1st',
+                        x: 'Jan 1st, 2020',
                         y: 1,
                     },
                     {
-                        x: 'Jan 2nd',
+                        x: 'Jan 2nd, 2020',
                         y: 2,
                     },
                 ],
@@ -89,11 +89,11 @@ describe('TimeSeriesChart', () => {
                 label: 'second',
                 values: [
                     {
-                        x: 'Jan 1st',
+                        x: 'Jan 1st, 2020',
                         y: 3,
                     },
                     {
-                        x: 'Jan 2nd',
+                        x: 'Jan 2nd, 2020',
                         y: 4,
                     },
                 ],

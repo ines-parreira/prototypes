@@ -1,11 +1,4 @@
-import {
-    Chart,
-    ChartArea,
-    ChartData,
-    ChartOptions,
-    Point,
-    TooltipItem,
-} from 'chart.js'
+import {Chart, ChartArea, ChartData, ChartOptions, TooltipItem} from 'chart.js'
 import React, {useMemo, useState} from 'react'
 import {Line} from 'react-chartjs-2'
 
@@ -139,7 +132,7 @@ export default function LineChart({
                     fill: 'origin',
                     backgroundColor: background,
                     label: item.label,
-                    data: item.values as any as Point[],
+                    data: item.values.map((value) => value.y),
                 }
             }),
         }

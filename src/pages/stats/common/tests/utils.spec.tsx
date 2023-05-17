@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import _keyBy from 'lodash/keyBy'
 import {renderHook} from '@testing-library/react-hooks'
 
+import moment from 'moment/moment'
 import {tags} from 'fixtures/tag'
 import {RootState} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
@@ -13,13 +14,14 @@ import {StatsFilters} from 'models/stat/types'
 import {ReportingGranularity} from 'models/reporting/types'
 
 import {
-    formatNumber,
-    formatDuration,
-    useStatsViewFilters,
     findChannelNameKey,
-    formatMetricValue,
+    formatDuration,
     formatMetricTrend,
+    formatMetricValue,
+    formatNumber,
     formatTimeSeriesDate,
+    SHORT_FORMAT,
+    useStatsViewFilters,
 } from '../utils'
 
 const mockStore = configureMockStore([thunk])
@@ -260,13 +262,13 @@ describe('stats components utils', () => {
     })
 
     describe('formatTimeSeriesDate', () => {
-        it('should format the dates to show month and day', () => {
+        it('should format the dates to show month day and year', () => {
             expect(
                 formatTimeSeriesDate(
                     '2020-01-01T00:00:00.000',
                     ReportingGranularity.Month
                 )
-            ).toBe('Jan 1st')
+            ).toBe(moment('2020-01-01T00:00:00.000').format(SHORT_FORMAT))
         })
 
         it('should format the dates to show hour when granularity is "hour"', () => {

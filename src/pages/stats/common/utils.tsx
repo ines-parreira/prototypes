@@ -222,11 +222,12 @@ export const formatMetricTrend = (
     return sign + formattedDiff
 }
 
+export const SHORT_FORMAT = 'MMM Do, YYYY'
 export const formatTimeSeriesDate = (
     date: string,
     granularity: ReportingGranularity
 ) => {
-    let format = 'MMM Do'
+    let format = SHORT_FORMAT
     if (granularity === 'hour') {
         format = 'LT'
     }
