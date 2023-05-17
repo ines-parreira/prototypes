@@ -287,7 +287,7 @@ describe('<HelpCenterCategoryEdit />', () => {
 
             await userEvent.type(screen.getByTestId('title-input'), 'Title')
 
-            userEvent.upload(screen.getByTestId('input-image'), file)
+            userEvent.upload(screen.getByTestId('input-category-image'), file)
 
             userEvent.click(screen.getByTestId('button-save'))
 

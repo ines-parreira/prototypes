@@ -1,0 +1,17 @@
+:local {
+    .imageUpload {
+        font-size: 14px;
+
+        :global(.hd-help-text-actions) {
+            max-width: 318px; // be design we need actions will be under the image, not 100% width
+        }
+    }
+
+    .imageUploadInline {
+        :global(.hd-help-text-text),
+        :global(.hd-help-text-actions),
+        :global(.hd-help-text-actions) div {
+            display: inline;
+        }
+    }
+}

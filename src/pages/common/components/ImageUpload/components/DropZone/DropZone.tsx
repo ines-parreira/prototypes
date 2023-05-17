@@ -27,7 +27,7 @@ export type DropZoneProps = {
     className?: string
     inputRef?: RefObject<HTMLInputElement>
     name?: string
-    imageRole?: 'default' | 'logo' | 'favicon' | 'bannerImage'
+    imageRole?: 'default' | 'logo' | 'favicon' | 'bannerImage' | 'categoryImage'
     onDragIn?: (event: DragEvent) => void
     onDragOut?: (event: DragEvent) => void
     onDrop?: (event: DragEvent) => void
@@ -153,6 +153,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
                             [css.favicon]: imageRole === 'favicon',
                             [css.logo]: imageRole === 'logo',
                             [css.bannerImage]: imageRole === 'bannerImage',
+                            [css.categoryImage]: imageRole === 'categoryImage',
                             [css.rejected]: isDragRejected,
                             [css.accepted]: isDragging && !isDragRejected,
                         },

@@ -69,7 +69,11 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
                 {closeSpan}
                 <div className={css.content}>
                     <img
-                        className={css.preview}
+                        className={
+                            imageRole === 'categoryImage'
+                                ? css.categoryImagePreview
+                                : css.preview
+                        }
                         alt={defaultPreview}
                         src={defaultPreview}
                     />
@@ -84,7 +88,11 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
                 {closeSpan}
                 <div className={css.content}>
                     <img
-                        className={css.preview}
+                        className={
+                            imageRole === 'categoryImage'
+                                ? css.categoryImagePreview
+                                : css.preview
+                        }
                         alt={localImage.name}
                         src={URL.createObjectURL(localImage)}
                     />

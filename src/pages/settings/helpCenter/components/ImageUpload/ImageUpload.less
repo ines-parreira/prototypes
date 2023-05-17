@@ -10,6 +10,17 @@
         max-width: 100%;
     }
 
+    // Should be in sync with help-center(front) styles for category images
+    // https://github.com/gorgias/help-center/blob/main/apps/front/components/PreviewCard/CategoryCard.tsx
+    .categoryImagePreview {
+        position: absolute;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        right: 0;
+    }
+
     .content {
         display: flex;
         justify-content: center;
@@ -17,6 +28,7 @@
         overflow: hidden;
         border-radius: 10px;
         pointer-events: none;
+        position: relative;
         width: 100%;
         height: 100%;
     }

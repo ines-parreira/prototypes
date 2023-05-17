@@ -62,12 +62,12 @@ import {ConfirmationModal} from '../ConfirmationModal'
 import {SearchEnginePreview} from '../SearchEnginePreview'
 import {CloseModal} from '../articles/CloseModal'
 import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
-import {ImageUpload} from '../ImageUpload'
 import {FileUpload, useFileUpload} from '../../hooks/useFileUpload'
 import {FeatureFlagKey} from '../../../../../config/featureFlags'
 import {eligibleParentCategories, isOneOfParentsUnlisted} from './utils'
 
 import css from './HelpCenterCategoryEdit.less'
+import {CategoryImageEdit} from './components/CategoryImageEdit'
 
 type Props = {
     isOpen: boolean
@@ -116,6 +116,7 @@ export const HelpCenterCategoryEdit = ({
     const [slug, setSlug] = useState('')
     const [isPristineSlug, setPristineSlug] = useState(true)
     const [description, setDescription] = useState('')
+    const [imageUrl, setImageUrl] = useState('')
     const [metaTitle, setMetaTitle] = useState<string | null>(null)
     const [metaDescription, setMetaDescription] = useState<string | null>(null)
     const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
@@ -139,8 +140,7 @@ export const HelpCenterCategoryEdit = ({
 
     const isHelpCenterImagesForCategoriesEnabled =
         useFlags()[FeatureFlagKey.HelpCenterImagesForCategories]
-    const categoryImage = useFileUpload()
-
+    const imageFile = useFileUpload()
     /**
      * We check here few cases
      * - process the image as user uploaded image locally (by checking file.payload)
@@ -159,19 +159,9 @@ export const HelpCenterCategoryEdit = ({
         return undefined
     }
 
-    const getImageUploadHighlightText = (
-        upload: FileUpload,
-        currentImage?: string | null
-    ) => {
-        return (upload.isTouched && upload.payload) ||
-            (!upload.isTouched && currentImage)
-            ? 'Replace image'
-            : 'Upload image'
-    }
-
     useEffect(() => {
         // Discard to reset image state (isTouched and upload file) when the preview image changes.
-        categoryImage.discardFile()
+        imageFile.discardFile()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [category?.translation?.image_url])
 
@@ -220,6 +210,7 @@ export const HelpCenterCategoryEdit = ({
             setParentCategory(
                 category.translation?.parent_category_id ?? undefined
             )
+            setImageUrl(category.translation?.image_url ?? '')
             if (category.translation) {
                 setVisibilityStatus(category.translation.visibility_status)
             }
@@ -231,6 +222,7 @@ export const HelpCenterCategoryEdit = ({
             setMetaDescription(null)
             setParentCategory(parentCategoryId)
             setVisibilityStatus('PUBLIC')
+            setImageUrl('')
         }
         setParentCategory(
             category?.translation?.parent_category_id ?? parentCategoryId
@@ -299,6 +291,15 @@ export const HelpCenterCategoryEdit = ({
         onClose()
     }
 
+    const handleChangeImageFile = () => {
+        setHasPendingChanges(true)
+    }
+
+    const handleRemoveImage = () => {
+        setHasPendingChanges(true)
+        setImageUrl('')
+    }
+
     const handleChangeTitle = (ev: ChangeEvent<HTMLInputElement>) => {
         setTitle(ev.target.value)
 
@@ -340,7 +341,7 @@ export const HelpCenterCategoryEdit = ({
 
         let categoryImageUrl: string | undefined | null = undefined
         try {
-            categoryImageUrl = await getFileUploadURL(categoryImage)
+            categoryImageUrl = await getFileUploadURL(imageFile)
         } catch (e) {
             void dispatch(
                 notify({
@@ -410,7 +411,7 @@ export const HelpCenterCategoryEdit = ({
         onClose()
         setHasPendingChanges(false)
         setIsAttemptingToClose(false)
-        categoryImage.discardFile()
+        imageFile.discardFile()
     }
 
     const handleCloseModalAttempt = () => {
@@ -604,24 +605,11 @@ export const HelpCenterCategoryEdit = ({
                         data-testid="image-upload"
                     >
                         <FormGroup>
-                            <ImageUpload
-                                id="image"
-                                title="Image"
-                                imageRole="default"
-                                file={categoryImage.payload}
-                                defaultPreview={
-                                    category?.translation?.image_url ?? ''
-                                }
-                                onChangeFile={categoryImage.changeFile}
-                                isTouched={categoryImage.isTouched}
-                                helpTextProps={{
-                                    highlight: getImageUploadHighlightText(
-                                        categoryImage,
-                                        category?.translation?.image_url
-                                    ),
-                                    text: ' - Recommended file size: 318 x 160px, 500KB or less.  Max file size: 10MB.',
-                                    className: css.imageUpload,
-                                }}
+                            <CategoryImageEdit
+                                onImageChanged={handleChangeImageFile}
+                                currentImageUrl={imageUrl}
+                                imageFile={imageFile}
+                                onRemoveImage={handleRemoveImage}
                             />
                         </FormGroup>
                     </div>
