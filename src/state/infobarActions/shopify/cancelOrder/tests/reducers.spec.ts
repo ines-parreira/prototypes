@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {
@@ -76,27 +76,23 @@ describe('infobarActions.shopify.cancelOrder reducer', () => {
         })
     })
 
-    describe('SET_REFUND_AMOUNT', () => {
+    describe('SET_TRANSACTIONS', () => {
         it('should set products', () => {
-            const amount = 9.99
+            const transaction: Map<any, any> = Map({amount: '1.00'})
+            const transactions = List([transaction])
             const payload = fromJS(shopifyCancelOrderPayloadFixture())
             const state = initialState.set('payload', payload)
-            const action = {type: constants.SET_REFUND_AMOUNT, amount}
+            const action = {type: constants.SET_TRANSACTIONS, transactions}
             const nextState = reducer(state, action)
             expect(
-                nextState.getIn([
-                    'payload',
-                    'refund',
-                    'transactions',
-                    0,
-                    'amount',
-                ])
-            ).toEqual(amount)
+                nextState.getIn(['payload', 'refund', 'transactions'])
+            ).toEqual(transactions)
         })
 
         it('should keep current state if the payload is not set', () => {
-            const amount = 9.99
-            const action = {type: constants.SET_REFUND_AMOUNT, amount}
+            const transaction: Map<any, any> = Map({amount: '1.00'})
+            const transactions = List([transaction])
+            const action = {type: constants.SET_TRANSACTIONS, transactions}
             const nextState = reducer(initialState, action)
             expect(nextState).toEqualImmutable(initialState)
         })

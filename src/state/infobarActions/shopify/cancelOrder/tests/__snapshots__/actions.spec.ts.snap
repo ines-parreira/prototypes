@@ -288,8 +288,18 @@ exports[`infobarActions.shopify.cancelOrder actions on not restockable onInit() 
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
   },
   {
-    "amount": "1.20",
-    "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
+    "transactions": Immutable.List [
+      Immutable.Map {
+        "order_id": 1894175539223,
+        "kind": "suggested_refund",
+        "gateway": "manual",
+        "parent_id": 2521452118039,
+        "amount": "1.20",
+        "currency": "USD",
+        "maximum_refundable": "1.20",
+      },
+    ],
+    "type": "infobarActions/shopify/cancelOrder/SET_TRANSACTIONS",
   },
   {
     "loading": false,
@@ -454,8 +464,18 @@ exports[`infobarActions.shopify.cancelOrder actions on restockable onInit() shou
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
   },
   {
-    "amount": "1.20",
-    "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
+    "transactions": Immutable.List [
+      Immutable.Map {
+        "order_id": 1894175539223,
+        "kind": "suggested_refund",
+        "gateway": "manual",
+        "parent_id": 2521452118039,
+        "amount": "1.20",
+        "currency": "USD",
+        "maximum_refundable": "1.20",
+      },
+    ],
+    "type": "infobarActions/shopify/cancelOrder/SET_TRANSACTIONS",
   },
   {
     "loading": false,
@@ -582,8 +602,18 @@ exports[`infobarActions.shopify.cancelOrder actions on success on initialized on
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
   },
   {
-    "amount": "1.20",
-    "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
+    "transactions": Immutable.List [
+      Immutable.Map {
+        "order_id": 1894175539223,
+        "kind": "suggested_refund",
+        "gateway": "manual",
+        "parent_id": 2521452118039,
+        "amount": "1.20",
+        "currency": "USD",
+        "maximum_refundable": "1.20",
+      },
+    ],
+    "type": "infobarActions/shopify/cancelOrder/SET_TRANSACTIONS",
   },
   {
     "loading": false,
@@ -672,8 +702,18 @@ exports[`infobarActions.shopify.cancelOrder actions on success on initialized on
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
   },
   {
-    "amount": "1.20",
-    "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
+    "transactions": Immutable.List [
+      Immutable.Map {
+        "order_id": 1894175539223,
+        "kind": "suggested_refund",
+        "gateway": "manual",
+        "parent_id": 2521452118039,
+        "amount": "1.20",
+        "currency": "USD",
+        "maximum_refundable": "1.20",
+      },
+    ],
+    "type": "infobarActions/shopify/cancelOrder/SET_TRANSACTIONS",
   },
   {
     "loading": false,
@@ -834,8 +874,18 @@ exports[`infobarActions.shopify.cancelOrder actions on success onInit() should i
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
   },
   {
-    "amount": "1.20",
-    "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
+    "transactions": Immutable.List [
+      Immutable.Map {
+        "order_id": 1894175539223,
+        "kind": "suggested_refund",
+        "gateway": "manual",
+        "parent_id": 2521452118039,
+        "amount": "1.20",
+        "currency": "USD",
+        "maximum_refundable": "1.20",
+      },
+    ],
+    "type": "infobarActions/shopify/cancelOrder/SET_TRANSACTIONS",
   },
   {
     "loading": false,
