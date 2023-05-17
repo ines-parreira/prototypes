@@ -31,8 +31,10 @@ export class CustomerNote extends React.Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        // todo(@martin): handle the case when the note is overridden by a server-side update while the current user
-        //  is modifying the note at the same time
+        if (this.state.isDirty) {
+            return
+        }
+
         this.setState({
             note: nextProps.customer.get('note'),
             isDirty: false,
