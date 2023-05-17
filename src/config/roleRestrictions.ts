@@ -14,6 +14,10 @@ export const roleRestrictionConfigs: Record<
     [PageSection.Billing]: {
         pageHeader: SectionPageHeader.Billing,
     },
+    // TODO(@Irinel) remove this when new billing is fully released
+    [PageSection.NewBilling]: {
+        pageHeader: SectionPageHeader.NewBilling,
+    },
     [PageSection.Integrations]: {
         pageHeader: SectionPageHeader.Integrations,
     },

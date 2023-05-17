@@ -1,5 +1,6 @@
 export enum PageSection {
     Billing = 'billing',
+    NewBilling = 'new-billing', // TODO(@Irinel) remove this when new billing is fully released
     Integrations = 'integrations',
     Channels = 'channels',
     Macros = 'macros',
@@ -25,6 +26,7 @@ export enum PageSection {
 
 export enum SectionPageHeader {
     Billing = 'Billing & usage',
+    NewBilling = 'Billing', // TODO(@Irinel) remove this when new billing is fully released
     Integrations = 'Integrations',
     Channels = 'Channels',
     Macros = 'Macros',

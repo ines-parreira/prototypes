@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BillingStartView should render a BillingStartView component and load the Usage & Plans view 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              class="section"
+              to="/app/settings/new-billing"
+            >
+              Billing
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            Usage & Plans
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/new-billing"
+      >
+        Usage & Plans
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
+        href="/app/settings/new-billing/payment"
+      >
+        Payment Information
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
+        href="/app/settings/new-billing/payment-history"
+      >
+        Payment History
+      </a>
+    </nav>
+    <div
+      class="container-fluid"
+    >
+      <div>
+        <h1>
+          UsageAndPlansView
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>
+`;

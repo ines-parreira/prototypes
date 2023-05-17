@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generateBreadcrumbs should render a Breadcrumb component with a Billing & usage and additional BreadcrumbItems 1`] = `
+<div>
+  <div>
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            class="section"
+            to="/app/settings/new-billing"
+          >
+            Billing
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          Page 1
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <div>
+            Page 2
+          </div>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          Page 3
+        </li>
+      </ol>
+    </nav>
+  </div>
+</div>
+`;

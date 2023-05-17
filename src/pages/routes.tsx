@@ -63,6 +63,7 @@ import NoMatch from './common/components/NoMatch'
 import OnboardingSidePanel from './tickets/list/OnboardingSidePanel'
 import withUserRoleRequired from './common/utils/withUserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'
+import NewBilling from './settings/new_billing/views/BillingStartView'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCard'
 import BillingDetailsFormContainer from './settings/billing/details/BillingDetailsForm'
 import BillingPlansContainer from './settings/billing/plans/BillingPlans'
@@ -717,6 +718,11 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
             <Route path={`${path}/users`} render={UsersSettingsRoutes} />
             <Route path={`${path}/revenue`} render={RevenueSettingsRoutes} />
             <Route path={`${path}/billing`} render={BillingSettingsRoutes} />
+            {/* TODO(@Irinel) remove this when new billing is fully released */}
+            <Route
+                path={`${path}/new-billing`}
+                render={NewBillingSettingsRoutes}
+            />
             <Route
                 path={`${path}/manage-tags`}
                 exact
@@ -1383,6 +1389,29 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                         BillingPlansContainer,
                         ADMIN_ROLE,
                         PageSection.Billing
+                    ),
+                    navbar: SettingsNavbar,
+                })}
+            />
+        </Switch>
+    )
+}
+
+// TODO(@Irinel) rename to BillingSettingsRoutes once we remove the old billing
+export function NewBillingSettingsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={[
+                    `${path}/`,
+                    `${path}/payment`,
+                    `${path}/payment-history`,
+                ]}
+                render={appRender({
+                    content: memoizedWithUserRoleRequired(
+                        NewBilling,
+                        ADMIN_ROLE,
+                        PageSection.NewBilling
                     ),
                     navbar: SettingsNavbar,
                 })}
