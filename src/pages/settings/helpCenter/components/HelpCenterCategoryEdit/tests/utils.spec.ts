@@ -23,6 +23,7 @@ const topLevelCategory: Category = {
     help_center_id: 1,
     available_locales: ['en-US', 'fr-FR'],
     translation: {
+        image_url: null,
         created_datetime: '2022-03-17T12:52:14.243Z',
         updated_datetime: '2022-03-17T12:52:14.243Z',
         deleted_datetime: null,
@@ -52,6 +53,7 @@ const level1CategoryWithChildren: Category = {
     help_center_id: 1,
     available_locales: ['fr-FR', 'en-US'],
     translation: {
+        image_url: null,
         created_datetime: '2022-03-17T12:53:10.489Z',
         updated_datetime: '2022-03-17T12:53:10.489Z',
         deleted_datetime: null,
@@ -81,6 +83,7 @@ const level2Category: Category = {
     help_center_id: 1,
     available_locales: ['fr-FR', 'en-US'],
     translation: {
+        image_url: null,
         created_datetime: '2022-03-17T12:53:43.235Z',
         updated_datetime: '2022-03-17T12:54:26.411Z',
         deleted_datetime: null,
@@ -110,6 +113,7 @@ const level1Category: Category = {
     help_center_id: 1,
     available_locales: ['en-US'],
     translation: {
+        image_url: null,
         created_datetime: '2022-03-23T10:34:42.017Z',
         updated_datetime: '2022-03-23T10:34:42.017Z',
         deleted_datetime: null,

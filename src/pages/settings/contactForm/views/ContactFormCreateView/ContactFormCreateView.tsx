@@ -40,7 +40,6 @@ const ContactFormCreateView = ({
             const integration = defaultIntegration ?? emailIntegrations[0]
             return {
                 name: '',
-                help_center_id: null,
                 default_locale: CONTACT_FORM_DEFAULT_LOCALE,
                 email_integration: {
                     id: integration.id,

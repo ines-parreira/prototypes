@@ -4752,12 +4752,7 @@
                         ]
                     }
                 },
-                "required": [
-                    "help_center_id",
-                    "name",
-                    "default_locale",
-                    "email_integration"
-                ]
+                "required": ["name", "default_locale", "email_integration"]
             },
             "SubjectLinesDto": {
                 "type": "object",
@@ -5153,6 +5148,7 @@
                     "locale",
                     "seo_meta",
                     "visibility_status",
+                    "image_url",
                     "title",
                     "description",
                     "slug"
@@ -5299,6 +5295,7 @@
                     "locale",
                     "seo_meta",
                     "visibility_status",
+                    "image_url",
                     "title",
                     "description",
                     "slug"

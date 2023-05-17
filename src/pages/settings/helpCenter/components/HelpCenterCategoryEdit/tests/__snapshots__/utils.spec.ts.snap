@@ -22,6 +22,7 @@ exports[`eligibleParentCategories() should return an empty array if the category
       "created_datetime": "2022-03-17T12:52:14.243Z",
       "deleted_datetime": null,
       "description": "",
+      "image_url": null,
       "locale": "en-US",
       "parent_category_id": null,
       "seo_meta": {
@@ -55,6 +56,7 @@ exports[`eligibleParentCategories() should return an empty array if the category
       "created_datetime": "2022-03-17T12:53:10.489Z",
       "deleted_datetime": null,
       "description": "",
+      "image_url": null,
       "locale": "en-US",
       "parent_category_id": 47,
       "seo_meta": {
@@ -88,6 +90,7 @@ exports[`eligibleParentCategories() should return an empty array if the category
       "created_datetime": "2022-03-17T12:53:43.235Z",
       "deleted_datetime": null,
       "description": "",
+      "image_url": null,
       "locale": "en-US",
       "parent_category_id": 48,
       "seo_meta": {
@@ -127,6 +130,7 @@ exports[`eligibleParentCategories() should return the categories including the l
       "created_datetime": "2022-03-17T12:52:14.243Z",
       "deleted_datetime": null,
       "description": "",
+      "image_url": null,
       "locale": "en-US",
       "parent_category_id": null,
       "seo_meta": {
@@ -160,6 +164,7 @@ exports[`eligibleParentCategories() should return the categories including the l
       "created_datetime": "2022-03-17T12:53:10.489Z",
       "deleted_datetime": null,
       "description": "",
+      "image_url": null,
       "locale": "en-US",
       "parent_category_id": 47,
       "seo_meta": {
@@ -193,6 +198,7 @@ exports[`eligibleParentCategories() should return the categories including the l
       "created_datetime": "2022-03-17T12:53:43.235Z",
       "deleted_datetime": null,
       "description": "",
+      "image_url": null,
       "locale": "en-US",
       "parent_category_id": 48,
       "seo_meta": {
@@ -234,6 +240,7 @@ exports[`eligibleParentCategories() should return the categories without the chi
       "created_datetime": "2022-03-17T12:52:14.243Z",
       "deleted_datetime": null,
       "description": "",
+      "image_url": null,
       "locale": "en-US",
       "parent_category_id": null,
       "seo_meta": {
@@ -264,6 +271,7 @@ exports[`eligibleParentCategories() should return the categories without the chi
       "created_datetime": "2022-03-23T10:34:42.017Z",
       "deleted_datetime": null,
       "description": "",
+      "image_url": null,
       "locale": "en-US",
       "parent_category_id": 47,
       "seo_meta": {

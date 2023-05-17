@@ -49,6 +49,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                                     available_locales: ['en-US'],
                                     children: [],
                                     translation: {
+                                        image_url: null,
                                         created_datetime:
                                             '2022-03-10T08:22:08.318Z',
                                         updated_datetime:
@@ -71,6 +72,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                                 },
                             ],
                             translation: {
+                                image_url: null,
                                 created_datetime: '2022-03-10T08:21:16.195Z',
                                 updated_datetime: '2022-03-10T08:21:16.195Z',
                                 deleted_datetime: null,
@@ -91,6 +93,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                         },
                     ],
                     translation: {
+                        image_url: null,
                         created_datetime: '2022-03-07T14:47:39.237Z',
                         updated_datetime: '2022-03-07T14:56:07.075Z',
                         deleted_datetime: null,
@@ -111,6 +114,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                 },
             ],
             translation: {
+                image_url: null,
                 created_datetime: '2022-03-07T14:47:03.686Z',
                 updated_datetime: '2022-03-07T14:47:03.686Z',
                 deleted_datetime: null,
@@ -147,6 +151,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                     available_locales: ['en-US'],
                     children: [],
                     translation: {
+                        image_url: null,
                         created_datetime: '2022-03-07T15:11:48.641Z',
                         updated_datetime: '2022-03-07T15:11:48.641Z',
                         deleted_datetime: null,
@@ -167,6 +172,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                 },
             ],
             translation: {
+                image_url: null,
                 created_datetime: '2022-03-07T14:47:16.170Z',
                 updated_datetime: '2022-03-07T14:47:16.170Z',
                 deleted_datetime: null,
@@ -203,6 +209,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                     available_locales: ['en-US'],
                     children: [],
                     translation: {
+                        image_url: null,
                         created_datetime: '2022-03-07T15:12:09.705Z',
                         updated_datetime: '2022-03-07T15:12:09.705Z',
                         deleted_datetime: null,
@@ -223,6 +230,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                 },
             ],
             translation: {
+                image_url: null,
                 created_datetime: '2022-03-07T14:47:24.935Z',
                 updated_datetime: '2022-03-07T14:47:24.935Z',
                 deleted_datetime: null,
@@ -253,6 +261,7 @@ export const getSingleCategory: Category = {
     help_center_id: 3,
     available_locales: ['en-US'],
     translation: {
+        image_url: null,
         created_datetime: '2022-03-07T14:47:03.686Z',
         updated_datetime: '2022-03-07T14:47:03.686Z',
         deleted_datetime: null,

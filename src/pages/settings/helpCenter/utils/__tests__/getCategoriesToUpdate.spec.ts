@@ -9,6 +9,7 @@ import {
 
 const categories = _keyBy(getCategoriesFlatSorted, 'id')
 const translation: CategoryTranslation = {
+    image_url: null,
     created_datetime: '2022-03-07T14:47:03.686Z',
     updated_datetime: '2022-03-07T14:47:03.686Z',
     deleted_datetime: null,

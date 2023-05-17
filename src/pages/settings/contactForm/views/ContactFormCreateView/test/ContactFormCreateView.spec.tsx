@@ -138,7 +138,6 @@ describe('<ContactFormCreateView />', () => {
                         id: 13,
                     },
                     default_locale: 'en-US',
-                    help_center_id: null,
                     name: TEST_NAME,
                 })
             })

@@ -314,7 +314,7 @@ declare namespace Components {
        * example:
        * https://cdn.shopify.com/image.jpg
        */
-      image_url?: string | null;
+      image_url: string | null;
       title: string;
       description: string | null;
       slug: string;
@@ -465,7 +465,7 @@ declare namespace Components {
          * example:
          * https://cdn.shopify.com/image.jpg
          */
-        image_url?: string | null;
+        image_url: string | null;
         title: string;
         description: string | null;
         slug: string;
@@ -1016,7 +1016,7 @@ declare namespace Components {
        * Help center id that is serving this contact form
        * example:
        */
-      help_center_id: number | null;
+      help_center_id?: number | null;
       /**
        * Name of the Contact Form
        * example:
@@ -1576,7 +1576,7 @@ declare namespace Components {
        * example:
        * https://cdn.shopify.com/image.jpg
        */
-      image_url?: string | null;
+      image_url: string | null;
       /**
        * Gives details on how the translation fallback was chosen:
        * - `undefined`: the translation is the requested one

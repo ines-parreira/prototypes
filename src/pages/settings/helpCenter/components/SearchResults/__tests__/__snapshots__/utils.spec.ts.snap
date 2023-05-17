@@ -21,6 +21,7 @@ exports[`SearchResults utils searchResultsTreeFromAlgolia returns a result tree 
           "created_datetime": "2022-03-07T14:47:03.686Z",
           "deleted_datetime": null,
           "description": "",
+          "image_url": null,
           "locale": "en-US",
           "parent_category_id": null,
           "seo_meta": {
