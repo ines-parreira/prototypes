@@ -7,9 +7,7 @@ import {CampaignProduct} from '../types/CampaignProduct'
 
 import {extractLinksFromText} from './extractLinksFromText'
 
-export function isRevenueAddonSubscriber() {
-    return Boolean(getLDClient().allFlags()[FeatureFlagKey.RevenueBetaTesters])
-}
+import {isRevenueAddonSubscriber} from './isRevenueAddonSubscriber'
 
 export function shouldAppendUtmParam(): boolean {
     const shouldDisableUtmParams = Boolean(

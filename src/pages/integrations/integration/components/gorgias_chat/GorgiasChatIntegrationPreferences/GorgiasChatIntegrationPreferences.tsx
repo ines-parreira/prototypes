@@ -23,6 +23,8 @@ import NavigatedSuccessModal, {
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 
+import {isRevenueAddonSubscriber} from '../GorgiasChatIntegrationCampaigns/utils/isRevenueAddonSubscriber'
+
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
@@ -115,6 +117,7 @@ type State = {
     hide: boolean
     hideOnMobile: boolean
     hideOutsideBusinessHours: boolean
+    displayCampaignsHiddenChat: boolean
     isInitialized: boolean
     isUpdating: boolean
     preview: string
@@ -142,6 +145,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         hide: false,
         hideOnMobile: false,
         hideOutsideBusinessHours: false,
+        displayCampaignsHiddenChat: false,
         isInitialized: false,
         isUpdating: false,
         preview: PREVIEW_LIVE_CHAT_AVAILABILITY,
@@ -195,6 +199,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'meta',
                         'preferences',
                         'hide_outside_business_hours',
+                    ]),
+                    displayCampaignsHiddenChat: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'display_campaigns_hidden_chat',
                     ]),
                     linkedEmailIntegration: integration.getIn([
                         'meta',
@@ -308,6 +317,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         })
     }
 
+    _setDisplayCampaignsChatHidden = (value: boolean) => {
+        this.setState({
+            displayCampaignsHiddenChat: value,
+        })
+    }
+
     _setLinkedEmailIntegration = (integrationId: number) => {
         this.setState({linkedEmailIntegration: integrationId})
     }
@@ -343,6 +358,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             linked_email_integration: this.state.linkedEmailIntegration,
             hide_on_mobile: this.state.hideOnMobile,
             hide_outside_business_hours: this.state.hideOutsideBusinessHours,
+            display_campaigns_hidden_chat:
+                this.state.displayCampaignsHiddenChat,
             offline_mode_enabled_datetime:
                 this.state.offlineModeEnabledDatetime,
             live_chat_availability: this.state.liveChatAvailability,
@@ -376,6 +393,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             hide,
             hideOnMobile,
             hideOutsideBusinessHours,
+            displayCampaignsHiddenChat,
             isUpdating,
             preview,
             linkedEmailIntegration,
@@ -575,6 +593,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 label: 'In a few hours',
             },
         ]
+
+        const renderDisplayCampaignsHiddenChat = isRevenueAddonSubscriber()
 
         return (
             <>
@@ -793,6 +813,41 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             <b>Hide on mobile</b>
                                         </div>
                                     </div>
+
+                                    {renderDisplayCampaignsHiddenChat && (
+                                        <div
+                                            className={classnames(
+                                                css.formGroup,
+                                                'd-flex'
+                                            )}
+                                        >
+                                            <ToggleInput
+                                                onClick={
+                                                    this
+                                                        ._setDisplayCampaignsChatHidden
+                                                }
+                                                isToggled={
+                                                    displayCampaignsHiddenChat
+                                                }
+                                            />
+
+                                            <div
+                                                className={classnames(
+                                                    css.toggleInfo,
+                                                    'ml-1'
+                                                )}
+                                            >
+                                                <b>
+                                                    Display campaigns when chat
+                                                    is hidden
+                                                </b>{' '}
+                                                <div className="form-text text-muted">
+                                                    Customers will not be able
+                                                    to reply to campaigns
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className={classnames(css.formSection)}>

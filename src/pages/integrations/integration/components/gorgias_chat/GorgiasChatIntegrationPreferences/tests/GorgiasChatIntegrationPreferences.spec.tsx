@@ -92,6 +92,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         },
                         email_capture_enforcement:
                             GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
+                        display_campaigns_hidden_chat: false,
                     },
                     language: SPANISH_LANGUAGE,
                 },
@@ -422,6 +423,19 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 )
 
             expect(component.state()).toEqual(expectedState)
+        })
+    })
+
+    describe('_setDisplayCampaignsChatHidden()', () => {
+        it('should update the display campaigns with hidden chat in the state.', () => {
+            const component =
+                shallow<GorgiasChatIntegrationPreferencesComponent>(
+                    <GorgiasChatIntegrationPreferencesComponent {...minProps} />
+                )
+
+            expect(component.state()).toMatchSnapshot()
+            component.instance()._setDisplayCampaignsChatHidden(true)
+            expect(component.state()).toMatchSnapshot()
         })
     })
 

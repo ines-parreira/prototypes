@@ -1,5 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<GorgiasChatIntegrationPreferences/> _setDisplayCampaignsChatHidden() should update the display campaigns with hidden chat in the state. 1`] = `
+{
+  "autoResponderEnabled": true,
+  "autoResponderReply": "reply-dynamic",
+  "avatar": undefined,
+  "avatarTeamPictureUrl": null,
+  "avatarType": "team-members",
+  "displayCampaignsHiddenChat": false,
+  "emailCaptureEnforcement": "optional",
+  "hide": false,
+  "hideOnMobile": false,
+  "hideOutsideBusinessHours": false,
+  "isInitialized": false,
+  "isUpdating": false,
+  "linkedEmailIntegration": null,
+  "liveChatAvailability": "auto-based-on-agent-availability",
+  "offlineModeEnabledDatetime": null,
+  "preview": "live-chat-availability",
+}
+`;
+
+exports[`<GorgiasChatIntegrationPreferences/> _setDisplayCampaignsChatHidden() should update the display campaigns with hidden chat in the state. 2`] = `
+{
+  "autoResponderEnabled": true,
+  "autoResponderReply": "reply-dynamic",
+  "avatar": undefined,
+  "avatarTeamPictureUrl": null,
+  "avatarType": "team-members",
+  "displayCampaignsHiddenChat": true,
+  "emailCaptureEnforcement": "optional",
+  "hide": false,
+  "hideOnMobile": false,
+  "hideOutsideBusinessHours": false,
+  "isInitialized": false,
+  "isUpdating": false,
+  "linkedEmailIntegration": null,
+  "liveChatAvailability": "auto-based-on-agent-availability",
+  "offlineModeEnabledDatetime": null,
+  "preview": "live-chat-availability",
+}
+`;
+
 exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() should update the linked email integration in the state. 1`] = `
 {
   "autoResponderEnabled": true,
@@ -7,6 +49,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
   "avatar": undefined,
   "avatarTeamPictureUrl": null,
   "avatarType": "team-members",
+  "displayCampaignsHiddenChat": false,
   "emailCaptureEnforcement": "optional",
   "hide": false,
   "hideOnMobile": false,
@@ -27,6 +70,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
   "avatar": undefined,
   "avatarTeamPictureUrl": null,
   "avatarType": "team-members",
+  "displayCampaignsHiddenChat": false,
   "emailCaptureEnforcement": "optional",
   "hide": false,
   "hideOnMobile": false,
@@ -57,6 +101,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "linked_email_integration": null,
             "hide_on_mobile": false,
             "hide_outside_business_hours": false,
+            "display_campaigns_hidden_chat": false,
             "offline_mode_enabled_datetime": null,
             "live_chat_availability": "auto-based-on-agent-availability",
           },
@@ -90,6 +135,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "linked_email_integration": null,
             "hide_on_mobile": false,
             "hide_outside_business_hours": false,
+            "display_campaigns_hidden_chat": false,
             "offline_mode_enabled_datetime": null,
             "live_chat_availability": "auto-based-on-agent-availability",
           },
@@ -119,6 +165,7 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidMount() should initial
   },
   "avatarTeamPictureUrl": null,
   "avatarType": "team-members",
+  "displayCampaignsHiddenChat": false,
   "emailCaptureEnforcement": "always-required",
   "hide": false,
   "hideOnMobile": false,
@@ -143,6 +190,7 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidUpdate() should initia
   },
   "avatarTeamPictureUrl": null,
   "avatarType": "team-members",
+  "displayCampaignsHiddenChat": false,
   "emailCaptureEnforcement": "always-required",
   "hide": false,
   "hideOnMobile": false,
