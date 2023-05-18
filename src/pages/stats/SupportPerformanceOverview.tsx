@@ -207,9 +207,9 @@ export default function SupportPerformanceOverview() {
                     dismissible={false}
                     message={
                         <span>
-                            Welcome to the new Statistics Overview! It
-                            calculates data in a new way to represent your
-                            workload more accurately.{' '}
+                            Welcome to the new Statistics Overview beta! The
+                            metrics are computed in a new way to represent your
+                            performance more accurately.{' '}
                             <a href={LEARN_MORE_URL}>Learn more.</a>
                         </span>
                     }
@@ -398,12 +398,12 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
                         <ChartCard
-                            title="Tickets closed"
+                            title="Closed tickets"
                             hint="Number of opened tickets solved by the end of the period"
                         >
                             <TimeSeriesChart
                                 timeSeries={ticketsClosedTimeSeries}
-                                labels={['Tickets closed']}
+                                labels={['Closed tickets']}
                                 granularity={granularity}
                             />
                         </ChartCard>

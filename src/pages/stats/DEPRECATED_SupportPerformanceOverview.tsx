@@ -230,7 +230,7 @@ export default function DEPRECATED_SupportPerformanceOverview() {
                     }
                     closable
                     dismissible={false}
-                    message="This is the old Statistics Overview, which uses our old method of calculating data and may not fully represent your workload."
+                    message="This is the old Statistics Overview, which uses our old method of computing metrics and may not fully represent your performance."
                     onClose={() => setIsVersionBannerVisible(false)}
                 />
             ) : null}
