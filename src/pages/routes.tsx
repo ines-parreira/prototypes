@@ -139,6 +139,7 @@ import OrderManagementPaywallView from './automation/orderManagement/OrderManage
 import ArticleRecommendationPaywallView from './automation/articleRecommendation/ArticleRecommendationPaywallView'
 import OrderManagementPreviewProvider from './automation/orderManagement/OrderManagementPreviewProvider'
 import ConnectedChannelsViewContainer from './automation/connectedChannels/ConnectedChannelsViewContainer'
+import WorkflowsPaywallView from './automation/workflows/WorkflowsPaywallView'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1206,6 +1207,9 @@ function AutomationContent() {
                         )}
                     />
                 </SelfServiceHelpCentersProvider>
+            </Route>
+            <Route path={`${path}/flows`} exact>
+                <WorkflowsPaywallView />
             </Route>
             <Route path={`${path}/quick-responses`} exact>
                 <QuickResponsesPaywallView />

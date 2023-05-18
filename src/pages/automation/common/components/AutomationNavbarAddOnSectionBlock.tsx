@@ -70,15 +70,28 @@ const AutomationNavbarAddOnSectionBlock = ({
                     </NavbarLink>
                 </>
             ) : (
-                <AutomationNavbarAddOnPaywallNavbarLink
-                    to="/app/automation/quick-responses"
-                    onSubscribeToAutomationAddOnClick={
-                        onSubscribeToAutomationAddOnClick
-                    }
-                    isNested
-                >
-                    Quick responses
-                </AutomationNavbarAddOnPaywallNavbarLink>
+                <>
+                    {isflowsBetaEnabled && (
+                        <AutomationNavbarAddOnPaywallNavbarLink
+                            to="/app/automation/flows"
+                            onSubscribeToAutomationAddOnClick={
+                                onSubscribeToAutomationAddOnClick
+                            }
+                            isNested
+                        >
+                            Flows
+                        </AutomationNavbarAddOnPaywallNavbarLink>
+                    )}
+                    <AutomationNavbarAddOnPaywallNavbarLink
+                        to="/app/automation/quick-responses"
+                        onSubscribeToAutomationAddOnClick={
+                            onSubscribeToAutomationAddOnClick
+                        }
+                        isNested
+                    >
+                        Quick responses
+                    </AutomationNavbarAddOnPaywallNavbarLink>
+                </>
             )}
             {shopType === 'shopify' && (
                 <>
