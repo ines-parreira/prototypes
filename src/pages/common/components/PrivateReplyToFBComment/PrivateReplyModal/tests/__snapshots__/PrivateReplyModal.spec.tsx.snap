@@ -1,3 +1,94 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PrivateReplyModal/> render should render the modal 1`] = `null`;
+exports[`<PrivateReplyModal/> should render the modal 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal fade"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Message
+                 
+                some_sender_firstname
+                 
+                some_sender_lastname
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="p-0 modal-body"
+            >
+              <div>
+                mocked TicketMessageEmbeddedCard
+              </div>
+              <textarea
+                class="form-control privateReplyTextarea"
+                maxlength="2000"
+                placeholder="Reply via Facebook Messenger"
+                rows="4"
+              />
+            </div>
+            <div
+              class="modalFooter modal-footer"
+            >
+              <button
+                class="wrapper submit send fill primary medium isDisabled"
+                disabled=""
+                id="private-reply-submit"
+                type="button"
+              >
+                Send
+              </button>
+              <button
+                class="wrapper submit sendAndClose fill secondary medium isDisabled"
+                disabled=""
+                id="send-private-reply-and-close-button"
+                type="button"
+              >
+                Send & Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop fade"
+      />
+    </div>
+  </div>
+</body>
+`;

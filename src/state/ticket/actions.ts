@@ -457,7 +457,7 @@ export const setStatus =
                     type: types.SET_STATUS,
                     args: fromJS({status: initialStatus}),
                 })
-                return
+                return response
             }
             if (status === 'closed') callback()
         })

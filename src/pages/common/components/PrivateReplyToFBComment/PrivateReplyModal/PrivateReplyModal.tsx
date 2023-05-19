@@ -4,6 +4,13 @@ import classnames from 'classnames'
 
 import {connect, ConnectedProps} from 'react-redux'
 
+import {TICKET_PARTIAL_UPDATE_ERROR} from 'state/ticket/constants'
+import {
+    goToNextTicket,
+    setStatus,
+    triggerTicketFieldsRefreshAndInvalidation,
+} from 'state/ticket/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 
 import {FACEBOOK_MESSENGER_MESSAGE_MAX_LENGTH} from '../../../../../config/integrations/facebook'
@@ -13,7 +20,6 @@ import * as infobarActions from '../../../../../state/infobar/actions'
 
 import TicketMessageEmbeddedCard from '../../TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
 import {StoreDispatch} from '../../../../../state/types'
-import {goToNextTicket, setStatus} from '../../../../../state/ticket/actions'
 import {COMMENT_TICKET_PRIVATE_REPLY_EVENT} from '../../../../tickets/detail/components/PrivateReplyEvent/constants'
 
 import css from './PrivateReplyModal.less'
@@ -146,6 +152,7 @@ function usePrivateReply(
     goToNextTicket: Props['goToNextTicket'],
     meta?: Meta
 ) {
+    const dispatch = useAppDispatch()
     const [isSending, setIsSending] = useState(false)
     const [privateReplyMessage, setPrivateReplyMessage] = useState('')
     const [canSend, setCanSend] = useState(false)
@@ -196,15 +203,38 @@ function usePrivateReply(
             senderId,
             actionPayload
         )
-        setIsSending(false)
-        toggle()
         if (sendAndClose) {
-            void setClosedStatus()
-            void goToNextTicket()
+            void setClosedStatus().then((dispatchReturn) => {
+                if (isErrorDispatchReturn(dispatchReturn)) {
+                    if (dispatchReturn.type === TICKET_PARTIAL_UPDATE_ERROR) {
+                        void dispatch(
+                            triggerTicketFieldsRefreshAndInvalidation()
+                        )
+                    }
+                } else {
+                    void goToNextTicket()
+                }
+                toggle()
+                setIsSending(false)
+            })
         }
     }
 
     return {isSending, sendPrivateReply, inputOnChange, canSend}
+}
+
+function isErrorDispatchReturn(
+    response: unknown
+): response is {type: string; error: Record<string, unknown>} {
+    if (typeof response === 'object' && response !== null) {
+        if (
+            response.hasOwnProperty('type') &&
+            response.hasOwnProperty('error')
+        ) {
+            return true
+        }
+    }
+    return false
 }
 
 const mapDispatchToProps = (dispatch: StoreDispatch, props: OwnProps) => ({
