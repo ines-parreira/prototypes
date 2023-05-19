@@ -1,5 +1,33 @@
+@import '~css/new/colorTokens';
+@import '~css/new/layout';
+
 :local {
     .orderTitle {
         font-size: 18px;
+    }
+
+    .copyButton {
+        display: none;
+        margin-left: @layout-spacing-xxs;
+    }
+
+    .iconButton {
+        background-color: transparent !important;
+    }
+
+    .copyIcon {
+        color: @classic-neutral-grey-6;
+    }
+
+    .orderTitleContainer {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+
+        &:hover {
+            .copyButton {
+                display: flex;
+            }
+        }
     }
 }

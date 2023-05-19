@@ -3,11 +3,13 @@ import React, {
     ContextType,
     createContext,
     FunctionComponent,
+    MouseEvent,
     ReactNode,
     useContext,
 } from 'react'
 import {fromJS, Map} from 'immutable'
 
+import copy from 'copy-to-clipboard'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     FulfillmentStatus,
@@ -25,6 +27,12 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
+import IconButton from 'pages/common/components/button/IconButton'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {EditionContext} from 'providers/infobar/EditionContext'
+import {reportError} from 'utils/errors'
 import CancelOrderModal from './CancelOrderModal/CancelOrderModal'
 import RefundOrderModal from './RefundOrderModal/RefundOrderModal'
 import EditOrderModal from './EditOrderModal/EditOrderModal'
@@ -263,11 +271,57 @@ class AfterTitle extends Component<AfterTitleProps> {
     }
 }
 
+export const Copy = ({
+    value,
+    onCopyMessage = 'Copied!',
+}: {
+    value: string
+    onCopyMessage?: string
+}) => {
+    const dispatch = useAppDispatch()
+
+    const copyContent = async (e: MouseEvent) => {
+        e.stopPropagation()
+        try {
+            copy(value)
+            await dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    title: onCopyMessage,
+                })
+            )
+        } catch (err) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    title: 'Failed to copy',
+                })
+            )
+            reportError(err as Error)
+        }
+    }
+
+    return (
+        <span className={css.copyButton}>
+            <IconButton
+                className={css.iconButton}
+                iconClassName={`material-icons ${css.copyIcon}`}
+                fillStyle="ghost"
+                size="small"
+                onClick={copyContent}
+            >
+                content_copy
+            </IconButton>
+        </span>
+    )
+}
+
 type TitleWrapperProps = {
     children?: ReactNode
     source: Map<any, any>
 }
 function TitleWrapper({children, source}: TitleWrapperProps) {
+    const {isEditing} = useContext(EditionContext)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {integration} = useContext(IntegrationContext)
     const {isOrderCancelled} = useContext(OrderContext)
@@ -275,21 +329,29 @@ function TitleWrapper({children, source}: TitleWrapperProps) {
 
     return (
         <>
-            <a
-                href={`https://${shopName}.myshopify.com/admin/orders/${(
-                    (source.get('id') as number) || ''
-                ).toString()}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => {
-                    logEvent(SegmentEvent.ShopifyOrderClicked, {
-                        account_domain: currentAccount.get('domain'),
-                    })
-                }}
-                className={css.orderTitle}
-            >
-                {children}
-            </a>
+            <div className={css.orderTitleContainer}>
+                <a
+                    href={`https://${shopName}.myshopify.com/admin/orders/${(
+                        (source.get('id') as number) || ''
+                    ).toString()}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                        logEvent(SegmentEvent.ShopifyOrderClicked, {
+                            account_domain: currentAccount.get('domain'),
+                        })
+                    }}
+                    className={css.orderTitle}
+                >
+                    <>{children}</>
+                </a>
+                {!isEditing && (
+                    <Copy
+                        value={source.get('order_number')}
+                        onCopyMessage="Order Number copied to clipboard"
+                    />
+                )}
+            </div>
             <div>
                 <OrderStatus
                     fulfillmentStatus={
