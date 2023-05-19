@@ -23,6 +23,7 @@ type Props = {
     animation?: 'default' | 'none'
     children: ReactNode
     className?: string
+    classNameDialog?: string
     classNameContent?: string
     container?: Element
     id?: string
@@ -49,6 +50,7 @@ const Modal = (
         animation = 'default',
         children,
         className,
+        classNameDialog,
         classNameContent,
         container = document.body,
         id,
@@ -117,10 +119,14 @@ const Modal = (
                 onClick={handleClose}
             >
                 <div
-                    className={classnames(css.dialog, {
-                        [css[size!]]: !!size,
-                        [css.scrollableDialog]: isScrollable,
-                    })}
+                    className={classnames(
+                        css.dialog,
+                        {
+                            [css[size!]]: !!size,
+                            [css.scrollableDialog]: isScrollable,
+                        },
+                        classNameDialog
+                    )}
                 >
                     <div
                         ref={ref}

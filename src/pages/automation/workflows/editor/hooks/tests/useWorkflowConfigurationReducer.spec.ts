@@ -3,7 +3,7 @@ import {
     WorkflowStepChoices,
     WorkflowStepMessages,
     WorkflowStepWorkflowCall,
-} from 'pages/automation/workflows/hooks/useWorkflowApi'
+} from '../../../types'
 import {reducer} from '../useWorkflowConfigurationReducer'
 
 const genStepMessage = (id: string): WorkflowStepMessages => ({

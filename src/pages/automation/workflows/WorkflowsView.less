@@ -1,4 +1,7 @@
-@import '~css/new/colorTokens.less';
+@import (reference) '~css/new/colorTokens.less';
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/typography';
+
 :local {
     .pageHeaderContainer {
         position: sticky;
@@ -49,22 +52,14 @@
         vertical-align: middle !important;
     }
 
-    .info {
-        padding-left: 30px;
-        padding-bottom: 16px;
-    }
-
-    .infoContainer {
+    .descriptionContainer {
         display: flex;
         justify-content: space-between;
-        align-items: start;
-
-        p:last-child {
-            margin-bottom: -10px;
-        }
+        gap: @layout-spacing-m;
     }
 
     .description {
-        padding-right: 12px;
+        .body-regular();
+        margin-bottom: 2px;
     }
 }

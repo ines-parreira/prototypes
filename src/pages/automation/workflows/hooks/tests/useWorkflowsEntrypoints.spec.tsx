@@ -50,7 +50,7 @@ const entrypointsFixtures = [
     {enabled: false, workflow_id: 'c', label: 'c'},
 ]
 
-describe('useWorflowsEntrypoints', () => {
+describe('useWorkflowsEntrypoints', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         updateMock({})

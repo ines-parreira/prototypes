@@ -27,6 +27,9 @@ export default function WorkflowEditorViewContainer() {
     const goToWorkflowsListPage = useCallback(() => {
         history.push(`/app/automation/${shopType}/${shopName}/flows`)
     }, [history, shopName, shopType])
+    const goToWorkflowTemplatesPage = useCallback(() => {
+        history.push(`/app/automation/${shopType}/${shopName}/flows/templates`)
+    }, [history, shopName, shopType])
 
     const isNewWorkflow = editWorkflowId == null
     const workflowId = useMemo(() => editWorkflowId ?? ulid(), [editWorkflowId])
@@ -54,6 +57,7 @@ export default function WorkflowEditorViewContainer() {
         <WorkflowEditorView
             currentAccountId={currentAccountId}
             goToWorkflowsListPage={goToWorkflowsListPage}
+            goToWorkflowTemplatesPage={goToWorkflowTemplatesPage}
             workflowId={workflowId}
             isNewWorkflow={isNewWorkflow}
             notifyMerchant={notifyMerchant}

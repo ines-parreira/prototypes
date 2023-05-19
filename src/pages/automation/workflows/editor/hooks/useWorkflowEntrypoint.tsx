@@ -83,7 +83,7 @@ export function useWorkflowEntrypoint(
         (e) => e.workflow_id === workflowId
     )?.label
     useOnLoaded(selfServiceConfiguration, () => {
-        setLabel(apiLabel ?? '')
+        setLabel((prevState) => apiLabel ?? prevState)
     })
     const isDirty = label !== (apiLabel ?? '')
 

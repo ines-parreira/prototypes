@@ -1,5 +1,6 @@
 import {useEffect} from 'react'
 import {Edge, Node, useNodesInitialized, useReactFlow} from 'reactflow'
+import {WorkflowConfiguration} from '../../../types'
 import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
 import {useWorkflowEntrypointContext} from '../../hooks/useWorkflowEntrypoint'
 import {
@@ -7,7 +8,6 @@ import {
     ReplyButtonNodeType,
     TriggerButtonNodeType,
 } from '../types'
-import {WorkflowConfiguration} from '../../../hooks/useWorkflowApi'
 
 export function useSyncWorkflowToReactFlow() {
     const {setNodes, getNodes, setEdges} = useReactFlow()

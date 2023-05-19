@@ -1,28 +1,23 @@
-@import '~css/new/colorTokens';
-@import '~css/new/mixins';
+@import (reference) '~css/new/colorTokens';
+@import (reference) '~css/typography';
 
 :local {
     .preview {
         display: flex;
         justify-content: center;
-        align-items: center;
         flex-direction: column;
-        width: 228px;
+        width: 207px;
         height: 148px;
+        padding: 8px;
         background: @classic-neutral-grey-1;
         border: solid 1px @classic-neutral-grey-3;
         border-radius: 4px;
-        margin-bottom: 15px;
         cursor: pointer;
+        gap: 8px;
 
         .screenshotWrapper {
-            width: 190px;
-            height: 104px;
-            background: @classic-neutral-grey-0;
-            border: solid 1px @classic-neutral-grey-3;
-            border-radius: 4px;
-            margin-bottom: 3px;
-            padding: 7px;
+            width: 191px;
+            height: 108px;
 
             .screenshot {
                 height: 100%;
@@ -59,15 +54,9 @@
         }
 
         .title {
-            font-size: 14px;
-            font-weight: 400;
-            color: @classic-neutral-grey-6;
-            text-align: left;
+            .caption-semibold();
+            color: @classic-main-primary;
         }
-    }
-
-    .modal {
-        max-width: 80%;
     }
 
     .modalBody {
@@ -76,6 +65,7 @@
     }
 
     .iframe {
+        border: none;
         flex: 1;
     }
 }

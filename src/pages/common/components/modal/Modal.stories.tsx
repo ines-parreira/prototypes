@@ -44,7 +44,7 @@ const Template: Story<
                 isOpen={isOpen}
                 container={document.getElementById('root') as Element}
             >
-                <ModalHeader subtitle={subtitle} title={title!} />
+                <ModalHeader subtitle={subtitle} title={title} />
                 <ModalBody>{children}</ModalBody>
                 <ModalActionsFooter>
                     <Button intent="secondary" onClick={() => setIsOpen(false)}>
@@ -99,7 +99,7 @@ const TemplateWithExtraFooterInfo: Story<
                 isOpen={isOpen}
                 container={document.getElementById('root') as Element}
             >
-                <ModalHeader subtitle={subtitle} title={title!} />
+                <ModalHeader subtitle={subtitle} title={title} />
                 <ModalBody>{children}</ModalBody>
                 <ModalActionsFooter extra="Mythology is cool">
                     <Button intent="secondary" onClick={() => setIsOpen(false)}>
@@ -137,7 +137,7 @@ const WithCustomFooterTemplate: Story<
                 isOpen={isOpen}
                 container={document.getElementById('root') as Element}
             >
-                <ModalHeader subtitle={subtitle} title={title!} />
+                <ModalHeader subtitle={subtitle} title={title} />
                 <ModalBody>{children}</ModalBody>
                 <ModalFooter className={css.footer}>
                     <span>Zeus and Hera are his parents</span>

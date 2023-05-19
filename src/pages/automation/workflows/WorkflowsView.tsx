@@ -2,6 +2,7 @@ import React from 'react'
 import {Table, Container} from 'reactstrap'
 import classNames from 'classnames'
 import {Link} from 'react-router-dom'
+
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import ReactSortable from 'pages/common/components/dragging/ReactSortable'
@@ -11,13 +12,16 @@ import {WorkflowEntrypoint} from 'models/selfServiceConfiguration/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Tooltip from 'pages/common/components/Tooltip'
 import Loader from 'pages/common/components/Loader/Loader'
+
+import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
+import CreateWorkflowFooter from './components/CreateWorkflowFooter'
+
 import css from './WorkflowsView.less'
-import useWorflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
 
 type WorkflowsViewProps = {
     shopType: string
     shopName: string
-    goToNewWorkflowPage: () => void
+    goToWorkflowTemplatesPage: () => void
     goToEditWorkflowPage: (flowId: string) => void
     quickResponsesUrl: string
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
@@ -26,7 +30,7 @@ type WorkflowsViewProps = {
 export default function WorkflowsView({
     shopName,
     shopType,
-    goToNewWorkflowPage,
+    goToWorkflowTemplatesPage,
     goToEditWorkflowPage,
     quickResponsesUrl,
     notifyMerchant,
@@ -40,31 +44,84 @@ export default function WorkflowsView({
         isUpdatePending,
         isToggleUpdatePending,
         isEnabledLimitReached,
-    } = useWorflowsEntrypoints(shopType, shopName, notifyMerchant)
+    } = useWorkflowsEntrypoints(shopType, shopName, notifyMerchant)
+
+    const hasWorkflowsEntrypoints = workflowsEntrypoints.length > 0
 
     return (
         <div className="full-width overflow-auto">
             <div className={css.pageHeaderContainer}>
                 <PageHeader title="Flows">
-                    <div className={css.headerContainer}>
-                        <Button
-                            className="float-right"
-                            onClick={goToNewWorkflowPage}
-                        >
-                            Create flow
-                        </Button>
-                    </div>
-                </PageHeader>
-                {isFetchPending ? (
-                    <Loader data-testid="loader" />
-                ) : (
-                    <Container fluid className={css.pageContainer}>
-                        <div className={css.pageContainerHeadline}>
-                            {infoContainer}
+                    {hasWorkflowsEntrypoints && (
+                        <div className={css.headerContainer}>
+                            <Button
+                                className="float-right"
+                                onClick={goToWorkflowTemplatesPage}
+                            >
+                                Create new flow
+                            </Button>
                         </div>
+                    )}
+                </PageHeader>
+            </div>
 
+            {isFetchPending ? (
+                <Loader data-testid="loader" />
+            ) : (
+                <Container fluid className={css.pageContainer}>
+                    <div className={css.pageContainerHeadline}>
+                        <div className={css.descriptionContainer}>
+                            <div>
+                                <div className={css.description}>
+                                    Create and edit flows to automate multi-step
+                                    interactions.
+                                </div>
+                                <a
+                                    href="https://docs.gorgias.com/en-US/setting-up-multi-step-flows-246591"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                >
+                                    <i className="material-icons mr-2">
+                                        menu_book
+                                    </i>
+                                    How To Set Up Flows
+                                </a>
+                            </div>
+                            {/*TODO: uncomment once video for flows is ready*/}
+                            {/*<Video*/}
+                            {/*    youtubeId="HFylY2x3T_Y"*/}
+                            {/*    legend="Working with flows"*/}
+                            {/*/>*/}
+                        </div>
+                    </div>
+                    {hasWorkflowsEntrypoints ? (
                         <Table hover className="mb-0">
-                            {tableHeader(workflowsEntrypoints.length === 0)}
+                            <colgroup>
+                                <col style={{width: 25}} />
+                                <col style={{width: 25}} />
+                                <col />
+                                <col style={{width: 50}} />
+                            </colgroup>
+                            <thead className="border-0">
+                                <tr>
+                                    <td>
+                                        <i
+                                            className={classNames(
+                                                'material-icons',
+                                                css.arrowIcon
+                                            )}
+                                        >
+                                            arrow_downward
+                                        </i>
+                                    </td>
+                                    <td
+                                        colSpan={3}
+                                        className={css.tableHeaderTitle}
+                                    >
+                                        Flows appear in the order below
+                                    </td>
+                                </tr>
+                            </thead>
                             <ReactSortable
                                 tag="tbody"
                                 options={{
@@ -163,27 +220,18 @@ export default function WorkflowsView({
                                 ))}
                             </ReactSortable>
                         </Table>
-                    </Container>
-                )}
-            </div>
+                    ) : (
+                        <CreateWorkflowFooter
+                            goToWorkflowTemplatesPage={
+                                goToWorkflowTemplatesPage
+                            }
+                        />
+                    )}
+                </Container>
+            )}
         </div>
     )
 }
-
-const infoContainer = (
-    <div className={css.infoContainer}>
-        <div
-            className={css.description}
-            data-candu-id="shopper-flows-description"
-        >
-            <p className="mb-2">
-                Automate multi-step interactions in your chat widget with flows.
-                If a customer needs more help, a ticket is created for an agent
-                to handle.
-            </p>
-        </div>
-    </div>
-)
 
 function deleteActionButton(
     entrypoint: WorkflowEntrypoint,
@@ -223,38 +271,3 @@ function deleteActionButton(
         </div>
     )
 }
-
-const tableHeader = (emptyRows: boolean) => (
-    <>
-        <colgroup>
-            <col style={{width: 25}} />
-            <col style={{width: 25}} />
-            <col />
-            <col style={{width: 50}} />
-        </colgroup>
-        <thead className="border-0">
-            <tr>
-                <td>
-                    <i className={classNames('material-icons', css.arrowIcon)}>
-                        arrow_downward
-                    </i>
-                </td>
-                <td colSpan={3} className={css.tableHeaderTitle}>
-                    Flows appear in the order below
-                </td>
-            </tr>
-        </thead>
-        {/* This is a hack to make the table header respect the colgroup widths
-        defined above */}
-        {emptyRows && (
-            <tbody>
-                <tr>
-                    <td style={{padding: 0, border: 0}}></td>
-                    <td style={{padding: 0, border: 0}}></td>
-                    <td style={{padding: 0, border: 0}}></td>
-                    <td style={{padding: 0, border: 0}}></td>
-                </tr>
-            </tbody>
-        )}
-    </>
-)

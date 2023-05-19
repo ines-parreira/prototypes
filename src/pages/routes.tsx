@@ -140,6 +140,7 @@ import ArticleRecommendationPaywallView from './automation/articleRecommendation
 import OrderManagementPreviewProvider from './automation/orderManagement/OrderManagementPreviewProvider'
 import ConnectedChannelsViewContainer from './automation/connectedChannels/ConnectedChannelsViewContainer'
 import WorkflowsPaywallView from './automation/workflows/WorkflowsPaywallView'
+import WorkflowTemplatesViewContainer from './automation/workflows/WorkflowTemplatesViewContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1102,6 +1103,14 @@ function AutomationContent() {
                 exact
                 component={memoizedWithUserRoleRequired(
                     WorkflowsViewContainer,
+                    AGENT_ROLE
+                )}
+            />
+            <Route
+                path={`${path}/:shopType/:shopName/flows/templates`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    WorkflowTemplatesViewContainer,
                     AGENT_ROLE
                 )}
             />

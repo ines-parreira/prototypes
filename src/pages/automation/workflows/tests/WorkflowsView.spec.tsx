@@ -8,7 +8,8 @@ import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfSe
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import WorkflowsView from '../WorkflowsView'
-import useWorkflowApi, {WorkflowConfiguration} from '../hooks/useWorkflowApi'
+import {WorkflowConfiguration} from '../types'
+import useWorkflowApi from '../hooks/useWorkflowApi'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -57,7 +58,7 @@ describe('<WorkflowsView />', () => {
                     shopName=""
                     shopType=""
                     goToEditWorkflowPage={jest.fn()}
-                    goToNewWorkflowPage={jest.fn()}
+                    goToWorkflowTemplatesPage={jest.fn()}
                     quickResponsesUrl=""
                     notifyMerchant={jest.fn()}
                 />
@@ -104,7 +105,7 @@ describe('<WorkflowsView />', () => {
                     shopName=""
                     shopType=""
                     goToEditWorkflowPage={jest.fn()}
-                    goToNewWorkflowPage={jest.fn()}
+                    goToWorkflowTemplatesPage={jest.fn()}
                     quickResponsesUrl=""
                     notifyMerchant={jest.fn()}
                 />

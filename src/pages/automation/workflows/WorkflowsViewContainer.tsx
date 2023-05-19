@@ -16,8 +16,8 @@ export default function WorkflowsViewContainer() {
     }>()
     const history = useHistory()
     const dispatch = useAppDispatch()
-    const goToNewWorkflowPage = useCallback(() => {
-        history.push(`${history.location.pathname}/new`)
+    const goToWorkflowTemplatesPage = useCallback(() => {
+        history.push(`${history.location.pathname}/templates`)
     }, [history])
 
     const goToEditWorkflowPage = useCallback(
@@ -54,7 +54,7 @@ export default function WorkflowsViewContainer() {
         <WorkflowsView
             shopName={shopName}
             shopType={shopType}
-            goToNewWorkflowPage={goToNewWorkflowPage}
+            goToWorkflowTemplatesPage={goToWorkflowTemplatesPage}
             goToEditWorkflowPage={goToEditWorkflowPage}
             quickResponsesUrl={quickResponsesUrl}
             notifyMerchant={notifyMerchant}

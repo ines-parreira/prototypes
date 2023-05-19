@@ -1,25 +1,22 @@
-import React, {
-    PropsWithChildren,
-    ReactNode,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import React, {PropsWithChildren, ReactNode, useRef, useState} from 'react'
 import {Container} from 'reactstrap'
+import {useEffectOnce} from 'react-use'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import useSearch from 'hooks/useSearch'
+import {WORKFLOW_TEMPLATES} from '../constants'
 import {
     useWorkflowConfigurationContext,
     withWorkflowConfigurationContext,
 } from './hooks/useWorkflowConfiguration'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 import {
-    withWorkflowEntrypointContext,
     useWorkflowEntrypointContext,
+    withWorkflowEntrypointContext,
 } from './hooks/useWorkflowEntrypoint'
 
 import css from './WorkflowEditorView.less'
@@ -31,14 +28,19 @@ type WorkflowEditorViewProps = {
     workflowId: string
     isNewWorkflow: boolean
     goToWorkflowsListPage: () => void
+    goToWorkflowTemplatesPage: () => void
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
 }
 
 function WorkflowEditorViewWrapped({
+    currentAccountId,
+    workflowId,
     isNewWorkflow,
     goToWorkflowsListPage,
+    goToWorkflowTemplatesPage,
     notifyMerchant,
 }: WorkflowEditorViewProps) {
+    const {template: templateSlug} = useSearch<{template: string | undefined}>()
     const worfklowConfigurationContext = useWorkflowConfigurationContext()
     const workflowEntrypointContext = useWorkflowEntrypointContext()
 
@@ -65,7 +67,7 @@ function WorkflowEditorViewWrapped({
         workflowEntrypointContext.handleDiscard()
     }
     const handleCancel = () => {
-        goToWorkflowsListPage()
+        goToWorkflowTemplatesPage()
     }
     const handleSave = async () => {
         const entrypointError = workflowEntrypointContext.handleValidate()
@@ -94,13 +96,29 @@ function WorkflowEditorViewWrapped({
     }
 
     const inputRef = useRef<HTMLInputElement>(null)
-    useEffect(() => {
-        if (!isNewWorkflow) return
-        const t = setTimeout(() => {
-            inputRef.current?.focus()
-        }, 300)
-        return () => clearTimeout(t)
-    }, [isNewWorkflow])
+
+    useEffectOnce(() => {
+        if (!isNewWorkflow) {
+            return
+        }
+
+        if (templateSlug && templateSlug in WORKFLOW_TEMPLATES) {
+            const template = WORKFLOW_TEMPLATES[templateSlug]
+            worfklowConfigurationContext.dispatch({
+                type: 'RESET_CONFIGURATION',
+                configuration: template.getConfiguration(
+                    workflowId,
+                    currentAccountId
+                ),
+            })
+            workflowEntrypointContext.setLabel(template.entrypoint.label)
+        } else {
+            const t = setTimeout(() => {
+                inputRef.current?.focus()
+            }, 300)
+            return () => clearTimeout(t)
+        }
+    })
 
     return (
         <div className={css.page}>

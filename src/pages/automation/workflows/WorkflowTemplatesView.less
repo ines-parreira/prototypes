@@ -1,0 +1,25 @@
+@import (reference) '~css/new/colorTokens.less';
+@import (reference) '~css/new/layout.less';
+
+:local {
+    .pageHeaderContainer {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: @classic-neutral-grey-0;
+    }
+
+    .container {
+        padding: @layout-spacing-m;
+    }
+
+    .description {
+        padding-bottom: @layout-spacing-m;
+    }
+
+    .templatesContainer {
+        display: flex;
+        gap: @layout-spacing-s;
+        flex-wrap: wrap;
+    }
+}

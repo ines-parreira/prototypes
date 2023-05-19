@@ -43,9 +43,8 @@ import {
 import PageHeader from 'pages/common/components/PageHeader'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import {FeatureFlagKey} from 'config/featureFlags'
-import useWorkflowApi, {
-    WorkflowConfiguration,
-} from 'pages/automation/workflows/hooks/useWorkflowApi'
+import useWorkflowApi from 'pages/automation/workflows/hooks/useWorkflowApi'
+import {WorkflowConfiguration} from 'pages/automation/workflows/types'
 
 import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'

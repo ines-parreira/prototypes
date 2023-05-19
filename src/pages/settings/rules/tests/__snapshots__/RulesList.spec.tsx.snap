@@ -109,38 +109,34 @@ exports[`<RulesList/> should render the rules list 1`] = `
       <div
         class="d-flex"
       >
-        <div>
+        <div
+          class="preview"
+        >
           <div
-            class="preview"
+            class="screenshotWrapper"
           >
-            <div>
+            <div
+              class="screenshot"
+            >
+              <img
+                alt="video preview"
+                src="https://img.youtube.com/vi/HFylY2x3T_Y/0.jpg"
+              />
               <div
-                class="screenshotWrapper"
+                class="playIcon"
               >
-                <div
-                  class="screenshot"
-                >
-                  <img
-                    alt="video preview"
-                    src="https://img.youtube.com/vi/HFylY2x3T_Y/0.jpg"
-                  />
-                  <div
-                    class="playIcon"
-                  >
-                    <img
-                      alt="play"
-                      src="test-file-stub"
-                      width="11"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                class="title"
-              >
-                Working with rules
+                <img
+                  alt="play"
+                  src="test-file-stub"
+                  width="11"
+                />
               </div>
             </div>
+          </div>
+          <div
+            class="title"
+          >
+            Working with rules
           </div>
         </div>
         <div

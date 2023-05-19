@@ -9,7 +9,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from 'pages/automation/common/components/constants'
 import useWorkflowApi from './useWorkflowApi'
 
-export type UseWorflowsEntrypointsReturnType = {
+export type UseWorkflowsEntrypointsReturnType = {
     workflowsEntrypoints: Array<WorkflowEntrypoint & {name?: Maybe<string>}>
     isFetchPending: boolean
     isUpdatePending: boolean
@@ -20,11 +20,11 @@ export type UseWorflowsEntrypointsReturnType = {
     deleteWorkflowEntrypoint: (workflowId: string) => Promise<void>
 }
 
-export default function useWorflowsEntrypoints(
+export default function useWorkflowsEntrypoints(
     shopType: string,
     shopName: string,
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
-): UseWorflowsEntrypointsReturnType {
+): UseWorkflowsEntrypointsReturnType {
     const {
         isFetchPending: isSelfServiceFetchPending,
         isUpdatePending,

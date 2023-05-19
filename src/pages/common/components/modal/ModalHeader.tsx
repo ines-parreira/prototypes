@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {ReactNode, useContext} from 'react'
 import classnames from 'classnames'
 
 import {ModalContext} from './Modal'
@@ -8,7 +8,7 @@ import css from './ModalHeader.less'
 type Props = {
     className?: string
     subtitle?: string
-    title: string
+    title: ReactNode
     forceCloseButton?: boolean
 }
 

@@ -37,7 +37,7 @@ describe('Video component', () => {
             />
         )
         fireEvent.click(screen.getByAltText('video preview'))
-        const video = screen.getByTitle('rule-video')
+        const video = screen.getByTitle('foo')
 
         expect(video).toBeVisible()
         expect(video.getAttribute('src')).toBe(videoURL)
@@ -64,6 +64,6 @@ describe('Video component', () => {
 
         fireEvent.click(screen.getByAltText('video preview'))
 
-        expect(screen.getByTitle('rule-video')).toBeTruthy()
+        expect(screen.getByTitle('foo')).toBeTruthy()
     })
 })

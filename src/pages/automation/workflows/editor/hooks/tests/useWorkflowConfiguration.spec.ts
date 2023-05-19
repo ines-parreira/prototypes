@@ -1,8 +1,7 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 import {useWorkflowConfiguration} from '../useWorkflowConfiguration'
-import useWorkflowApi, {
-    WorkflowConfiguration,
-} from '../../../hooks/useWorkflowApi'
+import {WorkflowConfiguration} from '../../../types'
+import useWorkflowApi from '../../../hooks/useWorkflowApi'
 
 const mockStore: Record<string, WorkflowConfiguration> = {}
 

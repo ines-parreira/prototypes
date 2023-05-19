@@ -3,11 +3,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {renderHook} from '@testing-library/react-hooks'
 import {Edge, Node, useReactFlow} from 'reactflow'
+import {WorkflowConfiguration} from '../../../../types'
 import {useWorkflowConfigurationContext} from '../../../hooks/useWorkflowConfiguration'
-import {
-    WorkflowConfiguration,
-    workflowConfigurationFactory,
-} from '../../../../hooks/useWorkflowApi'
+import {workflowConfigurationFactory} from '../../../../hooks/useWorkflowApi'
 import {useWorkflowEntrypointContext} from '../../../hooks/useWorkflowEntrypoint'
 import {useSyncWorkflowToReactFlow} from '../useSyncWorkflowToReactFlow'
 import {reducer} from '../../../hooks/useWorkflowConfigurationReducer'
@@ -104,6 +102,7 @@ describe('useSyncWorkflowToReactFlow', () => {
         expect(nodesPlaceholder.length).toEqual(2)
 
         const exploredNodesIds = new Set<string>()
+
         // walk the graph following all edges, every node should have at least one edge, except for placeholders that are the graph leaves
         function checkAllStepsAreLinked(
             currentNodeId = baseWorkflow.initial_step_id
@@ -119,6 +118,7 @@ describe('useSyncWorkflowToReactFlow', () => {
                 true
             )
         }
+
         expect(checkAllStepsAreLinked()).toBe(true)
         expect(exploredNodesIds.size).toEqual(
             workflow.steps.length +

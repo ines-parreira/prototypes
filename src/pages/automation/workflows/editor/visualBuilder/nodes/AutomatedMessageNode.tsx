@@ -5,8 +5,8 @@ import _isEqual from 'lodash/isEqual'
 
 import Label from 'pages/common/forms/Label/Label'
 
+import {WorkflowStepChoices} from '../../../types'
 import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
-import {WorkflowStepChoices} from '../../../hooks/useWorkflowApi'
 import EdgeButton from '../components/EdgeButton'
 import {AutomatedMessageNodeType} from '../types'
 

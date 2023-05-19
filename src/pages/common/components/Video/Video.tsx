@@ -1,6 +1,6 @@
 import React from 'react'
-
 import {useToggle} from 'react-use'
+
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -37,19 +37,17 @@ export default function Video({
         `https://img.youtube.com/vi/${youtubeId}/${youtubePreviewIndex}.jpg`
 
     return (
-        <div>
+        <>
             <div className={css.preview} onClick={toggleIsOpen}>
-                <div>
-                    <div className={css.screenshotWrapper}>
-                        <div className={css.screenshot}>
-                            <img alt="video preview" src={preview} />
-                            <div className={css.playIcon}>
-                                <img src={arrow} alt="play" width="11" />
-                            </div>
+                <div className={css.screenshotWrapper}>
+                    <div className={css.screenshot}>
+                        <img alt="video preview" src={preview} />
+                        <div className={css.playIcon}>
+                            <img src={arrow} alt="play" width="11" />
                         </div>
                     </div>
-                    <div className={css.title}>{legend}</div>
                 </div>
+                <div className={css.title}>{legend}</div>
             </div>
             <Modal isOpen={isOpen} onClose={toggleIsOpen} size="huge">
                 <ModalHeader title={legend} />
@@ -57,15 +55,14 @@ export default function Video({
                     {isOpen && (
                         <iframe
                             className={css.iframe}
-                            title="rule-video"
+                            title={legend}
                             src={url}
-                            frameBorder="0"
                             allowFullScreen
                             allow="autoplay"
                         />
                     )}
                 </ModalBody>
             </Modal>
-        </div>
+        </>
     )
 }

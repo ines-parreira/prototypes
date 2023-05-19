@@ -1,0 +1,72 @@
+@import (reference) '~css/new/colorTokens';
+@import (reference) '~css/new/mixins';
+@import (reference) '~css/new/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        padding: @layout-spacing-m;
+        border-top: 1px solid @classic-neutral-grey-3;
+    }
+
+    .wrapper {
+        border-radius: 4px;
+        background: @classic-neutral-grey-1;
+        padding: 0 32px;
+        display: flex;
+        height: 474px;
+        align-items: flex-end;
+        column-gap: 25.5px;
+        row-gap: 84px;
+
+        @media @mobiles {
+            height: unset;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        max-width: 318px;
+        align-self: center;
+        align-items: flex-start;
+        gap: 32px;
+
+        @media @mobiles {
+            max-width: unset;
+            margin-top: 84px;
+            align-self: unset;
+            align-items: center;
+            text-align: center;
+        }
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .title {
+        .heading-section-semibold();
+        max-width: 308px;
+
+        @media @mobiles {
+            max-width: unset;
+        }
+    }
+
+    .description {
+        .heading-subsection-regular();
+        color: @classic-neutral-grey-5;
+    }
+
+    .image {
+        @media @mobiles {
+            width: 100%;
+        }
+    }
+}

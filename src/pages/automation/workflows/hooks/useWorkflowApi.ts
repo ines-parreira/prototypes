@@ -3,7 +3,8 @@ import {ulid} from 'ulidx'
 import axios from 'axios'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 import {isProduction, isStaging} from 'utils/environment'
-import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
+import {WorkflowConfiguration} from '../types'
 
 const baseURL = isProduction()
     ? `https://api.gorgias.work`
@@ -18,62 +19,6 @@ const apiClient = axios.create({
     },
 })
 apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
-
-export type MessageContent = {
-    html: string
-    text: string
-    attachments?: ProductCardAttachment[] | null
-}
-
-export type WorkflowStepMessages = {
-    id: string
-    kind: 'messages'
-    settings: {
-        messages: Array<{
-            content: MessageContent
-        }>
-    }
-}
-
-export type WorkflowStepChoices = {
-    id: string
-    kind: 'choices'
-    settings: {
-        choices: Array<{
-            event_id: string
-            label: string
-        }>
-    }
-}
-
-export type WorkflowStepWorkflowCall = {
-    id: string
-    kind: 'workflow_call'
-    settings: {
-        configuration_id: string
-    }
-}
-
-export type WorkflowConfiguration = {
-    id: string
-    internal_id: string
-    account_id: number
-    is_draft: boolean
-    name: string
-    initial_step_id: string
-    steps: Array<
-        WorkflowStepMessages | WorkflowStepChoices | WorkflowStepWorkflowCall
-    >
-    transitions: Array<{
-        id: string
-        from_step_id: string
-        to_step_id: string
-        event?: Maybe<{
-            id: string
-            kind: 'choices'
-        }>
-    }>
-}
 
 type WorkflowApi = {
     isFetchPending: boolean
@@ -134,8 +79,6 @@ export default function useWorkflowApi(): WorkflowApi {
     }
 }
 
-export const wasThisHelpfulWorkflowId = '01GWPRH2G05DYYFBB1GNVNRB19'
-
 export const workflowConfigurationFactory = (
     accountId: number,
     workflowId: string
@@ -161,7 +104,7 @@ export const workflowConfigurationFactory = (
                 id: workflowCallStepId,
                 kind: 'workflow_call',
                 settings: {
-                    configuration_id: wasThisHelpfulWorkflowId,
+                    configuration_id: WAS_THIS_HELPFUL_WORKFLOW_ID,
                 },
             },
         ],

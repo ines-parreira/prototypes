@@ -5,8 +5,8 @@ import {
     MessageContent,
     WorkflowConfiguration,
     WorkflowStepChoices,
-    wasThisHelpfulWorkflowId,
-} from '../../hooks/useWorkflowApi'
+} from '../../types'
+import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../../constants'
 
 export function useWorkflowConfigurationReducer(
     initialState: WorkflowConfiguration
@@ -120,7 +120,7 @@ function appendWasItHelpfulWorkflowCall(
             id: wasThisHelpfulStepId,
             kind: 'workflow_call',
             settings: {
-                configuration_id: wasThisHelpfulWorkflowId,
+                configuration_id: WAS_THIS_HELPFUL_WORKFLOW_ID,
             },
         })
         draft.transitions.push({
