@@ -4,6 +4,7 @@ import React, {useState} from 'react'
 import {hasFailedAction, isFailed, isPending} from 'models/ticket/predicates'
 import {TicketMessage} from 'models/ticket/types'
 
+import TicketMessageEmbeddedCard from '../../../../common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
 import Actions from './Actions'
 import Attachments from './Attachments'
 import Body from './Body'
@@ -48,6 +49,14 @@ export default function Message(props: Props) {
                     }
                     hideTimestamp={!isOver}
                     showIntents={isOver}
+                />
+            )}
+            {!!message?.replied_to && (
+                <TicketMessageEmbeddedCard
+                    integrationId={message.replied_to.integration_id}
+                    messageText={message.replied_to.body_text}
+                    source={message.replied_to.source}
+                    sender={message.replied_to.customer}
                 />
             )}
             <Body message={message} hasError={hasError} />

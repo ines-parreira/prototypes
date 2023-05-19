@@ -1,4 +1,5 @@
 @import '~css/new/colorTokens';
+@import '~css/new/layout.less';
 
 :local .from {
     color: darken(@classic-neutral-grey-4, 8%);
@@ -15,6 +16,21 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+
+        .repliedBy {
+            display: flex;
+            align-items: center;
+
+            .separator {
+                margin-left: @layout-spacing-xxs;
+                margin-right: @layout-spacing-xxs;
+            }
+
+            .filler {
+                margin-left: 3px;
+                margin-right: 6px;
+            }
+        }
     }
 
     a {
@@ -23,12 +39,13 @@
         text-decoration: underline !important;
     }
 
+    .ticketLink a {
+        font-weight: 600;
+        color: @classic-main-primary;
+    }
+
     .spinner {
         width: 18px;
         margin-right: 5px;
     }
-}
-
-:local .repliedViaMessenger {
-    margin-left: 6px;
 }

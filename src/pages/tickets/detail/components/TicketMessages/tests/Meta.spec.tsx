@@ -246,6 +246,71 @@ describe('ticket message meta', () => {
             )
         })
 
+        it('should display "responded to via Messenger by" with ticket link', () => {
+            const pageId = '871900732905218'
+            const postId = '2750858871676052'
+            const userId = '2941872749234184'
+            const commentId = '2823237684438170'
+            const source = {
+                extra: {
+                    page_id: pageId,
+                    post_id: `${pageId}_${postId}`,
+                    parent_id: `${pageId}_${postId}`,
+                },
+                from: {address: `${pageId}-${userId}`, name: 'Foo Bar'},
+                type: TicketMessageSourceType.FacebookComment,
+                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+            }
+
+            const replied_by = {
+                body_text: 'test',
+                integration_id: 1,
+                source: source,
+                user: {
+                    id: 1,
+                    email: 'test@test.com',
+                    name: 'Acme Support',
+                    firstname: 'Acme',
+                    lastname: 'Support',
+                },
+                customer: {
+                    id: 2,
+                    email: 'customer@test.com',
+                    name: 'Acme Customer',
+                    firstname: 'Acme',
+                    lastname: 'Customer',
+                },
+            }
+            const meta = {
+                replied_by: {
+                    ticket_id: 3312,
+                    ticket_message_id: 123,
+                },
+            }
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        via="facebook"
+                        messageId={`${postId}_${commentId}`}
+                        integrationId={118}
+                        source={source}
+                        meta={meta}
+                        repliedBy={replied_by}
+                    />
+                </Provider>
+            )
+
+            expect(container.textContent).toContain(
+                'responded to via Messenger by'
+            )
+
+            const links = Array.from(container.querySelectorAll('a'))
+            expect(links[0].href).toEqual(
+                `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}`
+            )
+            expect(links[1].href).toEqual(`${window.location.href}3312`)
+        })
+
         it('should display "go to reply" link', () => {
             const pageId = '871900732905218'
             const postId = '2750858871676052'
@@ -445,6 +510,60 @@ describe('ticket message meta', () => {
 
             expect(container.textContent).toBe('go to media')
             expect(container.querySelector('a')?.href).toBe(permalink)
+        })
+
+        it('should display "responded to via Messenger by" with ticket link', () => {
+            const permalink = 'https://www.instagram.com/p/B_V7_Znngrv/'
+            const source = {
+                from: {name: 'trudoglife', address: 'trudoglife'},
+                to: [{name: 'trudoglife', address: 'trudoglife'}],
+                extra: {media_id: '18101302111081366', permalink},
+                type: TicketMessageSourceType.InstagramComment,
+            }
+
+            const replied_by = {
+                body_text: 'test',
+                integration_id: 1,
+                source: source,
+                user: {
+                    id: 1,
+                    email: 'test@test.com',
+                    name: 'Acme Support',
+                    firstname: 'Acme',
+                    lastname: 'Support',
+                },
+                customer: {
+                    id: 2,
+                    email: 'customer@test.com',
+                    name: 'Acme Customer',
+                    firstname: 'Acme',
+                    lastname: 'Customer',
+                },
+            }
+            const meta = {
+                replied_by: {
+                    ticket_id: 3312,
+                    ticket_message_id: 123,
+                },
+            }
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        via="instagram"
+                        integrationId={118}
+                        source={source}
+                        meta={meta}
+                        repliedBy={replied_by}
+                    />
+                </Provider>
+            )
+
+            expect(container.textContent).toContain(
+                'responded to via Messenger by'
+            )
+            expect(container.querySelector('a')?.href).toBe(
+                `${window.location.href}3312`
+            )
         })
     })
 

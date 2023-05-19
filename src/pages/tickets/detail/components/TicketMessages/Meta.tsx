@@ -15,10 +15,15 @@ import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {ManagedRule, RuleType} from 'state/rules/types'
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import {TicketVias} from '../../../../../business/ticket'
-import {Meta as MetaType, Source} from '../../../../../models/ticket/types'
+import {
+    Meta as MetaType,
+    ReplyTicketMessage,
+    Source,
+} from '../../../../../models/ticket/types'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 import {starRatingProps} from '../../../../common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo/Reviews'
 
+import {AgentLabel} from '../../../../common/utils/labels'
 import css from './Meta.less'
 
 type Props = {
@@ -31,6 +36,8 @@ type Props = {
     source?: Source
     messageCreatedDatetime?: string
     subject?: string
+    repliedBy?: ReplyTicketMessage
+    repliedTo?: ReplyTicketMessage
 }
 
 const From = ({label, children}: {label: string; children?: ReactNode}) => (
@@ -49,6 +56,8 @@ export default function Meta(props: Props) {
         via,
         integrationId,
         messageCreatedDatetime,
+        repliedBy,
+        repliedTo,
     } = props
     const widgets = []
 
@@ -165,7 +174,6 @@ export default function Meta(props: Props) {
         const fullPostId = source.extra.post_id
         const parentId = source.extra.parent_id
         const permalink = source.extra.permalink
-
         const isFacebookMentionPost =
             source.type === TicketMessageSourceType.FacebookMentionPost
         const isFacebookMentionComment =
@@ -306,6 +314,61 @@ export default function Meta(props: Props) {
             )
         }
 
+        widgets.push(fromComponent)
+    }
+
+    if (!!repliedBy) {
+        const agent = repliedBy.user?.name && (
+            <AgentLabel name={repliedBy.user?.name} />
+        )
+        const view_ticket_link = meta?.replied_by?.ticket_id && (
+            <>
+                <span className={css.separator}>-</span>
+                <span className={css.ticketLink}>
+                    <a
+                        href={`${meta.replied_by.ticket_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        View ticket
+                    </a>
+                </span>
+            </>
+        )
+        const fromComponent = (
+            <From label={''} key="ref-widget">
+                <span className={css.repliedBy}>
+                    responded to via Messenger{' '}
+                    <span className={css.filler}>by</span> {agent}{' '}
+                    {view_ticket_link}
+                </span>
+            </From>
+        )
+        widgets.push(fromComponent)
+    }
+
+    if (!!repliedTo) {
+        const view_ticket_link = meta?.replied_to?.ticket_id && (
+            <>
+                <span className={css.separator}> </span>
+                <span className={css.ticketLink}>
+                    <a
+                        href={`${meta.replied_to.ticket_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Comment
+                    </a>
+                </span>
+            </>
+        )
+        const fromComponent = (
+            <From label={''} key="ref-widget">
+                <span className={css.repliedIn}>
+                    responded via Messenger to {view_ticket_link}
+                </span>
+            </From>
+        )
         widgets.push(fromComponent)
     }
 

@@ -122,6 +122,8 @@ export type TicketMessage = {
     }
     isMessage: boolean
     intents?: TicketMessageIntent[]
+    replied_to?: ReplyTicketMessage
+    replied_by?: ReplyTicketMessage
 }
 
 export type TicketMessageIntent = {
@@ -225,6 +227,8 @@ export type Meta = {
     parent_id?: string
     deleted_datetime?: string
     private_reply?: FacebookPrivateReply
+    replied_to?: ReplyMetaTicketMessage
+    replied_by?: ReplyMetaTicketMessage
     is_duplicated?: boolean
     is_story_mention?: boolean
     is_story_reply?: boolean
@@ -243,6 +247,20 @@ export type FacebookPrivateReply = {
     sent_datetime?: string
     messenger_ticket_id?: number
     original_ticket_id?: string
+}
+
+export type ReplyTicketMessage = {
+    integration_id: number
+    created_datetime?: string
+    body_text: string
+    source: Source
+    customer: Actor
+    user: Actor
+}
+
+export type ReplyMetaTicketMessage = {
+    ticket_id: number
+    ticket_message_id: number
 }
 
 export type LastSendingError = {
