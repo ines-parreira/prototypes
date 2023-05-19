@@ -34,7 +34,7 @@ describe('reporting utils', () => {
     })
 
     describe('periodToReportingGranularity', () => {
-        it('should "month" when dates range is larger than 3 months', () => {
+        it('should return "month" when dates range is larger than 3 months', () => {
             expect(
                 periodToReportingGranularity({
                     start_datetime: '2020-01-01T00:00:00.000Z',
@@ -43,7 +43,7 @@ describe('reporting utils', () => {
             ).toBe(ReportingGranularity.Month)
         })
 
-        it('should "week" when dates range is larger than 1 month', () => {
+        it('should return "week" when dates range is larger than 1 month', () => {
             expect(
                 periodToReportingGranularity({
                     start_datetime: '2020-01-01T00:00:00.000Z',
@@ -52,7 +52,16 @@ describe('reporting utils', () => {
             ).toBe(ReportingGranularity.Week)
         })
 
-        it('should "days" when dates range is larger than 1 day', () => {
+        it('should return "days" when dates range is a period of one month and one day', () => {
+            expect(
+                periodToReportingGranularity({
+                    start_datetime: '2020-01-15T00:00:00.000Z',
+                    end_datetime: '2020-02-15T00:00:00.000Z',
+                })
+            ).toBe(ReportingGranularity.Day)
+        })
+
+        it('should return "days" when dates range is larger than 1 day', () => {
             expect(
                 periodToReportingGranularity({
                     start_datetime: '2020-01-01T00:00:00.000Z',
@@ -61,7 +70,7 @@ describe('reporting utils', () => {
             ).toBe(ReportingGranularity.Day)
         })
 
-        it('should "hour" when dates range is smaller than 1 day', () => {
+        it('should return "hour" when dates range is smaller than 1 day', () => {
             expect(
                 periodToReportingGranularity({
                     start_datetime: '2020-01-01T00:00:00.000Z',

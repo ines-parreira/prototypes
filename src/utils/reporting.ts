@@ -93,11 +93,12 @@ export const periodToReportingGranularity = (
     const start = moment(period.start_datetime)
     const end = moment(period.end_datetime)
     const diff = moment.duration(end.diff(start) + 1)
+    const daysInMonth = moment(start).daysInMonth() + 1 // to have a period of one month and one day
 
     let granularity = ReportingGranularity.Hour
     if (diff.asMonths() > 3) {
         granularity = ReportingGranularity.Month
-    } else if (diff.asMonths() >= 1) {
+    } else if (diff.asDays() > daysInMonth) {
         granularity = ReportingGranularity.Week
     } else if (diff.asDays() >= 1) {
         granularity = ReportingGranularity.Day
