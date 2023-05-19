@@ -10,6 +10,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {assetsUrl} from 'utils'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import AutomationNavbarAddOnPaywallNavbarLink from './AutomationNavbarAddOnPaywallNavbarLink'
 
@@ -60,6 +61,7 @@ const AutomationNavbarAddOnSectionBlock = ({
                             isNested
                         >
                             Flows
+                            <Badge type={ColorType.Blue}>BETA</Badge>
                         </NavbarLink>
                     )}
                     <NavbarLink
