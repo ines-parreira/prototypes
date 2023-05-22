@@ -9,9 +9,10 @@ import CountryFlag from 'pages/phoneNumbers/CountryFlag'
 import {WhatsAppTemplate} from 'models/integration/types'
 
 import css from './WhatsAppTemplatesList.less'
-import {extractCountryCodeFromTemplate} from './utils'
+
 import WhatsAppTemplateStatusLabel from './WhatsAppTemplateStatusLabel'
 import WhatsAppTemplateCategoryLabel from './WhatsAppTemplateCategoryLabel'
+import {whatsAppFlagCodes} from './constants'
 
 const mockTemplates = [
     {
@@ -82,9 +83,9 @@ export default function WhatsAppTemplatesList() {
                             </BodyCell>
                             <BodyCell>
                                 <CountryFlag
-                                    countryCode={extractCountryCodeFromTemplate(
-                                        template.language
-                                    )}
+                                    countryCode={
+                                        whatsAppFlagCodes[template.language]
+                                    }
                                     withRoundFlag
                                 />
                             </BodyCell>

@@ -10,7 +10,7 @@ import {fieldPath, getAST, getLanguageDisplayName, stripHTML} from '../utils'
 import {getMomentUtcISOString} from '../utils/date'
 
 import * as ticketConfig from './ticket'
-import TICKET_LANGUAGES from './ticketLanguages'
+import ticketLanguages from './ticketLanguages'
 
 // Number of maximum recent views we store in the reducer and local storage.
 // View counts will only be calculated periodically for these views.
@@ -158,7 +158,7 @@ export const views = fromJS([
                 name: ViewField.Language,
                 title: 'Language',
                 filter: {
-                    enum: TICKET_LANGUAGES.map((lang) => lang.localeName),
+                    enum: ticketLanguages,
                 },
             },
             {

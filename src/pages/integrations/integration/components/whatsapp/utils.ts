@@ -1,9 +1,3 @@
-import {CountryCode} from 'libphonenumber-js'
-
-export const extractCountryCodeFromTemplate = (
-    countryCode: string
-): CountryCode => {
-    const parts = countryCode.split('_')
-
-    return (parts[1] ?? parts[0]) as CountryCode
+export const normalizeLocale = (locale: string): string => {
+    return locale.replace('_', '-').toLowerCase()
 }

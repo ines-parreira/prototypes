@@ -1,6 +1,7 @@
 declare namespace Intl {
     interface DisplayNamesOptions {
         type: 'language' | 'region' | 'script' | 'currency'
+        languageDisplay?: 'dialect' | 'standard'
     }
 
     interface DisplayNames {

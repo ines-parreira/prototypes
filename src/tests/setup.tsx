@@ -10,6 +10,8 @@ import _noop from 'lodash/noop'
 import {MomentTimezone} from 'moment-timezone'
 import {mockFlags} from 'jest-launchdarkly-mock'
 import {NavLinkProps} from 'react-router-dom'
+import '@formatjs/intl-displaynames/polyfill'
+import '@formatjs/intl-displaynames/locale-data/en'
 
 import history from '../pages/history'
 

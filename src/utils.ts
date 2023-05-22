@@ -7,7 +7,6 @@ import esprima from 'esprima'
 import htmlparser from 'htmlparser2'
 import Immutable, {fromJS, Iterable, List, Map} from 'immutable'
 import _filter from 'lodash/filter'
-import _find from 'lodash/find'
 import _get from 'lodash/get'
 import _has from 'lodash/has'
 import _isNumber from 'lodash/isNumber'
@@ -31,7 +30,6 @@ import URLSafeBase64 from 'urlsafe-base64'
 import {TicketChannel} from './business/types/ticket'
 import {humanize} from './business/format'
 import {ACTION_TEMPLATES} from './config'
-import TICKET_LANGUAGES from './config/ticketLanguages'
 import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
 import {Notification, NotificationStatus} from './state/notifications/types'
 import {ViewsState} from './state/views/types'
@@ -917,11 +915,12 @@ export const getLanguageDisplayName = (
         return null
     }
 
-    const langObj = _find(TICKET_LANGUAGES, (lang) => {
-        return lang.localeName === locale
-    })
+    const displayName = new Intl.DisplayNames('en', {
+        type: 'language',
+        languageDisplay: 'standard',
+    }).of(locale)
 
-    return langObj ? langObj.displayName : null
+    return displayName ?? null
 }
 
 /**

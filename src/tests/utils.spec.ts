@@ -4,7 +4,6 @@ import MockAdapter from 'axios-mock-adapter'
 import randomstring from 'randomstring'
 
 import * as utils from '../utils'
-import TICKET_LANGUAGES from '../config/ticketLanguages'
 import schemasJSON from '../fixtures/openapi.json'
 import {
     ADMIN_ROLE,
@@ -598,10 +597,13 @@ describe('global utils', () => {
 
     describe('getLanguageDisplayName', () => {
         it('should return the display name correctly from the locale name', () => {
-            TICKET_LANGUAGES.forEach((lang) => {
-                expect(utils.getLanguageDisplayName(lang.localeName)).toEqual(
-                    lang.displayName
-                )
+            ;[
+                ['en', 'English'],
+                ['en-US', 'English (United States)'],
+                ['ca', 'Catalan'],
+                ['de', 'German'],
+            ].forEach(([lang, displayName]) => {
+                expect(utils.getLanguageDisplayName(lang)).toEqual(displayName)
             })
         })
     })
