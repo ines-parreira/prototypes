@@ -67,7 +67,7 @@ import {FeatureFlagKey} from '../../../../../config/featureFlags'
 import {eligibleParentCategories, isOneOfParentsUnlisted} from './utils'
 
 import css from './HelpCenterCategoryEdit.less'
-import {CategoryImageEdit} from './components/CategoryImageEdit'
+import {CategoryImageEdit} from './components/CategoryImageEdit/CategoryImageEdit'
 
 type Props = {
     isOpen: boolean

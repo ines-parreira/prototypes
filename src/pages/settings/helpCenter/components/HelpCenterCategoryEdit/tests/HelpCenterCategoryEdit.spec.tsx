@@ -346,5 +346,45 @@ describe('<HelpCenterCategoryEdit />', () => {
                 )
             )
         })
+
+        it('should remove image on Remove Image click', async () => {
+            const fakeOnSave = jest.fn()
+            const translation = {
+                ...getSingleCategoryEnglish.translation,
+                image_url: 'https//example.com/hello.png',
+            } as LocalCategoryTranslation // required because problem of property destructuring with type mapping
+            const category = {
+                ...getSingleCategoryEnglish,
+                translation,
+            }
+            render(
+                <Example
+                    onSave={fakeOnSave}
+                    isOpen
+                    isCreate={false}
+                    category={category}
+                    translation={translation}
+                />
+            )
+
+            userEvent.click(screen.getByText('Remove image'))
+
+            userEvent.click(screen.getByTestId('button-save'))
+
+            await waitFor(() =>
+                expect(fakeOnSave).toHaveBeenCalledWith(
+                    {
+                        description: translation.description,
+                        image_url: null,
+                        slug: translation.slug,
+                        title: translation.title,
+                        parent_category_id: 0,
+                        seo_meta: translation.seo_meta,
+                        visibility_status: translation.visibility_status,
+                    },
+                    'en-US'
+                )
+            )
+        })
     })
 })

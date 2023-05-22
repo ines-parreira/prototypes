@@ -52,9 +52,7 @@ export const useLocalImage = ({
     }
 
     useEffect(() => {
-        if (file) {
-            setLocalImage(file)
-        }
+        setLocalImage(file)
     }, [file])
 
     useEffect(() => {

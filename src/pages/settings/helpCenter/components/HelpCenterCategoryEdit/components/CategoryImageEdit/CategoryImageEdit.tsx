@@ -1,10 +1,10 @@
 import React from 'react'
 import classNames from 'classnames'
-import {ImageUpload} from '../../ImageUpload'
-import {FileUpload} from '../../../hooks/useFileUpload'
+import {ImageUpload} from '../../../ImageUpload'
+import {FileUpload} from '../../../../hooks/useFileUpload'
 import css from './CategoryImageEdit.less'
 
-type Props = {
+export type CategoryImageEditProps = {
     imageFile: FileUpload
     currentImageUrl: string
     onRemoveImage: () => void
@@ -26,14 +26,15 @@ export const CategoryImageEdit = ({
     currentImageUrl,
     onRemoveImage,
     onImageChanged,
-}: Props) => {
+}: CategoryImageEditProps) => {
     const onRemoveImageClick = () => {
-        imageFile.discardFile()
+        // `changeFile` because image should be "isTouched=true"
+        // We count remove image as change for the file upload
+        imageFile.changeFile(undefined)
         onRemoveImage()
     }
 
-    const isImageUploaded = imageFile.payload || currentImageUrl !== ''
-
+    const isImageUploaded = !!imageFile.payload || currentImageUrl !== ''
     const onChangeFile = (file: File | undefined) => {
         imageFile.changeFile(file)
         onImageChanged()
