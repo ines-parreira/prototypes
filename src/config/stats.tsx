@@ -348,9 +348,13 @@ export const stats = toImmutable<
             {
                 api_resource_name: USERS_STATUSES,
                 label: 'Agents online',
-                formatData: (data: Map<any, any>) => {
+                formatData: (data: Map<any, List<any>>) => {
+                    if (!data.get('lines')) {
+                        return null
+                    }
                     return formatNumber(
-                        (data.get('lines') as List<any>)
+                        data
+                            .get('lines')
                             .filter(
                                 (value: List<any>) =>
                                     value.getIn([1, 'value']) as boolean
@@ -399,9 +403,13 @@ export const stats = toImmutable<
             {
                 api_resource_name: USERS_STATUSES,
                 label: 'Agents offline',
-                formatData: (data: Map<any, any>) => {
+                formatData: (data: Map<'lines', List<any>>) => {
+                    if (!data.get('lines')) {
+                        return null
+                    }
                     return formatNumber(
-                        (data.get('lines') as List<any>)
+                        data
+                            .get('lines')
                             .filter(
                                 (value: List<any>) => !value.getIn([1, 'value'])
                             )
@@ -449,8 +457,8 @@ export const stats = toImmutable<
                 api_resource_name: OPEN_TICKETS_ASSIGNMENT_STATUSES,
                 label: 'Assigned open tickets',
                 tooltip: 'Total number of open tickets assigned to an agent',
-                formatData: (data: Map<any, any>) => {
-                    const ticketsTotal = data.getIn([0, 'value']) as number
+                formatData: (data: Map<any, List<any>>) => {
+                    const ticketsTotal = data.getIn([0, 'value'])
 
                     return ticketsTotal >= LIVE_STATS_MAX_TICKETS
                         ? '5K+'
@@ -462,8 +470,8 @@ export const stats = toImmutable<
                 label: 'Unassigned open tickets',
                 tooltip:
                     'Total number of open tickets that are not assigned to an agent',
-                formatData: (data: Map<any, any>) => {
-                    const ticketsTotal = data.getIn([1, 'value']) as number
+                formatData: (data: Map<any, List<any>>) => {
+                    const ticketsTotal = data.getIn([1, 'value'])
 
                     return ticketsTotal >= LIVE_STATS_MAX_TICKETS
                         ? '5K+'

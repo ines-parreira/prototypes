@@ -24,6 +24,8 @@ import KeyMetricCellWrapper from './KeyMetricCellWrapper'
 
 import css from './KeyMetricCell.less'
 
+export const NO_VALUE_PLACEHOLDER = '-'
+
 export type Props = {
     metricConfig: Map<any, any>
     index: number
@@ -31,6 +33,117 @@ export type Props = {
     data: List<any>
     meta: Map<any, any>
     id: string
+}
+const renderDifference = (
+    valueTooltipId: string,
+    metric: Map<any, any>,
+    tooltipDelta: string | null
+) => {
+    return (
+        <span id={valueTooltipId} className={css.diff}>
+            <StatDifference
+                label={metric.get('delta')}
+                value={metric.get('delta')}
+                moreIsBetter={metric.get('more_is_better')}
+            />
+            <Tooltip placement="top" target={valueTooltipId}>
+                {tooltipDelta}
+            </Tooltip>
+        </span>
+    )
+}
+const defaultWrapper = (
+    formattedValue: string | number | null,
+    metric: Map<any, any>,
+    valueTooltipId: string,
+    tooltipDelta: string | null
+) => {
+    return (
+        <div>
+            {formattedValue || formattedValue === 0 ? (
+                <div className={css.value}>{formattedValue}</div>
+            ) : (
+                <div className={css.value}>n/a</div>
+            )}
+            {renderDifference(valueTooltipId, metric, tooltipDelta)}
+        </div>
+    )
+}
+export const formatValue = (value: any, metric: Map<any, any>) => {
+    switch (metric.get('type')) {
+        case StatType.Number:
+            return formatNumber(value)
+        case StatType.Duration:
+            return formatDuration(value, 2)
+        case StatType.Percent:
+            return formatPercent(value)
+        case StatType.Currency:
+            return formatCurrency(value, metric.get('currency'))
+        default:
+            return value as string
+    }
+}
+export const renderValue = (
+    config: Map<any, any>,
+    metric: Map<any, any> | null,
+    valueTooltipId: string,
+    tooltipDelta: string | null
+) => {
+    if (!metric) {
+        return NO_VALUE_PLACEHOLDER
+    }
+    const formatData = config.get(
+        'formatData'
+    ) as StatConfigMetric['formatData']
+
+    if (formatData) {
+        return defaultWrapper(
+            formatData(metric),
+            metric,
+            valueTooltipId,
+            tooltipDelta
+        )
+    }
+
+    const value = metric.get('value') as string | Map<any, any>
+
+    if (_isObject(value)) {
+        const formattedValue = fromJS(
+            value.reduce(
+                (acc, value, key) => ({
+                    ...acc,
+                    [key]: formatValue(value, metric),
+                }),
+                {}
+            )
+        )
+
+        return (
+            <DistributionKeyMetricStat
+                config={config}
+                formattedValue={formattedValue}
+            />
+        )
+    }
+
+    const formattedValue = formatValue(value, metric)
+
+    return config.get('type') === 'donut' ? (
+        <DonutKeyMetricStat
+            value={parseFloat(value)}
+            maxValue={parseFloat(config.get('maxValue'))}
+            fill={config.get('fill')}
+            formattedValue={formattedValue as string}
+            label={`${metric.get('delta') as number}%`}
+            differenceComponent={renderDifference(
+                valueTooltipId,
+                metric,
+                tooltipDelta
+            )}
+        />
+    ) : (
+        defaultWrapper(formattedValue, metric, valueTooltipId, tooltipDelta)
+    )
 }
 
 export const KeyMetricCell = ({
@@ -41,119 +154,6 @@ export const KeyMetricCell = ({
     meta,
     id,
 }: Props) => {
-    const renderDifference = (
-        valueTooltipId: string,
-        metric: Map<any, any>,
-        tooltipDelta: string | null
-    ) => {
-        return (
-            <span id={valueTooltipId} className={css.diff}>
-                <StatDifference
-                    label={metric.get('delta')}
-                    value={metric.get('delta')}
-                    moreIsBetter={metric.get('more_is_better')}
-                />
-                <Tooltip placement="top" target={valueTooltipId}>
-                    {tooltipDelta}
-                </Tooltip>
-            </span>
-        )
-    }
-    const defaultWrapper = (
-        formattedValue: string | number,
-        metric: Map<any, any>,
-        valueTooltipId: string,
-        tooltipDelta: string | null
-    ) => {
-        return (
-            <div>
-                {formattedValue || formattedValue === 0 ? (
-                    <div className={css.value}>{formattedValue}</div>
-                ) : (
-                    <div className={css.value}>n/a</div>
-                )}
-                {renderDifference(valueTooltipId, metric, tooltipDelta)}
-            </div>
-        )
-    }
-
-    const formatValue = (value: any, metric: Map<any, any>) => {
-        switch (metric.get('type')) {
-            case StatType.Number:
-                return formatNumber(value)
-            case StatType.Duration:
-                return formatDuration(value, 2)
-            case StatType.Percent:
-                return formatPercent(value)
-            case StatType.Currency:
-                return formatCurrency(value, metric.get('currency'))
-            default:
-                return value as string
-        }
-    }
-
-    const renderValue = (
-        config: Map<any, any>,
-        metric: Map<any, any> | null,
-        valueTooltipId: string,
-        tooltipDelta: string | null
-    ) => {
-        if (!metric) {
-            return '-'
-        }
-
-        if (config.get('formatData')) {
-            return defaultWrapper(
-                (config.get('formatData') as StatConfigMetric['formatData'])!(
-                    metric
-                )!,
-                metric,
-                valueTooltipId,
-                tooltipDelta
-            )
-        }
-
-        const value = metric.get('value') as string | Map<any, any>
-
-        if (_isObject(value)) {
-            const formattedValue = fromJS(
-                value.reduce(
-                    (acc, value, key) => ({
-                        ...acc,
-                        [key]: formatValue(value, metric),
-                    }),
-                    {}
-                )
-            )
-
-            return (
-                <DistributionKeyMetricStat
-                    config={config}
-                    formattedValue={formattedValue}
-                />
-            )
-        }
-
-        const formattedValue = formatValue(value, metric)
-
-        return config.get('type') === 'donut' ? (
-            <DonutKeyMetricStat
-                value={parseFloat(value)}
-                maxValue={parseFloat(config.get('maxValue'))}
-                fill={config.get('fill')}
-                formattedValue={formattedValue as string}
-                label={`${metric.get('delta') as number}%`}
-                differenceComponent={renderDifference(
-                    valueTooltipId,
-                    metric,
-                    tooltipDelta
-                )}
-            />
-        ) : (
-            defaultWrapper(formattedValue, metric, valueTooltipId, tooltipDelta)
-        )
-    }
-
     const metricTooltipId = `title-${id}`
     const valueTooltipId = `value-${id}`
     let previousStartDatetime = null
