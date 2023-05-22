@@ -15,10 +15,18 @@ import ContactFormInstallationCard from 'pages/settings/contactForm/components/C
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import settingsCss from 'pages/settings/settings.less'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../store/middlewares/segmentTracker'
 
 const ContactFormPublish = (): JSX.Element => {
     const contactForm = useCurrentContactForm()
     const {copyButtonText} = useClipboard('#copy-shareable-link')
+
+    const onCopyClick = () => {
+        logEvent(SegmentEvent.HelpCenterContactFormCopyLink)
+    }
 
     return (
         <Container fluid className={settingsCss.pageContainer}>
@@ -57,6 +65,7 @@ const ContactFormPublish = (): JSX.Element => {
                                 <Button
                                     id="copy-shareable-link"
                                     data-clipboard-target="#shareable-link"
+                                    onClick={onCopyClick}
                                 >
                                     <ButtonIconLabel icon="content_copy">
                                         {copyButtonText}

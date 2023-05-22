@@ -8,9 +8,10 @@ import css from 'pages/common/components/InstallationCodeSnippet/InstallationCod
 
 type Props = {
     code?: string
+    onCopy?: () => void
 }
 
-const InstallationCodeSnippet = ({code}: Props) => {
+const InstallationCodeSnippet = ({code, onCopy}: Props) => {
     const [state, copyToClipboard] = useCopyToClipboard()
 
     if (!code) {
@@ -24,6 +25,7 @@ const InstallationCodeSnippet = ({code}: Props) => {
 
     const handleCopyCode = () => {
         copyToClipboard(code)
+        onCopy?.()
     }
 
     const isCopied = Boolean(state.value)

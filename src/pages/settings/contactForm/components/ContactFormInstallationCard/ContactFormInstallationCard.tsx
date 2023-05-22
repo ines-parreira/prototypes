@@ -4,6 +4,10 @@ import {Card, CardBody, CardHeader, Collapse} from 'reactstrap'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../store/middlewares/segmentTracker'
 import css from './ContactFormInstalationCard.less'
 
 type Props = {
@@ -24,6 +28,10 @@ export function ContactFormInstallationCard({
     const [isOpen, setIsOpen] = useState(true)
 
     const toggleIsOpen = () => setIsOpen(!isOpen)
+
+    const onCopyClick = () => {
+        logEvent(SegmentEvent.HelpCenterContactFormCopyCode)
+    }
 
     return (
         <Card data-is-open={isOpen} className={css.card}>
@@ -72,7 +80,7 @@ export function ContactFormInstallationCard({
                         <span dangerouslySetInnerHTML={{__html: alert}} />
                     </Alert>
 
-                    <InstallationCodeSnippet code={code} />
+                    <InstallationCodeSnippet onCopy={onCopyClick} code={code} />
                 </CardBody>
             </Collapse>
         </Card>

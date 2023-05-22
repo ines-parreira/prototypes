@@ -249,6 +249,8 @@ export enum SegmentEvent {
     SelfServiceActivatedViaBanner = 'self-service-activated-via-banner',
     PrintTicketClicked = 'print-ticket-clicked',
     HelpCenterArticleRowClicked = 'help-center/articles-view/article-row-clicked',
+    HelpCenterContactFormCopyLink = 'help-center/contact-form/copy-link',
+    HelpCenterContactFormCopyCode = 'help-center/contact-form/copy-code',
     HelpCenterArticleRowSettingsClicked = 'help-center/articles-view/article-row-settings-clicked',
     ChatSettingsAppearancePageViewed = 'settings-appearance-page-viewed',
     ChatSettingsToneOfVoiceLinkClicked = 'settings-tone-of-voice-link-clicked',
