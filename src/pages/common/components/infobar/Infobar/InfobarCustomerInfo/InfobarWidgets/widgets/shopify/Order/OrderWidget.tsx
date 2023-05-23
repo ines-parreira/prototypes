@@ -347,7 +347,7 @@ function TitleWrapper({children, source}: TitleWrapperProps) {
                 </a>
                 {!isEditing && (
                     <Copy
-                        value={source.get('order_number')}
+                        value={source.get('name')}
                         onCopyMessage="Order Number copied to clipboard"
                     />
                 )}
