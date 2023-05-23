@@ -14,7 +14,7 @@ import {
     DisconnectResponse,
     Category,
 } from './types/app'
-import {Integration, IntegrationType} from './types'
+import {Integration, IntegrationRequest, IntegrationType} from './types'
 
 export const appListDataToAppListMapper = (data: AppListData): AppListItem => {
     const categories = data.categories || []
@@ -103,3 +103,11 @@ export const fetchIntegrations = async (params: ApiPaginationParams = {}) =>
             params,
         }
     )
+
+export const requestNewIntegration = async (payload: IntegrationRequest) => {
+    const {data} = await client.post<IntegrationRequest>(
+        '/integrations/request',
+        payload
+    )
+    return data
+}

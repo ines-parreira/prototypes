@@ -11,7 +11,9 @@ import {
     fetchAppErrorLogs,
     fetchIntegrations,
     fetchInstalledApps,
+    requestNewIntegration,
 } from '../resources'
+import {IntegrationRequest} from '../types'
 
 const mockedServer = new MockAdapter(client)
 
@@ -140,6 +142,29 @@ describe('integration resource', () => {
             return expect(fetchIntegrations()).rejects.toEqual(
                 new Error('Request failed with status code 503')
             )
+        })
+    })
+
+    describe('requestNewIntegration', () => {
+        const newIntegrationRequest: IntegrationRequest = {
+            description: 'description',
+        }
+
+        it('should return null', async () => {
+            mockedServer
+                .onPost('/integrations/request')
+                .reply(201, newIntegrationRequest)
+            const res = await requestNewIntegration(newIntegrationRequest)
+            expect(res).toStrictEqual(newIntegrationRequest)
+        })
+
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onPost('/integrations/request')
+                .reply(503, {message: 'error'})
+            return expect(
+                requestNewIntegration(newIntegrationRequest)
+            ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
 })

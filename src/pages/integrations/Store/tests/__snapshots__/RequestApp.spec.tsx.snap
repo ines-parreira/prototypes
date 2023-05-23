@@ -12,15 +12,13 @@ exports[`<RequestApp /> should render correctly 1`] = `
   <p
     class="incentive"
   >
-    If we are missing an app you were looking for, let us know.
+    If we're missing an app, let us know!
   </p>
-  <a
+  <button
     class="wrapper fill primary medium"
-    href="https://gorgias.productboard.com/insights/notes/"
-    rel="noopener noreferrer"
-    target="_blank"
+    type="button"
   >
     Request App
-  </a>
+  </button>
 </footer>
 `;

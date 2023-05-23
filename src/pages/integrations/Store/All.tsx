@@ -48,6 +48,7 @@ import Category from './Category'
 import CardsWrapper from './CardsWrapper'
 import Card from './Card'
 import Search from './Search'
+import RequestApp from './RequestApp'
 
 type Item = IntegrationListItem | AppListItem
 
@@ -242,6 +243,7 @@ export default function All() {
                                 </CardsWrapper>
                             )
                         })}
+                    <RequestApp />
                 </div>
             </div>
         </main>

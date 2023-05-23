@@ -76,3 +76,7 @@ export type Integration =
     | TwitterIntegration
     | BigCommerceIntegration
     | WhatsAppIntegration
+
+export type IntegrationRequest = {
+    description: string
+}
