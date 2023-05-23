@@ -997,6 +997,37 @@ describe('ticket reducers', () => {
                 ).toJS()
             ).toMatchSnapshot()
         })
+
+        it('should deep merge ticket.custom_fields', () => {
+            const customFieldsInitialState = {
+                1: {id: 1, value: 'foo', hasError: true},
+            }
+            const actionCustomFields = {1: {}}
+
+            const action = {
+                type: types.MERGE_TICKET,
+
+                ticket: ticket.mergeDeep({
+                    custom_fields: actionCustomFields,
+                }),
+            }
+
+            const nextState = reducer(
+                initialState.mergeDeep(ticket).mergeDeep({
+                    custom_fields: customFieldsInitialState,
+                }),
+                action
+            )
+
+            expect(
+                (
+                    nextState.getIn(['custom_fields', '1']) as Map<
+                        unknown,
+                        unknown
+                    >
+                ).toJS()
+            ).toEqual(customFieldsInitialState[1])
+        })
     })
 
     describe('handle MERGE_CUSTOMER', () => {

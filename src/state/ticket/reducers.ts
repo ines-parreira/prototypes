@@ -452,8 +452,19 @@ export default function reducer(
         case types.MERGE_TICKET: {
             const {ticket, messagesDifference} = action
 
+            // Make sure that custom fields
+            // are not reset by error when receiving new messages or merging ticket
+            const oldCustomFields = state.get('custom_fields') as Map<any, any>
+            const newCustomFields = ticket?.get('custom_fields') as Map<
+                any,
+                any
+            >
+            const mergedCustomFields =
+                oldCustomFields?.mergeDeep(newCustomFields)
+
             // merge received ticket with current ticket
-            let newState = state.mergeDeep(ticket as Map<any, any>)
+            let newState = state.merge(ticket as Map<any, any>)
+            newState = newState.set('custom_fields', mergedCustomFields)
 
             // keep the old ticket.customer.external_data
             // if the new ticket.customer doesn't have an external_data key
