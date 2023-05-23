@@ -4,7 +4,6 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import LD from 'launchdarkly-react-client-sdk'
 import userEvent from '@testing-library/user-event'
 import {
     Category,
@@ -23,7 +22,6 @@ import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixt
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {HelpCenterCategoryEdit} from '../HelpCenterCategoryEdit'
-import {FeatureFlagKey} from '../../../../../../config/featureFlags'
 import {getSingleCategoryEnglish} from '../../../fixtures/getCategoriesResponse.fixtures'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -269,9 +267,6 @@ describe('<HelpCenterCategoryEdit />', () => {
     describe('image upload', () => {
         beforeEach(() => {
             window.URL.createObjectURL = jest.fn() // avoid upload image error
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.HelpCenterImagesForCategories]: true,
-            }))
         })
 
         it('should displays Image field', () => {

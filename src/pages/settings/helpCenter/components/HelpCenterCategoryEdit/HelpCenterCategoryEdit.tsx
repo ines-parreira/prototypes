@@ -11,7 +11,6 @@ import {
 } from 'reactstrap'
 
 import {useAsyncFn} from 'react-use'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
@@ -63,7 +62,6 @@ import {SearchEnginePreview} from '../SearchEnginePreview'
 import {CloseModal} from '../articles/CloseModal'
 import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
 import {FileUpload, useFileUpload} from '../../hooks/useFileUpload'
-import {FeatureFlagKey} from '../../../../../config/featureFlags'
 import {eligibleParentCategories, isOneOfParentsUnlisted} from './utils'
 
 import css from './HelpCenterCategoryEdit.less'
@@ -137,9 +135,6 @@ export const HelpCenterCategoryEdit = ({
     )
     const [hasPendingChanges, setHasPendingChanges] = useState(false)
     const [isAttemptingToClose, setIsAttemptingToClose] = useState(false)
-
-    const isHelpCenterImagesForCategoriesEnabled =
-        useFlags()[FeatureFlagKey.HelpCenterImagesForCategories]
     const imageFile = useFileUpload()
     /**
      * We check here few cases
@@ -584,7 +579,25 @@ export const HelpCenterCategoryEdit = ({
                         setShowNotification={setShowNotification}
                         type="category"
                     />
-                    {!isHelpCenterImagesForCategoriesEnabled && (
+                </div>
+            </Drawer.Header>
+            <Drawer.Content>
+                <div
+                    className={css.groupedFormGroups}
+                    data-testid="image-upload"
+                >
+                    <FormGroup>
+                        <CategoryImageEdit
+                            onImageChanged={handleChangeImageFile}
+                            currentImageUrl={imageUrl}
+                            imageFile={imageFile}
+                            onRemoveImage={handleRemoveImage}
+                        />
+                    </FormGroup>
+                </div>
+                <div className={css.groupedFormGroups}>
+                    <FormGroup className={classNames(css.languageSelect)}>
+                        <Label for="title">Language</Label>
                         <ArticleLanguageSelect
                             selected={viewLanguage}
                             list={localeOptions}
@@ -592,45 +605,11 @@ export const HelpCenterCategoryEdit = ({
                             onActionClick={handleOnClickAction}
                             className={classNames(
                                 css.inlineLanguageSelect,
-                                css.inlineLanguageSelectHeader
+                                css.inlineLanguageSelectForm
                             )}
                         />
-                    )}
+                    </FormGroup>
                 </div>
-            </Drawer.Header>
-            <Drawer.Content>
-                {isHelpCenterImagesForCategoriesEnabled && (
-                    <div
-                        className={css.groupedFormGroups}
-                        data-testid="image-upload"
-                    >
-                        <FormGroup>
-                            <CategoryImageEdit
-                                onImageChanged={handleChangeImageFile}
-                                currentImageUrl={imageUrl}
-                                imageFile={imageFile}
-                                onRemoveImage={handleRemoveImage}
-                            />
-                        </FormGroup>
-                    </div>
-                )}
-                {isHelpCenterImagesForCategoriesEnabled && (
-                    <div className={css.groupedFormGroups}>
-                        <FormGroup className={classNames(css.languageSelect)}>
-                            <Label for="title">Language</Label>
-                            <ArticleLanguageSelect
-                                selected={viewLanguage}
-                                list={localeOptions}
-                                onSelect={handleOnChangeLocale}
-                                onActionClick={handleOnClickAction}
-                                className={classNames(
-                                    css.inlineLanguageSelect,
-                                    css.inlineLanguageSelectForm
-                                )}
-                            />
-                        </FormGroup>
-                    </div>
-                )}
                 <div className={css.groupedFormGroups}>
                     <FormGroup
                         className={classNames(css.textfield, css.required)}

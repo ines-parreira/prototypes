@@ -404,39 +404,135 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 </div>
               </div>
             </div>
-            <div
-              class="wrapper inlineLanguageSelect inlineLanguageSelectHeader"
-            >
-              <button
-                class="trigger"
-                data-testid="dropdown-select-trigger"
-              >
-                <span
-                  class="label"
-                >
-                  <span>
-                    <img
-                      alt="en-US"
-                      class="flag-emoji"
-                      src="test-file-stub"
-                    />
-                    <span>
-                      English - USA
-                    </span>
-                  </span>
-                </span>
-                <span
-                  class="material-icons"
-                >
-                  arrow_drop_down
-                </span>
-              </button>
-            </div>
           </div>
         </header>
         <div
           class="content"
         >
+          <div
+            class="groupedFormGroups"
+            data-testid="image-upload"
+          >
+            <div
+              class="form-group"
+            >
+              <div
+                class="container"
+              >
+                <div
+                  class="container"
+                >
+                  Image
+                </div>
+                <label
+                  class="wrapper"
+                  data-testid="dropZone"
+                  for="category-image"
+                >
+                  <div
+                    class="container categoryImage dropZone"
+                  >
+                    <div
+                      class="content"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <div
+                          class="wrapper"
+                        >
+                          <img
+                            alt="upload"
+                            class="icon"
+                            src="test-file-stub"
+                          />
+                          <div
+                            class="text"
+                          >
+                            <span>
+                              Drop your image here, or
+                            </span>
+                            <span
+                              class="browseInput"
+                            >
+                              browse
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+                <input
+                  accept="image/jpeg,image/png"
+                  data-testid="input-category-image"
+                  id="category-image"
+                  style="display: none;"
+                  type="file"
+                />
+                <div
+                  class="container imageUpload imageUploadInline"
+                >
+                  <div
+                    class="actions hd-help-text-actions"
+                  >
+                    <div
+                      class="highlight clickable"
+                    >
+                      Upload image
+                    </div>
+                  </div>
+                  <p
+                    class="hd-help-text-text"
+                  >
+                     - Recommended file size: 318 x 160px (4:2 aspect ratio), 500KB or less.  Max file size: 10MB.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="groupedFormGroups"
+          >
+            <div
+              class="languageSelect form-group"
+            >
+              <label
+                class=""
+                for="title"
+              >
+                Language
+              </label>
+              <div
+                class="wrapper inlineLanguageSelect inlineLanguageSelectForm"
+              >
+                <button
+                  class="trigger"
+                  data-testid="dropdown-select-trigger"
+                >
+                  <span
+                    class="label"
+                  >
+                    <span>
+                      <img
+                        alt="en-US"
+                        class="flag-emoji"
+                        src="test-file-stub"
+                      />
+                      <span>
+                        English - USA
+                      </span>
+                    </span>
+                  </span>
+                  <span
+                    class="material-icons"
+                  >
+                    arrow_drop_down
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
           <div
             class="groupedFormGroups"
           >
