@@ -39,7 +39,7 @@ const ChatApplication = () => {
     } = useApplications()
 
     const {
-        translation: {chatApplicationId, contactInfo},
+        translation: {chatAppKey, contactInfo},
         updateTranslation,
     } = useHelpCenterTranslation()
     const chatIntegrations = useAppSelector(
@@ -58,10 +58,13 @@ const ChatApplication = () => {
                 .map((chat: Map<any, any>) => {
                     const chatName: string = chat.get('name')
                     const integrationId: number = chat.get('id')
-                    const chatAppId: number = parseInt(
+                    const chatApplicationId: number = parseInt(
                         chat.getIn(['meta', 'app_id']) as string,
                         10
                     )
+                    const chatAppKey =
+                        applications.find(({id}) => id === chatApplicationId)
+                            ?.appKey || ''
                     const chatLanguageCode: string = chat.getIn([
                         'meta',
                         'language',
@@ -81,11 +84,11 @@ const ChatApplication = () => {
                                 {chatName} {chatLanguageName}
                             </span>
                         ),
-                        value: chatAppId,
+                        value: chatAppKey,
                         integrationId,
                     }
                 }),
-        [chatIntegrations]
+        [chatIntegrations, applications]
     )
 
     const [isDescriptionTooLong, setIsDescriptionTooLong] = useState(false)
@@ -107,19 +110,13 @@ const ChatApplication = () => {
             })
         }
 
-    const handleChatApplicationIdChange = (
-        chatApplicationId: number | null
-    ) => {
-        const chatAppKey =
-            applications.find(({id}) => id === chatApplicationId)?.appKey ||
-            null
-
-        updateTranslation({chatApplicationId, chatAppKey})
+    const handleChatApplicationIdChange = (chatAppKey: string | null) => {
+        updateTranslation({chatAppKey})
     }
 
     const toggleChatEnabled = () => {
         handleChatApplicationIdChange(
-            chatApplicationId == null && chatOptions.length > 0
+            chatAppKey == null && chatOptions.length > 0
                 ? chatOptions[0].value
                 : null
         )
@@ -163,7 +160,7 @@ const ChatApplication = () => {
                         </div>
                     </div>
                     <ToggleInput
-                        isToggled={!!chatApplicationId}
+                        isToggled={!!chatAppKey}
                         onClick={toggleChatEnabled}
                         isDisabled={chatOptions.length === 0}
                         className={css.toggle}
@@ -195,24 +192,23 @@ const ChatApplication = () => {
                     {chatOptions.length > 0 && (
                         <>
                             <Label
-                                disabled={!chatApplicationId}
+                                disabled={!chatAppKey}
                                 className="control-label"
                             >
                                 Select chat integration
                             </Label>
                             <SelectField
-                                value={chatApplicationId}
+                                value={chatAppKey}
                                 options={chatOptions}
                                 onChange={(value) =>
                                     handleChatApplicationIdChange(
-                                        value as number
+                                        value as string
                                     )
                                 }
                                 placeholder="Select a chat"
                                 fullWidth
                                 disabled={
-                                    !chatApplicationId ||
-                                    !hasFetchedApplications
+                                    !chatAppKey || !hasFetchedApplications
                                 }
                                 icon="forum"
                             />
@@ -225,7 +221,7 @@ const ChatApplication = () => {
                             isToggled={enabled}
                             onClick={handleChange('enabled')}
                             aria-label="Enable chat contact card"
-                            isDisabled={!chatApplicationId}
+                            isDisabled={!chatAppKey}
                         >
                             Chat contact card
                         </ToggleInput>

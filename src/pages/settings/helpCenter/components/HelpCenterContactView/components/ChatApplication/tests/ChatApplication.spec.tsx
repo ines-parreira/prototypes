@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 
 import {contactInfoFixture} from 'pages/settings/helpCenter/fixtures/contactInfo.fixture'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import {useApplications} from 'models/integration/queries'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
@@ -164,6 +165,7 @@ const defaultState: Partial<RootState> = {
 }
 
 jest.mock('../../../../../providers/HelpCenterTranslation')
+jest.mock('../../../../../../../../models/integration/queries')
 
 const route = {
     path: '/app/settings/help-center/:helpcenterId/contact',
@@ -176,10 +178,21 @@ describe('<ChatApplication />', () => {
         jest.resetAllMocks()
         ;(useHelpCenterTranslation as jest.Mock).mockReturnValue({
             translation: {
-                chatApplicationId: null,
+                chatAppKey: null,
                 contactInfo: contactInfoFixture,
             },
             updateTranslation: mockedUpdateTranslation,
+        })
+        ;(useApplications as jest.Mock).mockReturnValue({
+            data: {
+                applications: [
+                    {
+                        id: 1,
+                        appKey: 'app-key',
+                    },
+                ],
+            },
+            isSuccess: true,
         })
     })
 
@@ -201,7 +214,7 @@ describe('<ChatApplication />', () => {
 
         expect(mockedUpdateTranslation).toHaveBeenLastCalledWith(
             expect.objectContaining({
-                chatApplicationId: 1,
+                chatAppKey: 'app-key',
             })
         )
     })
