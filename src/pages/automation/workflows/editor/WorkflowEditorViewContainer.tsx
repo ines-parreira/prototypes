@@ -7,7 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import {Notification} from 'state/notifications/types'
 
 import WorkflowEditorView from './WorkflowEditorView'
 
@@ -30,21 +30,18 @@ export default function WorkflowEditorViewContainer() {
     const goToWorkflowTemplatesPage = useCallback(() => {
         history.push(`/app/automation/${shopType}/${shopName}/flows/templates`)
     }, [history, shopName, shopType])
+    const goToConnectedChannelsPage = useCallback(() => {
+        history.push(
+            `/app/automation/${shopType}/${shopName}/connected-channels`
+        )
+    }, [history, shopName, shopType])
 
     const isNewWorkflow = editWorkflowId == null
     const workflowId = useMemo(() => editWorkflowId ?? ulid(), [editWorkflowId])
 
     const notifyMerchant = useCallback(
-        (message: string, kind: 'success' | 'error') => {
-            void dispatch(
-                notify({
-                    message,
-                    status:
-                        kind === 'success'
-                            ? NotificationStatus.Success
-                            : NotificationStatus.Error,
-                })
-            )
+        (message: Notification) => {
+            void dispatch(notify(message))
         },
         [dispatch]
     )
@@ -58,6 +55,7 @@ export default function WorkflowEditorViewContainer() {
             currentAccountId={currentAccountId}
             goToWorkflowsListPage={goToWorkflowsListPage}
             goToWorkflowTemplatesPage={goToWorkflowTemplatesPage}
+            goToConnectedChannelsPage={goToConnectedChannelsPage}
             workflowId={workflowId}
             isNewWorkflow={isNewWorkflow}
             notifyMerchant={notifyMerchant}

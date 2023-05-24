@@ -49,6 +49,10 @@ const entrypointsFixtures = [
     {enabled: true, workflow_id: 'b', label: 'b'},
     {enabled: false, workflow_id: 'c', label: 'c'},
 ]
+const entrypointsWithNameFixtures = entrypointsFixtures.map((entrypoint) => ({
+    ...entrypoint,
+    name: '',
+}))
 
 describe('useWorkflowsEntrypoints', () => {
     beforeEach(() => {
@@ -114,7 +118,7 @@ describe('useWorkflowsEntrypoints', () => {
         )
         await act(() => result.current.deleteWorkflowEntrypoint('a'))
         expect(result.current.workflowsEntrypoints).toEqual([
-            ...entrypointsFixtures.slice(1),
+            ...entrypointsWithNameFixtures.slice(1),
         ])
     })
 

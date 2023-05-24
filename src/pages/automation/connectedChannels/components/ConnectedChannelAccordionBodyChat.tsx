@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link, useParams} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -13,6 +13,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 import AutomationSubscriptionAction from './AutomationSubscriptionAction'
+import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
 
 import css from './ConnectedChannelAccordionBodyChat.less'
 
@@ -23,12 +24,10 @@ type Props = {
 const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
     const isflowsBetaEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.FlowsBeta]
+    const allowDifferentFlowsPerChannel =
+        useFlags()[FeatureFlagKey.DifferentFlowsPerChannel]
     const applicationId = channel.value.meta.app_id!
 
-    const {shopType, shopName} = useParams<{
-        shopType: string
-        shopName: string
-    }>()
     const {
         applicationsAutomationSettings,
         handleChatApplicationAutomationSettingsUpdate,
@@ -38,6 +37,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         articleRecommendationHelpCenterId,
         isHelpCenterEmpty,
         isOrderManagementAvailable,
+        articleRecommendationUrl,
     } = useConnectedChannelsViewContext()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
@@ -68,9 +68,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
 
         if (!articleRecommendationHelpCenterId) {
             return (
-                <Link
-                    to={`/app/automation/${shopType}/${shopName}/article-recommendation`}
-                >
+                <Link to={articleRecommendationUrl}>
                     <Button fillStyle="ghost" size="small">
                         <ButtonIconLabel
                             icon="warning"
@@ -98,7 +96,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
 
     return (
         <>
-            {isflowsBetaEnabled && (
+            {isflowsBetaEnabled && !allowDifferentFlowsPerChannel && (
                 <ConnectedChannelFeatureToggle
                     name="Flows"
                     value={workflows.enabled}
@@ -107,6 +105,21 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                     action={
                         !hasAutomationAddOn && <AutomationSubscriptionAction />
                     }
+                />
+            )}
+            {isflowsBetaEnabled && allowDifferentFlowsPerChannel && (
+                <ConnectedChannelWorkflowsFeature
+                    channelId={`chat-${applicationId}`}
+                    entrypoints={workflows.entrypoints}
+                    onChange={(nextEntrypoints) => {
+                        void handleChatApplicationAutomationSettingsUpdate({
+                            ...applicationAutomationSettings,
+                            workflows: {
+                                ...workflows,
+                                entrypoints: nextEntrypoints,
+                            },
+                        })
+                    }}
                 />
             )}
 

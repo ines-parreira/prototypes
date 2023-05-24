@@ -43,6 +43,7 @@ export default function WorkflowsViewContainer() {
     )
 
     const quickResponsesUrl = `/app/automation/${shopType}/${shopName}/quick-responses`
+    const connectedChannelsUrl = `/app/automation/${shopType}/${shopName}/connected-channels`
 
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
@@ -57,6 +58,7 @@ export default function WorkflowsViewContainer() {
             goToWorkflowTemplatesPage={goToWorkflowTemplatesPage}
             goToEditWorkflowPage={goToEditWorkflowPage}
             quickResponsesUrl={quickResponsesUrl}
+            connectedChannelsUrl={connectedChannelsUrl}
             notifyMerchant={notifyMerchant}
         />
     )

@@ -38,4 +38,5 @@ export enum FeatureFlagKey {
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ContinuousChatViewsPolling = 'continuous-chat-views-polling',
     NewBillingInterface = 'new-billing-interface',
+    DifferentFlowsPerChannel = 'different-flows-per-channel',
 }

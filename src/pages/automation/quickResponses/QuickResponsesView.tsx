@@ -3,8 +3,10 @@ import {Container} from 'reactstrap'
 import {useParams} from 'react-router-dom'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
+import _keyBy from 'lodash/keyBy'
 import {v4 as uuidv4} from 'uuid'
 import {fromJS} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -13,6 +15,7 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import useSelfServiceChatChannels from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../common/components/constants'
 import QuickResponsesAccordionCaption from './components/QuickResponsesAccordionCaption'
@@ -27,6 +30,8 @@ import {NEW_QUICK_RESPONSE_SYMBOL} from './constants'
 import css from './QuickResponsesView.less'
 
 const QuickResponsesView = () => {
+    const allowDifferentFlowsPerChannel =
+        useFlags()[FeatureFlagKey.DifferentFlowsPerChannel]
     const {shopType, shopName} = useParams<{
         shopType: string
         shopName: string
@@ -58,13 +63,62 @@ const QuickResponsesView = () => {
         setDirtyQuickResponses(quickResponses)
     }
 
-    const activeQuickResponsesCount = quickResponses.filter(
+    const chatApplicationIds = useMemo(
+        () =>
+            chatChannels
+                .map(({value}) => value.meta.app_id)
+                .filter((value): value is string => Boolean(value)),
+        [chatChannels]
+    )
+
+    const {applicationsAutomationSettings} =
+        useApplicationsAutomationSettings(chatApplicationIds)
+
+    const enabledQuickResponsesCount = quickResponses.filter(
         (quickResponse) => !quickResponse.deactivated_datetime
     ).length
-    const enabledFlowsCount =
-        selfServiceConfiguration?.workflows_entrypoints?.filter(
-            (e) => e.enabled
-        )?.length ?? 0
+    const enabledWorkflowsCount = useMemo(() => {
+        const allEntrypoints = selfServiceConfiguration?.workflows_entrypoints
+
+        if (!allEntrypoints) {
+            return 0
+        }
+
+        if (!allowDifferentFlowsPerChannel) {
+            return allEntrypoints.filter((entrypoint) => entrypoint.enabled)
+                .length
+        }
+
+        const allEntrypointsByWorkflowId = _keyBy(allEntrypoints, 'workflow_id')
+        const enabledWorkflowIds = new Set<string>()
+
+        Object.entries(applicationsAutomationSettings).forEach(
+            ([applicationId, settings]) => {
+                if (!chatApplicationIds.includes(applicationId)) {
+                    return
+                }
+
+                const entrypoints =
+                    settings.workflows.entrypoints ?? allEntrypoints
+
+                entrypoints.forEach((entrypoint) => {
+                    if (
+                        entrypoint.enabled &&
+                        entrypoint.workflow_id in allEntrypointsByWorkflowId
+                    ) {
+                        enabledWorkflowIds.add(entrypoint.workflow_id)
+                    }
+                })
+            }
+        )
+
+        return enabledWorkflowIds.size
+    }, [
+        allowDifferentFlowsPerChannel,
+        selfServiceConfiguration?.workflows_entrypoints,
+        chatApplicationIds,
+        applicationsAutomationSettings,
+    ])
     const hasError = Object.keys(errors).length > 0
     const quickResponsesViewContext: QuickResponsesViewContextType = useMemo(
         () => ({
@@ -86,28 +140,18 @@ const QuickResponsesView = () => {
                 })
             },
             isLimitReached:
-                activeQuickResponsesCount + enabledFlowsCount >=
+                enabledQuickResponsesCount + enabledWorkflowsCount >=
                 MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
             storeIntegration,
         }),
         [
             isUpdatePending,
             hasError,
-            activeQuickResponsesCount,
-            enabledFlowsCount,
+            enabledQuickResponsesCount,
+            enabledWorkflowsCount,
             storeIntegration,
         ]
     )
-    const chatApplicationIds = useMemo(
-        () =>
-            chatChannels
-                .map(({value}) => value.meta.app_id)
-                .filter((value): value is string => Boolean(value)),
-        [chatChannels]
-    )
-
-    const {applicationsAutomationSettings} =
-        useApplicationsAutomationSettings(chatApplicationIds)
 
     const handleNewQuickResponse = () => {
         const newQuickResponse = {

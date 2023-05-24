@@ -8,6 +8,8 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useSearch from 'hooks/useSearch'
+import {Notification, NotificationStatus} from 'state/notifications/types'
+
 import {WORKFLOW_TEMPLATES} from '../constants'
 import {
     useWorkflowConfigurationContext,
@@ -29,7 +31,8 @@ type WorkflowEditorViewProps = {
     isNewWorkflow: boolean
     goToWorkflowsListPage: () => void
     goToWorkflowTemplatesPage: () => void
-    notifyMerchant: (message: string, kind: 'success' | 'error') => void
+    goToConnectedChannelsPage: () => void
+    notifyMerchant: (message: Notification) => void
 }
 
 function WorkflowEditorViewWrapped({
@@ -38,6 +41,7 @@ function WorkflowEditorViewWrapped({
     isNewWorkflow,
     goToWorkflowsListPage,
     goToWorkflowTemplatesPage,
+    goToConnectedChannelsPage,
     notifyMerchant,
 }: WorkflowEditorViewProps) {
     const {template: templateSlug} = useSearch<{template: string | undefined}>()
@@ -75,24 +79,44 @@ function WorkflowEditorViewWrapped({
         const validationError = configurationError || entrypointError
         if (validationError) {
             setLastSaveAttempt(new Date())
-            notifyMerchant(validationError, 'error')
+            notifyMerchant({
+                message: validationError,
+                status: NotificationStatus.Error,
+            })
             return
         }
         try {
             await worfklowConfigurationContext.handleSave()
             await workflowEntrypointContext.handleSave()
         } catch (e) {
-            notifyMerchant(
-                'An error happened trying to save the flow, please try again or contact support',
-                'error'
-            )
+            notifyMerchant({
+                message:
+                    'An error happened trying to save the flow, please try again or contact support',
+                status: NotificationStatus.Error,
+            })
             return
         }
-        notifyMerchant(
-            isNewWorkflow ? 'Successfully created' : 'Successfully updated',
-            'success'
-        )
-        goToWorkflowsListPage()
+
+        if (
+            !workflowEntrypointContext.hasExistingEntrypoints &&
+            isNewWorkflow
+        ) {
+            notifyMerchant({
+                message:
+                    'Flow successfully created. Select the desired channel to enable and arrange flows.',
+                status: NotificationStatus.Success,
+                dismissAfter: 4000,
+            })
+            goToConnectedChannelsPage()
+        } else {
+            notifyMerchant({
+                message: isNewWorkflow
+                    ? 'Successfully created'
+                    : 'Successfully updated',
+                status: NotificationStatus.Success,
+            })
+            goToWorkflowsListPage()
+        }
     }
 
     const inputRef = useRef<HTMLInputElement>(null)

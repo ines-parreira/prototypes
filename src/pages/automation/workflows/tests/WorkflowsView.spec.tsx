@@ -15,7 +15,6 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 jest.mock('pages/automation/common/hooks/useSelfServiceConfiguration')
 jest.mock('../hooks/useWorkflowApi')
-jest.mock('utils/launchDarkly')
 
 const useSelfServiceConfigurationMock =
     useSelfServiceConfiguration as jest.MockedFunction<
@@ -39,7 +38,7 @@ function updateUseWorkflowApiMock(
 
 describe('<WorkflowsView />', () => {
     beforeEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
         updateUseWorkflowApiMock({})
     })
 
@@ -60,6 +59,7 @@ describe('<WorkflowsView />', () => {
                     goToEditWorkflowPage={jest.fn()}
                     goToWorkflowTemplatesPage={jest.fn()}
                     quickResponsesUrl=""
+                    connectedChannelsUrl=""
                     notifyMerchant={jest.fn()}
                 />
             </Provider>
@@ -107,6 +107,7 @@ describe('<WorkflowsView />', () => {
                     goToEditWorkflowPage={jest.fn()}
                     goToWorkflowTemplatesPage={jest.fn()}
                     quickResponsesUrl=""
+                    connectedChannelsUrl=""
                     notifyMerchant={jest.fn()}
                 />
             </Provider>

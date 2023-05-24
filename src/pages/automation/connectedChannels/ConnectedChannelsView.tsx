@@ -18,6 +18,7 @@ import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfSe
 import {useHelpCenterPublishedArticlesCount} from 'pages/automation/common/hooks/useHelpCenterPublishedArticlesCount'
 import Button from 'pages/common/components/button/Button'
 import useSearch from 'hooks/useSearch'
+import useWorkflowConfigurations from 'pages/automation/common/hooks/useWorkflowConfigurations'
 
 import ConnectedChannelAccordionItem from './components/ConnectedChannelAccordionItem'
 import ConnectedChannelsPreview from './ConnectedChannelsPreview'
@@ -42,6 +43,8 @@ const ConnectedChannelsView = () => {
         shopType,
         shopName
     )
+    const {isFetchPending: isWorkflowsFetchPending, workflowConfigurations} =
+        useWorkflowConfigurations()
     const [expandedChannelIndex, setExpandedChannelIndex] = useState(() => {
         if (!defaultExpandedChannelType || !defaultExpandedChannelId) {
             return 0
@@ -74,11 +77,25 @@ const ConnectedChannelsView = () => {
                 isHelpCenterEmpty: helpCenterArticlesCount === 0,
                 isOrderManagementAvailable:
                     shopType === IntegrationType.Shopify,
+                workflowConfigurations,
+                workflowsEntrypoints:
+                    selfServiceConfiguration?.workflows_entrypoints ?? [],
+                workflowsUrl: `/app/automation/${shopType}/${shopName}/flows`,
+                articleRecommendationUrl: `/app/automation/${shopType}/${shopName}/article-recommendation`,
+                quickResponsesUrl: `/app/automation/${shopType}/${shopName}/quick-responses`,
+                enabledQuickResponsesCount:
+                    selfServiceConfiguration?.quick_response_policies.filter(
+                        (quickResponse) => !quickResponse.deactivated_datetime
+                    ).length ?? 0,
             }),
             [
                 articleRecommendationHelpCenterId,
                 helpCenterArticlesCount,
                 shopType,
+                shopName,
+                selfServiceConfiguration?.workflows_entrypoints,
+                selfServiceConfiguration?.quick_response_policies,
+                workflowConfigurations,
             ]
         )
 
@@ -112,6 +129,7 @@ const ConnectedChannelsView = () => {
     const hasChannels = hasChatChannel || hasHelpCenterChannel
     const isLoading =
         !selfServiceConfiguration ||
+        isWorkflowsFetchPending ||
         chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
 
     const expandedChannel = channels[expandedChannelIndex]

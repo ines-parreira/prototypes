@@ -10,7 +10,7 @@ import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from 'pages/automation/common/comp
 import useWorkflowApi from './useWorkflowApi'
 
 export type UseWorkflowsEntrypointsReturnType = {
-    workflowsEntrypoints: Array<WorkflowEntrypoint & {name?: Maybe<string>}>
+    workflowsEntrypoints: Array<WorkflowEntrypoint & {name: string}>
     isFetchPending: boolean
     isUpdatePending: boolean
     isEnabledLimitReached: boolean
@@ -164,7 +164,7 @@ export default function useWorkflowsEntrypoints(
     const workflowsEntrypoints =
         draftConfiguration?.workflows_entrypoints?.map((e) => ({
             ...e,
-            name: workflowNamesById[e.workflow_id],
+            name: workflowNamesById[e.workflow_id] ?? '',
         })) ?? []
     const quickResponsesEnabled =
         selfServiceConfigurationApi.selfServiceConfiguration?.quick_response_policies?.filter(
