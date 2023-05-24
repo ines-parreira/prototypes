@@ -16,6 +16,7 @@ import {
 import {notify} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {reportError} from 'utils/errors'
 
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 
@@ -45,9 +46,19 @@ const useSelfServiceConfiguration = (
     const [{loading: isFetchPending}, handleSelfServiceConfigurationFetch] =
         useAsyncFn(async (storeIntegrationId: number) => {
             try {
-                const res = await fetchSelfServiceConfiguration(
+                let res = await fetchSelfServiceConfiguration(
                     storeIntegrationId
                 )
+                if (res.deactivated_datetime) {
+                    reportError(
+                        new Error('Self-service configuration is deactivated'),
+                        {extra: {shopName: res.shop_name, shopType: res.type}}
+                    )
+                    res = await updateSelfServiceConfiguration({
+                        ...res,
+                        deactivated_datetime: null,
+                    })
+                }
                 void dispatch(selfServiceConfigurationFetched(res))
             } catch (error) {
                 handleNotify({
