@@ -1,0 +1,40 @@
+@import '~css/new/layout.less';
+@import '~css/new/colorTokens.less';
+
+:local {
+    .headerTitle {
+        margin-bottom: 0;
+    }
+
+    .propertiesWrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: @layout-spacing-l;
+        margin-top: @layout-spacing-s;
+    }
+
+    .property {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 33%;
+        gap: @layout-spacing-xxs;
+        align-items: flex-start;
+    }
+
+    .countryValue {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+    }
+
+    .messageDescription {
+        margin-top: @layout-spacing-xxs;
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .messageContainer {
+        background-color: @classic-neutral-grey-0;
+        padding: 18px @layout-spacing-s;
+    }
+}

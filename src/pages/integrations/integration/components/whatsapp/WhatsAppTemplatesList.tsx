@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -7,12 +7,12 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import CountryFlag from 'pages/phoneNumbers/CountryFlag'
 import {WhatsAppTemplate} from 'models/integration/types'
-
-import css from './WhatsAppTemplatesList.less'
-
 import WhatsAppTemplateStatusLabel from './WhatsAppTemplateStatusLabel'
 import WhatsAppTemplateCategoryLabel from './WhatsAppTemplateCategoryLabel'
 import {whatsAppFlagCodes} from './constants'
+import WhatsAppTemplateDetailsDrawer from './WhatsAppTemplateDetailsDrawer'
+
+import css from './WhatsAppTemplatesList.less'
 
 const mockTemplates = [
     {
@@ -23,7 +23,7 @@ const mockTemplates = [
             },
             body: {
                 type: 'text',
-                value: "Hey {{1}},\\nHere's your one-time password:  *{{2}}*\\nCode expires in 30 minutes.",
+                value: "Hey {{1}},\\nHere's your https://www.google.com one-time password:  *{{2}}*\\nCode expires in 30 minutes.",
             },
             footer: {
                 type: 'text',
@@ -50,6 +50,8 @@ const mockTemplates = [
 ] as WhatsAppTemplate[]
 
 export default function WhatsAppTemplatesList() {
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [currentTemplate, setCurrentTemplate] = useState<WhatsAppTemplate>()
     return (
         <div>
             <p className={css.intro}>
@@ -67,7 +69,13 @@ export default function WhatsAppTemplatesList() {
                 </TableHead>
                 <TableBody>
                     {mockTemplates.map((template) => (
-                        <TableBodyRow key={template.id}>
+                        <TableBodyRow
+                            key={template.id}
+                            onClick={() => {
+                                setCurrentTemplate(template)
+                                setIsDrawerOpen(true)
+                            }}
+                        >
                             <BodyCell>
                                 <strong>{template.name}</strong>
                             </BodyCell>
@@ -93,6 +101,13 @@ export default function WhatsAppTemplatesList() {
                     ))}
                 </TableBody>
             </TableWrapper>
+            {currentTemplate && (
+                <WhatsAppTemplateDetailsDrawer
+                    isOpen={isDrawerOpen}
+                    setIsOpen={setIsDrawerOpen}
+                    template={currentTemplate}
+                />
+            )}
         </div>
     )
 }

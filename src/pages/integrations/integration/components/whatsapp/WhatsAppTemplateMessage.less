@@ -1,0 +1,21 @@
+@import '~css/new/layout.less';
+@import '~css/new/colorTokens.less';
+
+:local {
+    .sentence {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        row-gap: @layout-spacing-xxs;
+    }
+
+    .variable:not(:first-child) {
+        margin-left: @layout-spacing-xxs;
+    }
+
+    .messageBody {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+}

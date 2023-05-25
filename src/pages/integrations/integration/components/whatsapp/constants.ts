@@ -1,4 +1,32 @@
 import {CountryCode} from 'libphonenumber-js'
+import {WhatsAppTemplateStatus} from 'models/integration/types'
+import {AlertType} from 'pages/common/components/Alert/Alert'
+
+export const templateAlertContent = {
+    [WhatsAppTemplateStatus.Paused]: {
+        type: AlertType.Warning,
+        message:
+            'This template received recurring negative feedback from customers and is not usable for up to 6h.',
+        learnMore: 'TODO',
+    },
+    [WhatsAppTemplateStatus.Disabled]: {
+        type: AlertType.Warning,
+        message:
+            'This template received recurring negative feedback from customers. Re-edit and appeal the decision.',
+        learnMore: 'TODO',
+    },
+    [WhatsAppTemplateStatus.Rejected]: {
+        type: AlertType.Warning,
+        message:
+            'This template violates WhatsApp policies and cannot be used. Re-submit or appeal the decision.',
+        learnMore: 'TODO',
+    },
+    [WhatsAppTemplateStatus.Unsupported]: {
+        type: AlertType.Info,
+        message: 'This template contains content not yet supported by Gorgias.',
+        learnMore: 'TODO',
+    },
+}
 
 export const whatsAppFlagCodes = {
     af: 'ZA',
