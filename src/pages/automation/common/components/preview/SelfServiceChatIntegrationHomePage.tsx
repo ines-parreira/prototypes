@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import classnames from 'classnames'
 import {useHistory} from 'react-router-dom'
+import _keyBy from 'lodash/keyBy'
 
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
@@ -32,8 +33,50 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
         hoveredQuickResponseId,
         hoveredOrderManagementFlow,
         isArticleRecommendationEnabled,
+        areWorkflowsEnabled,
+        workflowsEntrypoints: workflowsEntrypointsProp,
     } = useSelfServicePreviewContext()
     const currentUser = useAppSelector(getCurrentUser)
+    const workflowsEntrypoints = useMemo(() => {
+        if (!areWorkflowsEnabled) {
+            return []
+        }
+
+        const allWorkflowsEntrypoints =
+            selfServiceConfiguration?.workflows_entrypoints ?? []
+
+        if (!workflowsEntrypointsProp) {
+            return allWorkflowsEntrypoints
+                .filter((entrypoint) => entrypoint.enabled)
+                .map((entrypoint) => ({
+                    workflow_id: entrypoint.workflow_id,
+                    label: entrypoint.label,
+                }))
+        }
+
+        const allWorkflowsEntrypointsByWorkflowId = _keyBy(
+            allWorkflowsEntrypoints,
+            'workflow_id'
+        )
+
+        return workflowsEntrypointsProp
+            .filter(
+                (entrypoint) =>
+                    entrypoint.workflow_id in
+                        allWorkflowsEntrypointsByWorkflowId &&
+                    entrypoint.enabled
+            )
+            .map((entrypoint) => ({
+                workflow_id: entrypoint.workflow_id,
+                label: allWorkflowsEntrypointsByWorkflowId[
+                    entrypoint.workflow_id
+                ].label,
+            }))
+    }, [
+        areWorkflowsEnabled,
+        workflowsEntrypointsProp,
+        selfServiceConfiguration?.workflows_entrypoints,
+    ])
 
     const sspTexts =
         GORGIAS_CHAT_SSP_TEXTS[integration.meta.language || 'en-US']
@@ -50,7 +93,11 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
         selfServiceConfiguration?.return_order_policy.enabled
     const isInitialEntry = history.length === 1
 
-    if (!quickResponses.length && !canManageOrders) {
+    if (
+        !quickResponses.length &&
+        !canManageOrders &&
+        !workflowsEntrypoints.length
+    ) {
         return (
             <MessageContent
                 conversationColor={integration.decoration.conversation_color}
@@ -69,11 +116,26 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
             })}
         >
             <div className={css.contentContainer}>
-                <Collapse isOpen={quickResponses.length > 0} memoizeOnExit>
+                <Collapse
+                    isOpen={
+                        quickResponses.length > 0 ||
+                        workflowsEntrypoints.length > 0
+                    }
+                    memoizeOnExit
+                >
                     <div className={css.listGroup}>
                         <div className={css.listGroupItemHeading}>
                             {sspTexts.quickResponses}
                         </div>
+                        {workflowsEntrypoints.map((entrypoint) => (
+                            <div
+                                key={entrypoint.workflow_id}
+                                className={css.listGroupItem}
+                            >
+                                {entrypoint.label}
+                                <ChevronRightIcon />
+                            </div>
+                        ))}
                         {quickResponses.map((quickResponse) => (
                             <div
                                 key={quickResponse.id}

@@ -20,6 +20,8 @@ export type SelfServicePreviewContextType = {
     reportOrderIssueReason?: ReportIssueCaseReason
     hoveredReportOrderIssueReason?: Maybe<ReportIssueCaseReason['reasonKey']>
     isArticleRecommendationEnabled?: boolean
+    areWorkflowsEnabled?: boolean
+    workflowsEntrypoints?: {workflow_id: string; enabled: boolean}[]
 }
 
 const SelfServicePreviewContext = createContext<

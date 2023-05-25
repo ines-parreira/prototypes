@@ -1,15 +1,19 @@
 import React, {useMemo} from 'react'
 import {createMemoryHistory} from 'history'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceChannels'
 import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
-import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
+import SelfServicePreviewContext, {
+    SelfServicePreviewContextType,
+} from 'pages/automation/common/components/preview/SelfServicePreviewContext'
 import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import {TicketChannel} from 'business/types/ticket'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 type Props = {
     channel: SelfServiceChannel
@@ -20,6 +24,8 @@ const ConnectedChannelsPreview = ({
     channel,
     selfServiceConfiguration,
 }: Props) => {
+    const allowDifferentFlowsPerChannel =
+        useFlags()[FeatureFlagKey.DifferentFlowsPerChannel]
     const history = useMemo(
         () =>
             createMemoryHistory({
@@ -34,14 +40,20 @@ const ConnectedChannelsPreview = ({
     let isArticleRecommendationEnabled = false
     let areQuickResponsesEnabled = false
     let isOrderManagementEnabled = false
+    let workflowsEntrypoints: SelfServicePreviewContextType['workflowsEntrypoints']
 
     if (channel.type === TicketChannel.Chat) {
-        const {articleRecommendation, orderManagement, quickResponses} =
-            applicationsAutomationSettings[channel.value.meta.app_id!]
+        const {
+            articleRecommendation,
+            orderManagement,
+            quickResponses,
+            workflows,
+        } = applicationsAutomationSettings[channel.value.meta.app_id!]
 
         isArticleRecommendationEnabled = articleRecommendation.enabled
         isOrderManagementEnabled = orderManagement.enabled
         areQuickResponsesEnabled = quickResponses.enabled
+        workflowsEntrypoints = workflows.entrypoints
     } else {
         isOrderManagementEnabled =
             !channel.value.self_service_deactivated_datetime
@@ -87,6 +99,8 @@ const ConnectedChannelsPreview = ({
                             Boolean(
                                 selfServiceConfiguration.article_recommendation_help_center_id
                             ),
+                        areWorkflowsEnabled: allowDifferentFlowsPerChannel,
+                        workflowsEntrypoints,
                     }}
                 >
                     <SelfServicePreview channel={channel} history={history} />

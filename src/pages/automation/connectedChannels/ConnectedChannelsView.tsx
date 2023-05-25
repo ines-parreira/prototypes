@@ -115,9 +115,7 @@ const ConnectedChannelsView = () => {
         useApplicationsAutomationSettings(chatApplicationIds)
 
     const handleExpandedChannelChange = (channelIndex: string | null) => {
-        if (channelIndex) {
-            setExpandedChannelIndex(parseInt(channelIndex, 10))
-        }
+        setExpandedChannelIndex(channelIndex ? parseInt(channelIndex, 10) : -1)
     }
 
     const hasChatChannel = channels.some(

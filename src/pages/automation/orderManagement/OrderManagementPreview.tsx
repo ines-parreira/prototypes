@@ -1,9 +1,12 @@
 import React from 'react'
 import {History} from 'history'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {TicketChannel} from 'business/types/ticket'
 import SelfServiceFeatureDisabledOnChannelAlert from 'pages/automation/common/components/preview/SelfServiceFeatureDisabledOnChannelAlert'
-import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
+import SelfServicePreviewContext, {
+    SelfServicePreviewContextType,
+} from 'pages/automation/common/components/preview/SelfServicePreviewContext'
 import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
 import {
@@ -12,6 +15,7 @@ import {
 } from 'models/selfServiceConfiguration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {useOrderManagementPreviewContext} from './OrderManagementPreviewContext'
 
@@ -26,6 +30,8 @@ const OrderManagementPreview = ({
     hoveredOrderManagementFlow,
     history,
 }: Props) => {
+    const allowDifferentFlowsPerChannel =
+        useFlags()[FeatureFlagKey.DifferentFlowsPerChannel]
     const {channels, channel, onChannelChange} =
         useOrderManagementPreviewContext()
     const applicationsAutomationSettings = useAppSelector(
@@ -43,13 +49,18 @@ const OrderManagementPreview = ({
             }}
         >
             {(channel) => {
-                let isOrderManagementDisabled
+                let isOrderManagementDisabled: boolean
+                let workflowsEntrypoints: SelfServicePreviewContextType['workflowsEntrypoints']
 
                 if (channel.type === TicketChannel.Chat) {
                     const applicationId = channel.value.meta.app_id!
-                    isOrderManagementDisabled =
+                    const applicationAutomationSettings =
                         applicationsAutomationSettings[applicationId]
-                            ?.orderManagement.enabled === false
+                    isOrderManagementDisabled =
+                        applicationAutomationSettings?.orderManagement
+                            .enabled === false
+                    workflowsEntrypoints =
+                        applicationAutomationSettings?.workflows.entrypoints
                 } else {
                     isOrderManagementDisabled = Boolean(
                         channel.value.self_service_deactivated_datetime
@@ -71,6 +82,8 @@ const OrderManagementPreview = ({
                             selfServiceConfiguration,
                             hoveredOrderManagementFlow,
                             orderManagementFlow: 'track_order_policy',
+                            areWorkflowsEnabled: allowDifferentFlowsPerChannel,
+                            workflowsEntrypoints,
                         }}
                     >
                         <SelfServicePreview
