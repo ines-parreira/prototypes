@@ -161,7 +161,6 @@ export const getSingleHelpCenterResponseFixtureWithTranslation: HelpCenter = {
             updated_datetime: '2022-02-22T15:23:55.843Z',
             banner_image_vertical_offset: 0,
             banner_text: 'Banner text',
-            chat_application_id: 0,
             chat_app_key: '',
             contact_info: {
                 email: {

@@ -3994,7 +3994,6 @@
                         "nullable": false,
                         "allOf": [{"$ref": "#/components/schemas/ExtraHTML"}]
                     },
-                    "chat_application_id": {"type": "number", "nullable": true},
                     "chat_app_key": {"type": "string", "nullable": true}
                 },
                 "required": [
@@ -4007,7 +4006,6 @@
                     "seo_meta",
                     "contact_info",
                     "extra_html",
-                    "chat_application_id",
                     "chat_app_key"
                 ]
             },
@@ -4410,7 +4408,6 @@
                             }
                         ]
                     },
-                    "chat_application_id": {"type": "number", "nullable": true},
                     "chat_app_key": {"type": "string", "nullable": true}
                 },
                 "required": ["locale", "seo_meta"]
@@ -4513,7 +4510,6 @@
                             }
                         ]
                     },
-                    "chat_application_id": {"type": "number", "nullable": true},
                     "chat_app_key": {"type": "string", "nullable": true},
                     "banner_text": {
                         "type": "string",

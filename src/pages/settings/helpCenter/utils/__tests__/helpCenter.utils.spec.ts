@@ -39,7 +39,6 @@ describe('getNewHelpCenterTranslation()', () => {
                 title: null,
                 description: null,
             },
-            chat_application_id: null,
             chat_app_key: null,
         })
     })

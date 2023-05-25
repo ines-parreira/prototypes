@@ -29,7 +29,6 @@ export const getHelpCenterTranslationsResponseFixture: Components.Schemas.HelpCe
                         description: '',
                     },
                 },
-                chat_application_id: null,
                 chat_app_key: null,
                 extra_html: {
                     extra_head_deactivated_datetime: null,
@@ -70,7 +69,6 @@ export const getHelpCenterTranslationsResponseFixture: Components.Schemas.HelpCe
                         description: '',
                     },
                 },
-                chat_application_id: null,
                 chat_app_key: null,
                 extra_html: {
                     extra_head_deactivated_datetime: '2022-02-04T14:20:23.000Z',
