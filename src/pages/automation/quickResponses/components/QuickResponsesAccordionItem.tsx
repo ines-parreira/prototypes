@@ -1,7 +1,5 @@
 import React, {MouseEvent} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -74,9 +72,6 @@ const QuickResponsesAccordionItem = ({
         !item.response_message_content.html &&
         item.response_message_content.attachments.isEmpty()
 
-    const isFlowsBetaEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.FlowsBeta]
-
     return (
         <>
             <SortableAccordionHeader>
@@ -96,9 +91,7 @@ const QuickResponsesAccordionItem = ({
                         target={toggleInputId}
                         trigger={['hover']}
                     >
-                        {isFlowsBetaEnabled
-                            ? `There are already ${MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} active quick responses and/or flows. Disable one of them to activate this one.`
-                            : `There are already ${MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} active quick responses. Disable one of them to activate this one.`}
+                        {`There are already ${MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} active quick responses and/or flows. Disable one of them to activate this one.`}
                     </Tooltip>
                 )}
                 <QuickResponseTitle

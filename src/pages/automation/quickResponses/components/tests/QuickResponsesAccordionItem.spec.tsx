@@ -176,7 +176,7 @@ describe('<QuickResponsesAccordionItem />', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'There are already 6 active quick responses. Disable one of them to activate this one.'
+                    'There are already 6 active quick responses and/or flows. Disable one of them to activate this one.'
                 )
             ).toBeVisible()
         })

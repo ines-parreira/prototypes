@@ -191,6 +191,18 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           <a
             class="link isNested"
             data-active-class-name="active"
+            href="/app/automation/shopify/gorgiastest/flows"
+          >
+            Flows
+            <div
+              class="badge"
+            >
+              BETA
+            </div>
+          </a>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
             href="/app/automation/shopify/gorgiastest/quick-responses"
           >
             Quick responses
@@ -248,6 +260,18 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               </span>
             </div>
           </div>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
+            href="/app/automation/bigcommerce/xb107iaz1n/flows"
+          >
+            Flows
+            <div
+              class="badge"
+            >
+              BETA
+            </div>
+          </a>
           <a
             class="link isNested"
             data-active-class-name="active"
@@ -501,6 +525,22 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           <a
             class="link isNested item"
             data-active-class-name="active"
+            href="/app/automation/flows"
+          >
+            <div
+              class="name"
+            >
+              Flows
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              lock
+            </i>
+          </a>
+          <a
+            class="link isNested item"
+            data-active-class-name="active"
             href="/app/automation/quick-responses"
           >
             <div
@@ -741,6 +781,22 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         <div
           class="mt-4"
         >
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/flows"
+          >
+            <div
+              class="name"
+            >
+              Flows
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              lock
+            </i>
+          </a>
           <a
             class="link item"
             data-active-class-name="active"
@@ -1021,6 +1077,18 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           <a
             class="link isNested"
             data-active-class-name="active"
+            href="/app/automation/shopify/gorgiastest/flows"
+          >
+            Flows
+            <div
+              class="badge"
+            >
+              BETA
+            </div>
+          </a>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
             href="/app/automation/shopify/gorgiastest/quick-responses"
           >
             Quick responses
@@ -1078,6 +1146,18 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               </span>
             </div>
           </div>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
+            href="/app/automation/bigcommerce/xb107iaz1n/flows"
+          >
+            Flows
+            <div
+              class="badge"
+            >
+              BETA
+            </div>
+          </a>
           <a
             class="link isNested"
             data-active-class-name="active"
@@ -1331,6 +1411,22 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           <a
             class="link isNested item"
             data-active-class-name="active"
+            href="/app/automation/flows"
+          >
+            <div
+              class="name"
+            >
+              Flows
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              lock
+            </i>
+          </a>
+          <a
+            class="link isNested item"
+            data-active-class-name="active"
             href="/app/automation/quick-responses"
           >
             <div
@@ -1571,6 +1667,22 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         <div
           class="mt-4"
         >
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/flows"
+          >
+            <div
+              class="name"
+            >
+              Flows
+            </div>
+            <i
+              class="material-icons md-2 icon"
+            >
+              lock
+            </i>
+          </a>
           <a
             class="link item"
             data-active-class-name="active"

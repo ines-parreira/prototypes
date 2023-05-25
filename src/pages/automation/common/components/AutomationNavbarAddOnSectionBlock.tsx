@@ -1,7 +1,5 @@
 import React from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getIconFromType} from 'state/integrations/helpers'
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
@@ -30,8 +28,6 @@ const AutomationNavbarAddOnSectionBlock = ({
     ...props
 }: Props) => {
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const isflowsBetaEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.FlowsBeta]
 
     const getIconSrc = () => {
         switch (shopType) {
@@ -55,15 +51,13 @@ const AutomationNavbarAddOnSectionBlock = ({
         >
             {hasAutomationAddOn ? (
                 <>
-                    {isflowsBetaEnabled && (
-                        <NavbarLink
-                            to={`/app/automation/${shopType}/${shopName}/flows`}
-                            isNested
-                        >
-                            Flows
-                            <Badge type={ColorType.Blue}>BETA</Badge>
-                        </NavbarLink>
-                    )}
+                    <NavbarLink
+                        to={`/app/automation/${shopType}/${shopName}/flows`}
+                        isNested
+                    >
+                        Flows
+                        <Badge type={ColorType.Blue}>BETA</Badge>
+                    </NavbarLink>
                     <NavbarLink
                         to={`/app/automation/${shopType}/${shopName}/quick-responses`}
                         isNested
@@ -73,17 +67,15 @@ const AutomationNavbarAddOnSectionBlock = ({
                 </>
             ) : (
                 <>
-                    {isflowsBetaEnabled && (
-                        <AutomationNavbarAddOnPaywallNavbarLink
-                            to="/app/automation/flows"
-                            onSubscribeToAutomationAddOnClick={
-                                onSubscribeToAutomationAddOnClick
-                            }
-                            isNested
-                        >
-                            Flows
-                        </AutomationNavbarAddOnPaywallNavbarLink>
-                    )}
+                    <AutomationNavbarAddOnPaywallNavbarLink
+                        to="/app/automation/flows"
+                        onSubscribeToAutomationAddOnClick={
+                            onSubscribeToAutomationAddOnClick
+                        }
+                        isNested
+                    >
+                        Flows
+                    </AutomationNavbarAddOnPaywallNavbarLink>
                     <AutomationNavbarAddOnPaywallNavbarLink
                         to="/app/automation/quick-responses"
                         onSubscribeToAutomationAddOnClick={

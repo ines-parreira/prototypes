@@ -22,8 +22,6 @@ type Props = {
 }
 
 const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
-    const isflowsBetaEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.FlowsBeta]
     const allowDifferentFlowsPerChannel =
         useFlags()[FeatureFlagKey.DifferentFlowsPerChannel]
     const applicationId = channel.value.meta.app_id!
@@ -96,7 +94,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
 
     return (
         <>
-            {isflowsBetaEnabled && !allowDifferentFlowsPerChannel && (
+            {!allowDifferentFlowsPerChannel && (
                 <ConnectedChannelFeatureToggle
                     name="Flows"
                     value={workflows.enabled}
@@ -107,7 +105,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                     }
                 />
             )}
-            {isflowsBetaEnabled && allowDifferentFlowsPerChannel && (
+            {allowDifferentFlowsPerChannel && (
                 <ConnectedChannelWorkflowsFeature
                     channelId={`chat-${applicationId}`}
                     entrypoints={workflows.entrypoints}

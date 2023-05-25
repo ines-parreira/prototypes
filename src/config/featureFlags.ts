@@ -33,7 +33,6 @@ export enum FeatureFlagKey {
     ChatLauncherCustomization = 'chat-launcher-customization',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
     DecoupleContactForm = 'decouple-contact-form',
-    FlowsBeta = 'flows-beta',
     SpotlightRecentItems = 'spotlight-recent-items',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ContinuousChatViewsPolling = 'continuous-chat-views-polling',
