@@ -1,13 +1,10 @@
 import {renderHook, act} from '@testing-library/react-hooks/dom'
 import {waitFor} from '@testing-library/react'
-import _noop from 'lodash/noop'
-import LD from 'launchdarkly-react-client-sdk'
 
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {DEBOUNCE_TIME, RecentItems} from 'hooks/useRecentItems/constants'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import {flushPromises} from 'utils/testing'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 const mockSetItem = jest.fn().mockResolvedValue(true)
 const mockObserveTableUnsubscribe = jest.fn()
@@ -43,27 +40,10 @@ describe('useRecentItems', () => {
                 unsubscribe: mockObserveTableUnsubscribe,
             })
         )
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.SpotlightRecentItems]: true,
-        }))
     })
 
     afterEach(() => {
         jest.useRealTimers()
-    })
-
-    it('should return dummy values if feature flag is disabled', async () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.SpotlightRecentItems]: false,
-        }))
-
-        const {result} = renderHook(() => useRecentItems(RecentItems.Tickets))
-        await waitFor(() => result.current)
-        expect(result.current).toEqual({
-            items: [],
-            isGettingItems: false,
-            setRecentItem: _noop,
-        })
     })
 
     it('should return loading state', async () => {

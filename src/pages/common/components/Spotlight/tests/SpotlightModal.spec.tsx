@@ -102,7 +102,6 @@ describe('<SpotlightModal/>', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ElasticsearchTicketSearch]: true,
             [FeatureFlagKey.ElasticsearchCustomerSearch]: true,
-            [FeatureFlagKey.SpotlightRecentItems]: true,
         }))
         mockServer = new MockAdapter(client)
         mockUseRecentItems.mockReturnValue({
@@ -839,19 +838,6 @@ describe('<SpotlightModal/>', () => {
             expect(getByText(componentName)).toBeInTheDocument()
         }
     )
-
-    it('should not return the no recent results message if feature flag is disabled', async () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ElasticsearchTicketSearch]: true,
-            [FeatureFlagKey.ElasticsearchCustomerSearch]: true,
-            [FeatureFlagKey.SpotlightRecentItems]: false,
-        }))
-        const {queryByText} = renderWithRouter(
-            <WrappedSpotlightModal {...minProps} />
-        )
-        await act(flushPromises)
-        expect(queryByText('No recent results')).toEqual(null)
-    })
 
     it.each([
         ['Tickets', ticket, 'SpotlightTicketRow', 'spotlight-ticket'],

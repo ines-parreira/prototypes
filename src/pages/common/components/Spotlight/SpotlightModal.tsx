@@ -100,9 +100,6 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const isESCustomerSearchEnabled =
         useFlags()[FeatureFlagKey.ElasticsearchCustomerSearch]
 
-    const areRecentItemsEnabled =
-        useFlags()[FeatureFlagKey.SpotlightRecentItems]
-
     const [searchQuery, setSearchQuery] = useState<string>()
     const [lastSearchQueries, setLastSearchQueries] = useState<{
         [Tabs.Tickets]: string
@@ -573,10 +570,6 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 (_isEmpty(recentCustomers) &&
                     searchItemsType === ViewType.CustomerList))
         ) {
-            if (!areRecentItemsEnabled) {
-                return null
-            }
-
             return (
                 <SpotlightNoResults
                     title="No recent results"
@@ -674,7 +667,6 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         handleHover,
         selectedIndex,
         hasSearched,
-        areRecentItemsEnabled,
         logRecentlyAccessedSegmentEvent,
     ])
 

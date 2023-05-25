@@ -2,13 +2,10 @@ import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {useAsyncFn, useEffectOnce} from 'react-use'
 import _debounce from 'lodash/debounce'
 import _isEmpty from 'lodash/isEmpty'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import _noop from 'lodash/noop'
 import _isEqual from 'lodash/isEqual'
 
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import {DEBOUNCE_TIME, RecentItems} from 'hooks/useRecentItems/constants'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 const MAX_RECENT_ITEMS = 30
 
@@ -16,7 +13,6 @@ const useRecentItems = <T extends {id: number}>(
     itemType: RecentItems,
     maxItems: number = MAX_RECENT_ITEMS
 ) => {
-    const isEnabled = useFlags()[FeatureFlagKey.SpotlightRecentItems]
     const previousItemRef = useRef<T>()
 
     const localForage = useMemo(
@@ -111,15 +107,12 @@ const useRecentItems = <T extends {id: number}>(
     }, [itemType, localForage, setRecentItems])
 
     return useMemo(
-        () =>
-            !isEnabled
-                ? {items: [], setRecentItem: _noop, isGettingItems: false}
-                : {
-                      items,
-                      setRecentItem,
-                      isGettingItems,
-                  },
-        [isEnabled, items, setRecentItem, isGettingItems]
+        () => ({
+            items,
+            setRecentItem,
+            isGettingItems,
+        }),
+        [items, setRecentItem, isGettingItems]
     )
 }
 
