@@ -4,9 +4,7 @@ import classnames from 'classnames'
 import useAppSelector from 'hooks/useAppSelector'
 import {ProductType} from 'models/billing/types'
 import {
-    getCheapestSMSPrice,
     getCurrentSMSProduct,
-    getCheapestVoicePrice,
     getCurrentVoiceProduct,
 } from 'state/billing/selectors'
 
@@ -19,8 +17,6 @@ import css from './AddOns.less'
 const AddOns = () => {
     const voiceProduct = useAppSelector(getCurrentVoiceProduct)
     const smsProduct = useAppSelector(getCurrentSMSProduct)
-    const cheapestVoicePrice = useAppSelector(getCheapestVoicePrice)
-    const cheapestSMSPrice = useAppSelector(getCheapestSMSPrice)
 
     return (
         <div className={css.wrapper}>
@@ -38,7 +34,7 @@ const AddOns = () => {
                         </>
                     }
                     pricingDetailsLink="https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#voice-tickets"
-                    headerPriceAmount={cheapestVoicePrice?.amount}
+                    headerPriceAmount={30}
                 />
                 <AddOnCard
                     name={ProductType.SMS}
@@ -51,7 +47,7 @@ const AddOns = () => {
                         </>
                     }
                     pricingDetailsLink="https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#sms-tickets"
-                    headerPriceAmount={cheapestSMSPrice?.amount}
+                    headerPriceAmount={20}
                 />
             </div>
         </div>

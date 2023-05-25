@@ -102,7 +102,7 @@ exports[`<AddOns /> should render the add ons for pay-as-you-go subscribers as i
               class="amount"
             >
               <b>
-                $175
+                $30
               </b>
                
               / 
@@ -177,7 +177,7 @@ exports[`<AddOns /> should render the add ons for pay-as-you-go subscribers as i
               class="amount"
             >
               <b>
-                $90
+                $20
               </b>
                
               / 
