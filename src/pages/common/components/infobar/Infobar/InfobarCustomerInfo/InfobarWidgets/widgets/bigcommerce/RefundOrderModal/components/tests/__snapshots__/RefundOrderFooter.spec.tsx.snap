@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RefundOrderFooter snapshot renders the initial disabled state 1`] = `
+<div>
+  <div
+    class="modalSectionSmall"
+  >
+    <p
+      class="modalSectionHeader"
+    >
+      Other
+    </p>
+    <label
+      class="label label"
+      for="refundReason"
+    >
+      Reason for refund
+    </label>
+    <div>
+      <textarea
+        aria-describedby="refundReason-caption"
+        class="textarea"
+        disabled=""
+        id="refundReason"
+        maxlength="1000"
+        name="refundReason"
+        rows="1"
+      />
+      <div
+        class="caption"
+        id="refundReason-caption"
+      >
+        Maximum length is 1000 characters.
+      </div>
+    </div>
+    <div
+      class="checkboxWrapper"
+    >
+      <label
+        class="label isDisabled label"
+        for="checkbox-2"
+      >
+        <input
+          class="input"
+          disabled=""
+          id="checkbox-2"
+          name="checkbox-2"
+          type="checkbox"
+        />
+        Mark order as Cancelled in BigCommerce
+      </label>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RefundOrderFooter snapshot renders the initial state 1`] = `
+<div>
+  <div
+    class="modalSectionSmall"
+  >
+    <p
+      class="modalSectionHeader"
+    >
+      Other
+    </p>
+    <label
+      class="label label"
+      for="refundReason"
+    >
+      Reason for refund
+    </label>
+    <div>
+      <textarea
+        aria-describedby="refundReason-caption"
+        class="textarea"
+        id="refundReason"
+        maxlength="1000"
+        name="refundReason"
+        rows="1"
+      />
+      <div
+        class="caption"
+        id="refundReason-caption"
+      >
+        Maximum length is 1000 characters.
+      </div>
+    </div>
+    <div
+      class="checkboxWrapper"
+    >
+      <label
+        class="label label"
+        for="checkbox-4"
+      >
+        <input
+          class="input"
+          id="checkbox-4"
+          name="checkbox-4"
+          type="checkbox"
+        />
+        Mark order as Cancelled in BigCommerce
+      </label>
+    </div>
+  </div>
+</div>
+`;

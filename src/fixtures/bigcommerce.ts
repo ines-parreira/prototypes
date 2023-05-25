@@ -14,6 +14,7 @@ import {
     BigCommerceBillingAddress,
     BigCommerceCustomCartLineItem,
     BigCommerceCustomProduct,
+    CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
 
 export const bigCommerceCustomerFixture = () => ({
@@ -765,7 +766,7 @@ export const bigCommerceOrderFixture = {
             product_id: 245,
             variant_id: 325,
             external_id: null,
-            is_refunded: false,
+            is_refunded: true,
             wrapping_id: 0,
             ebay_item_id: '',
             price_ex_tax: '78.0000',
@@ -913,7 +914,7 @@ export const bigCommerceOrderFixture = {
     discount_amount: '0.0000',
     external_source: null,
     is_email_opt_in: false,
-    refunded_amount: '0.0000',
+    refunded_amount: '10.0000',
     subtotal_ex_tax: '156.0000',
     tax_provider_id: 'BasicTaxProvider',
     credit_card_type: null,
@@ -935,7 +936,7 @@ export const bigCommerceOrderFixture = {
     },
     default_currency_id: 1,
     payment_provider_id: null,
-    store_credit_amount: '0.0000',
+    store_credit_amount: '7.0000',
     external_merchant_id: null,
     handling_cost_ex_tax: '0.0000',
     shipping_cost_ex_tax: '15.0000',
@@ -946,7 +947,7 @@ export const bigCommerceOrderFixture = {
     wrapping_cost_inc_tax: '0.0000',
     currency_exchange_rate: '1.0000000000',
     shipping_address_count: 1,
-    gift_certificate_amount: '0.0000',
+    gift_certificate_amount: '5.0000',
     handling_cost_tax_class_id: 2,
     shipping_cost_tax_class_id: 2,
     wrapping_cost_tax_class_id: 3,
@@ -963,3 +964,13 @@ export const bigCommerceCustomProductFixture: BigCommerceCustomProduct = {
     extended_list_price: 78,
     image_url: '',
 }
+
+export const bigCommerceCalculateOrderRefundDataResponseFixture: CalculateOrderRefundDataResponse =
+    {
+        order: bigCommerceOrderFixture,
+        order_level_refund_data: {
+            total_amount: 217.2,
+            refunded_amount: 10,
+            available_amount: 216.2,
+        },
+    }

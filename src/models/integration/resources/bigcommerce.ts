@@ -28,6 +28,9 @@ import {
     BigCommerceDuplicateOrderErrorResponse,
     BigCommerceAddressResponse,
     BigCommerceCustomAddress,
+    CalculateOrderRefundDataResponse,
+    CalculateOrderRefundDataErrorResponse,
+    CalculateOrderRefundDataNestedResponse,
 } from '../types'
 export type OptionSelection = {option_id: number; option_value: number}
 
@@ -833,6 +836,52 @@ export async function createCartFromOrder({
             }
         })
         .catch((error: AxiosError<BigCommerceDuplicateOrderErrorResponse>) => {
+            const {response} = error
+
+            if (response?.status === 429) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.rateLimitingError
+                )
+            }
+
+            throw new BigCommerceGeneralError(
+                BigCommerceGeneralErrorMessage.defaultError
+            )
+        })
+}
+
+export async function getBigCommerceOrderRefundData({
+    integrationId,
+    customerId,
+    orderId,
+}: {
+    integrationId: number
+    customerId: number
+    orderId: number
+}): Promise<CalculateOrderRefundDataResponse> {
+    const url = `/integrations/bigcommerce/order/${orderId}/refund/calculate/`
+
+    return await client
+        .get<CalculateOrderRefundDataNestedResponse>(url, {
+            params: {
+                integration_id: integrationId,
+                customer_id: customerId,
+            },
+        })
+        .then((response) => {
+            if (
+                !('data' in response.data) ||
+                !response.data?.data?.order?.id ||
+                !response.data?.data?.order_level_refund_data
+            ) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.defaultError
+                )
+            }
+
+            return response.data.data
+        })
+        .catch((error: AxiosError<CalculateOrderRefundDataErrorResponse>) => {
             const {response} = error
 
             if (response?.status === 429) {

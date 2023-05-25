@@ -367,6 +367,7 @@ export type BigCommerceUpsertConsignmentPayload =
 export enum BigCommerceActionType {
     CreateOrder = 'bigcommerceCreateOrder',
     DuplicateOrder = 'bigcommerceDuplicateOrder',
+    RefundOrder = 'bigcommerceRefundOrder',
 }
 
 export enum OrderStatusIDType {
@@ -392,6 +393,11 @@ export enum OrderPaymentMethodType {
     cash = 'Cash',
     test_payment_gateway = 'Test Payment Gateway',
     manual = 'Manual',
+}
+
+export type BigCommerceOrder = {
+    id: number
+    currency_code: string
 }
 
 // Errors
@@ -563,3 +569,50 @@ export type BigCommerceAddressResponse =
           address?: Maybe<BigCommerceCustomerAddress>
       }
     | BigCommerceCheckoutErrorResponse
+
+// BigCommerce Refund
+
+export enum BigCommerceRefundType {
+    IndividualItems = 'Individual items',
+    EntireOrder = 'Entire order',
+    CustomAmount = 'Custom amount',
+}
+
+export type OrderLevelRefundData = {
+    total_amount: number
+    refunded_amount: number
+    available_amount: number
+}
+
+export type CalculateOrderRefundDataResponse = {
+    order: Maybe<BigCommerceOrder>
+    order_level_refund_data: Maybe<OrderLevelRefundData>
+}
+
+export type CalculateOrderRefundDataErrorResponse = {
+    error?: {
+        data?: CalculateOrderRefundDataResponse
+        msg?: Maybe<string>
+    }
+}
+
+export type CalculateOrderRefundDataNestedResponse =
+    | {data?: CalculateOrderRefundDataResponse}
+    | CalculateOrderRefundDataErrorResponse
+
+export type BigCommerceRefundItemsPayload = {
+    items: Array<{
+        item_type: BigCommerceRefundableItemType
+        item_id: number
+        quantity?: Maybe<number>
+        amount?: Maybe<number>
+    }>
+}
+
+export enum BigCommerceRefundableItemType {
+    product = 'PRODUCT',
+    gift_wrapping = 'GIFT_WRAPPING',
+    shipping = 'SHIPPING',
+    handling = 'HANDLING',
+    order = 'ORDER',
+}

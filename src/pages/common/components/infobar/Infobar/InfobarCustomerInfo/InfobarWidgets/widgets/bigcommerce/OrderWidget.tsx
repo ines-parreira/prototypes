@@ -3,6 +3,7 @@ import {Map} from 'immutable'
 
 import copy from 'copy-to-clipboard'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
 import {humanizeString} from 'utils'
@@ -25,9 +26,12 @@ import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarC
 import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {BigCommerceActionType} from 'models/integration/types/index'
+import {FeatureFlagKey} from 'config/featureFlags'
 import css from './OrderWidget.less'
 import {CustomStaticField} from './CustomStaticField'
 import OrderModalRenderWrapper from './AddOrderModal/OrderModal'
+import RefundOrderModalRenderWrapper from './RefundOrderModal/RefundOrderModal'
+import {isOrderFullyRefunded} from './RefundOrderModal/utils'
 
 export default function OrderWidget() {
     return {
@@ -115,6 +119,8 @@ type AfterTitleProps = {
 export function AfterTitle({isEditing, source}: AfterTitleProps) {
     const dispatch = useAppDispatch()
     const {integrationId} = useContext(IntegrationContext)
+    const bigcommerceRefundOrderAccessFlags =
+        useFlags()[FeatureFlagKey.BigCommerceRefundOrder]
     const [draftOrderUrl, setDraftOrderUrl] = useState(
         source.get('draft_order_url') || ''
     )
@@ -136,41 +142,81 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
         order_id: (source.get('id') as number) || '',
     }
 
-    const actions: Array<InfobarAction> = [
-        {
-            key: 'duplicate',
-            options: [
-                {
-                    value: BigCommerceActionType.DuplicateOrder,
-                    label: 'Duplicate',
-                    parameters: [
-                        {name: 'bigcommerce_checkout_id', type: 'hidden'},
-                        {name: 'bigcommerce_order_payload', type: 'hidden'},
-                        {
-                            name: 'bigcommerce_draft_order_url',
-                            type: 'hidden',
-                        },
-                    ],
-                },
-            ],
-            title: 'Duplicate order',
-            child: (
-                <>
-                    <ButtonIconLabel icon="content_copy" /> Duplicate
-                </>
-            ),
-            modal: OrderModalRenderWrapper,
-            modalData: {
-                actionName: BigCommerceActionType.DuplicateOrder,
-                order: source,
-                customer: {
-                    id: source.get('customer_id'),
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-                    email: customer.get('email'),
+    const getActions = () => {
+        const actions: Array<InfobarAction> = [
+            {
+                key: 'duplicate',
+                options: [
+                    {
+                        value: BigCommerceActionType.DuplicateOrder,
+                        label: 'Duplicate',
+                        parameters: [
+                            {name: 'bigcommerce_checkout_id', type: 'hidden'},
+                            {name: 'bigcommerce_order_payload', type: 'hidden'},
+                            {
+                                name: 'bigcommerce_draft_order_url',
+                                type: 'hidden',
+                            },
+                        ],
+                    },
+                ],
+                title: 'Duplicate order',
+                child: (
+                    <>
+                        <ButtonIconLabel icon="content_copy" /> Duplicate
+                    </>
+                ),
+                modal: OrderModalRenderWrapper,
+                modalData: {
+                    actionName: BigCommerceActionType.DuplicateOrder,
+                    order: source,
+                    customer: {
+                        id: source.get('customer_id'),
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+                        email: customer.get('email'),
+                    },
                 },
             },
-        },
-    ]
+            {
+                key: 'refund',
+                options: [
+                    {
+                        value: BigCommerceActionType.RefundOrder,
+                        label: 'Refund',
+                        parameters: [
+                            {name: 'order_id', type: 'hidden'},
+                            {name: 'payload', type: 'hidden'},
+                        ],
+                    },
+                ],
+                title: 'Refund order',
+                child: (
+                    <>
+                        <ButtonIconLabel icon="attach_money" /> Refund
+                    </>
+                ),
+                modal: RefundOrderModalRenderWrapper,
+                modalData: {
+                    actionName: BigCommerceActionType.RefundOrder,
+                    order: source,
+                },
+            },
+        ]
+
+        const removed: string[] = []
+
+        if (
+            isOrderFullyRefunded(source) ||
+            !bigcommerceRefundOrderAccessFlags
+        ) {
+            removed.push('refund')
+        }
+
+        // remove removed actions from list of available actions
+        return actions.filter(
+            (action: InfobarAction) => !removed.includes(action.key)
+        )
+    }
 
     return (
         <>
@@ -237,7 +283,7 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                     </CustomStaticField>
                 </div>
             )}
-            <ActionButtonsGroup actions={actions} payload={orderPayload} />
+            <ActionButtonsGroup actions={getActions()} payload={orderPayload} />
             <StaticField label="Created">
                 <DatetimeLabel
                     key="created"
@@ -260,7 +306,7 @@ const statusColors: Record<string, ColorType> = {
     pending: ColorType.Warning,
     shipped: ColorType.Classic,
     partially_shipped: ColorType.Classic,
-    refunded: ColorType.Grey,
+    refunded: ColorType.LightWarning,
     cancelled: ColorType.Error,
     declined: ColorType.Error,
     awaiting_payment: ColorType.Warning,
@@ -270,7 +316,7 @@ const statusColors: Record<string, ColorType> = {
     awaiting_fulfillment: ColorType.Warning,
     manual_verification_required: ColorType.Warning,
     disputed: ColorType.Error,
-    partially_refunded: ColorType.Grey,
+    partially_refunded: ColorType.LightWarning,
 }
 
 type TitleWrapperProps = {

@@ -1,0 +1,593 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-4-desc"
+    aria-labelledby="modal-4-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog medium scrollableDialog"
+    >
+      <div
+        class="modalContent scrollableContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-4-title"
+            >
+              Refund Order #123
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="formBody"
+        >
+          <div
+            class="modalSection"
+          >
+            <p
+              class="modalSectionHeader"
+            >
+              Refund
+            </p>
+            <span
+              class="customAmountRefundInputFieldWrapper wrapper group horizontal"
+            >
+              <span
+                class="prefix"
+              >
+                €
+              </span>
+              <input
+                class="input isAlignedRight"
+                max="Infinity"
+                min="0"
+                required=""
+                step="0.01"
+                type="number"
+                value="0.00"
+              />
+              <span
+                class="suffix"
+              >
+                 
+              </span>
+            </span>
+            <p
+              class="caption"
+            />
+          </div>
+          <div
+            class="modalSection"
+          >
+            <p
+              class="modalSectionHeader"
+            >
+              Refund method
+            </p>
+          </div>
+          <div
+            class="modalSectionSmall"
+          >
+            <p
+              class="modalSectionHeader"
+            >
+              Other
+            </p>
+            <label
+              class="label label"
+              for="refundReason"
+            >
+              Reason for refund
+            </label>
+            <div>
+              <textarea
+                aria-describedby="refundReason-caption"
+                class="textarea"
+                id="refundReason"
+                maxlength="1000"
+                name="refundReason"
+                rows="1"
+              />
+              <div
+                class="caption"
+                id="refundReason-caption"
+              >
+                Maximum length is 1000 characters.
+              </div>
+            </div>
+            <div
+              class="checkboxWrapper"
+            >
+              <label
+                class="label label"
+                for="checkbox-6"
+              >
+                <input
+                  class="input"
+                  id="checkbox-6"
+                  name="checkbox-6"
+                  type="checkbox"
+                />
+                Mark order as Cancelled in BigCommerce
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="wrapper modalFooterWrapper"
+        >
+          <button
+            class="wrapper fill secondary medium"
+            tabindex="0"
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            class="wrapper fill primary medium isDisabled"
+            disabled=""
+            tabindex="0"
+            type="button"
+          >
+            Refund €0.00
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    aria-describedby="modal-7-desc"
+    aria-labelledby="modal-7-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog small"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-7-title"
+            >
+              Error
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper"
+          id="modal-7-desc"
+        >
+          An unexpected error occurred. Please try again later.
+        </div>
+        <div
+          class="wrapper wrapper"
+        >
+          <div
+            class="actions"
+          >
+            <div
+              class="childWrapper"
+            >
+              <button
+                class="wrapper fill primary medium"
+                type="button"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`RefundOrderModal should render Refund Order - OK 1`] = `
+<body>
+  <div>
+    
+  </div>
+  <div
+    aria-describedby="modal-1-desc"
+    aria-labelledby="modal-1-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog medium scrollableDialog"
+    >
+      <div
+        class="modalContent scrollableContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-1-title"
+            >
+              Refund Order #123
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="formBody"
+        >
+          <div
+            class="modalSection"
+          >
+            <p
+              class="modalSectionHeader"
+            >
+              Refund
+            </p>
+            <span
+              class="customAmountRefundInputFieldWrapper wrapper group horizontal"
+            >
+              <span
+                class="prefix"
+              >
+                €
+              </span>
+              <input
+                class="input isAlignedRight"
+                max="Infinity"
+                min="0"
+                required=""
+                step="0.01"
+                type="number"
+                value="0.00"
+              />
+              <span
+                class="suffix"
+              >
+                 
+              </span>
+            </span>
+            <p
+              class="caption"
+            >
+              Available for refund: €1,230,000.89
+            </p>
+          </div>
+          <div
+            class="modalSection"
+          >
+            <p
+              class="modalSectionHeader"
+            >
+              Refund method
+            </p>
+          </div>
+          <div
+            class="modalSectionSmall"
+          >
+            <p
+              class="modalSectionHeader"
+            >
+              Other
+            </p>
+            <label
+              class="label label"
+              for="refundReason"
+            >
+              Reason for refund
+            </label>
+            <div>
+              <textarea
+                aria-describedby="refundReason-caption"
+                class="textarea"
+                id="refundReason"
+                maxlength="1000"
+                name="refundReason"
+                rows="1"
+              />
+              <div
+                class="caption"
+                id="refundReason-caption"
+              >
+                Maximum length is 1000 characters.
+              </div>
+            </div>
+            <div
+              class="checkboxWrapper"
+            >
+              <label
+                class="label label"
+                for="checkbox-3"
+              >
+                <input
+                  class="input"
+                  id="checkbox-3"
+                  name="checkbox-3"
+                  type="checkbox"
+                />
+                Mark order as Cancelled in BigCommerce
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="wrapper modalFooterWrapper"
+        >
+          <button
+            class="wrapper fill secondary medium"
+            tabindex="0"
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            class="wrapper fill primary medium isDisabled"
+            disabled=""
+            tabindex="0"
+            type="button"
+          >
+            Refund €0.00
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR popup 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-8-desc"
+    aria-labelledby="modal-8-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog medium scrollableDialog"
+    >
+      <div
+        class="modalContent scrollableContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-8-title"
+            >
+              Refund Order #123
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="formBody"
+        >
+          <div
+            class="modalSection"
+          >
+            <p
+              class="modalSectionHeader"
+            >
+              Refund
+            </p>
+            <span
+              class="customAmountRefundInputFieldWrapper wrapper group horizontal"
+            >
+              <span
+                class="prefix"
+              >
+                €
+              </span>
+              <input
+                class="input isAlignedRight"
+                max="Infinity"
+                min="0"
+                required=""
+                step="0.01"
+                type="number"
+                value="0.00"
+              />
+              <span
+                class="suffix"
+              >
+                 
+              </span>
+            </span>
+            <p
+              class="caption"
+            />
+          </div>
+          <div
+            class="modalSection"
+          >
+            <p
+              class="modalSectionHeader"
+            >
+              Refund method
+            </p>
+          </div>
+          <div
+            class="modalSectionSmall"
+          >
+            <p
+              class="modalSectionHeader"
+            >
+              Other
+            </p>
+            <label
+              class="label label"
+              for="refundReason"
+            >
+              Reason for refund
+            </label>
+            <div>
+              <textarea
+                aria-describedby="refundReason-caption"
+                class="textarea"
+                id="refundReason"
+                maxlength="1000"
+                name="refundReason"
+                rows="1"
+              />
+              <div
+                class="caption"
+                id="refundReason-caption"
+              >
+                Maximum length is 1000 characters.
+              </div>
+            </div>
+            <div
+              class="checkboxWrapper"
+            >
+              <label
+                class="label label"
+                for="checkbox-10"
+              >
+                <input
+                  class="input"
+                  id="checkbox-10"
+                  name="checkbox-10"
+                  type="checkbox"
+                />
+                Mark order as Cancelled in BigCommerce
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="wrapper modalFooterWrapper"
+        >
+          <button
+            class="wrapper fill secondary medium"
+            tabindex="0"
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            class="wrapper fill primary medium isDisabled"
+            disabled=""
+            tabindex="0"
+            type="button"
+          >
+            Refund €0.00
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    aria-describedby="modal-11-desc"
+    aria-labelledby="modal-11-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog small"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-11-title"
+            >
+              Error
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="wrapper"
+          id="modal-11-desc"
+        >
+          The operation cannot be completed. You have too many queued requests at the moment. Please wait a moment and try again.
+        </div>
+        <div
+          class="wrapper wrapper"
+        >
+          <div
+            class="actions"
+          >
+            <div
+              class="childWrapper"
+            >
+              <button
+                class="wrapper fill primary medium"
+                type="button"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

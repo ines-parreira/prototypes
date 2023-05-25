@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CustomAmountRefundOrderModal snapshot renders the initial disabled state 1`] = `
+<div>
+  <div
+    class="modalSection"
+  >
+    <p
+      class="modalSectionHeader"
+    >
+      Refund
+    </p>
+    <span
+      class="customAmountRefundInputFieldWrapper disabled wrapper isDisabled group horizontal"
+    >
+      <span
+        class="prefix"
+      >
+        $
+      </span>
+      <input
+        class="input isAlignedRight isDisabled"
+        disabled=""
+        max="Infinity"
+        min="0"
+        required=""
+        step="0.01"
+        type="number"
+        value="0.00"
+      />
+      <span
+        class="suffix"
+      >
+         
+      </span>
+    </span>
+    <p
+      class="caption"
+    />
+  </div>
+</div>
+`;
+
+exports[`CustomAmountRefundOrderModal snapshot renders the initial state 1`] = `
+<div>
+  <div
+    class="modalSection"
+  >
+    <p
+      class="modalSectionHeader"
+    >
+      Refund
+    </p>
+    <span
+      class="customAmountRefundInputFieldWrapper wrapper group horizontal"
+    >
+      <span
+        class="prefix"
+      >
+        €
+      </span>
+      <input
+        class="input isAlignedRight"
+        max="Infinity"
+        min="0"
+        required=""
+        step="0.01"
+        type="number"
+        value="0.00"
+      />
+      <span
+        class="suffix"
+      >
+         
+      </span>
+    </span>
+    <p
+      class="caption"
+    >
+      Available for refund: €1,230,000.89
+    </p>
+  </div>
+</div>
+`;
