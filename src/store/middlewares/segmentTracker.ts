@@ -279,6 +279,7 @@ export enum SegmentEvent {
     GlobalSearchCustomerTabClick = 'customer-tab-click',
     RecentItemAccessed = 'recent-item-accessed',
     DraftTicket = 'draft-ticket',
+    InfobarFieldCopied = 'infobar-field-copied',
 }
 
 export enum StatViewLinkClickedStat {

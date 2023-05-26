@@ -279,9 +279,13 @@ export const Copy = ({
     onCopyMessage?: string
 }) => {
     const dispatch = useAppDispatch()
+    const currentAccount = useAppSelector(getCurrentAccountState)
 
     const copyContent = async (e: MouseEvent) => {
         e.stopPropagation()
+        logEvent(SegmentEvent.InfobarFieldCopied, {
+            account_domain: currentAccount.get('domain'),
+        })
         try {
             copy(value)
             await dispatch(

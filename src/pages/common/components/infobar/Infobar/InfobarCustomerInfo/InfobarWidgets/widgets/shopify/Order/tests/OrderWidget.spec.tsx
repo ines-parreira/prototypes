@@ -10,6 +10,7 @@ import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
 import {IntegrationType} from 'models/integration/constants'
 import {notify} from 'state/notifications/actions'
 import {EditionContext} from 'providers/infobar/EditionContext'
+import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import Order, {Copy} from '../OrderWidget'
 
 const mockedDispatch = jest.fn()
@@ -124,6 +125,10 @@ describe('<TitleWrapper/>', () => {
 
 jest.mock('copy-to-clipboard', () => jest.fn())
 const copyMock = copy as jest.MockedFunction<typeof copy>
+
+jest.mock('store/middlewares/segmentTracker')
+const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
+
 describe('<Copy/>', () => {
     const mockStore = configureMockStore()
     beforeEach(() => {
@@ -131,7 +136,7 @@ describe('<Copy/>', () => {
     })
 
     it('should copy on clipboard', () => {
-        const store = mockStore({})
+        const store = mockStore({currentAccount: fromJS({domain: 'domain'})})
         render(
             <Provider store={store}>
                 <Copy value="test" />
@@ -141,6 +146,10 @@ describe('<Copy/>', () => {
         expect(button).toBeVisible()
         fireEvent.click(button)
         expect(copyMock).toHaveBeenCalledWith('test')
+        expect(logEventMock).toHaveBeenLastCalledWith(
+            SegmentEvent.InfobarFieldCopied,
+            {account_domain: 'domain'}
+        )
     })
 
     it('should notify the user about the copy', () => {
