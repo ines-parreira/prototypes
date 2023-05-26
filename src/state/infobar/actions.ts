@@ -23,7 +23,7 @@ export const search =
             type: constants.SEARCH_CUSTOMERS_START,
         })
         return apiSearch<Customer>({
-            type: SearchType.UserProfile,
+            type: SearchType.CustomerProfile,
             query,
             cancelToken,
         }).then(

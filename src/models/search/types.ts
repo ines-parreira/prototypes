@@ -10,7 +10,6 @@ export enum SearchType {
     CustomerChannelEmail = 'customer_channel_email',
     CustomerChannelPhone = 'customer_channel_phone',
     CustomersByPhone = 'customers_by_phone',
-    UserProfile = 'user_profile',
     Integration = 'integration',
     UserChannelEmail = 'user_channel_email',
     UserChannelPhone = 'user_channel_phone',
