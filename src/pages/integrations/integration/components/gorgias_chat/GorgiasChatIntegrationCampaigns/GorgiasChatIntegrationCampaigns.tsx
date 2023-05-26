@@ -13,8 +13,11 @@ import PageHeader from 'pages/common/components/PageHeader'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import {IntegrationType} from 'models/integration/constants'
 import CampaignGenerator from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator/CampaignGenerator'
+
 import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
+
+import {CampaignChatHiddenWarning} from './components/CampaignChatHiddenWarning'
 
 import css from './GorgiasChatIntegrationCampaigns.less'
 
@@ -78,10 +81,12 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                 <GorgiasChatIntegrationHeader integration={integration} />
 
                 <Container fluid className={css.pageContainer}>
-                    <p>
+                    <span>
                         Use campaigns to prompt visitors of your website to
                         start chatting with your team.
-                    </p>
+                    </span>
+
+                    <CampaignChatHiddenWarning integration={integration} />
 
                     <CampaignGenerator
                         integration={integration}

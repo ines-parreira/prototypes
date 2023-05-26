@@ -62,6 +62,7 @@ export const CampaignGenerator = ({
 
     return (
         <Alert
+            className="mt-4"
             customActions={
                 <div className={css.actions}>
                     <Button

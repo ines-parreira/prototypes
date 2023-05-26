@@ -136,9 +136,9 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
     <div
       class="pageContainer container-fluid"
     >
-      <p>
+      <span>
         Use campaigns to prompt visitors of your website to start chatting with your team.
-      </p>
+      </span>
       <div>
         This integration doesn't have any campaigns yet.
       </div>
@@ -265,9 +265,9 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
     <div
       class="pageContainer container-fluid"
     >
-      <p>
+      <span>
         Use campaigns to prompt visitors of your website to start chatting with your team.
-      </p>
+      </span>
     </div>
     <table
       class="table-integrations mt-3 campaignsTable table table-hover"
