@@ -4,7 +4,9 @@ import {useHistory, useLocation} from 'react-router-dom'
 
 import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
 import {DragItemRequired, useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+import Tooltip from 'pages/common/components/Tooltip'
 
+import useId from 'hooks/useId'
 import css from './ReportOrderIssueScenarioItem.less'
 
 type Props = {
@@ -36,7 +38,7 @@ const ReportOrderIssueScenarioItem = ({
 }: Props) => {
     const history = useHistory()
     const {pathname} = useLocation()
-
+    const orderIssueIconId = 'order-issue-icon' + useId()
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD<DragItem>(
         {id, type: TARGET_TYPE, position},
         [TARGET_TYPE],
@@ -47,7 +49,11 @@ const ReportOrderIssueScenarioItem = ({
     const handleClick = () => {
         history.push(`${pathname}/${position}`)
     }
-
+    const isResponseNotConfiguredForAny = item.reasons.some(
+        (reason) =>
+            !reason.action?.responseMessageContent.html &&
+            !reason.action?.responseMessageContent.text
+    )
     return (
         <tr
             className={css.container}
@@ -74,6 +80,28 @@ const ReportOrderIssueScenarioItem = ({
             </td>
             <td className={css.title}>{item.title}</td>
             <td className={css.description}>{item.description}</td>
+            <td className={css.orderIssueIcon}>
+                {isResponseNotConfiguredForAny && (
+                    <>
+                        <Tooltip
+                            aria-label="Tooltip for response not configured"
+                            placement="top-start"
+                            target={orderIssueIconId}
+                            trigger={['hover']}
+                        >
+                            Responses are not configured for all issue options
+                            in this scenario.
+                        </Tooltip>
+                        <i
+                            aria-label="Icon for response not configured"
+                            id={orderIssueIconId}
+                            className={'material-icons'}
+                        >
+                            error
+                        </i>
+                    </>
+                )}
+            </td>
             <td className={css.arrowRight}>
                 <i className="material-icons md-2">keyboard_arrow_right</i>
             </td>
