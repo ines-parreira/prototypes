@@ -93,7 +93,9 @@ describe('<QuickResponsesView />', () => {
             </Provider>
         )
 
-        expect(screen.queryByText('How To Set Up Quick Responses')).toBeNull()
+        expect(
+            screen.queryByText('How To Set Up Quick Response Flows')
+        ).toBeNull()
     })
 
     it('should not allow to save without changes', () => {
@@ -285,7 +287,9 @@ describe('<QuickResponsesView />', () => {
             </Provider>
         )
 
-        const addQuickResponseButton = screen.getByText('Add quick response')
+        const addQuickResponseButton = screen.getByText(
+            'Add quick response flow'
+        )
 
         act(() => {
             fireEvent.click(addQuickResponseButton)

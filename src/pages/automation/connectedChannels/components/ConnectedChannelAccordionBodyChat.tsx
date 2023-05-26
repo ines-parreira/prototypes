@@ -122,7 +122,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
             )}
 
             <ConnectedChannelFeatureToggle
-                name="Quick responses"
+                name="Quick response flows"
                 value={quickResponses.enabled}
                 onChange={updateSettings('quickResponses')}
                 disabled={isUpdatePending || !hasAutomationAddOn}
@@ -131,7 +131,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
 
             {isOrderManagementAvailable && (
                 <ConnectedChannelFeatureToggle
-                    name="Order management"
+                    name="Order management flows"
                     value={orderManagement.enabled}
                     onChange={updateSettings('orderManagement')}
                     disabled={isUpdatePending}

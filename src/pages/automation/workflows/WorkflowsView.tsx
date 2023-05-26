@@ -149,7 +149,7 @@ export default function WorkflowsView({
                                         You have reached the maximum number of
                                         enabled flows. Disable a flow or a{' '}
                                         <Link to={quickResponsesUrl}>
-                                            quick response
+                                            quick response flow
                                         </Link>{' '}
                                         in order to enable this flow.
                                     </Tooltip>
@@ -186,7 +186,7 @@ export default function WorkflowsView({
     return (
         <div className="full-width overflow-auto">
             <div className={css.pageHeaderContainer}>
-                <PageHeader title="Flows">
+                <PageHeader title="Flow builder">
                     {hasWorkflowsEntrypoints && (
                         <div className={css.headerContainer}>
                             <Button

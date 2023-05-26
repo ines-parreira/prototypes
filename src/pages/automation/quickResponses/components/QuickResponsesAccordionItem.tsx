@@ -91,7 +91,9 @@ const QuickResponsesAccordionItem = ({
                         target={toggleInputId}
                         trigger={['hover']}
                     >
-                        {`There are already ${MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} active quick responses and/or flows. Disable one of them to activate this one.`}
+                        There are already {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}{' '}
+                        active quick response flows and/or flows. Disable one of
+                        them to activate this one.
                     </Tooltip>
                 )}
                 <QuickResponseTitle

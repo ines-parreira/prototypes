@@ -29,7 +29,7 @@ const WorkflowTemplatesView = ({
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to={workflowsUrl}>Flows</Link>
+                                <Link to={workflowsUrl}>Flow builder</Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
                                 Flow Templates

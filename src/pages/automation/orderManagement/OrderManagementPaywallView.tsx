@@ -6,7 +6,7 @@ import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automat
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {assetsUrl} from 'utils'
 
-const TITLE = 'Order management'
+const TITLE = 'Order management flows'
 
 const OrderManagementPaywallView = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =

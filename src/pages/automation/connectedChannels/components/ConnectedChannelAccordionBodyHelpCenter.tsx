@@ -58,7 +58,7 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
 
     return (
         <ConnectedChannelFeatureToggle
-            name="Order management"
+            name="Order management flows"
             value={channel.value.self_service_deactivated_datetime === null}
             disabled={updatingHelpCenter || !hasAutomationAddOn}
             onChange={updateHelpCenter}

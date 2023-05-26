@@ -121,7 +121,7 @@ const CancelOrderFlowView = () => {
                             <Link
                                 to={`/app/automation/shopify/${shopName}/order-management`}
                             >
-                                Order management
+                                Order management flows
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>Cancel order</BreadcrumbItem>

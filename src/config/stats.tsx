@@ -1453,36 +1453,6 @@ export const stats = toImmutable<
             },
         ],
     },
-    [SELF_SERVICE_OVERVIEW_V2]: {
-        style: 'key-metrics',
-        api_resource_name: SELF_SERVICE_OVERVIEW_V2,
-        metrics: [
-            {
-                name: 'total_self_service_interaction_count',
-                label: 'Total Self-service interactions',
-                tooltip:
-                    'Total number of Self-service interactions started by customers.',
-            },
-            {
-                name: 'self_service_automation_rate',
-                label: 'Self-service automation rate',
-                tooltip:
-                    'The number of interactions resolved by Self-service, divided by all Self-service sessions.',
-            },
-            {
-                name: 'automated_self_service_interaction_count',
-                label: 'Automated Self-service interactions',
-                tooltip:
-                    'Number of Self-service sessions automated by Self-service through the Track Order flow, Quick Response, or Article Recommendation.',
-            },
-            {
-                name: 'not_automated_self_service_interaction_count',
-                label: 'Served by an agent after Self-service',
-                tooltip:
-                    'Number of Self-service interactions that resulted in a chat ticket for an agent to handle.',
-            },
-        ],
-    },
     [AUTOMATION_ADD_ON_OVERVIEW]: {
         style: 'key-metrics',
         api_resource_name: SELF_SERVICE_OVERVIEW_V2,
@@ -1502,7 +1472,7 @@ export const stats = toImmutable<
                 name: 'automated_self_service_interaction_count',
                 label: 'Automated Add-on interaction',
                 tooltip:
-                    'Number of interactions automated by Quick responses, Order management flows, or Article recommendation.',
+                    'Number of interactions automated by Flows, Quick response flows, Order management flows, or Article recommendation.',
             },
             {
                 name: 'not_automated_self_service_interaction_count',
@@ -1518,7 +1488,7 @@ export const stats = toImmutable<
         downloadable: true,
         lines: {
             quick_responses: {
-                label: 'Quick response',
+                label: 'Quick response flow',
                 backgroundColor: '#1D786B',
                 borderColor: '#1D786B',
                 borderWidth: 1,
@@ -1652,8 +1622,11 @@ export const stats = toImmutable<
         },
         axisHelpers: {
             'Automation rate':
-                'Number of interactions resolved by Quick Response divided by the total number of times a user views the Quick Response.',
+                'Number of interactions resolved by Quick Response Flow divided by the total number of times a user views the Quick Response Flow.',
+            // TODO: deprecated by AUTEN-463
             'Served by an agent after quick response':
+                'If a customer is not satisfied with the response provided or if there is no response configured for a flow, a ticket is created.',
+            'Served by an agent after quick response flow':
                 'If a customer is not satisfied with the response provided or if there is no response configured for a flow, a ticket is created.',
         },
         callbacks: {

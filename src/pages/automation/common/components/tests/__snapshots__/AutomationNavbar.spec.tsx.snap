@@ -193,7 +193,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             data-active-class-name="active"
             href="/app/automation/shopify/gorgiastest/flows"
           >
-            Flows
+            Flow builder
             <div
               class="badge"
             >
@@ -205,14 +205,14 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             data-active-class-name="active"
             href="/app/automation/shopify/gorgiastest/quick-responses"
           >
-            Quick responses
+            Quick response flows
           </a>
           <a
             class="link isNested"
             data-active-class-name="active"
             href="/app/automation/shopify/gorgiastest/order-management"
           >
-            Order management
+            Order management flows
           </a>
           <a
             class="link isNested"
@@ -265,7 +265,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             data-active-class-name="active"
             href="/app/automation/bigcommerce/xb107iaz1n/flows"
           >
-            Flows
+            Flow builder
             <div
               class="badge"
             >
@@ -277,7 +277,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             data-active-class-name="active"
             href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
           >
-            Quick responses
+            Quick response flows
           </a>
           <a
             class="link isNested"
@@ -530,7 +530,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             <div
               class="name"
             >
-              Flows
+              Flow builder
             </div>
             <i
               class="material-icons md-2 icon"
@@ -546,7 +546,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             <div
               class="name"
             >
-              Quick responses
+              Quick response flows
             </div>
             <i
               class="material-icons md-2 icon"
@@ -559,7 +559,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             data-active-class-name="active"
             href="/app/automation/shopify/gorgiastest/order-management"
           >
-            Order management
+            Order management flows
           </a>
           <a
             class="link isNested item"
@@ -789,7 +789,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             <div
               class="name"
             >
-              Flows
+              Flow builder
             </div>
             <i
               class="material-icons md-2 icon"
@@ -805,7 +805,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             <div
               class="name"
             >
-              Quick responses
+              Quick response flows
             </div>
             <i
               class="material-icons md-2 icon"
@@ -821,7 +821,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             <div
               class="name"
             >
-              Order management
+              Order management flows
             </div>
             <i
               class="material-icons md-2 icon"
@@ -1079,7 +1079,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             data-active-class-name="active"
             href="/app/automation/shopify/gorgiastest/flows"
           >
-            Flows
+            Flow builder
             <div
               class="badge"
             >
@@ -1091,14 +1091,14 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             data-active-class-name="active"
             href="/app/automation/shopify/gorgiastest/quick-responses"
           >
-            Quick responses
+            Quick response flows
           </a>
           <a
             class="link isNested"
             data-active-class-name="active"
             href="/app/automation/shopify/gorgiastest/order-management"
           >
-            Order management
+            Order management flows
           </a>
           <a
             class="link isNested"
@@ -1151,7 +1151,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             data-active-class-name="active"
             href="/app/automation/bigcommerce/xb107iaz1n/flows"
           >
-            Flows
+            Flow builder
             <div
               class="badge"
             >
@@ -1163,7 +1163,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             data-active-class-name="active"
             href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
           >
-            Quick responses
+            Quick response flows
           </a>
           <a
             class="link isNested"
@@ -1416,7 +1416,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             <div
               class="name"
             >
-              Flows
+              Flow builder
             </div>
             <i
               class="material-icons md-2 icon"
@@ -1432,7 +1432,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             <div
               class="name"
             >
-              Quick responses
+              Quick response flows
             </div>
             <i
               class="material-icons md-2 icon"
@@ -1445,7 +1445,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             data-active-class-name="active"
             href="/app/automation/shopify/gorgiastest/order-management"
           >
-            Order management
+            Order management flows
           </a>
           <a
             class="link isNested item"
@@ -1675,7 +1675,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             <div
               class="name"
             >
-              Flows
+              Flow builder
             </div>
             <i
               class="material-icons md-2 icon"
@@ -1691,7 +1691,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             <div
               class="name"
             >
-              Quick responses
+              Quick response flows
             </div>
             <i
               class="material-icons md-2 icon"
@@ -1707,7 +1707,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             <div
               class="name"
             >
-              Order management
+              Order management flows
             </div>
             <i
               class="material-icons md-2 icon"

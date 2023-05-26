@@ -55,14 +55,14 @@ const AutomationNavbarAddOnSectionBlock = ({
                         to={`/app/automation/${shopType}/${shopName}/flows`}
                         isNested
                     >
-                        Flows
+                        Flow builder
                         <Badge type={ColorType.Blue}>BETA</Badge>
                     </NavbarLink>
                     <NavbarLink
                         to={`/app/automation/${shopType}/${shopName}/quick-responses`}
                         isNested
                     >
-                        Quick responses
+                        Quick response flows
                     </NavbarLink>
                 </>
             ) : (
@@ -74,7 +74,7 @@ const AutomationNavbarAddOnSectionBlock = ({
                         }
                         isNested
                     >
-                        Flows
+                        Flow builder
                     </AutomationNavbarAddOnPaywallNavbarLink>
                     <AutomationNavbarAddOnPaywallNavbarLink
                         to="/app/automation/quick-responses"
@@ -83,7 +83,7 @@ const AutomationNavbarAddOnSectionBlock = ({
                         }
                         isNested
                     >
-                        Quick responses
+                        Quick response flows
                     </AutomationNavbarAddOnPaywallNavbarLink>
                 </>
             )}
@@ -93,7 +93,7 @@ const AutomationNavbarAddOnSectionBlock = ({
                         to={`/app/automation/shopify/${shopName}/order-management`}
                         isNested
                     >
-                        Order management
+                        Order management flows
                     </NavbarLink>
                 </>
             )}

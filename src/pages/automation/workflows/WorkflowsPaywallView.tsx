@@ -6,7 +6,7 @@ import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automat
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {assetsUrl} from 'utils'
 
-const TITLE = 'Flows'
+const TITLE = 'Flow builder'
 
 const WorkflowsPaywallView = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =

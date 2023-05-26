@@ -387,7 +387,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                     class="circle mr-2"
                     style="background-color: rgb(29, 120, 107);"
                   />
-                  Quick response
+                  Quick response flow
                 </div>
                 <div
                   class="data"
@@ -700,7 +700,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           <h5
             class="mb-0 d-flex header"
           >
-            Quick response performance
+            Quick response flows performance
             <span>
               <i
                 class="material-icons ml-2 helpIcon"
@@ -1811,7 +1811,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
                     class="circle mr-2"
                     style="background-color: rgb(29, 120, 107);"
                   />
-                  Quick response
+                  Quick response flow
                 </div>
                 <div
                   class="data"
@@ -1940,7 +1940,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           <h5
             class="mb-0 d-flex header"
           >
-            Quick response performance
+            Quick response flows performance
             <span>
               <i
                 class="material-icons ml-2 helpIcon"
@@ -1958,7 +1958,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             class="previewImageContainer"
           >
             <img
-              alt="Quick response feature preview"
+              alt="Quick response flows feature preview"
               src="/assets/img/presentationals/quick-response-preview.png"
               width="246"
             />
@@ -1974,13 +1974,13 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="description"
             >
-              Enable and display up to 6 custom Quick Responses to provide customers with automated responses to common questions.
+              Enable and display up to 6 custom Quick Response Flows to provide customers with automated responses to common questions.
             </div>
             <button
               class="wrapper fill primary medium"
               type="button"
             >
-              Go to quick responses
+              Go to quick response flows
             </button>
           </div>
         </div>
@@ -2088,7 +2088,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               class="wrapper fill primary medium"
               type="button"
             >
-              Go to Order Management
+              Go to Order Management Flows
             </button>
           </div>
         </div>
@@ -2128,13 +2128,13 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="description"
             >
-              Enable and customize these flows in Order Management.
+              Enable and customize these flows in Order Management Flows.
             </div>
             <button
               class="wrapper fill primary medium"
               type="button"
             >
-              Go to Order Management
+              Go to Order Management Flows
             </button>
           </div>
         </div>

@@ -192,7 +192,7 @@ const QuickResponsesView = () => {
 
     return (
         <div className="full-width">
-            <PageHeader title="Quick responses" />
+            <PageHeader title="Quick response flows" />
             <Container
                 fluid
                 className={classnames({
@@ -224,7 +224,7 @@ const QuickResponsesView = () => {
                                     <i className="material-icons mr-2">
                                         menu_book
                                     </i>
-                                    How To Set Up Quick Responses
+                                    How To Set Up Quick Response Flows
                                 </a>
                             </div>
 
@@ -250,7 +250,7 @@ const QuickResponsesView = () => {
                                 isDisabled={hasError}
                             >
                                 <i className="material-icons md-2 mr-2">add</i>
-                                Add quick response
+                                Add quick response flow
                             </Button>
 
                             <div

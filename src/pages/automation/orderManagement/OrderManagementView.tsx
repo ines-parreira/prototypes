@@ -127,7 +127,7 @@ const OrderManagementView = () => {
 
     return (
         <div className="full-width">
-            <PageHeader title="Order management" />
+            <PageHeader title="Order management flows" />
             <Container
                 fluid
                 className={classnames({

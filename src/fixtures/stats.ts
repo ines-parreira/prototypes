@@ -1893,7 +1893,7 @@ export const selfServiceVolumePerFlowNoData: Stat<TwoDimensionalChart> = {
 
 export const selfServiceQuickResponsePerformance: Stat<TwoDimensionalChart> = {
     data: {
-        label: 'Quick response performance',
+        label: 'Quick response flows performance',
         data: {
             axes: {
                 x: [
@@ -1945,7 +1945,7 @@ export const selfServiceQuickResponsePerformance: Stat<TwoDimensionalChart> = {
 export const selfServiceQuickResponsePerformanceNoData: Stat<TwoDimensionalChart> =
     {
         data: {
-            label: 'Quick response performance',
+            label: 'Quick response flows performance',
             data: {
                 axes: {
                     x: [

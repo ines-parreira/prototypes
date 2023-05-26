@@ -35,7 +35,7 @@ const ReportOrderIssueFlowView = () => {
                             <Link
                                 to={`/app/automation/shopify/${shopName}/order-management`}
                             >
-                                Order management
+                                Order management flows
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>

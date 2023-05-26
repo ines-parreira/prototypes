@@ -359,13 +359,13 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 quickResponseDisabled ? (
                                     <SelfServiceFeaturePreview
                                         title="Automate up to 14% of interactions with quick response flows"
-                                        description="Enable and display up to 6 custom Quick Responses to provide customers with automated responses to common questions."
-                                        buttonText="Go to quick responses"
+                                        description="Enable and display up to 6 custom Quick Response Flows to provide customers with automated responses to common questions."
+                                        buttonText="Go to quick response flows"
                                         buttonRedirectUrl="/app/automation"
                                         imageUrl={assetsUrl(
                                             '/img/presentationals/quick-response-preview.png'
                                         )}
-                                        imageAltText="Quick response feature preview"
+                                        imageAltText="Quick response flows feature preview"
                                     />
                                 ) : (
                                     <TableStat
@@ -473,7 +473,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                     <SelfServiceFeaturePreview
                                         title="Monitor order issues with the report issue flow"
                                         description="Monitor order issues with the report issue flow"
-                                        buttonText="Go to Order Management"
+                                        buttonText="Go to Order Management Flows"
                                         buttonRedirectUrl="/app/automation"
                                         imageUrl={assetsUrl(
                                             '/img/presentationals/report-issue-preview.png'
@@ -513,8 +513,8 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 reportIssueDisabled ? (
                                     <SelfServiceFeaturePreview
                                         title="Gain product insights by enabling the report issue and return flows"
-                                        description="Enable and customize these flows in Order Management."
-                                        buttonText="Go to Order Management"
+                                        description="Enable and customize these flows in Order Management Flows."
+                                        buttonText="Go to Order Management Flows"
                                         buttonRedirectUrl="/app/automation"
                                         imageUrl={assetsUrl(
                                             '/img/presentationals/return-order-preview.png'

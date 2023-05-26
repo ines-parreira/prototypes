@@ -6,7 +6,7 @@ import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automat
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {assetsUrl} from 'utils'
 
-const TITLE = 'Quick responses'
+const TITLE = 'Quick response flows'
 
 const QuickResponsesPaywallView = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -16,7 +16,7 @@ const QuickResponsesPaywallView = () => {
         <Paywall
             pageHeader={TITLE}
             header="Automate up to 25% of interactions with advanced automation features"
-            description="Provide customers with automated responses to common questions with quick responses."
+            description="Provide customers with automated responses to common questions with quick response flows."
             previewImage={assetsUrl(
                 '/img/paywalls/screens/quick-responses.png'
             )}

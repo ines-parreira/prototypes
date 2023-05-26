@@ -77,8 +77,8 @@ const WorkflowItem = ({
                 >
                     You have reached the maximum number of enabled flows in this
                     channel. Disable a flow or{' '}
-                    <Link to={quickResponsesUrl}>quick response</Link> in order
-                    to enable this flow.
+                    <Link to={quickResponsesUrl}>quick response flow</Link> in
+                    order to enable this flow.
                 </Tooltip>
             )}
         </div>

@@ -1,36 +1,34 @@
 import React, {useState} from 'react'
 
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
-import {slugify} from 'utils'
 
 import AutomationNavbarAddOnPaywallNavbarLink from './AutomationNavbarAddOnPaywallNavbarLink'
 
 const PAYWALL_ITEMS = [
-    'Flows',
-    'Quick responses',
-    'Order management',
-    'Article recommendation',
-]
+    {name: 'Flow builder', slug: 'flows'},
+    {name: 'Quick response flows', slug: 'quick-responses'},
+    {name: 'Order management flows', slug: 'order-management'},
+    {name: 'Article recommendation', slug: 'article-recommendation'},
+] as const
 
 const AutomationNavbarAddOnPaywallView = () => {
     const [
         isAutomationSubscriptionModalOpen,
         setIsAutomationSubscriptionModalOpen,
     ] = useState(false)
-    const paywallItems = PAYWALL_ITEMS
 
     return (
         <>
             <div className="mt-4">
-                {paywallItems.map((paywallItem) => (
+                {PAYWALL_ITEMS.map((paywallItem) => (
                     <AutomationNavbarAddOnPaywallNavbarLink
-                        key={paywallItem}
-                        to={`/app/automation/${slugify(paywallItem)}`}
+                        key={paywallItem.name}
+                        to={`/app/automation/${paywallItem.slug}`}
                         onSubscribeToAutomationAddOnClick={() => {
                             setIsAutomationSubscriptionModalOpen(true)
                         }}
                     >
-                        {paywallItem}
+                        {paywallItem.name}
                     </AutomationNavbarAddOnPaywallNavbarLink>
                 ))}
             </div>
