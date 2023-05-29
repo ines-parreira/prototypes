@@ -19,13 +19,9 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 jest.mock(
     '../TrendBadge',
     () =>
-        ({color, children, direction}: ComponentProps<typeof TrendBadge>) => {
+        ({color, children}: ComponentProps<typeof TrendBadge>) => {
             return (
-                <div
-                    data-testid="trend-badge"
-                    data-color={color}
-                    data-direction={direction}
-                >
+                <div data-testid="trend-badge" data-color={color}>
                     {children}
                 </div>
             )
@@ -51,7 +47,9 @@ describe('TrendMetricCard', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         formatMetricValueMock.mockReturnValue('formatted-metric-value')
-        formatMetricTrendMock.mockReturnValue('formatted-metric-trend')
+        formatMetricTrendMock.mockReturnValue({
+            formattedTrend: 'formatted-metric-trend',
+        })
     })
 
     it('should render the trend metric card', () => {
@@ -115,6 +113,10 @@ describe('TrendMetricCard', () => {
             flatTrendColor
         ) => {
             it(`should render ${uptrendColor} color TrendBadge when trend is up`, () => {
+                formatMetricTrendMock.mockReturnValue({
+                    formattedTrend: 'formatted-metric-trend',
+                    sign: 1,
+                })
                 const renderFn = jest.fn()
                 const {getByTestId} = render(
                     <TrendMetricCard
@@ -135,6 +137,10 @@ describe('TrendMetricCard', () => {
             })
 
             it(`should render ${downtrendColor} color TrendBadge when trend is down`, () => {
+                formatMetricTrendMock.mockReturnValue({
+                    formattedTrend: 'formatted-metric-trend',
+                    sign: -1,
+                })
                 const renderFn = jest.fn()
                 const {getByTestId} = render(
                     <TrendMetricCard
@@ -180,6 +186,17 @@ describe('TrendMetricCard', () => {
         const {queryByTestId} = render(
             <TrendMetricCard {...minProps} data={{prevValue: null, value: 3}} />
         )
+        expect(queryByTestId('trend-badge')).not.toBeInTheDocument()
+    })
+
+    it('should not render trend badge when formattedTrend is null', () => {
+        formatMetricTrendMock.mockReturnValue({
+            formattedTrend: null,
+        })
+        const {queryByTestId} = render(
+            <TrendMetricCard {...minProps} data={{prevValue: 0, value: 3}} />
+        )
+
         expect(queryByTestId('trend-badge')).not.toBeInTheDocument()
     })
 

@@ -23,7 +23,6 @@ exports[`TrendMetricCard should render the trend metric card 1`] = `
     >
       <div
         data-color="neutral"
-        data-direction="down"
         data-testid="trend-badge"
       >
         formatted-metric-trend

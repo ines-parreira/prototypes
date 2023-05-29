@@ -332,7 +332,7 @@ export default function SupportPerformanceOverview() {
                             hint="Number of unique tickets closed during the period (and that did not reopen)"
                             data={closedTicketsTrend.data}
                             trendFormat="percent"
-                            interpretAs="more-is-better"
+                            interpretAs="neutral"
                         >
                             {({formattedValue, formattedPrevValue}) => (
                                 <BigNumberMetric from={formattedPrevValue}>
@@ -347,6 +347,7 @@ export default function SupportPerformanceOverview() {
                             hint="Number of new tickets to handle"
                             data={ticketsCreatedTrend.data}
                             trendFormat="percent"
+                            interpretAs="neutral"
                         >
                             {({formattedValue, formattedPrevValue}) => (
                                 <BigNumberMetric from={formattedPrevValue}>

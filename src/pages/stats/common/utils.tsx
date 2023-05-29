@@ -202,24 +202,35 @@ export const formatMetricTrend = (
     format: MetricTrendFormat
 ) => {
     const diff = value - prevValue
-    const sign = diff > 0 ? '+' : diff < 0 ? '-' : ''
     const absDiff = Math.abs(diff)
-    let formattedDiff: string
+    let formattedDiff: string | null
 
     if (format === 'duration') {
         formattedDiff = formatDuration(absDiff, 1)
     } else if (format === 'percent') {
-        formattedDiff = new Intl.NumberFormat(DEFAULT_LOCALE, {
-            style: 'percent',
-            maximumFractionDigits: 0,
-        }).format(absDiff / prevValue || 0)
+        const value = absDiff / prevValue || 0
+        formattedDiff = Number.isFinite(value)
+            ? new Intl.NumberFormat(DEFAULT_LOCALE, {
+                  style: 'percent',
+                  maximumFractionDigits: 0,
+              }).format(value)
+            : null
     } else {
         formattedDiff = Intl.NumberFormat(DEFAULT_LOCALE, {
             maximumFractionDigits: 1,
         }).format(absDiff)
     }
 
-    return sign + formattedDiff
+    if (formattedDiff === null || parseFloat(formattedDiff) === 0) {
+        return {
+            formattedTrend: formattedDiff,
+        }
+    }
+
+    return {
+        formattedTrend: formattedDiff,
+        sign: diff > 0 ? 1 : diff < 0 ? -1 : 0,
+    }
 }
 
 export const SHORT_FORMAT = 'MMM Do, YYYY'

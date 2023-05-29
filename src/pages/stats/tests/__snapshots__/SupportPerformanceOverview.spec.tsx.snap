@@ -931,11 +931,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     <div
                       class="trend positive"
                     >
-                      <i
-                        class="material-icons trendIcon"
-                      >
-                        trending_up
-                      </i>
                       +333
                     </div>
                   </div>
@@ -980,11 +975,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     <div
                       class="trend negative"
                     >
-                      <i
-                        class="material-icons trendIcon"
-                      >
-                        trending_up
-                      </i>
                       +5m
                     </div>
                   </div>
@@ -1023,11 +1013,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     <div
                       class="trend negative"
                     >
-                      <i
-                        class="material-icons trendIcon"
-                      >
-                        trending_up
-                      </i>
                       +5m
                     </div>
                   </div>
@@ -1066,11 +1051,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     <div
                       class="trend negative"
                     >
-                      <i
-                        class="material-icons trendIcon"
-                      >
-                        trending_up
-                      </i>
                       +333
                     </div>
                   </div>
@@ -1126,11 +1106,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     <div
                       class="trend neutral"
                     >
-                      <i
-                        class="material-icons trendIcon"
-                      >
-                        trending_up
-                      </i>
                       +271%
                     </div>
                   </div>
@@ -1173,13 +1148,8 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     class="trendBadge"
                   >
                     <div
-                      class="trend positive"
+                      class="trend neutral"
                     >
-                      <i
-                        class="material-icons trendIcon"
-                      >
-                        trending_up
-                      </i>
                       +271%
                     </div>
                   </div>
@@ -1224,11 +1194,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     <div
                       class="trend neutral"
                     >
-                      <i
-                        class="material-icons trendIcon"
-                      >
-                        trending_up
-                      </i>
                       +271%
                     </div>
                   </div>
@@ -1273,11 +1238,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     <div
                       class="trend positive"
                     >
-                      <i
-                        class="material-icons trendIcon"
-                      >
-                        trending_up
-                      </i>
                       +271%
                     </div>
                   </div>
@@ -1322,11 +1282,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     <div
                       class="trend neutral"
                     >
-                      <i
-                        class="material-icons trendIcon"
-                      >
-                        trending_up
-                      </i>
                       +271%
                     </div>
                   </div>

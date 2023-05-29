@@ -22,7 +22,6 @@ const Template: Story<ComponentProps<typeof TrendBadge>> = (props) => (
 const defaultProps: ComponentProps<typeof TrendBadge> = {
     className: '',
     children: '5%',
-    direction: 'up',
     color: 'positive',
 }
 

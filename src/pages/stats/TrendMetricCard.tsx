@@ -40,10 +40,6 @@ export default function TrendMetricCard({
     children,
 }: Props) {
     const {prevValue, value} = data || {}
-    const diff =
-        data?.prevValue != null && data?.value != null
-            ? data.value - data.prevValue
-            : 0
 
     const formattedValue = useMemo(() => {
         return value != null
@@ -57,17 +53,17 @@ export default function TrendMetricCard({
             : notAvailableText
     }, [valueFormat, prevValue, notAvailableText])
 
-    const formattedTrend = useMemo(() => {
+    const {formattedTrend, sign = 0} = useMemo(() => {
         return value != null && prevValue != null
             ? formatMetricTrend(value, prevValue, trendFormat)
-            : notAvailableText
+            : {formattedTrend: notAvailableText}
     }, [trendFormat, value, prevValue, notAvailableText])
 
     let trendColor: ComponentProps<typeof TrendBadge>['color'] = 'neutral'
     if (interpretAs === 'more-is-better') {
-        trendColor = diff > 0 ? 'positive' : diff < 0 ? 'negative' : 'neutral'
+        trendColor = sign > 0 ? 'positive' : sign < 0 ? 'negative' : 'neutral'
     } else if (interpretAs === 'less-is-better') {
-        trendColor = diff > 0 ? 'negative' : diff < 0 ? 'positive' : 'neutral'
+        trendColor = sign > 0 ? 'negative' : sign < 0 ? 'positive' : 'neutral'
     }
 
     return (
@@ -78,13 +74,10 @@ export default function TrendMetricCard({
             trendBadge={
                 !data ? (
                     <Skeleton height={18} width={50} />
-                ) : data.value != null && data.prevValue != null ? (
-                    <TrendBadge
-                        color={trendColor}
-                        direction={diff > 0 ? 'up' : diff < 0 ? 'down' : 'flat'}
-                    >
-                        {formattedTrend}
-                    </TrendBadge>
+                ) : value != null && prevValue != null && formattedTrend ? (
+                    <TrendBadge color={trendColor}>{`${
+                        sign > 0 ? '+' : sign < 0 ? '-' : ''
+                    }${formattedTrend}`}</TrendBadge>
                 ) : null
             }
         >

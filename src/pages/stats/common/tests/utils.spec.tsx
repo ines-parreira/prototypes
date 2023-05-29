@@ -233,7 +233,10 @@ describe('stats components utils', () => {
 
     describe('formatMetricTrend', () => {
         it('should format trend up to one decimal when format is "decimal"', () => {
-            expect(formatMetricTrend(13.14, 10, 'decimal')).toBe('+3.1')
+            expect(formatMetricTrend(13.14, 10, 'decimal')).toMatchObject({
+                formattedTrend: '3.1',
+                sign: 1,
+            })
         })
 
         it('should format trend as duration with precision one when format is "duration"', () => {
@@ -245,19 +248,41 @@ describe('stats components utils', () => {
                     21 * minuteInSeconds + 6,
                     'duration'
                 )
-            ).toBe('+17m')
+            ).toMatchObject({
+                formattedTrend: '17m',
+                sign: 1,
+            })
         })
 
         it('should format trend as percent with no decimal places when format is "percent"', () => {
-            expect(formatMetricTrend(2.3, 1.2, 'percent')).toBe('+92%')
+            expect(formatMetricTrend(2.3, 1.2, 'percent')).toMatchObject({
+                formattedTrend: '92%',
+                sign: 1,
+            })
         })
 
-        it('should format trend as +∞ when current value is non-zero and prev value is zero and the format is percent', () => {
-            expect(formatMetricTrend(2.3, 0, 'percent')).toBe('+∞%')
+        it('should return null when current value is non-zero and prev value is zero and the format is percent', () => {
+            expect(formatMetricTrend(2.3, 0, 'percent')).toMatchObject({
+                formattedTrend: null,
+            })
         })
 
         it('should format trend as 0 when current value is zero and prev value is zero and the format is percent', () => {
-            expect(formatMetricTrend(0, 0, 'percent')).toBe('0%')
+            expect(formatMetricTrend(0, 0, 'percent')).toMatchObject({
+                formattedTrend: '0%',
+            })
+        })
+        it('should not return +0% when the result is to the degree of thousands and the format is percent', () => {
+            expect(formatMetricTrend(1001, 1000, 'percent')).not.toMatchObject({
+                formattedTrend: '0%',
+                sign: 1,
+            })
+        })
+        it('should not return -0% when the result is to the degree of thousands and the format is percent', () => {
+            expect(formatMetricTrend(1000, 1001, 'percent')).not.toMatchObject({
+                formattedTrend: '0%',
+                sign: -1,
+            })
         })
     })
 
