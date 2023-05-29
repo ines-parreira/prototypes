@@ -10,15 +10,12 @@ type Props = {
     backToHref: string
 }
 
-export const CampaignDetailsHeader = ({
-    backToHref,
-    isUpdate = false,
-}: Props): JSX.Element => {
+export const CampaignDetailsHeader = ({backToHref}: Props): JSX.Element => {
     return (
         <div className={css.backWrapper}>
             <Link to={backToHref} className="d-flex">
-                <img src={ArrowBackwardIcon} alt="Back to campaigns" />
-                {isUpdate ? 'Edit Campaign' : 'New Campaign'}
+                <img src={ArrowBackwardIcon} alt="Back to Campaigns list" />
+                Back to Campaigns list
             </Link>
         </div>
     )

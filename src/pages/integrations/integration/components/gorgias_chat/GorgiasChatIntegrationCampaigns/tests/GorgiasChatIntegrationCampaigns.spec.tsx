@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {screen, fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -43,6 +43,8 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
         integration: fromJS({}),
         currentUser: fromJS({}),
         updateCampaign: jest.fn(),
+        createCampaign: jest.fn(),
+        deleteCampaign: jest.fn(),
     }
 
     describe('render()', () => {
@@ -214,6 +216,140 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
             expect(localStorage.getItem(CAMPAIGN_INFO_BOX_STORAGE_KEY)).toBe(
                 'true'
             )
+        })
+
+        it('should display the duplicate buttons correctly', () => {
+            const {container, getAllByTestId} = render(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationCampaigns
+                        {...minProps}
+                        integration={fromJS({
+                            id: 118,
+                            type: 'gorgias_chat',
+                            name: 'My new chat',
+                            meta: {
+                                campaigns: [
+                                    {
+                                        id: '156a4d-fg68h40-sd6f4',
+                                        name: 'Super campaign',
+                                        deactivated_datetime: null,
+                                    },
+                                    {
+                                        id: 'not-so-good-campaign-d8f9-fds486-sf78',
+                                        name: 'Not so good campaign',
+                                        deactivated_datetime:
+                                            '2017-10-06T17:17:56.565Z',
+                                    },
+                                ],
+                            },
+                        })}
+                    />
+                </Provider>
+            )
+
+            const duplicateButtons = getAllByTestId('duplicate-icon-button')
+            expect(duplicateButtons.length).toBe(2)
+            expect(container).toMatchSnapshot()
+        })
+
+        it('should display the delete buttons correctly', () => {
+            const {container, getAllByTestId} = render(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationCampaigns
+                        {...minProps}
+                        integration={fromJS({
+                            id: 118,
+                            type: 'gorgias_chat',
+                            name: 'My new chat',
+                            meta: {
+                                campaigns: [
+                                    {
+                                        id: '156a4d-fg68h40-sd6f4',
+                                        name: 'Super campaign',
+                                        deactivated_datetime: null,
+                                    },
+                                    {
+                                        id: 'not-so-good-campaign-d8f9-fds486-sf78',
+                                        name: 'Not so good campaign',
+                                        deactivated_datetime:
+                                            '2017-10-06T17:17:56.565Z',
+                                    },
+                                ],
+                            },
+                        })}
+                    />
+                </Provider>
+            )
+
+            const duplicateButtons = getAllByTestId('delete-icon-button')
+            expect(duplicateButtons.length).toBe(2)
+            expect(container).toMatchSnapshot()
+        })
+
+        it('should call the duplicate callback', async () => {
+            const {getByTestId} = render(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationCampaignsComponent
+                        {...minProps}
+                        integration={fromJS({
+                            id: 118,
+                            type: 'gorgias_chat',
+                            name: 'My new chat',
+                            meta: {
+                                campaigns: [
+                                    {
+                                        id: '156a4d-fg68h40-sd6f4',
+                                        name: 'Super campaign',
+                                        deactivated_datetime: null,
+                                    },
+                                ],
+                            },
+                        })}
+                    />
+                </Provider>
+            )
+
+            fireEvent.click(getByTestId('duplicate-icon-button'))
+
+            await waitFor(() => {
+                expect(minProps.createCampaign).toHaveBeenCalled()
+            })
+        })
+
+        it('should call the delete callback', async () => {
+            const {getByTestId} = render(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationCampaignsComponent
+                        {...minProps}
+                        integration={fromJS({
+                            id: 118,
+                            type: 'gorgias_chat',
+                            name: 'My new chat',
+                            meta: {
+                                campaigns: [
+                                    {
+                                        id: '156a4d-fg68h40-sd6f4',
+                                        name: 'Super campaign',
+                                        deactivated_datetime: null,
+                                    },
+                                ],
+                            },
+                        })}
+                    />
+                </Provider>
+            )
+
+            fireEvent.click(getByTestId('delete-icon-button'))
+
+            await waitFor(() => {
+                screen.getByText(`Are you sure?`)
+            })
+
+            fireEvent.click(screen.getByText('Confirm'))
+
+            await waitFor(() => {
+                expect(minProps.deleteCampaign).toHaveBeenCalled()
+            })
         })
     })
 })

@@ -9,24 +9,15 @@ describe('<CampaignDetailsHeader />', () => {
             <CampaignDetailsHeader backToHref="/back-to-campaigns" />
         )
 
-        expect(getByText('New Campaign').getAttribute('to')).toEqual(
+        expect(getByText('Back to Campaigns list').getAttribute('to')).toEqual(
             '/back-to-campaigns'
         )
     })
 
-    describe('Header is for a new campaign', () => {
-        it('renders the "New Campaign" title', () => {
+    describe('Header button shows back text', () => {
+        it('renders the "Back to Campaigns list" title', () => {
             const {getByText} = render(<CampaignDetailsHeader backToHref="/" />)
-            getByText('New Campaign')
-        })
-    })
-
-    describe('Header is to update campaign', () => {
-        it('renders the "Edit Campaign" title', () => {
-            const {getByText} = render(
-                <CampaignDetailsHeader isUpdate backToHref="/" />
-            )
-            getByText('Edit Campaign')
+            getByText('Back to Campaigns list')
         })
     })
 })

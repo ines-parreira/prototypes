@@ -6,13 +6,18 @@ import moment from 'moment'
 import {Breadcrumb, BreadcrumbItem, Container, Table} from 'reactstrap'
 import classnames from 'classnames'
 
-import {updateCampaign} from 'state/campaigns/actions'
+import {
+    createCampaign,
+    deleteCampaign,
+    updateCampaign,
+} from 'state/campaigns/actions'
 import Button from 'pages/common/components/button/Button'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import PageHeader from 'pages/common/components/PageHeader'
-import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
+import IconButton from 'pages/common/components/button/IconButton'
 import {IntegrationType} from 'models/integration/constants'
 import CampaignGenerator from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/CampaignGenerator/CampaignGenerator'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
@@ -38,6 +43,28 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
         }
 
         void updateCampaign(form, integration)
+    }
+
+    handleDuplicateCampaign = async (campaign: Map<any, any>) => {
+        const {createCampaign, integration} = this.props
+        await createCampaign(
+            fromJS({
+                ...campaign.toJS(),
+                id: '',
+                name: `${campaign.get('name') as string} (copy)`,
+                deactivated_datetime: new Date().toISOString(),
+                message: {
+                    text: ' ',
+                    html: ' ',
+                },
+            }),
+            integration
+        )
+    }
+
+    handleDeleteCampaign = async (campaign: Map<any, any>) => {
+        const {deleteCampaign, integration} = this.props
+        await deleteCampaign(fromJS(campaign), integration)
     }
 
     render() {
@@ -148,7 +175,68 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                                             </Link>
                                         </td>
                                         <td className="smallest align-middle">
-                                            <ForwardIcon href={editLink} />
+                                            <IconButton
+                                                className={classnames('mr-1')}
+                                                data-testid="duplicate-icon-button"
+                                                fillStyle="ghost"
+                                                intent="secondary"
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    void this.handleDuplicateCampaign(
+                                                        campaign
+                                                    )
+                                                }}
+                                                title="Duplicate campaign"
+                                            >
+                                                file_copy
+                                            </IconButton>
+                                            <ConfirmationPopover
+                                                buttonProps={{
+                                                    intent: 'destructive',
+                                                }}
+                                                id={`delete-campaign-${
+                                                    campaign.get('id') as string
+                                                }`}
+                                                content={
+                                                    <>
+                                                        You are about to delete{' '}
+                                                        <b>
+                                                            {
+                                                                campaign.get(
+                                                                    'name'
+                                                                ) as string
+                                                            }
+                                                        </b>{' '}
+                                                        campaign.
+                                                    </>
+                                                }
+                                                onConfirm={() => {
+                                                    return this.handleDeleteCampaign(
+                                                        campaign
+                                                    )
+                                                }}
+                                            >
+                                                {({
+                                                    uid,
+                                                    onDisplayConfirmation,
+                                                }) => (
+                                                    <IconButton
+                                                        className={classnames(
+                                                            'mr-1'
+                                                        )}
+                                                        onClick={
+                                                            onDisplayConfirmation
+                                                        }
+                                                        fillStyle="ghost"
+                                                        intent="destructive"
+                                                        title="Delete campaign"
+                                                        id={uid}
+                                                        data-testid="delete-icon-button"
+                                                    >
+                                                        delete
+                                                    </IconButton>
+                                                )}
+                                            </ConfirmationPopover>
                                         </td>
                                     </tr>
                                 )
@@ -162,6 +250,8 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
 }
 
 const connector = connect(null, {
+    createCampaign,
+    deleteCampaign,
     updateCampaign,
 })
 
