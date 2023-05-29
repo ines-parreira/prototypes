@@ -9,6 +9,7 @@ import {
     textToHTML,
     trimHTML,
     unescapeQuoteEntities,
+    removeLinksFromHtml,
 } from '../html'
 
 describe('html util', () => {
@@ -379,6 +380,30 @@ describe('html util', () => {
             ],
         ])('should return text in html', (html, trimmedHTML) => {
             expect(trimHTML(html)).toBe(trimmedHTML)
+        })
+    })
+
+    describe('removeLinksFromHtml', () => {
+        it('should remove links from HTML', () => {
+            const input_html =
+                'Hello world! This is a <a href="https://example.com">link</a>.'
+            const expected = 'Hello world! This is a link.'
+
+            expect(removeLinksFromHtml(input_html)).toEqual(expected)
+        })
+
+        it('should handle empty HTML', () => {
+            const input_html = ''
+            const expected = ''
+
+            expect(removeLinksFromHtml(input_html)).toEqual(expected)
+        })
+
+        it('should handle HTML with no links', () => {
+            const input_html = 'Hello world! <b>this is not a link</b>.'
+            const expected = 'Hello world! <b>this is not a link</b>.'
+
+            expect(removeLinksFromHtml(input_html)).toEqual(expected)
         })
     })
 })

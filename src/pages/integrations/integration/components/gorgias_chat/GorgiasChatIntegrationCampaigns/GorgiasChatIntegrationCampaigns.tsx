@@ -6,6 +6,8 @@ import moment from 'moment'
 import {Breadcrumb, BreadcrumbItem, Container, Table} from 'reactstrap'
 import classnames from 'classnames'
 
+import {removeLinksFromHtml} from 'utils/html'
+
 import {
     createCampaign,
     deleteCampaign,
@@ -54,8 +56,11 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                 name: `${campaign.get('name') as string} (copy)`,
                 deactivated_datetime: new Date().toISOString(),
                 message: {
-                    text: ' ',
-                    html: ' ',
+                    text: campaign.getIn(['message', 'text']) ?? '',
+                    html:
+                        removeLinksFromHtml(
+                            campaign.getIn(['message', 'html'])
+                        ) ?? '',
                 },
             }),
             integration

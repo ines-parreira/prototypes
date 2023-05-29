@@ -266,3 +266,23 @@ export function trimHTML(html: string): string {
 
     return body.innerHTML
 }
+
+/**
+ * Replaces all link elements with their inner text
+ *
+ * @param html
+ */
+export const removeLinksFromHtml = (html = '') => {
+    const doc = parseHtml(html)
+
+    const linkElements = doc.querySelectorAll('a')
+    linkElements.forEach((linkElement) => {
+        const parentNode = linkElement.parentNode
+        if (parentNode) {
+            const linkText = doc.createTextNode(linkElement.textContent || '')
+            parentNode.replaceChild(linkText, linkElement)
+        }
+    })
+
+    return doc.body.innerHTML
+}
