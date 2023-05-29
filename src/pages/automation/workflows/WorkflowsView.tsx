@@ -206,8 +206,8 @@ export default function WorkflowsView({
                 <Container fluid className={css.pageContainer}>
                     <div className={css.pageContainerHeadline}>
                         <div className={css.descriptionContainer}>
-                            <div>
-                                <div className={css.description}>
+                            <div className={css.description}>
+                                <div className={css.descriptionText}>
                                     Create and edit flows to automate multi-step
                                     interactions.
                                 </div>
