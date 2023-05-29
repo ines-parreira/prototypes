@@ -12,6 +12,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import Loader from 'pages/common/components/Loader/Loader'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Alert from 'pages/common/components/Alert/Alert'
+import Video from 'pages/common/components/Video/Video'
 
 import CreateWorkflowFooter from './components/CreateWorkflowFooter'
 import DeleteWorkflowAction from './components/DeleteWorkflowAction'
@@ -232,11 +233,10 @@ export default function WorkflowsView({
                                     </Alert>
                                 )}
                             </div>
-                            {/*TODO: uncomment once video for flows is ready*/}
-                            {/*<Video*/}
-                            {/*    youtubeId="HFylY2x3T_Y"*/}
-                            {/*    legend="Working with flows"*/}
-                            {/*/>*/}
+                            <Video
+                                youtubeId="yQ9Rj0k9UiM"
+                                legend="Working with flows"
+                            />
                         </div>
                     </div>
                     {hasWorkflowsEntrypoints ? (
