@@ -97,10 +97,7 @@ function WorkflowEditorViewWrapped({
             return
         }
 
-        if (
-            !workflowEntrypointContext.hasExistingEntrypoints &&
-            isNewWorkflow
-        ) {
+        if (isNewWorkflow) {
             notifyMerchant({
                 message:
                     'Flow successfully created. Select the desired channel to enable and arrange flows.',

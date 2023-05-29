@@ -13,7 +13,6 @@ type WorkflowEntrypointContext = {
     isDirty: boolean
     isFetchPending: boolean
     isSavePending: boolean
-    hasExistingEntrypoints: boolean
     handleValidate: () => Maybe<string>
     handleSave: () => Promise<void> | void
     handleDiscard: () => void
@@ -130,9 +129,6 @@ export function useWorkflowEntrypoint(
         isDirty,
         isFetchPending: !selfServiceConfiguration || isFetchPending,
         isSavePending: isUpdatePending,
-        hasExistingEntrypoints: Boolean(
-            selfServiceConfiguration?.workflows_entrypoints?.length
-        ),
         handleValidate,
         handleSave,
         handleDiscard,
