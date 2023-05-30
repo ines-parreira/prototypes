@@ -116,11 +116,6 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
     const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpCenterPayload>(
         {
             ...initialFormState,
-            email_integration: {
-                email: defaultEmailIntegration?.meta.address,
-                id: defaultEmailIntegration?.id,
-            },
-            // FIXME: Clean up backward compatibility after migration #2566
             contact_form: {
                 card_enabled: true,
                 helpdesk_integration_email:
@@ -187,11 +182,6 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
             if (selectedIntegration) {
                 setNewHelpCenter((prev) => ({
                     ...prev,
-                    email_integration: {
-                        email: selectedIntegration.meta.address,
-                        id: selectedIntegration.id,
-                    },
-                    // FIXME: Clean up backward compatibility after migration #2566
                     contact_form: {
                         card_enabled: true,
                         helpdesk_integration_email:
@@ -433,8 +423,6 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                             id="contactForm"
                             placeholder="Select an email integration"
                             value={
-                                newHelpCenter?.email_integration?.id ||
-                                // FIXME: Clean up backward compatibility after migration #2566
                                 newHelpCenter.contact_form
                                     ?.helpdesk_integration_id
                             }

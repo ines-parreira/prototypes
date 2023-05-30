@@ -6,7 +6,7 @@ import {initialState as uiState} from 'state/ui/contactForm/reducer'
 import {initialState as contactFormInitialState} from 'state/entities/contactForm/reducer'
 
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {getCurrentContactForm, getContactFormById} from '../selectors'
+import {getCurrentContactForm} from '../selectors'
 
 describe('Entities/Contact Form', () => {
     describe('getCurrentContactForm', () => {
@@ -38,39 +38,6 @@ describe('Entities/Contact Form', () => {
             expect(getCurrentContactForm(dataStore as StoreState)).toEqual(
                 ContactFormFixture
             )
-        })
-    })
-
-    describe('getContactFormById', () => {
-        const CONTACT_FORM_ID = 1
-
-        it('returns null if the contact form with the given id does not exist', () => {
-            const store: Partial<StoreState> = {
-                entities: {contactForm: contactFormInitialState} as any,
-                ui: {contactForm: uiState} as any,
-            }
-            expect(
-                getContactFormById(CONTACT_FORM_ID)(store as StoreState)
-            ).toEqual(null)
-        })
-
-        it('returns the right contact form by id', () => {
-            const dataStore: Partial<StoreState> = {
-                entities: {
-                    contactForm: {
-                        contactForms: {
-                            contactFormById: {
-                                [CONTACT_FORM_ID]: ContactFormFixture,
-                            },
-                        },
-                    },
-                } as any,
-                ui: {contactForm: uiState} as any,
-            }
-
-            expect(
-                getContactFormById(CONTACT_FORM_ID)(dataStore as StoreState)
-            ).toEqual(ContactFormFixture)
         })
     })
 })

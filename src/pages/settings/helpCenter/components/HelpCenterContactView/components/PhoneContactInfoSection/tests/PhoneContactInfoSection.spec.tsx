@@ -3,11 +3,9 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import _keyBy from 'lodash/keyBy'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import PhoneContactInfoSection from '../PhoneContactInfoSection'
 import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import {HelpCenterTranslationProvider} from '../../../../../providers/HelpCenterTranslation'
@@ -23,11 +21,6 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
 
 const defaultState: Partial<RootState> = {
     entities: {
-        contactForm: {
-            contactForms: {
-                contactFormById: _keyBy([ContactFormFixture], 'id'),
-            },
-        },
         helpCenter: {
             helpCenters: {
                 helpCentersById: {
@@ -59,16 +52,6 @@ const mockedListGoogleFonts = jest.fn().mockResolvedValue({
         {family: 'Adriana', category: 'serif'},
         {family: 'Tambourin', category: 'serif'},
     ],
-})
-
-jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
-    return {
-        useContactFormApi: () => ({
-            isReady: true,
-            isLoading: false,
-            getContactFormById: jest.fn(),
-        }),
-    }
 })
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {

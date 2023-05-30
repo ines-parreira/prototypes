@@ -35,21 +35,8 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
 
-jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
-    return {
-        useContactFormApi: () => ({
-            isReady: true,
-            isLoading: false,
-            getContactFormById: jest.fn(),
-        }),
-    }
-})
-
 const defaultState: Partial<RootState> = {
     entities: {
-        contactForm: {
-            contactForms: {},
-        },
         helpCenter: {
             helpCenters: {
                 helpCentersById: {

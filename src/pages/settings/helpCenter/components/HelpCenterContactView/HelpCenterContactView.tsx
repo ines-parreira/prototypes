@@ -22,7 +22,7 @@ const HelpCenterContactView: React.FC = () => {
             isDirty={isDirty}
             onSaveChanges={updateHelpCenter}
         >
-            <ContactFormInfoSection />
+            <ContactFormInfoSection helpCenter={helpCenter} />
             <ChatApplication />
             <PhoneContactInfoSection />
             <FooterActions />
