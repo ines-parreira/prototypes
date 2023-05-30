@@ -1013,11 +1013,6 @@ declare namespace Components {
     }
     export interface CreateContactFormDto {
       /**
-       * Help center id that is serving this contact form
-       * example:
-       */
-      help_center_id?: number | null;
-      /**
        * Name of the Contact Form
        * example:
        * My Contact Form
@@ -1173,6 +1168,24 @@ declare namespace Components {
       };
       source?: "manual" | "automation";
       gaid?: string | null; // GOOGLE_ANALYTICS_ID_REGEXP
+      /**
+       * Email integration used to receive this contact form inquiries
+       * example:
+       * {
+       *   "id": 1,
+       *   "email": "jonh@example.com"
+       * }
+       */
+      email_integration?: {
+        /**
+         * Identifier
+         */
+        id: number;
+        /**
+         * Email value
+         */
+        email: string;
+      } | null;
       account_id?: number;
     }
     export interface CreateNavigationLinkDto {
@@ -1486,6 +1499,7 @@ declare namespace Components {
         custom_footer_deactivated_datetime: string | null; // date-time
       };
       chat_app_key: string | null;
+      contact_form_id?: number | null;
     }
     export interface HelpCenterTranslationSeoMeta {
       title: string | null;
@@ -1907,11 +1921,6 @@ declare namespace Components {
     }
     export interface UpdateContactFormDto {
       /**
-       * Help center id that is serving this contact form
-       * example:
-       */
-      help_center_id?: number | null;
-      /**
        * Name of the Contact Form
        * example:
        * My Contact Form
@@ -2107,6 +2116,24 @@ declare namespace Components {
         };
       };
       gaid?: string | null; // GOOGLE_ANALYTICS_ID_REGEXP
+      /**
+       * Email integration used to receive this contact form inquiries
+       * example:
+       * {
+       *   "id": 1,
+       *   "email": "jonh@example.com"
+       * }
+       */
+      email_integration?: {
+        /**
+         * Identifier
+         */
+        id: number;
+        /**
+         * Email value
+         */
+        email: string;
+      } | null;
       /**
        * Boolean indicating if "Powered By Gorgias" will be displayed in this help center footer
        * example:

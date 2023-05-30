@@ -25,6 +25,12 @@ export type HelpCenterTranslationSeoMeta =
 export type HelpCenter = Components.Schemas.HelpCenterDto & {
     customDomain?: CustomDomain
     translations?: HelpCenterTranslation[]
+    // FIXME: #2566 this should be cleaned up after the migration as this property should be available
+    //        in the HelpCenterDto
+    email_integration?: {
+        id?: number | null
+        email?: string | null
+    }
 }
 
 export type ContactForm = Components.Schemas.HelpCenterContactFormDto

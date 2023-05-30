@@ -3451,6 +3451,18 @@
                     "helpdesk_integration_id"
                 ]
             },
+            "EmailIntegrationDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "Identifier",
+                        "minimum": 1
+                    },
+                    "email": {"type": "string", "description": "Email value"}
+                },
+                "required": ["id", "email"]
+            },
             "CreateHelpCenterWithAccountIdDto": {
                 "type": "object",
                 "properties": {
@@ -3528,6 +3540,14 @@
                         "type": "string",
                         "nullable": true,
                         "pattern": "GOOGLE_ANALYTICS_ID_REGEXP"
+                    },
+                    "email_integration": {
+                        "description": "Email integration used to receive this contact form inquiries",
+                        "nullable": true,
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
                     },
                     "account_id": {"type": "number"}
                 },
@@ -3994,7 +4014,8 @@
                         "nullable": false,
                         "allOf": [{"$ref": "#/components/schemas/ExtraHTML"}]
                     },
-                    "chat_app_key": {"type": "string", "nullable": true}
+                    "chat_app_key": {"type": "string", "nullable": true},
+                    "contact_form_id": {"type": "number", "nullable": true}
                 },
                 "required": [
                     "created_datetime",
@@ -4282,6 +4303,14 @@
                         "type": "string",
                         "nullable": true,
                         "pattern": "GOOGLE_ANALYTICS_ID_REGEXP"
+                    },
+                    "email_integration": {
+                        "description": "Email integration used to receive this contact form inquiries",
+                        "nullable": true,
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
                     },
                     "powered_by_deactivated": {
                         "type": "boolean",
@@ -4656,18 +4685,6 @@
                 },
                 "required": ["from", "to"]
             },
-            "EmailIntegrationDto": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "number",
-                        "description": "Identifier",
-                        "minimum": 1
-                    },
-                    "email": {"type": "string", "description": "Email value"}
-                },
-                "required": ["id", "email"]
-            },
             "CreateSubjectLinesDto": {
                 "type": "object",
                 "properties": {
@@ -4690,12 +4707,6 @@
             "CreateContactFormDto": {
                 "type": "object",
                 "properties": {
-                    "help_center_id": {
-                        "type": "number",
-                        "nullable": true,
-                        "description": "Help center id that is serving this contact form",
-                        "example": null
-                    },
                     "name": {
                         "type": "string",
                         "description": "Name of the Contact Form",
@@ -4903,12 +4914,6 @@
             "UpdateContactFormDto": {
                 "type": "object",
                 "properties": {
-                    "help_center_id": {
-                        "type": "number",
-                        "nullable": true,
-                        "description": "Help center id that is serving this contact form",
-                        "example": null
-                    },
                     "name": {
                         "type": "string",
                         "description": "Name of the Contact Form",

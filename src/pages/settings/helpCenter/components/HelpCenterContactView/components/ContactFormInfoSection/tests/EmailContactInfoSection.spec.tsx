@@ -8,12 +8,14 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
 
 import {fromJS} from 'immutable'
+import _keyBy from 'lodash/keyBy'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import ContactFormInfoSection from '../ContactFormInfoSection'
 import {getSingleHelpCenterResponseFixtureWithTranslation} from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import {getHelpCenterTranslationsResponseFixture} from '../../../../../fixtures/getHelpCenterTranslationsResponse.fixture'
@@ -21,12 +23,18 @@ import {getLocalesResponseFixture} from '../../../../../fixtures/getLocalesRespo
 import {useCurrentHelpCenter} from '../../../../../providers/CurrentHelpCenter'
 import {HelpCenterTranslationProvider} from '../../../../../providers/HelpCenterTranslation'
 import {useSupportedLocales} from '../../../../../providers/SupportedLocales'
+
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
 
 const defaultState: Partial<RootState> = {
     entities: {
+        contactForm: {
+            contactForms: {
+                contactFormById: _keyBy([ContactFormFixture], 'id'),
+            },
+        },
         helpCenter: {
             helpCenters: {
                 helpCentersById: {
@@ -86,6 +94,16 @@ jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
+jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
+    return {
+        useContactFormApi: () => ({
+            isReady: true,
+            isLoading: false,
+            getContactFormById: jest.fn(),
+        }),
+    }
+})
+
 const DefaultProviders: FC = ({children}) => (
     <Provider store={mockedStore(defaultState)}>
         <HelpCenterTranslationProvider
@@ -112,11 +130,7 @@ describe('<ContactFormInfoSection />', () => {
         renderWithRouter(
             <DefaultProviders>
                 <DndProvider backend={HTML5Backend}>
-                    <ContactFormInfoSection
-                        helpCenter={
-                            getSingleHelpCenterResponseFixtureWithTranslation
-                        }
-                    />
+                    <ContactFormInfoSection />
                 </DndProvider>
             </DefaultProviders>
         )

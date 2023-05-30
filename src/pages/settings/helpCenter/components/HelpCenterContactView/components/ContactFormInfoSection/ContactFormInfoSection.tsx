@@ -6,7 +6,7 @@ import settingsCss from 'pages/settings/settings.less'
 
 import * as integrationsSelectors from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
-import {EmailContactInfoDto, HelpCenter} from 'models/helpCenter/types'
+import {EmailContactInfoDto} from 'models/helpCenter/types'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import TextArea from 'pages/common/forms/TextArea'
 
@@ -33,14 +33,12 @@ import SubjectLines from '../../../SubjectLines/SubjectLines'
 import ToggleInput from '../../../../../../common/forms/ToggleInput'
 import css from './ContactFormInfoSection.less'
 
-type ContactFormInfoSectionProps = {
-    helpCenter: HelpCenter
-}
-
-const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
+const ContactFormInfoSection = () => {
     const [isDescriptionTooLong, setIsDescriptionTooLong] = useState(false)
 
     const {
+        emailIntegration,
+        updateEmailIntegration,
         translation: {contactInfo},
         updateTranslation,
         updateContactForm,
@@ -68,12 +66,9 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
         false
     )
 
+    const isEmailIntegrationSelected = !!emailIntegration?.email
     const isBaseEmailIntegration =
-        !!contactForm.helpdesk_integration_email &&
-        isBaseEmailAddress(contactForm.helpdesk_integration_email)
-
-    const isEmailIntegrationSelected =
-        !!helpCenter.contact_form?.helpdesk_integration_email
+        emailIntegration?.email && isBaseEmailAddress(emailIntegration.email)
 
     const handleChange =
         <TKey extends keyof EmailContactInfoDto>(key: TKey) =>
@@ -100,17 +95,14 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
             )
 
             if (selectedIntegration) {
-                updateContactForm((prevContactForm) => ({
-                    ...prevContactForm,
-                    helpdesk_integration_email:
-                        selectedIntegration.meta.address,
-                    helpdesk_integration_id: selectedIntegration.id,
-                }))
-
+                updateEmailIntegration({
+                    id: selectedIntegration.id,
+                    email: selectedIntegration.meta.address,
+                })
                 setIsAlertAcknowledged(false)
             }
         },
-        [emailIntegrations, updateContactForm, setIsAlertAcknowledged]
+        [emailIntegrations, updateEmailIntegration, setIsAlertAcknowledged]
     )
 
     return (
@@ -144,7 +136,7 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                             desired integration is selected.
                         </Alert>
                     )}
-                    {!contactForm.helpdesk_integration_email && (
+                    {!emailIntegration?.email && (
                         <Alert
                             icon
                             type={AlertType.Error}
@@ -160,7 +152,7 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                     <SelectField
                         id="contactForm"
                         placeholder="Select an email integration"
-                        value={contactForm.helpdesk_integration_id}
+                        value={emailIntegration?.id}
                         options={emailIntegrations.map((integration) => ({
                             label:
                                 `${integration.name} ` +
@@ -184,7 +176,7 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                             }))
                             setIsDirty(true)
                         }}
-                        isDisabled={!contactForm.helpdesk_integration_email}
+                        isDisabled={!emailIntegration?.email}
                         className={css.contactCardToggle}
                     >
                         Contact form card
@@ -196,7 +188,7 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                         isDisabled={
                             !(
                                 contactForm.card_enabled &&
-                                contactForm.helpdesk_integration_email
+                                emailIntegration?.email
                             )
                         }
                         onChange={(value: string) => {
@@ -253,10 +245,7 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                     helpText="Contact us card preview"
                     className={css.card}
                     disabled={
-                        !(
-                            contactForm.card_enabled &&
-                            contactForm.helpdesk_integration_email
-                        )
+                        !(contactForm.card_enabled && emailIntegration?.email)
                     }
                 >
                     <div>{description}</div>
