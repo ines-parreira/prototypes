@@ -2,6 +2,8 @@ import MockAdapter from 'axios-mock-adapter'
 import {
     bigCommerceCartFixture,
     bigCommerceCustomerFixture,
+    bigCommerceCustomLineItemFixture,
+    bigCommerceLineItemFixture,
     bigCommerceProductFixture,
     bigCommerceVariantFixture,
 } from 'fixtures/bigcommerce'
@@ -17,6 +19,7 @@ import {
 import {
     addLineItem,
     exportedForTesting,
+    getAvailableLineItems,
     onCancel,
     onInit,
     removeRow,
@@ -60,6 +63,23 @@ describe('utils', () => {
     const setProducts = jest.fn()
     const setModalErrors = jest.fn()
 
+    describe('getAvailableLineItems', () => {
+        it('should filter line items by not having a parentId', () => {
+            const bundledBigCommerceLineItem = bigCommerceLineItemFixture()
+            bundledBigCommerceLineItem.parent_id = 1
+
+            const availableLineItems = getAvailableLineItems([
+                bigCommerceLineItemFixture(),
+                bigCommerceCustomLineItemFixture,
+                bundledBigCommerceLineItem,
+            ])
+
+            expect(availableLineItems).toEqual([
+                bigCommerceLineItemFixture(),
+                bigCommerceCustomLineItemFixture,
+            ])
+        })
+    })
     describe('onInit', () => {
         it('should init the order modal', async () => {
             apiMock.onAny().reply(200, cartResponse)

@@ -54,6 +54,7 @@ import {
     addCustomLineItem,
     addLineItem,
     bigcommerceCreateOrderFromCheckoutCart,
+    getAvailableLineItems,
     onCancel,
     onReset,
     processAvailableAddresses,
@@ -169,11 +170,11 @@ export function OrderModal({
     const lineItems: Array<
         BigCommerceCartLineItem | BigCommerceCustomCartLineItem
     > = cart
-        ? [
+        ? getAvailableLineItems([
               ...cart.line_items.physical_items,
               ...cart.line_items.digital_items,
               ...cart.line_items.custom_items,
-          ]
+          ])
         : []
 
     const hasItemsInCart = Boolean(lineItems.length)

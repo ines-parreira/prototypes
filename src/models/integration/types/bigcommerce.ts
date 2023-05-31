@@ -117,6 +117,7 @@ export type BigCommerceCustomCartLineItem = {
     name: string
     quantity: number
     sku: string
+    parent_id?: number | null
 }
 
 export type BigCommerceCartLineItems = {

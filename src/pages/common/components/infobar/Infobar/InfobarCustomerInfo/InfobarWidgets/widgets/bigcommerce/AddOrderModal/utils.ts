@@ -1,5 +1,6 @@
 import _debounce from 'lodash/debounce'
 import {Map as ImmutableMap} from 'immutable'
+import _omit from 'lodash/omit'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
     addBigCommerceCheckoutBillingAddress,
@@ -55,6 +56,16 @@ export const isBigCommerceProduct = (
     product: BigCommerceProduct | BigCommerceCustomProduct
 ): product is BigCommerceProduct => 'variants' in product
 
+export const getAvailableLineItems = (
+    lineItems: Array<BigCommerceCartLineItem | BigCommerceCustomCartLineItem>
+): Array<BigCommerceCartLineItem | BigCommerceCustomCartLineItem> => {
+    return lineItems.filter(
+        (lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem) =>
+            // Bundled items will have the ID of their parent item
+            // We want to display only the parent product
+            !lineItem?.parent_id
+    )
+}
 export const onInit = async ({
     actionName,
     customer,
@@ -123,10 +134,10 @@ export const loadCartProducts = async ({
     })
 
     // Physical & Digital Line Items
-    const lineItems = [
+    const lineItems = getAvailableLineItems([
         ...cart.line_items.physical_items,
         ...cart.line_items.digital_items,
-    ]
+    ]) as Array<BigCommerceCartLineItem>
     const lineItemsIds = lineItems.map((lineItem) => lineItem.product_id)
     const integrationProducts = await fetchIntegrationProducts(
         integrationId,
@@ -658,11 +669,12 @@ export const removeRow = async ({
 
     setIsLoading(true)
 
-    const lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem = [
-        ...cart.line_items.physical_items,
-        ...cart.line_items.digital_items,
-        ...cart.line_items.custom_items,
-    ][index]
+    const lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem =
+        getAvailableLineItems([
+            ...cart.line_items.physical_items,
+            ...cart.line_items.digital_items,
+            ...cart.line_items.custom_items,
+        ])[index]
 
     try {
         const newCart = await removeBigCommerceLineItem(
@@ -747,11 +759,12 @@ export const updateRow = async ({
 
     setIsLoading(true)
 
-    const lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem = [
-        ...cart.line_items.physical_items,
-        ...cart.line_items.digital_items,
-        ...cart.line_items.custom_items,
-    ][index]
+    const lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem =
+        getAvailableLineItems([
+            ...cart.line_items.physical_items,
+            ...cart.line_items.digital_items,
+            ...cart.line_items.custom_items,
+        ])[index]
 
     try {
         if (!isBigCommerceCartLineItem(lineItem)) {
@@ -847,11 +860,11 @@ export const updateLineItemModifiers = async ({
 
     setIsLoading(true)
 
-    const lineItems = [
+    const lineItems = getAvailableLineItems([
         ...cart.line_items.physical_items,
         ...cart.line_items.digital_items,
         ...cart.line_items.custom_items,
-    ]
+    ])
     const lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem =
         lineItems[index]
     const lineItemID = lineItem.id
@@ -873,10 +886,10 @@ export const updateLineItemModifiers = async ({
 
         // set the discount of the to-be-modified line item on the new line item, so we don't lose it
         if (discounts.has(lineItemID) && fullLineItemPrice) {
-            const newLineItems = [
+            const newLineItems = getAvailableLineItems([
                 ...newCart.line_items.physical_items,
                 ...newCart.line_items.digital_items,
-            ]
+            ])
             let newLineItemID = ''
             newLineItems.forEach((element) => {
                 if (!lineItems.find((item) => element.id === item.id)) {
@@ -956,10 +969,10 @@ export const setLineItemDiscount = async ({
 
     setIsLoading(true)
 
-    const lineItem = [
+    const lineItem = getAvailableLineItems([
         ...cart.line_items.physical_items,
         ...cart.line_items.digital_items,
-    ][index]
+    ])[index] as BigCommerceCartLineItem
 
     try {
         const newCart = await editBigCommerceLineItem({
@@ -1149,12 +1162,10 @@ export const addCheckoutBillingAddress = async ({
     selectedAddress: BigCommerceCustomerAddress
     cart: BigCommerceCart
 }) => {
-    delete selectedAddress.custom_fields
-
     return addBigCommerceCheckoutBillingAddress(
         integrationId,
         cart.id,
-        selectedAddress
+        _omit(selectedAddress, ['custom_fields'])
     )
 }
 
@@ -1169,11 +1180,11 @@ export async function upsertCheckoutConsignment({
     shippingAddress: BigCommerceCustomerAddress
     consignmentId: Maybe<string>
 }) {
-    const lineItems = [
+    const lineItems = getAvailableLineItems([
         ...cart.line_items.physical_items,
         ...cart.line_items.digital_items,
         ...cart.line_items.custom_items,
-    ].map(({id, quantity}) => ({
+    ]).map(({id, quantity}) => ({
         item_id: id,
         quantity,
     }))
@@ -1182,10 +1193,8 @@ export async function upsertCheckoutConsignment({
         return null
     }
 
-    delete shippingAddress.custom_fields
-
     const singleConsignmentPayload = {
-        address: shippingAddress,
+        address: _omit(shippingAddress, ['custom_fields']),
         line_items: lineItems,
     }
 
