@@ -15,11 +15,9 @@ import {
 } from 'pages/stats/revenue/services/CampaignMetricsHelper'
 import {CampaignsTotals} from 'pages/stats/revenue/services/types'
 import {usePostReporting} from 'models/reporting/queries'
-import {REPORTING_STALE_TIME_MS} from 'hooks/reporting/constants'
 import {useTicketsPerformanceStat} from 'pages/stats/revenue/hooks/stats/useGetTicketsPerformanceStat'
 
 const OVERRIDES = {
-    staleTime: REPORTING_STALE_TIME_MS,
     select: getMetricFromCubeData,
 }
 

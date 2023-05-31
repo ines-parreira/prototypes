@@ -40,7 +40,6 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
     ],
     {
       "select": [Function],
-      "staleTime": 300000,
     },
   ],
   [
@@ -82,7 +81,6 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
     ],
     {
       "select": [Function],
-      "staleTime": 300000,
     },
   ],
   [
@@ -114,7 +112,6 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
     ],
     {
       "select": [Function],
-      "staleTime": 300000,
     },
   ],
 ]

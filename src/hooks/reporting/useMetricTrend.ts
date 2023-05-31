@@ -3,7 +3,6 @@ import {
     UseGetReportingQueryData,
 } from 'models/reporting/queries'
 import {ReportingMeasure, ReportingQuery} from 'models/reporting/types'
-import {REPORTING_STALE_TIME_MS} from './constants'
 
 export type MetricTrend = {
     isFetching: boolean
@@ -31,7 +30,6 @@ export default function useMetricTrend(
     const currentPeriodMetric = useGetReporting<QueryReturnType, number | null>(
         [currentPeriodQuery],
         {
-            staleTime: REPORTING_STALE_TIME_MS,
             select: (data) =>
                 selectMeasure(currentPeriodQuery.measures[0], data),
         }
@@ -39,7 +37,6 @@ export default function useMetricTrend(
     const prevPeriodMetric = useGetReporting<QueryReturnType, number | null>(
         [prevPeriodQuery],
         {
-            staleTime: REPORTING_STALE_TIME_MS,
             select: (data) => selectMeasure(prevPeriodQuery.measures[0], data),
         }
     )

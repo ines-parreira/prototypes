@@ -13,10 +13,8 @@ import {
 import {CampaignsPerformanceDataset} from 'pages/stats/revenue/services/types'
 import {usePostReporting} from 'models/reporting/queries'
 import {useTicketsPerformanceStat} from 'pages/stats/revenue/hooks/stats/useGetTicketsPerformanceStat'
-import {REPORTING_STALE_TIME_MS} from 'hooks/reporting/constants'
 
 const OVERRIDES = {
-    staleTime: REPORTING_STALE_TIME_MS,
     select: getDataFromResult,
 }
 

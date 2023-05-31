@@ -48,7 +48,6 @@ import {
     TicketStateSegment,
 } from 'models/reporting/types'
 import {useGetReporting} from 'models/reporting/queries'
-import {REPORTING_STALE_TIME_MS} from 'hooks/reporting/constants'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
@@ -181,7 +180,6 @@ export default function SupportPerformanceOverview() {
             },
         ],
         {
-            staleTime: REPORTING_STALE_TIME_MS,
             select: (data) => {
                 return data.data.data.map((item) => ({
                     label: TICKET_CHANNEL_NAMES[

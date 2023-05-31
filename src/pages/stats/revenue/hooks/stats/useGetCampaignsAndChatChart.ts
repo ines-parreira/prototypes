@@ -15,14 +15,8 @@ import {
 import {CampaignChatPerformanceData} from 'pages/stats/revenue/services/types'
 import {usePostReporting} from 'models/reporting/queries'
 import {ReportingGranularity} from 'models/reporting/types'
-import {REPORTING_STALE_TIME_MS} from 'hooks/reporting/constants'
 import {TicketChannel} from 'business/types/ticket'
 import {useTicketsPerformanceChart} from 'pages/stats/revenue/hooks/stats/useGetTicketsPerformanceChart'
-
-const OVERRIDES = {
-    staleTime: REPORTING_STALE_TIME_MS,
-    select: getDataFromResult,
-}
 
 export type GetRevenueUpliftChartQuery = {
     isFetching: boolean
@@ -65,7 +59,9 @@ export const useGetCampaignsAndChatChart = (
 
     const campaignsPerformance = usePostReporting<[CubeData], CubeData>(
         campaignsPerformanceQuery,
-        OVERRIDES
+        {
+            select: getDataFromResult,
+        }
     )
     const integrationIds = useMemo(
         () => (!!integrationId ? [integrationId] : []),

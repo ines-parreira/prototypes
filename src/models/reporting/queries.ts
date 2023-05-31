@@ -4,6 +4,11 @@ import {AxiosResponse} from 'axios'
 import {getReporting, postReporting} from './resources'
 import {ReportingParams, ReportingResponse} from './types'
 
+const defaultOptions = {
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    cacheTime: 10 * 60 * 1000, // 10 minutes
+}
+
 export const getReportingQueryKey = (params: ReportingParams) => [
     'reporting',
     'get-reporting',
@@ -28,6 +33,7 @@ export const useGetReporting = <
     return useQuery({
         queryKey: getReportingQueryKey(params),
         queryFn: () => getReporting<TData>(params),
+        ...defaultOptions,
         ...overrides,
     })
 }
@@ -56,6 +62,7 @@ export const usePostReporting = <
     return useQuery({
         queryKey: postReportingQueryKey(data),
         queryFn: () => postReporting<TData>(data),
+        ...defaultOptions,
         ...overrides,
     })
 }

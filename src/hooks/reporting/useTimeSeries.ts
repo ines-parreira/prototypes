@@ -8,8 +8,6 @@ import {
     ReportingTimeDimension,
 } from 'models/reporting/types'
 
-import {REPORTING_STALE_TIME_MS} from './constants'
-
 export type TimeSeriesQuery = Omit<ReportingQuery, 'timeDimensions'> & {
     timeDimensions: [Required<ReportingTimeDimension>]
 }
@@ -26,7 +24,6 @@ export default function useTimeSeries(query: TimeSeriesQuery) {
         Partial<Record<string, string>>[],
         TimeSeriesDataItem[][]
     >([query], {
-        staleTime: REPORTING_STALE_TIME_MS,
         select: (res) => {
             const dateTimeToValuesMap = res.data.data.reduce((acc, item) => {
                 const key = formatReportingQueryDate(item[dimension]!)

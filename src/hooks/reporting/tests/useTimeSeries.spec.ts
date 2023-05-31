@@ -9,7 +9,6 @@ import {
     TicketStateMeasure,
 } from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
-import {REPORTING_STALE_TIME_MS} from '../constants'
 import useTimeSeries, {TimeSeriesQuery} from '../useTimeSeries'
 
 jest.mock('models/reporting/queries')
@@ -66,11 +65,12 @@ describe('useTimeSeries', () => {
 
     it('should call useGetReportingMock with the query', () => {
         renderHook(() => useTimeSeries(defaultQuery))
+        const select = useGetReportingMock.mock.calls[0][1]?.select
 
         expect(useGetReportingMock).toHaveBeenCalledWith(
             [defaultQuery],
             expect.objectContaining({
-                staleTime: REPORTING_STALE_TIME_MS,
+                select,
             })
         )
     })

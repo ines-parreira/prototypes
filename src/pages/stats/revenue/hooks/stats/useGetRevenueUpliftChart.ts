@@ -16,10 +16,8 @@ import {
 import {RevenueGraphDataPoint} from 'pages/stats/revenue/services/types'
 import {usePostReporting} from 'models/reporting/queries'
 import {ReportingGranularity} from 'models/reporting/types'
-import {REPORTING_STALE_TIME_MS} from 'hooks/reporting/constants'
 
 const OVERRIDES = {
-    staleTime: REPORTING_STALE_TIME_MS,
     select: getDataFromResult,
 }
 

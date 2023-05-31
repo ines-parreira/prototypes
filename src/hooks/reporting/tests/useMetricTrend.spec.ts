@@ -5,7 +5,6 @@ import {useGetReporting} from 'models/reporting/queries'
 import {ReportingQuery, TicketStateMeasure} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
 
-import {REPORTING_STALE_TIME_MS} from '../constants'
 import useMetricTrend from '../useMetricTrend'
 
 jest.mock('models/reporting/queries')
@@ -98,7 +97,7 @@ describe('useMetricTrend', () => {
         })
     })
 
-    it('should call useGetReporting with stale time', () => {
+    it('should call useGetReporting with the query', () => {
         const prevPeriodQuery = {
             ...defaultQuery,
             measures: [TicketStateMeasure.MessagesAverage],
@@ -117,13 +116,13 @@ describe('useMetricTrend', () => {
         expect(useGetReportingMock).toHaveBeenCalledWith(
             [defaultQuery],
             expect.objectContaining({
-                staleTime: REPORTING_STALE_TIME_MS,
+                select: useGetReportingMock.mock.calls[0][1]?.select,
             })
         )
         expect(useGetReportingMock).toHaveBeenCalledWith(
             [prevPeriodQuery],
             expect.objectContaining({
-                staleTime: REPORTING_STALE_TIME_MS,
+                select: useGetReportingMock.mock.calls[1][1]?.select,
             })
         )
     })
