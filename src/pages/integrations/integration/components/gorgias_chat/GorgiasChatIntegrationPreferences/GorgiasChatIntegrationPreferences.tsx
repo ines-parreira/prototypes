@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
@@ -23,6 +24,9 @@ import NavigatedSuccessModal, {
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 
+import {fetchSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {TagLabel} from 'pages/common/utils/labels'
 import {isRevenueAddonSubscriber} from '../GorgiasChatIntegrationCampaigns/utils/isRevenueAddonSubscriber'
 
 import {
@@ -62,6 +66,7 @@ import RequiredEmailCapturePreview from '../GorgiasChatIntegrationPreview/Requir
 import AutoResponderPreview from '../GorgiasChatIntegrationPreview/AutoResponder'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import {isGenericEmailIntegration} from '../../email/helpers'
+import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
 import css from './GorgiasChatIntegrationPreferences.less'
 
 const emailCaptureOptions = [
@@ -98,6 +103,7 @@ const liveChatAvailabilityOptions = [
 export const PREVIEW_EMAIL_CAPTURE = 'email-capture'
 export const PREVIEW_AUTO_RESPONDER = 'auto-responder'
 export const PREVIEW_LIVE_CHAT_AVAILABILITY = 'live-chat-availability'
+export const PREVIEW_CONTROL_TICKET_VOLUME = 'control-ticket-volume'
 
 /**
  * For backwards compatibility, the "Chat conversation" section that holds
@@ -108,6 +114,7 @@ const SHOW_CHAT_CONVERSATIONS_SECTION = false
 
 type Props = {
     integration: Map<any, any>
+    displayControlTicketVolume: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -127,6 +134,8 @@ type State = {
     avatar: GorgiasChatAvatarSettings | undefined
     avatarType: string
     avatarTeamPictureUrl: string | null
+    controlTicketVolume: boolean
+    selfServiceConfiguration: SelfServiceConfiguration | null
 }
 
 export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
@@ -155,6 +164,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         avatar: undefined,
         avatarType: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
         avatarTeamPictureUrl: null,
+        controlTicketVolume: false,
+        selfServiceConfiguration: null,
     }
 
     _initState = (integration: Map<any, any>) => {
@@ -242,21 +253,40 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'decoration',
                         'avatar_team_picture_url',
                     ]),
+                    controlTicketVolume: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'control_ticket_volume',
+                    ]),
                 },
                 _isUndefined
             ) as State
         )
     }
 
+    fetchSelfServiceConfiguration = async (integration: Map<any, any>) => {
+        const shopIntegrationId = integration.getIn([
+            'meta',
+            'shop_integration_id',
+        ])
+        if (!shopIntegrationId) return
+        const selfServiceConfiguration = await fetchSelfServiceConfiguration(
+            shopIntegrationId
+        )
+        this.setState({selfServiceConfiguration})
+    }
+
     componentDidMount() {
         if (!this.props.integration.isEmpty()) {
             this._initState(this.props.integration)
+            void this.fetchSelfServiceConfiguration(this.props.integration)
         }
     }
 
     componentDidUpdate() {
         if (!this.state.isInitialized && !this.props.integration.isEmpty()) {
             this._initState(this.props.integration)
+            void this.fetchSelfServiceConfiguration(this.props.integration)
         }
     }
 
@@ -340,6 +370,18 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         })
     }
 
+    _setControlTicketVolume = (value: boolean) => {
+        this.setState({
+            controlTicketVolume: value,
+            preview: PREVIEW_CONTROL_TICKET_VOLUME,
+        })
+
+        logEvent(SegmentEvent.ChatPreferencesControlTicketVolume, {
+            id: this.props.integration.get('id'),
+            state: value ? 'ON' : 'OFF',
+        })
+    }
+
     _submitPreferences = async (event: React.SyntheticEvent) => {
         const {updateOrCreateIntegration, integration} = this.props
         event.preventDefault()
@@ -363,6 +405,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             offline_mode_enabled_datetime:
                 this.state.offlineModeEnabledDatetime,
             live_chat_availability: this.state.liveChatAvailability,
+            control_ticket_volume: this.state.controlTicketVolume,
         }
 
         const payload = fromJS({
@@ -402,8 +445,15 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             avatar,
             avatarType,
             avatarTeamPictureUrl,
+            controlTicketVolume,
+            selfServiceConfiguration,
         } = this.state
-        const {integration, emailIntegrations: integrations} = this.props
+
+        const {
+            integration,
+            emailIntegrations: integrations,
+            displayControlTicketVolume,
+        } = this.props
         const emailIntegrations = integrations.filter(isGenericEmailIntegration)
 
         const chatTitle = integration.get('name')
@@ -428,21 +478,29 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             ),
         }
 
+        const isLiveChatAvailable =
+            preview === PREVIEW_LIVE_CHAT_AVAILABILITY &&
+            liveChatAvailability !== GORGIAS_CHAT_LIVE_CHAT_OFFLINE
+
+        const isControlTicketVolumeEnabled =
+            preview === PREVIEW_CONTROL_TICKET_VOLUME && !controlTicketVolume
+
+        const isEmailCaptureOptional =
+            preview === PREVIEW_EMAIL_CAPTURE &&
+            emailCaptureEnforcement ===
+                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL
+
         const renderPreviewFooter =
-            (preview === PREVIEW_LIVE_CHAT_AVAILABILITY &&
-                liveChatAvailability !== GORGIAS_CHAT_LIVE_CHAT_OFFLINE) ||
+            isLiveChatAvailable ||
             preview === PREVIEW_AUTO_RESPONDER ||
-            (preview === PREVIEW_EMAIL_CAPTURE &&
-                emailCaptureEnforcement ===
-                    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL)
+            isEmailCaptureOptional
 
         const showCustomerInitialMessages =
             preview === PREVIEW_AUTO_RESPONDER ||
             (preview === PREVIEW_EMAIL_CAPTURE &&
                 emailCaptureEnforcement !==
                     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED) ||
-            (preview === PREVIEW_LIVE_CHAT_AVAILABILITY &&
-                liveChatAvailability !== GORGIAS_CHAT_LIVE_CHAT_OFFLINE)
+            isLiveChatAvailable
 
         let previewChildren = null
 
@@ -483,6 +541,13 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     name={chatTitle}
                 />
             )
+        } else if (preview === PREVIEW_CONTROL_TICKET_VOLUME) {
+            previewChildren = (
+                <ChatHomePreview
+                    selfServiceConfiguration={selfServiceConfiguration}
+                    language={language}
+                />
+            )
         } else {
             previewChildren = (
                 <AutoResponderPreview
@@ -520,14 +585,18 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 }
                 language={language}
                 position={position}
+                renderPoweredBy={preview !== PREVIEW_CONTROL_TICKET_VOLUME}
                 renderFooter={renderPreviewFooter}
+                renderButtonFooter={isControlTicketVolumeEnabled}
                 autoResponderEnabled={
                     preview === PREVIEW_AUTO_RESPONDER && autoResponderEnabled
                 }
                 autoResponderReply={autoResponderReply}
             >
                 <ChatIntegrationPreviewContent>
-                    <ConversationTimestamp />
+                    {preview !== PREVIEW_CONTROL_TICKET_VOLUME && (
+                        <ConversationTimestamp />
+                    )}
                     {showCustomerInitialMessages && (
                         <CustomerInitialMessages
                             conversationColor={conversationColor}
@@ -684,6 +753,75 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         </p>
                                     </div>
                                 </div>
+
+                                {displayControlTicketVolume && (
+                                    <div className={css.formSection}>
+                                        <h4
+                                            className={classnames(
+                                                css.title,
+                                                'mb-1'
+                                            )}
+                                        >
+                                            Control ticket volume
+                                            <TagLabel
+                                                className={classnames(
+                                                    css.controlTicketVolumeTag,
+                                                    'ml-2'
+                                                )}
+                                            >
+                                                <span
+                                                    className={classnames(
+                                                        'material-icons',
+                                                        'mr-1'
+                                                    )}
+                                                >
+                                                    auto_awesome
+                                                </span>
+                                                {'Automation Add-on'}
+                                            </TagLabel>
+                                        </h4>
+                                        <div>
+                                            <p className="mb-4">
+                                                Customers can only send live
+                                                chat messages or offline
+                                                captures to your team after
+                                                going through an automated
+                                                interaction. This may help
+                                                deflect repetitive questions and
+                                                reduce your overall ticket
+                                                volume.
+                                            </p>
+                                            <div
+                                                className={classnames(
+                                                    css.formGroup,
+                                                    'd-flex'
+                                                )}
+                                            >
+                                                <ToggleInput
+                                                    onClick={
+                                                        this
+                                                            ._setControlTicketVolume
+                                                    }
+                                                    isToggled={
+                                                        controlTicketVolume
+                                                    }
+                                                />
+
+                                                <div
+                                                    className={classnames(
+                                                        css.toggleInfo,
+                                                        'ml-1'
+                                                    )}
+                                                >
+                                                    <b>
+                                                        Require automated
+                                                        interactions
+                                                    </b>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
 
                                 <div className={css.formSection}>
                                     <h4 className={css.title}>

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -8,8 +8,9 @@ import {useUpdateEffect, useAsyncFn} from 'react-use'
 import {Container} from 'reactstrap'
 import classNames from 'classnames'
 
+import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
 import * as IntegrationsActions from 'state/integrations/actions'
-import {makeHasFeature} from 'state/billing/selectors'
+import {getHasAutomationAddOn, makeHasFeature} from 'state/billing/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType} from 'models/integration/types'
@@ -38,6 +39,7 @@ import {
     chatInstallationStatusFetched,
     resetChatInstallationStatus,
 } from 'state/entities/chatInstallationStatus/actions'
+import useAppSelector from 'hooks/useAppSelector'
 import history from '../../history'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
@@ -139,6 +141,10 @@ export const IntegrationDetail = ({
         subId: string
     }>()
 
+    const [displayControlTicketVolume, setDisplayControlTicketVolume] =
+        useState(false)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+
     const isIntegrationId = ![
         'new',
         'connections',
@@ -217,6 +223,17 @@ export const IntegrationDetail = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const chatApplicationIds = useMemo(() => {
+        const appId: string = integration.getIn(['meta', 'app_id'])
+        if (appId && integrationType === IntegrationType.GorgiasChat) {
+            return [appId]
+        }
+        return []
+    }, [integration, integrationType])
+
+    const {applicationsAutomationSettings} =
+        useApplicationsAutomationSettings(chatApplicationIds)
+
     useUpdateEffect(() => {
         const appId = integration.getIn(['meta', 'app_id'])
         if (integrationType === IntegrationType.GorgiasChat) {
@@ -272,6 +289,16 @@ export const IntegrationDetail = ({
             }
         }
     )
+
+    useEffect(() => {
+        const appId = chatApplicationIds[0]
+        if (appId) {
+            setDisplayControlTicketVolume(
+                !applicationsAutomationSettings[appId]?.articleRecommendation
+                    ?.enabled && hasAutomationAddOn
+            )
+        }
+    }, [hasAutomationAddOn, chatApplicationIds, applicationsAutomationSettings])
 
     useUpdateEffect(() => {
         if (integrationId && isIntegrationId) {
@@ -415,6 +442,9 @@ export const IntegrationDetail = ({
                     return (
                         <GorgiasChatIntegrationPreferences
                             integration={integration}
+                            displayControlTicketVolume={
+                                displayControlTicketVolume
+                            }
                         />
                     )
                 }

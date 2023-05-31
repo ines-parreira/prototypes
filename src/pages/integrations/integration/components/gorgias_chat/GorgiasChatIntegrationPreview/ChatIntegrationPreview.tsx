@@ -9,6 +9,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import SelfServiceChatIntegrationFooter from 'pages/automation/common/components/preview/components/SelfServiceChatIntegrationFooter'
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
@@ -19,6 +20,7 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
     isAutoresponderReply,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    GORGIAS_CHAT_SSP_TEXTS,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {
     GorgiasChatAvatarSettings,
@@ -49,6 +51,7 @@ type Props = {
     language?: string
     children: ReactNode
     renderFooter?: boolean
+    renderButtonFooter?: boolean
     renderPoweredBy?: boolean
     position?: GorgiasChatPosition
     editedPositionAxis?: PositionAxis | null
@@ -81,6 +84,7 @@ const ChatIntegrationPreview = (props: Props) => {
         language = GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
         children,
         renderFooter = true,
+        renderButtonFooter = false,
         renderPoweredBy = true,
         position = {
             alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_RIGHT,
@@ -122,6 +126,7 @@ const ChatIntegrationPreview = (props: Props) => {
     const offlineColor = '#EBEBEB' // Colors.LightGrey in chat client
 
     const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
+    const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
 
     const getTypicalResponseText = () => {
         if (!isAutoresponderReply(autoResponderReply)) {
@@ -267,6 +272,13 @@ const ChatIntegrationPreview = (props: Props) => {
                             attach_file
                         </i>
                     </div>
+                )}
+
+                {renderButtonFooter && (
+                    <SelfServiceChatIntegrationFooter
+                        sspTexts={sspTexts}
+                        color={mainColor}
+                    />
                 )}
             </div>
         </CustomizedChatLauncher>

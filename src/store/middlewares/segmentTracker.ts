@@ -262,6 +262,7 @@ export enum SegmentEvent {
     ChatSettingsToneOfVoiceFieldClicked = 'settings-tone-of-voice-field-clicked',
     ChatSettingsToneOfVoicePageSaved = 'settings-tone-of-voice-page-saved',
     ChatSettingsHide = 'settings-hide-chat',
+    ChatPreferencesControlTicketVolume = 'chat/preferences-control-ticket-volume',
     CustomFieldTicketCreateFieldClicked = 'custom-fields/ticket/create-field-clicked',
     CustomFieldTicketSaveNewFieldClicked = 'custom-fields/ticket/save-new-field-clicked',
     CustomFieldTicketValueInputFocused = 'custom-fields/ticket/input-focused',

@@ -159,6 +159,8 @@ jest.mock('../components/magento2/Magento2', () => () => (
     <div>Magento2Integration</div>
 ))
 
+jest.mock('hooks/useAppSelector', () => jest.fn(() => 'mocked'))
+
 beforeEach(() => {
     jest.clearAllMocks()
 })

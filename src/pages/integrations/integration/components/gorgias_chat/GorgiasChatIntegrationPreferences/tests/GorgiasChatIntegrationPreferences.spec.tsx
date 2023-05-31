@@ -44,6 +44,7 @@ const defaultState = {
 } as unknown as RootState
 
 jest.mock('utils/launchDarkly')
+jest.mock('models/selfServiceConfiguration/resources')
 
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})
@@ -63,6 +64,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         integration: fromJS({}),
         emailIntegrations: [],
         updateOrCreateIntegration: jest.fn(),
+        displayControlTicketVolume: true,
     }
 
     describe('componentDidMount()', () => {
@@ -94,6 +96,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
                         display_campaigns_hidden_chat: false,
                     },
+                    shop_integration_id: 1,
                     language: SPANISH_LANGUAGE,
                 },
             })
@@ -126,6 +129,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             email_capture_enforcement:
                                 GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
                         },
+                        shop_integration_id: 1,
                         language: SPANISH_LANGUAGE,
                     },
                 })
@@ -153,6 +157,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         email_capture_enforcement:
                             GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
                     },
+                    shop_integration_id: 1,
                     language: SPANISH_LANGUAGE,
                 },
             })
@@ -196,6 +201,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         email_capture_enforcement:
                             GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                     },
+                    shop_integration_id: 1,
                     language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                 },
             })
@@ -252,6 +258,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             email_capture_enforcement:
                                 GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                         },
+                        shop_integration_id: 1,
                         language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                     },
                 })
@@ -261,6 +268,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         <GorgiasChatIntegrationPreferencesComponent
                             updateOrCreateIntegration={jest.fn()}
                             integration={integration}
+                            displayControlTicketVolume={true}
                         />
                     )
 
@@ -302,6 +310,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             email_capture_enforcement:
                                 GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                         },
+                        shop_integration_id: 1,
                         language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                     },
                 })
@@ -350,6 +359,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         email_capture_enforcement:
                             GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                     },
+                    shop_integration_id: 1,
                     language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                 },
             })
@@ -391,6 +401,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         live_chat_availability:
                             GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
                     },
+                    shop_integration_id: 1,
                 },
             })
 
@@ -452,6 +463,19 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         })
     })
 
+    describe('_setControlTicketVolume()', () => {
+        it('should update the control ticket volume in the state.', () => {
+            const component =
+                shallow<GorgiasChatIntegrationPreferencesComponent>(
+                    <GorgiasChatIntegrationPreferencesComponent {...minProps} />
+                )
+
+            expect(component.state()).toMatchSnapshot()
+            component.instance()._setControlTicketVolume(true)
+            expect(component.state()).toMatchSnapshot()
+        })
+    })
+
     describe('_submitPreferences()', () => {
         it('should be called when the form is submitted', () => {
             ;[
@@ -499,6 +523,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             type: GORGIAS_CHAT_INTEGRATION_TYPE,
                             meta: {
                                 language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                                shop_integration_id: 1,
                             },
                         })}
                     />
@@ -526,6 +551,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         email_capture_enforcement:
                             GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                     },
+                    shop_integration_id: 1,
                     language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
                 },
             })
@@ -567,6 +593,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         type: GORGIAS_CHAT_INTEGRATION_TYPE,
                         meta: {
                             language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                            shop_integration_id: 1,
                         },
                         decoration: {
                             main_color: '#789c5d',
@@ -587,6 +614,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         type: GORGIAS_CHAT_INTEGRATION_TYPE,
                         meta: {
                             language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                            shop_integration_id: 1,
                         },
                         decoration: {
                             main_color: '#789c5d',
