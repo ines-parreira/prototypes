@@ -82,6 +82,11 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             >
               Refund method
             </p>
+            <p
+              class=""
+            >
+              Select an amount to refund.
+            </p>
           </div>
           <div
             class="modalSectionSmall"
@@ -302,6 +307,11 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
             >
               Refund method
             </p>
+            <p
+              class=""
+            >
+              Select an amount to refund.
+            </p>
           </div>
           <div
             class="modalSectionSmall"
@@ -457,6 +467,11 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
               class="modalSectionHeader"
             >
               Refund method
+            </p>
+            <p
+              class=""
+            >
+              Select an amount to refund.
             </p>
           </div>
           <div

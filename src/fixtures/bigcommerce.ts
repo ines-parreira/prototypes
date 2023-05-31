@@ -15,6 +15,7 @@ import {
     BigCommerceCustomCartLineItem,
     BigCommerceCustomProduct,
     CalculateOrderRefundDataResponse,
+    BigCommerceAvailablePaymentOptionsData,
 } from 'models/integration/types'
 
 export const bigCommerceCustomerFixture = () => ({
@@ -973,4 +974,54 @@ export const bigCommerceCalculateOrderRefundDataResponseFixture: CalculateOrderR
             refunded_amount: 10,
             available_amount: 216.2,
         },
+    }
+
+export const bigCommerceAvailablePaymentOptionsDataResponseFixture: BigCommerceAvailablePaymentOptionsData =
+    {
+        total_refund_amount: 1234567.89,
+        total_refund_tax_amount: 0,
+        rounding: 0,
+        adjustment: 0,
+        is_tax_included: false,
+        order_level_refund_amount: 1,
+        refund_methods: [
+            [
+                {
+                    provider_id: 'instore',
+                    provider_description: 'Pay in Store',
+                    amount: 1234567.89,
+                    offline: true,
+                    offline_provider: true,
+                    offline_reason: 'This is an offline payment provider.',
+                },
+            ],
+            [
+                {
+                    provider_id: 'storecredit',
+                    provider_description: 'Store Credit',
+                    amount: 1000000.0,
+                    offline: false,
+                    offline_provider: false,
+                    offline_reason: '',
+                },
+                {
+                    provider_id: 'test',
+                    provider_description: 'Test provider',
+                    amount: 234567.89,
+                    offline: false,
+                    offline_provider: false,
+                    offline_reason: '',
+                },
+            ],
+            [
+                {
+                    provider_id: 'custom',
+                    provider_description: 'Custom',
+                    amount: 1234567.89,
+                    offline: true,
+                    offline_provider: true,
+                    offline_reason: 'This is an offline payment provider.',
+                },
+            ],
+        ],
     }

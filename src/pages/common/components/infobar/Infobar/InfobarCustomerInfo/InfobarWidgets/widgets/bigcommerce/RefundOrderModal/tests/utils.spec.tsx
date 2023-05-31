@@ -2,16 +2,21 @@ import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 import client from 'models/api/resources'
 import {
-    BigCommerceOrder,
-    CalculateOrderRefundDataResponse,
-    CalculateOrderRefundDataNestedResponse,
     BigCommerceGeneralErrorMessage,
+    BigCommerceOrder,
+    BigCommerceRefundableItemType,
+    CalculateOrderRefundDataNestedResponse,
+    CalculateOrderRefundDataResponse,
+    CalculateOrderRefundQuotesDataResponse,
 } from 'models/integration/types'
+import {bigCommerceAvailablePaymentOptionsDataResponseFixture} from 'fixtures/bigcommerce'
 import {
-    onReset,
+    buildPaymentOptionLabel,
+    calculateAvailablePaymentOptionsData,
     calculateOrderRefund,
     calculateTotalOrderAmount,
     isOrderFullyRefunded,
+    onReset,
 } from '../utils'
 import {defaultBigCommerceRefundType} from '../consts'
 
@@ -64,12 +69,24 @@ describe('utils', () => {
             },
         }
 
+    const getBigCommerceAvailablePaymentOptionsDataOkResponse: CalculateOrderRefundQuotesDataResponse =
+        bigCommerceAvailablePaymentOptionsDataResponseFixture
+    const getBigCommerceAvailablePaymentOptionsDataErrorResponse: CalculateOrderRefundQuotesDataResponse =
+        {
+            error: {
+                data: undefined,
+                msg: 'Unexpected error',
+            },
+        }
+
     describe('onReset', () => {
         it('should reset Refund Order Modal', () => {
             const setRefundTypeMock = jest.fn()
             const setRefundDataMock = jest.fn()
             const setTotalAmountToRefundMock = jest.fn()
             const setRefundItemsPayloadMock = jest.fn()
+            const setAvailablePaymentOptionsDataMock = jest.fn()
+            const setSelectedPaymentOptionMock = jest.fn()
             const setRefundReasonMock = jest.fn()
             const setOrderIsCancelledMock = jest.fn()
 
@@ -78,6 +95,9 @@ describe('utils', () => {
                 setRefundData: setRefundDataMock,
                 setTotalAmountToRefund: setTotalAmountToRefundMock,
                 setRefundItemsPayload: setRefundItemsPayloadMock,
+                setAvailablePaymentOptionsData:
+                    setAvailablePaymentOptionsDataMock,
+                setSelectedPaymentOption: setSelectedPaymentOptionMock,
                 setRefundReason: setRefundReasonMock,
                 setOrderIsCancelled: setOrderIsCancelledMock,
             })
@@ -91,6 +111,10 @@ describe('utils', () => {
             })
             expect(setTotalAmountToRefundMock).toHaveBeenCalledWith(0)
             expect(setRefundItemsPayloadMock).toHaveBeenCalledWith(null)
+            expect(setAvailablePaymentOptionsDataMock).toHaveBeenCalledWith(
+                null
+            )
+            expect(setSelectedPaymentOptionMock).toHaveBeenCalledWith(null)
             expect(setRefundReasonMock).toHaveBeenCalledWith('')
             expect(setOrderIsCancelledMock).toHaveBeenCalledWith(false)
         })
@@ -144,6 +168,73 @@ describe('utils', () => {
         })
     })
 
+    describe('calculateAvailablePaymentOptionsData', () => {
+        it('should fetch the available refund methods', async () => {
+            apiMock
+                .onAny()
+                .reply(200, getBigCommerceAvailablePaymentOptionsDataOkResponse)
+
+            const setAvailablePaymentOptionsDataMock = jest.fn()
+            const setIsLoadingMock = jest.fn()
+
+            await calculateAvailablePaymentOptionsData({
+                integrationId,
+                customerId,
+                orderId: bigcommerceOrder.id,
+                refundItemsPayload: {
+                    items: [
+                        {
+                            item_type: BigCommerceRefundableItemType.order,
+                            item_id: bigcommerceOrder.id,
+                            amount: 222.33,
+                        },
+                    ],
+                },
+                setAvailablePaymentOptionsData:
+                    setAvailablePaymentOptionsDataMock,
+                setIsLoading: setIsLoadingMock,
+                setErrorMessage: jest.fn(),
+            })
+
+            expect(setIsLoadingMock).toHaveBeenCalledWith(false)
+            expect(setAvailablePaymentOptionsDataMock).toHaveBeenCalledWith(
+                getBigCommerceAvailablePaymentOptionsDataOkResponse
+            )
+        })
+
+        it('should handle API error when fetching the available refund methods', async () => {
+            apiMock
+                .onAny()
+                .reply(
+                    400,
+                    getBigCommerceAvailablePaymentOptionsDataErrorResponse
+                )
+
+            const setAvailablePaymentOptionsDataMock = jest.fn()
+            const setIsLoadingMock = jest.fn()
+            const setErrorMessageMock = jest.fn()
+
+            await calculateAvailablePaymentOptionsData({
+                integrationId,
+                customerId,
+                orderId: bigcommerceOrder.id,
+                refundItemsPayload: {
+                    items: [],
+                },
+                setAvailablePaymentOptionsData:
+                    setAvailablePaymentOptionsDataMock,
+                setIsLoading: setIsLoadingMock,
+                setErrorMessage: setErrorMessageMock,
+            })
+
+            expect(setIsLoadingMock).toHaveBeenCalledWith(false)
+            expect(setAvailablePaymentOptionsDataMock).toHaveBeenCalledTimes(0)
+            expect(setErrorMessageMock).toHaveBeenCalledWith(
+                BigCommerceGeneralErrorMessage.defaultError
+            )
+        })
+    })
+
     describe('calculateTotalOrderAmount', () => {
         it('should calculate the total order amount', () => {
             expect(
@@ -183,6 +274,53 @@ describe('utils', () => {
                     })
                 )
             ).toEqual(false)
+        })
+    })
+
+    describe('buildPaymentOptionLabel', () => {
+        it('should build a formatted string component', () => {
+            // Single component
+            expect(
+                buildPaymentOptionLabel(
+                    [
+                        {
+                            provider_id: 'instore',
+                            provider_description: 'Pay in Store',
+                            amount: 1000000.1,
+                            offline: true,
+                            offline_provider: true,
+                            offline_reason:
+                                'This is an offline payment provider.',
+                        },
+                    ],
+                    'EUR'
+                )
+            ).toMatchSnapshot()
+
+            // Multiple components
+            expect(
+                buildPaymentOptionLabel(
+                    [
+                        {
+                            provider_id: 'storecredit',
+                            provider_description: 'Store Credit',
+                            amount: 1000000.1,
+                            offline: false,
+                            offline_provider: false,
+                            offline_reason: '',
+                        },
+                        {
+                            provider_id: 'test',
+                            provider_description: 'Test Provider',
+                            amount: 2000000.2,
+                            offline: false,
+                            offline_provider: false,
+                            offline_reason: '',
+                        },
+                    ],
+                    'EUR'
+                )
+            ).toMatchSnapshot()
         })
     })
 })

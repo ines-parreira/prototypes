@@ -31,6 +31,10 @@ import {
     CalculateOrderRefundDataResponse,
     CalculateOrderRefundDataErrorResponse,
     CalculateOrderRefundDataNestedResponse,
+    CalculateOrderRefundQuotesDataResponse,
+    BigCommerceAvailablePaymentOptionsData,
+    BigCommerceRefundItemsPayload,
+    CalculateOrderRefundQuotesDataErrorResponse,
 } from '../types'
 export type OptionSelection = {option_id: number; option_value: number}
 
@@ -894,4 +898,52 @@ export async function getBigCommerceOrderRefundData({
                 BigCommerceGeneralErrorMessage.defaultError
             )
         })
+}
+
+export async function getBigCommerceAvailablePaymentOptionsData({
+    integrationId,
+    customerId,
+    orderId,
+    payload,
+}: {
+    integrationId: number
+    customerId: number
+    orderId: number
+    payload: BigCommerceRefundItemsPayload
+}): Promise<BigCommerceAvailablePaymentOptionsData> {
+    const url = `/integrations/bigcommerce/order/${orderId}/refund/refund_quotes/`
+
+    return await client
+        .post<CalculateOrderRefundQuotesDataResponse>(url, payload, {
+            params: {
+                integration_id: integrationId,
+                customer_id: customerId,
+            },
+        })
+        .then((response) => {
+            if (!response.data || !('refund_methods' in response.data)) {
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.defaultError
+                )
+            }
+
+            return response.data
+        })
+        .catch(
+            (
+                error: AxiosError<CalculateOrderRefundQuotesDataErrorResponse>
+            ) => {
+                const {response} = error
+
+                if (response?.status === 429) {
+                    throw new BigCommerceGeneralError(
+                        BigCommerceGeneralErrorMessage.rateLimitingError
+                    )
+                }
+
+                throw new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.defaultError
+                )
+            }
+        )
 }

@@ -1,14 +1,21 @@
 import _debounce from 'lodash/debounce'
 import {Map as ImmutableMap} from 'immutable'
+import React, {ReactNode, Fragment} from 'react'
 import {
+    BigCommerceAvailablePaymentOptionsData,
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,
     BigCommerceRefundItemsPayload,
+    BigCommerceRefundMethod,
+    BigCommerceRefundMethodComponent,
     BigCommerceRefundType,
     CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {getBigCommerceOrderRefundData} from 'models/integration/resources/bigcommerce'
+import {
+    getBigCommerceAvailablePaymentOptionsData,
+    getBigCommerceOrderRefundData,
+} from 'models/integration/resources/bigcommerce'
 import {defaultBigCommerceRefundType} from './consts'
 
 export const onReset = _debounce(
@@ -17,6 +24,8 @@ export const onReset = _debounce(
         setRefundData,
         setTotalAmountToRefund,
         setRefundItemsPayload,
+        setAvailablePaymentOptionsData,
+        setSelectedPaymentOption,
         setRefundReason,
         setOrderIsCancelled,
     }: {
@@ -25,6 +34,12 @@ export const onReset = _debounce(
         setTotalAmountToRefund: (totalAmountToRefund: number) => void
         setRefundItemsPayload: (
             refundItemsPayload: Maybe<BigCommerceRefundItemsPayload>
+        ) => void
+        setAvailablePaymentOptionsData: (
+            availablePaymentOptionsData: Maybe<BigCommerceAvailablePaymentOptionsData>
+        ) => void
+        setSelectedPaymentOption: (
+            selectedPaymentOption: Maybe<BigCommerceRefundMethod>
         ) => void
         setRefundReason: (refundReason: string) => void
         setOrderIsCancelled: (orderIsCancelled: boolean) => void
@@ -36,6 +51,8 @@ export const onReset = _debounce(
         })
         setTotalAmountToRefund(0)
         setRefundItemsPayload(null)
+        setAvailablePaymentOptionsData(null)
+        setSelectedPaymentOption(null)
         setRefundReason('')
         setOrderIsCancelled(false)
 
@@ -87,6 +104,54 @@ export const calculateOrderRefund = async ({
 }
 
 /**
+ * Calculate available refund methods of given order & items to refund.
+ * */
+export const calculateAvailablePaymentOptionsData = async ({
+    integrationId,
+    customerId,
+    orderId,
+    refundItemsPayload,
+    setAvailablePaymentOptionsData,
+    setIsLoading,
+    setErrorMessage,
+}: {
+    integrationId: number
+    customerId: number
+    orderId: number
+    refundItemsPayload: BigCommerceRefundItemsPayload
+    setAvailablePaymentOptionsData: (
+        availablePaymentOptionsData: BigCommerceAvailablePaymentOptionsData
+    ) => void
+    setIsLoading: (isLoading: boolean) => void
+    setErrorMessage: (errorMessage: string) => void
+}) => {
+    setIsLoading(true)
+
+    try {
+        const data: BigCommerceAvailablePaymentOptionsData =
+            await getBigCommerceAvailablePaymentOptionsData({
+                integrationId,
+                customerId,
+                orderId,
+                payload: refundItemsPayload,
+            })
+
+        setAvailablePaymentOptionsData(data)
+
+        logEvent(SegmentEvent.BigCommerceRefundOrderOpen)
+    } catch (error) {
+        // Error Handling
+        setErrorMessage(
+            error instanceof BigCommerceGeneralError
+                ? error.message
+                : BigCommerceGeneralErrorMessage.defaultError
+        )
+    } finally {
+        setIsLoading(false)
+    }
+}
+
+/**
  * Calculate the total order amount.
  * */
 export function calculateTotalOrderAmount(
@@ -119,4 +184,27 @@ export function formatAmount(
         currencyDisplay: 'symbol',
         maximumFractionDigits: 2,
     }).format(availableAmount)
+}
+
+export function buildPaymentOptionLabel(
+    paymentOption: BigCommerceRefundMethod,
+    currencyCode: Maybe<string>
+): ReactNode {
+    return (
+        <div>
+            {paymentOption.map(
+                (option: BigCommerceRefundMethodComponent, index: number) => {
+                    return (
+                        <Fragment key={index}>
+                            <b>{`${option.provider_description}: `}</b>
+                            {formatAmount(currencyCode, option.amount)}
+                            {index >= 0 &&
+                                paymentOption.length > 1 &&
+                                index !== paymentOption.length - 1 && <br />}
+                        </Fragment>
+                    )
+                }
+            )}
+        </div>
+    )
 }

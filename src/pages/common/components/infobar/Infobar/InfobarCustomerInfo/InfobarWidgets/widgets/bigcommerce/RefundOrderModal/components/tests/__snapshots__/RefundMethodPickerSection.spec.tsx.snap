@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RefundMethodPickerSection snapshot renders refund methods & selected refund method 1`] = `
+<div>
+  <div
+    class="modalSection"
+  >
+    <p
+      class="modalSectionHeader"
+    >
+      Refund method
+    </p>
+    <div
+      aria-checked="false"
+      aria-label="[object Object]"
+      class="wrapper previewRadioButtonWrapper"
+      role="radio"
+      tabindex="0"
+    >
+      <div>
+        <label
+          class="label label"
+          for="option-0"
+        >
+          <input
+            class="input"
+            id="option-0"
+            role="checkbox"
+            tabindex="-1"
+            type="radio"
+          />
+          <div>
+            <b>
+              Pay in Store: 
+            </b>
+            €1,234,567.89
+          </div>
+        </label>
+      </div>
+    </div>
+    <div
+      aria-checked="true"
+      aria-label="[object Object]"
+      class="wrapper selected previewRadioButtonWrapper"
+      role="radio"
+      tabindex="0"
+    >
+      <div>
+        <label
+          class="label label"
+          for="option-1"
+        >
+          <input
+            checked=""
+            class="input"
+            id="option-1"
+            role="checkbox"
+            tabindex="-1"
+            type="radio"
+          />
+          <div>
+            <b>
+              Store Credit: 
+            </b>
+            €1,000,000.00
+            <br />
+            <b>
+              Test provider: 
+            </b>
+            €234,567.89
+          </div>
+        </label>
+      </div>
+    </div>
+    <div
+      aria-checked="false"
+      aria-label="[object Object]"
+      class="wrapper previewRadioButtonWrapper"
+      role="radio"
+      tabindex="0"
+    >
+      <div>
+        <label
+          class="label label"
+          for="option-2"
+        >
+          <input
+            class="input"
+            id="option-2"
+            role="checkbox"
+            tabindex="-1"
+            type="radio"
+          />
+          <div>
+            <b>
+              Custom: 
+            </b>
+            €1,234,567.89
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RefundMethodPickerSection snapshot renders the initial disabled state 1`] = `
+<div>
+  <div
+    class="modalSection"
+  >
+    <p
+      class="modalSectionHeader"
+    >
+      Refund method
+    </p>
+    <p
+      class="disabled"
+    >
+      Select an amount to refund.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`RefundMethodPickerSection snapshot renders the initial state 1`] = `
+<div>
+  <div
+    class="modalSection"
+  >
+    <p
+      class="modalSectionHeader"
+    >
+      Refund method
+    </p>
+    <p
+      class=""
+    >
+      Select items to refund.
+    </p>
+  </div>
+</div>
+`;

@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`utils buildPaymentOptionLabel should build a formatted string component 1`] = `
+<div>
+  <React.Fragment>
+    <b>
+      Pay in Store: 
+    </b>
+    €1,000,000.10
+  </React.Fragment>
+</div>
+`;
+
+exports[`utils buildPaymentOptionLabel should build a formatted string component 2`] = `
+<div>
+  <React.Fragment>
+    <b>
+      Store Credit: 
+    </b>
+    €1,000,000.10
+    <br />
+  </React.Fragment>
+  <React.Fragment>
+    <b>
+      Test Provider: 
+    </b>
+    €2,000,000.20
+  </React.Fragment>
+</div>
+`;

@@ -616,3 +616,35 @@ export enum BigCommerceRefundableItemType {
     handling = 'HANDLING',
     order = 'ORDER',
 }
+
+export type BigCommerceRefundMethodComponent = {
+    provider_id: string
+    provider_description: string
+    amount: number
+    offline: boolean
+    offline_provider: boolean
+    offline_reason: string
+}
+
+export type BigCommerceRefundMethod = Array<BigCommerceRefundMethodComponent>
+
+export type BigCommerceAvailablePaymentOptionsData = {
+    total_refund_amount: number
+    total_refund_tax_amount: number
+    rounding: number
+    adjustment: number
+    is_tax_included: boolean
+    order_level_refund_amount: number
+    refund_methods: Array<BigCommerceRefundMethod>
+}
+
+export type CalculateOrderRefundQuotesDataErrorResponse = {
+    error?: {
+        data?: BigCommerceAvailablePaymentOptionsData
+        msg?: Maybe<string>
+    }
+}
+
+export type CalculateOrderRefundQuotesDataResponse =
+    | BigCommerceAvailablePaymentOptionsData
+    | CalculateOrderRefundQuotesDataErrorResponse

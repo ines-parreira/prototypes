@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import userEvent from '@testing-library/user-event'
 import {render, screen} from '@testing-library/react'
-
+import {act} from '@testing-library/react-hooks'
 import {RefundOrderFooter} from '../RefundOrderFooter'
 
 type Props = ComponentProps<typeof RefundOrderFooter>
@@ -12,6 +12,8 @@ const initialProps: Props = {
     setOrderIsCancelled: jest.fn(),
     isLoading: false,
 }
+
+jest.useFakeTimers()
 
 describe('RefundOrderFooter', () => {
     beforeEach(() => {
@@ -49,6 +51,7 @@ describe('RefundOrderFooter', () => {
         // Agent types a refund reason and checks the `Mark order as Cancelled in BigCommerce` checkbox =>
         // it will trigger a hook call with user's data
         await userEvent.type(screen.getByRole('textbox'), refundReason)
+        act(() => jest.runAllTimers())
         userEvent.click(screen.getByRole('checkbox'))
 
         expect(setRefundReasonMock).toHaveBeenCalledTimes(1)

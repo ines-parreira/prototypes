@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {fireEvent, render, screen} from '@testing-library/react'
+import {act, fireEvent, render, screen} from '@testing-library/react'
 import {
     BigCommerceOrder,
     BigCommerceRefundableItemType,
@@ -18,12 +18,15 @@ const initialDisabledProps: Props = {
         order: null,
         order_level_refund_data: null,
     },
-    setTotalAmountToRefund: jest.fn(),
+    refundItemsPayload: null,
     setRefundItemsPayload: jest.fn(),
+    setSelectedPaymentOption: jest.fn(),
     currencyCode: null,
     isLoading: true,
     hasError: false,
 }
+
+const availableAmount = 1230000.89
 
 const initialProps: Props = {
     refundData: {
@@ -31,15 +34,18 @@ const initialProps: Props = {
         order_level_refund_data: {
             total_amount: 1234567.89,
             refunded_amount: 4567,
-            available_amount: 1230000.89,
+            available_amount: availableAmount,
         },
     },
-    setTotalAmountToRefund: jest.fn(),
+    refundItemsPayload: null,
     setRefundItemsPayload: jest.fn(),
+    setSelectedPaymentOption: jest.fn(),
     currencyCode: 'EUR',
     isLoading: false,
     hasError: false,
 }
+
+jest.useFakeTimers()
 
 describe('CustomAmountRefundOrderModal', () => {
     beforeEach(() => {
@@ -65,30 +71,24 @@ describe('CustomAmountRefundOrderModal', () => {
     it("should update external state with user's data when the agent's input is valid", () => {
         const amountToRefund = 4000
 
-        const setTotalAmountToRefundMock = jest.fn()
         const setRefundItemsPayloadMock = jest.fn()
+        const setSelectedPaymentOptionMock = jest.fn()
 
         render(
             <CustomAmountRefundOrderModal
                 {...initialProps}
-                setTotalAmountToRefund={setTotalAmountToRefundMock}
                 setRefundItemsPayload={setRefundItemsPayloadMock}
+                setSelectedPaymentOption={setSelectedPaymentOptionMock}
             />
         )
+        act(() => jest.runAllTimers())
 
-        // Agent types an amount to refund => it will not trigger a hook call
+        // Agent types an amount to refund => it will trigger a hook call with user's data
         fireEvent.change(screen.getByRole('spinbutton'), {
             target: {value: amountToRefund},
         })
+        act(() => jest.runAllTimers())
 
-        expect(setTotalAmountToRefundMock).toHaveBeenCalledTimes(0)
-        expect(setRefundItemsPayloadMock).toHaveBeenCalledTimes(0)
-
-        // Agent moves to another field (the element loses focus) => it will trigger a hook call with user's data
-        fireEvent.blur(screen.getByRole('spinbutton'))
-
-        expect(setTotalAmountToRefundMock).toHaveBeenCalledTimes(1)
-        expect(setTotalAmountToRefundMock).toHaveBeenCalledWith(amountToRefund)
         expect(setRefundItemsPayloadMock).toHaveBeenCalledTimes(1)
         expect(setRefundItemsPayloadMock).toHaveBeenCalledWith({
             items: [
@@ -99,44 +99,33 @@ describe('CustomAmountRefundOrderModal', () => {
                 },
             ],
         })
+        expect(setSelectedPaymentOptionMock).toHaveBeenCalledTimes(0)
     })
 
-    it("should update external state with raw data when the agent's input is not valid", () => {
-        const amountToRefund = 'abcdef'
+    it("should update external state with raw data when the agent's input is not valid, but numerical", () => {
+        const amountToRefund = availableAmount + 1
 
-        const setTotalAmountToRefundMock = jest.fn()
         const setRefundItemsPayloadMock = jest.fn()
+        const setSelectedPaymentOptionMock = jest.fn()
 
         render(
             <CustomAmountRefundOrderModal
                 {...initialProps}
-                setTotalAmountToRefund={setTotalAmountToRefundMock}
                 setRefundItemsPayload={setRefundItemsPayloadMock}
+                setSelectedPaymentOption={setSelectedPaymentOptionMock}
             />
         )
+        act(() => jest.runAllTimers())
 
-        // Agent types an invalid amount to refund => it will not trigger a hook call
+        // Agent types an invalid numerical amount to refund => it will trigger a hook call with raw data
         fireEvent.change(screen.getByRole('spinbutton'), {
             target: {value: amountToRefund},
         })
+        act(() => jest.runAllTimers())
 
-        expect(setTotalAmountToRefundMock).toHaveBeenCalledTimes(0)
-        expect(setRefundItemsPayloadMock).toHaveBeenCalledTimes(0)
-
-        // Agent moves to another field (the element loses focus) => it will trigger a hook call with raw data
-        fireEvent.blur(screen.getByRole('spinbutton'))
-
-        expect(setTotalAmountToRefundMock).toHaveBeenCalledTimes(1)
-        expect(setTotalAmountToRefundMock).toHaveBeenCalledWith(0)
         expect(setRefundItemsPayloadMock).toHaveBeenCalledTimes(1)
-        expect(setRefundItemsPayloadMock).toHaveBeenCalledWith({
-            items: [
-                {
-                    amount: 0,
-                    item_id: bigcommerceOrder.id,
-                    item_type: BigCommerceRefundableItemType.order,
-                },
-            ],
-        })
+        expect(setRefundItemsPayloadMock).toHaveBeenCalledWith({items: []})
+        expect(setSelectedPaymentOptionMock).toHaveBeenCalledTimes(1)
+        expect(setSelectedPaymentOptionMock).toHaveBeenCalledWith(null)
     })
 })

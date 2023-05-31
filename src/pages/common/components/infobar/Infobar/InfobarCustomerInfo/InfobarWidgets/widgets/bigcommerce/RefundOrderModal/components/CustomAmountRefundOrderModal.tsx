@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
 import classnames from 'classnames'
+import {useDebounce} from 'react-use'
 import {
     BigCommerceRefundableItemType,
     BigCommerceRefundItemsPayload,
+    BigCommerceRefundMethod,
     CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
 import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
@@ -13,9 +15,12 @@ import css from './CustomAmountRefundOrderModal.less'
 
 type Props = {
     refundData: CalculateOrderRefundDataResponse
-    setTotalAmountToRefund: (totalAmountToRefund: number) => void
+    refundItemsPayload: Maybe<BigCommerceRefundItemsPayload>
     setRefundItemsPayload: (
         refundItemsPayload: Maybe<BigCommerceRefundItemsPayload>
+    ) => void
+    setSelectedPaymentOption: (
+        selectedPaymentOption: Maybe<BigCommerceRefundMethod>
     ) => void
     currencyCode: Maybe<string>
     isLoading: boolean
@@ -24,8 +29,9 @@ type Props = {
 
 export function CustomAmountRefundOrderModal({
     refundData,
-    setTotalAmountToRefund,
+    refundItemsPayload,
     setRefundItemsPayload,
+    setSelectedPaymentOption,
     currencyCode,
     isLoading,
     hasError,
@@ -39,6 +45,7 @@ export function CustomAmountRefundOrderModal({
         currencyCode,
         availableAmount
     )}`
+    const [isFirstRender, setIsFirstRender] = useState(true)
 
     const checkAmountToRefundValidity = () => {
         return (
@@ -54,6 +61,14 @@ export function CustomAmountRefundOrderModal({
 
     const handleOnSubmitAmountToRefund = () => {
         if (checkAmountToRefundValidity() && refundData.order) {
+            if (
+                refundItemsPayload?.items?.length &&
+                refundItemsPayload.items[0]?.amount === amountToRefund
+            ) {
+                // The amount is identical
+                return
+            }
+
             setRefundItemsPayload({
                 items: [
                     {
@@ -63,12 +78,24 @@ export function CustomAmountRefundOrderModal({
                     },
                 ],
             })
-            setTotalAmountToRefund(amountToRefund)
         } else {
+            // Invalid amount
             setRefundItemsPayload({items: []})
-            setTotalAmountToRefund(0)
+            setSelectedPaymentOption(null)
         }
     }
+
+    useDebounce(
+        () => {
+            if (!isFirstRender) {
+                handleOnSubmitAmountToRefund()
+            } else {
+                setIsFirstRender(false)
+            }
+        },
+        1000,
+        [amountToRefund]
+    )
 
     return (
         <div className={cssRefundOrderModal.modalSection}>
@@ -88,7 +115,6 @@ export function CustomAmountRefundOrderModal({
                 onChange={(amount) => {
                     setAmountToRefund(amount || 0)
                 }}
-                onBlur={handleOnSubmitAmountToRefund}
                 onClick={handleOnClick}
                 onFocus={handleOnClick}
                 hasControls={false}

@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import {useDebounce} from 'react-use'
 import CheckBox from 'pages/common/forms/CheckBox'
 import TextArea from 'pages/common/forms/TextArea'
 import Label from 'pages/common/forms/Label/Label'
@@ -20,9 +21,13 @@ export function RefundOrderFooter({
     const [reasonForRefund, setReasonForRefund] = useState('')
     const maxLengthRefundReason = 1000
 
-    const handleRefundReason = () => {
-        setRefundReason(reasonForRefund)
-    }
+    useDebounce(
+        () => {
+            setRefundReason(reasonForRefund)
+        },
+        300,
+        [reasonForRefund]
+    )
 
     return (
         <div className={css.modalSectionSmall}>
@@ -39,7 +44,6 @@ export function RefundOrderFooter({
                 onChange={(reason: string) => {
                     setReasonForRefund(reason)
                 }}
-                onBlurCapture={handleRefundReason}
                 caption={`Maximum length is ${maxLengthRefundReason} characters.`}
             />
             <CheckBox
