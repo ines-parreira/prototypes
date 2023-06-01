@@ -28,7 +28,12 @@ type Props = {
 const LINE_OPTIONS: ChartOptions<'line'> = {
     elements: {
         point: {
-            pointStyle: false,
+            pointStyle: 'circle',
+        },
+        line: {
+            borderWidth: 1,
+            cubicInterpolationMode: 'default',
+            tension: 0.5,
         },
     },
     layout: {
@@ -133,6 +138,7 @@ export default function LineChart({
                     backgroundColor: background,
                     label: item.label,
                     data: item.values.map((value) => value.y),
+                    pointBackgroundColor: color,
                 }
             }),
         }
