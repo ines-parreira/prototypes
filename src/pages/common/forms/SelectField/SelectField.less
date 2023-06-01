@@ -22,8 +22,13 @@
     box-sizing: border-box;
     cursor: pointer;
 
-    &:global(.dropdown-toggle)::after {
-        display: none;
+    &:global(.dropdown-toggle) {
+        &::after {
+            display: none;
+        }
+        > span {
+            width: 100%;
+        }
     }
 
     &.selectFullWidth {

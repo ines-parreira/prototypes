@@ -58,7 +58,7 @@ export const HelpCenterPreferencesView: React.FC = () => {
             />
             <section className={settingsCss.mb40}>
                 <h3>Languages</h3>
-                <DefaultLanguageSelect availableLocales={locales} />
+                <DefaultLanguageSelect />
                 <AvailableLanguagesTags availableLocales={locales} />
             </section>
             <SEO helpCenter={helpCenter} />

@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<LanguageSelect /> should render the component 1`] = `
-<div>
+<div
+  style="width: 140px;"
+>
   <div
     class="dropdown"
   >
@@ -15,24 +17,15 @@ exports[`<LanguageSelect /> should render the component 1`] = `
         class="select dropdown-toggle"
       >
         <span
-          class="label"
-          style="min-width: 10px; opacity: 1;"
+          class="label placeholder"
+          style="min-width: 130px; opacity: 1;"
         >
-          <span>
-            <img
-              alt="en-US"
-              class="flag-emoji"
-              src="test-file-stub"
-            />
-            <span>
-              English - USA
-            </span>
-          </span>
+          Select an option
         </span>
         <input
           autocomplete="chrome-off"
           class="input"
-          style="min-width: 10px;"
+          style="min-width: 130px;"
           type="text"
           value=""
         />
@@ -52,6 +45,25 @@ exports[`<LanguageSelect /> should render the component 1`] = `
       
       <button
         class="option option--focused dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          <span>
+            <img
+              alt="en-US"
+              class="flag-emoji"
+              src="test-file-stub"
+            />
+            <span>
+              English - USA
+            </span>
+          </span>
+        </span>
+      </button>
+      <button
+        class="option dropdown-item"
         role="menuitem"
         tabindex="0"
         type="button"

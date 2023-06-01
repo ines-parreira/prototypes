@@ -15,7 +15,13 @@ import {
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {renderWithRouter} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
+import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
+
+jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
+    getSingleHelpCenterResponseFixture
+)
 
 jest.mock('pages/settings/helpCenter/utils/localeSelectOptions', () => {
     const dep: Record<string, unknown> = jest.requireActual(

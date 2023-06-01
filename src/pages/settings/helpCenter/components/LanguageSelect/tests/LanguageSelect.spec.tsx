@@ -45,11 +45,11 @@ describe('<LanguageSelect />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
-
+    const onChange = jest.fn()
     it('should render the component', () => {
         const {container} = render(
             <Provider store={store}>
-                <LanguageSelect />
+                <LanguageSelect onChange={onChange} />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -58,7 +58,7 @@ describe('<LanguageSelect />', () => {
     it('should call handleOnChangeLocale on language change', async () => {
         const {findByText} = render(
             <Provider store={store}>
-                <LanguageSelect />
+                <LanguageSelect onChange={onChange} />
             </Provider>
         )
 
@@ -70,6 +70,6 @@ describe('<LanguageSelect />', () => {
 
         selectButton.click()
 
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        expect(onChange).toHaveBeenCalledTimes(2)
     })
 })

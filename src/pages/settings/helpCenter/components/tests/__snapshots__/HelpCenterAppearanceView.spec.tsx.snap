@@ -767,7 +767,9 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             <div
               class="bannerHeaderLocale"
             >
-              <div>
+              <div
+                style="width: 140px;"
+              >
                 <div
                   class="dropdown"
                 >
