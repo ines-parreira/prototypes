@@ -60,15 +60,19 @@ export const getFormattedDate = (date: string, locale?: string) => {
     return new Intl.DateTimeFormat(locale ?? 'en-US').format(new Date(date))
 }
 
+export const DETAILED_FORMATTED_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+}
 export const getDetailedFormattedDate = (date: string, locale?: string) => {
     if (isNaN(Date.parse(date))) {
         throw new Error('Invalid date')
     }
-    return new Intl.DateTimeFormat(locale ?? 'en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-    }).format(new Date(date))
+    return new Intl.DateTimeFormat(
+        locale ?? 'en-US',
+        DETAILED_FORMATTED_DATE_OPTIONS
+    ).format(new Date(date))
 }

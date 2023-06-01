@@ -12,7 +12,7 @@ stages:
   - force deploy
 
 default:
-  image: node:14
+  image: node:16
   tags:
     - non-gpu
   timeout: 30m
@@ -28,7 +28,7 @@ variables:
 
 .yarn cache:
   cache:
-   key: node-14-yarn-1.22 # Change this key when Node or Yarn versions change, to invalidate cache
+   key: node-16-yarn-1.22 # Change this key when Node or Yarn versions change, to invalidate cache
    paths: # Paths are relative to the project directory ($CI_PROJECT_DIR) and can’t directly link outside it.
     - .yarn-cache/
 

@@ -82,11 +82,11 @@ Running `yarn install` leads to error
 ➤ YN0000: └ Completed in 11s 814ms
 ➤ YN0000: Failed with errors in 11s 817ms
 ```
-This is because the is no registry configurated with access to the package @gorgias/javascript-shared-config.
-#### Posible solution
+This is because the is no registry configured with access to the package @gorgias/javascript-shared-config.
+#### Possible solution
 - Ensure you have yarn installed, if not [Yarn installation](https://yarnpkg.com/getting-started/install)
-- Configue registry for gorgias packages. For this:
-  - follow https://github.com/gorgias/gorgias/blob/main/README.md#setup-npm-to-access-private-packages to configurate npm access to github registry
+- Configure registry for gorgias packages. For this:
+  - follow https://github.com/gorgias/gorgias/blob/main/README.md#setup-npm-to-access-private-packages to configure npm access to GitHub registry
   - create your ~/.yarnrc.yml file
   ```sh
   npmRegistryServer: "https://registry.yarnpkg.com"

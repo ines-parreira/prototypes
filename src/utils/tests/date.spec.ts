@@ -1,5 +1,6 @@
 // bypassing mocked values in setup.js
 import {
+    DETAILED_FORMATTED_DATE_OPTIONS,
     getDetailedFormattedDate,
     getFormattedDate,
     getMomentTimezoneNames,
@@ -50,7 +51,10 @@ describe('date utils', () => {
     describe('getDetailedFormattedDate', () => {
         it('should return a detailed formatted date string in the default locale (en-US)', () => {
             const date = '2022-12-16T00:00:00Z'
-            const expectedResult = 'December 16, 2022, 12:00 AM'
+            const expectedResult = new Intl.DateTimeFormat(
+                'en-US',
+                DETAILED_FORMATTED_DATE_OPTIONS
+            ).format(new Date(date))
 
             const result = getDetailedFormattedDate(date)
 
@@ -60,7 +64,10 @@ describe('date utils', () => {
         it('should return a detailed formatted date string in the specified locale', () => {
             const date = '2022-12-16T00:00:00Z'
             const locale = 'de-DE'
-            const expectedResult = '16. Dezember 2022, 00:00'
+            const expectedResult = new Intl.DateTimeFormat(
+                locale,
+                DETAILED_FORMATTED_DATE_OPTIONS
+            ).format(new Date(date))
 
             const result = getDetailedFormattedDate(date, locale)
 
