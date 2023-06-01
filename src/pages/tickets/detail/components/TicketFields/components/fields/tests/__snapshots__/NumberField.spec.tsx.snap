@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NumberField /> should render the number field component correctly 1`] = `
+<label
+  class="labelWrapper"
+>
+  <span
+    class="label"
+  >
+    number field
+    :
+  </span>
+  <sup
+    class="asterisk"
+  >
+    *
+  </sup>
+  <input
+    autocomplete="off"
+    class="baseStyles stealth"
+    id="ticket-whateva-custom-field-value-number-input-1"
+    name="number field"
+    placeholder="+Add"
+    type="number"
+    value="999"
+  />
+</label>
+`;
+
+exports[`<NumberField /> should render the number field component correctly 2`] = `
+<label
+  class="labelWrapper"
+>
+  <span
+    class="label"
+  >
+    number field
+    :
+  </span>
+  <sup
+    class="asterisk"
+  >
+    *
+  </sup>
+  <input
+    autocomplete="off"
+    class="baseStyles stealth isPlaceholding"
+    id="ticket-whateva-custom-field-value-number-input-1"
+    name="number field"
+    placeholder="+Add"
+    type="number"
+    value=""
+  />
+</label>
+`;
+
+exports[`<NumberField /> should render the number field component correctly 3`] = `
+<label
+  class="labelWrapper"
+>
+  <span
+    class="label"
+  >
+    number field
+    :
+  </span>
+  <sup
+    class="asterisk"
+  >
+    *
+  </sup>
+  <input
+    autocomplete="off"
+    class="baseStyles stealth"
+    id="ticket-whateva-custom-field-value-number-input-1"
+    name="number field"
+    placeholder="+Add"
+    type="number"
+    value="0"
+  />
+</label>
+`;
+
+exports[`<NumberField /> should render the number field component correctly 4`] = `
+<label
+  class="labelWrapper"
+>
+  <span
+    class="label"
+  >
+    number field
+    :
+  </span>
+  <sup
+    class="asterisk"
+  >
+    *
+  </sup>
+  <input
+    autocomplete="off"
+    class="baseStyles stealth"
+    id="ticket-whateva-custom-field-value-number-input-1"
+    name="number field"
+    placeholder="+Add"
+    type="number"
+    value="2.3e-34"
+  />
+</label>
+`;
+
+exports[`<NumberField /> should render the number field component correctly but dispatch an error 1`] = `
+<label
+  class="labelWrapper"
+>
+  <span
+    class="label"
+  >
+    number field
+    :
+  </span>
+  <sup
+    class="asterisk"
+  >
+    *
+  </sup>
+  <input
+    autocomplete="off"
+    class="baseStyles stealth"
+    id="ticket-whateva-custom-field-value-number-input-1"
+    max="10"
+    name="number field"
+    placeholder="+Add"
+    type="number"
+    value="9999999998"
+  />
+</label>
+`;

@@ -6,6 +6,12 @@ export const VALUE_TYPES = [
         description: 'Choose one option from a list',
     },
     {
+        value: 'input_number_number',
+        icon: 'tag',
+        name: 'Number',
+        description: 'Add whole or decimal number',
+    },
+    {
         value: 'input_text',
         icon: 'title',
         name: 'Text',

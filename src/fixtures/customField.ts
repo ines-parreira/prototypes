@@ -39,6 +39,20 @@ export const ticketInputFieldDefinition: CustomField = {
         },
     },
 }
+export const ticketNumberFieldDefinition: CustomField = {
+    ...ticketFieldBaseDefinition,
+    id: 123,
+    priority: 1,
+    label: 'Number field',
+    definition: {
+        data_type: 'number',
+        input_settings: {
+            input_type: 'input_number',
+            min: '1',
+            max: '10',
+        },
+    },
+}
 
 export const ticketDropdownFieldDefinition: CustomField = {
     ...ticketFieldBaseDefinition,
@@ -76,4 +90,5 @@ export const ticketFieldDefinitions: CustomField[] = [
     ticketInputFieldDefinition,
     ticketDropdownFieldDefinition,
     ticketBooleanDefinition,
+    ticketNumberFieldDefinition,
 ]

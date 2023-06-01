@@ -12,9 +12,23 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 
+import {CustomFieldDefinition} from 'models/customField/types'
 import TicketField from '../TicketField'
 
 const mockStore = configureMockStore()
+
+function getValueForDataType(dataType: CustomFieldDefinition['data_type']) {
+    switch (dataType) {
+        case 'text':
+            return 'some value'
+        case 'number':
+            return 123
+        case 'boolean':
+            return true
+        default:
+            return 'some value'
+    }
+}
 
 describe('<TicketField />', () => {
     const defaultState = {
@@ -26,8 +40,7 @@ describe('<TicketField />', () => {
     const store = mockStore(defaultState)
     const queryClient = createTestQueryClient()
 
-    const basefieldState = {
-        value: 'some value',
+    const baseFieldState = {
         hasError: false,
     }
 
@@ -39,16 +52,17 @@ describe('<TicketField />', () => {
 
     it.each(ticketFieldDefinitions)(
         'should render the appropriate field',
-        (definition) => {
+        (customField) => {
             const fieldState = {
-                ...basefieldState,
-                id: definition.id,
+                ...baseFieldState,
+                value: getValueForDataType(customField.definition.data_type),
+                id: customField.id,
             }
             const {container} = render(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <TicketField
-                            fieldDefinition={definition}
+                            fieldDefinition={customField}
                             fieldState={fieldState}
                         />
                     </Provider>
@@ -64,27 +78,28 @@ describe('<TicketField />', () => {
             ...ticketInputFieldDefinition,
             definition: {
                 ...ticketInputFieldDefinition.definition,
-                data_type: 'number',
+                data_type: 'number' as CustomFieldDefinition['data_type'],
             },
         },
         {
             ...ticketDropdownFieldDefinition,
             definition: {
                 ...ticketDropdownFieldDefinition.definition,
-                data_type: 'number',
+                data_type: 'number' as CustomFieldDefinition['data_type'],
             },
         },
-    ])('should render coming soon for unsupported fields', (definition) => {
+    ])('should render coming soon for unsupported fields', (customField) => {
         const fieldState = {
-            ...basefieldState,
-            id: definition.id,
+            ...baseFieldState,
+            value: getValueForDataType(customField.definition.data_type),
+            id: customField.id,
         }
         const {container} = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <TicketField
                         // @ts-ignore - we're testing an unsupported/untyped field
-                        fieldDefinition={definition}
+                        fieldDefinition={customField}
                         fieldState={fieldState}
                     />
                 </Provider>

@@ -73,7 +73,31 @@ exports[`<TicketField /> should render the appropriate field 3`] = `
     name="Yes/No field"
     placeholder="+Add"
     type="text"
-    value="some value"
+    value="Yes"
+  />
+</label>
+`;
+
+exports[`<TicketField /> should render the appropriate field 4`] = `
+<label
+  class="labelWrapper"
+>
+  <span
+    class="label"
+  >
+    Number field
+    :
+  </span>
+  <input
+    autocomplete="off"
+    class="baseStyles stealth"
+    id="ticket-whateva-custom-field-value-number-input-123"
+    max="10"
+    min="1"
+    name="Number field"
+    placeholder="+Add"
+    type="number"
+    value="123"
   />
 </label>
 `;

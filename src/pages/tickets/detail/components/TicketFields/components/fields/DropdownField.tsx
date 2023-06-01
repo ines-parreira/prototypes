@@ -47,7 +47,6 @@ type Props = {
     label: string
     fieldState?: CustomFieldState
     choices: CustomFieldValue[]
-    placeholder?: string
     isRequired?: boolean
 }
 

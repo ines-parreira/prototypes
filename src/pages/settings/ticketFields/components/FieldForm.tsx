@@ -33,6 +33,7 @@ interface FieldFormProps {
 const pickMap = {
     input: ['placeholder'],
     dropdown: ['choices', 'default'],
+    input_number: ['min', 'max'],
 }
 
 function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
@@ -175,7 +176,9 @@ export default function FieldForm(props: FieldFormProps) {
                 <TypeSelectInput
                     value={`${form.definition.input_settings.input_type}_${form.definition.data_type}`}
                     onChange={(val) => {
-                        const [inputType, dataType] = val.split('_')
+                        const split = val.split('_')
+                        const dataType = split.pop()
+                        const inputType = split.join('_')
                         setValue(
                             'definition.input_settings.input_type',
                             inputType
@@ -188,17 +191,21 @@ export default function FieldForm(props: FieldFormProps) {
                     Field type can't be changed once it's been saved.
                 </Caption>
             </div>
-            {form.definition.input_settings.input_type === 'input' && (
-                <InputField
-                    name="settings.placeholder"
-                    label="Placeholder"
-                    value={form.definition.input_settings.placeholder}
-                    onChange={(val) =>
-                        setValue('definition.input_settings.placeholder', val)
-                    }
-                    className={css.formRow}
-                />
-            )}
+            {form.definition.data_type === 'text' &&
+                form.definition.input_settings.input_type === 'input' && (
+                    <InputField
+                        name="settings.placeholder"
+                        label="Placeholder"
+                        value={form.definition.input_settings.placeholder}
+                        onChange={(val) =>
+                            setValue(
+                                'definition.input_settings.placeholder',
+                                val
+                            )
+                        }
+                        className={css.formRow}
+                    />
+                )}
             {form.definition.data_type !== 'boolean' &&
                 form.definition.input_settings.input_type === 'dropdown' && (
                     <div className={css.formRow}>

@@ -1,5 +1,7 @@
-export type CustomFieldTextInputTypes =
-    CustomTypeDefinitionText['input_settings']['input_type']
+export type CustomFieldDefinition =
+    | CustomTypeDefinitionText
+    | CustomTypeDefinitionBoolean
+    | CustomTypeDefinitionNumber
 
 export type CustomFieldValue = string | number | boolean
 
@@ -14,6 +16,12 @@ interface CustomFieldInputSettingsDropdown {
     default?: string
 }
 
+interface CustomFieldInputSettingsNumber {
+    input_type: 'input_number'
+    min?: string
+    max?: string
+}
+
 interface CustomTypeDefinitionText {
     data_type: 'text'
     input_settings:
@@ -24,6 +32,10 @@ interface CustomTypeDefinitionBoolean {
     data_type: 'boolean'
     input_settings: CustomFieldInputSettingsDropdown
 }
+interface CustomTypeDefinitionNumber {
+    data_type: 'number'
+    input_settings: CustomFieldInputSettingsNumber
+}
 
 export interface CustomFieldInput {
     object_type: 'Ticket' | 'Customer'
@@ -31,7 +43,7 @@ export interface CustomFieldInput {
     description?: string
     priority?: number
     required: boolean
-    definition: CustomTypeDefinitionText | CustomTypeDefinitionBoolean
+    definition: CustomFieldDefinition
 }
 
 export interface CustomField extends CustomFieldInput {
