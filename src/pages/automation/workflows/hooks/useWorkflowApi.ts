@@ -34,6 +34,7 @@ type WorkflowApi = {
         accountId: number,
         workflowId: string
     ) => WorkflowConfiguration
+    deleteWorkflowConfiguration: (configurationId: string) => Promise<void>
 }
 
 export default function useWorkflowApi(): WorkflowApi {
@@ -75,6 +76,14 @@ export default function useWorkflowApi(): WorkflowApi {
             },
             []
         ),
+        deleteWorkflowConfiguration: useCallback((configurationId: string) => {
+            setIsUpdatePending(true)
+            return apiClient
+                .delete<void>(`/configurations/${configurationId}`)
+                .then(() => {
+                    setIsUpdatePending(false)
+                })
+        }, []),
         workflowConfigurationFactory,
     }
 }

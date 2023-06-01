@@ -7,6 +7,7 @@ import {
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {NotificationStatus} from 'state/notifications/types'
 import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from 'pages/automation/common/components/constants'
+import {WorkflowConfiguration} from '../types'
 import useWorkflowApi from './useWorkflowApi'
 
 export type UseWorkflowsEntrypointsReturnType = {
@@ -44,16 +45,20 @@ export default function useWorkflowsEntrypoints(
     const {
         isFetchPending: isWorkflowApiFetchPending,
         fetchWorkflowConfigurations,
+        deleteWorkflowConfiguration,
     } = useWorkflowApi()
-    const [workflowNamesById, setWorkflowNamesById] = useState<
-        Record<string, string>
+    const [workflowConfigurationById, setWorkflowConfigurationById] = useState<
+        Record<string, WorkflowConfiguration>
     >({})
     useEffect(() => {
         void fetchWorkflowConfigurations().then((confs) =>
-            setWorkflowNamesById(
+            setWorkflowConfigurationById(
                 confs.reduce(
-                    (acc, conf) => ({...acc, [conf.id]: conf.name}),
-                    {} as Record<string, string>
+                    (acc, conf) => ({
+                        ...acc,
+                        [conf.id]: conf,
+                    }),
+                    {} as Record<string, WorkflowConfiguration>
                 )
             )
         )
@@ -132,13 +137,19 @@ export default function useWorkflowsEntrypoints(
                     if (at >= 0) draft.workflows_entrypoints!.splice(at, 1)
                 }
             )
+
             setDraftConfiguration(nextConfiguration)
             await handleSelfServiceConfigurationUpdate(nextConfiguration)
+            const internalId =
+                workflowConfigurationById[workflowId]?.internal_id
+            await deleteWorkflowConfiguration(internalId)
             notifyMerchant('Successfully deleted', 'success')
         },
         [
             selfServiceConfigurationApi.selfServiceConfiguration,
             handleSelfServiceConfigurationUpdate,
+            workflowConfigurationById,
+            deleteWorkflowConfiguration,
             notifyMerchant,
         ]
     )
@@ -164,7 +175,7 @@ export default function useWorkflowsEntrypoints(
     const workflowsEntrypoints =
         draftConfiguration?.workflows_entrypoints?.map((e) => ({
             ...e,
-            name: workflowNamesById[e.workflow_id] ?? '',
+            name: workflowConfigurationById[e.workflow_id]?.name ?? '',
         })) ?? []
     const quickResponsesEnabled =
         selfServiceConfigurationApi.selfServiceConfiguration?.quick_response_policies?.filter(

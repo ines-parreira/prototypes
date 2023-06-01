@@ -2,10 +2,17 @@ import React, {ComponentType, ReactChildren} from 'react'
 import {act, renderHook} from '@testing-library/react-hooks'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import {waitFor} from '@testing-library/react'
 import {RootState, StoreDispatch} from 'state/types'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import useWorkflowsEntrypoints from '../useWorkflowsEntrypoints'
+import useWorkflowApi from '../useWorkflowApi'
+import {
+    WorkflowConfiguration,
+    WorkflowStepMessages,
+    WorkflowTransition,
+} from '../../types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const renderHookOptions = {
@@ -24,12 +31,34 @@ const mockSelfServiceConfiguration: ReturnType<
     handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
 } as const
 
+const mockWorkflowConfiguration: WorkflowConfiguration = {
+    id: 'a',
+    account_id: 1,
+    internal_id: 'int-a',
+    name: 'a',
+    is_draft: false,
+    initial_step_id: 's1',
+    steps: [] as WorkflowStepMessages[],
+    transitions: [] as WorkflowTransition[],
+}
+
+const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
+    isFetchPending: false,
+    isUpdatePending: false,
+    fetchWorkflowConfigurations: () => {
+        return Promise.resolve([mockWorkflowConfiguration])
+    },
+    deleteWorkflowConfiguration: jest.fn(() => Promise.resolve()),
+} as const
+
 jest.mock('pages/automation/common/hooks/useSelfServiceConfiguration', () => {
     return {
         __esModule: true,
         default: jest.fn().mockReturnValue(mockSelfServiceConfiguration),
     }
 })
+
+jest.mock('pages/automation/workflows/hooks/useWorkflowApi.ts')
 
 function updateMock(
     overrides: Partial<ReturnType<typeof useSelfServiceConfiguration>>
@@ -42,6 +71,9 @@ function updateMock(
         ...mockSelfServiceConfiguration,
         ...overrides,
     })
+    ;(useWorkflowApi as jest.MockedFn<typeof useWorkflowApi>).mockReturnValue(
+        mockWorkflowApi as ReturnType<typeof useWorkflowApi>
+    )
 }
 
 const entrypointsFixtures = [
@@ -86,7 +118,9 @@ describe('useWorkflowsEntrypoints', () => {
             } as SelfServiceConfiguration,
         })
         rerender()
-        expect(result.current.workflowsEntrypoints).toEqual(entrypointsFixtures)
+        expect(result.current.workflowsEntrypoints).toEqual(
+            entrypointsWithNameFixtures
+        )
     })
 
     it('handleDragAndDrop', async () => {
@@ -101,12 +135,13 @@ describe('useWorkflowsEntrypoints', () => {
         )
         await act(() => result.current.handleDragAndDrop(['c', 'a', 'b']))
         expect(result.current.workflowsEntrypoints).toEqual([
-            entrypointsFixtures[2],
-            ...entrypointsFixtures.slice(0, 2),
+            entrypointsWithNameFixtures[2],
+            {...entrypointsWithNameFixtures[0], name: 'a'},
+            ...entrypointsWithNameFixtures.slice(1, 2),
         ])
     })
 
-    it.only('deleteWorkflowEntrypoint', async () => {
+    it('deleteWorkflowEntrypoint', async () => {
         updateMock({
             selfServiceConfiguration: {
                 workflows_entrypoints: entrypointsFixtures,
@@ -116,10 +151,23 @@ describe('useWorkflowsEntrypoints', () => {
             () => useWorkflowsEntrypoints('', '', () => null),
             renderHookOptions
         )
-        await act(() => result.current.deleteWorkflowEntrypoint('a'))
+        await waitFor(() =>
+            expect(result.current.isFetchPending).toEqual(false)
+        )
+        await act(() =>
+            result.current.deleteWorkflowEntrypoint(
+                mockWorkflowConfiguration.id
+            )
+        )
         expect(result.current.workflowsEntrypoints).toEqual([
             ...entrypointsWithNameFixtures.slice(1),
         ])
+        expect(
+            mockWorkflowApi.deleteWorkflowConfiguration
+        ).toHaveBeenCalledTimes(1)
+        expect(
+            mockWorkflowApi.deleteWorkflowConfiguration
+        ).toHaveBeenCalledWith(mockWorkflowConfiguration.internal_id)
     })
 
     it('toggleEnabled and isToggleUpdatePending', async () => {
@@ -135,8 +183,8 @@ describe('useWorkflowsEntrypoints', () => {
         )
         await act(() => result.current.toggleEnabled('a'))
         expect(result.current.workflowsEntrypoints).toEqual([
-            {...entrypointsFixtures[0], enabled: false},
-            ...entrypointsFixtures.slice(1),
+            {...entrypointsFixtures[0], enabled: false, name: 'a'},
+            ...entrypointsWithNameFixtures.slice(1),
         ])
         expect(result.current.isToggleUpdatePending('a')).toBe(true)
         // simulate selfServiceConfiguration being refreshed after API update
@@ -150,6 +198,9 @@ describe('useWorkflowsEntrypoints', () => {
         // refresh useCallbacks to use the last selfServiceConfiguration mock
         rerender()
         await act(() => result.current.toggleEnabled('a'))
-        expect(result.current.workflowsEntrypoints).toEqual(entrypointsFixtures)
+        expect(result.current.workflowsEntrypoints).toEqual([
+            {...entrypointsFixtures[0], name: 'a'},
+            ...entrypointsWithNameFixtures.slice(1),
+        ])
     })
 })
