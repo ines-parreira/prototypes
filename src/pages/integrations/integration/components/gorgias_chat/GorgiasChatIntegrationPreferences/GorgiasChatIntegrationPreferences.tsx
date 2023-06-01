@@ -783,13 +783,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <div>
                                             <p className="mb-4">
                                                 Customers can only send live
-                                                chat messages or offline
-                                                captures to your team after
-                                                going through an automated
-                                                interaction. This may help
-                                                deflect repetitive questions and
-                                                reduce your overall ticket
-                                                volume.
+                                                chat messages or contact form to
+                                                your team after going through an
+                                                automated interaction. This may
+                                                help deflect repetitive
+                                                questions and reduce your
+                                                overall ticket volume.
                                             </p>
                                             <div
                                                 className={classnames(
