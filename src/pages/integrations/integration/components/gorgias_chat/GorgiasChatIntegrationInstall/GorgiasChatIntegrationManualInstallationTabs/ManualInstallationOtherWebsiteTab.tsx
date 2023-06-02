@@ -26,7 +26,7 @@ const ManualInstallationOtherWebsiteTab = ({code}: Props) => {
             </InstallationStep>
             <InstallationCodeSnippet code={code} />
             <Alert type={AlertType.Warning}>
-                Please not that by inserting this snippet on your webpage, it
+                Please note that by inserting this snippet on your webpage, it
                 will load the chat on that specific webpage only. Make sure to
                 insert the snippet on all the pages for which you wish to
                 display the chat widget.

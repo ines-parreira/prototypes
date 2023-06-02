@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ManualInstallationOtherWebsiteTab should render the component 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="container"
+  >
+    <div
+      class="bullet"
+    >
+      1
+    </div>
+    <div>
+      Edit the source code of your website and find the closing HTML tag 
+      <b>
+        &lt;/body&gt;
+      </b>
+    </div>
+  </div>
+  <div
+    class="container"
+  >
+    <div
+      class="bullet"
+    >
+      2
+    </div>
+    <div>
+      Above the 
+      <b>
+        &lt;/body&gt;
+      </b>
+       tag, paste the code snippet below
+    </div>
+  </div>
+  <div
+    class="container"
+  >
+    <div
+      class="bullet"
+    >
+      3
+    </div>
+    <div>
+      Save and publish the changes
+    </div>
+  </div>
+  <div
+    class="container"
+  >
+    <code
+      class="code"
+    >
+      code_snippet_here
+    </code>
+    <button
+      class="wrapper fill secondary small"
+      type="button"
+    >
+      <span
+        class="wrapper"
+      >
+        <i
+          class="material-icons icon isLeft small"
+        >
+          content_copy
+        </i>
+        Copy Code
+      </span>
+    </button>
+  </div>
+  <div
+    class="alert warning"
+  >
+    <div
+      class="content"
+    >
+      <span
+        class="label"
+      >
+        Please note that by inserting this snippet on your webpage, it will load the chat on that specific webpage only. Make sure to insert the snippet on all the pages for which you wish to display the chat widget.
+      </span>
+    </div>
+  </div>
+</div>
+`;
