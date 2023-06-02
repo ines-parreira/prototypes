@@ -1,14 +1,17 @@
 import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
-import {render, screen} from '@testing-library/react'
+import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
+import userEvent from '@testing-library/user-event'
 import {
     BigCommerceActionType,
     BigCommerceGeneralErrorMessage,
     BigCommerceOrder,
+    BigCommerceRefundableItemType,
+    BigCommerceRefundType,
     CalculateOrderRefundDataNestedResponse,
     CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
@@ -21,11 +24,16 @@ import {
     CustomerContext,
     CustomerContextType,
 } from 'providers/infobar/CustomerContext'
-import {bigCommerceIntegrationFixture} from 'fixtures/bigcommerce'
+import {
+    bigCommerceAvailablePaymentOptionsDataResponseFixture,
+    bigCommerceIntegrationFixture,
+} from 'fixtures/bigcommerce'
 import client from 'models/api/resources'
+import * as bigcommerceApi from 'models/integration/resources/bigcommerce'
 import RefundOrderModalRenderWrapper, {
     RefundOrderModal,
 } from '../RefundOrderModal'
+import * as utils from '../utils'
 
 const defaultState = {
     integrations: fromJS(integrationsState),
@@ -37,6 +45,13 @@ const bigcommerceOrder: BigCommerceOrder = {
     id: 123,
     currency_code: 'EUR',
 }
+const bigcommerceOrderLevelRefundData = {
+    total_amount: 1234567.89,
+    refunded_amount: 4567,
+    available_amount: 1230000.89,
+}
+
+jest.useFakeTimers()
 
 describe('RefundOrderModal', () => {
     let apiMock: MockAdapter
@@ -136,6 +151,10 @@ describe('RefundOrderModal', () => {
 })
 
 describe('RefundOrderModalConnected', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
     const defaultCustomerContextValue = {
         customerId: 44,
     }
@@ -211,5 +230,137 @@ describe('RefundOrderModalConnected', () => {
             refundOrderModalProps: refundOrderProps,
         })
         expect(screen.getByText(/Refund order #123/i)).toBeTruthy()
+    })
+
+    it('`Refund` button does not send a refund BigCommerce order action when data is incomplete', () => {
+        const bigcommerceRefundOrderSpy = jest.spyOn(
+            utils,
+            'bigcommerceRefundOrder'
+        )
+
+        refundOrderProps.isOpen = true
+        renderSubject({
+            refundOrderModalProps: refundOrderProps,
+        })
+
+        screen.getByRole('button', {name: /Refund/i}).click()
+
+        expect(bigcommerceRefundOrderSpy).toHaveBeenCalledTimes(0)
+    })
+
+    it('Custom amount - `Refund` button sends a refund BigCommerce order action', async () => {
+        const getBigCommerceOrderRefundDataSpy = jest
+            .spyOn(bigcommerceApi, 'getBigCommerceOrderRefundData')
+            .mockReturnValue(
+                new Promise((resolve) =>
+                    resolve({
+                        order: bigcommerceOrder,
+                        order_level_refund_data:
+                            bigcommerceOrderLevelRefundData,
+                    })
+                )
+            )
+        const getBigCommerceAvailablePaymentOptionsDataSpy = jest
+            .spyOn(bigcommerceApi, 'getBigCommerceAvailablePaymentOptionsData')
+            .mockReturnValue(
+                new Promise((resolve) =>
+                    resolve(
+                        bigCommerceAvailablePaymentOptionsDataResponseFixture
+                    )
+                )
+            )
+        const bigcommerceRefundOrderSpy = jest
+            .spyOn(utils, 'bigcommerceRefundOrder')
+            .mockReturnValue()
+        const onResetSpy = jest.spyOn(utils, 'onReset').mockReturnValue()
+
+        refundOrderProps.isOpen = true
+        renderSubject({
+            refundOrderModalProps: refundOrderProps,
+        })
+        act(() => jest.runAllTimers())
+
+        // Initialize the modal => available amount for refund is displayed
+        expect(getBigCommerceOrderRefundDataSpy).toHaveBeenCalledTimes(1)
+
+        // Select an amount to refund
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    new RegExp(
+                        `Available for refund: ${utils.formatAmount(
+                            bigcommerceOrder.currency_code,
+                            bigcommerceOrderLevelRefundData.available_amount
+                        )}`
+                    )
+                )
+            ).toBeInTheDocument()
+        })
+
+        const amountToRefund = 10
+        fireEvent.change(screen.getByRole('spinbutton'), {
+            target: {value: amountToRefund},
+        })
+        act(() => jest.runAllTimers())
+
+        expect(
+            getBigCommerceAvailablePaymentOptionsDataSpy
+        ).toHaveBeenCalledTimes(1)
+
+        // Select a refund method
+        await waitFor(() => {
+            expect(screen.getByText(/Store Credit/)).toBeInTheDocument()
+        })
+        userEvent.click(screen.getAllByRole('checkbox')[1])
+
+        // Select a reason for refund
+        fireEvent.change(screen.getByRole('textbox'), {
+            target: {value: 'Refunded from Gorgias'},
+        })
+        act(() => jest.runAllTimers())
+
+        // Select `Mark order as Cancelled in BigCommerce`
+        userEvent.click(
+            screen.getByText('Mark order as Cancelled in BigCommerce')
+        )
+
+        // Refund order
+        screen
+            .getByRole('button', {
+                name: new RegExp(
+                    `Refund ${utils.formatAmount(
+                        bigcommerceOrder.currency_code,
+                        bigCommerceAvailablePaymentOptionsDataResponseFixture.total_refund_amount
+                    )}`,
+                    'i'
+                ),
+            })
+            .click()
+
+        expect(bigcommerceRefundOrderSpy).toHaveBeenCalledTimes(1)
+        expect(bigcommerceRefundOrderSpy).toHaveBeenCalledWith(
+            BigCommerceActionType.RefundOrder,
+            expect.any(Function),
+            integrationsState.integrations.find(
+                (integration) => integration.type === 'bigcommerce'
+            ),
+            defaultCustomerContextValue.customerId.toString(),
+            bigcommerceOrder.id,
+            BigCommerceRefundType.CustomAmount,
+            {
+                items: [
+                    {
+                        amount: amountToRefund,
+                        item_id: bigcommerceOrder.id,
+                        item_type: BigCommerceRefundableItemType.order,
+                    },
+                ],
+            },
+            bigCommerceAvailablePaymentOptionsDataResponseFixture
+                .refund_methods[1],
+            'Refunded from Gorgias',
+            true
+        )
+        expect(onResetSpy).toHaveBeenCalledTimes(1)
     })
 })

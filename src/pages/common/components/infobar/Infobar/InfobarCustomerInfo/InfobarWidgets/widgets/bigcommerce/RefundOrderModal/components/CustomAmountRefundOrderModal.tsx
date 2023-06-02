@@ -60,7 +60,11 @@ export function CustomAmountRefundOrderModal({
     }
 
     const handleOnSubmitAmountToRefund = () => {
-        if (checkAmountToRefundValidity() && refundData.order) {
+        if (
+            amountToRefund > 0 &&
+            checkAmountToRefundValidity() &&
+            refundData.order
+        ) {
             if (
                 refundItemsPayload?.items?.length &&
                 refundItemsPayload.items[0]?.amount === amountToRefund

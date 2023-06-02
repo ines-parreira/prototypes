@@ -2,9 +2,11 @@ import _debounce from 'lodash/debounce'
 import {Map as ImmutableMap} from 'immutable'
 import React, {ReactNode, Fragment} from 'react'
 import {
+    BigCommerceActionType,
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,
+    BigCommerceIntegration,
     BigCommerceRefundItemsPayload,
     BigCommerceRefundMethod,
     BigCommerceRefundMethodComponent,
@@ -16,6 +18,9 @@ import {
     getBigCommerceAvailablePaymentOptionsData,
     getBigCommerceOrderRefundData,
 } from 'models/integration/resources/bigcommerce'
+import {StoreDispatch} from 'state/types'
+import {ActionDataPayload} from 'state/infobar/utils'
+import {executeAction} from 'state/infobar/actions'
 import {defaultBigCommerceRefundType} from './consts'
 
 export const onReset = _debounce(
@@ -149,6 +154,42 @@ export const calculateAvailablePaymentOptionsData = async ({
     } finally {
         setIsLoading(false)
     }
+}
+
+/**
+ * Send a `bigcommerceRefundOrder` action that will result in refunding an existing order from BigCommerce.
+ */
+export function bigcommerceRefundOrder(
+    actionName: BigCommerceActionType,
+    dispatch: StoreDispatch,
+    integration: BigCommerceIntegration,
+    customerId: Maybe<string>,
+    orderId: number,
+    refundType: BigCommerceRefundType,
+    refundItemsPayload: BigCommerceRefundItemsPayload,
+    selectedPaymentOption: BigCommerceRefundMethod,
+    refundReason: Maybe<string>,
+    orderIsCancelled: boolean
+) {
+    const payload: ActionDataPayload = {
+        bigcommerce_order_id: orderId,
+        bigcommerce_refund_payload: {
+            items: refundItemsPayload.items,
+            reason: refundReason,
+            payments: selectedPaymentOption,
+        },
+        bigcommerce_mark_order_as_cancelled: orderIsCancelled,
+        bigcommerce_refund_type: refundType,
+    }
+
+    dispatch(
+        executeAction({
+            actionName: actionName,
+            integrationId: integration.id,
+            customerId: customerId?.toString(),
+            payload: payload,
+        })
+    )
 }
 
 /**

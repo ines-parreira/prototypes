@@ -206,6 +206,7 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
         const removed: string[] = []
 
         if (
+            draftOrderUrl ||
             isOrderFullyRefunded(source) ||
             !bigcommerceRefundOrderAccessFlags
         ) {

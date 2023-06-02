@@ -649,3 +649,9 @@ export type CalculateOrderRefundQuotesDataErrorResponse = {
 export type CalculateOrderRefundQuotesDataResponse =
     | BigCommerceAvailablePaymentOptionsData
     | CalculateOrderRefundQuotesDataErrorResponse
+
+export type BigCommerceRefundOrderPayload = {
+    items: BigCommerceRefundItemsPayload['items']
+    reason?: Maybe<string>
+    payments: BigCommerceRefundMethod
+}

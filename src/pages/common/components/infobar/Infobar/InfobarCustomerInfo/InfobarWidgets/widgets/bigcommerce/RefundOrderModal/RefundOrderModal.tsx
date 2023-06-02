@@ -32,12 +32,14 @@ import {
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
 import Spinner from 'pages/common/components/Spinner'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {defaultBigCommerceRefundType} from './consts'
 import {CustomAmountRefundOrderModal} from './components/CustomAmountRefundOrderModal'
 import {RefundMethodPickerSection} from './components/RefundMethodPickerSection'
 import {RefundOrderFooter} from './components/RefundOrderFooter'
 import css from './RefundOrderModal.less'
 import {
+    bigcommerceRefundOrder,
     calculateAvailablePaymentOptionsData,
     calculateOrderRefund,
     formatAmount,
@@ -55,6 +57,8 @@ export function RefundOrderModal({
     data = {actionName: null, order: null},
     onClose,
 }: Props) {
+    const dispatch = useAppDispatch()
+
     const orderId: number = data?.order?.get('id')
     const currencyCode: Maybe<string> = data?.order?.get('currency_code')
 
@@ -74,7 +78,7 @@ export function RefundOrderModal({
         useState<Maybe<BigCommerceAvailablePaymentOptionsData>>(null)
     const [selectedPaymentOption, setSelectedPaymentOption] =
         useState<Maybe<BigCommerceRefundMethod>>(null)
-    const [, setRefundReason] = useState('')
+    const [refundReason, setRefundReason] = useState('')
     const [orderIsCancelled, setOrderIsCancelled] = useState(false)
 
     const handleReset = useCallback(() => {
@@ -141,7 +145,38 @@ export function RefundOrderModal({
     }, [refundItemsPayload, availablePaymentOptionsData, selectedPaymentOption])
 
     const handleRefundOrder = () => {
-        logEvent(SegmentEvent.BigCommerceRefundOrderSubmitRefund)
+        if (
+            !data?.actionName ||
+            !refundItemsPayload ||
+            !selectedPaymentOption?.length ||
+            totalAmountToRefund <= 0 ||
+            !checkRefundModalValidity()
+        ) {
+            return
+        }
+
+        logEvent(SegmentEvent.BigCommerceRefundOrderSubmitRefund, {
+            refundedAmount: totalAmountToRefund,
+            type: refundType,
+            method: selectedPaymentOption.map(
+                (option) => option.provider_description
+            ),
+        })
+
+        bigcommerceRefundOrder(
+            data.actionName,
+            dispatch,
+            integration,
+            customerId?.toString(),
+            orderId,
+            refundType,
+            refundItemsPayload,
+            selectedPaymentOption,
+            refundReason,
+            orderIsCancelled
+        )
+
+        handleCancel('refund-order')
     }
 
     const checkRefundItemsPayloadValidity = useCallback(() => {

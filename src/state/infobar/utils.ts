@@ -1,6 +1,10 @@
 import hash from 'object-hash'
 
-import {ActionPayload} from '../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {ActionPayload} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {
+    BigCommerceRefundOrderPayload,
+    BigCommerceRefundType,
+} from 'models/integration/types'
 
 export type ActionDataPayload =
     | {
@@ -18,6 +22,10 @@ export type ActionDataPayload =
           bigcommerce_checkout_id?: Maybe<string>
           bigcommerce_order_payload?: Maybe<Record<string, any>>
           bigcommerce_draft_order_url?: Maybe<string>
+          bigcommerce_order_id?: Maybe<number>
+          bigcommerce_refund_payload?: Maybe<BigCommerceRefundOrderPayload>
+          bigcommerce_mark_order_as_cancelled?: Maybe<boolean>
+          bigcommerce_refund_type?: Maybe<BigCommerceRefundType>
           from_ticket_message_id?: number
       }
     | ActionPayload

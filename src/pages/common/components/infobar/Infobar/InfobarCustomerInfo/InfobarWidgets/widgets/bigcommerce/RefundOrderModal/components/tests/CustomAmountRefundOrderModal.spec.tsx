@@ -45,6 +45,23 @@ const initialProps: Props = {
     hasError: false,
 }
 
+const zeroAmountToRefundProps: Props = {
+    refundData: {
+        order: bigcommerceOrder,
+        order_level_refund_data: {
+            total_amount: 1234567.89,
+            refunded_amount: 1234567.89,
+            available_amount: 0,
+        },
+    },
+    refundItemsPayload: null,
+    setRefundItemsPayload: jest.fn(),
+    setSelectedPaymentOption: jest.fn(),
+    currencyCode: 'EUR',
+    isLoading: false,
+    hasError: false,
+}
+
 jest.useFakeTimers()
 
 describe('CustomAmountRefundOrderModal', () => {
@@ -127,5 +144,36 @@ describe('CustomAmountRefundOrderModal', () => {
         expect(setRefundItemsPayloadMock).toHaveBeenCalledWith({items: []})
         expect(setSelectedPaymentOptionMock).toHaveBeenCalledTimes(1)
         expect(setSelectedPaymentOptionMock).toHaveBeenCalledWith(null)
+    })
+
+    it('should test behavior when the order is fully refunded - zero available amount left for refund', () => {
+        const amountToRefund = 1
+
+        const setRefundItemsPayloadMock = jest.fn()
+        const setSelectedPaymentOptionMock = jest.fn()
+
+        const {container} = render(
+            <CustomAmountRefundOrderModal
+                {...zeroAmountToRefundProps}
+                setRefundItemsPayload={setRefundItemsPayloadMock}
+                setSelectedPaymentOption={setSelectedPaymentOptionMock}
+            />
+        )
+
+        expect(container).toMatchSnapshot()
+
+        act(() => jest.runAllTimers())
+
+        // Agent types an invalid numerical amount to refund => it will trigger a hook call with raw data
+        fireEvent.change(screen.getByRole('spinbutton'), {
+            target: {value: amountToRefund},
+        })
+        act(() => jest.runAllTimers())
+
+        expect(setRefundItemsPayloadMock).toHaveBeenCalledTimes(1)
+        expect(setRefundItemsPayloadMock).toHaveBeenCalledWith({items: []})
+        expect(setSelectedPaymentOptionMock).toHaveBeenCalledTimes(1)
+        expect(setSelectedPaymentOptionMock).toHaveBeenCalledWith(null)
+        expect(container).toMatchSnapshot()
     })
 })

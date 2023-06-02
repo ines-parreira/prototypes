@@ -1,5 +1,87 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`CustomAmountRefundOrderModal should test behavior when the order is fully refunded - zero available amount left for refund 1`] = `
+<div>
+  <div
+    class="modalSection"
+  >
+    <p
+      class="modalSectionHeader"
+    >
+      Refund
+    </p>
+    <span
+      class="customAmountRefundInputFieldWrapper wrapper group horizontal"
+    >
+      <span
+        class="prefix"
+      >
+        €
+      </span>
+      <input
+        class="input isAlignedRight"
+        max="Infinity"
+        min="0"
+        required=""
+        step="0.01"
+        type="number"
+        value="0.00"
+      />
+      <span
+        class="suffix"
+      >
+         
+      </span>
+    </span>
+    <p
+      class="caption"
+    />
+  </div>
+</div>
+`;
+
+exports[`CustomAmountRefundOrderModal should test behavior when the order is fully refunded - zero available amount left for refund 2`] = `
+<div>
+  <div
+    class="modalSection"
+  >
+    <p
+      class="modalSectionHeader"
+    >
+      Refund
+    </p>
+    <span
+      class="customAmountRefundInputFieldWrapper wrapper hasError group horizontal"
+    >
+      <span
+        class="prefix"
+      >
+        €
+      </span>
+      <input
+        class="input isAlignedRight"
+        max="Infinity"
+        min="0"
+        required=""
+        step="0.01"
+        type="number"
+        value="1.00"
+      />
+      <span
+        class="suffix"
+      >
+         
+      </span>
+    </span>
+    <p
+      class="caption hasError"
+    >
+      Available for refund: €0.00
+    </p>
+  </div>
+</div>
+`;
+
 exports[`CustomAmountRefundOrderModal snapshot renders the initial disabled state 1`] = `
 <div>
   <div
