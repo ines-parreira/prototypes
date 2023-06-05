@@ -56,6 +56,10 @@ export type WhatsAppTemplateComponents = {
         type: string
         value: string
     }
+    footer: {
+        type: string
+        value: string
+    }
 }
 
 export type WhatsAppTemplate = {
