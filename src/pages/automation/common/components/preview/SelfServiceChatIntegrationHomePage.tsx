@@ -1,7 +1,6 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 import classnames from 'classnames'
 import {useHistory} from 'react-router-dom'
-import _keyBy from 'lodash/keyBy'
 
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
@@ -12,6 +11,7 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 
 import SelfServiceChatIntegrationFooter from './components/SelfServiceChatIntegrationFooter'
 import SelfServiceChatIntegrationArticleRecommendationFooter from './components/SelfServiceChatIntegrationArticleRecommendationFooter'
+import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 import css from './SelfServiceChatIntegrationHomePage.less'
@@ -33,50 +33,9 @@ const SelfServiceChatIntegrationHomePage = ({integration}: Props) => {
         hoveredQuickResponseId,
         hoveredOrderManagementFlow,
         isArticleRecommendationEnabled,
-        areWorkflowsEnabled,
-        workflowsEntrypoints: workflowsEntrypointsProp,
     } = useSelfServicePreviewContext()
     const currentUser = useAppSelector(getCurrentUser)
-    const workflowsEntrypoints = useMemo(() => {
-        if (!areWorkflowsEnabled) {
-            return []
-        }
-
-        const allWorkflowsEntrypoints =
-            selfServiceConfiguration?.workflows_entrypoints ?? []
-
-        if (!workflowsEntrypointsProp) {
-            return allWorkflowsEntrypoints
-                .filter((entrypoint) => entrypoint.enabled)
-                .map((entrypoint) => ({
-                    workflow_id: entrypoint.workflow_id,
-                    label: entrypoint.label,
-                }))
-        }
-
-        const allWorkflowsEntrypointsByWorkflowId = _keyBy(
-            allWorkflowsEntrypoints,
-            'workflow_id'
-        )
-
-        return workflowsEntrypointsProp
-            .filter(
-                (entrypoint) =>
-                    entrypoint.workflow_id in
-                        allWorkflowsEntrypointsByWorkflowId &&
-                    entrypoint.enabled
-            )
-            .map((entrypoint) => ({
-                workflow_id: entrypoint.workflow_id,
-                label: allWorkflowsEntrypointsByWorkflowId[
-                    entrypoint.workflow_id
-                ].label,
-            }))
-    }, [
-        areWorkflowsEnabled,
-        workflowsEntrypointsProp,
-        selfServiceConfiguration?.workflows_entrypoints,
-    ])
+    const workflowsEntrypoints = useWorkflowsEntrypoints()
 
     const sspTexts =
         GORGIAS_CHAT_SSP_TEXTS[integration.meta.language || 'en-US']

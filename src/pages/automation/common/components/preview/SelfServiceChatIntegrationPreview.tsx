@@ -3,8 +3,9 @@ import {Route, useHistory, useLocation} from 'react-router-dom'
 
 import {GorgiasChatIntegration} from 'models/integration/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-
 import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
+
+import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
 import SelfServiceChatIntegrationHomePage from './SelfServiceChatIntegrationHomePage'
 import SelfServiceChatIntegrationQuickResponsePage from './SelfServiceChatIntegrationQuickResponsePage'
 import SelfServiceChatIntegrationTrackPage from './SelfServiceChatIntegrationTrackPage'
@@ -31,6 +32,7 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
         useSelfServicePreviewContext()
     const {decoration, meta} = integration
 
+    const workflowsEntrypoints = useWorkflowsEntrypoints()
     const isInitialEntry = history.length === 1
 
     const quickResponses =
@@ -43,7 +45,10 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
         selfServiceConfiguration?.cancel_order_policy.enabled ||
         selfServiceConfiguration?.return_order_policy.enabled
 
-    const isSSPDisabled = !quickResponses.length && !canManageOrders
+    const isSSPDisabled =
+        !quickResponses.length &&
+        !canManageOrders &&
+        !workflowsEntrypoints.length
 
     return (
         <ChatIntegrationPreview
