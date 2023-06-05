@@ -1,13 +1,27 @@
 import React from 'react'
 import LD from 'launchdarkly-react-client-sdk'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
+
+import {RootState, StoreDispatch} from 'state/types'
+import {products} from 'fixtures/productPrices'
 import {renderWithRouter} from 'utils/testing'
-import {
-    BILLING_BASE_PATH,
-    BILLING_PAYMENTS_HISTORY,
-    BILLING_PAYMENT_PATH,
-} from 'pages/settings/new_billing/constants'
+import {BILLING_BASE_PATH} from 'pages/settings/new_billing/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
 import BillingStartView from '../BillingStartView'
+
+const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
+
+const store = mockedStore({
+    billing: fromJS({invoices: [], products}),
+})
+
+const WrappedBillingStartView = () => (
+    <Provider store={store}>
+        <BillingStartView />
+    </Provider>
+)
 
 describe('BillingStartView', () => {
     beforeEach(() => {
@@ -17,33 +31,10 @@ describe('BillingStartView', () => {
     })
 
     it('should render a BillingStartView component and load the Usage & Plans view', () => {
-        const {container} = renderWithRouter(<BillingStartView />, {
+        const {container} = renderWithRouter(<WrappedBillingStartView />, {
             route: BILLING_BASE_PATH,
         })
 
-        expect(container.querySelector('li:last-child')).toHaveTextContent(
-            'Usage & Plans'
-        )
         expect(container).toMatchSnapshot()
-    })
-
-    it('should render the Payments History Page', () => {
-        const {container} = renderWithRouter(<BillingStartView />, {
-            route: BILLING_PAYMENTS_HISTORY,
-        })
-
-        expect(container.querySelector('li:last-child')).toHaveTextContent(
-            'Payment History'
-        )
-    })
-
-    it('should render the Payment Information page', () => {
-        const {container} = renderWithRouter(<BillingStartView />, {
-            route: BILLING_PAYMENT_PATH,
-        })
-
-        expect(container.querySelector('li:last-child')).toHaveTextContent(
-            'Payment Information'
-        )
     })
 })

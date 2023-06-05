@@ -48,7 +48,7 @@ export function getFormattedAmount(amountInCents: number) {
 }
 
 export const getCheapestPrice = (
-    prices?: SMSOrVoicePrice[],
+    prices?: (HelpdeskPrice | AutomationPrice | SMSOrVoicePrice)[],
     interval?: PlanInterval
 ) =>
     !!prices

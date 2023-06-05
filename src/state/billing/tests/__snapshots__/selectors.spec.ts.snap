@@ -446,6 +446,191 @@ exports[`billing selectors getAutomationProduct should return the automation pro
 }
 `;
 
+exports[`billing selectors getCheapestProductPrices should return the cheapest product prices 1`] = `
+{
+  "automation": {
+    "amount": 3000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+    "currency": "usd",
+    "extra_ticket_cost": 0.2,
+    "features": {
+      "automation_cancellations_flow": {
+        "enabled": true,
+      },
+      "automation_managed_rules": {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": {
+        "enabled": true,
+      },
+      "automation_return_flow": {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": {
+        "enabled": true,
+      },
+      "automation_track_order_flow": {
+        "enabled": true,
+      },
+    },
+    "internal_id": "aut-addon-basic-full-price-monthly-usd-4",
+    "interval": "month",
+    "legacy_id": "basic-automation-full-price-monthly-usd-4",
+    "name": "Basic",
+    "num_quota_tickets": null,
+    "order": 2,
+    "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  "helpdesk": {
+    "addons": [
+      "price_1LJBjXI9qXomtXqSSX34F3we",
+    ],
+    "amount": 6000,
+    "currency": "usd",
+    "extra_ticket_cost": 0.4,
+    "features": {
+      "api_1st_party_rate_limit": {
+        "enabled": true,
+        "rate_limit": {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": {
+        "enabled": true,
+        "rate_limit": {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": {
+        "enabled": false,
+      },
+      "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": {
+        "enabled": false,
+      },
+      "automation_return_flow": {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": {
+        "enabled": false,
+      },
+      "automation_track_order_flow": {
+        "enabled": false,
+      },
+      "chat_campaigns": {
+        "enabled": true,
+      },
+      "facebook_comment": {
+        "enabled": true,
+      },
+      "help_center": {
+        "enabled": true,
+      },
+      "instagram_comment": {
+        "enabled": true,
+      },
+      "instagram_dm": {
+        "enabled": true,
+      },
+      "magento_integration": {
+        "enabled": false,
+      },
+      "overview_live_statistics": {
+        "enabled": true,
+      },
+      "phone_number": {
+        "enabled": true,
+        "limit": 1,
+      },
+      "revenue_statistics": {
+        "enabled": false,
+      },
+      "satisfaction_surveys": {
+        "enabled": true,
+      },
+      "teams": {
+        "enabled": true,
+      },
+      "twitter_integration": {
+        "enabled": false,
+        "limit": 0,
+      },
+      "user_roles": {
+        "enabled": true,
+      },
+      "users_live_statistics": {
+        "enabled": false,
+      },
+      "view_sharing": {
+        "enabled": true,
+      },
+      "yotpo_integration": {
+        "enabled": true,
+      },
+    },
+    "integrations": 150,
+    "internal_id": "basic-monthly-usd-4",
+    "interval": "month",
+    "is_legacy": false,
+    "legacy_id": "basic-monthly-usd-4",
+    "limits": {
+      "messages": {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+    },
+    "name": "Basic",
+    "num_quota_tickets": 300,
+    "order": 2,
+    "phone_limits": {
+      "billing": 50,
+    },
+    "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
+  },
+  "sms": {
+    "amount": 90,
+    "currency": "usd",
+    "extra_ticket_cost": 1.2,
+    "internal_id": "sms-addon-03-monthly-usd-4",
+    "interval": "month",
+    "name": "SMS Addon 150 Monthly",
+    "num_quota_tickets": 150,
+    "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
+    "product_id": "prod_MT8Fzk7vmcT73m",
+  },
+  "voice": {
+    "amount": 175,
+    "currency": "usd",
+    "extra_ticket_cost": 1.4,
+    "internal_id": "voc-addon-04-monthly-usd-4",
+    "interval": "month",
+    "name": "Voice Addon 250 Monthly",
+    "num_quota_tickets": 250,
+    "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
+    "product_id": "prod_MT6fyh00TCFRGZ",
+  },
+}
+`;
+
 exports[`billing selectors getCurrentAutomationFullAmount() should return the full amount of automation add-on 1`] = `30`;
 
 exports[`billing selectors getCurrentAutomationFullAmount() should return undefined when no automation add-on amount or discount exists 1`] = `undefined`;

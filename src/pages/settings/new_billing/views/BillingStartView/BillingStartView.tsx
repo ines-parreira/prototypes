@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {Container} from 'reactstrap'
 import {NavLink, Route, Switch} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -13,14 +13,11 @@ import {
 import UsageAndPlansView from '../UsageAndPlansView'
 import PaymentInformationView from '../PaymentInformationView/PaymentInformationView'
 import PaymentsHistoryView from '../PaymentHistoryView/PaymentsHistoryView'
-import {generateBreadcrumbs} from '../../utils/generateBreadcrumbs'
+import css from './BillingStartView.less'
 
 const BillingStartView = () => {
     const hasAccessToNewBilling: boolean | undefined =
         useFlags()[FeatureFlagKey.NewBillingInterface]
-    const [breadcrumbItems, setBreadcrumbItems] = useState<
-        (JSX.Element | string)[]
-    >([])
 
     if (!hasAccessToNewBilling) {
         return null
@@ -28,7 +25,7 @@ const BillingStartView = () => {
 
     return (
         <div className="full-width">
-            <PageHeader title={generateBreadcrumbs(breadcrumbItems)} />
+            <PageHeader title="Billing" />
             <SecondaryNavbar>
                 <NavLink exact to={BILLING_BASE_PATH}>
                     Usage & Plans
@@ -36,22 +33,16 @@ const BillingStartView = () => {
                 <NavLink to={BILLING_PAYMENT_PATH}>Payment Information</NavLink>
                 <NavLink to={BILLING_PAYMENTS_HISTORY}>Payment History</NavLink>
             </SecondaryNavbar>
-            <Container fluid>
+            <Container fluid className={css.mainContainer}>
                 <Switch>
                     <Route exact path={BILLING_BASE_PATH}>
-                        <UsageAndPlansView
-                            setBreadcrumbItems={setBreadcrumbItems}
-                        />
+                        <UsageAndPlansView />
                     </Route>
                     <Route exact path={BILLING_PAYMENT_PATH}>
-                        <PaymentInformationView
-                            setBreadcrumbItems={setBreadcrumbItems}
-                        />
+                        <PaymentInformationView />
                     </Route>
                     <Route exact path={BILLING_PAYMENTS_HISTORY}>
-                        <PaymentsHistoryView
-                            setBreadcrumbItems={setBreadcrumbItems}
-                        />
+                        <PaymentsHistoryView />
                     </Route>
                 </Switch>
             </Container>

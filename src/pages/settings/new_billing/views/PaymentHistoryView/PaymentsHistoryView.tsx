@@ -1,13 +1,6 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 
-type Props = {
-    setBreadcrumbItems: (breadcrumbItems: (JSX.Element | string)[]) => void
-}
-
-const PaymentHistoryView = ({setBreadcrumbItems}: Props) => {
-    useEffect(() => {
-        setBreadcrumbItems(['Payment History'])
-    }, [setBreadcrumbItems])
+const PaymentHistoryView = () => {
     return (
         <div>
             <h1>PaymentsHistoryView</h1>

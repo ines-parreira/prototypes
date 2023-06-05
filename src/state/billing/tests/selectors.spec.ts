@@ -649,4 +649,21 @@ describe('billing selectors', () => {
             expect(selectors.getAutomationPrices(state)).toMatchSnapshot()
         })
     })
+
+    describe('getCheapestProductPrices', () => {
+        it('should return the cheapest product prices', () => {
+            const cheapestProductPrices =
+                selectors.getCheapestProductPrices(state)
+            expect(cheapestProductPrices.voice).toEqual(voicePrice1)
+            expect(cheapestProductPrices.sms).toEqual(smsPrice1)
+            expect(cheapestProductPrices.automation).toEqual(
+                basicMonthlyAutomationPrice
+            )
+            expect(cheapestProductPrices.helpdesk).toEqual(
+                basicMonthlyHelpdeskPrice
+            )
+
+            expect(cheapestProductPrices).toMatchSnapshot()
+        })
+    })
 })
