@@ -19,6 +19,7 @@ export type UseWorkflowsEntrypointsReturnType = {
     toggleEnabled: (workflowId: string) => Promise<void>
     handleDragAndDrop: (sortedWorkflowIds: string[]) => Promise<void>
     deleteWorkflowEntrypoint: (workflowId: string) => Promise<void>
+    duplicateWorkflow: (workflowId: string) => Promise<{id: string}>
 }
 
 export default function useWorkflowsEntrypoints(
@@ -28,7 +29,7 @@ export default function useWorkflowsEntrypoints(
 ): UseWorkflowsEntrypointsReturnType {
     const {
         isFetchPending: isSelfServiceFetchPending,
-        isUpdatePending,
+        isUpdatePending: isSelfServiceUpdatePending,
         handleSelfServiceConfigurationUpdate,
         ...selfServiceConfigurationApi
     } = useSelfServiceConfiguration(
@@ -44,14 +45,16 @@ export default function useWorkflowsEntrypoints(
     )
     const {
         isFetchPending: isWorkflowApiFetchPending,
+        isUpdatePending: isWorkflowApiUpdatePending,
         fetchWorkflowConfigurations,
         deleteWorkflowConfiguration,
+        duplicateWorkflowConfiguration,
     } = useWorkflowApi()
     const [workflowConfigurationById, setWorkflowConfigurationById] = useState<
         Record<string, WorkflowConfiguration>
     >({})
-    useEffect(() => {
-        void fetchWorkflowConfigurations().then((confs) =>
+    const loadWorkflowsConfigurations = useCallback(() => {
+        return fetchWorkflowConfigurations().then((confs) =>
             setWorkflowConfigurationById(
                 confs.reduce(
                     (acc, conf) => ({
@@ -63,6 +66,9 @@ export default function useWorkflowsEntrypoints(
             )
         )
     }, [fetchWorkflowConfigurations])
+    useEffect(() => {
+        void loadWorkflowsConfigurations()
+    }, [loadWorkflowsConfigurations])
 
     // needed to avoid stale references of self service configuration in the handleDragAndDrop callback below
     // otherwise there is a bug involving ReactSortable onChange prop having a stale version of the callback
@@ -77,6 +83,9 @@ export default function useWorkflowsEntrypoints(
     const [draftConfiguration, setDraftConfiguration] = useState(
         selfServiceConfigurationRef.current
     )
+    // some operations (duplicate) require fetching and updating from both the self service API and workflows API
+    // to keep a consistent loading state we use an additional local isUpdatePending state
+    const [isUpdatePending, setIsUpdatePending] = useState(false)
 
     useEffect(() => {
         setDraftConfiguration(
@@ -88,7 +97,8 @@ export default function useWorkflowsEntrypoints(
 
     const toggleEnabled = useCallback(
         async (workflowId: string) => {
-            if (!selfServiceConfigurationApi.selfServiceConfiguration) return
+            if (!selfServiceConfigurationApi.selfServiceConfiguration)
+                throw new Error('self service configuration not loaded')
             const nextConfiguration = produce(
                 selfServiceConfigurationApi.selfServiceConfiguration,
                 (draft) => {
@@ -126,7 +136,8 @@ export default function useWorkflowsEntrypoints(
 
     const deleteWorkflowEntrypoint = useCallback(
         async (workflowId: string) => {
-            if (!selfServiceConfigurationApi.selfServiceConfiguration) return
+            if (!selfServiceConfigurationApi.selfServiceConfiguration)
+                throw new Error('self service configuration not loaded')
             const nextConfiguration = produce(
                 selfServiceConfigurationApi.selfServiceConfiguration,
                 (draft) => {
@@ -151,6 +162,40 @@ export default function useWorkflowsEntrypoints(
             workflowConfigurationById,
             deleteWorkflowConfiguration,
             notifyMerchant,
+        ]
+    )
+
+    const duplicateWorkflow = useCallback(
+        async (workflowId: string) => {
+            if (!selfServiceConfigurationApi.selfServiceConfiguration)
+                throw new Error('self service configuration not loaded')
+            setIsUpdatePending(true)
+            const duplicatedWorkflow = await duplicateWorkflowConfiguration(
+                workflowId
+            )
+            await loadWorkflowsConfigurations()
+            const nextConfiguration = produce(
+                selfServiceConfigurationApi.selfServiceConfiguration,
+                (draft) => {
+                    const originalLabel = draft.workflows_entrypoints?.find(
+                        (e) => e.workflow_id === workflowId
+                    )?.label
+                    draft.workflows_entrypoints?.push({
+                        workflow_id: duplicatedWorkflow.id,
+                        enabled: false,
+                        label: originalLabel || '',
+                    })
+                }
+            )
+            await handleSelfServiceConfigurationUpdate(nextConfiguration)
+            setIsUpdatePending(false)
+            return {id: duplicatedWorkflow.id}
+        },
+        [
+            selfServiceConfigurationApi.selfServiceConfiguration,
+            duplicateWorkflowConfiguration,
+            loadWorkflowsConfigurations,
+            handleSelfServiceConfigurationUpdate,
         ]
     )
 
@@ -187,12 +232,18 @@ export default function useWorkflowsEntrypoints(
             workflowsEntrypoints.filter((e) => e.enabled).length +
                 quickResponsesEnabled >=
             MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
-        isFetchPending: isSelfServiceFetchPending || isWorkflowApiFetchPending,
-        isUpdatePending,
+        isFetchPending:
+            !isUpdatePending &&
+            (isSelfServiceFetchPending || isWorkflowApiFetchPending),
+        isUpdatePending:
+            isSelfServiceUpdatePending ||
+            isWorkflowApiUpdatePending ||
+            isUpdatePending,
         isToggleUpdatePending,
         toggleEnabled,
         handleDragAndDrop,
         deleteWorkflowEntrypoint,
+        duplicateWorkflow,
     }
 }
 

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import IconButton from 'pages/common/components/button/IconButton'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -13,6 +14,7 @@ import css from './WorkflowsList.less'
 type Props = {
     entrypoints: Array<WorkflowEntrypoint & {name: string}>
     onDelete: (workflowId: string) => Promise<void>
+    onDuplicate: (workflowId: string) => Promise<{id: string}>
     goToEditWorkflowPage: (workflowId: string) => void
     isUpdatePending: boolean
 }
@@ -20,6 +22,7 @@ type Props = {
 const WorkflowsList = ({
     entrypoints,
     onDelete,
+    onDuplicate,
     goToEditWorkflowPage,
     isUpdatePending,
 }: Props) => {
@@ -37,6 +40,22 @@ const WorkflowsList = ({
                             {entrypoint.name}
                         </BodyCell>
                         <BodyCell size="smallest">
+                            <IconButton
+                                className="mr-1"
+                                fillStyle="ghost"
+                                intent="secondary"
+                                isDisabled={isUpdatePending}
+                                onClick={async (e) => {
+                                    e.stopPropagation()
+                                    const duplicated = await onDuplicate(
+                                        entrypoint.workflow_id
+                                    )
+                                    goToEditWorkflowPage(duplicated.id)
+                                }}
+                                title="Duplicate flow"
+                            >
+                                file_copy
+                            </IconButton>
                             <DeleteWorkflowAction
                                 onDelete={() => {
                                     void onDelete(entrypoint.workflow_id)

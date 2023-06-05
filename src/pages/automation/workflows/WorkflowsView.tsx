@@ -46,6 +46,7 @@ export default function WorkflowsView({
         workflowsEntrypoints,
         handleDragAndDrop,
         deleteWorkflowEntrypoint,
+        duplicateWorkflow,
         toggleEnabled,
         isFetchPending,
         isUpdatePending,
@@ -61,6 +62,7 @@ export default function WorkflowsView({
                 <WorkflowsList
                     entrypoints={workflowsEntrypoints}
                     onDelete={deleteWorkflowEntrypoint}
+                    onDuplicate={duplicateWorkflow}
                     goToEditWorkflowPage={goToEditWorkflowPage}
                     isUpdatePending={isUpdatePending}
                 />
