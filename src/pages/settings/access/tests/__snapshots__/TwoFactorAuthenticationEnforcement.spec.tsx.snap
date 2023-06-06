@@ -39,6 +39,37 @@ exports[`<TwoFactorAuthenticationEnforcement /> render() should render turned on
         Require 2FA for all users
       </label>
     </div>
+    <div
+      class="mt-3"
+    >
+      <label
+        class="label mb-2"
+        for="twoFAEnforcementDatetime"
+      >
+        Enforcement time
+        <abbr
+          aria-label="required"
+          class="abbr"
+          title="required"
+        >
+          *
+        </abbr>
+      </label>
+      <div>
+        <div
+          class="wrapper"
+        >
+          <input
+            class="input"
+            data-1p-ignore="true"
+            id="twoFAEnforcementDatetime"
+            name="twoFAEnforcementDatetime"
+            type="text"
+            value="06/16/2023 5:34 AM"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 `;

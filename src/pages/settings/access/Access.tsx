@@ -164,13 +164,11 @@ export const AccessContainer = (props: Props) => {
     }, [])
 
     const toggle2FAEnforcement = useCallback(
-        (val: boolean) => {
+        (val: string | null) => {
             return saveSettings(
                 LoadingKey.TwoFAEnforcement,
                 {
-                    two_fa_enforced_datetime: val
-                        ? new Date().toISOString().split('.')[0]
-                        : null,
+                    two_fa_enforced_datetime: val,
                 },
                 `Two-Factor Authentication ${
                     val
@@ -281,7 +279,7 @@ export const AccessContainer = (props: Props) => {
                         </div>
 
                         <TwoFactorAuthenticationEnforcement
-                            is2FAEnforced={!!twoFAEnforcedDatetime}
+                            twoFAEnforcedDatetime={twoFAEnforcedDatetime}
                             loading={isLoading === LoadingKey.TwoFAEnforcement}
                             disabled={
                                 !!isLoading &&

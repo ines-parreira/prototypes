@@ -2,6 +2,7 @@ import React from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {screen, render, fireEvent} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
@@ -31,6 +32,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
 
     const defaultStore = mockStore({
         currentUser: fromJS({
+            timezone: 'US/Pacific',
             has_2fa_enabled: false,
         }),
     })
@@ -41,15 +43,24 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
         on2FAEnforced: jest.fn(),
     }
 
+    beforeAll(() => {
+        const mockTime = 1685709296000 // 2023-06-02T12:34:56
+        jest.useFakeTimers().setSystemTime(mockTime)
+    })
+
+    afterAll(() => {
+        jest.useRealTimers()
+    })
+
     describe('render()', () => {
-        it.each([true, false])(
+        it.each(['2023-06-02T12:34:56', null])(
             'should render turned on/off',
-            (is2FAEnforced) => {
+            (twoFAEnforcedDatetime) => {
                 const {container} = render(
                     <Provider store={defaultStore}>
                         <TwoFactorAuthenticationEnforcement
                             {...minProps}
-                            is2FAEnforced={is2FAEnforced}
+                            twoFAEnforcedDatetime={twoFAEnforcedDatetime}
                         />
                     </Provider>
                 )
@@ -70,17 +81,16 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                 <Provider store={store}>
                     <TwoFactorAuthenticationEnforcement
                         {...minProps}
-                        is2FAEnforced={false}
+                        twoFAEnforcedDatetime={null}
                         on2FAEnforced={on2FAEnforced}
                     />
                 </Provider>
             )
 
             const toggle = screen.getByLabelText('Require 2FA for all users')
-
             fireEvent.click(toggle)
 
-            expect(on2FAEnforced).toHaveBeenCalledWith(true)
+            expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-02T12:34:56')
         })
 
         it('should open 2fa setup modal because user does not have it enabled and enforce 2fa on finish', async () => {
@@ -90,7 +100,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                 <Provider store={defaultStore}>
                     <TwoFactorAuthenticationEnforcement
                         {...minProps}
-                        is2FAEnforced={false}
+                        twoFAEnforcedDatetime={null}
                         on2FAEnforced={on2FAEnforced}
                     />
                 </Provider>
@@ -106,7 +116,64 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
             // mock finish 2fa setup
             fireEvent.click(screen.getByText('Finish action mocked'))
 
-            expect(on2FAEnforced).toHaveBeenCalledWith(true)
+            expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-02T12:34:56')
         })
+    })
+
+    it('should disable 2fa enforcement', () => {
+        const on2FAEnforced = jest.fn()
+
+        render(
+            <Provider store={defaultStore}>
+                <TwoFactorAuthenticationEnforcement
+                    {...minProps}
+                    twoFAEnforcedDatetime={'2023-06-02T12:34:56'}
+                    on2FAEnforced={on2FAEnforced}
+                />
+            </Provider>
+        )
+
+        const toggle = screen.getByLabelText('Require 2FA for all users')
+        fireEvent.click(toggle)
+
+        expect(on2FAEnforced).toHaveBeenCalledWith(null)
+    })
+
+    it('should allow to customize the enforcement datetime', () => {
+        const on2FAEnforced = jest.fn()
+        const store = mockStore({
+            currentUser: fromJS({
+                timezone: 'US/Pacific',
+                has_2fa_enabled: true,
+            }),
+        })
+
+        render(
+            <Provider store={store}>
+                <TwoFactorAuthenticationEnforcement
+                    {...minProps}
+                    twoFAEnforcedDatetime={'2023-06-02T12:34:56'}
+                    on2FAEnforced={on2FAEnforced}
+                />
+            </Provider>
+        )
+
+        // Open calendar
+        const toggle = screen.getByLabelText(/Enforcement time/)
+        fireEvent.click(toggle)
+
+        // Click the day 21
+        const day = screen
+            .getAllByText('21')
+            .filter((elt) => elt.getAttribute('data-title') === 'r3c3')[0]
+        userEvent.click(day)
+
+        // Confirm choice
+        const apply = screen.getByText('Apply')
+        fireEvent.click(apply)
+
+        // It should send the day 21 - 14 = 7
+        // The seconds are lost since we don't show a second selector in the datetime picker
+        expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-07T12:34:00')
     })
 })
