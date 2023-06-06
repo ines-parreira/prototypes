@@ -16,21 +16,36 @@ export const FakeFAQArticle: React.FC<Props> = ({title, description}) => (
     </div>
 )
 
-const FakeFAQArticlePreview: React.FC = () => (
+export const FakeFAQArticlePreview: React.FC = () => (
     <>
         <FakeFAQArticle
-            title="What size should I order?"
-            description="Unsure what size will work? Check out our sizing guide located above the sizes offered on each product page for exact measure..."
+            title="What’s your shipping policy?"
+            description="Delivery times are based on where you’re located. We ship our orders from California…"
         />
         <FakeFAQArticle
-            title="What shoe size should I buy?"
-            description="We recommend looking at the product details on the product page for each item for specific fit information. Each style will have..."
+            title="Shipping timelines during peak season"
+            description="During Black Friday, Cyber Monday and Christmas our orders may take longer to deliver…"
         />
         <FakeFAQArticle
-            title="What size am I in your denim?"
-            description="Take a look at our denim size guide for measurement instructions and keep in mind that the fabric will relax during the first..."
+            title="Do you support express shipping?"
+            description="If you’d like your order to ship faster, we support express shipping! Simply select this as your preferred shipping during checkout…"
         />
     </>
 )
 
-export default FakeFAQArticlePreview
+export const FakeFAQArticleAnswerPreview: React.FC = () => (
+    <div className={classnames(css.container, css.FAQArticlePreview)}>
+        <p className={css.previewTitle}>We found an answer!</p>
+        <div className={css.previewAnswer}>
+            <p>
+                Our delivery times vary depending on where you’re based and
+                whether it’s peak season, but it can take 5 to 10 business days
+                with regular delivery and up to 5 days with express shipping.
+            </p>
+            <p>
+                This information was pulled from the articles below from our
+                Help Center.
+            </p>
+        </div>
+    </div>
+)

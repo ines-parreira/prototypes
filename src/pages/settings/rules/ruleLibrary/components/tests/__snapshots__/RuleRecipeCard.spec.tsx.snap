@@ -479,9 +479,7 @@ exports[`<RuleRecipeCard/> render should open modal on click 1`] = `
       foo
     </div>
   </div>
-  <div
-    class="footer"
-  >
+  <div>
     <div
       class="ticketCount"
     >
@@ -521,9 +519,7 @@ exports[`<RuleRecipeCard/> render should render cards for the library 1`] = `
       foo
     </div>
   </div>
-  <div
-    class="footer"
-  >
+  <div>
     <div
       class="ticketCount"
     >
@@ -567,9 +563,7 @@ exports[`<RuleRecipeCard/> render should render install check mark on installed 
       foo
     </div>
   </div>
-  <div
-    class="footer"
-  >
+  <div>
     <div
       class="ticketCount"
     >

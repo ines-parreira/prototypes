@@ -349,7 +349,7 @@ function RuleRecipeCard({
                     {rule.description || 'No description available'}
                 </div>
             </div>
-            <div className={css.footer}>
+            <div>
                 <div
                     className={classnames(css.ticketCount, {
                         [css.important]: recipe.triggered_count >= 20,

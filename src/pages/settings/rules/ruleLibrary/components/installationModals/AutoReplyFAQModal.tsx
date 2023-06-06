@@ -3,7 +3,10 @@ import React, {useEffect} from 'react'
 
 import {assetsUrl} from 'utils'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import FakeFAQArticlePreview from 'pages/settings/rules/components/FakeFAQArticlePreview'
+import {
+    FakeFAQArticlePreview,
+    FakeFAQArticleAnswerPreview,
+} from 'pages/settings/rules/components/FakeFAQArticlePreview'
 import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -41,9 +44,9 @@ export const AutoReplyFAQModal = ({
                     <div className={defaultModalCss.descriptionBlock}>
                         <h4>How it works</h4>
                         <p>
-                            This rule detects customer questions in incoming
-                            emails, replies with relevant articles from your
-                            help center, and closes the ticket. If customers
+                            This rule use ChatGPT to auto-generate answers based
+                            on Help Center articles, and send them as instant
+                            responses to incoming email tickets. If customers
                             reply, the ticket will reopen so you never miss a
                             response.
                         </p>
@@ -72,8 +75,8 @@ export const AutoReplyFAQModal = ({
                             <div className="ml-3">
                                 <div className={css.name}>Client Name</div>
                                 <div>
-                                    Hey, I'm not sure what size to order, can
-                                    you help me out?
+                                    What is the estimated delivery time for
+                                    orders?
                                 </div>
                             </div>
                         </div>
@@ -98,11 +101,11 @@ export const AutoReplyFAQModal = ({
                                     <p>Hi Client Name,</p>
                                     <p>Thank you for contacting us!</p>
                                     <p>
-                                        We found some articles from our help
-                                        center that might provide the
-                                        information you’re looking for. Click a
-                                        preview below to open and read more.
+                                        We found some answers from our Help
+                                        Center that might provide the
+                                        information you’re looking for.
                                     </p>
+                                    <FakeFAQArticleAnswerPreview />
                                     <FakeFAQArticlePreview />
                                     <p>
                                         This is an automated message. If it does

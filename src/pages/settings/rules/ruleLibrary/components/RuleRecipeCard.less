@@ -2,13 +2,12 @@
 
 :local {
     .card {
+        display: grid;
+        grid-template-rows: max-content 1fr auto;
         border: 1px solid @classic-neutral-grey-3;
         border-radius: 4px;
         width: 380px;
         padding: 0px;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 16px;
         cursor: pointer;
         transition: ease-in-out 0.2s;
 
@@ -21,7 +20,7 @@
         font-weight: 600;
         margin-bottom: 8px;
         display: -webkit-box;
-        -webkit-line-clamp: 1;
+        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
@@ -51,10 +50,6 @@
         }
     }
 
-    .footer {
-        display: flex;
-        justify-content: space-between;
-    }
     .content {
         padding: 16px;
     }

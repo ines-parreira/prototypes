@@ -120,7 +120,7 @@ export const ManagedRuleDisplayName = new Map<ManagedRulesSlugs, string>([
     ],
     [
         ManagedRulesSlugs.AutoReplyFAQ,
-        '[Auto Reply] Article recommendation (Email)',
+        '[Auto Reply] Recommend articles via email using ChatGPT',
     ],
     [ManagedRulesSlugs.AutoCloseSpam, '[Auto Close] Auto-close spam emails'],
     [

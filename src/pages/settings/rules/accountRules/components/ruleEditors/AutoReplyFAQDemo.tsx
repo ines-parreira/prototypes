@@ -2,7 +2,10 @@ import React from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import {AutoReplyFAQSettings} from 'state/rules/types'
-import FakeFAQArticlePreview from 'pages/settings/rules/components/FakeFAQArticlePreview'
+import {
+    FakeFAQArticlePreview,
+    FakeFAQArticleAnswerPreview,
+} from 'pages/settings/rules/components/FakeFAQArticlePreview'
 import RichField from 'pages/common/forms/RichField/RichField'
 
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
@@ -35,6 +38,7 @@ export const AutoReplyFAQDemo = ({settings}: Props) => {
                             />
                         </div>
                     </div>
+                    <FakeFAQArticleAnswerPreview />
                     <FakeFAQArticlePreview />
                     <div>
                         <div className={css.previewLegend}>
