@@ -15,6 +15,9 @@ import {
     Spinner,
 } from 'reactstrap'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
@@ -95,6 +98,8 @@ function GorgiasTranslateText({
         'email_capture_enforcement',
     ])
     const filterForlEmailCaptureKeys = {emailCaptureEnforcement}
+    const renameContactFormEnabled =
+        useFlags()[FeatureFlagKey.ChatRenameContactForm]
 
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -377,7 +382,11 @@ function GorgiasTranslateText({
                         />
 
                         <GorgiasTranslateInputGroup
-                            title="Contact form"
+                            title={
+                                renameContactFormEnabled
+                                    ? 'Offline Capture'
+                                    : 'Contact Form'
+                            }
                             keys={contactFormKeys}
                             filtersForKeys={{}}
                             texts={texts}

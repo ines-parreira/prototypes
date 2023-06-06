@@ -718,7 +718,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                         <p
                           className="dynamicDescription"
                         >
-                          If the wait time is long, customers can choose to wait in the chat or leave a message through contact form
+                          If the wait time is long, customers can choose to wait in the chat or leave a message through
+                           
+                          contact form
                         </p>
                       </div>,
                       "value": "reply-dynamic",
@@ -1247,7 +1249,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                         <p
                           className="dynamicDescription"
                         >
-                          If the wait time is long, customers can choose to wait in the chat or leave a message through contact form
+                          If the wait time is long, customers can choose to wait in the chat or leave a message through
+                           
+                          contact form
                         </p>
                       </div>,
                       "value": "reply-dynamic",

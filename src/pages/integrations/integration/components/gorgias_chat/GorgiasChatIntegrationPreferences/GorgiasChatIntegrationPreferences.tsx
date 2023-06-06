@@ -9,6 +9,8 @@ import {fromJS, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
 
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {IntegrationType} from 'models/integration/constants'
@@ -17,6 +19,8 @@ import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import Button from 'pages/common/components/button/Button'
 import NavigatedSuccessModal, {
@@ -80,26 +84,6 @@ const emailCaptureOptions = [
     },
 ]
 
-const liveChatAvailabilityOptions = [
-    {
-        caption:
-            'Customers can only send live chat messages when an agent is available in Gorgias',
-        label: 'Live when agents are available',
-        value: GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
-    },
-    {
-        caption:
-            'Customers can always send live chat messages during business hours',
-        label: 'Always live during business hours',
-        value: GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
-    },
-    {
-        caption: 'Customers can only send messages using the contact form',
-        label: 'Offline',
-        value: GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
-    },
-]
-
 export const PREVIEW_EMAIL_CAPTURE = 'email-capture'
 export const PREVIEW_AUTO_RESPONDER = 'auto-responder'
 export const PREVIEW_LIVE_CHAT_AVAILABILITY = 'live-chat-availability'
@@ -113,6 +97,7 @@ export const PREVIEW_CONTROL_TICKET_VOLUME = 'control-ticket-volume'
 const SHOW_CHAT_CONVERSATIONS_SECTION = false
 
 type Props = {
+    flags?: LDFlagSet
     integration: Map<any, any>
     displayControlTicketVolume: boolean
 } & ConnectedProps<typeof connector>
@@ -453,6 +438,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             integration,
             emailIntegrations: integrations,
             displayControlTicketVolume,
+            flags,
         } = this.props
         const emailIntegrations = integrations.filter(isGenericEmailIntegration)
 
@@ -560,6 +546,32 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             )
         }
 
+        const renameContactFormEnabled =
+            flags?.[FeatureFlagKey.ChatRenameContactForm]
+        const liveChatAvailabilityOptions = [
+            {
+                caption:
+                    'Customers can only send live chat messages when an agent is available in Gorgias',
+                label: 'Live when agents are available',
+                value: GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+            },
+            {
+                caption:
+                    'Customers can always send live chat messages during business hours',
+                label: 'Always live during business hours',
+                value: GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
+            },
+            {
+                caption: `Customers can only send messages using the ${
+                    renameContactFormEnabled
+                        ? 'offline capture'
+                        : 'contact form'
+                }`,
+                label: 'Offline',
+                value: GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
+            },
+        ]
+
         const chatPreview = (
             <ChatIntegrationPreview
                 name={chatTitle}
@@ -647,8 +659,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             )}
                         >
                             If the wait time is long, customers can choose to
-                            wait in the chat or leave a message through contact
-                            form
+                            wait in the chat or leave a message through{' '}
+                            {renameContactFormEnabled
+                                ? 'offline capture'
+                                : 'contact form'}
                         </p>
                     </div>
                 ),
@@ -745,7 +759,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                 rel="noopener noreferrer"
                                                 href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
                                             >
-                                                contact form
+                                                {renameContactFormEnabled
+                                                    ? 'offline capture'
+                                                    : 'contact form'}
                                             </a>{' '}
                                             to receive an email response. Live
                                             chat is always unavailable outside
@@ -1046,8 +1062,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                     When disabled, customers can
                                                     interact with quick response
                                                     flows and order management
-                                                    flows and fill the contact
-                                                    form.
+                                                    flows and{' '}
+                                                    {renameContactFormEnabled
+                                                        ? 'leave a message through offline capture'
+                                                        : 'fill the contact form'}
+                                                    .
                                                 </div>
                                             </div>
                                         </div>
@@ -1179,4 +1198,6 @@ const connector = connect(
     }
 )
 
-export default connector(GorgiasChatIntegrationPreferencesComponent)
+export default withLDConsumer()(
+    connector(GorgiasChatIntegrationPreferencesComponent)
+)

@@ -1142,7 +1142,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="label"
                     >
                       <div>
-                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
+                        Customize copy for labels, automated messages, and
+                         
+                        contact form
+                         
+                        subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -2016,7 +2020,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="label"
                     >
                       <div>
-                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
+                        Customize copy for labels, automated messages, and
+                         
+                        contact form
+                         
+                        subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -2860,7 +2868,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="label"
                     >
                       <div>
-                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
+                        Customize copy for labels, automated messages, and
+                         
+                        contact form
+                         
+                        subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -3712,7 +3724,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="label"
                     >
                       <div>
-                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
+                        Customize copy for labels, automated messages, and
+                         
+                        contact form
+                         
+                        subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -4556,7 +4572,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="label"
                     >
                       <div>
-                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
+                        Customize copy for labels, automated messages, and
+                         
+                        contact form
+                         
+                        subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -8170,7 +8190,11 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="label"
                     >
                       <div>
-                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
+                        Customize copy for labels, automated messages, and
+                         
+                        contact form
+                         
+                        subjects to match your tone of voice.
                       </div>
                     </span>
                     <div

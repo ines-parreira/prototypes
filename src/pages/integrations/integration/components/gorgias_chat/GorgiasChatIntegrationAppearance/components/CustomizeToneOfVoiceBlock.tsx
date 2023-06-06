@@ -1,7 +1,9 @@
 import React, {useCallback} from 'react'
 import {Link} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {FeatureFlagKey} from 'config/featureFlags'
 import css from '../GorgiasChatIntegrationAppearance.less'
 
 type Props = {
@@ -15,6 +17,8 @@ export const CustomizeToneOfVoiceBlock = ({integrationId}: Props) => {
             (integrationId && {id: integrationId}) || {}
         )
     }, [integrationId])
+    const renameContactFormEnabled =
+        useFlags()[FeatureFlagKey.ChatRenameContactForm]
 
     return (
         <Alert
@@ -32,7 +36,8 @@ export const CustomizeToneOfVoiceBlock = ({integrationId}: Props) => {
             }
         >
             <div>
-                Customize copy for labels, automated messages, and contact form
+                Customize copy for labels, automated messages, and{' '}
+                {renameContactFormEnabled ? 'offline capture' : 'contact form'}{' '}
                 subjects to match your tone of voice.
             </div>
         </Alert>

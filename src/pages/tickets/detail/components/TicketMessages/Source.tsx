@@ -2,6 +2,8 @@ import React from 'react'
 import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 import SourceIcon from '../../../../common/components/SourceIcon'
 import {DatetimeLabel} from '../../../../common/utils/labels'
@@ -27,6 +29,9 @@ export default function Source({
     isForwarded,
     source,
 }: Props) {
+    const renameContactFormEnabled =
+        useFlags()[FeatureFlagKey.ChatRenameContactForm]
+
     return (
         <div>
             <span className={classnames('clickable', css.source)}>
@@ -65,7 +70,13 @@ export default function Source({
                         />
                         <li>
                             <span className="text-faded">Sent via: </span>
-                            <strong>{source.type}</strong>
+                            <strong>
+                                {renameContactFormEnabled &&
+                                source.type ===
+                                    TicketMessageSourceType.ChatContactForm
+                                    ? 'chat offline capture'
+                                    : source.type}
+                            </strong>
                         </li>
                         <li>
                             <span className="text-faded">Date: </span>
