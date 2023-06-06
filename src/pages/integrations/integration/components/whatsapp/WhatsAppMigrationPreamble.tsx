@@ -15,8 +15,14 @@ export default function WhatsAppMigrationPreamble(): JSX.Element {
             message: (
                 <>
                     Find the WhatsApp number you want to migrate{' '}
-                    <a href="#">here</a> and click <strong>Settings</strong> on
-                    the far right
+                    <a
+                        href="https://business.facebook.com/wa/manage/phone-numbers"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                    >
+                        here
+                    </a>{' '}
+                    and click <strong>Settings</strong> on the far right
                 </>
             ),
         },
@@ -56,7 +62,14 @@ export default function WhatsAppMigrationPreamble(): JSX.Element {
                 <Col>
                     <h3 className="mb-1">Disable Two-factor authentication</h3>
                     <p>
-                        In the WABA (WhatsApp Business Account) settings
+                        In the WABA (WhatsApp Business Account){' '}
+                        <a
+                            href="https://business.facebook.com/wa/manage/phone-numbers"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            settings
+                        </a>{' '}
                         associated with your current provider, disable 2FA for
                         the phone number that you want to migrate into Gorgias.
                     </p>
