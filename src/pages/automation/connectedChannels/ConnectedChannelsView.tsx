@@ -1,11 +1,7 @@
 import React, {useMemo, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
-import {Container} from 'reactstrap'
-import classnames from 'classnames'
 
 import {TicketChannel} from 'business/types/ticket'
-import PageHeader from 'pages/common/components/PageHeader'
-import Loader from 'pages/common/components/Loader/Loader'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {IntegrationType} from 'models/integration/constants'
@@ -19,6 +15,8 @@ import {useHelpCenterPublishedArticlesCount} from 'pages/automation/common/hooks
 import Button from 'pages/common/components/button/Button'
 import useSearch from 'hooks/useSearch'
 import useWorkflowConfigurations from 'pages/automation/common/hooks/useWorkflowConfigurations'
+import AutomationView from 'pages/automation/common/components/AutomationView'
+import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
 import ConnectedChannelAccordionItem from './components/ConnectedChannelAccordionItem'
 import ConnectedChannelsPreview from './ConnectedChannelsPreview'
@@ -133,108 +131,72 @@ const ConnectedChannelsView = () => {
     const expandedChannel = channels[expandedChannelIndex]
 
     return (
-        <div className="full-width">
-            <PageHeader title="Connected channels" />
-            <Container
-                fluid
-                className={classnames({
-                    [css.container]: !isLoading,
-                })}
-            >
-                {isLoading ? (
-                    <Loader />
-                ) : (
-                    <>
-                        <div className={css.content}>
-                            <div className={css.descriptionContainer}>
-                                Manage features enabled per channel connected to
-                                this store.
-                            </div>
-
-                            {hasChannels && (
-                                <div className={css.channelsContainer}>
-                                    <ConnectedChannelsViewContext.Provider
-                                        value={connectedChannelsViewContext}
-                                    >
-                                        <Accordion
-                                            expandedItem={expandedChannelIndex.toString()}
-                                            onChange={
-                                                handleExpandedChannelChange
-                                            }
-                                        >
-                                            {channels.map((channel, index) => (
-                                                <ConnectedChannelAccordionItem
-                                                    key={index}
-                                                    index={index}
-                                                    channel={channel}
-                                                />
-                                            ))}
-                                        </Accordion>
-                                    </ConnectedChannelsViewContext.Provider>
-                                </div>
-                            )}
-
-                            <div className={css.alertsContainer}>
-                                {!hasChatChannel && (
-                                    <Alert
-                                        icon
-                                        type={AlertType.Warning}
-                                        customActions={
-                                            <Link
-                                                to={`/app/settings/channels/gorgias_chat`}
-                                            >
-                                                <Button
-                                                    size="small"
-                                                    fillStyle="ghost"
-                                                >
-                                                    Go To Chat
-                                                </Button>
-                                            </Link>
-                                        }
-                                    >
-                                        Connect a chat widget to this store to
-                                        use Automation Add-on features.
-                                    </Alert>
-                                )}
-
-                                {!hasHelpCenterChannel &&
-                                    shopType === IntegrationType.Shopify && (
-                                        <Alert
-                                            icon
-                                            type={AlertType.Warning}
-                                            customActions={
-                                                <Link
-                                                    to={`/app/settings/help-center`}
-                                                >
-                                                    <Button
-                                                        size="small"
-                                                        fillStyle="ghost"
-                                                    >
-                                                        Go To Help Center
-                                                    </Button>
-                                                </Link>
-                                            }
-                                        >
-                                            Connect a Help Center to this store
-                                            to use Automation Add-on features.
-                                            Currently only available for Shopify
-                                            stores.
-                                        </Alert>
-                                    )}
-                            </div>
-                        </div>
-                        {expandedChannel && (
-                            <ConnectedChannelsPreview
-                                channel={expandedChannel}
-                                selfServiceConfiguration={
-                                    selfServiceConfiguration!
-                                }
-                            />
-                        )}
-                    </>
+        <AutomationView title="Connected channels" isLoading={isLoading}>
+            <AutomationViewContent description="Manage features enabled per channel connected to this store.">
+                {hasChannels && (
+                    <div className={css.channelsContainer}>
+                        <ConnectedChannelsViewContext.Provider
+                            value={connectedChannelsViewContext}
+                        >
+                            <Accordion
+                                expandedItem={expandedChannelIndex.toString()}
+                                onChange={handleExpandedChannelChange}
+                            >
+                                {channels.map((channel, index) => (
+                                    <ConnectedChannelAccordionItem
+                                        key={index}
+                                        index={index}
+                                        channel={channel}
+                                    />
+                                ))}
+                            </Accordion>
+                        </ConnectedChannelsViewContext.Provider>
+                    </div>
                 )}
-            </Container>
-        </div>
+                <div className={css.alertsContainer}>
+                    {!hasChatChannel && (
+                        <Alert
+                            icon
+                            type={AlertType.Warning}
+                            customActions={
+                                <Link
+                                    to={`/app/settings/channels/gorgias_chat`}
+                                >
+                                    <Button size="small" fillStyle="ghost">
+                                        Go To Chat
+                                    </Button>
+                                </Link>
+                            }
+                        >
+                            Connect a chat widget to this store to use
+                            Automation Add-on features.
+                        </Alert>
+                    )}
+                    {!hasHelpCenterChannel &&
+                        shopType === IntegrationType.Shopify && (
+                            <Alert
+                                icon
+                                type={AlertType.Warning}
+                                customActions={
+                                    <Link to={`/app/settings/help-center`}>
+                                        <Button size="small" fillStyle="ghost">
+                                            Go To Help Center
+                                        </Button>
+                                    </Link>
+                                }
+                            >
+                                Connect a Help Center to this store to use
+                                Automation Add-on features. Currently only
+                                available for Shopify stores.
+                            </Alert>
+                        )}
+                </div>
+            </AutomationViewContent>
+            <ConnectedChannelsPreview
+                channel={expandedChannel}
+                selfServiceConfiguration={selfServiceConfiguration!}
+            />
+        </AutomationView>
     )
 }
 

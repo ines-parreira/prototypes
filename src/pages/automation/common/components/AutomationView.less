@@ -1,0 +1,10 @@
+:local {
+    .container {
+        &:not(.isLoading) {
+            display: grid;
+            grid-template-columns: minmax(480px, 1000px) 1fr;
+            padding: 0;
+            min-height: ~'calc(100% - 60px)';
+        }
+    }
+}

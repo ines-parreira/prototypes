@@ -1,11 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {useHistory, useLocation, useParams} from 'react-router-dom'
-import classnames from 'classnames'
-import {Container} from 'reactstrap'
 import {createMemoryHistory} from 'history'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import Loader from 'pages/common/components/Loader/Loader'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useAppSelector from 'hooks/useAppSelector'
@@ -19,12 +15,12 @@ import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/pr
 import {TicketChannel} from 'business/types/ticket'
 import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
+import AutomationView from 'pages/automation/common/components/AutomationView'
+import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
 import OrderManagementFlowItem from './components/OrderManagementFlowItem'
 import OrderManagementPreview from './OrderManagementPreview'
 import {useOrderManagementPreviewContext} from './OrderManagementPreviewContext'
-
-import css from './OrderManagementView.less'
 
 const AutomationSubscriptionAction = () => {
     const [
@@ -126,173 +122,127 @@ const OrderManagementView = () => {
         chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
 
     return (
-        <div className="full-width">
-            <PageHeader title="Order management flows" />
-            <Container
-                fluid
-                className={classnames({
-                    [css.container]: !isLoading,
-                })}
+        <AutomationView title="Order management flows" isLoading={isLoading}>
+            <AutomationViewContent
+                description="Allow customers to take actions depending on their order status from your chat widget and Help Center."
+                helpUrl="https://docs.gorgias.com/en-US/installing-self-service-81861"
+                helpTitle="How To Set Up Order Management Flows"
             >
-                {isLoading ? (
-                    <Loader />
-                ) : (
-                    <>
-                        <div className={css.content}>
-                            <div className={css.descriptionContainer}>
-                                <div className={css.description}>
-                                    Allow customers to take actions depending on
-                                    their order status from your chat widget and
-                                    Help Center.
-                                </div>
-                                <a
-                                    href="https://docs.gorgias.com/en-US/installing-self-service-81861"
-                                    rel="noopener noreferrer"
-                                    target="_blank"
-                                >
-                                    <i className="material-icons mr-2">
-                                        menu_book
-                                    </i>
-                                    How To Set Up Order Management Flows
-                                </a>
-                            </div>
-
-                            <OrderManagementFlowItem
-                                isEnabled={
-                                    selfServiceConfiguration!.track_order_policy
-                                        .enabled
-                                }
-                                isDisabled={isUpdatePending}
-                                title="Track order"
-                                description="Allow customers to view order tracking information."
-                                onChange={(isEnabled) => {
-                                    handleOrderManagementFlowUpdate(
-                                        'track_order_policy',
-                                        isEnabled
-                                    )
-                                }}
-                                action={
-                                    <Button
-                                        fillStyle="ghost"
-                                        onClick={handleTrackOrderPreviewClick}
-                                        isDisabled={
-                                            !selfServiceConfiguration!
-                                                .track_order_policy.enabled
-                                        }
-                                    >
-                                        <ButtonIconLabel
-                                            icon={
-                                                isTrackOrderPreviewPlaying
-                                                    ? 'motion_photos_on'
-                                                    : 'play_circle_filled'
-                                            }
-                                            iconClassName={
-                                                isTrackOrderPreviewPlaying
-                                                    ? 'md-spin'
-                                                    : ''
-                                            }
-                                        >
-                                            Preview
-                                        </ButtonIconLabel>
-                                    </Button>
-                                }
-                                onMouseEnter={() => {
-                                    setHoveredOrderManagementFlow(
-                                        'track_order_policy'
-                                    )
-                                }}
-                                onMouseLeave={handleFlowItemMouseLeave}
-                            />
-                            <OrderManagementFlowItem
-                                isEnabled={
-                                    selfServiceConfiguration!
-                                        .return_order_policy.enabled
-                                }
-                                isDisabled={isUpdatePending}
-                                title="Return order"
-                                description="Allow customers to request returns based on custom criteria."
-                                onChange={(isEnabled) => {
-                                    handleOrderManagementFlowUpdate(
-                                        'return_order_policy',
-                                        isEnabled
-                                    )
-                                }}
-                                onMouseEnter={() => {
-                                    setHoveredOrderManagementFlow(
-                                        'return_order_policy'
-                                    )
-                                }}
-                                onMouseLeave={handleFlowItemMouseLeave}
-                                onClick={() => {
-                                    history.push(`${pathname}/return`)
-                                }}
-                            />
-                            <OrderManagementFlowItem
-                                isEnabled={
-                                    selfServiceConfiguration!
-                                        .cancel_order_policy.enabled
-                                }
-                                isDisabled={isUpdatePending}
-                                title="Cancel order"
-                                description="Allow customers to request order cancellations based on custom criteria."
-                                onChange={(isEnabled) => {
-                                    handleOrderManagementFlowUpdate(
-                                        'cancel_order_policy',
-                                        isEnabled
-                                    )
-                                }}
-                                onMouseEnter={() => {
-                                    setHoveredOrderManagementFlow(
-                                        'cancel_order_policy'
-                                    )
-                                }}
-                                onMouseLeave={handleFlowItemMouseLeave}
-                                onClick={() => {
-                                    history.push(`${pathname}/cancel`)
-                                }}
-                            />
-                            <OrderManagementFlowItem
-                                isEnabled={
-                                    selfServiceConfiguration!
-                                        .report_issue_policy.enabled
-                                }
-                                isDisabled={isUpdatePending}
-                                title="Report order issue"
-                                description="Allow customers to report order issues based on custom scenarios."
-                                onChange={(isEnabled) => {
-                                    handleOrderManagementFlowUpdate(
-                                        'report_issue_policy',
-                                        isEnabled
-                                    )
-                                }}
-                                onMouseEnter={() => {
-                                    setHoveredOrderManagementFlow(
-                                        'report_issue_policy'
-                                    )
-                                }}
-                                onMouseLeave={handleFlowItemMouseLeave}
-                                {...(!hasAutomationAddOn
-                                    ? {action: <AutomationSubscriptionAction />}
-                                    : {
-                                          onClick: () => {
-                                              history.push(
-                                                  `${pathname}/report-issue`
-                                              )
-                                          },
-                                      })}
-                            />
-                        </div>
-                        <OrderManagementPreview
-                            history={previewHistory}
-                            hoveredOrderManagementFlow={
-                                hoveredOrderManagementFlow
+                <OrderManagementFlowItem
+                    isEnabled={
+                        selfServiceConfiguration!.track_order_policy.enabled
+                    }
+                    isDisabled={isUpdatePending}
+                    title="Track order"
+                    description="Allow customers to view order tracking information."
+                    onChange={(isEnabled) => {
+                        handleOrderManagementFlowUpdate(
+                            'track_order_policy',
+                            isEnabled
+                        )
+                    }}
+                    action={
+                        <Button
+                            fillStyle="ghost"
+                            onClick={handleTrackOrderPreviewClick}
+                            isDisabled={
+                                !selfServiceConfiguration!.track_order_policy
+                                    .enabled
                             }
-                            selfServiceConfiguration={selfServiceConfiguration!}
-                        />
-                    </>
-                )}
-            </Container>
-        </div>
+                        >
+                            <ButtonIconLabel
+                                icon={
+                                    isTrackOrderPreviewPlaying
+                                        ? 'motion_photos_on'
+                                        : 'play_circle_filled'
+                                }
+                                iconClassName={
+                                    isTrackOrderPreviewPlaying ? 'md-spin' : ''
+                                }
+                            >
+                                Preview
+                            </ButtonIconLabel>
+                        </Button>
+                    }
+                    onMouseEnter={() => {
+                        setHoveredOrderManagementFlow('track_order_policy')
+                    }}
+                    onMouseLeave={handleFlowItemMouseLeave}
+                />
+                <OrderManagementFlowItem
+                    isEnabled={
+                        selfServiceConfiguration!.return_order_policy.enabled
+                    }
+                    isDisabled={isUpdatePending}
+                    title="Return order"
+                    description="Allow customers to request returns based on custom criteria."
+                    onChange={(isEnabled) => {
+                        handleOrderManagementFlowUpdate(
+                            'return_order_policy',
+                            isEnabled
+                        )
+                    }}
+                    onMouseEnter={() => {
+                        setHoveredOrderManagementFlow('return_order_policy')
+                    }}
+                    onMouseLeave={handleFlowItemMouseLeave}
+                    onClick={() => {
+                        history.push(`${pathname}/return`)
+                    }}
+                />
+                <OrderManagementFlowItem
+                    isEnabled={
+                        selfServiceConfiguration!.cancel_order_policy.enabled
+                    }
+                    isDisabled={isUpdatePending}
+                    title="Cancel order"
+                    description="Allow customers to request order cancellations based on custom criteria."
+                    onChange={(isEnabled) => {
+                        handleOrderManagementFlowUpdate(
+                            'cancel_order_policy',
+                            isEnabled
+                        )
+                    }}
+                    onMouseEnter={() => {
+                        setHoveredOrderManagementFlow('cancel_order_policy')
+                    }}
+                    onMouseLeave={handleFlowItemMouseLeave}
+                    onClick={() => {
+                        history.push(`${pathname}/cancel`)
+                    }}
+                />
+                <OrderManagementFlowItem
+                    isEnabled={
+                        selfServiceConfiguration!.report_issue_policy.enabled
+                    }
+                    isDisabled={isUpdatePending}
+                    title="Report order issue"
+                    description="Allow customers to report order issues based on custom scenarios."
+                    onChange={(isEnabled) => {
+                        handleOrderManagementFlowUpdate(
+                            'report_issue_policy',
+                            isEnabled
+                        )
+                    }}
+                    onMouseEnter={() => {
+                        setHoveredOrderManagementFlow('report_issue_policy')
+                    }}
+                    onMouseLeave={handleFlowItemMouseLeave}
+                    {...(!hasAutomationAddOn
+                        ? {action: <AutomationSubscriptionAction />}
+                        : {
+                              onClick: () => {
+                                  history.push(`${pathname}/report-issue`)
+                              },
+                          })}
+                />
+            </AutomationViewContent>
+            <OrderManagementPreview
+                history={previewHistory}
+                hoveredOrderManagementFlow={hoveredOrderManagementFlow}
+                selfServiceConfiguration={selfServiceConfiguration!}
+            />
+        </AutomationView>
     )
 }
 

@@ -1,20 +1,17 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
-import classnames from 'classnames'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import Loader from 'pages/common/components/Loader/Loader'
 import {
     AUTOMATED_RESPONSE,
     ResponseMessageContent,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
-import Button from 'pages/common/components/button/Button'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
+import AutomationView from 'pages/automation/common/components/AutomationView'
+import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
 import useCancelOrderFlow from './hooks/useCancelOrderFlow'
 import CancelOrderEligibility from './components/CancelOrderEligibility'
@@ -24,8 +21,6 @@ import CancelOrderFlowViewContext, {
     CancelOrderFlowViewContextType,
 } from './CancelOrderFlowViewContext'
 import {DEFAULT_RESPONSE_MESSAGE_CONTENT} from './constants'
-
-import css from './CancelOrderFlowView.less'
 
 const CancelOrderFlowView = () => {
     const {shopName} = useParams<{shopName: string}>()
@@ -111,117 +106,60 @@ const CancelOrderFlowView = () => {
         dirtyCancelOrderFlow,
         cancelOrderFlow
     )
+    const isLoading = !selfServiceConfiguration || !dirtyCancelOrderFlow
 
     return (
-        <div className="full-width">
-            <PageHeader
-                title={
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/automation/shopify/${shopName}/order-management`}
-                            >
-                                Order management flows
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>Cancel order</BreadcrumbItem>
-                    </Breadcrumb>
+        <AutomationView
+            title={
+                <Breadcrumb>
+                    <BreadcrumbItem>
+                        <Link
+                            to={`/app/automation/shopify/${shopName}/order-management`}
+                        >
+                            Order management flows
+                        </Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>Cancel order</BreadcrumbItem>
+                </Breadcrumb>
+            }
+            isLoading={isLoading}
+        >
+            <AutomationViewContent
+                description="Allow customers to request a cancellation if an order hasn't been processed or shipped."
+                helpUrl="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
+                helpTitle="Learn About Order Statuses In Gorgias"
+                onSubmit={handleSubmit}
+                onCancel={handleCancel}
+                isSubmittable={
+                    isCancelOrderFlowDirty && !isUpdatePending && !hasError
+                }
+                isCancelable={isCancelOrderFlowDirty && !isUpdatePending}
+            >
+                <CancelOrderFlowViewContext.Provider
+                    value={cancelOrderFlowViewContext}
+                >
+                    <CancelOrderEligibility
+                        eligibility={dirtyCancelOrderFlow?.eligibilities[0]}
+                        onChange={handleEligibilityChange}
+                    />
+                    {hasAutomationAddOn && (
+                        <CancelOrderResponseMessageContent
+                            responseMessageContent={
+                                dirtyCancelOrderFlow?.action
+                                    ?.response_message_content ??
+                                DEFAULT_RESPONSE_MESSAGE_CONTENT
+                            }
+                            onChange={handleResponseMessageContentChange}
+                        />
+                    )}
+                </CancelOrderFlowViewContext.Provider>
+            </AutomationViewContent>
+            <CancelOrderFlowPreview
+                responseMessageContent={
+                    dirtyCancelOrderFlow?.action?.response_message_content
                 }
             />
-            <Container
-                fluid
-                className={classnames({
-                    [css.container]: Boolean(
-                        selfServiceConfiguration && dirtyCancelOrderFlow
-                    ),
-                })}
-            >
-                {!selfServiceConfiguration || !dirtyCancelOrderFlow ? (
-                    <Loader />
-                ) : (
-                    <CancelOrderFlowViewContext.Provider
-                        value={cancelOrderFlowViewContext}
-                    >
-                        <div className={css.content}>
-                            <div className={css.descriptionContainer}>
-                                <div className={css.description}>
-                                    Allow customers to request a cancellation if
-                                    an order hasn't been processed or shipped.
-                                </div>
-                                <a
-                                    href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
-                                    rel="noopener noreferrer"
-                                    target="_blank"
-                                >
-                                    <i className="material-icons mr-2">
-                                        menu_book
-                                    </i>
-                                    Learn About Order Statuses In Gorgias
-                                </a>
-                            </div>
-
-                            <CancelOrderEligibility
-                                eligibility={
-                                    dirtyCancelOrderFlow.eligibilities[0]
-                                }
-                                onChange={handleEligibilityChange}
-                            />
-                            {hasAutomationAddOn && (
-                                <CancelOrderResponseMessageContent
-                                    responseMessageContent={
-                                        dirtyCancelOrderFlow.action
-                                            ?.response_message_content ??
-                                        DEFAULT_RESPONSE_MESSAGE_CONTENT
-                                    }
-                                    onChange={
-                                        handleResponseMessageContentChange
-                                    }
-                                />
-                            )}
-
-                            <div
-                                className={css.submitAndCancelButtonsContainer}
-                            >
-                                <Button
-                                    isDisabled={
-                                        !isCancelOrderFlowDirty ||
-                                        isUpdatePending ||
-                                        hasError
-                                    }
-                                    onClick={handleSubmit}
-                                >
-                                    Save changes
-                                </Button>
-                                <Button
-                                    isDisabled={
-                                        !isCancelOrderFlowDirty ||
-                                        isUpdatePending
-                                    }
-                                    onClick={handleCancel}
-                                    intent="secondary"
-                                >
-                                    Cancel
-                                </Button>
-                            </div>
-                            <UnsavedChangesPrompt
-                                onSave={handleSubmit}
-                                when={
-                                    isCancelOrderFlowDirty &&
-                                    !isUpdatePending &&
-                                    !hasError
-                                }
-                            />
-                        </div>
-                        <CancelOrderFlowPreview
-                            responseMessageContent={
-                                dirtyCancelOrderFlow.action
-                                    ?.response_message_content
-                            }
-                        />
-                    </CancelOrderFlowViewContext.Provider>
-                )}
-            </Container>
-        </div>
+        </AutomationView>
     )
 }
 

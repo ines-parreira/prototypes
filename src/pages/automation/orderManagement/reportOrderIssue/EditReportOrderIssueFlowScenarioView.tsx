@@ -1,16 +1,13 @@
 import React, {useMemo, useRef, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
-import classnames from 'classnames'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import Loader from 'pages/common/components/Loader/Loader'
-import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
+import AutomationView from 'pages/automation/common/components/AutomationView'
+import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
 import useReportOrderIssueFlowScenario from './hooks/useReportOrderIssueFlowScenario'
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
@@ -87,122 +84,82 @@ const EditReportOrderIssueFlowScenarioView = () => {
     }
 
     const isScenarioDirty = !_isEqual(dirtyScenario, scenario)
+    const isLoading = !selfServiceConfiguration || !dirtyScenario
 
     return (
-        <div className="full-width">
-            <PageHeader
-                title={
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/automation/shopify/${shopName}/order-management`}
-                            >
-                                Order management flows
-                            </Link>
+        <AutomationView
+            title={
+                <Breadcrumb>
+                    <BreadcrumbItem>
+                        <Link
+                            to={`/app/automation/shopify/${shopName}/order-management`}
+                        >
+                            Order management flows
+                        </Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <Link
+                            to={`/app/automation/shopify/${shopName}/order-management/report-issue`}
+                        >
+                            Report order issue
+                        </Link>
+                    </BreadcrumbItem>
+                    {dirtyScenario && (
+                        <BreadcrumbItem active>
+                            {dirtyScenario.title}
                         </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/automation/shopify/${shopName}/order-management/report-issue`}
-                            >
-                                Report order issue
-                            </Link>
-                        </BreadcrumbItem>
-                        {dirtyScenario && (
-                            <BreadcrumbItem active>
-                                {dirtyScenario.title}
-                            </BreadcrumbItem>
-                        )}
-                    </Breadcrumb>
+                    )}
+                </Breadcrumb>
+            }
+            isLoading={isLoading}
+        >
+            <AutomationViewContent
+                onSubmit={handleSubmit}
+                onCancel={handleCancel}
+                isSubmittable={isScenarioDirty && !isUpdatePending && !hasError}
+                isCancelable={isScenarioDirty && !isUpdatePending}
+                extraButtons={
+                    !isFallback && (
+                        <ConfirmButton
+                            className={css.deleteButton}
+                            confirmationButtonIntent="destructive"
+                            confirmationContent="Deleting this scenario cannot be undone."
+                            confirmationTitle={<b>Delete scenario?</b>}
+                            confirmLabel="Delete"
+                            fillStyle="ghost"
+                            intent="destructive"
+                            onConfirm={handleScenarioDelete}
+                            placement="top"
+                            showCancelButton
+                            isDisabled={isUpdatePending}
+                        >
+                            <ButtonIconLabel icon="delete">
+                                Delete Scenario
+                            </ButtonIconLabel>
+                        </ConfirmButton>
+                    )
                 }
-            />
-            <Container
-                fluid
-                className={classnames({
-                    [css.container]: Boolean(
-                        selfServiceConfiguration && dirtyScenario
-                    ),
-                })}
             >
-                {!selfServiceConfiguration || !dirtyScenario ? (
-                    <Loader />
-                ) : (
-                    <>
-                        <div className={css.content}>
-                            <ReportOrderIssueScenarioFormContext.Provider
-                                value={reportOrderIssueScenarioFormContext}
-                            >
-                                <ReportOrderIssueScenarioForm
-                                    value={dirtyScenario}
-                                    expandedReason={expandedReasonKey}
-                                    onExpandedReasonChange={
-                                        setExpandedReasonKey
-                                    }
-                                    onHoveredReasonChange={setHoveredReasonKey}
-                                    isFallback={isFallback}
-                                    onPreviewChange={setDirtyScenario}
-                                    onChange={handleScenarioUpdate}
-                                />
-                                <div className={css.buttonsContainer}>
-                                    <Button
-                                        isDisabled={
-                                            !isScenarioDirty ||
-                                            isUpdatePending ||
-                                            hasError
-                                        }
-                                        onClick={handleSubmit}
-                                    >
-                                        Save changes
-                                    </Button>
-                                    <Button
-                                        isDisabled={
-                                            !isScenarioDirty || isUpdatePending
-                                        }
-                                        onClick={handleCancel}
-                                        intent="secondary"
-                                    >
-                                        Cancel
-                                    </Button>
-                                    {!isFallback && (
-                                        <ConfirmButton
-                                            className={css.deleteButton}
-                                            confirmationButtonIntent="destructive"
-                                            confirmationContent="Deleting this scenario cannot be undone."
-                                            confirmationTitle={
-                                                <b>Delete scenario?</b>
-                                            }
-                                            confirmLabel="Delete"
-                                            fillStyle="ghost"
-                                            intent="destructive"
-                                            onConfirm={handleScenarioDelete}
-                                            placement="top"
-                                            showCancelButton
-                                            isDisabled={isUpdatePending}
-                                        >
-                                            <ButtonIconLabel icon="delete">
-                                                Delete Scenario
-                                            </ButtonIconLabel>
-                                        </ConfirmButton>
-                                    )}
-                                    <UnsavedChangesPrompt
-                                        onSave={handleSubmit}
-                                        when={
-                                            isScenarioDirty &&
-                                            !isUpdatePending &&
-                                            !hasError
-                                        }
-                                    />
-                                </div>
-                            </ReportOrderIssueScenarioFormContext.Provider>
-                        </div>
-                        <ReportOrderIssueFlowScenarioPreview
-                            reasons={dirtyScenario.reasons}
-                            expandedReasonKey={expandedReasonKey}
-                            hoveredReasonKey={hoveredReasonKey}
-                        />
-                    </>
-                )}
-            </Container>
-        </div>
+                <ReportOrderIssueScenarioFormContext.Provider
+                    value={reportOrderIssueScenarioFormContext}
+                >
+                    <ReportOrderIssueScenarioForm
+                        value={dirtyScenario!}
+                        expandedReason={expandedReasonKey}
+                        onExpandedReasonChange={setExpandedReasonKey}
+                        onHoveredReasonChange={setHoveredReasonKey}
+                        isFallback={isFallback}
+                        onPreviewChange={setDirtyScenario}
+                        onChange={handleScenarioUpdate}
+                    />
+                </ReportOrderIssueScenarioFormContext.Provider>
+            </AutomationViewContent>
+            <ReportOrderIssueFlowScenarioPreview
+                reasons={dirtyScenario!.reasons}
+                expandedReasonKey={expandedReasonKey}
+                hoveredReasonKey={hoveredReasonKey}
+            />
+        </AutomationView>
     )
 }
 

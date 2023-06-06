@@ -51,6 +51,7 @@ const SelfServicePreviewChannelSelect = <T extends SelfServiceChannel>({
 
     return (
         <SelectInputBox
+            className={css.input}
             placeholder="Channel"
             floating={floatingRef}
             label={channel?.value?.name}

@@ -1,19 +1,16 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
-import classnames from 'classnames'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import Loader from 'pages/common/components/Loader/Loader'
 import {
     ReturnAction,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
-import Button from 'pages/common/components/button/Button'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
+import AutomationView from 'pages/automation/common/components/AutomationView'
+import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
 import useReturnOrderFlow from './hooks/useReturnOrderFlow'
 import ReturnOrderEligibility from './components/ReturnOrderEligibility'
@@ -23,8 +20,6 @@ import ReturnOrderFlowViewContext, {
     ReturnOrderFlowViewContextType,
 } from './ReturnOrderFlowViewContext'
 import {DEFAULT_RETURN_ACTION} from './constants'
-
-import css from './ReturnOrderFlowView.less'
 
 const ReturnOrderFlowView = () => {
     const {shopName} = useParams<{shopName: string}>()
@@ -104,108 +99,52 @@ const ReturnOrderFlowView = () => {
     )
     const dirtyReturnAction =
         dirtyReturnOrderFlow?.action ?? DEFAULT_RETURN_ACTION
+    const isLoading = !selfServiceConfiguration || !dirtyReturnOrderFlow
 
     return (
-        <div className="full-width">
-            <PageHeader
-                title={
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/automation/shopify/${shopName}/order-management`}
-                            >
-                                Order management flows
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>Return order</BreadcrumbItem>
-                    </Breadcrumb>
+        <AutomationView
+            title={
+                <Breadcrumb>
+                    <BreadcrumbItem>
+                        <Link
+                            to={`/app/automation/shopify/${shopName}/order-management`}
+                        >
+                            Order management flows
+                        </Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>Return order</BreadcrumbItem>
+                </Breadcrumb>
+            }
+            isLoading={isLoading}
+        >
+            <AutomationViewContent
+                description="Allow customers to request a return if an order has been delivered."
+                helpUrl="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
+                helpTitle="Learn About Order Statuses In Gorgias"
+                onSubmit={handleSubmit}
+                onCancel={handleCancel}
+                isSubmittable={
+                    isReturnOrderFlowDirty && !isUpdatePending && !hasError
                 }
-            />
-            <Container
-                fluid
-                className={classnames({
-                    [css.container]: Boolean(
-                        selfServiceConfiguration && dirtyReturnOrderFlow
-                    ),
-                })}
+                isCancelable={isReturnOrderFlowDirty && !isUpdatePending}
             >
-                {!selfServiceConfiguration || !dirtyReturnOrderFlow ? (
-                    <Loader />
-                ) : (
-                    <ReturnOrderFlowViewContext.Provider
-                        value={returnOrderFlowViewContext}
-                    >
-                        <div className={css.content}>
-                            <div className={css.descriptionContainer}>
-                                <div className={css.description}>
-                                    Allow customers to request a return if an
-                                    order has been delivered.
-                                </div>
-                                <a
-                                    href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862"
-                                    rel="noopener noreferrer"
-                                    target="_blank"
-                                >
-                                    <i className="material-icons mr-2">
-                                        menu_book
-                                    </i>
-                                    Learn About Order Statuses In Gorgias
-                                </a>
-                            </div>
-
-                            <ReturnOrderEligibility
-                                eligibility={
-                                    dirtyReturnOrderFlow?.eligibilities[0]
-                                }
-                                onChange={handleEligibilityChange}
-                            />
-                            {hasAutomationAddOn && (
-                                <ReturnOrderAction
-                                    action={dirtyReturnAction}
-                                    onChange={handleActionChange}
-                                />
-                            )}
-
-                            <div
-                                className={css.submitAndCancelButtonsContainer}
-                            >
-                                <Button
-                                    isDisabled={
-                                        !isReturnOrderFlowDirty ||
-                                        isUpdatePending ||
-                                        hasError
-                                    }
-                                    onClick={handleSubmit}
-                                >
-                                    Save changes
-                                </Button>
-                                <Button
-                                    isDisabled={
-                                        !isReturnOrderFlowDirty ||
-                                        isUpdatePending
-                                    }
-                                    onClick={handleCancel}
-                                    intent="secondary"
-                                >
-                                    Cancel
-                                </Button>
-                            </div>
-                            <UnsavedChangesPrompt
-                                onSave={handleSubmit}
-                                when={
-                                    isReturnOrderFlowDirty &&
-                                    !isUpdatePending &&
-                                    !hasError
-                                }
-                            />
-                        </div>
-                        <ReturnOrderFlowPreview
-                            returnAction={dirtyReturnAction}
+                <ReturnOrderFlowViewContext.Provider
+                    value={returnOrderFlowViewContext}
+                >
+                    <ReturnOrderEligibility
+                        eligibility={dirtyReturnOrderFlow?.eligibilities[0]}
+                        onChange={handleEligibilityChange}
+                    />
+                    {hasAutomationAddOn && (
+                        <ReturnOrderAction
+                            action={dirtyReturnAction}
+                            onChange={handleActionChange}
                         />
-                    </ReturnOrderFlowViewContext.Provider>
-                )}
-            </Container>
-        </div>
+                    )}
+                </ReturnOrderFlowViewContext.Provider>
+            </AutomationViewContent>
+            <ReturnOrderFlowPreview returnAction={dirtyReturnAction} />
+        </AutomationView>
     )
 }
 

@@ -16,7 +16,7 @@ import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 type Props = {
-    channel: SelfServiceChannel
+    channel?: SelfServiceChannel
     selfServiceConfiguration: SelfServiceConfiguration
 }
 
@@ -42,7 +42,7 @@ const ConnectedChannelsPreview = ({
     let isOrderManagementEnabled = false
     let workflowsEntrypoints: SelfServicePreviewContextType['workflowsEntrypoints']
 
-    if (channel.type === TicketChannel.Chat) {
+    if (channel?.type === TicketChannel.Chat) {
         const {
             articleRecommendation,
             orderManagement,
@@ -54,7 +54,7 @@ const ConnectedChannelsPreview = ({
         isOrderManagementEnabled = orderManagement.enabled
         areQuickResponsesEnabled = quickResponses.enabled
         workflowsEntrypoints = workflows.entrypoints
-    } else {
+    } else if (channel?.type === TicketChannel.HelpCenter) {
         isOrderManagementEnabled =
             !channel.value.self_service_deactivated_datetime
     }

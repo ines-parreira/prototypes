@@ -11,7 +11,7 @@ import useApplicationsAutomationSettings from 'pages/automation/common/hooks/use
 import SelfServiceFeatureDisabledOnChannelAlert from 'pages/automation/common/components/preview/SelfServiceFeatureDisabledOnChannelAlert'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
-interface Props {
+type Props = {
     channels: SelfServiceChatChannel[]
     selfServiceConfiguration: SelfServiceConfiguration
     isHelpCenterSelected: boolean

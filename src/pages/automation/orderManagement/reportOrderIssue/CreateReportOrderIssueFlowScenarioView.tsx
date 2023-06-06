@@ -1,17 +1,14 @@
 import React, {useMemo, useState} from 'react'
 import {Link, useHistory, useParams} from 'react-router-dom'
-import classnames from 'classnames'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import Loader from 'pages/common/components/Loader/Loader'
-import Button from 'pages/common/components/button/Button'
 import {
     ReportIssueCaseReason,
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import AutomationView from 'pages/automation/common/components/AutomationView'
+import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
 import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
@@ -20,8 +17,6 @@ import ReportOrderIssueScenarioFormContext, {
 } from './components/ReportOrderIssueScenarioFormContext'
 import ReportOrderIssueFlowScenarioPreview from './ReportOrderIssueFlowScenarioPreview'
 import {DEFAULT_SCENARIO} from './constants'
-
-import css from './CreateReportOrderIssueFlowScenarioView.less'
 
 const CreateReportOrderIssueFlowScenarioView = () => {
     const history = useHistory()
@@ -79,84 +74,57 @@ const CreateReportOrderIssueFlowScenarioView = () => {
         )
     }
 
+    const isLoading = !selfServiceConfiguration
+
     return (
-        <div className="full-width">
-            <PageHeader
-                title={
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/automation/shopify/${shopName}/order-management`}
-                            >
-                                Order management flows
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/automation/shopify/${shopName}/order-management/report-issue`}
-                            >
-                                Report order issue
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>Create scenario</BreadcrumbItem>
-                    </Breadcrumb>
-                }
-            />
-            <Container
-                fluid
-                className={classnames({
-                    [css.container]: Boolean(selfServiceConfiguration),
-                })}
+        <AutomationView
+            title={
+                <Breadcrumb>
+                    <BreadcrumbItem>
+                        <Link
+                            to={`/app/automation/shopify/${shopName}/order-management`}
+                        >
+                            Order management flows
+                        </Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <Link
+                            to={`/app/automation/shopify/${shopName}/order-management/report-issue`}
+                        >
+                            Report order issue
+                        </Link>
+                    </BreadcrumbItem>
+                    <BreadcrumbItem active>Create scenario</BreadcrumbItem>
+                </Breadcrumb>
+            }
+            isLoading={isLoading}
+        >
+            <AutomationViewContent
+                onSubmit={handleSubmit}
+                onCancel={handleCancel}
+                isSubmittable={!hasError && !isCreatePending}
+                isCancelable={!isCreatePending}
             >
-                {!selfServiceConfiguration ? (
-                    <Loader />
-                ) : (
-                    <>
-                        <div className={css.content}>
-                            <ReportOrderIssueScenarioFormContext.Provider
-                                value={reportOrderIssueScenarioFormContext}
-                            >
-                                <ReportOrderIssueScenarioForm
-                                    value={scenario}
-                                    expandedReason={expandedReasonKey}
-                                    onExpandedReasonChange={
-                                        setExpandedReasonKey
-                                    }
-                                    onHoveredReasonChange={setHoveredReasonKey}
-                                    isFallback={false}
-                                    onPreviewChange={setScenario}
-                                    onChange={setScenario}
-                                />
-                                <div className={css.buttonsContainer}>
-                                    <Button
-                                        isDisabled={isCreatePending || hasError}
-                                        onClick={handleSubmit}
-                                    >
-                                        Create scenario
-                                    </Button>
-                                    <Button
-                                        isDisabled={isCreatePending}
-                                        onClick={handleCancel}
-                                        intent="secondary"
-                                    >
-                                        Cancel
-                                    </Button>
-                                </div>
-                                <UnsavedChangesPrompt
-                                    onSave={handleSubmit}
-                                    when={!hasError && !isCreatePending}
-                                />
-                            </ReportOrderIssueScenarioFormContext.Provider>
-                        </div>
-                        <ReportOrderIssueFlowScenarioPreview
-                            reasons={scenario.reasons}
-                            expandedReasonKey={expandedReasonKey}
-                            hoveredReasonKey={hoveredReasonKey}
-                        />
-                    </>
-                )}
-            </Container>
-        </div>
+                <ReportOrderIssueScenarioFormContext.Provider
+                    value={reportOrderIssueScenarioFormContext}
+                >
+                    <ReportOrderIssueScenarioForm
+                        value={scenario}
+                        expandedReason={expandedReasonKey}
+                        onExpandedReasonChange={setExpandedReasonKey}
+                        onHoveredReasonChange={setHoveredReasonKey}
+                        isFallback={false}
+                        onPreviewChange={setScenario}
+                        onChange={setScenario}
+                    />
+                </ReportOrderIssueScenarioFormContext.Provider>
+            </AutomationViewContent>
+            <ReportOrderIssueFlowScenarioPreview
+                reasons={scenario.reasons}
+                expandedReasonKey={expandedReasonKey}
+                hoveredReasonKey={hoveredReasonKey}
+            />
+        </AutomationView>
     )
 }
 

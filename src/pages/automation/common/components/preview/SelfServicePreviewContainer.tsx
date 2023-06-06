@@ -32,42 +32,43 @@ const SelfServicePreviewContainer = <T extends SelfServiceChannel>({
     const alertAction = alert?.action
 
     return (
-        <div>
-            <div className={css.container}>
-                <div className={css.controlsContainer}>
-                    <div className={css.header}>Customer preview</div>
+        <div className={css.container}>
+            <div className={css.contentContainer}>
+                <div className={css.content}>
                     {channels && onChange && (
-                        <SelfServicePreviewChannelSelect
-                            channel={channel}
-                            channels={channels}
-                            onChange={onChange}
-                        />
+                        <div className={css.controlsContainer}>
+                            <SelfServicePreviewChannelSelect
+                                channel={channel}
+                                channels={channels}
+                                onChange={onChange}
+                            />
+                        </div>
                     )}
+                    {channel
+                        ? children(channel)
+                        : alert && (
+                              <Alert
+                                  className={css.alert}
+                                  type={AlertType.Warning}
+                                  icon
+                                  customActions={
+                                      alertAction && (
+                                          <Button
+                                              fillStyle="ghost"
+                                              size="small"
+                                              onClick={() => {
+                                                  history.push(alertAction.href)
+                                              }}
+                                          >
+                                              {alertAction.message}
+                                          </Button>
+                                      )
+                                  }
+                              >
+                                  {alert.message}
+                              </Alert>
+                          )}
                 </div>
-                {channel
-                    ? children(channel)
-                    : alert && (
-                          <Alert
-                              className={css.alert}
-                              type={AlertType.Warning}
-                              icon
-                              customActions={
-                                  alertAction && (
-                                      <Button
-                                          fillStyle="ghost"
-                                          size="small"
-                                          onClick={() => {
-                                              history.push(alertAction.href)
-                                          }}
-                                      >
-                                          {alertAction.message}
-                                      </Button>
-                                  )
-                              }
-                          >
-                              {alert.message}
-                          </Alert>
-                      )}
             </div>
         </div>
     )

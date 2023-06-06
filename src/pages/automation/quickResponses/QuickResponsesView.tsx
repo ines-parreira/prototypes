@@ -1,21 +1,18 @@
 import React, {useMemo, useRef, useState} from 'react'
-import {Container} from 'reactstrap'
 import {useParams} from 'react-router-dom'
-import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import _keyBy from 'lodash/keyBy'
 import {v4 as uuidv4} from 'uuid'
 import {fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import Loader from 'pages/common/components/Loader/Loader'
 import Button from 'pages/common/components/button/Button'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import useSelfServiceChatChannels from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
 import {FeatureFlagKey} from 'config/featureFlags'
+import AutomationView from 'pages/automation/common/components/AutomationView'
+import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
 import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../common/components/constants'
 import QuickResponsesAccordionCaption from './components/QuickResponsesAccordionCaption'
@@ -185,120 +182,59 @@ const QuickResponsesView = () => {
         (dirtyQuickResponse) =>
             dirtyQuickResponse.id === expandedQuickResponseId
     )
-
     const isLoading =
         !selfServiceConfiguration ||
         chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
 
     return (
-        <div className="full-width">
-            <PageHeader title="Quick response flows" />
-            <Container
-                fluid
-                className={classnames({
-                    [css.container]: !isLoading,
-                })}
+        <AutomationView title="Quick response flows" isLoading={isLoading}>
+            <AutomationViewContent
+                description={`Display up to ${MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} buttons in your chat widget with common questions that customers can click for an instant response. If a customer needs more help, a ticket is created for an agent to handle.`}
+                helpUrl="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"
+                helpTitle="How To Set Up Quick Response Flows"
+                onSubmit={handleSubmit}
+                onCancel={handleCancel}
+                isSubmittable={
+                    areQuickResponsesDirty && !isUpdatePending && !hasError
+                }
+                isCancelable={areQuickResponsesDirty && !isUpdatePending}
             >
-                {isLoading ? (
-                    <Loader />
-                ) : (
-                    <QuickResponsesViewContext.Provider
-                        value={quickResponsesViewContext}
-                    >
-                        <div className={css.content}>
-                            <div className={css.descriptionContainer}>
-                                <div className={css.description}>
-                                    Display up to{' '}
-                                    {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}{' '}
-                                    buttons in your chat widget with common
-                                    questions that customers can click for an
-                                    instant response. If a customer needs more
-                                    help, a ticket is created for an agent to
-                                    handle.
-                                </div>
-                                <a
-                                    href="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"
-                                    rel="noopener noreferrer"
-                                    target="_blank"
-                                >
-                                    <i className="material-icons mr-2">
-                                        menu_book
-                                    </i>
-                                    How To Set Up Quick Response Flows
-                                </a>
-                            </div>
-
-                            {dirtyQuickResponses.length > 0 && (
-                                <QuickResponsesAccordionCaption />
-                            )}
-                            <QuickResponsesAccordion
-                                items={dirtyQuickResponses}
-                                expandedItem={expandedQuickResponseId}
-                                onExpandedItemChange={
-                                    setExpandedQuickResponseId
-                                }
-                                onHoveredItemChange={setHoveredQuickResponseId}
-                                onPreviewChange={setDirtyQuickResponses}
-                                onChange={handleQuickResponsesUpdate}
-                                onDelete={handleQuickResponsesDelete}
-                            />
-
-                            <Button
-                                intent="secondary"
-                                className={css.addQuickResponseButton}
-                                onClick={handleNewQuickResponse}
-                                isDisabled={hasError}
-                            >
-                                <i className="material-icons md-2 mr-2">add</i>
-                                Add quick response flow
-                            </Button>
-
-                            <div
-                                className={css.submitAndCancelButtonsContainer}
-                            >
-                                <Button
-                                    isDisabled={
-                                        !areQuickResponsesDirty ||
-                                        isUpdatePending ||
-                                        hasError
-                                    }
-                                    onClick={handleSubmit}
-                                >
-                                    Save changes
-                                </Button>
-                                <Button
-                                    isDisabled={
-                                        !areQuickResponsesDirty ||
-                                        isUpdatePending
-                                    }
-                                    onClick={handleCancel}
-                                    intent="secondary"
-                                >
-                                    Cancel
-                                </Button>
-                            </div>
-                            <UnsavedChangesPrompt
-                                onSave={handleSubmit}
-                                when={
-                                    areQuickResponsesDirty &&
-                                    !isUpdatePending &&
-                                    !hasError
-                                }
-                            />
-                        </div>
-                        <QuickResponsesPreview
-                            channels={chatChannels}
-                            selfServiceConfiguration={{
-                                ...selfServiceConfiguration!,
-                                quick_response_policies: dirtyQuickResponses,
-                            }}
-                            expandedQuickResponse={expandedQuickResponse}
-                            hoveredQuickResponseId={hoveredQuickResponseId}
-                        />
-                    </QuickResponsesViewContext.Provider>
+                {dirtyQuickResponses.length > 0 && (
+                    <QuickResponsesAccordionCaption />
                 )}
-            </Container>
-        </div>
+                <QuickResponsesViewContext.Provider
+                    value={quickResponsesViewContext}
+                >
+                    <QuickResponsesAccordion
+                        items={dirtyQuickResponses}
+                        expandedItem={expandedQuickResponseId}
+                        onExpandedItemChange={setExpandedQuickResponseId}
+                        onHoveredItemChange={setHoveredQuickResponseId}
+                        onPreviewChange={setDirtyQuickResponses}
+                        onChange={handleQuickResponsesUpdate}
+                        onDelete={handleQuickResponsesDelete}
+                    />
+                </QuickResponsesViewContext.Provider>
+                <Button
+                    intent="secondary"
+                    className={css.addQuickResponseButton}
+                    onClick={handleNewQuickResponse}
+                    isDisabled={hasError}
+                >
+                    <i className="material-icons md-2 mr-2">add</i>
+                    Add quick response flow
+                </Button>
+            </AutomationViewContent>
+            <QuickResponsesPreview
+                channels={chatChannels}
+                selfServiceConfiguration={{
+                    ...selfServiceConfiguration!,
+                    quick_response_policies: dirtyQuickResponses,
+                }}
+                expandedQuickResponse={expandedQuickResponse}
+                hoveredQuickResponseId={hoveredQuickResponseId}
+            />
+        </AutomationView>
     )
 }
 

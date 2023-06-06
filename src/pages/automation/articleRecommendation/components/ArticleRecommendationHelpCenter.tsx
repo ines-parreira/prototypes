@@ -8,15 +8,15 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import {HelpCenter} from 'models/helpCenter/types'
 
-interface Props {
+type Props = {
     helpCenter: HelpCenter | undefined
-    availableHelpCenters: HelpCenter[]
+    helpCenters: HelpCenter[]
     setHelpCenterId: (id: number) => void
 }
 
 const ArticleRecommendationHelpCenter = ({
     helpCenter,
-    availableHelpCenters,
+    helpCenters,
     setHelpCenterId,
 }: Props) => {
     const targetRef = useRef<HTMLDivElement>(null)
@@ -39,10 +39,10 @@ const ArticleRecommendationHelpCenter = ({
                         value={helpCenter?.id}
                         target={targetRef}
                         ref={floatingRef}
-                        isDisabled={!availableHelpCenters.length}
+                        isDisabled={!helpCenters.length}
                     >
                         <DropdownBody>
-                            {availableHelpCenters.map((helpCenter) => (
+                            {helpCenters.map((helpCenter) => (
                                 <DropdownItem
                                     key={helpCenter.id}
                                     option={{
