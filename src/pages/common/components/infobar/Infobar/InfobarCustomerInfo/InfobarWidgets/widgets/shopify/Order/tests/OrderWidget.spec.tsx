@@ -139,7 +139,7 @@ describe('<Copy/>', () => {
         const store = mockStore({currentAccount: fromJS({domain: 'domain'})})
         render(
             <Provider store={store}>
-                <Copy value="test" />
+                <Copy name="name" value="test" />
             </Provider>
         )
         const button = screen.getByRole('button')
@@ -148,7 +148,7 @@ describe('<Copy/>', () => {
         expect(copyMock).toHaveBeenCalledWith('test')
         expect(logEventMock).toHaveBeenLastCalledWith(
             SegmentEvent.InfobarFieldCopied,
-            {account_domain: 'domain'}
+            {account_domain: 'domain', name: 'name'}
         )
     })
 
@@ -156,7 +156,7 @@ describe('<Copy/>', () => {
         const store = mockStore({})
         render(
             <Provider store={store}>
-                <Copy value="test" />
+                <Copy name="name" value="test" />
             </Provider>
         )
         const button = screen.getByRole('button')
@@ -173,7 +173,7 @@ describe('<Copy/>', () => {
         const store = mockStore({})
         render(
             <Provider store={store}>
-                <Copy value="test" onCopyMessage="Test Message" />
+                <Copy name="name" value="test" onCopyMessage="Test Message" />
             </Provider>
         )
         const button = screen.getByRole('button')
@@ -193,7 +193,7 @@ describe('<Copy/>', () => {
         })
         render(
             <Provider store={store}>
-                <Copy value="test" onCopyMessage="Test Message" />
+                <Copy name="name" value="test" onCopyMessage="Test Message" />
             </Provider>
         )
         const button = screen.getByRole('button')

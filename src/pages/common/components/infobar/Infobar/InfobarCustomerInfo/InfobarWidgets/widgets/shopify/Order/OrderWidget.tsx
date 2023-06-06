@@ -273,9 +273,11 @@ class AfterTitle extends Component<AfterTitleProps> {
 
 export const Copy = ({
     value,
+    name,
     onCopyMessage = 'Copied!',
 }: {
     value: string
+    name: string
     onCopyMessage?: string
 }) => {
     const dispatch = useAppDispatch()
@@ -285,6 +287,7 @@ export const Copy = ({
         e.stopPropagation()
         logEvent(SegmentEvent.InfobarFieldCopied, {
             account_domain: currentAccount.get('domain'),
+            name: name,
         })
         try {
             copy(value)
@@ -352,6 +355,7 @@ function TitleWrapper({children, source}: TitleWrapperProps) {
                 {!isEditing && (
                     <Copy
                         value={source.get('name')}
+                        name="Order Name"
                         onCopyMessage="Order Number copied to clipboard"
                     />
                 )}
