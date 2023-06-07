@@ -1691,7 +1691,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             <div
                               class="title"
                             >
-                              hellochatintegration
+                              hellochatintegration Bot
                             </div>
                             <div
                               class="bubble firstMessageOfAppMaker"
@@ -2539,7 +2539,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             <div
                               class="title"
                             >
-                              hellochatintegration
+                              hellochatintegration Bot
                             </div>
                             <div
                               class="bubble firstMessageOfAppMaker"
@@ -3395,7 +3395,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                             <div
                               class="title"
                             >
-                              hellochatintegration
+                              hellochatintegration Bot
                             </div>
                             <div
                               class="bubble firstMessageOfAppMaker"
@@ -4243,7 +4243,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             <div
                               class="title"
                             >
-                              hellochatintegration
+                              hellochatintegration Bot
                             </div>
                             <div
                               class="bubble firstMessageOfAppMaker"
@@ -5084,7 +5084,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             <div
                               class="title"
                             >
-                              hellochatintegration
+                              hellochatintegration Bot
                             </div>
                             <div
                               class="bubble firstMessageOfAppMaker"
@@ -5977,7 +5977,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                             <div
                               class="title"
                             >
-                              MY ONLY SHOPIFY STORE Support
+                              MY ONLY SHOPIFY STORE Support Bot
                             </div>
                             <div
                               class="bubble firstMessageOfAppMaker"
@@ -6376,10 +6376,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                 class="formSection"
               >
                 <h2
-                  class="title"
+                  class="title mb-1"
                 >
                   Company logo
                 </h2>
+                <p
+                  class="mb-4"
+                >
+                  Customize your team's or robot avatars by uploading your company's logo.
+                </p>
                 <div
                   class="imagePreviewWrapper"
                 >
@@ -6913,7 +6918,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                             <div
                               class="title"
                             >
-                              Acme Chat
+                              Acme Chat Bot
                             </div>
                             <div
                               class="bubble firstMessageOfAppMaker"
@@ -8709,7 +8714,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             <div
                               class="title"
                             >
-                              myChat1
+                              myChat1 Bot
                             </div>
                             <div
                               class="bubble firstMessageOfAppMaker"

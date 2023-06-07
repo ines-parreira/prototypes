@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BotMessages /> should display bot icon 1`] = `
+<div
+  class="appMakerMessageWrapper test-class"
+>
+  <div
+    class="avatar"
+  >
+    <img
+      alt="Robot icon"
+      src="/assets/img/icons/bot-icon.svg"
+    />
+  </div>
+  <div>
+    <div
+      class="title"
+    >
+      Acme Support Bot
+    </div>
+    <div
+      class="bubble firstMessageOfAppMaker"
+    >
+      Hello!
+    </div>
+    <div
+      class="bubble"
+    >
+      How can I help you?
+    </div>
+    <div>
+      test
+    </div>
+    <div
+      class="automatedTimestamp"
+    >
+      Automated
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<BotMessages /> should display company logo 1`] = `
+<div
+  class="appMakerMessageWrapper test-class"
+>
+  <div
+    class="avatar"
+    style="background-image: url(company-logo-url.jpg);"
+  />
+  <div>
+    <div
+      class="title"
+    >
+      Acme Support Bot
+    </div>
+    <div
+      class="bubble firstMessageOfAppMaker"
+    >
+      Hello!
+    </div>
+    <div
+      class="bubble"
+    >
+      How can I help you?
+    </div>
+    <div>
+      test
+    </div>
+    <div
+      class="automatedTimestamp"
+    >
+      Automated
+    </div>
+  </div>
+</div>
+`;

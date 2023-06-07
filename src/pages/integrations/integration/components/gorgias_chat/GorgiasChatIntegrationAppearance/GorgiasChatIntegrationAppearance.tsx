@@ -61,6 +61,7 @@ import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+import {ChatIntegrationPreviewProvider} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreviewProvider'
 import ConversationTimestamp from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationTimestamp'
 import ChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatLauncher'
 import AutoResponderMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AutoResponderMessages'
@@ -561,27 +562,33 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 renderFooter={isOnline}
             >
                 <ChatIntegrationPreviewContent>
-                    {isOnline ? (
-                        <AutoResponderMessages
-                            currentUser={currentUser}
-                            conversationColor={conversationColor}
-                            chatTitle={name}
-                            avatar={state.avatar}
-                            language={language}
-                            autoResponderReply={
-                                GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
-                            }
-                        />
-                    ) : (
-                        <>
-                            <ConversationTimestamp />
-                            <OfflineMessages
-                                mainColor={mainColor}
+                    <ChatIntegrationPreviewProvider
+                        value={{
+                            avatar,
+                        }}
+                    >
+                        {isOnline ? (
+                            <AutoResponderMessages
+                                currentUser={currentUser}
+                                conversationColor={conversationColor}
                                 chatTitle={name}
+                                avatar={state.avatar}
                                 language={language}
+                                autoResponderReply={
+                                    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
+                                }
                             />
-                        </>
-                    )}
+                        ) : (
+                            <>
+                                <ConversationTimestamp />
+                                <OfflineMessages
+                                    mainColor={mainColor}
+                                    chatTitle={name}
+                                    language={language}
+                                />
+                            </>
+                        )}
+                    </ChatIntegrationPreviewProvider>
                 </ChatIntegrationPreviewContent>
             </ChatIntegrationPreview>
         </div>
@@ -874,9 +881,19 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             <>
                                 {shouldShowAvatarCustomization ? (
                                     <div className={css.formSection}>
-                                        <h2 className={css.title}>
+                                        <h2
+                                            className={classNames(
+                                                css.title,
+                                                'mb-1'
+                                            )}
+                                        >
                                             Company logo
                                         </h2>
+                                        <p className="mb-4">
+                                            Customize your team's or robot
+                                            avatars by uploading your company's
+                                            logo.
+                                        </p>
                                         <ImageField
                                             isDiscardable={true}
                                             onChange={onCompanyLogoUrlChange}

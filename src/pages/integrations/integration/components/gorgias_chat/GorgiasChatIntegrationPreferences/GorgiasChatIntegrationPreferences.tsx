@@ -59,6 +59,7 @@ import SelectField from '../../../../../common/forms/SelectField/SelectField'
 import {RootState} from '../../../../../../state/types'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
+import {ChatIntegrationPreviewProvider} from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewProvider'
 
 import OfflineMessages from '../GorgiasChatIntegrationPreview/OfflineMessages'
 import CustomerInitialMessages from '../GorgiasChatIntegrationPreview/CustomerInitialMessages'
@@ -606,19 +607,21 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 autoResponderReply={autoResponderReply}
             >
                 <ChatIntegrationPreviewContent>
-                    {preview !== PREVIEW_CONTROL_TICKET_VOLUME && (
-                        <ConversationTimestamp />
-                    )}
-                    {showCustomerInitialMessages && (
-                        <CustomerInitialMessages
-                            conversationColor={conversationColor}
-                            messages={[
-                                'Hi, could you give me an update on my order status?',
-                            ]}
-                            hideConversationTimestamp
-                        />
-                    )}
-                    {previewChildren}
+                    <ChatIntegrationPreviewProvider value={{avatar}}>
+                        {preview !== PREVIEW_CONTROL_TICKET_VOLUME && (
+                            <ConversationTimestamp />
+                        )}
+                        {showCustomerInitialMessages && (
+                            <CustomerInitialMessages
+                                conversationColor={conversationColor}
+                                messages={[
+                                    'Hi, could you give me an update on my order status?',
+                                ]}
+                                hideConversationTimestamp
+                            />
+                        )}
+                        {previewChildren}
+                    </ChatIntegrationPreviewProvider>
                 </ChatIntegrationPreviewContent>
             </ChatIntegrationPreview>
         )
