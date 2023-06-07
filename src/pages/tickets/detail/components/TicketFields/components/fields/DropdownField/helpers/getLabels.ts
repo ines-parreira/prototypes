@@ -1,0 +1,28 @@
+import {DROPDOWN_NESTING_DELIMITER} from 'models/customField/constants'
+import {CustomFieldValue} from 'models/customField/types'
+import {isCustomFieldValueEmpty} from 'utils/customFields'
+
+import {DROPDOWN_NESTING_FANCY_DELIMITER} from '../constants'
+
+export function getLabel(choice?: CustomFieldValue) {
+    if (isCustomFieldValueEmpty(choice)) return ''
+    if (typeof choice === 'boolean') {
+        return choice ? 'Yes' : 'No'
+    }
+    if (typeof choice === 'string') {
+        return choice
+            .split(DROPDOWN_NESTING_DELIMITER)
+            .join(DROPDOWN_NESTING_FANCY_DELIMITER)
+    }
+
+    return choice.toString()
+}
+
+export function getStealthLabel(choice?: CustomFieldValue) {
+    const _choice =
+        typeof choice === 'string'
+            ? (choice.split(DROPDOWN_NESTING_DELIMITER).pop() as string)
+            : choice
+
+    return getLabel(_choice)
+}

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchInput should render with a search icon and a clear icon when has a search value 1`] = `
+<div
+  class="wrapper searchInput"
+>
+  <span
+    class="prefix"
+  >
+    <i
+      class="material-icons icon"
+    >
+      search
+    </i>
+  </span>
+  <input
+    class="input"
+    id="custom-field-dropdown-search"
+    name="custom-field-dropdown-search"
+    placeholder="Search"
+    type="text"
+    value=""
+  />
+</div>
+`;

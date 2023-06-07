@@ -17,6 +17,9 @@ import {
 
 import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
 import DropdownField from '../DropdownField'
+import {getLabel} from '../helpers/getLabels'
+
+jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 const mockStore = configureMockStore()
 const mockedServer = new MockAdapter(client)
@@ -93,7 +96,7 @@ describe('<DropdownField />', () => {
         )
         await waitFor(() => {
             userEvent.hover(screen.getByRole('textbox'))
-            expect(screen.getByText(fieldState.value))
+            expect(screen.getByText(getLabel(fieldState.value)))
         })
     })
 
@@ -202,7 +205,7 @@ describe('<DropdownField />', () => {
         )
 
         userEvent.click(screen.getByRole('textbox'))
-        userEvent.click(screen.getByText('Clear'))
+        userEvent.click(screen.getByText(/Clear/))
         await waitFor(() => {
             expect(mockedServer.history.delete[0]).toBeDefined()
         })
@@ -219,11 +222,34 @@ describe('<DropdownField />', () => {
         )
 
         userEvent.click(screen.getByRole('textbox'))
-        userEvent.click(screen.getByText('Clear'))
+        userEvent.click(screen.getByText(/Clear/))
         await waitFor(() => {
             expect(mockedServer.history.delete).toHaveLength(0)
         })
     })
 
-    // TODO(@Manuel): add accessibility tests once we update userEvent
+    it('should not display a search input if not text choices', () => {
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <DropdownField {...initialProps} choices={[1024, 2048]} />
+                </Provider>
+            </QueryClientProvider>
+        )
+        userEvent.click(screen.getByRole('textbox'))
+        expect(screen.queryByPlaceholderText('Search')).toBeNull()
+    })
+
+    it('should display display results when searching', async () => {
+        const {container} = render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <DropdownField {...initialProps} />
+                </Provider>
+            </QueryClientProvider>
+        )
+        userEvent.click(screen.getByRole('textbox'))
+        await userEvent.type(screen.getByPlaceholderText('Search'), 's1')
+        expect(container.parentElement).toMatchSnapshot()
+    })
 })

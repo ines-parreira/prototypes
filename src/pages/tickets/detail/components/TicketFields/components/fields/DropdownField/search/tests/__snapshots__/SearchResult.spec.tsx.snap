@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchResult should render with a highlighted label or path when currentSearch is equal to label or path 1`] = `
+<span
+  class="searchResultWrapper"
+>
+  <span
+    class="ellipsis"
+  >
+    
+    <strong>
+      fo
+    </strong>
+    obar
+  </span>
+  <small
+    class="searchResultPath ellipsis"
+  >
+    bar
+    <strong>
+      fo
+    </strong>
+    o
+  </small>
+</span>
+`;
+
+exports[`SearchResult should render with only a label 1`] = `
+<span
+  class="searchResultWrapper"
+>
+  <span
+    class="ellipsis"
+  >
+    foo
+  </span>
+  
+</span>
+`;

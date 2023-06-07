@@ -1,0 +1,30 @@
+@import '~css/new/layout';
+@import '~css/new/colors';
+
+:local {
+    .searchInput {
+        flex: 0 0 auto;
+        margin: @layout-spacing-xs;
+        margin-bottom: 0;
+        width: auto;
+    }
+
+    .searchClearIcon {
+        padding: @layout-spacing-xxs 0;
+        cursor: pointer;
+        font-size: 1.2rem !important;
+    }
+
+    .searchResultWrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        padding: @layout-spacing-xs 0;
+    }
+
+    .searchResultPath {
+        color: @classic-neutral-grey-4;
+        font-size: 0.85rem;
+    }
+}
