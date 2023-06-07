@@ -123,29 +123,15 @@ describe('useWorkflowsEntrypoints', () => {
         )
     })
 
-    it('handleDragAndDrop', async () => {
-        updateMock({
-            selfServiceConfiguration: {
-                workflows_entrypoints: entrypointsFixtures,
-            } as SelfServiceConfiguration,
-        })
-        const {result} = renderHook(
-            () => useWorkflowsEntrypoints('', '', () => null),
-            renderHookOptions
-        )
-        await act(() => result.current.handleDragAndDrop(['c', 'a', 'b']))
-        expect(result.current.workflowsEntrypoints).toEqual([
-            entrypointsWithNameFixtures[2],
-            {...entrypointsWithNameFixtures[0], name: 'a'},
-            ...entrypointsWithNameFixtures.slice(1, 2),
-        ])
-    })
-
     it('deleteWorkflowEntrypoint', async () => {
+        const handleSelfServiceConfigurationUpdateMock = jest.fn()
+
         updateMock({
             selfServiceConfiguration: {
                 workflows_entrypoints: entrypointsFixtures,
             } as SelfServiceConfiguration,
+            handleSelfServiceConfigurationUpdate:
+                handleSelfServiceConfigurationUpdateMock,
         })
         const {result} = renderHook(
             () => useWorkflowsEntrypoints('', '', () => null),
@@ -159,48 +145,16 @@ describe('useWorkflowsEntrypoints', () => {
                 mockWorkflowConfiguration.id
             )
         )
-        expect(result.current.workflowsEntrypoints).toEqual([
-            ...entrypointsWithNameFixtures.slice(1),
-        ])
+        expect(handleSelfServiceConfigurationUpdateMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                workflows_entrypoints: entrypointsFixtures.slice(1),
+            })
+        )
         expect(
             mockWorkflowApi.deleteWorkflowConfiguration
         ).toHaveBeenCalledTimes(1)
         expect(
             mockWorkflowApi.deleteWorkflowConfiguration
         ).toHaveBeenCalledWith(mockWorkflowConfiguration.internal_id)
-    })
-
-    it('toggleEnabled and isToggleUpdatePending', async () => {
-        const configuration = {
-            workflows_entrypoints: entrypointsFixtures,
-        } as SelfServiceConfiguration
-        updateMock({
-            selfServiceConfiguration: configuration,
-        })
-        const {result, rerender} = renderHook(
-            () => useWorkflowsEntrypoints('', '', () => null),
-            renderHookOptions
-        )
-        await act(() => result.current.toggleEnabled('a'))
-        expect(result.current.workflowsEntrypoints).toEqual([
-            {...entrypointsFixtures[0], enabled: false, name: 'a'},
-            ...entrypointsWithNameFixtures.slice(1),
-        ])
-        expect(result.current.isToggleUpdatePending('a')).toBe(true)
-        // simulate selfServiceConfiguration being refreshed after API update
-        updateMock({
-            selfServiceConfiguration: {
-                ...configuration,
-                workflows_entrypoints: result.current.workflowsEntrypoints,
-            },
-        })
-        expect(result.current.isToggleUpdatePending('a')).toBe(true)
-        // refresh useCallbacks to use the last selfServiceConfiguration mock
-        rerender()
-        await act(() => result.current.toggleEnabled('a'))
-        expect(result.current.workflowsEntrypoints).toEqual([
-            {...entrypointsFixtures[0], name: 'a'},
-            ...entrypointsWithNameFixtures.slice(1),
-        ])
     })
 })

@@ -1,12 +1,8 @@
-import {useState, useEffect, useRef, useCallback} from 'react'
+import {useCallback, useEffect, useState} from 'react'
 import {produce} from 'immer'
-import {
-    SelfServiceConfiguration,
-    WorkflowEntrypoint,
-} from 'models/selfServiceConfiguration/types'
+import {WorkflowEntrypoint} from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {NotificationStatus} from 'state/notifications/types'
-import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from 'pages/automation/common/components/constants'
 import {WorkflowConfiguration} from '../types'
 import useWorkflowApi from './useWorkflowApi'
 
@@ -14,10 +10,6 @@ export type UseWorkflowsEntrypointsReturnType = {
     workflowsEntrypoints: Array<WorkflowEntrypoint & {name: string}>
     isFetchPending: boolean
     isUpdatePending: boolean
-    isEnabledLimitReached: boolean
-    isToggleUpdatePending: (workflowId: string) => boolean
-    toggleEnabled: (workflowId: string) => Promise<void>
-    handleDragAndDrop: (sortedWorkflowIds: string[]) => Promise<void>
     deleteWorkflowEntrypoint: (workflowId: string) => Promise<void>
     duplicateWorkflow: (workflowId: string) => Promise<{id: string}>
 }
@@ -28,10 +20,10 @@ export default function useWorkflowsEntrypoints(
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
 ): UseWorkflowsEntrypointsReturnType {
     const {
+        selfServiceConfiguration,
         isFetchPending: isSelfServiceFetchPending,
         isUpdatePending: isSelfServiceUpdatePending,
         handleSelfServiceConfigurationUpdate,
-        ...selfServiceConfigurationApi
     } = useSelfServiceConfiguration(
         shopType,
         shopName,
@@ -70,76 +62,16 @@ export default function useWorkflowsEntrypoints(
         void loadWorkflowsConfigurations()
     }, [loadWorkflowsConfigurations])
 
-    // needed to avoid stale references of self service configuration in the handleDragAndDrop callback below
-    // otherwise there is a bug involving ReactSortable onChange prop having a stale version of the callback
-    // see https://linear.app/gorgias/issue/PLTCO-2960/[frontend]-stale-prop-bug-in-the-reactsortable-component
-    const selfServiceConfigurationRef = useRef(
-        selfServiceConfigurationApi.selfServiceConfiguration
-    )
-
-    // we maintain a local draft configuration to know which entrypoint is currently being enabled or disabled
-    // and display the loading in the UI in the corresponding Toggle component
-    // see isToggleUpdatePending and its use
-    const [draftConfiguration, setDraftConfiguration] = useState(
-        selfServiceConfigurationRef.current
-    )
     // some operations (duplicate) require fetching and updating from both the self service API and workflows API
     // to keep a consistent loading state we use an additional local isUpdatePending state
     const [isUpdatePending, setIsUpdatePending] = useState(false)
 
-    useEffect(() => {
-        setDraftConfiguration(
-            selfServiceConfigurationApi.selfServiceConfiguration
-        )
-        selfServiceConfigurationRef.current =
-            selfServiceConfigurationApi.selfServiceConfiguration
-    }, [selfServiceConfigurationApi.selfServiceConfiguration])
-
-    const toggleEnabled = useCallback(
-        async (workflowId: string) => {
-            if (!selfServiceConfigurationApi.selfServiceConfiguration)
-                throw new Error('self service configuration not loaded')
-            const nextConfiguration = produce(
-                selfServiceConfigurationApi.selfServiceConfiguration,
-                (draft) => {
-                    const entrypoint = draft.workflows_entrypoints?.find(
-                        (e) => e.workflow_id === workflowId
-                    )
-                    if (entrypoint) entrypoint.enabled = !entrypoint.enabled
-                }
-            )
-            setDraftConfiguration(nextConfiguration)
-            await handleSelfServiceConfigurationUpdate(nextConfiguration)
-            notifyMerchant('Successfully updated', 'success')
-        },
-        [
-            selfServiceConfigurationApi.selfServiceConfiguration,
-            handleSelfServiceConfigurationUpdate,
-            notifyMerchant,
-        ]
-    )
-
-    const handleDragAndDrop = useCallback(
-        async (sortedWorkflowIds: string[]) => {
-            // see why we use a ref here instead of selfServiceConfigurationApi.selfServiceConfiguration in the comment above the ref definition
-            if (!selfServiceConfigurationRef.current) return
-            const nextConfiguration = reorderWorkflowsEntrypoints(
-                selfServiceConfigurationRef.current,
-                sortedWorkflowIds
-            )
-            setDraftConfiguration(nextConfiguration)
-            await handleSelfServiceConfigurationUpdate(nextConfiguration)
-            notifyMerchant('Successfully updated', 'success')
-        },
-        [handleSelfServiceConfigurationUpdate, notifyMerchant]
-    )
-
     const deleteWorkflowEntrypoint = useCallback(
         async (workflowId: string) => {
-            if (!selfServiceConfigurationApi.selfServiceConfiguration)
+            if (!selfServiceConfiguration)
                 throw new Error('self service configuration not loaded')
             const nextConfiguration = produce(
-                selfServiceConfigurationApi.selfServiceConfiguration,
+                selfServiceConfiguration,
                 (draft) => {
                     const at =
                         draft.workflows_entrypoints?.findIndex(
@@ -149,7 +81,6 @@ export default function useWorkflowsEntrypoints(
                 }
             )
 
-            setDraftConfiguration(nextConfiguration)
             await handleSelfServiceConfigurationUpdate(nextConfiguration)
             const internalId =
                 workflowConfigurationById[workflowId]?.internal_id
@@ -157,7 +88,7 @@ export default function useWorkflowsEntrypoints(
             notifyMerchant('Successfully deleted', 'success')
         },
         [
-            selfServiceConfigurationApi.selfServiceConfiguration,
+            selfServiceConfiguration,
             handleSelfServiceConfigurationUpdate,
             workflowConfigurationById,
             deleteWorkflowConfiguration,
@@ -167,7 +98,7 @@ export default function useWorkflowsEntrypoints(
 
     const duplicateWorkflow = useCallback(
         async (workflowId: string) => {
-            if (!selfServiceConfigurationApi.selfServiceConfiguration)
+            if (!selfServiceConfiguration)
                 throw new Error('self service configuration not loaded')
             setIsUpdatePending(true)
             const duplicatedWorkflow = await duplicateWorkflowConfiguration(
@@ -175,7 +106,7 @@ export default function useWorkflowsEntrypoints(
             )
             await loadWorkflowsConfigurations()
             const nextConfiguration = produce(
-                selfServiceConfigurationApi.selfServiceConfiguration,
+                selfServiceConfiguration,
                 (draft) => {
                     const originalLabel = draft.workflows_entrypoints?.find(
                         (e) => e.workflow_id === workflowId
@@ -192,46 +123,20 @@ export default function useWorkflowsEntrypoints(
             return {id: duplicatedWorkflow.id}
         },
         [
-            selfServiceConfigurationApi.selfServiceConfiguration,
+            selfServiceConfiguration,
             duplicateWorkflowConfiguration,
             loadWorkflowsConfigurations,
             handleSelfServiceConfigurationUpdate,
         ]
     )
 
-    const isToggleUpdatePending = useCallback(
-        (workflowId: string) => {
-            const apiEnabled =
-                selfServiceConfigurationApi.selfServiceConfiguration?.workflows_entrypoints?.find(
-                    (e) => e.workflow_id === workflowId
-                )?.enabled
-            const draftEnabled =
-                draftConfiguration?.workflows_entrypoints?.find(
-                    (e) => e.workflow_id === workflowId
-                )?.enabled
-            return apiEnabled !== draftEnabled
-        },
-        [
-            selfServiceConfigurationApi.selfServiceConfiguration,
-            draftConfiguration,
-        ]
-    )
-
     const workflowsEntrypoints =
-        draftConfiguration?.workflows_entrypoints?.map((e) => ({
+        selfServiceConfiguration?.workflows_entrypoints?.map((e) => ({
             ...e,
             name: workflowConfigurationById[e.workflow_id]?.name ?? '',
         })) ?? []
-    const quickResponsesEnabled =
-        selfServiceConfigurationApi.selfServiceConfiguration?.quick_response_policies?.filter(
-            (p) => p.deactivated_datetime == null
-        ).length ?? 0
     return {
         workflowsEntrypoints,
-        isEnabledLimitReached:
-            workflowsEntrypoints.filter((e) => e.enabled).length +
-                quickResponsesEnabled >=
-            MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
         isFetchPending:
             !isUpdatePending &&
             (isSelfServiceFetchPending || isWorkflowApiFetchPending),
@@ -239,28 +144,7 @@ export default function useWorkflowsEntrypoints(
             isSelfServiceUpdatePending ||
             isWorkflowApiUpdatePending ||
             isUpdatePending,
-        isToggleUpdatePending,
-        toggleEnabled,
-        handleDragAndDrop,
         deleteWorkflowEntrypoint,
         duplicateWorkflow,
-    }
-}
-
-function reorderWorkflowsEntrypoints(
-    configuration: SelfServiceConfiguration,
-    sortedWorkflowIds: string[]
-) {
-    const entrypointsByWorkflowId =
-        configuration.workflows_entrypoints?.reduce(
-            (acc, e) => ({...acc, [e.workflow_id]: e}),
-            {} as {[workflowId: string]: WorkflowEntrypoint}
-        ) ?? {}
-    const workflowsEntrypoints = sortedWorkflowIds
-        .filter((workflowId) => workflowId in entrypointsByWorkflowId)
-        .map((workflowId) => entrypointsByWorkflowId[workflowId])
-    return {
-        ...configuration,
-        workflows_entrypoints: workflowsEntrypoints,
     }
 }

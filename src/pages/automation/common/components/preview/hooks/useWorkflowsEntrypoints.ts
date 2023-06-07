@@ -4,17 +4,10 @@ import _keyBy from 'lodash/keyBy'
 import {useSelfServicePreviewContext} from '../SelfServicePreviewContext'
 
 const useWorkflowsEntrypoints = () => {
-    const {
-        selfServiceConfiguration,
-        areWorkflowsEnabled,
-        workflowsEntrypoints,
-    } = useSelfServicePreviewContext()
+    const {selfServiceConfiguration, workflowsEntrypoints} =
+        useSelfServicePreviewContext()
 
     return useMemo(() => {
-        if (!areWorkflowsEnabled) {
-            return []
-        }
-
         const allWorkflowsEntrypoints =
             selfServiceConfiguration?.workflows_entrypoints ?? []
 
@@ -45,11 +38,7 @@ const useWorkflowsEntrypoints = () => {
                     entrypoint.workflow_id
                 ].label,
             }))
-    }, [
-        areWorkflowsEnabled,
-        workflowsEntrypoints,
-        selfServiceConfiguration?.workflows_entrypoints,
-    ])
+    }, [workflowsEntrypoints, selfServiceConfiguration?.workflows_entrypoints])
 }
 
 export default useWorkflowsEntrypoints

@@ -1,8 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
@@ -22,8 +20,6 @@ type Props = {
 }
 
 const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
-    const allowDifferentFlowsPerChannel =
-        useFlags()[FeatureFlagKey.DifferentFlowsPerChannel]
     const applicationId = channel.value.meta.app_id!
 
     const {
@@ -46,13 +42,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         applicationAutomationSettings
 
     const updateSettings =
-        (
-            key:
-                | 'articleRecommendation'
-                | 'orderManagement'
-                | 'quickResponses'
-                | 'workflows'
-        ) =>
+        (key: 'articleRecommendation' | 'orderManagement' | 'quickResponses') =>
         (value: boolean) =>
             handleChatApplicationAutomationSettingsUpdate({
                 ...applicationAutomationSettings,
@@ -94,32 +84,19 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
 
     return (
         <>
-            {!allowDifferentFlowsPerChannel && (
-                <ConnectedChannelFeatureToggle
-                    name="Flows"
-                    value={workflows.enabled}
-                    onChange={updateSettings('workflows')}
-                    disabled={isUpdatePending || !hasAutomationAddOn}
-                    action={
-                        !hasAutomationAddOn && <AutomationSubscriptionAction />
-                    }
-                />
-            )}
-            {allowDifferentFlowsPerChannel && (
-                <ConnectedChannelWorkflowsFeature
-                    channelId={`chat-${applicationId}`}
-                    entrypoints={workflows.entrypoints}
-                    onChange={(nextEntrypoints) => {
-                        void handleChatApplicationAutomationSettingsUpdate({
-                            ...applicationAutomationSettings,
-                            workflows: {
-                                ...workflows,
-                                entrypoints: nextEntrypoints,
-                            },
-                        })
-                    }}
-                />
-            )}
+            <ConnectedChannelWorkflowsFeature
+                channelId={`chat-${applicationId}`}
+                entrypoints={workflows.entrypoints}
+                onChange={(nextEntrypoints) => {
+                    void handleChatApplicationAutomationSettingsUpdate({
+                        ...applicationAutomationSettings,
+                        workflows: {
+                            ...workflows,
+                            entrypoints: nextEntrypoints,
+                        },
+                    })
+                }}
+            />
 
             <ConnectedChannelFeatureToggle
                 name="Quick response flows"

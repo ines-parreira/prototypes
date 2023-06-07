@@ -1,6 +1,5 @@
 import React from 'react'
 import {History} from 'history'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {TicketChannel} from 'business/types/ticket'
 import SelfServiceFeatureDisabledOnChannelAlert from 'pages/automation/common/components/preview/SelfServiceFeatureDisabledOnChannelAlert'
@@ -15,7 +14,6 @@ import {
 } from 'models/selfServiceConfiguration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {useOrderManagementPreviewContext} from './OrderManagementPreviewContext'
 
@@ -30,8 +28,6 @@ const OrderManagementPreview = ({
     hoveredOrderManagementFlow,
     history,
 }: Props) => {
-    const allowDifferentFlowsPerChannel =
-        useFlags()[FeatureFlagKey.DifferentFlowsPerChannel]
     const {channels, channel, onChannelChange} =
         useOrderManagementPreviewContext()
     const applicationsAutomationSettings = useAppSelector(
@@ -82,7 +78,6 @@ const OrderManagementPreview = ({
                             selfServiceConfiguration,
                             hoveredOrderManagementFlow,
                             orderManagementFlow: 'track_order_policy',
-                            areWorkflowsEnabled: allowDifferentFlowsPerChannel,
                             workflowsEntrypoints,
                         }}
                     >

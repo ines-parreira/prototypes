@@ -4,13 +4,11 @@ import _isEqual from 'lodash/isEqual'
 import _keyBy from 'lodash/keyBy'
 import {v4 as uuidv4} from 'uuid'
 import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import Button from 'pages/common/components/button/Button'
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import useSelfServiceChatChannels from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
-import {FeatureFlagKey} from 'config/featureFlags'
 import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
@@ -27,8 +25,6 @@ import {NEW_QUICK_RESPONSE_SYMBOL} from './constants'
 import css from './QuickResponsesView.less'
 
 const QuickResponsesView = () => {
-    const allowDifferentFlowsPerChannel =
-        useFlags()[FeatureFlagKey.DifferentFlowsPerChannel]
     const {shopType, shopName} = useParams<{
         shopType: string
         shopName: string
@@ -81,11 +77,6 @@ const QuickResponsesView = () => {
             return 0
         }
 
-        if (!allowDifferentFlowsPerChannel) {
-            return allEntrypoints.filter((entrypoint) => entrypoint.enabled)
-                .length
-        }
-
         const allEntrypointsByWorkflowId = _keyBy(allEntrypoints, 'workflow_id')
         const enabledWorkflowIds = new Set<string>()
 
@@ -111,7 +102,6 @@ const QuickResponsesView = () => {
 
         return enabledWorkflowIds.size
     }, [
-        allowDifferentFlowsPerChannel,
         selfServiceConfiguration?.workflows_entrypoints,
         chatApplicationIds,
         applicationsAutomationSettings,

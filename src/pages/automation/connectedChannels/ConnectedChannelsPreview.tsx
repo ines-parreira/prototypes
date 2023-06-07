@@ -1,6 +1,5 @@
 import React, {useMemo} from 'react'
 import {createMemoryHistory} from 'history'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceChannels'
 import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
@@ -13,7 +12,6 @@ import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 type Props = {
     channel?: SelfServiceChannel
@@ -24,8 +22,6 @@ const ConnectedChannelsPreview = ({
     channel,
     selfServiceConfiguration,
 }: Props) => {
-    const allowDifferentFlowsPerChannel =
-        useFlags()[FeatureFlagKey.DifferentFlowsPerChannel]
     const history = useMemo(
         () =>
             createMemoryHistory({
@@ -99,7 +95,6 @@ const ConnectedChannelsPreview = ({
                             Boolean(
                                 selfServiceConfiguration.article_recommendation_help_center_id
                             ),
-                        areWorkflowsEnabled: allowDifferentFlowsPerChannel,
                         workflowsEntrypoints,
                     }}
                 >

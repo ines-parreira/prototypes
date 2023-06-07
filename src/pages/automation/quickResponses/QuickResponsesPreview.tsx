@@ -1,6 +1,5 @@
 import React, {useEffect, useMemo} from 'react'
 import {createMemoryHistory} from 'history'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {
     QuickResponsePolicy,
@@ -14,7 +13,6 @@ import SelfServicePreviewContext from 'pages/automation/common/components/previe
 import useAppSelector from 'hooks/useAppSelector'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import SelfServiceFeatureDisabledOnChannelAlert from 'pages/automation/common/components/preview/SelfServiceFeatureDisabledOnChannelAlert'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 type Props = {
     channels: SelfServiceChatChannel[]
@@ -29,8 +27,6 @@ const QuickResponsesPreview = ({
     expandedQuickResponse,
     hoveredQuickResponseId,
 }: Props) => {
-    const allowDifferentFlowsPerChannel =
-        useFlags()[FeatureFlagKey.DifferentFlowsPerChannel]
     const history = useMemo(
         () => createMemoryHistory(),
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,7 +79,6 @@ const QuickResponsesPreview = ({
                             selfServiceConfiguration,
                             quickResponse: expandedQuickResponse,
                             hoveredQuickResponseId,
-                            areWorkflowsEnabled: allowDifferentFlowsPerChannel,
                             workflowsEntrypoints:
                                 applicationAutomationSettings?.workflows
                                     ?.entrypoints,
