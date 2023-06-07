@@ -1,4 +1,6 @@
 import React, {useState} from 'react'
+import {useListWhatsAppMessageTemplates} from 'models/whatsAppMessageTemplates/queries'
+
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -6,52 +8,19 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import CountryFlag from 'pages/phoneNumbers/CountryFlag'
-import {WhatsAppTemplate} from 'models/integration/types'
-import WhatsAppTemplateStatusLabel from './WhatsAppTemplateStatusLabel'
-import WhatsAppTemplateCategoryLabel from './WhatsAppTemplateCategoryLabel'
+import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
+import WhatsAppMessageTemplateStatusLabel from './WhatsAppMessageTemplateStatusLabel'
+import WhatsAppMessageTemplateCategoryLabel from './WhatsAppMessageTemplateCategoryLabel'
 import {whatsAppFlagCodes} from './constants'
-import WhatsAppTemplateDetailsDrawer from './WhatsAppTemplateDetailsDrawer'
+import WhatsAppMessageTemplateDetailsDrawer from './WhatsAppMessageTemplateDetailsDrawer'
 
-import css from './WhatsAppTemplatesList.less'
+import css from './WhatsAppMessageTemplatesList.less'
 
-const mockTemplates = [
-    {
-        components: {
-            header: {
-                type: 'text',
-                value: 'LOGIN ATTEMPT',
-            },
-            body: {
-                type: 'text',
-                value: "Hey {{1}},\\nHere's your https://www.google.com one-time password:  *{{2}}*\\nCode expires in 30 minutes.",
-            },
-            footer: {
-                type: 'text',
-                value: 'If you never requested this code, please ignore the message.',
-            },
-            button: {
-                type: 'url',
-                value: 'https://app.mobile.me.app/{{1}}',
-            },
-        },
-        category: 'MARKETING',
-        id: '100500',
-        external_id: '1184662202111735',
-        language: 'en_US',
-        name: 'sample_purchase_feedback',
-        status: 'REJECTED',
-        rejected_reason: 'INVALID_FORMAT',
-        quality_score: 'UNKNOWN',
-        waba_id: '123128413183132',
-        created_datetime: 'datetime',
-        updated_datetime: 'datetime',
-        deactivated_datetime: 'datetime',
-    } as WhatsAppTemplate,
-] as WhatsAppTemplate[]
-
-export default function WhatsAppTemplatesList() {
+export default function WhatsAppMessageTemplatesList() {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-    const [currentTemplate, setCurrentTemplate] = useState<WhatsAppTemplate>()
+    const [currentTemplate, setCurrentTemplate] =
+        useState<WhatsAppMessageTemplate>()
+    const request = useListWhatsAppMessageTemplates()
     return (
         <div>
             <p className={css.intro}>
@@ -68,7 +37,7 @@ export default function WhatsAppTemplatesList() {
                     <HeaderCellProperty title="Language" />
                 </TableHead>
                 <TableBody>
-                    {mockTemplates.map((template) => (
+                    {request.data?.data.map((template) => (
                         <TableBodyRow
                             key={template.id}
                             onClick={() => {
@@ -80,12 +49,12 @@ export default function WhatsAppTemplatesList() {
                                 <strong>{template.name}</strong>
                             </BodyCell>
                             <BodyCell>
-                                <WhatsAppTemplateCategoryLabel
+                                <WhatsAppMessageTemplateCategoryLabel
                                     category={template.category}
                                 />
                             </BodyCell>
                             <BodyCell>
-                                <WhatsAppTemplateStatusLabel
+                                <WhatsAppMessageTemplateStatusLabel
                                     status={template.status}
                                 />
                             </BodyCell>
@@ -102,7 +71,7 @@ export default function WhatsAppTemplatesList() {
                 </TableBody>
             </TableWrapper>
             {currentTemplate && (
-                <WhatsAppTemplateDetailsDrawer
+                <WhatsAppMessageTemplateDetailsDrawer
                     isOpen={isDrawerOpen}
                     setIsOpen={setIsDrawerOpen}
                     template={currentTemplate}

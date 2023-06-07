@@ -3,14 +3,14 @@ import {sanitizeHtmlDefault} from 'utils/html'
 import {WHATSAPP_VARIABLE_REGEX} from './utils'
 import WhatsAppVariablePreview from './WhatsAppVariablePreview'
 
-import css from './WhatsAppTemplateMessage.less'
+import css from './WhatsAppMessageTemplateMessage.less'
 
 type Props = {
     message: string
     isPreview: boolean
 }
 
-export default function WhatsAppTemplateMessageBody({
+export default function WhatsAppMessageTemplateMessageBody({
     message,
     isPreview,
 }: Props) {

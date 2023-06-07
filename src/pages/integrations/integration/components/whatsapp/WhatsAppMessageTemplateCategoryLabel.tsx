@@ -1,27 +1,29 @@
 import React from 'react'
-import {WhatsAppTemplateCategory} from 'models/integration/types'
+import {WhatsAppMessageTemplateCategory} from 'models/whatsAppMessageTemplates/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 type Props = {
-    category: WhatsAppTemplateCategory
+    category: WhatsAppMessageTemplateCategory
 }
 
-export default function WhatsAppTemplateCategoryLabel({category}: Props) {
+export default function WhatsAppMessageTemplateCategoryLabel({
+    category,
+}: Props) {
     const {color, label} = templateCategoryToBadgeProps[category]
 
     return <Badge color={color}>{label}</Badge>
 }
 
 const templateCategoryToBadgeProps = {
-    [WhatsAppTemplateCategory.Utility]: {
+    [WhatsAppMessageTemplateCategory.Utility]: {
         color: ColorType.Blue,
         label: 'Order Update',
     },
-    [WhatsAppTemplateCategory.Marketing]: {
+    [WhatsAppMessageTemplateCategory.Marketing]: {
         color: ColorType.Light,
         label: 'Marketing',
     },
-    [WhatsAppTemplateCategory.Authentication]: {
+    [WhatsAppMessageTemplateCategory.Authentication]: {
         color: ColorType.Grey,
         label: 'Authentication',
     },

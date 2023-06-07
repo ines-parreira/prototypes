@@ -3,25 +3,25 @@ import {ReactCountryFlag} from 'react-country-flag'
 import IconButton from 'pages/common/components/button/IconButton'
 import {Drawer} from 'pages/common/components/Drawer'
 import Label from 'pages/common/forms/Label/Label'
-import {WhatsAppTemplate} from 'models/integration/types'
+import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Card from 'pages/stats/Card'
 
 import {getLanguageDisplayName} from 'utils'
-import css from './WhatsAppTemplateDetailsDrawer.less'
-import WhatsAppTemplateMessage from './WhatsAppTemplateMessage'
+import css from './WhatsAppMessageTemplateDetailsDrawer.less'
+import WhatsAppMessageTemplateMessage from './WhatsAppMessageTemplateMessage'
 import {templateAlertContent, whatsAppFlagCodes} from './constants'
-import WhatsAppTemplateStatusLabel from './WhatsAppTemplateStatusLabel'
-import WhatsAppTemplateCategoryLabel from './WhatsAppTemplateCategoryLabel'
+import WhatsAppMessageTemplateStatusLabel from './WhatsAppMessageTemplateStatusLabel'
+import WhatsAppMessageTemplateCategoryLabel from './WhatsAppMessageTemplateCategoryLabel'
 import {normalizeLocale} from './utils'
 
 type Props = {
     isOpen: boolean
     setIsOpen: (isOpen: boolean) => void
-    template: WhatsAppTemplate
+    template: WhatsAppMessageTemplate
 }
 
-export default function WhatsAppTemplateDetailsDrawer({
+export default function WhatsAppMessageTemplateDetailsDrawer({
     isOpen,
     setIsOpen,
     template,
@@ -75,11 +75,13 @@ export default function WhatsAppTemplateDetailsDrawer({
                 <div className={css.propertiesWrapper}>
                     <div className={css.property}>
                         <Label>Status</Label>
-                        <WhatsAppTemplateStatusLabel status={template.status} />
+                        <WhatsAppMessageTemplateStatusLabel
+                            status={template.status}
+                        />
                     </div>
                     <div className={css.property}>
                         <Label>Category</Label>
-                        <WhatsAppTemplateCategoryLabel
+                        <WhatsAppMessageTemplateCategoryLabel
                             category={template.category}
                         />
                     </div>
@@ -108,7 +110,7 @@ export default function WhatsAppTemplateDetailsDrawer({
                     .
                 </p>
                 <Card className={css.messageContainer}>
-                    <WhatsAppTemplateMessage template={template} />
+                    <WhatsAppMessageTemplateMessage template={template} />
                 </Card>
             </Drawer.Content>
         </Drawer>

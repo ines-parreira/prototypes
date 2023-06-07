@@ -11,7 +11,7 @@ export enum FeatureFlagKey {
     EarlyAdopter = 'early-adopter',
     EnableWhatsAppMigrations = 'enable-whatsapp-migrations',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
-    WhatsappTemplates = 'enable-whatsapp-templates',
+    WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     EnforceTicketsOnES = 'enforce-tickets-on-es',
     ElasticsearchSearchLoadTest = 'elasticsearch-search-load-test',
     ElasticsearchCustomerSearch = 'elasticsearch-customer-search',

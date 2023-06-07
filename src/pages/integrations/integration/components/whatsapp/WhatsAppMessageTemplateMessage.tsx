@@ -1,16 +1,16 @@
 import React from 'react'
-import {WhatsAppTemplate} from 'models/integration/types'
-import WhatsAppTemplateMessageBody from './WhatsAppTemplateMessageBody'
+import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
+import WhatsAppMessageTemplateMessageBody from './WhatsAppMessageTemplateMessageBody'
 import {processWhatsAppMarkdown} from './utils'
 
-import css from './WhatsAppTemplateMessage.less'
+import css from './WhatsAppMessageTemplateMessage.less'
 
 type Props = {
-    template: WhatsAppTemplate
+    template: WhatsAppMessageTemplate
     isPreview?: boolean
 }
 
-export default function WhatsAppTemplateMessage({
+export default function WhatsAppMessageTemplateMessage({
     template,
     isPreview = true,
 }: Props) {
@@ -18,7 +18,7 @@ export default function WhatsAppTemplateMessage({
 
     return (
         <div data-testid="template-message">
-            <WhatsAppTemplateMessageBody
+            <WhatsAppMessageTemplateMessageBody
                 isPreview={isPreview}
                 message={processWhatsAppMarkdown(
                     template.components.body.value

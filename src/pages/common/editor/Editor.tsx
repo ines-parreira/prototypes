@@ -37,8 +37,8 @@ export default function Editor({
         onChangeFilters,
         onChangeQuery,
     } = useMacros({initialFilters: initialMacroFilters})
-    const whatsAppTemplatesEnabled =
-        useFlags()[FeatureFlagKey.WhatsappTemplates]
+    const whatsAppMessageTemplatesEnabled =
+        useFlags()[FeatureFlagKey.WhatsAppMessageTemplates]
 
     return (
         <div
@@ -48,7 +48,9 @@ export default function Editor({
         >
             <form ref={formRef} id="ticket-reply-editor" onSubmit={onSubmit}>
                 <ReplyMessageChannel
-                    whatsAppTemplatesEnabled={whatsAppTemplatesEnabled}
+                    whatsAppMessageTemplatesEnabled={
+                        whatsAppMessageTemplatesEnabled
+                    }
                 />
                 <ReplyForm>
                     <TicketReplyArea

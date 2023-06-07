@@ -37,7 +37,7 @@ const changeReceiversAllowedSourceTypes = [
 
 type Props = {
     className?: string
-    whatsAppTemplatesEnabled: boolean
+    whatsAppMessageTemplatesEnabled: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -148,7 +148,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
             isNewMessagePublic,
             prepareNewMessage,
             ticket,
-            whatsAppTemplatesEnabled,
+            whatsAppMessageTemplatesEnabled,
         } = this.props
 
         const isTicketExisting = !!ticket.get('id')
@@ -194,7 +194,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
         const suggestWhatsApp =
             hasWhatsAppIntegration &&
             (!!replyOptions.get(TicketMessageSourceType.WhatsAppMessage) ||
-                (whatsAppTemplatesEnabled && !isTicketExisting))
+                (whatsAppMessageTemplatesEnabled && !isTicketExisting))
         const suggestYotpoReview =
             isTicketExisting &&
             !!replyOptions.get(TicketMessageSourceType.YotpoReview)

@@ -1,68 +1,25 @@
 import React, {useState} from 'react'
 import classNames from 'classnames'
 import {ReactCountryFlag} from 'react-country-flag'
-import {WhatsAppTemplate} from 'models/integration/types'
+import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import WhatsAppTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppTemplateMessage'
+import WhatsAppMessageTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
 import {whatsAppFlagCodes} from 'pages/integrations/integration/components/whatsapp/constants'
+import {whatsAppMessageTemplates} from 'fixtures/whatsAppMessageTemplates'
 
-import css from './WhatsAppTemplateNavigator.less'
-
-const mockTemplate = {
-    components: {
-        header: {
-            type: 'text',
-            value: 'LOGIN ATTEMPT',
-        },
-        body: {
-            type: 'text',
-            value: "Hey {{1}},\\nHere's your https://www.google.com one-time password:  *{{2}}*\\nCode expires in 30 minutes.",
-        },
-        footer: {
-            type: 'text',
-            value: 'If you never requested this code, please ignore the message.',
-        },
-        button: {
-            type: 'url',
-            value: 'https://app.mobile.me.app/{{1}}',
-        },
-    },
-    category: 'MARKETING',
-    id: '100500',
-    external_id: '1184662202111735',
-    language: 'ca',
-    name: 'sample_purchase_feedback',
-    status: 'REJECTED',
-    rejected_reason: 'INVALID_FORMAT',
-    quality_score: 'UNKNOWN',
-    waba_id: '123128413183132',
-    created_datetime: 'datetime',
-    updated_datetime: 'datetime',
-    deactivated_datetime: 'datetime',
-} as WhatsAppTemplate
-
-const mockTemplates = Array(5)
-    .fill(mockTemplate)
-    .map(
-        (template, index) =>
-            ({
-                ...template,
-                id: index.toString(),
-            } as WhatsAppTemplate)
-    )
+import css from './WhatsAppMessageTemplateNavigator.less'
 
 type Props = {
-    onItemClick: (template: WhatsAppTemplate) => void
-    templates: WhatsAppTemplate[]
+    onItemClick: (template: WhatsAppMessageTemplate) => void
+    templates: WhatsAppMessageTemplate[]
 }
 
-export default function WhatsAppTemplateNavigator({
+export default function WhatsAppMessageTemplateNavigator({
     onItemClick,
-    templates = mockTemplates,
+    templates = whatsAppMessageTemplates,
 }: Props) {
-    const [currentTemplate, setCurrentTemplate] = useState<WhatsAppTemplate>(
-        templates[0]
-    )
+    const [currentTemplate, setCurrentTemplate] =
+        useState<WhatsAppMessageTemplate>(templates[0])
 
     // TODO check if template can ever be disabled
     const isDisabled = false
@@ -107,7 +64,9 @@ export default function WhatsAppTemplateNavigator({
             </InfiniteScroll>
             {currentTemplate && (
                 <div className={css.templateMessage}>
-                    <WhatsAppTemplateMessage template={currentTemplate} />
+                    <WhatsAppMessageTemplateMessage
+                        template={currentTemplate}
+                    />
                 </div>
             )}
         </div>

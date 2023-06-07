@@ -46,7 +46,7 @@ describe('ReplyMessageChannel component', () => {
         hasSmsIntegration: false,
         hasWhatsAppIntegration: false,
         prepareNewMessage: jest.fn(),
-        whatsAppTemplatesEnabled: false,
+        whatsAppMessageTemplatesEnabled: false,
     }
 
     it('new ticket', () => {
@@ -185,7 +185,7 @@ describe('ReplyMessageChannel component', () => {
                 })}
                 isNewMessagePublic
                 hasWhatsAppIntegration
-                whatsAppTemplatesEnabled
+                whatsAppMessageTemplatesEnabled
             />
         )
         expect(getByText(/whatsapp/i)).toBeVisible()
