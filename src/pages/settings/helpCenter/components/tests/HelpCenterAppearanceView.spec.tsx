@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 
+import _keyBy from 'lodash/keyBy'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
@@ -16,6 +17,7 @@ import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentH
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {billingState} from 'fixtures/billing'
 import {FontCatalogueModal} from 'pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal'
+import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {HelpCenterAppearanceView} from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
 import {getHelpCenterTranslationsResponseFixture} from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import {HelpCenterTranslationProvider} from '../../providers/HelpCenterTranslation'
@@ -24,8 +26,23 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
 
+jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
+    return {
+        useContactFormApi: () => ({
+            isReady: true,
+            isLoading: false,
+            getContactFormById: jest.fn(),
+        }),
+    }
+})
+
 const defaultState: Partial<RootState> = {
     entities: {
+        contactForm: {
+            contactForms: {
+                contactFormById: _keyBy([ContactFormFixture], 'id'),
+            },
+        },
         helpCenter: {
             helpCenters: {
                 helpCentersById: {

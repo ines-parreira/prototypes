@@ -26,6 +26,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
             shop_name: null,
             contact_form: null,
+            email_integration: null,
         },
         {
             id: 2,
@@ -51,6 +52,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
             shop_name: null,
             contact_form: null,
+            email_integration: null,
         },
         {
             id: 3,
@@ -76,6 +78,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
             shop_name: null,
             contact_form: null,
+            email_integration: null,
         },
         {
             id: 4,
@@ -101,6 +104,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
             shop_name: null,
             contact_form: null,
+            email_integration: null,
         },
     ],
     object: 'list',
@@ -140,6 +144,7 @@ export const getSingleHelpCenterResponseFixture: HelpCenter = {
     updated_datetime: '2021-05-17T18:21:42.022Z',
     deleted_datetime: null,
     contact_form: null,
+    email_integration: null,
 }
 
 export const getSingleHelpCenterResponseFixtureWithTranslation: HelpCenter = {

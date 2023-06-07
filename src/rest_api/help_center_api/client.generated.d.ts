@@ -4,7 +4,7 @@ import {
   UnknownParamsObject,
   OperationResponse,
   AxiosRequestConfig,
-} from 'openapi-client-axios';
+} from 'openapi-client-axios'; 
 
 declare namespace Components {
   namespace Schemas {
@@ -652,6 +652,11 @@ declare namespace Components {
        * Url template to use to construct the shareable Contact form link
        */
       url_template: string;
+      shop_name: string | null;
+      /**
+       * Deactivation date
+       */
+      deactivated_datetime: string | null; // date-time
     }
     export interface ContactFormSubmissionDto {
       /**
@@ -725,13 +730,13 @@ declare namespace Components {
     export interface CreateArticleDto {
       /**
        * A translation for the article.
-       *
+       * 
        * When creating an article, a translation should be provided.
        */
       translation: {
         /**
          * The locale of the translation.
-         *
+         * 
          * It should be in help center's supported locales.
          * example:
          * fr-FR
@@ -751,7 +756,7 @@ declare namespace Components {
         excerpt: string;
         /**
          * The content of the article in the `locale`'s translation.
-         *
+         * 
          * Supports HTML formatted content.
          * example:
          * I can be <strong>HTML</strong>
@@ -759,7 +764,7 @@ declare namespace Components {
         content: string;
         /**
          * A slug for the article that'll be used to construct article's URLs.
-         *
+         * 
          * Should only contains alphanumeric values and hyphens.
          * example:
          * cancel-an-order
@@ -796,7 +801,7 @@ declare namespace Components {
     export interface CreateArticleTranslationDto {
       /**
        * The locale of the translation.
-       *
+       * 
        * It should be in help center's supported locales.
        * example:
        * fr-FR
@@ -816,7 +821,7 @@ declare namespace Components {
       excerpt: string;
       /**
        * The content of the article in the `locale`'s translation.
-       *
+       * 
        * Supports HTML formatted content.
        * example:
        * I can be <strong>HTML</strong>
@@ -824,7 +829,7 @@ declare namespace Components {
       content: string;
       /**
        * A slug for the article that'll be used to construct article's URLs.
-       *
+       * 
        * Should only contains alphanumeric values and hyphens.
        * example:
        * cancel-an-order
@@ -879,13 +884,13 @@ declare namespace Components {
     export interface CreateCategoryDto {
       /**
        * A translation for the category.
-       *
+       * 
        * When creating a category, a translation should be provided.
        */
       translation: {
         /**
          * The locale of the translation.
-         *
+         * 
          * It should be in help center's supported locales.
          * example:
          * fr-FR
@@ -911,7 +916,7 @@ declare namespace Components {
         description: string | null;
         /**
          * A slug for the category that'll be used to construct category's URLs.
-         *
+         * 
          * Should only contains alphanumeric values and hyphens.
          * example:
          * orders
@@ -945,7 +950,7 @@ declare namespace Components {
     export interface CreateCategoryTranslationDto {
       /**
        * The locale of the translation.
-       *
+       * 
        * It should be in help center's supported locales.
        * example:
        * fr-FR
@@ -971,7 +976,7 @@ declare namespace Components {
       description: string | null;
       /**
        * A slug for the category that'll be used to construct category's URLs.
-       *
+       * 
        * Should only contains alphanumeric values and hyphens.
        * example:
        * orders
@@ -1012,11 +1017,6 @@ declare namespace Components {
       description: string | null;
     }
     export interface CreateContactFormDto {
-      /**
-       * Help center id that is serving this contact form
-       * example:
-       */
-      help_center_id?: number | null;
       /**
        * Name of the Contact Form
        * example:
@@ -1073,6 +1073,7 @@ declare namespace Components {
          */
         allow_other: boolean;
       } | null;
+      shop_name?: string | null;
     }
     export interface CreateCustomDomainDto {
       hostname: string;
@@ -1080,7 +1081,7 @@ declare namespace Components {
     export interface CreateHelpCenterTranslationDto {
       /**
        * The locale of the translation.
-       *
+       * 
        * It should be in help center's supported locales.
        * example:
        * fr-FR
@@ -1119,13 +1120,13 @@ declare namespace Components {
       name: string;
       /**
        * A valid subdomain for the Help center.
-       *
+       * 
        * Should be:
        * - length no greater than 63
        * - must begin and end with an alpha-numeric
        * - may contain hyphens (dashes)
        * - may not begin or end with a hyphen
-       *
+       * 
        * If not provided, a subdomain will be generated.
        * example:
        * mysubdomain
@@ -1173,6 +1174,24 @@ declare namespace Components {
       };
       source?: "manual" | "automation";
       gaid?: string | null; // GOOGLE_ANALYTICS_ID_REGEXP
+      /**
+       * Email integration used to receive this contact form inquiries
+       * example:
+       * {
+       *   "id": 1,
+       *   "email": "jonh@example.com"
+       * }
+       */
+      email_integration?: {
+        /**
+         * Identifier
+         */
+        id: number;
+        /**
+         * Email value
+         */
+        email: string;
+      } | null;
       account_id?: number;
     }
     export interface CreateNavigationLinkDto {
@@ -1182,7 +1201,7 @@ declare namespace Components {
       label: string;
       /**
        * The URL of the navigation link.
-       *
+       * 
        * Should be an absolute URL with protocol and host.
        * example:
        * https://gorgias.com/pricing
@@ -1190,7 +1209,7 @@ declare namespace Components {
       value: string;
       /**
        * The locale of the navigation link.
-       *
+       * 
        * It should be in help center's supported locales.
        * example:
        * fr-FR
@@ -1288,7 +1307,7 @@ declare namespace Components {
     export interface ExtraHTMLDto {
       /**
        * The HTML injected in the head
-       *
+       * 
        * It should be in help center's supported locales.
        * example:
        * <div>....</div>
@@ -1302,7 +1321,7 @@ declare namespace Components {
       extra_head_deactivated?: boolean;
       /**
        * The HTML of the custom header
-       *
+       * 
        * It should be in help center's supported locales.
        * example:
        * <div>....</div>
@@ -1316,7 +1335,7 @@ declare namespace Components {
       custom_header_deactivated?: boolean;
       /**
        * The HTML of the custom footer
-       *
+       * 
        * It should be in help center's supported locales.
        * example:
        * <div>....</div>
@@ -1384,6 +1403,16 @@ declare namespace Components {
           [name: string]: SubjectLineDto;
         };
       } | null;
+      email_integration: {
+        /**
+         * Identifier
+         */
+        id: number;
+        /**
+         * Email value
+         */
+        email: string;
+      } | null;
       translations?: HelpCenterTranslationDto[];
       redirects?: RedirectDto[];
     }
@@ -1438,6 +1467,16 @@ declare namespace Components {
           [name: string]: SubjectLineDto;
         };
       } | null;
+      email_integration: {
+        /**
+         * Identifier
+         */
+        id: number;
+        /**
+         * Email value
+         */
+        email: string;
+      } | null;
     }
     export interface HelpCenterTranslationDto {
       /**
@@ -1486,6 +1525,7 @@ declare namespace Components {
         custom_footer_deactivated_datetime: string | null; // date-time
       };
       chat_app_key: string | null;
+      contact_form_id?: number | null;
     }
     export interface HelpCenterTranslationSeoMeta {
       title: string | null;
@@ -1670,7 +1710,7 @@ declare namespace Components {
       nb_pages: number;
       /**
        * The path to the next page.
-       *
+       * 
        * If none, there is no next page.
        * example:
        * /my-items?page=2&per_page=20
@@ -1804,7 +1844,7 @@ declare namespace Components {
       excerpt?: string;
       /**
        * The content of the article in the `locale`'s translation.
-       *
+       * 
        * Supports HTML formatted content.
        * example:
        * I can be <strong>HTML</strong>
@@ -1812,7 +1852,7 @@ declare namespace Components {
       content?: string;
       /**
        * A slug for the article that'll be used to construct article's URLs.
-       *
+       * 
        * Should only contains alphanumeric values and hyphens.
        * example:
        * cancel-an-order
@@ -1875,7 +1915,7 @@ declare namespace Components {
       description?: string | null;
       /**
        * A slug for the category that'll be used to construct category's URLs.
-       *
+       * 
        * Should only contains alphanumeric values and hyphens.
        * example:
        * orders
@@ -1906,11 +1946,6 @@ declare namespace Components {
       image_url?: string | null;
     }
     export interface UpdateContactFormDto {
-      /**
-       * Help center id that is serving this contact form
-       * example:
-       */
-      help_center_id?: number | null;
       /**
        * Name of the Contact Form
        * example:
@@ -1967,6 +2002,8 @@ declare namespace Components {
          */
         allow_other: boolean;
       } | null;
+      shop_name?: string | null;
+      deactivated_datetime?: string | null; // date-time
     }
     export interface UpdateContactFormIntegrationDto {
       /**
@@ -1997,7 +2034,7 @@ declare namespace Components {
     export interface UpdateExtraHTMLDto {
       /**
        * The HTML injected in the head
-       *
+       * 
        * It should be in help center's supported locales.
        * example:
        * <div>....</div>
@@ -2011,7 +2048,7 @@ declare namespace Components {
       extra_head_deactivated?: boolean;
       /**
        * The HTML of the custom header
-       *
+       * 
        * It should be in help center's supported locales.
        * example:
        * <div>....</div>
@@ -2025,7 +2062,7 @@ declare namespace Components {
       custom_header_deactivated?: boolean;
       /**
        * The HTML of the custom footer
-       *
+       * 
        * It should be in help center's supported locales.
        * example:
        * <div>....</div>
@@ -2054,13 +2091,13 @@ declare namespace Components {
       name?: string;
       /**
        * A valid subdomain for the Help center.
-       *
+       * 
        * Should be:
        * - length no greater than 63
        * - must begin and end with an alpha-numeric
        * - may contain hyphens (dashes)
        * - may not begin or end with a hyphen
-       *
+       * 
        * If not provided, a subdomain will be generated.
        * example:
        * mysubdomain
@@ -2108,6 +2145,24 @@ declare namespace Components {
       };
       gaid?: string | null; // GOOGLE_ANALYTICS_ID_REGEXP
       /**
+       * Email integration used to receive this contact form inquiries
+       * example:
+       * {
+       *   "id": 1,
+       *   "email": "jonh@example.com"
+       * }
+       */
+      email_integration?: {
+        /**
+         * Identifier
+         */
+        id: number;
+        /**
+         * Email value
+         */
+        email: string;
+      } | null;
+      /**
        * Boolean indicating if "Powered By Gorgias" will be displayed in this help center footer
        * example:
        * false
@@ -2150,7 +2205,7 @@ declare namespace Components {
       extra_html?: {
         /**
          * The HTML injected in the head
-         *
+         * 
          * It should be in help center's supported locales.
          * example:
          * <div>....</div>
@@ -2164,7 +2219,7 @@ declare namespace Components {
         extra_head_deactivated?: boolean;
         /**
          * The HTML of the custom header
-         *
+         * 
          * It should be in help center's supported locales.
          * example:
          * <div>....</div>
@@ -2178,7 +2233,7 @@ declare namespace Components {
         custom_header_deactivated?: boolean;
         /**
          * The HTML of the custom footer
-         *
+         * 
          * It should be in help center's supported locales.
          * example:
          * <div>....</div>
@@ -2199,7 +2254,7 @@ declare namespace Components {
       label?: string;
       /**
        * The URL of the navigation link.
-       *
+       * 
        * Should be an absolute URL with protocol and host.
        * example:
        * https://gorgias.com/pricing
@@ -3298,7 +3353,7 @@ export interface OperationMethods {
   'importCsv'(
     parameters?: Parameters<Paths.ImportCsv.PathParameters> | null,
     data?: Paths.ImportCsv.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ImportCsv.Responses.$201>
   /**
    * analyseCsv - Provide information on a CSV file with a preview of its rows
@@ -3306,7 +3361,7 @@ export interface OperationMethods {
   'analyseCsv'(
     parameters?: Parameters<Paths.AnalyseCsv.PathParameters> | null,
     data?: Paths.AnalyseCsv.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.AnalyseCsv.Responses.$200>
   /**
    * generateCsvTemplate - Generate a template CSV based on the help-center's languages
@@ -3314,7 +3369,7 @@ export interface OperationMethods {
   'generateCsvTemplate'(
     parameters?: Parameters<Paths.GenerateCsvTemplate.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GenerateCsvTemplate.Responses.$200>
   /**
    * createHotswapSessionToken - Generate hotswap session token
@@ -3322,7 +3377,7 @@ export interface OperationMethods {
   'createHotswapSessionToken'(
     parameters?: Parameters<Paths.CreateHotswapSessionToken.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateHotswapSessionToken.Responses.$201>
   /**
    * complete - Webhook called by hotswap when import is completed
@@ -3330,7 +3385,7 @@ export interface OperationMethods {
   'complete'(
     parameters?: Parameters<Paths.Complete.PathParameters> | null,
     data?: Paths.Complete.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * getHotswapStatus - Get hotswap import status
@@ -3338,20 +3393,20 @@ export interface OperationMethods {
   'getHotswapStatus'(
     parameters?: Parameters<Paths.GetHotswapStatus.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetHotswapStatus.Responses.$200>
   /**
    * listHelpCenters - List help centers
-   *
+   * 
    * List help centers.
-   *
+   * 
    * If authenticated as agent, returns the list of help centers associated with the account domain
    * the agent belongs to.
    */
   'listHelpCenters'(
     parameters?: Parameters<Paths.ListHelpCenters.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListHelpCenters.Responses.$200>
   /**
    * createHelpCenter - Create a help center
@@ -3359,7 +3414,7 @@ export interface OperationMethods {
   'createHelpCenter'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CreateHelpCenter.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateHelpCenter.Responses.$201>
   /**
    * sendContactForm - Send a contact form
@@ -3367,17 +3422,17 @@ export interface OperationMethods {
   'sendContactForm'(
     parameters?: Parameters<Paths.SendContactForm.PathParameters> | null,
     data?: Paths.SendContactForm.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * getAccountInfo - Get account information for a help center
-   *
+   * 
    * When both subdomain and custom_domain are provided, the subdomain will be used to search the help center
    */
   'getAccountInfo'(
     parameters?: Parameters<Paths.GetAccountInfo.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetAccountInfo.Responses.$200>
   /**
    * checkHelpCenterWithSubdomainExists - Check that a help center with this subdomain exists
@@ -3385,7 +3440,7 @@ export interface OperationMethods {
   'checkHelpCenterWithSubdomainExists'(
     parameters?: Parameters<Paths.CheckHelpCenterWithSubdomainExists.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * getHelpCenter - Retrieve a help center
@@ -3393,7 +3448,7 @@ export interface OperationMethods {
   'getHelpCenter'(
     parameters?: Parameters<Paths.GetHelpCenter.PathParameters & Paths.GetHelpCenter.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetHelpCenter.Responses.$200>
   /**
    * updateHelpCenter - Update a help center
@@ -3401,7 +3456,7 @@ export interface OperationMethods {
   'updateHelpCenter'(
     parameters?: Parameters<Paths.UpdateHelpCenter.PathParameters> | null,
     data?: Paths.UpdateHelpCenter.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateHelpCenter.Responses.$200>
   /**
    * deleteHelpCenter - Delete a help center
@@ -3409,7 +3464,7 @@ export interface OperationMethods {
   'deleteHelpCenter'(
     parameters?: Parameters<Paths.DeleteHelpCenter.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * deleteAccountHelpCenters - Delete all Help centers of an account
@@ -3417,17 +3472,17 @@ export interface OperationMethods {
   'deleteAccountHelpCenters'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.DeleteAccountHelpCenters.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * updateContactFormIntegration - Update the help centers contact form integration values
-   *
+   * 
    * This will update all the help centers that are using the "deactivated_integration_id" for the contact form feature. If a "fallback_integration" is provided, those help centers will use this new integration for the contact form feature. Else, the contact form feature will be disabled.
    */
   'updateContactFormIntegration'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.UpdateContactFormIntegration.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * purgeCache - Purge CDN cache
@@ -3435,17 +3490,17 @@ export interface OperationMethods {
   'purgeCache'(
     parameters?: Parameters<Paths.PurgeCache.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * duplicateHelpCenter - Duplicate a help center
-   *
+   * 
    * Duplicate a help center with all its translations, categories, articles, navigation links and redirects.
    */
   'duplicateHelpCenter'(
     parameters?: Parameters<Paths.DuplicateHelpCenter.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.DuplicateHelpCenter.Responses.$201>
   /**
    * listHelpCenterTranslations - List help center's translations
@@ -3453,7 +3508,7 @@ export interface OperationMethods {
   'listHelpCenterTranslations'(
     parameters?: Parameters<Paths.ListHelpCenterTranslations.PathParameters & Paths.ListHelpCenterTranslations.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListHelpCenterTranslations.Responses.$200>
   /**
    * createHelpCenterTranslation - Create a help center translation
@@ -3461,7 +3516,7 @@ export interface OperationMethods {
   'createHelpCenterTranslation'(
     parameters?: Parameters<Paths.CreateHelpCenterTranslation.PathParameters> | null,
     data?: Paths.CreateHelpCenterTranslation.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateHelpCenterTranslation.Responses.$201>
   /**
    * updateHelpCenterTranslation - Update a help center translation
@@ -3469,7 +3524,7 @@ export interface OperationMethods {
   'updateHelpCenterTranslation'(
     parameters?: Parameters<Paths.UpdateHelpCenterTranslation.PathParameters> | null,
     data?: Paths.UpdateHelpCenterTranslation.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateHelpCenterTranslation.Responses.$200>
   /**
    * deleteHelpCenterTranslation - Delete a help center translation
@@ -3477,7 +3532,7 @@ export interface OperationMethods {
   'deleteHelpCenterTranslation'(
     parameters?: Parameters<Paths.DeleteHelpCenterTranslation.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * listCustomDomains - List custom domains
@@ -3485,7 +3540,7 @@ export interface OperationMethods {
   'listCustomDomains'(
     parameters?: Parameters<Paths.ListCustomDomains.PathParameters & Paths.ListCustomDomains.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListCustomDomains.Responses.$200>
   /**
    * createCustomDomain - Create a custom domain
@@ -3493,7 +3548,7 @@ export interface OperationMethods {
   'createCustomDomain'(
     parameters?: Parameters<Paths.CreateCustomDomain.PathParameters> | null,
     data?: Paths.CreateCustomDomain.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateCustomDomain.Responses.$201>
   /**
    * getCustomDomain - Retrieve a custom domain
@@ -3501,7 +3556,7 @@ export interface OperationMethods {
   'getCustomDomain'(
     parameters?: Parameters<Paths.GetCustomDomain.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetCustomDomain.Responses.$200>
   /**
    * deleteCustomDomain - Delete a custom domain
@@ -3509,7 +3564,7 @@ export interface OperationMethods {
   'deleteCustomDomain'(
     parameters?: Parameters<Paths.DeleteCustomDomain.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * checkCustomDomainStatus - Check the status of a custom domain
@@ -3517,7 +3572,7 @@ export interface OperationMethods {
   'checkCustomDomainStatus'(
     parameters?: Parameters<Paths.CheckCustomDomainStatus.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CheckCustomDomainStatus.Responses.$200>
   /**
    * getExtraHTML - Get a help center's extra HTML
@@ -3525,7 +3580,7 @@ export interface OperationMethods {
   'getExtraHTML'(
     parameters?: Parameters<Paths.GetExtraHTML.PathParameters & Paths.GetExtraHTML.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetExtraHTML.Responses.$200>
   /**
    * updateExtraHTML - Update a help center's extra HTML
@@ -3533,7 +3588,7 @@ export interface OperationMethods {
   'updateExtraHTML'(
     parameters?: Parameters<Paths.UpdateExtraHTML.PathParameters> | null,
     data?: Paths.UpdateExtraHTML.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateExtraHTML.Responses.$200>
   /**
    * listLocales - List supported locales
@@ -3541,7 +3596,7 @@ export interface OperationMethods {
   'listLocales'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListLocales.Responses.$200>
   /**
    * getLocale - Retrieve a locale
@@ -3549,7 +3604,7 @@ export interface OperationMethods {
   'getLocale'(
     parameters?: Parameters<Paths.GetLocale.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetLocale.Responses.$200>
   /**
    * getRedirect - Retrieve a redirect
@@ -3557,7 +3612,7 @@ export interface OperationMethods {
   'getRedirect'(
     parameters?: Parameters<Paths.GetRedirect.PathParameters & Paths.GetRedirect.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetRedirect.Responses.$200>
   /**
    * createRedirect - Create a new redirect
@@ -3565,7 +3620,7 @@ export interface OperationMethods {
   'createRedirect'(
     parameters?: Parameters<Paths.CreateRedirect.PathParameters> | null,
     data?: Paths.CreateRedirect.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateRedirect.Responses.$201>
   /**
    * deleteRedirect - Delete a redirect
@@ -3573,7 +3628,7 @@ export interface OperationMethods {
   'deleteRedirect'(
     parameters?: Parameters<Paths.DeleteRedirect.PathParameters & Paths.DeleteRedirect.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * checkContactFormNameExists - Check that a contact form with the provided name exists
@@ -3581,7 +3636,7 @@ export interface OperationMethods {
   'checkContactFormNameExists'(
     parameters?: Parameters<Paths.CheckContactFormNameExists.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * listContactForms - List the contact forms
@@ -3589,7 +3644,7 @@ export interface OperationMethods {
   'listContactForms'(
     parameters?: Parameters<Paths.ListContactForms.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListContactForms.Responses.$200>
   /**
    * createContactForm - Create a Contact Form
@@ -3597,7 +3652,7 @@ export interface OperationMethods {
   'createContactForm'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CreateContactForm.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateContactForm.Responses.$201>
   /**
    * getContactForm - Retrieve a Contact form
@@ -3605,7 +3660,7 @@ export interface OperationMethods {
   'getContactForm'(
     parameters?: Parameters<Paths.GetContactForm.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetContactForm.Responses.$200>
   /**
    * updateContactForm - Update a Contact Form
@@ -3613,7 +3668,7 @@ export interface OperationMethods {
   'updateContactForm'(
     parameters?: Parameters<Paths.UpdateContactForm.PathParameters> | null,
     data?: Paths.UpdateContactForm.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateContactForm.Responses.$200>
   /**
    * deleteContactForm - Delete a Contact Form
@@ -3621,7 +3676,7 @@ export interface OperationMethods {
   'deleteContactForm'(
     parameters?: Parameters<Paths.DeleteContactForm.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * getContactFormByUid - Retrieve a Contact form by uid
@@ -3629,7 +3684,7 @@ export interface OperationMethods {
   'getContactFormByUid'(
     parameters?: Parameters<Paths.GetContactFormByUid.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetContactFormByUid.Responses.$200>
   /**
    * submitContactFormByUid - Submit a Contact Form by uid
@@ -3637,27 +3692,27 @@ export interface OperationMethods {
   'submitContactFormByUid'(
     parameters?: Parameters<Paths.SubmitContactFormByUid.PathParameters> | null,
     data?: Paths.SubmitContactFormByUid.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * listCategories - List categories
-   *
+   * 
    * List the top level categories with pagination metadata.
    */
   'listCategories'(
     parameters?: Parameters<Paths.ListCategories.PathParameters & Paths.ListCategories.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListCategories.Responses.$200>
   /**
    * createCategory - Create a category
-   *
+   * 
    * Create a category in a given help center. If the provided `parent_category_id` field is `null` or is not provided, the category will be created at the root category level.
    */
   'createCategory'(
     parameters?: Parameters<Paths.CreateCategory.PathParameters> | null,
     data?: Paths.CreateCategory.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateCategory.Responses.$201>
   /**
    * getCategoriesPositions - Retrieve categories' positions
@@ -3665,17 +3720,17 @@ export interface OperationMethods {
   'getCategoriesPositions'(
     parameters?: Parameters<Paths.GetCategoriesPositions.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetCategoriesPositions.Responses.$200>
   /**
    * setCategoriesPositions - Set categories' positions
-   *
+   * 
    * If the provided `id`s is missing an item, this item will be sorted last.
    */
   'setCategoriesPositions'(
     parameters?: Parameters<Paths.SetCategoriesPositions.PathParameters> | null,
     data?: Paths.SetCategoriesPositions.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.SetCategoriesPositions.Responses.$200>
   /**
    * getCategory - Retrieve a category
@@ -3683,7 +3738,7 @@ export interface OperationMethods {
   'getCategory'(
     parameters?: Parameters<Paths.GetCategory.PathParameters & Paths.GetCategory.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetCategory.Responses.$200>
   /**
    * deleteCategory - Delete a category. Deletion is allowed for categories that have no articles or sub-categories.
@@ -3691,7 +3746,7 @@ export interface OperationMethods {
   'deleteCategory'(
     parameters?: Parameters<Paths.DeleteCategory.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * listCategoryTranslations - List category's translations
@@ -3699,31 +3754,31 @@ export interface OperationMethods {
   'listCategoryTranslations'(
     parameters?: Parameters<Paths.ListCategoryTranslations.PathParameters & Paths.ListCategoryTranslations.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListCategoryTranslations.Responses.$200>
   /**
    * createCategoryTranslation - Create a category translation
-   *
+   * 
    * Create a category translation in a given help center. If the provided `parent_category_id` field is `null` or is not provided, the category will be moved to the root level.
    */
   'createCategoryTranslation'(
     parameters?: Parameters<Paths.CreateCategoryTranslation.PathParameters> | null,
     data?: Paths.CreateCategoryTranslation.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateCategoryTranslation.Responses.$201>
   /**
    * updateCategoryTranslation - Update a category translation
-   *
+   * 
    * Update a category translation in a given help center. If the provided `parent_category_id` field is `null` or is not provided, the category will be moved to the root level.
    */
   'updateCategoryTranslation'(
     parameters?: Parameters<Paths.UpdateCategoryTranslation.PathParameters> | null,
     data?: Paths.UpdateCategoryTranslation.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateCategoryTranslation.Responses.$200>
   /**
    * deleteCategoryTranslation - Delete a category translation
-   *
+   * 
    * So that a category have at least 1
    *     translation, you can't delete a translation if it's the only
    *     non-deleted translation.
@@ -3731,7 +3786,7 @@ export interface OperationMethods {
   'deleteCategoryTranslation'(
     parameters?: Parameters<Paths.DeleteCategoryTranslation.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * getCategoryTree - Retrieve the category, its subcategories and subarticles in a tree structure
@@ -3739,27 +3794,27 @@ export interface OperationMethods {
   'getCategoryTree'(
     parameters?: Parameters<Paths.GetCategoryTree.PathParameters & Paths.GetCategoryTree.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetCategoryTree.Responses.$200>
   /**
    * getSubCategoriesPositions - Retrieve sub-categories' positions
-   *
+   * 
    * The category id that will be used as the root node of the tree. If `0` is provided, the children ids of the top level categories of the help center will be returned
    */
   'getSubCategoriesPositions'(
     parameters?: Parameters<Paths.GetSubCategoriesPositions.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetSubCategoriesPositions.Responses.$200>
   /**
    * setSubCategoriesPositions - Set sub-categories' positions
-   *
+   * 
    * The category id that will be used as the root node of the tree. If `0` is provided, the children ids of the top level categories of the help center will be returned
    */
   'setSubCategoriesPositions'(
     parameters?: Parameters<Paths.SetSubCategoriesPositions.PathParameters> | null,
     data?: Paths.SetSubCategoriesPositions.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.SetSubCategoriesPositions.Responses.$200>
   /**
    * listCategoryArticles - List category's articles
@@ -3767,7 +3822,7 @@ export interface OperationMethods {
   'listCategoryArticles'(
     parameters?: Parameters<Paths.ListCategoryArticles.PathParameters & Paths.ListCategoryArticles.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListCategoryArticles.Responses.$200>
   /**
    * deleteCategoryArticles - Delete category's articles
@@ -3775,7 +3830,7 @@ export interface OperationMethods {
   'deleteCategoryArticles'(
     parameters?: Parameters<Paths.DeleteCategoryArticles.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * getCategoryArticlesPositions - Retrieve articles' positions in category
@@ -3783,40 +3838,40 @@ export interface OperationMethods {
   'getCategoryArticlesPositions'(
     parameters?: Parameters<Paths.GetCategoryArticlesPositions.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetCategoryArticlesPositions.Responses.$200>
   /**
    * setArticlesPositionsInCategory - Set articles' positions in category
-   *
+   * 
    * If the provided `id`s is missing an item, this item will be sorted last.
    */
   'setArticlesPositionsInCategory'(
     parameters?: Parameters<Paths.SetArticlesPositionsInCategory.PathParameters> | null,
     data?: Paths.SetArticlesPositionsInCategory.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.SetArticlesPositionsInCategory.Responses.$200>
   /**
    * listArticles - List articles
-   *
+   * 
    * If you want to get articles ordered by `position` in a category, prefer using
    * `/categories/:category_id/articles`.
    */
   'listArticles'(
     parameters?: Parameters<Paths.ListArticles.PathParameters & Paths.ListArticles.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListArticles.Responses.$200>
   /**
    * createArticle - Create an article
-   *
+   * 
    * Create an article for the given help center.
-   *
+   * 
    * A translation should be provided when creating an article.
    */
   'createArticle'(
     parameters?: Parameters<Paths.CreateArticle.PathParameters> | null,
     data?: Paths.CreateArticle.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateArticle.Responses.$201>
   /**
    * getUncategorizedArticlesPositions - Retrieve uncategorized articles' positions
@@ -3824,17 +3879,17 @@ export interface OperationMethods {
   'getUncategorizedArticlesPositions'(
     parameters?: Parameters<Paths.GetUncategorizedArticlesPositions.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetUncategorizedArticlesPositions.Responses.$200>
   /**
    * setUncategorizedArticlesPositions - Set uncategorized articles' positions
-   *
+   * 
    * If the provided `id`s is missing an item, this item will be sorted last.
    */
   'setUncategorizedArticlesPositions'(
     parameters?: Parameters<Paths.SetUncategorizedArticlesPositions.PathParameters> | null,
     data?: Paths.SetUncategorizedArticlesPositions.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.SetUncategorizedArticlesPositions.Responses.$200>
   /**
    * getArticle - Retrieve an article
@@ -3842,7 +3897,7 @@ export interface OperationMethods {
   'getArticle'(
     parameters?: Parameters<Paths.GetArticle.PathParameters & Paths.GetArticle.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetArticle.Responses.$200>
   /**
    * updateArticle - Update an article
@@ -3850,7 +3905,7 @@ export interface OperationMethods {
   'updateArticle'(
     parameters?: Parameters<Paths.UpdateArticle.PathParameters> | null,
     data?: Paths.UpdateArticle.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateArticle.Responses.$200>
   /**
    * deleteArticle - Delete an article
@@ -3858,7 +3913,7 @@ export interface OperationMethods {
   'deleteArticle'(
     parameters?: Parameters<Paths.DeleteArticle.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * listArticleTranslations - List article's translations
@@ -3866,7 +3921,7 @@ export interface OperationMethods {
   'listArticleTranslations'(
     parameters?: Parameters<Paths.ListArticleTranslations.PathParameters & Paths.ListArticleTranslations.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListArticleTranslations.Responses.$200>
   /**
    * createArticleTranslation - Create an article translation
@@ -3874,7 +3929,7 @@ export interface OperationMethods {
   'createArticleTranslation'(
     parameters?: Parameters<Paths.CreateArticleTranslation.PathParameters> | null,
     data?: Paths.CreateArticleTranslation.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateArticleTranslation.Responses.$201>
   /**
    * updateArticleTranslation - Update an article translation
@@ -3882,11 +3937,11 @@ export interface OperationMethods {
   'updateArticleTranslation'(
     parameters?: Parameters<Paths.UpdateArticleTranslation.PathParameters> | null,
     data?: Paths.UpdateArticleTranslation.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateArticleTranslation.Responses.$200>
   /**
    * deleteArticleTranslation - Delete an article translation
-   *
+   * 
    * So that an article have at least 1
    *     translation, you can't delete a translation if it's the only
    *     non-deleted translation.
@@ -3894,7 +3949,7 @@ export interface OperationMethods {
   'deleteArticleTranslation'(
     parameters?: Parameters<Paths.DeleteArticleTranslation.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * createArticleTranslationRating - Create an article translation rating
@@ -3902,7 +3957,7 @@ export interface OperationMethods {
   'createArticleTranslationRating'(
     parameters?: Parameters<Paths.CreateArticleTranslationRating.PathParameters> | null,
     data?: Paths.CreateArticleTranslationRating.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateArticleTranslationRating.Responses.$201>
   /**
    * updateArticleTranslationRating - Update an article translation rating
@@ -3910,7 +3965,7 @@ export interface OperationMethods {
   'updateArticleTranslationRating'(
     parameters?: Parameters<Paths.UpdateArticleTranslationRating.PathParameters> | null,
     data?: Paths.UpdateArticleTranslationRating.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateArticleTranslationRating.Responses.$200>
   /**
    * deleteArticleTranslationRating - Removes an article translation rating
@@ -3918,7 +3973,7 @@ export interface OperationMethods {
   'deleteArticleTranslationRating'(
     parameters?: Parameters<Paths.DeleteArticleTranslationRating.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * createAccessToken - Generate JWT token
@@ -3926,7 +3981,7 @@ export interface OperationMethods {
   'createAccessToken'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
   /**
    * getFileUploadPolicy - Generate a signed url to upload a file based on the declared policy
@@ -3934,7 +3989,7 @@ export interface OperationMethods {
   'getFileUploadPolicy'(
     parameters?: Parameters<Paths.GetFileUploadPolicy.PathParameters> | null,
     data?: Paths.GetFileUploadPolicy.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetFileUploadPolicy.Responses.$201>
   /**
    * getAttachmentUploadPolicy - Generate a signed url to upload a file based on the declared policy
@@ -3942,7 +3997,7 @@ export interface OperationMethods {
   'getAttachmentUploadPolicy'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.GetAttachmentUploadPolicy.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetAttachmentUploadPolicy.Responses.$201>
   /**
    * listNavigationLinks - List navigation links
@@ -3950,7 +4005,7 @@ export interface OperationMethods {
   'listNavigationLinks'(
     parameters?: Parameters<Paths.ListNavigationLinks.PathParameters & Paths.ListNavigationLinks.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListNavigationLinks.Responses.$200>
   /**
    * createNavigationLink - Create a navigation link
@@ -3958,7 +4013,7 @@ export interface OperationMethods {
   'createNavigationLink'(
     parameters?: Parameters<Paths.CreateNavigationLink.PathParameters> | null,
     data?: Paths.CreateNavigationLink.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateNavigationLink.Responses.$201>
   /**
    * updateNavigationLink - Update a navigation link
@@ -3966,7 +4021,7 @@ export interface OperationMethods {
   'updateNavigationLink'(
     parameters?: Parameters<Paths.UpdateNavigationLink.PathParameters> | null,
     data?: Paths.UpdateNavigationLink.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateNavigationLink.Responses.$200>
   /**
    * deleteNavigationLink - Delete a navigation link
@@ -3974,7 +4029,7 @@ export interface OperationMethods {
   'deleteNavigationLink'(
     parameters?: Parameters<Paths.DeleteNavigationLink.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
    * getNavigationLinksPositions - Retrieve navigation links' positions
@@ -3982,17 +4037,17 @@ export interface OperationMethods {
   'getNavigationLinksPositions'(
     parameters?: Parameters<Paths.GetNavigationLinksPositions.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetNavigationLinksPositions.Responses.$200>
   /**
    * setNavigationLinksPositions - Set navigation links' positions
-   *
+   * 
    * If the provided `id`s is missing an item, this item will be sorted last.
    */
   'setNavigationLinksPositions'(
     parameters?: Parameters<Paths.SetNavigationLinksPositions.PathParameters> | null,
     data?: Paths.SetNavigationLinksPositions.RequestBody,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<Paths.SetNavigationLinksPositions.Responses.$200>
   /**
    * listGoogleFonts - List google fonts
@@ -4000,7 +4055,7 @@ export interface OperationMethods {
   'listGoogleFonts'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig
+    config?: AxiosRequestConfig  
   ): OperationResponse<any>
 }
 
@@ -4012,7 +4067,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.ImportCsv.PathParameters> | null,
       data?: Paths.ImportCsv.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ImportCsv.Responses.$201>
   }
   ['/api/help-center/help-centers/{help_center_id}/import/csv/analysis']: {
@@ -4022,7 +4077,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.AnalyseCsv.PathParameters> | null,
       data?: Paths.AnalyseCsv.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AnalyseCsv.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/import/csv/template']: {
@@ -4032,7 +4087,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.GenerateCsvTemplate.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GenerateCsvTemplate.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/import/hotswap/token']: {
@@ -4042,7 +4097,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.CreateHotswapSessionToken.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateHotswapSessionToken.Responses.$201>
   }
   ['/api/help-center/help-centers/{help_center_id}/import/hotswap/complete']: {
@@ -4052,7 +4107,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.Complete.PathParameters> | null,
       data?: Paths.Complete.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/import/hotswap/status']: {
@@ -4062,7 +4117,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetHotswapStatus.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetHotswapStatus.Responses.$200>
   }
   ['/api/help-center/help-centers']: {
@@ -4072,20 +4127,20 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CreateHelpCenter.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateHelpCenter.Responses.$201>
     /**
      * listHelpCenters - List help centers
-     *
+     * 
      * List help centers.
-     *
+     * 
      * If authenticated as agent, returns the list of help centers associated with the account domain
      * the agent belongs to.
      */
     'get'(
       parameters?: Parameters<Paths.ListHelpCenters.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListHelpCenters.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/submit-contact-form']: {
@@ -4095,19 +4150,19 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.SendContactForm.PathParameters> | null,
       data?: Paths.SendContactForm.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/account']: {
     /**
      * getAccountInfo - Get account information for a help center
-     *
+     * 
      * When both subdomain and custom_domain are provided, the subdomain will be used to search the help center
      */
     'get'(
       parameters?: Parameters<Paths.GetAccountInfo.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetAccountInfo.Responses.$200>
   }
   ['/api/help-center/help-centers/subdomain/{subdomain}']: {
@@ -4117,7 +4172,7 @@ export interface PathsDictionary {
     'head'(
       parameters?: Parameters<Paths.CheckHelpCenterWithSubdomainExists.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}']: {
@@ -4127,7 +4182,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetHelpCenter.PathParameters & Paths.GetHelpCenter.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetHelpCenter.Responses.$200>
     /**
      * updateHelpCenter - Update a help center
@@ -4135,7 +4190,7 @@ export interface PathsDictionary {
     'put'(
       parameters?: Parameters<Paths.UpdateHelpCenter.PathParameters> | null,
       data?: Paths.UpdateHelpCenter.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateHelpCenter.Responses.$200>
     /**
      * deleteHelpCenter - Delete a help center
@@ -4143,7 +4198,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteHelpCenter.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/delete-account']: {
@@ -4153,19 +4208,19 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.DeleteAccountHelpCenters.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/update-contact-form-integration']: {
     /**
      * updateContactFormIntegration - Update the help centers contact form integration values
-     *
+     * 
      * This will update all the help centers that are using the "deactivated_integration_id" for the contact form feature. If a "fallback_integration" is provided, those help centers will use this new integration for the contact form feature. Else, the contact form feature will be disabled.
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.UpdateContactFormIntegration.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/shop-name/{shop_name}/purge-cache']: {
@@ -4175,19 +4230,19 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.PurgeCache.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/duplicate']: {
     /**
      * duplicateHelpCenter - Duplicate a help center
-     *
+     * 
      * Duplicate a help center with all its translations, categories, articles, navigation links and redirects.
      */
     'post'(
       parameters?: Parameters<Paths.DuplicateHelpCenter.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.DuplicateHelpCenter.Responses.$201>
   }
   ['/api/help-center/help-centers/{help_center_id}/translations']: {
@@ -4197,7 +4252,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.ListHelpCenterTranslations.PathParameters & Paths.ListHelpCenterTranslations.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListHelpCenterTranslations.Responses.$200>
     /**
      * createHelpCenterTranslation - Create a help center translation
@@ -4205,7 +4260,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.CreateHelpCenterTranslation.PathParameters> | null,
       data?: Paths.CreateHelpCenterTranslation.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateHelpCenterTranslation.Responses.$201>
   }
   ['/api/help-center/help-centers/{help_center_id}/translations/{locale}']: {
@@ -4215,7 +4270,7 @@ export interface PathsDictionary {
     'put'(
       parameters?: Parameters<Paths.UpdateHelpCenterTranslation.PathParameters> | null,
       data?: Paths.UpdateHelpCenterTranslation.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateHelpCenterTranslation.Responses.$200>
     /**
      * deleteHelpCenterTranslation - Delete a help center translation
@@ -4223,7 +4278,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteHelpCenterTranslation.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/custom-domains']: {
@@ -4233,7 +4288,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.ListCustomDomains.PathParameters & Paths.ListCustomDomains.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListCustomDomains.Responses.$200>
     /**
      * createCustomDomain - Create a custom domain
@@ -4241,7 +4296,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.CreateCustomDomain.PathParameters> | null,
       data?: Paths.CreateCustomDomain.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateCustomDomain.Responses.$201>
   }
   ['/api/help-center/help-centers/{help_center_id}/custom-domains/{hostname}']: {
@@ -4251,7 +4306,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetCustomDomain.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetCustomDomain.Responses.$200>
     /**
      * deleteCustomDomain - Delete a custom domain
@@ -4259,7 +4314,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteCustomDomain.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/custom-domains/{hostname}/check-status']: {
@@ -4269,7 +4324,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.CheckCustomDomainStatus.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CheckCustomDomainStatus.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/extra-html']: {
@@ -4279,7 +4334,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetExtraHTML.PathParameters & Paths.GetExtraHTML.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetExtraHTML.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/extra-html/{locale}']: {
@@ -4289,7 +4344,7 @@ export interface PathsDictionary {
     'put'(
       parameters?: Parameters<Paths.UpdateExtraHTML.PathParameters> | null,
       data?: Paths.UpdateExtraHTML.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateExtraHTML.Responses.$200>
   }
   ['/api/help-center/locales']: {
@@ -4299,7 +4354,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListLocales.Responses.$200>
   }
   ['/api/help-center/locales/{locale}']: {
@@ -4309,7 +4364,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetLocale.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetLocale.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/redirects']: {
@@ -4319,7 +4374,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.CreateRedirect.PathParameters> | null,
       data?: Paths.CreateRedirect.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateRedirect.Responses.$201>
     /**
      * getRedirect - Retrieve a redirect
@@ -4327,7 +4382,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetRedirect.PathParameters & Paths.GetRedirect.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetRedirect.Responses.$200>
     /**
      * deleteRedirect - Delete a redirect
@@ -4335,7 +4390,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteRedirect.PathParameters & Paths.DeleteRedirect.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/contact-forms/name/{input_name}']: {
@@ -4345,7 +4400,7 @@ export interface PathsDictionary {
     'head'(
       parameters?: Parameters<Paths.CheckContactFormNameExists.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/contact-forms']: {
@@ -4355,7 +4410,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CreateContactForm.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateContactForm.Responses.$201>
     /**
      * listContactForms - List the contact forms
@@ -4363,7 +4418,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.ListContactForms.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListContactForms.Responses.$200>
   }
   ['/api/help-center/contact-forms/{id}']: {
@@ -4373,7 +4428,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetContactForm.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetContactForm.Responses.$200>
     /**
      * updateContactForm - Update a Contact Form
@@ -4381,7 +4436,7 @@ export interface PathsDictionary {
     'put'(
       parameters?: Parameters<Paths.UpdateContactForm.PathParameters> | null,
       data?: Paths.UpdateContactForm.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateContactForm.Responses.$200>
     /**
      * deleteContactForm - Delete a Contact Form
@@ -4389,7 +4444,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteContactForm.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/contact-forms/uid/{uid}']: {
@@ -4399,7 +4454,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetContactFormByUid.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetContactFormByUid.Responses.$200>
   }
   ['/api/help-center/contact-forms/uid/{uid}/submit']: {
@@ -4409,29 +4464,29 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.SubmitContactFormByUid.PathParameters> | null,
       data?: Paths.SubmitContactFormByUid.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/categories']: {
     /**
      * createCategory - Create a category
-     *
+     * 
      * Create a category in a given help center. If the provided `parent_category_id` field is `null` or is not provided, the category will be created at the root category level.
      */
     'post'(
       parameters?: Parameters<Paths.CreateCategory.PathParameters> | null,
       data?: Paths.CreateCategory.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateCategory.Responses.$201>
     /**
      * listCategories - List categories
-     *
+     * 
      * List the top level categories with pagination metadata.
      */
     'get'(
       parameters?: Parameters<Paths.ListCategories.PathParameters & Paths.ListCategories.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListCategories.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/categories/positions']: {
@@ -4441,17 +4496,17 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetCategoriesPositions.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetCategoriesPositions.Responses.$200>
     /**
      * setCategoriesPositions - Set categories' positions
-     *
+     * 
      * If the provided `id`s is missing an item, this item will be sorted last.
      */
     'put'(
       parameters?: Parameters<Paths.SetCategoriesPositions.PathParameters> | null,
       data?: Paths.SetCategoriesPositions.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.SetCategoriesPositions.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/categories/{id}']: {
@@ -4461,7 +4516,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetCategory.PathParameters & Paths.GetCategory.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetCategory.Responses.$200>
     /**
      * deleteCategory - Delete a category. Deletion is allowed for categories that have no articles or sub-categories.
@@ -4469,7 +4524,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteCategory.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/translations']: {
@@ -4479,33 +4534,33 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.ListCategoryTranslations.PathParameters & Paths.ListCategoryTranslations.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListCategoryTranslations.Responses.$200>
     /**
      * createCategoryTranslation - Create a category translation
-     *
+     * 
      * Create a category translation in a given help center. If the provided `parent_category_id` field is `null` or is not provided, the category will be moved to the root level.
      */
     'post'(
       parameters?: Parameters<Paths.CreateCategoryTranslation.PathParameters> | null,
       data?: Paths.CreateCategoryTranslation.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateCategoryTranslation.Responses.$201>
   }
   ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/translations/{locale}']: {
     /**
      * updateCategoryTranslation - Update a category translation
-     *
+     * 
      * Update a category translation in a given help center. If the provided `parent_category_id` field is `null` or is not provided, the category will be moved to the root level.
      */
     'put'(
       parameters?: Parameters<Paths.UpdateCategoryTranslation.PathParameters> | null,
       data?: Paths.UpdateCategoryTranslation.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateCategoryTranslation.Responses.$200>
     /**
      * deleteCategoryTranslation - Delete a category translation
-     *
+     * 
      * So that a category have at least 1
      *     translation, you can't delete a translation if it's the only
      *     non-deleted translation.
@@ -4513,7 +4568,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteCategoryTranslation.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/categories/{parent_category_id}/tree']: {
@@ -4523,29 +4578,29 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetCategoryTree.PathParameters & Paths.GetCategoryTree.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetCategoryTree.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/categories/{parent_category_id}/positions']: {
     /**
      * getSubCategoriesPositions - Retrieve sub-categories' positions
-     *
+     * 
      * The category id that will be used as the root node of the tree. If `0` is provided, the children ids of the top level categories of the help center will be returned
      */
     'get'(
       parameters?: Parameters<Paths.GetSubCategoriesPositions.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetSubCategoriesPositions.Responses.$200>
     /**
      * setSubCategoriesPositions - Set sub-categories' positions
-     *
+     * 
      * The category id that will be used as the root node of the tree. If `0` is provided, the children ids of the top level categories of the help center will be returned
      */
     'put'(
       parameters?: Parameters<Paths.SetSubCategoriesPositions.PathParameters> | null,
       data?: Paths.SetSubCategoriesPositions.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.SetSubCategoriesPositions.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles']: {
@@ -4555,7 +4610,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.ListCategoryArticles.PathParameters & Paths.ListCategoryArticles.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListCategoryArticles.Responses.$200>
     /**
      * deleteCategoryArticles - Delete category's articles
@@ -4563,7 +4618,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteCategoryArticles.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/categories/{category_id}/articles/positions']: {
@@ -4573,42 +4628,42 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetCategoryArticlesPositions.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetCategoryArticlesPositions.Responses.$200>
     /**
      * setArticlesPositionsInCategory - Set articles' positions in category
-     *
+     * 
      * If the provided `id`s is missing an item, this item will be sorted last.
      */
     'put'(
       parameters?: Parameters<Paths.SetArticlesPositionsInCategory.PathParameters> | null,
       data?: Paths.SetArticlesPositionsInCategory.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.SetArticlesPositionsInCategory.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/articles']: {
     /**
      * listArticles - List articles
-     *
+     * 
      * If you want to get articles ordered by `position` in a category, prefer using
      * `/categories/:category_id/articles`.
      */
     'get'(
       parameters?: Parameters<Paths.ListArticles.PathParameters & Paths.ListArticles.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListArticles.Responses.$200>
     /**
      * createArticle - Create an article
-     *
+     * 
      * Create an article for the given help center.
-     *
+     * 
      * A translation should be provided when creating an article.
      */
     'post'(
       parameters?: Parameters<Paths.CreateArticle.PathParameters> | null,
       data?: Paths.CreateArticle.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateArticle.Responses.$201>
   }
   ['/api/help-center/help-centers/{help_center_id}/articles/uncategorized/positions']: {
@@ -4618,17 +4673,17 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetUncategorizedArticlesPositions.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetUncategorizedArticlesPositions.Responses.$200>
     /**
      * setUncategorizedArticlesPositions - Set uncategorized articles' positions
-     *
+     * 
      * If the provided `id`s is missing an item, this item will be sorted last.
      */
     'put'(
       parameters?: Parameters<Paths.SetUncategorizedArticlesPositions.PathParameters> | null,
       data?: Paths.SetUncategorizedArticlesPositions.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.SetUncategorizedArticlesPositions.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/articles/{id}']: {
@@ -4638,7 +4693,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetArticle.PathParameters & Paths.GetArticle.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetArticle.Responses.$200>
     /**
      * updateArticle - Update an article
@@ -4646,7 +4701,7 @@ export interface PathsDictionary {
     'put'(
       parameters?: Parameters<Paths.UpdateArticle.PathParameters> | null,
       data?: Paths.UpdateArticle.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateArticle.Responses.$200>
     /**
      * deleteArticle - Delete an article
@@ -4654,7 +4709,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteArticle.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations']: {
@@ -4664,7 +4719,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.ListArticleTranslations.PathParameters & Paths.ListArticleTranslations.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListArticleTranslations.Responses.$200>
     /**
      * createArticleTranslation - Create an article translation
@@ -4672,7 +4727,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.CreateArticleTranslation.PathParameters> | null,
       data?: Paths.CreateArticleTranslation.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateArticleTranslation.Responses.$201>
   }
   ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}']: {
@@ -4682,11 +4737,11 @@ export interface PathsDictionary {
     'put'(
       parameters?: Parameters<Paths.UpdateArticleTranslation.PathParameters> | null,
       data?: Paths.UpdateArticleTranslation.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateArticleTranslation.Responses.$200>
     /**
      * deleteArticleTranslation - Delete an article translation
-     *
+     * 
      * So that an article have at least 1
      *     translation, you can't delete a translation if it's the only
      *     non-deleted translation.
@@ -4694,7 +4749,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteArticleTranslation.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/ratings']: {
@@ -4704,7 +4759,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.CreateArticleTranslationRating.PathParameters> | null,
       data?: Paths.CreateArticleTranslationRating.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateArticleTranslationRating.Responses.$201>
   }
   ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/ratings/{ratingId}']: {
@@ -4714,7 +4769,7 @@ export interface PathsDictionary {
     'put'(
       parameters?: Parameters<Paths.UpdateArticleTranslationRating.PathParameters> | null,
       data?: Paths.UpdateArticleTranslationRating.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateArticleTranslationRating.Responses.$200>
     /**
      * deleteArticleTranslationRating - Removes an article translation rating
@@ -4722,7 +4777,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteArticleTranslationRating.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/auth']: {
@@ -4732,7 +4787,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
   }
   ['/api/help-center/help-centers/{help_center_id}/attachments']: {
@@ -4742,7 +4797,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.GetFileUploadPolicy.PathParameters> | null,
       data?: Paths.GetFileUploadPolicy.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetFileUploadPolicy.Responses.$201>
   }
   ['/api/help-center/attachments']: {
@@ -4752,7 +4807,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.GetAttachmentUploadPolicy.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetAttachmentUploadPolicy.Responses.$201>
   }
   ['/api/help-center/help-centers/{help_center_id}/navigation-links']: {
@@ -4762,7 +4817,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.CreateNavigationLink.PathParameters> | null,
       data?: Paths.CreateNavigationLink.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CreateNavigationLink.Responses.$201>
     /**
      * listNavigationLinks - List navigation links
@@ -4770,7 +4825,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.ListNavigationLinks.PathParameters & Paths.ListNavigationLinks.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListNavigationLinks.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/navigation-links/{id}']: {
@@ -4780,7 +4835,7 @@ export interface PathsDictionary {
     'put'(
       parameters?: Parameters<Paths.UpdateNavigationLink.PathParameters> | null,
       data?: Paths.UpdateNavigationLink.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateNavigationLink.Responses.$200>
     /**
      * deleteNavigationLink - Delete a navigation link
@@ -4788,7 +4843,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteNavigationLink.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/navigation-links/{locale}/{group}/positions']: {
@@ -4798,17 +4853,17 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetNavigationLinksPositions.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetNavigationLinksPositions.Responses.$200>
     /**
      * setNavigationLinksPositions - Set navigation links' positions
-     *
+     * 
      * If the provided `id`s is missing an item, this item will be sorted last.
      */
     'put'(
       parameters?: Parameters<Paths.SetNavigationLinksPositions.PathParameters> | null,
       data?: Paths.SetNavigationLinksPositions.RequestBody,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<Paths.SetNavigationLinksPositions.Responses.$200>
   }
   ['/api/help-center/google-fonts']: {
@@ -4818,7 +4873,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
 }

@@ -3451,6 +3451,18 @@
                     "helpdesk_integration_id"
                 ]
             },
+            "EmailIntegrationDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "Identifier",
+                        "minimum": 1
+                    },
+                    "email": {"type": "string", "description": "Email value"}
+                },
+                "required": ["id", "email"]
+            },
             "CreateHelpCenterWithAccountIdDto": {
                 "type": "object",
                 "properties": {
@@ -3528,6 +3540,14 @@
                         "type": "string",
                         "nullable": true,
                         "pattern": "GOOGLE_ANALYTICS_ID_REGEXP"
+                    },
+                    "email_integration": {
+                        "description": "Email integration used to receive this contact form inquiries",
+                        "nullable": true,
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
                     },
                     "account_id": {"type": "number"}
                 },
@@ -3670,6 +3690,12 @@
                                 "$ref": "#/components/schemas/HelpCenterContactFormDto"
                             }
                         ]
+                    },
+                    "email_integration": {
+                        "nullable": true,
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
                     }
                 },
                 "required": [
@@ -3694,7 +3720,8 @@
                     "hotswap_session_token",
                     "source",
                     "gaid",
-                    "contact_form"
+                    "contact_form",
+                    "email_integration"
                 ]
             },
             "ContactFormAttachmentDto": {
@@ -3994,7 +4021,8 @@
                         "nullable": false,
                         "allOf": [{"$ref": "#/components/schemas/ExtraHTML"}]
                     },
-                    "chat_app_key": {"type": "string", "nullable": true}
+                    "chat_app_key": {"type": "string", "nullable": true},
+                    "contact_form_id": {"type": "number", "nullable": true}
                 },
                 "required": [
                     "created_datetime",
@@ -4154,6 +4182,12 @@
                             }
                         ]
                     },
+                    "email_integration": {
+                        "nullable": true,
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
+                    },
                     "translations": {
                         "minItems": 1,
                         "type": "array",
@@ -4188,7 +4222,8 @@
                     "hotswap_session_token",
                     "source",
                     "gaid",
-                    "contact_form"
+                    "contact_form",
+                    "email_integration"
                 ]
             },
             "HelpCentersListPageDto": {
@@ -4282,6 +4317,14 @@
                         "type": "string",
                         "nullable": true,
                         "pattern": "GOOGLE_ANALYTICS_ID_REGEXP"
+                    },
+                    "email_integration": {
+                        "description": "Email integration used to receive this contact form inquiries",
+                        "nullable": true,
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
                     },
                     "powered_by_deactivated": {
                         "type": "boolean",
@@ -4656,18 +4699,6 @@
                 },
                 "required": ["from", "to"]
             },
-            "EmailIntegrationDto": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "number",
-                        "description": "Identifier",
-                        "minimum": 1
-                    },
-                    "email": {"type": "string", "description": "Email value"}
-                },
-                "required": ["id", "email"]
-            },
             "CreateSubjectLinesDto": {
                 "type": "object",
                 "properties": {
@@ -4690,12 +4721,6 @@
             "CreateContactFormDto": {
                 "type": "object",
                 "properties": {
-                    "help_center_id": {
-                        "type": "number",
-                        "nullable": true,
-                        "description": "Help center id that is serving this contact form",
-                        "example": null
-                    },
                     "name": {
                         "type": "string",
                         "description": "Name of the Contact Form",
@@ -4746,7 +4771,8 @@
                                 "$ref": "#/components/schemas/CreateSubjectLinesDto"
                             }
                         ]
-                    }
+                    },
+                    "shop_name": {"type": "string", "nullable": true}
                 },
                 "required": ["name", "default_locale", "email_integration"]
             },
@@ -4866,6 +4892,13 @@
                     "url_template": {
                         "type": "string",
                         "description": "Url template to use to construct the shareable Contact form link"
+                    },
+                    "shop_name": {"type": "string", "nullable": true},
+                    "deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Deactivation date"
                     }
                 },
                 "required": [
@@ -4881,7 +4914,9 @@
                     "subject_lines",
                     "email_integration",
                     "code_snippet_template",
-                    "url_template"
+                    "url_template",
+                    "shop_name",
+                    "deactivated_datetime"
                 ]
             },
             "ContactFormsListPageDto": {
@@ -4903,12 +4938,6 @@
             "UpdateContactFormDto": {
                 "type": "object",
                 "properties": {
-                    "help_center_id": {
-                        "type": "number",
-                        "nullable": true,
-                        "description": "Help center id that is serving this contact form",
-                        "example": null
-                    },
                     "name": {
                         "type": "string",
                         "description": "Name of the Contact Form",
@@ -4959,6 +4988,12 @@
                                 "$ref": "#/components/schemas/CreateSubjectLinesDto"
                             }
                         ]
+                    },
+                    "shop_name": {"type": "string", "nullable": true},
+                    "deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
                     }
                 }
             },

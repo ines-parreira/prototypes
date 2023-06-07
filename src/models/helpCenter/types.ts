@@ -43,6 +43,11 @@ export type EmailContactInfoDto = Components.Schemas.EmailContactInfoDto
 export type PhoneContactInfoDto = Components.Schemas.PhoneContactInfoDto
 export type ContactPhoneNumber = Components.Schemas.ContactPhoneNumber
 
+export type EmailIntegration = {
+    email: string | null
+    id: number | null
+}
+
 // CATEGORIES
 
 export type CreateCategoryDto = Components.Schemas.CreateCategoryDto

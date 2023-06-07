@@ -1,0 +1,457 @@
+import {renderHook} from '@testing-library/react-hooks'
+import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import React, {ComponentType} from 'react'
+import {Provider} from 'react-redux'
+import {act} from 'react-test-renderer'
+import {RootState, StoreDispatch} from 'state/types'
+import {getContactFormForHelpCenterFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import {getSingleHelpCenterResponseFixtureWithTranslation} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {initialState as articlesState} from 'state/entities/helpCenter/articles'
+import {initialState as categoriesState} from 'state/entities/helpCenter/categories'
+import {initialState as uiState} from 'state/ui/helpCenter'
+import {
+    HelpCenterTranslationProvider,
+    useHelpCenterTranslation,
+} from 'pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation'
+import {flushPromises} from 'utils/testing'
+import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import {HelpCenter} from 'models/helpCenter/types'
+
+const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
+    thunk,
+])
+
+const contactForm = getContactFormForHelpCenterFixture({
+    id: 111,
+    help_center_id: 333,
+})
+const helpCenter = {
+    ...getSingleHelpCenterResponseFixtureWithTranslation,
+    id: 333,
+    email_integration: {
+        email: 'new-help-center@test.email',
+        id: 444,
+    },
+    translations:
+        getSingleHelpCenterResponseFixtureWithTranslation.translations?.map(
+            (t) => ({...t, help_center_id: 333, id: 555, contact_form_id: 111})
+        ),
+}
+
+const legacyHelCenter = {
+    ...getSingleHelpCenterResponseFixtureWithTranslation,
+    id: 2,
+}
+
+const defaultState: Partial<RootState> = {
+    entities: {
+        contactForm: {
+            contactForms: {
+                contactFormById: {
+                    [contactForm.id]: contactForm,
+                },
+            },
+        },
+        helpCenter: {
+            helpCenters: {
+                helpCentersById: {
+                    [legacyHelCenter.id]: legacyHelCenter,
+                    [helpCenter.id]: helpCenter,
+                },
+            },
+            articles: articlesState,
+            categories: categoriesState,
+        },
+    } as any,
+    integrations: fromJS({
+        integrations: [],
+    }),
+    ui: {helpCenter: {...uiState}} as any,
+}
+
+jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+
+const mockedUpdateHelpCenterTranslation = jest.fn()
+const mockedUpdateHelpCenter = jest.fn()
+const mockedListHelpCenterTranslations = jest.fn()
+const mockedGetHelpCenter = jest.fn()
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
+    return {
+        useHelpCenterApi: () => ({
+            isReady: true,
+            client: {
+                updateHelpCenter: mockedUpdateHelpCenter,
+                updateHelpCenterTranslation: mockedUpdateHelpCenterTranslation,
+                listHelpCenterTranslations: mockedListHelpCenterTranslations,
+                getHelpCenter: mockedGetHelpCenter,
+            },
+        }),
+    }
+})
+
+const mockGetContactFormById = jest.fn()
+const mockUpdateContactForm = jest.fn()
+jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
+    return {
+        useContactFormApi: () => ({
+            isReady: true,
+            isLoading: false,
+            getContactFormById: mockGetContactFormById,
+            updateContactForm: mockUpdateContactForm,
+        }),
+    }
+})
+
+function renderTestHook({
+    state = defaultState,
+    currentHelpCenter,
+}: {
+    currentHelpCenter: HelpCenter
+    state?: Partial<RootState>
+}) {
+    return renderHook(() => useHelpCenterTranslation(), {
+        wrapper: ({children}: {children: ComponentType}) => (
+            <Provider
+                store={mockedStore({
+                    ...defaultState,
+                    ...state,
+                })}
+            >
+                <HelpCenterTranslationProvider helpCenter={currentHelpCenter}>
+                    {children}
+                </HelpCenterTranslationProvider>
+            </Provider>
+        ),
+    })
+}
+
+describe('useHelpCenterTranslation', () => {
+    let state: Partial<RootState>
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    describe('help-center with legacy translation', () => {
+        beforeEach(() => {
+            state = {
+                ui: {
+                    helpCenter: {
+                        currentId: legacyHelCenter.id,
+                        currentLanguage: legacyHelCenter.default_locale,
+                    },
+                } as any,
+            }
+            jest.mocked(useCurrentHelpCenter).mockReturnValue(legacyHelCenter)
+            mockedGetHelpCenter.mockResolvedValue({data: legacyHelCenter})
+        })
+
+        it('should return valid contact form related fields', async () => {
+            const {
+                result: {current},
+            } = renderTestHook({
+                state,
+                currentHelpCenter: legacyHelCenter,
+            })
+
+            await flushPromises()
+
+            expect(mockGetContactFormById).not.toHaveBeenCalled()
+
+            expect(current.contactForm.card_enabled).toEqual(
+                legacyHelCenter.contact_form?.card_enabled
+            )
+
+            expect(current.emailIntegration.email).toEqual(
+                legacyHelCenter.contact_form?.helpdesk_integration_email
+            )
+
+            expect(current.contactForm.helpdesk_integration_email).toEqual(
+                legacyHelCenter.contact_form?.helpdesk_integration_email
+            )
+
+            expect(current.emailIntegration.id).toEqual(
+                legacyHelCenter.contact_form?.helpdesk_integration_id
+            )
+
+            expect(current.contactForm.helpdesk_integration_id).toEqual(
+                legacyHelCenter.contact_form?.helpdesk_integration_id
+            )
+
+            expect(current.contactForm.subject_lines).toEqual(
+                legacyHelCenter.contact_form?.subject_lines
+            )
+        })
+
+        it('updates help center correctly after changes', async () => {
+            const {result} = renderTestHook({
+                state,
+                currentHelpCenter: legacyHelCenter,
+            })
+
+            await act(async () => {
+                result.current.updateEmailIntegration({
+                    id: 1001,
+                    email: 'XXXX@YYYY.ZZZZ',
+                })
+
+                result.current.updateContactForm({
+                    ...result.current.contactForm,
+                    card_enabled: false,
+                    subject_lines: {
+                        [legacyHelCenter.default_locale]: {
+                            options: ['XXX'],
+                            allow_other: false,
+                        },
+                    },
+                })
+
+                result.current.updateTranslation({
+                    contactInfo: {
+                        chat: {
+                            enabled: true,
+                            description: 'AAA',
+                        },
+                        email: {
+                            enabled: false,
+                            email: 'PTN@PNH.COM',
+                            description: 'BBB',
+                        },
+                        phone: {
+                            enabled: true,
+                            phone_numbers: [
+                                {
+                                    phone_number: 'XXXXX',
+                                    reference: 'YYYY',
+                                },
+                            ],
+                            description: 'CCC',
+                        },
+                    },
+                })
+                await flushPromises()
+                await result.current.updateHelpCenter()
+                await flushPromises()
+            })
+
+            expect(mockGetContactFormById).not.toHaveBeenCalled()
+            expect(mockUpdateContactForm).toHaveBeenCalledTimes(0)
+            expect(mockedUpdateHelpCenter).toHaveBeenCalledTimes(1)
+            expect(mockedUpdateHelpCenterTranslation).toHaveBeenCalledTimes(1)
+
+            expect(mockedUpdateHelpCenter.mock.calls[0]).toMatchInlineSnapshot(`
+                [
+                  {
+                    "help_center_id": 2,
+                  },
+                  {
+                    "contact_form": {
+                      "card_enabled": false,
+                      "helpdesk_integration_email": "sample@example.com",
+                      "helpdesk_integration_id": 123456,
+                      "subject_lines": {
+                        "en-US": {
+                          "allow_other": false,
+                          "options": [
+                            "XXX",
+                          ],
+                        },
+                      },
+                    },
+                  },
+                ]
+            `)
+            expect(mockedUpdateHelpCenterTranslation.mock.calls[0])
+                .toMatchInlineSnapshot(`
+                [
+                  {
+                    "help_center_id": 2,
+                    "locale": "en-US",
+                  },
+                  {
+                    "chat_app_key": "",
+                    "contact_info": {
+                      "chat": {
+                        "description": "AAA",
+                        "enabled": true,
+                      },
+                      "email": {
+                        "description": "BBB",
+                        "email": "PTN@PNH.COM",
+                        "enabled": false,
+                      },
+                      "phone": {
+                        "description": "CCC",
+                        "enabled": true,
+                        "phone_numbers": [
+                          {
+                            "phone_number": "XXXXX",
+                            "reference": "YYYY",
+                          },
+                        ],
+                      },
+                    },
+                  },
+                ]
+            `)
+        })
+    })
+
+    describe('help center with contact forms linked to every translation', () => {
+        beforeEach(() => {
+            state = {
+                ui: {
+                    helpCenter: {
+                        currentId: helpCenter.id,
+                        currentLanguage: helpCenter.default_locale,
+                    },
+                } as any,
+            }
+            jest.mocked(useCurrentHelpCenter).mockReturnValue(helpCenter)
+            mockedGetHelpCenter.mockResolvedValue({data: helpCenter})
+        })
+
+        it('should return valid contact form related fields', async () => {
+            const {
+                result: {current},
+            } = renderTestHook({state, currentHelpCenter: helpCenter})
+
+            await flushPromises()
+
+            expect(current.contactForm.subject_lines).toEqual({
+                [contactForm.default_locale]: contactForm.subject_lines,
+            })
+
+            expect(current.contactForm.card_enabled).toEqual(
+                !contactForm.deactivated_datetime
+            )
+
+            expect(current.emailIntegration.email).toEqual(
+                helpCenter.email_integration?.email
+            )
+
+            expect(current.emailIntegration.id).toEqual(
+                helpCenter.email_integration?.id
+            )
+        })
+
+        it('updates help center correctly after changes', async () => {
+            const {result} = renderTestHook({
+                state,
+                currentHelpCenter: helpCenter,
+            })
+
+            await act(async () => {
+                result.current.updateEmailIntegration({
+                    id: 1001,
+                    email: 'XXXX@YYYY.ZZZZ',
+                })
+
+                result.current.updateContactForm({
+                    ...result.current.contactForm,
+                    card_enabled: false,
+                    subject_lines: {
+                        [legacyHelCenter.default_locale]: {
+                            options: ['XXX'],
+                            allow_other: false,
+                        },
+                    },
+                })
+
+                result.current.updateTranslation({
+                    contactInfo: {
+                        chat: {
+                            enabled: true,
+                            description: 'AAA',
+                        },
+                        email: {
+                            enabled: false,
+                            email: 'PTN@PNH.COM',
+                            description: 'BBB',
+                        },
+                        phone: {
+                            enabled: true,
+                            phone_numbers: [
+                                {
+                                    phone_number: 'XXXXX',
+                                    reference: 'YYYY',
+                                },
+                            ],
+                            description: 'CCC',
+                        },
+                    },
+                })
+                await flushPromises()
+
+                await result.current.updateHelpCenter()
+                await flushPromises()
+            })
+
+            expect(mockGetContactFormById).toHaveBeenCalledTimes(0)
+            expect(mockUpdateContactForm).toHaveBeenCalledTimes(1)
+            expect(mockedUpdateHelpCenter).toHaveBeenCalledTimes(1)
+            expect(mockedUpdateHelpCenterTranslation).toHaveBeenCalledTimes(1)
+
+            expect(mockUpdateContactForm.mock.calls[0]).toStrictEqual(
+                expect.arrayContaining([
+                    111,
+                    {
+                        deactivated_datetime: expect.any(String),
+                        subject_lines: {
+                            allow_other: false,
+                            options: ['XXX'],
+                        },
+                    },
+                ])
+            )
+            expect(mockedUpdateHelpCenter.mock.calls[0]).toMatchInlineSnapshot(`
+                [
+                  {
+                    "help_center_id": 333,
+                  },
+                  {
+                    "email_integration": {
+                      "email": "XXXX@YYYY.ZZZZ",
+                      "id": 1001,
+                    },
+                  },
+                ]
+            `)
+            expect(mockedUpdateHelpCenterTranslation.mock.calls[0])
+                .toMatchInlineSnapshot(`
+                [
+                  {
+                    "help_center_id": 333,
+                    "locale": "en-US",
+                  },
+                  {
+                    "chat_app_key": "",
+                    "contact_info": {
+                      "chat": {
+                        "description": "AAA",
+                        "enabled": true,
+                      },
+                      "email": {
+                        "description": "BBB",
+                        "email": "PTN@PNH.COM",
+                        "enabled": false,
+                      },
+                      "phone": {
+                        "description": "CCC",
+                        "enabled": true,
+                        "phone_numbers": [
+                          {
+                            "phone_number": "XXXXX",
+                            "reference": "YYYY",
+                          },
+                        ],
+                      },
+                    },
+                  },
+                ]
+            `)
+        })
+    })
+})

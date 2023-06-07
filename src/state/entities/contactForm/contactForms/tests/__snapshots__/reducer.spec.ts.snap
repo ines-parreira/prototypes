@@ -7,6 +7,7 @@ exports[`contactForms reducer contactFormDeleted action should delete a contact 
       "account_id": 1,
       "code_snippet_template": "<script...></script><div></div>",
       "created_datetime": "2023-02-21T19:21:06.804Z",
+      "deactivated_datetime": null,
       "default_locale": "en-US",
       "email_integration": {
         "email": "princesspolly@gorgias.com",
@@ -15,6 +16,7 @@ exports[`contactForms reducer contactFormDeleted action should delete a contact 
       "help_center_id": null,
       "id": 1,
       "name": "SF Bicycles Contact Form",
+      "shop_name": null,
       "source": "manual",
       "subject_lines": {
         "allow_other": true,
@@ -41,6 +43,7 @@ exports[`contactForms reducer contactFormUpdated action should replace an existi
       "account_id": 1,
       "code_snippet_template": "<script...></script><div></div>",
       "created_datetime": "2023-02-21T19:21:06.804Z",
+      "deactivated_datetime": null,
       "default_locale": "da-DK",
       "email_integration": {
         "email": "princesspolly@gorgias.com",
@@ -49,6 +52,7 @@ exports[`contactForms reducer contactFormUpdated action should replace an existi
       "help_center_id": null,
       "id": 1,
       "name": "test",
+      "shop_name": null,
       "source": "manual",
       "subject_lines": {
         "allow_other": true,
@@ -71,6 +75,7 @@ exports[`contactForms reducer contactFormsFetched action should add the contact 
       "account_id": 1,
       "code_snippet_template": "<script...></script><div></div>",
       "created_datetime": "2023-02-21T19:21:06.804Z",
+      "deactivated_datetime": null,
       "default_locale": "en-US",
       "email_integration": {
         "email": "princesspolly@gorgias.com",
@@ -79,6 +84,7 @@ exports[`contactForms reducer contactFormsFetched action should add the contact 
       "help_center_id": null,
       "id": 1,
       "name": "SF Bicycles Contact Form",
+      "shop_name": null,
       "source": "manual",
       "subject_lines": {
         "allow_other": true,

@@ -17,3 +17,9 @@ export const getCurrentContactForm = createSelector(
         return contactForms[currentContactFormId.toString()] || null
     }
 )
+
+export const getContactFormById = (contactFormId: number | null) =>
+    createSelector(getContactForms, (contactForms): ContactForm | null => {
+        if (!contactFormId) return null
+        return contactForms[contactFormId.toString()] || null
+    })

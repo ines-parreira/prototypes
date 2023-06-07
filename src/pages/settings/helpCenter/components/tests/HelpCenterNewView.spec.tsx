@@ -10,8 +10,8 @@ import {renderWithRouter} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
 import {integrationsState} from 'fixtures/integrations'
+import history from 'pages/history'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
-import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
 import HelpCenterNewView from '../HelpCenterNewView'
 
@@ -24,17 +24,22 @@ const defaultState: Partial<RootState> = {
 }
 const store = mockStore(defaultState)
 
+const mockCheckHelpCenterWithSubdomainExists = jest.fn()
+const mockCreateHelpCenter = jest.fn()
+const mockIsPassingRuleCheck = jest.fn()
 jest.mock('../../hooks/useHelpCenterApi', () => {
     return {
+        useAbilityChecker: () => ({
+            isPassingRulesCheck: mockIsPassingRuleCheck,
+        }),
         useHelpCenterApi: () => ({
             isReady: true,
             client: {
-                createHelpCenter: jest
-                    .fn()
-                    .mockReturnValue(Promise.resolve({})),
+                checkHelpCenterWithSubdomainExists:
+                    mockCheckHelpCenterWithSubdomainExists,
+                createHelpCenter: mockCreateHelpCenter,
             },
         }),
-        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
     }
 })
 
@@ -49,8 +54,13 @@ jest.mock('../../hooks/useShopifyStoreWithChatConnectionsOptions', () => {
 jest.mock('../../providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
+const mockEnableArticleRecommendation = jest.fn()
 jest.mock('../../hooks/useEnableArticleRecommendation', () => ({
-    useEnableArticleRecommendation: () => jest.fn(),
+    useEnableArticleRecommendation: () => mockEnableArticleRecommendation,
+}))
+
+jest.mock('state/notifications/actions', () => ({
+    notify: () => ({type: 'test'}),
 }))
 
 describe('<HelpCenterNewView />', () => {
@@ -58,7 +68,12 @@ describe('<HelpCenterNewView />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        history.push = jest.fn()
         mockFlags({})
+        mockCheckHelpCenterWithSubdomainExists.mockResolvedValue(true)
+        mockCreateHelpCenter.mockResolvedValue({data: {}})
+        mockIsPassingRuleCheck.mockReturnValue(true)
+        mockEnableArticleRecommendation.mockReturnValue({})
     })
 
     it('should render the component', async () => {
@@ -134,28 +149,49 @@ describe('<HelpCenterNewView />', () => {
         })
 
         it('should call helpcenter API on submit a new help center', async () => {
-            const {findByRole, getByTestId, findByTestId} = renderWithRouter(
+            const {findByRole, findByTestId, getByRole} = renderWithRouter(
                 <Provider store={store}>
                     <HelpCenterNewView {...props} />
                 </Provider>
             )
             const brandInput = await findByTestId('name')
+            const subdomainInput = getByRole('textbox', {name: 'Subdomain'})
             const submitButton = await findByRole('button', {
                 name: /add help center/i,
             })
 
-            void act(async () => {
-                fireEvent.change(brandInput, {target: {value: 'My brand'}})
+            await act(async () => {
+                await waitFor(() => {
+                    fireEvent.change(brandInput, {target: {value: 'My brand'}})
+                    fireEvent.change(subdomainInput, {
+                        target: {value: 'acme'},
+                    })
+                })
+
                 fireEvent.click(submitButton)
 
-                await waitFor(() => getByTestId('loading'))
-
-                expect(
-                    useHelpCenterApi().client?.createHelpCenter
-                ).toHaveBeenLastCalledWith(null, {
-                    name: 'My brand',
-                    default_locale: 'en-US',
-                })
+                expect(mockCreateHelpCenter).toHaveBeenLastCalledWith(
+                    null,
+                    expect.objectContaining({
+                        default_locale: 'en-US',
+                        email_integration: {
+                            email: 'billing@acme.gorgias.io',
+                            id: 5,
+                        },
+                        name: 'My brand',
+                        primary_color: '#4A8DF9',
+                        shop_name: undefined,
+                        subdomain: 'acme',
+                        theme: 'light',
+                        // FIXME: #2566 after the migration the sending of contact forms should be prohibited
+                        contact_form: {
+                            card_enabled: true,
+                            helpdesk_integration_email:
+                                'billing@acme.gorgias.io',
+                            helpdesk_integration_id: 5,
+                        },
+                    })
+                )
             })
         })
     })
