@@ -130,7 +130,7 @@ const OrderManagementView = () => {
             >
                 <OrderManagementFlowItem
                     isEnabled={
-                        selfServiceConfiguration!.track_order_policy.enabled
+                        !!selfServiceConfiguration?.track_order_policy.enabled
                     }
                     isDisabled={isUpdatePending}
                     title="Track order"
@@ -146,7 +146,7 @@ const OrderManagementView = () => {
                             fillStyle="ghost"
                             onClick={handleTrackOrderPreviewClick}
                             isDisabled={
-                                !selfServiceConfiguration!.track_order_policy
+                                !selfServiceConfiguration?.track_order_policy
                                     .enabled
                             }
                         >
@@ -171,7 +171,7 @@ const OrderManagementView = () => {
                 />
                 <OrderManagementFlowItem
                     isEnabled={
-                        selfServiceConfiguration!.return_order_policy.enabled
+                        !!selfServiceConfiguration?.return_order_policy.enabled
                     }
                     isDisabled={isUpdatePending}
                     title="Return order"
@@ -192,7 +192,7 @@ const OrderManagementView = () => {
                 />
                 <OrderManagementFlowItem
                     isEnabled={
-                        selfServiceConfiguration!.cancel_order_policy.enabled
+                        !!selfServiceConfiguration?.cancel_order_policy.enabled
                     }
                     isDisabled={isUpdatePending}
                     title="Cancel order"
@@ -213,7 +213,7 @@ const OrderManagementView = () => {
                 />
                 <OrderManagementFlowItem
                     isEnabled={
-                        selfServiceConfiguration!.report_issue_policy.enabled
+                        !!selfServiceConfiguration?.report_issue_policy.enabled
                     }
                     isDisabled={isUpdatePending}
                     title="Report order issue"
