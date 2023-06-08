@@ -4,8 +4,8 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
 <body>
   <div />
   <div
-    aria-describedby="modal-4-desc"
-    aria-labelledby="modal-4-title"
+    aria-describedby="modal-3-desc"
+    aria-labelledby="modal-3-title"
     aria-modal="true"
     class="modal default open"
     role="dialog"
@@ -22,7 +22,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
           <div>
             <div
               class="title"
-              id="modal-4-title"
+              id="modal-3-title"
             >
               Refund Order #123
             </div>
@@ -102,7 +102,9 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             >
               Reason for refund
             </label>
-            <div>
+            <div
+              class="textAreaWrapper"
+            >
               <textarea
                 aria-describedby="refundReason-caption"
                 class="textarea"
@@ -110,6 +112,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
                 maxlength="1000"
                 name="refundReason"
                 rows="1"
+                style="height: 2px;"
               />
               <div
                 class="caption"
@@ -118,22 +121,37 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
                 Maximum length is 1000 characters.
               </div>
             </div>
-            <div
-              class="checkboxWrapper"
+            <label
+              class="label label smallSpacingMarginTop"
+              for="newOrderStatus"
             >
-              <label
-                class="label label"
-                for="checkbox-6"
+              New status
+            </label>
+            <div
+              class="wrapper"
+              role="listbox"
+              tabindex="0"
+            >
+              <div
+                class="inputWrapper"
               >
-                <input
-                  class="input"
-                  id="checkbox-6"
-                  name="checkbox-6"
-                  type="checkbox"
-                />
-                Mark order as Cancelled in BigCommerce
-              </label>
+                <div
+                  class="input isGreyed"
+                >
+                  Select order status
+                </div>
+                <i
+                  class="affix suffix toggle material-icons"
+                >
+                  arrow_drop_down
+                </i>
+              </div>
             </div>
+            <p
+              class="caption"
+            >
+              If the field is left empty, Refunded or Partially Refunded status will be assigned to order.
+            </p>
           </div>
         </div>
         <div
@@ -159,8 +177,12 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
     </div>
   </div>
   <div
-    aria-describedby="modal-7-desc"
-    aria-labelledby="modal-7-title"
+    data-floating-ui-portal=""
+    id="floating-ui-1"
+  />
+  <div
+    aria-describedby="modal-5-desc"
+    aria-labelledby="modal-5-title"
     aria-modal="true"
     class="modal default open"
     role="dialog"
@@ -177,7 +199,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
           <div>
             <div
               class="title"
-              id="modal-7-title"
+              id="modal-5-title"
             >
               Error
             </div>
@@ -193,7 +215,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
         </div>
         <div
           class="wrapper"
-          id="modal-7-desc"
+          id="modal-5-desc"
         >
           An unexpected error occurred. Please try again later.
         </div>
@@ -327,7 +349,9 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
             >
               Reason for refund
             </label>
-            <div>
+            <div
+              class="textAreaWrapper"
+            >
               <textarea
                 aria-describedby="refundReason-caption"
                 class="textarea"
@@ -335,6 +359,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
                 maxlength="1000"
                 name="refundReason"
                 rows="1"
+                style="height: 2px;"
               />
               <div
                 class="caption"
@@ -343,22 +368,37 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
                 Maximum length is 1000 characters.
               </div>
             </div>
-            <div
-              class="checkboxWrapper"
+            <label
+              class="label label smallSpacingMarginTop"
+              for="newOrderStatus"
             >
-              <label
-                class="label label"
-                for="checkbox-3"
+              New status
+            </label>
+            <div
+              class="wrapper"
+              role="listbox"
+              tabindex="0"
+            >
+              <div
+                class="inputWrapper"
               >
-                <input
-                  class="input"
-                  id="checkbox-3"
-                  name="checkbox-3"
-                  type="checkbox"
-                />
-                Mark order as Cancelled in BigCommerce
-              </label>
+                <div
+                  class="input isGreyed"
+                >
+                  Select order status
+                </div>
+                <i
+                  class="affix suffix toggle material-icons"
+                >
+                  arrow_drop_down
+                </i>
+              </div>
             </div>
+            <p
+              class="caption"
+            >
+              If the field is left empty, Refunded or Partially Refunded status will be assigned to order.
+            </p>
           </div>
         </div>
         <div
@@ -383,6 +423,10 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
       </div>
     </div>
   </div>
+  <div
+    data-floating-ui-portal=""
+    id="floating-ui-0"
+  />
 </body>
 `;
 
@@ -390,8 +434,8 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
 <body>
   <div />
   <div
-    aria-describedby="modal-8-desc"
-    aria-labelledby="modal-8-title"
+    aria-describedby="modal-6-desc"
+    aria-labelledby="modal-6-title"
     aria-modal="true"
     class="modal default open"
     role="dialog"
@@ -408,7 +452,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
           <div>
             <div
               class="title"
-              id="modal-8-title"
+              id="modal-6-title"
             >
               Refund Order #123
             </div>
@@ -488,7 +532,9 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             >
               Reason for refund
             </label>
-            <div>
+            <div
+              class="textAreaWrapper"
+            >
               <textarea
                 aria-describedby="refundReason-caption"
                 class="textarea"
@@ -496,6 +542,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
                 maxlength="1000"
                 name="refundReason"
                 rows="1"
+                style="height: 2px;"
               />
               <div
                 class="caption"
@@ -504,22 +551,37 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
                 Maximum length is 1000 characters.
               </div>
             </div>
-            <div
-              class="checkboxWrapper"
+            <label
+              class="label label smallSpacingMarginTop"
+              for="newOrderStatus"
             >
-              <label
-                class="label label"
-                for="checkbox-10"
+              New status
+            </label>
+            <div
+              class="wrapper"
+              role="listbox"
+              tabindex="0"
+            >
+              <div
+                class="inputWrapper"
               >
-                <input
-                  class="input"
-                  id="checkbox-10"
-                  name="checkbox-10"
-                  type="checkbox"
-                />
-                Mark order as Cancelled in BigCommerce
-              </label>
+                <div
+                  class="input isGreyed"
+                >
+                  Select order status
+                </div>
+                <i
+                  class="affix suffix toggle material-icons"
+                >
+                  arrow_drop_down
+                </i>
+              </div>
             </div>
+            <p
+              class="caption"
+            >
+              If the field is left empty, Refunded or Partially Refunded status will be assigned to order.
+            </p>
           </div>
         </div>
         <div
@@ -545,8 +607,12 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
     </div>
   </div>
   <div
-    aria-describedby="modal-11-desc"
-    aria-labelledby="modal-11-title"
+    data-floating-ui-portal=""
+    id="floating-ui-2"
+  />
+  <div
+    aria-describedby="modal-8-desc"
+    aria-labelledby="modal-8-title"
     aria-modal="true"
     class="modal default open"
     role="dialog"
@@ -563,7 +629,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
           <div>
             <div
               class="title"
-              id="modal-11-title"
+              id="modal-8-title"
             >
               Error
             </div>
@@ -579,7 +645,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
         </div>
         <div
           class="wrapper"
-          id="modal-11-desc"
+          id="modal-8-desc"
         >
           The operation cannot be completed. You have too many queued requests at the moment. Please wait a moment and try again.
         </div>

@@ -1,25 +1,39 @@
-import React, {useState} from 'react'
+import React, {useRef, useState} from 'react'
 import {useDebounce} from 'react-use'
-import CheckBox from 'pages/common/forms/CheckBox'
+import classNames from 'classnames'
 import TextArea from 'pages/common/forms/TextArea'
 import Label from 'pages/common/forms/Label/Label'
-import css from '../RefundOrderModal.less'
+import {OrderStatusList} from 'models/integration/types'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
+import Button from 'pages/common/components/button/Button'
+import cssRefundOrderModal from '../RefundOrderModal.less'
+import css from './RefundOrderFooter.less'
 
 type Props = {
     setRefundReason: (refundReason: string) => void
-    orderIsCancelled: boolean
-    setOrderIsCancelled: (orderIsCancelled: boolean) => void
+    newOrderStatus: Maybe<string>
+    setNewOrderStatus: (newOrderStatus: Maybe<string>) => void
     isLoading: boolean
 }
 
 export function RefundOrderFooter({
     setRefundReason,
-    orderIsCancelled,
-    setOrderIsCancelled,
+    newOrderStatus,
+    setNewOrderStatus,
     isLoading,
 }: Props) {
     const [reasonForRefund, setReasonForRefund] = useState('')
     const maxLengthRefundReason = 1000
+
+    const selectRef = useRef(null)
+    const floatingSelectRef = useRef(null)
+    const [isSelectOpen, setIsSelectOpen] = useState(false)
 
     useDebounce(
         () => {
@@ -30,13 +44,14 @@ export function RefundOrderFooter({
     )
 
     return (
-        <div className={css.modalSectionSmall}>
-            <p className={css.modalSectionHeader}>Other</p>
-            <Label className={css.label} htmlFor="refundReason">
+        <div className={cssRefundOrderModal.modalSectionSmall}>
+            <p className={cssRefundOrderModal.modalSectionHeader}>Other</p>
+            <Label className={cssRefundOrderModal.label} htmlFor="refundReason">
                 Reason for refund
             </Label>
             <TextArea
                 id="refundReason"
+                className={cssRefundOrderModal.textAreaWrapper}
                 rows={1}
                 isDisabled={isLoading}
                 maxLength={maxLengthRefundReason}
@@ -45,17 +60,85 @@ export function RefundOrderFooter({
                     setReasonForRefund(reason)
                 }}
                 caption={`Maximum length is ${maxLengthRefundReason} characters.`}
+                autoRowHeight
             />
-            <CheckBox
-                className={css.checkboxWrapper}
-                isDisabled={isLoading}
-                isChecked={orderIsCancelled}
-                onChange={(orderIsCancelled: boolean) => {
-                    setOrderIsCancelled(orderIsCancelled)
-                }}
+            <Label
+                className={classNames(
+                    cssRefundOrderModal.label,
+                    cssRefundOrderModal.smallSpacingMarginTop
+                )}
+                htmlFor="newOrderStatus"
             >
-                Mark order as Cancelled in BigCommerce
-            </CheckBox>
+                New status
+            </Label>
+            <SelectInputBox
+                id="newOrderStatus"
+                isDisabled={isLoading}
+                ref={selectRef}
+                floating={floatingSelectRef}
+                onToggle={setIsSelectOpen}
+                placeholder="Select order status"
+                label={newOrderStatus}
+            >
+                <SelectInputBoxContext.Consumer>
+                    {(context) => (
+                        <Dropdown
+                            target={selectRef}
+                            ref={floatingSelectRef}
+                            isOpen={isSelectOpen}
+                            onToggle={() => context!.onBlur()}
+                            placement="top"
+                            contained
+                            className={css.dropdownWrapper}
+                        >
+                            <DropdownBody>
+                                {OrderStatusList.map((orderStatus) => (
+                                    <DropdownItem
+                                        className={css.dropdownItemWrapper}
+                                        key={`order-status-${orderStatus}`}
+                                        option={{
+                                            label: orderStatus,
+                                            value: orderStatus,
+                                        }}
+                                        onClick={() => {
+                                            setNewOrderStatus(orderStatus)
+                                        }}
+                                        shouldCloseOnSelect
+                                    >
+                                        <span className={css.choiceButton}>
+                                            {orderStatus}
+                                        </span>
+                                        {newOrderStatus === orderStatus && (
+                                            <span
+                                                className={`material-icons ${css.checkIcon}`}
+                                            >
+                                                check
+                                            </span>
+                                        )}
+                                    </DropdownItem>
+                                ))}
+                            </DropdownBody>
+                            {newOrderStatus && (
+                                <DropdownFooter>
+                                    <Button
+                                        fillStyle="ghost"
+                                        onClick={() => {
+                                            setNewOrderStatus(null)
+                                            context!.onBlur()
+                                        }}
+                                    >
+                                        Clear Selection
+                                    </Button>
+                                </DropdownFooter>
+                            )}
+                        </Dropdown>
+                    )}
+                </SelectInputBoxContext.Consumer>
+            </SelectInputBox>
+            <p className={cssRefundOrderModal.caption}>
+                If the field is left empty, Refunded or Partially Refunded
+                status will be assigned to order.
+            </p>
         </div>
     )
 }

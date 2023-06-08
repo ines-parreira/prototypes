@@ -389,6 +389,24 @@ export enum OrderStatusIDType {
     partially_refunded = 14,
 }
 
+export const OrderStatusList = [
+    'Incomplete',
+    'Pending',
+    'Shipped',
+    'Partially Shipped',
+    'Refunded',
+    'Cancelled',
+    'Declined',
+    'Awaiting Payment',
+    'Awaiting Pickup',
+    'Awaiting Shipment',
+    'Completed',
+    'Awaiting Fulfillment',
+    'Manual Verification Required',
+    'Disputed',
+    'Partially Refunded',
+]
+
 export enum OrderPaymentMethodType {
     credit_card = 'Credit Card',
     cash = 'Cash',

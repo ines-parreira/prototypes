@@ -31,9 +31,8 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
           />
           <div>
             <b>
-              Pay in Store: 
+              Pay in Store
             </b>
-            €1,234,567.89
           </div>
         </label>
       </div>
@@ -93,9 +92,8 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
           />
           <div>
             <b>
-              Custom: 
+              Custom
             </b>
-            €1,234,567.89
           </div>
         </label>
       </div>

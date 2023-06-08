@@ -32,7 +32,7 @@ export const onReset = _debounce(
         setAvailablePaymentOptionsData,
         setSelectedPaymentOption,
         setRefundReason,
-        setOrderIsCancelled,
+        setNewOrderStatus,
     }: {
         setRefundType: (refundType: BigCommerceRefundType) => void
         setRefundData: (refundData: CalculateOrderRefundDataResponse) => void
@@ -47,7 +47,7 @@ export const onReset = _debounce(
             selectedPaymentOption: Maybe<BigCommerceRefundMethod>
         ) => void
         setRefundReason: (refundReason: string) => void
-        setOrderIsCancelled: (orderIsCancelled: boolean) => void
+        setNewOrderStatus: (newOrderStatus: Maybe<string>) => void
     }) => {
         setRefundType(defaultBigCommerceRefundType)
         setRefundData({
@@ -59,7 +59,7 @@ export const onReset = _debounce(
         setAvailablePaymentOptionsData(null)
         setSelectedPaymentOption(null)
         setRefundReason('')
-        setOrderIsCancelled(false)
+        setNewOrderStatus(null)
 
         logEvent(SegmentEvent.BigCommerceRefundOrderResetModal)
     },
@@ -169,7 +169,7 @@ export function bigcommerceRefundOrder(
     refundItemsPayload: BigCommerceRefundItemsPayload,
     selectedPaymentOption: BigCommerceRefundMethod,
     refundReason: Maybe<string>,
-    orderIsCancelled: boolean
+    newOrderStatus: Maybe<string>
 ) {
     const payload: ActionDataPayload = {
         bigcommerce_order_id: orderId,
@@ -178,7 +178,7 @@ export function bigcommerceRefundOrder(
             reason: refundReason,
             payments: selectedPaymentOption,
         },
-        bigcommerce_mark_order_as_cancelled: orderIsCancelled,
+        bigcommerce_new_order_status: newOrderStatus,
         bigcommerce_refund_type: refundType,
     }
 
@@ -235,6 +235,13 @@ export function buildPaymentOptionLabel(
         <div>
             {paymentOption.map(
                 (option: BigCommerceRefundMethodComponent, index: number) => {
+                    if (paymentOption.length === 1) {
+                        return (
+                            <Fragment key={index}>
+                                <b>{`${option.provider_description}`}</b>
+                            </Fragment>
+                        )
+                    }
                     return (
                         <Fragment key={index}>
                             <b>{`${option.provider_description}: `}</b>

@@ -1,0 +1,29 @@
+@import '~css/new/colors';
+@import '~css/new/layout';
+
+:local {
+    .dropdownWrapper {
+        max-height: 30%;
+    }
+
+    .dropdownItemWrapper {
+        &:hover,
+        &:focus {
+            background: @ultraLightBlue;
+            outline: none;
+        }
+    }
+
+    .choiceButton {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        min-width: 0;
+    }
+
+    .checkIcon {
+        margin-left: @layout-spacing-xxs;
+        font-size: 1.2rem !important;
+        color: @classic-main-primary;
+    }
+}

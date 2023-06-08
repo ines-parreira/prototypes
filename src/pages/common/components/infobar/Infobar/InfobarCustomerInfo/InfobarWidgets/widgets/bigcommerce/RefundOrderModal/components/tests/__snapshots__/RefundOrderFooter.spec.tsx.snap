@@ -16,7 +16,9 @@ exports[`RefundOrderFooter snapshot renders the initial disabled state 1`] = `
     >
       Reason for refund
     </label>
-    <div>
+    <div
+      class="textAreaWrapper"
+    >
       <textarea
         aria-describedby="refundReason-caption"
         class="textarea"
@@ -25,6 +27,7 @@ exports[`RefundOrderFooter snapshot renders the initial disabled state 1`] = `
         maxlength="1000"
         name="refundReason"
         rows="1"
+        style="height: 2px;"
       />
       <div
         class="caption"
@@ -33,23 +36,37 @@ exports[`RefundOrderFooter snapshot renders the initial disabled state 1`] = `
         Maximum length is 1000 characters.
       </div>
     </div>
-    <div
-      class="checkboxWrapper"
+    <label
+      class="label label smallSpacingMarginTop"
+      for="newOrderStatus"
     >
-      <label
-        class="label isDisabled label"
-        for="checkbox-2"
+      New status
+    </label>
+    <div
+      class="wrapper"
+      role="listbox"
+      tabindex="-1"
+    >
+      <div
+        class="inputWrapper isDisabled"
       >
-        <input
-          class="input"
-          disabled=""
-          id="checkbox-2"
-          name="checkbox-2"
-          type="checkbox"
-        />
-        Mark order as Cancelled in BigCommerce
-      </label>
+        <div
+          class="input isGreyed"
+        >
+          Select order status
+        </div>
+        <i
+          class="affix suffix toggle material-icons"
+        >
+          arrow_drop_down
+        </i>
+      </div>
     </div>
+    <p
+      class="caption"
+    >
+      If the field is left empty, Refunded or Partially Refunded status will be assigned to order.
+    </p>
   </div>
 </div>
 `;
@@ -70,7 +87,9 @@ exports[`RefundOrderFooter snapshot renders the initial state 1`] = `
     >
       Reason for refund
     </label>
-    <div>
+    <div
+      class="textAreaWrapper"
+    >
       <textarea
         aria-describedby="refundReason-caption"
         class="textarea"
@@ -78,6 +97,7 @@ exports[`RefundOrderFooter snapshot renders the initial state 1`] = `
         maxlength="1000"
         name="refundReason"
         rows="1"
+        style="height: 2px;"
       />
       <div
         class="caption"
@@ -86,22 +106,37 @@ exports[`RefundOrderFooter snapshot renders the initial state 1`] = `
         Maximum length is 1000 characters.
       </div>
     </div>
-    <div
-      class="checkboxWrapper"
+    <label
+      class="label label smallSpacingMarginTop"
+      for="newOrderStatus"
     >
-      <label
-        class="label label"
-        for="checkbox-4"
+      New status
+    </label>
+    <div
+      class="wrapper"
+      role="listbox"
+      tabindex="0"
+    >
+      <div
+        class="inputWrapper"
       >
-        <input
-          class="input"
-          id="checkbox-4"
-          name="checkbox-4"
-          type="checkbox"
-        />
-        Mark order as Cancelled in BigCommerce
-      </label>
+        <div
+          class="input isGreyed"
+        >
+          Select order status
+        </div>
+        <i
+          class="affix suffix toggle material-icons"
+        >
+          arrow_drop_down
+        </i>
+      </div>
     </div>
+    <p
+      class="caption"
+    >
+      If the field is left empty, Refunded or Partially Refunded status will be assigned to order.
+    </p>
   </div>
 </div>
 `;

@@ -319,10 +319,11 @@ describe('RefundOrderModalConnected', () => {
         })
         act(() => jest.runAllTimers())
 
-        // Select `Mark order as Cancelled in BigCommerce`
-        userEvent.click(
-            screen.getByText('Mark order as Cancelled in BigCommerce')
-        )
+        // Select new order status
+        const newOrderStatus = 'Partially Shipped'
+
+        userEvent.click(screen.getByRole('listbox'))
+        userEvent.click(screen.getByRole('option', {name: /Partially Shipped/}))
 
         // Refund order
         screen
@@ -359,7 +360,7 @@ describe('RefundOrderModalConnected', () => {
             bigCommerceAvailablePaymentOptionsDataResponseFixture
                 .refund_methods[1],
             'Refunded from Gorgias',
-            true
+            newOrderStatus
         )
         expect(onResetSpy).toHaveBeenCalledTimes(1)
     })

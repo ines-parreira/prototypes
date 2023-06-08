@@ -24,7 +24,7 @@ export type ActionDataPayload =
           bigcommerce_draft_order_url?: Maybe<string>
           bigcommerce_order_id?: Maybe<number>
           bigcommerce_refund_payload?: Maybe<BigCommerceRefundOrderPayload>
-          bigcommerce_mark_order_as_cancelled?: Maybe<boolean>
+          bigcommerce_new_order_status?: Maybe<string>
           bigcommerce_refund_type?: Maybe<BigCommerceRefundType>
           from_ticket_message_id?: number
       }

@@ -88,7 +88,7 @@ describe('utils', () => {
             const setAvailablePaymentOptionsDataMock = jest.fn()
             const setSelectedPaymentOptionMock = jest.fn()
             const setRefundReasonMock = jest.fn()
-            const setOrderIsCancelledMock = jest.fn()
+            const setNewOrderStatusMock = jest.fn()
 
             onReset({
                 setRefundType: setRefundTypeMock,
@@ -99,7 +99,7 @@ describe('utils', () => {
                     setAvailablePaymentOptionsDataMock,
                 setSelectedPaymentOption: setSelectedPaymentOptionMock,
                 setRefundReason: setRefundReasonMock,
-                setOrderIsCancelled: setOrderIsCancelledMock,
+                setNewOrderStatus: setNewOrderStatusMock,
             })
 
             expect(setRefundTypeMock).toHaveBeenCalledWith(
@@ -116,7 +116,7 @@ describe('utils', () => {
             )
             expect(setSelectedPaymentOptionMock).toHaveBeenCalledWith(null)
             expect(setRefundReasonMock).toHaveBeenCalledWith('')
-            expect(setOrderIsCancelledMock).toHaveBeenCalledWith(false)
+            expect(setNewOrderStatusMock).toHaveBeenCalledWith(null)
         })
     })
 

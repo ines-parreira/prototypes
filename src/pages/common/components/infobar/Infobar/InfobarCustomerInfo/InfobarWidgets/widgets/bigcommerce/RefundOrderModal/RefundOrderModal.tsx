@@ -79,7 +79,7 @@ export function RefundOrderModal({
     const [selectedPaymentOption, setSelectedPaymentOption] =
         useState<Maybe<BigCommerceRefundMethod>>(null)
     const [refundReason, setRefundReason] = useState('')
-    const [orderIsCancelled, setOrderIsCancelled] = useState(false)
+    const [newOrderStatus, setNewOrderStatus] = useState<Maybe<string>>(null)
 
     const handleReset = useCallback(() => {
         onReset({
@@ -90,7 +90,7 @@ export function RefundOrderModal({
             setAvailablePaymentOptionsData,
             setSelectedPaymentOption,
             setRefundReason,
-            setOrderIsCancelled,
+            setNewOrderStatus,
         })
     }, [])
 
@@ -173,7 +173,7 @@ export function RefundOrderModal({
             refundItemsPayload,
             selectedPaymentOption,
             refundReason,
-            orderIsCancelled
+            newOrderStatus
         )
 
         handleCancel('refund-order')
@@ -254,8 +254,8 @@ export function RefundOrderModal({
                         />
                         <RefundOrderFooter
                             setRefundReason={setRefundReason}
-                            orderIsCancelled={orderIsCancelled}
-                            setOrderIsCancelled={setOrderIsCancelled}
+                            newOrderStatus={newOrderStatus}
+                            setNewOrderStatus={setNewOrderStatus}
                             isLoading={isLoading}
                         />
                     </div>

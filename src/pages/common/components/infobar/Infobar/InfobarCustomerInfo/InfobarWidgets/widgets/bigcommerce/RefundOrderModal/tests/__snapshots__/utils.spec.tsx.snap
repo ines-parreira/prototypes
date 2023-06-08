@@ -4,9 +4,8 @@ exports[`utils buildPaymentOptionLabel should build a formatted string component
 <div>
   <React.Fragment>
     <b>
-      Pay in Store: 
+      Pay in Store
     </b>
-    €1,000,000.10
   </React.Fragment>
 </div>
 `;
