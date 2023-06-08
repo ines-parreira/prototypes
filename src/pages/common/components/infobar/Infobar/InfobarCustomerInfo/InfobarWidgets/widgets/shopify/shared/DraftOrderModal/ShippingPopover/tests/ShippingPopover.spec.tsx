@@ -131,6 +131,67 @@ describe('<ShippingPopover/>', () => {
             }
         )
 
+        it.each([
+            [
+                ShopifyActionType.CreateOrder,
+                SegmentEvent.ShopifyCreateOrderShippingPopoverOpen,
+                SegmentEvent.ShopifyCreateOrderShippingPopoverApply,
+            ],
+            [
+                ShopifyActionType.DuplicateOrder,
+                SegmentEvent.ShopifyDuplicateOrderShippingPopoverOpen,
+                SegmentEvent.ShopifyDuplicateOrderShippingPopoverApply,
+            ],
+        ])(
+            'should call onChange() with custom shipping line having default $0 for %s action',
+            (actionName, openEvent, submitEvent) => {
+                const shippingLine = fromJS({
+                    ...shopifyShippingLineFixture(),
+                    // The default initial state for price
+                    price: undefined,
+                })
+                const label = 'Add shipping'
+                const {getByPlaceholderText, getByText} = render(
+                    <ShippingPopover
+                        id="shipping-lines"
+                        actionName={actionName}
+                        editable
+                        currencyCode="USD"
+                        value={shippingLine}
+                        availableShippingRates={fromJS([])}
+                        onChange={onChange}
+                    >
+                        {label}
+                    </ShippingPopover>
+                )
+
+                // Open popover
+                userEvent.click(getByText(label))
+                const customInput = getByPlaceholderText('Custom rate name')
+                expect(logEvent).toHaveBeenCalledWith(openEvent)
+                // Change form values, but leave default $0 for shipping cost
+                userEvent.click(getByText(/custom/i))
+                fireEvent.change(customInput, {
+                    target: {value: 'Test default'},
+                })
+                // Submit
+                userEvent.click(getByText('Apply'))
+
+                expect(onChange).toHaveBeenCalledWith(
+                    fromJS({
+                        custom: true,
+                        handle: null,
+                        price: 0,
+                        title: 'Test default',
+                    })
+                )
+
+                expect(logEvent).toHaveBeenCalledWith(submitEvent, {
+                    handle: 'custom',
+                })
+            }
+        )
+
         it('should call onChange() with free shipping line', () => {
             const shippingLine = fromJS(shopifyShippingLineFixture())
             const label = 'Add shipping'

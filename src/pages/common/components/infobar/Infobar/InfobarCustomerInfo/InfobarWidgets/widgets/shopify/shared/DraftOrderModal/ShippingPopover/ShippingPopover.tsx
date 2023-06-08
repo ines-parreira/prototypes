@@ -186,7 +186,7 @@ export default class ShippingPopover extends Component<Props, State> {
                     fromJS({
                         custom: true,
                         handle: null,
-                        price: price,
+                        price: price || 0,
                         title: title || 'Custom',
                     })
                 )
