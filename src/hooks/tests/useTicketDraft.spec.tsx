@@ -3,10 +3,10 @@ import React, {ComponentType} from 'react'
 import {fromJS, Map} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import {act} from 'react-dom/test-utils'
 
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import {RootState, StoreDispatch} from 'state/types'
-import {flushPromises} from 'utils/testing'
 
 import useTicketDraft from '../useTicketDraft'
 
@@ -19,6 +19,14 @@ const mockGetTableObject = {
     setItem: mockSetItem,
 } as unknown as LocalForage
 
+const defaultTicket = {
+    subject: '',
+    tags: [],
+    state: {
+        appliedMacro: null,
+    },
+}
+
 const defaultState = {
     newMessage: fromJS({
         newMessage: {
@@ -28,10 +36,7 @@ const defaultState = {
             source: {},
         },
     }),
-    ticket: fromJS({
-        subject: '',
-        tags: [],
-    }),
+    ticket: fromJS(defaultTicket),
 } as RootState
 
 describe('useTicketDraft hook', () => {
@@ -49,13 +54,13 @@ describe('useTicketDraft hook', () => {
             mockGetTableObject
         )
 
-        renderHook(() => useTicketDraft(true), {
+        const {waitForNextUpdate} = renderHook(() => useTicketDraft(true), {
             wrapper: (({children}: {children: React.ReactNode}) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             )) as unknown as ComponentType,
         })
+        await act(async () => await waitForNextUpdate())
 
-        await flushPromises()
         expect(mockSetItem).toHaveBeenCalled()
     })
 
@@ -65,12 +70,12 @@ describe('useTicketDraft hook', () => {
             mockGetTableObject
         )
 
-        renderHook(() => useTicketDraft(true), {
+        const {waitForNextUpdate} = renderHook(() => useTicketDraft(true), {
             wrapper: (({children}: {children: React.ReactNode}) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             )) as unknown as ComponentType,
         })
-        await flushPromises()
+        await act(async () => await waitForNextUpdate())
 
         expect(mockSetItem).toHaveBeenCalled()
     })
@@ -93,19 +98,23 @@ describe('useTicketDraft hook', () => {
             </Provider>
         )) as unknown as ComponentType
 
-        const {rerender} = renderHook(() => useTicketDraft(true), {
-            wrapper,
-            initialProps: {
-                ticket: fromJS({
-                    subject: '',
-                    tags: [{name: 'during-business-hours'}],
-                }),
-            },
-        })
+        const {rerender, waitForNextUpdate} = renderHook(
+            () => useTicketDraft(true),
+            {
+                wrapper,
+                initialProps: {
+                    ticket: fromJS({
+                        ...defaultTicket,
+                        subject: '',
+                        tags: [{name: 'during-business-hours'}],
+                    }),
+                },
+            }
+        )
 
         rerender({ticket: defaultState.ticket})
 
-        await flushPromises()
+        await act(async () => await waitForNextUpdate())
 
         expect(mockSetItem).toHaveBeenCalledTimes(2)
     })

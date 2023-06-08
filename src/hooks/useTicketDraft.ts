@@ -76,7 +76,7 @@ export const isTicketDraftEmpty = (ticketDraft: TicketDraft | null) => {
             attachments.length === 0 &&
             customer === null &&
             source.type === TicketMessageSourceType.Email &&
-            source.to.length === 0 &&
+            source.to?.length === 0 &&
             subject === '' &&
             tags.length === 0
         )
@@ -220,7 +220,9 @@ export default function useTicketDraft(isTicketNew = false) {
             bodyText === '' &&
             customer === null &&
             source.get('type') === TicketMessageSourceType.Email &&
-            (source.get('to') as List<any>).size === 0 &&
+            (!!source.get('to')
+                ? (source.get('to') as List<any>).size === 0
+                : true) &&
             subject === '' &&
             tags.size === 0,
         [
