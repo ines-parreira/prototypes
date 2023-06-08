@@ -978,6 +978,85 @@ describe('ticket utils', () => {
                 )
             ).toEqual(expectedSender)
         })
+
+        it(
+            "should get the sender from last message's integration ID before falling" +
+                'back on the preferred one',
+            () => {
+                const integrationId = 42
+                const expectedSender = {
+                    id: integrationId,
+                    type: 'email',
+                    name: 'Acme Billing',
+                    address: 'billing@acme.gorgias.io',
+                    preferred: false,
+                    signature: {
+                        text: 'cheers, ',
+                        html: 'cheers, <strong></strong>',
+                    },
+                    verified: true,
+                    isDeactivated: false,
+                }
+                const channels = fromJS([
+                    expectedSender,
+                    {
+                        id: 1,
+                        type: 'email',
+                        name: 'Acme Support',
+                        address: 'support@acme.gorgias.io',
+                        preferred: true,
+                        signature: {
+                            text: 'cheers, ',
+                            html: 'cheers, <strong></strong>',
+                        },
+                        verified: true,
+                        isDeactivated: false,
+                    },
+                ])
+                const ticket = fromJS({
+                    customer: {
+                        name: 'Patrick',
+                        channels: [
+                            {
+                                address: 'nico@las.com',
+                                id: 5,
+                                preferred: true,
+                                type: 'email',
+                            },
+                        ],
+                    },
+                    messages: [
+                        {
+                            from_agent: false,
+                            integration_id: integrationId,
+                            source: {
+                                type: 'email',
+                                to: [
+                                    {
+                                        name: '',
+                                        address:
+                                            'billing-alias@acme.gorgias.io',
+                                    },
+                                ],
+                                from: {
+                                    name: 'Patrick',
+                                    address: 'nico@las.com',
+                                },
+                            },
+                        },
+                    ],
+                })
+
+                expect(
+                    getNewMessageSender(
+                        ticket,
+                        TicketMessageSourceType.Email,
+                        channels,
+                        fromJS([])
+                    )
+                ).toEqual(fromJS(expectedSender))
+            }
+        )
     })
 
     describe('isForwardedMessage()', () => {

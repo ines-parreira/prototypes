@@ -710,43 +710,50 @@ export function getNewMessageSender(
         )
     }
 
-    // If we don't find a channel, we use the preferred channel
-    let sender = preferredChannel
+    // If the last message is an email and was sent from an agent, the sender of the
+    // next should be the same as the previous one, unless an integration for it doesn't
+    // exist anymore.
+    if (
+        lastMessage.get('from_agent', false) &&
+        newMessageSourceType === 'email'
+    ) {
+        const address = lastMessage.getIn(['source', 'from', 'address']) as
+            | string
+            | undefined
 
-    // last message sent by the customer
-    // from address of last message or preferred channel of the same type
-    if (lastMessage.get('from_agent', false)) {
-        sender = lastMessage.getIn(['source', 'from']) || preferredChannel
-
-        if (!sender.isEmpty() && newMessageSourceType === 'email') {
-            sender =
-                channels.find(
-                    (channel: Map<any, any>) =>
-                        channel.get('address') === sender.get('address') &&
-                        EMAIL_INTEGRATION_TYPES.includes(channel.get('type'))
-                ) || preferredChannel
+        if (!address) {
+            return preferredChannel
         }
 
-        return sender
+        return (
+            (channels as List<Map<any, any>>).find(
+                (channel) =>
+                    !!channel &&
+                    channel.get('address') === address &&
+                    EMAIL_INTEGRATION_TYPES.includes(channel.get('type'))
+            ) || preferredChannel
+        )
     }
 
-    // last message sent by an agent
-    // search in recipients of `to` and `cc` fields to match with an email of account channels
+    // If the last message was sent by a customer, the sender of the next one should be
+    // in its recipients.
     const receivers = (
         lastMessage.getIn(['source', 'to'], fromJS([])) as List<any>
     ).concat(lastMessage.getIn(['source', 'cc'], fromJS([]))) as List<any>
-    for (const receiver of receivers as unknown as any[]) {
-        for (const channel of channels as unknown as any[]) {
-            if (
-                (receiver as Map<any, any>).get('address') ===
-                (channel as Map<any, any>).get('address')
-            ) {
-                return channel as Map<any, any>
+    for (const channel of channels.toArray() as Map<any, any>[]) {
+        for (const receiver of receivers.toArray() as Map<any, any>[]) {
+            if (receiver.get('address') === channel.get('address')) {
+                return channel
             }
+        }
+
+        // Unless one of the recipients was an alias for one of our integrations.
+        if (lastMessage.get('integration_id') === channel.get('id')) {
+            return channel
         }
     }
 
-    return sender
+    return preferredChannel
 }
 
 /**
