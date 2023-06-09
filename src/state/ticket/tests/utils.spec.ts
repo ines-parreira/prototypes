@@ -53,8 +53,16 @@ import {
     twitterTweet,
     chatTicket,
     chatContactFormTicket,
-    helpCenterContactFormTicket,
-    helpCenterContactFormTicketWithInternalNote,
+    helpCenterContactFormTicketViaSengrid,
+    helpCenterContactFormTicketViaSendgridWithInternalNote,
+    standaloneContactFormViaSengrid,
+    helpCenterContactFormViaApi,
+    standaloneContactFormViaApi,
+    standaloneContactFormViaSengridNoSelectedEmail,
+    helpCenterContactFormViaApiNoSelectedEmail,
+    standaloneContactFormViaApiNoSelectedEmail,
+    helpCenterContactFormViaApiUnavailableEmail,
+    standaloneContactFormViaApiUnavailableEmail,
 } from './fixtures'
 
 jest.mock('../../../config/ticket', () => {
@@ -471,6 +479,184 @@ describe('ticket utils', () => {
     })
 
     describe('getNewMessageSender()', () => {
+        describe('Contact Form', () => {
+            const integrationsWithSelectedEmail = fromJS({
+                integrations: [
+                    {
+                        deleted_datetime: null,
+                        mappings: [],
+                        meta: {
+                            address: 'selected-email-integration@email.com',
+                        },
+                        deactivated_datetime: null,
+                        name: 'An email integration',
+                        user: {
+                            id: 2,
+                        },
+                        uri: '/api/integrations/100/',
+                        decoration: null,
+                        locked_datetime: null,
+                        created_datetime: '2017-02-07T06:07:43.481450+00:00',
+                        type: 'email',
+                        id: 1,
+                        description: null,
+                        updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+                        smooch: null,
+                    },
+                ],
+            })
+            it('should return `to` field from first message from shopper (help center contact form - via email)', () => {
+                const expected = helpCenterContactFormTicketViaSengrid.getIn([
+                    'messages',
+                    0,
+                    'source',
+                    'to',
+                    0,
+                ])
+                expect(
+                    getNewMessageSender(
+                        helpCenterContactFormTicketViaSengrid,
+                        TicketMessageSourceType.HelpCenterContactForm,
+                        channels,
+                        integrationsWithSelectedEmail
+                    )
+                ).toEqualImmutable(expected)
+            })
+
+            it('should return `to` field from second message from shopper when first is internal note (help center contact form - via email', () => {
+                /* first message is an internal note, second message is from shopper */
+                const expected =
+                    helpCenterContactFormTicketViaSendgridWithInternalNote.getIn(
+                        ['messages', 1, 'source', 'to', 0]
+                    )
+                expect(
+                    getNewMessageSender(
+                        helpCenterContactFormTicketViaSendgridWithInternalNote,
+                        TicketMessageSourceType.HelpCenterContactForm,
+                        channels,
+                        integrationsWithSelectedEmail
+                    )
+                ).toEqualImmutable(expected)
+            })
+
+            it('should return `to` field from first message from shopper (standalone contact form - via email)', () => {
+                const expected = standaloneContactFormViaSengrid.getIn([
+                    'messages',
+                    0,
+                    'source',
+                    'to',
+                    0,
+                ])
+                expect(
+                    getNewMessageSender(
+                        standaloneContactFormViaSengrid,
+                        TicketMessageSourceType.ContactForm,
+                        channels,
+                        integrationsWithSelectedEmail
+                    )
+                ).toEqualImmutable(expected)
+            })
+
+            it('should return `to` field from first message from shopper (help center contact form - via API)', () => {
+                const expected = helpCenterContactFormViaApi.getIn([
+                    'messages',
+                    0,
+                    'source',
+                    'to',
+                    0,
+                ])
+                expect(
+                    getNewMessageSender(
+                        helpCenterContactFormViaApi,
+                        TicketMessageSourceType.ContactForm,
+                        channels,
+                        integrationsWithSelectedEmail
+                    )
+                ).toEqualImmutable(expected)
+            })
+
+            it('should return `to` field from first message from shopper (standalone contact form - via API)', () => {
+                const expected = standaloneContactFormViaApi.getIn([
+                    'messages',
+                    0,
+                    'source',
+                    'to',
+                    0,
+                ])
+                expect(
+                    getNewMessageSender(
+                        standaloneContactFormViaApi,
+                        TicketMessageSourceType.ContactForm,
+                        channels,
+                        integrationsWithSelectedEmail
+                    )
+                ).toEqualImmutable(expected)
+            })
+
+            it.each([
+                standaloneContactFormViaApiNoSelectedEmail,
+                helpCenterContactFormViaApiNoSelectedEmail,
+                standaloneContactFormViaSengridNoSelectedEmail,
+            ])(
+                'should fallback to the helpdesk default email integration when no selected-email integration is found in the ticket - $#',
+                (ticket) => {
+                    expect(
+                        getNewMessageSender(
+                            ticket,
+                            TicketMessageSourceType.ContactForm,
+                            channels,
+                            integrationsWithSelectedEmail
+                        )
+                    ).toMatchInlineSnapshot(`
+                    Immutable.Map {
+                      "id": 1,
+                      "type": "email",
+                      "name": "Acme Support",
+                      "address": "support@acme.gorgias.io",
+                      "preferred": true,
+                      "signature": Immutable.Map {
+                        "text": "cheers, ",
+                        "html": "cheers, <strong></strong>",
+                      },
+                      "verified": true,
+                      "isDeactivated": false,
+                    }
+                `)
+                }
+            )
+
+            it.each([
+                helpCenterContactFormViaApiUnavailableEmail,
+                standaloneContactFormViaApiUnavailableEmail,
+            ])(
+                'should fallback to the helpdesk default email integration when the email integration found in the ticket is not available anymore - $#',
+                (ticket) => {
+                    expect(
+                        getNewMessageSender(
+                            ticket,
+                            TicketMessageSourceType.ContactForm,
+                            channels,
+                            integrationsWithSelectedEmail
+                        )
+                    ).toMatchInlineSnapshot(`
+                    Immutable.Map {
+                      "id": 1,
+                      "type": "email",
+                      "name": "Acme Support",
+                      "address": "support@acme.gorgias.io",
+                      "preferred": true,
+                      "signature": Immutable.Map {
+                        "text": "cheers, ",
+                        "html": "cheers, <strong></strong>",
+                      },
+                      "verified": true,
+                      "isDeactivated": false,
+                    }
+                `)
+                }
+            )
+        })
+
         it('should return `from` field from last message from agent (chat, messenger)', () => {
             const expected = smoochTicket.getIn([
                 'messages',
@@ -482,43 +668,6 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     smoochTicket,
                     TicketMessageSourceType.Chat,
-                    channels,
-                    integrations
-                )
-            ).toEqualImmutable(expected)
-        })
-
-        it('should return `to` field from first message from shopper (help center contact form)', () => {
-            const expected = helpCenterContactFormTicket.getIn([
-                'messages',
-                0,
-                'source',
-                'to',
-                0,
-            ])
-            expect(
-                getNewMessageSender(
-                    helpCenterContactFormTicket,
-                    TicketMessageSourceType.HelpCenterContactForm,
-                    channels,
-                    integrations
-                )
-            ).toEqualImmutable(expected)
-        })
-
-        it('should return `to` field from second message from shopper when first is internal note (help center contact form)', () => {
-            /* first message is an internal note, second message is from shopper */
-            const expected = helpCenterContactFormTicketWithInternalNote.getIn([
-                'messages',
-                1,
-                'source',
-                'to',
-                0,
-            ])
-            expect(
-                getNewMessageSender(
-                    helpCenterContactFormTicketWithInternalNote,
-                    TicketMessageSourceType.HelpCenterContactForm,
                     channels,
                     integrations
                 )

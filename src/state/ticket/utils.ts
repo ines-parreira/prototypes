@@ -533,6 +533,73 @@ export function getOutboundCallFrom(
     return channel || (channels.get(0) as Map<any, any>)
 }
 
+const getContactFormTicketMessageSender = (
+    ticket: Map<any, any>
+): Map<any, any> | null => {
+    const ticketMessages = ticket.get('messages') as List<any>
+    const firstContactFormMessage = ticketMessages.find(
+        (message: Map<any, any>) => {
+            const isHelpCenterContactFormSource =
+                message.getIn(['source', 'type']) ===
+                TicketMessageSourceType.HelpCenterContactForm
+            const isStandaloneContactFormSource =
+                message.getIn(['source', 'type']) ===
+                TicketMessageSourceType.ContactForm
+
+            return (
+                isHelpCenterContactFormSource || isStandaloneContactFormSource
+            )
+        }
+    ) as Map<any, any> | undefined
+
+    /**
+     * Won't be used anymore
+     */
+    const isHelpCenterContactFormViaEmail =
+        ticket.get('channel') === TicketChannel.HelpCenter &&
+        ticket.get('via') === TicketChannel.ContactForm
+    const isStandaloneContactFormViaEmail =
+        ticket.get('channel') === TicketChannel.ContactForm &&
+        ticket.get('via') === TicketChannel.ContactForm
+
+    /**
+     * Will be used after the migration of all help center contact forms
+     */
+    const isHelpCenterContactFormViaApi = firstContactFormMessage
+        ? ticket.get('channel') === TicketChannel.HelpCenter &&
+          ticket.get('via') === TicketChannel.Api &&
+          firstContactFormMessage.getIn(['source', 'type']) ===
+              TicketMessageSourceType.HelpCenterContactForm
+        : false
+
+    const isStandaloneContactFormViaApi = firstContactFormMessage
+        ? ticket.get('channel') === TicketChannel.ContactForm &&
+          ticket.get('via') === TicketChannel.Api &&
+          firstContactFormMessage.getIn(['source', 'type']) ===
+              TicketMessageSourceType.ContactForm
+        : false
+
+    if (
+        [
+            isHelpCenterContactFormViaEmail,
+            isStandaloneContactFormViaEmail,
+            isHelpCenterContactFormViaApi,
+            isStandaloneContactFormViaApi,
+        ].every((isContactForm) => !isContactForm)
+    ) {
+        // this is not a contact form ticket
+        return null
+    }
+
+    if (!firstContactFormMessage) {
+        // this is a contact form ticket but the contact form message is not available
+        // this should not happen
+        return null
+    }
+
+    return firstContactFormMessage.getIn(['source', 'to', 0]) as Map<any, any>
+}
+
 /**
  * Return sender based on ticket messages and available channels
  */
@@ -550,26 +617,27 @@ export function getNewMessageSender(
         return getOutboundCallFrom(ticket, channels)
     }
 
-    if (
-        [TicketChannel.HelpCenter, TicketChannel.ContactForm].includes(
-            ticket.get('channel')
-        ) &&
-        ticket.get('via') === TicketVia.ContactForm
-    ) {
-        const firstContactFormMessage = (
-            ticket.get('messages') as List<any>
-        ).find(
-            (message: Map<any, any>) =>
-                message.getIn(['source', 'type']) ===
-                TicketMessageSourceType.HelpCenterContactForm
-        ) as Map<any, any> | undefined
+    // contact form cases
+    const contactFormTicketMessageSender =
+        getContactFormTicketMessageSender(ticket)
+    if (contactFormTicketMessageSender) {
+        // if found email sender is not available in the integrations
+        // we don't return the sender email we found in the contact form ticket
+        const integrationList = integrations.get('integrations') as
+            | List<any>
+            | undefined
 
-        if (firstContactFormMessage) {
-            return firstContactFormMessage.getIn(['source', 'to', 0]) as Map<
-                any,
-                any
-            >
+        if (integrationList) {
+            const foundIntegration = integrationList.find(
+                (integration: Map<any, any>) =>
+                    integration.getIn(['meta', 'address']) ===
+                    contactFormTicketMessageSender.get('address')
+            ) as Map<any, any> | undefined
+
+            if (foundIntegration) return contactFormTicketMessageSender
         }
+
+        // we only select this sender if it's available in the integrations
     }
 
     const preferredChannel =

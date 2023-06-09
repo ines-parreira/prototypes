@@ -500,7 +500,8 @@ export const chatContactFormTicket = fromJS({
     ],
 }) as Map<any, any>
 
-export const helpCenterContactFormTicket = fromJS({
+// Help center contact form ticket via Sengrid
+export const helpCenterContactFormTicketViaSengrid = fromJS({
     channel: 'help-center',
     messages: [
         {
@@ -512,14 +513,16 @@ export const helpCenterContactFormTicket = fromJS({
                 type: 'help-center-contact-form',
                 to: [
                     {
-                        address: 'irinel@gorgias.com',
-                        name: 'Irinel',
+                        address: 'selected-email-integration@email.com',
+                        name: '',
                     },
                 ],
             },
             id: 153,
             from_agent: false,
-            integration_id: 8,
+            integration_id: null,
+            channel: 'contact_form',
+            via: 'contact_form',
         },
         {
             source: {
@@ -538,13 +541,14 @@ export const helpCenterContactFormTicket = fromJS({
             },
             id: 189,
             from_agent: true,
-            integration_id: 8,
+            integration_id: null,
         },
     ],
     via: 'contact_form',
 }) as Map<any, any>
 
-export const helpCenterContactFormTicketWithInternalNote = fromJS({
+// Help center contact form ticket via Sengrid with internal note
+export const helpCenterContactFormTicketViaSendgridWithInternalNote = fromJS({
     channel: 'help-center',
     messages: [
         {
@@ -563,7 +567,7 @@ export const helpCenterContactFormTicketWithInternalNote = fromJS({
             },
             id: 153,
             from_agent: false,
-            integration_id: 8,
+            integration_id: null,
         },
         {
             source: {
@@ -574,15 +578,204 @@ export const helpCenterContactFormTicketWithInternalNote = fromJS({
                 type: 'help-center-contact-form',
                 to: [
                     {
-                        address: 'contact-form@gorgias.com',
-                        name: 'Contact Form',
+                        address: 'selected-email-integration@email.com',
+                        name: '',
                     },
                 ],
             },
             id: 153,
             from_agent: false,
-            integration_id: 8,
+            integration_id: null,
+            channel: 'contact_form',
+            via: 'contact_form',
         },
     ],
     via: 'contact_form',
+}) as Map<any, any>
+
+/**
+ * Cases with the selected email integration present in the source
+ */
+export const standaloneContactFormViaSengrid = fromJS({
+    channel: 'contact_form',
+    via: 'contact_form',
+    messages: [
+        {
+            source: {
+                to: [
+                    {name: '', address: 'selected-email-integration@email.com'},
+                ],
+                from: {
+                    name: 'Visitor Name',
+                    address: 'visitor@email.com',
+                },
+                type: 'contact-form',
+            },
+            id: 153,
+            from_agent: false,
+            channel: 'contact_form',
+            via: 'contact_form',
+        },
+    ],
+}) as Map<any, any>
+
+export const helpCenterContactFormViaApi = fromJS({
+    channel: 'help-center',
+    via: 'api',
+    messages: [
+        {
+            source: {
+                to: [
+                    {name: '', address: 'selected-email-integration@email.com'},
+                ],
+                from: {
+                    name: 'Visitor Name',
+                    address: 'visitor@email.com',
+                },
+                type: 'help-center-contact-form',
+            },
+            id: 153,
+            from_agent: false,
+            channel: 'help-center',
+            via: 'contact_form',
+        },
+    ],
+}) as Map<any, any>
+
+export const standaloneContactFormViaApi = fromJS({
+    channel: 'contact_form',
+    via: 'api',
+    messages: [
+        {
+            source: {
+                to: [
+                    {name: '', address: 'selected-email-integration@email.com'},
+                ],
+                from: {
+                    name: 'Visitor Name',
+                    address: 'visitor@email.com',
+                },
+                type: 'contact-form',
+            },
+            id: 153,
+            from_agent: false,
+            channel: 'contact_form',
+            via: 'contact_form',
+        },
+    ],
+}) as Map<any, any>
+
+export const helpCenterContactFormViaApiUnavailableEmail = fromJS({
+    channel: 'help-center',
+    via: 'api',
+    messages: [
+        {
+            source: {
+                to: [
+                    {
+                        name: '',
+                        address: 'unavailable-email-integration@email.com',
+                    },
+                ],
+                from: {
+                    name: 'Visitor Name',
+                    address: 'visitor@email.com',
+                },
+                type: 'contact-form',
+            },
+            id: 153,
+            from_agent: false,
+            channel: 'help-center',
+            via: 'contact_form',
+        },
+    ],
+}) as Map<any, any>
+
+export const standaloneContactFormViaApiUnavailableEmail = fromJS({
+    channel: 'contact_form',
+    via: 'api',
+    messages: [
+        {
+            source: {
+                to: [
+                    {
+                        name: '',
+                        address: 'unavailable-email-integration@email.com',
+                    },
+                ],
+                from: {
+                    name: 'Visitor Name',
+                    address: 'visitor@email.com',
+                },
+                type: 'contact-form',
+            },
+            id: 153,
+            from_agent: false,
+            channel: 'contact_form',
+            via: 'contact_form',
+        },
+    ],
+}) as Map<any, any>
+
+/**
+ * Cases with the selected email integration not present in the sources ("to" field)
+ */
+export const standaloneContactFormViaSengridNoSelectedEmail = fromJS({
+    channel: 'contact_form',
+    via: 'contact_form',
+    messages: [
+        {
+            source: {
+                from: {
+                    name: 'Visitor Name',
+                    address: 'visitor@email.com',
+                },
+                type: 'contact-form',
+            },
+            id: 153,
+            from_agent: false,
+            channel: 'contact_form',
+            via: 'contact_form',
+        },
+    ],
+}) as Map<any, any>
+
+export const helpCenterContactFormViaApiNoSelectedEmail = fromJS({
+    channel: 'help-center',
+    via: 'api',
+    messages: [
+        {
+            source: {
+                from: {
+                    name: 'Visitor Name',
+                    address: 'visitor@email.com',
+                },
+                type: 'contact-form',
+            },
+            id: 153,
+            from_agent: false,
+            channel: 'help-center',
+            via: 'contact_form',
+        },
+    ],
+}) as Map<any, any>
+
+export const standaloneContactFormViaApiNoSelectedEmail = fromJS({
+    channel: 'contact_form',
+    via: 'api',
+    messages: [
+        {
+            source: {
+                from: {
+                    name: 'Visitor Name',
+                    address: 'visitor@email.com',
+                },
+                type: 'contact-form',
+            },
+            id: 153,
+            from_agent: false,
+            channel: 'contact_form',
+            via: 'contact_form',
+        },
+    ],
 }) as Map<any, any>
