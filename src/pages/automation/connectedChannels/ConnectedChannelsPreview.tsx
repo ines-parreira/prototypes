@@ -12,6 +12,8 @@ import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import {TicketChannel} from 'business/types/ticket'
+import {getContactFormsAutomationSettings} from 'state/entities/contactForm/contactFormsAutomationSettings'
+import {getHelpCentersAutomationSettings} from 'state/entities/helpCenter/helpCentersAutomationSettings'
 
 type Props = {
     channel?: SelfServiceChannel
@@ -31,6 +33,12 @@ const ConnectedChannelsPreview = ({
     )
     const applicationsAutomationSettings = useAppSelector(
         getChatsApplicationAutomationSettings
+    )
+    const helpCentersAutomationSettings = useAppSelector(
+        getHelpCentersAutomationSettings
+    )
+    const contactFormsAutomationSettings = useAppSelector(
+        getContactFormsAutomationSettings
     )
 
     let isArticleRecommendationEnabled = false
@@ -53,6 +61,24 @@ const ConnectedChannelsPreview = ({
     } else if (channel?.type === TicketChannel.HelpCenter) {
         isOrderManagementEnabled =
             !channel.value.self_service_deactivated_datetime
+
+        const automationSettings =
+            helpCentersAutomationSettings[channel.value.id]
+
+        if (automationSettings !== undefined) {
+            workflowsEntrypoints = automationSettings.workflows.map(
+                ({id, enabled}) => ({workflow_id: id, enabled})
+            )
+        }
+    } else if (channel?.type === TicketChannel.ContactForm) {
+        const automationSettings =
+            contactFormsAutomationSettings[channel.value.id]
+
+        if (automationSettings !== undefined) {
+            workflowsEntrypoints = automationSettings.workflows.map(
+                ({id, enabled}) => ({workflow_id: id, enabled})
+            )
+        }
     }
 
     return (

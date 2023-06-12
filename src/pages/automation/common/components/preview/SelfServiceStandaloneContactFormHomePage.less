@@ -1,0 +1,45 @@
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/colorTokens.less';
+@import (reference) '~css/typography.less';
+@import (reference) '~css/new/util.less';
+
+:local {
+    .contactFormContainer {
+        background-color: @modern-neutral-grey-0;
+        color: @modern-neutral-grey-6;
+        flex: 1;
+
+        &:not(.isInitialEntry) {
+            :global {
+                animation: fadeIn 0.3s ease-in;
+            }
+        }
+    }
+
+    .contactFormItemsContainer {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-m;
+        row-gap: @layout-spacing-s;
+    }
+
+    .workflowItem {
+        .heading-subsection-semibold();
+        display: flex;
+        align-items: center;
+        column-gap: @layout-spacing-s;
+        border: 1px solid @modern-neutral-grey-3;
+        border-radius: 8px;
+        padding: @layout-spacing-m @layout-spacing-s;
+        text-transform: capitalize;
+    }
+
+    .flowLabel {
+        flex-grow: 1;
+    }
+
+    .flowChevron {
+        font-size: 24px;
+        color: @modern-neutral-grey-4;
+    }
+}

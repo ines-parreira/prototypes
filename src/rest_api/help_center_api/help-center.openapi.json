@@ -521,6 +521,68 @@
                 "tags": ["help-centers"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/automation-settings": {
+            "get": {
+                "operationId": "getHelpCenterAutomationSettings",
+                "summary": "Get a Help center automation settings",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AutomationSettingsDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-centers"]
+            },
+            "put": {
+                "operationId": "upsertHelpCenterAutomationSettings",
+                "summary": "Update a Help center automation settings",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpsertAutomationSettingsDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AutomationSettingsDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-centers"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/translations": {
             "get": {
                 "operationId": "listHelpCenterTranslations",
@@ -1241,6 +1303,68 @@
                     }
                 },
                 "responses": {"204": {"description": ""}},
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms/{id}/automation-settings": {
+            "get": {
+                "operationId": "getContactFormAutomationSettings",
+                "summary": "Get a Contact Form automation settings",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AutomationSettingsDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            },
+            "put": {
+                "operationId": "upsertContactFormAutomationSettings",
+                "summary": "Update a Contact Form automation settings",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpsertAutomationSettingsDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AutomationSettingsDto"
+                                }
+                            }
+                        }
+                    }
+                },
                 "tags": ["contact-forms"]
             }
         },
@@ -3696,6 +3820,12 @@
                         "allOf": [
                             {"$ref": "#/components/schemas/EmailIntegrationDto"}
                         ]
+                    },
+                    "automation_settings_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Automation settings id in help center",
+                        "example": 2
                     }
                 },
                 "required": [
@@ -3721,7 +3851,8 @@
                     "source",
                     "gaid",
                     "contact_form",
-                    "email_integration"
+                    "email_integration",
+                    "automation_settings_id"
                 ]
             },
             "ContactFormAttachmentDto": {
@@ -4188,6 +4319,12 @@
                             {"$ref": "#/components/schemas/EmailIntegrationDto"}
                         ]
                     },
+                    "automation_settings_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Automation settings id in help center",
+                        "example": 2
+                    },
                     "translations": {
                         "minItems": 1,
                         "type": "array",
@@ -4223,7 +4360,8 @@
                     "source",
                     "gaid",
                     "contact_form",
-                    "email_integration"
+                    "email_integration",
+                    "automation_settings_id"
                 ]
             },
             "HelpCentersListPageDto": {
@@ -4387,6 +4525,36 @@
                     "deactivated_integration_id",
                     "fallback_integration"
                 ]
+            },
+            "WorkflowVo": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "string"},
+                    "enabled": {"type": "boolean"}
+                },
+                "required": ["id", "enabled"]
+            },
+            "AutomationSettingsDto": {
+                "type": "object",
+                "properties": {
+                    "workflows": {
+                        "example": [{"id": "workflowId", "enabled": true}],
+                        "type": "array",
+                        "items": {"$ref": "#/components/schemas/WorkflowVo"}
+                    }
+                },
+                "required": ["workflows"]
+            },
+            "UpsertAutomationSettingsDto": {
+                "type": "object",
+                "properties": {
+                    "workflows": {
+                        "example": [{"id": "workflowId", "enabled": true}],
+                        "type": "array",
+                        "items": {"$ref": "#/components/schemas/WorkflowVo"}
+                    }
+                },
+                "required": ["workflows"]
             },
             "HelpCenterTranslationsListPageDto": {
                 "type": "object",
@@ -4899,6 +5067,12 @@
                         "type": "string",
                         "nullable": true,
                         "description": "Deactivation date"
+                    },
+                    "automation_settings_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Automation settings id in contact form",
+                        "example": 2
                     }
                 },
                 "required": [
@@ -4916,7 +5090,8 @@
                     "code_snippet_template",
                     "url_template",
                     "shop_name",
-                    "deactivated_datetime"
+                    "deactivated_datetime",
+                    "automation_settings_id"
                 ]
             },
             "ContactFormsListPageDto": {

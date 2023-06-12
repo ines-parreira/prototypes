@@ -1,7 +1,11 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {useAsyncFn} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
+import useHelpCentersAutomationSettings from 'pages/automation/common/hooks/useHelpCenterAutomationSettings'
 import {SelfServiceHelpCenterChannel} from 'pages/automation/common/hooks/useSelfServiceHelpCenterChannels'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
@@ -10,8 +14,10 @@ import {NotificationStatus} from 'state/notifications/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 
+import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 import AutomationSubscriptionAction from './AutomationSubscriptionAction'
+import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
 
 type Props = {
     channel: SelfServiceHelpCenterChannel
@@ -21,6 +27,37 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
     const {client} = useHelpCenterApi()
     const dispatch = useAppDispatch()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+
+    const helpCenterAndContactFormFlowsEnabled =
+        useFlags()[FeatureFlagKey.HelpCenterAndContactFormFlows]
+
+    const {automationSettings, handleHelpCenterAutomationSettingsUpdate} =
+        useHelpCentersAutomationSettings(channel.value.id)
+
+    const {workflowsEntrypoints: availableWorkflowsEntrypoints} =
+        useConnectedChannelsViewContext()
+
+    const workflowsEntrypoints = useMemo(() => {
+        const existingWorkflows: HelpCenterAutomationSettings['workflows'] =
+            automationSettings?.workflows ?? []
+
+        const existingWorkflowsIds = existingWorkflows.map(({id}) => id)
+
+        const newWorkflows = availableWorkflowsEntrypoints.filter(
+            ({workflow_id}) => !existingWorkflowsIds.includes(workflow_id)
+        )
+
+        return [
+            ...existingWorkflows.map(({id, enabled}) => ({
+                workflow_id: id,
+                enabled,
+            })),
+            ...newWorkflows.map(({workflow_id}) => ({
+                workflow_id,
+                enabled: false,
+            })),
+        ]
+    }, [automationSettings, availableWorkflowsEntrypoints])
 
     const [{loading: updatingHelpCenter}, updateHelpCenter] = useAsyncFn(
         async (orderManagementEnabled: boolean) => {
@@ -57,13 +94,32 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
     )
 
     return (
-        <ConnectedChannelFeatureToggle
-            name="Order management flows"
-            value={channel.value.self_service_deactivated_datetime === null}
-            disabled={updatingHelpCenter || !hasAutomationAddOn}
-            onChange={updateHelpCenter}
-            action={!hasAutomationAddOn && <AutomationSubscriptionAction />}
-        />
+        <>
+            {helpCenterAndContactFormFlowsEnabled && (
+                <ConnectedChannelWorkflowsFeature
+                    channelId={`contact-form-${channel.value.id}`}
+                    entrypoints={workflowsEntrypoints}
+                    onChange={(nextEntrypoints) => {
+                        void handleHelpCenterAutomationSettingsUpdate({
+                            workflows: nextEntrypoints.map(
+                                ({workflow_id, enabled}) => ({
+                                    id: workflow_id,
+                                    enabled,
+                                })
+                            ),
+                        })
+                    }}
+                />
+            )}
+
+            <ConnectedChannelFeatureToggle
+                name="Order management flows"
+                value={channel.value.self_service_deactivated_datetime === null}
+                disabled={updatingHelpCenter || !hasAutomationAddOn}
+                onChange={updateHelpCenter}
+                action={!hasAutomationAddOn && <AutomationSubscriptionAction />}
+            />
+        </>
     )
 }
 

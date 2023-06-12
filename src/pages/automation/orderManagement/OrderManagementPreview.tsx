@@ -45,7 +45,7 @@ const OrderManagementPreview = ({
             }}
         >
             {(channel) => {
-                let isOrderManagementDisabled: boolean
+                let isOrderManagementDisabled = true
                 let workflowsEntrypoints: SelfServicePreviewContextType['workflowsEntrypoints']
 
                 if (channel.type === TicketChannel.Chat) {
@@ -57,7 +57,7 @@ const OrderManagementPreview = ({
                             .enabled === false
                     workflowsEntrypoints =
                         applicationAutomationSettings?.workflows.entrypoints
-                } else {
+                } else if (channel.type === TicketChannel.HelpCenter) {
                     isOrderManagementDisabled = Boolean(
                         channel.value.self_service_deactivated_datetime
                     )

@@ -1,0 +1,152 @@
+import axios from 'axios'
+import {useEffect, useMemo} from 'react'
+import {useAsyncFn} from 'react-use'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {
+    helpCenterAutomationSettingsFetched,
+    helpCenterAutomationSettingsUpdated,
+    getHelpCentersAutomationSettings,
+} from 'state/entities/helpCenter/helpCentersAutomationSettings'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
+import {reportError} from 'utils/errors'
+
+const useHelpCentersAutomationSettings = (helpCenterId: number) => {
+    const dispatch = useAppDispatch()
+    const {client} = useHelpCenterApi()
+
+    const helpCentersAutomationSettings = useAppSelector(
+        getHelpCentersAutomationSettings
+    )
+
+    const [{loading: isFetchPending}, handleHelpCenterAutomationSettingsFetch] =
+        useAsyncFn(async () => {
+            if (!client) {
+                return
+            }
+
+            try {
+                const {data: automationSettings} =
+                    await client.getHelpCenterAutomationSettings({
+                        help_center_id: helpCenterId,
+                    })
+
+                void dispatch(
+                    helpCenterAutomationSettingsFetched({
+                        helpCenterId: helpCenterId.toString(),
+                        automationSettings,
+                    })
+                )
+            } catch (error) {
+                if (
+                    axios.isAxiosError(error) &&
+                    error.response?.status === 404
+                ) {
+                    return dispatch(
+                        helpCenterAutomationSettingsFetched({
+                            helpCenterId: helpCenterId.toString(),
+                            automationSettings: {
+                                workflows: [],
+                            },
+                        })
+                    )
+                }
+
+                if (error instanceof Error) {
+                    reportError(error)
+                }
+
+                void dispatch(
+                    notify({
+                        message: 'Failed to fetch',
+                        status: NotificationStatus.Error,
+                    })
+                )
+            }
+        }, [client])
+
+    const [
+        {loading: isUpdatePending},
+        handleHelpCenterAutomationSettingsUpdate,
+    ] = useAsyncFn(
+        async (automationSettings: HelpCenterAutomationSettings) => {
+            if (!client) {
+                return
+            }
+
+            try {
+                const {data: updatedAutomationSettings} =
+                    await client.upsertHelpCenterAutomationSettings(
+                        {help_center_id: helpCenterId},
+                        automationSettings
+                    )
+
+                void dispatch(
+                    helpCenterAutomationSettingsUpdated({
+                        helpCenterId: helpCenterId.toString(),
+                        automationSettings: updatedAutomationSettings,
+                    })
+                )
+
+                void dispatch(
+                    notify({
+                        message: 'Successfully updated',
+                        status: NotificationStatus.Success,
+                    })
+                )
+            } catch (error) {
+                if (error instanceof Error) {
+                    reportError(error)
+                }
+
+                void dispatch(
+                    notify({
+                        message: 'Failed to update',
+                        status: NotificationStatus.Error,
+                    })
+                )
+            }
+        },
+        [client]
+    )
+
+    useEffect(() => {
+        const valueMissing =
+            helpCentersAutomationSettings[helpCenterId.toString()] === undefined
+
+        if (valueMissing) {
+            void handleHelpCenterAutomationSettingsFetch()
+        }
+    }, [
+        helpCenterId,
+        helpCentersAutomationSettings,
+        handleHelpCenterAutomationSettingsFetch,
+    ])
+
+    return useMemo(
+        () => ({
+            isFetchPending,
+            isUpdatePending,
+            automationSettings: helpCentersAutomationSettings[
+                helpCenterId.toString()
+            ] ?? {workflows: []},
+            handleHelpCenterAutomationSettingsFetch,
+            handleHelpCenterAutomationSettingsUpdate,
+        }),
+        [
+            isFetchPending,
+            isUpdatePending,
+            helpCenterId,
+            helpCentersAutomationSettings,
+            handleHelpCenterAutomationSettingsFetch,
+            handleHelpCenterAutomationSettingsUpdate,
+        ]
+    )
+}
+
+export default useHelpCentersAutomationSettings

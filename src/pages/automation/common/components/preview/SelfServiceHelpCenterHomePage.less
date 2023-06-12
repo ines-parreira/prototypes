@@ -44,6 +44,26 @@
         }
     }
 
+    .workflowItem {
+        .heading-subsection-semibold();
+        display: flex;
+        align-items: center;
+        column-gap: @layout-spacing-s;
+        border: 1px solid @modern-neutral-grey-3;
+        border-radius: 8px;
+        padding: @layout-spacing-m @layout-spacing-s;
+        text-transform: capitalize;
+    }
+
+    .flowLabel {
+        flex-grow: 1;
+    }
+
+    .flowChevron {
+        font-size: 24px;
+        color: @modern-neutral-grey-4;
+    }
+
     .container {
         background-color: @modern-neutral-grey-1;
         color: @modern-neutral-grey-6;

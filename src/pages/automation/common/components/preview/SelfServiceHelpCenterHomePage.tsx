@@ -13,6 +13,7 @@ import gorgiasLogo from 'assets/img/help-center/gorgias-logo.svg'
 import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 import css from './SelfServiceHelpCenterHomePage.less'
+import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
 
 const OrderManagementFlowItem = ({
     isHighlighted,
@@ -30,10 +31,22 @@ const OrderManagementFlowItem = ({
             })}
         >
             <img src={icon} alt="" />
-            {children}
+            <div className={css.flowLabel}>{children}</div>
+            <i className={classnames('material-icons', css.flowChevron)}>
+                keyboard_arrow_right
+            </i>
         </div>
     )
 }
+
+const WorkflowItem = ({label}: {label: string}) => (
+    <div className={css.workflowItem}>
+        <div className={css.flowLabel}>{label}</div>
+        <i className={classnames('material-icons', css.flowChevron)}>
+            keyboard_arrow_right
+        </i>
+    </div>
+)
 
 type Props = {
     helpCenter: HelpCenter
@@ -43,6 +56,7 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
     const history = useHistory()
     const {selfServiceConfiguration, hoveredOrderManagementFlow} =
         useSelfServicePreviewContext()
+    const workflowsEntrypoints = useWorkflowsEntrypoints()
 
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
     const isInitialEntry = history.length === 1
@@ -117,10 +131,16 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                 [css.isInitialEntry]: isInitialEntry,
             })}
         >
-            <div className={css.orderManagementTitle}>
-                {helpCenterTexts.homepageManageOrdersTitle}
-            </div>
             <div className={css.orderManagementItemsContainer}>
+                {workflowsEntrypoints.map((entrypoint) => (
+                    <div
+                        key={entrypoint.workflow_id}
+                        className={css.listGroupItem}
+                    >
+                        <WorkflowItem label={entrypoint.label} />
+                    </div>
+                ))}
+
                 {selfServiceConfiguration?.track_order_policy.enabled && (
                     <OrderManagementFlowItem
                         icon={trackIcon}

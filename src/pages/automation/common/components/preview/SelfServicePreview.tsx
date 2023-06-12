@@ -8,6 +8,7 @@ import {TicketChannel} from 'business/types/ticket'
 
 import SelfServiceChatIntegrationPreview from './SelfServiceChatIntegrationPreview'
 import SelfServiceHelpCenterPreview from './SelfServiceHelpCenterPreview'
+import SelfServiceStandaloneContactFormPreview from './SelfServiceStandaloneContactFormPreview'
 
 type Props = {
     channel: SelfServiceChannel
@@ -31,6 +32,11 @@ const SelfServicePreview = ({channel, history}: Props) => {
                 )}
                 {channel.type === TicketChannel.HelpCenter && (
                     <SelfServiceHelpCenterPreview helpCenter={channel.value} />
+                )}
+                {channel.type === TicketChannel.ContactForm && (
+                    <SelfServiceStandaloneContactFormPreview
+                        contactForm={channel.value}
+                    />
                 )}
             </Switch>
         </Router>

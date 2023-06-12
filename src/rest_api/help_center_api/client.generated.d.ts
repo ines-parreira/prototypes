@@ -273,6 +273,18 @@ declare namespace Components {
        */
       mimetype: string;
     }
+    export interface AutomationSettingsDto {
+      /**
+       * example:
+       * [
+       *   {
+       *     "id": "workflowId",
+       *     "enabled": true
+       *   }
+       * ]
+       */
+      workflows: WorkflowVo[];
+    }
     export interface CategoriesListPageDto {
       meta: PageMetaDto;
       object: "list";
@@ -657,6 +669,12 @@ declare namespace Components {
        * Deactivation date
        */
       deactivated_datetime: string | null; // date-time
+      /**
+       * Automation settings id in contact form
+       * example:
+       * 2
+       */
+      automation_settings_id: number | null;
     }
     export interface ContactFormSubmissionDto {
       /**
@@ -1413,6 +1431,12 @@ declare namespace Components {
          */
         email: string;
       } | null;
+      /**
+       * Automation settings id in help center
+       * example:
+       * 2
+       */
+      automation_settings_id: number | null;
       translations?: HelpCenterTranslationDto[];
       redirects?: RedirectDto[];
     }
@@ -1477,6 +1501,12 @@ declare namespace Components {
          */
         email: string;
       } | null;
+      /**
+       * Automation settings id in help center
+       * example:
+       * 2
+       */
+      automation_settings_id: number | null;
     }
     export interface HelpCenterTranslationDto {
       /**
@@ -2275,6 +2305,22 @@ declare namespace Components {
       size: number;
       mimetype: string;
     }
+    export interface UpsertAutomationSettingsDto {
+      /**
+       * example:
+       * [
+       *   {
+       *     "id": "workflowId",
+       *     "enabled": true
+       *   }
+       * ]
+       */
+      workflows: WorkflowVo[];
+    }
+    export interface WorkflowVo {
+      id: string;
+      enabled: boolean;
+    }
   }
 }
 declare namespace Paths {
@@ -2738,6 +2784,17 @@ declare namespace Paths {
       export type $200 = Components.Schemas.ContactFormDto;
     }
   }
+  namespace GetContactFormAutomationSettings {
+    namespace Parameters {
+      export type Id = number;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.AutomationSettingsDto;
+    }
+  }
   namespace GetContactFormByUid {
     namespace Parameters {
       export type Uid = string;
@@ -2802,6 +2859,17 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = Components.Schemas.GetHelpCenterDto;
+    }
+  }
+  namespace GetHelpCenterAutomationSettings {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.AutomationSettingsDto;
     }
   }
   namespace GetHotswapStatus {
@@ -3344,6 +3412,30 @@ declare namespace Paths {
       export type $200 = Components.Schemas.NavigationLinkDto;
     }
   }
+  namespace UpsertContactFormAutomationSettings {
+    namespace Parameters {
+      export type Id = number;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    export type RequestBody = Components.Schemas.UpsertAutomationSettingsDto;
+    namespace Responses {
+      export type $200 = Components.Schemas.AutomationSettingsDto;
+    }
+  }
+  namespace UpsertHelpCenterAutomationSettings {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    export type RequestBody = Components.Schemas.UpsertAutomationSettingsDto;
+    namespace Responses {
+      export type $200 = Components.Schemas.AutomationSettingsDto;
+    }
+  }
 }
 
 export interface OperationMethods {
@@ -3502,6 +3594,22 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.DuplicateHelpCenter.Responses.$201>
+  /**
+   * getHelpCenterAutomationSettings - Get a Help center automation settings
+   */
+  'getHelpCenterAutomationSettings'(
+    parameters?: Parameters<Paths.GetHelpCenterAutomationSettings.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetHelpCenterAutomationSettings.Responses.$200>
+  /**
+   * upsertHelpCenterAutomationSettings - Update a Help center automation settings
+   */
+  'upsertHelpCenterAutomationSettings'(
+    parameters?: Parameters<Paths.UpsertHelpCenterAutomationSettings.PathParameters> | null,
+    data?: Paths.UpsertHelpCenterAutomationSettings.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpsertHelpCenterAutomationSettings.Responses.$200>
   /**
    * listHelpCenterTranslations - List help center's translations
    */
@@ -3694,6 +3802,22 @@ export interface OperationMethods {
     data?: Paths.SubmitContactFormByUid.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
+  /**
+   * getContactFormAutomationSettings - Get a Contact Form automation settings
+   */
+  'getContactFormAutomationSettings'(
+    parameters?: Parameters<Paths.GetContactFormAutomationSettings.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetContactFormAutomationSettings.Responses.$200>
+  /**
+   * upsertContactFormAutomationSettings - Update a Contact Form automation settings
+   */
+  'upsertContactFormAutomationSettings'(
+    parameters?: Parameters<Paths.UpsertContactFormAutomationSettings.PathParameters> | null,
+    data?: Paths.UpsertContactFormAutomationSettings.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpsertContactFormAutomationSettings.Responses.$200>
   /**
    * listCategories - List categories
    * 
@@ -4245,6 +4369,24 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.DuplicateHelpCenter.Responses.$201>
   }
+  ['/api/help-center/help-centers/{help_center_id}/automation-settings']: {
+    /**
+     * getHelpCenterAutomationSettings - Get a Help center automation settings
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetHelpCenterAutomationSettings.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetHelpCenterAutomationSettings.Responses.$200>
+    /**
+     * upsertHelpCenterAutomationSettings - Update a Help center automation settings
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpsertHelpCenterAutomationSettings.PathParameters> | null,
+      data?: Paths.UpsertHelpCenterAutomationSettings.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpsertHelpCenterAutomationSettings.Responses.$200>
+  }
   ['/api/help-center/help-centers/{help_center_id}/translations']: {
     /**
      * listHelpCenterTranslations - List help center's translations
@@ -4466,6 +4608,24 @@ export interface PathsDictionary {
       data?: Paths.SubmitContactFormByUid.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
+  }
+  ['/api/help-center/contact-forms/{id}/automation-settings']: {
+    /**
+     * getContactFormAutomationSettings - Get a Contact Form automation settings
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetContactFormAutomationSettings.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetContactFormAutomationSettings.Responses.$200>
+    /**
+     * upsertContactFormAutomationSettings - Update a Contact Form automation settings
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpsertContactFormAutomationSettings.PathParameters> | null,
+      data?: Paths.UpsertContactFormAutomationSettings.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpsertContactFormAutomationSettings.Responses.$200>
   }
   ['/api/help-center/help-centers/{help_center_id}/categories']: {
     /**

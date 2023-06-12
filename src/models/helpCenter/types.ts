@@ -165,3 +165,8 @@ export const isArticleWithExistingTranslation = (
 export type ExtraHTML = Components.Schemas.ExtraHTML
 export type ExtraHTMLDto = Components.Schemas.ExtraHTMLDto
 export type UpdateExtraHTMLDto = Components.Schemas.UpdateExtraHTMLDto
+
+// AUTOMATION SETTINGS
+
+export type HelpCenterAutomationSettings =
+    Components.Schemas.AutomationSettingsDto

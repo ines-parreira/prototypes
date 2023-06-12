@@ -10,8 +10,14 @@ export type ContactFormIntegration =
     | GmailIntegration
     | OutlookIntegration
 
+export type ContactFormAutomationSettings =
+    Components.Schemas.AutomationSettingsDto
+
 export type ContactForm = Components.Schemas.ContactFormDto
 
 export type CreateContactFormDto = Components.Schemas.CreateContactFormDto
 
 export type UpdateContactFormDto = Components.Schemas.UpdateContactFormDto
+
+export type UpsertContactFormAutomationSettingsDto =
+    Components.Schemas.UpsertAutomationSettingsDto

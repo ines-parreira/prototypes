@@ -141,6 +141,7 @@ import OrderManagementPreviewProvider from './automation/orderManagement/OrderMa
 import ConnectedChannelsViewContainer from './automation/connectedChannels/ConnectedChannelsViewContainer'
 import WorkflowsPaywallView from './automation/workflows/WorkflowsPaywallView'
 import WorkflowTemplatesViewContainer from './automation/workflows/WorkflowTemplatesViewContainer'
+import SelfServiceContactFormsProvider from './automation/common/providers/SelfServiceContactFormsProvider'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1207,14 +1208,16 @@ function AutomationContent() {
             />
             <Route path={`${path}/:shopType/:shopName/connected-channels`}>
                 <SelfServiceHelpCentersProvider>
-                    <Route
-                        path={`${path}/:shopType/:shopName/connected-channels`}
-                        exact
-                        component={memoizedWithUserRoleRequired(
-                            ConnectedChannelsViewContainer,
-                            AGENT_ROLE
-                        )}
-                    />
+                    <SelfServiceContactFormsProvider>
+                        <Route
+                            path={`${path}/:shopType/:shopName/connected-channels`}
+                            exact
+                            component={memoizedWithUserRoleRequired(
+                                ConnectedChannelsViewContainer,
+                                AGENT_ROLE
+                            )}
+                        />
+                    </SelfServiceContactFormsProvider>
                 </SelfServiceHelpCentersProvider>
             </Route>
             <Route path={`${path}/flows`} exact>

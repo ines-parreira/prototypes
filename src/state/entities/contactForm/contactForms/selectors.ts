@@ -9,6 +9,11 @@ export const getContactForms = (
 ): ContactFormsState['contactFormById'] =>
     state.entities.contactForm.contactForms.contactFormById || {}
 
+export const getContactFormsList = createSelector(
+    getContactForms,
+    (contactForms) => Object.values(contactForms)
+)
+
 export const getCurrentContactForm = createSelector(
     getCurrentContactFormId,
     getContactForms,

@@ -38,4 +38,5 @@ export enum FeatureFlagKey {
     ContinuousChatViewsPolling = 'continuous-chat-views-polling',
     NewBillingInterface = 'new-billing-interface',
     ChatRenameContactForm = 'chat-rename-contact-form',
+    HelpCenterAndContactFormFlows = 'help-center-and-contact-form-flows',
 }
