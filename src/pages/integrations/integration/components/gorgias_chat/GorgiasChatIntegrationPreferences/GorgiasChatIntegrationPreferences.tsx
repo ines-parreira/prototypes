@@ -801,11 +801,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         </h4>
                                         <div>
                                             <p className="mb-4">
-                                                Customers can only send live
-                                                chat messages or contact form to
-                                                your team after going through an
-                                                automated interaction. This may
-                                                help deflect repetitive
+                                                Require customers to go through
+                                                automated flows before being
+                                                able to send a live message or
+                                                contact form by removing the
+                                                “Send us a message” button. This
+                                                helps deflect repetitive
                                                 questions and reduce your
                                                 overall ticket volume.
                                             </p>
@@ -832,8 +833,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                     )}
                                                 >
                                                     <b>
-                                                        Require automated
-                                                        interactions
+                                                        Remove “Send us a
+                                                        message” button
                                                     </b>
                                                 </div>
                                             </div>
