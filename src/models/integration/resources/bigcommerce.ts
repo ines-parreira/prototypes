@@ -941,6 +941,17 @@ export async function getBigCommerceAvailablePaymentOptionsData({
                     )
                 }
 
+                if (response?.data?.error?.msg) {
+                    throw new BigCommerceGeneralError(
+                        new RegExp(
+                            `Order with ID ${orderId} can not be refunded.$`,
+                            'i'
+                        ).test(response.data.error.msg)
+                            ? BigCommerceGeneralErrorMessage.defaultRefundError
+                            : BigCommerceGeneralErrorMessage.defaultError
+                    )
+                }
+
                 throw new BigCommerceGeneralError(
                     BigCommerceGeneralErrorMessage.defaultError
                 )

@@ -443,6 +443,7 @@ export class BigCommerceGeneralError extends Error {
 export enum BigCommerceGeneralErrorMessage {
     rateLimitingError = 'The operation cannot be completed. You have too many queued requests at the moment. Please wait a moment and try again.',
     defaultError = 'An unexpected error occurred. Please try again later.',
+    defaultRefundError = 'Order can not be refunded.',
 }
 
 export class ProductModifiersChangedError extends Error {

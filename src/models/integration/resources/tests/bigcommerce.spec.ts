@@ -162,5 +162,29 @@ describe('bigcommerce integration resource', () => {
                 )
             )
         })
+
+        it('should throw a default refund BigCommerce order error', async () => {
+            mockedServer.onAny().reply(422, {
+                error: {
+                    data: {},
+                    msg: `[BIGCOMMERCE][create_refund_quote] BigCommerce API has returned an error: (422): Order with ID ${orderId} can not be refunded.`,
+                },
+            })
+
+            await expect(
+                getBigCommerceAvailablePaymentOptionsData({
+                    integrationId,
+                    customerId: customer.id,
+                    orderId,
+                    payload: {
+                        items: [],
+                    },
+                })
+            ).rejects.toThrow(
+                new BigCommerceGeneralError(
+                    BigCommerceGeneralErrorMessage.defaultRefundError
+                )
+            )
+        })
     })
 })
