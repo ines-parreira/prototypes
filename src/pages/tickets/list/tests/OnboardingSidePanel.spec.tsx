@@ -64,4 +64,32 @@ describe('OnboardingSidePanel', () => {
             )
         }
     )
+
+    it.each([
+        {
+            id: 'connect-store',
+            path: '/app/settings/integrations?category=Ecommerce',
+        },
+        {id: 'connect-email', path: '/app/settings/channels/email'},
+        {id: 'enable-2FA', path: '/app/settings/access'},
+        {
+            id: 'connect-social',
+            path: '/app/settings/integrations/facebook',
+        },
+        {
+            id: 'connect-chat',
+            path: '/app/settings/channels/gorgias_chat',
+        },
+        {id: 'add-team-members', path: '/app/settings/users/'},
+    ])('$id should send the user to $path', ({id, path}) => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <OnboardingSidePanel />
+            </Provider>
+        )
+
+        const link = screen.getByTestId(id)
+
+        expect(link.getAttribute('to')).toBe(path)
+    })
 })

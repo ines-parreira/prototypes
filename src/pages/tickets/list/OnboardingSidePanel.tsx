@@ -111,13 +111,14 @@ export const OnboardingSidePanel = () => {
 
                     <div className={css.buttons}>
                         <Link
-                            to="app/settings/integrations?category=Ecommerce"
+                            to="/app/settings/integrations?category=Ecommerce"
                             className={css.button}
                             onClick={() => {
                                 logEvent(SegmentEvent.OnboardingWidgetClicked, {
                                     name: 'Connect a store',
                                 })
                             }}
+                            data-testid="connect-store"
                         >
                             <CheckIcon condition={hasShopifyIntegration} />
                             <div>Connect store</div>
@@ -130,6 +131,7 @@ export const OnboardingSidePanel = () => {
                                     name: 'Connect an email address',
                                 })
                             }}
+                            data-testid="connect-email"
                         >
                             <CheckIcon
                                 condition={hasVerifiedEmailIntegration}
@@ -144,6 +146,7 @@ export const OnboardingSidePanel = () => {
                                     name: 'Enable 2FA',
                                 })
                             }}
+                            data-testid="enable-2FA"
                         >
                             <CheckIcon condition={is2FAEnforced} />
                             <div>Enable 2FA</div>
@@ -156,6 +159,7 @@ export const OnboardingSidePanel = () => {
                                     name: 'Connect chat',
                                 })
                             }}
+                            data-testid="connect-chat"
                         >
                             <CheckIcon condition={hasConnectedChat} />
                             <div>Add chat widget</div>
@@ -168,6 +172,7 @@ export const OnboardingSidePanel = () => {
                                     name: 'Connect social media',
                                 })
                             }}
+                            data-testid="connect-social"
                         >
                             <CheckIcon condition={hasConnectedFacebook} />
                             <div>Connect social media</div>
@@ -180,6 +185,7 @@ export const OnboardingSidePanel = () => {
                                     name: 'Add team members',
                                 })
                             }}
+                            data-testid="add-team-members"
                         >
                             <CheckIcon condition={hasInvitedTeamMembers} />
                             <div>Invite team members</div>
