@@ -44,6 +44,7 @@ const sourceTypeToIcon = (
         case IntegrationType.Smooch:
         case IntegrationType.SmoochInside:
         case TicketMessageSourceType.ChatContactForm:
+        case TicketMessageSourceType.ChatOfflineCapture:
             icon.name = 'forum'
             break
         case TicketMessageSourceType.Api:

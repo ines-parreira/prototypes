@@ -5,7 +5,6 @@ import moment from 'moment'
 import ReactStars from 'react-rating-stars-component'
 
 import {useAsync} from 'react-use'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {fetchRule} from 'models/rule/resources'
 import Spinner from 'pages/common/components/Spinner'
 import {ruleFetched} from 'state/entities/rules/actions'
@@ -15,7 +14,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {ManagedRule, RuleType} from 'state/rules/types'
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketVias} from '../../../../../business/ticket'
 import {
     Meta as MetaType,
@@ -62,8 +60,6 @@ export default function Meta(props: Props) {
         repliedTo,
     } = props
     const widgets = []
-    const renameContactFormEnabled =
-        useFlags()[FeatureFlagKey.ChatRenameContactForm]
 
     const dispatch = useAppDispatch()
     const rules = useAppSelector(rulesSelector)
@@ -80,15 +76,22 @@ export default function Meta(props: Props) {
         }
     })
 
-    if (source && source.type === TicketMessageSourceType.ChatContactForm) {
+    if (
+        source &&
+        (source.type === TicketMessageSourceType.ChatContactForm ||
+            source.type === TicketMessageSourceType.ChatOfflineCapture)
+    ) {
         widgets.push(
             <From label="via" key="from-widget">
                 <span>
-                    <b>
-                        {renameContactFormEnabled
-                            ? 'offline capture'
-                            : 'contact form'}
-                    </b>
+                    {source.type ===
+                        TicketMessageSourceType.ChatContactForm && (
+                        <b>contact form</b>
+                    )}
+                    {source.type ===
+                        TicketMessageSourceType.ChatOfflineCapture && (
+                        <b>offline capture</b>
+                    )}
                     {meta && meta.current_page && (
                         <>
                             {' '}
