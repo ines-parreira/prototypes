@@ -1,7 +1,7 @@
 import moment from 'moment-timezone'
 
 import {formatReportingQueryDate} from 'utils/reporting'
-import {useGetReporting} from 'models/reporting/queries'
+import {usePostReporting} from 'models/reporting/queries'
 import {
     ReportingGranularity,
     ReportingQuery,
@@ -20,7 +20,7 @@ export type TimeSeriesDataItem = {
 export default function useTimeSeries(query: TimeSeriesQuery) {
     const {timeDimensions, measures} = query
     const {dimension, dateRange, granularity} = timeDimensions[0]
-    return useGetReporting<
+    return usePostReporting<
         Partial<Record<string, string>>[],
         TimeSeriesDataItem[][]
     >([query], {

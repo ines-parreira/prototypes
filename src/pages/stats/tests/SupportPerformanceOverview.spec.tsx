@@ -34,7 +34,7 @@ import {
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import useTimeSeries from 'hooks/reporting/useTimeSeries'
-import {useGetReporting} from 'models/reporting/queries'
+import {usePostReporting} from 'models/reporting/queries'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 
 import SupportPerformanceOverview from '../SupportPerformanceOverview'
@@ -69,7 +69,7 @@ const useTicketsRepliedTimeSeriesMock = assumeMock(useTicketsRepliedTimeSeries)
 const useMessagesSentTimeSeriesMock = assumeMock(useMessagesSentTimeSeries)
 
 jest.mock('models/reporting/queries')
-const useGetReportingMock = assumeMock(useGetReporting)
+const usePostReportingMock = assumeMock(usePostReporting)
 
 jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
@@ -134,7 +134,7 @@ describe('<SupportPerformanceOverview />', () => {
         useTicketsClosedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useTicketsRepliedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useMessagesSentTimeSeriesMock.mockReturnValue(defaultTimeSeries)
-        useGetReportingMock.mockReturnValue({
+        usePostReportingMock.mockReturnValue({
             data: [
                 {
                     value: 200,

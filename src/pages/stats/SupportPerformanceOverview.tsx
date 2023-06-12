@@ -47,7 +47,7 @@ import {
     TicketStateMember,
     TicketStateSegment,
 } from 'models/reporting/types'
-import {useGetReporting} from 'models/reporting/queries'
+import {usePostReporting} from 'models/reporting/queries'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
@@ -148,7 +148,7 @@ export default function SupportPerformanceOverview() {
         granularity
     )
 
-    const workloadPerChannel = useGetReporting<
+    const workloadPerChannel = usePostReporting<
         {
             [TicketStateMeasure.TicketCount]: string
             [TicketStateDimension.Channel]: TicketChannel

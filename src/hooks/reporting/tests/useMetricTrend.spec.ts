@@ -1,14 +1,14 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
 
-import {useGetReporting} from 'models/reporting/queries'
+import {usePostReporting} from 'models/reporting/queries'
 import {ReportingQuery, TicketStateMeasure} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
 
 import useMetricTrend from '../useMetricTrend'
 
 jest.mock('models/reporting/queries')
-const useGetReportingMock = assumeMock(useGetReporting)
+const usePostReportingMock = assumeMock(usePostReporting)
 
 describe('useMetricTrend', () => {
     const defaultReporting = {
@@ -24,7 +24,7 @@ describe('useMetricTrend', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        useGetReportingMock.mockReturnValue(defaultReporting)
+        usePostReportingMock.mockReturnValue(defaultReporting)
     })
 
     it('should return isFetching=false when no queries are fetching', () => {
@@ -36,7 +36,7 @@ describe('useMetricTrend', () => {
     })
 
     it('should return isFetching=true when one the queries is fetching', () => {
-        useGetReportingMock.mockReturnValueOnce({
+        usePostReportingMock.mockReturnValueOnce({
             ...defaultReporting,
             isFetching: true,
         })
@@ -57,7 +57,7 @@ describe('useMetricTrend', () => {
     })
 
     it('should return isError=true when one the queries errored', () => {
-        useGetReportingMock.mockReturnValueOnce({
+        usePostReportingMock.mockReturnValueOnce({
             ...defaultReporting,
             isError: true,
         } as UseQueryResult)
@@ -78,11 +78,11 @@ describe('useMetricTrend', () => {
     })
 
     it('should return data', () => {
-        useGetReportingMock.mockReturnValueOnce({
+        usePostReportingMock.mockReturnValueOnce({
             ...defaultReporting,
             data: 1,
         } as UseQueryResult)
-        useGetReportingMock.mockReturnValueOnce({
+        usePostReportingMock.mockReturnValueOnce({
             ...defaultReporting,
             data: null,
         } as UseQueryResult)
@@ -97,32 +97,32 @@ describe('useMetricTrend', () => {
         })
     })
 
-    it('should call useGetReporting with the query', () => {
+    it('should call usePostReporting with the query', () => {
         const prevPeriodQuery = {
             ...defaultQuery,
             measures: [TicketStateMeasure.MessagesAverage],
         }
-        useGetReportingMock.mockReturnValueOnce({
+        usePostReportingMock.mockReturnValueOnce({
             ...defaultReporting,
             data: 1,
         } as UseQueryResult)
-        useGetReportingMock.mockReturnValueOnce({
+        usePostReportingMock.mockReturnValueOnce({
             ...defaultReporting,
             data: 2,
         } as UseQueryResult)
 
         renderHook(() => useMetricTrend(defaultQuery, prevPeriodQuery))
 
-        expect(useGetReportingMock).toHaveBeenCalledWith(
+        expect(usePostReportingMock).toHaveBeenCalledWith(
             [defaultQuery],
             expect.objectContaining({
-                select: useGetReportingMock.mock.calls[0][1]?.select,
+                select: usePostReportingMock.mock.calls[0][1]?.select,
             })
         )
-        expect(useGetReportingMock).toHaveBeenCalledWith(
+        expect(usePostReportingMock).toHaveBeenCalledWith(
             [prevPeriodQuery],
             expect.objectContaining({
-                select: useGetReportingMock.mock.calls[1][1]?.select,
+                select: usePostReportingMock.mock.calls[1][1]?.select,
             })
         )
     })

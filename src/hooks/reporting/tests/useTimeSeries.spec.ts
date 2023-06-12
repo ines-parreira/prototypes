@@ -1,7 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {AxiosResponse} from 'axios'
 
-import {useGetReporting} from 'models/reporting/queries'
+import {usePostReporting} from 'models/reporting/queries'
 import {
     ReportingResponse,
     ReportingGranularity,
@@ -12,7 +12,7 @@ import {assumeMock} from 'utils/testing'
 import useTimeSeries, {TimeSeriesQuery} from '../useTimeSeries'
 
 jest.mock('models/reporting/queries')
-const useGetReportingMock = assumeMock(useGetReporting)
+const usePostReportingMock = assumeMock(usePostReporting)
 
 describe('useTimeSeries', () => {
     const defaultTimeDimension = {
@@ -63,11 +63,11 @@ describe('useTimeSeries', () => {
         jest.resetAllMocks()
     })
 
-    it('should call useGetReportingMock with the query', () => {
+    it('should call usePostReportingMock with the query', () => {
         renderHook(() => useTimeSeries(defaultQuery))
-        const select = useGetReportingMock.mock.calls[0][1]?.select
+        const select = usePostReportingMock.mock.calls[0][1]?.select
 
-        expect(useGetReportingMock).toHaveBeenCalledWith(
+        expect(usePostReportingMock).toHaveBeenCalledWith(
             [defaultQuery],
             expect.objectContaining({
                 select,
@@ -77,7 +77,7 @@ describe('useTimeSeries', () => {
 
     it('should fill in the missing dates', () => {
         renderHook(() => useTimeSeries(defaultQuery))
-        const select = useGetReportingMock.mock.calls[0][1]?.select
+        const select = usePostReportingMock.mock.calls[0][1]?.select
 
         expect(
             select?.({
@@ -103,7 +103,7 @@ describe('useTimeSeries', () => {
                 ],
             })
         )
-        const select = useGetReportingMock.mock.calls[0][1]?.select
+        const select = usePostReportingMock.mock.calls[0][1]?.select
 
         expect(
             select?.({

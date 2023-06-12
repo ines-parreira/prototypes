@@ -2,7 +2,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 
-import {REPORTING_ENDPOINT, getReporting, postReporting} from '../resources'
+import {REPORTING_ENDPOINT, postReporting} from '../resources'
 import {ReportingResponse, ReportingQuery} from '../types'
 
 const mockedServer = new MockAdapter(client)
@@ -25,35 +25,7 @@ describe('Reporting resources', () => {
 
     beforeEach(() => {
         mockedServer.reset()
-        mockedServer.onGet(REPORTING_ENDPOINT).reply(200, resFixture)
         mockedServer.onPost(REPORTING_ENDPOINT).reply(200, resFixture)
-    })
-
-    describe('getReporting', () => {
-        it('should resolve with the data on success', async () => {
-            const res = await getReporting<[number]>([query])
-
-            expect(res.data.data).toEqual([1])
-        })
-
-        it('should serialize query', async () => {
-            await getReporting<[number]>([query])
-            expect(mockedServer.history).toMatchSnapshot()
-        })
-
-        it('should reject with an error on success', async () => {
-            mockedServer.onGet(REPORTING_ENDPOINT).reply(503)
-
-            return expect(
-                getReporting<[number]>([
-                    {
-                        dimensions: [],
-                        measures: [],
-                        filters: [],
-                    },
-                ])
-            ).rejects.toEqual(new Error('Request failed with status code 503'))
-        })
     })
 
     describe('postReporting', () => {
