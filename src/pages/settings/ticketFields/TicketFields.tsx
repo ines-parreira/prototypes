@@ -5,10 +5,7 @@ import {Link, NavLink, useParams} from 'react-router-dom'
 import {useDebounce} from 'react-use'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useTitle from 'hooks/useTitle'
-import {
-    useGetCustomFieldDefinitions,
-    useUpdateCustomFields,
-} from 'models/customField/queries'
+import {useUpdateCustomFields} from 'models/customField/queries'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import List from 'pages/settings/ticketFields/components/List'
@@ -17,7 +14,8 @@ import Loader from 'pages/common/components/Loader/Loader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Search from 'pages/common/components/Search'
-import {ListParams} from 'models/customField/resources'
+import {ListParams} from 'models/customField/types'
+import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 
 import css from './TicketFields.less'
 
@@ -42,7 +40,7 @@ export default function TicketFields() {
     const {
         data: {data: activeFields = [], meta: activeFieldsPaginationMeta} = {},
         isLoading: isLoadingActive,
-    } = useGetCustomFieldDefinitions(activeParams)
+    } = useCustomFieldDefinitions(activeParams)
 
     const {mutate: mutateCustomFieldsPriority} =
         useUpdateCustomFields(activeParams)
@@ -53,7 +51,7 @@ export default function TicketFields() {
             meta: archivedFieldsPaginationMeta,
         } = {},
         isLoading: isLoadingArchived,
-    } = useGetCustomFieldDefinitions({
+    } = useCustomFieldDefinitions({
         archived: true,
         object_type: 'Ticket',
         cursor: archivedCursor,

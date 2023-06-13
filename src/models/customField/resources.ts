@@ -1,35 +1,26 @@
 import client from 'models/api/resources'
 import {
-    ApiPaginationParams,
-    ApiListResponseCursorPagination,
-} from 'models/api/types'
-import {
     CustomField,
     CustomFieldInput,
     CustomFieldState,
+    GetCustomFieldDefinitionsResponse,
+    ListParams,
     PartialCustomFieldWithId,
 } from './types'
 
-export type ListParams = ApiPaginationParams & {
-    archived: boolean
-    object_type: CustomFieldInput['object_type']
-    search?: string
+export async function getCustomFields(params: ListParams) {
+    const res = await client.get<GetCustomFieldDefinitionsResponse>(
+        '/api/custom-fields/',
+        {
+            params,
+        }
+    )
+    return res
 }
 
-export async function getCustomFields(
-    params: ListParams
-): Promise<ApiListResponseCursorPagination<CustomField[]>> {
-    const response = await client.get<
-        ApiListResponseCursorPagination<CustomField[]>
-    >('/api/custom-fields/', {
-        params,
-    })
-    return response.data
-}
-
-export async function getCustomField(id: number): Promise<CustomField> {
+export async function getCustomField(id: number) {
     const response = await client.get<CustomField>(`/api/custom-fields/${id}`)
-    return response.data
+    return response
 }
 
 export async function createCustomField(

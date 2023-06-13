@@ -1410,7 +1410,7 @@ export const triggerTicketFieldsRefreshAndInvalidation =
                         archived: false,
                         object_type: 'Ticket',
                     })
-                )?.data || [],
+                )?.data?.data || [],
         })
         dispatch(setInvalidCustomFieldsToErrored(invalidFields))
     }

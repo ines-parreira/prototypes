@@ -3,17 +3,18 @@ import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
 import useTitle from 'hooks/useTitle'
+import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
-import {useGetCustomFieldDefinition} from 'models/customField/queries'
+
 import EditFieldForm from './components/EditFieldForm'
 
 export default function EditTicketField() {
     const params = useParams<{id: string}>()
     const id = parseInt(params.id, 10)
 
-    const {data: field, isLoading} = useGetCustomFieldDefinition(id)
+    const {data: field, isLoading} = useCustomFieldDefinition(id)
 
     useTitle(field?.label)
 

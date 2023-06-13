@@ -1,9 +1,10 @@
 import React, {memo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetCustomFieldDefinitions} from 'models/customField/queries'
 
 import {getTicketFieldState} from 'state/ticket/selectors'
+import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+
 import TicketField from './TicketField'
 import css from './TicketFields.less'
 
@@ -11,7 +12,7 @@ function TicketFields() {
     const ticketFieldState = useAppSelector(getTicketFieldState)
 
     const {data: {data: ticketFieldDefinitions = []} = {}, isLoading} =
-        useGetCustomFieldDefinitions({
+        useCustomFieldDefinitions({
             archived: false,
             object_type: 'Ticket',
         })

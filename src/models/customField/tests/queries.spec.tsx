@@ -24,7 +24,7 @@ import {
     customFieldInputDefinition,
 } from 'fixtures/customField'
 import {NotificationStatus} from 'state/notifications/types'
-import {ListParams} from 'models/customField/resources'
+import {ListParams} from 'models/customField/types'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = createTestQueryClient()
@@ -36,7 +36,7 @@ describe('queries.spec.tsx', () => {
     })
 
     describe('useGetCustomFieldDefinitions', () => {
-        it('successful query hook', async () => {
+        it('should succeed and return proper data', async () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer
                 .onGet('/api/custom-fields/')
@@ -61,7 +61,7 @@ describe('queries.spec.tsx', () => {
             expect(result.current.data).toMatchSnapshot()
         })
 
-        it('failure query hook', async () => {
+        it('should fail and return proper error', async () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer
                 .onGet('/api/custom-fields')
@@ -84,21 +84,12 @@ describe('queries.spec.tsx', () => {
             await waitFor(() => {
                 expect(result.current.isError).toBe(true)
                 expect(result.current.error).toBeDefined()
-                expect(mockStore.getActions()).toMatchObject([
-                    {
-                        payload: {
-                            message:
-                                'Failed to fetch ticket custom fields list',
-                            status: NotificationStatus.Error,
-                        },
-                    },
-                ])
             })
         })
     })
 
     describe('useGetCustomFieldDefinition', () => {
-        it('successful query hook', async () => {
+        it('should succeed and return proper data', async () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer
                 .onGet('/api/custom-fields/123')
@@ -118,7 +109,7 @@ describe('queries.spec.tsx', () => {
             expect(result.current.data).toMatchSnapshot()
         })
 
-        it('failure query hook', async () => {
+        it('should fail and return proper error', async () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer
                 .onGet('/api/custom-fields/123')
@@ -138,14 +129,6 @@ describe('queries.spec.tsx', () => {
             await waitFor(() => {
                 expect(result.current.isError).toBe(true)
                 expect(result.current.error).toBeDefined()
-                expect(mockStore.getActions()).toMatchObject([
-                    {
-                        payload: {
-                            message: 'Failed to fetch custom field',
-                            status: NotificationStatus.Error,
-                        },
-                    },
-                ])
             })
         })
     })
@@ -502,7 +485,7 @@ describe('queries.spec.tsx', () => {
         const ticketId = 123
         const fieldValue = 'foo'
 
-        it('succeed', async () => {
+        it('should succeed and return proper data', async () => {
             const mockStore = configureMockStore([thunk])()
 
             mockedServer
@@ -547,7 +530,7 @@ describe('queries.spec.tsx', () => {
     describe('useDeleteCustomFieldValue', () => {
         const ticketId = 123
 
-        it('succeed', async () => {
+        it('should succeed and not return data', async () => {
             const mockStore = configureMockStore([thunk])()
 
             mockedServer

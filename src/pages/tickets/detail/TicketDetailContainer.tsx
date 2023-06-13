@@ -57,12 +57,12 @@ import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import {RecentItems} from 'hooks/useRecentItems/constants'
 import {Ticket} from 'models/ticket/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {useGetCustomFieldDefinitions} from 'models/customField/queries'
 import {
     PickedTicket,
     pickedTicketFields,
 } from 'pages/common/components/Spotlight/SpotlightTicketRow'
-import Loader from '../../common/components/Loader/Loader'
+import Loader from 'pages/common/components/Loader/Loader'
+import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 
 import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
@@ -125,7 +125,7 @@ export const TicketDetailContainer = ({
     const {
         data: {data: fieldDefinitions = []} = {},
         isLoading: isTicketFieldDefinitionLoading,
-    } = useGetCustomFieldDefinitions({
+    } = useCustomFieldDefinitions({
         archived: false,
         object_type: 'Ticket',
     })

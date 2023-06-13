@@ -1,3 +1,18 @@
+import {
+    ApiListResponseCursorPagination,
+    ApiPaginationParams,
+} from 'models/api/types'
+
+export type ListParams = ApiPaginationParams & {
+    archived: boolean
+    object_type: CustomFieldInput['object_type']
+    search?: string
+}
+
+export type GetCustomFieldDefinitionsResponse = ApiListResponseCursorPagination<
+    CustomField[]
+>
+
 export type CustomFieldDefinition =
     | CustomTypeDefinitionText
     | CustomTypeDefinitionBoolean

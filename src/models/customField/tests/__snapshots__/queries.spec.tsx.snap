@@ -20,47 +20,109 @@ exports[`queries.spec.tsx useCreateCustomField successful query hook 1`] = `
 }
 `;
 
-exports[`queries.spec.tsx useGetCustomFieldDefinition successful query hook 1`] = `
+exports[`queries.spec.tsx useGetCustomFieldDefinition should succeed and return proper data 1`] = `
 {
-  "created_datetime": "2022-01-02T03:04:05.123456+00:00",
-  "deactivated_datetime": null,
-  "definition": {
-    "data_type": "text",
-    "input_settings": {
-      "input_type": "input",
-      "placeholder": "Some placeholder",
+  "config": {
+    "data": undefined,
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
     },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "get",
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "url": "/api/custom-fields/123",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
   },
-  "id": 123,
-  "label": "Input field",
-  "object_type": "Ticket",
-  "priority": 1,
-  "required": false,
-  "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
+  "data": {
+    "created_datetime": "2022-01-02T03:04:05.123456+00:00",
+    "deactivated_datetime": null,
+    "definition": {
+      "data_type": "text",
+      "input_settings": {
+        "input_type": "input",
+        "placeholder": "Some placeholder",
+      },
+    },
+    "id": 123,
+    "label": "Input field",
+    "object_type": "Ticket",
+    "priority": 1,
+    "required": false,
+    "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
+  },
+  "headers": undefined,
+  "request": {
+    "responseUrl": "/api/custom-fields/123",
+  },
+  "status": 200,
 }
 `;
 
-exports[`queries.spec.tsx useGetCustomFieldDefinitions successful query hook 1`] = `
+exports[`queries.spec.tsx useGetCustomFieldDefinitions should succeed and return proper data 1`] = `
 {
-  "data": [
-    {
-      "created_datetime": "2022-01-02T03:04:05.123456+00:00",
-      "deactivated_datetime": null,
-      "definition": {
-        "data_type": "text",
-        "input_settings": {
-          "input_type": "input",
-          "placeholder": "Some placeholder",
-        },
-      },
-      "id": 123,
-      "label": "Input field",
-      "object_type": "Ticket",
-      "priority": 1,
-      "required": false,
-      "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
+  "config": {
+    "data": undefined,
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
     },
-  ],
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "get",
+    "params": {
+      "archived": false,
+      "object_type": "Ticket",
+    },
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "url": "/api/custom-fields/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": {
+    "data": [
+      {
+        "created_datetime": "2022-01-02T03:04:05.123456+00:00",
+        "deactivated_datetime": null,
+        "definition": {
+          "data_type": "text",
+          "input_settings": {
+            "input_type": "input",
+            "placeholder": "Some placeholder",
+          },
+        },
+        "id": 123,
+        "label": "Input field",
+        "object_type": "Ticket",
+        "priority": 1,
+        "required": false,
+        "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
+      },
+    ],
+  },
+  "headers": undefined,
+  "request": {
+    "responseUrl": "/api/custom-fields/",
+  },
+  "status": 200,
 }
 `;
 

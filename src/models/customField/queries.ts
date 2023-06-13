@@ -3,36 +3,32 @@ import {
     useMutation,
     useQueryClient,
     UseMutationOptions,
+    UseQueryOptions,
 } from '@tanstack/react-query'
 import moment from 'moment'
 
+import {errorToChildren} from 'utils'
+import {isCustomFieldValueEmpty} from 'utils/customFields'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+import {StoreDispatch} from 'state/types'
+import {NotificationStatus} from 'state/notifications/types'
+import {GorgiasApiError} from 'models/api/types'
+import {
+    CustomFieldInput,
+    ListParams,
+    PartialCustomFieldWithId,
+} from 'models/customField/types'
 import {
     createCustomField,
     deleteCustomFieldValue,
     getCustomField,
     getCustomFields,
-    ListParams,
     updateCustomField,
     updateCustomFields,
     updateCustomFieldValue,
     updatePartialCustomField,
 } from 'models/customField/resources'
-
-import {isCustomFieldValueEmpty} from 'utils/customFields'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {
-    ApiListResponseCursorPagination,
-    GorgiasApiError,
-} from 'models/api/types'
-import {
-    CustomField,
-    CustomFieldInput,
-    PartialCustomFieldWithId,
-} from 'models/customField/types'
-import {errorToChildren} from 'utils'
-import {StoreDispatch} from 'state/types'
 
 export const customFieldDefinitionKeys = {
     all: () => ['customFieldDefinition'] as const,
@@ -51,40 +47,33 @@ export const customFieldValueKeys = {
     value: (id: number) => [...customFieldValueKeys.all(), id] as const,
 }
 
-export const useGetCustomFieldDefinitions = (
+export type UseGetCustomFieldDefinitions = Awaited<
+    ReturnType<typeof getCustomFields>
+>
+
+export const useGetCustomFieldDefinitions = <TData>(
     params: ListParams,
-    overrides?: {enabled: boolean}
+    overrides?: UseQueryOptions<UseGetCustomFieldDefinitions, unknown, TData>
 ) => {
-    const dispatch = useAppDispatch()
     return useQuery({
-        staleTime: 60 * 60 * 1000, // 1 hour
         queryKey: customFieldDefinitionKeys.list(params),
         queryFn: () => getCustomFields(params),
-        onError: () => {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch ticket custom fields list',
-                    status: NotificationStatus.Error,
-                })
-            )
-        },
         ...overrides,
     })
 }
 
-export const useGetCustomFieldDefinition = (id: number) => {
-    const dispatch = useAppDispatch()
+export const useGetCustomFieldDefinition = <TData>(
+    id: number,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getCustomField>>,
+        unknown,
+        TData
+    >
+) => {
     return useQuery({
         queryKey: customFieldDefinitionKeys.detail(id),
         queryFn: () => getCustomField(id),
-        onError: () => {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch custom field',
-                    status: NotificationStatus.Error,
-                })
-            )
-        },
+        ...overrides,
     })
 }
 
@@ -162,37 +151,46 @@ export const useUpdateCustomFields = (params: ListParams) => {
             await queryClient.cancelQueries({queryKey})
 
             // Optimistically update to the new value
-            queryClient.setQueryData<
-                Partial<ApiListResponseCursorPagination<CustomField[]>>
-            >(queryKey, (oldQueryData) => {
-                const newData = oldQueryData?.data
-                    ?.map((customField) => {
-                        const updatedCustomField = data.find(
-                            (partialCustomFieldWithId) =>
-                                partialCustomFieldWithId.id === customField.id
+            queryClient.setQueryData<UseGetCustomFieldDefinitions>(
+                queryKey,
+                (oldQueryResponse) => {
+                    // if there is no data in cache then we don't need to update anything
+                    if (!oldQueryResponse) {
+                        return undefined
+                    }
+                    const newData = oldQueryResponse?.data?.data
+                        ?.map((customField) => {
+                            const updatedCustomField = data.find(
+                                (partialCustomFieldWithId) =>
+                                    partialCustomFieldWithId.id ===
+                                    customField.id
+                            )
+
+                            if (updatedCustomField) {
+                                return {
+                                    ...customField,
+                                    ...updatedCustomField,
+                                }
+                            }
+
+                            return customField
+                        })
+                        // in case we update priorities of custom fields then they won't be sorted anymore,
+                        // so we need to sort them back
+                        .sort(
+                            (customFieldA, customFieldB) =>
+                                customFieldB.priority - customFieldA.priority
                         )
 
-                        if (updatedCustomField) {
-                            return {
-                                ...customField,
-                                ...updatedCustomField,
-                            }
-                        }
-
-                        return customField
-                    })
-                    // in case we update priorities of custom fields then they won't be sorted anymore,
-                    // so we need to sort them back
-                    .sort(
-                        (customFieldA, customFieldB) =>
-                            customFieldB.priority - customFieldA.priority
-                    )
-
-                return {
-                    ...oldQueryData,
-                    data: newData,
+                    return {
+                        ...oldQueryResponse,
+                        data: {
+                            ...oldQueryResponse?.data,
+                            data: newData,
+                        },
+                    }
                 }
-            })
+            )
         },
         onError: (error: GorgiasApiError) => {
             void dispatch(
