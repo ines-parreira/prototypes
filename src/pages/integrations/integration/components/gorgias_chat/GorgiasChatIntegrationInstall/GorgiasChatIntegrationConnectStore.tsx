@@ -159,11 +159,14 @@ const GorgiasChatIntegrationConnectStore = ({
                 </Button>
             )}
             <Modal isOpen={isModalOpen} onClose={handleModalClose}>
-                <ModalHeader title="Connect store" />
+                <ModalHeader
+                    title={storeIntegration ? 'Change store' : 'Connect store'}
+                />
                 <ModalBody className={css.modalBody}>
                     <div>
-                        Connect a store to use Automation Add-on features in
-                        chat and to enable 1-click install for Shopify.
+                        {storeIntegration
+                            ? 'A store connection is required to use Automation Add-on features and enable auto-embedding for Shopify stores.'
+                            : 'Connect a store to use Automation Add-on features in chat and to enable 1-click install for Shopify.'}
                     </div>
                     <StoreNameDropdown
                         gorgiasChatIntegrations={fromJS(
@@ -183,7 +186,7 @@ const GorgiasChatIntegrationConnectStore = ({
                         isLoading={isConnectPending}
                         onClick={handleConnect}
                     >
-                        Connect store
+                        {storeIntegration ? 'Change store' : 'Connect store'}
                     </Button>
                 </ModalActionsFooter>
             </Modal>
