@@ -123,15 +123,78 @@ export function isAccountDuringBusinessHours(
     )
 }
 
+const INSTALLATION_THRESHOLD_HOURS = 12
+
+// "installed" status should be ignored if chat was recently added by one click installation
+const getShouldIgnoreInstalledStatus = (chat: Map<any, any>): boolean => {
+    const oneClickInstallationDatetime = chat.getIn([
+        'meta',
+        'one_click_installation_datetime',
+    ])
+
+    if (!oneClickInstallationDatetime) {
+        return false
+    }
+
+    const isChatAddedByOneClickInstallation =
+        (chat.getIn(['meta', 'shopify_integration_ids']) as List<any>)?.size !==
+        0
+
+    const duration = moment.duration(
+        moment().diff(moment(oneClickInstallationDatetime))
+    )
+    const hours = duration.asHours()
+
+    return (
+        hours <= INSTALLATION_THRESHOLD_HOURS &&
+        isChatAddedByOneClickInstallation
+    )
+}
+
+// "installed" status should be ignored if chat was recently removed by one click installation
+const getShouldForceShowChatAsUninstalled = (chat: Map<any, any>): boolean => {
+    const oneClickUninstallationDatetime = chat.getIn([
+        'meta',
+        'one_click_uninstallation_datetime',
+    ])
+
+    if (!oneClickUninstallationDatetime) {
+        return false
+    }
+
+    const isChatRemovedByOneClickInstallation =
+        (chat.getIn(['meta', 'shopify_integration_ids']) as List<any>)?.size ===
+        0
+
+    const duration = moment.duration(
+        moment().diff(moment(oneClickUninstallationDatetime))
+    )
+    const hours = duration.asHours()
+
+    return (
+        hours <= INSTALLATION_THRESHOLD_HOURS &&
+        isChatRemovedByOneClickInstallation
+    )
+}
+
 /**
  * Calculate chat live status using different chat settings
  */
+
 export const computeChatIntegrationStatus = (
     chat: Map<any, any>,
     isBusinessHours: boolean,
     installationStatus: InstallationStatus
 ): GorgiasChatStatusEnum | null => {
-    if (!installationStatus.installed) {
+    const shouldIgnoreInstalledStatus = getShouldIgnoreInstalledStatus(chat)
+    const shouldForceShowChatAsUninstalled =
+        getShouldForceShowChatAsUninstalled(chat)
+
+    if (shouldForceShowChatAsUninstalled) {
+        return GorgiasChatStatusEnum.NOT_INSTALLED
+    }
+
+    if (!installationStatus.installed && !shouldIgnoreInstalledStatus) {
         return GorgiasChatStatusEnum.NOT_INSTALLED
     }
 

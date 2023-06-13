@@ -190,6 +190,76 @@ describe('integrations helpers', () => {
                 })
             ).toEqual(GorgiasChatStatusEnum.NOT_INSTALLED)
         })
+
+        it('should return `online` status when chat was removed via 1 click long time ago, but it is somehow installed now', () => {
+            const integrationState = fromJS({
+                deactivated_datetime: null,
+                meta: {
+                    one_click_uninstallation_datetime: new Date(
+                        2020,
+                        1,
+                        1
+                    ).toISOString(),
+                    shopify_integration_ids: [],
+                    preferences: {
+                        hide_outside_business_hours: false,
+                        live_chat_availability:
+                            GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
+                    },
+                },
+            })
+
+            expect(
+                helpers.computeChatIntegrationStatus(integrationState, true, {
+                    ...neutralInstallationStatus,
+                    installed: true,
+                })
+            ).toEqual(GorgiasChatStatusEnum.ONLINE)
+        })
+
+        it('should return `online` status (despite having "installed": false) if chat was installed recently using 1 click installation', () => {
+            const integrationState = fromJS({
+                deactivated_datetime: null,
+                meta: {
+                    one_click_installation_datetime: new Date().toISOString(),
+                    shopify_integration_ids: [123],
+                    preferences: {
+                        hide_outside_business_hours: false,
+                        live_chat_availability:
+                            GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
+                    },
+                },
+            })
+
+            expect(
+                helpers.computeChatIntegrationStatus(integrationState, true, {
+                    ...neutralInstallationStatus,
+                    installed: false,
+                })
+            ).toEqual(GorgiasChatStatusEnum.ONLINE)
+        })
+
+        it('should return `not-installed` status when chat was removed recently', () => {
+            const integrationState = fromJS({
+                deactivated_datetime: null,
+                meta: {
+                    one_click_uninstallation_datetime: new Date().toISOString(),
+                    shopify_integration_ids: [],
+                    preferences: {
+                        hide_outside_business_hours: false,
+                        live_chat_availability:
+                            GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
+                    },
+                },
+            })
+
+            expect(
+                helpers.computeChatIntegrationStatus(integrationState, true, {
+                    ...neutralInstallationStatus,
+                    installed: true,
+                })
+            ).toEqual(GorgiasChatStatusEnum.NOT_INSTALLED)
+        })
     })
 
     describe('isAccountDuringBusinessHours()', () => {
