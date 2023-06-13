@@ -1,6 +1,76 @@
-import {normalizeLocale, processWhatsAppMarkdown} from '../whatsapp/utils'
+import {
+    normalizeLocale,
+    countDistinctVariables,
+    isWhatsAppMessageValid,
+    processWhatsAppMarkdown,
+} from '../whatsapp/utils'
 
 describe('whatsAppUtils', () => {
+    describe('countDistinctVariables', () => {
+        it('should return correct number of variables when message does not contain variables', () => {
+            const message = 'This is a test message'
+            expect(countDistinctVariables(message)).toEqual(0)
+        })
+
+        it('should return correct number when message contains one variable', () => {
+            const message = 'This is a test message with {{1}}'
+            expect(countDistinctVariables(message)).toEqual(1)
+        })
+
+        it('should return correct number when message contains multiple variables', () => {
+            const message = 'This is a test message with {{1}} and {{2}}'
+            expect(countDistinctVariables(message)).toEqual(2)
+        })
+
+        it('should return correct number when variables are unordered', () => {
+            const message = 'This is a test message with {{2}} and {{1}}'
+            expect(countDistinctVariables(message)).toEqual(2)
+        })
+
+        it('should return correct number when variables are repeated', () => {
+            const message = 'This is a test message with {{1}} and {{1}}'
+            expect(countDistinctVariables(message)).toEqual(1)
+        })
+
+        it('should return correct number when variables are repeated and unordered', () => {
+            const message =
+                'This is a test message with {{2}} and {{1}} and {{2}}'
+            expect(countDistinctVariables(message)).toEqual(2)
+        })
+    })
+
+    describe('isWhatsAppMessageValid', () => {
+        it('should return true when message does not contain variables', () => {
+            const message = 'This is a test message'
+            const values: string[] = []
+            expect(isWhatsAppMessageValid(message, values)).toEqual(true)
+        })
+
+        it('should return true when message contains one variable and one value', () => {
+            const message = 'This is a test message with {{1}}'
+            const values = ['test']
+            expect(isWhatsAppMessageValid(message, values)).toEqual(true)
+        })
+
+        it('should return true when message contains multiple variables and multiple values', () => {
+            const message = 'This is a test message with {{1}} and {{2}}'
+            const values = ['test', 'message']
+            expect(isWhatsAppMessageValid(message, values)).toEqual(true)
+        })
+
+        it('should return false when message contains one variable and no values', () => {
+            const message = 'This is a test message with {{1}}'
+            const values: string[] = []
+            expect(isWhatsAppMessageValid(message, values)).toEqual(false)
+        })
+
+        it('should return false when message contains multiple variables and one value', () => {
+            const message = 'This is a test message with {{1}} and {{2}}'
+            const values = ['test']
+            expect(isWhatsAppMessageValid(message, values)).toEqual(false)
+        })
+    })
+
     describe('processWhatsAppMarkdown', () => {
         it('should return correct message when message does not contain markdown', () => {
             const message = 'This is a test message'

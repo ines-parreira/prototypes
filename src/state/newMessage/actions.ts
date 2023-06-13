@@ -63,7 +63,11 @@ import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/sh
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {AttachmentPosition} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/types/CampaignAttachment'
 
-import {MacroActionName, MacroActionType} from 'models/macroAction/types'
+import {
+    MacroAction,
+    MacroActionName,
+    MacroActionType,
+} from 'models/macroAction/types'
 import {isBaseEmailAddress} from 'pages/integrations/integration/components/email/helpers'
 import {FullTicketStateWithoutImmutable} from 'state/ticket/types'
 import {DiscountCode} from 'models/discountCodes/types'
@@ -442,6 +446,11 @@ export const setSourceExtra = (extra: Record<string, unknown>) => ({
 export const setMeta = (meta: Record<string, unknown>) => ({
     type: constants.NEW_MESSAGE_SET_META,
     meta,
+})
+
+export const setNewMessageActions = (actions: MacroAction[]) => ({
+    type: constants.SET_NEW_MESSAGE_ACTIONS,
+    payload: actions,
 })
 
 export const addNewMessageDiscountCode = (

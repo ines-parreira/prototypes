@@ -11,6 +11,8 @@ import {isForwardedMessage} from 'state/ticket/utils'
 import {RootState} from 'state/types'
 import {isImmutable, createImmutableSelector} from 'utils'
 
+import {MacroAction, MacroActionName} from 'models/macroAction/types'
+import {ApplyExternalTemplateActionArguments} from 'models/whatsAppMessageTemplates/types'
 import {NewMessageState, ReceiverProperty} from './types'
 
 export const getReceiversProperties = () => Object.values(ReceiverProperty)
@@ -58,6 +60,31 @@ export const isNewMessageEmailExtraAdded = createSelector(
 export const getNewMessage = createImmutableSelector(
     getNewMessageState,
     (state) => (state.get('newMessage') || fromJS({})) as Map<any, any>
+)
+
+export const getNewMessageActions = createSelector(
+    getNewMessageState,
+    (state) => (state.getIn(['newMessage', 'actions']) || []) as MacroAction[]
+)
+
+export const hasValidExternalTemplate = createSelector(
+    getNewMessage,
+    getNewMessageActions,
+    (newMessage, newMessageActions) => {
+        const isWhatsAppChannel =
+            newMessage.get('channel') === TicketChannel.WhatsApp
+        const externalTemplateAction = newMessageActions.find(
+            (action) => action.name === MacroActionName.ApplyExternalTemplate
+        )
+
+        if (!isWhatsAppChannel || !externalTemplateAction) return false
+
+        const hasIncompleteVariables = !!(
+            externalTemplateAction?.arguments as ApplyExternalTemplateActionArguments
+        ).body.find((argument) => !argument.value)
+
+        return !hasIncompleteVariables
+    }
 )
 
 export const getNewMessageContentState = createImmutableSelector(
@@ -202,17 +229,19 @@ export const canSend = createSelector(
     isNewMessagePublic,
     hasContent,
     hasContentlessAction,
+    hasValidExternalTemplate,
     (
         isAccountActive,
         hasRecipients,
         isPublic,
         hasContent,
-        hasContentlessAction
+        hasContentlessAction,
+        hasValidExternalTemplate
     ) => {
         return (
             isAccountActive &&
             (hasRecipients || !isPublic) &&
-            (hasContent || hasContentlessAction)
+            (hasContent || hasContentlessAction || hasValidExternalTemplate)
         )
     }
 )

@@ -31,23 +31,45 @@ export enum WhatsAppMessageTemplateStatus {
     Unsupported = 'unsupported',
 }
 
+export type WhatsAppTemplateHeaderComponent = {
+    type: string
+    value?: string
+}
+
+export type WhatsAppTemplateButtonComponent =
+    | {
+          type: 'quick_reply'
+          text: string
+      }
+    | {
+          type: 'phone_number'
+          value: {
+              name: string
+              phone_number: string
+          }
+      }
+    | {
+          type: 'url'
+          value: {
+              name: string
+              url: string
+          }
+      }
+
 export type WhatsAppMessageTemplateComponents = {
     body: {
-        type: string
+        type: 'text'
         value: string
     }
-    header: {
-        type: string
-        value: string
-    }
+    // header: {
+    //     type: string
+    //     value: string
+    // }
     footer: {
-        type: string
+        type: 'text'
         value: string
     }
-    buttons: {
-        type: string
-        value: string
-    }[]
+    // buttons: WhatsAppTemplateButtonComponent[]
 }
 
 export type ListWhatsAppMessageTemplatesOrderBy =
@@ -64,4 +86,18 @@ export type ListWhatsAppMessageTemplatesParams = {
     limit?: number
     waba_id?: string
     is_supported?: boolean
+}
+
+export type ApplyExternalTemplateActionArguments = {
+    provider: 'whatsapp'
+    template_id: string
+    body: {
+        type: 'text'
+        value: string
+    }[]
+}
+
+export type ApplyExternalTemplateAction = {
+    type: string
+    arguments: ApplyExternalTemplateActionArguments
 }

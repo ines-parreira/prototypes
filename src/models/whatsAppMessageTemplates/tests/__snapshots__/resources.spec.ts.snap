@@ -11,19 +11,9 @@ exports[`list whatsapp message template resources listWhatsAppMessageTemplates s
             "type": "text",
             "value": "Hey {{1}},\\nHere's your https://www.google.com one-time password:  *{{2}}*\\nCode expires in 30 minutes.",
           },
-          "buttons": [
-            {
-              "type": "url",
-              "value": "https://app.mobile.me.app/{{1}}",
-            },
-          ],
           "footer": {
             "type": "text",
             "value": "If you never requested this code, please ignore the message.",
-          },
-          "header": {
-            "type": "text",
-            "value": "LOGIN ATTEMPT",
           },
         },
         "created_datetime": "2023-12-01T18:00:00.000000+00:00",
@@ -46,19 +36,9 @@ exports[`list whatsapp message template resources listWhatsAppMessageTemplates s
             "type": "text",
             "value": "Here's the rejected template content {{1}}",
           },
-          "buttons": [
-            {
-              "type": "url",
-              "value": "https://app.mobile.me.app/{{1}}",
-            },
-          ],
           "footer": {
             "type": "text",
             "value": "If you never requested this code, please ignore the message.",
-          },
-          "header": {
-            "type": "text",
-            "value": "LOGIN ATTEMPT",
           },
         },
         "created_datetime": "2023-12-01T18:00:00.000000+00:00",

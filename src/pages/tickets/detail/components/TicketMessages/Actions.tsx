@@ -181,7 +181,7 @@ export default class Actions extends Component<Props, State> {
 
         const backActions = message.actions.filter(
             ({name}) =>
-                getActionTemplate(name)!.execution !==
+                getActionTemplate(name)?.execution !==
                 ActionTemplateExecution.Front
         )
 
@@ -221,6 +221,8 @@ export default class Actions extends Component<Props, State> {
                     const isShopifyAction = SHOPIFY_ACTION_NAMES.includes(
                         action.name as typeof SHOPIFY_ACTION_NAMES[number]
                     )
+                    const isExternalTemplateAction =
+                        action.name === MacroActionName.ApplyExternalTemplate
                     const contentType = _get(action, 'arguments.content_type')
 
                     const arg = this._renderActionArg(action)
@@ -242,8 +244,11 @@ export default class Actions extends Component<Props, State> {
                                     id={`message-${message.id!}-actions-badge-${index}`}
                                 >
                                     {icon}
-                                    {action.title}
+                                    {isExternalTemplateAction
+                                        ? 'WhatsApp template applied'
+                                        : action.title}
                                     {!isHTTPOrShopify &&
+                                        !isExternalTemplateAction &&
                                         ![
                                             MacroActionName.ForwardByEmail,
                                             MacroActionName.ExcludeFromCSAT,

@@ -709,6 +709,10 @@ export default function reducer(
             )
         }
 
+        case types.SET_NEW_MESSAGE_ACTIONS: {
+            return state.setIn(['newMessage', 'actions'], action.payload)
+        }
+
         default:
             return state
     }

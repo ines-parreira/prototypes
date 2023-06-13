@@ -10,6 +10,12 @@ import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
 import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import {getNewMessageChannel} from 'state/newMessage/selectors'
+import {TicketChannel} from 'business/types/ticket'
+import {getTicket} from 'state/ticket/selectors'
+import WhatsAppMessageTemplateReplyArea from 'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea'
+
 import useForm from './hooks/useForm'
 import useMacros from './hooks/useMacros'
 import css from './Editor.less'
@@ -40,6 +46,15 @@ export default function Editor({
     const whatsAppMessageTemplatesEnabled =
         useFlags()[FeatureFlagKey.WhatsAppMessageTemplates]
 
+    const channel = useAppSelector(getNewMessageChannel)
+    const ticket = useAppSelector(getTicket)
+    const isNewTicket = !ticket.id
+
+    const showWhatsAppTemplateEditor =
+        whatsAppMessageTemplatesEnabled &&
+        isNewTicket &&
+        channel === TicketChannel.WhatsApp
+
     return (
         <div
             className={cn('d-print-none', css.container)}
@@ -53,15 +68,19 @@ export default function Editor({
                     }
                 />
                 <ReplyForm>
-                    <TicketReplyArea
-                        hasShownMacros={hasShown}
-                        filters={filters}
-                        isMacrosActive={isActive}
-                        query={query}
-                        onChangeFilters={onChangeFilters}
-                        onChangeMacrosActive={onChangeActive}
-                        onChangeQuery={onChangeQuery}
-                    />
+                    {showWhatsAppTemplateEditor ? (
+                        <WhatsAppMessageTemplateReplyArea />
+                    ) : (
+                        <TicketReplyArea
+                            hasShownMacros={hasShown}
+                            filters={filters}
+                            isMacrosActive={isActive}
+                            query={query}
+                            onChangeFilters={onChangeFilters}
+                            onChangeMacrosActive={onChangeActive}
+                            onChangeQuery={onChangeQuery}
+                        />
+                    )}
                     <TicketSubmitButtons setTicketStatus={setTicketStatus} />
                 </ReplyForm>
             </form>

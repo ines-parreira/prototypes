@@ -9,10 +9,10 @@ export const whatsAppMessageTemplates: WhatsAppMessageTemplate[] = [
         id: 1,
         name: 'sample_purchase_feedback',
         components: {
-            header: {
-                type: 'text',
-                value: 'LOGIN ATTEMPT',
-            },
+            // header: {
+            //     type: 'text',
+            //     value: 'LOGIN ATTEMPT',
+            // },
             body: {
                 type: 'text',
                 value: "Hey {{1}},\\nHere's your https://www.google.com one-time password:  *{{2}}*\\nCode expires in 30 minutes.",
@@ -21,12 +21,12 @@ export const whatsAppMessageTemplates: WhatsAppMessageTemplate[] = [
                 type: 'text',
                 value: 'If you never requested this code, please ignore the message.',
             },
-            buttons: [
-                {
-                    type: 'url',
-                    value: 'https://app.mobile.me.app/{{1}}',
-                },
-            ],
+            // buttons: [
+            //     {
+            //         type: 'url',
+            //         value: 'https://app.mobile.me.app/{{1}}',
+            //     },
+            // ],
         },
         is_supported: true,
         category: WhatsAppMessageTemplateCategory.Marketing,
@@ -44,10 +44,10 @@ export const whatsAppMessageTemplates: WhatsAppMessageTemplate[] = [
         id: 2,
         name: 'rejected_template_sample',
         components: {
-            header: {
-                type: 'text',
-                value: 'LOGIN ATTEMPT',
-            },
+            // header: {
+            //     type: 'text',
+            //     value: 'LOGIN ATTEMPT',
+            // },
             body: {
                 type: 'text',
                 value: "Here's the rejected template content {{1}}",
@@ -56,12 +56,12 @@ export const whatsAppMessageTemplates: WhatsAppMessageTemplate[] = [
                 type: 'text',
                 value: 'If you never requested this code, please ignore the message.',
             },
-            buttons: [
-                {
-                    type: 'url',
-                    value: 'https://app.mobile.me.app/{{1}}',
-                },
-            ],
+            // buttons: [
+            //     {
+            //         type: 'url',
+            //         value: 'https://app.mobile.me.app/{{1}}',
+            //     },
+            // ],
         },
         category: WhatsAppMessageTemplateCategory.Utility,
         external_id: '22',

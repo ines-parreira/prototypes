@@ -2,6 +2,13 @@
 @import '~css/new/colorTokens.less';
 
 :local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: @layout-spacing-s;
+    }
+
     .sentence {
         display: flex;
         align-items: center;
@@ -21,5 +28,9 @@
 
     .footer {
         color: @classic-neutral-grey-4;
+    }
+
+    .input {
+        background-color: @classic-neutral-grey-0;
     }
 }

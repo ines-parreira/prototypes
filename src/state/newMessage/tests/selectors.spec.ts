@@ -224,7 +224,8 @@ describe('new message selectors', () => {
                             hasRecipients: boolean,
                             isPublic: boolean,
                             hasContent: boolean,
-                            getHasContentlessAction: boolean
+                            getHasContentlessAction: boolean,
+                            hasValidExternalTemplate: boolean
                         ) => boolean
                     }
                 ).resultFunc
@@ -235,6 +236,7 @@ describe('new message selectors', () => {
                             isActive,
                             hasRecipients,
                             isPublic,
+                            false,
                             false,
                             false
                         )
@@ -249,6 +251,7 @@ describe('new message selectors', () => {
                             hasRecipients,
                             isPublic,
                             true,
+                            false,
                             false
                         )
                     ).toBe(expectedResult)
@@ -262,7 +265,8 @@ describe('new message selectors', () => {
                             hasRecipients,
                             isPublic,
                             false,
-                            true
+                            true,
+                            false
                         )
                     ).toBe(expectedResult)
                 })

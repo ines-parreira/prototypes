@@ -1,11 +1,13 @@
 import type {User} from 'config/types/user'
 import {HttpMethod} from 'models/api/types'
 import type {Team} from 'models/team/types'
+import {ApplyExternalTemplateActionArguments} from 'models/whatsAppMessageTemplates/types'
 
 export enum MacroActionName {
     AddAttachments = 'addAttachments',
     AddInternalNote = 'addInternalNote',
     AddTags = 'addTags',
+    ApplyExternalTemplate = 'applyExternalTemplate',
     ExcludeFromCSAT = 'excludeFromCSAT',
     ForwardByEmail = 'forwardByEmail',
     Http = 'http',
@@ -39,7 +41,10 @@ export enum MacroActionType {
     User = 'user',
 }
 
-export type MacroAction = {
+// TODO extend ApplyExternalTemplate
+export type MacroAction = Partial<
+    Pick<ApplyExternalTemplateActionArguments, 'body'>
+> & {
     arguments: {
         attachments?: MacroActionAttachment[]
         body_html?: string

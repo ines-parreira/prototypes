@@ -5,7 +5,6 @@ import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import WhatsAppMessageTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
 import {whatsAppFlagCodes} from 'pages/integrations/integration/components/whatsapp/constants'
-import {whatsAppMessageTemplates} from 'fixtures/whatsAppMessageTemplates'
 
 import css from './WhatsAppMessageTemplateNavigator.less'
 
@@ -16,7 +15,7 @@ type Props = {
 
 export default function WhatsAppMessageTemplateNavigator({
     onItemClick,
-    templates = whatsAppMessageTemplates,
+    templates,
 }: Props) {
     const [currentTemplate, setCurrentTemplate] =
         useState<WhatsAppMessageTemplate>(templates[0])

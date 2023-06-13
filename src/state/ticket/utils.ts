@@ -1053,6 +1053,10 @@ export const mergeInternalNoteActions = (
     )
 }
 
+export const mergeActionsJS = (oldActions: any[], newActions: any[]): any => {
+    return mergeActions(fromJS(oldActions), fromJS(newActions)).toJS()
+}
+
 export const mergeActions = (oldActions: List<any>, newActions: List<any>) => {
     let actions = newActions
     oldActions.forEach((oldAction: Map<any, any>) => {

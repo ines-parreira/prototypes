@@ -9,11 +9,11 @@ import Card from 'pages/stats/Card'
 
 import {getLanguageDisplayName} from 'utils'
 import css from './WhatsAppMessageTemplateDetailsDrawer.less'
-import WhatsAppMessageTemplateMessage from './WhatsAppMessageTemplateMessage'
 import {templateAlertContent, whatsAppFlagCodes} from './constants'
 import WhatsAppMessageTemplateStatusLabel from './WhatsAppMessageTemplateStatusLabel'
 import WhatsAppMessageTemplateCategoryLabel from './WhatsAppMessageTemplateCategoryLabel'
 import {normalizeLocale} from './utils'
+import WhatsAppMessageTemplateMessage from './WhatsAppMessageTemplateMessage'
 
 type Props = {
     isOpen: boolean
@@ -110,7 +110,10 @@ export default function WhatsAppMessageTemplateDetailsDrawer({
                     .
                 </p>
                 <Card className={css.messageContainer}>
-                    <WhatsAppMessageTemplateMessage template={template} />
+                    <WhatsAppMessageTemplateMessage
+                        template={template}
+                        isPreview
+                    />
                 </Card>
             </Drawer.Content>
         </Drawer>
