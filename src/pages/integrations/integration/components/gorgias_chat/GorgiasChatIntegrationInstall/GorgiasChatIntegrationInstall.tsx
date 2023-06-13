@@ -16,6 +16,7 @@ import NavigatedSuccessModal, {
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 import {Tab} from 'pages/integrations/integration/Integration'
 
+import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
 import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
@@ -39,6 +40,7 @@ const GorgiasChatIntegrationInstall = ({
     isUpdate,
 }: Props) => {
     const storeIntegrations = useAppSelector(getStoreIntegrations)
+    const {installed} = useAppSelector(getChatInstallationStatus)
     const applicationId = integration.getIn(['meta', 'app_id'])
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
     const shopifyIntegrationIds: List<number> = integration.getIn(
@@ -135,6 +137,9 @@ const GorgiasChatIntegrationInstall = ({
                                     applicationId={applicationId}
                                     isConnected={isConnected}
                                     isConnectedToShopify={isConnectedToShopify}
+                                    isInstalledManually={
+                                        installed && !isOneClickInstallation
+                                    }
                                 />
                             </div>
                         </div>
@@ -145,7 +150,29 @@ const GorgiasChatIntegrationInstall = ({
                                 onConfirm={() => {
                                     deleteIntegration(integration)
                                 }}
-                                confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                confirmationTitle="Delete chat?"
+                                confirmationContent={
+                                    isOneClickInstallation ? (
+                                        'Deleting this chat will remove it from your store and disable any associated views and rules.'
+                                    ) : (
+                                        <span>
+                                            Deleting this chat will remove it
+                                            from your store and disable any
+                                            associated views and rules. <br />
+                                            <br />
+                                            For manually installed chats, you
+                                            also need to
+                                            <b> delete the script</b> from the
+                                            store's theme, website code, or
+                                            Google Tag Manager to remove it from
+                                            your website.
+                                        </span>
+                                    )
+                                }
+                                confirmationButtonIntent="destructive"
+                                confirmLabel="Delete Chat"
+                                cancelLabel="Cancel"
+                                showCancelButton={true}
                                 intent="destructive"
                                 fillStyle="ghost"
                             >

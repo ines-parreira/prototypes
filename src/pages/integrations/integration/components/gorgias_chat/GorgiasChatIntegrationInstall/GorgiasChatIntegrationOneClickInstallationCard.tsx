@@ -55,6 +55,14 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
 
     return (
         <div className={css.container}>
+            {isInstalled ? (
+                <i
+                    className="material-icons text-success"
+                    style={{fontSize: 24}}
+                >
+                    check_circle
+                </i>
+            ) : null}
             <div>
                 <div className={css.title}>
                     1-click installation for Shopify

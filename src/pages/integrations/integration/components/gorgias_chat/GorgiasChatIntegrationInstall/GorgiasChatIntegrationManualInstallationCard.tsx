@@ -14,6 +14,7 @@ type Props = {
     applicationId?: string
     isConnected: boolean
     isConnectedToShopify: boolean
+    isInstalledManually: boolean
 }
 
 enum Tab {
@@ -26,6 +27,7 @@ const GorgiasChatIntegrationManualInstallationCard = ({
     applicationId,
     isConnected,
     isConnectedToShopify,
+    isInstalledManually,
 }: Props) => {
     const {data} = useGetInstallationSnippet(
         {applicationId: applicationId!},
@@ -70,6 +72,14 @@ const GorgiasChatIntegrationManualInstallationCard = ({
                     setIsOpen(!isOpen)
                 }}
             >
+                {isInstalledManually ? (
+                    <i
+                        className="material-icons text-success"
+                        style={{fontSize: 24}}
+                    >
+                        check_circle
+                    </i>
+                ) : null}
                 <div>
                     <div className={css.title}>Manual installation</div>
                     <div>
