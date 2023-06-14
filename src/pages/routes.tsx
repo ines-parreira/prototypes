@@ -53,6 +53,7 @@ import CustomerDetailContainer from './customers/detail/CustomerDetailContainer'
 import CustomerSourceContainer from './customers/detail/CustomerSourceContainer'
 import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer'
 
+import NotificationSettings from './settings/notifications/NotificationSettings'
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
 import PasswordAnd2FA from './settings/yourProfile/PasswordAnd2FA'
 import APIView from './settings/api/APIView'
@@ -621,6 +622,8 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
 export function SettingsRoutes({match: {path}}: RouteComponentProps) {
     const isDecoupleContactFormEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.DecoupleContactForm]
+    const isNotificationSoundsEnabled: boolean =
+        useFlags()[FeatureFlagKey.NotificationSounds] || false
     const satisfactionPaywallConfig = {
         [AccountFeature.SatisfactionSurveys]: {
             ...defaultPaywallConfigs[AccountFeature.SatisfactionSurveys],
@@ -685,6 +688,16 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                     navbar: SettingsNavbar,
                 })}
             />
+            {isNotificationSoundsEnabled && (
+                <Route
+                    path={`${path}/notifications`}
+                    exact
+                    render={appRender({
+                        content: NotificationSettings,
+                        navbar: SettingsNavbar,
+                    })}
+                />
+            )}
             <Route
                 path={`${path}/password-2fa`}
                 exact

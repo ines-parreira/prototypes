@@ -200,6 +200,11 @@ const CATEGORIES: Category[] = [
                 text: 'Your profile',
             },
             {
+                to: 'notifications',
+                requiredFeatureFlag: FeatureFlagKey.NotificationSounds,
+                text: 'Notifications',
+            },
+            {
                 to: 'password-2fa',
                 text: 'Password & 2FA',
             },
