@@ -3,6 +3,10 @@ import {render} from '@testing-library/react'
 
 import BigNumberMetric from '../BigNumberMetric'
 
+jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
+    <div data-testid="skeleton" />
+))
+
 describe('<BigNumberMetric />', () => {
     it('should render the number metric', () => {
         const {container} = render(<BigNumberMetric>content</BigNumberMetric>)
@@ -16,5 +20,13 @@ describe('<BigNumberMetric />', () => {
         )
 
         expect(container).toMatchSnapshot()
+    })
+
+    it('should render the loading skeleton', () => {
+        const {getAllByTestId} = render(
+            <BigNumberMetric isLoading>content</BigNumberMetric>
+        )
+
+        expect(getAllByTestId('skeleton')).toHaveLength(1)
     })
 })

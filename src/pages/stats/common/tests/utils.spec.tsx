@@ -19,8 +19,9 @@ import {
     formatMetricTrend,
     formatMetricValue,
     formatNumber,
-    formatTimeSeriesDate,
+    formatTimeSeriesData,
     SHORT_FORMAT,
+    NOT_AVAILABLE_TEXT,
     useStatsViewFilters,
 } from '../utils'
 
@@ -229,6 +230,10 @@ describe('stats components utils', () => {
                 )
             ).toBe('5d 17h')
         })
+
+        it('should return fallback when value is null', () => {
+            expect(formatMetricValue(null, 'decimal')).toBe(NOT_AVAILABLE_TEXT)
+        })
     })
 
     describe('formatMetricTrend', () => {
@@ -286,23 +291,78 @@ describe('stats components utils', () => {
         })
     })
 
-    describe('formatTimeSeriesDate', () => {
-        it('should format the dates to show month day and year', () => {
+    describe('formatTimeSeriesData', () => {
+        it('should return the time series data for line chart', () => {
             expect(
-                formatTimeSeriesDate(
-                    '2020-01-01T00:00:00.000',
+                formatTimeSeriesData(
+                    [
+                        [
+                            {
+                                dateTime: '2020-01-01T00:00:00.000',
+                                value: 1,
+                            },
+                            {
+                                dateTime: '2020-01-01T00:00:00.000',
+                                value: 2,
+                            },
+                        ],
+                    ],
+                    'test label',
                     ReportingGranularity.Month
                 )
-            ).toBe(moment('2020-01-01T00:00:00.000').format(SHORT_FORMAT))
+            ).toMatchObject([
+                {
+                    label: 'test label',
+                    values: [
+                        {
+                            x: moment('2020-01-01T00:00:00.000').format(
+                                SHORT_FORMAT
+                            ),
+                            y: 1,
+                        },
+                        {
+                            x: moment('2020-01-01T00:00:00.000').format(
+                                SHORT_FORMAT
+                            ),
+                            y: 2,
+                        },
+                    ],
+                },
+            ])
+        })
+
+        it('should format the dates to show month day and year', () => {
+            expect(
+                formatTimeSeriesData(
+                    [[{dateTime: '2020-01-01T00:00:00.000', value: 1}]],
+                    'test label',
+                    ReportingGranularity.Month
+                )
+            ).toMatchObject([
+                {
+                    label: 'test label',
+                    values: [
+                        {
+                            x: moment('2020-01-01T00:00:00.000').format(
+                                SHORT_FORMAT
+                            ),
+                            y: 1,
+                        },
+                    ],
+                },
+            ])
         })
 
         it('should format the dates to show hour when granularity is "hour"', () => {
             expect(
-                formatTimeSeriesDate(
-                    '2020-01-01T00:00:00.000',
+                formatTimeSeriesData(
+                    [[{dateTime: '2020-01-01T00:00:00.000', value: 2}]],
+                    'test label',
                     ReportingGranularity.Hour
                 )
-            ).toBe('12:00 AM')
+            ).toMatchObject([
+                {label: 'test label', values: [{x: '12:00 AM', y: 2}]},
+            ])
         })
     })
 })

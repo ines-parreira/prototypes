@@ -3,9 +3,9 @@
 exports[`<TrendBadge /> should render the badge 1`] = `
 <div>
   <div
-    class="trend positive"
+    class="trend neutral"
   >
-    value
+    N/A
   </div>
 </div>
 `;

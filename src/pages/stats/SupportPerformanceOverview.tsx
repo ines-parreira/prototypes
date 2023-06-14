@@ -52,15 +52,17 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 
+import {formatMetricValue, formatTimeSeriesData} from './common/utils'
+import MetricCard from './MetricCard'
+import TrendBadge from './TrendBadge'
 import BigNumberMetric from './BigNumberMetric'
 import DashboardSection from './DashboardSection'
 import DashboardGridCell from './DashboardGridCell'
 import css from './SupportPerformanceOverview.less'
 import ChartCard from './ChartCard'
-import TrendMetricCard from './TrendMetricCard'
 import GaugeChart from './GaugeChart'
+import LineChart from './LineChart'
 import {OneDimensionalDataItem} from './types'
-import TimeSeriesChart from './TimeSeriesChart'
 
 const DEFAULT_TIMEZONE = 'UTC'
 const LEARN_MORE_URL =
@@ -246,152 +248,264 @@ export default function SupportPerformanceOverview() {
             >
                 <DashboardSection title="Customer experience">
                     <DashboardGridCell size={3}>
-                        <TrendMetricCard
+                        <MetricCard
                             title="Customer satisfaction"
                             hint="Average CSAT score for tickets which received a survey during the period"
-                            data={customerSatisfactionTrend.data}
-                            interpretAs="more-is-better"
+                            trendBadge={
+                                <TrendBadge
+                                    interpretAs="more-is-better"
+                                    isLoading={!customerSatisfactionTrend.data}
+                                    value={
+                                        customerSatisfactionTrend.data?.value
+                                    }
+                                    prevValue={
+                                        customerSatisfactionTrend.data
+                                            ?.prevValue
+                                    }
+                                />
+                            }
                         >
-                            {({formattedValue}) => (
-                                <BigNumberMetric>
-                                    {formattedValue}{' '}
-                                    <img
-                                        className={css.customerSatisfactionStar}
-                                        src={blueStar}
-                                        alt="Blue star"
-                                    />
-                                </BigNumberMetric>
-                            )}
-                        </TrendMetricCard>
+                            <BigNumberMetric
+                                isLoading={!customerSatisfactionTrend.data}
+                            >
+                                {formatMetricValue(
+                                    customerSatisfactionTrend.data?.value
+                                )}{' '}
+                                <img
+                                    className={css.customerSatisfactionStar}
+                                    src={blueStar}
+                                    alt="Blue star"
+                                />
+                            </BigNumberMetric>
+                        </MetricCard>
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
-                        <TrendMetricCard
+                        <MetricCard
                             title="First response time"
                             hint="Median time between 1st customer message and 1st human agent response"
-                            data={firstResponseTimeTrend.data}
-                            interpretAs="less-is-better"
-                            valueFormat="duration"
+                            trendBadge={
+                                <TrendBadge
+                                    format="duration"
+                                    interpretAs="less-is-better"
+                                    isLoading={!firstResponseTimeTrend.data}
+                                    value={firstResponseTimeTrend.data?.value}
+                                    prevValue={
+                                        firstResponseTimeTrend.data?.prevValue
+                                    }
+                                />
+                            }
                         >
-                            {({formattedValue}) => (
-                                <BigNumberMetric>
-                                    {formattedValue}
-                                </BigNumberMetric>
-                            )}
-                        </TrendMetricCard>
+                            <BigNumberMetric
+                                isLoading={!firstResponseTimeTrend.data}
+                            >
+                                {formatMetricValue(
+                                    firstResponseTimeTrend.data?.value,
+                                    'duration'
+                                )}
+                            </BigNumberMetric>
+                        </MetricCard>
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
-                        <TrendMetricCard
+                        <MetricCard
                             title="Resolution time"
                             hint="Median time between the 1st customer message and the last time the ticket was closed"
-                            data={resolutionTimeTrend.data}
-                            valueFormat="duration"
-                            interpretAs="less-is-better"
+                            trendBadge={
+                                <TrendBadge
+                                    format="duration"
+                                    interpretAs="less-is-better"
+                                    isLoading={!resolutionTimeTrend.data}
+                                    value={resolutionTimeTrend.data?.value}
+                                    prevValue={
+                                        resolutionTimeTrend.data?.prevValue
+                                    }
+                                />
+                            }
                         >
-                            {({formattedValue}) => (
-                                <BigNumberMetric>
-                                    {formattedValue}
-                                </BigNumberMetric>
-                            )}
-                        </TrendMetricCard>
+                            <BigNumberMetric
+                                isLoading={!resolutionTimeTrend.data}
+                            >
+                                {formatMetricValue(
+                                    resolutionTimeTrend.data?.value,
+                                    'duration'
+                                )}
+                            </BigNumberMetric>
+                        </MetricCard>
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
-                        <TrendMetricCard
+                        <MetricCard
                             title="Messages per ticket"
                             hint="Average number of messages exchanged per closed ticket"
-                            data={messagesPerTicketTrend.data}
-                            interpretAs="less-is-better"
+                            trendBadge={
+                                <TrendBadge
+                                    interpretAs="less-is-better"
+                                    isLoading={!messagesPerTicketTrend.data}
+                                    value={messagesPerTicketTrend.data?.value}
+                                    prevValue={
+                                        messagesPerTicketTrend.data?.prevValue
+                                    }
+                                />
+                            }
                         >
-                            {({formattedValue}) => (
-                                <BigNumberMetric>
-                                    {formattedValue}
-                                </BigNumberMetric>
-                            )}
-                        </TrendMetricCard>
+                            <BigNumberMetric
+                                isLoading={!messagesPerTicketTrend.data}
+                            >
+                                {formatMetricValue(
+                                    messagesPerTicketTrend.data?.value
+                                )}
+                            </BigNumberMetric>
+                        </MetricCard>
                     </DashboardGridCell>
                 </DashboardSection>
                 <DashboardSection title="Workload">
                     <DashboardGridCell size={6}>
-                        <TrendMetricCard
+                        <MetricCard
                             title="Open tickets"
                             hint="Number of tickets with the status “open” at the end of the period"
-                            data={openTicketsTrend.data}
-                            trendFormat="percent"
+                            trendBadge={
+                                <TrendBadge
+                                    format="percent"
+                                    isLoading={!openTicketsTrend.data}
+                                    value={openTicketsTrend.data?.value}
+                                    prevValue={openTicketsTrend.data?.prevValue}
+                                />
+                            }
                         >
-                            {({formattedValue, formattedPrevValue}) => (
-                                <BigNumberMetric from={formattedPrevValue}>
-                                    {formattedValue}
-                                </BigNumberMetric>
-                            )}
-                        </TrendMetricCard>
+                            <BigNumberMetric
+                                isLoading={!openTicketsTrend.data}
+                                from={formatMetricValue(
+                                    openTicketsTrend.data?.prevValue
+                                )}
+                            >
+                                {formatMetricValue(
+                                    openTicketsTrend.data?.value
+                                )}
+                            </BigNumberMetric>
+                        </MetricCard>
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
-                        <TrendMetricCard
+                        <MetricCard
                             title="Closed tickets"
                             hint="Number of unique tickets closed during the period (and that did not reopen)"
-                            data={closedTicketsTrend.data}
-                            trendFormat="percent"
-                            interpretAs="neutral"
+                            trendBadge={
+                                <TrendBadge
+                                    format="percent"
+                                    isLoading={!closedTicketsTrend.data}
+                                    value={closedTicketsTrend.data?.value}
+                                    prevValue={
+                                        closedTicketsTrend.data?.prevValue
+                                    }
+                                />
+                            }
                         >
-                            {({formattedValue, formattedPrevValue}) => (
-                                <BigNumberMetric from={formattedPrevValue}>
-                                    {formattedValue}
-                                </BigNumberMetric>
-                            )}
-                        </TrendMetricCard>
+                            <BigNumberMetric
+                                isLoading={!closedTicketsTrend.data}
+                                from={formatMetricValue(
+                                    closedTicketsTrend.data?.prevValue
+                                )}
+                            >
+                                {formatMetricValue(
+                                    closedTicketsTrend.data?.value
+                                )}
+                            </BigNumberMetric>
+                        </MetricCard>
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
-                        <TrendMetricCard
+                        <MetricCard
                             title="Tickets created"
                             hint="Number of new tickets to handle"
-                            data={ticketsCreatedTrend.data}
-                            trendFormat="percent"
-                            interpretAs="neutral"
+                            trendBadge={
+                                <TrendBadge
+                                    format="percent"
+                                    isLoading={!ticketsCreatedTrend.data}
+                                    value={ticketsCreatedTrend.data?.value}
+                                    prevValue={
+                                        ticketsCreatedTrend.data?.prevValue
+                                    }
+                                />
+                            }
                         >
-                            {({formattedValue, formattedPrevValue}) => (
-                                <BigNumberMetric from={formattedPrevValue}>
-                                    {formattedValue}
-                                </BigNumberMetric>
-                            )}
-                        </TrendMetricCard>
+                            <BigNumberMetric
+                                isLoading={!ticketsCreatedTrend.data}
+                                from={formatMetricValue(
+                                    ticketsCreatedTrend.data?.prevValue
+                                )}
+                            >
+                                {formatMetricValue(
+                                    ticketsCreatedTrend.data?.value
+                                )}
+                            </BigNumberMetric>
+                        </MetricCard>
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
-                        <TrendMetricCard
+                        <MetricCard
                             title="Tickets replied"
                             hint="Number of tickets where the customer got a response"
-                            data={ticketsRepliedTrend.data}
-                            trendFormat="percent"
-                            interpretAs="more-is-better"
+                            trendBadge={
+                                <TrendBadge
+                                    format="percent"
+                                    interpretAs="more-is-better"
+                                    isLoading={!ticketsRepliedTrend.data}
+                                    value={ticketsRepliedTrend.data?.value}
+                                    prevValue={
+                                        ticketsRepliedTrend.data?.prevValue
+                                    }
+                                />
+                            }
                         >
-                            {({formattedValue, formattedPrevValue}) => (
-                                <BigNumberMetric from={formattedPrevValue}>
-                                    {formattedValue}
-                                </BigNumberMetric>
-                            )}
-                        </TrendMetricCard>
+                            <BigNumberMetric
+                                isLoading={!ticketsRepliedTrend.data}
+                                from={formatMetricValue(
+                                    ticketsRepliedTrend.data?.prevValue
+                                )}
+                            >
+                                {formatMetricValue(
+                                    ticketsRepliedTrend.data?.value
+                                )}
+                            </BigNumberMetric>
+                        </MetricCard>
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
-                        <TrendMetricCard
+                        <MetricCard
                             title="Messages sent"
                             hint="Number of messages received by your customer"
-                            data={messagesSentTrend.data}
-                            trendFormat="percent"
+                            trendBadge={
+                                <TrendBadge
+                                    format="percent"
+                                    isLoading={!messagesSentTrend.data}
+                                    value={messagesSentTrend.data?.value}
+                                    prevValue={
+                                        messagesSentTrend.data?.prevValue
+                                    }
+                                />
+                            }
                         >
-                            {({formattedValue, formattedPrevValue}) => (
-                                <BigNumberMetric from={formattedPrevValue}>
-                                    {formattedValue}
-                                </BigNumberMetric>
-                            )}
-                        </TrendMetricCard>
+                            <BigNumberMetric
+                                isLoading={!messagesSentTrend.data}
+                                from={formatMetricValue(
+                                    messagesSentTrend.data?.prevValue
+                                )}
+                            >
+                                {formatMetricValue(
+                                    messagesSentTrend.data?.value
+                                )}
+                            </BigNumberMetric>
+                        </MetricCard>
                     </DashboardGridCell>
+
                     <DashboardGridCell size={6}>
                         <ChartCard
                             title="Tickets created"
                             hint="Number of new tickets to handle"
                         >
-                            <TimeSeriesChart
-                                timeSeries={ticketsCreatedTimeSeries}
-                                labels={['Tickets created']}
-                                granularity={granularity}
+                            <LineChart
+                                isLoading={!ticketsCreatedTimeSeries.data}
+                                data={formatTimeSeriesData(
+                                    ticketsCreatedTimeSeries.data,
+                                    'Tickets created',
+                                    granularity
+                                )}
+                                hasBackground
+                                _displayLegacyTooltip
                             />
                         </ChartCard>
                     </DashboardGridCell>
@@ -400,10 +514,15 @@ export default function SupportPerformanceOverview() {
                             title="Closed tickets"
                             hint="Number of opened tickets solved by the end of the period"
                         >
-                            <TimeSeriesChart
-                                timeSeries={ticketsClosedTimeSeries}
-                                labels={['Closed tickets']}
-                                granularity={granularity}
+                            <LineChart
+                                isLoading={!ticketsClosedTimeSeries.data}
+                                data={formatTimeSeriesData(
+                                    ticketsClosedTimeSeries.data,
+                                    'Closed tickets',
+                                    granularity
+                                )}
+                                hasBackground
+                                _displayLegacyTooltip
                             />
                         </ChartCard>
                     </DashboardGridCell>
@@ -412,10 +531,15 @@ export default function SupportPerformanceOverview() {
                             title="Tickets replied"
                             hint="Number of tickets where the customer got a response"
                         >
-                            <TimeSeriesChart
-                                timeSeries={ticketsRepliedTimeSeries}
-                                labels={['Tickets replied']}
-                                granularity={granularity}
+                            <LineChart
+                                isLoading={!ticketsRepliedTimeSeries.data}
+                                data={formatTimeSeriesData(
+                                    ticketsRepliedTimeSeries.data,
+                                    'Tickets replied',
+                                    granularity
+                                )}
+                                hasBackground
+                                _displayLegacyTooltip
                             />
                         </ChartCard>
                     </DashboardGridCell>
@@ -424,10 +548,15 @@ export default function SupportPerformanceOverview() {
                             title="Messages sent"
                             hint="Number of messages received by your customer"
                         >
-                            <TimeSeriesChart
-                                timeSeries={messagesSentTimeSeries}
-                                labels={['Messages sent']}
-                                granularity={granularity}
+                            <LineChart
+                                isLoading={!messagesSentTimeSeries.data}
+                                data={formatTimeSeriesData(
+                                    messagesSentTimeSeries.data,
+                                    'Messages sent',
+                                    granularity
+                                )}
+                                hasBackground
+                                _displayLegacyTooltip
                             />
                         </ChartCard>
                     </DashboardGridCell>

@@ -22,7 +22,7 @@ const defaultProps: ComponentProps<typeof MetricCard> = {
     tooltip: (
         <MetricTooltip title="Tooltip title">Tooltip content</MetricTooltip>
     ),
-    trendBadge: <TrendBadge>5%</TrendBadge>,
+    trendBadge: <TrendBadge value={7} prevValue={2} />,
 }
 
 export const Default = Template.bind({})

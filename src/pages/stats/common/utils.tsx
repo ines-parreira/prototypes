@@ -16,10 +16,12 @@ import {RootState} from 'state/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {TicketChannel} from 'business/types/ticket'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 
 import StatsFiltersContext from '../StatsFiltersContext'
 
 export const DEFAULT_LOCALE = 'en-US'
+export const NOT_AVAILABLE_TEXT = 'N/A'
 
 export const comparedPeriodString = (
     previousStartDatetime: Moment,
@@ -185,7 +187,14 @@ export const findChannelNameKey = (
 }
 
 export type MetricValueFormat = 'decimal' | 'duration'
-export const formatMetricValue = (value: number, format: MetricValueFormat) => {
+export const formatMetricValue = (
+    value: number | null | undefined,
+    format: MetricValueFormat = 'decimal'
+) => {
+    if (value == null) {
+        return NOT_AVAILABLE_TEXT
+    }
+
     if (format === 'duration') {
         return formatDuration(value, 2)
     }
@@ -234,13 +243,18 @@ export const formatMetricTrend = (
 }
 
 export const SHORT_FORMAT = 'MMM Do, YYYY'
-export const formatTimeSeriesDate = (
-    date: string,
+export const formatTimeSeriesData = (
+    data: TimeSeriesDataItem[][] = [],
+    label: string,
     granularity: ReportingGranularity
 ) => {
-    let format = SHORT_FORMAT
-    if (granularity === 'hour') {
-        format = 'LT'
-    }
-    return moment(date).format(format)
+    const format = granularity === 'hour' ? 'LT' : SHORT_FORMAT
+
+    return data.map((items) => ({
+        label: label,
+        values: items.map((item) => ({
+            x: moment(item.dateTime).format(format),
+            y: item.value,
+        })),
+    }))
 }

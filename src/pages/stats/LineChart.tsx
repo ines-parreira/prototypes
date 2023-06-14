@@ -3,6 +3,7 @@ import React, {useMemo, useState} from 'react'
 import {Line} from 'react-chartjs-2'
 
 import colors from 'assets/tokens/colors.json'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Legend from 'pages/stats/Legend'
 import css from './LineChart.less'
 import {TwoDimensionalDataItem} from './types'
@@ -20,6 +21,7 @@ type Props = {
     hasBackground?: boolean
     yLabel?: string
     renderYTickLabel?: (value: number | string) => string
+    isLoading?: boolean
     displayLegend?: boolean
     _displayLegacyTooltip?: boolean
     _renderLegacyTooltipLabel?: (tooltipItem: TooltipItem<'line'>) => string
@@ -104,6 +106,7 @@ export default function LineChart({
     hasBackground,
     yLabel,
     renderYTickLabel = renderTickLabelAsNumber,
+    isLoading = false,
     displayLegend = false,
     _displayLegacyTooltip = false,
     _renderLegacyTooltipLabel,
@@ -186,6 +189,10 @@ export default function LineChart({
             _renderLegacyTooltipLabel,
         ]
     )
+
+    if (isLoading) {
+        return <Skeleton height={250} />
+    }
 
     return (
         <div className={css.wrapper}>
