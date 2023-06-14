@@ -49,7 +49,7 @@ export default function useMacrosSearch({filters, query, ticket}: Options) {
 
     const ticketOptions = useMemo(
         () =>
-            !ticket
+            !ticket.id
                 ? {}
                 : {
                       ticketId: ticket.id,
