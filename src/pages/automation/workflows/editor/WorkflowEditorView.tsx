@@ -125,14 +125,19 @@ function WorkflowEditorViewWrapped({
 
         if (templateSlug && templateSlug in WORKFLOW_TEMPLATES) {
             const template = WORKFLOW_TEMPLATES[templateSlug]
+            const configuration = template.getConfiguration(
+                workflowId,
+                currentAccountId
+            )
             worfklowConfigurationContext.dispatch({
                 type: 'RESET_CONFIGURATION',
-                configuration: template.getConfiguration(
-                    workflowId,
-                    currentAccountId
-                ),
+                configuration,
             })
-            workflowEntrypointContext.setLabel(template.entrypoint.label)
+            if (configuration.entrypoint?.label) {
+                workflowEntrypointContext.setLabel(
+                    configuration.entrypoint?.label
+                )
+            }
         } else {
             const t = setTimeout(() => {
                 inputRef.current?.focus()

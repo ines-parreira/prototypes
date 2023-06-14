@@ -23,9 +23,6 @@ export const WORKFLOW_TEMPLATES: Record<
         description:
             'Ask customers questions and recommend specific products based on their answers.',
         previewImg: productRecommendation,
-        entrypoint: {
-            label: 'What shoe is right for me?',
-        },
         getConfiguration: (
             id: string,
             account_id: number
@@ -103,6 +100,10 @@ export const WORKFLOW_TEMPLATES: Record<
                 account_id,
                 is_draft: false,
                 initial_step_id: stepFirstId,
+                entrypoint: {
+                    label: 'What shoe is right for me?',
+                    label_tkey: ulid(),
+                },
                 steps: [
                     genMessagesStep(
                         stepFirstId,
