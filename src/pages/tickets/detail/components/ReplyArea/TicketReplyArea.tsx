@@ -1,24 +1,14 @@
 import React, {Component, KeyboardEvent as KeyboardEventReact} from 'react'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
-import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 import {ContentState, EditorState} from 'draft-js'
 
 import {clearMacroBeforeApply} from 'business/macro'
-import {OrderDirection} from 'models/api/types'
-import {
-    FetchMacrosOptions,
-    MacroSortableProperties,
-    MacrosProperties,
-} from 'models/macro/types'
+import {Macro, MacrosProperties} from 'models/macro/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {fetchMacros} from 'state/macro/actions'
 import RichField from 'pages/common/forms/RichField/RichField'
-import withCancellableRequest, {
-    CancellableRequestInjectedProps,
-} from 'pages/common/utils/withCancellableRequest'
 import {
     getCurrentMacro,
     getDefaultSelectedMacroId,
@@ -28,14 +18,12 @@ import {getPreferences} from 'state/currentUser/selectors'
 import {setResponseText} from 'state/newMessage/actions'
 import {getNewMessageType, isCacheAdded} from 'state/newMessage/selectors'
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
-import {getMacroParametersOptions} from 'state/macro/selectors'
 import {notify} from 'state/notifications/actions'
 import {applyMacro, clearAppliedMacro} from 'state/ticket/actions'
 import {
     DEPRECATED_getTicket,
     getAppliedMacro,
     getTopRankMacroState,
-    getLastMessage,
     getInTicketSuggestionState,
 } from 'state/ticket/selectors'
 import {nestedReplace} from 'state/ticket/utils'
@@ -54,25 +42,21 @@ const PREFILL_TOP_MACRO_SCORE_THRESHOLD = 0.8
 type Props = {
     filters: MacrosProperties
     hasShownMacros: boolean
+    initialMacrosLoaded: boolean
     isMacrosActive: boolean
+    loadMacros: (retainPreviousResults?: boolean) => Promise<void>
+    macros: Macro[]
+    nextCursor: string | null
     query: string
     onChangeFilters: (filters: MacrosProperties) => void
     onChangeMacrosActive: (isActive?: boolean) => void
     onChangeQuery: (query: string) => void
-} & CancellableRequestInjectedProps<
-    'fetchMacrosCancellable',
-    'cancelFetchMacrosCancellable',
-    typeof fetchMacros
-> &
-    ConnectedProps<typeof connector>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    isInitialMacrosLoading: boolean
-    searchResults: List<Map<any, any>>
     selectedMacroId: number | null
     shouldFocusEditor: boolean
     topRankMacro: Map<any, any> | null
-    nextCursor: string | null
 }
 
 export class TicketReplyArea extends Component<Props, State> {
@@ -84,23 +68,14 @@ export class TicketReplyArea extends Component<Props, State> {
         super(props)
 
         this.state = {
-            searchResults: fromJS([]),
             selectedMacroId: null,
-            isInitialMacrosLoading: false,
             shouldFocusEditor: false,
             topRankMacro: null,
-            nextCursor: null,
         }
     }
 
-    async componentDidMount() {
-        const {filters, query} = this.props
+    componentDidMount() {
         this.bindKeys()
-        this.setState({isInitialMacrosLoading: true})
-        await this.loadMacros({...filters, search: query})
-        this.setState({isInitialMacrosLoading: false})
-
-        this.checkTopRankMacro()
     }
 
     applyTopRankMacro(macro: Map<any, any>, state: TopRankMacroState['state']) {
@@ -137,16 +112,17 @@ export class TicketReplyArea extends Component<Props, State> {
         )
             return
 
-        const topRankMacro: Map<any, any> | undefined =
-            this.state.searchResults.find(
-                (macro) =>
-                    macro?.get('relevance_rank') === 1 &&
-                    macro?.get('score') > PREFILL_TOP_MACRO_SCORE_THRESHOLD
-            )
-        if (!topRankMacro) return
+        const foundTopRankMacro = this.props.macros.find(
+            (macro) =>
+                macro.relevance_rank === 1 &&
+                macro.score &&
+                macro.score > PREFILL_TOP_MACRO_SCORE_THRESHOLD
+        )
+        if (!foundTopRankMacro) return
 
+        const topRankMacro: Map<any, any> = fromJS(foundTopRankMacro)
         const topRankMacroStateId = this.props.topRankMacroState?.['macroId']
-        const topRankMacroId: number | undefined = topRankMacro?.get('id')
+        const topRankMacroId: number | undefined = topRankMacro.get('id')
         if (
             topRankMacroStateId &&
             topRankMacroId &&
@@ -215,27 +191,17 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     componentDidUpdate = (prevProps: Props, prevState: State) => {
+        const {initialMacrosLoaded, macros} = this.props
         const {shouldFocusEditor} = this.state
-        const {filters, query} = this.props
 
-        if (
-            (filters !== prevProps.filters || query !== prevProps.query) &&
-            query.trim().length !== 1
-        ) {
-            const fields: [string, unknown, unknown][] = [
-                ['search', query, prevProps.query],
-                ['languages', filters.languages, prevProps.filters.languages],
-                ['tags', filters.tags, prevProps.filters.tags],
-            ]
-
-            const changed = fields
-                .filter(([, a, b]) => a !== b)
-                .map(([name]) => name)
-
-            void this.debounceLoadMacrosWithLogEvent(
-                {...filters, search: query},
-                changed
-            )
+        if (initialMacrosLoaded && !prevProps.initialMacrosLoaded) {
+            this.setState({
+                selectedMacroId: getDefaultSelectedMacroId(
+                    fromJS(macros),
+                    this.state.selectedMacroId
+                ),
+            })
+            this.checkTopRankMacro()
         }
 
         if (this.props.cacheAdded && this.cacheAdded !== true) {
@@ -314,7 +280,7 @@ export class TicketReplyArea extends Component<Props, State> {
             : true
 
         return (
-            this.state.searchResults.size > 0 &&
+            this.props.macros.length > 0 &&
             (this.props.newMessage.getIn(['newMessage', 'body_text']) as string)
                 .length < 3 &&
             !this.props.ticket.getIn(['state', 'appliedMacro']) &&
@@ -377,67 +343,6 @@ export class TicketReplyArea extends Component<Props, State> {
         }
     }
 
-    loadMacros = async (
-        options: FetchMacrosOptions = {
-            search: '',
-        },
-        retainPreviousResults = false
-    ): Promise<void> => {
-        const ticketId = this.props.currentTicket.get('id')
-        let filters: FetchMacrosOptions = {}
-
-        if (ticketId) {
-            filters = {
-                messageId: this.props.currentTicket.getIn([
-                    'messages',
-                    (this.props.currentTicket.get('messages') as List<any>)
-                        .size - 1,
-                    'id',
-                ]),
-                numberPredictions: 3,
-                ticketId,
-            }
-        }
-
-        const res = await this.props.fetchMacrosCancellable({
-            ...options,
-            ...filters,
-            orderBy: `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
-        })
-        if (!res) {
-            return
-        }
-
-        const newMacros = retainPreviousResults
-            ? (this.state.searchResults.concat(
-                  fromJS(res.data) as List<Map<any, any>>
-              ) as List<Map<any, any>>)
-            : (fromJS(res.data) as List<Map<any, any>>)
-
-        const selectedMacroId = getDefaultSelectedMacroId(
-            fromJS(res.data),
-            this.state.selectedMacroId
-        )
-        return new Promise((resolve) => {
-            this.setState(
-                {
-                    selectedMacroId,
-                    searchResults: newMacros,
-                    nextCursor: res.meta.next_cursor,
-                },
-                resolve
-            )
-        })
-    }
-
-    loadMacrosWithLogEvent = async (
-        options: FetchMacrosOptions,
-        changed: string[]
-    ): Promise<void> => {
-        logEvent(SegmentEvent.TicketMacrosSearch, {...options, changed})
-        return await this.loadMacros(options)
-    }
-
     setSelectedMacroId = (macro: Map<any, any>) =>
         this.setState({selectedMacroId: macro.get('id')})
 
@@ -470,11 +375,11 @@ export class TicketReplyArea extends Component<Props, State> {
                 action: (e) => {
                     e.preventDefault()
                     if (this.shouldDisplayQuickReply()) {
-                        const macros = this.state.searchResults
+                        const {macros} = this.props
                         const macroIdx =
                             parseInt((e as KeyboardEvent).code.slice(-1)) - 1
-                        if (macros.size > macroIdx) {
-                            this.applyMacro(macros.get(macroIdx))
+                        if (macros.length > macroIdx) {
+                            this.applyMacro(fromJS(macros[macroIdx]))
                         }
                     }
                 },
@@ -483,11 +388,12 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     handleSearchKeyDown = (e: KeyboardEventReact) => {
-        const {searchResults} = this.state
-        const macrosIds = searchResults
-            .map((macro) => macro?.get('id') as number)
-            .toList()
-        const indexCurrentMacro = macrosIds.indexOf(this.state.selectedMacroId!)
+        const {macros} = this.props
+        const {selectedMacroId} = this.state
+
+        const selectedMacroIndex = macros.findIndex(
+            (macro) => macro.id === selectedMacroId
+        )
 
         if (e.key === 'Escape' || e.key === 'Tab') {
             e.preventDefault()
@@ -495,33 +401,29 @@ export class TicketReplyArea extends Component<Props, State> {
         }
 
         if (e.key === 'ArrowDown') {
-            if (~indexCurrentMacro && indexCurrentMacro < macrosIds.size - 1) {
+            const nextId = macros[selectedMacroIndex + 1]?.id
+            if (nextId) {
                 e.preventDefault()
-                const nextMacroIndex = indexCurrentMacro + 1
-                this.setState({selectedMacroId: macrosIds.get(nextMacroIndex)})
+                this.setState({selectedMacroId: nextId})
             }
         }
 
         if (e.key === 'ArrowUp') {
-            if (~indexCurrentMacro && indexCurrentMacro > 0) {
+            const nextId = macros[selectedMacroIndex - 1]?.id
+            if (nextId) {
                 e.preventDefault()
-                const nextMacroIndex = indexCurrentMacro - 1
-                this.setState({selectedMacroId: macrosIds.get(nextMacroIndex)})
+                this.setState({selectedMacroId: nextId})
             }
         }
 
         if (e.key === 'Enter') {
             e.preventDefault()
-            const macro = searchResults.find(
-                (macro) => macro?.get('id') === this.state.selectedMacroId
-            )
+            const macro = macros[selectedMacroIndex]
             if (macro) {
-                this.applyMacro(macro)
+                this.applyMacro(fromJS(macro))
             }
         }
     }
-
-    debounceLoadMacrosWithLogEvent = _debounce(this.loadMacrosWithLogEvent, 350)
 
     showMacros = () => {
         this.props.onChangeMacrosActive(true)
@@ -553,20 +455,23 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     render() {
-        const {searchResults, isInitialMacrosLoading, nextCursor} = this.state
-        const currentMacro = getCurrentMacro(
-            this.state.searchResults,
-            this.state.selectedMacroId
-        )
+        const {selectedMacroId} = this.state
         const {
             currentTicket,
             filters,
+            initialMacrosLoaded,
             isMacrosActive,
+            macros,
             newMessageType,
+            nextCursor,
             query,
             onChangeFilters,
             onChangeQuery,
         } = this.props
+
+        const immutableMacros = fromJS(macros)
+
+        const currentMacro = getCurrentMacro(immutableMacros, selectedMacroId)
 
         const requireCustomerSelection =
             !currentTicket.get('id') &&
@@ -614,15 +519,15 @@ export class TicketReplyArea extends Component<Props, State> {
                         </div>
                     ) : isMacrosActive ? (
                         <TicketMacros
-                            macros={searchResults}
-                            isInitialMacrosLoading={isInitialMacrosLoading}
+                            macros={immutableMacros}
+                            initialMacrosLoaded={initialMacrosLoaded}
                             currentMacro={currentMacro}
                             selectMacro={this.setSelectedMacroId}
-                            fetchMacros={this.loadMacros}
+                            loadMacros={this.props.loadMacros}
                             searchParams={{
                                 ...filters,
                                 search: query,
-                                cursor: this.state.nextCursor,
+                                cursor: nextCursor,
                             }}
                             applyMacro={this.applyMacro}
                             hasDataToLoad={!!nextCursor}
@@ -644,7 +549,7 @@ export class TicketReplyArea extends Component<Props, State> {
                                 'appliedMacro',
                             ])}
                             richAreaRef={(ref) => (this.richArea = ref)}
-                            macros={this.state.searchResults}
+                            macros={immutableMacros}
                             applyMacro={this.applyMacro}
                             shouldDisplayQuickReply={this.shouldDisplayQuickReply()}
                         />
@@ -662,9 +567,7 @@ const connector = connect(
         currentUser: state.currentUser,
         newMessage: state.newMessage,
         newMessageType: getNewMessageType(state),
-        lastMessage: getLastMessage(state),
         preferences: getPreferences(state),
-        macroParametersOptions: getMacroParametersOptions(state),
         appliedMacro: getAppliedMacro(state),
         ticket: state.ticket,
         topRankMacroState: getTopRankMacroState(state),
@@ -678,11 +581,4 @@ const connector = connect(
     }
 )
 
-export default withCancellableRequest<
-    'fetchMacrosCancellable',
-    'cancelFetchMacrosCancellable',
-    typeof fetchMacros
->(
-    'fetchMacrosCancellable',
-    fetchMacros
-)(connector(TicketReplyArea))
+export default connector(TicketReplyArea)

@@ -6,7 +6,6 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {ContentState} from 'draft-js'
-import {Macro} from 'state/macro/types'
 import TicketReply from '../TicketReply'
 import {TicketReplyArea} from '../TicketReplyArea'
 import TicketMacros from '../TicketMacros'
@@ -90,7 +89,10 @@ const minProps = {
     cacheAdded: false,
     filters: {},
     hasShownMacros: false,
+    initialMacrosLoaded: false,
     isMacrosActive: false,
+    loadMacros: jest.fn(),
+    macros: [],
     query: '',
     onChangeFilters: jest.fn(),
     onChangeMacrosActive: jest.fn(),
@@ -184,135 +186,6 @@ describe('<TicketReplyArea/>', () => {
     })
 
     describe('prefill macro alert', () => {
-        it.each([
-            [
-                [
-                    {
-                        id: 1,
-                        external_id: null,
-                        name: 'Macro 1',
-                        intent: null,
-                        language: 'en',
-                        usage: 0,
-                        actions: [],
-                        relevance_rank: 1,
-                        score: 0.99,
-                    },
-                    {
-                        id: 2,
-                        external_id: null,
-                        name: 'Macro 2',
-                        intent: null,
-                        language: 'en',
-                        usage: 0,
-                        actions: [],
-                        relevance_rank: 2,
-                    },
-                ],
-                true,
-            ],
-            [
-                [
-                    {
-                        id: 1,
-                        external_id: null,
-                        name: 'Macro 1',
-                        intent: null,
-                        language: 'en',
-                        usage: 0,
-                        actions: [],
-                        relevance_rank: 1,
-                        score: 0.99,
-                    },
-                    {
-                        id: 2,
-                        external_id: null,
-                        name: 'Macro 2',
-                        intent: null,
-                        language: 'en',
-                        usage: 0,
-                        actions: [],
-                        relevance_rank: 2,
-                    },
-                    {
-                        id: 3,
-                        external_id: null,
-                        name: 'Macro 3',
-                        intent: null,
-                        language: 'en',
-                        usage: 0,
-                        actions: [],
-                        relevance_rank: 0,
-                        score: 0.29,
-                    },
-                ],
-                true,
-            ],
-            [
-                [
-                    {
-                        id: 1,
-                        external_id: null,
-                        name: 'Macro 1',
-                        intent: null,
-                        language: 'en',
-                        usage: 0,
-                        actions: [],
-                        relevance_rank: 2,
-                        score: 0.99,
-                    },
-                ],
-                false,
-            ],
-            [
-                [
-                    {
-                        id: 1,
-                        external_id: null,
-                        name: 'Macro 1',
-                        intent: null,
-                        language: 'en',
-                        usage: 0,
-                        actions: [],
-                        relevance_rank: 1,
-                        score: 0.5,
-                    },
-                ],
-                false,
-            ],
-        ])(
-            'should apply top one macro based on macros search results',
-            async (macros, shouldApplyMacro) => {
-                const component = mount(
-                    <Provider store={mockedStore({})}>
-                        <TicketReplyArea {...minProps} />
-                    </Provider>
-                )
-                const ticketReplyArea = component.find('TicketReplyArea')
-                ticketReplyArea.setState({
-                    searchResults: fromJS(macros),
-                })
-
-                await waitFor(() => {
-                    if (shouldApplyMacro) {
-                        const topOneMacro = fromJS({
-                            ...macros.find(
-                                (macro) => macro.relevance_rank === 1
-                            ),
-                        }) as Macro
-                        expect(minProps.applyMacro).toHaveBeenCalledWith(
-                            topOneMacro,
-                            minProps.currentTicket.get('id'),
-                            true,
-                            {macroId: topOneMacro.get('id'), state: 'pending'}
-                        )
-                    } else {
-                        expect(minProps.applyMacro).not.toHaveBeenCalled()
-                    }
-                })
-            }
-        )
-
         it('should not prefill macro if rule suggestion is displayed', async () => {
             const macros = [
                 {

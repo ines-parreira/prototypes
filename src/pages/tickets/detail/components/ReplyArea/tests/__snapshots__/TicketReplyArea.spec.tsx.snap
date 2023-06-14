@@ -16,12 +16,15 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
   fetchMacrosCancellable={[Function]}
   filters={{}}
   hasShownMacros={false}
+  initialMacrosLoaded={false}
   isMacrosActive={false}
   lastMessage={
     Immutable.Map {
       "id": 10,
     }
   }
+  loadMacros={[MockFunction]}
+  macros={[]}
   newMessage={
     Immutable.Map {
       "contentState": null,

@@ -41,11 +41,8 @@ type Props = {
     applyMacro: (macro: Map<any, any>) => void
     className?: string
     currentMacro: Map<any, any>
-    fetchMacros: (
-        params: FetchMacrosOptions,
-        retainPreviousResults?: boolean
-    ) => Promise<void>
-    isInitialMacrosLoading: boolean
+    initialMacrosLoaded: boolean
+    loadMacros: (retainPreviousResults?: boolean) => Promise<void>
     macros: List<any>
     selectMacro: (macro: Map<any, any>) => void
     searchParams: FetchMacrosOptions
@@ -56,9 +53,9 @@ export function TicketMacrosContainer({
     applyMacro,
     className,
     currentMacro,
-    fetchMacros,
     hasDataToLoad,
-    isInitialMacrosLoading,
+    initialMacrosLoaded,
+    loadMacros,
     macros = fromJS([]),
     searchParams = {search: ''},
     selectMacro,
@@ -98,8 +95,8 @@ export function TicketMacrosContainer({
         setIsModalOpen(false)
 
         // reload macros, in case they changed in the modal
-        void fetchMacros({...searchParams, cursor: null})
-    }, [fetchMacros, searchParams])
+        void loadMacros()
+    }, [loadMacros])
 
     const toggleCreateMacro = useCallback((isCreatingMacro = false): void => {
         setIsCreatingMacro(isCreatingMacro)
@@ -116,12 +113,12 @@ export function TicketMacrosContainer({
 
     useEffect(() => {
         if (prevIsDeleting && isDeleting !== prevIsDeleting) {
-            void fetchMacros({...searchParams, cursor: null})
+            void loadMacros()
         }
-    }, [fetchMacros, isDeleting, prevIsDeleting, searchParams])
+    }, [isDeleting, loadMacros, prevIsDeleting])
 
     let content = null
-    if (macros.isEmpty() && isInitialMacrosLoading) {
+    if (macros.isEmpty() && !initialMacrosLoaded) {
         content = <Loader minHeight="100%" message="Loading macros..." />
     } else if (macros.isEmpty()) {
         content = (
@@ -139,7 +136,7 @@ export function TicketMacrosContainer({
                     searchResults={macros}
                     onClickItem={applyMacro}
                     onHoverItem={selectMacro}
-                    loadMore={() => fetchMacros(searchParams, true)}
+                    loadMore={() => loadMacros(true)}
                     hasDataToLoad={hasDataToLoad}
                 />
                 <div className={css.previewContainer} ref={previewContainerRef}>

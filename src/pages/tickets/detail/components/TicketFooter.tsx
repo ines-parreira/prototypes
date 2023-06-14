@@ -46,6 +46,7 @@ export default function TicketFooter({context}: Props) {
             <Editor
                 initialMacroFilters={initialMacroFilters}
                 submit={submit}
+                ticket={ticket}
                 onBlur={handleBlur}
                 onFocus={handleFocus}
             />

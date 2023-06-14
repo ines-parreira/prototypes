@@ -31,8 +31,8 @@ describe('<TicketMacros />', () => {
     const minProps: ComponentProps<typeof TicketMacrosContainer> = {
         applyMacro: jest.fn(),
         currentMacro: fromJS({}),
-        fetchMacros: jest.fn(),
-        isInitialMacrosLoading: false,
+        initialMacrosLoaded: true,
+        loadMacros: jest.fn(),
         macros: fromJS({}),
         searchParams: {},
         selectMacro: jest.fn(),

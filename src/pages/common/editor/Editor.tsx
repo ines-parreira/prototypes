@@ -3,6 +3,7 @@ import React from 'react'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {MacrosProperties} from 'models/macro/types'
+import {Ticket} from 'models/ticket/types'
 import ReplyMessageChannel from 'pages/tickets/detail/components/ReplyArea/ReplyMessageChannel'
 import TicketSubmitButtons from 'pages/tickets/detail/components/ReplyArea/TicketSubmitButtons'
 import TicketReplyArea from 'pages/tickets/detail/components/ReplyArea/TicketReplyArea'
@@ -13,11 +14,11 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getNewMessageChannel} from 'state/newMessage/selectors'
 import {TicketChannel} from 'business/types/ticket'
-import {getTicket} from 'state/ticket/selectors'
 import WhatsAppMessageTemplateReplyArea from 'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea'
 
 import useForm from './hooks/useForm'
 import useMacros from './hooks/useMacros'
+import useMacrosSearch from './hooks/useMacrosSearch'
 import css from './Editor.less'
 
 type Props = {
@@ -25,6 +26,7 @@ type Props = {
     onBlur?: () => void
     onFocus?: () => void
     submit: (args: SubmitArgs) => any
+    ticket: Ticket
 }
 
 export default function Editor({
@@ -32,6 +34,7 @@ export default function Editor({
     onBlur,
     onFocus,
     submit,
+    ticket,
 }: Props) {
     const {formRef, onSubmit, setTicketStatus} = useForm(submit)
     const {
@@ -46,8 +49,13 @@ export default function Editor({
     const whatsAppMessageTemplatesEnabled =
         useFlags()[FeatureFlagKey.WhatsAppMessageTemplates]
 
+    const {initialLoaded, loadMacros, macros, nextCursor} = useMacrosSearch({
+        filters,
+        query,
+        ticket,
+    })
+
     const channel = useAppSelector(getNewMessageChannel)
-    const ticket = useAppSelector(getTicket)
     const isNewTicket = !ticket.id
 
     const showWhatsAppTemplateEditor =
@@ -74,7 +82,11 @@ export default function Editor({
                         <TicketReplyArea
                             hasShownMacros={hasShown}
                             filters={filters}
+                            initialMacrosLoaded={initialLoaded}
                             isMacrosActive={isActive}
+                            loadMacros={loadMacros}
+                            macros={macros}
+                            nextCursor={nextCursor}
                             query={query}
                             onChangeFilters={onChangeFilters}
                             onChangeMacrosActive={onChangeActive}

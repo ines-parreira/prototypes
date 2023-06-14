@@ -12,6 +12,7 @@ export type Macro = MacroDraft & {
     uri: string
     usage: number
     relevance_rank?: number
+    score?: number
 }
 
 export type MacroDraft = {
