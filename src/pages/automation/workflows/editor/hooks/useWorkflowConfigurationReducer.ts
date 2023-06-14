@@ -34,6 +34,7 @@ export type WorkflowConfigurationAction =
           event_id: string
           label: string
       }
+    | {type: 'SET_ENTRYPOINT_LABEL'; label: string}
     | {type: 'ADD_REPLY_BUTTONS'; step_id: string}
     | {type: 'ADD_REPLY_BUTTON'; step_id: string}
     | {type: 'DELETE_CHOICE'; step_id: string; choice_event_id: string}
@@ -62,6 +63,17 @@ export function reducer(
                 )
                 if (!choice) return draft
                 choice.label = action.label
+            })
+        case 'SET_ENTRYPOINT_LABEL':
+            return produce(configuration, (draft) => {
+                if (!draft.entrypoint) {
+                    draft.entrypoint = {
+                        label_tkey: ulid(),
+                        label: action.label,
+                    }
+                } else {
+                    draft.entrypoint.label = action.label
+                }
             })
         case 'ADD_REPLY_BUTTONS':
             return addReplyButton(
