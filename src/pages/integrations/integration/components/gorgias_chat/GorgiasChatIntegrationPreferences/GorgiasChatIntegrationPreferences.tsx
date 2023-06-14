@@ -1081,12 +1081,26 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     <h4
                                         className={classnames(
                                             css.title,
-                                            'mb-3'
+                                            'mb-1'
                                         )}
                                     >
                                         Autoresponder
                                     </h4>
-
+                                    <p
+                                        className={classnames('mb-4', {
+                                            'text-faded': !autoResponderEnabled,
+                                        })}
+                                    >
+                                        During{' '}
+                                        <Link to="/app/settings/business-hours">
+                                            business hours
+                                        </Link>
+                                        , let customers know how fast they can
+                                        expect a response with an autoresponder.
+                                        A message is sent in new chat tickets
+                                        after 30 seconds without replies from an
+                                        agent.
+                                    </p>
                                     <div className="mb-4 d-flex align-items-center">
                                         <ToggleInput
                                             onClick={
@@ -1100,22 +1114,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     </div>
 
                                     <div className="mb-3">
-                                        <p
-                                            className={classnames({
-                                                'text-faded':
-                                                    !autoResponderEnabled,
-                                            })}
-                                        >
-                                            During{' '}
-                                            <Link to="/app/settings/business-hours">
-                                                business hours
-                                            </Link>
-                                            , let customers know how fast they
-                                            can expect a response with an
-                                            autoresponder. A message is sent in
-                                            new chat tickets after 30 seconds
-                                            without replies from an agent.
-                                        </p>
                                         <RadioFieldSet
                                             className={classnames(
                                                 'mb-2',

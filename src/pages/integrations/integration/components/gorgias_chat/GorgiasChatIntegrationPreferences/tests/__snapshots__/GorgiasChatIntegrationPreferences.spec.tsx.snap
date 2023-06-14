@@ -659,10 +659,22 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             className="formSection"
           >
             <h4
-              className="title mb-3"
+              className="title mb-1"
             >
               Autoresponder
             </h4>
+            <p
+              className="mb-4"
+            >
+              During
+               
+              <Link
+                to="/app/settings/business-hours"
+              >
+                business hours
+              </Link>
+              , let customers know how fast they can expect a response with an autoresponder. A message is sent in new chat tickets after 30 seconds without replies from an agent.
+            </p>
             <div
               className="mb-4 d-flex align-items-center"
             >
@@ -681,18 +693,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             <div
               className="mb-3"
             >
-              <p
-                className=""
-              >
-                During
-                 
-                <Link
-                  to="/app/settings/business-hours"
-                >
-                  business hours
-                </Link>
-                , let customers know how fast they can expect a response with an autoresponder. A message is sent in new chat tickets after 30 seconds without replies from an agent.
-              </p>
               <RadioFieldSet
                 className="mb-2 radioFieldSet"
                 isDisabled={false}
@@ -1202,10 +1202,22 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             className="formSection"
           >
             <h4
-              className="title mb-3"
+              className="title mb-1"
             >
               Autoresponder
             </h4>
+            <p
+              className="mb-4"
+            >
+              During
+               
+              <Link
+                to="/app/settings/business-hours"
+              >
+                business hours
+              </Link>
+              , let customers know how fast they can expect a response with an autoresponder. A message is sent in new chat tickets after 30 seconds without replies from an agent.
+            </p>
             <div
               className="mb-4 d-flex align-items-center"
             >
@@ -1224,18 +1236,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             <div
               className="mb-3"
             >
-              <p
-                className=""
-              >
-                During
-                 
-                <Link
-                  to="/app/settings/business-hours"
-                >
-                  business hours
-                </Link>
-                , let customers know how fast they can expect a response with an autoresponder. A message is sent in new chat tickets after 30 seconds without replies from an agent.
-              </p>
               <RadioFieldSet
                 className="mb-2 radioFieldSet"
                 isDisabled={false}
