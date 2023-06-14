@@ -30,6 +30,7 @@ export enum FeatureFlagKey {
     RevenueClickTracking = 'revenue-click-tracking',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
+    RevenueShopifyHistoryTriggers = 'revenue-shopify-history-triggers',
     SpotlightGlobalSearch = 'spotlight-global-search',
     HelpCenterMigrationConfig = 'migration-config',
     ChatLauncherCustomization = 'chat-launcher-customization',

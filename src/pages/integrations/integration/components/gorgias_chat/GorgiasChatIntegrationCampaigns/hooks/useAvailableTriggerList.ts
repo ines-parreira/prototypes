@@ -6,12 +6,15 @@ type FnArguments = {
     isRevenueBetaTester?: boolean
     isShopifyStore?: boolean
     isShopifyHeadless?: boolean
+    // TODO: Remove this in https://linear.app/gorgias/issue/REV-930/[helpdesk-and-chat]-remove-the-ld-flag
+    areShopifyHistoryTriggersEnabled?: boolean
 }
 
 export function useAvailableTriggerList({
     isRevenueBetaTester = false,
     isShopifyStore = false,
     isShopifyHeadless = false,
+    areShopifyHistoryTriggersEnabled = false,
 }: FnArguments) {
     const options = useMemo(() => {
         return TRIGGER_LIST.filter((trigger) => {
@@ -34,10 +37,20 @@ export function useAvailableTriggerList({
                     return isShopifyHeadless === value
                 }
 
+                // TODO: Remove this in https://linear.app/gorgias/issue/REV-930/[helpdesk-and-chat]-remove-the-ld-flag
+                if (req === 'shopify_history') {
+                    return areShopifyHistoryTriggersEnabled === value
+                }
+
                 return false
             })
         })
-    }, [isRevenueBetaTester, isShopifyStore, isShopifyHeadless])
+    }, [
+        isShopifyStore,
+        isRevenueBetaTester,
+        isShopifyHeadless,
+        areShopifyHistoryTriggersEnabled,
+    ])
 
     return options
 }

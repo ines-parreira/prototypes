@@ -7,6 +7,7 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
 import {useAvailableTriggerList} from '../../hooks/useAvailableTriggerList'
 import {useIsHeadlessShopifyStore} from '../../hooks/useIsHeadlessShopifyStore'
+import {useCanAddShopifyHistoryTriggers} from '../../hooks/useCanAddShopifyHistoryTriggers'
 
 import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
 
@@ -24,6 +25,7 @@ export const AdvancedTriggersSelect = ({
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef<HTMLButtonElement>(null)
     const isShopifyHeadless = useIsHeadlessShopifyStore()
+    const areShopifyHistoryTriggersEnabled = useCanAddShopifyHistoryTriggers()
 
     const handleClickItem = (value: CampaignTriggerKey) => {
         setIsOpen(false)
@@ -34,6 +36,7 @@ export const AdvancedTriggersSelect = ({
         isRevenueBetaTester,
         isShopifyStore,
         isShopifyHeadless,
+        areShopifyHistoryTriggersEnabled,
     })
 
     return (
