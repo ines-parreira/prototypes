@@ -60,6 +60,9 @@ export default {
         'texts.emailCaptureTriggerTextBase': {
             maxLength: 80,
         },
+        'texts.thanksForReachingOut': {
+            maxLength: 45,
+        },
         'texts.emailCaptureTriggerTypicalReplyMinutes': {maxLength: 65},
         'texts.emailCaptureTriggerTypicalReplyHours': {maxLength: 65},
     },
