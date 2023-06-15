@@ -236,6 +236,7 @@ describe('useStatResource', () => {
                     statName: 'stat',
                     resourceName: defaultResourceName,
                     statsFilters,
+                    fetchDebounceDelay: 0,
                 })
             },
             {
