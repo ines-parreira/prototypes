@@ -1,16 +1,33 @@
 import {Notification, NotificationButton} from 'state/notifications/types'
+import {MigrationFailuresSection} from './components/MigrationStateModal/components/MigrationFailuresDetails/MigrationFailuresDetails'
+import {QuickSummaryEntry} from './components/MigrationStateModal/components/MigrationQuickSummary/MigrationQuickSummary'
 import {
     MigrationSession,
     MigrationSessionCreate,
     MigrationSessionStatus,
 } from './types'
 
-// If there's one of this states we can say the migration has started and it is in progress
+const sessionKeys: (keyof MigrationSession)[] = [
+    'session',
+    'session_id',
+    'status',
+]
+/**
+ * The response typings from some of the generated OpenAPI endpoints are something like `Components.Schemas.SessionLong | Components.Schemas.Detail` (.Detail is in case of error)
+ *
+ * We type guard the response for this reason
+ */
+export const responseIsSession = (
+    responseData: any
+): responseData is MigrationSession =>
+    sessionKeys.every((key) => key in responseData)
+
 export const sessionHasProgressStatus = (
     session: Pick<MigrationSession, 'status'> | null
 ) => {
     return (
         [
+            // If there's one of this states we can say the migration has started and it is in progress
             MigrationSessionStatus.Pending,
             MigrationSessionStatus.Running,
             MigrationSessionStatus.Started,
@@ -47,4 +64,65 @@ export const notificationRefreshButton: NotificationButton = {
     onClick: () => {
         window.location.reload()
     },
+}
+
+export interface ParsedSessionStats {
+    totalImported: number
+    totalFailed: number
+    totalExported: number
+    quickSummaryEntries: QuickSummaryEntry[]
+    failuresSections: MigrationFailuresSection[]
+}
+
+export const parseSessionStats = (
+    session: Pick<MigrationSession, 'stats'> | null
+): ParsedSessionStats => {
+    const {articles, categories} = session?.stats || {}
+
+    const processes = [articles, categories]
+    return {
+        totalExported: processes.reduce(
+            (acc, process) => acc + (process?.export_count || 0),
+            0
+        ),
+        totalImported: processes.reduce(
+            (acc, process) => acc + (process?.import_count || 0),
+            0
+        ),
+        totalFailed: processes.reduce(
+            (acc, process) => acc + (process?.errors_count || 0),
+            0
+        ),
+        quickSummaryEntries: [
+            {
+                label: 'Articles',
+                showAlways: true,
+                exported: articles?.export_count || 0,
+                imported: articles?.import_count || 0,
+                failed: articles?.errors_count || 0,
+            },
+            {
+                label: 'Categories',
+                exported: categories?.export_count || 0,
+                imported: categories?.import_count || 0,
+                failed: categories?.errors_count || 0,
+            },
+        ],
+        failuresSections: [
+            {
+                title: 'Articles',
+                items:
+                    articles?.errors_details?.map(
+                        (item) => item.instance_title as string
+                    ) || [],
+            },
+            {
+                title: 'Categories',
+                items:
+                    categories?.errors_details?.map(
+                        (item) => item.instance_title as string
+                    ) || [],
+            },
+        ],
+    }
 }

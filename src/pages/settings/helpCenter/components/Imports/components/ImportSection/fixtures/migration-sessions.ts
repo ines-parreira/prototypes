@@ -1,3 +1,117 @@
+export const migrationStatsWithFailures = {
+    articles: {
+        errors_count: 5,
+        errors_details: new Array(5).fill(null).map((_, i) => ({
+            error_message: 'sample exception',
+            instance_id: '3886032' + String(i),
+            instance_title: 'Untitled article',
+        })),
+        export_count: 11,
+        import_count: 4,
+    },
+    categories: {
+        errors_count: 4,
+        errors_details: new Array(4).fill(null).map((_, i) => ({
+            error_message: 'sample exception',
+            instance_id: '3886032' + String(i),
+            instance_title: 'Untitled collection',
+        })),
+        export_count: 6,
+        import_count: 0,
+    },
+}
+
+export const migrationStatsWithoutFailures = {
+    articles: {
+        errors_count: 0,
+        errors_details: [],
+        export_count: 11,
+        import_count: 7,
+    },
+    categories: {
+        errors_count: 0,
+        errors_details: [],
+        export_count: 6,
+        import_count: 2,
+    },
+}
+
+export const emptyMigrationStats = {
+    articles: {
+        errors_count: 0,
+        errors_details: [],
+        export_count: 0,
+        import_count: 0,
+    },
+    categories: {
+        errors_count: 0,
+        errors_details: [],
+        export_count: 0,
+        import_count: 0,
+    },
+}
+
+export const failedMigrationStats = {
+    articles: {
+        errors_count: 12,
+        errors_details: new Array(12).fill(null).map((_, i) => ({
+            error_message: 'sample exception',
+            instance_id: '3886032' + String(i),
+            instance_title: 'Untitled article',
+        })),
+        export_count: 12,
+        import_count: 0,
+    },
+    categories: {
+        errors_count: 7,
+        errors_details: new Array(12).fill(null).map((_, i) => ({
+            error_message: 'sample exception',
+            instance_id: '3886032' + String(i),
+            instance_title: 'Untitled collection',
+        })),
+        export_count: 7,
+        import_count: 0,
+    },
+}
+
+export const succeededMigrationStats = {
+    articles: {
+        errors_count: 0,
+        errors_details: [],
+        export_count: 11,
+        import_count: 11,
+    },
+    categories: {
+        errors_count: 0,
+        errors_details: [],
+        export_count: 6,
+        import_count: 6,
+    },
+}
+
+export const partiallySucceededMigrationStats = {
+    articles: {
+        errors_count: 2,
+        errors_details: new Array(2).fill(null).map((_, i) => ({
+            error_message: 'sample exception',
+            instance_id: '3886032' + String(i),
+            instance_title: 'Untitled article',
+        })),
+        export_count: 12,
+        import_count: 10,
+    },
+    categories: {
+        errors_count: 2,
+        errors_details: new Array(2).fill(null).map((_, i) => ({
+            error_message: 'sample exception',
+            instance_id: '3886032' + String(i),
+            instance_title: 'Untitled collection',
+        })),
+        export_count: 7,
+        import_count: 5,
+    },
+}
+
 export const migrationSessions = [
     {
         result: {
@@ -86,6 +200,7 @@ export const migrationSessions = [
             ],
             status: 'SUCCESS',
         },
+        stats: migrationStatsWithoutFailures,
         session: {
             migration: {
                 provider: {
@@ -203,6 +318,7 @@ export const migrationSessions = [
             ],
             status: 'RUNNING',
         },
+        stats: migrationStatsWithFailures,
         session: {
             migration: {
                 provider: {

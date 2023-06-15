@@ -1,6 +1,114 @@
 {
     "components": {
         "schemas": {
+            "ArticleColumnLocale": {
+                "properties": {
+                    "content": {
+                        "$ref": "#/components/schemas/ColumnDescription"
+                    },
+                    "excerpt": {
+                        "$ref": "#/components/schemas/ColumnDescription"
+                    },
+                    "slug": {
+                        "$ref": "#/components/schemas/ColumnDescription"
+                    },
+                    "title": {
+                        "$ref": "#/components/schemas/ColumnDescription"
+                    }
+                },
+                "required": ["title", "content", "slug", "excerpt"],
+                "title": "ArticleColumnLocale",
+                "type": "object"
+            },
+            "CSVHelpCenterProvider": {
+                "description": "Base class for HelpCenter providers",
+                "properties": {
+                    "article_columns": {
+                        "$ref": "#/components/schemas/Columns"
+                    },
+                    "category_columns": {
+                        "$ref": "#/components/schemas/Columns"
+                    },
+                    "file_url": {
+                        "format": "uri",
+                        "maxLength": 65536,
+                        "minLength": 1,
+                        "title": "File Url",
+                        "type": "string"
+                    },
+                    "type": {
+                        "default": "CSV",
+                        "enum": ["CSV"],
+                        "title": "Type",
+                        "type": "string"
+                    }
+                },
+                "required": ["file_url", "article_columns", "category_columns"],
+                "title": "CSVHelpCenterProvider",
+                "type": "object"
+            },
+            "CategoryColumnLocale": {
+                "properties": {
+                    "description": {
+                        "$ref": "#/components/schemas/ColumnDescription"
+                    },
+                    "name": {
+                        "$ref": "#/components/schemas/ColumnDescription"
+                    },
+                    "slug": {
+                        "$ref": "#/components/schemas/ColumnDescription"
+                    }
+                },
+                "required": ["name", "slug", "description"],
+                "title": "CategoryColumnLocale",
+                "type": "object"
+            },
+            "ColumnDescription": {
+                "properties": {
+                    "source": {
+                        "$ref": "#/components/schemas/ColumnSource"
+                    }
+                },
+                "required": ["source"],
+                "title": "ColumnDescription",
+                "type": "object"
+            },
+            "ColumnSource": {
+                "properties": {
+                    "csv_column": {
+                        "title": "Csv Column",
+                        "type": "string"
+                    },
+                    "kind": {
+                        "title": "Kind",
+                        "type": "string"
+                    }
+                },
+                "required": ["kind", "csv_column"],
+                "title": "ColumnSource",
+                "type": "object"
+            },
+            "Columns": {
+                "properties": {
+                    "locales": {
+                        "additionalProperties": {
+                            "anyOf": [
+                                {
+                                    "$ref": "#/components/schemas/ArticleColumnLocale"
+                                },
+                                {
+                                    "$ref": "#/components/schemas/CategoryColumnLocale"
+                                }
+                            ]
+                        },
+                        "title": "Locales",
+                        "type": "object"
+                    }
+                },
+                "required": ["locales"],
+                "title": "Columns",
+                "type": "object"
+            },
             "Detail": {
                 "properties": {
                     "message": {
@@ -12,8 +120,30 @@
                 "title": "Detail",
                 "type": "object"
             },
+            "ErrorDetail": {
+                "properties": {
+                    "error_message": {
+                        "title": "Error Message",
+                        "type": "string"
+                    },
+                    "instance_id": {
+                        "title": "Instance Id",
+                        "type": "string"
+                    },
+                    "instance_title": {
+                        "title": "Instance Title"
+                    },
+                    "locale": {
+                        "title": "Locale",
+                        "type": "string"
+                    }
+                },
+                "required": ["instance_id", "error_message"],
+                "title": "ErrorDetail",
+                "type": "object"
+            },
             "GorgiasHelpCenterReceiver": {
-                "description": "Import a HelpCenter into Gorgias ",
+                "description": "Import a HelpCenter into Gorgias",
                 "properties": {
                     "access_token": {
                         "format": "password",
@@ -38,13 +168,76 @@
                 "type": "object"
             },
             "HelpCenterMigration": {
-                "description": "Base class for HelpCenter migrations ",
+                "description": "Base class for HelpCenter migrations",
                 "properties": {
+                    "is_rollback": {
+                        "default": false,
+                        "title": "Is Rollback",
+                        "type": "boolean"
+                    },
                     "provider": {
-                        "$ref": "#/components/schemas/ZendeskHelpCenterProvider"
+                        "discriminator": {
+                            "mapping": {
+                                "CSV": "#/definitions/CSVHelpCenterProvider",
+                                "HelpDocs": "#/definitions/HelpDocsHelpCenterProvider",
+                                "Intercom": "#/definitions/IntercomHelpCenterProvider",
+                                "ReAmaze": "#/definitions/ReAmazeHelpCenterProvider",
+                                "Zendesk": "#/definitions/ZendeskHelpCenterProvider"
+                            },
+                            "propertyName": "type"
+                        },
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/ZendeskHelpCenterProvider"
+                            },
+                            {
+                                "$ref": "#/components/schemas/HelpDocsHelpCenterProvider"
+                            },
+                            {
+                                "$ref": "#/components/schemas/ReAmazeHelpCenterProvider"
+                            },
+                            {
+                                "$ref": "#/components/schemas/IntercomHelpCenterProvider"
+                            },
+                            {
+                                "$ref": "#/components/schemas/CSVHelpCenterProvider"
+                            }
+                        ],
+                        "title": "Provider"
                     },
                     "receiver": {
                         "$ref": "#/components/schemas/GorgiasHelpCenterReceiver"
+                    },
+                    "stats": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MigrationStats"
+                            }
+                        ],
+                        "default": {
+                            "articles": {
+                                "errors_count": 0,
+                                "errors_details": [],
+                                "export_count": 0,
+                                "import_count": 0,
+                                "import_mapping": {}
+                            },
+                            "categories": {
+                                "errors_count": 0,
+                                "errors_details": [],
+                                "export_count": 0,
+                                "import_count": 0,
+                                "import_mapping": {}
+                            },
+                            "redirects": {
+                                "errors_count": 0,
+                                "errors_details": [],
+                                "export_count": 0,
+                                "import_count": 0,
+                                "import_mapping": {}
+                            }
+                        },
+                        "title": "Stats"
                     },
                     "type": {
                         "default": "HelpCenter",
@@ -98,10 +291,65 @@
                 "title": "HelpCenterProviderList",
                 "type": "array"
             },
+            "HelpDocsHelpCenterProvider": {
+                "description": "Base class for HelpCenter providers",
+                "properties": {
+                    "api_key": {
+                        "format": "password",
+                        "title": "Api Key",
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "type": {
+                        "default": "HelpDocs",
+                        "enum": ["HelpDocs"],
+                        "title": "Type",
+                        "type": "string"
+                    }
+                },
+                "required": ["api_key"],
+                "title": "HelpDocsHelpCenterProvider",
+                "type": "object"
+            },
+            "ImportMappingItem": {
+                "properties": {
+                    "instance_id": {
+                        "title": "Instance Id",
+                        "type": "string"
+                    },
+                    "translation_id": {
+                        "title": "Translation Id",
+                        "type": "string"
+                    }
+                },
+                "required": ["instance_id"],
+                "title": "ImportMappingItem",
+                "type": "object"
+            },
+            "IntercomHelpCenterProvider": {
+                "description": "Base class for HelpCenter providers",
+                "properties": {
+                    "api_key": {
+                        "format": "password",
+                        "title": "Api Key",
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "type": {
+                        "default": "Intercom",
+                        "enum": ["Intercom"],
+                        "title": "Type",
+                        "type": "string"
+                    }
+                },
+                "required": ["api_key"],
+                "title": "IntercomHelpCenterProvider",
+                "type": "object"
+            },
             "Message": {
                 "properties": {
                     "level": {
-                        "enum": ["MESSAGE", "WARNING", "FAILURE"],
+                        "enum": ["INFO", "ERROR", "WARNING"],
                         "title": "Level",
                         "type": "string"
                     },
@@ -141,7 +389,7 @@
                         "type": "string"
                     }
                 },
-                "required": ["type", "meta"],
+                "required": ["type"],
                 "title": "MigrationProvider",
                 "type": "object"
             },
@@ -207,6 +455,57 @@
                 "title": "MigrationResult",
                 "type": "object"
             },
+            "MigrationStats": {
+                "properties": {
+                    "articles": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Stats"
+                            }
+                        ],
+                        "default": {
+                            "errors_count": 0,
+                            "errors_details": [],
+                            "export_count": 0,
+                            "import_count": 0,
+                            "import_mapping": {}
+                        },
+                        "title": "Articles"
+                    },
+                    "categories": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Stats"
+                            }
+                        ],
+                        "default": {
+                            "errors_count": 0,
+                            "errors_details": [],
+                            "export_count": 0,
+                            "import_count": 0,
+                            "import_mapping": {}
+                        },
+                        "title": "Categories"
+                    },
+                    "redirects": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Stats"
+                            }
+                        ],
+                        "default": {
+                            "errors_count": 0,
+                            "errors_details": [],
+                            "export_count": 0,
+                            "import_count": 0,
+                            "import_mapping": {}
+                        },
+                        "title": "Redirects"
+                    }
+                },
+                "title": "MigrationStats",
+                "type": "object"
+            },
             "Process": {
                 "properties": {
                     "segments": {
@@ -251,15 +550,38 @@
                 "title": "PropertySchema",
                 "type": "object"
             },
+            "ReAmazeHelpCenterProvider": {
+                "description": "Base class for HelpCenter providers",
+                "properties": {
+                    "api_key": {
+                        "format": "password",
+                        "title": "API Key",
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "email": {
+                        "description": "Your work email",
+                        "format": "email",
+                        "title": "Email",
+                        "type": "string"
+                    },
+                    "subdomain": {
+                        "title": "Subdomain",
+                        "type": "string"
+                    },
+                    "type": {
+                        "default": "ReAmaze",
+                        "enum": ["ReAmaze"],
+                        "title": "Type",
+                        "type": "string"
+                    }
+                },
+                "required": ["subdomain", "email", "api_key"],
+                "title": "ReAmazeHelpCenterProvider",
+                "type": "object"
+            },
             "Segment": {
                 "properties": {
-                    "failures": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "title": "Failures",
-                        "type": "array"
-                    },
                     "messages": {
                         "items": {
                             "$ref": "#/components/schemas/Message"
@@ -279,13 +601,6 @@
                     "title": {
                         "title": "Title",
                         "type": "string"
-                    },
-                    "warnings": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "title": "Warnings",
-                        "type": "array"
                     }
                 },
                 "required": ["title"],
@@ -340,6 +655,10 @@
             },
             "SessionLong": {
                 "properties": {
+                    "is_rollback": {
+                        "title": "Is Rollback",
+                        "type": "boolean"
+                    },
                     "result": {
                         "$ref": "#/components/schemas/MigrationResult"
                     },
@@ -351,12 +670,21 @@
                         "title": "Session Id",
                         "type": "string"
                     },
+                    "stats": {
+                        "$ref": "#/components/schemas/MigrationStats"
+                    },
                     "status": {
                         "title": "Status",
                         "type": "string"
                     }
                 },
-                "required": ["session", "session_id", "status", "result"],
+                "required": [
+                    "session",
+                    "session_id",
+                    "status",
+                    "result",
+                    "stats"
+                ],
                 "title": "SessionLong",
                 "type": "object"
             },
@@ -376,6 +704,10 @@
             },
             "SessionShort": {
                 "properties": {
+                    "is_rollback": {
+                        "title": "Is Rollback",
+                        "type": "boolean"
+                    },
                     "session": {
                         "$ref": "#/components/schemas/SessionParams"
                     },
@@ -400,8 +732,45 @@
                 "title": "SessionShortList",
                 "type": "array"
             },
+            "Stats": {
+                "properties": {
+                    "errors_count": {
+                        "default": 0,
+                        "title": "Errors Count",
+                        "type": "integer"
+                    },
+                    "errors_details": {
+                        "default": [],
+                        "items": {
+                            "$ref": "#/components/schemas/ErrorDetail"
+                        },
+                        "title": "Errors Details",
+                        "type": "array"
+                    },
+                    "export_count": {
+                        "default": 0,
+                        "title": "Export Count",
+                        "type": "integer"
+                    },
+                    "import_count": {
+                        "default": 0,
+                        "title": "Import Count",
+                        "type": "integer"
+                    },
+                    "import_mapping": {
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/ImportMappingItem"
+                        },
+                        "default": {},
+                        "title": "Import Mapping",
+                        "type": "object"
+                    }
+                },
+                "title": "Stats",
+                "type": "object"
+            },
             "ZendeskHelpCenterProvider": {
-                "description": "Base class for HelpCenter providers ",
+                "description": "Base class for HelpCenter providers",
                 "properties": {
                     "api_key": {
                         "format": "password",
@@ -649,11 +1018,21 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/SessionShort"
+                                    "$ref": "#/components/schemas/Detail"
                                 }
                             }
                         },
                         "description": "OK"
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionShort"
+                                }
+                            }
+                        },
+                        "description": "Created"
                     },
                     "401": {
                         "content": {
@@ -713,6 +1092,92 @@
                     }
                 },
                 "summary": "session_retrieve <GET>",
+                "tags": []
+            }
+        },
+        "/api/sessions/{uuid}/retry": {
+            "post": {
+                "description": "",
+                "operationId": "sessionRetry",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uuid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionLong"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    }
+                },
+                "summary": "session_retry <POST>",
+                "tags": []
+            }
+        },
+        "/api/sessions/{uuid}/rollback": {
+            "post": {
+                "description": "",
+                "operationId": "sessionRollback",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uuid",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SessionLong"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    }
+                },
+                "summary": "session_rollback <POST>",
                 "tags": []
             }
         },

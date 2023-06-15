@@ -1,0 +1,34 @@
+@import '~css/new/colorTokens';
+@import '~css/typography';
+
+:local {
+    .wrapper {
+        .caption-regular();
+        color: @classic-neutral-grey-6;
+    }
+    .title {
+        font-weight: bold;
+    }
+    .entry {
+        padding: 8px 0;
+
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+
+        &:not(:first-child) {
+            border-top: 1px solid @classic-neutral-grey-3;
+        }
+
+        i {
+            font-size: 12px;
+        }
+    }
+    .entryLabel {
+        flex: 1;
+    }
+    .entryStats {
+        display: flex;
+        gap: 8px;
+    }
+}

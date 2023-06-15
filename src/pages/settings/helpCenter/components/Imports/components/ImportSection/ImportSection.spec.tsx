@@ -21,7 +21,12 @@ import {getMigrationClient} from 'rest_api/migration_api'
 import {getAccessToken} from 'rest_api/utils'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {migrationSessions} from './fixtures/migration-sessions'
+import {
+    failedMigrationStats,
+    migrationSessions,
+    partiallySucceededMigrationStats,
+    succeededMigrationStats,
+} from './fixtures/migration-sessions'
 import {
     helpCenterMigrationConfig,
     migrationProviders,
@@ -81,6 +86,39 @@ const activeMigration = migrationSessions.find((session) =>
     sessionHasProgressStatus(session)
 )!
 
+const succeededMigration = {
+    ...activeMigration,
+    result: {
+        ...activeMigration.result,
+        progress: 100,
+    },
+    stats: succeededMigrationStats,
+    status: 'SUCCESS',
+}
+// Note that the `status: SUCCESS` doesn't correlate with if there are entities failed to migrate
+const failedMigration = {
+    ...activeMigration,
+    result: {
+        ...activeMigration.result,
+        progress: 100,
+    },
+    stats: failedMigrationStats,
+    status: 'SUCCESS',
+}
+const partiallySucceededMigration = {
+    ...activeMigration,
+    result: {
+        ...activeMigration.result,
+        progress: 100,
+    },
+    stats: partiallySucceededMigrationStats,
+    status: 'SUCCESS',
+}
+const rollbackMigration = {
+    ...activeMigration,
+    is_rollback: true,
+}
+
 jest.mock('pages/settings/helpCenter/hooks/useMigrationApi')
 
 jest.useFakeTimers()
@@ -135,7 +173,7 @@ describe('<ImportSection />', () => {
         expect(progressElement).not.toBeNull()
     })
 
-    test('migration flow', async () => {
+    test('Successful migration flow', async () => {
         mockAPI
             .onGet('/api/help_center/providers')
             .reply(200, migrationProviders)
@@ -151,15 +189,7 @@ describe('<ImportSection />', () => {
         // After the first update make the session's status successful
         mockAPI
             .onGet('/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26')
-            .reply(200, {
-                ...activeMigration,
-                result: {
-                    ...activeMigration.result,
-                    progress: 100,
-                    status: 'SUCCESS',
-                },
-                status: 'SUCCESS',
-            })
+            .reply(200, succeededMigration)
 
         renderWithStore(<ImportSection />)
 
@@ -210,12 +240,119 @@ describe('<ImportSection />', () => {
         })
 
         fireEvent.click(finishButton)
+    })
 
-        // After the migration is finished should be able to start another round
-        const finalImportArticlesButton = await waitFor(() =>
-            screen.getByText('Import Articles')
+    test('Retry and revert for migration', async () => {
+        /**
+         * To test all of them in one go we'll do this:
+         * 1. Simulate a failed migration, retry it
+         * 2. For this retry simulate a partially succeded migration, then retry it again
+         * 3. For the second retry simulate a partially succeded migration and revert it
+         */
+        mockAPI
+            .onGet('/api/help_center/providers')
+            .reply(200, migrationProviders)
+
+        mockAPI.onGet('/api/sessions').reply(200, [])
+
+        // Verify credentials
+        mockAPI.onPost('/api/sessions?check=true').reply(200)
+
+        mockAPI.onPost('/api/sessions').reply(200, activeMigration)
+
+        renderWithStore(<ImportSection />)
+
+        const importArticlesButton = await waitFor(() =>
+            screen.getByText(/Import Articles/, {selector: 'button'})
         )
-        expect(finalImportArticlesButton).not.toBeNull()
+        fireEvent.click(importArticlesButton)
+
+        const importFromAnotherProvider = await waitFor(() =>
+            screen.getByTestId('import-articles-modal-file-drop-area')
+        )
+        fireEvent.click(importFromAnotherProvider)
+
+        // Choose provider
+        const provider = await waitFor(() => screen.getByText(/Zendesk/))
+        fireEvent.click(provider)
+
+        // Inside migration credentials modal
+        const emailInput = await waitFor(() => screen.getByLabelText(/Email/))
+        const apiKeyInput = screen.getByLabelText(/API Key/)
+        const submitButton = screen.getByText('Connect')
+
+        await userEvent.type(emailInput, 'email@email.com')
+        await userEvent.type(apiKeyInput, 'api-key')
+        fireEvent.click(submitButton)
+        const startMigrationButton = await waitFor(() =>
+            screen.getByText('Start migrating', {selector: 'button'})
+        )
+        fireEvent.click(startMigrationButton)
+
+        mockAPI
+            .onGet('/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26')
+            .replyOnce(200, failedMigration)
+
+        // Make sure it displays the progress of the active migration in the state modal
+        const progressElement = await waitFor(() =>
+            screen.getByText(
+                new RegExp(`${activeMigration.result.progress}% Complete`)
+            )
+        )
+        expect(progressElement).not.toBeNull()
+        jest.advanceTimersByTime(ACTIVE_MIGRATION_UPDATE_TIMEOUT)
+
+        mockAPI
+            .onPost('/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26/retry')
+            .replyOnce(200, partiallySucceededMigration)
+
+        const firstRetryButton = await waitFor(() =>
+            screen.getByText('Retry', {
+                selector: 'button',
+            })
+        )
+
+        fireEvent.click(firstRetryButton)
+
+        jest.advanceTimersByTime(ACTIVE_MIGRATION_UPDATE_TIMEOUT)
+
+        mockAPI
+            .onPost('/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26/retry')
+            .replyOnce(200, partiallySucceededMigration)
+
+        // The first one was for failed migration, this one is for partially succeeded
+        const secondRetryButton = await waitFor(() =>
+            screen.getByText('Retry', {
+                selector: 'button',
+            })
+        )
+
+        fireEvent.click(secondRetryButton)
+
+        jest.advanceTimersByTime(ACTIVE_MIGRATION_UPDATE_TIMEOUT)
+
+        // Rollback (reverting) creates a new session
+        mockAPI
+            .onPost(
+                '/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26/rollback'
+            )
+            .replyOnce(200, rollbackMigration)
+
+        const revertButton = await waitFor(() =>
+            screen.getByText('Revert', {
+                selector: 'button',
+            })
+        )
+
+        fireEvent.click(revertButton)
+
+        jest.advanceTimersByTime(ACTIVE_MIGRATION_UPDATE_TIMEOUT)
+
+        const revertNotice = await waitFor(() =>
+            screen.getByText(/Reverting migration from /)
+        )
+
+        expect(revertNotice).not.toBeNull()
     })
 
     it('should not display providers that are not included in the feature flag config', async () => {

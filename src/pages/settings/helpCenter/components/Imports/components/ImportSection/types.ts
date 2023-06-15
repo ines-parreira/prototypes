@@ -27,17 +27,19 @@ export interface FetchedProvidersState {
 export enum MigrationStatus {
     Connected,
     InProgress,
-    Completed,
+    Succeeded,
+    PartiallySucceeded,
+    Failed,
 }
 
-interface ConnectedMigrationState {
+export interface ConnectedMigrationState {
     status: MigrationStatus.Connected
 
     onMigrationStart: () => void
     isMigrationStartLoading: boolean
 }
 
-interface InProgressMigrationState {
+export interface InProgressMigrationState {
     status: MigrationStatus.InProgress
     /**
      * Percentage
@@ -45,14 +47,33 @@ interface InProgressMigrationState {
     progress: number
 }
 
-interface CompletedMigrationState {
-    status: MigrationStatus.Completed
+export interface SucceededMigrationState {
+    status: MigrationStatus.Succeeded
+    onFinish: () => void
+}
+
+export interface PartiallySucceededMigrationState {
+    status: MigrationStatus.PartiallySucceeded
+    onRetry: () => void
+    isRetryLoading: boolean
+    onRevert: () => void
+    isRevertLoading: boolean
+    onFinish: () => void
+}
+
+export interface FailedMigrationState {
+    status: MigrationStatus.Failed
+    onRetry: () => void
+    isRetryLoading: boolean
+    onFinish: () => void
 }
 
 export type MigrationState =
     | ConnectedMigrationState
     | InProgressMigrationState
-    | CompletedMigrationState
+    | SucceededMigrationState
+    | PartiallySucceededMigrationState
+    | FailedMigrationState
 
 export type MigrationProviderType = string
 
@@ -81,9 +102,9 @@ export enum MigrationSessionStatus {
     Success = 'SUCCESS',
 }
 
-// Result field is not present in the short response so merging it as optional field
+// Result and stats fields are not present in the short response so merging it as optional field
 export type MigrationSession = Components.Schemas.SessionShort &
-    Partial<Pick<Components.Schemas.SessionLong, 'result'>>
+    Partial<Pick<Components.Schemas.SessionLong, 'result' | 'stats'>>
 
 export type MigrationSessionCreate = Paths.SessionCreate.RequestBody
 

@@ -36,7 +36,7 @@
         "helpcenter:fetch-openapi": "curl http://localhost:4001/api/help-center/api-json > ./src/rest_api/help_center_api/help-center.openapi.json && prettier --write ./src/rest_api/help_center_api/help-center.openapi.json",
         "helpcenter:generate-types": "typegen ./src/rest_api/help_center_api/help-center.openapi.json > ./src/rest_api/help_center_api/client.generated.d.ts",
         "helpcenter:update-client": "yarn run helpcenter:fetch-openapi && yarn run helpcenter:generate-types",
-        "migration:fetch-openapi": "curl http://localhost:8000/apidoc/openapi.json > ./src/rest_api/migration_api/migration.openapi.json && prettier --write ./src/rest_api/migration_api/migration.openapi.json",
+        "migration:fetch-openapi": "curl http://localhost:8001/apidoc/openapi.json > ./src/rest_api/migration_api/migration.openapi.json && prettier --write ./src/rest_api/migration_api/migration.openapi.json",
         "migration:generate-types": "typegen ./src/rest_api/migration_api/migration.openapi.json > ./src/rest_api/migration_api/client.generated.d.ts && prettier --write ./src/rest_api/migration_api/client.generated.d.ts",
         "migration:update-client": "yarn run migration:fetch-openapi && yarn run migration:generate-types",
         "gorgiaschat:generate-openapi:public": "p2o ./src/rest_api/gorgias_chat_api/gorgias-chat-api.postman_collection.json -f ./src/rest_api/gorgias_chat_api/gorgias-chat-api.openapi.json -o ./src/rest_api/gorgias_chat_api/gorgias-chat-api.p2o_options.json",

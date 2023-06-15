@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`utils parseSessionStats should match snapshots 1`] = `
+{
+  "failuresSections": [
+    {
+      "items": [],
+      "title": "Articles",
+    },
+    {
+      "items": [],
+      "title": "Categories",
+    },
+  ],
+  "quickSummaryEntries": [
+    {
+      "exported": 0,
+      "failed": 0,
+      "imported": 0,
+      "label": "Articles",
+      "showAlways": true,
+    },
+    {
+      "exported": 0,
+      "failed": 0,
+      "imported": 0,
+      "label": "Categories",
+    },
+  ],
+  "totalExported": 0,
+  "totalFailed": 0,
+  "totalImported": 0,
+}
+`;
+
+exports[`utils parseSessionStats should match snapshots 2`] = `
+{
+  "failuresSections": [
+    {
+      "items": [],
+      "title": "Articles",
+    },
+    {
+      "items": [],
+      "title": "Categories",
+    },
+  ],
+  "quickSummaryEntries": [
+    {
+      "exported": 11,
+      "failed": 0,
+      "imported": 11,
+      "label": "Articles",
+      "showAlways": true,
+    },
+    {
+      "exported": 6,
+      "failed": 0,
+      "imported": 6,
+      "label": "Categories",
+    },
+  ],
+  "totalExported": 17,
+  "totalFailed": 0,
+  "totalImported": 17,
+}
+`;
+
+exports[`utils parseSessionStats should match snapshots 3`] = `
+{
+  "failuresSections": [
+    {
+      "items": [
+        "Untitled article",
+        "Untitled article",
+        "Untitled article",
+        "Untitled article",
+        "Untitled article",
+      ],
+      "title": "Articles",
+    },
+    {
+      "items": [
+        "Untitled collection",
+        "Untitled collection",
+        "Untitled collection",
+        "Untitled collection",
+      ],
+      "title": "Categories",
+    },
+  ],
+  "quickSummaryEntries": [
+    {
+      "exported": 11,
+      "failed": 5,
+      "imported": 4,
+      "label": "Articles",
+      "showAlways": true,
+    },
+    {
+      "exported": 6,
+      "failed": 4,
+      "imported": 0,
+      "label": "Categories",
+    },
+  ],
+  "totalExported": 17,
+  "totalFailed": 9,
+  "totalImported": 4,
+}
+`;
+
+exports[`utils parseSessionStats should match snapshots 4`] = `
+{
+  "failuresSections": [
+    {
+      "items": [],
+      "title": "Articles",
+    },
+    {
+      "items": [],
+      "title": "Categories",
+    },
+  ],
+  "quickSummaryEntries": [
+    {
+      "exported": 11,
+      "failed": 0,
+      "imported": 7,
+      "label": "Articles",
+      "showAlways": true,
+    },
+    {
+      "exported": 6,
+      "failed": 0,
+      "imported": 2,
+      "label": "Categories",
+    },
+  ],
+  "totalExported": 17,
+  "totalFailed": 0,
+  "totalImported": 9,
+}
+`;

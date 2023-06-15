@@ -9,6 +9,69 @@ import {
 declare namespace Components {
     namespace Schemas {
         /**
+         * ArticleColumnLocale
+         */
+        export interface ArticleColumnLocale {
+            content: ColumnDescription
+            excerpt: ColumnDescription
+            slug: ColumnDescription
+            title: ColumnDescription
+        }
+        /**
+         * CSVHelpCenterProvider
+         * Base class for HelpCenter providers
+         */
+        export interface CSVHelpCenterProvider {
+            article_columns: Columns
+            category_columns: Columns
+            /**
+             * File Url
+             */
+            file_url: string // uri
+            /**
+             * Type
+             */
+            type?: 'CSV'
+        }
+        /**
+         * CategoryColumnLocale
+         */
+        export interface CategoryColumnLocale {
+            description: ColumnDescription
+            name: ColumnDescription
+            slug: ColumnDescription
+        }
+        /**
+         * ColumnDescription
+         */
+        export interface ColumnDescription {
+            source: ColumnSource
+        }
+        /**
+         * ColumnSource
+         */
+        export interface ColumnSource {
+            /**
+             * Csv Column
+             */
+            csv_column: string
+            /**
+             * Kind
+             */
+            kind: string
+        }
+        /**
+         * Columns
+         */
+        export interface Columns {
+            /**
+             * Locales
+             */
+            locales: {
+                [name: string]: ArticleColumnLocale | CategoryColumnLocale
+            }
+        }
+        /**
          * Detail
          */
         export interface Detail {
@@ -16,6 +79,27 @@ declare namespace Components {
              * Message
              */
             message: string
+        }
+        /**
+         * ErrorDetail
+         */
+        export interface ErrorDetail {
+            /**
+             * Error Message
+             */
+            error_message: string
+            /**
+             * Instance Id
+             */
+            instance_id: string
+            /**
+             * Instance Title
+             */
+            instance_title?: any
+            /**
+             * Locale
+             */
+            locale?: string
         }
         /**
          * GorgiasHelpCenterReceiver
@@ -40,8 +124,106 @@ declare namespace Components {
          * Base class for HelpCenter migrations
          */
         export interface HelpCenterMigration {
-            provider: ZendeskHelpCenterProvider
+            /**
+             * Is Rollback
+             */
+            is_rollback?: boolean
+            /**
+             * Provider
+             */
+            provider:
+                | ZendeskHelpCenterProvider
+                | HelpDocsHelpCenterProvider
+                | ReAmazeHelpCenterProvider
+                | IntercomHelpCenterProvider
+                | CSVHelpCenterProvider
             receiver: GorgiasHelpCenterReceiver
+            /**
+             * MigrationStats
+             */
+            stats?: {
+                /**
+                 * Stats
+                 */
+                articles?: {
+                    /**
+                     * Errors Count
+                     */
+                    errors_count?: number
+                    /**
+                     * Errors Details
+                     */
+                    errors_details?: ErrorDetail[]
+                    /**
+                     * Export Count
+                     */
+                    export_count?: number
+                    /**
+                     * Import Count
+                     */
+                    import_count?: number
+                    /**
+                     * Import Mapping
+                     */
+                    import_mapping?: {
+                        [name: string]: ImportMappingItem
+                    }
+                }
+                /**
+                 * Stats
+                 */
+                categories?: {
+                    /**
+                     * Errors Count
+                     */
+                    errors_count?: number
+                    /**
+                     * Errors Details
+                     */
+                    errors_details?: ErrorDetail[]
+                    /**
+                     * Export Count
+                     */
+                    export_count?: number
+                    /**
+                     * Import Count
+                     */
+                    import_count?: number
+                    /**
+                     * Import Mapping
+                     */
+                    import_mapping?: {
+                        [name: string]: ImportMappingItem
+                    }
+                }
+                /**
+                 * Stats
+                 */
+                redirects?: {
+                    /**
+                     * Errors Count
+                     */
+                    errors_count?: number
+                    /**
+                     * Errors Details
+                     */
+                    errors_details?: ErrorDetail[]
+                    /**
+                     * Export Count
+                     */
+                    export_count?: number
+                    /**
+                     * Import Count
+                     */
+                    import_count?: number
+                    /**
+                     * Import Mapping
+                     */
+                    import_mapping?: {
+                        [name: string]: ImportMappingItem
+                    }
+                }
+            }
             /**
              * Type
              */
@@ -81,13 +263,54 @@ declare namespace Components {
          */
         export type HelpCenterProviderList = HelpCenterProvider[]
         /**
+         * HelpDocsHelpCenterProvider
+         * Base class for HelpCenter providers
+         */
+        export interface HelpDocsHelpCenterProvider {
+            /**
+             * Api Key
+             */
+            api_key: string // password
+            /**
+             * Type
+             */
+            type?: 'HelpDocs'
+        }
+        /**
+         * ImportMappingItem
+         */
+        export interface ImportMappingItem {
+            /**
+             * Instance Id
+             */
+            instance_id: string
+            /**
+             * Translation Id
+             */
+            translation_id?: string
+        }
+        /**
+         * IntercomHelpCenterProvider
+         * Base class for HelpCenter providers
+         */
+        export interface IntercomHelpCenterProvider {
+            /**
+             * Api Key
+             */
+            api_key: string // password
+            /**
+             * Type
+             */
+            type?: 'Intercom'
+        }
+        /**
          * Message
          */
         export interface Message {
             /**
              * Level
              */
-            level: 'MESSAGE' | 'WARNING' | 'FAILURE'
+            level: 'INFO' | 'ERROR' | 'WARNING'
             /**
              * Message
              */
@@ -108,7 +331,7 @@ declare namespace Components {
          * MigrationProvider
          */
         export interface MigrationProvider {
-            meta: MigrationProviderMeta
+            meta?: MigrationProviderMeta
             /**
              * Type
              */
@@ -167,6 +390,92 @@ declare namespace Components {
             status: string
         }
         /**
+         * MigrationStats
+         */
+        export interface MigrationStats {
+            /**
+             * Stats
+             */
+            articles?: {
+                /**
+                 * Errors Count
+                 */
+                errors_count?: number
+                /**
+                 * Errors Details
+                 */
+                errors_details?: ErrorDetail[]
+                /**
+                 * Export Count
+                 */
+                export_count?: number
+                /**
+                 * Import Count
+                 */
+                import_count?: number
+                /**
+                 * Import Mapping
+                 */
+                import_mapping?: {
+                    [name: string]: ImportMappingItem
+                }
+            }
+            /**
+             * Stats
+             */
+            categories?: {
+                /**
+                 * Errors Count
+                 */
+                errors_count?: number
+                /**
+                 * Errors Details
+                 */
+                errors_details?: ErrorDetail[]
+                /**
+                 * Export Count
+                 */
+                export_count?: number
+                /**
+                 * Import Count
+                 */
+                import_count?: number
+                /**
+                 * Import Mapping
+                 */
+                import_mapping?: {
+                    [name: string]: ImportMappingItem
+                }
+            }
+            /**
+             * Stats
+             */
+            redirects?: {
+                /**
+                 * Errors Count
+                 */
+                errors_count?: number
+                /**
+                 * Errors Details
+                 */
+                errors_details?: ErrorDetail[]
+                /**
+                 * Export Count
+                 */
+                export_count?: number
+                /**
+                 * Import Count
+                 */
+                import_count?: number
+                /**
+                 * Import Mapping
+                 */
+                import_mapping?: {
+                    [name: string]: ImportMappingItem
+                }
+            }
+        }
+        /**
          * Process
          */
         export interface Process {
@@ -205,13 +514,32 @@ declare namespace Components {
             writeOnly?: boolean
         }
         /**
+         * ReAmazeHelpCenterProvider
+         * Base class for HelpCenter providers
+         */
+        export interface ReAmazeHelpCenterProvider {
+            /**
+             * API Key
+             */
+            api_key: string // password
+            /**
+             * Email
+             * Your work email
+             */
+            email: string // email
+            /**
+             * Subdomain
+             */
+            subdomain: string
+            /**
+             * Type
+             */
+            type?: 'ReAmaze'
+        }
+        /**
          * Segment
          */
         export interface Segment {
-            /**
-             * Failures
-             */
-            failures?: string[]
             /**
              * Messages
              */
@@ -225,10 +553,6 @@ declare namespace Components {
              * Title
              */
             title: string
-            /**
-             * Warnings
-             */
-            warnings?: string[]
         }
         /**
          * Session
@@ -270,12 +594,17 @@ declare namespace Components {
          * SessionLong
          */
         export interface SessionLong {
+            /**
+             * Is Rollback
+             */
+            is_rollback?: boolean
             result: MigrationResult
             session: SessionParams
             /**
              * Session Id
              */
             session_id: string // uuid
+            stats: MigrationStats
             /**
              * Status
              */
@@ -295,6 +624,10 @@ declare namespace Components {
          * SessionShort
          */
         export interface SessionShort {
+            /**
+             * Is Rollback
+             */
+            is_rollback?: boolean
             session: SessionParams
             /**
              * Session Id
@@ -309,6 +642,33 @@ declare namespace Components {
          * SessionShortList
          */
         export type SessionShortList = SessionShort[]
+        /**
+         * Stats
+         */
+        export interface Stats {
+            /**
+             * Errors Count
+             */
+            errors_count?: number
+            /**
+             * Errors Details
+             */
+            errors_details?: ErrorDetail[]
+            /**
+             * Export Count
+             */
+            export_count?: number
+            /**
+             * Import Count
+             */
+            import_count?: number
+            /**
+             * Import Mapping
+             */
+            import_mapping?: {
+                [name: string]: ImportMappingItem
+            }
+        }
         /**
          * ZendeskHelpCenterProvider
          * Base class for HelpCenter providers
@@ -377,7 +737,8 @@ declare namespace Paths {
         }
         export type RequestBody = Components.Schemas.Session
         namespace Responses {
-            export type $200 = Components.Schemas.SessionShort
+            export type $200 = Components.Schemas.Detail
+            export type $201 = Components.Schemas.SessionShort
             export type $401 = Components.Schemas.Detail
         }
     }
@@ -407,6 +768,30 @@ declare namespace Paths {
         }
     }
     namespace SessionRetrieve {
+        namespace Parameters {
+            export type Uuid = string
+        }
+        export interface PathParameters {
+            uuid: Parameters.Uuid
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.SessionLong
+            export type $401 = Components.Schemas.Detail
+        }
+    }
+    namespace SessionRetry {
+        namespace Parameters {
+            export type Uuid = string
+        }
+        export interface PathParameters {
+            uuid: Parameters.Uuid
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.SessionLong
+            export type $401 = Components.Schemas.Detail
+        }
+    }
+    namespace SessionRollback {
         namespace Parameters {
             export type Uuid = string
         }
@@ -472,7 +857,9 @@ export interface OperationMethods {
         data?: Paths.SessionCreate.RequestBody,
         config?: AxiosRequestConfig
     ): OperationResponse<
-        Paths.SessionCreate.Responses.$200 | Paths.SessionCreate.Responses.$401
+        | Paths.SessionCreate.Responses.$200
+        | Paths.SessionCreate.Responses.$201
+        | Paths.SessionCreate.Responses.$401
     >
     /**
      * sessionRetrieve - session_retrieve <GET>
@@ -484,6 +871,27 @@ export interface OperationMethods {
     ): OperationResponse<
         | Paths.SessionRetrieve.Responses.$200
         | Paths.SessionRetrieve.Responses.$401
+    >
+    /**
+     * sessionRetry - session_retry <POST>
+     */
+    'sessionRetry'(
+        parameters?: Parameters<Paths.SessionRetry.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.SessionRetry.Responses.$200 | Paths.SessionRetry.Responses.$401
+    >
+    /**
+     * sessionRollback - session_rollback <POST>
+     */
+    'sessionRollback'(
+        parameters?: Parameters<Paths.SessionRollback.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.SessionRollback.Responses.$200
+        | Paths.SessionRollback.Responses.$401
     >
     /**
      * echoView - echo_view <GET>
@@ -577,6 +985,7 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig
         ): OperationResponse<
             | Paths.SessionCreate.Responses.$200
+            | Paths.SessionCreate.Responses.$201
             | Paths.SessionCreate.Responses.$401
         >
     }
@@ -591,6 +1000,32 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.SessionRetrieve.Responses.$200
             | Paths.SessionRetrieve.Responses.$401
+        >
+    }
+    ['/api/sessions/{uuid}/retry']: {
+        /**
+         * sessionRetry - session_retry <POST>
+         */
+        'post'(
+            parameters?: Parameters<Paths.SessionRetry.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.SessionRetry.Responses.$200
+            | Paths.SessionRetry.Responses.$401
+        >
+    }
+    ['/api/sessions/{uuid}/rollback']: {
+        /**
+         * sessionRollback - session_rollback <POST>
+         */
+        'post'(
+            parameters?: Parameters<Paths.SessionRollback.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.SessionRollback.Responses.$200
+            | Paths.SessionRollback.Responses.$401
         >
     }
     ['/debug/echo']: {

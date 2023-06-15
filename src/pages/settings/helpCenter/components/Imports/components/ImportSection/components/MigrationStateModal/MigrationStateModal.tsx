@@ -1,20 +1,26 @@
 import React, {useMemo} from 'react'
 import classNames from 'classnames'
-import {Progress} from 'reactstrap'
-import {noop} from 'lodash'
 
 import gorgiasLogo from 'assets/img/icons/gorgias-icon-logo-black.png'
-import Button from 'pages/common/components/button/Button'
 
 import {
     MigrationProviderMeta,
     MigrationState,
     MigrationStatus,
 } from '../../types'
+import {ParsedSessionStats} from '../../utils'
 
 import MigrationProviderPair from '../MigrationProviderPair'
 import MigrationBaseModal from '../MigrationBaseModal'
 import MigrationBaseModalBody from '../MigrationBaseModalBody'
+
+import MigrationQuickSummary from './components/MigrationQuickSummary'
+import MigrationFailuresDetails from './components/MigrationFailuresDetails'
+import MigrationSucceededActions from './components/MigrationSucceededActions'
+import MigrationInProgressActions from './components/MigrationInProgressActions'
+import MigrationConnectedActions from './components/MigrationConnectedActions'
+import MigrationPartiallySucceededActions from './components/MigrationPartiallySucceededActions'
+import MigrationFailedActions from './components/MigrationFailedActions'
 
 import css from './MigrationStateModal.less'
 
@@ -24,12 +30,8 @@ type Props = {
 
     provider: MigrationProviderMeta
     state: MigrationState
-}
-
-const actionButtonText: Record<MigrationStatus, string> = {
-    [MigrationStatus.Connected]: 'Start migrating',
-    [MigrationStatus.InProgress]: 'Loading',
-    [MigrationStatus.Completed]: 'Finish',
+    stats: ParsedSessionStats | null
+    isRevert?: boolean
 }
 
 const MigrationStateModal: React.FC<Props> = ({
@@ -37,45 +39,62 @@ const MigrationStateModal: React.FC<Props> = ({
     onClose,
     provider,
     state,
+    stats,
+    isRevert,
 }) => {
     const {status} = state
 
-    const {actionButtonHandler, isActionButtonLoading, progressPercentage} =
-        useMemo(() => {
-            if (state.status === MigrationStatus.Connected) {
-                return {
-                    actionButtonHandler: state.onMigrationStart,
-                    isActionButtonLoading: state.isMigrationStartLoading,
-                    progressPercentage: 0,
-                }
-            }
-            if (state.status === MigrationStatus.InProgress) {
-                return {
-                    actionButtonHandler: noop,
-                    isActionButtonLoading: true,
-                    progressPercentage: state.progress,
-                }
-            }
+    const migrationDidEnd = ![
+        MigrationStatus.Connected,
+        MigrationStatus.InProgress,
+    ].includes(status)
 
-            return {
-                actionButtonHandler: () => {
-                    window.location.reload()
-                },
-                isActionButtonLoading: false,
-                progressPercentage: 100,
-            }
-        }, [state])
+    const title = useMemo(() => {
+        if (isRevert)
+            return migrationDidEnd
+                ? 'Migration reverted'
+                : 'Reverting migration'
+        return migrationDidEnd ? 'Migration end' : 'Start migration'
+    }, [migrationDidEnd, isRevert])
+
+    const description = useMemo(() => {
+        if (isRevert) return `Reverting migration from ${provider.title || ''}`
+        return status === MigrationStatus.Connected
+            ? `Migrate data from ${provider.title || ''} to Gorgias`
+            : `Migrating from ${provider.title || ''} to Gorgias`
+    }, [status, isRevert, provider])
+
+    const actions = useMemo(() => {
+        switch (state.status) {
+            case MigrationStatus.Connected:
+                return <MigrationConnectedActions state={state} />
+            case MigrationStatus.InProgress:
+                return (
+                    <MigrationInProgressActions
+                        state={state}
+                        progressClassName={css.progress}
+                        progressLabelClassName={css.progressLabel}
+                    />
+                )
+            case MigrationStatus.Succeeded:
+                return (
+                    <MigrationSucceededActions
+                        state={state}
+                        progressClassName={css.progress}
+                        progressLabelClassName={css.progressLabel}
+                    />
+                )
+            case MigrationStatus.PartiallySucceeded:
+                return <MigrationPartiallySucceededActions state={state} />
+            case MigrationStatus.Failed:
+                return <MigrationFailedActions state={state} />
+            default:
+                return null
+        }
+    }, [state])
 
     return (
-        <MigrationBaseModal
-            title={
-                status === MigrationStatus.Completed
-                    ? 'Migration complete'
-                    : 'Start migration'
-            }
-            isOpen={isOpen}
-            onClose={onClose}
-        >
+        <MigrationBaseModal title={title} isOpen={isOpen} onClose={onClose}>
             <MigrationBaseModalBody>
                 <MigrationProviderPair
                     left={{
@@ -88,65 +107,48 @@ const MigrationStateModal: React.FC<Props> = ({
                     }}
                 />
                 <div className="mb-4"></div>
-                <h3 className="text-center">
-                    {status === MigrationStatus.Connected
-                        ? `Migrate data from ${provider.title || ''} to Gorgias`
-                        : `Migrating from ${provider.title || ''} to Gorgias`}
-                </h3>
+                <h3 className="text-center">{description}</h3>
                 <div className="mb-4"></div>
 
                 {status === MigrationStatus.Connected ? (
-                    <div className={css.checkInfoContainer}>
-                        <i
-                            className={classNames(
-                                css.checkIcon,
-                                'material-icons'
-                            )}
-                        >
-                            check
-                        </i>
-                        <div>
-                            <h4 className="m-0">Connected accounts</h4>
-                            <p>
-                                You have connected your accounts to{' '}
-                                {provider.title}.
-                            </p>
-                        </div>
-                    </div>
-                ) : (
                     <>
-                        <div className={css.caption}>
-                            {status === MigrationStatus.Completed
-                                ? 'Completed'
-                                : 'In progress'}
+                        <div className={css.checkInfoContainer}>
+                            <i
+                                className={classNames(
+                                    css.checkIcon,
+                                    'material-icons'
+                                )}
+                            >
+                                check
+                            </i>
+                            <div>
+                                <h4 className="m-0">Connected accounts</h4>
+                                <p>
+                                    You have connected your accounts to{' '}
+                                    {provider.title}.
+                                </p>
+                            </div>
                         </div>
-                        <div className="mb-1"></div>
-                        <div className={css.progressLabel}>
-                            {progressPercentage.toFixed(0)}% Complete
-                        </div>
-                        <div className="mb-1"></div>
-
-                        <Progress
-                            className={css.progress}
-                            value={progressPercentage}
-                            animated={status === MigrationStatus.InProgress}
-                        />
+                        <div className="mb-4"></div>
                     </>
+                ) : (
+                    stats && (
+                        <>
+                            <MigrationQuickSummary
+                                title="Quick summary"
+                                providerName={provider.title || ''}
+                                entries={stats.quickSummaryEntries}
+                            />
+                            <div className="mb-2"></div>
+                            <MigrationFailuresDetails
+                                title="See what failed to import"
+                                sections={stats.failuresSections}
+                            />
+                            <div className="mb-4"></div>
+                        </>
+                    )
                 )}
-                <div className="mb-4"></div>
-
-                <Button
-                    className="w-100"
-                    isLoading={isActionButtonLoading}
-                    onClick={actionButtonHandler}
-                >
-                    {actionButtonText[status]}
-                </Button>
-                {state.status === MigrationStatus.Completed && (
-                    <div className={classNames(css.caption, 'mt-2')}>
-                        * To see the results, this will refresh the page
-                    </div>
-                )}
+                {actions}
             </MigrationBaseModalBody>
         </MigrationBaseModal>
     )
