@@ -9,15 +9,14 @@ const defaultOptions = {
     cacheTime: 10 * 60 * 1000, // 10 minutes
 }
 
-export const postReportingQueryKey = (data: ReportingParams) => [
-    'reporting',
-    'post-reporting',
-    data,
-]
-
 export type UsePostReportingQueryData<TData extends unknown[]> = AxiosResponse<
     ReportingResponse<TData>
 >
+
+export const reportingKeys = {
+    post: (data: ReportingParams) =>
+        ['reporting', 'post-reporting', data] as const,
+}
 
 export const usePostReporting = <
     TData extends unknown[],
@@ -31,7 +30,7 @@ export const usePostReporting = <
     >
 ) => {
     return useQuery({
-        queryKey: postReportingQueryKey(data),
+        queryKey: reportingKeys.post(data),
         queryFn: () => postReporting<TData>(data),
         ...defaultOptions,
         ...overrides,
