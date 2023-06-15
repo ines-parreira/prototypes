@@ -20,6 +20,7 @@ import {
     getCountryFromPhoneNumber,
     normalizeNumber,
     formatPhoneNumberInternational,
+    shouldValidateAddress,
 } from '../utils'
 
 describe('isNewPhoneNumber()', () => {
@@ -266,5 +267,17 @@ describe('getCountryFromPhoneNumber()', () => {
         (number, country) => {
             expect(getCountryFromPhoneNumber(number)).toEqual(country)
         }
+    )
+})
+
+describe('shouldValidateAddress()', () => {
+    it.each([PhoneCountry.US, PhoneCountry.CA, PhoneCountry.FR])(
+        'should not validate address',
+        (country) => expect(shouldValidateAddress(country)).toBe(false)
+    )
+
+    it.each([PhoneCountry.AU, PhoneCountry.GB])(
+        'should validate address',
+        (country) => expect(shouldValidateAddress(country)).toBe(true)
     )
 })

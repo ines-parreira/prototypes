@@ -40,14 +40,19 @@ export default function PhoneNumberCreateForm(): JSX.Element {
         emoji: null,
     })
     const {country, type} = meta
-    const [address, setAddress] = useState<Partial<AddressInformation> | null>({
-        country,
-        type: AddressType.Company,
-    })
+    const [validationAddress, setValidationAddress] =
+        useState<Partial<AddressInformation> | null>(null)
 
     const [{loading: isLoading}, handlePhoneNumberCreate] =
         useAsyncFn(async () => {
             try {
+                const address =
+                    country && shouldValidateAddress(country)
+                        ? validationAddress
+                        : {
+                              country,
+                              type: AddressType.Company,
+                          }
                 const payload = {
                     name,
                     meta,
@@ -80,7 +85,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                     })
                 )
             }
-        }, [dispatch, name, meta, address])
+        }, [dispatch, name, meta, validationAddress])
 
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {
@@ -91,7 +96,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
     )
 
     useEffect(() => {
-        setAddress((address) => ({
+        setValidationAddress((address) => ({
             ...address,
             country,
         }))
@@ -140,15 +145,19 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                             />
                         </FormGroup>
                         <PhoneMetaFields value={meta} onChange={setMeta} />
-                        {address && country && shouldValidateAddress(country) && (
-                            <div className={css.addressWrapper}>
-                                <h4 className="mb-3">Address verification</h4>
-                                <PhoneAddressFields
-                                    value={address}
-                                    onChange={setAddress}
-                                />
-                            </div>
-                        )}
+                        {validationAddress &&
+                            country &&
+                            shouldValidateAddress(country) && (
+                                <div className={css.addressWrapper}>
+                                    <h4 className="mb-3">
+                                        Address verification
+                                    </h4>
+                                    <PhoneAddressFields
+                                        value={validationAddress}
+                                        onChange={setValidationAddress}
+                                    />
+                                </div>
+                            )}
                         <Button
                             type="submit"
                             isLoading={isLoading}
