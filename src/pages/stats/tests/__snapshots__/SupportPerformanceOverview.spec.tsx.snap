@@ -931,7 +931,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     <div
                       class="trend positive"
                     >
-                      +333
+                      +271%
                     </div>
                   </div>
                 </div>
@@ -939,7 +939,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   class="wrapper heading-page-semibold"
                 >
                   456
-                   
                   <img
                     alt="Blue star"
                     class="customerSatisfactionStar"

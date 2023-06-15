@@ -262,6 +262,7 @@ export default function SupportPerformanceOverview() {
                                         customerSatisfactionTrend.data
                                             ?.prevValue
                                     }
+                                    format={'percent'}
                                 />
                             }
                         >
@@ -270,7 +271,7 @@ export default function SupportPerformanceOverview() {
                             >
                                 {formatMetricValue(
                                     customerSatisfactionTrend.data?.value
-                                )}{' '}
+                                )}
                                 <img
                                     className={css.customerSatisfactionStar}
                                     src={blueStar}
