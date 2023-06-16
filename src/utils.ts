@@ -1192,3 +1192,10 @@ export function includes<TPossibilities extends TValue, TValue>(
     // @ts-expect-error - The default `includes` method wants the value to be the exact type as the array
     return possibilities.includes(value)
 }
+
+/**
+ * Utility to generate a unique id for a TicketMessages component.
+ */
+export function generateTicketMessagesId(index: number) {
+    return `message-${index}`
+}

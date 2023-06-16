@@ -34,6 +34,7 @@ import {
     getTicketState,
 } from 'state/ticket/selectors'
 import {reportError} from 'utils/errors'
+import {generateTicketMessagesId} from 'utils'
 import {TicketEventPrivateReplyData} from '../../../../models/event/types'
 
 interface Props {
@@ -91,7 +92,7 @@ const TicketBodyElement = ({
                 customer={ticket.get('customer')}
                 hasCursor={hasCursor}
                 highlightedElements={highlightedElements}
-                id={`message-${index}`}
+                id={generateTicketMessagesId(index)}
                 lastCustomerMessage={lastCustomerMessage}
                 lastMessageDatetimeAfterMount={lastMessageDatetimeAfterMount}
                 lastReadMessageId={lastReadMessage.get('id')}
@@ -99,6 +100,7 @@ const TicketBodyElement = ({
                 setStatus={setStatus}
                 ticketId={ticket.get('id')}
                 timezone={currentUser.get('timezone')}
+                ticketMeta={ticket.get('meta')}
             />
         )
     }

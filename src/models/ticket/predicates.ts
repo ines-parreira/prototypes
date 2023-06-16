@@ -1,12 +1,17 @@
 import memoizeOne from 'memoize-one'
 import moment from 'moment'
+import _get from 'lodash/get'
 
 import {
     TicketChannel,
     TicketMessageSourceType,
 } from '../../business/types/ticket'
 
-import type {TicketEvent, TicketMessage} from './types'
+import type {
+    GorgiasContactFormTicketMeta,
+    TicketEvent,
+    TicketMessage,
+} from './types'
 
 export const isTicketMessage = (
     obj: Record<string, unknown>
@@ -54,6 +59,18 @@ export const isFailed = (message: TicketMessage): boolean => {
     return !!(
         !isPending(message) &&
         (hasFailedAction(message) || message.failed_datetime)
+    )
+}
+
+export const isGorgiasContactFormTicketMeta = (
+    ticketMetaObj: unknown
+): ticketMetaObj is {gorgias_contact_form: GorgiasContactFormTicketMeta} => {
+    return (
+        typeof _get(
+            ticketMetaObj,
+            ['gorgias_contact_form', 'contact_form_id'],
+            null
+        ) === 'number'
     )
 }
 

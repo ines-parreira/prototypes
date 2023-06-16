@@ -326,3 +326,16 @@ export type ProductDetails = {
     total_reviews: number
     url: string
 }
+
+/**
+ * This represents the meta created by any Gorgias Contact Form tickets
+ * to keep in sync with https://github.com/gorgias/help-center/blob/a596ce9588af9943d1974452cb4e9f0fe96708c3/apps/api/src/modules/helpdesk/ticket-meta-gorgias-contact-form.type.ts#L2
+ */
+export type GorgiasContactFormTicketMeta = {
+    is_embedded: boolean
+    host_url: string
+    contact_form_id: number
+    contact_form_uid: string
+    contact_form_locale_id: number
+    help_center_id: number | null
+}

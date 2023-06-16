@@ -32,11 +32,17 @@ import * as responseUtils from 'state/newMessage/responseUtils'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
-import {getActionTemplate, isImmutable, toImmutable} from 'utils'
+import {
+    generateTicketMessagesId,
+    getActionTemplate,
+    isImmutable,
+    toImmutable,
+} from 'utils'
 import {unescapeQuoteEntities} from 'utils/html'
 
 import {EventType} from 'models/event/types'
 import {humanize} from 'business/format'
+import {isGorgiasContactFormTicketMeta} from 'models/ticket/predicates'
 import {getProperty} from './selectors'
 import {EMPTY_SENDER, TICKET_CHANNEL_NAMES} from './constants'
 import {TicketState} from './types'
@@ -1149,4 +1155,27 @@ export function humanizeChannel(channel: string) {
     if (existing) return existing
 
     return humanize(channel)
+}
+
+export function buildFirstTicketMessage(
+    ticketMessage: TicketMessage,
+    ticketMessagesId: string,
+    ticketMeta: Map<any, any> | null
+): TicketMessage {
+    // Only modify the first ticket message of the first ticket messages group, identifiable via the id = "message-1"
+    if (ticketMessagesId !== generateTicketMessagesId(1) || !ticketMeta)
+        return ticketMessage
+
+    const ticketMetaObj = ticketMeta.toJS()
+    if (isGorgiasContactFormTicketMeta(ticketMetaObj)) {
+        return {
+            ...ticketMessage,
+            meta: {
+                ...ticketMessage.meta,
+                current_page: ticketMetaObj.gorgias_contact_form.host_url,
+            },
+        }
+    }
+
+    return ticketMessage
 }

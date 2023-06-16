@@ -9,6 +9,7 @@ import {
 import {TicketMessage} from 'models/ticket/types'
 import {HighlightedElements} from 'pages/tickets/detail/components/AuditLogEvent'
 
+import {buildFirstTicketMessage} from 'state/ticket/utils'
 import Container from './Container'
 import Message from './Message'
 
@@ -25,6 +26,7 @@ type Props = {
     highlightedElements: HighlightedElements | null
     customer: Map<any, any>
     lastCustomerMessage: Map<any, any>
+    ticketMeta: Map<any, any> | null
 }
 
 export default function TicketMessages({
@@ -39,12 +41,13 @@ export default function TicketMessages({
     highlightedElements,
     lastCustomerMessage,
     customer = fromJS({}),
+    ticketMeta,
 }: Props) {
     if (!messages.length) {
         return null
     }
 
-    const message = messages[0]
+    const message = buildFirstTicketMessage(messages[0], id, ticketMeta)
 
     const groupAfterLastCustomerMessage = moment(message.sent_datetime).isAfter(
         lastCustomerMessage.get('sent_datetime')

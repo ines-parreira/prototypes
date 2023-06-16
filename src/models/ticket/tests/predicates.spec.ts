@@ -6,6 +6,7 @@ import {
     hasFailedAction,
     hasPendingAction,
     isFailed,
+    isGorgiasContactFormTicketMeta,
     isPending,
     shouldMessagesBeGrouped,
 } from '../predicates'
@@ -273,6 +274,30 @@ describe('predicates', () => {
                 created_datetime: '2023-02-02T14:54:00',
             }
             expect(shouldMessagesBeGrouped(msg1, msg2)).toBeTruthy()
+        })
+    })
+
+    describe('isGorgiasContactFormTicketMeta', () => {
+        it.each([undefined, null])(
+            'returns false if the input is falsy',
+            (input) => {
+                expect(isGorgiasContactFormTicketMeta(input)).toBeFalsy()
+            }
+        )
+
+        it('returns true if the input looks like a "gorgias_contact_form" meta field', () => {
+            const input = {
+                gorgias_contact_form: {
+                    is_embedded: true,
+                    host_url: 'https://contact.gorgias.help/forms/abcd1234',
+                    contact_form_id: 1,
+                    contact_form_uid: 'abcd1234',
+                    contact_form_locale_id: 1,
+                    help_center_id: 2,
+                },
+            }
+
+            expect(isGorgiasContactFormTicketMeta(input)).toBeTruthy()
         })
     })
 })
