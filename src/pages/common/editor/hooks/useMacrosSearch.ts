@@ -97,11 +97,13 @@ export default function useMacrosSearch({filters, query, ticket}: Options) {
 
         void cancellableFetchMacros(debouncedSearchOptions)
             .then((res) => {
-                initialLoaded.current = true
-                setState({
-                    macros: res.data.data,
-                    nextCursor: res.data.meta.next_cursor,
-                })
+                if (res) {
+                    initialLoaded.current = true
+                    setState({
+                        macros: res.data.data,
+                        nextCursor: res.data.meta.next_cursor,
+                    })
+                }
             })
             .catch((err) => {
                 console.error(err)
@@ -116,13 +118,15 @@ export default function useMacrosSearch({filters, query, ticket}: Options) {
                     cursor: nextCursor,
                 })
 
-                setState((s) => ({
-                    ...s,
-                    macros: retainPreviousResults
-                        ? [...s.macros, ...(res?.data.data || [])]
-                        : res?.data.data || [],
-                    nextCursor: res.data.meta.next_cursor,
-                }))
+                if (res) {
+                    setState((s) => ({
+                        ...s,
+                        macros: retainPreviousResults
+                            ? [...s.macros, ...(res.data.data || [])]
+                            : res.data.data || [],
+                        nextCursor: res.data.meta.next_cursor,
+                    }))
+                }
             } catch (err) {
                 console.error(err)
             }
