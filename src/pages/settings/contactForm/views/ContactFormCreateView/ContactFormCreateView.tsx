@@ -13,6 +13,7 @@ import {
     CONTACT_FORM_CUSTOMIZATION_PATH,
     CONTACT_FORM_BASE_PATH,
     CONTACT_FORM_DEFAULT_LOCALE,
+    EMAIL_SELECTION_INPUT_LABEL,
 } from 'pages/settings/contactForm/constants'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import {
@@ -166,9 +167,7 @@ const ContactFormCreateView = ({
                             emailIntegrationId={
                                 createContactFormDto.email_integration.id
                             }
-                            customLabel={
-                                'Select email that will receive form submissions'
-                            }
+                            customLabel={EMAIL_SELECTION_INPUT_LABEL}
                         />
                     </section>
 

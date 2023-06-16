@@ -14,3 +14,5 @@ export const CONTACT_FORM_PREFERENCES_PATH = `${CONTACT_FORM_BASE_PATH}/:${CONTA
 export const CONTACT_FORM_ABOUT_PATH = `${CONTACT_FORM_BASE_PATH}/about`
 export const CONTACT_FORM_FORMS_PATH = `${CONTACT_FORM_BASE_PATH}/forms`
 export const CONTACT_FORM_CREATE_PATH = `${CONTACT_FORM_BASE_PATH}/new`
+export const EMAIL_SELECTION_INPUT_LABEL =
+    'Select an email to reply to Contact Form submissions'

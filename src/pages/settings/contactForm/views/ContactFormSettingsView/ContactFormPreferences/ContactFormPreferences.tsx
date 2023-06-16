@@ -25,7 +25,10 @@ import {NotificationStatus} from 'state/notifications/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
-import {CONTACT_FORM_BASE_PATH} from 'pages/settings/contactForm/constants'
+import {
+    CONTACT_FORM_BASE_PATH,
+    EMAIL_SELECTION_INPUT_LABEL,
+} from 'pages/settings/contactForm/constants'
 import {LocaleCode} from 'models/helpCenter/types'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
@@ -230,6 +233,7 @@ const ContactFormPreferences = (): JSX.Element => {
                             updateContactFormDto.email_integration?.id ||
                             contactForm.email_integration?.id
                         }
+                        customLabel={EMAIL_SELECTION_INPUT_LABEL}
                     />
                 </section>
 

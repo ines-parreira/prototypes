@@ -109,7 +109,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
             class="label mbXs"
             for="email-select"
           >
-            Select email that will receive form submissions
+            Select an email to reply to Contact Form submissions
             <abbr
               aria-label="required"
               class="abbr"
