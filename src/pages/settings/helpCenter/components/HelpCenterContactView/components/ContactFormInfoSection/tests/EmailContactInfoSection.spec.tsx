@@ -8,37 +8,51 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
 
 import {fromJS} from 'immutable'
-import _keyBy from 'lodash/keyBy'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import {getContactFormForHelpCenterFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import ContactFormInfoSection from '../ContactFormInfoSection'
 import {getSingleHelpCenterResponseFixtureWithTranslation} from '../../../../../fixtures/getHelpCentersResponse.fixture'
-import {getHelpCenterTranslationsResponseFixture} from '../../../../../fixtures/getHelpCenterTranslationsResponse.fixture'
-import {getLocalesResponseFixture} from '../../../../../fixtures/getLocalesResponse.fixtures'
-import {useCurrentHelpCenter} from '../../../../../providers/CurrentHelpCenter'
 import {HelpCenterTranslationProvider} from '../../../../../providers/HelpCenterTranslation'
-import {useSupportedLocales} from '../../../../../providers/SupportedLocales'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
 
+const contactForm = getContactFormForHelpCenterFixture({
+    id: 111,
+    help_center_id: 333,
+})
+const helpCenter = {
+    ...getSingleHelpCenterResponseFixtureWithTranslation,
+    id: 333,
+    email_integration: {
+        email: 'new-help-center@test.email',
+        id: 444,
+    },
+    translations:
+        getSingleHelpCenterResponseFixtureWithTranslation.translations?.map(
+            (t) => ({...t, help_center_id: 333, id: 555, contact_form_id: 111})
+        ),
+}
+
 const defaultState: Partial<RootState> = {
     entities: {
         contactForm: {
             contactForms: {
-                contactFormById: _keyBy([ContactFormFixture], 'id'),
+                contactFormById: {
+                    [contactForm.id]: contactForm,
+                },
             },
         },
         helpCenter: {
             helpCenters: {
                 helpCentersById: {
-                    '1': getSingleHelpCenterResponseFixtureWithTranslation,
+                    [helpCenter.id]: helpCenter,
                 },
             },
             articles: articlesState,
@@ -48,29 +62,16 @@ const defaultState: Partial<RootState> = {
     integrations: fromJS({
         integrations: [],
     }),
-    ui: {helpCenter: {...uiState, currentId: 1}} as any,
+    ui: {helpCenter: {...uiState}} as any,
 }
 
-const mockedUpdateHelpCenter = jest.fn().mockResolvedValue({
-    data: getSingleHelpCenterResponseFixtureWithTranslation,
-})
-
-const mockedGetHelpCenter = jest.fn().mockResolvedValue({
-    data: getSingleHelpCenterResponseFixtureWithTranslation,
-})
+jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
 
 const mockedUpdateHelpCenterTranslation = jest.fn()
-const mockedListHelpCenterTranslations = jest
-    .fn()
-    .mockResolvedValue(getHelpCenterTranslationsResponseFixture)
-const mockedListGoogleFonts = jest.fn().mockResolvedValue({
-    data: [
-        {family: 'Roboto', category: 'serif'},
-        {family: 'Adriana', category: 'serif'},
-        {family: 'Tambourin', category: 'serif'},
-    ],
-})
-
+const mockedUpdateHelpCenter = jest.fn()
+const mockedListHelpCenterTranslations = jest.fn()
+const mockedGetHelpCenter = jest.fn()
+const mockedListGoogleFonts = jest.fn()
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {
         useHelpCenterApi: () => ({
@@ -86,29 +87,22 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     }
 })
 
-jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
-;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixtureWithTranslation
-)
-
-jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
-;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
-
+const mockGetContactFormById = jest.fn()
+const mockUpdateContactForm = jest.fn()
 jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
     return {
         useContactFormApi: () => ({
             isReady: true,
             isLoading: false,
-            getContactFormById: jest.fn(),
+            getContactFormById: mockGetContactFormById,
+            updateContactForm: mockUpdateContactForm,
         }),
     }
 })
 
 const DefaultProviders: FC = ({children}) => (
     <Provider store={mockedStore(defaultState)}>
-        <HelpCenterTranslationProvider
-            helpCenter={getSingleHelpCenterResponseFixtureWithTranslation}
-        >
+        <HelpCenterTranslationProvider helpCenter={helpCenter}>
             {children}
         </HelpCenterTranslationProvider>
     </Provider>

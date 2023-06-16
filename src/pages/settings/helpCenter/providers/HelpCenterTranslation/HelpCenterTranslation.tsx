@@ -1,4 +1,3 @@
-import produce, {Draft} from 'immer'
 import React, {
     createContext,
     useCallback,
@@ -15,6 +14,7 @@ import {
     UpdateContactForm,
     ContactInfoDto,
     HelpCenter,
+    HelpCenterTranslation,
 } from 'models/helpCenter/types'
 import {getViewLanguage} from 'state/ui/helpCenter'
 import {notify} from 'state/notifications/actions'
@@ -27,6 +27,7 @@ import {getContactFormById} from 'state/entities/contactForm/contactForms'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import {Paths} from 'rest_api/help_center_api/client.generated'
+import {ContactForm} from 'models/contactForm/types'
 import {getGenericMessageFromError} from '../../utils'
 
 export type HelpCenterTranslationState = {
@@ -46,8 +47,7 @@ type HelpCenterTranslationContext = {
     updateTranslation: (payload: Partial<HelpCenterTranslationState>) => void
     updateContactForm: React.Dispatch<React.SetStateAction<UpdateContactForm>>
     updateHelpCenter: () => Promise<void>
-    resetTranslation: () => void
-    translationsLoaded: boolean
+    reset: () => void
     isDirty: boolean
     setIsDirty: React.Dispatch<React.SetStateAction<boolean>>
     emailIntegration: EmailIntegration
@@ -94,18 +94,20 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
     const {fetchHelpCenterTranslations} = useHelpCenterActions()
     const viewLanguage =
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
-    const [translation, updateTranslation] =
+    const [translation, setTranslation] =
         useState<HelpCenterTranslationState>(defaultTranslation)
-    const [contactForm, updateContactForm] = useState<UpdateContactForm>(
+    const [contactForm, setContactForm] = useState<UpdateContactForm>(
         defaultEmailIntegration
     )
-    const [emailIntegration, updateEmailIntegration] =
-        useState<EmailIntegration>({id: null, email: null})
+    const [emailIntegration, setEmailIntegration] = useState<EmailIntegration>({
+        id: null,
+        email: null,
+    })
     const [isDirty, setIsDirty] = useState(false)
-    const [translationsLoaded, setTranslationsLoaded] = useState(false)
     const contactFormFromCache = useAppSelector(
         getContactFormById(translation.contactFormId)
     )
+
     const {
         isReady,
         fetchContactFormById,
@@ -137,6 +139,18 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
         }
 
         try {
+            if (emailIntegration.email && emailIntegration.id) {
+                await client.updateHelpCenter(
+                    {help_center_id: helpCenter.id},
+                    {
+                        email_integration: {
+                            id: emailIntegration.id,
+                            email: emailIntegration.email,
+                        },
+                    }
+                )
+            }
+
             const {chatAppKey, contactInfo} = translation
             await client.updateHelpCenterTranslation(
                 {
@@ -150,18 +164,6 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             )
 
             if (translation.contactFormId) {
-                if (emailIntegration.email && emailIntegration.id) {
-                    await client.updateHelpCenter(
-                        {help_center_id: helpCenter.id},
-                        {
-                            email_integration: {
-                                id: emailIntegration.id,
-                                email: emailIntegration.email,
-                            },
-                        }
-                    )
-                }
-
                 const updates: Paths.UpdateContactForm.RequestBody = {}
                 if (
                     contactForm.subject_lines &&
@@ -185,14 +187,6 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                     translation.contactFormId,
                     updates
                 )
-            } else {
-                await client.updateHelpCenter(
-                    {help_center_id: helpCenter.id},
-                    {
-                        contact_form: contactForm,
-                    }
-                )
-                await fetchHelpCenterTranslations()
             }
 
             setIsDirty(false)
@@ -221,158 +215,131 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
         client,
         dispatch,
         contactForm,
-        fetchHelpCenterTranslations,
         helpCenter,
         viewLanguage,
         translation,
         updateContactFormViaApi,
     ])
 
-    const handleOnUpdate = useCallback(
+    const handleOnTranslationUpdate = useCallback(
         (payload: Partial<HelpCenterTranslationState>) => {
-            updateTranslation({
+            setTranslation({
                 ...translation,
                 ...payload,
             })
+            setIsDirty(true)
         },
-        [updateTranslation, translation]
+        [setTranslation, translation]
     )
 
     const handleOnUpdateContactForm = useCallback(
         (payload: React.SetStateAction<UpdateContactForm>) => {
-            updateContactForm(payload)
+            setContactForm(payload)
+            setIsDirty(true)
         },
-        [updateContactForm]
+        []
     )
 
-    const handleOnUpdateEmailIntegration = useCallback(
+    const handleOnEmailIntegrationUpdate = useCallback(
         (payload: EmailIntegration) => {
-            updateEmailIntegration(payload)
-            // FIXME: #2566 After migration the support for legacy contact form should be removed
-            updateContactForm((previousContactForm) => ({
-                ...previousContactForm,
-                helpdesk_integration_email: payload?.email,
-                helpdesk_integration_id: payload.id,
-            }))
+            setEmailIntegration(payload)
+            setIsDirty(true)
         },
-        [updateContactForm, updateEmailIntegration]
+        []
     )
 
-    const updateTranslationFromData = useCallback(() => {
-        const updateFn = (draftSettings: Draft<HelpCenterTranslationState>) => {
-            const helpCenterTranslation = helpCenter.translations?.find(
-                (t) => t.locale === viewLanguage
-            )
+    const resetTranslation = useCallback(
+        (translation: HelpCenterTranslation) => {
+            setTranslation((draftSettings) => {
+                const {contact_info, chat_app_key, contact_form_id} =
+                    translation
 
-            if (helpCenterTranslation) {
-                const {chat_app_key, contact_info} = helpCenterTranslation
-
-                draftSettings.contactFormId =
-                    helpCenterTranslation.contact_form_id || null
-                draftSettings.chatAppKey = chat_app_key
-                draftSettings.contactInfo = {
-                    email: {
-                        description: contact_info.email.description,
-                        enabled:
-                            contact_info.email.deactivated_datetime === null,
-                        email: contact_info.email.email,
-                    },
-                    phone: {
-                        description: contact_info.phone.description,
-                        enabled:
-                            contact_info.phone.deactivated_datetime === null,
-                        phone_numbers: contact_info.phone.phone_numbers,
-                    },
-                    chat: {
-                        description: contact_info.chat.description,
-                        enabled:
-                            contact_info.chat.deactivated_datetime === null,
+                return {
+                    ...draftSettings,
+                    contactFormId: contact_form_id || null,
+                    chatAppKey: chat_app_key,
+                    contactInfo: {
+                        email: {
+                            description: contact_info.email.description,
+                            enabled:
+                                contact_info.email.deactivated_datetime ===
+                                null,
+                            email: contact_info.email.email,
+                        },
+                        phone: {
+                            description: contact_info.phone.description,
+                            enabled:
+                                contact_info.phone.deactivated_datetime ===
+                                null,
+                            phone_numbers: contact_info.phone.phone_numbers,
+                        },
+                        chat: {
+                            description: contact_info.chat.description,
+                            enabled:
+                                contact_info.chat.deactivated_datetime === null,
+                        },
                     },
                 }
+            })
+        },
+        []
+    )
+
+    const resetEmailIntegration = useCallback(
+        (emailIntegration?: EmailIntegration) => {
+            setEmailIntegration({
+                email: emailIntegration?.email || null,
+                id: emailIntegration?.id || null,
+            })
+        },
+        []
+    )
+
+    const resetContactForm = useCallback((contactForm: ContactForm) => {
+        setContactForm((draftSettings) => {
+            const subject_lines =
+                (contactForm?.subject_lines && {
+                    [contactForm.default_locale]: contactForm.subject_lines,
+                }) ??
+                undefined
+
+            return {
+                ...draftSettings,
+                ...(subject_lines && {subject_lines}),
+                card_enabled: !contactForm.deactivated_datetime,
             }
-        }
+        })
+    }, [])
 
-        const updateContactFormFn = (
-            draftSettings: Draft<UpdateContactForm>
-        ) => {
-            const helpCenterTranslation = helpCenter.translations?.find(
-                (t) => t.locale === viewLanguage
-            )
-
-            if (
-                !helpCenterTranslation ||
-                (helpCenterTranslation.contact_form_id && !contactFormFromCache)
-            ) {
-                return
-            }
-
-            draftSettings.helpdesk_integration_email = helpCenter.contact_form
-                ? helpCenter.contact_form.helpdesk_integration_email
-                : null
-
-            draftSettings.helpdesk_integration_id = helpCenter.contact_form
-                ? helpCenter.contact_form.helpdesk_integration_id
-                : null
-
-            draftSettings.card_enabled = contactFormFromCache
-                ? !contactFormFromCache.deactivated_datetime
-                : // FIXME: #2566 After migration the support for legacy contact form should be removed
-                  helpCenter.contact_form?.card_enabled !== false
-
-            const subject_lines = helpCenterTranslation.contact_form_id
-                ? contactFormFromCache?.subject_lines && {
-                      [contactFormFromCache.default_locale]:
-                          contactFormFromCache.subject_lines,
-                  }
-                : // FIXME: #2566 After migration the support for legacy contact form should be removed
-                  helpCenter.contact_form?.subject_lines || null
-
-            if (subject_lines) {
-                draftSettings.subject_lines = subject_lines
-            }
-        }
-
-        const updateEmailIntegrationFn = (
-            draftSettings: Draft<EmailIntegration>
-        ) => {
-            if (helpCenter.email_integration) {
-                draftSettings.email = helpCenter.email_integration.email
-                draftSettings.id = helpCenter.email_integration.id
-            } else {
-                // FIXME: #2566 After migration the support for legacy contact form should be removed
-                draftSettings.email =
-                    helpCenter.contact_form?.helpdesk_integration_email || null
-                draftSettings.id =
-                    helpCenter.contact_form?.helpdesk_integration_id || null
-            }
-        }
-
-        updateEmailIntegration((prevEmailIntegration) =>
-            produce(prevEmailIntegration, updateEmailIntegrationFn)
+    const reset = useCallback(() => {
+        resetEmailIntegration(helpCenter?.email_integration || undefined)
+        if (contactFormFromCache) resetContactForm(contactFormFromCache)
+        const currentTranslation = helpCenter.translations?.find(
+            (t) => t.locale === viewLanguage
         )
-
-        updateTranslation((prevTranslation) =>
-            produce(prevTranslation, updateFn)
-        )
-        updateContactForm((prevContactForm) =>
-            produce(prevContactForm, updateContactFormFn)
-        )
+        if (currentTranslation) resetTranslation(currentTranslation)
         setIsDirty(false)
     }, [
         helpCenter.email_integration,
+        contactFormFromCache,
         helpCenter.translations,
         viewLanguage,
-        contactFormFromCache,
-        // FIXME: #2566 After migration the support for legacy contact form should be removed
-        helpCenter.contact_form,
+        resetEmailIntegration,
+        resetContactForm,
+        resetTranslation,
     ])
 
     useEffect(() => {
-        updateTranslationFromData()
-        if (helpCenter.translations) {
-            setTranslationsLoaded(true)
-        }
-    }, [helpCenter.translations, updateTranslationFromData])
+        resetEmailIntegration(helpCenter?.email_integration || undefined)
+    }, [helpCenter.email_integration, resetEmailIntegration])
+
+    useEffect(() => {
+        const currentTranslation = helpCenter.translations?.find(
+            (t) => t.locale === viewLanguage
+        )
+        if (!currentTranslation) return
+        resetTranslation(currentTranslation)
+    }, [helpCenter.translations, viewLanguage, resetTranslation])
 
     useEffect(() => {
         const availableLanguages = helpCenter.translations?.map((t) => t.locale)
@@ -381,6 +348,11 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [viewLanguage])
+
+    useEffect(() => {
+        if (!contactFormFromCache) return
+        resetContactForm(contactFormFromCache)
+    }, [contactFormFromCache, resetContactForm])
 
     useEffect(() => {
         if (!isReady) return
@@ -417,30 +389,28 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
 
     const value = useMemo(
         () => ({
-            emailIntegration,
-            translation,
             contactForm,
-            updateTranslation: handleOnUpdate,
-            updateContactForm: handleOnUpdateContactForm,
-            updateEmailIntegration: handleOnUpdateEmailIntegration,
-            updateHelpCenter,
-            resetTranslation: updateTranslationFromData,
-            translationsLoaded,
+            emailIntegration,
             isDirty,
             setIsDirty,
+            translation,
+            updateContactForm: handleOnUpdateContactForm,
+            updateEmailIntegration: handleOnEmailIntegrationUpdate,
+            updateHelpCenter,
+            updateTranslation: handleOnTranslationUpdate,
+            reset,
         }),
         [
-            emailIntegration,
-            handleOnUpdateEmailIntegration,
-            translation,
             contactForm,
-            handleOnUpdate,
+            emailIntegration,
+            handleOnEmailIntegrationUpdate,
+            handleOnTranslationUpdate,
             handleOnUpdateContactForm,
-            updateHelpCenter,
-            updateTranslationFromData,
-            translationsLoaded,
             isDirty,
             setIsDirty,
+            translation,
+            updateHelpCenter,
+            reset,
         ]
     )
 

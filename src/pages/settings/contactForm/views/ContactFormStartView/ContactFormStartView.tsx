@@ -41,7 +41,8 @@ const ContactFormStartView: React.FC = () => {
     }, [contactForms.length, hasLoadedOnce])
 
     const manageContactFormProps: Props = {
-        contactForms,
+        // We want to manage only the forms with source 'manual'
+        contactForms: contactForms.filter((cf) => cf.source === 'manual'),
         isLoading,
     }
 

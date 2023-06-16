@@ -183,13 +183,6 @@ describe('<HelpCenterNewView />', () => {
                         shop_name: undefined,
                         subdomain: 'acme',
                         theme: 'light',
-                        // FIXME: #2566 after the migration the sending of contact forms should be prohibited
-                        contact_form: {
-                            card_enabled: true,
-                            helpdesk_integration_email:
-                                'billing@acme.gorgias.io',
-                            helpdesk_integration_id: 5,
-                        },
                     })
                 )
             })

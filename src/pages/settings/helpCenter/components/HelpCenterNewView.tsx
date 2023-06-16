@@ -120,13 +120,6 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                 email: defaultEmailIntegration?.meta.address,
                 id: defaultEmailIntegration?.id,
             },
-            // FIXME: Clean up backward compatibility after migration #2566
-            contact_form: {
-                card_enabled: true,
-                helpdesk_integration_email:
-                    defaultEmailIntegration?.meta.address,
-                helpdesk_integration_id: defaultEmailIntegration?.id,
-            },
         }
     )
 
@@ -190,13 +183,6 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                     email_integration: {
                         email: selectedIntegration.meta.address,
                         id: selectedIntegration.id,
-                    },
-                    // FIXME: Clean up backward compatibility after migration #2566
-                    contact_form: {
-                        card_enabled: true,
-                        helpdesk_integration_email:
-                            selectedIntegration.meta.address,
-                        helpdesk_integration_id: selectedIntegration.id,
                     },
                 }))
             }
@@ -432,12 +418,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                         <SelectField
                             id="contactForm"
                             placeholder="Select an email integration"
-                            value={
-                                newHelpCenter?.email_integration?.id ||
-                                // FIXME: Clean up backward compatibility after migration #2566
-                                newHelpCenter.contact_form
-                                    ?.helpdesk_integration_id
-                            }
+                            value={newHelpCenter?.email_integration?.id}
                             options={emailIntegrations.map((integration) => ({
                                 label:
                                     `${integration.name} ` +

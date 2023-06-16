@@ -147,7 +147,6 @@ export const getSingleHelpCenterResponseFixture: HelpCenter = {
     created_datetime: '2021-05-17T18:21:42.022Z',
     updated_datetime: '2021-05-17T18:21:42.022Z',
     deleted_datetime: null,
-    contact_form: null,
     email_integration: null,
     automation_settings_id: null,
 }
@@ -190,15 +189,4 @@ export const getSingleHelpCenterResponseFixtureWithTranslation: HelpCenter = {
             },
         },
     ],
-    contact_form: {
-        card_enabled: true,
-        helpdesk_integration_email: 'sample@example.com',
-        helpdesk_integration_id: 123456,
-        subject_lines: {
-            'en-US': {
-                allow_other: true,
-                options: ['I have a question'],
-            },
-        },
-    },
 }

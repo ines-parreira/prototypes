@@ -43,7 +43,6 @@ const ContactFormInfoSection = () => {
         updateTranslation,
         updateContactForm,
         contactForm,
-        translationsLoaded,
         setIsDirty,
     } = useHelpCenterTranslation()
 
@@ -209,18 +208,16 @@ const ContactFormInfoSection = () => {
                                 : undefined
                         }
                     />
-                    {isSubjectLinesAvailable &&
-                        translationsLoaded &&
-                        contactForm.subject_lines && (
-                            <SubjectLines
-                                title="Edit the subject of the contact form"
-                                description="Here is a default list of subject lines. If there is no subject added, user can freely type any subject."
-                                subjectLines={contactForm.subject_lines}
-                                currentLocale={viewLanguage}
-                                updateContactForm={updateContactForm}
-                                setIsDirty={setIsDirty}
-                            />
-                        )}
+                    {isSubjectLinesAvailable && contactForm.subject_lines && (
+                        <SubjectLines
+                            title="Edit the subject of the contact form"
+                            description="Here is a default list of subject lines. If there is no subject added, user can freely type any subject."
+                            subjectLines={contactForm.subject_lines}
+                            currentLocale={viewLanguage}
+                            updateContactForm={updateContactForm}
+                            setIsDirty={setIsDirty}
+                        />
+                    )}
                     <div
                         className={css.embedWrapper}
                         id="embedded-contact-form"

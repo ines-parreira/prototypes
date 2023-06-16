@@ -4,16 +4,12 @@ import Button from 'pages/common/components/button/Button'
 import {useHelpCenterTranslation} from '../../../../providers/HelpCenterTranslation'
 
 const FooterActions: React.FC = () => {
-    const {updateHelpCenter, resetTranslation} = useHelpCenterTranslation()
+    const {updateHelpCenter, reset} = useHelpCenterTranslation()
 
     return (
         <footer>
             <Button onClick={updateHelpCenter}>Save Changes</Button>
-            <Button
-                className="ml-2"
-                intent="secondary"
-                onClick={resetTranslation}
-            >
+            <Button className="ml-2" intent="secondary" onClick={reset}>
                 Cancel
             </Button>
         </footer>
