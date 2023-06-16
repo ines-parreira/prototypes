@@ -1,10 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import WhatsAppMessageTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
-    ApplyExternalTemplateAction,
-    WhatsAppMessageTemplate,
-} from 'models/whatsAppMessageTemplates/types'
+import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 import {useListWhatsAppMessageTemplates} from 'models/whatsAppMessageTemplates/queries'
 import {getNewMessageActions} from 'state/newMessage/selectors'
 import {mergeActionsJS} from 'state/ticket/utils'
@@ -17,13 +14,11 @@ import WhatsAppMessageTemplateNavigator from './WhatsAppMessageTemplateNavigator
 import css from './WhatsAppTemplateReplyArea.less'
 
 export default function WhatsAppMessageTemplateReplyArea() {
+    const [selectedTemplate, setSelectedTemplate] =
+        useState<WhatsAppMessageTemplate>()
     const currentActions = useAppSelector(getNewMessageActions)
-    const externalTemplateAction = (currentActions.find(
-        (action) => action.name === MacroActionName.ApplyExternalTemplate
-    ) || {}) as ApplyExternalTemplateAction
-    const selectedTemplate = externalTemplateAction.arguments?.template
 
-    const {data} = useListWhatsAppMessageTemplates({is_supported: true})
+    const request = useListWhatsAppMessageTemplates()
 
     const dispatch = useAppDispatch()
 
@@ -36,7 +31,6 @@ export default function WhatsAppMessageTemplateReplyArea() {
                 arguments: {
                     provider: 'whatsapp',
                     template_id: template.id,
-                    template: template,
                     body: Array(
                         countDistinctVariables(template.components.body.value)
                     ).fill({type: 'text', value: ''}),
@@ -45,6 +39,7 @@ export default function WhatsAppMessageTemplateReplyArea() {
         ])
 
         dispatch(setNewMessageActions(newActions))
+        setSelectedTemplate(template)
     }
 
     return selectedTemplate ? (
@@ -62,7 +57,7 @@ export default function WhatsAppMessageTemplateReplyArea() {
     ) : (
         <WhatsAppMessageTemplateNavigator
             onItemClick={handleTemplateClick}
-            templates={data?.data || []}
+            templates={request.data?.data || []}
         />
     )
 }

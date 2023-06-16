@@ -17,7 +17,6 @@ import {Context, renderTemplate} from 'pages/common/utils/template'
 import {
     castGorgiasVideosForUnsupportedSources,
     getActionTemplate,
-    isImmutable,
     toJS,
     uploadFiles,
 } from 'utils'
@@ -97,11 +96,7 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from './errors'
-import {
-    applyExternalTemplateAction,
-    transformToInternalNote,
-    upsertNewMessageAction,
-} from './utils'
+import {transformToInternalNote} from './utils'
 
 export const addAttachments =
     (ticket: Map<any, any>, atts: FileList | Attachment[] | File[]) =>
@@ -476,7 +471,6 @@ const prepareDefault =
         dispatch(setSubject())
         dispatch(setSourceType(sourceType))
         dispatch(setSourceExtra({}))
-        dispatch(setNewMessageActions([]))
         resetReceiversAndSender(dispatch, getState)
     }
 
@@ -872,8 +866,8 @@ export function prepareTicketDataToSend(
         }
 
         if (actions) {
-            newMessage.actions = actions
-                .map((curAction: Map<any, any> = fromJS({})) =>
+            newMessage.actions = actions.map(
+                (curAction: Map<any, any> = fromJS({})) =>
                     formatAction(
                         curAction,
                         fromJS(getActionTemplate(curAction.get('name'))),
@@ -882,19 +876,7 @@ export function prepareTicketDataToSend(
                             currentUser: currentUser.toJS(),
                         }
                     )
-                )
-                .concat(fromJS(newMessage.actions ?? [])) as List<Map<any, any>>
-        }
-
-        if (
-            newMessage.channel === TicketChannel.WhatsApp &&
-            newMessage.actions
-        ) {
-            newMessage.actions = isImmutable(newMessage.actions)
-                ? newMessage.actions
-                : fromJS(newMessage.actions)
-
-            newMessage = applyExternalTemplateAction(newMessage)
+            ) as List<Map<any, any>>
         }
 
         const discountCodes = prepareNewMessageDiscountCodes(
@@ -1053,6 +1035,30 @@ function onMessageSent(dispatch: StoreDispatch) {
     })
 }
 
+function upsertNewMessageAction(
+    messageToSend: NewMessage,
+    action: Map<any, any>
+): void {
+    if (!messageToSend.actions) {
+        messageToSend.actions = fromJS([action])
+        return
+    }
+
+    const existingActionIndex = messageToSend.actions.findIndex(
+        (existingAction?: Map<any, any>) =>
+            existingAction?.get('name') === action.get('name')
+    )
+    if (existingActionIndex !== -1) {
+        messageToSend.actions = messageToSend.actions.set(
+            existingActionIndex,
+            action
+        )
+        return
+    }
+
+    messageToSend.actions = messageToSend.actions.push(action)
+}
+
 export function prepareTicketMessage({
     status,
     macroActions,
@@ -1159,10 +1165,7 @@ export function prepareTicketMessage({
                     fromJS(getActionTemplate(MacroActionName.SetStatus)),
                     {}
                 )
-                messageToSend = upsertNewMessageAction(
-                    messageToSend,
-                    closeTicketAction
-                )
+                upsertNewMessageAction(messageToSend, closeTicketAction)
             }
 
             const state = getState()

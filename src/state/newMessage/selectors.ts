@@ -64,10 +64,7 @@ export const getNewMessage = createImmutableSelector(
 
 export const getNewMessageActions = createSelector(
     getNewMessageState,
-    (state) =>
-        (
-            (state.getIn(['newMessage', 'actions']) as List<any>) ?? fromJS([])
-        ).toJS() as MacroAction[]
+    (state) => (state.getIn(['newMessage', 'actions']) || []) as MacroAction[]
 )
 
 export const hasValidExternalTemplate = createSelector(

@@ -160,7 +160,6 @@
         "reselect": "4.1.7",
         "sanitize-html": "1.14.1",
         "scroll-into-view-if-needed": "2.2.20",
-        "slack-message-parser": "^3.0.2",
         "slick-carousel": "1.6.0",
         "socket.io-client": "2.5.0",
         "sortablejs": "gorgias/Sortable",

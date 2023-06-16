@@ -42,8 +42,10 @@ export enum MacroActionType {
 }
 
 // TODO extend ApplyExternalTemplate
-export type MacroAction = {
-    arguments: Partial<ApplyExternalTemplateActionArguments> & {
+export type MacroAction = Partial<
+    Pick<ApplyExternalTemplateActionArguments, 'body'>
+> & {
+    arguments: {
         attachments?: MacroActionAttachment[]
         body_html?: string
         body_text?: string

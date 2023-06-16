@@ -808,10 +808,6 @@ exports[`actions new message prepare() email-forward should cast chat react play
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
-    "payload": [],
-    "type": "SET_NEW_MESSAGE_ACTIONS",
-  },
-  {
     "receivers": {
       "to": [
         {
@@ -880,10 +876,6 @@ exports[`actions new message prepare() email-forward should cast chat react play
   {
     "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
-  },
-  {
-    "payload": [],
-    "type": "SET_NEW_MESSAGE_ACTIONS",
   },
   {
     "receivers": {
@@ -1234,10 +1226,6 @@ exports[`actions new message prepare() instagram comment should add prefix 1`] =
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
-    "payload": [],
-    "type": "SET_NEW_MESSAGE_ACTIONS",
-  },
-  {
     "receivers": {
       "to": [
         {
@@ -1473,10 +1461,6 @@ exports[`actions new message prepare() instagram comment should not add prefix i
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
-    "payload": [],
-    "type": "SET_NEW_MESSAGE_ACTIONS",
-  },
-  {
     "receivers": {
       "to": [
         {
@@ -1556,10 +1540,6 @@ exports[`actions new message prepare() instagram comment should not add prefix i
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
-    "payload": [],
-    "type": "SET_NEW_MESSAGE_ACTIONS",
-  },
-  {
     "receivers": {
       "to": [
         {
@@ -1635,10 +1615,6 @@ exports[`actions new message prepare() other types 1`] = `
   {
     "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
-  },
-  {
-    "payload": [],
-    "type": "SET_NEW_MESSAGE_ACTIONS",
   },
   {
     "receivers": {
@@ -1718,10 +1694,6 @@ exports[`actions new message prepare() other types 2`] = `
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
-    "payload": [],
-    "type": "SET_NEW_MESSAGE_ACTIONS",
-  },
-  {
     "receivers": {
       "to": [
         {
@@ -1799,10 +1771,6 @@ exports[`actions new message prepare() other types 3`] = `
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
-    "payload": [],
-    "type": "SET_NEW_MESSAGE_ACTIONS",
-  },
-  {
     "receivers": {
       "to": [
         {
@@ -1878,10 +1846,6 @@ exports[`actions new message prepare() other types 4`] = `
   {
     "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
-  },
-  {
-    "payload": [],
-    "type": "SET_NEW_MESSAGE_ACTIONS",
   },
   {
     "receivers": {

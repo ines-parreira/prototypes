@@ -17462,11 +17462,6 @@ sisteransi@^1.0.5:
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"
   integrity sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==
 
-slack-message-parser@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/slack-message-parser/-/slack-message-parser-3.0.2.tgz#a2ae0a521acfd0a0a3ebff9d8fd2bca494fb28ca"
-  integrity sha512-o5NUm2qZ19iyhDPtVGuWhXV9I7GGWXhsA4VDO8HhQZIRU4S5I2D76ZTv5yw1TvNeEJ+B8K/PNg1hsw3GGGA4iQ==
-
 slash@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-2.0.0.tgz#de552851a1759df3a8f206535442f5ec4ddeab44"

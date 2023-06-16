@@ -65,7 +65,7 @@ export type WhatsAppMessageTemplateComponents = {
     //     type: string
     //     value: string
     // }
-    footer?: {
+    footer: {
         type: 'text'
         value: string
     }
@@ -91,7 +91,6 @@ export type ListWhatsAppMessageTemplatesParams = {
 export type ApplyExternalTemplateActionArguments = {
     provider: 'whatsapp'
     template_id: string
-    template?: WhatsAppMessageTemplate
     body: {
         type: 'text'
         value: string

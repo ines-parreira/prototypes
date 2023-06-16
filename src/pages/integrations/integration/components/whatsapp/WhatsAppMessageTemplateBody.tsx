@@ -4,7 +4,7 @@ import InputField from 'pages/common/forms/input/InputField'
 import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 import WhatsAppVariablePreview from './WhatsAppVariablePreview'
 
-import {WhatsAppMessageTemplateToHtml, WHATSAPP_VARIABLE_REGEX} from './utils'
+import {processWhatsAppMarkdown, WHATSAPP_VARIABLE_REGEX} from './utils'
 
 import css from './WhatsAppMessageTemplateMessage.less'
 
@@ -21,74 +21,64 @@ export default function WhatsAppMessageTemplateBody({
     value = [],
     onChange,
 }: Props) {
-    const lines = template.components.body.value.split('\\n')
+    const message = processWhatsAppMarkdown(template.components.body.value)
+    const sentences = message.split('\\n')
 
     return (
         <div className={css.messageBody}>
-            {lines.map((rawSentence, sentenceIndex) => {
-                const sentence = WhatsAppMessageTemplateToHtml(rawSentence)
-                return (
-                    <div key={sentenceIndex}>
-                        <div className={css.sentence}>
-                            {sentence
-                                .split(WHATSAPP_VARIABLE_REGEX)
-                                .map((part, partIndex) => {
-                                    if (WHATSAPP_VARIABLE_REGEX.test(part)) {
-                                        const variableKey = parseInt(
-                                            part.slice(2, -2)
-                                        )
-                                        return (
-                                            <div
-                                                key={`${sentenceIndex}-${partIndex}`}
-                                                className={css.variable}
-                                                data-testid={`wa-variable-${
-                                                    isPreview
-                                                        ? 'preview'
-                                                        : 'input'
-                                                }`}
-                                            >
-                                                {isPreview ? (
-                                                    <WhatsAppVariablePreview />
-                                                ) : (
-                                                    <InputField
-                                                        name={`variable-${variableKey}`}
-                                                        className={css.input}
-                                                        value={
-                                                            value[
-                                                                variableKey - 1
-                                                            ] ?? ''
-                                                        }
-                                                        onChange={(
-                                                            inputValue
-                                                        ) => {
-                                                            const newValue = [
-                                                                ...value,
-                                                            ]
-                                                            newValue[
-                                                                variableKey - 1
-                                                            ] = inputValue
-                                                            onChange?.(newValue)
-                                                        }}
-                                                    />
-                                                )}
-                                            </div>
-                                        )
-                                    }
+            {sentences.map((sentence, sentenceIndex) => (
+                <div key={sentenceIndex}>
+                    <div className={css.sentence}>
+                        {sentence
+                            .split(WHATSAPP_VARIABLE_REGEX)
+                            .map((part, partIndex) => {
+                                if (WHATSAPP_VARIABLE_REGEX.test(part)) {
+                                    const variableKey = parseInt(
+                                        part.slice(2, -2)
+                                    )
                                     return (
                                         <div
                                             key={`${sentenceIndex}-${partIndex}`}
-                                            dangerouslySetInnerHTML={{
-                                                __html: sanitizeHtmlDefault(
-                                                    part
-                                                ),
-                                            }}
-                                        />
+                                            className={css.variable}
+                                            data-testid={`wa-variable-${
+                                                isPreview ? 'preview' : 'input'
+                                            }`}
+                                        >
+                                            {isPreview ? (
+                                                <WhatsAppVariablePreview />
+                                            ) : (
+                                                <InputField
+                                                    name={`variable-${variableKey}`}
+                                                    className={css.input}
+                                                    value={
+                                                        value[variableKey - 1]
+                                                    }
+                                                    onChange={(inputValue) => {
+                                                        const newValue = [
+                                                            ...value,
+                                                        ]
+                                                        newValue[
+                                                            variableKey - 1
+                                                        ] = inputValue
+                                                        onChange?.(newValue)
+                                                    }}
+                                                />
+                                            )}
+                                        </div>
                                     )
-                                })}
-                        </div>
+                                }
+                                return (
+                                    <div
+                                        key={`${sentenceIndex}-${partIndex}`}
+                                        dangerouslySetInnerHTML={{
+                                            __html: sanitizeHtmlDefault(part),
+                                        }}
+                                    />
+                                )
+                            })}
                     </div>
-                )
-            })}
+                </div>
+            ))}
         </div>
     )
 }

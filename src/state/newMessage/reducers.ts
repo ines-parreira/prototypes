@@ -20,7 +20,6 @@ import {
 } from 'state/ticket/utils'
 import {GorgiasAction} from 'state/types'
 
-import {MacroAction} from 'models/macroAction/types'
 import {addEmailExtra} from './actions'
 import * as types from './constants'
 import {
@@ -711,8 +710,7 @@ export default function reducer(
         }
 
         case types.SET_NEW_MESSAGE_ACTIONS: {
-            const newActions = fromJS(action.payload as MacroAction[])
-            return state.setIn(['newMessage', 'actions'], newActions)
+            return state.setIn(['newMessage', 'actions'], action.payload)
         }
 
         default:

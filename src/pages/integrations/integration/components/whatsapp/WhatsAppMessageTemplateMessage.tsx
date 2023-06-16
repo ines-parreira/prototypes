@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+    ApplyExternalTemplateAction,
     ApplyExternalTemplateActionArguments,
     WhatsAppMessageTemplate,
 } from 'models/whatsAppMessageTemplates/types'
@@ -7,8 +8,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {setNewMessageActions} from 'state/newMessage/actions'
 import useAppSelector from 'hooks/useAppSelector'
 import {getNewMessageActions} from 'state/newMessage/selectors'
-import {mergeActionsJS} from 'state/ticket/utils'
 import {MacroActionName} from 'models/macroAction/types'
+import {mergeActionsJS} from 'state/ticket/utils'
 import WhatsAppMessageTemplateBody from './WhatsAppMessageTemplateBody'
 
 import css from './WhatsAppMessageTemplateMessage.less'
@@ -22,15 +23,16 @@ export default function WhatsAppMessageTemplateMessage({
     template,
     isPreview = true,
 }: Props) {
-    const footer = template.components.footer?.value
+    const footer = template.components.footer.value
 
     const dispatch = useAppDispatch()
     const newMessageActions = useAppSelector(getNewMessageActions)
 
-    const externalTemplateAction = newMessageActions.find(
+    const externalTemplateAction = (newMessageActions.find(
         (action) => action.name === MacroActionName.ApplyExternalTemplate
-    )
-    const externalTemplateActionArguments = externalTemplateAction?.arguments
+    ) || {}) as ApplyExternalTemplateAction
+    const externalTemplateActionArguments =
+        externalTemplateAction.arguments || {}
 
     /* TODO create WhatsAppMessageTemplateEditor and WhatsAppTemplateMessagePreview */
     const handleTemplateValuesChange = (
@@ -68,7 +70,7 @@ export default function WhatsAppMessageTemplateMessage({
                     })
                 }}
                 value={
-                    externalTemplateActionArguments?.body?.map(
+                    externalTemplateActionArguments.body?.map(
                         (argumentValue) => argumentValue.value
                     ) ?? []
                 }

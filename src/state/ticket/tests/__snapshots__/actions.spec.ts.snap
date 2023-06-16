@@ -485,10 +485,6 @@ exports[`ticket actions fetchTicket() existing instagram ticket 1`] = `
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
-    "payload": [],
-    "type": "SET_NEW_MESSAGE_ACTIONS",
-  },
-  {
     "receivers": {
       "to": [],
     },
@@ -1023,10 +1019,6 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and go to this
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
-    "payload": [],
-    "type": "SET_NEW_MESSAGE_ACTIONS",
-  },
-  {
     "receivers": {
       "to": [],
     },
@@ -1376,10 +1368,6 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to 
   {
     "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
-  },
-  {
-    "payload": [],
-    "type": "SET_NEW_MESSAGE_ACTIONS",
   },
   {
     "receivers": {
