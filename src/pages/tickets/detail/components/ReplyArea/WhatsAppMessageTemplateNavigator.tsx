@@ -5,6 +5,7 @@ import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import WhatsAppMessageTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
 import {whatsAppFlagCodes} from 'pages/integrations/integration/components/whatsapp/constants'
+import {useListWhatsAppMessageTemplates} from 'models/whatsAppMessageTemplates/queries'
 
 import css from './WhatsAppMessageTemplateNavigator.less'
 
@@ -19,6 +20,7 @@ export default function WhatsAppMessageTemplateNavigator({
 }: Props) {
     const [currentTemplate, setCurrentTemplate] =
         useState<WhatsAppMessageTemplate>(templates[0])
+    const {refetch} = useListWhatsAppMessageTemplates()
 
     // TODO check if template can ever be disabled
     const isDisabled = false
@@ -29,10 +31,8 @@ export default function WhatsAppMessageTemplateNavigator({
             {/* eslint-disable-next-line prettier/prettier */}
             <InfiniteScroll
                 className={css.list}
-                shouldLoadMore
-                onLoad={function (): Promise<any> {
-                    throw new Error('Function not implemented.')
-                }}
+                shouldLoadMore={false}
+                onLoad={refetch}
             >
                 {templates.map((template) => (
                     <div
