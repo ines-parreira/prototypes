@@ -1132,7 +1132,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 <div
                   class="title"
                 >
-                  Closed tickets
+                  Tickets closed
                   <div
                     class="wrapper"
                   >
@@ -1342,7 +1342,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   <span
                     class="heading-section-semibold"
                   >
-                    Closed tickets
+                    Tickets closed
                   </span>
                   <div
                     class="wrapper tooltip"

@@ -385,7 +385,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
                         <MetricCard
-                            title="Closed tickets"
+                            title="Tickets closed"
                             hint="Number of unique tickets closed during the period (and that did not reopen)"
                             trendBadge={
                                 <TrendBadge
@@ -512,7 +512,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
                         <ChartCard
-                            title="Closed tickets"
+                            title="Tickets closed"
                             hint="Number of opened tickets solved by the end of the period"
                         >
                             <LineChart
