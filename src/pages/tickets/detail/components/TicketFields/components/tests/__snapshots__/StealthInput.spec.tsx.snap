@@ -3,7 +3,7 @@
 exports[`<StealthInput /> should render correctly 1`] = `
 <input
   autocomplete="off"
-  class="baseStyles isPlaceholding valid"
+  class="baseStyles valid"
   id="1"
   placeholder="+Add"
   type="text"

@@ -22,6 +22,7 @@ type Props = {
     fieldState?: CustomFieldState
     placeholder?: string
     isRequired?: boolean
+    isLarge?: boolean
 }
 
 export default function TextField({
@@ -30,6 +31,7 @@ export default function TextField({
     fieldState,
     placeholder,
     isRequired,
+    isLarge = false,
 }: Props) {
     const dispatch = useAppDispatch()
 
@@ -91,6 +93,7 @@ export default function TextField({
                         label,
                     })
                 }}
+                isLarge={isLarge}
                 onBlur={() => {
                     setActive(false)
                     const trimmedCurrentValue = currentValue.trim()

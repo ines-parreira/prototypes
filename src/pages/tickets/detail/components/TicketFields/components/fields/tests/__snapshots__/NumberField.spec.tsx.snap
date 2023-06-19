@@ -44,7 +44,7 @@ exports[`<NumberField /> should render the number field component correctly 2`] 
   </sup>
   <input
     autocomplete="off"
-    class="baseStyles stealth isPlaceholding"
+    class="baseStyles stealth"
     id="ticket-whateva-custom-field-value-number-input-1"
     name="number field"
     placeholder="+Add"

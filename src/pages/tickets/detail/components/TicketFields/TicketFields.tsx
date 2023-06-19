@@ -29,6 +29,7 @@ function TicketFields() {
                         key={fieldDefinition.id}
                         fieldDefinition={fieldDefinition}
                         fieldState={ticketFieldState[fieldDefinition.id]}
+                        isLarge={ticketFieldDefinitions.length < 4}
                     />
                 )
             })}

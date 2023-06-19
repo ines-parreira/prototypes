@@ -40,6 +40,7 @@ type Props = {
     fieldState?: CustomFieldState
     choices: CustomFieldValue[]
     isRequired?: boolean
+    isLarge?: boolean
 }
 
 export default function DropdownField({
@@ -48,6 +49,7 @@ export default function DropdownField({
     fieldState,
     choices,
     isRequired,
+    isLarge = false,
 }: Props) {
     const dispatch = useAppDispatch()
     const ticketId = useAppSelector(getTicket).id
@@ -166,6 +168,7 @@ export default function DropdownField({
                     name={label}
                     value={getStealthLabel(value)}
                     isActive={false}
+                    isLarge={isLarge}
                     onFocus={() => {
                         if (!isActive) {
                             logEvent(
