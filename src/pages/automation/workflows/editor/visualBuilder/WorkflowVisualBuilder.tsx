@@ -10,15 +10,14 @@ import {
 } from 'reactflow'
 
 import Loader from 'pages/common/components/Loader/Loader'
-import {useWorkflowEntrypointContext} from '../hooks/useWorkflowEntrypoint'
-import {useWorkflowConfigurationContext} from '../hooks/useWorkflowConfiguration'
+import {useWorkflowEntrypointContext} from '../../hooks/useWorkflowEntrypoint'
+import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
+import {VisualBuilderNode} from '../../models/visualBuilderGraph.types'
+import {useSyncWorkflowToReactFlow} from '../../hooks/useSyncWorkflowToReactFlow'
+import useAutoLayout from '../../hooks/useAutoLayout'
 import PlaceholderNode from './nodes/PlaceholderNode'
-import {VisualBuilderNode} from './types'
-
 import TriggerButtonNode from './nodes/TriggerButtonNode'
 import NodeEditorDrawer from './NodeEditorDrawer'
-import {useSyncWorkflowToReactFlow} from './hooks/useSyncWorkflowToReactFlow'
-import useAutoLayout from './hooks/useAutoLayout'
 
 import 'reactflow/dist/style.css'
 import AutomatedMessageNode from './nodes/AutomatedMessageNode'

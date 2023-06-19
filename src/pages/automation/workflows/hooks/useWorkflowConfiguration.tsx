@@ -7,8 +7,8 @@ import React, {
     useRef,
 } from 'react'
 import _isEqual from 'lodash/isEqual'
-import useWorkflowApi from '../../hooks/useWorkflowApi'
-import {WorkflowConfiguration} from '../../types'
+import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
+import useWorkflowApi from './useWorkflowApi'
 import useOnLoaded from './useOnLoaded'
 import {
     WorkflowConfigurationAction,

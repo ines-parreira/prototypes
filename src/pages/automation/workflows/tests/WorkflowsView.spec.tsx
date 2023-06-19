@@ -8,7 +8,7 @@ import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfSe
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
 import WorkflowsView from '../WorkflowsView'
-import {WorkflowConfiguration} from '../types'
+import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
 import useWorkflowApi from '../hooks/useWorkflowApi'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()

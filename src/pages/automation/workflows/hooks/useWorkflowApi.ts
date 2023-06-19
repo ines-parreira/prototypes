@@ -4,7 +4,7 @@ import axios from 'axios'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 import {isProduction, isStaging} from 'utils/environment'
 import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
-import {WorkflowConfiguration} from '../types'
+import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
 
 const baseURL = isProduction()
     ? `https://api.gorgias.work`

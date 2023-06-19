@@ -2,7 +2,7 @@ import {createContext, useContext} from 'react'
 
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
-import {WorkflowConfiguration} from '../workflows/types'
+import {WorkflowConfiguration} from '../workflows/models/workflowConfiguration.types'
 
 export type ConnectedChannelsViewContextType = {
     articleRecommendationHelpCenterId: Maybe<number>

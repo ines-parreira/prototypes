@@ -9,7 +9,7 @@ import {
     WorkflowStepWorkflowCall,
     WorkflowTemplate,
     WorkflowTransition,
-} from './types'
+} from './models/workflowConfiguration.types'
 
 export const WAS_THIS_HELPFUL_WORKFLOW_ID = '01GWPRH2G05DYYFBB1GNVNRB19'
 

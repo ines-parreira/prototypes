@@ -1,9 +1,9 @@
 import React, {useEffect, useRef} from 'react'
 import Label from 'pages/common/forms/Label/Label'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {useWorkflowEntrypointContext} from '../../hooks/useWorkflowEntrypoint'
-import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
-import {TriggerButtonNodeType} from '../types'
+import {useWorkflowEntrypointContext} from '../../../hooks/useWorkflowEntrypoint'
+import {useWorkflowConfigurationContext} from '../../../hooks/useWorkflowConfiguration'
+import {TriggerButtonNodeType} from '../../../models/visualBuilderGraph.types'
 
 import css from './NodeEditor.less'
 

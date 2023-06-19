@@ -3,7 +3,7 @@ import {produce} from 'immer'
 import {WorkflowEntrypoint} from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {NotificationStatus} from 'state/notifications/types'
-import {WorkflowConfiguration} from '../types'
+import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
 import useWorkflowApi from './useWorkflowApi'
 
 export type UseWorkflowsEntrypointsReturnType = {

@@ -8,9 +8,9 @@ import Label from 'pages/common/forms/Label/Label'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 import {IntegrationType} from 'models/integration/constants'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
-import {AutomatedMessageNodeType} from '../types'
-import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
-import {useWorkflowEntrypointContext} from '../../hooks/useWorkflowEntrypoint'
+import {AutomatedMessageNodeType} from '../../../models/visualBuilderGraph.types'
+import {useWorkflowConfigurationContext} from '../../../hooks/useWorkflowConfiguration'
+import {useWorkflowEntrypointContext} from '../../../hooks/useWorkflowEntrypoint'
 
 import css from './NodeEditor.less'
 

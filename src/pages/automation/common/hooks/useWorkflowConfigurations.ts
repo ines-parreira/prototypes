@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 
 import useWorkflowApi from '../../workflows/hooks/useWorkflowApi'
-import {WorkflowConfiguration} from '../../workflows/types'
+import {WorkflowConfiguration} from '../../workflows/models/workflowConfiguration.types'
 
 const useWorkflowConfigurations = () => {
     const [isFetchPending, setIsFetchPending] = useState(true)

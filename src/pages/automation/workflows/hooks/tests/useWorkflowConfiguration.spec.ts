@@ -1,13 +1,11 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 import {useWorkflowConfiguration} from '../useWorkflowConfiguration'
-import {WorkflowConfiguration} from '../../../types'
-import useWorkflowApi from '../../../hooks/useWorkflowApi'
+import {WorkflowConfiguration} from '../../models/workflowConfiguration.types'
+import useWorkflowApi from '../useWorkflowApi'
 
 const mockStore: Record<string, WorkflowConfiguration> = {}
 
-const {workflowConfigurationFactory} = jest.requireActual(
-    '../../../hooks/useWorkflowApi'
-)
+const {workflowConfigurationFactory} = jest.requireActual('../useWorkflowApi')
 
 const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
     upsertWorkflowConfiguration: (data: WorkflowConfiguration) => {
@@ -20,7 +18,7 @@ const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
     workflowConfigurationFactory,
 } as const
 
-jest.mock('../../../hooks/useWorkflowApi')
+jest.mock('../useWorkflowApi')
 
 function updateMock(overrides: Partial<ReturnType<typeof useWorkflowApi>>) {
     ;(useWorkflowApi as jest.MockedFn<typeof useWorkflowApi>).mockReturnValue({

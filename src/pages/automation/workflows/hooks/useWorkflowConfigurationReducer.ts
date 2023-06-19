@@ -5,8 +5,8 @@ import {
     MessageContent,
     WorkflowConfiguration,
     WorkflowStepChoices,
-} from '../../types'
-import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../../constants'
+} from '../models/workflowConfiguration.types'
+import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 
 export function useWorkflowConfigurationReducer(
     initialState: WorkflowConfiguration

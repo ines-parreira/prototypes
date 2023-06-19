@@ -14,12 +14,12 @@ import {WORKFLOW_TEMPLATES} from '../constants'
 import {
     useWorkflowConfigurationContext,
     withWorkflowConfigurationContext,
-} from './hooks/useWorkflowConfiguration'
-import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
+} from '../hooks/useWorkflowConfiguration'
 import {
     useWorkflowEntrypointContext,
     withWorkflowEntrypointContext,
-} from './hooks/useWorkflowEntrypoint'
+} from '../hooks/useWorkflowEntrypoint'
+import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 
 import css from './WorkflowEditorView.less'
 

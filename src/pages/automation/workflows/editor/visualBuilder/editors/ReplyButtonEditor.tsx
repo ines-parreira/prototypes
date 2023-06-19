@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react'
 import Label from 'pages/common/forms/Label/Label'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {ReplyButtonNodeType} from '../types'
-import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
+import {ReplyButtonNodeType} from '../../../models/visualBuilderGraph.types'
+import {useWorkflowConfigurationContext} from '../../../hooks/useWorkflowConfiguration'
 
 import css from './NodeEditor.less'
 

@@ -42,7 +42,7 @@ import {
 import PageHeader from 'pages/common/components/PageHeader'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import useWorkflowApi from 'pages/automation/workflows/hooks/useWorkflowApi'
-import {WorkflowConfiguration} from 'pages/automation/workflows/types'
+import {WorkflowConfiguration} from 'pages/automation/workflows/models/workflowConfiguration.types'
 
 import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'

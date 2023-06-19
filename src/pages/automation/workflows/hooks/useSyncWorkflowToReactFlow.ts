@@ -1,13 +1,13 @@
 import {useEffect} from 'react'
 import {Edge, Node, useNodesInitialized, useReactFlow} from 'reactflow'
-import {WorkflowConfiguration} from '../../../types'
-import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
-import {useWorkflowEntrypointContext} from '../../hooks/useWorkflowEntrypoint'
+import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
 import {
     AutomatedMessageNodeType,
     ReplyButtonNodeType,
     TriggerButtonNodeType,
-} from '../types'
+} from '../models/visualBuilderGraph.types'
+import {useWorkflowConfigurationContext} from './useWorkflowConfiguration'
+import {useWorkflowEntrypointContext} from './useWorkflowEntrypoint'
 
 export function useSyncWorkflowToReactFlow() {
     const {setNodes, getNodes, setEdges} = useReactFlow()

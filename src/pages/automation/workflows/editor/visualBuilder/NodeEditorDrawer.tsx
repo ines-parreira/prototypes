@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import {Drawer} from 'pages/common/components/Drawer'
 import IconButton from 'pages/common/components/button/IconButton'
-import {VisualBuilderNode} from './types'
+import {VisualBuilderNode} from '../../models/visualBuilderGraph.types'
 
 import css from './NodeEditorDrawer.less'
 import TriggerButtonEditor from './editors/TriggerButtonEditor'

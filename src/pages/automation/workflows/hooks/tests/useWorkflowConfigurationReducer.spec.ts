@@ -3,7 +3,7 @@ import {
     WorkflowStepChoices,
     WorkflowStepMessages,
     WorkflowStepWorkflowCall,
-} from '../../../types'
+} from '../../models/workflowConfiguration.types'
 import {reducer} from '../useWorkflowConfigurationReducer'
 
 const genStepMessage = (id: string): WorkflowStepMessages => ({

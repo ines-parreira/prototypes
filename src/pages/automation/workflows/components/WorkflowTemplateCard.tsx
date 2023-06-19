@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
-import {WorkflowTemplate} from '../types'
+import {WorkflowTemplate} from '../models/workflowConfiguration.types'
 import {WorkflowTemplateModal} from './WorkflowTemplateModal'
 
 import css from './WorkflowTemplateCard.less'

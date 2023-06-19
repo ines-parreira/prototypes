@@ -5,7 +5,7 @@ import _isEqual from 'lodash/isEqual'
 import Label from 'pages/common/forms/Label/Label'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
-import {TriggerButtonNodeType} from '../types'
+import {TriggerButtonNodeType} from '../../../models/visualBuilderGraph.types'
 import css from './Node.less'
 
 function TriggerButtonNode({data}: NodeProps<TriggerButtonNodeType['data']>) {

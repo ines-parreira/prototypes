@@ -12,7 +12,7 @@ import {
     WorkflowConfiguration,
     WorkflowStepMessages,
     WorkflowTransition,
-} from '../../types'
+} from '../../models/workflowConfiguration.types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const renderHookOptions = {

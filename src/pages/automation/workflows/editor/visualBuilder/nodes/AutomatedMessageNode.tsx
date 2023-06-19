@@ -5,10 +5,10 @@ import _isEqual from 'lodash/isEqual'
 
 import Label from 'pages/common/forms/Label/Label'
 
-import {WorkflowStepChoices} from '../../../types'
-import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
+import {WorkflowStepChoices} from '../../../models/workflowConfiguration.types'
+import {useWorkflowConfigurationContext} from '../../../hooks/useWorkflowConfiguration'
 import EdgeButton from '../components/EdgeButton'
-import {AutomatedMessageNodeType} from '../types'
+import {AutomatedMessageNodeType} from '../../../models/visualBuilderGraph.types'
 
 import css from './Node.less'
 

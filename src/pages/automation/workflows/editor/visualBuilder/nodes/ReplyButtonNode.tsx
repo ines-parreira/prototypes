@@ -6,8 +6,8 @@ import _isEqual from 'lodash/isEqual'
 import Label from 'pages/common/forms/Label/Label'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
-import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
-import {ReplyButtonNodeType} from '../types'
+import {useWorkflowConfigurationContext} from '../../../hooks/useWorkflowConfiguration'
+import {ReplyButtonNodeType} from '../../../models/visualBuilderGraph.types'
 
 import css from './Node.less'
 

@@ -13,7 +13,7 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 
 import Button from 'pages/common/components/button/Button'
 import EdgeIconButton from '../components/EdgeIconButton'
-import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
+import {useWorkflowConfigurationContext} from '../../../hooks/useWorkflowConfiguration'
 
 import css from './Node.less'
 

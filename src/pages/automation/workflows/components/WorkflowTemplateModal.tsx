@@ -6,7 +6,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 
-import {WorkflowTemplate} from '../types'
+import {WorkflowTemplate} from '../models/workflowConfiguration.types'
 
 import css from './WorkflowTemplateModal.less'
 
