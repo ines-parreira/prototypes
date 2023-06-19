@@ -974,7 +974,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     <div
                       class="trend negative"
                     >
-                      +5m
+                      +271%
                     </div>
                   </div>
                 </div>
@@ -1012,7 +1012,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     <div
                       class="trend negative"
                     >
-                      +5m
+                      +271%
                     </div>
                   </div>
                 </div>
@@ -1050,7 +1050,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     <div
                       class="trend negative"
                     >
-                      +333
+                      +271%
                     </div>
                   </div>
                 </div>

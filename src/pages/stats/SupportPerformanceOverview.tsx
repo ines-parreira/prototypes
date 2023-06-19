@@ -253,6 +253,7 @@ export default function SupportPerformanceOverview() {
                             hint="Average CSAT score for tickets which received a survey during the period"
                             trendBadge={
                                 <TrendBadge
+                                    format={'percent'}
                                     interpretAs="more-is-better"
                                     isLoading={!customerSatisfactionTrend.data}
                                     value={
@@ -262,7 +263,6 @@ export default function SupportPerformanceOverview() {
                                         customerSatisfactionTrend.data
                                             ?.prevValue
                                     }
-                                    format={'percent'}
                                 />
                             }
                         >
@@ -286,7 +286,7 @@ export default function SupportPerformanceOverview() {
                             hint="Median time between 1st customer message and 1st human agent response"
                             trendBadge={
                                 <TrendBadge
-                                    format="duration"
+                                    format="percent"
                                     interpretAs="less-is-better"
                                     isLoading={!firstResponseTimeTrend.data}
                                     value={firstResponseTimeTrend.data?.value}
@@ -312,7 +312,7 @@ export default function SupportPerformanceOverview() {
                             hint="Median time between the 1st customer message and the last time the ticket was closed"
                             trendBadge={
                                 <TrendBadge
-                                    format="duration"
+                                    format="percent"
                                     interpretAs="less-is-better"
                                     isLoading={!resolutionTimeTrend.data}
                                     value={resolutionTimeTrend.data?.value}
@@ -338,6 +338,7 @@ export default function SupportPerformanceOverview() {
                             hint="Average number of messages exchanged per closed ticket"
                             trendBadge={
                                 <TrendBadge
+                                    format="percent"
                                     interpretAs="less-is-better"
                                     isLoading={!messagesPerTicketTrend.data}
                                     value={messagesPerTicketTrend.data?.value}
