@@ -66,18 +66,33 @@ export default function GaugeChart({
 
     return (
         <div className={className}>
-            <div className={css.chart}>
-                {orderedItems.map((item) => (
-                    <BarSegment key={item.label} total={total} {...item} />
-                ))}
-            </div>
-            <Legend
-                className={css.legend}
-                items={displayItems.map(({label, color}) => ({
-                    label,
-                    color,
-                }))}
-            />
+            {orderedItems.length > 0 ? (
+                <>
+                    <div className={css.chart}>
+                        {orderedItems.map((item) => (
+                            <BarSegment
+                                key={item.label}
+                                total={total}
+                                {...item}
+                            />
+                        ))}
+                    </div>
+                    <Legend
+                        className={css.legend}
+                        items={displayItems.map(({label, color}) => ({
+                            label,
+                            color,
+                        }))}
+                    />
+                </>
+            ) : (
+                <div className={css.noData}>
+                    <p className={css.noDataTitle}>
+                        No data available for the selected period
+                    </p>
+                    <p>Try filtering for another date range to get results.</p>
+                </div>
+            )}
         </div>
     )
 }

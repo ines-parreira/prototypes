@@ -47,4 +47,12 @@ describe('<GaugeChart />', () => {
 
         expect(await screen.findByRole('tooltip')).toBeInTheDocument()
     })
+
+    it('should render no available data text on empty data', async () => {
+        render(<GaugeChart data={[]} />)
+
+        expect(
+            await screen.findByText(/no data available/i)
+        ).toBeInTheDocument()
+    })
 })
