@@ -129,6 +129,7 @@ describe('useAvailableTriggerList()', () => {
                 useAvailableTriggerList({
                     isRevenueBetaTester: true,
                     isShopifyStore: true,
+                    areShopifyHistoryTriggersEnabled: true,
                 })
             )
 

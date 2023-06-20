@@ -1,11 +1,15 @@
 import {BusinessHoursOperators} from '../types/enums/BusinessHoursOperators.enum'
 import {CampaignTriggerKey} from '../types/enums/CampaignTriggerKey.enum'
 import {CartValueOperators} from '../types/enums/CartValueOperators.enum'
+import {CountryOperators} from '../types/enums/CountryOperators.enum'
 import {CurrentProductTagsOperators} from '../types/enums/CurrentProductTagsOperators.enum'
 import {CurrentUrlOperators} from '../types/enums/CurrentUrlOperators.enum'
 import {ExitIntentOperators} from '../types/enums/ExitIntentOperators.enum'
+// import {OrderedProductsOperators} from '../types/enums/OrderedProductsOperators.enum'
+import {OrdersCountOperators} from '../types/enums/OrdersCountOperators.enum'
 import {ProductTagsOperators} from '../types/enums/ProductTagsOperators.enum'
 import {SessionTimeOperators} from '../types/enums/SessionTimeOperators.enum'
+import {ShopifyTagsOperators} from '../types/enums/ShopifyTagsOperators.enum'
 import {TimeSpentOnPageOperators} from '../types/enums/TimeSpentOnPageOperators.enum'
 import {VisitCountOperators} from '../types/enums/VisitCountOperators.enum'
 
@@ -121,6 +125,76 @@ export const TRIGGER_LIST = [
             revenue: true,
             shopify: true,
             headless: false,
+        },
+    },
+    {
+        key: CampaignTriggerKey.OrdersCount,
+        label: 'Number of orders placed',
+        defaults: {
+            value: '',
+            operator: OrdersCountOperators.Equal,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.AmountSpent,
+        label: 'Total spent',
+        defaults: {
+            value: '',
+            operator: OrdersCountOperators.Equal,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
+        },
+    },
+    // {
+    //     key: CampaignTriggerKey.OrderedProducts,
+    //     label: 'Products purchased',
+    //     defaults: {
+    //         value: '',
+    //         operator: OrderedProductsOperators.Contains,
+    //     },
+    //     requirements: {
+    //         revenue: true,
+    //         shopify: true,
+    //         headless: false,
+    //         shopify_history: true,
+    //     },
+    // },
+    {
+        key: CampaignTriggerKey.CustomerTags,
+        label: 'Shopify customer tags',
+        defaults: {
+            value: '',
+            operator: ShopifyTagsOperators.Contains,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.CountryCode,
+        label: 'Customer country',
+        defaults: {
+            value: '',
+            operator: CountryOperators.Contains,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
         },
     },
 ]

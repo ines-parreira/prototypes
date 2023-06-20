@@ -1,9 +1,14 @@
+import {AmountSpentOperators} from '../types/enums/AmountSpentOperators.enum'
 import {BusinessHoursOperators} from '../types/enums/BusinessHoursOperators.enum'
 import {CartValueOperators} from '../types/enums/CartValueOperators.enum'
+import {CountryOperators} from '../types/enums/CountryOperators.enum'
 import {CurrentProductTagsOperators} from '../types/enums/CurrentProductTagsOperators.enum'
 import {CurrentUrlOperators} from '../types/enums/CurrentUrlOperators.enum'
 import {DeviceTypeOperators} from '../types/enums/DeviceTypeOperators.enum'
+import {OrderedProductsOperators} from '../types/enums/OrderedProductsOperators.enum'
+import {OrdersCountOperators} from '../types/enums/OrdersCountOperators.enum'
 import {ProductTagsOperators} from '../types/enums/ProductTagsOperators.enum'
+import {ShopifyTagsOperators} from '../types/enums/ShopifyTagsOperators.enum'
 import {VisitCountOperators} from '../types/enums/VisitCountOperators.enum'
 
 export const CURRENT_URL_OPERATORS = [
@@ -112,5 +117,116 @@ export const DEVICE_TYPE_OPERATORS = [
     {
         value: DeviceTypeOperators.Mobile,
         label: 'Only mobile',
+    },
+]
+
+export const ORDERS_COUNT_OPERATORS = [
+    {
+        label: 'is greater than',
+        value: OrdersCountOperators.GreaterThan,
+    },
+    {
+        label: 'is greater or equal to',
+        value: OrdersCountOperators.GreaterOrEqual,
+    },
+    {
+        label: 'is less than',
+        value: OrdersCountOperators.LessThan,
+    },
+    {
+        label: 'is less or equal to',
+        value: OrdersCountOperators.LessOrEqual,
+    },
+    {
+        label: 'equals',
+        value: OrdersCountOperators.Equal,
+    },
+    {
+        label: 'not equals',
+        value: OrdersCountOperators.NotEqual,
+    },
+]
+
+export const AMOUNT_SPENT_OPERATORS = [
+    {
+        label: 'is greater than',
+        value: AmountSpentOperators.GreaterThan,
+    },
+    {
+        label: 'is greater or equal to',
+        value: AmountSpentOperators.GreaterOrEqual,
+    },
+    {
+        label: 'is less than',
+        value: AmountSpentOperators.LessThan,
+    },
+    {
+        label: 'is less or equal to',
+        value: AmountSpentOperators.LessOrEqual,
+    },
+    {
+        label: 'equals',
+        value: AmountSpentOperators.Equal,
+    },
+    {
+        label: 'not equals',
+        value: AmountSpentOperators.NotEqual,
+    },
+]
+
+export const ORDERED_PRODUCTS_OPERATORS = [
+    {
+        label: 'contains',
+        value: OrderedProductsOperators.Contains,
+    },
+    {
+        label: 'Not contains',
+        value: OrderedProductsOperators.NotContains,
+    },
+    {
+        label: 'In',
+        value: CountryOperators.In,
+    },
+    {
+        label: 'Not in',
+        value: CountryOperators.NotIn,
+    },
+]
+
+export const SHOPIFY_TAGS_OPERATORS = [
+    {
+        label: 'contains',
+        value: ShopifyTagsOperators.Contains,
+    },
+    {
+        label: 'Not contains',
+        value: ShopifyTagsOperators.NotContains,
+    },
+    {
+        label: 'In',
+        value: CountryOperators.In,
+    },
+    {
+        label: 'Not in',
+        value: CountryOperators.NotIn,
+    },
+]
+
+export const COUNTRY_OPERATORS = [
+    {
+        label: 'contains',
+        value: CountryOperators.Contains,
+    },
+    {
+        label: 'Not contains',
+        value: CountryOperators.NotContains,
+    },
+    {
+        label: 'In',
+        value: CountryOperators.In,
+    },
+    {
+        label: 'Not in',
+        value: CountryOperators.NotIn,
     },
 ]

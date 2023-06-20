@@ -65,6 +65,8 @@ import {replaceUrlsWithUtmUrl} from '../../utils/attachUtmParams'
 import {transformProductToAttachment} from '../../utils/transformProductToAttachment'
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
 
+import {IntegrationProvider} from '../IntegrationProvider'
+
 import {TriggersProvider} from '../TriggersProvider'
 
 import css from './AdvancedCampaignDetails.less'
@@ -486,114 +488,127 @@ export const AdvancedCampaignDetails = memo(
         }
 
         return (
-            <div data-testid="advanced-campaign-details-page">
-                <CampaignDetailsHeader
-                    backToHref={`/app/settings/channels/${
-                        integration.get('type') as string
-                    }/${integration.get('id') as string}/campaigns`}
-                    isUpdate={isUpdate}
-                />
+            <IntegrationProvider
+                chatIntegration={integration}
+                shopifyIntegration={shopifyIntegration}
+            >
+                <div data-testid="advanced-campaign-details-page">
+                    <CampaignDetailsHeader
+                        backToHref={`/app/settings/channels/${
+                            integration.get('type') as string
+                        }/${integration.get('id') as string}/campaigns`}
+                        isUpdate={isUpdate}
+                    />
 
-                <GorgiasChatIntegrationPreviewContainer
-                    preview={
-                        richArea && (
-                            <CampaignPreview
-                                {...chatPreviewProps}
-                                className={css.campaignPreview}
-                                products={shopifyProducts}
-                                html={sanitizeHtmlDefault(campaignMessageHTML)}
-                                authorName={campaignAgent?.name ?? ``}
-                                authorAvatarUrl={
-                                    campaignAgent?.avatar_url ?? ''
-                                }
-                                avatar={avatar}
-                                chatTitle={chatTitle}
-                                mainFontFamily={
-                                    chatPreviewProps.mainFontFamily ??
-                                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
-                                }
-                                shouldHideReplyInput={campaignWithNoReply}
-                                onCampaignContentChange={setShowContentWarning}
-                            />
-                        )
-                    }
-                >
-                    <div className={css.formWrapper}>
-                        <div className="mb-4">
-                            <InputField
-                                isRequired
-                                label="Campaign name"
-                                aria-label="Campaign name"
-                                placeholder="My new campaign"
-                                value={campaignName}
-                                onChange={setCampaignName}
-                            />
-                        </div>
+                    <GorgiasChatIntegrationPreviewContainer
+                        preview={
+                            richArea && (
+                                <CampaignPreview
+                                    {...chatPreviewProps}
+                                    className={css.campaignPreview}
+                                    products={shopifyProducts}
+                                    html={sanitizeHtmlDefault(
+                                        campaignMessageHTML
+                                    )}
+                                    authorName={campaignAgent?.name ?? ``}
+                                    authorAvatarUrl={
+                                        campaignAgent?.avatar_url ?? ''
+                                    }
+                                    avatar={avatar}
+                                    chatTitle={chatTitle}
+                                    mainFontFamily={
+                                        chatPreviewProps.mainFontFamily ??
+                                        GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                                    }
+                                    shouldHideReplyInput={campaignWithNoReply}
+                                    onCampaignContentChange={
+                                        setShowContentWarning
+                                    }
+                                />
+                            )
+                        }
+                    >
+                        <div className={css.formWrapper}>
+                            <div className="mb-4">
+                                <InputField
+                                    isRequired
+                                    label="Campaign name"
+                                    aria-label="Campaign name"
+                                    placeholder="My new campaign"
+                                    value={campaignName}
+                                    onChange={setCampaignName}
+                                />
+                            </div>
 
-                        <h3 className={css.section}>Choose your audience</h3>
-                        <div className="mb-4">
-                            {shouldShowContactCsm && (
-                                <Alert icon type={AlertType.Warning}>
-                                    Advanced triggers are only available to
-                                    Revenue subscribers.To update them, please
-                                    contact your Customer Success Manager to
-                                    activate this subscription.
-                                </Alert>
-                            )}
-                        </div>
-                        <div className="mb-4">
-                            <TriggersProvider
+                            <h3 className={css.section}>
+                                Choose your audience
+                            </h3>
+                            <div className="mb-4">
+                                {shouldShowContactCsm && (
+                                    <Alert icon type={AlertType.Warning}>
+                                        Advanced triggers are only available to
+                                        Revenue subscribers.To update them,
+                                        please contact your Customer Success
+                                        Manager to activate this subscription.
+                                    </Alert>
+                                )}
+                            </div>
+                            <div className="mb-4">
+                                <TriggersProvider
+                                    triggers={triggers}
+                                    onUpdateTrigger={handleUpdateTrigger}
+                                    onDeleteTrigger={handleDeleteTrigger}
+                                >
+                                    <AdvancedTriggersForm triggers={triggers} />
+                                </TriggersProvider>
+                                <AdvancedTriggersSelect
+                                    isShopifyStore={isShopifyStore}
+                                    isRevenueBetaTester={isRevenueBetaTester}
+                                    onClick={handleAddTrigger}
+                                />
+                            </div>
+
+                            <CampaignDisplaySettings
+                                isRevenueBetaTester={isRevenueBetaTester}
                                 triggers={triggers}
-                                onUpdateTrigger={handleUpdateTrigger}
-                                onDeleteTrigger={handleDeleteTrigger}
-                            >
-                                <AdvancedTriggersForm triggers={triggers} />
-                            </TriggersProvider>
-                            <AdvancedTriggersSelect
-                                isShopifyStore={isShopifyStore}
-                                isRevenueBetaTester={isRevenueBetaTester}
-                                onClick={handleAddTrigger}
+                                isNoReply={campaignWithNoReply}
+                                delay={campaignDelay}
+                                onChangeCollision={
+                                    handleToggleSingleCampaignInView
+                                }
+                                onChangeDelay={setCampaignDelay}
+                                onChangeDeviceType={handleChangeDeviceType}
+                                onChangeNoReply={handleChangeNoReply}
+                            />
+
+                            <h3 className={css.section}>Write your message</h3>
+                            {stateInitialized && (
+                                <CampaignMessage
+                                    richAreaRef={(ref) => setRichArea(ref)}
+                                    showContentWarning={showContentWarning}
+                                    agents={agents}
+                                    attachments={attachments}
+                                    html={campaignMessageHTML}
+                                    text={campaignMessageText}
+                                    isRevenueBetaTester={isRevenueBetaTester}
+                                    selectedAgent={campaignAgent?.email ?? ''}
+                                    onSelectAgent={handleChangeAgent}
+                                    onChangeMessage={handleChangeMessage}
+                                    onDeleteAttachment={handleDeleteAttachment}
+                                />
+                            )}
+
+                            <CampaignFooter
+                                isActionInProgress={isActionInProgress}
+                                isCampaignValid={isCampaignValid}
+                                isUpdate={isUpdate}
+                                onSave={handleSaveCampaign}
+                                onDelete={handleDeleteCampaign}
                             />
                         </div>
-
-                        <CampaignDisplaySettings
-                            isRevenueBetaTester={isRevenueBetaTester}
-                            triggers={triggers}
-                            isNoReply={campaignWithNoReply}
-                            delay={campaignDelay}
-                            onChangeCollision={handleToggleSingleCampaignInView}
-                            onChangeDelay={setCampaignDelay}
-                            onChangeDeviceType={handleChangeDeviceType}
-                            onChangeNoReply={handleChangeNoReply}
-                        />
-
-                        <h3 className={css.section}>Write your message</h3>
-                        {stateInitialized && (
-                            <CampaignMessage
-                                richAreaRef={(ref) => setRichArea(ref)}
-                                showContentWarning={showContentWarning}
-                                agents={agents}
-                                attachments={attachments}
-                                html={campaignMessageHTML}
-                                text={campaignMessageText}
-                                isRevenueBetaTester={isRevenueBetaTester}
-                                selectedAgent={campaignAgent?.email ?? ''}
-                                onSelectAgent={handleChangeAgent}
-                                onChangeMessage={handleChangeMessage}
-                                onDeleteAttachment={handleDeleteAttachment}
-                            />
-                        )}
-
-                        <CampaignFooter
-                            isActionInProgress={isActionInProgress}
-                            isCampaignValid={isCampaignValid}
-                            isUpdate={isUpdate}
-                            onSave={handleSaveCampaign}
-                            onDelete={handleDeleteCampaign}
-                        />
-                    </div>
-                </GorgiasChatIntegrationPreviewContainer>
-            </div>
+                    </GorgiasChatIntegrationPreviewContainer>
+                </div>
+            </IntegrationProvider>
         )
     }
 )

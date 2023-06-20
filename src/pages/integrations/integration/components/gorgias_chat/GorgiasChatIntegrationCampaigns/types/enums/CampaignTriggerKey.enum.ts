@@ -10,4 +10,9 @@ export enum CampaignTriggerKey {
     ExitIntent = 'exit_intent',
     SingleInView = 'single_in_view',
     DeviceType = 'device_type',
+    OrdersCount = 'orders_count',
+    AmountSpent = 'amount_spent',
+    OrderedProducts = 'ordered_products',
+    CustomerTags = 'customer_tags',
+    CountryCode = 'country_code',
 }

@@ -19,9 +19,14 @@ import {ProductTagsTrigger} from './ProductTagsTrigger'
 import {SessionTimeTrigger} from './SessionTimeTrigger'
 import {TimeSpentOnPageTrigger} from './TimeSpentOnPageTrigger'
 import {VisitCountTrigger} from './VisitCountTrigger'
+import {ShopifyTagsTrigger} from './ShopifyTagsTrigger'
+import {CurrentProductTagsTrigger} from './CurrentProductTagsTrigger'
+import {OrdersCountTrigger} from './OrdersCountTrigger'
+import {CustomerCountryTrigger} from './CustomerCountryTrigger'
+import {OrderedProductsTriggers} from './OrderedProductsTriggers'
 
 import css from './style.less'
-import {CurrentProductTagsTrigger} from './CurrentProductTagsTrigger'
+import {AmountSpentTrigger} from './AmountSpentTrigger'
 
 type Props = {
     trigger: CampaignTrigger
@@ -70,6 +75,16 @@ export const AdvancedTriggerFactory = ({
                 return <SessionTimeTrigger {...baseProps} />
             case CampaignTriggerKey.ExitIntent:
                 return <ExitIntentTrigger />
+            case CampaignTriggerKey.OrdersCount:
+                return <OrdersCountTrigger {...baseProps} />
+            case CampaignTriggerKey.AmountSpent:
+                return <AmountSpentTrigger {...baseProps} />
+            case CampaignTriggerKey.CustomerTags:
+                return <ShopifyTagsTrigger {...baseProps} />
+            case CampaignTriggerKey.CountryCode:
+                return <CustomerCountryTrigger {...baseProps} />
+            case CampaignTriggerKey.OrderedProducts:
+                return <OrderedProductsTriggers {...baseProps} />
 
             default:
                 return <div />

@@ -2,12 +2,23 @@ import {useQuery} from '@tanstack/react-query'
 
 import {reportError} from 'utils/errors'
 
+import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT} from 'constants/integration'
+
 import {
     getApplications,
     getInstallationSnippet,
 } from 'state/integrations/actions/gorgias-chat.actions'
 
-import {GetInstallationSnippetParams} from './types'
+import GorgiasApi from 'services/gorgiasApi'
+
+import {Product} from 'constants/integrations/types/shopify'
+
+import {
+    GetInstallationSnippetParams,
+    IntegrationDataItem,
+    ShopifyTags,
+} from './types'
+import {fetchShopTags} from './resources/shopify'
 
 export const getInstallationSnippetQueryKey = (
     params: GetInstallationSnippetParams
@@ -39,3 +50,48 @@ export const useApplications = () =>
             reportError(new Error('Failed to fetch chat applications'))
         },
     })
+
+export const useProductsFromShopifyIntegration = (
+    integrationId: number,
+    filter = ''
+) => {
+    return useQuery({
+        queryKey: ['integration', 'shopify', integrationId, 'products', filter],
+        queryFn: async () => {
+            const gorgiasApi = new GorgiasApi()
+            const results = await gorgiasApi.search(
+                `/api/integrations/${integrationId}/${INTEGRATION_DATA_ITEM_TYPE_PRODUCT}/`,
+                filter ?? ''
+            )
+            return results as IntegrationDataItem<Product>[]
+        },
+        keepPreviousData: true,
+        onError: () => {
+            reportError(
+                new Error(
+                    `Failed to fetch products for Shopify integration ${integrationId}`
+                )
+            )
+        },
+    })
+}
+
+export const useShopifyTags = (
+    integrationId: number,
+    tagsType: ShopifyTags
+) => {
+    return useQuery({
+        queryKey: ['integration', 'shopify', integrationId, 'tags', tagsType],
+        queryFn: async () => {
+            const response = await fetchShopTags(integrationId, tagsType)
+            return response
+        },
+        onError: () => {
+            reportError(
+                new Error(
+                    `Failed to fetch ${tagsType} tags for Shopify integration ${integrationId}`
+                )
+            )
+        },
+    })
+}
