@@ -4,7 +4,10 @@ import axios from 'axios'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 import {isProduction, isStaging} from 'utils/environment'
 import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
-import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
+import {
+    WorkflowConfiguration,
+    WorkflowConfigurationShallow,
+} from '../models/workflowConfiguration.types'
 
 const baseURL = isProduction()
     ? `https://api.gorgias.work`
@@ -23,7 +26,7 @@ apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
 type WorkflowApi = {
     isFetchPending: boolean
     isUpdatePending: boolean
-    fetchWorkflowConfigurations: () => Promise<WorkflowConfiguration[]>
+    fetchWorkflowConfigurations: () => Promise<WorkflowConfigurationShallow[]>
     fetchWorkflowConfiguration: (
         id: string
     ) => Promise<Maybe<WorkflowConfiguration>>
@@ -48,7 +51,7 @@ export default function useWorkflowApi(): WorkflowApi {
     const fetchWorkflowConfigurations = useCallback(() => {
         setIsFetchPending(true)
         return apiClient
-            .get<WorkflowConfiguration[]>('/configurations')
+            .get<WorkflowConfigurationShallow[]>('/configurations')
             .then((res) => {
                 setIsFetchPending(false)
                 return res.data
@@ -141,6 +144,10 @@ export const workflowConfigurationFactory = (
         is_draft: false,
         name: '',
         initial_step_id,
+        entrypoint: {
+            label: '',
+            label_tkey: ulid(),
+        },
         steps: [
             {
                 id: initial_step_id,

@@ -7,17 +7,13 @@ import {
     TriggerButtonNodeType,
 } from '../models/visualBuilderGraph.types'
 import {useWorkflowConfigurationContext} from './useWorkflowConfiguration'
-import {useWorkflowEntrypointContext} from './useWorkflowEntrypoint'
 
 export function useSyncWorkflowToReactFlow() {
     const {setNodes, getNodes, setEdges} = useReactFlow()
-    const {label: entrypoint_label, isFetchPending: isEntrypointFetchPending} =
-        useWorkflowEntrypointContext()
-    const {configuration, isFetchPending: isConfigurationFetchPending} =
-        useWorkflowConfigurationContext()
+    const {configuration, isFetchPending} = useWorkflowConfigurationContext()
     const nodesInitialized = useNodesInitialized()
     useEffect(() => {
-        if (isEntrypointFetchPending || isConfigurationFetchPending) return
+        if (isFetchPending) return
         const nextNodes = configuration.steps.reduce(
             (ns, step) => ns.concat(stepToNodes(step)),
             [] as Node[]
@@ -31,7 +27,7 @@ export function useSyncWorkflowToReactFlow() {
             id: 'entrypoint',
             type: 'trigger_button',
             data: {
-                entrypoint_label,
+                entrypoint_label: configuration.entrypoint?.label || '',
             },
             position: {x: 0, y: 0},
         }
@@ -53,14 +49,12 @@ export function useSyncWorkflowToReactFlow() {
         )
         setEdges(nextEdgesWithPlaceholders)
     }, [
-        entrypoint_label,
         configuration,
         setNodes,
         setEdges,
         getNodes,
         nodesInitialized,
-        isEntrypointFetchPending,
-        isConfigurationFetchPending,
+        isFetchPending,
     ])
 }
 

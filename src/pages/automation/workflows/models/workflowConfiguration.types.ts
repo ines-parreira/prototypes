@@ -62,6 +62,11 @@ export type WorkflowConfiguration = {
     transitions: WorkflowTransition[]
 }
 
+export type WorkflowConfigurationShallow = Omit<
+    WorkflowConfiguration,
+    'steps' | 'transitions'
+>
+
 export type WorkflowTemplate = {
     slug: string
     name: string

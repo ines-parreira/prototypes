@@ -1,4 +1,10 @@
-import React, {PropsWithChildren, ReactNode, useRef, useState} from 'react'
+import React, {
+    PropsWithChildren,
+    ReactNode,
+    useCallback,
+    useRef,
+    useState,
+} from 'react'
 import {Container} from 'reactstrap'
 import {useEffectOnce} from 'react-use'
 
@@ -7,18 +13,16 @@ import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import {withSelfServiceStoreIntegrationContext} from 'pages/automation/common/hooks/useSelfServiceStoreIntegration'
 import useSearch from 'hooks/useSearch'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
 import {WORKFLOW_TEMPLATES} from '../constants'
+import useStoreWorkflows from '../hooks/useStoreWorkflows'
 import {
     useWorkflowConfigurationContext,
     withWorkflowConfigurationContext,
 } from '../hooks/useWorkflowConfiguration'
-import {
-    useWorkflowEntrypointContext,
-    withWorkflowEntrypointContext,
-} from '../hooks/useWorkflowEntrypoint'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 
 import css from './WorkflowEditorView.less'
@@ -43,21 +47,32 @@ function WorkflowEditorViewWrapped({
     goToWorkflowTemplatesPage,
     goToConnectedChannelsPage,
     notifyMerchant,
+    shopName,
+    shopType,
 }: WorkflowEditorViewProps) {
     const {template: templateSlug} = useSearch<{template: string | undefined}>()
     const worfklowConfigurationContext = useWorkflowConfigurationContext()
-    const workflowEntrypointContext = useWorkflowEntrypointContext()
+    const {appendWorkflowInStore} = useStoreWorkflows(
+        shopType,
+        shopName,
+        useCallback(
+            (message: string, kind: 'success' | 'error') => {
+                void notifyMerchant({
+                    message,
+                    status:
+                        kind === 'success'
+                            ? NotificationStatus.Success
+                            : NotificationStatus.Error,
+                })
+            },
+            [notifyMerchant]
+        )
+    )
 
     // flags
-    const isDirty =
-        worfklowConfigurationContext.isDirty ||
-        workflowEntrypointContext.isDirty
-    const isFetchPending =
-        worfklowConfigurationContext.isFetchPending ||
-        workflowEntrypointContext.isFetchPending
-    const isSavePending =
-        worfklowConfigurationContext.isSavePending ||
-        workflowEntrypointContext.isSavePending
+    const isDirty = worfklowConfigurationContext.isDirty
+    const isFetchPending = worfklowConfigurationContext.isFetchPending
+    const isSavePending = worfklowConfigurationContext.isSavePending
     const [lastSaveAttempt, setLastSaveAttempt] = useState<Date | undefined>(
         undefined
     )
@@ -68,26 +83,25 @@ function WorkflowEditorViewWrapped({
     // handlers
     const handleDiscard = () => {
         worfklowConfigurationContext.handleDiscard()
-        workflowEntrypointContext.handleDiscard()
     }
     const handleCancel = () => {
         goToWorkflowTemplatesPage()
     }
     const handleSave = async () => {
-        const entrypointError = workflowEntrypointContext.handleValidate()
         const configurationError = worfklowConfigurationContext.handleValidate()
-        const validationError = configurationError || entrypointError
-        if (validationError) {
+        if (configurationError) {
             setLastSaveAttempt(new Date())
             notifyMerchant({
-                message: validationError,
+                message: configurationError,
                 status: NotificationStatus.Error,
             })
             return
         }
         try {
             await worfklowConfigurationContext.handleSave()
-            await workflowEntrypointContext.handleSave()
+            if (isNewWorkflow) {
+                await appendWorkflowInStore(workflowId)
+            }
         } catch (e) {
             notifyMerchant({
                 message:
@@ -133,11 +147,6 @@ function WorkflowEditorViewWrapped({
                 type: 'RESET_CONFIGURATION',
                 configuration,
             })
-            if (configuration.entrypoint?.label) {
-                workflowEntrypointContext.setLabel(
-                    configuration.entrypoint?.label
-                )
-            }
         } else {
             const t = setTimeout(() => {
                 inputRef.current?.focus()
@@ -283,5 +292,5 @@ function ButtonWithConfirmation({
 }
 
 export default withWorkflowConfigurationContext(
-    withWorkflowEntrypointContext(WorkflowEditorViewWrapped)
+    withSelfServiceStoreIntegrationContext(WorkflowEditorViewWrapped)
 )

@@ -19,7 +19,7 @@ type Entrypoint = {
 
 type Props = {
     channelId: string
-    entrypoints?: Entrypoint[]
+    entrypoints: Entrypoint[]
     onChange: (nextEntrypoints: Entrypoint[]) => void
 }
 
@@ -40,13 +40,6 @@ const ConnectedChannelWorkflowsFeature = ({
         [configurations]
     )
     const entrypoints = useMemo(() => {
-        if (!entrypointsProp) {
-            return allEntrypoints.map((entrypoint) => ({
-                workflow_id: entrypoint.workflow_id,
-                enabled: entrypoint.enabled,
-            }))
-        }
-
         const entrypointsByWorkflowId = _keyBy(entrypointsProp, 'workflow_id')
         const allEntrypointsByWorkflowId = _keyBy(allEntrypoints, 'workflow_id')
         const missingEntrypoints = allEntrypoints

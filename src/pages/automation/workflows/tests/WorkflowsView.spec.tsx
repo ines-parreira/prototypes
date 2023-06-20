@@ -77,13 +77,9 @@ describe('<WorkflowsView />', () => {
             selfServiceConfiguration: {
                 workflows_entrypoints: [
                     {
-                        enabled: true,
-                        label: 'my entrypoint a',
                         workflow_id: 'a',
                     },
                     {
-                        enabled: true,
-                        label: 'my entrypoint b',
                         workflow_id: 'b',
                     },
                 ],

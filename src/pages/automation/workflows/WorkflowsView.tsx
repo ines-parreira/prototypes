@@ -10,7 +10,7 @@ import Video from 'pages/common/components/Video/Video'
 
 import CreateWorkflowFooter from './components/CreateWorkflowFooter'
 import WorkflowsList from './components/WorkflowsList'
-import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
+import useStoreWorkflows from './hooks/useStoreWorkflows'
 
 import css from './WorkflowsView.less'
 
@@ -33,20 +33,20 @@ export default function WorkflowsView({
     notifyMerchant,
 }: WorkflowsViewProps) {
     const {
-        workflowsEntrypoints,
-        deleteWorkflowEntrypoint,
+        storeWorkflows,
+        removeWorkflowFromStore: deleteWorkflowEntrypoint,
         duplicateWorkflow,
         isFetchPending,
         isUpdatePending,
-    } = useWorkflowsEntrypoints(shopType, shopName, notifyMerchant)
+    } = useStoreWorkflows(shopType, shopName, notifyMerchant)
 
-    const hasWorkflowsEntrypoints = workflowsEntrypoints.length > 0
+    const hasStoreWorkflows = storeWorkflows.length > 0
 
     return (
         <div className="full-width overflow-auto">
             <div className={css.pageHeaderContainer}>
                 <PageHeader title="Flow builder">
-                    {hasWorkflowsEntrypoints && (
+                    {hasStoreWorkflows && (
                         <div className={css.headerContainer}>
                             <Button
                                 className="float-right"
@@ -95,9 +95,9 @@ export default function WorkflowsView({
                             />
                         </div>
                     </div>
-                    {hasWorkflowsEntrypoints ? (
+                    {hasStoreWorkflows ? (
                         <WorkflowsList
-                            entrypoints={workflowsEntrypoints}
+                            storeWorkflows={storeWorkflows}
                             onDelete={deleteWorkflowEntrypoint}
                             onDuplicate={duplicateWorkflow}
                             goToEditWorkflowPage={goToEditWorkflowPage}

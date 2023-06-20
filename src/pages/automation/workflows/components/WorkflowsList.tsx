@@ -5,14 +5,13 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import {WorkflowEntrypoint} from 'models/selfServiceConfiguration/types'
 
 import DeleteWorkflowAction from './DeleteWorkflowAction'
 
 import css from './WorkflowsList.less'
 
 type Props = {
-    entrypoints: Array<WorkflowEntrypoint & {name: string}>
+    storeWorkflows: Array<{workflow_id: string; name: string}>
     onDelete: (workflowId: string) => Promise<void>
     onDuplicate: (workflowId: string) => Promise<{id: string}>
     goToEditWorkflowPage: (workflowId: string) => void
@@ -20,7 +19,7 @@ type Props = {
 }
 
 const WorkflowsList = ({
-    entrypoints,
+    storeWorkflows: entrypoints,
     onDelete,
     onDuplicate,
     goToEditWorkflowPage,

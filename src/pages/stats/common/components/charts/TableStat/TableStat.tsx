@@ -16,7 +16,7 @@ import {Integration, StoreIntegration} from 'models/integration/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {WorkflowConfiguration} from 'pages/automation/workflows/models/workflowConfiguration.types'
+import {WorkflowConfigurationShallow} from 'pages/automation/workflows/models/workflowConfiguration.types'
 import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import {
@@ -51,7 +51,7 @@ type OwnProps = {
     }
     integrations?: Integration[]
     selfServiceConfigurations?: SelfServiceConfiguration[]
-    workflowConfigurations?: WorkflowConfiguration[]
+    workflowConfigurations?: WorkflowConfigurationShallow[]
 }
 
 type State = {

@@ -6,12 +6,10 @@ import {Edge, Node, useReactFlow} from 'reactflow'
 import {WorkflowConfiguration} from '../../models/workflowConfiguration.types'
 import {useWorkflowConfigurationContext} from '../useWorkflowConfiguration'
 import {workflowConfigurationFactory} from '../useWorkflowApi'
-import {useWorkflowEntrypointContext} from '../useWorkflowEntrypoint'
 import {useSyncWorkflowToReactFlow} from '../useSyncWorkflowToReactFlow'
 import {reducer} from '../useWorkflowConfigurationReducer'
 
 jest.mock('../useWorkflowConfiguration')
-jest.mock('../useWorkflowEntrypoint')
 jest.mock('reactflow')
 
 describe('useSyncWorkflowToReactFlow', () => {
@@ -37,13 +35,6 @@ describe('useSyncWorkflowToReactFlow', () => {
                 name: 'workflow name',
             },
         } as ReturnType<typeof useWorkflowConfigurationContext>)
-        ;(
-            useWorkflowEntrypointContext as jest.MockedFn<
-                typeof useWorkflowEntrypointContext
-            >
-        ).mockReturnValue({
-            label: 'entrypoint label',
-        } as ReturnType<typeof useWorkflowEntrypointContext>)
 
         renderHook(() => useSyncWorkflowToReactFlow())
 
@@ -80,13 +71,6 @@ describe('useSyncWorkflowToReactFlow', () => {
         ).mockReturnValue({
             configuration: workflow,
         } as ReturnType<typeof useWorkflowConfigurationContext>)
-        ;(
-            useWorkflowEntrypointContext as jest.MockedFn<
-                typeof useWorkflowEntrypointContext
-            >
-        ).mockReturnValue({
-            label: 'entrypoint label',
-        } as ReturnType<typeof useWorkflowEntrypointContext>)
 
         renderHook(() => useSyncWorkflowToReactFlow())
         const edges: Edge[] = mockSetEdges.mock.lastCall?.[0]

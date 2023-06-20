@@ -8,9 +8,10 @@ import Label from 'pages/common/forms/Label/Label'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 import {IntegrationType} from 'models/integration/constants'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import {useSelfServiceStoreIntegrationContext} from 'pages/automation/common/hooks/useSelfServiceStoreIntegration'
+
 import {AutomatedMessageNodeType} from '../../../models/visualBuilderGraph.types'
 import {useWorkflowConfigurationContext} from '../../../hooks/useWorkflowConfiguration'
-import {useWorkflowEntrypointContext} from '../../../hooks/useWorkflowEntrypoint'
 
 import css from './NodeEditor.less'
 
@@ -30,7 +31,7 @@ export default function AutomatedMessageEditor({
         return () => clearTimeout(t)
     }, [nodeInEdition])
     const {dispatch} = useWorkflowConfigurationContext()
-    const {storeIntegration} = useWorkflowEntrypointContext()
+    const storeIntegration = useSelfServiceStoreIntegrationContext()
     const nodeContent = useMemo(
         () => ({
             html: nodeInEdition.data.message.content.html,
@@ -93,7 +94,7 @@ export default function AutomatedMessageEditor({
                 canAddDiscountCodeLink={false}
                 canAddVideoPlayer={false}
                 shopifyIntegrations={Immutable.fromJS(
-                    storeIntegration?.type === IntegrationType.Shopify
+                    storeIntegration.type === IntegrationType.Shopify
                         ? [storeIntegration]
                         : []
                 )}

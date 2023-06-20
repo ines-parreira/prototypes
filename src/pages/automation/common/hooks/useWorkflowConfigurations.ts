@@ -1,12 +1,12 @@
 import {useState, useEffect} from 'react'
 
 import useWorkflowApi from '../../workflows/hooks/useWorkflowApi'
-import {WorkflowConfiguration} from '../../workflows/models/workflowConfiguration.types'
+import {WorkflowConfigurationShallow} from '../../workflows/models/workflowConfiguration.types'
 
 const useWorkflowConfigurations = () => {
     const [isFetchPending, setIsFetchPending] = useState(true)
     const [workflowConfigurations, setWorkflowConfigurations] = useState<
-        WorkflowConfiguration[]
+        WorkflowConfigurationShallow[]
     >([])
 
     const {fetchWorkflowConfigurations} = useWorkflowApi()

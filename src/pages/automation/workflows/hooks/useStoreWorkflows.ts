@@ -1,20 +1,20 @@
 import {useCallback, useEffect, useState} from 'react'
 import {produce} from 'immer'
-import {WorkflowEntrypoint} from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {NotificationStatus} from 'state/notifications/types'
-import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
+import {WorkflowConfigurationShallow} from '../models/workflowConfiguration.types'
 import useWorkflowApi from './useWorkflowApi'
 
 export type UseWorkflowsEntrypointsReturnType = {
-    workflowsEntrypoints: Array<WorkflowEntrypoint & {name: string}>
+    storeWorkflows: Array<{workflow_id: string; name: string}>
     isFetchPending: boolean
     isUpdatePending: boolean
-    deleteWorkflowEntrypoint: (workflowId: string) => Promise<void>
+    removeWorkflowFromStore: (workflowId: string) => Promise<void>
     duplicateWorkflow: (workflowId: string) => Promise<{id: string}>
+    appendWorkflowInStore: (workflowId: string) => Promise<void>
 }
 
-export default function useWorkflowsEntrypoints(
+export default function useStoreWorkflows(
     shopType: string,
     shopName: string,
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
@@ -43,7 +43,7 @@ export default function useWorkflowsEntrypoints(
         duplicateWorkflowConfiguration,
     } = useWorkflowApi()
     const [workflowConfigurationById, setWorkflowConfigurationById] = useState<
-        Record<string, WorkflowConfiguration>
+        Record<string, WorkflowConfigurationShallow>
     >({})
     const loadWorkflowsConfigurations = useCallback(() => {
         return fetchWorkflowConfigurations().then((confs) =>
@@ -53,7 +53,7 @@ export default function useWorkflowsEntrypoints(
                         ...acc,
                         [conf.id]: conf,
                     }),
-                    {} as Record<string, WorkflowConfiguration>
+                    {} as Record<string, WorkflowConfigurationShallow>
                 )
             )
         )
@@ -66,7 +66,7 @@ export default function useWorkflowsEntrypoints(
     // to keep a consistent loading state we use an additional local isUpdatePending state
     const [isUpdatePending, setIsUpdatePending] = useState(false)
 
-    const deleteWorkflowEntrypoint = useCallback(
+    const removeWorkflowFromStore = useCallback(
         async (workflowId: string) => {
             if (!selfServiceConfiguration)
                 throw new Error('self service configuration not loaded')
@@ -108,13 +108,8 @@ export default function useWorkflowsEntrypoints(
             const nextConfiguration = produce(
                 selfServiceConfiguration,
                 (draft) => {
-                    const originalLabel = draft.workflows_entrypoints?.find(
-                        (e) => e.workflow_id === workflowId
-                    )?.label
                     draft.workflows_entrypoints?.push({
                         workflow_id: duplicatedWorkflow.id,
-                        enabled: false,
-                        label: originalLabel || '',
                     })
                 }
             )
@@ -130,13 +125,33 @@ export default function useWorkflowsEntrypoints(
         ]
     )
 
-    const workflowsEntrypoints =
+    const appendWorkflowInStore = useCallback(
+        async (workflowId: string) => {
+            if (!selfServiceConfiguration)
+                throw new Error('self service configuration not loaded')
+            setIsUpdatePending(true)
+            const nextConfiguration = produce(
+                selfServiceConfiguration,
+                (draft) => {
+                    draft.workflows_entrypoints ??= []
+                    draft.workflows_entrypoints.push({
+                        workflow_id: workflowId,
+                    })
+                }
+            )
+            await handleSelfServiceConfigurationUpdate(nextConfiguration)
+            setIsUpdatePending(false)
+        },
+        [selfServiceConfiguration, handleSelfServiceConfigurationUpdate]
+    )
+
+    const storeWorkflows =
         selfServiceConfiguration?.workflows_entrypoints?.map((e) => ({
             ...e,
             name: workflowConfigurationById[e.workflow_id]?.name ?? '',
         })) ?? []
     return {
-        workflowsEntrypoints,
+        storeWorkflows,
         isFetchPending:
             !isUpdatePending &&
             (isSelfServiceFetchPending || isWorkflowApiFetchPending),
@@ -144,7 +159,8 @@ export default function useWorkflowsEntrypoints(
             isSelfServiceUpdatePending ||
             isWorkflowApiUpdatePending ||
             isUpdatePending,
-        deleteWorkflowEntrypoint,
+        removeWorkflowFromStore,
         duplicateWorkflow,
+        appendWorkflowInStore,
     }
 }

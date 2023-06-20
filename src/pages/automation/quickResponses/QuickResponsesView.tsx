@@ -86,8 +86,7 @@ const QuickResponsesView = () => {
                     return
                 }
 
-                const entrypoints =
-                    settings.workflows.entrypoints ?? allEntrypoints
+                const entrypoints = settings.workflows.entrypoints ?? []
 
                 entrypoints.forEach((entrypoint) => {
                     if (

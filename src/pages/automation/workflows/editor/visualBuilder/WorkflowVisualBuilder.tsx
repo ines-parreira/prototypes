@@ -10,7 +10,6 @@ import {
 } from 'reactflow'
 
 import Loader from 'pages/common/components/Loader/Loader'
-import {useWorkflowEntrypointContext} from '../../hooks/useWorkflowEntrypoint'
 import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
 import {VisualBuilderNode} from '../../models/visualBuilderGraph.types'
 import {useSyncWorkflowToReactFlow} from '../../hooks/useSyncWorkflowToReactFlow'
@@ -37,10 +36,7 @@ type WorkflowVisualBuilderProps = {
 export function WorkflowVisualBuilderWrapped({
     lastSaveAttempt,
 }: WorkflowVisualBuilderProps) {
-    const {isFetchPending: isWorkflowEntrypointFetchPending} =
-        useWorkflowEntrypointContext()
-    const {isFetchPending: isWorkflowConfigurationFetchPending} =
-        useWorkflowConfigurationContext()
+    const {isFetchPending} = useWorkflowConfigurationContext()
     useSyncWorkflowToReactFlow()
     const {minZoom, maxZoom} = useAutoLayout()
     const [nodes, setNodes, onNodesChange] = useNodesState([])
@@ -64,8 +60,7 @@ export function WorkflowVisualBuilderWrapped({
         )
     }, [lastSaveAttempt, setNodes])
 
-    if (isWorkflowEntrypointFetchPending || isWorkflowConfigurationFetchPending)
-        return <Loader />
+    if (isFetchPending) return <Loader />
 
     return (
         <>

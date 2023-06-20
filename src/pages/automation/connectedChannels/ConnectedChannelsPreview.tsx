@@ -4,9 +4,7 @@ import {createMemoryHistory} from 'history'
 import {SelfServiceChannel} from 'pages/automation/common/hooks/useSelfServiceChannels'
 import SelfServicePreview from 'pages/automation/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
-import SelfServicePreviewContext, {
-    SelfServicePreviewContextType,
-} from 'pages/automation/common/components/preview/SelfServicePreviewContext'
+import SelfServicePreviewContext from 'pages/automation/common/components/preview/SelfServicePreviewContext'
 import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -44,7 +42,9 @@ const ConnectedChannelsPreview = ({
     let isArticleRecommendationEnabled = false
     let areQuickResponsesEnabled = false
     let isOrderManagementEnabled = false
-    let workflowsEntrypoints: SelfServicePreviewContextType['workflowsEntrypoints']
+    let workflowsEntrypoints:
+        | {workflow_id: string; enabled: boolean}[]
+        | undefined
 
     if (channel?.type === TicketChannel.Chat) {
         const {

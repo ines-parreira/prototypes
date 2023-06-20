@@ -86,7 +86,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         <>
             <ConnectedChannelWorkflowsFeature
                 channelId={`chat-${applicationId}`}
-                entrypoints={workflows.entrypoints}
+                entrypoints={workflows.entrypoints || []}
                 onChange={(nextEntrypoints) => {
                     void handleChatApplicationAutomationSettingsUpdate({
                         ...applicationAutomationSettings,

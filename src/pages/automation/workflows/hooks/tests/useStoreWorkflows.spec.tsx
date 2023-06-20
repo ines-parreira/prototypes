@@ -6,7 +6,7 @@ import {waitFor} from '@testing-library/react'
 import {RootState, StoreDispatch} from 'state/types'
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import useWorkflowsEntrypoints from '../useWorkflowsEntrypoints'
+import useStoreWorkflows from '../useStoreWorkflows'
 import useWorkflowApi from '../useWorkflowApi'
 import {
     WorkflowConfiguration,
@@ -77,16 +77,16 @@ function updateMock(
 }
 
 const entrypointsFixtures = [
-    {enabled: true, workflow_id: 'a', label: 'a'},
-    {enabled: true, workflow_id: 'b', label: 'b'},
-    {enabled: false, workflow_id: 'c', label: 'c'},
+    {workflow_id: 'a'},
+    {workflow_id: 'b'},
+    {workflow_id: 'c'},
 ]
 const entrypointsWithNameFixtures = entrypointsFixtures.map((entrypoint) => ({
     ...entrypoint,
     name: '',
 }))
 
-describe('useWorkflowsEntrypoints', () => {
+describe('useStoreWorkflows', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         updateMock({})
@@ -97,19 +97,19 @@ describe('useWorkflowsEntrypoints', () => {
             isUpdatePending: true,
         })
         const {result} = renderHook(
-            () => useWorkflowsEntrypoints('', '', () => null),
+            () => useStoreWorkflows('', '', () => null),
             renderHookOptions
         )
         expect(result.current).toMatchObject({
             isFetchPending: true,
             isUpdatePending: true,
-            workflowsEntrypoints: [],
+            storeWorkflows: [],
         })
     })
 
-    it('hydrates workflowsEntrypoints once configuration fetched', () => {
+    it('hydrates storeWorkflows once configuration fetched', () => {
         const {result, rerender} = renderHook(
-            () => useWorkflowsEntrypoints('', '', () => null),
+            () => useStoreWorkflows('', '', () => null),
             renderHookOptions
         )
         updateMock({
@@ -118,7 +118,7 @@ describe('useWorkflowsEntrypoints', () => {
             } as SelfServiceConfiguration,
         })
         rerender()
-        expect(result.current.workflowsEntrypoints).toEqual(
+        expect(result.current.storeWorkflows).toEqual(
             entrypointsWithNameFixtures
         )
     })
@@ -134,16 +134,14 @@ describe('useWorkflowsEntrypoints', () => {
                 handleSelfServiceConfigurationUpdateMock,
         })
         const {result} = renderHook(
-            () => useWorkflowsEntrypoints('', '', () => null),
+            () => useStoreWorkflows('', '', () => null),
             renderHookOptions
         )
         await waitFor(() =>
             expect(result.current.isFetchPending).toEqual(false)
         )
         await act(() =>
-            result.current.deleteWorkflowEntrypoint(
-                mockWorkflowConfiguration.id
-            )
+            result.current.removeWorkflowFromStore(mockWorkflowConfiguration.id)
         )
         expect(handleSelfServiceConfigurationUpdateMock).toHaveBeenCalledWith(
             expect.objectContaining({
