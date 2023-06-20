@@ -82,12 +82,12 @@ const CATEGORIES: Category[] = [
             {
                 requiredRole: ADMIN_ROLE,
                 to: 'integrations/mine',
-                text: 'My Apps',
+                text: 'My apps',
             },
             {
                 requiredRole: ADMIN_ROLE,
                 to: 'integrations',
-                text: 'All Apps',
+                text: 'All apps',
             },
             {
                 requiredRole: ADMIN_ROLE,
@@ -103,7 +103,7 @@ const CATEGORIES: Category[] = [
             {
                 requiredRole: ADMIN_ROLE,
                 to: 'ticket-fields',
-                text: 'Ticket fields',
+                text: 'Ticket Fields',
                 extra: (
                     <Badge type={ColorType.Blue} className={css.badge}>
                         BETA
