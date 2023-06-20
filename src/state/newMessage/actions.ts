@@ -17,6 +17,7 @@ import {Context, renderTemplate} from 'pages/common/utils/template'
 import {
     castGorgiasVideosForUnsupportedSources,
     getActionTemplate,
+    isImmutable,
     toJS,
     uploadFiles,
 } from 'utils'
@@ -96,7 +97,11 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from './errors'
-import {transformToInternalNote} from './utils'
+import {
+    applyExternalTemplateAction,
+    transformToInternalNote,
+    upsertNewMessageAction,
+} from './utils'
 
 export const addAttachments =
     (ticket: Map<any, any>, atts: FileList | Attachment[] | File[]) =>
@@ -448,7 +453,7 @@ export const setMeta = (meta: Record<string, unknown>) => ({
     meta,
 })
 
-export const setNewMessageActions = (actions: MacroAction[]) => ({
+export const setNewMessageActions = (actions?: MacroAction[]) => ({
     type: constants.SET_NEW_MESSAGE_ACTIONS,
     payload: actions,
 })
@@ -471,6 +476,7 @@ const prepareDefault =
         dispatch(setSubject())
         dispatch(setSourceType(sourceType))
         dispatch(setSourceExtra({}))
+        dispatch(setNewMessageActions())
         resetReceiversAndSender(dispatch, getState)
     }
 
@@ -865,9 +871,13 @@ export function prepareTicketDataToSend(
             }
         }
 
+        newMessage.actions = isImmutable(newMessage.actions)
+            ? newMessage.actions
+            : fromJS(newMessage.actions)
+
         if (actions) {
-            newMessage.actions = actions.map(
-                (curAction: Map<any, any> = fromJS({})) =>
+            newMessage.actions = actions
+                .map((curAction: Map<any, any> = fromJS({})) =>
                     formatAction(
                         curAction,
                         fromJS(getActionTemplate(curAction.get('name'))),
@@ -876,7 +886,15 @@ export function prepareTicketDataToSend(
                             currentUser: currentUser.toJS(),
                         }
                     )
-            ) as List<Map<any, any>>
+                )
+                .concat(newMessage.actions ?? fromJS([])) as List<Map<any, any>>
+        }
+
+        if (
+            newMessage.channel === TicketChannel.WhatsApp &&
+            newMessage.actions
+        ) {
+            newMessage = applyExternalTemplateAction(newMessage)
         }
 
         const discountCodes = prepareNewMessageDiscountCodes(
@@ -1035,30 +1053,6 @@ function onMessageSent(dispatch: StoreDispatch) {
     })
 }
 
-function upsertNewMessageAction(
-    messageToSend: NewMessage,
-    action: Map<any, any>
-): void {
-    if (!messageToSend.actions) {
-        messageToSend.actions = fromJS([action])
-        return
-    }
-
-    const existingActionIndex = messageToSend.actions.findIndex(
-        (existingAction?: Map<any, any>) =>
-            existingAction?.get('name') === action.get('name')
-    )
-    if (existingActionIndex !== -1) {
-        messageToSend.actions = messageToSend.actions.set(
-            existingActionIndex,
-            action
-        )
-        return
-    }
-
-    messageToSend.actions = messageToSend.actions.push(action)
-}
-
 export function prepareTicketMessage({
     status,
     macroActions,
@@ -1165,7 +1159,10 @@ export function prepareTicketMessage({
                     fromJS(getActionTemplate(MacroActionName.SetStatus)),
                     {}
                 )
-                upsertNewMessageAction(messageToSend, closeTicketAction)
+                messageToSend = upsertNewMessageAction(
+                    messageToSend,
+                    closeTicketAction
+                )
             }
 
             const state = getState()

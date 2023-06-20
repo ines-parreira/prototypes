@@ -808,6 +808,10 @@ exports[`actions new message prepare() email-forward should cast chat react play
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
+    "payload": undefined,
+    "type": "SET_NEW_MESSAGE_ACTIONS",
+  },
+  {
     "receivers": {
       "to": [
         {
@@ -876,6 +880,10 @@ exports[`actions new message prepare() email-forward should cast chat react play
   {
     "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  {
+    "payload": undefined,
+    "type": "SET_NEW_MESSAGE_ACTIONS",
   },
   {
     "receivers": {
@@ -1226,6 +1234,10 @@ exports[`actions new message prepare() instagram comment should add prefix 1`] =
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
+    "payload": undefined,
+    "type": "SET_NEW_MESSAGE_ACTIONS",
+  },
+  {
     "receivers": {
       "to": [
         {
@@ -1461,6 +1473,10 @@ exports[`actions new message prepare() instagram comment should not add prefix i
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
+    "payload": undefined,
+    "type": "SET_NEW_MESSAGE_ACTIONS",
+  },
+  {
     "receivers": {
       "to": [
         {
@@ -1540,6 +1556,10 @@ exports[`actions new message prepare() instagram comment should not add prefix i
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
+    "payload": undefined,
+    "type": "SET_NEW_MESSAGE_ACTIONS",
+  },
+  {
     "receivers": {
       "to": [
         {
@@ -1615,6 +1635,10 @@ exports[`actions new message prepare() other types 1`] = `
   {
     "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  {
+    "payload": undefined,
+    "type": "SET_NEW_MESSAGE_ACTIONS",
   },
   {
     "receivers": {
@@ -1694,6 +1718,10 @@ exports[`actions new message prepare() other types 2`] = `
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
+    "payload": undefined,
+    "type": "SET_NEW_MESSAGE_ACTIONS",
+  },
+  {
     "receivers": {
       "to": [
         {
@@ -1771,6 +1799,10 @@ exports[`actions new message prepare() other types 3`] = `
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
   {
+    "payload": undefined,
+    "type": "SET_NEW_MESSAGE_ACTIONS",
+  },
+  {
     "receivers": {
       "to": [
         {
@@ -1846,6 +1878,10 @@ exports[`actions new message prepare() other types 4`] = `
   {
     "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  {
+    "payload": undefined,
+    "type": "SET_NEW_MESSAGE_ACTIONS",
   },
   {
     "receivers": {
@@ -2239,6 +2275,7 @@ exports[`actions new message prepareTicketDataToSend() should transform empty me
 
 exports[`actions new message prepareTicketMessage should prepare next new message after we submitted an instagram comment 1`] = `
 {
+  "actions": undefined,
   "attachments": [],
   "body_html": "",
   "body_text": "",
@@ -2314,6 +2351,7 @@ exports[`actions new message sendTicketMessage should submit new message 1`] = `
 [
   {
     "message": {
+      "actions": undefined,
       "attachments": [],
       "body_html": "<div><br></div>",
       "body_text": "",

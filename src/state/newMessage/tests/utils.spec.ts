@@ -5,7 +5,8 @@ import {TicketMessageSourceType} from 'business/types/ticket'
 
 import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
 
-import {getMentionIds} from '../utils'
+import {getMentionIds, upsertNewMessageAction} from '../utils'
+import {NewMessage} from '../types'
 
 describe('Utils', () => {
     beforeEach(() => {
@@ -41,6 +42,153 @@ describe('Utils', () => {
             expect(
                 getMentionIds(contentState, TicketMessageSourceType.Email)
             ).toMatchSnapshot()
+        })
+    })
+
+    describe('upsertNewMessageAction', () => {
+        it('new actions should equal action argument when newMessage.actions is undefined', () => {
+            const action = fromJS({
+                name: 'AddInternalNote',
+                arguments: {
+                    body_text: 'Foo',
+                    body_html: '<div>Foo</div>',
+                },
+            })
+            const newMessage = {
+                body_text: 'Bar',
+                body_html: '<div>Bar</div>',
+            } as NewMessage
+
+            expect(upsertNewMessageAction(newMessage, action)).toStrictEqual({
+                body_text: 'Bar',
+                body_html: '<div>Bar</div>',
+                actions: fromJS([
+                    {
+                        name: 'AddInternalNote',
+                        arguments: {
+                            body_text: 'Foo',
+                            body_html: '<div>Foo</div>',
+                        },
+                    },
+                ]),
+            })
+        })
+
+        it('new actions should equal action argument when newMessage.actions already contains same action type', () => {
+            const action = fromJS({
+                name: 'AddInternalNote',
+                arguments: {
+                    body_text: 'Foo',
+                    body_html: '<div>Foo</div>',
+                },
+            })
+            const newMessage = {
+                body_text: 'Bar',
+                body_html: '<div>Bar</div>',
+                actions: fromJS([
+                    {
+                        name: 'AddInternalNote',
+                        arguments: {
+                            body_text: 'Bar',
+                            body_html: '<div>Bar</div>',
+                        },
+                    },
+                ]),
+            } as NewMessage
+
+            expect(upsertNewMessageAction(newMessage, action)).toStrictEqual({
+                body_text: 'Bar',
+                body_html: '<div>Bar</div>',
+                actions: fromJS([
+                    {
+                        name: 'AddInternalNote',
+                        arguments: {
+                            body_text: 'Foo',
+                            body_html: '<div>Foo</div>',
+                        },
+                    },
+                ]),
+            })
+        })
+
+        it('new actions should equal action argument when newMessage.actions is empty array', () => {
+            const action = fromJS({
+                name: 'AddInternalNote',
+                arguments: {
+                    body_text: 'Foo',
+                    body_html: '<div>Foo</div>',
+                },
+            })
+            const newMessage = {
+                body_text: 'Bar',
+                body_html: '<div>Bar</div>',
+                actions: [],
+            } as unknown as NewMessage
+
+            expect(upsertNewMessageAction(newMessage, action)).toStrictEqual({
+                body_text: 'Bar',
+                body_html: '<div>Bar</div>',
+                actions: fromJS([
+                    {
+                        name: 'AddInternalNote',
+                        arguments: {
+                            body_text: 'Foo',
+                            body_html: '<div>Foo</div>',
+                        },
+                    },
+                ]),
+            })
+        })
+
+        it('should merge action with newMessage.actions when newMessage.actions already contains action type', () => {
+            const action = fromJS({
+                name: 'AddInternalNote',
+                arguments: {
+                    body_text: 'Foo',
+                    body_html: '<div>Foo</div>',
+                },
+            })
+            const newMessage = {
+                body_text: 'Bar',
+                body_html: '<div>Bar</div>',
+                actions: fromJS([
+                    {
+                        name: 'AddInternalNote',
+                        arguments: {
+                            body_text: 'Bar',
+                            body_html: '<div>Bar</div>',
+                        },
+                    },
+                    {
+                        name: 'ApplyExternalTemplate',
+                        arguments: {
+                            template_id: '1',
+                            template_name: 'Foo',
+                        },
+                    },
+                ]),
+            } as NewMessage
+
+            expect(upsertNewMessageAction(newMessage, action)).toStrictEqual({
+                body_text: 'Bar',
+                body_html: '<div>Bar</div>',
+                actions: fromJS([
+                    {
+                        name: 'AddInternalNote',
+                        arguments: {
+                            body_text: 'Foo',
+                            body_html: '<div>Foo</div>',
+                        },
+                    },
+                    {
+                        name: 'ApplyExternalTemplate',
+                        arguments: {
+                            template_id: '1',
+                            template_name: 'Foo',
+                        },
+                    },
+                ]),
+            })
         })
     })
 })

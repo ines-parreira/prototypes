@@ -10,6 +10,8 @@ import _findLast from 'lodash/findLast'
 import {BackendFactory} from 'dnd-core'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 
 import shortcutManager from '../services/shortcutManager/shortcutManager'
 
@@ -52,6 +54,19 @@ export const renderWithRouter = (
             </Router>
         ),
         ...options,
+    })
+}
+
+/* render with React Query Client Provider */
+export const renderWithRQProvider = (ui: ReactElement) => {
+    const queryClient = createTestQueryClient()
+
+    return render(ui, {
+        wrapper: ({children}: any) => (
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
+        ),
     })
 }
 
