@@ -3,7 +3,6 @@ import React, {useState, useCallback} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
-import EmailIntegrationInputSection from 'pages/settings/contactForm/components/EmailIntegrationInputSection'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import {notify as notifyAction} from 'state/notifications/actions'
@@ -13,18 +12,13 @@ import {
     CONTACT_FORM_CUSTOMIZATION_PATH,
     CONTACT_FORM_BASE_PATH,
     CONTACT_FORM_DEFAULT_LOCALE,
-    EMAIL_SELECTION_INPUT_LABEL,
 } from 'pages/settings/contactForm/constants'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
-import {
-    ContactFormIntegration,
-    CreateContactFormDto,
-} from 'models/contactForm/types'
+import {CreateContactFormDto} from 'models/contactForm/types'
 import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'
 import {LocaleCode} from 'models/helpCenter/types'
-import {useDefaultEmailSelectedBanner} from 'pages/settings/contactForm/hooks/useDefaultEmailSelectedBanner'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import contactFormCss from '../../contactForm.less'
 
@@ -48,15 +42,6 @@ const ContactFormCreateView = ({
                 },
             }
         })
-
-    const isDefaultIntegrationSelected =
-        createContactFormDto.email_integration.id === defaultIntegration?.id
-
-    const {BannerComponent, resetAcknowledgement} =
-        useDefaultEmailSelectedBanner({
-            isDefaultIntegrationSelected,
-        })
-
     const navigateToStartView = useCallback(
         () => history.push(CONTACT_FORM_BASE_PATH),
         [history]
@@ -78,17 +63,6 @@ const ContactFormCreateView = ({
         setCreateContactFormDto((prev) => ({
             ...prev,
             name,
-        }))
-    }
-
-    const onChangeEmailIntegration = (integration: ContactFormIntegration) => {
-        resetAcknowledgement()
-        setCreateContactFormDto((prev) => ({
-            ...prev,
-            email_integration: {
-                id: integration.id,
-                email: integration.meta.address,
-            },
         }))
     }
 
@@ -155,19 +129,6 @@ const ContactFormCreateView = ({
                             isNameCheckEnabled={
                                 !!createContactFormDto.name.length
                             }
-                        />
-                    </section>
-
-                    {BannerComponent && <section>{BannerComponent}</section>}
-
-                    <section>
-                        <EmailIntegrationInputSection
-                            isRequiredShown
-                            onChange={onChangeEmailIntegration}
-                            emailIntegrationId={
-                                createContactFormDto.email_integration.id
-                            }
-                            customLabel={EMAIL_SELECTION_INPUT_LABEL}
                         />
                     </section>
 

@@ -72,18 +72,6 @@ describe('<ContactFormCreateView />', () => {
         expect(nameInput.getAttribute('value')).toEqual('')
     })
 
-    it('should hide alert after alert is acknowledged', async () => {
-        renderView({state: defaultState})
-        const AlertRegEx = /The default Gorgias email is selected\. Make sure/
-
-        await screen.findByText(AlertRegEx)
-        fireEvent.click(screen.getByLabelText('Close Icon'))
-
-        await expect(screen.findByText(AlertRegEx)).rejects.toThrow(
-            /Unable to find/
-        )
-    })
-
     describe('Submit form', () => {
         it('should disable the submit button if name is empty', async () => {
             renderView({state: defaultState})
