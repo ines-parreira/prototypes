@@ -8,7 +8,7 @@ export type Props = {
     ticketFields: CustomField[]
     canReorder: boolean
     onReorder: (
-        updatedPriorities: Pick<CustomField, 'id' | 'priority'>[]
+        updatedPriorities: [Pick<CustomField, 'id' | 'priority'>[]]
     ) => void
 }
 
@@ -60,7 +60,7 @@ export default function List({ticketFields, canReorder, onReorder}: Props) {
             }
         })
 
-        onReorder(updatedPriorities)
+        onReorder([updatedPriorities])
     }
 
     return (

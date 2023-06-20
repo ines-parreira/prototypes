@@ -27,6 +27,7 @@ const mockStore = configureMockStore([thunk])()
 
 describe('useCustomFieldDefinitions', () => {
     beforeEach(() => {
+        mockStore.clearActions()
         jest.resetAllMocks()
     })
 
@@ -74,7 +75,7 @@ describe('useCustomFieldDefinitions', () => {
         ).toBe(ticketDropdownFieldDefinitions)
     })
 
-    it('should provide a onError param calls the notify action', () => {
+    it('should provide a onError param that calls the notify action', () => {
         renderHook(() => useCustomFieldDefinitions(listParams), {
             wrapper: ({children}) => (
                 <Provider store={mockStore}>{children}</Provider>

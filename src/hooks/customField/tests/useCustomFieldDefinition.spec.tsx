@@ -50,7 +50,7 @@ describe('useCustomFieldDefinition', () => {
         ).toBe(ticketDropdownFieldDefinition)
     })
 
-    it('should provide a onError param calls the notify action', () => {
+    it('should provide a onError param that calls the notify action', () => {
         renderHook(() => useCustomFieldDefinition(customFieldId), {
             wrapper: ({children}) => (
                 <Provider store={mockStore}>{children}</Provider>

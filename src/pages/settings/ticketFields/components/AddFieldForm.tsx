@@ -2,8 +2,8 @@ import React from 'react'
 
 import {CustomFieldInput} from 'models/customField/types'
 import history from 'pages/history'
-import {useCreateCustomField} from 'models/customField/queries'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {useCreateCustomFieldDefinition} from 'hooks/customField/useCreateCustomFieldDefinition'
 
 import FieldForm from './FieldForm'
 
@@ -12,7 +12,7 @@ interface AddFieldFormProps {
 }
 
 export default function AddFieldForm(props: AddFieldFormProps) {
-    const {mutateAsync} = useCreateCustomField()
+    const {mutateAsync} = useCreateCustomFieldDefinition()
 
     const newField: CustomFieldInput = {
         object_type: props.objectType,
@@ -32,7 +32,7 @@ export default function AddFieldForm(props: AddFieldFormProps) {
         logEvent(SegmentEvent.CustomFieldTicketSaveNewFieldClicked, {
             fieldType: field.definition.input_settings.input_type,
         })
-        await mutateAsync(field)
+        await mutateAsync([field])
     }
 
     return (

@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomFieldState} from 'models/customField/types'
-import {useUpdateOrDeleteTicketFieldValue} from 'models/customField/queries'
 import {
     updateCustomFieldError,
     updateCustomFieldState,
@@ -11,6 +10,7 @@ import {
 
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
+import {useUpdateOrDeleteTicketFieldValue} from 'hooks/customField/useUpdateOrDeleteTicketFieldValue'
 import {getTicket} from 'state/ticket/selectors'
 import Tooltip from 'pages/common/components/Tooltip'
 import {isCustomFieldValueEmpty} from 'utils/customFields'

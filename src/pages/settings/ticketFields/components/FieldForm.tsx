@@ -9,7 +9,7 @@ import {
     CustomFieldInput,
     isCustomField,
 } from 'models/customField/types'
-import {useUpdateCustomFieldStatus} from 'models/customField/queries'
+import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
 import InputField from 'pages/common/forms/input/InputField'
 import CheckBox from 'pages/common/forms/CheckBox'
 import Label from 'pages/common/forms/Label/Label'
@@ -47,7 +47,7 @@ function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
 }
 
 export default function FieldForm(props: FieldFormProps) {
-    const {mutateAsync} = useUpdateCustomFieldStatus(
+    const {mutateAsync} = useUpdateCustomFieldArchiveStatus(
         // this `: 0` case should never happen
         isCustomField(props.field) ? props.field.id : 0
     )
@@ -112,7 +112,7 @@ export default function FieldForm(props: FieldFormProps) {
     const handleArchivingCustomFieldCallback = useCallback(
         async (archived: boolean) => {
             setIsLoading(true)
-            await mutateAsync({archived})
+            await mutateAsync(archived)
             setIsLoading(false)
         },
         [mutateAsync]

@@ -2,13 +2,13 @@ import React, {useState} from 'react'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {CustomField} from 'models/customField/types'
-import {useUpdateCustomFieldStatus} from 'models/customField/queries'
 import IconButton from 'pages/common/components/button/IconButton'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import ArchiveConfirmationModal from 'pages/settings/ticketFields/components/ArchiveConfirmationModal'
 import {TableBodyRowDraggable} from 'pages/common/components/table/TableBodyRowDraggable'
 import {Callbacks} from 'pages/common/hooks/useReorderDnD'
+import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
 import css from './Row.less'
 
 export type Props = {
@@ -25,7 +25,9 @@ export default function Row({
     onMoveEntity,
     onDropEntity,
 }: Props) {
-    const {mutate, isLoading} = useUpdateCustomFieldStatus(ticketField.id)
+    const {mutate, isLoading} = useUpdateCustomFieldArchiveStatus(
+        ticketField.id
+    )
 
     const link = `/app/settings/ticket-fields/${ticketField.id}/edit`
     const [archiveModalVisible, setArchiveModalVisible] = useState(false)
@@ -98,7 +100,7 @@ export default function Row({
                             isOpen={archiveModalVisible}
                             onConfirm={() => {
                                 setArchiveModalVisible(false)
-                                mutate({archived: true})
+                                mutate(true)
                             }}
                             onClose={() => setArchiveModalVisible(false)}
                         />
@@ -109,7 +111,7 @@ export default function Row({
                     <IconButton
                         className={classnames(css.actionButton, 'mr-1')}
                         onClick={() => {
-                            mutate({archived: false})
+                            mutate(false)
                         }}
                         fillStyle="ghost"
                         intent="secondary"

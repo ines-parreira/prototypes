@@ -5,7 +5,8 @@ import {Link, NavLink, useParams} from 'react-router-dom'
 import {useDebounce} from 'react-use'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useTitle from 'hooks/useTitle'
-import {useUpdateCustomFields} from 'models/customField/queries'
+import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
+import {useUpdateCustomFieldDefinitions} from 'hooks/customField/useUpdateCustomFieldDefinitions'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import List from 'pages/settings/ticketFields/components/List'
@@ -15,7 +16,6 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Search from 'pages/common/components/Search'
 import {ListParams} from 'models/customField/types'
-import {useCustomFieldDefinitions} from 'hooks/customField/useCustomFieldDefinitions'
 
 import css from './TicketFields.less'
 
@@ -42,8 +42,8 @@ export default function TicketFields() {
         isLoading: isLoadingActive,
     } = useCustomFieldDefinitions(activeParams)
 
-    const {mutate: mutateCustomFieldsPriority} =
-        useUpdateCustomFields(activeParams)
+    const {mutate: mutateCustomFieldPriorities} =
+        useUpdateCustomFieldDefinitions(activeParams)
 
     const {
         data: {
@@ -181,7 +181,7 @@ export default function TicketFields() {
                                             !debouncedSearch &&
                                             activeTab !== 'archived'
                                         }
-                                        onReorder={mutateCustomFieldsPriority}
+                                        onReorder={mutateCustomFieldPriorities}
                                     />
                                     <Navigation
                                         className={css.navigation}

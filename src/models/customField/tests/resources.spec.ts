@@ -32,7 +32,7 @@ describe('custom field resources', () => {
                 archived: false,
                 object_type: 'Ticket',
             })
-            expect(res).toMatchSnapshot()
+            expect(res.data).toMatchSnapshot()
             expect(mockedServer.history).toMatchSnapshot()
         })
 
@@ -56,7 +56,7 @@ describe('custom field resources', () => {
                 .reply(200, ticketInputFieldDefinition)
             const res = await getCustomField(123)
 
-            expect(res).toMatchSnapshot()
+            expect(res.data).toMatchSnapshot()
             expect(mockedServer.history).toMatchSnapshot()
         })
 
@@ -77,7 +77,7 @@ describe('custom field resources', () => {
                 .reply(200, ticketInputFieldDefinition)
             const res = await createCustomField(customFieldInputDefinition)
 
-            expect(res).toMatchSnapshot()
+            expect(res.data).toMatchSnapshot()
             expect(mockedServer.history).toMatchSnapshot()
         })
 
@@ -98,7 +98,7 @@ describe('custom field resources', () => {
                 .reply(200, ticketInputFieldDefinition)
             const res = await updateCustomField(123, customFieldInputDefinition)
 
-            expect(res).toMatchSnapshot()
+            expect(res.data).toMatchSnapshot()
             expect(mockedServer.history).toMatchSnapshot()
         })
 
@@ -115,7 +115,7 @@ describe('custom field resources', () => {
     describe('updateCustomFields', () => {
         it('should resolve with a list of updated CustomFields on success', async () => {
             mockedServer
-                .onPut('/api/custom-fields/')
+                .onPut('/api/custom-fields')
                 .reply(200, {data: [ticketInputFieldDefinition]})
             const res = await updateCustomFields([
                 {
@@ -124,13 +124,13 @@ describe('custom field resources', () => {
                 },
             ])
 
-            expect(res).toMatchSnapshot()
+            expect(res.data).toMatchSnapshot()
             expect(mockedServer.history).toMatchSnapshot()
         })
 
         it('should reject an error on fail', () => {
             mockedServer
-                .onPut('/api/custom-fields/')
+                .onPut('/api/custom-fields')
                 .reply(503, {message: 'error'})
             return expect(
                 updateCustomFields([
@@ -153,7 +153,7 @@ describe('custom field resources', () => {
                 customFieldInputDefinition
             )
 
-            expect(res).toMatchSnapshot()
+            expect(res.data).toMatchSnapshot()
             expect(mockedServer.history).toMatchSnapshot()
         })
 

@@ -1,21 +1,20 @@
 import client from 'models/api/resources'
+import {ApiListResponseCursorPagination} from 'models/api/types'
 import {
     CustomField,
     CustomFieldInput,
     CustomFieldState,
-    GetCustomFieldDefinitionsResponse,
     ListParams,
     PartialCustomFieldWithId,
 } from './types'
 
 export async function getCustomFields(params: ListParams) {
-    const res = await client.get<GetCustomFieldDefinitionsResponse>(
-        '/api/custom-fields/',
-        {
-            params,
-        }
-    )
-    return res
+    const response = await client.get<
+        ApiListResponseCursorPagination<CustomField[]>
+    >('/api/custom-fields/', {
+        params,
+    })
+    return response
 }
 
 export async function getCustomField(id: number) {
@@ -23,43 +22,33 @@ export async function getCustomField(id: number) {
     return response
 }
 
-export async function createCustomField(
-    data: CustomFieldInput
-): Promise<CustomField> {
+export async function createCustomField(data: CustomFieldInput) {
     const response = await client.post<CustomField>('/api/custom-fields', data)
-    return response.data
+    return response
 }
 
-export async function updateCustomField(
-    id: number,
-    data: CustomFieldInput
-): Promise<CustomField> {
+export async function updateCustomField(id: number, data: CustomFieldInput) {
     const response = await client.put<CustomField>(
         `/api/custom-fields/${id}`,
         data
     )
-    return response.data
+    return response
 }
 
-export async function updateCustomFields(
-    data: PartialCustomFieldWithId[]
-): Promise<CustomField[]> {
-    const response = await client.put<CustomField[]>(
-        `/api/custom-fields/`,
-        data
-    )
-    return response.data
+export async function updateCustomFields(data: PartialCustomFieldWithId[]) {
+    const response = await client.put<CustomField[]>(`/api/custom-fields`, data)
+    return response
 }
 
 export async function updatePartialCustomField(
     id: number,
     data: Partial<CustomField>
-): Promise<CustomField> {
+) {
     const response = await client.put<CustomField>(
         `/api/custom-fields/${id}`,
         data
     )
-    return response.data
+    return response
 }
 
 export async function updateCustomFieldValue({
@@ -71,8 +60,8 @@ export async function updateCustomFieldValue({
     fieldType: CustomFieldInput['object_type']
     holderId: number
     fieldId: CustomField['id']
-    value: CustomFieldState['value']
-}): Promise<{field: CustomField; value: CustomFieldState['value']}> {
+    value?: CustomFieldState['value']
+}) {
     const response = await client.put<{
         field: CustomField
         value: CustomFieldState['value']
@@ -87,7 +76,7 @@ export async function updateCustomFieldValue({
             },
         }
     )
-    return response.data
+    return response
 }
 
 export async function deleteCustomFieldValue({
@@ -98,7 +87,7 @@ export async function deleteCustomFieldValue({
     fieldType: CustomFieldInput['object_type']
     holderId: number
     fieldId: CustomField['id']
-}): Promise<undefined> {
+}) {
     await client.delete(
         `/api/${
             fieldType === 'Ticket' ? 'tickets' : 'customers'

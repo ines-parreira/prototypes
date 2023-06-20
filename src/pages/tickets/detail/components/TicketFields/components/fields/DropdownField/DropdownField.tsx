@@ -3,9 +3,9 @@ import React, {useCallback, useMemo, useRef, useState, useEffect} from 'react'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {useUpdateOrDeleteTicketFieldValue} from 'hooks/customField/useUpdateOrDeleteTicketFieldValue'
 import {isCustomFieldValueEmpty} from 'utils/customFields'
 import {CustomFieldState, CustomFieldValue} from 'models/customField/types'
-import {useUpdateOrDeleteTicketFieldValue} from 'models/customField/queries'
 import {getTicket} from 'state/ticket/selectors'
 import {
     updateCustomFieldError,

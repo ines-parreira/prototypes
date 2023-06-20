@@ -1,4 +1,4 @@
-import {AxiosError} from 'axios'
+import axios, {AxiosError} from 'axios'
 
 export enum ContentType {
     Json = 'application/json',
@@ -73,6 +73,21 @@ export type GorgiasApiError<T = unknown> = Omit<AxiosError, 'response'> &
 export type GorgiasApiResponseDataError<T = unknown> = {
     msg: string
     data: T
+}
+
+export const isGogiasApiResponseDataError = (
+    error: Record<string, unknown>
+): error is GorgiasApiResponseDataError => {
+    return typeof error.msg !== 'undefined' && typeof error.data !== 'undefined'
+}
+
+export const isGorgiasApiError = (
+    error: Record<string, unknown>
+): error is GorgiasApiError => {
+    return (
+        axios.isAxiosError(error) &&
+        isGogiasApiResponseDataError(error.response?.data)
+    )
 }
 
 export enum CursorDirection {

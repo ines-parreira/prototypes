@@ -9,22 +9,21 @@ import React from 'react'
 import client from 'models/api/resources'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {
-    customFieldDefinitionKeys,
     useCreateCustomField,
     useDeleteCustomFieldValue,
     useGetCustomFieldDefinition,
     useGetCustomFieldDefinitions,
     useUpdateCustomField,
     useUpdateCustomFields,
-    useUpdateCustomFieldStatus,
+    useUpdatePartialCustomField,
     useUpdateCustomFieldValue,
 } from 'models/customField/queries'
+import {ticketInputFieldDefinition} from 'fixtures/customField'
 import {
-    ticketInputFieldDefinition,
-    customFieldInputDefinition,
-} from 'fixtures/customField'
-import {NotificationStatus} from 'state/notifications/types'
-import {ListParams} from 'models/customField/types'
+    CustomFieldInput,
+    PartialCustomFieldWithId,
+} from 'models/customField/types'
+import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = createTestQueryClient()
@@ -36,11 +35,13 @@ describe('queries.spec.tsx', () => {
     })
 
     describe('useGetCustomFieldDefinitions', () => {
+        const response = apiListCursorPaginationResponse([
+            ticketInputFieldDefinition,
+        ])
+
         it('should succeed and return proper data', async () => {
             const mockStore = configureMockStore([thunk])()
-            mockedServer
-                .onGet('/api/custom-fields/')
-                .reply(200, {data: [ticketInputFieldDefinition]})
+            mockedServer.onGet('/api/custom-fields/').reply(200, response)
             const {result, waitFor} = renderHook(
                 () =>
                     useGetCustomFieldDefinitions({
@@ -58,7 +59,7 @@ describe('queries.spec.tsx', () => {
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-            expect(result.current.data).toMatchSnapshot()
+            expect(result.current.data?.data).toStrictEqual(response)
         })
 
         it('should fail and return proper error', async () => {
@@ -106,7 +107,10 @@ describe('queries.spec.tsx', () => {
             )
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
-            expect(result.current.data).toMatchSnapshot()
+
+            expect(result.current.data?.data).toStrictEqual(
+                ticketInputFieldDefinition
+            )
         })
 
         it('should fail and return proper error', async () => {
@@ -134,15 +138,13 @@ describe('queries.spec.tsx', () => {
     })
 
     describe('useCreateCustomField', () => {
-        it('successful query hook', async () => {
+        it('should succeed and return proper data', async () => {
             const mockStore = configureMockStore([thunk])()
-            const invalidateQueriesSpy = jest.spyOn(
-                queryClient,
-                'invalidateQueries'
-            )
+
             mockedServer
-                .onPost('/api/custom-fields')
+                .onPost(`/api/custom-fields`)
                 .reply(200, ticketInputFieldDefinition)
+
             const {result, waitFor} = renderHook(() => useCreateCustomField(), {
                 wrapper: ({children}) => (
                     <QueryClientProvider client={queryClient}>
@@ -151,170 +153,65 @@ describe('queries.spec.tsx', () => {
                 ),
             })
 
+            const dataToMutate: CustomFieldInput = ticketInputFieldDefinition
+
             act(() => {
-                result.current.mutate(customFieldInputDefinition)
+                result.current.mutate([dataToMutate])
             })
 
             await waitFor(() => {
                 expect(result.current.isSuccess).toBe(true)
-                expect(result.current.data).toMatchSnapshot()
-                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                    queryKey: customFieldDefinitionKeys.all(),
-                })
-                expect(mockStore.getActions()).toMatchObject([
-                    {
-                        payload: {
-                            message: 'Ticket field created successfully.',
-                            status: NotificationStatus.Success,
-                        },
-                    },
-                ])
             })
-
-            invalidateQueriesSpy.mockRestore()
-        })
-
-        it('failure query hook', async () => {
-            const mockStore = configureMockStore([thunk])()
-            const invalidateQueriesSpy = jest.spyOn(
-                queryClient,
-                'invalidateQueries'
+            expect(result.current.data?.data).toEqual(
+                ticketInputFieldDefinition
             )
-            mockedServer.onPost('/api/custom-fields').reply(400, {
-                error: {msg: 'foo error'},
-            })
-            const {result, waitFor} = renderHook(() => useCreateCustomField(), {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            })
-
-            act(() => {
-                result.current.mutate(customFieldInputDefinition)
-            })
-
-            await waitFor(() => {
-                expect(result.current.isError).toBe(true)
-                expect(result.current.error).toBeDefined()
-                expect(invalidateQueriesSpy).toHaveBeenCalledTimes(0)
-                expect(mockStore.getActions()).toMatchObject([
-                    {
-                        payload: {
-                            message: 'foo error',
-                            status: NotificationStatus.Error,
-                        },
-                    },
-                ])
-            })
-
-            invalidateQueriesSpy.mockRestore()
         })
     })
 
     describe('useUpdateCustomField', () => {
-        it('successful query hook', async () => {
+        it('should succeed and return proper data', async () => {
             const mockStore = configureMockStore([thunk])()
-            const invalidateQueriesSpy = jest.spyOn(
-                queryClient,
-                'invalidateQueries'
-            )
+
             mockedServer
-                .onPut('/api/custom-fields/123')
+                .onPut(`/api/custom-fields/${ticketInputFieldDefinition.id}`)
                 .reply(200, ticketInputFieldDefinition)
-            const {result, waitFor} = renderHook(
-                () => useUpdateCustomField(123),
-                {
-                    wrapper: ({children}) => (
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={mockStore}>{children}</Provider>
-                        </QueryClientProvider>
-                    ),
-                }
-            )
+
+            const {result, waitFor} = renderHook(() => useUpdateCustomField(), {
+                wrapper: ({children}) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore}>{children}</Provider>
+                    </QueryClientProvider>
+                ),
+            })
+
+            const dataToMutate: CustomFieldInput = ticketInputFieldDefinition
 
             act(() => {
-                result.current.mutate(customFieldInputDefinition)
+                result.current.mutate([
+                    ticketInputFieldDefinition.id,
+                    dataToMutate,
+                ])
             })
 
             await waitFor(() => {
                 expect(result.current.isSuccess).toBe(true)
-                expect(result.current.data).toMatchSnapshot()
-                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                    queryKey: customFieldDefinitionKeys.all(),
-                })
-                expect(mockStore.getActions()).toMatchObject([
-                    {
-                        payload: {
-                            message: 'Ticket field updated successfully.',
-                            status: NotificationStatus.Success,
-                        },
-                    },
-                ])
             })
-
-            invalidateQueriesSpy.mockRestore()
-        })
-
-        it('failure query hook', async () => {
-            const mockStore = configureMockStore([thunk])()
-            const invalidateQueriesSpy = jest.spyOn(
-                queryClient,
-                'invalidateQueries'
+            expect(result.current.data?.data).toEqual(
+                ticketInputFieldDefinition
             )
-            mockedServer.onPut('/api/custom-fields/123').reply(400, {
-                error: {msg: 'foo error'},
-            })
-            const {result, waitFor} = renderHook(
-                () => useUpdateCustomField(123),
-                {
-                    wrapper: ({children}) => (
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={mockStore}>{children}</Provider>
-                        </QueryClientProvider>
-                    ),
-                }
-            )
-
-            act(() => {
-                result.current.mutate(customFieldInputDefinition)
-            })
-
-            await waitFor(() => {
-                expect(result.current.isError).toBe(true)
-                expect(result.current.error).toBeDefined()
-                expect(invalidateQueriesSpy).toHaveBeenCalledTimes(0)
-                expect(mockStore.getActions()).toMatchObject([
-                    {
-                        payload: {
-                            message: 'foo error',
-                            status: NotificationStatus.Error,
-                        },
-                    },
-                ])
-            })
-
-            invalidateQueriesSpy.mockRestore()
         })
     })
 
     describe('useUpdateCustomFields', () => {
-        it('successful query hook', async () => {
+        it('should succeed and return proper data', async () => {
             const mockStore = configureMockStore([thunk])()
-            const invalidateQueriesSpy = jest.spyOn(
-                queryClient,
-                'invalidateQueries'
-            )
-            const activeParams: ListParams = {
-                archived: false,
-                object_type: 'Ticket',
-            }
+
             mockedServer
-                .onPut('/api/custom-fields/')
-                .reply(200, {data: [ticketInputFieldDefinition]})
+                .onPut(`/api/custom-fields`)
+                .reply(200, [ticketInputFieldDefinition])
+
             const {result, waitFor} = renderHook(
-                () => useUpdateCustomFields(activeParams),
+                () => useUpdateCustomFields(),
                 {
                     wrapper: ({children}) => (
                         <QueryClientProvider client={queryClient}>
@@ -324,89 +221,33 @@ describe('queries.spec.tsx', () => {
                 }
             )
 
+            const dataToMutate: PartialCustomFieldWithId[] = [
+                {id: 1, priority: 1},
+            ]
+
             act(() => {
-                result.current.mutate([
-                    {
-                        id: ticketInputFieldDefinition.id,
-                        priority: 999,
-                    },
-                ])
+                result.current.mutate([dataToMutate])
             })
 
             await waitFor(() => {
                 expect(result.current.isSuccess).toBe(true)
-                expect(result.current.data).toMatchSnapshot()
-                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                    queryKey: customFieldDefinitionKeys.list(activeParams),
-                })
             })
-
-            invalidateQueriesSpy.mockRestore()
-        })
-
-        it('failure query hook', async () => {
-            const mockStore = configureMockStore([thunk])()
-            const invalidateQueriesSpy = jest.spyOn(
-                queryClient,
-                'invalidateQueries'
-            )
-            mockedServer.onPut('/api/custom-fields/').reply(400, {
-                error: {msg: 'foo error'},
-            })
-            const {result, waitFor} = renderHook(
-                () =>
-                    useUpdateCustomFields({
-                        archived: false,
-                        object_type: 'Ticket',
-                    }),
-                {
-                    wrapper: ({children}) => (
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={mockStore}>{children}</Provider>
-                        </QueryClientProvider>
-                    ),
-                }
-            )
-
-            act(() => {
-                result.current.mutate([
-                    {
-                        id: ticketInputFieldDefinition.id,
-                        priority: 999,
-                    },
-                ])
-            })
-
-            await waitFor(() => {
-                expect(result.current.isError).toBe(true)
-                expect(result.current.error).toBeDefined()
-                expect(invalidateQueriesSpy).toHaveBeenCalledTimes(1)
-                expect(mockStore.getActions()).toMatchObject([
-                    {
-                        payload: {
-                            message: 'foo error',
-                            status: NotificationStatus.Error,
-                        },
-                    },
-                ])
-            })
-
-            invalidateQueriesSpy.mockRestore()
+            expect(result.current.data?.data).toEqual([
+                ticketInputFieldDefinition,
+            ])
         })
     })
 
-    describe('useUpdateCustomFieldStatus', () => {
-        it('successful query hook', async () => {
+    describe('useUpdatePartialCustomField', () => {
+        it('should succeed and return proper data', async () => {
             const mockStore = configureMockStore([thunk])()
-            const invalidateQueriesSpy = jest.spyOn(
-                queryClient,
-                'invalidateQueries'
-            )
+
             mockedServer
-                .onPut('/api/custom-fields/123')
+                .onPut(`/api/custom-fields/${ticketInputFieldDefinition.id}`)
                 .reply(200, ticketInputFieldDefinition)
+
             const {result, waitFor} = renderHook(
-                () => useUpdateCustomFieldStatus(123),
+                () => useUpdatePartialCustomField(),
                 {
                     wrapper: ({children}) => (
                         <QueryClientProvider client={queryClient}>
@@ -417,67 +258,18 @@ describe('queries.spec.tsx', () => {
             )
 
             act(() => {
-                result.current.mutate({archived: true})
+                result.current.mutate([
+                    ticketInputFieldDefinition.id,
+                    {deactivated_datetime: null},
+                ])
             })
 
             await waitFor(() => {
                 expect(result.current.isSuccess).toBe(true)
-                expect(result.current.data).toMatchSnapshot()
-                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                    queryKey: customFieldDefinitionKeys.all(),
-                })
-                expect(mockStore.getActions()).toMatchObject([
-                    {
-                        payload: {
-                            message: 'Ticket field successfully archived.',
-                            status: NotificationStatus.Success,
-                        },
-                    },
-                ])
             })
-
-            invalidateQueriesSpy.mockRestore()
-        })
-
-        it('failure query hook', async () => {
-            const mockStore = configureMockStore([thunk])()
-            const invalidateQueriesSpy = jest.spyOn(
-                queryClient,
-                'invalidateQueries'
+            expect(result.current.data?.data).toEqual(
+                ticketInputFieldDefinition
             )
-            mockedServer.onPut('/api/custom-fields/123').reply(400, {
-                error: {msg: 'foo error'},
-            })
-            const {result, waitFor} = renderHook(
-                () => useUpdateCustomFieldStatus(123),
-                {
-                    wrapper: ({children}) => (
-                        <QueryClientProvider client={queryClient}>
-                            <Provider store={mockStore}>{children}</Provider>
-                        </QueryClientProvider>
-                    ),
-                }
-            )
-
-            act(() => {
-                result.current.mutate({archived: true})
-            })
-
-            await waitFor(() => {
-                expect(result.current.isError).toBe(true)
-                expect(result.current.error).toBeDefined()
-                expect(invalidateQueriesSpy).toHaveBeenCalledTimes(0)
-                expect(mockStore.getActions()).toMatchObject([
-                    {
-                        payload: {
-                            message: 'Failed to archive ticket field.',
-                            status: NotificationStatus.Error,
-                        },
-                    },
-                ])
-            })
-
-            invalidateQueriesSpy.mockRestore()
         })
     })
 
@@ -522,8 +314,7 @@ describe('queries.spec.tsx', () => {
             await waitFor(() => {
                 expect(result.current.isSuccess).toBe(true)
             })
-            //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            expect(result.current.data?.value).toEqual(fieldValue)
+            expect(result.current.data?.data.value).toEqual(fieldValue)
         })
     })
 
