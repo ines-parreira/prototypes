@@ -327,13 +327,13 @@ export function getTranslations() {
             sincerely: 'Sincerely,',
             sms: 'SMS',
             sorryToHearThatEmailNotRequired:
-                'Sorry to hear that! Someone will be with you soon.',
+                'Sorry to hear that! An agent will get back to you soon.',
             sorryToHearThatEmailRequired:
-                "Sorry to hear that. Leave us your email and we'll get back to you.",
-            sorryToHearThatOfflineEmailCaptured:
-                "Sorry to hear that, we'll get back to you by email.",
-            sorryToHearThatOnlineEmailCaptured:
-                "I'm sorry to hear that. An agent will be with you in a few minutes.",
+                'Sorry to hear that! Leave us your email and an agent will get back to you.',
+            sorryToHearThatHandoverToLiveChatFewHours:
+                'Sorry to hear that! An agent will be with you in a few hours.',
+            sorryToHearThatHandoverToLiveChatFewMinutes:
+                'Sorry to hear that! An agent will be with you in a few minutes.',
             startConversation: 'Start conversation',
             stuckInTransit:
                 'My order has been stuck in transit for several days',
