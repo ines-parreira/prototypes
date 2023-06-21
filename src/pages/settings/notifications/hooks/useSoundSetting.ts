@@ -1,0 +1,39 @@
+import {useCallback, useMemo, useState} from 'react'
+
+type Setting = {
+    enabled: boolean
+    sound: string
+    volume: number
+}
+
+export default function useSoundSetting(initialSettings?: Setting) {
+    const [state, setState] = useState<Setting>(
+        initialSettings || {
+            enabled: true,
+            sound: 'default',
+            volume: 5,
+        }
+    )
+
+    const onChangeEnabled = useCallback((enabled: boolean) => {
+        setState((s) => ({...s, enabled}))
+    }, [])
+
+    const onChangeSound = useCallback((sound: string) => {
+        setState((s) => ({...s, sound}))
+    }, [])
+
+    const onChangeVolume = useCallback((volume: number) => {
+        setState((s) => ({...s, volume}))
+    }, [])
+
+    return useMemo(
+        () => ({
+            ...state,
+            onChangeEnabled,
+            onChangeSound,
+            onChangeVolume,
+        }),
+        [onChangeEnabled, onChangeSound, onChangeVolume, state]
+    )
+}
