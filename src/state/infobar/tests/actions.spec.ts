@@ -106,6 +106,7 @@ describe('infobar actions', () => {
     describe('execute action', () => {
         const actionName = 'shopifyRefundShippingCostOfOrder'
         const integrationId = 5
+        const appId = 'foo'
         const customerId = '34'
         const payload = {order_id: 4194477515}
         const callback = jest.fn()
@@ -117,6 +118,7 @@ describe('infobar actions', () => {
                 actions.executeAction({
                     actionName,
                     integrationId,
+                    appId,
                     customerId,
                     payload,
                     callback,
@@ -132,6 +134,7 @@ describe('infobar actions', () => {
                 actions.executeAction({
                     actionName,
                     integrationId,
+                    appId,
                     customerId,
                     payload,
                     callback,

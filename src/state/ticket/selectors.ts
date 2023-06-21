@@ -59,6 +59,12 @@ export const getIntegrationDataByIntegrationId = (integrationId: number) =>
             (state.get(String(integrationId)) || fromJS({})) as Map<any, any>
     )
 
+export const getAppDataByAppId = (appId: string) =>
+    createSelector(
+        getTicket,
+        (state) => state.customer?.external_data?.[appId] || null
+    )
+
 export const getLoading = createImmutableSelector(
     getTicketState,
     (state) =>

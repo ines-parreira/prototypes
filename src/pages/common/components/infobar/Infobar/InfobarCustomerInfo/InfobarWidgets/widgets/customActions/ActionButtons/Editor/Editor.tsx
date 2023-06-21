@@ -14,6 +14,7 @@ import {
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {AppContext} from 'providers/infobar/AppContext'
 import {
     Button as ButtonType,
     OnOpenForm,
@@ -42,6 +43,7 @@ export function Editor({
     const currentAccount = useAppSelector(getCurrentAccountState)
     const dispatch = useAppDispatch()
     const {integrationId} = useContext(IntegrationContext)
+    const {appId} = useContext(AppContext)
     const [isFormOpen, setFormOpen] = useState<boolean>(false)
     const [editorIndex, setFormIndex] = useState<number | null>(null)
     const handleRemove = useCallback<OnRemoveButton>(
@@ -60,6 +62,7 @@ export function Editor({
             logEvent(SegmentEvent.CustomActionButtonsDeleted, {
                 account_domain: currentAccount.get('domain'),
                 integration_id: integrationId,
+                app_id: appId,
             })
 
             if (buttons.length > 0) {
@@ -75,6 +78,7 @@ export function Editor({
             templatePath,
             currentAccount,
             integrationId,
+            appId,
             dispatch,
         ]
     )
@@ -89,19 +93,21 @@ export function Editor({
                 logEvent(SegmentEvent.CustomActionButtonsEdited, {
                     account_domain: currentAccount.get('domain'),
                     integration_id: integrationId,
+                    app_id: appId,
                 })
                 newButtons[index] = button
             } else {
                 logEvent(SegmentEvent.CustomActionButtonsAdded, {
                     account_domain: currentAccount.get('domain'),
                     integration_id: integrationId,
+                    app_id: appId,
                 })
                 newButtons.push(button)
             }
 
             dispatch(updateCustomActions(newButtons))
         },
-        [buttons, templatePath, currentAccount, integrationId, dispatch]
+        [buttons, templatePath, currentAccount, integrationId, appId, dispatch]
     )
 
     const handleOpenForm = useCallback<OnOpenForm>(
@@ -113,12 +119,13 @@ export function Editor({
                 logEvent(SegmentEvent.CustomActionButtonsStart, {
                     account_domain: currentAccount.get('domain'),
                     integration_id: integrationId,
+                    app_id: appId,
                 })
             }
             setFormIndex(typeof index === 'number' ? index : null)
             setFormOpen(true)
         },
-        [currentAccount, integrationId]
+        [currentAccount, integrationId, appId]
     )
     const handleCloseForm = useCallback(() => setFormOpen(false), [])
 

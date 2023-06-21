@@ -13,7 +13,10 @@ import {RootState} from 'state/types'
 import {getActionByName} from 'config/actions'
 import {AgentLabel, DatetimeLabel} from 'pages/common/utils/labels'
 import {getIntegrationById} from 'state/integrations/selectors'
-import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
+import {
+    getAppDataByAppId,
+    getIntegrationDataByIntegrationId,
+} from 'state/ticket/selectors'
 import {humanizeString, stripErrorMessage} from 'utils'
 
 import css from './Event.less'
@@ -131,7 +134,9 @@ export class EventContainer extends React.Component<Props, State> {
     }
 
     render() {
-        const {event, isLast, integration, integrationData} = this.props
+        const {event, isLast, integration, integrationData, appData} =
+            this.props
+
         const user = (event.get('user') || fromJS({})) as Map<any, any>
         const status = event.getIn(['data', 'status'])
         const actionName = event.getIn(['data', 'action_name'])
@@ -166,8 +171,6 @@ export class EventContainer extends React.Component<Props, State> {
                 <i className="material-icons">{isError ? 'close' : 'check'}</i>
             </div>
         )
-
-        const shouldDisplayIntegration = true
 
         if (hasIntegration) {
             if (integration.get('type') === 'shopify') {
@@ -251,19 +254,28 @@ export class EventContainer extends React.Component<Props, State> {
                             )}
                         </span>
 
-                        {hasIntegration && shouldDisplayIntegration && (
-                            <span className={css.equalFiller}>on</span>
+                        {appData && (
+                            <>
+                                <span className={css.equalFiller}>on</span>
+                                <span className={css.actionName}>
+                                    {appData.__app_name__}
+                                </span>
+                            </>
                         )}
 
-                        {hasIntegration && shouldDisplayIntegration && (
-                            <span className={css.actionName}>
-                                {_capitalize(
-                                    this.getDisplayableType(
-                                        integration.get('type')
-                                    )
-                                )}{' '}
-                                ({integration.get('name')})
-                            </span>
+                        {hasIntegration && (
+                            <>
+                                <span className={css.equalFiller}>on</span>
+                                <span className={css.actionName}>
+                                    {hasIntegration &&
+                                        _capitalize(
+                                            this.getDisplayableType(
+                                                integration.get('type')
+                                            )
+                                        )}{' '}
+                                    ({integration.get('name')})
+                                </span>
+                            </>
                         )}
 
                         <span className={css.filler}>by</span>
@@ -312,7 +324,6 @@ export class EventContainer extends React.Component<Props, State> {
 
 const connector = connect((state: RootState, ownProps: OwnProps) => {
     const {event} = ownProps
-
     const integration = getIntegrationById(
         event.getIn(['data', 'integration_id'])
     )(state)
@@ -321,6 +332,7 @@ const connector = connect((state: RootState, ownProps: OwnProps) => {
         integrationData: getIntegrationDataByIntegrationId(
             integration.get('id', '') as number
         )(state),
+        appData: getAppDataByAppId(event.getIn(['data', 'app_id']))(state),
         integration,
     }
 })

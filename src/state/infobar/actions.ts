@@ -127,6 +127,7 @@ export const executeAction =
         actionName,
         actionLabel,
         integrationId,
+        appId,
         customerId,
         payload = {},
         callback = _noop,
@@ -134,6 +135,7 @@ export const executeAction =
         actionName: string
         actionLabel?: string
         integrationId: string | number | null
+        appId?: string | null
         customerId?: string
         payload?: utils.ActionDataPayload
         callback?: (response?: AxiosResponse) => void
@@ -148,6 +150,7 @@ export const executeAction =
             action_name: actionName,
             user_id: customerId,
             integration_id: integrationId?.toString(),
+            app_id: appId || undefined,
             payload,
         })
 
@@ -158,6 +161,7 @@ export const executeAction =
             user_id: customerId,
             ticket_id: ticketId?.toString(),
             integration_id: integrationId?.toString(),
+            app_id: appId || undefined,
             payload,
         }
 

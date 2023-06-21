@@ -35,6 +35,11 @@ describe('ticket selectors', () => {
                         1: {name: 'integration 1'},
                         2: {name: 'integration 2'},
                     },
+                    external_data: {
+                        foo: {
+                            peanuts: '_',
+                        },
+                    },
                 },
                 messages: [
                     // deliberately not ordered
@@ -151,6 +156,17 @@ describe('ticket selectors', () => {
         )
         expect(selectors.getIntegrationsData({} as RootState)).toEqualImmutable(
             fromJS({})
+        )
+    })
+
+    it('getAppDataByAppId', () => {
+        expect(selectors.getAppDataByAppId('foo')(state)).toEqual(
+            (
+                state.ticket.getIn(['customer', 'external_data', 'foo']) as Map<
+                    any,
+                    any
+                >
+            ).toJS()
         )
     })
 

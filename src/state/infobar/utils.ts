@@ -37,6 +37,7 @@ export type ActionData = {
     user_id?: string
     ticket_id?: string
     integration_id?: string
+    app_id?: string | null
     payload: ActionDataPayload
 }
 

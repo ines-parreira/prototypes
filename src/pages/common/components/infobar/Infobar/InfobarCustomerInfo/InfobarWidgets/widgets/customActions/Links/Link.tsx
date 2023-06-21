@@ -2,6 +2,7 @@ import React, {useCallback, useContext, useMemo} from 'react'
 import {Map} from 'immutable'
 
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {AppContext} from 'providers/infobar/AppContext'
 import {getTicket} from 'state/ticket/selectors'
 import {getActiveCustomer} from 'state/customers/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -50,6 +51,7 @@ export function Link(props: Props) {
     const {url: linkUrl, label: linkLabel} = link
 
     const {integrationId} = useContext(IntegrationContext)
+    const {appId} = useContext(AppContext)
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const ticket = useAppSelector(getTicket)
@@ -85,8 +87,9 @@ export function Link(props: Props) {
         logEvent(SegmentEvent.CustomActionLinksClicked, {
             account_domain: currentAccount.get('domain'),
             integration_id: integrationId,
+            app_id: appId,
         })
-    }, [currentAccount, integrationId])
+    }, [currentAccount, integrationId, appId])
 
     return (
         <li className={css.linkRow}>

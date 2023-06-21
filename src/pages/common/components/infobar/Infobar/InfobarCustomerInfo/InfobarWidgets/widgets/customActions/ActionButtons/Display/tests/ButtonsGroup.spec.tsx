@@ -177,6 +177,7 @@ describe('<ButtonsGroup/>', () => {
             actionLabel: buttonEditLabel,
             actionName: 'customHttpAction',
             customerId: undefined,
+            appId: null,
             integrationId: null,
             payload: {
                 form: {},

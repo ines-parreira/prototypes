@@ -41,6 +41,16 @@ exports[`Event component should display correctly a failed event for a Recharge 
       <span
         className="actionName"
       >
+        foo
+      </span>
+      <span
+        className="equalFiller"
+      >
+        on
+      </span>
+      <span
+        className="actionName"
+      >
         Recharge
          
         (
@@ -162,6 +172,16 @@ exports[`Event component should display correctly a failed event for a Recharge 
       <span
         className="actionName"
       >
+        foo
+      </span>
+      <span
+        className="equalFiller"
+      >
+        on
+      </span>
+      <span
+        className="actionName"
+      >
         Recharge
          
         (
@@ -264,6 +284,16 @@ exports[`Event component should display correctly a failed event for a Shopify O
         >
           #1234
         </a>
+      </span>
+      <span
+        className="equalFiller"
+      >
+        on
+      </span>
+      <span
+        className="actionName"
+      >
+        foo
       </span>
       <span
         className="equalFiller"
@@ -384,6 +414,16 @@ exports[`Event component should display correctly a successful event for a Recha
       <span
         className="actionName"
       >
+        foo
+      </span>
+      <span
+        className="equalFiller"
+      >
+        on
+      </span>
+      <span
+        className="actionName"
+      >
         Recharge
          
         (
@@ -494,6 +534,16 @@ exports[`Event component should display correctly a successful event for a Recha
       <span
         className="actionName"
       >
+        foo
+      </span>
+      <span
+        className="equalFiller"
+      >
+        on
+      </span>
+      <span
+        className="actionName"
+      >
         Recharge
          
         (
@@ -594,6 +644,16 @@ exports[`Event component should display correctly a successful event for a Shopi
       <span
         className="actionName"
       >
+        foo
+      </span>
+      <span
+        className="equalFiller"
+      >
+        on
+      </span>
+      <span
+        className="actionName"
+      >
         Shopify
          
         (
@@ -685,6 +745,16 @@ exports[`Event component should display correctly a successful event for a Shopi
         >
           #1234
         </a>
+      </span>
+      <span
+        className="equalFiller"
+      >
+        on
+      </span>
+      <span
+        className="actionName"
+      >
+        foo
       </span>
       <span
         className="equalFiller"
@@ -808,6 +878,16 @@ exports[`Event component should display the correct label for an action 1`] = `
       <span
         className="actionName"
       >
+        foo
+      </span>
+      <span
+        className="equalFiller"
+      >
+        on
+      </span>
+      <span
+        className="actionName"
+      >
         Recharge
          
         (
@@ -899,6 +979,16 @@ exports[`Event component should fallback to email when user has no name 1`] = `
         >
           #1234
         </a>
+      </span>
+      <span
+        className="equalFiller"
+      >
+        on
+      </span>
+      <span
+        className="actionName"
+      >
+        foo
       </span>
       <span
         className="equalFiller"

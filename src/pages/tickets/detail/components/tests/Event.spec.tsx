@@ -88,6 +88,7 @@ describe('Event component', () => {
     const minProps: ComponentProps<typeof EventContainer> = {
         event: fromJS({}),
         isLast: false,
+        appData: {__app_name__: 'foo'},
         ...getProps(rechargeIntegrationId),
         dispatch: jest.fn(),
     }

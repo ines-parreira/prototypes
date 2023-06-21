@@ -22,6 +22,7 @@ import {
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {AppContext} from 'providers/infobar/AppContext'
 import {
     Link as LinkType,
     SubmitLink,
@@ -53,6 +54,7 @@ export function Links(props: Props) {
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {integrationId} = useContext(IntegrationContext)
+    const {appId} = useContext(AppContext)
 
     const [links, setLinks] = useState<LinkType[]>([])
 
@@ -86,6 +88,7 @@ export function Links(props: Props) {
             logEvent(SegmentEvent.CustomActionLinksDeleted, {
                 account_domain: currentAccount.get('domain'),
                 integration_id: integrationId,
+                app_id: appId,
             })
         },
         [
@@ -94,6 +97,7 @@ export function Links(props: Props) {
             templatePath,
             currentAccount,
             integrationId,
+            appId,
             dispatch,
         ]
     )
@@ -107,18 +111,20 @@ export function Links(props: Props) {
                 logEvent(SegmentEvent.CustomActionLinksEdited, {
                     account_domain: currentAccount.get('domain'),
                     integration_id: integrationId,
+                    app_id: appId,
                 })
             } else {
                 links.push(link)
                 logEvent(SegmentEvent.CustomActionLinksAdded, {
                     account_domain: currentAccount.get('domain'),
                     integration_id: integrationId,
+                    app_id: appId,
                 })
             }
 
             dispatch(updateCustomActions(links))
         },
-        [links, templatePath, currentAccount, integrationId, dispatch]
+        [links, templatePath, currentAccount, integrationId, appId, dispatch]
     )
 
     const targetId = `custom-action-link-${templatePath.replace(/\./g, '')}`

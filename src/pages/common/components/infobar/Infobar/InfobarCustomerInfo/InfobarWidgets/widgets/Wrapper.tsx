@@ -17,6 +17,7 @@ import {
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {EditionContext} from 'providers/infobar/EditionContext'
+import {AppContext} from 'providers/infobar/AppContext'
 import {getWidgetId, getWidgetName} from 'state/widgets/predicates'
 import {
     CUSTOM_WIDGET_TYPE,
@@ -85,125 +86,133 @@ export default function Wrapper({widget, template, source, editing}: Props) {
         colorClassNames.push(css.adjustedPadding)
 
     return (
-        <IntegrationContext.Provider
+        <AppContext.Provider
             value={{
-                integration,
-                integrationId: integration.get('id', null),
+                appId: widget.get('app_id') as string,
             }}
         >
-            <div
-                className={classnames(
-                    'draggable',
-                    css.widgetWrapper,
-                    ...colorClassNames,
-                    {
-                        [css.widgetWrapperEditing]: isEditing,
-                    }
-                )}
-                style={borderColor}
+            <IntegrationContext.Provider
+                value={{
+                    integration,
+                    integrationId: integration.get('id', null),
+                }}
             >
-                {!isEditing && <div id={widgetId} className={css.anchor} />}
-                {isEditing && (
-                    <div className={css.widgetWrapperTools} id={uniqueId}>
-                        {[
-                            HTTP_WIDGET_TYPE,
-                            CUSTOM_WIDGET_TYPE,
-                            CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
-                            STANDALONE_WIDGET_TYPE,
-                        ].includes(widgetType) && (
+                <div
+                    className={classnames(
+                        'draggable',
+                        css.widgetWrapper,
+                        ...colorClassNames,
+                        {
+                            [css.widgetWrapperEditing]: isEditing,
+                        }
+                    )}
+                    style={borderColor}
+                >
+                    {!isEditing && <div id={widgetId} className={css.anchor} />}
+                    {isEditing && (
+                        <div className={css.widgetWrapperTools} id={uniqueId}>
+                            {[
+                                HTTP_WIDGET_TYPE,
+                                CUSTOM_WIDGET_TYPE,
+                                CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+                                STANDALONE_WIDGET_TYPE,
+                            ].includes(widgetType) && (
+                                <Button
+                                    type="button"
+                                    intent="primary"
+                                    fillStyle="ghost"
+                                    size="small"
+                                    onClick={() => {
+                                        dispatch(
+                                            startWidgetEdition(templatePath)
+                                        )
+                                        setPopupOpen(true)
+                                    }}
+                                >
+                                    <ButtonIconLabel icon="edit">
+                                        Customize Widget
+                                        <Popover
+                                            placement="left"
+                                            isOpen={isPopupOpen}
+                                            target={uniqueId}
+                                            toggle={() => {
+                                                dispatch(stopWidgetEdition())
+                                                setPopupOpen(false)
+                                            }}
+                                            trigger="legacy"
+                                        >
+                                            <PopoverBody>
+                                                <WrapperEdit
+                                                    template={template}
+                                                    onClose={handleClosePopover}
+                                                />
+                                            </PopoverBody>
+                                        </Popover>
+                                    </ButtonIconLabel>
+                                </Button>
+                            )}
                             <Button
-                                type="button"
-                                intent="primary"
+                                intent="destructive"
                                 fillStyle="ghost"
                                 size="small"
                                 onClick={() => {
-                                    dispatch(startWidgetEdition(templatePath))
-                                    setPopupOpen(true)
+                                    dispatch(
+                                        removeEditedWidget(
+                                            templatePath,
+                                            absolutePath
+                                        )
+                                    )
                                 }}
                             >
-                                <ButtonIconLabel icon="edit">
-                                    Customize Widget
-                                    <Popover
-                                        placement="left"
-                                        isOpen={isPopupOpen}
-                                        target={uniqueId}
-                                        toggle={() => {
-                                            dispatch(stopWidgetEdition())
-                                            setPopupOpen(false)
-                                        }}
-                                        trigger="legacy"
-                                    >
-                                        <PopoverBody>
-                                            <WrapperEdit
-                                                template={template}
-                                                onClose={handleClosePopover}
-                                            />
-                                        </PopoverBody>
-                                    </Popover>
+                                <ButtonIconLabel icon="delete">
+                                    Delete Widget
                                 </ButtonIconLabel>
                             </Button>
-                        )}
-                        <Button
-                            intent="destructive"
-                            fillStyle="ghost"
-                            size="small"
-                            onClick={() => {
-                                dispatch(
-                                    removeEditedWidget(
-                                        templatePath,
-                                        absolutePath
-                                    )
-                                )
-                            }}
-                        >
-                            <ButtonIconLabel icon="delete">
-                                Delete Widget
-                            </ButtonIconLabel>
-                        </Button>
-                    </div>
-                )}
+                        </div>
+                    )}
 
-                <DragWrapper
-                    sort
-                    group={{
-                        name: absolutePath.join('.'),
-                        pull: false,
-                        put: true,
-                    }}
-                    templatePath={templatePath}
-                    isEditing={isEditing}
-                    watchDrop
-                >
-                    {(
-                        template.get('widgets', fromJS([])) as Map<
-                            string,
-                            unknown
-                        >
-                    ).map((mappedWidget, index = '') => {
-                        const passedTemplate = (
-                            mappedWidget as Map<string, unknown>
-                        ).set(
-                            'templatePath',
-                            `${templatePath}.widgets.${index}`
-                        )
+                    <DragWrapper
+                        sort
+                        group={{
+                            name: absolutePath.join('.'),
+                            pull: false,
+                            put: true,
+                        }}
+                        templatePath={templatePath}
+                        isEditing={isEditing}
+                        watchDrop
+                    >
+                        {(
+                            template.get('widgets', fromJS([])) as Map<
+                                string,
+                                unknown
+                            >
+                        ).map((mappedWidget, index = '') => {
+                            const passedTemplate = (
+                                mappedWidget as Map<string, unknown>
+                            ).set(
+                                'templatePath',
+                                `${templatePath}.widgets.${index}`
+                            )
 
-                        return (
-                            <InfobarWidget
-                                key={`${
-                                    passedTemplate.get('path') as string
-                                }-${index}`}
-                                source={source}
-                                parent={template}
-                                widget={widget}
-                                template={passedTemplate}
-                                editing={editing}
-                                isEditing={isEditing}
-                            />
-                        )
-                    })}
-                </DragWrapper>
-            </div>
-        </IntegrationContext.Provider>
+                            return (
+                                <InfobarWidget
+                                    key={`${
+                                        passedTemplate.get('path') as string
+                                    }-${index}`}
+                                    source={source}
+                                    parent={template}
+                                    widget={widget}
+                                    template={passedTemplate}
+                                    editing={editing}
+                                    isEditing={isEditing}
+                                />
+                            )
+                        })}
+                    </DragWrapper>
+                </div>
+            </IntegrationContext.Provider>
+        </AppContext.Provider>
     )
 }
 

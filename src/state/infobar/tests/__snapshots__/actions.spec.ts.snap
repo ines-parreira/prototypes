@@ -15,6 +15,7 @@ exports[`infobar actions execute action fail 1`] = `
       "action_id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
       "action_label": undefined,
       "action_name": "shopifyRefundShippingCostOfOrder",
+      "app_id": "foo",
       "integration_id": "5",
       "payload": {
         "order_id": 4194477515,
@@ -30,6 +31,7 @@ exports[`infobar actions execute action fail 1`] = `
       "action_id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
       "action_label": undefined,
       "action_name": "shopifyRefundShippingCostOfOrder",
+      "app_id": "foo",
       "integration_id": "5",
       "payload": {
         "order_id": 4194477515,
@@ -60,6 +62,7 @@ exports[`infobar actions execute action success 1`] = `
       "action_id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
       "action_label": undefined,
       "action_name": "shopifyRefundShippingCostOfOrder",
+      "app_id": "foo",
       "integration_id": "5",
       "payload": {
         "order_id": 4194477515,

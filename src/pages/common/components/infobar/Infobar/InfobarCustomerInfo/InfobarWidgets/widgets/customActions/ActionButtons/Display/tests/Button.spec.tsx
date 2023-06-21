@@ -16,6 +16,7 @@ jest.mock('state/infobar/actions', () => ({
 }))
 
 import {actionFixture} from 'fixtures/infobarCustomActions'
+import {AppContext} from 'providers/infobar/AppContext'
 import Button from '../Button'
 
 const mockStore = configureMockStore([thunk])
@@ -81,6 +82,7 @@ describe('<Button/>', () => {
             actionName: 'customHttpAction',
             customerId: undefined,
             integrationId: null,
+            appId: null,
             payload: {
                 form: {},
                 headers: {},
@@ -100,6 +102,7 @@ describe('<Button/>', () => {
     it('should have correctly templated action’s payload', () => {
         const currentListIndex = 2
         const integrationId = 1337
+        const appId = 'foo'
         render(
             <Provider
                 store={mockStore({
@@ -109,15 +112,17 @@ describe('<Button/>', () => {
                 <IntegrationContext.Provider
                     value={{integration: fromJS({}), integrationId}}
                 >
-                    <WidgetListContext.Provider value={{currentListIndex}}>
-                        <Button
-                            {...props}
-                            action={{
-                                ...actionFixture(),
-                                url: 'www.someurl$listIndex$integrationId.com',
-                            }}
-                        />
-                    </WidgetListContext.Provider>
+                    <AppContext.Provider value={{appId}}>
+                        <WidgetListContext.Provider value={{currentListIndex}}>
+                            <Button
+                                {...props}
+                                action={{
+                                    ...actionFixture(),
+                                    url: 'www.someurl$listIndex$integrationId$appId.com',
+                                }}
+                            />
+                        </WidgetListContext.Provider>
+                    </AppContext.Provider>
                 </IntegrationContext.Provider>
             </Provider>
         )
@@ -127,13 +132,14 @@ describe('<Button/>', () => {
             actionName: 'customHttpAction',
             customerId: undefined,
             integrationId,
+            appId,
             payload: {
                 form: {},
                 headers: {},
                 json: {},
                 method: 'GET',
                 params: {},
-                url: `www.someurl${currentListIndex}${integrationId}.com`,
+                url: `www.someurl${currentListIndex}${integrationId}${appId}.com`,
             },
         })
         expect(

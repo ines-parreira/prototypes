@@ -1748,6 +1748,7 @@ exports[`ticket actions mergeCustomerExternalData() 1`] = `
     "customerId": 1,
     "externalData": {
       "my-awesome-app-id-1": {
+        "__app_name__": "foo",
         "badge": "Best customer",
       },
     },

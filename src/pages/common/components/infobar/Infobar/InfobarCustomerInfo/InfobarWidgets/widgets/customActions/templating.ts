@@ -1,4 +1,4 @@
-const TEMPLATE_VARIABLES = ['listIndex', 'integrationId'] as const
+const TEMPLATE_VARIABLES = ['listIndex', 'integrationId', 'appId'] as const
 
 type TemplateVariables = typeof TEMPLATE_VARIABLES[number]
 

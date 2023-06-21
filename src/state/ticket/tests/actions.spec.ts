@@ -161,6 +161,7 @@ describe('ticket actions', () => {
             actions.mergeCustomerExternalData(1, {
                 'my-awesome-app-id-1': {
                     badge: 'Best customer',
+                    __app_name__: 'foo',
                 },
             })
         )

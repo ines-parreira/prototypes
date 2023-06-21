@@ -25,6 +25,7 @@ import {getActiveCustomer} from 'state/customers/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {AppContext} from 'providers/infobar/AppContext'
 import {
     Action,
     Button as ButtonType,
@@ -62,6 +63,7 @@ function ButtonsGroup({buttons, source}: Props) {
     // editor management
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {integrationId} = useContext(IntegrationContext)
+    const {appId} = useContext(AppContext)
     const [editIndex, setEditIndex] = useState<number>(0)
     const [isEditorOpen, setEditorOpen] = useState<boolean>(false)
     const [handleSubmit, setHandleSubmit] = useState<HandleSubmit>()
@@ -76,11 +78,12 @@ function ButtonsGroup({buttons, source}: Props) {
                 logEvent(SegmentEvent.CustomActionButtonsParamClosed, {
                     account_domain: currentAccount.get('domain'),
                     integration_id: integrationId,
+                    app_id: appId,
                 })
             }
             setEditorOpen(false)
         },
-        [currentAccount, integrationId]
+        [currentAccount, integrationId, appId]
     )
 
     //buttons management

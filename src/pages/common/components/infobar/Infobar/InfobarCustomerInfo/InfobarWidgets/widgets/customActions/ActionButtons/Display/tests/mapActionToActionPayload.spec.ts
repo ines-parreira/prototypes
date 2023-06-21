@@ -4,8 +4,14 @@ import {TemplateValues} from 'pages/common/components/infobar/Infobar/InfobarCus
 import {mapActionToActionPayload} from '../mapActionToActionPayload'
 
 const listIndexTemplateValue = 'you must see me'
+const integrationIdTemplateValue = 'foo'
+const appIdTemplateValue = 'bar'
 
-const templateValues: TemplateValues = {listIndex: listIndexTemplateValue}
+const templateValues: TemplateValues = {
+    listIndex: listIndexTemplateValue,
+    integrationId: integrationIdTemplateValue,
+    appId: appIdTemplateValue,
+}
 
 describe('mapActionToActionPayload', () => {
     const editableParams = [
@@ -89,12 +95,12 @@ describe('mapActionToActionPayload', () => {
         const action = actionFixture()
         const templatedParam = {
             key: 'une_$listIndex_cle',
-            value: 'une value $listIndex',
+            value: 'une value $integrationId',
             label: 'Un label',
             editable: false,
             mandatory: false,
         }
-        action.url = 'une $listIndex url'
+        action.url = 'une $appId url'
         action.headers = [templatedParam]
         action.params = [templatedParam]
         action.method = HttpMethod.Post
@@ -105,13 +111,13 @@ describe('mapActionToActionPayload', () => {
         }
 
         expect(mapActionToActionPayload(action, templateValues)).toEqual({
-            url: `une ${listIndexTemplateValue} url`,
+            url: `une ${appIdTemplateValue} url`,
             method: action.method,
             params: {
-                [`une_${listIndexTemplateValue}_cle`]: `une value ${listIndexTemplateValue}`,
+                [`une_${listIndexTemplateValue}_cle`]: `une value ${integrationIdTemplateValue}`,
             },
             headers: {
-                [`une_${listIndexTemplateValue}_cle`]: `une value ${listIndexTemplateValue}`,
+                [`une_${listIndexTemplateValue}_cle`]: `une value ${integrationIdTemplateValue}`,
             },
             content_type: action.body.contentType,
             form: {},

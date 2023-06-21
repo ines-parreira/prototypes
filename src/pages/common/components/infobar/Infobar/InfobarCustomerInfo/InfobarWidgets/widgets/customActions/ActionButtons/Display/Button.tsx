@@ -10,6 +10,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {ContentType} from 'models/api/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
+import {AppContext} from 'providers/infobar/AppContext'
 import {WidgetListContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/List'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
@@ -43,6 +44,7 @@ function Button({index, label, action, isDropdown = false, openEditor}: Props) {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {customerId} = useContext(CustomerContext)
     const {integrationId} = useContext(IntegrationContext)
+    const {appId} = useContext(AppContext)
     const {currentListIndex} = useContext(WidgetListContext)
     const handleExecuteAction = useCallback(
         (action: Action) => {
@@ -51,6 +53,7 @@ function Button({index, label, action, isDropdown = false, openEditor}: Props) {
                     actionName: INFOBAR_CUSTOM_BUTTON_ACTION_NAME,
                     actionLabel: label,
                     integrationId: integrationId,
+                    appId: appId,
                     customerId: customerId?.toString(),
                     payload: mapActionToActionPayload(action, {
                         listIndex:
@@ -58,12 +61,14 @@ function Button({index, label, action, isDropdown = false, openEditor}: Props) {
                                 ? currentListIndex.toString()
                                 : undefined,
                         integrationId: integrationId?.toString(),
+                        appId: appId || undefined,
                     }),
                 })
             )
             logEvent(SegmentEvent.CustomActionButtonsExecuted, {
                 account_domain: currentAccount.get('domain'),
                 integration_id: integrationId,
+                app_id: appId,
             })
             setLoadingId(loadingId)
         },
@@ -72,6 +77,7 @@ function Button({index, label, action, isDropdown = false, openEditor}: Props) {
             dispatch,
             customerId,
             integrationId,
+            appId,
             currentAccount,
             currentListIndex,
         ]
@@ -82,6 +88,7 @@ function Button({index, label, action, isDropdown = false, openEditor}: Props) {
             logEvent(SegmentEvent.CustomActionButtonsParamOpened, {
                 account_domain: currentAccount.get('domain'),
                 integration_id: integrationId,
+                app_id: appId,
             })
         } else {
             handleExecuteAction(action)
@@ -92,6 +99,7 @@ function Button({index, label, action, isDropdown = false, openEditor}: Props) {
         openEditor,
         handleExecuteAction,
         integrationId,
+        appId,
         currentAccount,
     ])
 

@@ -970,6 +970,7 @@ describe('Config: socketEvents', () => {
                     external_data: {
                         'my-awesome-app-id-1': {
                             badge: 'Best customer',
+                            __app_name__: 'foo',
                         },
                     },
                 } as CustomerExternalDataUpdatedEvent

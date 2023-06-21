@@ -8,6 +8,7 @@ import React, {
 import {Form, Popover, PopoverBody} from 'reactstrap'
 
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {AppContext} from 'providers/infobar/AppContext'
 import useAppSelector from 'hooks/useAppSelector'
 import {ensureHTTPS} from 'utils/url'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
@@ -50,6 +51,7 @@ export default function Editor(props: Props) {
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {integrationId} = useContext(IntegrationContext)
+    const {appId} = useContext(AppContext)
 
     const [canSubmit, setCanSubmit] = useState(
         checkCanSubmit(link.url, link.label)
@@ -73,11 +75,12 @@ export default function Editor(props: Props) {
                 logEvent(SegmentEvent.CustomActionLinksStart, {
                     account_domain: currentAccount.get('domain'),
                     integration_id: integrationId,
+                    app_id: appId,
                 })
             }
             return !state
         })
-    }, [index, currentAccount, integrationId, setPopoverOpen])
+    }, [index, currentAccount, integrationId, appId, setPopoverOpen])
 
     const handleSubmit = useCallback(
         (evt: FormEvent<HTMLFormElement>) => {
