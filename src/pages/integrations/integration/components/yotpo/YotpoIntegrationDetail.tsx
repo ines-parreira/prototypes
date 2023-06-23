@@ -1,5 +1,5 @@
 import React, {MouseEvent, Component} from 'react'
-import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
+import {Link, RouteComponentProps} from 'react-router-dom'
 import classNames from 'classnames'
 import {
     Breadcrumb,
@@ -25,6 +25,7 @@ import {
     triggerCreateSuccess,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
+import withRouter from 'pages/common/utils/withRouter'
 import css from 'pages/settings/settings.less'
 
 interface IActions {

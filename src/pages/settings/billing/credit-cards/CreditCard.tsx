@@ -1,6 +1,6 @@
 import React, {Component, SyntheticEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import {Link, RouteComponentProps} from 'react-router-dom'
 import _pick from 'lodash/pick'
 import {
     Breadcrumb,
@@ -59,6 +59,7 @@ import {UPDATE_BILLING_CONTACT_ERROR} from 'state/billing/constants'
 import settingsCss from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
 import {AutomationPrice, HelpdeskPrice} from 'models/billing/types'
+import withRouter from 'pages/common/utils/withRouter'
 
 import AutomationAmount from '../plans/AutomationAmount'
 import {getPlanCardFeaturesForPrices} from '../plans/billingPlanFeatures'

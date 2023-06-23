@@ -3,7 +3,7 @@ import {fromJS, List, Map} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import React, {SyntheticEvent, useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import {Link, RouteComponentProps} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 import {
     Breadcrumb,
@@ -13,6 +13,7 @@ import {
     FormGroup,
 } from 'reactstrap'
 
+import withRouter from 'pages/common/utils/withRouter'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

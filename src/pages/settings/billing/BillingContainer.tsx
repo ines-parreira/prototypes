@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {RouteComponentProps, withRouter} from 'react-router-dom'
+import {RouteComponentProps} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import {parse} from 'qs'
 
+import withRouter from 'pages/common/utils/withRouter'
 import PageHeader from 'pages/common/components/PageHeader'
 import history from 'pages/history'
 import {

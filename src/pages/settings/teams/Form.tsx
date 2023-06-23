@@ -13,7 +13,7 @@ import {
     PopoverBody,
     Row,
 } from 'reactstrap'
-import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
+import {NavLink, RouteComponentProps} from 'react-router-dom'
 import classnames from 'classnames'
 
 import {GorgiasApiError} from 'models/api/types'
@@ -37,6 +37,7 @@ import {
     fetchTeamSuccess,
     updateTeamSuccess,
 } from 'state/teams/actions'
+import withRouter from 'pages/common/utils/withRouter'
 
 import css from './Form.less'
 

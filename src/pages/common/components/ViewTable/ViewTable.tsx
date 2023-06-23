@@ -1,7 +1,7 @@
 import React, {Component, ComponentType, ContextType, ReactNode} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
-import {withRouter, RouteComponentProps} from 'react-router-dom'
+import {RouteComponentProps} from 'react-router-dom'
 import classnames from 'classnames'
 import {parse, stringify} from 'qs'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
@@ -30,6 +30,7 @@ import {
     makeGetViewIdToDisplay,
     makeIsLoading,
 } from 'state/views/selectors'
+import withRouter from 'pages/common/utils/withRouter'
 
 import DeactivatedViewMessage from './DeactivatedViewMessage'
 import FilterTopbar from './FilterTopbar'
@@ -389,7 +390,7 @@ const connector = connect(
     }
 )
 
-export default withRouter<any, any>(
+export default withRouter(
     withCancellableRequest<
         'fetchViewItemsCancellable',
         'cancelFetchViewItemsCancellable',

@@ -1,6 +1,6 @@
 import React, {ComponentType, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {withRouter, useLocation} from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 import {useUpdateEffect} from 'react-use'
 import {Map} from 'immutable'
 import {
@@ -15,6 +15,7 @@ import history from 'pages/history'
 import {RootState} from 'state/types'
 import {updateView} from 'state/views/actions'
 import {areFiltersValid, getActiveView} from 'state/views/selectors'
+import withRouter from 'pages/common/utils/withRouter'
 
 type InjectedProps = {
     urlSearchView: Map<any, any>

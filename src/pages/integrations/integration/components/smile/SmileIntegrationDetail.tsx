@@ -1,6 +1,6 @@
 import React, {Component, SyntheticEvent} from 'react'
 import {Map, fromJS} from 'immutable'
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import {Link, RouteComponentProps} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 import {parse} from 'qs'
 import {connect, ConnectedProps} from 'react-redux'
@@ -17,6 +17,7 @@ import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
+import withRouter from 'pages/common/utils/withRouter'
 
 import DEPRECATED_InputField from '../../../../common/forms/DEPRECATED_InputField'
 

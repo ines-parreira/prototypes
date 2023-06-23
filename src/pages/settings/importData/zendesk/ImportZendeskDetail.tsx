@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import {Link, RouteComponentProps} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 import {fromJS} from 'immutable'
 import {useEffectOnce} from 'react-use'
@@ -12,6 +12,7 @@ import {
     PopoverBody,
     Table,
 } from 'reactstrap'
+
 import {
     fetchIntegration,
     updateOrCreateIntegration,
@@ -25,6 +26,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import settingsCss from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import withRouter from 'pages/common/utils/withRouter'
 
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'

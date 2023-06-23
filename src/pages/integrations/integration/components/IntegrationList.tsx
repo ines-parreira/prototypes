@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react'
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import {Link, RouteComponentProps} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {Breadcrumb, BreadcrumbItem, Container, Table} from 'reactstrap'
 import moment from 'moment'
@@ -14,6 +14,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {IntegrationType} from 'models/integration/types'
 import {NotificationStatus} from 'state/notifications/types'
+import withRouter from 'pages/common/utils/withRouter'
 
 import css from '../../../settings/settings.less'
 

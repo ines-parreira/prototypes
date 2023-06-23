@@ -1,8 +1,9 @@
 import React, {ReactNode, Component} from 'react'
 import classnames from 'classnames'
-import {RouteComponentProps, withRouter} from 'react-router-dom'
+import {RouteComponentProps} from 'react-router-dom'
 import {Container, Row, Col} from 'reactstrap'
 
+import withRouter from 'pages/common/utils/withRouter'
 import appCss from '../../App.less'
 
 import css from './FullPage.less'

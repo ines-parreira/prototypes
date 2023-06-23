@@ -3,14 +3,10 @@ import {useDebounce, useAsyncFn, useEffectOnce} from 'react-use'
 import classnames from 'classnames'
 import {Container, Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import _debounce from 'lodash/debounce'
-import {
-    Link,
-    withRouter,
-    RouteComponentProps,
-    useHistory,
-} from 'react-router-dom'
+import {Link, RouteComponentProps, useHistory} from 'react-router-dom'
 import {parse} from 'qs'
 
+import withRouter from 'pages/common/utils/withRouter'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'

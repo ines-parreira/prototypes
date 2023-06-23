@@ -3,7 +3,7 @@ import React, {Component, SyntheticEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import {Link, RouteComponentProps} from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -38,6 +38,7 @@ import {
 } from 'state/agents/actions'
 import {updateAccountOwner} from 'state/currentAccount/actions'
 import {RootState} from 'state/types'
+import withRouter from 'pages/common/utils/withRouter'
 import {toJS} from 'utils'
 
 import css from './Form.less'

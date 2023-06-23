@@ -1,17 +1,18 @@
 import React, {useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {RouteComponentProps, withRouter} from 'react-router-dom'
+import {RouteComponentProps} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 
-import Loader from '../../../../pages/common/components/Loader/Loader'
-import {fetchRule} from '../../../../models/rule/resources'
-import {getRulesLimitStatus} from '../../../../state/entities/rules/selectors'
-import {ruleFetched} from '../../../../state/entities/rules/actions'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import history from '../../../history'
+import withRouter from 'pages/common/utils/withRouter'
+import Loader from 'pages/common/components/Loader/Loader'
+import {fetchRule} from 'models/rule/resources'
+import {getRulesLimitStatus} from 'state/entities/rules/selectors'
+import {ruleFetched} from 'state/entities/rules/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import history from 'pages/history'
 
-import {RootState} from '../../../../state/types'
+import {RootState} from 'state/types'
 import {RuleFormEditor} from './components/RuleFormEditor'
 
 export function RuleDetailForm({

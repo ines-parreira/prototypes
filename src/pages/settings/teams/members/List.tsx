@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Breadcrumb, BreadcrumbItem, Col, Container} from 'reactstrap'
-import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
+import {NavLink, RouteComponentProps} from 'react-router-dom'
 import {Set} from 'immutable'
 import classnames from 'classnames'
 
@@ -38,6 +38,7 @@ import {
     updateTeamSuccess,
 } from 'state/teams/actions'
 import {RootState} from 'state/types'
+import withRouter from 'pages/common/utils/withRouter'
 
 import AddMember from './AddMember'
 import Row from './Row'

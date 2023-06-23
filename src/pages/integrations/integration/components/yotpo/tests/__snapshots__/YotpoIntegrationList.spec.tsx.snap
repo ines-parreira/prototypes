@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<YotpoIntegrationList/> render() should not render an integration cause the one passed is not a Yotpo integration 1`] = `
-<withRouter(Connect(IntegrationList))
+<ComponentWithRouterProp
   createIntegration={[Function]}
   createIntegrationButtonLabel="Add Yotpo account"
   integrationToItemDisplay={[Function]}
@@ -33,7 +33,7 @@ exports[`<YotpoIntegrationList/> render() should not render an integration cause
 `;
 
 exports[`<YotpoIntegrationList/> render() should render a deactivated integration that can be reenabled 1`] = `
-<withRouter(Connect(IntegrationList))
+<ComponentWithRouterProp
   createIntegration={[Function]}
   createIntegrationButtonLabel="Add Yotpo account"
   integrationToItemDisplay={[Function]}
@@ -82,7 +82,7 @@ exports[`<YotpoIntegrationList/> render() should render a deactivated integratio
 `;
 
 exports[`<YotpoIntegrationList/> render() should render a loader because the integration is loading 1`] = `
-<withRouter(Connect(IntegrationList))
+<ComponentWithRouterProp
   createIntegration={[Function]}
   createIntegrationButtonLabel="Add Yotpo account"
   integrationToItemDisplay={[Function]}
@@ -134,7 +134,7 @@ exports[`<YotpoIntegrationList/> render() should render a loader because the int
 `;
 
 exports[`<YotpoIntegrationList/> render() should render the Yotpo integration 1`] = `
-<withRouter(Connect(IntegrationList))
+<ComponentWithRouterProp
   createIntegration={[Function]}
   createIntegrationButtonLabel="Add Yotpo account"
   integrationToItemDisplay={[Function]}

@@ -1,19 +1,20 @@
 import React, {useEffect} from 'react'
-import {RouteComponentProps, withRouter} from 'react-router-dom'
+import {RouteComponentProps} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
-import Infobar from '../../common/components/infobar/Infobar/Infobar'
-import {fetchPreviewCustomer} from '../../../state/infobar/actions'
-import {InfobarState} from '../../../state/infobar/types'
-import * as WidgetActions from '../../../state/widgets/actions'
-import {WidgetContextType} from '../../../state/widgets/types'
+import withRouter from 'pages/common/utils/withRouter'
+import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
+import {fetchPreviewCustomer} from 'state/infobar/actions'
+import {InfobarState} from 'state/infobar/types'
+import * as WidgetActions from 'state/widgets/actions'
+import {WidgetContextType} from 'state/widgets/types'
 import {
     DEPRECATED_getActiveCustomer,
     getActiveCustomerId,
-} from '../../../state/customers/selectors'
-import {getSources} from '../../../state/widgets/selectors'
-import {RootState} from '../../../state/types'
+} from 'state/customers/selectors'
+import {getSources} from 'state/widgets/selectors'
+import {RootState} from 'state/types'
 
 type Props = {
     infobar: InfobarState
