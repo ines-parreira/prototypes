@@ -1,14 +1,15 @@
-import {EditorState, ContentBlock} from 'draft-js'
-import _get from 'lodash/get'
+import {ContentBlock, EditorState} from 'draft-js'
 import {Map} from 'immutable'
+import JSZip from 'jszip'
+import _get from 'lodash/get'
 
 import {MAX_ATTACHMENTS_SIZE} from '../config/editor'
 
+export const EOL = '\r\n'
+export const DEFAULT_CSV_EXPORT_FILE = 'export.csv'
+
 /**
- * Save a file like it has been downloaded.
- *
- * We simulate a click on an `a` tag to let the browser
- * captures data attached to the link and saves it as a file.
+ * Save data to a file like it has been downloaded.
  */
 export const saveFileAsDownloaded = (
     name: string,
@@ -18,13 +19,22 @@ export const saveFileAsDownloaded = (
     const blob = new Blob([data], {
         type: contentType || 'application/octet-stream',
     })
+    saveBlobAsDownloaded(blob, name)
+}
+/**
+ * Save Blob as a file like it has been downloaded.
+ *
+ * We simulate a click on an `a` tag to let the browser
+ * captures data attached to the link and saves it as a file.
+ */
+export const saveBlobAsDownloaded = (blob: Blob, fileName: string) => {
     const blobURL = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
     const {body} = document
 
     link.style.display = 'none'
     link.href = blobURL
-    link.setAttribute('download', name)
+    link.setAttribute('download', fileName)
 
     if (typeof link.download === 'undefined') {
         link.setAttribute('target', '_blank')
@@ -136,3 +146,25 @@ export const getText = (file: File): Promise<string> =>
 
         reader.readAsText(file)
     })
+
+export const createCsv = (data: unknown[][]) =>
+    data
+        .map((row) => row.map((cell) => `"${String(cell)}"`).join(','))
+        .join(EOL)
+
+/**
+ * Save files as zipped archive.
+ */
+export async function saveZippedFiles(
+    files: Record<string, string>,
+    archiveName = DEFAULT_CSV_EXPORT_FILE
+) {
+    const archive = new JSZip()
+
+    Object.keys(files).forEach((fileName) =>
+        archive.file(fileName, files[fileName])
+    )
+
+    const zipped = await archive.generateAsync({type: 'blob'})
+    saveBlobAsDownloaded(zipped, `${archiveName}.zip`)
+}

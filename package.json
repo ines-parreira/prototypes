@@ -103,6 +103,7 @@
         "indefinite": "2.4.1",
         "jquery": "3.5.1",
         "jsonp": "0.2.1",
+        "jszip": "^3.10.1",
         "launchdarkly-js-client-sdk": "2.22.1",
         "launchdarkly-react-client-sdk": "2.26.0",
         "libphonenumber-js": "1.9.39",

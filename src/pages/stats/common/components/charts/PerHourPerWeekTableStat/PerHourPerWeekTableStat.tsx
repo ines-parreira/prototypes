@@ -3,6 +3,7 @@ import {Map, List} from 'immutable'
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Table} from 'reactstrap'
+import {NOT_AVAILABLE_LABEL} from 'services/reporting/constants'
 
 import {DEPRECATED_getBusinessHoursSettings} from '../../../../../../state/currentAccount/selectors'
 import {getTimezone} from '../../../../../../state/currentUser/selectors'
@@ -219,7 +220,9 @@ export function TableCells(props: TableCellsProps) {
                     <div className={css.redTransparentStripes}></div>
                 ) : null}
                 <span>
-                    {metric.get('value') !== null ? metric.get('value') : 'n/a'}
+                    {metric.get('value') !== null
+                        ? metric.get('value')
+                        : NOT_AVAILABLE_LABEL}
                 </span>
             </td>
         )

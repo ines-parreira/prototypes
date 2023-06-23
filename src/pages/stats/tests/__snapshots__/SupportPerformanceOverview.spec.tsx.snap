@@ -879,6 +879,22 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 </span>
               </button>
             </div>
+            <button
+              class="wrapper ghost secondary medium"
+              title="Download Performance Overview Data"
+              type="button"
+            >
+              <span
+                class="wrapper"
+              >
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  file_download
+                </i>
+                Download data
+              </span>
+            </button>
           </div>
         </div>
       </div>

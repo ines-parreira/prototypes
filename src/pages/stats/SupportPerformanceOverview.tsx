@@ -1,22 +1,10 @@
 import classnames from 'classnames'
 import React, {useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
+import {getPreviousPeriod} from 'hooks/reporting/createUseMetricTrend'
+import blueStar from 'assets/img/icons/blue-star.svg'
 
 import {TicketChannel} from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
-import {StatsFilters} from 'models/stat/types'
-import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
-import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
-import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
-import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
-import StatsPage from 'pages/stats/StatsPage'
-import {
-    getMessagingIntegrationsStatsFilter,
-    getStatsFilters,
-    getStatsMessagingIntegrations,
-} from 'state/stats/selectors'
-import blueStar from 'assets/img/icons/blue-star.svg'
-import {getTimezone} from 'state/currentUser/selectors'
 import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
@@ -34,12 +22,8 @@ import {
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {
-    periodToReportingGranularity,
-    statsFiltersToReportingFilters,
-    TicketStateStatsFiltersMembers,
-} from 'utils/reporting'
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     ReportingFilterOperator,
     TicketStateDimension,
@@ -48,16 +32,47 @@ import {
     TicketStateSegment,
 } from 'models/reporting/types'
 import {usePostReporting} from 'models/reporting/queries'
+import {StatsFilters} from 'models/stat/types'
+import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
+import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
+import {
+    CUSTOMER_SATISFACTION_LABEL,
+    FIRST_RESPONSE_TIME_LABEL,
+    MESSAGES_PER_TICKET_LABEL,
+    MESSAGES_SENT_LABEL,
+    OPEN_TICKETS_LABEL,
+    RESOLUTION_TIME_LABEL,
+    TICKETS_CLOSED_LABEL,
+    TICKETS_CREATED_LABEL,
+    TICKETS_REPLIED_LABEL,
+    TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
+} from 'services/reporting/constants'
+import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
+import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import StatsPage from 'pages/stats/StatsPage'
+import {DownloadOverviewDataButton} from 'pages/stats/DownloadOverviewDataButton'
+import {saveReport} from 'services/reporting/supportPerformanceReportingService'
+import {getTimezone} from 'state/currentUser/selectors'
+import {
+    getMessagingIntegrationsStatsFilter,
+    getStatsFilters,
+    getStatsMessagingIntegrations,
+} from 'state/stats/selectors'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
+import {
+    periodToReportingGranularity,
+    statsFiltersToReportingFilters,
+    TicketStateStatsFiltersMembers,
+} from 'utils/reporting'
 
 import {formatMetricValue, formatTimeSeriesData} from './common/utils'
 import MetricCard from './MetricCard'
 import TrendBadge from './TrendBadge'
 import BigNumberMetric from './BigNumberMetric'
-import DashboardSection from './DashboardSection'
 import DashboardGridCell from './DashboardGridCell'
+import DashboardSection from './DashboardSection'
 import css from './SupportPerformanceOverview.less'
 import ChartCard from './ChartCard'
 import GaugeChart from './GaugeChart'
@@ -176,7 +191,7 @@ export default function SupportPerformanceOverview() {
                     },
                     ...statsFiltersToReportingFilters(
                         TicketStateStatsFiltersMembers,
-                        statsFilters
+                        requestStatsFilters
                     ),
                 ],
             },
@@ -192,6 +207,94 @@ export default function SupportPerformanceOverview() {
             },
         }
     )
+
+    const workloadPerChannelPrevious = usePostReporting<
+        {
+            [TicketStateMeasure.TicketCount]: string
+            [TicketStateDimension.Channel]: TicketChannel
+        }[],
+        OneDimensionalDataItem[]
+    >(
+        [
+            {
+                measures: [TicketStateMeasure.TicketCount],
+                order: [[TicketStateMeasure.TicketCount, 'desc']],
+                dimensions: [TicketStateDimension.Channel],
+                segments: [TicketStateSegment.WorkloadTickets],
+                filters: [
+                    {
+                        member: TicketStateMember.IsSpam,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    {
+                        member: TicketStateMember.IsTrashed,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['0'],
+                    },
+                    ...statsFiltersToReportingFilters(
+                        TicketStateStatsFiltersMembers,
+                        {
+                            ...requestStatsFilters,
+                            period: getPreviousPeriod(
+                                requestStatsFilters.period
+                            ),
+                        }
+                    ),
+                ],
+            },
+        ],
+        {
+            select: (data) => {
+                return data.data.data.map((item) => ({
+                    label: TICKET_CHANNEL_NAMES[
+                        item[TicketStateDimension.Channel]
+                    ],
+                    value: parseFloat(item[TicketStateMeasure.TicketCount]),
+                }))
+            },
+        }
+    )
+
+    const exportableData = useMemo(() => {
+        return {
+            customerSatisfactionTrend,
+            firstResponseTimeTrend,
+            resolutionTimeTrend,
+            messagesPerTicketTrend,
+            openTicketsTrend,
+            closedTicketsTrend,
+            ticketsCreatedTrend,
+            ticketsRepliedTrend,
+            messagesSentTrend,
+            ticketsCreatedTimeSeries,
+            ticketsClosedTimeSeries,
+            ticketsRepliedTimeSeries,
+            messagesSentTimeSeries,
+            workloadPerChannel,
+            workloadPerChannelPrevious,
+        }
+    }, [
+        closedTicketsTrend,
+        customerSatisfactionTrend,
+        firstResponseTimeTrend,
+        messagesPerTicketTrend,
+        messagesSentTimeSeries,
+        messagesSentTrend,
+        openTicketsTrend,
+        resolutionTimeTrend,
+        ticketsClosedTimeSeries,
+        ticketsCreatedTimeSeries,
+        ticketsCreatedTrend,
+        ticketsRepliedTimeSeries,
+        ticketsRepliedTrend,
+        workloadPerChannel,
+        workloadPerChannelPrevious,
+    ])
+
+    const loading = useMemo(() => {
+        return Object.values(exportableData).some((metric) => metric.isFetching)
+    }, [exportableData])
 
     return (
         <div className="full-width">
@@ -243,13 +346,22 @@ export default function SupportPerformanceOverview() {
                             value={pageStatsFilters.period}
                             variant="ghost"
                         />
+                        <DownloadOverviewDataButton
+                            onClick={async () => {
+                                await saveReport(
+                                    exportableData,
+                                    statsFilters.period
+                                )
+                            }}
+                            disabled={loading}
+                        />
                     </>
                 }
             >
                 <DashboardSection title="Customer experience">
                     <DashboardGridCell size={3}>
                         <MetricCard
-                            title="Customer satisfaction"
+                            title={CUSTOMER_SATISFACTION_LABEL}
                             hint="Average CSAT score for tickets which received a survey during the period"
                             trendBadge={
                                 <TrendBadge
@@ -282,7 +394,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
                         <MetricCard
-                            title="First response time"
+                            title={FIRST_RESPONSE_TIME_LABEL}
                             hint="Median time between 1st customer message and 1st human agent response"
                             trendBadge={
                                 <TrendBadge
@@ -308,7 +420,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
                         <MetricCard
-                            title="Resolution time"
+                            title={RESOLUTION_TIME_LABEL}
                             hint="Median time between the 1st customer message and the last time the ticket was closed"
                             trendBadge={
                                 <TrendBadge
@@ -334,7 +446,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={3}>
                         <MetricCard
-                            title="Messages per ticket"
+                            title={MESSAGES_PER_TICKET_LABEL}
                             hint="Average number of messages exchanged per closed ticket"
                             trendBadge={
                                 <TrendBadge
@@ -361,7 +473,7 @@ export default function SupportPerformanceOverview() {
                 <DashboardSection title="Workload">
                     <DashboardGridCell size={6}>
                         <MetricCard
-                            title="Open tickets"
+                            title={OPEN_TICKETS_LABEL}
                             hint="Number of tickets with the status “open” at the end of the period"
                             trendBadge={
                                 <TrendBadge
@@ -386,7 +498,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
                         <MetricCard
-                            title="Tickets closed"
+                            title={TICKETS_CLOSED_LABEL}
                             hint="Number of unique tickets closed during the period (and that did not reopen)"
                             trendBadge={
                                 <TrendBadge
@@ -413,7 +525,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
                         <MetricCard
-                            title="Tickets created"
+                            title={TICKETS_CREATED_LABEL}
                             hint="Number of new tickets to handle"
                             trendBadge={
                                 <TrendBadge
@@ -440,7 +552,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
                         <MetricCard
-                            title="Tickets replied"
+                            title={TICKETS_REPLIED_LABEL}
                             hint="Number of tickets where the customer got a response"
                             trendBadge={
                                 <TrendBadge
@@ -468,7 +580,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={4}>
                         <MetricCard
-                            title="Messages sent"
+                            title={MESSAGES_SENT_LABEL}
                             hint="Number of messages received by your customer"
                             trendBadge={
                                 <TrendBadge
@@ -496,14 +608,14 @@ export default function SupportPerformanceOverview() {
 
                     <DashboardGridCell size={6}>
                         <ChartCard
-                            title="Tickets created"
+                            title={TICKETS_CREATED_LABEL}
                             hint="Number of new tickets to handle"
                         >
                             <LineChart
                                 isLoading={!ticketsCreatedTimeSeries.data}
                                 data={formatTimeSeriesData(
                                     ticketsCreatedTimeSeries.data,
-                                    'Tickets created',
+                                    TICKETS_CREATED_LABEL,
                                     granularity
                                 )}
                                 hasBackground
@@ -513,7 +625,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
                         <ChartCard
-                            title="Tickets closed"
+                            title={TICKETS_CLOSED_LABEL}
                             hint="Number of opened tickets solved by the end of the period"
                         >
                             <LineChart
@@ -530,14 +642,14 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
                         <ChartCard
-                            title="Tickets replied"
+                            title={TICKETS_REPLIED_LABEL}
                             hint="Number of tickets where the customer got a response"
                         >
                             <LineChart
                                 isLoading={!ticketsRepliedTimeSeries.data}
                                 data={formatTimeSeriesData(
                                     ticketsRepliedTimeSeries.data,
-                                    'Tickets replied',
+                                    TICKETS_REPLIED_LABEL,
                                     granularity
                                 )}
                                 hasBackground
@@ -547,14 +659,14 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={6}>
                         <ChartCard
-                            title="Messages sent"
+                            title={MESSAGES_SENT_LABEL}
                             hint="Number of messages received by your customer"
                         >
                             <LineChart
                                 isLoading={!messagesSentTimeSeries.data}
                                 data={formatTimeSeriesData(
                                     messagesSentTimeSeries.data,
-                                    'Messages sent',
+                                    MESSAGES_SENT_LABEL,
                                     granularity
                                 )}
                                 hasBackground
@@ -564,7 +676,7 @@ export default function SupportPerformanceOverview() {
                     </DashboardGridCell>
                     <DashboardGridCell size={12}>
                         <ChartCard
-                            title="Total workload by channel"
+                            title={TOTAL_WORKLOAD_BY_CHANNEL_LABEL}
                             hint="Distribution of all tickets of the period (both “open” and “closed”) by channel"
                         >
                             {workloadPerChannel.data ? (

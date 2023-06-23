@@ -3,6 +3,7 @@ import React, {ReactNode} from 'react'
 import {Map, List, fromJS} from 'immutable'
 import classnames from 'classnames'
 import _isObject from 'lodash/isObject'
+import {NOT_AVAILABLE_LABEL} from 'services/reporting/constants'
 
 import {StatType} from 'models/stat/types'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -63,7 +64,7 @@ const defaultWrapper = (
             {formattedValue || formattedValue === 0 ? (
                 <div className={css.value}>{formattedValue}</div>
             ) : (
-                <div className={css.value}>n/a</div>
+                <div className={css.value}>{NOT_AVAILABLE_LABEL}</div>
             )}
             {renderDifference(valueTooltipId, metric, tooltipDelta)}
         </div>

@@ -4,7 +4,7 @@ import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import useMetricTrend, {MetricTrend} from './useMetricTrend'
 
-const getPreviousPeriod = (
+export const getPreviousPeriod = (
     period: StatsFilters['period']
 ): StatsFilters['period'] => {
     const start = moment(period.start_datetime).parseZone()

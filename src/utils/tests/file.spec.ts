@@ -1,4 +1,27 @@
-import {getFileTooLargeError, getText} from '../file'
+import {act} from '@testing-library/react'
+import {
+    saveZippedFiles,
+    getFileTooLargeError,
+    getText,
+    createCsv,
+    EOL,
+} from 'utils/file'
+
+const mockedBlob = new Blob()
+const mockFile = jest.fn()
+const mockGenerateAsync = jest.fn().mockResolvedValue(mockedBlob)
+jest.mock('jszip', () => {
+    return jest.fn().mockImplementation(() => {
+        return {
+            file: mockFile,
+            generateAsync: mockGenerateAsync,
+        }
+    })
+})
+const createObjectURLMock = jest.fn()
+const revokeObjectURLMock = jest.fn()
+global.URL.createObjectURL = createObjectURLMock
+global.URL.revokeObjectURL = revokeObjectURLMock
 
 describe('file util', () => {
     it('should get error for file too large in MB', () => {
@@ -19,6 +42,41 @@ describe('file util', () => {
             const contents = 'Line 1\nLine 2'
             const file = new File([contents], 'file.csv', {type: 'text/csv'})
             expect(await getText(file)).toEqual(contents)
+        })
+    })
+
+    describe('createCsv', () => {
+        it('should create a csv representation of the passed data', () => {
+            const label = 'some label'
+            const anotherLabel = 'someOtherLabel'
+            const dataPiece = 123
+            const anotherDataPiece = 567
+            const data = [
+                [label, anotherLabel],
+                [dataPiece, anotherDataPiece],
+            ]
+
+            const csv = createCsv(data)
+
+            expect(csv).toEqual(
+                `"${label}","${anotherLabel}"${EOL}"${dataPiece}","${anotherDataPiece}"`
+            )
+        })
+    })
+
+    describe('saveZippedFiles', () => {
+        it('should call saveAs with zipped archive', async () => {
+            const fileName = 'someFileName.extension'
+            const fileContent = 'someFileContent'
+
+            await act(async () => {
+                await saveZippedFiles({
+                    [fileName]: fileContent,
+                })
+            })
+
+            expect(mockFile).toHaveBeenCalledWith(fileName, fileContent)
+            expect(createObjectURLMock).toHaveBeenCalledWith(mockedBlob)
         })
     })
 })
