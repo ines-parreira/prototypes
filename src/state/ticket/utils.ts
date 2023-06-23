@@ -717,6 +717,7 @@ export function getNewMessageSender(
                 newMessageSourceType,
                 TicketMessageSourceType.Chat,
                 TicketMessageSourceType.ChatContactForm,
+                TicketMessageSourceType.ChatOfflineCapture,
             ].includes(type)
         }
 
@@ -758,6 +759,7 @@ export function getNewMessageSender(
         [
             TicketMessageSourceType.Chat,
             TicketMessageSourceType.ChatContactForm,
+            TicketMessageSourceType.ChatOfflineCapture,
         ].includes(lastMessage.getIn(['source', 'type']))
     ) {
         const integration =

@@ -108,6 +108,7 @@ export const SOURCE_VALUE_PROP: Partial<
     [TicketMessageSourceType.OttspottCall]: 'address',
     [TicketMessageSourceType.Chat]: 'address',
     [TicketMessageSourceType.ChatContactForm]: 'address',
+    [TicketMessageSourceType.ChatOfflineCapture]: 'address',
     [TicketMessageSourceType.HelpCenterContactForm]: 'address',
     [TicketMessageSourceType.ContactForm]: 'address',
     [TicketMessageSourceType.Aircall]: 'address',

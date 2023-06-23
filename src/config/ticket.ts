@@ -355,6 +355,7 @@ export function sourceTypeToChannel(
             TicketMessageSourceType.HelpCenterContactForm,
             TicketMessageSourceType.ChatContactForm,
             TicketMessageSourceType.ContactForm,
+            TicketMessageSourceType.ChatOfflineCapture,
         ].includes(sourceType)
     ) {
         return TicketChannel.Email
