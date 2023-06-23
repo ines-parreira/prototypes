@@ -45,22 +45,32 @@ const SubjectLines = ({
     // Initialize the subject lines with unique ids just when the locale/ref changes
     useEffect(() => {
         if (
+            // We need this check to avoid loosing focus when the user is typing
             subjectLines !== lastSubjectLineRef.current &&
             subjectLines[currentLocale]
         ) {
-            updateSubjectLinesWithId(
+            setSubjectLinesWithId(
                 subjectLines[currentLocale].options.map((option) => ({
                     id: _uniqueId('subject-line-'),
                     value: option,
                 }))
             )
+
+            lastSubjectLineRef.current = {
+                ...subjectLines,
+                [currentLocale]: {
+                    allow_other:
+                        subjectLines?.[currentLocale]?.allow_other ?? true,
+                    options: subjectLines?.[currentLocale]?.options ?? [],
+                },
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentLocale, subjectLines])
 
     const updateSubjectLinesWithId = useCallback(
-        (subjectLines: {id: string; value: string}[]) => {
-            setSubjectLinesWithId(subjectLines)
+        (subjectLinesWithIds: {id: string; value: string}[]) => {
+            setSubjectLinesWithId(subjectLinesWithIds)
 
             updateContactForm((prevContactForm) => {
                 lastSubjectLineRef.current = {
@@ -69,7 +79,7 @@ const SubjectLines = ({
                         allow_other:
                             prevContactForm.subject_lines?.[currentLocale]
                                 ?.allow_other ?? true,
-                        options: subjectLines.map(({value}) => value),
+                        options: subjectLinesWithIds.map(({value}) => value),
                     },
                 }
 

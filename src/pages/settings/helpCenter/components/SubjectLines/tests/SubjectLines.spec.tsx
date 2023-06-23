@@ -207,9 +207,9 @@ describe('<SubjectLines />', () => {
             })
         )
 
-        expect(updateContactForm).toHaveBeenCalled()
         // wait for the reordering animation to finish
         setTimeout(() => {
+            expect(updateContactForm).toHaveBeenCalled()
             expect(screen.getAllByRole('textbox')[0]).toHaveValue('Option 2')
             expect(screen.getAllByRole('textbox')[1]).toHaveValue('Option 1')
             expect(setIsDirty).toHaveBeenCalledWith(true)
