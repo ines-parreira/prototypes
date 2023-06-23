@@ -2,7 +2,9 @@ import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/compon
 
 export type MessageContent = {
     html: string
+    html_tkey?: string
     text: string
+    text_tkey?: string
     attachments?: ProductCardAttachment[] | null
 }
 
@@ -35,6 +37,11 @@ export type WorkflowStepWorkflowCall = {
     }
 }
 
+export type WorkflowStep =
+    | WorkflowStepMessages
+    | WorkflowStepChoices
+    | WorkflowStepWorkflowCall
+
 export type WorkflowTransition = {
     id: string
     from_step_id: string
@@ -56,9 +63,7 @@ export type WorkflowConfiguration = {
         label: string
         label_tkey: string
     }
-    steps: Array<
-        WorkflowStepMessages | WorkflowStepChoices | WorkflowStepWorkflowCall
-    >
+    steps: WorkflowStep[]
     transitions: WorkflowTransition[]
 }
 
