@@ -2,7 +2,11 @@ import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 
-import {REPORTING_ENDPOINT, postReporting} from '../resources'
+import {
+    REPORTING_ENDPOINT,
+    postReporting,
+    QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS,
+} from '../resources'
 import {ReportingResponse, ReportingQuery} from '../types'
 
 const mockedServer = new MockAdapter(client)
@@ -36,10 +40,38 @@ describe('Reporting resources', () => {
         })
 
         it('should reject with an error on success', async () => {
-            mockedServer.onPost(REPORTING_ENDPOINT).reply(503)
+            const statusCode = 503
+
+            mockedServer.onPost(REPORTING_ENDPOINT).reply(statusCode)
 
             return expect(postReporting<[number]>([query])).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error(`Request failed with status code ${statusCode}`)
+            )
+        })
+
+        it('should throw and error to trigger retry on result not yet ready status (202)', () => {
+            mockedServer
+                .onPost(REPORTING_ENDPOINT)
+                .reply(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS)
+
+            return expect(postReporting<[number]>([query])).rejects.toEqual(
+                new Error(
+                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`
+                )
+            )
+        })
+
+        it('should throw and error to trigger retry on result not yet ready status (202) even if it is a string', () => {
+            mockedServer
+                .onPost(REPORTING_ENDPOINT)
+                .reply(
+                    String(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS) as any
+                )
+
+            return expect(postReporting<[number]>([query])).rejects.toEqual(
+                new Error(
+                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`
+                )
             )
         })
     })
