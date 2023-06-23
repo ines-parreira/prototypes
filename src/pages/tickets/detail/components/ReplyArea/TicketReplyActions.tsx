@@ -12,7 +12,6 @@ import {ActionTemplateExecution} from 'config'
 import useAppSelector from 'hooks/useAppSelector'
 import {hasContent} from 'state/newMessage/selectors'
 import TicketReplyAction from './TicketReplyAction'
-import TMPApplyOnSendPopover from './ApplyOnSendPopover'
 import css from './TicketReplyActions.less'
 
 type Props = {
@@ -83,7 +82,6 @@ export default function TicketReplyActions({
                     {isOpen ? 'Hide macro actions ' : 'Show macro actions'}
                 </Tooltip>
             </div>
-            <TMPApplyOnSendPopover actions={backendActions} />
             <Collapse isOpen={isOpen} className={css.scrollable}>
                 {sortedBackendActions.map(
                     (action: Map<any, any>, key: number | undefined) => (
