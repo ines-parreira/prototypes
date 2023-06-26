@@ -39,6 +39,7 @@ const TicketPrintContainer = () => {
               }`
             : `${ticket.get('id') as number}`
         : undefined
+
     useTitle(isLoading ? undefined : title)
 
     return (

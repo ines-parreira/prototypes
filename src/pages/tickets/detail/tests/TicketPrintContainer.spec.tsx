@@ -35,6 +35,7 @@ describe('<TicketPrintContainer/>', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        window.document.title = 'Gorgias'
     })
 
     it('should render loader', () => {
@@ -77,6 +78,7 @@ describe('<TicketPrintContainer/>', () => {
     })
 
     it('should not set document title when ticket is loading', () => {
+        jest.useFakeTimers()
         renderWithRouter(
             <Provider
                 store={mockStore({
@@ -90,7 +92,7 @@ describe('<TicketPrintContainer/>', () => {
                 route: '/foo/1',
             }
         )
-
+        jest.runOnlyPendingTimers()
         expect(window.document.title).toEqual('Gorgias')
     })
 
@@ -126,7 +128,6 @@ describe('<TicketPrintContainer/>', () => {
                 route: '/foo/1',
             }
         )
-
         expect(window.document.title).toEqual('123_foo')
     })
 })

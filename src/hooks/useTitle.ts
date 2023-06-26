@@ -1,17 +1,29 @@
 import {useEffect} from 'react'
 
+export const TITLE_RESET_DELAY = 200
+
 const originalTitle = (document && document.title) || 'Gorgias'
+
+let globalTimer: number
 
 export function useTitle(title?: string) {
     useEffect(() => {
-        if (!title || document.title === title) {
+        // In case useTitle is called empty, we want the timeout from the
+        // previous hook call to run in order to reset the title
+        if (!title) {
             return
         }
 
-        document.title = title
+        clearTimeout(globalTimer)
+
+        if (title !== document.title) {
+            document.title = title
+        }
 
         return () => {
-            document.title = originalTitle
+            globalTimer = window.setTimeout(() => {
+                document.title = originalTitle
+            }, TITLE_RESET_DELAY)
         }
     }, [title])
 }
