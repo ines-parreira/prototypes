@@ -1,0 +1,37 @@
+@import '~css/new/colorTokens';
+@import '~css/new/layout';
+
+&:local {
+    .wrapper {
+        background: @classic-neutral-grey-2;
+        border-radius: 4px;
+        color: @classic-neutral-grey-5;
+        padding: @layout-spacing-s;
+
+        &.success {
+            background: @classic-main-primary-4;
+            color: @classic-main-primary-0;
+        }
+
+        &.light-success {
+            background: @classic-main-primary-0;
+            color: @classic-main-primary-4;
+        }
+
+        &.light-error {
+            background: @dark-feedback-error-4;
+            color: @modern-feedback-error-4;
+        }
+
+        &.error {
+            background: @dark-feedback-error-0;
+            color: @dark-feedback-error-4;
+        }
+    }
+
+    .title {
+        margin-bottom: @layout-spacing-xs;
+        align-items: center;
+        display: flex;
+    }
+}

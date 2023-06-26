@@ -1,5 +1,7 @@
+import {data} from 'browserslist'
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 
@@ -10,8 +12,9 @@ type Props = {
     children: ReactNode
     className?: string
     hint?: ReactNode
+    isLoading?: boolean
     title: ReactNode
-    tooltip?: ReactNode
+    tip?: ReactNode
     trendBadge?: ReactNode
 }
 
@@ -19,8 +22,9 @@ export default function MetricCard({
     children,
     className,
     hint,
+    isLoading = false,
     title,
-    tooltip,
+    tip,
     trendBadge,
 }: Props) {
     return (
@@ -35,7 +39,12 @@ export default function MetricCard({
 
             {children}
 
-            {tooltip && <div className={css.tooltip}>{tooltip}</div>}
+            {tip &&
+                (!data || isLoading ? (
+                    <Skeleton height={132} className={css.tooltip} />
+                ) : (
+                    <div className={css.tooltip}>{tip}</div>
+                ))}
         </Card>
     )
 }

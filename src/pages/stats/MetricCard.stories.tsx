@@ -2,7 +2,7 @@ import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
 import MetricCard from './MetricCard'
-import MetricTooltip from './MetricTooltip'
+import MetricTip from './MetricTip'
 import TrendBadge from './TrendBadge'
 
 const storyConfig: Meta = {
@@ -19,9 +19,7 @@ const defaultProps: ComponentProps<typeof MetricCard> = {
     children: 'Value',
     hint: "I'm a hint",
     title: 'First response time',
-    tooltip: (
-        <MetricTooltip title="Tooltip title">Tooltip content</MetricTooltip>
-    ),
+    tip: <MetricTip title="Tooltip title">Tooltip content</MetricTip>,
     trendBadge: <TrendBadge value={7} prevValue={2} />,
 }
 

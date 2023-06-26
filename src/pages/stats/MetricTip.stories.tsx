@@ -1,10 +1,10 @@
 import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
-import MetricTip from './MetricTip'
+import MetricTip from 'pages/stats/MetricTip'
 
 const storyConfig: Meta = {
-    title: 'Stats/MetricTip',
+    title: 'Stats/MetricTooltip',
     component: MetricTip,
     argTypes: {
         type: {
@@ -16,11 +16,10 @@ const storyConfig: Meta = {
 }
 
 const Template: Story<ComponentProps<typeof MetricTip>> = (props) => (
-    <MetricTip {...props} />
+    <MetricTip {...props}>{'Content of the tip'}</MetricTip>
 )
 
 const defaultProps: ComponentProps<typeof MetricTip> = {
-    children: 'Content of the tip',
     className: '',
     title: 'Title of the tip',
     type: 'neutral',

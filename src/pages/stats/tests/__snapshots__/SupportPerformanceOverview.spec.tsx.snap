@@ -916,6 +916,21 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
             >
               Customer experience
             </div>
+            <button
+              class="wrapper ghost primary medium"
+              type="button"
+            >
+              <span
+                class="wrapper"
+              >
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  visibility_off
+                </i>
+                Hide tips
+              </span>
+            </button>
           </div>
           <div
             class="wrapper"
@@ -961,6 +976,24 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     src="test-file-stub"
                   />
                 </div>
+                <div
+                  class="tooltip"
+                >
+                  <div
+                    class="wrapper success"
+                  >
+                    <div
+                      class="body-semibold title"
+                    >
+                      some title
+                    </div>
+                    <div
+                      class="body-regular"
+                    >
+                      Tip: some content
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -998,6 +1031,24 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   class="wrapper heading-page-semibold"
                 >
                   7m 36s
+                </div>
+                <div
+                  class="tooltip"
+                >
+                  <div
+                    class="wrapper success"
+                  >
+                    <div
+                      class="body-semibold title"
+                    >
+                      some title
+                    </div>
+                    <div
+                      class="body-regular"
+                    >
+                      Tip: some content
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1037,6 +1088,24 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                 >
                   7m 36s
                 </div>
+                <div
+                  class="tooltip"
+                >
+                  <div
+                    class="wrapper success"
+                  >
+                    <div
+                      class="body-semibold title"
+                    >
+                      some title
+                    </div>
+                    <div
+                      class="body-regular"
+                    >
+                      Tip: some content
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -1074,6 +1143,24 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   class="wrapper heading-page-semibold"
                 >
                   456
+                </div>
+                <div
+                  class="tooltip"
+                >
+                  <div
+                    class="wrapper success"
+                  >
+                    <div
+                      class="body-semibold title"
+                    >
+                      some title
+                    </div>
+                    <div
+                      class="body-regular"
+                    >
+                      Tip: some content
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

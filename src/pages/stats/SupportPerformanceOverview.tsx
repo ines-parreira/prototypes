@@ -1,10 +1,30 @@
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo, useState} from 'react'
+import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getPreviousPeriod} from 'hooks/reporting/createUseMetricTrend'
-import blueStar from 'assets/img/icons/blue-star.svg'
+import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
+import {MetricName} from 'services/performanceTipService'
+import {PerformanceTip} from 'pages/stats/PerformanceTip'
 
 import {TicketChannel} from 'business/types/ticket'
+import useAppSelector from 'hooks/useAppSelector'
+import {StatsFilters} from 'models/stat/types'
+import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
+import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
+import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
+import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import StatsPage from 'pages/stats/StatsPage'
+import {currentAccountHasFeature} from 'state/currentAccount/selectors'
+import {AccountFeature} from 'state/currentAccount/types'
+import {
+    getMessagingIntegrationsStatsFilter,
+    getStatsFilters,
+    getStatsMessagingIntegrations,
+} from 'state/stats/selectors'
+import blueStar from 'assets/img/icons/blue-star.svg'
 import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
@@ -23,7 +43,6 @@ import {
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
-import useAppSelector from 'hooks/useAppSelector'
 import {
     ReportingFilterOperator,
     TicketStateDimension,
@@ -32,11 +51,8 @@ import {
     TicketStateSegment,
 } from 'models/reporting/types'
 import {usePostReporting} from 'models/reporting/queries'
-import {StatsFilters} from 'models/stat/types'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
-import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
 import {
     CUSTOMER_SATISFACTION_LABEL,
     FIRST_RESPONSE_TIME_LABEL,
@@ -49,17 +65,9 @@ import {
     TICKETS_REPLIED_LABEL,
     TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
 } from 'services/reporting/constants'
-import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
-import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
-import StatsPage from 'pages/stats/StatsPage'
 import {DownloadOverviewDataButton} from 'pages/stats/DownloadOverviewDataButton'
 import {saveReport} from 'services/reporting/supportPerformanceReportingService'
 import {getTimezone} from 'state/currentUser/selectors'
-import {
-    getMessagingIntegrationsStatsFilter,
-    getStatsFilters,
-    getStatsMessagingIntegrations,
-} from 'state/stats/selectors'
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {
     periodToReportingGranularity,
@@ -72,6 +80,7 @@ import MetricCard from './MetricCard'
 import TrendBadge from './TrendBadge'
 import BigNumberMetric from './BigNumberMetric'
 import DashboardGridCell from './DashboardGridCell'
+import TipsToggle from './TipsToggle'
 import DashboardSection from './DashboardSection'
 import css from './SupportPerformanceOverview.less'
 import ChartCard from './ChartCard'
@@ -79,6 +88,7 @@ import GaugeChart from './GaugeChart'
 import LineChart from './LineChart'
 import {OneDimensionalDataItem} from './types'
 
+export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 const DEFAULT_TIMEZONE = 'UTC'
 const LEARN_MORE_URL =
     'https://docs.gorgias.com/en-US/226700-5b26beb8fd254af181bd50281c5bbde6'
@@ -89,9 +99,18 @@ export default function SupportPerformanceOverview() {
     )
     const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(true)
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const hasPerformanceTips: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsPerformanceTips]
+    const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
+        currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
+    )
     const statsFilters = useAppSelector(getStatsFilters)
     const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
+    )
+    const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
+        STATS_TIPS_VISIBILITY_KEY,
+        true
     )
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
@@ -358,11 +377,24 @@ export default function SupportPerformanceOverview() {
                     </>
                 }
             >
-                <DashboardSection title="Customer experience">
+                <DashboardSection
+                    title="Customer experience"
+                    titleExtra={
+                        hasPerformanceTips && (
+                            <TipsToggle
+                                isVisible={!!areTipsVisible}
+                                onClick={() =>
+                                    setAreTipsVisible(!areTipsVisible)
+                                }
+                            />
+                        )
+                    }
+                >
                     <DashboardGridCell size={3}>
                         <MetricCard
                             title={CUSTOMER_SATISFACTION_LABEL}
                             hint="Average CSAT score for tickets which received a survey during the period"
+                            isLoading={customerSatisfactionTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
                                     format={'percent'}
@@ -376,6 +408,18 @@ export default function SupportPerformanceOverview() {
                                             ?.prevValue
                                     }
                                 />
+                            }
+                            tip={
+                                hasPerformanceTips &&
+                                areTipsVisible &&
+                                (hasSatisfactionSurveyEnabled ? (
+                                    <PerformanceTip
+                                        metric={MetricName.CustomerSatisfaction}
+                                        data={customerSatisfactionTrend.data}
+                                    />
+                                ) : (
+                                    <ActivateCustomerSatisfactionSurveyTip />
+                                ))
                             }
                         >
                             <BigNumberMetric
@@ -396,6 +440,7 @@ export default function SupportPerformanceOverview() {
                         <MetricCard
                             title={FIRST_RESPONSE_TIME_LABEL}
                             hint="Median time between 1st customer message and 1st human agent response"
+                            isLoading={firstResponseTimeTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
@@ -406,6 +451,15 @@ export default function SupportPerformanceOverview() {
                                         firstResponseTimeTrend.data?.prevValue
                                     }
                                 />
+                            }
+                            tip={
+                                hasPerformanceTips &&
+                                areTipsVisible && (
+                                    <PerformanceTip
+                                        metric={MetricName.FirstResponseTime}
+                                        data={firstResponseTimeTrend.data}
+                                    />
+                                )
                             }
                         >
                             <BigNumberMetric
@@ -422,6 +476,7 @@ export default function SupportPerformanceOverview() {
                         <MetricCard
                             title={RESOLUTION_TIME_LABEL}
                             hint="Median time between the 1st customer message and the last time the ticket was closed"
+                            isLoading={resolutionTimeTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
@@ -432,6 +487,15 @@ export default function SupportPerformanceOverview() {
                                         resolutionTimeTrend.data?.prevValue
                                     }
                                 />
+                            }
+                            tip={
+                                hasPerformanceTips &&
+                                areTipsVisible && (
+                                    <PerformanceTip
+                                        metric={MetricName.ResolutionTime}
+                                        data={resolutionTimeTrend.data}
+                                    />
+                                )
                             }
                         >
                             <BigNumberMetric
@@ -448,6 +512,7 @@ export default function SupportPerformanceOverview() {
                         <MetricCard
                             title={MESSAGES_PER_TICKET_LABEL}
                             hint="Average number of messages exchanged per closed ticket"
+                            isLoading={messagesPerTicketTrend.isFetching}
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
@@ -458,6 +523,15 @@ export default function SupportPerformanceOverview() {
                                         messagesPerTicketTrend.data?.prevValue
                                     }
                                 />
+                            }
+                            tip={
+                                hasPerformanceTips &&
+                                areTipsVisible && (
+                                    <PerformanceTip
+                                        metric={MetricName.MessagesPerTicket}
+                                        data={messagesPerTicketTrend.data}
+                                    />
+                                )
                             }
                         >
                             <BigNumberMetric

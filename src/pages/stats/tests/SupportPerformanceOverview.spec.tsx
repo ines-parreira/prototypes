@@ -1,10 +1,14 @@
 import {fromJS} from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {render} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 import {UseQueryResult} from '@tanstack/react-query'
+import {FeatureFlagKey} from 'config/featureFlags'
+import * as PerformanceTipHook from 'hooks/reporting/usePerformanceTips'
+import {TipQualifier} from 'services/performanceTipService'
 
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
@@ -37,7 +41,9 @@ import useTimeSeries from 'hooks/reporting/useTimeSeries'
 import {usePostReporting} from 'models/reporting/queries'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 
-import SupportPerformanceOverview from '../SupportPerformanceOverview'
+import SupportPerformanceOverview, {
+    STATS_TIPS_VISIBILITY_KEY,
+} from '../SupportPerformanceOverview'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -73,6 +79,8 @@ const usePostReportingMock = assumeMock(usePostReporting)
 
 jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
+
+jest.mock('services/performanceTipService')
 
 describe('<SupportPerformanceOverview />', () => {
     const defaultStatsFilters: StatsFilters = {
@@ -147,6 +155,15 @@ describe('<SupportPerformanceOverview />', () => {
             ],
         } as UseQueryResult)
         useCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
+        jest.spyOn(PerformanceTipHook, 'usePerformanceTips').mockReturnValue({
+            type: TipQualifier.Success,
+            title: 'some title',
+            content: 'some content',
+            hint: undefined,
+        })
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsPerformanceTips]: true,
+        }))
     })
 
     it('should render the page', () => {
@@ -157,5 +174,58 @@ describe('<SupportPerformanceOverview />', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+    describe('Performance Tips', () => {
+        beforeEach(() => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AnalyticsPerformanceTips]: true,
+            }))
+        })
+
+        afterEach(() => {
+            jest.clearAllMocks()
+        })
+
+        it('should show tips by default', () => {
+            const {queryAllByText} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <SupportPerformanceOverview />
+                </Provider>
+            )
+
+            expect(queryAllByText(/^Tip:/)).not.toHaveLength(0)
+        })
+
+        it('should show tips and save the value to local storage on show tips button click', () => {
+            localStorage.setItem(STATS_TIPS_VISIBILITY_KEY, 'false')
+
+            const {getByText, queryAllByText} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <SupportPerformanceOverview />
+                </Provider>
+            )
+
+            fireEvent.click(getByText(/Show tips/))
+
+            expect(queryAllByText(/^Tip:/)).not.toHaveLength(0)
+            expect(localStorage.getItem(STATS_TIPS_VISIBILITY_KEY)).toBe('true')
+        })
+
+        it('should hide tips and save the value to local storage on hide tips button click ', () => {
+            localStorage.setItem(STATS_TIPS_VISIBILITY_KEY, 'true')
+
+            const {getByText, queryAllByText} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <SupportPerformanceOverview />
+                </Provider>
+            )
+
+            fireEvent.click(getByText(/Hide tips/))
+
+            expect(queryAllByText(/^Tip:/)).toHaveLength(0)
+            expect(localStorage.getItem(STATS_TIPS_VISIBILITY_KEY)).toBe(
+                'false'
+            )
+        })
     })
 })

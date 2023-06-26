@@ -1,6 +1,7 @@
 export enum FeatureFlagKey {
     AgentsAvailabilityStatus = 'agents-availability-status',
     AnalyticsBetaTesters = 'analytics-beta-testers',
+    AnalyticsPerformanceTips = 'analytics-performance-tips',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
     ChatEnableTranslationEdit = 'enable-translations-edit',
