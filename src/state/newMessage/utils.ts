@@ -10,7 +10,7 @@ import {MacroAction, MacroActionName} from 'models/macroAction/types'
 import {EMPTY_SENDER} from 'state/ticket/constants'
 import {ApplyExternalTemplateAction} from 'models/whatsAppMessageTemplates/types'
 import {
-    WhatsAppMessageTemplateToHtml,
+    whatsAppMessageTemplateToHtml,
     WHATSAPP_VARIABLE_REGEX,
 } from 'pages/integrations/integration/components/whatsapp/utils'
 import {isImmutable} from 'utils'
@@ -92,7 +92,7 @@ export const replaceWhatsAppTemplateVariables = (
         })
     }
 
-    return WhatsAppMessageTemplateToHtml(newText)
+    return newText
 }
 
 export const transformExternalTemplatePart = (
@@ -104,9 +104,10 @@ export const transformExternalTemplatePart = (
 ): string => {
     const lines = text.split('\n')
 
-    const newLines = lines.map((line) =>
-        replaceWhatsAppTemplateVariables(line, args)
-    )
+    const newLines = lines.map((line) => {
+        const newText = replaceWhatsAppTemplateVariables(line, args)
+        return whatsAppMessageTemplateToHtml(newText)
+    })
 
     return newLines.join('<br/>')
 }
@@ -160,6 +161,10 @@ export const applyExternalTemplateAction = (
         templateBody.value,
         bodyArgs
     )
+    const body_text = replaceWhatsAppTemplateVariables(
+        templateBody.value,
+        bodyArgs
+    )
 
     const message = upsertNewMessageAction(
         newMessage,
@@ -169,5 +174,6 @@ export const applyExternalTemplateAction = (
     return {
         ...message,
         body_html,
+        body_text,
     }
 }

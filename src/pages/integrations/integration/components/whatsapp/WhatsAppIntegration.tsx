@@ -19,6 +19,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 
 import {getIntegrationById} from 'state/integrations/selectors'
 import WhatsAppMessageTemplatesList from './WhatsAppMessageTemplatesList'
+import WhatsappBusinessManagerLinkButton from './WhatsappBusinessManagerLinkButton'
 
 export default function WhatsAppIntegration() {
     const {integrationId} = useParams<{integrationId: string}>()
@@ -51,6 +52,9 @@ export default function WhatsAppIntegration() {
                 <Route path={`${baseURL}/integrations`} exact>
                     <WhatsAppIntegrationConnectButton isHorizontal />
                 </Route>
+                <Route path={`${baseURL}/:integrationId/templates`} exact>
+                    <WhatsappBusinessManagerLinkButton />
+                </Route>
             </PageHeader>
 
             <WhatsAppIntegrationSecondaryNavigation
@@ -74,7 +78,11 @@ export default function WhatsAppIntegration() {
                                 path={`${baseURL}/:integrationId/templates`}
                                 exact
                             >
-                                <WhatsAppMessageTemplatesList />
+                                <WhatsAppMessageTemplatesList
+                                    phoneNumberId={
+                                        currentIntegration.meta.phone_number_id
+                                    }
+                                />
                             </Route>
                         )}
                     </>

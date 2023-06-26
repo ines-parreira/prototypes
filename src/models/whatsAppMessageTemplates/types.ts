@@ -79,6 +79,15 @@ export type ListWhatsAppMessageTemplatesOrderBy =
     | 'created_datetime:desc'
     | 'name:asc'
     | 'name:desc'
+    | 'status'
+    | 'category'
+    | 'language'
+    | 'category:asc'
+    | 'category:desc'
+    | 'status:asc'
+    | 'status:desc'
+    | 'language:asc'
+    | 'language:desc'
 
 export type ListWhatsAppMessageTemplatesParams = {
     order_by?: ListWhatsAppMessageTemplatesOrderBy
@@ -86,6 +95,7 @@ export type ListWhatsAppMessageTemplatesParams = {
     limit?: number
     waba_id?: string
     is_supported?: boolean
+    status?: WhatsAppMessageTemplateStatus
 }
 
 export type ApplyExternalTemplateActionArguments = {

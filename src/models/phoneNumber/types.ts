@@ -28,6 +28,10 @@ export type NewPhoneNumber = {
     deleted_datetime: Maybe<string>
     integrations: IntegrationPreview[]
     capabilities: PhoneCapabilities
+    whatsapp_phone_number?: {
+        waba_id: string
+        waba_phone_number_id: string
+    }
 }
 
 export type TwilioPhoneNumberMeta = {

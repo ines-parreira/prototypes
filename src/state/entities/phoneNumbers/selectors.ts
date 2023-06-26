@@ -15,3 +15,10 @@ export const getPhoneNumber = (id: number) =>
 
 export const getNewPhoneNumber = (id: number) =>
     createSelector(getNewPhoneNumbers, (phoneNumbers) => phoneNumbers[id])
+
+export const getNewPhoneNumberByNumber = (number: string) =>
+    createSelector(getNewPhoneNumbers, (phoneNumbers) =>
+        Object.values(phoneNumbers).find(
+            (phoneNumber) => phoneNumber.phone_number === number
+        )
+    )

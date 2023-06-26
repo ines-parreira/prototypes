@@ -54,7 +54,7 @@ export default function WhatsAppMessageTemplateMessage({
     }
 
     return (
-        <div data-testid="template-message">
+        <div data-testid="template-message" className={css.container}>
             <WhatsAppMessageTemplateBody
                 template={template}
                 isPreview={isPreview}

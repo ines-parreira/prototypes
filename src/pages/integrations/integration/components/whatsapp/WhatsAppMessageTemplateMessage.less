@@ -16,14 +16,19 @@
         row-gap: @layout-spacing-xxs;
     }
 
-    .variable:not(:first-child) {
-        margin-left: @layout-spacing-xxs;
+    .variable {
+        &:not(:first-child) {
+            margin-left: @layout-spacing-xxs;
+        }
+        &:not(:last-child) {
+            margin-right: @layout-spacing-xxs;
+        }
     }
 
     .messageBody {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: @layout-spacing-s;
     }
 
     .footer {

@@ -4,7 +4,7 @@ import InputField from 'pages/common/forms/input/InputField'
 import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 import WhatsAppVariablePreview from './WhatsAppVariablePreview'
 
-import {WhatsAppMessageTemplateToHtml, WHATSAPP_VARIABLE_REGEX} from './utils'
+import {whatsAppMessageTemplateToHtml, WHATSAPP_VARIABLE_REGEX} from './utils'
 
 import css from './WhatsAppMessageTemplateMessage.less'
 
@@ -21,12 +21,12 @@ export default function WhatsAppMessageTemplateBody({
     value = [],
     onChange,
 }: Props) {
-    const lines = template.components.body.value.split('\\n')
+    const lines = template.components.body.value.split('\n')
 
     return (
         <div className={css.messageBody}>
             {lines.map((rawSentence, sentenceIndex) => {
-                const sentence = WhatsAppMessageTemplateToHtml(rawSentence)
+                const sentence = whatsAppMessageTemplateToHtml(rawSentence)
                 return (
                     <div key={sentenceIndex}>
                         <div className={css.sentence}>

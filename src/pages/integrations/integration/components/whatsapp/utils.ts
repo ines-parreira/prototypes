@@ -47,7 +47,7 @@ const toHTML = (node: Node): string => {
     }
 }
 
-export const WhatsAppMessageTemplateToHtml = (templateString: string) =>
+export const whatsAppMessageTemplateToHtml = (templateString: string) =>
     toHTML(slackMessageParser(templateString))
 
 export const normalizeLocale = (locale: string): string => {
