@@ -1,0 +1,44 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        padding-top: 8px;
+        border-top: 1px solid @classic-neutral-grey-3;
+    }
+
+    .total {
+        padding: 8px 8px 0 8px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .totalTitle {
+        font-size: 14px;
+        font-weight: 600;
+        color: @classic-neutral-grey-6;
+    }
+
+    .totalPrice {
+        font-size: 14px;
+        font-weight: 400;
+        color: @classic-neutral-grey-6;
+
+        span {
+            font-weight: 600;
+        }
+    }
+
+    .oldPrice {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 400;
+        color: @classic-neutral-grey-5;
+        text-decoration: line-through;
+        padding-right: 4px;
+    }
+
+    .disclaimer {
+        text-align: right;
+        padding-top: 24px;
+    }
+}

@@ -1,0 +1,49 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 32px;
+        padding: 16px;
+        border-bottom: 1px solid @classic-neutral-grey-3;
+    }
+
+    .loader {
+        padding: 16px;
+        min-height: auto !important;
+    }
+
+    .successIcon {
+        color: @classic-feedback-success;
+        font-size: 20px;
+    }
+
+    .warningIcon {
+        color: @classic-feedback-warning;
+        font-size: 20px;
+    }
+
+    .cardIcon {
+        color: @classic-neutral-grey-5;
+        font-size: 20px;
+    }
+
+    .method {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .change {
+        cursor: pointer;
+        color: @classic-main-primary;
+        font-size: 12px;
+        font-weight: 500;
+
+        &:hover {
+            color: @classic-main-primary-4;
+        }
+    }
+}

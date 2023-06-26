@@ -26,10 +26,12 @@ describe('migration banner helpers', () => {
             })
 
             expect(
-                bannerSettings?.actionHTML?.includes('Start Migration')
+                typeof bannerSettings?.actionHTML === 'string' &&
+                    bannerSettings?.actionHTML?.includes('Start Migration')
             ).toBeTruthy()
             expect(
-                bannerSettings?.actionHTML?.includes('Continue Migration')
+                typeof bannerSettings?.actionHTML === 'string' &&
+                    bannerSettings?.actionHTML?.includes('Continue Migration')
             ).toBeFalsy()
         })
 
@@ -41,10 +43,12 @@ describe('migration banner helpers', () => {
             })
 
             expect(
-                bannerSettings?.actionHTML?.includes('Continue Migration')
+                typeof bannerSettings?.actionHTML === 'string' &&
+                    bannerSettings?.actionHTML?.includes('Continue Migration')
             ).toBeTruthy()
             expect(
-                bannerSettings?.actionHTML?.includes('Start Migration')
+                typeof bannerSettings?.actionHTML === 'string' &&
+                    bannerSettings?.actionHTML?.includes('Start Migration')
             ).toBeFalsy()
         })
 
@@ -56,10 +60,12 @@ describe('migration banner helpers', () => {
             })
 
             expect(
-                bannerSettings?.actionHTML?.includes('Continue Migration')
+                typeof bannerSettings?.actionHTML === 'string' &&
+                    bannerSettings?.actionHTML?.includes('Continue Migration')
             ).toBeTruthy()
             expect(
-                bannerSettings?.actionHTML?.includes('Start Migration')
+                typeof bannerSettings?.actionHTML === 'string' &&
+                    bannerSettings?.actionHTML?.includes('Start Migration')
             ).toBeFalsy()
         })
 
@@ -112,7 +118,8 @@ describe('migration banner helpers', () => {
                 due_at: '2023-01-01T00:00',
             })
             expect(
-                bannerSettings?.actionHTML?.includes('Finish Migration')
+                typeof bannerSettings?.actionHTML === 'string' &&
+                    bannerSettings?.actionHTML?.includes('Finish Migration')
             ).toBeTruthy()
         })
 
@@ -123,7 +130,8 @@ describe('migration banner helpers', () => {
                 due_at: '2023-01-01T00:00',
             })
             expect(
-                bannerSettings?.actionHTML?.includes('Start Migration')
+                typeof bannerSettings?.actionHTML === 'string' &&
+                    bannerSettings?.actionHTML?.includes('Start Migration')
             ).toBeTruthy()
         })
 

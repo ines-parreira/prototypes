@@ -20,7 +20,6 @@ exports[`BillingStartView should render a BillingStartView component and load th
       <a
         class="link"
         data-active-class-name="active"
-        data-exact="true"
         href="/app/settings/new-billing"
       >
         Usage & Plans
@@ -316,20 +315,13 @@ exports[`BillingStartView should render a BillingStartView component and load th
         <div
           class="unsubscribe"
         >
-          If you have any questions or if you want to unsubscribe, please contact us at
+          If you have any questions or if you want to unsubscribe, please
            
-          <a
-            href="mailto:billing@gorgias.com"
+          <span
+            class="text-primary contactUs"
           >
-            billing@gorgias.com
-          </a>
-           or
-           
-          <a
-            href=""
-          >
-            Live Chat
-          </a>
+            contact us
+          </span>
           .
         </div>
         <div

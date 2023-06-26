@@ -1,4 +1,5 @@
 @import '~css/new/mixins';
+@import '~css/new/colorTokens';
 
 :local {
     .container {
@@ -48,5 +49,13 @@
 
     .canduContainer {
         margin-top: 24px;
+    }
+
+    .contactUs {
+        cursor: pointer;
+
+        &:hover {
+            color: @classic-main-primary-2;
+        }
     }
 }

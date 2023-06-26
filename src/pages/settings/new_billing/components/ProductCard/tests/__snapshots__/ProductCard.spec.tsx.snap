@@ -58,7 +58,8 @@ exports[`ProductCard should render a Helpdesk ProductCard component 1`] = `
         290 of 
         300
          
-        tickets used
+        tickets
+         used
         <i
           class="material-icons"
           id="info_helpdesk"

@@ -9,10 +9,12 @@ import {
     BILLING_BASE_PATH,
     BILLING_PAYMENTS_HISTORY,
     BILLING_PAYMENT_PATH,
+    BILLING_PROCESS_PATH,
 } from '../../constants'
 import UsageAndPlansView from '../UsageAndPlansView'
 import PaymentInformationView from '../PaymentInformationView/PaymentInformationView'
 import PaymentsHistoryView from '../PaymentHistoryView/PaymentsHistoryView'
+import BillingProcessView from '../BillingProcessView'
 import css from './BillingStartView.less'
 
 const BillingStartView = () => {
@@ -27,7 +29,19 @@ const BillingStartView = () => {
         <div className="full-width">
             <PageHeader title="Billing" />
             <SecondaryNavbar>
-                <NavLink exact to={BILLING_BASE_PATH}>
+                <NavLink
+                    to={BILLING_BASE_PATH}
+                    isActive={(match, location) => {
+                        if (!match) {
+                            return false
+                        }
+
+                        return (
+                            location.pathname === BILLING_BASE_PATH ||
+                            location.pathname.includes(BILLING_PROCESS_PATH)
+                        )
+                    }}
+                >
                     Usage & Plans
                 </NavLink>
                 <NavLink to={BILLING_PAYMENT_PATH}>Payment Information</NavLink>
@@ -43,6 +57,9 @@ const BillingStartView = () => {
                     </Route>
                     <Route exact path={BILLING_PAYMENTS_HISTORY}>
                         <PaymentsHistoryView />
+                    </Route>
+                    <Route path={`${BILLING_PROCESS_PATH}/:selectedProduct`}>
+                        <BillingProcessView />
                     </Route>
                 </Switch>
             </Container>

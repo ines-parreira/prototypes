@@ -1,0 +1,51 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        padding: 16px;
+        background-color: @classic-neutral-grey-2;
+        font-size: 12px;
+        line-height: 16px;
+
+        &.disabled {
+            color: @classic-neutral-grey-4;
+
+            a {
+                color: @classic-neutral-grey-4 !important;
+            }
+        }
+    }
+
+    .legalText {
+        padding-bottom: 12px;
+    }
+
+    .checkboxLegalTerms {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding-bottom: 12px;
+
+        input {
+            width: 16px;
+            margin: 0;
+            padding: 0;
+        }
+
+        label {
+            margin: 0;
+        }
+    }
+
+    .termsLabel {
+        a {
+            color: @classic-neutral-grey-6;
+            text-decoration: underline !important;
+        }
+    }
+
+    .button {
+        display: flex;
+        justify-content: end;
+    }
+}

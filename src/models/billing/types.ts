@@ -87,7 +87,7 @@ export type AutomationPrice = BasePrice & {
     automation_addon_included?: boolean
     base_price_id: string
     features: AutomationPriceFeatures
-    num_quota_tickets: null
+    num_quota_tickets: number | null
 }
 
 export type SMSOrVoicePrice = Omit<BasePrice, 'legacy_id' | 'order'> & {

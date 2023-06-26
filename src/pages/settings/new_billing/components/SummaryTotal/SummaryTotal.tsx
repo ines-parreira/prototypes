@@ -1,0 +1,75 @@
+import React, {useMemo} from 'react'
+
+import {
+    AutomationPrice,
+    HelpdeskPrice,
+    PlanInterval,
+    SMSOrVoicePrice,
+} from 'models/billing/types'
+import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
+
+import {formatAmount} from '../../utils/formatAmount'
+import css from './SummaryTotal.less'
+
+export type SummaryTotalProps = {
+    selectedPlans: SelectedPlans
+    totalProductAmount: number
+    prices?: (HelpdeskPrice | AutomationPrice | SMSOrVoicePrice)[]
+    interval?: PlanInterval
+    currency: string
+}
+
+const SummaryTotal = ({
+    selectedPlans,
+    totalProductAmount,
+    interval = PlanInterval.Month,
+    currency,
+}: SummaryTotalProps) => {
+    // Get the total amount of the selected plans
+    const amountSelectedPlans = useMemo(() => {
+        return Object.values(selectedPlans).reduce((acc, plan) => {
+            if (plan.isSelected) {
+                return acc + (plan.plan?.amount ?? 0)
+            }
+            return acc
+        }, 0)
+    }, [selectedPlans])
+
+    const oldPrice = useMemo(() => {
+        if (totalProductAmount === amountSelectedPlans) {
+            return null
+        }
+        return totalProductAmount
+    }, [totalProductAmount, amountSelectedPlans])
+
+    return (
+        <div className={css.container}>
+            <div className={css.total}>
+                <div className={css.totalTitle}>Total</div>
+                <div className={css.totalPrice}>
+                    {oldPrice && (
+                        <div className={css.oldPrice} data-testid="oldPrice">
+                            {formatAmount(oldPrice / 100, currency)}
+                        </div>
+                    )}
+                    <span>
+                        {formatAmount(amountSelectedPlans / 100, currency)}
+                    </span>
+                    /{interval}
+                </div>
+            </div>
+            <div className={css.disclaimer}>
+                Prices do not include{' '}
+                <a
+                    href="https://www.gorgias.com/pricing/billing-sales-tax"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Sales tax
+                </a>
+            </div>
+        </div>
+    )
+}
+
+export default SummaryTotal

@@ -59,6 +59,7 @@ type Props = {
     customIcon?: ReactNode
     container?: ComponentProps<typeof DropdownMenu>['container']
     caption?: ReactNode
+    showSelectedOption?: boolean
 }
 
 type State = {
@@ -98,7 +99,8 @@ export default class SelectField extends Component<Props, State> {
             filteredOptions: this._filterOptions(
                 props.options,
                 '',
-                props.value
+                props.value,
+                props.showSelectedOption
             ),
             isFocused: false,
         }
@@ -121,7 +123,8 @@ export default class SelectField extends Component<Props, State> {
                 filteredOptions: this._filterOptions(
                     nextProps.options,
                     this.state.input,
-                    nextProps.value
+                    nextProps.value,
+                    this.props.showSelectedOption
                 ),
             })
         }
@@ -134,7 +137,8 @@ export default class SelectField extends Component<Props, State> {
     _filterOptions = (
         options: Option[],
         input: string,
-        value?: Value | null
+        value?: Value | null,
+        showSelectedOption?: boolean
     ): Option[] => {
         // Filter options by search query
         let filteredOptions = options.filter((option) => {
@@ -149,7 +153,7 @@ export default class SelectField extends Component<Props, State> {
             const searchableText = option.text ? option.text : option.label
 
             return (
-                option.value !== value &&
+                (showSelectedOption || option.value !== value) &&
                 (!input ||
                     (typeof searchableText === 'string' &&
                         searchableText
@@ -194,11 +198,17 @@ export default class SelectField extends Component<Props, State> {
     }
 
     _onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {allowCustomValue, options, value} = this.props
+        const {allowCustomValue, options, value, showSelectedOption} =
+            this.props
         const input = event.currentTarget.value
         this.setState({
             input: input,
-            filteredOptions: this._filterOptions(options, input, value),
+            filteredOptions: this._filterOptions(
+                options,
+                input,
+                value,
+                showSelectedOption
+            ),
             selectedOptionIndex: allowCustomValue ? -1 : 0,
         })
 

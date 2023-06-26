@@ -1,0 +1,101 @@
+@import '~css/new/mixins';
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        // Space for the chat widget, when width is bellow xlarge-desktops
+        padding-bottom: 80px;
+
+        @media @xlarge-desktops {
+            padding-bottom: 0px;
+        }
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 24px;
+    }
+
+    .cards {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        justify-content: space-between;
+        align-items: start;
+
+        @media @xlarge-desktops {
+            flex-direction: row;
+        }
+    }
+
+    .products {
+        padding-bottom: 16px;
+    }
+
+    .generalInfoItem {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-weight: 600;
+
+        a {
+            font-weight: 400;
+            display: inline-block;
+            padding: 0px 8px;
+            font-size: 12px;
+        }
+    }
+
+    .summary {
+        padding: 8px 16px 24px;
+        border-bottom: 1px solid @classic-neutral-grey-3;
+    }
+
+    .summaryHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: @classic-neutral-grey-5;
+        font-weight: 600;
+        font-size: 11px;
+        line-height: 14px;
+        padding: 0px 8px 8px;
+    }
+
+    .paymentMethod {
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid @classic-neutral-grey-3;
+    }
+
+    .noPaddingBottom {
+        padding-bottom: 0px;
+    }
+
+    .enterprisePlanText {
+        padding: 0 16px 16px;
+    }
+
+    .enterprisePlanFooter {
+        padding: 16px;
+        border-top: 1px solid @classic-neutral-grey-3;
+        background-color: @classic-neutral-grey-1;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .contactBilling {
+        color: @classic-main-primary;
+
+        &:hover {
+            color: @classic-main-primary-2;
+        }
+    }
+
+    :global(.reapop__notification-button) {
+        white-space: nowrap;
+    }
+}

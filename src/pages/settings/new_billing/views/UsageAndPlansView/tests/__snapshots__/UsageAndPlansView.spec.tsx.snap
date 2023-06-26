@@ -275,20 +275,13 @@ exports[`UsageAndPlansView should render 1`] = `
     <div
       class="unsubscribe"
     >
-      If you have any questions or if you want to unsubscribe, please contact us at
+      If you have any questions or if you want to unsubscribe, please
        
-      <a
-        href="mailto:billing@gorgias.com"
+      <span
+        class="text-primary contactUs"
       >
-        billing@gorgias.com
-      </a>
-       or
-       
-      <a
-        href=""
-      >
-        Live Chat
-      </a>
+        contact us
+      </span>
       .
     </div>
     <div

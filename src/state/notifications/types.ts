@@ -1,3 +1,5 @@
+import {ReactNode} from 'react'
+
 export enum NotificationStatus {
     Success = 'success',
     Error = 'error',
@@ -20,7 +22,7 @@ export type Notification = {
     closeOnNext?: boolean
     buttons?: NotificationButton[]
     allowHTML?: boolean
-    actionHTML?: string
+    actionHTML?: string | ReactNode
     dismissible?: boolean
     style?: NotificationStyle
     type?: NotificationStatus

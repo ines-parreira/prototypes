@@ -1,5 +1,6 @@
-import React, {useCallback, useMemo} from 'react'
+import React, {useMemo} from 'react'
 import classNames from 'classnames'
+import {useHistory} from 'react-router-dom'
 import {
     AutomationPrice,
     HelpdeskPrice,
@@ -15,8 +16,9 @@ import {
     getCurrentHelpdeskInterval,
 } from 'state/billing/selectors'
 
-import {PRODUCT_INFO} from '../../constants'
+import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge/Badge'
+import {formatAmount, formatNumTickets} from '../../utils/formatAmount'
 import css from './ProductCard.less'
 
 export type ProductCardProps = {
@@ -27,6 +29,7 @@ export type ProductCardProps = {
 const ProductCard = ({type, product}: ProductCardProps) => {
     const cheapestPrices = useAppSelector(getCheapestProductPrices)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
+    const history = useHistory()
 
     const {isActive, price, currency, planName} = useMemo(() => {
         if (!product) {
@@ -45,18 +48,6 @@ const ProductCard = ({type, product}: ProductCardProps) => {
         }
     }, [product])
 
-    const formatAmount = useCallback(
-        (amount: number) => {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: currency ?? 'usd',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-            }).format(amount)
-        },
-        [currency]
-    )
-
     const currentStatus = useMemo(() => {
         if (!isActive) {
             return <Badge text="Inactive" type={BadgeType.Info} />
@@ -64,35 +55,54 @@ const ProductCard = ({type, product}: ProductCardProps) => {
         return (
             <>
                 {type === ProductType.Helpdesk && <>{planName} - </>}
-                <b>{formatAmount(price ?? 0)}</b>/{interval}
+                <b>{formatAmount(price ?? 0, currency)}</b>/{interval}
             </>
         )
-    }, [formatAmount, interval, isActive, planName, price, type])
+    }, [interval, isActive, planName, price, currency, type])
 
     const subscribeContainer = useMemo(() => {
         return (
             <div className={css.subscribeContainer}>
                 <div>
                     Starting at{' '}
-                    <b>{formatAmount(cheapestPrices[type]?.amount ?? 0)}</b>/
-                    {interval}
+                    <b>
+                        {formatAmount(
+                            (cheapestPrices[type]?.amount ?? 0) / 100,
+                            currency
+                        )}
+                    </b>
+                    /{interval}
                 </div>
-                <Button intent="primary">Subscribe</Button>
+                <Button
+                    intent="primary"
+                    onClick={() =>
+                        history.push(`${BILLING_PROCESS_PATH}/${type}`)
+                    }
+                >
+                    Subscribe
+                </Button>
             </div>
         )
-    }, [cheapestPrices, formatAmount, interval, type])
+    }, [cheapestPrices, type, currency, interval, history])
 
     const updateContainer = useMemo(
-        () => <Button intent="secondary">Update Plan</Button>,
-        []
+        () => (
+            <Button
+                intent="secondary"
+                onClick={() => history.push(`${BILLING_PROCESS_PATH}/${type}`)}
+            >
+                Update Plan
+            </Button>
+        ),
+        [history, type]
     )
 
     const counter = useMemo(
         () => (
             <div className={classNames(css.counter)}>
                 <>
-                    290 of {product?.num_quota_tickets || 0}{' '}
-                    {PRODUCT_INFO[type].counter}
+                    290 of {formatNumTickets(product?.num_quota_tickets || 0)}{' '}
+                    {PRODUCT_INFO[type].counter} used
                 </>
                 <i className="material-icons" id={`info_${type}`}>
                     info_outlined
