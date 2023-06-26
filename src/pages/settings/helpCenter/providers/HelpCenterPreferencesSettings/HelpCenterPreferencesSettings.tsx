@@ -6,7 +6,7 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import produce, {Draft} from 'immer'
+import {produce, Draft} from 'immer'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'

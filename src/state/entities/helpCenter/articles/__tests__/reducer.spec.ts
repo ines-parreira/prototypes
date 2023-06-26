@@ -1,5 +1,5 @@
 import _keyBy from 'lodash/keyBy'
-import produce from 'immer'
+import {produce} from 'immer'
 
 import {createArticleFromDto} from 'models/helpCenter/utils'
 import {

@@ -1,5 +1,5 @@
 import _keyBy from 'lodash/keyBy'
-import produce from 'immer'
+import {produce} from 'immer'
 
 import {getSingleCategoryEnglish as categoryResponse} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
 

@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import produce from 'immer'
+import {produce} from 'immer'
 import {
     bigCommerceLineItemFixture,
     bigCommerceProductFixture,

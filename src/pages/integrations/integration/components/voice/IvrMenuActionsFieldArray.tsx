@@ -1,5 +1,5 @@
 import React from 'react'
-import produce from 'immer'
+import {produce} from 'immer'
 
 import Button from 'pages/common/components/button/Button'
 import {

@@ -98,7 +98,7 @@
         "history": "4.10.1",
         "htmlparser2": "3.10.1",
         "httpstatus": "1.0.0",
-        "immer": "8.0.1",
+        "immer": "10.0.2",
         "immutable": "3.8.2",
         "indefinite": "2.4.1",
         "jquery": "3.5.1",

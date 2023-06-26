@@ -6,7 +6,7 @@ import {
     ModalFooter,
     ModalHeader,
 } from 'reactstrap'
-import produce from 'immer'
+import {produce} from 'immer'
 import {set as _set} from 'lodash'
 
 import {ContentType} from 'models/api/types'

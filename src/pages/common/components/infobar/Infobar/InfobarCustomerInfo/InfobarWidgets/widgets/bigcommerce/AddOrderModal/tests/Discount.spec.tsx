@@ -1,5 +1,5 @@
 import React from 'react'
-import produce from 'immer'
+import {produce} from 'immer'
 
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'

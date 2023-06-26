@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useMemo, useReducer, useState} from 'react'
-import produce from 'immer'
+import {produce} from 'immer'
 import {
     BigCommerceActionType,
     BigCommerceCart,

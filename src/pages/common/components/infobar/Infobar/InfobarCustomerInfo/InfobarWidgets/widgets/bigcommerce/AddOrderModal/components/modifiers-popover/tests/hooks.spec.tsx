@@ -1,6 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {waitFor} from '@testing-library/react'
-import produce from 'immer'
+import {produce} from 'immer'
 import {
     bigCommerceLineItemFixture,
     bigCommerceProductFixture,

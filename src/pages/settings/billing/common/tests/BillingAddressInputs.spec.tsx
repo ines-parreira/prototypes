@@ -1,6 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
-import produce from 'immer'
+import {produce} from 'immer'
 
 import {countriesRequiringState} from 'config/countries'
 

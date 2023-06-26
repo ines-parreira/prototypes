@@ -1,6 +1,6 @@
 import React, {useMemo, useCallback} from 'react'
 import moment from 'moment-timezone'
-import produce from 'immer'
+import {produce} from 'immer'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {stats as statsConfig, USERS_PERFORMANCE_OVERVIEW} from 'config/stats'

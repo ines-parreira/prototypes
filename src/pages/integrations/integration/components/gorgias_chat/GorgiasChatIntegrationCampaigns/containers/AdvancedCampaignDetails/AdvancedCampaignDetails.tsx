@@ -1,6 +1,6 @@
 import React, {memo, useCallback, useEffect, useMemo, useState} from 'react'
 import {fromJS, Map} from 'immutable'
-import produce from 'immer'
+import {produce} from 'immer'
 import _uniqueId from 'lodash/uniqueId'
 import {EditorState} from 'draft-js'
 

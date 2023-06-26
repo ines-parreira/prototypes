@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useState} from 'react'
-import produce from 'immer'
+import {produce} from 'immer'
 import _keyBy from 'lodash/keyBy'
 
 import Button from 'pages/common/components/button/Button'

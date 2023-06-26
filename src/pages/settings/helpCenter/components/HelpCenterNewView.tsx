@@ -2,7 +2,7 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import axios from 'axios'
 import classnames from 'classnames'
-import produce from 'immer'
+import {produce} from 'immer'
 import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'

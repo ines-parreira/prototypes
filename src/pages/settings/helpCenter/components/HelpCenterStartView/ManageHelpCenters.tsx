@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import produce from 'immer'
+import {produce} from 'immer'
 import {keyBy as _keyBy} from 'lodash'
 import moment from 'moment'
 import {Container} from 'reactstrap'
