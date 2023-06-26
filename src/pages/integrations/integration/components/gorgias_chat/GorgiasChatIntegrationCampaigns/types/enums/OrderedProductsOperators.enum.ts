@@ -1,11 +1,10 @@
 export enum OrderedProductsOperators {
-    Contains = 'contains',
+    ContainsAll = 'containsAll',
+    ContainsAny = 'containsAny',
     NotContains = 'notContains',
-    In = 'in',
-    NotIn = 'notIn',
 }
 
-const ORDERED_PRODUCTS_OPERATORS = ['contains', 'notContains', 'in', 'notIn']
+const ORDERED_PRODUCTS_OPERATORS = ['containsAll', 'containsAny', 'notContains']
 
 export function isOrderedProductsOperators(
     operator: string

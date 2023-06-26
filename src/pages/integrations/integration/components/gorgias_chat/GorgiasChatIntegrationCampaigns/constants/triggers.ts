@@ -174,7 +174,7 @@ export const TRIGGER_LIST = [
         label: 'Shopify customer tags',
         defaults: {
             value: '',
-            operator: ShopifyTagsOperators.Contains,
+            operator: ShopifyTagsOperators.ContainsAny,
         },
         requirements: {
             revenue: true,
@@ -188,7 +188,7 @@ export const TRIGGER_LIST = [
         label: 'Customer country',
         defaults: {
             value: '',
-            operator: CountryOperators.Contains,
+            operator: CountryOperators.In,
         },
         requirements: {
             revenue: true,

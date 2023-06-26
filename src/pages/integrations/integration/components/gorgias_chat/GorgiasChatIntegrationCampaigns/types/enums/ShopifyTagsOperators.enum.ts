@@ -1,11 +1,10 @@
 export enum ShopifyTagsOperators {
-    Contains = 'contains',
+    ContainsAll = 'containsAll',
+    ContainsAny = 'containsAny',
     NotContains = 'notContains',
-    In = 'in',
-    NotIn = 'notIn',
 }
 
-const SHOPIFY_TAGS_OPERATORS = ['contains', 'notContains', 'in', 'notIn']
+const SHOPIFY_TAGS_OPERATORS = ['containsAll', 'containsAny', 'notContains']
 
 export function isShopifyTagsOperators(
     operator: string

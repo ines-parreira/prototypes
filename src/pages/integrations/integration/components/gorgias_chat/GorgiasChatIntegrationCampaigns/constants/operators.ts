@@ -176,57 +176,41 @@ export const AMOUNT_SPENT_OPERATORS = [
 
 export const ORDERED_PRODUCTS_OPERATORS = [
     {
-        label: 'contains',
-        value: OrderedProductsOperators.Contains,
+        label: 'contains all',
+        value: OrderedProductsOperators.ContainsAll,
     },
     {
-        label: 'Not contains',
+        label: 'contains any',
+        value: OrderedProductsOperators.ContainsAny,
+    },
+    {
+        label: 'not contains',
         value: OrderedProductsOperators.NotContains,
-    },
-    {
-        label: 'In',
-        value: CountryOperators.In,
-    },
-    {
-        label: 'Not in',
-        value: CountryOperators.NotIn,
     },
 ]
 
 export const SHOPIFY_TAGS_OPERATORS = [
     {
-        label: 'contains',
-        value: ShopifyTagsOperators.Contains,
+        label: 'contains all',
+        value: ShopifyTagsOperators.ContainsAll,
     },
     {
-        label: 'Not contains',
+        label: 'contains any',
+        value: ShopifyTagsOperators.ContainsAny,
+    },
+    {
+        label: 'not contains',
         value: ShopifyTagsOperators.NotContains,
-    },
-    {
-        label: 'In',
-        value: CountryOperators.In,
-    },
-    {
-        label: 'Not in',
-        value: CountryOperators.NotIn,
     },
 ]
 
 export const COUNTRY_OPERATORS = [
     {
-        label: 'contains',
-        value: CountryOperators.Contains,
-    },
-    {
-        label: 'Not contains',
-        value: CountryOperators.NotContains,
-    },
-    {
-        label: 'In',
+        label: 'is',
         value: CountryOperators.In,
     },
     {
-        label: 'Not in',
+        label: 'is not',
         value: CountryOperators.NotIn,
     },
 ]

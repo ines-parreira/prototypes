@@ -1,11 +1,9 @@
 export enum CountryOperators {
-    Contains = 'contains',
-    NotContains = 'notContains',
     In = 'in',
     NotIn = 'notIn',
 }
 
-const OPERATORS_OPERATORS = ['contains', 'notContains', 'in', 'notIn']
+const OPERATORS_OPERATORS = ['in', 'notIn']
 
 export function isCountryOperators(
     operator: string
