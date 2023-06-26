@@ -118,10 +118,15 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
             <ConnectedChannelFeatureToggle
                 name="Article recommendation"
                 description="Requires an active help center with published articles."
-                value={articleRecommendation.enabled}
+                value={
+                    !!articleRecommendationHelpCenterId &&
+                    articleRecommendation.enabled
+                }
                 onChange={updateSettings('articleRecommendation')}
                 disabled={
-                    isUpdatePending || isHelpCenterEmpty || !hasAutomationAddOn
+                    isUpdatePending ||
+                    !articleRecommendationHelpCenterId ||
+                    !hasAutomationAddOn
                 }
                 action={renderArticleRecommendationAction()}
             />
