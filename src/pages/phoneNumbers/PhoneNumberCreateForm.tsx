@@ -29,6 +29,10 @@ import PhoneMetaFields from './PhoneMetaFields'
 import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
 import PhoneNumberAddressValidationAlert from './PhoneNumberAddressValidationAlert'
 import {shouldValidateAddress} from './utils'
+import {
+    CustomNotifications,
+    UPGRADE_MESSAGE_NOTIFICATION_SETTINGS,
+} from './constants'
 import css from './PhoneNumberCreateForm.less'
 
 export default function PhoneNumberCreateForm(): JSX.Element {
@@ -42,6 +46,34 @@ export default function PhoneNumberCreateForm(): JSX.Element {
     const {country, type} = meta
     const [validationAddress, setValidationAddress] =
         useState<Partial<AddressInformation> | null>(null)
+
+    const showErrorNotification = ({error}: {error: any}) => {
+        const {response} = error as AxiosError<{
+            error: {msg: string; data: {use_custom: string | null}}
+        }>
+        const customNotificationName = response?.data?.error?.data?.use_custom
+        if (customNotificationName === CustomNotifications.UPGRADE_MESSAGE) {
+            void dispatch(
+                notify({
+                    ...UPGRADE_MESSAGE_NOTIFICATION_SETTINGS,
+                    title: 'Cannot add phone number.',
+                    status: NotificationStatus.Error,
+                })
+            )
+            return
+        }
+
+        const errorMsg = response?.data?.error
+            ? response.data.error.msg
+            : 'Failed to create phone number'
+
+        void dispatch(
+            notify({
+                message: errorMsg,
+                status: NotificationStatus.Error,
+            })
+        )
+    }
 
     const [{loading: isLoading}, handlePhoneNumberCreate] =
         useAsyncFn(async () => {
@@ -72,18 +104,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                 )
                 history.push(`/app/settings/phone-numbers/${phoneNumber.id}`)
             } catch (error) {
-                const {response} = error as AxiosError<{error: {msg: string}}>
-                const errorMsg =
-                    response && response.data.error
-                        ? response.data.error.msg
-                        : 'Failed to create phone number'
-
-                void dispatch(
-                    notify({
-                        message: errorMsg,
-                        status: NotificationStatus.Error,
-                    })
-                )
+                showErrorNotification({error: error})
             }
         }, [dispatch, name, meta, validationAddress])
 

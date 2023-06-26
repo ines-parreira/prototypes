@@ -2,15 +2,17 @@ import React from 'react'
 import {act, fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import {RootState, StoreDispatch} from 'state/types'
 import {phoneNumbers, capabilities} from 'fixtures/phoneNumber'
 import {fetchPhoneCapabilities} from 'models/phoneNumber/resources'
 import {assumeMock} from 'utils/testing'
 import * as apiCalls from 'models/phoneNumber/resources'
+import * as notificationActions from 'state/notifications/actions'
 
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const store = mockStore({
     entities: {
         phoneNumbers: phoneNumbers.reduce(
@@ -22,6 +24,8 @@ const store = mockStore({
 
 jest.mock('models/phoneNumber/resources')
 const createPhoneNumberSpy = jest.spyOn(apiCalls, 'createPhoneNumber')
+
+const notify = jest.spyOn(notificationActions, 'notify')
 
 describe('<PhoneNumberCreateForm/>', () => {
     beforeEach(() => {
@@ -201,6 +205,47 @@ describe('<PhoneNumberCreateForm/>', () => {
                 country: 'US',
                 type: 'company',
             })
+        })
+
+        it('should render custom error', async () => {
+            createPhoneNumberSpy.mockImplementation(() =>
+                Promise.reject({
+                    response: {
+                        data: {
+                            error: {
+                                msg: 'Failed',
+                                data: {use_custom: 'UPGRADE_MESSAGE'},
+                            },
+                        },
+                    },
+                })
+            )
+
+            const {getByText, getByRole, findByText} = render(
+                <Provider store={store}>
+                    <PhoneNumberCreateForm />
+                </Provider>
+            )
+
+            await act(async () => {
+                fireEvent.change(
+                    getByRole('textbox', {
+                        name: /title required/i,
+                    }),
+                    {target: {value: 'test title'}}
+                )
+
+                fireEvent.click(getByText('United States'))
+                await findByText('Alabama')
+                fireEvent.click(getByText('Alabama'))
+                fireEvent.click(getByText('Birmingham (205)'))
+                fireEvent.click(getByText('Add phone number'))
+            })
+            expect(createPhoneNumberSpy).toHaveBeenCalled()
+
+            const notificationSent = notify.mock.lastCall?.[0]
+            expect(notificationSent?.title).toEqual('Cannot add phone number.')
+            expect(notificationSent?.allowHTML).toBe(true)
         })
     })
 })
