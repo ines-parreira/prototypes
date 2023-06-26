@@ -1048,4 +1048,18 @@ describe('global utils', () => {
             }
         })
     })
+
+    describe('isTouchEvent()', () => {
+        it('should return true', () => {
+            const event = new TouchEvent('touchstart')
+
+            expect(utils.isTouchEvent(event)).toEqual(true)
+        })
+
+        it('should return false', () => {
+            const event = new MouseEvent('mousemove')
+
+            expect(utils.isTouchEvent(event)).toEqual(false)
+        })
+    })
 })

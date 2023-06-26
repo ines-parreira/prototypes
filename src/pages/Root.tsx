@@ -13,7 +13,8 @@ import {QueryClientProvider} from '@tanstack/react-query'
 
 import {getLDClient, LDUser} from 'utils/launchDarkly'
 import {appQueryClient} from 'init'
-import {RootState} from '../state/types'
+
+import {RootState} from 'state/types'
 
 import history from './history'
 import Routes from './routes'

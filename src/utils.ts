@@ -1199,3 +1199,9 @@ export function includes<TPossibilities extends TValue, TValue>(
 export function generateTicketMessagesId(index: number) {
     return `message-${index}`
 }
+
+export function isTouchEvent(
+    event: MouseEvent | TouchEvent
+): event is TouchEvent {
+    return 'touches' in event
+}

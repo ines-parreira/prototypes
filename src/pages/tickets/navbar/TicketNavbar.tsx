@@ -375,89 +375,82 @@ export function TicketNavbarContainer({
     )
 
     return (
-        <>
-            <Navbar activeContent="tickets">
-                <RecentChats />
-                <NavbarBlock
-                    actions={
-                        isAgent
-                            ? [
-                                  {
-                                      label: 'Create view',
-                                      onClick: () =>
-                                          history.push(
-                                              '/app/tickets/new/public'
-                                          ),
-                                  },
-                                  {
-                                      label: 'Create section',
-                                      onClick: () =>
-                                          handleCreateSectionClick(false),
-                                  },
-                              ]
-                            : []
-                    }
-                    title="Shared views"
-                    className={css.navbarBlock}
-                >
-                    <TicketNavbarContent
-                        {...(isAgent
-                            ? {
-                                  onSectionDeleteClick:
-                                      handleSectionDeleteClick,
-                                  onSectionRenameClick:
-                                      handleSectionRenameClick,
-                              }
-                            : {})}
-                        elements={sharedElements}
-                        isMovingItem={isMovingItem}
-                        onSubmitMoveItem={handleSubmitMoveItem}
-                    />
-                </NavbarBlock>
-                <NavbarBlock
-                    actions={[
-                        {
-                            label: 'Create view',
-                            onClick: () =>
-                                history.push('/app/tickets/new/private'),
-                        },
-                        {
-                            label: 'Create section',
-                            onClick: () => handleCreateSectionClick(true),
-                        },
-                    ]}
-                    title="Private views"
-                    className={css.navbarBlock}
-                >
-                    <TicketNavbarContent
-                        elements={privateElements}
-                        isMovingItem={isMovingItem}
-                        isPrivate
-                        onSectionDeleteClick={handleSectionDeleteClick}
-                        onSectionRenameClick={handleSectionRenameClick}
-                        onSubmitMoveItem={handleSubmitMoveItem}
-                    />
-                </NavbarBlock>
-
-                <SectionFormModal
-                    isNewSection={isNewSection}
-                    isOpen={isSectionFormModalOpened}
-                    isSubmitting={isSubmitting}
-                    onChange={handleSectionDraftChange}
-                    onClose={handleSectionModalClose}
-                    onSubmit={handleSectionDraftSubmit}
-                    sectionForm={sectionForm}
+        <Navbar activeContent="tickets">
+            <RecentChats />
+            <NavbarBlock
+                actions={
+                    isAgent
+                        ? [
+                              {
+                                  label: 'Create view',
+                                  onClick: () =>
+                                      history.push('/app/tickets/new/public'),
+                              },
+                              {
+                                  label: 'Create section',
+                                  onClick: () =>
+                                      handleCreateSectionClick(false),
+                              },
+                          ]
+                        : []
+                }
+                title="Shared views"
+                className={css.navbarBlock}
+            >
+                <TicketNavbarContent
+                    {...(isAgent
+                        ? {
+                              onSectionDeleteClick: handleSectionDeleteClick,
+                              onSectionRenameClick: handleSectionRenameClick,
+                          }
+                        : {})}
+                    elements={sharedElements}
+                    isMovingItem={isMovingItem}
+                    onSubmitMoveItem={handleSubmitMoveItem}
                 />
-
-                <DeleteSectionModal
-                    isOpen={isDeleteSectionModalOpened}
-                    isSubmitting={isDeleting}
-                    onClose={handleDeleteSectionModalClose}
-                    onSubmit={handleSectionDelete}
-                    section={sectionForm as Maybe<Section>}
+            </NavbarBlock>
+            <NavbarBlock
+                actions={[
+                    {
+                        label: 'Create view',
+                        onClick: () => history.push('/app/tickets/new/private'),
+                    },
+                    {
+                        label: 'Create section',
+                        onClick: () => handleCreateSectionClick(true),
+                    },
+                ]}
+                title="Private views"
+                className={css.navbarBlock}
+            >
+                <TicketNavbarContent
+                    elements={privateElements}
+                    isMovingItem={isMovingItem}
+                    isPrivate
+                    onSectionDeleteClick={handleSectionDeleteClick}
+                    onSectionRenameClick={handleSectionRenameClick}
+                    onSubmitMoveItem={handleSubmitMoveItem}
                 />
-            </Navbar>
-        </>
+            </NavbarBlock>
+
+            <SectionFormModal
+                isNewSection={isNewSection}
+                isOpen={isSectionFormModalOpened}
+                isSubmitting={isSubmitting}
+                onChange={handleSectionDraftChange}
+                onClose={handleSectionModalClose}
+                onSubmit={handleSectionDraftSubmit}
+                sectionForm={sectionForm}
+            />
+
+            <DeleteSectionModal
+                isOpen={isDeleteSectionModalOpened}
+                isSubmitting={isDeleting}
+                onClose={handleDeleteSectionModalClose}
+                onSubmit={handleSectionDelete}
+                section={sectionForm as Maybe<Section>}
+            />
+        </Navbar>
     )
 }
 

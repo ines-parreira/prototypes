@@ -4,13 +4,60 @@
 @import (reference) '~css/typography';
 
 :local {
+    .sidebar {
+        flex-grow: 0;
+        flex-shrink: 0;
+        min-width: 200px;
+        max-width: 350px;
+        display: flex;
+        flex-direction: row;
+        z-index: 2;
+
+        @media @mobiles {
+            min-width: 0;
+            max-width: 0;
+            z-index: 1040;
+        }
+    }
+
+    .sidebar .sidebar-resizer {
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 5px;
+        justify-self: flex-end;
+        cursor: col-resize;
+        resize: horizontal;
+
+        @media @mobiles {
+            display: none;
+        }
+
+        &:hover,
+        &.isTouched {
+            width: 3px;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0px;
+                bottom: 0px;
+                width: 2px;
+                background-color: @classic-main-primary-1;
+                opacity: 1;
+                transition-property: opacity;
+                transition-duration: 0.25s;
+                transition-delay: 0ms;
+                pointer-events: none;
+            }
+        }
+    }
+
     .nav-primary {
         @media @mobiles {
             @width: 80%;
             width: @width;
             min-width: @width;
             max-width: @width;
-            z-index: 1040;
             transition: all 0.2s linear;
             top: 0;
             height: 100%;
@@ -29,9 +76,10 @@
 
         display: flex;
         flex-direction: column;
-        flex-shrink: 0;
-        width: @navbarWidth;
+        width: inherit;
         background: @classic-neutral-grey-6;
+        min-width: 200px;
+        max-width: 350px;
     }
 
     .nav-dropdown {

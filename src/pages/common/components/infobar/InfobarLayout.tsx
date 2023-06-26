@@ -2,11 +2,10 @@ import React, {ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 
-import {tryLocalStorage} from '../../../../services/common/utils'
-import * as layoutSelectors from '../../../../state/layout/selectors'
-import {RootState} from '../../../../state/types'
-
-import {ErrorBoundary} from '../../../ErrorBoundary'
+import {ErrorBoundary} from 'pages/ErrorBoundary'
+import {tryLocalStorage} from 'services/common/utils'
+import * as layoutSelectors from 'state/layout/selectors'
+import {RootState} from 'state/types'
 
 import {getInfobarMinWidth, getInfobarWidth} from './utils'
 import css from './Infobar.less'
@@ -120,7 +119,7 @@ export class InfobarLayout extends React.Component<Props, State> {
                 ref={(ref) => (this.containerRef = ref)}
                 style={style}
             >
-                <div className="infobar-drag-handle" />
+                <div className={css[this.classHandle]} />
                 <ErrorBoundary>{this.props.children}</ErrorBoundary>
             </div>
         )
