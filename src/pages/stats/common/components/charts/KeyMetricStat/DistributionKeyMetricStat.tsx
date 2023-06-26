@@ -3,7 +3,9 @@ import classnames from 'classnames'
 import _rangeRight from 'lodash/rangeRight'
 import {Map} from 'immutable'
 
-import DistributionVariantStat from '../DistributionVariantStat'
+import DistributionVariantStat, {
+    DistributionStatVariant,
+} from '../DistributionVariantStat'
 
 import css from './DistributionKeyMetricStat.less'
 
@@ -19,7 +21,7 @@ export default class DistributionKeyMetricStat extends Component<Props> {
         const {config, formattedValue} = this.props
         const maxValue = config.get('maxValue') as number
         const minValue = config.get('minValue') as number
-        const variant = config.get('variant') as string
+        const variant = config.get('variant') as DistributionStatVariant
 
         return (
             <div>

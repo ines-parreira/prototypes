@@ -1,7 +1,9 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import DistributionVariantStat from '../DistributionVariantStat'
+import DistributionVariantStat, {
+    DistributionStatVariant,
+} from '../DistributionVariantStat'
 
 describe('DistributionVariantStat', () => {
     it('should render a distribution chart', () => {
@@ -9,7 +11,7 @@ describe('DistributionVariantStat', () => {
             <DistributionVariantStat
                 minValue={1}
                 maxValue={5}
-                variant="star"
+                variant={DistributionStatVariant.Star}
                 currentValue={2}
             />
         )

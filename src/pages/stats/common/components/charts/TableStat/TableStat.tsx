@@ -34,7 +34,9 @@ import {
     formatCurrency,
     formatDuration,
 } from '../../../utils'
-import DistributionVariantStat from '../DistributionVariantStat'
+import DistributionVariantStat, {
+    DistributionStatVariant,
+} from '../DistributionVariantStat'
 import StatDifference from '../../StatDifference'
 import StatsHelpIcon from '../../StatsHelpIcon'
 
@@ -311,7 +313,7 @@ export class TableStat extends Component<
                         minValue={SATISFACTION_SURVEY_MIN_SCORE}
                         maxValue={SATISFACTION_SURVEY_MAX_SCORE}
                         currentValue={metric.get('value')}
-                        variant="star"
+                        variant={DistributionStatVariant.Star}
                     />
                 )
             }

@@ -1,6 +1,5 @@
-import React, {Component, ReactNode} from 'react'
+import React, {Component} from 'react'
 import classNames from 'classnames'
-import {fromJS, Map} from 'immutable'
 import _rangeRight from 'lodash/rangeRight'
 
 import fullStar from 'assets/img/satisfaction-survey/full-star.svg'
@@ -11,16 +10,19 @@ import css from './DistributionVariantStat.less'
 type Props = {
     minValue: number
     maxValue: number
-    variant: string
+    variant: DistributionStatVariant
     currentValue: number
 }
 
-export default class DistributionVariantStat extends Component<Props> {
-    render() {
-        const {minValue, maxValue, variant, currentValue} = this.props
+export enum DistributionStatVariant {
+    Default = 'default',
+    Star = 'star',
+}
 
-        const VARIANTS: Map<any, any> = fromJS({
-            star: {
+const getVariant = (variant: DistributionStatVariant) => {
+    switch (variant) {
+        case DistributionStatVariant.Star:
+            return {
                 fill: (key: number) => (
                     <img
                         alt="filled star"
@@ -37,8 +39,9 @@ export default class DistributionVariantStat extends Component<Props> {
                         className={css.star}
                     />
                 ),
-            },
-            default: {
+            }
+        case DistributionStatVariant.Default:
+            return {
                 fill: (key: number) => (
                     <i
                         key={key}
@@ -61,28 +64,22 @@ export default class DistributionVariantStat extends Component<Props> {
                         star_rate
                     </i>
                 ),
-            },
-        })
+            }
+    }
+}
 
-        const variantComponent = VARIANTS.get(variant, 'default') as Map<
-            any,
-            any
-        >
+export default class DistributionVariantStat extends Component<Props> {
+    render() {
+        const {minValue, maxValue, variant, currentValue} = this.props
+
+        const variantComponent = getVariant(variant)
 
         return (
             <span className={classNames(css.distribution)}>
                 {_rangeRight(minValue, maxValue + 1).map((index) =>
                     index <= maxValue - currentValue
-                        ? (
-                              variantComponent.get('empty') as (
-                                  key: number
-                              ) => ReactNode
-                          )(index)
-                        : (
-                              variantComponent.get('fill') as (
-                                  key: number
-                              ) => ReactNode
-                          )(index)
+                        ? variantComponent.empty(index)
+                        : variantComponent.fill(index)
                 )}
             </span>
         )
