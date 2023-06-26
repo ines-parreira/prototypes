@@ -79,4 +79,16 @@ describe('attachSearchParamsToUrl', () => {
             })
         ).toEqual('http://acme.gorgias.docker/?ref=internal&isTest=true')
     })
+
+    it('should encode the values', () => {
+        expect(
+            attachSearchParamsToUrl('http://acme.gorgias.docker', {
+                ref: 'internal',
+                isTest: 'true',
+                utm_campaign: '10% test',
+            })
+        ).toEqual(
+            'http://acme.gorgias.docker/?ref=internal&isTest=true&utm_campaign=10%25%20test'
+        )
+    })
 })

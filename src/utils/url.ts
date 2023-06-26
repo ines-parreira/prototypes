@@ -20,7 +20,7 @@ export function attachSearchParamsToUrl(
         const url = new URL(baseUrl)
 
         Object.entries(params).forEach(([key, value]) => {
-            url.searchParams.set(_trim(key), _trim(value))
+            url.searchParams.set(_trim(key), encodeURIComponent(_trim(value)))
         })
 
         return decodeURI(url.toString())

@@ -59,7 +59,7 @@ describe('attachUtmToCampaignProduct', () => {
             [FeatureFlagKey.RevenueDisableUtmParams]: false,
         })
 
-        const campaignNameConcat = MOCK_CAMPAIGN_NAME.replace(' ', '+')
+        const campaignNameConcat = MOCK_CAMPAIGN_NAME.replace(' ', '%20')
         const expectedFullUrl = `${MOCK_PRODUCT.url}?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignNameConcat}`
 
         expect(
@@ -82,7 +82,7 @@ describe('replaceUrlsWithUtmUrl', () => {
     it('replaces the url with the utm url', () => {
         const html = `<p><a href="${MOCK_PRODUCT.url}">Mock product</a></p>`
 
-        const campaignNameConcat = MOCK_CAMPAIGN_NAME.replace(' ', '+')
+        const campaignNameConcat = MOCK_CAMPAIGN_NAME.replace(' ', '%20')
         const expectedFullUrl = `${MOCK_PRODUCT.url}?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignNameConcat}`
 
         expect(replaceUrlsWithUtmUrl(html, MOCK_CAMPAIGN_NAME)).toEqual(
