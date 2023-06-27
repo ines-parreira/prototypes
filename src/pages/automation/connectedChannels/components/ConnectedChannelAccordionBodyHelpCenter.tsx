@@ -38,8 +38,12 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
         useConnectedChannelsViewContext()
 
     const workflowsEntrypoints = useMemo(() => {
-        const existingWorkflows: HelpCenterAutomationSettings['workflows'] =
+        const availableWorkflowsIds = availableWorkflowsEntrypoints.map(
+            ({workflow_id}) => workflow_id
+        )
+        const existingWorkflows: HelpCenterAutomationSettings['workflows'] = (
             automationSettings?.workflows ?? []
+        ).filter(({id}) => availableWorkflowsIds.includes(id))
 
         const existingWorkflowsIds = existingWorkflows.map(({id}) => id)
 
