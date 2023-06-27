@@ -375,14 +375,16 @@ function TitleWrapper({children, source}: TitleWrapperProps) {
     )
 }
 
-const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
+export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
     source: order = fromJS({}) as Map<string, any>,
     children,
 }) => {
     const {integration, integrationId} = useContext(IntegrationContext)
 
     const isCancelled = !!order.get('cancelled_at')
-    const isRefunded = order.get('financial_status') === 'refunded'
+    const isRefunded = ['refunded', 'voided'].includes(
+        order.get('financial_status')
+    )
     const isFulfilled = order.get('fulfillment_status') === 'fulfilled'
     const isPartiallyFulfilled = order.get('fulfillment_status') === 'partial'
 

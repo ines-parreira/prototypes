@@ -11,7 +11,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {notify} from 'state/notifications/actions'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
-import Order, {Copy} from '../OrderWidget'
+import Order, {Copy, Wrapper} from '../OrderWidget'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -20,6 +20,7 @@ jest.mock('state/notifications/actions')
 const orderWidgets = Order()
 
 const TitleWrapper = orderWidgets.TitleWrapper
+const AfterTitle = orderWidgets.AfterTitle
 
 describe('<TitleWrapper/>', () => {
     const mockStore = configureMockStore()
@@ -120,6 +121,84 @@ describe('<TitleWrapper/>', () => {
 
             expect(container).toMatchSnapshot()
         })
+    })
+})
+
+describe('<AfterTitle/>', () => {
+    const mockStore = configureMockStore()
+    const integrationId = 1
+    const integration = {
+        id: integrationId,
+        name: 'My Shopify Integration',
+        total_spent: '100.0',
+        currency: 'USD',
+        admin_graphql_api_id: 'https://test.myshopify.com',
+        meta: {
+            currency: 'GBP',
+            store_url: 'https://test.myshopify.com',
+        },
+        integrationType: IntegrationType.Shopify,
+        shopify: IntegrationType.Shopify,
+    }
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+    describe('render()', () => {
+        it.each([
+            ['voided', 0],
+            ['refunded', 0],
+            ['paid', 1],
+        ])(
+            'should not render refund button if not refundable',
+            (financial_status, expected) => {
+                const store = mockStore({
+                    integrations: fromJS({
+                        integrations: [integration],
+                    }),
+                    infobarActions: {
+                        [IntegrationType.Shopify]: {
+                            createOrder: initialState,
+                            editOrder: initialState,
+                            refundOrder: initialState,
+                            cancelOrder: initialState,
+                        },
+                    },
+                })
+                render(
+                    <Provider store={store}>
+                        <IntegrationContext.Provider
+                            value={{
+                                integration: fromJS(integration),
+                                integrationId: integrationId,
+                            }}
+                        >
+                            <Wrapper
+                                source={fromJS({
+                                    financial_status: financial_status,
+                                })}
+                            >
+                                <AfterTitle
+                                    isEditing={false}
+                                    source={fromJS({
+                                        order_number: 123,
+                                        name: 'name',
+                                        meta: {
+                                            shop_name: 'shopify.gorgi.us',
+                                            admin_url_suffix: 'admin_12df',
+                                        },
+                                    })}
+                                >
+                                    <div>foo bar</div>
+                                </AfterTitle>
+                            </Wrapper>
+                        </IntegrationContext.Provider>
+                    </Provider>
+                )
+                expect(
+                    screen.queryAllByRole('button', {name: /Refund/}).length
+                ).toBe(expected)
+            }
+        )
     })
 })
 
