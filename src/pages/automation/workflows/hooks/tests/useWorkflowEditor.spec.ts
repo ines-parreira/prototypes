@@ -1,5 +1,5 @@
 import {act, renderHook} from '@testing-library/react-hooks'
-import {useWorkflowConfiguration} from '../useWorkflowConfiguration'
+import {useWorkflowEditor} from '../useWorkflowEditor'
 import {WorkflowConfiguration} from '../../models/workflowConfiguration.types'
 import useWorkflowApi from '../useWorkflowApi'
 
@@ -27,15 +27,13 @@ function updateMock(overrides: Partial<ReturnType<typeof useWorkflowApi>>) {
     } as ReturnType<typeof useWorkflowApi>)
 }
 
-describe('useWorkflowConfiguration', () => {
+describe('useWorkflowEditor', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         updateMock({})
     })
     it('generates an empty workflow configuration when is new', () => {
-        const {result} = renderHook(() =>
-            useWorkflowConfiguration(1, 'a', true)
-        )
+        const {result} = renderHook(() => useWorkflowEditor(1, 'a', true))
         expect(result.current.configuration.name).toEqual('')
     })
 
@@ -44,7 +42,7 @@ describe('useWorkflowConfiguration', () => {
             fetchWorkflowConfiguration: () => Promise.resolve(null),
         })
         const {result, waitForNextUpdate} = renderHook(() =>
-            useWorkflowConfiguration(1, 'a', false)
+            useWorkflowEditor(1, 'a', false)
         )
         await waitForNextUpdate()
         expect(result.current.hookError).toBeDefined()
@@ -65,7 +63,7 @@ describe('useWorkflowConfiguration', () => {
                 } as WorkflowConfiguration),
         })
         const {result, waitForNextUpdate, rerender} = renderHook(() =>
-            useWorkflowConfiguration(1, 'a', false)
+            useWorkflowEditor(1, 'a', false)
         )
         expect(result.current.isFetchPending).toBe(true)
         // wait for asynchronous effect to update the local configuration
@@ -79,7 +77,7 @@ describe('useWorkflowConfiguration', () => {
             result.current.dispatch({type: 'SET_NAME', name: 'local name'})
         )
         rerender()
-        expect(result.current.configuration.name).toBe('local name')
+        expect(result.current.visualBuilderGraph.name).toBe('local name')
         expect(result.current.isDirty).toBe(true)
 
         // save
@@ -94,6 +92,6 @@ describe('useWorkflowConfiguration', () => {
         // and discard
         act(() => result.current.handleDiscard())
         expect(result.current.isDirty).toBe(false)
-        expect(result.current.configuration.name).toBe('local name')
+        expect(result.current.visualBuilderGraph.name).toBe('local name')
     })
 })

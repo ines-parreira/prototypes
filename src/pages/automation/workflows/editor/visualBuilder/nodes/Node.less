@@ -1,5 +1,6 @@
-@import '~css/new/layout.less';
-@import '~css/new/colorTokens';
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/colorTokens';
+@import (reference) '~css/typography.less';
 :local {
     .node {
         box-sizing: border-box;
@@ -8,7 +9,7 @@
         background: @classic-neutral-grey-0;
         border: 1px solid @classic-neutral-grey-3;
         width: 274px;
-        height: 72px;
+        height: 104px;
         padding: 14px 16px;
         border-radius: @layout-spacing-xxs;
         cursor: pointer !important;
@@ -26,8 +27,13 @@
         background: @classic-neutral-grey-2;
     }
 
-    .placeholderNode {
-        height: 98px;
+    .nodeSelected {
+        border: 1px solid @classic-main-primary;
+        box-shadow: 0px 2px 4px rgba(22, 22, 22, 0.16);
+    }
+
+    .endNode {
+        height: 104px;
         display: flex;
         flex-direction: column;
         gap: 6px;
@@ -40,28 +46,29 @@
         }
     }
 
-    label {
-        cursor: pointer;
-    }
-
-    .placeholderContainer {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-grow: 1;
-    }
-
-    .placeholderTooltipIcon {
+    .endTooltipIcon {
         cursor: help;
     }
 
     .nodeContainer {
         display: flex;
+        align-items: baseline;
         flex-direction: column;
+        height: 100%;
+        gap: 8px;
     }
 
     .nodeTitle {
-        margin-bottom: @layout-spacing-xxs;
+        width: 95%;
+        .body-semibold();
+        // white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        cursor: pointer;
     }
 
     .nodeContent {
@@ -94,24 +101,5 @@
         opacity: 0;
         transform: translate(-50%, -100%) !important;
         cursor: pointer !important;
-    }
-
-    .addNodeIconContainer {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        left: 0;
-        cursor: grab;
-    }
-
-    .itemDeleteIcon {
-        font-size: 20px;
-        position: absolute;
-        top: 0;
-        right: 0;
-        padding: 10px 10px;
-        color: @classic-neutral-grey-4;
     }
 }

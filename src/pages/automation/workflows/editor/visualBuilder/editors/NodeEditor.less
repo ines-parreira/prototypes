@@ -4,7 +4,12 @@
 @import (reference) '~css/typography.less';
 
 :local {
+    .title {
+        .heading-subsection-semibold();
+        margin-bottom: @layout-spacing-s;
+    }
     .label {
+        .body-semibold();
         margin-bottom: @layout-spacing-xs;
     }
 
@@ -13,6 +18,10 @@
     }
 
     .richFieldLabel {
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .richFieldContainer {
         margin-bottom: @layout-spacing-s;
     }
 

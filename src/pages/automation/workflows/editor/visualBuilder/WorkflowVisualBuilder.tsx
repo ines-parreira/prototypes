@@ -7,26 +7,32 @@ import {
     ReactFlowProvider,
     useNodesState,
     useEdgesState,
+    Node,
+    useReactFlow,
 } from 'reactflow'
 
 import Loader from 'pages/common/components/Loader/Loader'
-import {useWorkflowConfigurationContext} from '../../hooks/useWorkflowConfiguration'
+import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
 import {VisualBuilderNode} from '../../models/visualBuilderGraph.types'
-import {useSyncWorkflowToReactFlow} from '../../hooks/useSyncWorkflowToReactFlow'
 import useAutoLayout from '../../hooks/useAutoLayout'
-import PlaceholderNode from './nodes/PlaceholderNode'
 import TriggerButtonNode from './nodes/TriggerButtonNode'
+import AutomatedMessageNode from './nodes/AutomatedMessageNode'
+import MultipleChoicesNode from './nodes/MultipleChoicesNode'
+import EndNode from './nodes/EndNode'
+import CustomEdge from './CustomEdge'
 import NodeEditorDrawer from './NodeEditorDrawer'
 
 import 'reactflow/dist/style.css'
-import AutomatedMessageNode from './nodes/AutomatedMessageNode'
-import ReplyButtonNode from './nodes/ReplyButtonNode'
 
 const nodeTypes = {
     trigger_button: TriggerButtonNode,
     automated_message: AutomatedMessageNode,
-    reply_button: ReplyButtonNode,
-    placeholder: PlaceholderNode,
+    multiple_choices: MultipleChoicesNode,
+    end: EndNode,
+}
+
+const edgeTypes = {
+    custom: CustomEdge,
 }
 
 type WorkflowVisualBuilderProps = {
@@ -36,14 +42,21 @@ type WorkflowVisualBuilderProps = {
 export function WorkflowVisualBuilderWrapped({
     lastSaveAttempt,
 }: WorkflowVisualBuilderProps) {
-    const {isFetchPending} = useWorkflowConfigurationContext()
-    useSyncWorkflowToReactFlow()
+    const {
+        isFetchPending,
+        visualBuilderGraph,
+        visualBuilderNodeIdEditing,
+        setVisualBuilderNodeIdEditing,
+    } = useWorkflowEditorContext()
     const {minZoom, maxZoom} = useAutoLayout()
-    const [nodes, setNodes, onNodesChange] = useNodesState([])
+    const {getNodes} = useReactFlow()
+    const [nodes, setNodes, onNodesChange] = useNodesState<
+        VisualBuilderNode['data']
+    >(visualBuilderGraph.nodes)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [edges, _setEdges, onEdgesChange] = useEdgesState([])
-    const [visualBuilderNodeIdEditing, setVisualBuilderNodeIdEditing] =
-        useState<VisualBuilderNode['id'] | null>(null)
+    const [edges, setEdges, onEdgesChange] = useEdgesState(
+        visualBuilderGraph.edges
+    )
     const [nodeEditorDrawerOpen, setNodeEditorDrawerOpen] = useState(false)
     const visualBuilderNodeEditing = visualBuilderNodeIdEditing
         ? (nodes.find(
@@ -52,13 +65,24 @@ export function WorkflowVisualBuilderWrapped({
         : null
 
     useEffect(() => {
-        setNodes((nodes) =>
-            nodes.map((n) => ({
+        const existingNodes = getNodes().reduce(
+            (acc, n) => ({
+                ...acc,
+                [n.id]: n,
+            }),
+            {} as Record<string, Node>
+        )
+        setNodes(
+            visualBuilderGraph.nodes.map((n) => ({
                 ...n,
                 data: {...n.data, shouldShowErrors: lastSaveAttempt != null},
+                position: existingNodes[n.id]?.position || n.position,
+                width: existingNodes[n.id]?.width || n.width,
+                height: existingNodes[n.id]?.height || n.height,
             }))
         )
-    }, [lastSaveAttempt, setNodes])
+        setEdges(visualBuilderGraph.edges)
+    }, [visualBuilderGraph, setNodes, setEdges, getNodes, lastSaveAttempt])
 
     if (isFetchPending) return <Loader />
 
@@ -76,6 +100,7 @@ export function WorkflowVisualBuilderWrapped({
                 edges={edges}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
+                edgeTypes={edgeTypes}
                 nodeTypes={nodeTypes}
                 minZoom={minZoom}
                 maxZoom={maxZoom}
@@ -83,7 +108,7 @@ export function WorkflowVisualBuilderWrapped({
                 nodesConnectable={false}
                 zoomOnDoubleClick={false}
                 onNodeClick={(_e, node) => {
-                    if (node.type !== 'placeholder') {
+                    if (node.type !== 'end') {
                         setVisualBuilderNodeIdEditing(node.id)
                         setNodeEditorDrawerOpen(true)
                     }

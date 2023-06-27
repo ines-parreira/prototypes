@@ -20,7 +20,7 @@ export const buildEdgeCommonProperties: () => Pick<
     'id' | 'type' | 'style' | 'interactionWidth'
 > & {id: string} = () => ({
     id: ulid(),
-    type: 'smoothstep',
+    type: 'custom',
     style: {stroke: '#D2D7DE'},
     interactionWidth: 0,
 })
@@ -85,7 +85,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     }
                 }
                 return
-            } else if (node.type === 'automated_answer') {
+            } else if (node.type === 'automated_message') {
                 const stepId =
                     node.data.wfConfigurationRef.wfConfigurationMessagesStepId
                 const s: WorkflowStepMessages = {

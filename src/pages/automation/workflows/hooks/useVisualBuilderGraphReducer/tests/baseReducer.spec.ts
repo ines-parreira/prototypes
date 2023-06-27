@@ -1,6 +1,6 @@
 import {visualBuilderGraphSimpleChoicesFixture} from 'pages/automation/workflows/tests/visualBuilderGraph.fixtures'
 import {
-    AutomatedAnswerNodeType,
+    AutomatedMessageNodeType,
     TriggerButtonNodeType,
 } from 'pages/automation/workflows/models/visualBuilderGraph.types'
 
@@ -21,11 +21,11 @@ describe('baseReducer', () => {
         ).toEqual('new entrypoint')
     })
 
-    test('SET_AUTOMATED_ANSWER_CONTENT', () => {
+    test('SET_AUTOMATED_MESSAGE_CONTENT', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
         const nextG = baseReducer(g, {
-            type: 'SET_AUTOMATED_ANSWER_CONTENT',
-            automatedAnswerNodeId: 'automated_answer1',
+            type: 'SET_AUTOMATED_MESSAGE_CONTENT',
+            automatedMessageNodeId: 'automated_message1',
             content: {
                 html: 'new html',
                 text: 'new text',
@@ -33,8 +33,8 @@ describe('baseReducer', () => {
         })
         expect(
             nextG.nodes.find(
-                (n): n is AutomatedAnswerNodeType =>
-                    n.id === 'automated_answer1'
+                (n): n is AutomatedMessageNodeType =>
+                    n.id === 'automated_message1'
             )?.data.content
         ).toEqual(
             expect.objectContaining({
@@ -44,21 +44,21 @@ describe('baseReducer', () => {
         )
     })
 
-    test('INSERT_AUTOMATED_ANSWER_NODE', () => {
+    test('INSERT_AUTOMATED_MESSAGE_NODE', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
         const nextG = baseReducer(g, {
-            type: 'INSERT_AUTOMATED_ANSWER_NODE',
-            beforeNodeId: 'automated_answer1',
+            type: 'INSERT_AUTOMATED_MESSAGE_NODE',
+            beforeNodeId: 'automated_message1',
         })
         // there should be one more node and one more edge
         expect(g.nodes.length).toEqual(nextG.nodes.length - 1)
         expect(g.edges.length).toEqual(nextG.edges.length - 1)
-        // the new automated_answer node has empty text
+        // the new automated_message node has empty text
         expect(
             nextG.nodes
                 .filter(
-                    (n): n is AutomatedAnswerNodeType =>
-                        n.type === 'automated_answer'
+                    (n): n is AutomatedMessageNodeType =>
+                        n.type === 'automated_message'
                 )
                 .find(
                     (n) =>
@@ -71,7 +71,7 @@ describe('baseReducer', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
         const nextG = baseReducer(g, {
             type: 'DELETE_NODE',
-            nodeId: 'automated_answer1',
+            nodeId: 'automated_message1',
         })
         // there should be one less node and one less edge
         expect(g.nodes.length).toEqual(nextG.nodes.length + 1)
@@ -82,14 +82,14 @@ describe('baseReducer', () => {
             nextG.edges
                 .filter((e) => e.source === 'multiple_choices1')
                 .map((e) => e.target)
-        ).toEqual(['end1', 'automated_answer2'])
+        ).toEqual(['end1', 'automated_message2'])
     })
 
     test('DELETE_BRANCH', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
         const nextG = baseReducer(g, {
             type: 'DELETE_NODE',
-            nodeId: 'automated_answer1',
+            nodeId: 'automated_message1',
         })
         // there should be one less node and one less edge
         expect(g.nodes.length).toEqual(nextG.nodes.length + 1)
@@ -100,7 +100,7 @@ describe('baseReducer', () => {
             nextG.edges
                 .filter((e) => e.source === 'multiple_choices1')
                 .map((e) => e.target)
-        ).toEqual(['end1', 'automated_answer2'])
+        ).toEqual(['end1', 'automated_message2'])
     })
 
     test('GREY_OUT_BRANCH', () => {

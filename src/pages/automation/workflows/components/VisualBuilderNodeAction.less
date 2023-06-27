@@ -1,0 +1,37 @@
+@import (reference) '~css/new/colorTokens';
+@import (reference) '~css/typography.less';
+
+:local {
+    .visualBuilderNodeAction {
+        display: flex;
+        padding: 4px 8px;
+        border-radius: 4px;
+        .caption-semibold();
+        gap: 4px;
+        :global {
+            .material-icons {
+                line-height: inherit;
+            }
+        }
+    }
+
+    .red {
+        color: @classic-feedback-error-4;
+        background-color: @classic-accessory-red-bg;
+    }
+
+    .orange {
+        color: @classic-feedback-warning-4;
+        background-color: @classic-accessory-orange-bg;
+    }
+
+    .blue {
+        color: @classic-neutral-grey-5;
+        background-color: @classic-accessory-blue-bg;
+    }
+
+    .teal {
+        color: @classic-feedback-success-4;
+        background-color: @classic-accessory-teal-bg;
+    }
+}

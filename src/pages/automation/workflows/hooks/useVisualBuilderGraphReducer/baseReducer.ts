@@ -4,13 +4,13 @@ import {MessageContent} from 'pages/automation/workflows/models/workflowConfigur
 import {buildEdgeCommonProperties} from 'pages/automation/workflows/models/visualBuilderGraph.model'
 
 import {
-    AutomatedAnswerNodeType,
+    AutomatedMessageNodeType,
     TriggerButtonNodeType,
     VisualBuilderGraph,
     VisualBuilderNode,
 } from '../../models/visualBuilderGraph.types'
 import {
-    buildAutomatedAnswerNode,
+    buildAutomatedMessageNode,
     buildEndNode,
     deleteBranch,
     greyOutBranch,
@@ -31,12 +31,12 @@ export type VisualBuilderBaseAction =
           label: string
       }
     | {
-          type: 'SET_AUTOMATED_ANSWER_CONTENT'
-          automatedAnswerNodeId: string
+          type: 'SET_AUTOMATED_MESSAGE_CONTENT'
+          automatedMessageNodeId: string
           content: MessageContent
       }
     | {
-          type: 'INSERT_AUTOMATED_ANSWER_NODE'
+          type: 'INSERT_AUTOMATED_MESSAGE_NODE'
           beforeNodeId: string
       }
     | {
@@ -73,12 +73,12 @@ export function baseReducer(
                 )
                 if (node) node.data.label = action.label
             })
-        case 'SET_AUTOMATED_ANSWER_CONTENT':
+        case 'SET_AUTOMATED_MESSAGE_CONTENT':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    (n): n is AutomatedAnswerNodeType =>
-                        n.id === action.automatedAnswerNodeId &&
-                        n.type === 'automated_answer'
+                    (n): n is AutomatedMessageNodeType =>
+                        n.id === action.automatedMessageNodeId &&
+                        n.type === 'automated_message'
                 )
                 const {html, text, attachments} = action.content
                 if (node) {
@@ -87,10 +87,10 @@ export function baseReducer(
                     node.data.content.attachments = attachments
                 }
             })
-        case 'INSERT_AUTOMATED_ANSWER_NODE':
+        case 'INSERT_AUTOMATED_MESSAGE_NODE':
             return insertNodeBefore(
                 graph,
-                buildAutomatedAnswerNode(),
+                buildAutomatedMessageNode(),
                 action.beforeNodeId
             )
         case 'DELETE_NODE':

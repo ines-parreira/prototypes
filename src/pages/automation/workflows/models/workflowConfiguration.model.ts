@@ -3,7 +3,7 @@ import {
     buildNodeCommonProperties,
 } from './visualBuilderGraph.model'
 import {
-    AutomatedAnswerNodeType,
+    AutomatedMessageNodeType,
     EndNodeType,
     MultipleChoicesNodeType,
     TriggerButtonNodeType,
@@ -59,7 +59,6 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
         ...buildNodeCommonProperties(),
         type: 'trigger_button',
         data: {
-            entrypoint_label: c.entrypoint?.label ?? '',
             label: c.entrypoint?.label ?? '',
             label_tkey: c.entrypoint?.label_tkey ?? '',
         },
@@ -95,10 +94,10 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             nodeIdByStepId[nextSteps[0].id] = n.id
             nodes.push(n)
         } else if (step.kind === 'messages') {
-            // single message step will become an automated_answer node
-            const n: AutomatedAnswerNodeType = {
+            // single message step will become an automated_message node
+            const n: AutomatedMessageNodeType = {
                 ...buildNodeCommonProperties(),
-                type: 'automated_answer',
+                type: 'automated_message',
                 data: {
                     content: {
                         html: step.settings.messages[0].content.html,

@@ -12,7 +12,6 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             id: 'trigger_button1',
             type: 'trigger_button',
             data: {
-                entrypoint_label: 'entrypoint',
                 label: 'entrypoint',
                 label_tkey: 'entrypoint_tkey',
             },
@@ -44,8 +43,8 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
         },
         {
             ...buildNodeCommonProperties(),
-            id: 'automated_answer1',
-            type: 'automated_answer',
+            id: 'automated_message1',
+            type: 'automated_message',
             data: {
                 content: {
                     html: 'html',
@@ -58,8 +57,8 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
         },
         {
             ...buildNodeCommonProperties(),
-            id: 'automated_answer2',
-            type: 'automated_answer',
+            id: 'automated_message2',
+            type: 'automated_message',
             data: {
                 content: {
                     html: 'html',
@@ -100,9 +99,9 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
         },
         {
             ...buildEdgeCommonProperties(),
-            id: 'multiple_choices1_automated_answer1',
+            id: 'multiple_choices1_automated_message1',
             source: 'multiple_choices1',
-            target: 'automated_answer1',
+            target: 'automated_message1',
             data: {
                 event: {
                     id: 'eventId1',
@@ -112,9 +111,9 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
         },
         {
             ...buildEdgeCommonProperties(),
-            id: 'multiple_choices1_automated_answer2',
+            id: 'multiple_choices1_automated_message2',
             source: 'multiple_choices1',
-            target: 'automated_answer2',
+            target: 'automated_message2',
             data: {
                 event: {
                     id: 'eventId2',
@@ -124,14 +123,14 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
         },
         {
             ...buildEdgeCommonProperties(),
-            id: 'automated_answer1_end1',
-            source: 'automated_answer1',
+            id: 'automated_message1_end1',
+            source: 'automated_message1',
             target: 'end1',
         },
         {
             ...buildEdgeCommonProperties(),
-            id: 'automated_answer2_end2',
-            source: 'automated_answer2',
+            id: 'automated_message2_end2',
+            source: 'automated_message2',
             target: 'end2',
         },
     ],

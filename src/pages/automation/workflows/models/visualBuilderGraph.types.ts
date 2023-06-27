@@ -1,7 +1,5 @@
 import {Edge, Node} from 'reactflow'
 
-import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
-
 import {
     MessageContent,
     WorkflowConfiguration,
@@ -10,45 +8,12 @@ import {
 
 export type TriggerButtonNodeType = Node<
     {
-        // TODO remove entrypoint_label and make label* keys required once the new visual builder UI components are ready
-        label?: string
-        label_tkey?: string
-        entrypoint_label: string
+        label: string
+        label_tkey: string
         shouldShowErrors?: boolean
         isGreyedOut?: boolean | null
     },
     'trigger_button'
->
-
-// TODO remove once the new visual builder UI components are ready
-export type AutomatedMessageNodeType = Node<
-    {
-        step_id: string
-        message: {
-            content: {
-                html: string
-                text: string
-                attachments?: ProductCardAttachment[] | null
-            }
-        }
-        shouldShowErrors?: Maybe<boolean>
-        isGreyedOut?: Maybe<boolean>
-    },
-    'automated_message'
->
-
-// TODO remove once the new visual builder UI components are ready
-export type ReplyButtonNodeType = Node<
-    {
-        step_id: string
-        choice: {
-            label: string
-            event_id: string
-        }
-        shouldShowErrors?: Maybe<boolean>
-        isGreyedOut?: Maybe<boolean>
-    },
-    'reply_button'
 >
 
 export type MultipleChoicesNodeType = Node<
@@ -69,7 +34,7 @@ export type MultipleChoicesNodeType = Node<
     'multiple_choices'
 >
 
-export type AutomatedAnswerNodeType = Node<
+export type AutomatedMessageNodeType = Node<
     {
         wfConfigurationRef: {
             wfConfigurationMessagesStepId: string
@@ -78,7 +43,7 @@ export type AutomatedAnswerNodeType = Node<
         shouldShowErrors?: boolean | null
         isGreyedOut?: boolean | null
     },
-    'automated_answer'
+    'automated_message'
 >
 
 export type EndNodeType = Node<
@@ -94,10 +59,8 @@ export type EndNodeType = Node<
 
 export type VisualBuilderNode =
     | TriggerButtonNodeType
-    | AutomatedMessageNodeType
-    | ReplyButtonNodeType
     | MultipleChoicesNodeType
-    | AutomatedAnswerNodeType
+    | AutomatedMessageNodeType
     | EndNodeType
 
 export type VisualBuilderEdge = Edge<{

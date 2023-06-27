@@ -1,8 +1,7 @@
 import React, {useEffect, useRef} from 'react'
 import Label from 'pages/common/forms/Label/Label'
 import TextInput from 'pages/common/forms/input/TextInput'
-
-import {useWorkflowConfigurationContext} from '../../../hooks/useWorkflowConfiguration'
+import {useWorkflowEditorContext} from '../../../hooks/useWorkflowEditor'
 import {TriggerButtonNodeType} from '../../../models/visualBuilderGraph.types'
 
 import css from './NodeEditor.less'
@@ -24,8 +23,7 @@ export default function TriggerButtonEditor({
         }, 300)
         return () => clearTimeout(t)
     }, [nodeInEdition])
-    const {configuration, dispatch, isFetchPending, isSavePending} =
-        useWorkflowConfigurationContext()
+    const {dispatch, isFetchPending, isSavePending} = useWorkflowEditorContext()
 
     return (
         <div
@@ -35,7 +33,7 @@ export default function TriggerButtonEditor({
                 }
             }}
         >
-            <Label isRequired={true} className={css.label}>
+            <Label isRequired={true} className={css.title}>
                 Trigger button
             </Label>
             <TextInput
@@ -45,11 +43,12 @@ export default function TriggerButtonEditor({
                 maxLength={textLimit}
                 onChange={(nextValue) => {
                     dispatch({
-                        type: 'SET_ENTRYPOINT_LABEL',
+                        type: 'SET_TRIGGER_BUTTON_LABEL',
+                        triggerButtonNodeId: nodeInEdition.id,
                         label: nextValue,
                     })
                 }}
-                value={configuration.entrypoint?.label ?? ''}
+                value={nodeInEdition.data.label ?? ''}
                 isDisabled={isFetchPending || isSavePending}
             />
             <div className={css.description}>

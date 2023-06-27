@@ -6,7 +6,7 @@ import {VisualBuilderNode} from '../../models/visualBuilderGraph.types'
 
 import css from './NodeEditorDrawer.less'
 import TriggerButtonEditor from './editors/TriggerButtonEditor'
-import ReplyButtonEditor from './editors/ReplyButtonEditor'
+import MultipleChoicesEditor from './editors/MultipleChoicesEditor'
 import AutomatedMessageEditor from './editors/AutomatedMessageEditor'
 
 type NodeEditorDrawerProps = {
@@ -24,7 +24,9 @@ export default function NodeEditorDrawer({
     return (
         <Drawer
             className={classNames(css.drawer, {
-                [css.drawerWide]: nodeInEdition?.type === 'automated_message',
+                [css.drawerWide]:
+                    nodeInEdition?.type === 'automated_message' ||
+                    nodeInEdition?.type === 'multiple_choices',
             })}
             name="visual-builder-node-edition"
             open={open}
@@ -61,8 +63,8 @@ export default function NodeEditorDrawer({
                 {nodeInEdition?.type === 'automated_message' && (
                     <AutomatedMessageEditor nodeInEdition={nodeInEdition} />
                 )}
-                {nodeInEdition?.type === 'reply_button' && (
-                    <ReplyButtonEditor
+                {nodeInEdition?.type === 'multiple_choices' && (
+                    <MultipleChoicesEditor
                         nodeInEdition={nodeInEdition}
                         onClose={onClose}
                     />

@@ -2,7 +2,7 @@ import {produce} from 'immer'
 import {ulid} from 'ulidx'
 
 import {
-    AutomatedAnswerNodeType,
+    AutomatedMessageNodeType,
     MultipleChoicesNodeType,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
@@ -81,7 +81,7 @@ export function choicesReducer(
         case 'SET_MULTIPLE_CHOICES_CONTENT':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    (n): n is AutomatedAnswerNodeType =>
+                    (n): n is AutomatedMessageNodeType =>
                         n.id === action.multipleChoicesNodeId &&
                         n.type === 'multiple_choices'
                 )

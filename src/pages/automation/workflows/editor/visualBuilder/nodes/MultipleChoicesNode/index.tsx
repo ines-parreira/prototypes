@@ -1,24 +1,21 @@
 import classNames from 'classnames'
 import React from 'react'
-import {Handle, Position, NodeProps} from 'reactflow'
+import {Handle, NodeProps, Position} from 'reactflow'
 import _isEqual from 'lodash/isEqual'
 
 import Label from 'pages/common/forms/Label/Label'
 import VisualBuilderNodeAction from 'pages/automation/workflows/components/VisualBuilderNodeAction'
 import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 
-import {AutomatedMessageNodeType} from '../../../models/visualBuilderGraph.types'
-import NodeDeleteIcon from '../components/NodeDeleteIcon'
-import EdgeBlock from '../components/EdgeBlock'
+import {MultipleChoicesNodeType} from '../../../../models/visualBuilderGraph.types'
+import NodeDeleteIcon from '../../components/NodeDeleteIcon'
+import EdgeBlock from '../../components/EdgeBlock'
 
-import css from './Node.less'
+import css from '../Node.less'
 
-function AutomatedMessageNode(
-    node: NodeProps<AutomatedMessageNodeType['data']>
-) {
-    const {content} = node.data
-    const {shouldShowErrors, isGreyedOut} = node.data
-    const isErrored = content.text.length === 0
+function MultipleChoicesNode(node: NodeProps<MultipleChoicesNodeType['data']>) {
+    const {content, choices, shouldShowErrors, isGreyedOut} = node.data
+    const isErrored = content.text.length === 0 || choices.find((c) => !c.label)
     const {visualBuilderNodeIdEditing} = useWorkflowEditorContext()
     const isSelected = visualBuilderNodeIdEditing === node.id
 
@@ -42,13 +39,13 @@ function AutomatedMessageNode(
                         {content.text.length > 0 ? (
                             content.text
                         ) : (
-                            <span className={css.clickToAdd}>Prompt</span>
+                            <span className={css.clickToAdd}>Question</span>
                         )}
                     </Label>
                     <VisualBuilderNodeAction
-                        text="Automated message"
-                        color="red"
-                        icon="chat_bubble"
+                        text="Multiple choice"
+                        color="blue"
+                        icon="view_list"
                     />
                     <NodeDeleteIcon node={node} />
                 </div>
@@ -62,6 +59,6 @@ function AutomatedMessageNode(
     )
 }
 
-export default React.memo(AutomatedMessageNode, (prevProps, nextProps) =>
+export default React.memo(MultipleChoicesNode, (prevProps, nextProps) =>
     _isEqual(prevProps, nextProps)
 )

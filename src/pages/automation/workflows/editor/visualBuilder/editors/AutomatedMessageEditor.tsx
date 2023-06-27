@@ -11,7 +11,7 @@ import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/compon
 import {useSelfServiceStoreIntegrationContext} from 'pages/automation/common/hooks/useSelfServiceStoreIntegration'
 
 import {AutomatedMessageNodeType} from '../../../models/visualBuilderGraph.types'
-import {useWorkflowConfigurationContext} from '../../../hooks/useWorkflowConfiguration'
+import {useWorkflowEditorContext} from '../../../hooks/useWorkflowEditor'
 
 import css from './NodeEditor.less'
 
@@ -30,17 +30,14 @@ export default function AutomatedMessageEditor({
         }, 300)
         return () => clearTimeout(t)
     }, [nodeInEdition])
-    const {dispatch} = useWorkflowConfigurationContext()
     const storeIntegration = useSelfServiceStoreIntegrationContext()
+    const {dispatch} = useWorkflowEditorContext()
     const nodeContent = useMemo(
         () => ({
-            html: nodeInEdition.data.message.content.html,
-            text: nodeInEdition.data.message.content.text,
+            html: nodeInEdition.data.content.html,
+            text: nodeInEdition.data.content.text,
         }),
-        [
-            nodeInEdition.data.message.content.text,
-            nodeInEdition.data.message.content.html,
-        ]
+        [nodeInEdition.data.content.text, nodeInEdition.data.content.html]
     )
     const handleChange = (editorState: EditorState) => {
         const content = editorState.getCurrentContent()
@@ -50,22 +47,22 @@ export default function AutomatedMessageEditor({
         if (text.length > textLimit) return
         dispatch({
             type: 'SET_AUTOMATED_MESSAGE_CONTENT',
-            step_id: nodeInEdition.data.step_id,
+            automatedMessageNodeId: nodeInEdition.id,
             content: {
                 html: convertToHTML(content),
                 text: text,
-                attachments: nodeInEdition.data.message.content.attachments,
+                attachments: nodeInEdition.data.content.attachments,
             },
         })
     }
     const handleAddAttachment = (attachment: ProductCardAttachment) => {
         dispatch({
             type: 'SET_AUTOMATED_MESSAGE_CONTENT',
-            step_id: nodeInEdition.data.step_id,
+            automatedMessageNodeId: nodeInEdition.id,
             content: {
                 ...nodeContent,
                 attachments: [
-                    ...(nodeInEdition.data.message.content.attachments ?? []),
+                    ...(nodeInEdition.data.content.attachments ?? []),
                     attachment,
                 ],
             },
@@ -74,19 +71,20 @@ export default function AutomatedMessageEditor({
     const handleDeleteAttachment = (index: number) => {
         dispatch({
             type: 'SET_AUTOMATED_MESSAGE_CONTENT',
-            step_id: nodeInEdition.data.step_id,
+            automatedMessageNodeId: nodeInEdition.id,
             content: {
                 ...nodeContent,
                 attachments: (
-                    nodeInEdition.data.message.content.attachments ?? []
+                    nodeInEdition.data.content.attachments ?? []
                 ).filter((_, i) => i !== index),
             },
         })
     }
     return (
         <>
-            <Label isRequired={true} className={css.richFieldLabel}>
-                Automated message
+            <Label className={css.title}>Automated message</Label>
+            <Label className={css.label} isRequired={true}>
+                Prompt
             </Label>
             <ToolbarProvider
                 canAddProductCard={true}
@@ -107,14 +105,14 @@ export default function AutomatedMessageEditor({
                     allowExternalChanges
                     onChange={handleChange}
                     attachments={Immutable.fromJS(
-                        nodeInEdition.data.message.content.attachments ?? []
+                        nodeInEdition.data.content.attachments ?? []
                     )}
                 />
                 <TicketAttachments
                     className={css.attachments}
                     removable
                     attachments={Immutable.fromJS(
-                        nodeInEdition.data.message.content.attachments ?? []
+                        nodeInEdition.data.content.attachments ?? []
                     )}
                     deleteAttachment={handleDeleteAttachment}
                 />

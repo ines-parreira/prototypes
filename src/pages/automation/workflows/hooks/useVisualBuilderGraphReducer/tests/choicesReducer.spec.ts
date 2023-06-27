@@ -51,16 +51,16 @@ describe('choicesReducer', () => {
                 type: 'multiple_choices',
             },
             {
-                id: 'automated_answer1',
-                type: 'automated_answer',
+                id: 'automated_message1',
+                type: 'automated_message',
             },
             {
                 id: 'end1',
                 type: 'end',
             },
             {
-                id: 'automated_answer2',
-                type: 'automated_answer',
+                id: 'automated_message2',
+                type: 'automated_message',
             },
             {
                 id: 'end2',
@@ -132,7 +132,7 @@ describe('choicesReducer', () => {
         expect(walkedNodesIds).toEqual([
             'trigger_button1',
             'multiple_choices1',
-            'automated_answer2',
+            'automated_message2',
             'end2',
         ])
     })
@@ -152,9 +152,9 @@ describe('choicesReducer', () => {
         expect(walkedNodesIds).toEqual([
             'trigger_button1',
             'multiple_choices1',
-            'automated_answer2',
+            'automated_message2',
             'end2',
-            'automated_answer1',
+            'automated_message1',
             'end1',
         ])
     })
@@ -201,11 +201,11 @@ describe('choicesReducer', () => {
                 notGreyedOutIds.push(n.id)
             }
         })
-        expect(greyedOutIds).toEqual(['automated_answer1', 'end1'])
+        expect(greyedOutIds).toEqual(['automated_message1', 'end1'])
         expect(notGreyedOutIds).toEqual([
             'trigger_button1',
             'multiple_choices1',
-            'automated_answer2',
+            'automated_message2',
             'end2',
         ])
     })

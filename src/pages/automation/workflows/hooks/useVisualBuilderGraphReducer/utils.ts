@@ -6,7 +6,7 @@ import {
     walkVisualBuilderGraph,
 } from '../../models/visualBuilderGraph.model'
 import {
-    AutomatedAnswerNodeType,
+    AutomatedMessageNodeType,
     EndNodeType,
     MultipleChoicesNodeType,
     VisualBuilderEdge,
@@ -70,19 +70,20 @@ export function deleteBranch(
     return nextGraph
 }
 
-export const buildAutomatedAnswerNode: () => AutomatedAnswerNodeType = () => ({
-    ...buildNodeCommonProperties(),
-    type: 'automated_answer',
-    data: {
-        wfConfigurationRef: {
-            wfConfigurationMessagesStepId: ulid(),
+export const buildAutomatedMessageNode: () => AutomatedMessageNodeType =
+    () => ({
+        ...buildNodeCommonProperties(),
+        type: 'automated_message',
+        data: {
+            wfConfigurationRef: {
+                wfConfigurationMessagesStepId: ulid(),
+            },
+            content: {
+                html: '',
+                text: '',
+            },
         },
-        content: {
-            html: '',
-            text: '',
-        },
-    },
-})
+    })
 
 export const buildMultipleChoicesNode: () => MultipleChoicesNodeType = () => ({
     ...buildNodeCommonProperties(),

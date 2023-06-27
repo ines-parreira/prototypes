@@ -20,9 +20,10 @@ import {Notification, NotificationStatus} from 'state/notifications/types'
 import {WORKFLOW_TEMPLATES} from '../constants'
 import useStoreWorkflows from '../hooks/useStoreWorkflows'
 import {
-    useWorkflowConfigurationContext,
-    withWorkflowConfigurationContext,
-} from '../hooks/useWorkflowConfiguration'
+    useWorkflowEditorContext,
+    withWorkflowEditorContext,
+} from '../hooks/useWorkflowEditor'
+import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 
 import css from './WorkflowEditorView.less'
@@ -51,7 +52,7 @@ function WorkflowEditorViewWrapped({
     shopType,
 }: WorkflowEditorViewProps) {
     const {template: templateSlug} = useSearch<{template: string | undefined}>()
-    const worfklowConfigurationContext = useWorkflowConfigurationContext()
+    const workflowEditorContext = useWorkflowEditorContext()
     const {appendWorkflowInStore} = useStoreWorkflows(
         shopType,
         shopName,
@@ -70,25 +71,25 @@ function WorkflowEditorViewWrapped({
     )
 
     // flags
-    const isDirty = worfklowConfigurationContext.isDirty
-    const isFetchPending = worfklowConfigurationContext.isFetchPending
-    const isSavePending = worfklowConfigurationContext.isSavePending
+    const isDirty = workflowEditorContext.isDirty
+    const isFetchPending = workflowEditorContext.isFetchPending
+    const isSavePending = workflowEditorContext.isSavePending
     const [lastSaveAttempt, setLastSaveAttempt] = useState<Date | undefined>(
         undefined
     )
     const workflowNameisErrored =
-        worfklowConfigurationContext.configuration.name.trim().length === 0 ||
-        worfklowConfigurationContext.configuration.name.length > 100
+        workflowEditorContext.configuration.name.trim().length === 0 ||
+        workflowEditorContext.configuration.name.length > 100
 
     // handlers
     const handleDiscard = () => {
-        worfklowConfigurationContext.handleDiscard()
+        workflowEditorContext.handleDiscard()
     }
     const handleCancel = () => {
         goToWorkflowTemplatesPage()
     }
     const handleSave = async () => {
-        const configurationError = worfklowConfigurationContext.handleValidate()
+        const configurationError = workflowEditorContext.handleValidate()
         if (configurationError) {
             setLastSaveAttempt(new Date())
             notifyMerchant({
@@ -98,7 +99,7 @@ function WorkflowEditorViewWrapped({
             return
         }
         try {
-            await worfklowConfigurationContext.handleSave()
+            await workflowEditorContext.handleSave()
             if (isNewWorkflow) {
                 await appendWorkflowInStore(workflowId)
             }
@@ -143,9 +144,11 @@ function WorkflowEditorViewWrapped({
                 workflowId,
                 currentAccountId
             )
-            worfklowConfigurationContext.dispatch({
-                type: 'RESET_CONFIGURATION',
-                configuration,
+            workflowEditorContext.dispatch({
+                type: 'RESET_GRAPH',
+                graph: transformWorkflowConfigurationIntoVisualBuilderGraph(
+                    configuration
+                ),
             })
         } else {
             const t = setTimeout(() => {
@@ -166,19 +169,19 @@ function WorkflowEditorViewWrapped({
                             className={css.headerLeftInput}
                             isRequired
                             onChange={(name) => {
-                                worfklowConfigurationContext.dispatch({
+                                workflowEditorContext.dispatch({
                                     type: 'SET_NAME',
                                     name,
                                 })
                             }}
                             placeholder={
                                 !isNewWorkflow &&
-                                worfklowConfigurationContext.isFetchPending
+                                workflowEditorContext.isFetchPending
                                     ? '...'
                                     : 'Add flow name'
                             }
                             value={
-                                worfklowConfigurationContext.configuration.name
+                                workflowEditorContext.visualBuilderGraph.name
                             }
                             isDisabled={isFetchPending || isSavePending}
                             hasError={lastSaveAttempt && workflowNameisErrored}
@@ -291,6 +294,6 @@ function ButtonWithConfirmation({
     )
 }
 
-export default withWorkflowConfigurationContext(
+export default withWorkflowEditorContext(
     withSelfServiceStoreIntegrationContext(WorkflowEditorViewWrapped)
 )

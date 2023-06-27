@@ -136,7 +136,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 }),
                 expect.objectContaining({
                     id: expect.any(String),
-                    type: 'automated_answer',
+                    type: 'automated_message',
                     data: {
                         content: {
                             html: 'html',
@@ -158,7 +158,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 }),
                 expect.objectContaining({
                     id: expect.any(String),
-                    type: 'automated_answer',
+                    type: 'automated_message',
                     data: {
                         content: {
                             html: 'html',
