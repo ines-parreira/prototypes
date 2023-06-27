@@ -119,7 +119,7 @@ export class InfobarLayout extends React.Component<Props, State> {
                 ref={(ref) => (this.containerRef = ref)}
                 style={style}
             >
-                <div className={css[this.classHandle]} />
+                <div className={this.classHandle} />
                 <ErrorBoundary>{this.props.children}</ErrorBoundary>
             </div>
         )

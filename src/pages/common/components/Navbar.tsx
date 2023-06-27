@@ -311,6 +311,7 @@ export class Navbar extends Component<Props, State> {
             isTrialing,
             isPreferencesLoading,
         } = this.props
+        const {isResizing} = this.state
         const isBasicOrPro = ['pro', 'basic'].some((priceType) =>
             currentHelpdeskProduct?.name.toLowerCase().includes(priceType)
         )
@@ -323,7 +324,7 @@ export class Navbar extends Component<Props, State> {
                 ref={this.navbarRef}
                 className={css.sidebar}
                 style={{width: `${this.state.navbarWidth}px`}}
-                onMouseDown={(e) => e.preventDefault()}
+                onMouseDown={(e) => isResizing && e.preventDefault()}
             >
                 <div
                     className={classnames(css['nav-primary'], {
