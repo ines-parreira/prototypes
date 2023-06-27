@@ -124,12 +124,24 @@ describe('useStoreWorkflows', () => {
     })
 
     it('deleteWorkflowEntrypoint', async () => {
-        const handleSelfServiceConfigurationUpdateMock = jest.fn()
+        const selfServiceConfiguration = {
+            workflows_entrypoints: [...entrypointsFixtures],
+        } as SelfServiceConfiguration
+
+        const handleSelfServiceConfigurationUpdateMock = jest
+            .fn()
+            .mockImplementation(
+                (
+                    patchSelfServiceConfiguration: (
+                        draft: SelfServiceConfiguration
+                    ) => void
+                ) => {
+                    patchSelfServiceConfiguration(selfServiceConfiguration)
+                }
+            )
 
         updateMock({
-            selfServiceConfiguration: {
-                workflows_entrypoints: entrypointsFixtures,
-            } as SelfServiceConfiguration,
+            selfServiceConfiguration,
             handleSelfServiceConfigurationUpdate:
                 handleSelfServiceConfigurationUpdateMock,
         })
@@ -143,10 +155,8 @@ describe('useStoreWorkflows', () => {
         await act(() =>
             result.current.removeWorkflowFromStore(mockWorkflowConfiguration.id)
         )
-        expect(handleSelfServiceConfigurationUpdateMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                workflows_entrypoints: entrypointsFixtures.slice(1),
-            })
+        expect(selfServiceConfiguration.workflows_entrypoints).toEqual(
+            entrypointsFixtures.slice(1)
         )
         expect(
             mockWorkflowApi.deleteWorkflowConfiguration

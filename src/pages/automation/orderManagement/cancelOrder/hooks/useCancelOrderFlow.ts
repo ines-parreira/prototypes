@@ -19,16 +19,15 @@ const useCancelOrderFlow = (shopName: string) => {
 
     const handleCancelOrderFlowUpdate = useCallback(
         (cancelOrderFlow: SelfServiceConfiguration['cancel_order_policy']) => {
-            if (!selfServiceConfiguration) {
-                return
-            }
-
-            void handleSelfServiceConfigurationUpdate({
-                ...selfServiceConfiguration,
-                cancel_order_policy: cancelOrderFlow,
+            void handleSelfServiceConfigurationUpdate((draft) => {
+                draft.cancel_order_policy.exceptions =
+                    cancelOrderFlow.exceptions
+                draft.cancel_order_policy.eligibilities =
+                    cancelOrderFlow.eligibilities
+                draft.cancel_order_policy.action = cancelOrderFlow.action
             })
         },
-        [selfServiceConfiguration, handleSelfServiceConfigurationUpdate]
+        [handleSelfServiceConfigurationUpdate]
     )
 
     const cancelOrderFlow = useMemo(

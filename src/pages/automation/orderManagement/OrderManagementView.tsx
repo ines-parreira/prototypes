@@ -101,13 +101,8 @@ const OrderManagementView = () => {
         flow: PolicyKey,
         isEnabled: boolean
     ) => {
-        if (!selfServiceConfiguration) {
-            return
-        }
-
-        void handleSelfServiceConfigurationUpdate({
-            ...selfServiceConfiguration,
-            [flow]: {...selfServiceConfiguration[flow], enabled: isEnabled},
+        void handleSelfServiceConfigurationUpdate((draft) => {
+            draft[flow].enabled = isEnabled
         })
     }
     const handleFlowItemMouseLeave = () => {

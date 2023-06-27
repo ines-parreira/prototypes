@@ -1,6 +1,7 @@
 import {useCallback, useEffect, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
+import {produce, Draft} from 'immer'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -71,12 +72,23 @@ const useSelfServiceConfiguration = (
     const [{loading: isUpdatePending}, handleSelfServiceConfigurationUpdate] =
         useAsyncFn(
             async (
-                selfServiceConfiguration: SelfServiceConfiguration,
+                patchSelfServiceConfiguration: (
+                    draft: Draft<SelfServiceConfiguration>
+                ) => void,
                 messages: {success?: string; error?: string} = {}
             ) => {
+                if (!storeIntegrationId) {
+                    return
+                }
+
                 try {
+                    const selfServiceConfiguration =
+                        await fetchSelfServiceConfiguration(storeIntegrationId)
                     const res = await updateSelfServiceConfiguration(
-                        selfServiceConfiguration
+                        produce(
+                            selfServiceConfiguration,
+                            patchSelfServiceConfiguration
+                        )
                     )
                     void dispatch(selfServiceConfigurationUpdated(res))
                     handleNotify({
@@ -90,7 +102,7 @@ const useSelfServiceConfiguration = (
                     })
                 }
             },
-            []
+            [storeIntegrationId]
         )
 
     const selfServiceConfiguration = useMemo(() => {

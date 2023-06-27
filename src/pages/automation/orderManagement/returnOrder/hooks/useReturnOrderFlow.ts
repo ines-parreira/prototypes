@@ -16,16 +16,15 @@ const useReturnOrderFlow = (shopName: string) => {
 
     const handleReturnOrderFlowUpdate = useCallback(
         (returnOrderFlow: SelfServiceConfiguration['return_order_policy']) => {
-            if (!selfServiceConfiguration) {
-                return
-            }
-
-            void handleSelfServiceConfigurationUpdate({
-                ...selfServiceConfiguration,
-                return_order_policy: returnOrderFlow,
+            void handleSelfServiceConfigurationUpdate((draft) => {
+                draft.return_order_policy.action = returnOrderFlow.action
+                draft.return_order_policy.eligibilities =
+                    returnOrderFlow.eligibilities
+                draft.return_order_policy.exceptions =
+                    returnOrderFlow.exceptions
             })
         },
-        [selfServiceConfiguration, handleSelfServiceConfigurationUpdate]
+        [handleSelfServiceConfigurationUpdate]
     )
 
     const returnOrderFlow = useMemo(

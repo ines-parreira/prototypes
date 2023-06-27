@@ -20,10 +20,6 @@ const useQuickResponses = (shopType: string, shopName: string) => {
         (
             quickResponses: SelfServiceConfiguration['quick_response_policies']
         ) => {
-            if (!selfServiceConfiguration) {
-                return
-            }
-
             const trimmedQuickResponses = quickResponses.map(
                 (quickResponse) => {
                     const html = trimHTML(
@@ -43,30 +39,24 @@ const useQuickResponses = (shopType: string, shopName: string) => {
                 }
             )
 
-            void handleSelfServiceConfigurationUpdate({
-                ...selfServiceConfiguration,
-                quick_response_policies: trimmedQuickResponses,
+            void handleSelfServiceConfigurationUpdate((draft) => {
+                draft.quick_response_policies = trimmedQuickResponses
             })
         },
-        [selfServiceConfiguration, handleSelfServiceConfigurationUpdate]
+        [handleSelfServiceConfigurationUpdate]
     )
     const handleQuickResponsesDelete = useCallback(
         (
             quickResponses: SelfServiceConfiguration['quick_response_policies']
         ) => {
-            if (!selfServiceConfiguration) {
-                return
-            }
-
             void handleSelfServiceConfigurationUpdate(
-                {
-                    ...selfServiceConfiguration,
-                    quick_response_policies: quickResponses,
+                (draft) => {
+                    draft.quick_response_policies = quickResponses
                 },
                 {success: 'Successfully deleted', error: 'Failed to delete'}
             )
         },
-        [selfServiceConfiguration, handleSelfServiceConfigurationUpdate]
+        [handleSelfServiceConfigurationUpdate]
     )
     const quickResponses = useMemo(
         () =>

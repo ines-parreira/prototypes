@@ -25,22 +25,11 @@ const useReportOrderIssueFlowScenarios = (shopName: string) => {
             scenarios: SelfServiceReportIssueCase[],
             messages: {success?: string; error?: string} = {}
         ) => {
-            if (!selfServiceConfiguration) {
-                return
-            }
-
-            return handleSelfServiceConfigurationUpdate(
-                {
-                    ...selfServiceConfiguration,
-                    report_issue_policy: {
-                        ...selfServiceConfiguration.report_issue_policy,
-                        cases: scenarios,
-                    },
-                },
-                messages
-            )
+            return handleSelfServiceConfigurationUpdate((draft) => {
+                draft.report_issue_policy.cases = scenarios
+            }, messages)
         },
-        [selfServiceConfiguration, handleSelfServiceConfigurationUpdate]
+        [handleSelfServiceConfigurationUpdate]
     )
     const [{loading: isCreatePending}, handleScenarioCreate] = useAsyncFn(
         async (scenario: SelfServiceReportIssueCase) => {
@@ -65,6 +54,7 @@ const useReportOrderIssueFlowScenarios = (shopName: string) => {
         selfServiceConfiguration,
         handleScenariosUpdate,
         handleScenarioCreate,
+        handleSelfServiceConfigurationUpdate,
     }
 }
 

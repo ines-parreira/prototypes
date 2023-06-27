@@ -61,12 +61,9 @@ const ArticleRecommendationView = () => {
     }, [helpCenters, dirtyHelpCenterId])
 
     const handleSubmit = () => {
-        if (selfServiceConfiguration) {
-            void handleSelfServiceConfigurationUpdate({
-                ...selfServiceConfiguration,
-                article_recommendation_help_center_id: dirtyHelpCenterId,
-            })
-        }
+        void handleSelfServiceConfigurationUpdate((draft) => {
+            draft.article_recommendation_help_center_id = dirtyHelpCenterId
+        })
     }
     const handleCancel = () => {
         setDirtyHelpCenterId(helpCenterId)

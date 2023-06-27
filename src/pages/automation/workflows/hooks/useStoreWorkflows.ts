@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from 'react'
-import {produce} from 'immer'
+
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {NotificationStatus} from 'state/notifications/types'
 import {WorkflowConfigurationShallow} from '../models/workflowConfiguration.types'
@@ -68,27 +68,19 @@ export default function useStoreWorkflows(
 
     const removeWorkflowFromStore = useCallback(
         async (workflowId: string) => {
-            if (!selfServiceConfiguration)
-                throw new Error('self service configuration not loaded')
-            const nextConfiguration = produce(
-                selfServiceConfiguration,
-                (draft) => {
-                    const at =
-                        draft.workflows_entrypoints?.findIndex(
-                            (e) => e.workflow_id === workflowId
-                        ) ?? -1
-                    if (at >= 0) draft.workflows_entrypoints!.splice(at, 1)
-                }
-            )
-
-            await handleSelfServiceConfigurationUpdate(nextConfiguration)
+            await handleSelfServiceConfigurationUpdate((draft) => {
+                const at =
+                    draft.workflows_entrypoints?.findIndex(
+                        (e) => e.workflow_id === workflowId
+                    ) ?? -1
+                if (at >= 0) draft.workflows_entrypoints?.splice(at, 1)
+            })
             const internalId =
                 workflowConfigurationById[workflowId]?.internal_id
             await deleteWorkflowConfiguration(internalId)
             notifyMerchant('Successfully deleted', 'success')
         },
         [
-            selfServiceConfiguration,
             handleSelfServiceConfigurationUpdate,
             workflowConfigurationById,
             deleteWorkflowConfiguration,
@@ -98,27 +90,20 @@ export default function useStoreWorkflows(
 
     const duplicateWorkflow = useCallback(
         async (workflowId: string) => {
-            if (!selfServiceConfiguration)
-                throw new Error('self service configuration not loaded')
             setIsUpdatePending(true)
             const duplicatedWorkflow = await duplicateWorkflowConfiguration(
                 workflowId
             )
             await loadWorkflowsConfigurations()
-            const nextConfiguration = produce(
-                selfServiceConfiguration,
-                (draft) => {
-                    draft.workflows_entrypoints?.push({
-                        workflow_id: duplicatedWorkflow.id,
-                    })
-                }
-            )
-            await handleSelfServiceConfigurationUpdate(nextConfiguration)
+            await handleSelfServiceConfigurationUpdate((draft) => {
+                draft.workflows_entrypoints?.push({
+                    workflow_id: duplicatedWorkflow.id,
+                })
+            })
             setIsUpdatePending(false)
             return {id: duplicatedWorkflow.id}
         },
         [
-            selfServiceConfiguration,
             duplicateWorkflowConfiguration,
             loadWorkflowsConfigurations,
             handleSelfServiceConfigurationUpdate,
@@ -127,22 +112,16 @@ export default function useStoreWorkflows(
 
     const appendWorkflowInStore = useCallback(
         async (workflowId: string) => {
-            if (!selfServiceConfiguration)
-                throw new Error('self service configuration not loaded')
             setIsUpdatePending(true)
-            const nextConfiguration = produce(
-                selfServiceConfiguration,
-                (draft) => {
-                    draft.workflows_entrypoints ??= []
-                    draft.workflows_entrypoints.push({
-                        workflow_id: workflowId,
-                    })
-                }
-            )
-            await handleSelfServiceConfigurationUpdate(nextConfiguration)
+            await handleSelfServiceConfigurationUpdate((draft) => {
+                draft.workflows_entrypoints ??= []
+                draft.workflows_entrypoints.push({
+                    workflow_id: workflowId,
+                })
+            })
             setIsUpdatePending(false)
         },
-        [selfServiceConfiguration, handleSelfServiceConfigurationUpdate]
+        [handleSelfServiceConfigurationUpdate]
     )
 
     const storeWorkflows =

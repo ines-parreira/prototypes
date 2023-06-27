@@ -10,28 +10,27 @@ import {renderWithRouterAndDnD} from 'utils/testing'
 import {getLDClient} from 'utils/launchDarkly'
 import {RootState, StoreDispatch} from 'state/types'
 import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
-import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import useSelfServiceChatChannels from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from 'pages/automation/common/components/constants'
 import {GorgiasChatIntegration} from 'models/integration/types'
 import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
 import {TicketChannel} from 'business/types/ticket'
 
+import useQuickResponses from '../hooks/useQuickResponses'
 import QuickResponsesView from '../QuickResponsesView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
-jest.mock('pages/automation/common/hooks/useSelfServiceConfiguration')
 jest.mock('pages/automation/common/hooks/useSelfServiceChatChannels')
 jest.mock('utils/launchDarkly')
+jest.mock('../hooks/useQuickResponses')
 
 const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
     ReturnType<typeof getLDClient>['allFlags']
 >
-const useSelfServiceConfigurationMock =
-    useSelfServiceConfiguration as jest.MockedFunction<
-        typeof useSelfServiceConfiguration
-    >
+const useQuickResponsesMock = useQuickResponses as jest.MockedFunction<
+    typeof useQuickResponses
+>
 const useSelfServiceChatChannelsMock =
     useSelfServiceChatChannels as jest.MockedFunction<
         typeof useSelfServiceChatChannels
@@ -79,12 +78,14 @@ describe('<QuickResponsesView />', () => {
     })
 
     it('should not display content if quick responses are fetching', () => {
-        useSelfServiceConfigurationMock.mockReturnValue({
+        useQuickResponsesMock.mockReturnValue({
             isFetchPending: true,
             isUpdatePending: false,
             storeIntegration: undefined,
             selfServiceConfiguration: undefined,
-            handleSelfServiceConfigurationUpdate: jest.fn(),
+            quickResponses: [],
+            handleQuickResponsesUpdate: jest.fn(),
+            handleQuickResponsesDelete: jest.fn(),
         })
 
         renderWithRouterAndDnD(
@@ -99,7 +100,7 @@ describe('<QuickResponsesView />', () => {
     })
 
     it('should not allow to save without changes', () => {
-        useSelfServiceConfigurationMock.mockReturnValue({
+        useQuickResponsesMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
             storeIntegration: undefined,
@@ -107,7 +108,9 @@ describe('<QuickResponsesView />', () => {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [quickResponse1],
             },
-            handleSelfServiceConfigurationUpdate: jest.fn(),
+            quickResponses: [quickResponse1],
+            handleQuickResponsesUpdate: jest.fn(),
+            handleQuickResponsesDelete: jest.fn(),
         })
 
         renderWithRouterAndDnD(
@@ -121,9 +124,9 @@ describe('<QuickResponsesView />', () => {
 
     it('should allow to edit quick response and save changes', () => {
         const newTitle = 'What is your shipping policy?'
-        const handleSelfServiceConfigurationUpdateMock = jest.fn()
+        const handleQuickResponsesUpdateMock = jest.fn()
 
-        useSelfServiceConfigurationMock.mockReturnValue({
+        useQuickResponsesMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
             storeIntegration: undefined,
@@ -131,8 +134,9 @@ describe('<QuickResponsesView />', () => {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [quickResponse1],
             },
-            handleSelfServiceConfigurationUpdate:
-                handleSelfServiceConfigurationUpdateMock,
+            quickResponses: [quickResponse1],
+            handleQuickResponsesUpdate: handleQuickResponsesUpdateMock,
+            handleQuickResponsesDelete: jest.fn(),
         })
 
         renderWithRouterAndDnD(
@@ -157,20 +161,16 @@ describe('<QuickResponsesView />', () => {
             fireEvent.click(submitButton)
         })
 
-        expect(handleSelfServiceConfigurationUpdateMock).toBeCalledWith(
-            expect.objectContaining({
-                quick_response_policies: [
-                    {
-                        ...quickResponse1,
-                        title: newTitle,
-                    },
-                ],
-            })
-        )
+        expect(handleQuickResponsesUpdateMock).toBeCalledWith([
+            {
+                ...quickResponse1,
+                title: newTitle,
+            },
+        ])
     })
 
     it('should allow to edit quick response and cancel', () => {
-        useSelfServiceConfigurationMock.mockReturnValue({
+        useQuickResponsesMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
             storeIntegration: undefined,
@@ -178,7 +178,9 @@ describe('<QuickResponsesView />', () => {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [quickResponse1],
             },
-            handleSelfServiceConfigurationUpdate: jest.fn(),
+            quickResponses: [quickResponse1],
+            handleQuickResponsesUpdate: jest.fn(),
+            handleQuickResponsesDelete: jest.fn(),
         })
 
         renderWithRouterAndDnD(
@@ -221,9 +223,9 @@ describe('<QuickResponsesView />', () => {
                 attachments: fromJS([]),
             },
         }
-        const handleSelfServiceConfigurationUpdateMock = jest.fn()
+        const handleQuickResponsesUpdateMock = jest.fn()
 
-        useSelfServiceConfigurationMock.mockReturnValue({
+        useQuickResponsesMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
             storeIntegration: undefined,
@@ -231,8 +233,9 @@ describe('<QuickResponsesView />', () => {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [quickResponse1, quickResponse2],
             },
-            handleSelfServiceConfigurationUpdate:
-                handleSelfServiceConfigurationUpdateMock,
+            quickResponses: [quickResponse1, quickResponse2],
+            handleQuickResponsesUpdate: handleQuickResponsesUpdateMock,
+            handleQuickResponsesDelete: jest.fn(),
         })
 
         renderWithRouterAndDnD(
@@ -259,17 +262,16 @@ describe('<QuickResponsesView />', () => {
             fireEvent.drop(quickResponseAccordionItem1)
         })
 
-        expect(handleSelfServiceConfigurationUpdateMock).toBeCalledWith(
-            expect.objectContaining({
-                quick_response_policies: [quickResponse2, quickResponse1],
-            })
-        )
+        expect(handleQuickResponsesUpdateMock).toBeCalledWith([
+            quickResponse2,
+            quickResponse1,
+        ])
     })
 
     it('should allow to add new quick response', () => {
-        const handleSelfServiceConfigurationUpdateMock = jest.fn()
+        const handleQuickResponsesUpdateMock = jest.fn()
 
-        useSelfServiceConfigurationMock.mockReturnValue({
+        useQuickResponsesMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
             storeIntegration: undefined,
@@ -277,8 +279,9 @@ describe('<QuickResponsesView />', () => {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [],
             },
-            handleSelfServiceConfigurationUpdate:
-                handleSelfServiceConfigurationUpdateMock,
+            quickResponses: [],
+            handleQuickResponsesUpdate: handleQuickResponsesUpdateMock,
+            handleQuickResponsesDelete: jest.fn(),
         })
 
         renderWithRouterAndDnD(
@@ -309,26 +312,22 @@ describe('<QuickResponsesView />', () => {
             fireEvent.click(submitButton)
         })
 
-        expect(handleSelfServiceConfigurationUpdateMock).toBeCalledWith(
+        expect(handleQuickResponsesUpdateMock).toBeCalledWith([
             expect.objectContaining({
-                quick_response_policies: [
-                    expect.objectContaining({
-                        title: quickResponse1.title,
-                        response_message_content: {
-                            html: '',
-                            text: '',
-                            attachments: fromJS([]),
-                        },
-                        id: expect.any(String),
-                        deactivated_datetime: expect.any(String),
-                    }),
-                ],
-            })
-        )
+                title: quickResponse1.title,
+                response_message_content: {
+                    html: '',
+                    text: '',
+                    attachments: fromJS([]),
+                },
+                id: expect.any(String),
+                deactivated_datetime: expect.any(String),
+            }),
+        ])
     })
 
     it('should not allow to save changes without title', () => {
-        useSelfServiceConfigurationMock.mockReturnValue({
+        useQuickResponsesMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
             storeIntegration: undefined,
@@ -336,7 +335,9 @@ describe('<QuickResponsesView />', () => {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [quickResponse1],
             },
-            handleSelfServiceConfigurationUpdate: jest.fn(),
+            quickResponses: [quickResponse1],
+            handleQuickResponsesUpdate: jest.fn(),
+            handleQuickResponsesDelete: jest.fn(),
         })
 
         renderWithRouterAndDnD(
@@ -365,22 +366,25 @@ describe('<QuickResponsesView />', () => {
             deactivated_datetime: new Date().toISOString(),
             id: '2b111cf9-efb0-4a3a-a787-498c32a2b435',
         }
+        const quickResponses = [
+            ..._times(MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS, () => ({
+                ...quickResponse1,
+                id: uuidv4(),
+            })),
+            quickResponse5,
+        ]
 
-        useSelfServiceConfigurationMock.mockReturnValue({
+        useQuickResponsesMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                quick_response_policies: [
-                    ..._times(MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS, () => ({
-                        ...quickResponse1,
-                        id: uuidv4(),
-                    })),
-                    quickResponse5,
-                ],
+                quick_response_policies: quickResponses,
             },
-            handleSelfServiceConfigurationUpdate: jest.fn(),
+            quickResponses,
+            handleQuickResponsesUpdate: jest.fn(),
+            handleQuickResponsesDelete: jest.fn(),
         })
 
         renderWithRouterAndDnD(
