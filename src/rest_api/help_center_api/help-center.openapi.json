@@ -283,6 +283,7 @@
             "post": {
                 "operationId": "sendContactForm",
                 "summary": "Send a contact form",
+                "deprecated": true,
                 "parameters": [
                     {
                         "name": "help_center_id",
@@ -461,6 +462,7 @@
             "post": {
                 "operationId": "updateContactFormIntegration",
                 "summary": "Update the help centers contact form integration values",
+                "deprecated": true,
                 "description": "This will update all the help centers that are using the \"deactivated_integration_id\" for the contact form feature. If a \"fallback_integration\" is provided, those help centers will use this new integration for the contact form feature. Else, the contact form feature will be disabled.",
                 "parameters": [],
                 "requestBody": {
@@ -468,7 +470,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UpdateContactFormIntegrationDto"
+                                "$ref": "#/components/schemas/UpdateEmailIntegrationDto"
                             }
                         }
                     }
@@ -1365,6 +1367,26 @@
                         }
                     }
                 },
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms/update-email-integration": {
+            "post": {
+                "operationId": "updateEmailIntegration",
+                "summary": "Update the contact form email integration values",
+                "description": "This will update all the contact forms that are using the \"deactivated_integration_id\" for the contact form feature. If a \"fallback_integration\" is provided, those contact forms will use this new integration for the contact form feature. Else, the contact form feature will be disabled.",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateEmailIntegrationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"204": {"description": ""}},
                 "tags": ["contact-forms"]
             }
         },
@@ -3206,6 +3228,25 @@
                 "responses": {"200": {"description": ""}},
                 "tags": ["google-fonts"]
             }
+        },
+        "/api/help-center/workflows/handover": {
+            "post": {
+                "operationId": "handoverWorkflowExecution",
+                "summary": "Hand over a workflow execution",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WorkflowHandoverDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"204": {"description": ""}},
+                "tags": ["workflows"]
+            }
         }
     },
     "info": {
@@ -4165,7 +4206,8 @@
                     "seo_meta",
                     "contact_info",
                     "extra_html",
-                    "chat_app_key"
+                    "chat_app_key",
+                    "contact_form_id"
                 ]
             },
             "RedirectDto": {
@@ -4488,7 +4530,7 @@
                 },
                 "required": ["account_id"]
             },
-            "FallbackIntegrationDto": {
+            "FallbackEmailIntegrationDto": {
                 "type": "object",
                 "properties": {
                     "id": {"type": "number", "example": 12345},
@@ -4499,7 +4541,7 @@
                 },
                 "required": ["id", "email"]
             },
-            "UpdateContactFormIntegrationDto": {
+            "UpdateEmailIntegrationDto": {
                 "type": "object",
                 "properties": {
                     "account_id": {
@@ -4515,7 +4557,7 @@
                     "fallback_integration": {
                         "allOf": [
                             {
-                                "$ref": "#/components/schemas/FallbackIntegrationDto"
+                                "$ref": "#/components/schemas/FallbackEmailIntegrationDto"
                             }
                         ]
                     }
@@ -6753,6 +6795,104 @@
                     }
                 },
                 "required": ["meta", "object", "data"]
+            },
+            "WorkflowHandoverMessageAttachmentExtraDto": {
+                "type": "object",
+                "properties": {
+                    "product_id": {"type": "number"},
+                    "variant_id": {"type": "number"},
+                    "price": {"type": "string"},
+                    "variant_name": {"type": "string"},
+                    "product_link": {"type": "string"},
+                    "currency": {"type": "string"},
+                    "featured_image": {"type": "string"}
+                },
+                "required": [
+                    "product_id",
+                    "variant_id",
+                    "product_link",
+                    "featured_image"
+                ]
+            },
+            "WorkflowHandoverMessageAttachmentDto": {
+                "type": "object",
+                "properties": {
+                    "url": {"type": "string"},
+                    "name": {"type": "string"},
+                    "size": {"type": "number"},
+                    "content_type": {"type": "string"},
+                    "extra": {
+                        "$ref": "#/components/schemas/WorkflowHandoverMessageAttachmentExtraDto"
+                    }
+                },
+                "required": ["url", "name", "size", "content_type", "extra"]
+            },
+            "WorkflowHandoverMessageDto": {
+                "type": "object",
+                "properties": {
+                    "subject": {"type": "string"},
+                    "body_html": {"type": "string"},
+                    "attachments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WorkflowHandoverMessageAttachmentDto"
+                        }
+                    },
+                    "from_agent": {"type": "boolean"}
+                },
+                "required": [
+                    "subject",
+                    "body_html",
+                    "attachments",
+                    "from_agent"
+                ]
+            },
+            "WorkflowHandoverDto": {
+                "type": "object",
+                "properties": {
+                    "contact_form_uid": {"type": "string"},
+                    "help_center_id": {"type": "number"},
+                    "locale": {
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "workflow_entrypoint_label": {"type": "string"},
+                    "workflow_configuration_id": {"type": "string"},
+                    "workflow_execution_id": {"type": "string"},
+                    "conversation": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WorkflowHandoverMessageDto"
+                        }
+                    },
+                    "sender_email": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 320
+                    },
+                    "url": {"type": "string"}
+                },
+                "required": [
+                    "locale",
+                    "workflow_entrypoint_label",
+                    "workflow_configuration_id",
+                    "workflow_execution_id",
+                    "conversation",
+                    "sender_email",
+                    "url"
+                ]
             }
         }
     },

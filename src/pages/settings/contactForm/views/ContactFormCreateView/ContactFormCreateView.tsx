@@ -21,6 +21,7 @@ import LanguageInputSection from 'pages/settings/contactForm/components/Language
 import {LocaleCode} from 'models/helpCenter/types'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import contactFormCss from '../../contactForm.less'
+import {ConnectContactFormToShopSection} from '../../components/ConnectContactFormToShopSection/ConnectContactFormToShopSection'
 
 const ContactFormCreateView = ({
     notify,
@@ -63,6 +64,13 @@ const ContactFormCreateView = ({
         setCreateContactFormDto((prev) => ({
             ...prev,
             name,
+        }))
+    }
+
+    const onChangeShopName = ({shop_name}: {shop_name: string | null}) => {
+        setCreateContactFormDto((prev) => ({
+            ...prev,
+            shop_name,
         }))
     }
 
@@ -137,6 +145,13 @@ const ContactFormCreateView = ({
                             locale={createContactFormDto.default_locale}
                             onChange={onChangeLocale}
                             customLabel={'Select default language'}
+                        />
+                    </section>
+
+                    <section>
+                        <ConnectContactFormToShopSection
+                            shopName={null}
+                            onUpdate={onChangeShopName}
                         />
                     </section>
 

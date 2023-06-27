@@ -31,6 +31,9 @@ import {
 } from 'pages/settings/contactForm/constants'
 import {LocaleCode} from 'models/helpCenter/types'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import {ConnectContactFormToShopSection} from 'pages/settings/contactForm/components/ConnectContactFormToShopSection/ConnectContactFormToShopSection'
+import useAppSelector from 'hooks/useAppSelector'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
 
 const ContactFormPreferences = (): JSX.Element => {
     const {
@@ -49,9 +52,18 @@ const ContactFormPreferences = (): JSX.Element => {
     const [updateContactFormDto, setUpdateContactFormDto] = useState<
         Pick<
             UpdateContactFormDto,
-            'name' | 'email_integration' | 'default_locale'
+            'name' | 'email_integration' | 'default_locale' | 'shop_name'
         >
     >({})
+
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+
+    const onConnectedShopChange = ({shop_name}: {shop_name: string | null}) => {
+        setUpdateContactFormDto((prev) => ({
+            ...prev,
+            shop_name,
+        }))
+    }
 
     const onChangeName = (name: string) => {
         setUpdateContactFormDto((prev) => ({
@@ -140,7 +152,8 @@ const ContactFormPreferences = (): JSX.Element => {
     const isSaveChangesEnabled =
         ((updateContactFormDto.name && updateContactFormDto.name.length > 1) ||
             updateContactFormDto.email_integration ||
-            updateContactFormDto.default_locale) &&
+            updateContactFormDto.default_locale ||
+            updateContactFormDto.shop_name !== undefined) &&
         !isNameInvalid &&
         !isLoading &&
         isDirty
@@ -246,6 +259,13 @@ const ContactFormPreferences = (): JSX.Element => {
                         }
                     />
                 </section>
+
+                {hasAutomationAddOn && (
+                    <ConnectContactFormToShopSection
+                        onUpdate={onConnectedShopChange}
+                        shopName={contactForm.shop_name}
+                    />
+                )}
 
                 <div
                     className={classNames(

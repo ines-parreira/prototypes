@@ -23,6 +23,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import {billingState} from 'fixtures/billing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -32,6 +33,7 @@ describe('<ContactFormSettingsView />', () => {
     const FORM_ID = '1'
     const defaultState: Partial<RootState> = {
         integrations: fromJS(integrationsState),
+        billing: fromJS(billingState),
         currentAccount: fromJS(account),
         entities: {
             contactForm: {

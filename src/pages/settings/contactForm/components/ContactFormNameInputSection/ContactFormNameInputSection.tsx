@@ -74,13 +74,18 @@ const ContactFormNameInputSection = ({
 
     return (
         <>
-            <Label className={contactFormCss.mbXs} isRequired={isRequiredShown}>
+            <Label
+                className={contactFormCss.mbXs}
+                isRequired={isRequiredShown}
+                htmlFor="name"
+            >
                 Contact form name
             </Label>
             <InputField
                 autoFocus
                 isRequired={isRequiredShown}
                 data-testid="name"
+                id="name"
                 type="text"
                 name="name"
                 placeholder={`Contact Form Name`}

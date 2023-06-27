@@ -1366,7 +1366,7 @@ declare namespace Components {
        */
       custom_footer_deactivated?: boolean;
     }
-    export interface FallbackIntegrationDto {
+    export interface FallbackEmailIntegrationDto {
       /**
        * example:
        * 12345
@@ -1555,7 +1555,7 @@ declare namespace Components {
         custom_footer_deactivated_datetime: string | null; // date-time
       };
       chat_app_key: string | null;
-      contact_form_id?: number | null;
+      contact_form_id: number | null;
     }
     export interface HelpCenterTranslationSeoMeta {
       title: string | null;
@@ -2035,7 +2035,7 @@ declare namespace Components {
       shop_name?: string | null;
       deactivated_datetime?: string | null; // date-time
     }
-    export interface UpdateContactFormIntegrationDto {
+    export interface UpdateEmailIntegrationDto {
       /**
        * The account id whose help centers should be deleted
        * example:
@@ -2316,6 +2316,39 @@ declare namespace Components {
        * ]
        */
       workflows: WorkflowVo[];
+    }
+    export interface WorkflowHandoverDto {
+      contact_form_uid?: string;
+      help_center_id?: number;
+      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      workflow_entrypoint_label: string;
+      workflow_configuration_id: string;
+      workflow_execution_id: string;
+      conversation: WorkflowHandoverMessageDto[];
+      sender_email: string;
+      url: string;
+    }
+    export interface WorkflowHandoverMessageAttachmentDto {
+      url: string;
+      name: string;
+      size: number;
+      content_type: string;
+      extra: WorkflowHandoverMessageAttachmentExtraDto;
+    }
+    export interface WorkflowHandoverMessageAttachmentExtraDto {
+      product_id: number;
+      variant_id: number;
+      price?: string;
+      variant_name?: string;
+      product_link: string;
+      currency?: string;
+      featured_image: string;
+    }
+    export interface WorkflowHandoverMessageDto {
+      subject: string;
+      body_html: string;
+      attachments: WorkflowHandoverMessageAttachmentDto[];
+      from_agent: boolean;
     }
     export interface WorkflowVo {
       id: string;
@@ -2948,6 +2981,9 @@ declare namespace Paths {
       export type $200 = number[];
     }
   }
+  namespace HandoverWorkflowExecution {
+    export type RequestBody = Components.Schemas.WorkflowHandoverDto;
+  }
   namespace ImportCsv {
     namespace Parameters {
       export type HelpCenterId = number;
@@ -3356,7 +3392,10 @@ declare namespace Paths {
     }
   }
   namespace UpdateContactFormIntegration {
-    export type RequestBody = Components.Schemas.UpdateContactFormIntegrationDto;
+    export type RequestBody = Components.Schemas.UpdateEmailIntegrationDto;
+  }
+  namespace UpdateEmailIntegration {
+    export type RequestBody = Components.Schemas.UpdateEmailIntegrationDto;
   }
   namespace UpdateExtraHTML {
     namespace Parameters {
@@ -3819,6 +3858,16 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpsertContactFormAutomationSettings.Responses.$200>
   /**
+   * updateEmailIntegration - Update the contact form email integration values
+   * 
+   * This will update all the contact forms that are using the "deactivated_integration_id" for the contact form feature. If a "fallback_integration" is provided, those contact forms will use this new integration for the contact form feature. Else, the contact form feature will be disabled.
+   */
+  'updateEmailIntegration'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.UpdateEmailIntegration.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
    * listCategories - List categories
    * 
    * List the top level categories with pagination metadata.
@@ -4179,6 +4228,14 @@ export interface OperationMethods {
   'listGoogleFonts'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * handoverWorkflowExecution - Hand over a workflow execution
+   */
+  'handoverWorkflowExecution'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.HandoverWorkflowExecution.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
 }
@@ -4627,6 +4684,18 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpsertContactFormAutomationSettings.Responses.$200>
   }
+  ['/api/help-center/contact-forms/update-email-integration']: {
+    /**
+     * updateEmailIntegration - Update the contact form email integration values
+     * 
+     * This will update all the contact forms that are using the "deactivated_integration_id" for the contact form feature. If a "fallback_integration" is provided, those contact forms will use this new integration for the contact form feature. Else, the contact form feature will be disabled.
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.UpdateEmailIntegration.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
   ['/api/help-center/help-centers/{help_center_id}/categories']: {
     /**
      * createCategory - Create a category
@@ -5033,6 +5102,16 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/workflows/handover']: {
+    /**
+     * handoverWorkflowExecution - Hand over a workflow execution
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.HandoverWorkflowExecution.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }

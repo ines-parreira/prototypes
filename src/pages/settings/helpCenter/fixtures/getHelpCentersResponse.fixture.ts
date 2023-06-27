@@ -171,6 +171,7 @@ export const getSingleHelpCenterResponseFixtureWithTranslation: HelpCenter = {
             banner_image_vertical_offset: 0,
             banner_text: 'Banner text',
             chat_app_key: '',
+            contact_form_id: 0,
             contact_info: {
                 email: {
                     deactivated_datetime: null,

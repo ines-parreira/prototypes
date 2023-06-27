@@ -44,6 +44,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
         >
           <label
             class="label mbXs"
+            for="name"
           >
             Contact form name
             <abbr
@@ -61,7 +62,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
               <input
                 class="input"
                 data-testid="name"
-                id="input-text-1"
+                id="name"
                 name="name"
                 placeholder="Contact Form Name"
                 required=""
@@ -229,6 +230,77 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
               </div>
             </div>
           </div>
+        </section>
+        <section>
+          <section
+            class="mb40"
+          >
+            <label
+              class="label mbXs"
+              for="store-select"
+            >
+              Connect a store
+            </label>
+            <div>
+              <div
+                class="dropdown"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <div
+                    class="select dropdown-toggle selectFullWidth"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      store
+                    </i>
+                    <span
+                      class="label placeholder"
+                      style="min-width: 10px; opacity: 1;"
+                    >
+                      Select a store
+                    </span>
+                    <input
+                      autocomplete="chrome-off"
+                      class="input iconPadding"
+                      id="store-select"
+                      style="min-width: 10px;"
+                      type="text"
+                      value=""
+                    />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </div>
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="options optionsFullWidth dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  <h6
+                    class="dropdown-header"
+                    tabindex="-1"
+                  >
+                    No result
+                  </h6>
+                </div>
+              </div>
+              <div
+                class="caption"
+              >
+                Once set, the store associated with this contact form cannot be changed.
+              </div>
+            </div>
+          </section>
         </section>
         <div
           class="mtXl"
