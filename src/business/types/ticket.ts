@@ -61,14 +61,15 @@ export enum TicketChannel {
     HelpCenter = 'help-center',
     InstagramAdComment = 'instagram-ad-comment',
     InstagramComment = 'instagram-comment',
-    InstagramMention = 'instagram-mention',
     InstagramDirectMessage = 'instagram-direct-message',
+    InstagramMention = 'instagram-mention',
+    InternalNoteChannel = 'internal-note',
     Phone = 'phone',
     Sms = 'sms',
     Twitter = 'twitter',
     TwitterDirectMessage = 'twitter-direct-message',
-    YotpoReview = 'yotpo-review',
     WhatsApp = 'whatsapp',
+    YotpoReview = 'yotpo-review',
 }
 
 export enum TicketVia {

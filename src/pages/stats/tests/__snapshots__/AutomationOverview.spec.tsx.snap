@@ -374,7 +374,7 @@ exports[`AutomationOverview should render the filters and stats when stats filte
                       name="checkbox-15"
                       type="checkbox"
                     />
-                     Instagram Mention
+                     Instagram Direct Message
                   </label>
                 </div>
                 <div
@@ -390,7 +390,7 @@ exports[`AutomationOverview should render the filters and stats when stats filte
                       name="checkbox-16"
                       type="checkbox"
                     />
-                     Instagram Direct Message
+                     Instagram Mention
                   </label>
                 </div>
                 <div
@@ -406,7 +406,7 @@ exports[`AutomationOverview should render the filters and stats when stats filte
                       name="checkbox-17"
                       type="checkbox"
                     />
-                     Phone
+                     Internal Note
                   </label>
                 </div>
                 <div
@@ -422,7 +422,7 @@ exports[`AutomationOverview should render the filters and stats when stats filte
                       name="checkbox-18"
                       type="checkbox"
                     />
-                     SMS
+                     Phone
                   </label>
                 </div>
                 <div
@@ -438,7 +438,7 @@ exports[`AutomationOverview should render the filters and stats when stats filte
                       name="checkbox-19"
                       type="checkbox"
                     />
-                     Twitter
+                     SMS
                   </label>
                 </div>
                 <div
@@ -454,7 +454,7 @@ exports[`AutomationOverview should render the filters and stats when stats filte
                       name="checkbox-20"
                       type="checkbox"
                     />
-                     Twitter Direct Message
+                     Twitter
                   </label>
                 </div>
                 <div
@@ -470,7 +470,7 @@ exports[`AutomationOverview should render the filters and stats when stats filte
                       name="checkbox-21"
                       type="checkbox"
                     />
-                     Yotpo Review
+                     Twitter Direct Message
                   </label>
                 </div>
                 <div
@@ -487,6 +487,22 @@ exports[`AutomationOverview should render the filters and stats when stats filte
                       type="checkbox"
                     />
                      WhatsApp
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-23"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-23"
+                      name="checkbox-23"
+                      type="checkbox"
+                    />
+                     Yotpo Review
                   </label>
                 </div>
               </div>

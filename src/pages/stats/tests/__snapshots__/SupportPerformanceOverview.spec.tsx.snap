@@ -552,7 +552,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                         name="checkbox-22"
                         type="checkbox"
                       />
-                       Instagram Mention
+                       Instagram Direct Message
                     </label>
                   </div>
                   <div
@@ -568,7 +568,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                         name="checkbox-23"
                         type="checkbox"
                       />
-                       Instagram Direct Message
+                       Instagram Mention
                     </label>
                   </div>
                   <div
@@ -584,7 +584,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                         name="checkbox-24"
                         type="checkbox"
                       />
-                       Phone
+                       Internal Note
                     </label>
                   </div>
                   <div
@@ -600,7 +600,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                         name="checkbox-25"
                         type="checkbox"
                       />
-                       SMS
+                       Phone
                     </label>
                   </div>
                   <div
@@ -616,7 +616,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                         name="checkbox-26"
                         type="checkbox"
                       />
-                       Twitter
+                       SMS
                     </label>
                   </div>
                   <div
@@ -632,7 +632,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                         name="checkbox-27"
                         type="checkbox"
                       />
-                       Twitter Direct Message
+                       Twitter
                     </label>
                   </div>
                   <div
@@ -648,7 +648,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                         name="checkbox-28"
                         type="checkbox"
                       />
-                       Yotpo Review
+                       Twitter Direct Message
                     </label>
                   </div>
                   <div
@@ -665,6 +665,22 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                         type="checkbox"
                       />
                        WhatsApp
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-30"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-30"
+                        name="checkbox-30"
+                        type="checkbox"
+                      />
+                       Yotpo Review
                     </label>
                   </div>
                 </div>
@@ -710,13 +726,13 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <label
                       class="label label quickSelectionOption"
-                      for="checkbox-30"
+                      for="checkbox-31"
                     >
                       <input
                         checked=""
                         class="input"
-                        id="checkbox-30"
-                        name="checkbox-30"
+                        id="checkbox-31"
+                        name="checkbox-31"
                         type="checkbox"
                       />
                       Deselect
@@ -747,22 +763,6 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                     >
                       <label
                         class="label label labelItem"
-                        for="checkbox-31"
-                      >
-                        <input
-                          class="input"
-                          id="checkbox-31"
-                          name="checkbox-31"
-                          type="checkbox"
-                        />
-                        Foo
-                      </label>
-                    </div>
-                    <div
-                      class="wrapperItem"
-                    >
-                      <label
-                        class="label label labelItem"
                         for="checkbox-32"
                       >
                         <input
@@ -771,7 +771,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                           name="checkbox-32"
                           type="checkbox"
                         />
-                        Phone team - +1 205-396-3441
+                        Foo
                       </label>
                     </div>
                     <div
@@ -787,7 +787,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                           name="checkbox-33"
                           type="checkbox"
                         />
-                        Team: user meta null
+                        Phone team - +1 205-396-3441
                       </label>
                     </div>
                     <div
@@ -801,6 +801,22 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                           class="input"
                           id="checkbox-34"
                           name="checkbox-34"
+                          type="checkbox"
+                        />
+                        Team: user meta null
+                      </label>
+                    </div>
+                    <div
+                      class="wrapperItem"
+                    >
+                      <label
+                        class="label label labelItem"
+                        for="checkbox-35"
+                      >
+                        <input
+                          class="input"
+                          id="checkbox-35"
+                          name="checkbox-35"
                           type="checkbox"
                         />
                         Test
@@ -822,13 +838,13 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-35"
+                      for="checkbox-36"
                     >
                       <input
                         checked=""
                         class="input"
-                        id="checkbox-35"
-                        name="checkbox-35"
+                        id="checkbox-36"
+                        name="checkbox-36"
                         type="checkbox"
                       />
                        Acme Support
@@ -839,12 +855,12 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-36"
+                      for="checkbox-37"
                     >
                       <input
                         class="input"
-                        id="checkbox-36"
-                        name="checkbox-36"
+                        id="checkbox-37"
+                        name="checkbox-37"
                         type="checkbox"
                       />
                        Bob Smith
@@ -951,7 +967,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-37"
+                      id="tooltip-38"
                     >
                       info
                     </i>
@@ -1012,7 +1028,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-38"
+                      id="tooltip-39"
                     >
                       info
                     </i>
@@ -1068,7 +1084,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-39"
+                      id="tooltip-40"
                     >
                       info
                     </i>
@@ -1124,7 +1140,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-40"
+                      id="tooltip-41"
                     >
                       info
                     </i>
@@ -1197,7 +1213,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-41"
+                      id="tooltip-42"
                     >
                       info
                     </i>
@@ -1241,7 +1257,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-42"
+                      id="tooltip-43"
                     >
                       info
                     </i>
@@ -1285,7 +1301,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-43"
+                      id="tooltip-44"
                     >
                       info
                     </i>
@@ -1329,7 +1345,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-44"
+                      id="tooltip-45"
                     >
                       info
                     </i>
@@ -1373,7 +1389,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-45"
+                      id="tooltip-46"
                     >
                       info
                     </i>
@@ -1421,7 +1437,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-46"
+                      id="tooltip-47"
                     >
                       info
                     </i>
@@ -1452,7 +1468,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-47"
+                      id="tooltip-48"
                     >
                       info
                     </i>
@@ -1483,7 +1499,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-48"
+                      id="tooltip-49"
                     >
                       info
                     </i>
@@ -1514,7 +1530,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-49"
+                      id="tooltip-50"
                     >
                       info
                     </i>
@@ -1545,7 +1561,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
                   >
                     <i
                       class="material-icons-outlined icon"
-                      id="tooltip-50"
+                      id="tooltip-51"
                     >
                       info
                     </i>

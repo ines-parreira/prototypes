@@ -374,7 +374,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       name="checkbox-15"
                       type="checkbox"
                     />
-                     Instagram Mention
+                     Instagram Direct Message
                   </label>
                 </div>
                 <div
@@ -390,7 +390,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       name="checkbox-16"
                       type="checkbox"
                     />
-                     Instagram Direct Message
+                     Instagram Mention
                   </label>
                 </div>
                 <div
@@ -406,7 +406,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       name="checkbox-17"
                       type="checkbox"
                     />
-                     Phone
+                     Internal Note
                   </label>
                 </div>
                 <div
@@ -422,7 +422,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       name="checkbox-18"
                       type="checkbox"
                     />
-                     SMS
+                     Phone
                   </label>
                 </div>
                 <div
@@ -438,7 +438,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       name="checkbox-19"
                       type="checkbox"
                     />
-                     Twitter
+                     SMS
                   </label>
                 </div>
                 <div
@@ -454,7 +454,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       name="checkbox-20"
                       type="checkbox"
                     />
-                     Twitter Direct Message
+                     Twitter
                   </label>
                 </div>
                 <div
@@ -470,7 +470,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       name="checkbox-21"
                       type="checkbox"
                     />
-                     Yotpo Review
+                     Twitter Direct Message
                   </label>
                 </div>
                 <div
@@ -487,6 +487,22 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       type="checkbox"
                     />
                      WhatsApp
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-23"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-23"
+                      name="checkbox-23"
+                      type="checkbox"
+                    />
+                     Yotpo Review
                   </label>
                 </div>
               </div>
@@ -532,13 +548,13 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-23"
+                    for="checkbox-24"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-23"
-                      name="checkbox-23"
+                      id="checkbox-24"
+                      name="checkbox-24"
                       type="checkbox"
                     />
                     Deselect
@@ -569,22 +585,6 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-24"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-24"
-                        name="checkbox-24"
-                        type="checkbox"
-                      />
-                      Foo
-                    </label>
-                  </div>
-                  <div
-                    class="wrapperItem"
-                  >
-                    <label
-                      class="label label labelItem"
                       for="checkbox-25"
                     >
                       <input
@@ -593,7 +593,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                         name="checkbox-25"
                         type="checkbox"
                       />
-                      Phone team - +1 205-396-3441
+                      Foo
                     </label>
                   </div>
                   <div
@@ -609,7 +609,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                         name="checkbox-26"
                         type="checkbox"
                       />
-                      Team: user meta null
+                      Phone team - +1 205-396-3441
                     </label>
                   </div>
                   <div
@@ -623,6 +623,22 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                         class="input"
                         id="checkbox-27"
                         name="checkbox-27"
+                        type="checkbox"
+                      />
+                      Team: user meta null
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-28"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-28"
+                        name="checkbox-28"
                         type="checkbox"
                       />
                       Test
@@ -644,13 +660,13 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-28"
+                    for="checkbox-29"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-28"
-                      name="checkbox-28"
+                      id="checkbox-29"
+                      name="checkbox-29"
                       type="checkbox"
                     />
                      Acme Support
@@ -661,12 +677,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-29"
+                    for="checkbox-30"
                   >
                     <input
                       class="input"
-                      id="checkbox-29"
-                      name="checkbox-29"
+                      id="checkbox-30"
+                      name="checkbox-30"
                       type="checkbox"
                     />
                      Bob Smith

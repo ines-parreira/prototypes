@@ -525,7 +525,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                         name="checkbox-22"
                         type="checkbox"
                       />
-                       Instagram Mention
+                       Instagram Direct Message
                     </label>
                   </div>
                   <div
@@ -541,7 +541,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                         name="checkbox-23"
                         type="checkbox"
                       />
-                       Instagram Direct Message
+                       Instagram Mention
                     </label>
                   </div>
                   <div
@@ -557,7 +557,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                         name="checkbox-24"
                         type="checkbox"
                       />
-                       Phone
+                       Internal Note
                     </label>
                   </div>
                   <div
@@ -573,7 +573,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                         name="checkbox-25"
                         type="checkbox"
                       />
-                       SMS
+                       Phone
                     </label>
                   </div>
                   <div
@@ -589,7 +589,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                         name="checkbox-26"
                         type="checkbox"
                       />
-                       Twitter
+                       SMS
                     </label>
                   </div>
                   <div
@@ -605,7 +605,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                         name="checkbox-27"
                         type="checkbox"
                       />
-                       Twitter Direct Message
+                       Twitter
                     </label>
                   </div>
                   <div
@@ -621,7 +621,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                         name="checkbox-28"
                         type="checkbox"
                       />
-                       Yotpo Review
+                       Twitter Direct Message
                     </label>
                   </div>
                   <div
@@ -638,6 +638,22 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                         type="checkbox"
                       />
                        WhatsApp
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-30"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-30"
+                        name="checkbox-30"
+                        type="checkbox"
+                      />
+                       Yotpo Review
                     </label>
                   </div>
                 </div>
@@ -683,13 +699,13 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                   >
                     <label
                       class="label label quickSelectionOption"
-                      for="checkbox-30"
+                      for="checkbox-31"
                     >
                       <input
                         checked=""
                         class="input"
-                        id="checkbox-30"
-                        name="checkbox-30"
+                        id="checkbox-31"
+                        name="checkbox-31"
                         type="checkbox"
                       />
                       Deselect
@@ -720,22 +736,6 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     >
                       <label
                         class="label label labelItem"
-                        for="checkbox-31"
-                      >
-                        <input
-                          class="input"
-                          id="checkbox-31"
-                          name="checkbox-31"
-                          type="checkbox"
-                        />
-                        Foo
-                      </label>
-                    </div>
-                    <div
-                      class="wrapperItem"
-                    >
-                      <label
-                        class="label label labelItem"
                         for="checkbox-32"
                       >
                         <input
@@ -744,7 +744,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                           name="checkbox-32"
                           type="checkbox"
                         />
-                        Phone team - +1 205-396-3441
+                        Foo
                       </label>
                     </div>
                     <div
@@ -760,7 +760,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                           name="checkbox-33"
                           type="checkbox"
                         />
-                        Team: user meta null
+                        Phone team - +1 205-396-3441
                       </label>
                     </div>
                     <div
@@ -774,6 +774,22 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                           class="input"
                           id="checkbox-34"
                           name="checkbox-34"
+                          type="checkbox"
+                        />
+                        Team: user meta null
+                      </label>
+                    </div>
+                    <div
+                      class="wrapperItem"
+                    >
+                      <label
+                        class="label label labelItem"
+                        for="checkbox-35"
+                      >
+                        <input
+                          class="input"
+                          id="checkbox-35"
+                          name="checkbox-35"
                           type="checkbox"
                         />
                         Test
@@ -795,13 +811,13 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-35"
+                      for="checkbox-36"
                     >
                       <input
                         checked=""
                         class="input"
-                        id="checkbox-35"
-                        name="checkbox-35"
+                        id="checkbox-36"
+                        name="checkbox-36"
                         type="checkbox"
                       />
                        Acme Support
@@ -812,12 +828,12 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-36"
+                      for="checkbox-37"
                     >
                       <input
                         class="input"
-                        id="checkbox-36"
-                        name="checkbox-36"
+                        id="checkbox-37"
+                        name="checkbox-37"
                         type="checkbox"
                       />
                        Bob Smith

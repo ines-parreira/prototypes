@@ -285,7 +285,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-14"
             type="checkbox"
           />
-           Instagram Mention
+           Instagram Direct Message
         </label>
       </div>
       <div
@@ -301,7 +301,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-15"
             type="checkbox"
           />
-           Instagram Direct Message
+           Instagram Mention
         </label>
       </div>
       <div
@@ -317,7 +317,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-16"
             type="checkbox"
           />
-           Phone
+           Internal Note
         </label>
       </div>
       <div
@@ -333,7 +333,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-17"
             type="checkbox"
           />
-           SMS
+           Phone
         </label>
       </div>
       <div
@@ -349,7 +349,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-18"
             type="checkbox"
           />
-           Twitter
+           SMS
         </label>
       </div>
       <div
@@ -365,7 +365,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-19"
             type="checkbox"
           />
-           Twitter Direct Message
+           Twitter
         </label>
       </div>
       <div
@@ -381,7 +381,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             name="checkbox-20"
             type="checkbox"
           />
-           Yotpo Review
+           Twitter Direct Message
         </label>
       </div>
       <div
@@ -398,6 +398,22 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             type="checkbox"
           />
            WhatsApp
+        </label>
+      </div>
+      <div
+        class="wrapperItem"
+      >
+        <label
+          class="label label labelItem"
+          for="checkbox-22"
+        >
+          <input
+            class="input"
+            id="checkbox-22"
+            name="checkbox-22"
+            type="checkbox"
+          />
+           Yotpo Review
         </label>
       </div>
     </div>
