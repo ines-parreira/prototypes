@@ -9,7 +9,7 @@ import history from 'pages/history'
 const icon = assetsUrl('/img/icons/logo.png')
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
-const sound = new Audio(require('assets/audio/notification.mp3'))
+const sound = new Audio(require('assets/audio/classic.mp3'))
 sound.load()
 
 class BrowserNotification {

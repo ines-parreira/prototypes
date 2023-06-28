@@ -19,7 +19,7 @@ describe('useSoundSetting', () => {
         const {result} = renderHook(() =>
             useSoundSetting({
                 enabled: false,
-                sound: 'swoosh',
+                sound: 'intuition',
                 volume: 8,
             })
         )
@@ -27,7 +27,7 @@ describe('useSoundSetting', () => {
         expect(result.current).toEqual(
             expect.objectContaining({
                 enabled: false,
-                sound: 'swoosh',
+                sound: 'intuition',
                 volume: 8,
             })
         )
@@ -47,10 +47,10 @@ describe('useSoundSetting', () => {
         const {result} = renderHook(() => useSoundSetting())
 
         act(() => {
-            result.current.onChangeSound('swoosh')
+            result.current.onChangeSound('intuition')
         })
 
-        expect(result.current.sound).toBe('swoosh')
+        expect(result.current.sound).toBe('intuition')
     })
 
     it('should adjust the volume when the callback is invoked', () => {

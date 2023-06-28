@@ -1,16 +1,23 @@
-import defaultSound from 'assets/audio/notification.mp3'
+import audioBeyondDoubt from 'assets/audio/beyond-doubt.mp3'
+import audioClassic from 'assets/audio/classic.mp3'
+import audioDefinite from 'assets/audio/definite.mp3'
+import audioIntuition from 'assets/audio/intuition.mp3'
+import audioJuntos from 'assets/audio/juntos.mp3'
+import audioOpenEnded from 'assets/audio/open-ended.mp3'
+import audioPrettyGood from 'assets/audio/pretty-good.mp3'
+import audioSelfAssured from 'assets/audio/self-assured.mp3'
+import audioThatWasQuick from 'assets/audio/that-was-quick.mp3'
 
 export const sounds = [
-    {
-        label: 'Classic',
-        url: defaultSound,
-        value: 'classic',
-    },
-    {
-        label: 'Swoosh',
-        url: defaultSound,
-        value: 'swoosh',
-    },
+    {label: 'Beyond Doubt', url: audioBeyondDoubt, value: 'beyond-doubt'},
+    {label: 'Classic', url: audioClassic, value: 'default'},
+    {label: 'Definite', url: audioDefinite, value: 'definite'},
+    {label: 'Intuition', url: audioIntuition, value: 'intuition'},
+    {label: 'Juntos', url: audioJuntos, value: 'juntos'},
+    {label: 'Open Ended', url: audioOpenEnded, value: 'open-ended'},
+    {label: 'Pretty Good', url: audioPrettyGood, value: 'pretty-good'},
+    {label: 'Self Assured', url: audioSelfAssured, value: 'self-assured'},
+    {label: 'That Was Quick', url: audioThatWasQuick, value: 'that-was-quick'},
 ] as const
 
 export type SoundValue = typeof sounds[number]['value']

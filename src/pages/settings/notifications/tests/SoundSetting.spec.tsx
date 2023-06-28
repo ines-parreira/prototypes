@@ -56,7 +56,7 @@ describe('<SoundSetting />', () => {
     const defaultProps: ComponentProps<typeof SoundSetting> = {
         description: 'Test description',
         enabled: true,
-        sound: 'classic',
+        sound: 'default',
         title: 'Beep boop',
         volume: 5,
         onChangeEnabled: _noop,
@@ -121,6 +121,6 @@ describe('<SoundSetting />', () => {
         const el = getByText('Test Sound')
         userEvent.click(el)
 
-        expect(notificationSounds.play).toHaveBeenCalledWith('classic', 5)
+        expect(notificationSounds.play).toHaveBeenCalledWith('default', 5)
     })
 })

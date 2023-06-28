@@ -66,9 +66,9 @@ describe('NotificationSounds', () => {
         const ns = new NotificationSounds()
         await flushPromises()
 
-        ns.play('swoosh', 10)
+        ns.play('intuition', 10)
         expect(createBufferSource).toHaveBeenCalledWith()
-        expect(source.buffer).toBe('swoosh')
+        expect(source.buffer).toBe('intuition')
 
         expect(sourceConnect).toHaveBeenCalledWith(gainNode)
         expect(sourceStart).toHaveBeenCalledWith(0)
