@@ -15,7 +15,6 @@ import history from 'pages/history'
 import {RootState} from 'state/types'
 import {updateView} from 'state/views/actions'
 import {areFiltersValid, getActiveView} from 'state/views/selectors'
-import withRouter from 'pages/common/utils/withRouter'
 
 type InjectedProps = {
     urlSearchView: Map<any, any>
@@ -115,8 +114,6 @@ export default function withViewSearchUrlSync<P extends Props>(
     WrappedComponent: ComponentType<P & ViewSearchUrlSyncInjectedProps>
 ): ComponentType<P> {
     return connector(
-        withRouter(
-            withViewSearchUrlSyncContainer<P>(WrappedComponent) as any
-        ) as any
+        withViewSearchUrlSyncContainer<P>(WrappedComponent) as any
     ) as ComponentType<P>
 }

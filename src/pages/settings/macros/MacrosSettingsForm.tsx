@@ -3,7 +3,7 @@ import {fromJS, List, Map} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import React, {SyntheticEvent, useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Link, RouteComponentProps} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 import {
     Breadcrumb,
@@ -13,7 +13,6 @@ import {
     FormGroup,
 } from 'reactstrap'
 
-import withRouter from 'pages/common/utils/withRouter'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -48,8 +47,6 @@ import {MacroActionName} from 'models/macroAction/types'
 
 import css from './MacrosSettingsForm.less'
 
-type OwnProps = RouteComponentProps<{macroId?: string}>
-
 export function MacrosSettingsFormContainer({
     agents,
     macroCreated,
@@ -58,11 +55,9 @@ export function MacrosSettingsFormContainer({
     macroUpdated,
     macros,
     notify,
-    match: {
-        params: {macroId},
-    },
-}: OwnProps & ConnectedProps<typeof connector>) {
+}: ConnectedProps<typeof connector>) {
     const hasAgentPrivileges = useHasAgentPrivileges()
+    const {macroId} = useParams<{macroId?: string}>()
 
     const [macroForm, setMacroForm] = useState<MacroDraft>(
         getDefaultMacro().toJS()
@@ -325,4 +320,4 @@ const connector = connect(
     }
 )
 
-export default withRouter(connector(MacrosSettingsFormContainer))
+export default connector(MacrosSettingsFormContainer)

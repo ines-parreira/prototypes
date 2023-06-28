@@ -1,21 +1,30 @@
 import React, {ComponentProps} from 'react'
 import {render, RenderResult, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
-
+import * as ReactRouterDom from 'react-router-dom'
 import {Provider} from 'react-redux'
+
 import {mockStore} from 'utils/testing'
+import {IntegrationType, ZendeskIntegration} from 'models/integration/types'
+
 import {ImportZendeskDetail} from '../ImportZendeskDetail'
-
-import {
-    IntegrationType,
-    ZendeskIntegration,
-} from '../../../../../models/integration/types'
-
 import {failedImport, pendingImport, successImport} from './fixtures'
 
+jest.mock(
+    'react-router',
+    () =>
+        ({
+            ...jest.requireActual('react-router'),
+            useParams: jest.fn(),
+        } as Record<string, any>)
+)
+const mockUseParams = jest.spyOn(ReactRouterDom, 'useParams')
+
 const renderComponent = (
-    props: ComponentProps<typeof ImportZendeskDetail>
+    props: ComponentProps<typeof ImportZendeskDetail> & {integrationId?: string}
 ): RenderResult => {
+    mockUseParams.mockReturnValue({integrationId: props.integrationId || '1'})
+
     return render(
         <Provider
             store={mockStore({
@@ -34,12 +43,8 @@ describe('<ImportZendeskDetail/>', () => {
             (zendeskImport: ZendeskIntegration) => {
                 const fetchIntegrationMock = jest.fn()
                 const {container} = renderComponent({
+                    integrationId: zendeskImport.id.toString(10),
                     fetchIntegration: fetchIntegrationMock,
-                    match: {
-                        params: {
-                            integrationId: zendeskImport.id.toString(10),
-                        },
-                    },
                     updateOrCreateIntegration: jest.fn(),
                     integrations: [zendeskImport],
                     loading: false,
@@ -56,11 +61,6 @@ describe('<ImportZendeskDetail/>', () => {
             const {getByText, getByRole} = renderComponent({
                 fetchIntegration: jest.fn(),
                 updateOrCreateIntegration: jest.fn(),
-                match: {
-                    params: {
-                        integrationId: '1',
-                    },
-                },
                 integrations: [successImport],
                 loading: false,
             } as any)
@@ -75,11 +75,6 @@ describe('<ImportZendeskDetail/>', () => {
             const props = {
                 fetchIntegration: jest.fn(),
                 updateOrCreateIntegration: updateIntegrationMock,
-                match: {
-                    params: {
-                        integrationId: '1',
-                    },
-                },
                 integrations: [successImport],
                 loading: false,
             } as any

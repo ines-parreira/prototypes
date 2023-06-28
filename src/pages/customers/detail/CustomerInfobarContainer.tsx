@@ -1,9 +1,7 @@
 import React, {useEffect} from 'react'
-import {RouteComponentProps} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
-import withRouter from 'pages/common/utils/withRouter'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import {fetchPreviewCustomer} from 'state/infobar/actions'
 import {InfobarState} from 'state/infobar/types'
@@ -19,8 +17,7 @@ import {RootState} from 'state/types'
 type Props = {
     infobar: InfobarState
     isEditingWidgets: boolean
-} & ConnectedProps<typeof connector> &
-    RouteComponentProps
+} & ConnectedProps<typeof connector>
 
 export const CustomerInfobarContainer = ({
     actions,
@@ -74,4 +71,4 @@ const connector = connect(
     })
 )
 
-export default withRouter(connector(CustomerInfobarContainer))
+export default connector(CustomerInfobarContainer)

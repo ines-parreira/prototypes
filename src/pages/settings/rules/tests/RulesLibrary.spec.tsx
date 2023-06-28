@@ -1,10 +1,10 @@
 import React from 'react'
-import {RouteComponentProps, Router} from 'react-router-dom'
+import * as ReactRouterDom from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {screen, render, waitFor} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
+import {createMemoryHistory, Location} from 'history'
 import {fromJS} from 'immutable'
 
 import {billingState} from 'fixtures/billing'
@@ -21,9 +21,28 @@ import {RootState, StoreDispatch} from '../../../../state/types'
 
 import {RulesLibraryContainer} from '../RulesLibrary'
 
+const {Router} = ReactRouterDom
+
 jest.mock('../../../../models/rule/resources')
 jest.mock('../../../../models/ruleRecipe/resources')
 jest.mock('../../../../state/entities/ruleRecipes/actions')
+
+jest.mock(
+    'react-router',
+    () =>
+        ({
+            ...jest.requireActual('react-router'),
+            useLocation: jest.fn(),
+        } as Record<string, any>)
+)
+const useLocationSpy = (
+    jest.spyOn(ReactRouterDom, 'useLocation') as jest.SpyInstance<
+        Partial<Location>,
+        []
+    >
+).mockReturnValue({
+    search: '',
+})
 
 const createRuleFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({
@@ -51,12 +70,6 @@ const populateStore = (length: number): RootState => {
     return defaultState
 }
 
-const minProps = {
-    location: {
-        hash: '',
-    },
-} as unknown as RouteComponentProps
-
 describe('<RulesLibrary/>', () => {
     const fetchRulesMock = fetchRules as jest.MockedFunction<typeof fetchRules>
     const fetchRuleRecipesMock = fetchRuleRecipes as jest.MockedFunction<
@@ -70,36 +83,33 @@ describe('<RulesLibrary/>', () => {
     it('should render the rules library view', () => {
         const {container} = render(
             <Provider store={mockStore(populateStore(5))}>
-                <RulesLibraryContainer {...minProps} />
+                <RulesLibraryContainer />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the rule library view', () => {
-        const props = {
-            location: {
-                hash: '#rule-library',
-            },
-        } as unknown as RouteComponentProps
+        useLocationSpy.mockReturnValue({
+            hash: '#rule-library',
+        })
+
         const {container} = render(
             <Provider store={mockStore(populateStore(5))}>
-                <RulesLibraryContainer {...props} />
+                <RulesLibraryContainer />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render create custom rule footer', async () => {
-        const props = {
-            location: {
-                hash: '#rule-library',
-            },
-        } as unknown as RouteComponentProps
+        useLocationSpy.mockReturnValue({
+            hash: '#rule-library',
+        })
 
         render(
             <Provider store={mockStore(populateStore(5))}>
-                <RulesLibraryContainer {...props} />
+                <RulesLibraryContainer />
             </Provider>
         )
 
@@ -111,7 +121,7 @@ describe('<RulesLibrary/>', () => {
     it('should fetch rules', () => {
         render(
             <Provider store={mockStore(populateStore(1))}>
-                <RulesLibraryContainer {...minProps} />
+                <RulesLibraryContainer />
             </Provider>
         )
         expect(fetchRulesMock).toHaveBeenCalled()
@@ -120,21 +130,19 @@ describe('<RulesLibrary/>', () => {
     it('should fetch rule recipes', () => {
         render(
             <Provider store={mockStore(populateStore(1))}>
-                <RulesLibraryContainer {...minProps} />
+                <RulesLibraryContainer />
             </Provider>
         )
         expect(fetchRuleRecipesMock).toHaveBeenCalled()
     })
 
     it('it should redirect to rule page if managed rule installed', () => {
+        useLocationSpy.mockReturnValue({
+            search: `?${emptyManagedRule.settings.slug}`,
+        })
         const rules = {
             [emptyManagedRule.id]: emptyManagedRule,
         }
-        const props = {
-            location: {
-                search: `?${emptyManagedRule.settings.slug}`,
-            },
-        } as unknown as RouteComponentProps
 
         const store: RootState = {
             entities: {
@@ -151,7 +159,7 @@ describe('<RulesLibrary/>', () => {
         render(
             <Router history={history}>
                 <Provider store={mockStore(store)}>
-                    <RulesLibraryContainer {...props} />
+                    <RulesLibraryContainer />
                 </Provider>
             </Router>
         )

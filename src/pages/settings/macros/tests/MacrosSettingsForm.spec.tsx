@@ -1,6 +1,7 @@
 import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
+import * as ReactRouterDom from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -31,10 +32,19 @@ jest.mock(
     () => () => 'MacroEdit'
 )
 jest.mock('hooks/useHasAgentPrivileges')
+jest.mock(
+    'react-router',
+    () =>
+        ({
+            ...jest.requireActual('react-router'),
+            useParams: jest.fn(),
+        } as Record<string, any>)
+)
 
 const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<
     typeof useHasAgentPrivileges
 >
+const mockUseParams = jest.spyOn(ReactRouterDom, 'useParams')
 
 describe('<MacrosSettingsForm/>', () => {
     useHasAgentPrivilegesMock.mockReturnValue(true)
@@ -77,16 +87,7 @@ describe('<MacrosSettingsForm/>', () => {
         macroFetched: mockMacroFetched,
         macroUpdated: mockMacroUpdated,
         notify: mockNotify,
-        match: {params: {}},
     } as any as ComponentProps<typeof MacrosSettingsFormContainer>
-    const matchProp = {
-        params: {
-            macroId: '1',
-        },
-        isExact: true,
-        path: 'foo/',
-        url: 'foo/',
-    }
 
     mockCreateMacro.mockResolvedValue(newMacroFixture)
     mockDeleteMacro.mockResolvedValue()
@@ -95,26 +96,24 @@ describe('<MacrosSettingsForm/>', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseParams.mockReturnValue({macroId: '1'})
     })
 
     it('should render an empty form when no macro id', () => {
+        mockUseParams.mockReturnValue({})
         const component = shallow(<MacrosSettingsFormContainer {...minProps} />)
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display a loader when fetching a macro', () => {
-        const component = mount(
-            <MacrosSettingsFormContainer {...minProps} match={matchProp} />
-        )
+        const component = mount(<MacrosSettingsFormContainer {...minProps} />)
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render a filled form when passed macro id', (done) => {
-        const component = mount(
-            <MacrosSettingsFormContainer {...minProps} match={matchProp} />
-        )
+        const component = mount(<MacrosSettingsFormContainer {...minProps} />)
 
         expect(mockFetchMacro).toHaveBeenNthCalledWith(1, 1)
         setImmediate(() => {
@@ -130,9 +129,7 @@ describe('<MacrosSettingsForm/>', () => {
 
     it('should notify the user when failed to fetch the macro', (done) => {
         mockFetchMacro.mockRejectedValue('error')
-        const component = mount(
-            <MacrosSettingsFormContainer {...minProps} match={matchProp} />
-        )
+        const component = mount(<MacrosSettingsFormContainer {...minProps} />)
 
         expect(mockFetchMacro).toHaveBeenNthCalledWith(1, 1)
         setImmediate(() => {
@@ -150,6 +147,7 @@ describe('<MacrosSettingsForm/>', () => {
     })
 
     it('should create macro and redirect to /app/automation/macros', (done) => {
+        mockUseParams.mockReturnValue({})
         const component = mount(<MacrosSettingsFormContainer {...minProps} />)
 
         component.find(Button).at(0).simulate('submit')
@@ -178,7 +176,6 @@ describe('<MacrosSettingsForm/>', () => {
                 macros={{
                     '1': macrosFixtures[0],
                 }}
-                match={matchProp}
             />
         )
 
@@ -230,6 +227,7 @@ describe('<MacrosSettingsForm/>', () => {
                 },
             },
         })
+        mockUseParams.mockReturnValue({})
         const component = mount(<MacrosSettingsFormContainer {...minProps} />)
 
         component.find(Button).at(0).simulate('submit')
@@ -253,7 +251,6 @@ describe('<MacrosSettingsForm/>', () => {
                 macros={{
                     '1': macrosFixtures[0],
                 }}
-                match={matchProp}
             />
         )
 
@@ -271,6 +268,7 @@ describe('<MacrosSettingsForm/>', () => {
     })
 
     it('should disable submit button when submitting form', () => {
+        mockUseParams.mockReturnValue({})
         const component = mount(<MacrosSettingsFormContainer {...minProps} />)
 
         component.find(Button).at(0).simulate('submit')
@@ -285,7 +283,6 @@ describe('<MacrosSettingsForm/>', () => {
                 macros={{
                     '1': macrosFixtures[0],
                 }}
-                match={matchProp}
             />
         )
 
@@ -327,7 +324,6 @@ describe('<MacrosSettingsForm/>', () => {
                 macros={{
                     '1': macrosFixtures[0],
                 }}
-                match={matchProp}
             />
         )
 
@@ -349,7 +345,6 @@ describe('<MacrosSettingsForm/>', () => {
                 macros={{
                     '1': macrosFixtures[0],
                 }}
-                match={matchProp}
             />
         )
 
@@ -388,7 +383,6 @@ describe('<MacrosSettingsForm/>', () => {
                 macros={{
                     '1': macrosFixtures[0],
                 }}
-                match={matchProp}
             />
         )
 

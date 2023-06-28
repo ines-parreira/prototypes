@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Link, RouteComponentProps} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 import {fromJS} from 'immutable'
 import {useEffectOnce} from 'react-use'
@@ -26,7 +26,6 @@ import Tooltip from 'pages/common/components/Tooltip'
 import settingsCss from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import withRouter from 'pages/common/utils/withRouter'
 
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
@@ -37,21 +36,15 @@ import ImportStatusAlert from './ImportStatusAlert'
 import css from './ImportZendeskDetail.less'
 import EditCredentialsForm from './EditCredentialsForm'
 
-export const ImportZendeskDetail = (
-    props: RouteComponentProps<{integrationId: string}> &
-        ConnectedProps<typeof connector>
-) => {
-    const {
-        fetchIntegration,
-        updateOrCreateIntegration,
-        match: {
-            params: {integrationId},
-        },
-        integrations,
-        loading,
-        timezone,
-    } = props
+export const ImportZendeskDetail = ({
+    fetchIntegration,
+    updateOrCreateIntegration,
+    integrations,
+    loading,
+    timezone,
+}: ConnectedProps<typeof connector>) => {
     const [isPopoverOpened, setIsPopoverOpened] = useState(false)
+    const {integrationId} = useParams<{integrationId: string}>()
 
     useEffectOnce(() => {
         fetchIntegration(integrationId, ZENDESK_INTEGRATION_TYPE)
@@ -299,4 +292,4 @@ const mapDispatchToProps = (dispatch: StoreDispatch) =>
     )
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
-export default withRouter(connector(ImportZendeskDetail))
+export default connector(ImportZendeskDetail)

@@ -1,9 +1,8 @@
 import React, {useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {RouteComponentProps} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 
-import withRouter from 'pages/common/utils/withRouter'
 import Loader from 'pages/common/components/Loader/Loader'
 import {fetchRule} from 'models/rule/resources'
 import {getRulesLimitStatus} from 'state/entities/rules/selectors'
@@ -18,11 +17,9 @@ import {RuleFormEditor} from './components/RuleFormEditor'
 export function RuleDetailForm({
     rules,
     ruleFetched,
-    match: {
-        params: {ruleId},
-    },
     notify,
-}: RouteComponentProps<{ruleId?: string}> & ConnectedProps<typeof connector>) {
+}: ConnectedProps<typeof connector>) {
+    const {ruleId} = useParams<{ruleId?: string}>()
     const [{loading: isFetchPending}, handleFetchRule] = useAsyncFn(
         async (ruleId: number) => {
             try {
@@ -69,4 +66,4 @@ const connector = connect(
     }
 )
 
-export default withRouter(connector(RuleDetailForm))
+export default connector(RuleDetailForm)
