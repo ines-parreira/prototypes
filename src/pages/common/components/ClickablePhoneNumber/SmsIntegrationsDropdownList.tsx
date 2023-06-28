@@ -5,8 +5,10 @@ import parsePhoneNumber from 'libphonenumber-js'
 import {NewPhoneNumber} from 'models/phoneNumber/types'
 import {SmsIntegration} from 'models/integration/types'
 import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {fetchCustomer} from 'state/customers/actions'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
+import useAppDispatch from 'hooks/useAppDispatch'
 import history from 'pages/history'
 
 type Props = {
@@ -22,10 +24,12 @@ const SmsIntegrationsDropdownList = ({
     customerId,
     integrations,
 }: Props) => {
+    const dispatch = useAppDispatch()
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)
     const toAddress = parsePhoneNumber(address)?.format('E.164') || ''
     const onClick = useCallback(
-        (integration: SmsIntegration, phoneNumber: NewPhoneNumber) => {
+        async (integration: SmsIntegration, phoneNumber: NewPhoneNumber) => {
+            await dispatch(fetchCustomer(customerId))
             history.push(`/app/ticket/new?customer=${customerId}`, {
                 source: TicketMessageSourceType.Sms,
                 sender: phoneNumber.phone_number,
@@ -35,7 +39,7 @@ const SmsIntegrationsDropdownList = ({
                 },
             })
         },
-        [customerId, customerName, toAddress]
+        [customerId, customerName, toAddress, dispatch]
     )
 
     return (
@@ -54,7 +58,9 @@ const SmsIntegrationsDropdownList = ({
                 return (
                     <DropdownItem
                         key={integration.id}
-                        onClick={() => onClick(integration, phoneNumber)}
+                        onClick={async () =>
+                            await onClick(integration, phoneNumber)
+                        }
                     >
                         {emoji} {emoji && ' '}
                         {integration.name} ({phoneNumber.phone_number_friendly})
@@ -64,5 +70,4 @@ const SmsIntegrationsDropdownList = ({
         </>
     )
 }
-
 export default SmsIntegrationsDropdownList

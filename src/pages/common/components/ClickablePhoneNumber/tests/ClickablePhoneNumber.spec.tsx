@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Device} from '@twilio/voice-sdk'
+import thunk from 'redux-thunk'
 
 import {IntegrationType} from 'models/integration/types'
 import {RootState, StoreDispatch} from 'state/types'
@@ -15,7 +16,7 @@ import history from 'pages/history'
 
 import ClickablePhoneNumber from '../ClickablePhoneNumber'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const newPhoneNumbers = phoneNumberFixtures.reduce(
     (acc, number) => ({...acc, [number.id]: number}),
     {}
@@ -232,10 +233,12 @@ describe('<ClickablePhoneNumber/>', () => {
 
         fireEvent.click(getByText('My Phone Integration 1 (+1 213 373 4253)'))
 
-        expect(push).toHaveBeenCalledWith('/app/ticket/new?customer=1', {
-            receiver: {address: '+33611223344', name: 'Foo'},
-            sender: '+12133734253',
-            source: 'sms',
+        await waitFor(() => {
+            expect(push).toHaveBeenCalledWith('/app/ticket/new?customer=1', {
+                receiver: {address: '+33611223344', name: 'Foo'},
+                sender: '+12133734253',
+                source: 'sms',
+            })
         })
     })
 })
