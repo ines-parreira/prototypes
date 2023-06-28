@@ -9,6 +9,7 @@ import {WidgetsActionsType} from 'pages/common/components/infobar/Infobar/Infoba
 import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import FieldEdit from './forms/FieldEdit'
 import css from './Field.less'
+import {Copy} from './CopyButton'
 
 type Props = {
     editing?: Editing
@@ -18,6 +19,7 @@ type Props = {
     isParentList: boolean
     widget: Map<string, unknown>
     template: Map<string, unknown>
+    copyableValue: string | null
 }
 
 export default class Field extends React.Component<
@@ -144,7 +146,10 @@ export default class Field extends React.Component<
     }
 
     render() {
-        const {editing, template, value, type} = this.props
+        const {editing, isEditing, template, value, type, copyableValue} =
+            this.props
+
+        const title = template.get('title') as string
         // keep the unscoped class here to have drag and drop greying feature
         const className = classnames(
             `${css.widgetField} widget-field draggable`,
@@ -155,15 +160,21 @@ export default class Field extends React.Component<
 
         return (
             <div id={this.uniqueId} className={className}>
-                <span className={css.widgetFieldLabel}>
-                    {template.get('title')}:
-                </span>
+                <span className={css.widgetFieldLabel}>{title}:</span>
                 <span
                     className={classnames(css.widgetFieldValue, {
                         [css.overflow]: type === 'editableList',
                     })}
                 >
                     {displayValue(value)}
+                    {!isEditing && copyableValue && (
+                        <Copy
+                            value={copyableValue}
+                            className={css.copyButton}
+                            name={title}
+                            onCopyMessage={`${title} copied to clipboard`}
+                        />
+                    )}
                 </span>
                 {this._renderTools()}
                 {this._renderPopover()}

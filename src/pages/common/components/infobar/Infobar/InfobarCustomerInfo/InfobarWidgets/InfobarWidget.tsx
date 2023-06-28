@@ -5,6 +5,7 @@ import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerIn
 import {
     guessFieldValueFromRawData,
     prepareWidgetToDisplay,
+    stringifyRawData,
 } from 'pages/common/components/infobar/utils'
 import {WidgetContext, WidgetContextType} from 'providers/infobar/WidgetContext'
 import {
@@ -195,6 +196,7 @@ export default function InfobarWidget({
                     widget={widget}
                     template={updatedTemplate}
                     editing={editing}
+                    copyableValue={stringifyRawData(data, type)}
                 />
             )
         }

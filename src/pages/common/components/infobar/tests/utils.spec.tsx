@@ -666,4 +666,134 @@ describe('widgets infobar utils', () => {
             expect(utils.getInfobarWidth()).toBe(expected)
         })
     })
+
+    describe('stringifyRawData()', () => {
+        it('should return null because passed data is undefined', () => {
+            expect(utils.stringifyRawData(undefined, '')).toEqual(null)
+        })
+
+        it('should return null because passed data is null', () => {
+            expect(utils.stringifyRawData(null, '')).toEqual(null)
+        })
+
+        it('should return passed data because passed type is `text`', () => {
+            expect(utils.stringifyRawData('foo', 'text')).toEqual('foo')
+        })
+
+        it('should return passed data as string because passed type is `text`', () => {
+            expect(utils.stringifyRawData(1, 'text')).toEqual('1')
+        })
+
+        it('should return null when invalid datetime and passed type is `date`', () => {
+            expect(utils.stringifyRawData('foo', 'date')).toBeNull()
+        })
+
+        it('should return a formatted datetime label because passed type is `date`', () => {
+            expect(utils.stringifyRawData('2017-12-14T16:34', 'date')).toBe(
+                '2017-12-14T16:34:00Z'
+            )
+        })
+
+        it('should return a formatted datetime label because passed type is `date`', () => {
+            expect(utils.stringifyRawData(1513269240000, 'date')).toBe(
+                '2017-12-14T16:34:00Z'
+            )
+        })
+
+        it('should return an age string because passed type is `age` and passed data is a valid datetime', () => {
+            const expectedAge = 2
+            const currentYear = new Date().getFullYear()
+
+            const year = `${currentYear - expectedAge}-01-01`
+            expect(utils.stringifyRawData(`${year} 00:05:00`, 'age')).toEqual(
+                `${expectedAge} (${year})`
+            )
+        })
+
+        it('should return an age string label because passed type is `date`', () => {
+            expect(utils.stringifyRawData(1513269240000, 'age')).toBe(
+                '5 (2017-12-14)'
+            )
+        })
+
+        it('should return passed data because passed type is `age` and passed data is not a valid datetime', () => {
+            expect(utils.stringifyRawData('foo', 'age')).toBeNull()
+        })
+
+        it('should return the url because passed type is `url` and passed data is an url', () => {
+            expect(utils.stringifyRawData('https://gorgias.io', 'url')).toBe(
+                'https://gorgias.io'
+            )
+        })
+
+        it('should return null because passed type is `url` and passed data is not an url', () => {
+            expect(utils.stringifyRawData('foo', 'url')).toBeNull()
+            expect(utils.stringifyRawData(1, 'url')).toBeNull()
+            expect(utils.stringifyRawData('google.com', 'url')).toBeNull()
+        })
+
+        it('should return the emai because passed type is `email` and passed data is an email address', () => {
+            expect(
+                utils.stringifyRawData('developers@gorgias.io', 'email')
+            ).toBe('developers@gorgias.io')
+        })
+
+        it('should return null because passed type is `email` and passed data is not an email', () => {
+            expect(utils.stringifyRawData('foo', 'email')).toBeNull()
+            expect(utils.stringifyRawData(1, 'email')).toBeNull()
+            expect(utils.stringifyRawData('google.com', 'email')).toBeNull()
+        })
+
+        it('should return `true` because passed type is `boolean` and passed data is a `true` value', () => {
+            expect(utils.stringifyRawData('true', 'boolean')).toBe('true')
+            expect(utils.stringifyRawData('1', 'boolean')).toBe('true')
+            expect(utils.stringifyRawData(1, 'boolean')).toBe('true')
+            expect(utils.stringifyRawData(42, 'boolean')).toBe('true')
+        })
+
+        it('should return `false` because passed type is `boolean` and passed data is a `false` value', () => {
+            expect(utils.stringifyRawData('false', 'boolean')).toBe('false')
+            expect(utils.stringifyRawData('0', 'boolean')).toBe('false')
+            expect(utils.stringifyRawData(0, 'boolean')).toBe('false')
+        })
+
+        const validValues: [string | number, string, string | null][] = [
+            ['1', 'sentiment', 'Positive'],
+            [1, 'sentiment', 'Positive'],
+            ['-1', 'sentiment', 'Negative'],
+            [-1, 'sentiment', 'Negative'],
+            ['0', 'sentiment', 'Negative'],
+            [0, 'sentiment', 'Negative'],
+            ['1', 'rating', '1'],
+            [1, 'rating', '1'],
+            [5, 'rating', '5'],
+            ['1', 'points', '1'],
+            [1, 'points', '1'],
+            [555, 'points', '555'],
+            ['1', 'percent', '1%'],
+            [1, 'percent', '1%'],
+            [555, 'percent', '555%'],
+        ]
+
+        it.each(validValues)(
+            'given %p and %p as arguments, returns correct value',
+            (data, type, expected) => {
+                expect(utils.stringifyRawData(data, type)).toBe(expected)
+            }
+        )
+
+        const defaultValues = [
+            ['hello', 'sentiment'],
+            ['hello', 'rating'],
+            ['hello', 'points'],
+            ['hello', 'percent'],
+        ]
+
+        it.each(defaultValues)(
+            'given %p and %p as arguments, returns default value',
+            (data, type) => {
+                expect(utils.stringifyRawData(data, type)).toBeNull()
+            }
+        )
+    })
 })

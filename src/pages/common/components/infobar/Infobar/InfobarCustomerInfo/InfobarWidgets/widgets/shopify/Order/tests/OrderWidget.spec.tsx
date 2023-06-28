@@ -1,17 +1,16 @@
 import React from 'react'
-import {fireEvent, render, screen} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 
-import copy from 'copy-to-clipboard'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
 import {IntegrationType} from 'models/integration/constants'
-import {notify} from 'state/notifications/actions'
+
 import {EditionContext} from 'providers/infobar/EditionContext'
-import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
-import Order, {Copy, Wrapper} from '../OrderWidget'
+
+import Order, {Wrapper} from '../OrderWidget'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -199,89 +198,5 @@ describe('<AfterTitle/>', () => {
                 ).toBe(expected)
             }
         )
-    })
-})
-
-jest.mock('copy-to-clipboard', () => jest.fn())
-const copyMock = copy as jest.MockedFunction<typeof copy>
-
-jest.mock('store/middlewares/segmentTracker')
-const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
-
-describe('<Copy/>', () => {
-    const mockStore = configureMockStore()
-    beforeEach(() => {
-        jest.resetAllMocks()
-    })
-
-    it('should copy on clipboard', () => {
-        const store = mockStore({currentAccount: fromJS({domain: 'domain'})})
-        render(
-            <Provider store={store}>
-                <Copy name="name" value="test" />
-            </Provider>
-        )
-        const button = screen.getByRole('button')
-        expect(button).toBeVisible()
-        fireEvent.click(button)
-        expect(copyMock).toHaveBeenCalledWith('test')
-        expect(logEventMock).toHaveBeenLastCalledWith(
-            SegmentEvent.InfobarFieldCopied,
-            {account_domain: 'domain', name: 'name'}
-        )
-    })
-
-    it('should notify the user about the copy', () => {
-        const store = mockStore({})
-        render(
-            <Provider store={store}>
-                <Copy name="name" value="test" />
-            </Provider>
-        )
-        const button = screen.getByRole('button')
-        expect(button).toBeVisible()
-        fireEvent.click(button)
-        expect(notify).toHaveBeenCalledWith({
-            status: 'success',
-            title: 'Copied!',
-        })
-        expect(mockedDispatch).toHaveBeenCalled()
-    })
-
-    it('should notify the user about the copy with a custom message', () => {
-        const store = mockStore({})
-        render(
-            <Provider store={store}>
-                <Copy name="name" value="test" onCopyMessage="Test Message" />
-            </Provider>
-        )
-        const button = screen.getByRole('button')
-        expect(button).toBeVisible()
-        fireEvent.click(button)
-        expect(notify).toHaveBeenCalledWith({
-            status: 'success',
-            title: 'Test Message',
-        })
-        expect(mockedDispatch).toHaveBeenCalled()
-    })
-
-    it('should notify the user about the copy error', () => {
-        const store = mockStore({})
-        copyMock.mockImplementation(() => {
-            throw new Error('User not found')
-        })
-        render(
-            <Provider store={store}>
-                <Copy name="name" value="test" onCopyMessage="Test Message" />
-            </Provider>
-        )
-        const button = screen.getByRole('button')
-        expect(button).toBeVisible()
-        fireEvent.click(button)
-        expect(notify).toHaveBeenCalledWith({
-            status: 'error',
-            title: 'Failed to copy',
-        })
-        expect(mockedDispatch).toHaveBeenCalled()
     })
 })

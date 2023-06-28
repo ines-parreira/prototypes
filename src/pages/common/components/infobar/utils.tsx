@@ -793,6 +793,98 @@ export function guessFieldValueFromRawData(
     return fieldValue
 }
 
+export function stringifyRawData(data: any, type: string): string | null {
+    if (_isUndefined(data) || _isNull(data)) {
+        return null
+    }
+
+    switch (type) {
+        case 'text': {
+            return (data as string).toString()
+        }
+        case 'date': {
+            if (moment(data).isValid()) {
+                return moment(data).format()
+            }
+            break
+        }
+        case 'url': {
+            if (_isString(data) && utils.isUrl(data)) {
+                return data
+            }
+            break
+        }
+        case 'email': {
+            if (_isString(data) && utils.isEmail(data)) {
+                return data
+            }
+            break
+        }
+        case 'age': {
+            if (moment(data).isValid()) {
+                return `${moment().diff(data, 'years')} (${moment(data).format(
+                    'YYYY-MM-DD'
+                )})`
+            }
+            break
+        }
+        case 'boolean': {
+            let isTrue = true
+
+            if (_isBoolean(data)) {
+                isTrue = data
+            }
+
+            if (_isString(data)) {
+                isTrue = data === 'true' || data.toString() === '1'
+            }
+
+            if (_isInteger(data)) {
+                isTrue = data !== 0
+            }
+
+            return isTrue ? 'true' : 'false'
+        }
+        case 'rating': {
+            const value = _isString(data) ? parseFloat(data) : data
+            if (!isNaN(value)) {
+                return (value as string).toString()
+            }
+            break
+        }
+        case 'sentiment': {
+            const value = _isString(data) ? parseFloat(data) : data
+
+            if (!isNaN(value)) {
+                if (value >= SENTIMENT_TYPE_UPPER_BOUND) {
+                    return 'Positive'
+                } else if (value <= SENTIMENT_TYPE_UPPER_BOUND) {
+                    return 'Negative'
+                }
+
+                return 'Inconclusive'
+            }
+            break
+        }
+        case 'points': {
+            const value = _isString(data) ? parseFloat(data) : data
+            if (!isNaN(value)) {
+                return (value as string).toLocaleString()
+            }
+
+            break
+        }
+        case 'percent': {
+            const value = _isString(data) ? parseFloat(data) : data
+            if (!isNaN(value)) {
+                return (value as string).toString() + '%'
+            }
+            break
+        }
+    }
+    return null
+}
+
 /**
  * Display a widget field label (before the value)
  */
