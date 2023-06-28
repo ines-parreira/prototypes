@@ -40,12 +40,15 @@ import {
 import useTimeSeries from 'hooks/reporting/useTimeSeries'
 import {usePostReporting} from 'models/reporting/queries'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
+import TrendBadge from 'pages/stats/TrendBadge'
 
 import SupportPerformanceOverview, {
     STATS_TIPS_VISIBILITY_KEY,
 } from '../SupportPerformanceOverview'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+jest.mock('hooks/useId', () => () => 'abc')
 
 jest.mock('react-chartjs-2')
 jest.mock(
@@ -82,6 +85,9 @@ const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
 jest.mock('services/performanceTipService')
 
+jest.mock('pages/stats/TrendBadge')
+const trendBadgeMock = assumeMock(TrendBadge)
+
 describe('<SupportPerformanceOverview />', () => {
     const defaultStatsFilters: StatsFilters = {
         period: {
@@ -115,6 +121,41 @@ describe('<SupportPerformanceOverview />', () => {
             prevValue: 123,
         },
     }
+    const openTicketsMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            value: 90,
+            prevValue: 100,
+        },
+    }
+    const closedTicketsMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            value: 91,
+            prevValue: 100,
+        },
+    }
+    const createdTicketsMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            value: 92,
+            prevValue: 100,
+        },
+    }
+    const repliedTicketsMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            value: 93,
+            prevValue: 100,
+        },
+    }
+    const messagesSentMetricTrend = {
+        ...defaultMetricTrend,
+        data: {
+            value: 94,
+            prevValue: 100,
+        },
+    }
 
     const defaultTimeSeries = {
         data: [
@@ -133,11 +174,11 @@ describe('<SupportPerformanceOverview />', () => {
         useFirstResponseTimeTrendMock.mockReturnValue(defaultMetricTrend)
         useResolutionTimeTrendMock.mockReturnValue(defaultMetricTrend)
         useMessagesPerTicketTrendMock.mockReturnValue(defaultMetricTrend)
-        useOpenTicketsTrendMock.mockReturnValue(defaultMetricTrend)
-        useClosedTicketsTrendMock.mockReturnValue(defaultMetricTrend)
-        useTicketsCreatedTrendMock.mockReturnValue(defaultMetricTrend)
-        useTicketsRepliedTrendMock.mockReturnValue(defaultMetricTrend)
-        useMessagesSentTrendMock.mockReturnValue(defaultMetricTrend)
+        useOpenTicketsTrendMock.mockReturnValue(openTicketsMetricTrend)
+        useClosedTicketsTrendMock.mockReturnValue(closedTicketsMetricTrend)
+        useTicketsCreatedTrendMock.mockReturnValue(createdTicketsMetricTrend)
+        useTicketsRepliedTrendMock.mockReturnValue(repliedTicketsMetricTrend)
+        useMessagesSentTrendMock.mockReturnValue(messagesSentMetricTrend)
         useTicketsCreatedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useTicketsClosedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
         useTicketsRepliedTimeSeriesMock.mockReturnValue(defaultTimeSeries)
@@ -155,6 +196,7 @@ describe('<SupportPerformanceOverview />', () => {
             ],
         } as UseQueryResult)
         useCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
+        trendBadgeMock.mockImplementation(() => <div>TrendBadgeMock</div>)
         jest.spyOn(PerformanceTipHook, 'usePerformanceTips').mockReturnValue({
             type: TipQualifier.Success,
             title: 'some title',
@@ -175,15 +217,38 @@ describe('<SupportPerformanceOverview />', () => {
 
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    it.each([
+        openTicketsMetricTrend,
+        closedTicketsMetricTrend,
+        createdTicketsMetricTrend,
+        repliedTicketsMetricTrend,
+        messagesSentMetricTrend,
+    ])(
+        'should render workload section trend badges as neutral with a badge tooltip #$#',
+        (workloadMetricTrend) => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <SupportPerformanceOverview />
+                </Provider>
+            )
+            expect(trendBadgeMock.mock.calls).toContainEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        interpretAs: 'neutral',
+                        tooltip: 'Compared to: Feb 2nd, 2021 - Feb 2nd, 2021',
+                        value: workloadMetricTrend.data.value,
+                    }),
+                ])
+            )
+        }
+    )
+
     describe('Performance Tips', () => {
         beforeEach(() => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
                 [FeatureFlagKey.AnalyticsPerformanceTips]: true,
             }))
-        })
-
-        afterEach(() => {
-            jest.clearAllMocks()
         })
 
         it('should show tips by default', () => {

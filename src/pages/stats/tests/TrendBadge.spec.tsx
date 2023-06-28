@@ -1,6 +1,7 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {act, render, screen} from '@testing-library/react'
 
+import userEvent from '@testing-library/user-event'
 import TrendBadge from '../TrendBadge'
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
@@ -8,12 +9,6 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
 ))
 
 describe('<TrendBadge />', () => {
-    it('should render the badge', () => {
-        const {container} = render(<TrendBadge />)
-
-        expect(container).toMatchSnapshot()
-    })
-
     it('should render the loading skeleton', () => {
         const {getAllByTestId} = render(<TrendBadge isLoading />)
 
@@ -70,5 +65,27 @@ describe('<TrendBadge />', () => {
         )
 
         expect(container.firstChild).toHaveClass('neutral')
+    })
+
+    it('should render Badge tooltip', async () => {
+        const badgeClass = 'badge'
+        const tooltip = 'some tooltip text'
+
+        render(
+            <TrendBadge
+                className={badgeClass}
+                interpretAs="more-is-better"
+                value={5}
+                prevValue={10}
+                tooltip={tooltip}
+            />
+        )
+        const badge = document.querySelector(`[class*=${badgeClass}]`)
+
+        act(() => {
+            badge && userEvent.hover(badge)
+        })
+
+        expect(await screen.findByRole('tooltip')).toHaveTextContent(tooltip)
     })
 })

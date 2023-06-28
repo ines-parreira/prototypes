@@ -3,6 +3,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo, useState} from 'react'
 import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
+import moment from 'moment/moment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getPreviousPeriod} from 'hooks/reporting/createUseMetricTrend'
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
@@ -74,8 +75,11 @@ import {
     statsFiltersToReportingFilters,
     TicketStateStatsFiltersMembers,
 } from 'utils/reporting'
-
-import {formatMetricValue, formatTimeSeriesData} from './common/utils'
+import {
+    SHORT_FORMAT,
+    formatMetricValue,
+    formatTimeSeriesData,
+} from 'pages/stats/common/utils'
 import MetricCard from './MetricCard'
 import TrendBadge from './TrendBadge'
 import BigNumberMetric from './BigNumberMetric'
@@ -92,6 +96,13 @@ export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 const DEFAULT_TIMEZONE = 'UTC'
 const LEARN_MORE_URL =
     'https://docs.gorgias.com/en-US/226700-5b26beb8fd254af181bd50281c5bbde6'
+
+function getBadgeTooltipForPreviousPeriod(statsFilters: StatsFilters) {
+    const period = getPreviousPeriod(statsFilters.period)
+    return `Compared to: ${moment(period.start_datetime).format(
+        SHORT_FORMAT
+    )} - ${moment(period.end_datetime).format(SHORT_FORMAT)}`
+}
 
 export default function SupportPerformanceOverview() {
     const userTimezone = useAppSelector(
@@ -314,6 +325,9 @@ export default function SupportPerformanceOverview() {
     const loading = useMemo(() => {
         return Object.values(exportableData).some((metric) => metric.isFetching)
     }, [exportableData])
+
+    const periodComparisonTooltipText =
+        getBadgeTooltipForPreviousPeriod(statsFilters)
 
     return (
         <div className="full-width">
@@ -552,9 +566,11 @@ export default function SupportPerformanceOverview() {
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
+                                    interpretAs="neutral"
                                     isLoading={!openTicketsTrend.data}
-                                    value={openTicketsTrend.data?.value}
                                     prevValue={openTicketsTrend.data?.prevValue}
+                                    tooltip={periodComparisonTooltipText}
+                                    value={openTicketsTrend.data?.value}
                                 />
                             }
                         >
@@ -577,11 +593,13 @@ export default function SupportPerformanceOverview() {
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
+                                    interpretAs="neutral"
                                     isLoading={!closedTicketsTrend.data}
-                                    value={closedTicketsTrend.data?.value}
                                     prevValue={
                                         closedTicketsTrend.data?.prevValue
                                     }
+                                    tooltip={periodComparisonTooltipText}
+                                    value={closedTicketsTrend.data?.value}
                                 />
                             }
                         >
@@ -604,11 +622,13 @@ export default function SupportPerformanceOverview() {
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
+                                    interpretAs="neutral"
                                     isLoading={!ticketsCreatedTrend.data}
-                                    value={ticketsCreatedTrend.data?.value}
                                     prevValue={
                                         ticketsCreatedTrend.data?.prevValue
                                     }
+                                    tooltip={periodComparisonTooltipText}
+                                    value={ticketsCreatedTrend.data?.value}
                                 />
                             }
                         >
@@ -631,12 +651,13 @@ export default function SupportPerformanceOverview() {
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
-                                    interpretAs="more-is-better"
+                                    interpretAs="neutral"
                                     isLoading={!ticketsRepliedTrend.data}
-                                    value={ticketsRepliedTrend.data?.value}
                                     prevValue={
                                         ticketsRepliedTrend.data?.prevValue
                                     }
+                                    tooltip={periodComparisonTooltipText}
+                                    value={ticketsRepliedTrend.data?.value}
                                 />
                             }
                         >
@@ -659,11 +680,13 @@ export default function SupportPerformanceOverview() {
                             trendBadge={
                                 <TrendBadge
                                     format="percent"
+                                    interpretAs="neutral"
                                     isLoading={!messagesSentTrend.data}
-                                    value={messagesSentTrend.data?.value}
                                     prevValue={
                                         messagesSentTrend.data?.prevValue
                                     }
+                                    tooltip={periodComparisonTooltipText}
+                                    value={messagesSentTrend.data?.value}
                                 />
                             }
                         >
