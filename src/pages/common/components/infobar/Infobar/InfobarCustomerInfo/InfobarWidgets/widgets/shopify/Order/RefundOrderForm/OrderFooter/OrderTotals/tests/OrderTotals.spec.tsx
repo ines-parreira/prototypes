@@ -132,6 +132,30 @@ describe('<OrderTotals/>', () => {
                 expect(screen.getByRole('tooltip')).toMatchSnapshot()
             })
         })
+
+        it('should show an informative tooltip when hasGiftCard', async () => {
+            refund = refund.setIn(['transactions', 0, 'gateway'], 'gift_card')
+            render(
+                <OrderTotals
+                    editable
+                    hasShippingLine
+                    currencyCode="USD"
+                    loading={false}
+                    payload={payload}
+                    refund={refund}
+                    onPayloadChange={onPayloadChange}
+                    hasMultipleGateways={false}
+                />
+            )
+
+            fireEvent.mouseOver(
+                screen.getByLabelText('Order with multiple gateways warning')
+            )
+
+            await waitFor(() => {
+                expect(screen.getByRole('tooltip')).toMatchSnapshot()
+            })
+        })
     })
 
     describe('_onShippingChange()', () => {

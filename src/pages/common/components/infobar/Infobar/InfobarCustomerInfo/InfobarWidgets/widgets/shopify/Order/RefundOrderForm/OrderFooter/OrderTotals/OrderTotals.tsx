@@ -2,7 +2,7 @@ import React from 'react'
 import {Label} from 'reactstrap'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
-import {Map} from 'immutable'
+import {List, Map} from 'immutable'
 
 import {formatPrice} from 'business/shopify/number'
 import {
@@ -77,6 +77,12 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
             'shipping',
             'maximum_refundable',
         ])
+
+        const hasGiftCard = (
+            refund.get('transactions', List()) as List<Map<any, any>>
+        ).find((value) =>
+            value ? value.get('gateway') === 'gift_card' : false
+        )
 
         return (
             <dl className="row text-left mb-0">
@@ -179,7 +185,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
 
                 <dt className={classnames('col-7 mb-2', css.grey)}>
                     <span>Total available to refund</span>
-                    {hasMultipleGateways && (
+                    {(hasMultipleGateways || hasGiftCard) && (
                         <>
                             <span
                                 className={classnames(

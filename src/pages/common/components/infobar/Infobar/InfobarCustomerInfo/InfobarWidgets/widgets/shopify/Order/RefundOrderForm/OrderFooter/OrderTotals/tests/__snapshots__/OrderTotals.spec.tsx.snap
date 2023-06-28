@@ -236,6 +236,15 @@ exports[`<OrderTotals/> render() should render with shipping line 1`] = `
 </dl>
 `;
 
+exports[`<OrderTotals/> render() should show an informative tooltip when hasGiftCard 1`] = `
+<div
+  class="tooltip-inner"
+  role="tooltip"
+>
+  This order has multiple transactions with different payment providers. To issue a full refund, please go to Shopify.
+</div>
+`;
+
 exports[`<OrderTotals/> render() should show an informative tooltip when hasMultipleGateways 1`] = `
 <div
   class="tooltip-inner"
