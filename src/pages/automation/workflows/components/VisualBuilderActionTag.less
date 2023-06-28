@@ -1,0 +1,17 @@
+@import (reference) '~css/new/colorTokens';
+@import (reference) '~css/typography.less';
+
+:local {
+    .visualBuilderActionTag {
+        display: flex;
+        padding: 4px 8px;
+        border-radius: 4px;
+        .caption-semibold();
+        gap: 4px;
+        :global {
+            .material-icons {
+                line-height: inherit;
+            }
+        }
+    }
+}

@@ -4,7 +4,7 @@ import {Handle, Position, NodeProps} from 'reactflow'
 import _isEqual from 'lodash/isEqual'
 
 import Label from 'pages/common/forms/Label/Label'
-import VisualBuilderNodeAction from 'pages/automation/workflows/components/VisualBuilderNodeAction'
+import VisualBuilderActionTag from 'pages/automation/workflows/components/VisualBuilderActionTag'
 import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 
 import {AutomatedMessageNodeType} from '../../../models/visualBuilderGraph.types'
@@ -45,11 +45,9 @@ function AutomatedMessageNode(
                             <span className={css.clickToAdd}>Prompt</span>
                         )}
                     </Label>
-                    <VisualBuilderNodeAction
-                        text="Automated message"
-                        color="red"
-                        icon="chat_bubble"
-                    />
+                    <VisualBuilderActionTag nodeType="automated_message">
+                        Automated message
+                    </VisualBuilderActionTag>
                     <NodeDeleteIcon node={node} />
                 </div>
                 <Handle

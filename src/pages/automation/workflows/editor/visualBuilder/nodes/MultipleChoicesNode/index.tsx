@@ -4,7 +4,7 @@ import {Handle, NodeProps, Position} from 'reactflow'
 import _isEqual from 'lodash/isEqual'
 
 import Label from 'pages/common/forms/Label/Label'
-import VisualBuilderNodeAction from 'pages/automation/workflows/components/VisualBuilderNodeAction'
+import VisualBuilderActionTag from 'pages/automation/workflows/components/VisualBuilderActionTag'
 import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 
 import {MultipleChoicesNodeType} from '../../../../models/visualBuilderGraph.types'
@@ -42,11 +42,9 @@ function MultipleChoicesNode(node: NodeProps<MultipleChoicesNodeType['data']>) {
                             <span className={css.clickToAdd}>Question</span>
                         )}
                     </Label>
-                    <VisualBuilderNodeAction
-                        text="Multiple choice"
-                        color="blue"
-                        icon="view_list"
-                    />
+                    <VisualBuilderActionTag nodeType="multiple_choices">
+                        Multiple choice
+                    </VisualBuilderActionTag>
                     <NodeDeleteIcon node={node} />
                 </div>
                 <Handle

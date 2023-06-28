@@ -1,5 +1,6 @@
 import React, {useRef, useState} from 'react'
 import {NodeProps} from 'reactflow'
+import classNames from 'classnames'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
@@ -9,8 +10,12 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 import {VisualBuilderGraph} from 'pages/automation/workflows/models/visualBuilderGraph.types'
 
-import EdgeIconButton from './EdgeIconButton'
+import {
+    colorByVisualBuilderNodeType,
+    materialIconByVisualBuilderNodeType,
+} from 'pages/automation/workflows/constants'
 
+import EdgeIconButton from './EdgeIconButton'
 import css from './EdgeBlock.less'
 
 function getIncomingChoiceLabel(
@@ -43,6 +48,33 @@ export default function EdgeBlock({node}: {node: NodeProps}) {
         node.id
     )
 
+    const menuItems = [
+        {
+            label: 'Multiple choice',
+            description: 'Display up to 6 options',
+            icon: materialIconByVisualBuilderNodeType.multiple_choices,
+            style: colorByVisualBuilderNodeType.multiple_choices,
+            onClick: () => {
+                dispatch({
+                    type: 'INSERT_MULTIPLE_CHOICES_NODE',
+                    beforeNodeId: node.id,
+                })
+            },
+        },
+        {
+            label: 'Automated message',
+            description: 'Display short text',
+            icon: materialIconByVisualBuilderNodeType.automated_message,
+            style: colorByVisualBuilderNodeType.automated_message,
+            onClick: () => {
+                dispatch({
+                    type: 'INSERT_AUTOMATED_MESSAGE_NODE',
+                    beforeNodeId: node.id,
+                })
+            },
+        },
+    ]
+
     return (
         <div
             className={css.addNodeIconContainer}
@@ -73,34 +105,35 @@ export default function EdgeBlock({node}: {node: NodeProps}) {
                 onToggle={setIsNodeMenuDropdownOpen}
                 target={edgeRef}
                 placement="right-start"
+                className={css.menuContainer}
             >
                 <DropdownBody>
-                    <DropdownItem
-                        option={{
-                            label: 'Multiple choice (6 maximum)',
-                            value: 'multiple_choices',
-                        }}
-                        onClick={() => {
-                            dispatch({
-                                type: 'INSERT_MULTIPLE_CHOICES_NODE',
-                                beforeNodeId: node.id,
-                            })
-                        }}
-                        shouldCloseOnSelect
-                    />
-                    <DropdownItem
-                        option={{
-                            label: 'Automated message',
-                            value: 'automated_message',
-                        }}
-                        onClick={() => {
-                            dispatch({
-                                type: 'INSERT_AUTOMATED_MESSAGE_NODE',
-                                beforeNodeId: node.id,
-                            })
-                        }}
-                        shouldCloseOnSelect
-                    />
+                    {menuItems.map(
+                        ({label, description, icon, style, onClick}) => (
+                            <DropdownItem
+                                key={label}
+                                option={{
+                                    label,
+                                    value: label,
+                                }}
+                                onClick={onClick}
+                                shouldCloseOnSelect
+                                className={css.menuItemContainer}
+                            >
+                                <div className={css.menuIcon} style={style}>
+                                    <i className={classNames('material-icons')}>
+                                        {icon}
+                                    </i>
+                                </div>
+                                <div>
+                                    {label}
+                                    <div className={css.menuItemDescription}>
+                                        {description}
+                                    </div>
+                                </div>
+                            </DropdownItem>
+                        )
+                    )}
                 </DropdownBody>
             </Dropdown>
         </div>

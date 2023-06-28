@@ -1,5 +1,7 @@
 import {ulid} from 'ulidx'
 
+import colors from 'assets/tokens/colors.json'
+
 import {
     WorkflowConfiguration,
     WorkflowStepChoices,
@@ -8,6 +10,29 @@ import {
     WorkflowTemplate,
     WorkflowTransition,
 } from './models/workflowConfiguration.types'
+import {VisualBuilderNode} from './models/visualBuilderGraph.types'
+
+export const colorByVisualBuilderNodeType: Record<
+    Exclude<NonNullable<VisualBuilderNode['type']>, 'trigger_button' | 'end'>,
+    {color: string; backgroundColor: string}
+> = {
+    automated_message: {
+        color: colors['📺 Classic'].Accessory.Purple_text.value,
+        backgroundColor: colors['📺 Classic'].Accessory.Pink_bg.value,
+    },
+    multiple_choices: {
+        color: colors['📺 Classic'].Main.Variations.Primary_4.value,
+        backgroundColor: colors['📺 Classic'].Accessory.Blue_bg.value,
+    },
+}
+
+export const materialIconByVisualBuilderNodeType: Record<
+    Exclude<NonNullable<VisualBuilderNode['type']>, 'trigger_button' | 'end'>,
+    string
+> = {
+    automated_message: 'chat_bubble',
+    multiple_choices: 'view_list',
+}
 
 export const WAS_THIS_HELPFUL_WORKFLOW_ID = '01GWPRH2G05DYYFBB1GNVNRB19'
 

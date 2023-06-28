@@ -1,3 +1,6 @@
+@import (reference) '~css/new/colorTokens.less';
+@import (reference) '~css/typography.less';
+
 :local {
     .addNodeIconContainer {
         width: 100%;
@@ -16,6 +19,26 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin-right: 4px;
+    }
+
+    .menuContainer {
+        width: 274px;
+    }
+
+    .menuItemContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+        padding: 8px;
+        gap: 8px;
+        .body-regular();
+        .menuIcon {
+            border-radius: 4px;
+            padding: 4px 8px;
+        }
+        .menuItemDescription {
+            .caption-regular();
+            color: @classic-neutral-grey-4;
+        }
     }
 }
