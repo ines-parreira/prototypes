@@ -322,9 +322,10 @@ export class Navbar extends Component<Props, State> {
         return (
             <div
                 ref={this.navbarRef}
-                className={css.sidebar}
+                className={classnames(css.sidebar, {
+                    [css.isResizing]: isResizing,
+                })}
                 style={{width: `${this.state.navbarWidth}px`}}
-                onMouseDown={(e) => isResizing && e.preventDefault()}
             >
                 <div
                     className={classnames(css['nav-primary'], {
