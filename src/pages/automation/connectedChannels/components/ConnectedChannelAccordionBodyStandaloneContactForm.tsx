@@ -4,6 +4,7 @@ import {ContactFormAutomationSettings} from 'models/contactForm/types'
 import {SelfServiceStandaloneContactFormChannel} from 'pages/automation/common/hooks/useSelfServiceStandaloneContactFormChannels'
 import useContactFormsAutomationSettings from 'pages/automation/common/hooks/useContactFormsAutomationSettings'
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
+import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
 import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
 
 type Props = {
@@ -45,6 +46,8 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
         <ConnectedChannelWorkflowsFeature
             channelId={`contact-form-${channel.value.id}`}
             entrypoints={workflowsEntrypoints}
+            maxActiveWorkflows={MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}
+            limitTooltipMessage="You have reached the maximum number of enabled flows in this channel. Disable another flow in order to enable this flow."
             onChange={(nextEntrypoints) => {
                 void handleContactFormAutomationSettingsUpdate({
                     workflows: nextEntrypoints.map(

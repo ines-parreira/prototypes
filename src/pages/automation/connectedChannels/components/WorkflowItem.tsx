@@ -1,13 +1,10 @@
-import React, {RefObject} from 'react'
+import React, {ReactNode, RefObject} from 'react'
 import classnames from 'classnames'
-import {Link} from 'react-router-dom'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 import Tooltip from 'pages/common/components/Tooltip'
 import useId from 'hooks/useId'
-
-import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 
 import css from './WorkflowItem.less'
 
@@ -21,6 +18,7 @@ type Props = {
     isToggleable: boolean
     index: number
     onToggle: (index: number, isEnabled: boolean) => void
+    limitTooltipMessage: ReactNode
 }
 
 const WorkflowItem = ({
@@ -33,10 +31,10 @@ const WorkflowItem = ({
     isToggleable,
     index,
     onToggle,
+    limitTooltipMessage,
 }: Props) => {
     const toggleInputId = `workflow-item-${useId()}`
 
-    const {quickResponsesUrl} = useConnectedChannelsViewContext()
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {type: dndType, position: index},
         [dndType],
@@ -75,10 +73,7 @@ const WorkflowItem = ({
                     trigger={['hover']}
                     autohide={false}
                 >
-                    You have reached the maximum number of enabled flows in this
-                    channel. Disable a flow or{' '}
-                    <Link to={quickResponsesUrl}>quick response flow</Link> in
-                    order to enable this flow.
+                    {limitTooltipMessage}
                 </Tooltip>
             )}
         </div>

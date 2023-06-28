@@ -15,6 +15,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
+import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 import AutomationSubscriptionAction from './AutomationSubscriptionAction'
 import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
@@ -102,7 +103,9 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
             {helpCenterAndContactFormFlowsEnabled && (
                 <ConnectedChannelWorkflowsFeature
                     channelId={`contact-form-${channel.value.id}`}
+                    maxActiveWorkflows={MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}
                     entrypoints={workflowsEntrypoints}
+                    limitTooltipMessage="You have reached the maximum number of enabled flows in this channel. Disable another flow in order to enable this flow."
                     onChange={(nextEntrypoints) => {
                         void handleHelpCenterAutomationSettingsUpdate({
                             workflows: nextEntrypoints.map(

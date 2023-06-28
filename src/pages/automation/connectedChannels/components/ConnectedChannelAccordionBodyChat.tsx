@@ -9,6 +9,7 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
+import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 import AutomationSubscriptionAction from './AutomationSubscriptionAction'
 import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
@@ -32,6 +33,8 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         isHelpCenterEmpty,
         isOrderManagementAvailable,
         articleRecommendationUrl,
+        enabledQuickResponsesCount,
+        quickResponsesUrl,
     } = useConnectedChannelsViewContext()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
@@ -82,11 +85,25 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         }
     }
 
+    const maxActiveWorkflows = Math.max(
+        MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS - enabledQuickResponsesCount,
+        0
+    )
+
     return (
         <>
             <ConnectedChannelWorkflowsFeature
                 channelId={`chat-${applicationId}`}
                 entrypoints={workflows.entrypoints || []}
+                maxActiveWorkflows={maxActiveWorkflows}
+                limitTooltipMessage={
+                    <>
+                        You have reached the maximum number of enabled flows in
+                        this channel. Disable a flow or{' '}
+                        <Link to={quickResponsesUrl}>quick response flow</Link>{' '}
+                        in order to enable this flow.
+                    </>
+                }
                 onChange={(nextEntrypoints) => {
                     void handleChatApplicationAutomationSettingsUpdate({
                         ...applicationAutomationSettings,

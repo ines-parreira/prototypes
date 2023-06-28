@@ -1,11 +1,10 @@
-import React, {useMemo, useRef, useState} from 'react'
+import React, {ReactNode, useMemo, useRef, useState} from 'react'
 import _keyBy from 'lodash/keyBy'
 import _isEqual from 'lodash/isEqual'
 import {Link} from 'react-router-dom'
 
 import Label from 'pages/common/forms/Label/Label'
 import Button from 'pages/common/components/button/Button'
-import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from 'pages/automation/common/components/constants'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import WorkflowItem from './WorkflowItem'
@@ -20,6 +19,8 @@ type Entrypoint = {
 type Props = {
     channelId: string
     entrypoints: Entrypoint[]
+    limitTooltipMessage: ReactNode
+    maxActiveWorkflows: number
     onChange: (nextEntrypoints: Entrypoint[]) => void
 }
 
@@ -27,12 +28,13 @@ const ConnectedChannelWorkflowsFeature = ({
     channelId,
     entrypoints: entrypointsProp,
     onChange,
+    maxActiveWorkflows,
+    limitTooltipMessage,
 }: Props) => {
     const {
         workflowConfigurations: configurations,
         workflowsEntrypoints: allEntrypoints,
         workflowsUrl,
-        enabledQuickResponsesCount,
     } = useConnectedChannelsViewContext()
 
     const configurationsById = useMemo(
@@ -100,9 +102,7 @@ const ConnectedChannelWorkflowsFeature = ({
         onChange(nextEntrypoints)
     }
 
-    const isLimitReached =
-        enabledQuickResponsesCount + enabledEntrypointsCount >=
-        MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS
+    const isLimitReached = enabledEntrypointsCount >= maxActiveWorkflows
 
     return (
         <div className={css.container}>
@@ -126,6 +126,7 @@ const ConnectedChannelWorkflowsFeature = ({
                     isToggleable={entrypoint.enabled || !isLimitReached}
                     index={index}
                     onToggle={handleToggle}
+                    limitTooltipMessage={limitTooltipMessage}
                 />
             ))}
         </div>
