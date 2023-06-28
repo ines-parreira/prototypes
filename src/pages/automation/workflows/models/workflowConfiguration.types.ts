@@ -76,7 +76,6 @@ export type WorkflowTemplate = {
     slug: string
     name: string
     description: string
-    previewImg: string
     getConfiguration: (
         id: string,
         accountId: number // TODO: it shouldn't be a user input

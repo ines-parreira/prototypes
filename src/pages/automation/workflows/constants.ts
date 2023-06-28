@@ -1,7 +1,5 @@
 import {ulid} from 'ulidx'
 
-import productRecommendation from 'assets/img/workflows/templates/product-recommendation.png'
-
 import {
     WorkflowConfiguration,
     WorkflowStepChoices,
@@ -22,7 +20,6 @@ export const WORKFLOW_TEMPLATES: Record<
         name: 'Product recommendation',
         description:
             'Ask customers questions and recommend specific products based on their answers.',
-        previewImg: productRecommendation,
         getConfiguration: (
             id: string,
             account_id: number

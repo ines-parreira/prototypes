@@ -17,7 +17,7 @@ import {
     VisualBuilderNode,
 } from '../models/visualBuilderGraph.types'
 import {transformVisualBuilderGraphIntoWfConfiguration} from '../models/visualBuilderGraph.model'
-import useWorkflowApi from './useWorkflowApi'
+import useWorkflowApi, {workflowConfigurationFactory} from './useWorkflowApi'
 import {
     VisualBuilderGraphAction,
     useVisualBuilderGraphReducer,
@@ -40,9 +40,9 @@ type WorkflowEditorContext = {
     >
 }
 
-const WorkflowEditorContext = createContext<WorkflowEditorContext | undefined>(
-    undefined
-)
+export const WorkflowEditorContext = createContext<
+    WorkflowEditorContext | undefined
+>(undefined)
 
 export function useWorkflowEditorContext() {
     const context = useContext(WorkflowEditorContext)
@@ -238,4 +238,23 @@ function validate(conf: WorkflowConfiguration): Maybe<string> {
         )
     )
         return 'Complete or delete incomplete steps in order to save'
+}
+
+export function createWorkflowEditorContextForPreview(
+    visualBuilderGraph: VisualBuilderGraph
+): WorkflowEditorContext {
+    return {
+        hookError: null,
+        configuration: workflowConfigurationFactory(0, 'id'),
+        visualBuilderGraph,
+        isFetchPending: false,
+        isSavePending: false,
+        isDirty: false,
+        handleValidate: () => null,
+        handleSave: () => Promise.resolve(),
+        handleDiscard: () => null,
+        dispatch: () => null,
+        visualBuilderNodeIdEditing: null,
+        setVisualBuilderNodeIdEditing: () => null,
+    }
 }

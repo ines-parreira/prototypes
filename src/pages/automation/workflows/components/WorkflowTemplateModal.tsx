@@ -7,6 +7,8 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 
 import {WorkflowTemplate} from '../models/workflowConfiguration.types'
+import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
+import VisualBuilderTemplatePreview from '../editor/visualBuilder/components/VisualBuilderTemplatePreview'
 
 import css from './WorkflowTemplateModal.less'
 
@@ -23,15 +25,16 @@ export const WorkflowTemplateModal = ({
     goToNewWorkflowPage,
     template,
 }: Props) => {
+    const workflow = template.getConfiguration('template', 0)
+    const visualBuilderGraph =
+        transformWorkflowConfigurationIntoVisualBuilderGraph(workflow)
     return (
         <Modal isOpen={isOpen} onClose={onClose} classNameDialog={css.dialog}>
             <ModalHeader title={template.name} />
-            <ModalBody>
-                <img
-                    className={css.preview}
-                    src={template.previewImg}
-                    alt=""
-                ></img>
+            <ModalBody className={css.modalBody}>
+                <VisualBuilderTemplatePreview
+                    visualBuilderGraph={visualBuilderGraph}
+                />
             </ModalBody>
             <ModalActionsFooter>
                 <Button intent="secondary" onClick={onClose}>
