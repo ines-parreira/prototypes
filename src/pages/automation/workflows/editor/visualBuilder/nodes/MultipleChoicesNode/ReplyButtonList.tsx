@@ -94,7 +94,11 @@ export default function ReplyButtonList({
                 />
             ))}
             <div>
-                <Button intent="primary" onClick={() => onAddChoice()}>
+                <Button
+                    intent="primary"
+                    onClick={() => onAddChoice()}
+                    isDisabled={choicesDirty.length >= 6}
+                >
                     Add Reply Button
                 </Button>
             </div>
