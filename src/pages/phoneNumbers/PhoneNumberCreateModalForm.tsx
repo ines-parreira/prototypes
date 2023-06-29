@@ -15,7 +15,6 @@ import {
     createPhoneNumber,
     fetchNewPhoneNumber,
 } from 'models/phoneNumber/resources'
-import {GorgiasApiError} from 'models/api/types'
 import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
@@ -25,13 +24,13 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {errorToChildren} from 'utils'
 
 import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
 import PhoneNumberAddressValidationAlert from './PhoneNumberAddressValidationAlert'
 import PhoneAddressFields from './PhoneAddressFields'
 import PhoneMetaFields from './PhoneMetaFields'
 import {shouldValidateAddress} from './utils'
+import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
 
 type Props = {
     isOpen: boolean
@@ -50,6 +49,9 @@ export default function PhoneNumberCreateModalForm({
     onCreate,
 }: Props): JSX.Element {
     const dispatch = useAppDispatch()
+    const {showCreatePhoneNumberErrorNotification} =
+        useCreatePhoneNumberNotifications()
+
     const [step, setStep] = useState<Step>(Step.PhoneInformation)
     const [name, setName] = useState('')
     const [meta, setMeta] = useState<Partial<PhoneNumberMeta>>({
@@ -87,18 +89,7 @@ export default function PhoneNumberCreateModalForm({
                 onClose()
                 onCreate(phoneNumber)
             } catch (error) {
-                const errors = errorToChildren(error)
-                const title =
-                    (error as GorgiasApiError).response.data.error.msg ??
-                    'Failed to create phone number'
-                void dispatch(
-                    notify({
-                        title,
-                        message: errors ?? '',
-                        status: NotificationStatus.Error,
-                        allowHTML: true,
-                    })
-                )
+                showCreatePhoneNumberErrorNotification({error})
             }
         }, [dispatch, name, meta, address, onClose, onCreate])
 

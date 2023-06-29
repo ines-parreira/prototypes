@@ -2,7 +2,6 @@ import React, {useCallback, useState, useEffect} from 'react'
 import classnames from 'classnames'
 import {Col, Form, FormGroup, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
-import {AxiosError} from 'axios'
 
 import InputField from 'pages/common/forms/input/InputField'
 import {
@@ -29,10 +28,7 @@ import PhoneMetaFields from './PhoneMetaFields'
 import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
 import PhoneNumberAddressValidationAlert from './PhoneNumberAddressValidationAlert'
 import {shouldValidateAddress} from './utils'
-import {
-    CustomNotifications,
-    UPGRADE_MESSAGE_NOTIFICATION_SETTINGS,
-} from './constants'
+import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
 import css from './PhoneNumberCreateForm.less'
 
 export default function PhoneNumberCreateForm(): JSX.Element {
@@ -47,33 +43,8 @@ export default function PhoneNumberCreateForm(): JSX.Element {
     const [validationAddress, setValidationAddress] =
         useState<Partial<AddressInformation> | null>(null)
 
-    const showErrorNotification = ({error}: {error: any}) => {
-        const {response} = error as AxiosError<{
-            error: {msg: string; data: {use_custom: string | null}}
-        }>
-        const customNotificationName = response?.data?.error?.data?.use_custom
-        if (customNotificationName === CustomNotifications.UPGRADE_MESSAGE) {
-            void dispatch(
-                notify({
-                    ...UPGRADE_MESSAGE_NOTIFICATION_SETTINGS,
-                    title: 'Cannot add phone number.',
-                    status: NotificationStatus.Error,
-                })
-            )
-            return
-        }
-
-        const errorMsg = response?.data?.error
-            ? response.data.error.msg
-            : 'Failed to create phone number'
-
-        void dispatch(
-            notify({
-                message: errorMsg,
-                status: NotificationStatus.Error,
-            })
-        )
-    }
+    const {showCreatePhoneNumberErrorNotification} =
+        useCreatePhoneNumberNotifications()
 
     const [{loading: isLoading}, handlePhoneNumberCreate] =
         useAsyncFn(async () => {
@@ -104,7 +75,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                 )
                 history.push(`/app/settings/phone-numbers/${phoneNumber.id}`)
             } catch (error) {
-                showErrorNotification({error: error})
+                showCreatePhoneNumberErrorNotification({error})
             }
         }, [dispatch, name, meta, validationAddress])
 

@@ -14,9 +14,7 @@ export const UPGRADE_MESSAGE_NOTIFICATION_SETTINGS = {
                 href='https://gorgias.typeform.com/to/gH7HYEHu?utm_source=in_product&utm_campaign=phone_vetting#email=xxxxx&domain=xxxxx&plan=xxxxx'
                 target="_blank"
                 rel="noopener noreferrer"
-            >
-                here
-            </a>.
+            >here</a>.
         </div>
     `,
     allowHTML: true,
