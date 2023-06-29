@@ -78,6 +78,8 @@ Typecheck:
 Jest:
   stage: test
   variables:
+    NODE_OPTIONS: "--max-old-space-size=3584"
+  variables:
     COVERAGE_DIR: ${CI_PROJECT_DIR}/coverage/
     CACHE_FALLBACK_KEY: ${CI_JOB_NAME}
   artifacts:
