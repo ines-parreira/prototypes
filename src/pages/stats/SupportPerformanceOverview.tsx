@@ -80,6 +80,7 @@ import {
     formatMetricValue,
     formatTimeSeriesData,
 } from 'pages/stats/common/utils'
+import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import MetricCard from './MetricCard'
 import TrendBadge from './TrendBadge'
 import BigNumberMetric from './BigNumberMetric'
@@ -381,6 +382,9 @@ export default function SupportPerformanceOverview() {
                         />
                         <DownloadOverviewDataButton
                             onClick={async () => {
+                                logEvent(SegmentEvent.StatDownloadClicked, {
+                                    name: 'all-metrics',
+                                })
                                 await saveReport(
                                     exportableData,
                                     statsFilters.period

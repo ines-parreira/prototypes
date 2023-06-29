@@ -41,6 +41,7 @@ import useTimeSeries from 'hooks/reporting/useTimeSeries'
 import {usePostReporting} from 'models/reporting/queries'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import TrendBadge from 'pages/stats/TrendBadge'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import SupportPerformanceOverview, {
     STATS_TIPS_VISIBILITY_KEY,
@@ -84,6 +85,8 @@ jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
 jest.mock('services/performanceTipService')
+jest.mock('store/middlewares/segmentTracker')
+const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 jest.mock('pages/stats/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
@@ -243,6 +246,22 @@ describe('<SupportPerformanceOverview />', () => {
             )
         }
     )
+
+    it('should send event to segment on download data', () => {
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceOverview />
+            </Provider>
+        )
+        fireEvent.click(getByText(/Download data/))
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.StatDownloadClicked,
+            expect.objectContaining({
+                name: 'all-metrics',
+            })
+        )
+    })
 
     describe('Performance Tips', () => {
         beforeEach(() => {
