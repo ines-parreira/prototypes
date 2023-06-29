@@ -17,17 +17,11 @@ const template = (props) =>
         const customProps = Object.entries(prop).map(([name, value]) => {
             return `--${name}: ${value}`
         })
-        const LESSVars = Object.entries(prop).map(([name, value]) => {
-            return `@${theme}-${name}: ${value}`
-        })
 
         return `${className} {
         ${customProps.join(`;
         `)};
             }
-
-        ${LESSVars.join(`;
-        `)};
         `
     }).join(`
         `)
@@ -96,6 +90,16 @@ const StyleDictionary = StyleDictionaryPackage.extend({
             files: [
                 {
                     destination: 'colorTokens.less',
+                    format: 'less/variables',
+                    filter: (token) => {
+                        return (
+                            path.parse(token.filePath).name ===
+                            tokenTypes.colors
+                        )
+                    },
+                },
+                {
+                    destination: 'customProperties.less',
                     format: 'less/colors',
                     filter: (token) => {
                         return (
