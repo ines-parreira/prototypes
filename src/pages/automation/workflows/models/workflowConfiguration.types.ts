@@ -18,6 +18,16 @@ export type WorkflowStepMessages = {
     }
 }
 
+export type WorkflowStepTextInput = {
+    id: string
+    kind: 'text-input'
+}
+
+export type WorkflowStepAttachmentsInput = {
+    id: string
+    kind: 'attachments-input'
+}
+
 export type WorkflowStepChoices = {
     id: string
     kind: 'choices'
@@ -39,6 +49,8 @@ export type WorkflowStepWorkflowCall = {
 
 export type WorkflowStep =
     | WorkflowStepMessages
+    | WorkflowStepTextInput
+    | WorkflowStepAttachmentsInput
     | WorkflowStepChoices
     | WorkflowStepWorkflowCall
 

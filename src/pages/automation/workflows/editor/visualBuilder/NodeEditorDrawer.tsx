@@ -8,6 +8,8 @@ import css from './NodeEditorDrawer.less'
 import TriggerButtonEditor from './editors/TriggerButtonEditor'
 import MultipleChoicesEditor from './editors/MultipleChoicesEditor'
 import AutomatedMessageEditor from './editors/AutomatedMessageEditor'
+import TextReplyEditor from './editors/TextReplyEditor'
+import FileUploadEditor from './editors/FileUploadEditor'
 
 type NodeEditorDrawerProps = {
     nodeInEdition: VisualBuilderNode | null
@@ -24,9 +26,7 @@ export default function NodeEditorDrawer({
     return (
         <Drawer
             className={classNames(css.drawer, {
-                [css.drawerWide]:
-                    nodeInEdition?.type === 'automated_message' ||
-                    nodeInEdition?.type === 'multiple_choices',
+                [css.drawerWide]: nodeInEdition?.type !== 'trigger_button',
             })}
             name="visual-builder-node-edition"
             open={open}
@@ -68,6 +68,12 @@ export default function NodeEditorDrawer({
                         nodeInEdition={nodeInEdition}
                         onClose={onClose}
                     />
+                )}
+                {nodeInEdition?.type === 'text_reply' && (
+                    <TextReplyEditor nodeInEdition={nodeInEdition} />
+                )}
+                {nodeInEdition?.type === 'file_upload' && (
+                    <FileUploadEditor nodeInEdition={nodeInEdition} />
                 )}
             </Drawer.Content>
         </Drawer>

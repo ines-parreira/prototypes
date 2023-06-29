@@ -2,27 +2,33 @@ import classNames from 'classnames'
 import React from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
 import _isEqual from 'lodash/isEqual'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
 
-import {TriggerButtonNodeType} from '../../../models/visualBuilderGraph.types'
+import Label from 'pages/common/forms/Label/Label'
+import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
+import VisualBuilderActionTag from 'pages/automation/workflows/components/VisualBuilderActionTag'
+
+import {TextReplyNodeType} from '../../../models/visualBuilderGraph.types'
+import NodeDeleteIcon from '../components/NodeDeleteIcon'
+import EdgeBlock from '../components/EdgeBlock'
+
 import css from './Node.less'
 
-function TriggerButtonNode(node: NodeProps<TriggerButtonNodeType['data']>) {
-    const {shouldShowErrors} = node.data
-    const label = node.data.label
-    const isErrored = label.length === 0
+function TextReplyNode(node: NodeProps<TextReplyNodeType['data']>) {
+    const {content} = node.data
+    const {shouldShowErrors, isGreyedOut} = node.data
+    const isErrored = content.text.length === 0
     const {visualBuilderNodeIdEditing} = useWorkflowEditorContext()
     const isSelected = visualBuilderNodeIdEditing === node.id
 
     return (
         <div>
+            <EdgeBlock node={node} />
             <div
                 className={classNames(css.node, {
                     [css.nodeErrored]: shouldShowErrors && isErrored,
+                    [css.nodeGreyedOut]: isGreyedOut,
                     [css.nodeSelected]: isSelected,
                 })}
-                style={{height: 98}}
             >
                 <Handle
                     type="target"
@@ -30,23 +36,17 @@ function TriggerButtonNode(node: NodeProps<TriggerButtonNodeType['data']>) {
                     className={css.sourceHandle}
                 />
                 <div className={css.nodeContainer}>
-                    <div className={'w-100'}>
-                        <Badge type={ColorType.Light}>start flow</Badge>
-                    </div>
-                    <div
-                        className={classNames(css.nodeTitle, {
-                            [css.nodeContentErrored]:
-                                shouldShowErrors && isErrored,
-                        })}
-                    >
-                        {label.length > 0 ? (
-                            node.data.label
+                    <Label className={css.nodeTitle}>
+                        {content.text.length > 0 ? (
+                            content.text
                         ) : (
-                            <span className={css.clickToAdd}>
-                                Trigger button
-                            </span>
+                            <span className={css.clickToAdd}>Click to add</span>
                         )}
-                    </div>
+                    </Label>
+                    <VisualBuilderActionTag nodeType="text_reply">
+                        Collect text reply
+                    </VisualBuilderActionTag>
+                    <NodeDeleteIcon node={node} />
                 </div>
                 <Handle
                     type="source"
@@ -58,6 +58,6 @@ function TriggerButtonNode(node: NodeProps<TriggerButtonNodeType['data']>) {
     )
 }
 
-export default React.memo(TriggerButtonNode, (prevProps, nextProps) =>
+export default React.memo(TextReplyNode, (prevProps, nextProps) =>
     _isEqual(prevProps, nextProps)
 )

@@ -22,7 +22,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 initial_step_id,
             })
         )
-        expect(transformed.steps.length).toBe(6)
+        expect(transformed.steps.length).toBe(11)
         expect(transformed.steps).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({
@@ -49,10 +49,30 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                     id: 'workflowCall2',
                     kind: 'workflow_call',
                 }),
+                expect.objectContaining({
+                    id: 'messages4',
+                    kind: 'messages',
+                }),
+                expect.objectContaining({
+                    id: 'textInput1',
+                    kind: 'text-input',
+                }),
+                expect.objectContaining({
+                    id: 'messages5',
+                    kind: 'messages',
+                }),
+                expect.objectContaining({
+                    id: 'attachmentsInput1',
+                    kind: 'attachments-input',
+                }),
+                expect.objectContaining({
+                    id: 'workflowCall3',
+                    kind: 'workflow_call',
+                }),
             ])
         )
 
-        expect(transformed.transitions.length).toBe(5)
+        expect(transformed.transitions.length).toBe(10)
         expect(transformed.transitions).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({
@@ -74,6 +94,26 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 expect.objectContaining({
                     from_step_id: 'messages3',
                     to_step_id: 'workflowCall2',
+                }),
+                expect.objectContaining({
+                    from_step_id: 'choices1',
+                    to_step_id: 'messages4',
+                }),
+                expect.objectContaining({
+                    from_step_id: 'messages4',
+                    to_step_id: 'textInput1',
+                }),
+                expect.objectContaining({
+                    from_step_id: 'textInput1',
+                    to_step_id: 'messages5',
+                }),
+                expect.objectContaining({
+                    from_step_id: 'messages5',
+                    to_step_id: 'attachmentsInput1',
+                }),
+                expect.objectContaining({
+                    from_step_id: 'attachmentsInput1',
+                    to_step_id: 'workflowCall3',
                 }),
             ])
         )

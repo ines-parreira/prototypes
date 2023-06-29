@@ -46,11 +46,38 @@ export type AutomatedMessageNodeType = Node<
     'automated_message'
 >
 
+export type TextReplyNodeType = Node<
+    {
+        wfConfigurationRef: {
+            wfConfigurationMessagesStepId: string
+            wfConfigurationTextInputStepId: string
+        }
+        content: MessageContent
+        shouldShowErrors?: boolean | null
+        isGreyedOut?: boolean | null
+    },
+    'text_reply'
+>
+
+export type FileUploadNodeType = Node<
+    {
+        wfConfigurationRef: {
+            wfConfigurationMessagesStepId: string
+            wfConfigurationAttachmentsInputStepId: string
+        }
+        content: MessageContent
+        shouldShowErrors?: boolean | null
+        isGreyedOut?: boolean | null
+    },
+    'file_upload'
+>
+
 export type EndNodeType = Node<
     {
         wfConfigurationRef: {
             wfConfigurationWorkflowCallStepId: string
         }
+        withWasThisHelpfulPrompt: boolean
         shouldShowErrors?: boolean | null
         isGreyedOut?: boolean | null
     },
@@ -61,6 +88,8 @@ export type VisualBuilderNode =
     | TriggerButtonNodeType
     | MultipleChoicesNodeType
     | AutomatedMessageNodeType
+    | TextReplyNodeType
+    | FileUploadNodeType
     | EndNodeType
 
 export type VisualBuilderEdge = Edge<{

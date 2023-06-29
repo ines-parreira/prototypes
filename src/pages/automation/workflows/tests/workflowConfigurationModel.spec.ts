@@ -154,6 +154,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                         wfConfigurationRef: {
                             wfConfigurationWorkflowCallStepId: 'workflowCall1',
                         },
+                        withWasThisHelpfulPrompt: true,
                     },
                 }),
                 expect.objectContaining({
@@ -176,6 +177,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                         wfConfigurationRef: {
                             wfConfigurationWorkflowCallStepId: 'workflowCall2',
                         },
+                        withWasThisHelpfulPrompt: true,
                     },
                 }),
             ])
@@ -183,9 +185,9 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
         const [
             {id: triggerButtonNodeId},
             {id: multipleChoicesId},
-            {id: automatedReply1NodeId},
+            {id: automatedMessage1NodeId},
             {id: end1NodeId},
-            {id: automatedReply2NodeId},
+            {id: automatedMessage2NodeId},
             {id: end2NodeId},
         ] = visualBuilderGraph.nodes
         expect(visualBuilderGraph.edges.length).toBe(5)
@@ -199,21 +201,21 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 expect.objectContaining({
                     id: expect.any(String),
                     source: multipleChoicesId,
-                    target: automatedReply1NodeId,
+                    target: automatedMessage1NodeId,
                 }),
                 expect.objectContaining({
                     id: expect.any(String),
-                    source: automatedReply1NodeId,
+                    source: automatedMessage1NodeId,
                     target: end1NodeId,
                 }),
                 expect.objectContaining({
                     id: expect.any(String),
                     source: multipleChoicesId,
-                    target: automatedReply2NodeId,
+                    target: automatedMessage2NodeId,
                 }),
                 expect.objectContaining({
                     id: expect.any(String),
-                    source: automatedReply2NodeId,
+                    source: automatedMessage2NodeId,
                     target: end2NodeId,
                 }),
             ])

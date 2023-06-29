@@ -5,6 +5,8 @@ import {buildEdgeCommonProperties} from 'pages/automation/workflows/models/visua
 
 import {
     AutomatedMessageNodeType,
+    FileUploadNodeType,
+    TextReplyNodeType,
     TriggerButtonNodeType,
     VisualBuilderGraph,
     VisualBuilderNode,
@@ -12,6 +14,8 @@ import {
 import {
     buildAutomatedMessageNode,
     buildEndNode,
+    buildFileUploadNode,
+    buildTextReplyNode,
     deleteBranch,
     greyOutBranch,
 } from './utils'
@@ -36,7 +40,25 @@ export type VisualBuilderBaseAction =
           content: MessageContent
       }
     | {
+          type: 'SET_TEXT_REPLY_CONTENT'
+          textReplyNodeId: string
+          content: MessageContent
+      }
+    | {
+          type: 'SET_FILE_UPLOAD_CONTENT'
+          fileUploadNodeId: string
+          content: MessageContent
+      }
+    | {
           type: 'INSERT_AUTOMATED_MESSAGE_NODE'
+          beforeNodeId: string
+      }
+    | {
+          type: 'INSERT_TEXT_REPLY_NODE'
+          beforeNodeId: string
+      }
+    | {
+          type: 'INSERT_FILE_UPLOAD_NODE'
           beforeNodeId: string
       }
     | {
@@ -87,10 +109,50 @@ export function baseReducer(
                     node.data.content.attachments = attachments
                 }
             })
+        case 'SET_TEXT_REPLY_CONTENT':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is TextReplyNodeType =>
+                        n.id === action.textReplyNodeId &&
+                        n.type === 'text_reply'
+                )
+                const {html, text, attachments} = action.content
+                if (node) {
+                    node.data.content.html = html
+                    node.data.content.text = text
+                    node.data.content.attachments = attachments
+                }
+            })
+        case 'SET_FILE_UPLOAD_CONTENT':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is FileUploadNodeType =>
+                        n.id === action.fileUploadNodeId &&
+                        n.type === 'file_upload'
+                )
+                const {html, text, attachments} = action.content
+                if (node) {
+                    node.data.content.html = html
+                    node.data.content.text = text
+                    node.data.content.attachments = attachments
+                }
+            })
         case 'INSERT_AUTOMATED_MESSAGE_NODE':
             return insertNodeBefore(
                 graph,
                 buildAutomatedMessageNode(),
+                action.beforeNodeId
+            )
+        case 'INSERT_TEXT_REPLY_NODE':
+            return insertNodeBefore(
+                graph,
+                buildTextReplyNode(),
+                action.beforeNodeId
+            )
+        case 'INSERT_FILE_UPLOAD_NODE':
+            return insertNodeBefore(
+                graph,
+                buildFileUploadNode(),
                 action.beforeNodeId
             )
         case 'DELETE_NODE':

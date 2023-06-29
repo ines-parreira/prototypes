@@ -5,8 +5,10 @@ import _cloneDeep from 'lodash/cloneDeep'
 import {WAS_THIS_HELPFUL_WORKFLOW_ID} from '../constants'
 import {
     WorkflowConfiguration,
+    WorkflowStepAttachmentsInput,
     WorkflowStepChoices,
     WorkflowStepMessages,
+    WorkflowStepTextInput,
     WorkflowStepWorkflowCall,
 } from './workflowConfiguration.types'
 import {
@@ -115,6 +117,89 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     c.initial_step_id = stepId
                 }
                 stepIdByNodeId[node.id] = stepId
+            } else if (node.type === 'text_reply') {
+                const messagesStepId =
+                    node.data.wfConfigurationRef.wfConfigurationMessagesStepId
+                const textInputStepId =
+                    node.data.wfConfigurationRef.wfConfigurationTextInputStepId
+                const messagesStep: WorkflowStepMessages = {
+                    id: messagesStepId,
+                    kind: 'messages',
+                    settings: {
+                        messages: [
+                            {
+                                content: {
+                                    html: node.data.content.html,
+                                    text: node.data.content.text,
+                                    attachments: node.data.content.attachments,
+                                },
+                            },
+                        ],
+                    },
+                }
+                const textInputStep: WorkflowStepTextInput = {
+                    id: textInputStepId,
+                    kind: 'text-input',
+                }
+                c.steps.push(messagesStep, textInputStep)
+                c.transitions.push({
+                    id: ulid(),
+                    from_step_id: messagesStepId,
+                    to_step_id: textInputStepId,
+                })
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: messagesStepId,
+                        event: incomingEdge?.data?.event,
+                    })
+                } else {
+                    c.initial_step_id = messagesStepId
+                }
+                stepIdByNodeId[node.id] = textInputStepId
+            } else if (node.type === 'file_upload') {
+                const messagesStepId =
+                    node.data.wfConfigurationRef.wfConfigurationMessagesStepId
+                const attachmentsInputStepId =
+                    node.data.wfConfigurationRef
+                        .wfConfigurationAttachmentsInputStepId
+                const messagesStep: WorkflowStepMessages = {
+                    id: messagesStepId,
+                    kind: 'messages',
+                    settings: {
+                        messages: [
+                            {
+                                content: {
+                                    html: node.data.content.html,
+                                    text: node.data.content.text,
+                                    attachments: node.data.content.attachments,
+                                },
+                            },
+                        ],
+                    },
+                }
+                const attachmentsInputStep: WorkflowStepAttachmentsInput = {
+                    id: attachmentsInputStepId,
+                    kind: 'attachments-input',
+                }
+                c.steps.push(messagesStep, attachmentsInputStep)
+                c.transitions.push({
+                    id: ulid(),
+                    from_step_id: messagesStepId,
+                    to_step_id: attachmentsInputStepId,
+                })
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: messagesStepId,
+                        event: incomingEdge?.data?.event,
+                    })
+                } else {
+                    c.initial_step_id = messagesStepId
+                }
+                stepIdByNodeId[node.id] = attachmentsInputStepId
             } else if (node.type === 'multiple_choices') {
                 const messagesStepId =
                     node.data.wfConfigurationRef.wfConfigurationMessagesStepId

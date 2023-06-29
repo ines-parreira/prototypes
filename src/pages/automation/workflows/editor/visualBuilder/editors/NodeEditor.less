@@ -1,16 +1,15 @@
-@import (reference) '~css/new/colorTokens';
-@import (reference) '~css/new/layout.less';
-@import (reference) '~css/new/typographyTokens.less';
-@import (reference) '~css/typography.less';
+@import '~css/new/colorTokens';
+@import '~css/new/layout.less';
+@import '~css/new/typographyTokens.less';
+@import '~css/typography.less';
 
 :local {
     .title {
         .heading-subsection-semibold();
-        margin-bottom: @layout-spacing-s;
     }
+
     .label {
         .body-semibold();
-        margin-bottom: @layout-spacing-xs;
     }
 
     .textInput {
@@ -21,19 +20,26 @@
         margin-bottom: @layout-spacing-s;
     }
 
-    .richFieldContainer {
-        margin-bottom: @layout-spacing-s;
-    }
-
     .description {
         .caption-regular();
         color: @classic-neutral-grey-5;
         margin-top: @layout-spacing-xxs;
     }
 
-    .attachments {
+    .container {
         display: flex;
-        flex-wrap: wrap;
-        margin-top: @layout-spacing-xxs;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .formField {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .helperText {
+        .caption-regular();
+        color: @classic-neutral-grey-5;
     }
 }

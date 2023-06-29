@@ -66,6 +66,18 @@ describe('choicesReducer', () => {
                 id: 'end2',
                 type: 'end',
             },
+            {
+                id: 'text_reply1',
+                type: 'text_reply',
+            },
+            {
+                id: 'file_upload1',
+                type: 'file_upload',
+            },
+            {
+                id: 'end3',
+                type: 'end',
+            },
             // the inserted multiple choices has created a new ending branch
             {
                 id: expect.any(String),
@@ -80,13 +92,13 @@ describe('choicesReducer', () => {
             type: 'ADD_MULTIPLE_CHOICES_CHOICE',
             multipleChoicesNodeId: 'multiple_choices1',
         })
-        // now there are 3 ending branches
-        expect(nextG.nodes.filter((n) => n.type === 'end').length).toEqual(3)
-        // and three edges starting from the multiple_choices node
+        // now there are 4 ending branches
+        expect(nextG.nodes.filter((n) => n.type === 'end').length).toEqual(4)
+        // and 4 edges starting from the multiple_choices node
         const choicesOutgoingEdges = nextG.edges.filter(
             (e) => e.source === 'multiple_choices1'
         )
-        expect(choicesOutgoingEdges.length).toEqual(3)
+        expect(choicesOutgoingEdges.length).toEqual(4)
         expect(choicesOutgoingEdges).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({
@@ -102,6 +114,14 @@ describe('choicesReducer', () => {
                         event: {
                             kind: 'choices',
                             id: 'eventId2',
+                        },
+                    },
+                }),
+                expect.objectContaining({
+                    data: {
+                        event: {
+                            kind: 'choices',
+                            id: 'eventId3',
                         },
                     },
                 }),
@@ -134,6 +154,9 @@ describe('choicesReducer', () => {
             'multiple_choices1',
             'automated_message2',
             'end2',
+            'text_reply1',
+            'file_upload1',
+            'end3',
         ])
     })
 
@@ -142,7 +165,7 @@ describe('choicesReducer', () => {
         const nextG = choicesReducer(g, {
             type: 'REORDER_CHOICES',
             multipleChoicesNodeId: 'multiple_choices1',
-            orderedEventIds: ['eventId2', 'eventId1'],
+            orderedEventIds: ['eventId2', 'eventId1', 'eventId3'],
         })
         // walk the graph depth-first and check the ordered ids
         const walkedNodesIds: string[] = []
@@ -156,6 +179,9 @@ describe('choicesReducer', () => {
             'end2',
             'automated_message1',
             'end1',
+            'text_reply1',
+            'file_upload1',
+            'end3',
         ])
     })
 
@@ -180,6 +206,10 @@ describe('choicesReducer', () => {
             {
                 event_id: 'eventId2',
                 label: 'choice 2',
+            },
+            {
+                event_id: 'eventId3',
+                label: 'choice 3',
             },
         ])
     })
@@ -207,6 +237,9 @@ describe('choicesReducer', () => {
             'multiple_choices1',
             'automated_message2',
             'end2',
+            'text_reply1',
+            'file_upload1',
+            'end3',
         ])
     })
 })

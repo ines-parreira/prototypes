@@ -24,6 +24,14 @@ export const colorByVisualBuilderNodeType: Record<
         color: colors['📺 Classic'].Main.Variations.Primary_4.value,
         backgroundColor: colors['📺 Classic'].Accessory.Blue_bg.value,
     },
+    text_reply: {
+        color: colors['📺 Classic'].Accessory.Brown_text.value,
+        backgroundColor: colors['📺 Classic'].Accessory.Orange_bg.value,
+    },
+    file_upload: {
+        color: colors['📺 Classic'].Accessory.Green_text.value,
+        backgroundColor: colors['📺 Classic'].Accessory.Green_bg.value,
+    },
 }
 
 export const materialIconByVisualBuilderNodeType: Record<
@@ -32,6 +40,8 @@ export const materialIconByVisualBuilderNodeType: Record<
 > = {
     automated_message: 'chat_bubble',
     multiple_choices: 'view_list',
+    text_reply: 'short_text',
+    file_upload: 'attach_file',
 }
 
 export const WAS_THIS_HELPFUL_WORKFLOW_ID = '01GWPRH2G05DYYFBB1GNVNRB19'

@@ -5,7 +5,9 @@ import {
 import {
     AutomatedMessageNodeType,
     EndNodeType,
+    FileUploadNodeType,
     MultipleChoicesNodeType,
+    TextReplyNodeType,
     TriggerButtonNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
@@ -93,8 +95,56 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
             }
             nodeIdByStepId[nextSteps[0].id] = n.id
             nodes.push(n)
+        } else if (
+            step.kind === 'messages' &&
+            nextSteps.length === 1 &&
+            nextSteps[0].kind === 'text-input'
+        ) {
+            // group message step followed by a text-input step into a text_reply node
+            const n: TextReplyNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'text_reply',
+                data: {
+                    content: {
+                        html: step.settings.messages[0].content.html,
+                        text: step.settings.messages[0].content.text,
+                        attachments:
+                            step.settings.messages[0].content.attachments,
+                    },
+                    wfConfigurationRef: {
+                        wfConfigurationMessagesStepId: step.id,
+                        wfConfigurationTextInputStepId: nextSteps[0].id,
+                    },
+                },
+            }
+            nodeIdByStepId[nextSteps[0].id] = n.id
+            nodes.push(n)
+        } else if (
+            step.kind === 'messages' &&
+            nextSteps.length === 1 &&
+            nextSteps[0].kind === 'attachments-input'
+        ) {
+            // group message step followed by an attachments-input step into a file_upload node
+            const n: FileUploadNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'file_upload',
+                data: {
+                    content: {
+                        html: step.settings.messages[0].content.html,
+                        text: step.settings.messages[0].content.text,
+                        attachments:
+                            step.settings.messages[0].content.attachments,
+                    },
+                    wfConfigurationRef: {
+                        wfConfigurationMessagesStepId: step.id,
+                        wfConfigurationAttachmentsInputStepId: nextSteps[0].id,
+                    },
+                },
+            }
+            nodeIdByStepId[nextSteps[0].id] = n.id
+            nodes.push(n)
         } else if (step.kind === 'messages') {
-            // single message step will become an automated_message node
+            // single message step will become an automated_answer node
             const n: AutomatedMessageNodeType = {
                 ...buildNodeCommonProperties(),
                 type: 'automated_message',
@@ -121,6 +171,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                     wfConfigurationRef: {
                         wfConfigurationWorkflowCallStepId: step.id,
                     },
+                    withWasThisHelpfulPrompt: true,
                 },
             }
             nodeIdByStepId[step.id] = n.id

@@ -8,7 +8,9 @@ import {
 import {
     AutomatedMessageNodeType,
     EndNodeType,
+    FileUploadNodeType,
     MultipleChoicesNodeType,
+    TextReplyNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
@@ -85,6 +87,36 @@ export const buildAutomatedMessageNode: () => AutomatedMessageNodeType =
         },
     })
 
+export const buildTextReplyNode: () => TextReplyNodeType = () => ({
+    ...buildNodeCommonProperties(),
+    type: 'text_reply',
+    data: {
+        wfConfigurationRef: {
+            wfConfigurationMessagesStepId: ulid(),
+            wfConfigurationTextInputStepId: ulid(),
+        },
+        content: {
+            html: '',
+            text: '',
+        },
+    },
+})
+
+export const buildFileUploadNode: () => FileUploadNodeType = () => ({
+    ...buildNodeCommonProperties(),
+    type: 'file_upload',
+    data: {
+        wfConfigurationRef: {
+            wfConfigurationMessagesStepId: ulid(),
+            wfConfigurationAttachmentsInputStepId: ulid(),
+        },
+        content: {
+            html: '',
+            text: '',
+        },
+    },
+})
+
 export const buildMultipleChoicesNode: () => MultipleChoicesNodeType = () => ({
     ...buildNodeCommonProperties(),
     type: 'multiple_choices',
@@ -117,5 +149,6 @@ export const buildEndNode: () => EndNodeType = () => ({
         wfConfigurationRef: {
             wfConfigurationWorkflowCallStepId: ulid(),
         },
+        withWasThisHelpfulPrompt: true,
     },
 })

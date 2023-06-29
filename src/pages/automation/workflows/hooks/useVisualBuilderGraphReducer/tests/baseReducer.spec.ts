@@ -1,6 +1,8 @@
 import {visualBuilderGraphSimpleChoicesFixture} from 'pages/automation/workflows/tests/visualBuilderGraph.fixtures'
 import {
     AutomatedMessageNodeType,
+    FileUploadNodeType,
+    TextReplyNodeType,
     TriggerButtonNodeType,
 } from 'pages/automation/workflows/models/visualBuilderGraph.types'
 
@@ -44,6 +46,50 @@ describe('baseReducer', () => {
         )
     })
 
+    test('SET_TEXT_REPLY_CONTENT', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'SET_TEXT_REPLY_CONTENT',
+            textReplyNodeId: 'text_reply1',
+            content: {
+                html: 'new html',
+                text: 'new text',
+            },
+        })
+        expect(
+            nextG.nodes.find(
+                (n): n is TextReplyNodeType => n.id === 'text_reply1'
+            )?.data.content
+        ).toEqual(
+            expect.objectContaining({
+                html: 'new html',
+                text: 'new text',
+            })
+        )
+    })
+
+    test('SET_FILE_UPLOAD_CONTENT', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'SET_FILE_UPLOAD_CONTENT',
+            fileUploadNodeId: 'file_upload1',
+            content: {
+                html: 'new html',
+                text: 'new text',
+            },
+        })
+        expect(
+            nextG.nodes.find(
+                (n): n is FileUploadNodeType => n.id === 'file_upload1'
+            )?.data.content
+        ).toEqual(
+            expect.objectContaining({
+                html: 'new html',
+                text: 'new text',
+            })
+        )
+    })
+
     test('INSERT_AUTOMATED_MESSAGE_NODE', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
         const nextG = baseReducer(g, {
@@ -67,6 +113,48 @@ describe('baseReducer', () => {
         ).toBeDefined()
     })
 
+    test('INSERT_TEXT_REPLY_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_TEXT_REPLY_NODE',
+            beforeNodeId: 'text_reply1',
+        })
+        // there should be one more node and one more edge
+        expect(g.nodes.length).toEqual(nextG.nodes.length - 1)
+        expect(g.edges.length).toEqual(nextG.edges.length - 1)
+        // the new node has empty text
+        expect(
+            nextG.nodes
+                .filter((n): n is TextReplyNodeType => n.type === 'text_reply')
+                .find(
+                    (n) =>
+                        n.data.content.text === '' && n.data.content.html === ''
+                )
+        ).toBeDefined()
+    })
+
+    test('INSERT_FILE_UPLOAD_NODE', () => {
+        const g = visualBuilderGraphSimpleChoicesFixture
+        const nextG = baseReducer(g, {
+            type: 'INSERT_FILE_UPLOAD_NODE',
+            beforeNodeId: 'file_upload1',
+        })
+        // there should be one more node and one more edge
+        expect(g.nodes.length).toEqual(nextG.nodes.length - 1)
+        expect(g.edges.length).toEqual(nextG.edges.length - 1)
+        // the new node has empty text
+        expect(
+            nextG.nodes
+                .filter(
+                    (n): n is FileUploadNodeType => n.type === 'file_upload'
+                )
+                .find(
+                    (n) =>
+                        n.data.content.text === '' && n.data.content.html === ''
+                )
+        ).toBeDefined()
+    })
+
     test('DELETE_NODE', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
         const nextG = baseReducer(g, {
@@ -82,7 +170,7 @@ describe('baseReducer', () => {
             nextG.edges
                 .filter((e) => e.source === 'multiple_choices1')
                 .map((e) => e.target)
-        ).toEqual(['end1', 'automated_message2'])
+        ).toEqual(['end1', 'automated_message2', 'text_reply1'])
     })
 
     test('DELETE_BRANCH', () => {
@@ -100,7 +188,7 @@ describe('baseReducer', () => {
             nextG.edges
                 .filter((e) => e.source === 'multiple_choices1')
                 .map((e) => e.target)
-        ).toEqual(['end1', 'automated_message2'])
+        ).toEqual(['end1', 'automated_message2', 'text_reply1'])
     })
 
     test('GREY_OUT_BRANCH', () => {

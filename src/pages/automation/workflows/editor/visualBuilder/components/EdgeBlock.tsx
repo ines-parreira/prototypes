@@ -1,9 +1,10 @@
 import React, {useRef, useState} from 'react'
 import {NodeProps} from 'reactflow'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -47,6 +48,8 @@ export default function EdgeBlock({node}: {node: NodeProps}) {
         visualBuilderGraph,
         node.id
     )
+    const shouldShowCollectSteps: boolean | undefined =
+        useFlags()[FeatureFlagKey.FlowsCollectSteps]
 
     const menuItems = [
         {
@@ -61,8 +64,36 @@ export default function EdgeBlock({node}: {node: NodeProps}) {
                 })
             },
         },
+        ...(shouldShowCollectSteps
+            ? [
+                  {
+                      label: 'Collect text reply',
+                      description: 'Allow up to 5,000 characters',
+                      icon: materialIconByVisualBuilderNodeType.text_reply,
+                      style: colorByVisualBuilderNodeType.text_reply,
+                      onClick: () => {
+                          dispatch({
+                              type: 'INSERT_TEXT_REPLY_NODE',
+                              beforeNodeId: node.id,
+                          })
+                      },
+                  },
+                  {
+                      label: 'Collect file upload',
+                      description: 'Allow up to 5 files',
+                      icon: materialIconByVisualBuilderNodeType.file_upload,
+                      style: colorByVisualBuilderNodeType.file_upload,
+                      onClick: () => {
+                          dispatch({
+                              type: 'INSERT_FILE_UPLOAD_NODE',
+                              beforeNodeId: node.id,
+                          })
+                      },
+                  },
+              ]
+            : []),
         {
-            label: 'Automated message',
+            label: 'Message',
             description: 'Display short text',
             icon: materialIconByVisualBuilderNodeType.automated_message,
             style: colorByVisualBuilderNodeType.automated_message,

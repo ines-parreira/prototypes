@@ -46,7 +46,7 @@ function AutomatedMessageNode(
                         )}
                     </Label>
                     <VisualBuilderActionTag nodeType="automated_message">
-                        Automated message
+                        Message
                     </VisualBuilderActionTag>
                     <NodeDeleteIcon node={node} />
                 </div>

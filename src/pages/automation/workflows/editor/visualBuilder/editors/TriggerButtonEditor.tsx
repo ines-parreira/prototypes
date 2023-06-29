@@ -32,6 +32,7 @@ export default function TriggerButtonEditor({
                     onClose()
                 }
             }}
+            className={css.container}
         >
             <Label isRequired={true} className={css.title}>
                 Trigger button

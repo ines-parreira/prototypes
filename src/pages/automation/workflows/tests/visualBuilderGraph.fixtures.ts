@@ -34,6 +34,10 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
                         label: 'choice 2',
                         event_id: 'eventId2',
                     },
+                    {
+                        label: 'choice 3',
+                        event_id: 'eventId3',
+                    },
                 ],
                 wfConfigurationRef: {
                     wfConfigurationMessagesStepId: 'messages1',
@@ -71,12 +75,43 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
         },
         {
             ...buildNodeCommonProperties(),
+            id: 'text_reply1',
+            type: 'text_reply',
+            data: {
+                content: {
+                    html: 'html',
+                    text: 'text',
+                },
+                wfConfigurationRef: {
+                    wfConfigurationMessagesStepId: 'messages4',
+                    wfConfigurationTextInputStepId: 'textInput1',
+                },
+            },
+        },
+        {
+            ...buildNodeCommonProperties(),
+            id: 'file_upload1',
+            type: 'file_upload',
+            data: {
+                content: {
+                    html: 'html',
+                    text: 'text',
+                },
+                wfConfigurationRef: {
+                    wfConfigurationMessagesStepId: 'messages5',
+                    wfConfigurationAttachmentsInputStepId: 'attachmentsInput1',
+                },
+            },
+        },
+        {
+            ...buildNodeCommonProperties(),
             id: 'end1',
             type: 'end',
             data: {
                 wfConfigurationRef: {
                     wfConfigurationWorkflowCallStepId: 'workflowCall1',
                 },
+                withWasThisHelpfulPrompt: true,
             },
         },
         {
@@ -87,6 +122,18 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
                 wfConfigurationRef: {
                     wfConfigurationWorkflowCallStepId: 'workflowCall2',
                 },
+                withWasThisHelpfulPrompt: true,
+            },
+        },
+        {
+            ...buildNodeCommonProperties(),
+            id: 'end3',
+            type: 'end',
+            data: {
+                wfConfigurationRef: {
+                    wfConfigurationWorkflowCallStepId: 'workflowCall3',
+                },
+                withWasThisHelpfulPrompt: true,
             },
         },
     ],
@@ -123,6 +170,24 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
         },
         {
             ...buildEdgeCommonProperties(),
+            id: 'multiple_choices1_text_reply1',
+            source: 'multiple_choices1',
+            target: 'text_reply1',
+            data: {
+                event: {
+                    id: 'eventId3',
+                    kind: 'choices',
+                },
+            },
+        },
+        {
+            ...buildEdgeCommonProperties(),
+            id: 'text_reply1_file_upload1',
+            source: 'text_reply1',
+            target: 'file_upload1',
+        },
+        {
+            ...buildEdgeCommonProperties(),
             id: 'automated_message1_end1',
             source: 'automated_message1',
             target: 'end1',
@@ -132,6 +197,12 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             id: 'automated_message2_end2',
             source: 'automated_message2',
             target: 'end2',
+        },
+        {
+            ...buildEdgeCommonProperties(),
+            id: 'file_upload1_end3',
+            source: 'file_upload1',
+            target: 'end3',
         },
     ],
     wfConfigurationOriginal: {

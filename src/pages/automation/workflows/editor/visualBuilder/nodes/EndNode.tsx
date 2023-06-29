@@ -32,7 +32,7 @@ function EndNode(node: NodeProps<EndNodeType['data']>) {
             <EdgeBlock node={node} />
             <div className={classNames(css.node, css.endNode)}>
                 <div className={'w-100'}>
-                    <Badge type={ColorType.Blue}>end flow</Badge>
+                    <Badge type={ColorType.Light}>end flow</Badge>
                 </div>
                 <span>
                     Was this helpful?{' '}

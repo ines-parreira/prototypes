@@ -23,11 +23,15 @@ import CustomEdge from './CustomEdge'
 import NodeEditorDrawer from './NodeEditorDrawer'
 
 import 'reactflow/dist/style.css'
+import TextReplyNode from './nodes/TextReplyNode'
+import FileUploadNode from './nodes/FileUploadNode'
 
 const nodeTypes = {
     trigger_button: TriggerButtonNode,
     automated_message: AutomatedMessageNode,
     multiple_choices: MultipleChoicesNode,
+    text_reply: TextReplyNode,
+    file_upload: FileUploadNode,
     end: EndNode,
 }
 

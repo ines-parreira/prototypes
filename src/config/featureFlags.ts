@@ -42,4 +42,5 @@ export enum FeatureFlagKey {
     NewBillingInterface = 'new-billing-interface',
     ChatRenameContactForm = 'chat-rename-contact-form',
     HelpCenterAndContactFormFlows = 'help-center-and-contact-form-flows',
+    FlowsCollectSteps = 'flows-collect-steps',
 }
