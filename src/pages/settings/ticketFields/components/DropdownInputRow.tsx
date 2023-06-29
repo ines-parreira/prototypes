@@ -1,4 +1,4 @@
-import React, {memo, useEffect} from 'react'
+import React, {memo, useCallback, useEffect, useRef} from 'react'
 
 import classnames from 'classnames'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -15,43 +15,74 @@ interface DropdownInputRowProps {
     onRemove: (index: number) => void
     position: number
     id: string
+    nextId?: string | undefined
     onHover: any
     onDrop: any
     isLast?: boolean
 }
 
-export function DropdownInputRow(props: DropdownInputRowProps) {
+export function DropdownInputRow({
+    value,
+    position,
+    id,
+    nextId,
+    error,
+    isLast,
+    onChange,
+    onDrop,
+    onHover,
+    onRemove,
+}: DropdownInputRowProps) {
+    const nextInputRef = useRef<HTMLInputElement | null>(null)
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {
-            position: props.position,
-            id: props.id,
+            position,
+            id: id,
             type: 'dropdown-choice',
         },
         ['dropdown-choice'],
-        {onHover: props.onHover, onDrop: props.onDrop}
+        {onHover, onDrop}
     )
 
     // Set HTML5 validation status
-    const id = props.id
-    const error = props.error
+
     useEffect(() => {
-        const elt = document.getElementById(id) as HTMLInputElement
+        const elt = document.getElementById(id) as HTMLInputElement | null
         elt?.setCustomValidity(error || '')
     }, [id, error])
+
+    useEffect(() => {
+        if (!nextId) {
+            nextInputRef.current = null
+            return
+        }
+        nextInputRef.current = document.getElementById(
+            nextId
+        ) as HTMLInputElement | null
+    }, [nextId])
+
+    const handleEnterKeyDown = useCallback(
+        (evt: React.KeyboardEvent<HTMLInputElement>) => {
+            if (evt.key === 'Enter') {
+                if (!isLast) {
+                    nextInputRef.current?.focus()
+                }
+            }
+        },
+        [isLast, nextInputRef]
+    )
 
     return (
         <div
             ref={
-                props.isLast
-                    ? undefined
-                    : (dropRef as React.Ref<HTMLTableRowElement>)
+                isLast ? undefined : (dropRef as React.Ref<HTMLTableRowElement>)
             }
             data-handler-id={handlerId}
-            className={props.isLast ? css.lastInput : css.input}
+            className={isLast ? css.lastInput : css.input}
             style={{opacity: isDragging ? 0.3 : 1}}
         >
             <div className={css.inputContainer}>
-                {!props.isLast ? (
+                {!isLast ? (
                     <div
                         ref={dragRef as React.RefObject<HTMLDivElement>}
                         className={classnames(
@@ -59,7 +90,7 @@ export function DropdownInputRow(props: DropdownInputRowProps) {
                             css.dragIndicator,
                             css.dragIndicatorActive
                         )}
-                        data-testid={`${props.id}-handle`}
+                        data-testid={`${id}-handle`}
                     >
                         drag_indicator
                     </div>
@@ -75,28 +106,27 @@ export function DropdownInputRow(props: DropdownInputRowProps) {
                     </div>
                 )}
                 <TextInput
-                    id={props.id}
-                    value={props.value}
+                    id={id}
+                    value={value}
                     placeholder="e.g. Shipping issue::Delay"
-                    onChange={(val) => props.onChange(props.position, val)}
-                    hasError={!!props.error}
-                    data-testid={props.id}
+                    onChange={(val) => onChange(position, val)}
+                    hasError={!!error}
+                    data-testid={id}
+                    onKeyDown={handleEnterKeyDown}
                 />
-                {!props.isLast && (
+                {!isLast && (
                     <IconButton
-                        onClick={() => props.onRemove(props.position)}
+                        onClick={() => onRemove(position)}
                         fillStyle="ghost"
                         intent="destructive"
                         className={css.deleteButton}
-                        data-testid={`${props.id}-remove`}
+                        data-testid={`${id}-remove`}
                     >
                         clear
                     </IconButton>
                 )}
             </div>
-            {props.error && (
-                <Caption className={css.lastInput} error={props.error} />
-            )}
+            {error && <Caption className={css.lastInput} error={error} />}
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import React, {FormEvent, useCallback, useEffect, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {set, pick} from 'lodash'
 import {Location} from 'history'
 
@@ -94,8 +94,7 @@ export default function FieldForm(props: FieldFormProps) {
     }
 
     // On form submit, save the data then close the form
-    const handleSubmit = async (evt?: FormEvent<HTMLFormElement>) => {
-        evt?.preventDefault()
+    const handleSubmit = async () => {
         if (await save()) {
             props.onClose()
         }
@@ -124,7 +123,7 @@ export default function FieldForm(props: FieldFormProps) {
     )
 
     return (
-        <form onSubmit={handleSubmit} ref={formRef}>
+        <form onSubmit={(evt) => evt.preventDefault()} ref={formRef}>
             {isCustomField(props.field) && (
                 <div className={css.formRow}>
                     <Label className={css.formLabel}>Status</Label>
@@ -220,7 +219,7 @@ export default function FieldForm(props: FieldFormProps) {
                 <div className={css.leftGroup}>
                     <Button
                         intent="primary"
-                        type="submit"
+                        onClick={handleSubmit}
                         isDisabled={!isFormValid}
                         isLoading={isLoading}
                         data-testid="save-button"

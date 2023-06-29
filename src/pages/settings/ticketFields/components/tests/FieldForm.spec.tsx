@@ -226,4 +226,26 @@ describe('<FieldForm/>', () => {
             'Your changes to this page will be lost if you don’t save them.'
         )
     })
+
+    it('should not trigger a submit when pressing enter in a field', async () => {
+        const props = {
+            field: customFieldInputDefinition,
+            onSubmit: jest.fn(),
+            onClose: jest.fn(),
+        }
+
+        const {findByLabelText} = renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <FieldForm {...props} />
+                </Provider>{' '}
+            </QueryClientProvider>
+        )
+
+        const nameInput = await findByLabelText(/Name/)
+        nameInput.focus()
+        fireEvent.keyDown(nameInput, {key: 'Enter'})
+
+        expect(props.onSubmit).not.toHaveBeenCalled()
+    })
 })

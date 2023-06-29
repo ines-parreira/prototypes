@@ -249,7 +249,7 @@ exports[`<AddTicketField/> should render 1`] = `
               class="wrapper fill primary medium isDisabled"
               data-testid="save-button"
               disabled=""
-              type="submit"
+              type="button"
             >
               Save Changes
             </button>

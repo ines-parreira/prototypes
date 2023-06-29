@@ -170,6 +170,7 @@ export function DropdownInput({value, onChange}: DropdownInputProps) {
                     onRemove={removeValue}
                     position={index}
                     id={value.id}
+                    nextId={values[index + 1]?.id}
                     onHover={handleHover}
                     onDrop={handleDrop}
                     isLast={index === values.length - 1}

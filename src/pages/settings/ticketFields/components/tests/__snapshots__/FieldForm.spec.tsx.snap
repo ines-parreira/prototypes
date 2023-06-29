@@ -170,7 +170,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
       <button
         class="wrapper fill primary medium"
         data-testid="save-button"
-        type="submit"
+        type="button"
       >
         Save Changes
       </button>
@@ -543,7 +543,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
       <button
         class="wrapper fill primary medium"
         data-testid="save-button"
-        type="submit"
+        type="button"
       >
         Save Changes
       </button>
@@ -717,7 +717,7 @@ exports[`<FieldForm/> should render correctly 3`] = `
       <button
         class="wrapper fill primary medium"
         data-testid="save-button"
-        type="submit"
+        type="button"
       >
         Save Changes
       </button>
@@ -891,7 +891,7 @@ exports[`<FieldForm/> should render correctly 4`] = `
       <button
         class="wrapper fill primary medium"
         data-testid="save-button"
-        type="submit"
+        type="button"
       >
         Save Changes
       </button>
@@ -1086,7 +1086,7 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
       <button
         class="wrapper fill primary medium"
         data-testid="save-button"
-        type="submit"
+        type="button"
       >
         Save Changes
       </button>

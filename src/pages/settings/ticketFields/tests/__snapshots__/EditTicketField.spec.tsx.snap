@@ -223,7 +223,7 @@ exports[`<EditTicketField/> should render 2`] = `
             <button
               class="wrapper fill primary medium"
               data-testid="save-button"
-              type="submit"
+              type="button"
             >
               Save Changes
             </button>
