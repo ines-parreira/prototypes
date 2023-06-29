@@ -1,8 +1,10 @@
 import {useCallback, useMemo, useState} from 'react'
 
-type Setting = {
+import {SoundValue} from 'services/NotificationSounds'
+
+export type Setting = {
     enabled: boolean
-    sound: string
+    sound: SoundValue
     volume: number
 }
 
@@ -19,7 +21,7 @@ export default function useSoundSetting(initialSettings?: Setting) {
         setState((s) => ({...s, enabled}))
     }, [])
 
-    const onChangeSound = useCallback((sound: string) => {
+    const onChangeSound = useCallback((sound: SoundValue) => {
         setState((s) => ({...s, sound}))
     }, [])
 
