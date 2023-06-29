@@ -9,13 +9,13 @@ import SoundSetting from 'pages/settings/notifications/SoundSetting'
 import css from 'pages/settings/settings.less'
 
 export default function NotificationSettings() {
-    const {save} = useNotificationSettings()
-    const notificationSound = useSoundSetting()
+    const {initialNotificationSound, save} = useNotificationSettings()
+    const notificationSound = useSoundSetting(initialNotificationSound)
 
     const handleSubmit = useCallback(
         (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault()
-            save({notificationSound})
+            void save({notificationSound})
         },
         [notificationSound, save]
     )

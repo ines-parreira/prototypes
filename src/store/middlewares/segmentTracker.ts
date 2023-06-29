@@ -110,6 +110,7 @@ export enum SegmentEvent {
     SettingsNavigationClicked = 'settings-navigation-clicked',
     NavbarViewMoved = 'navbar-view-moved',
     NavbarViewToggled = 'navbar-view-toggled',
+    NotificationSettingsUpdated = 'notification-settings-updated',
     OnboardingWidgetClicked = 'onboarding-widget-clicked',
     PaymentMethodAddClicked = 'payment-method-add-clicked',
     PaymentMethodAdded = 'payment-method-added',

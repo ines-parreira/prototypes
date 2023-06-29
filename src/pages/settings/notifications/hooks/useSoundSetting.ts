@@ -8,14 +8,14 @@ export type Setting = {
     volume: number
 }
 
+export const defaultSound = {
+    enabled: true,
+    sound: 'default',
+    volume: 5,
+} as const
+
 export default function useSoundSetting(initialSettings?: Setting) {
-    const [state, setState] = useState<Setting>(
-        initialSettings || {
-            enabled: true,
-            sound: 'default',
-            volume: 5,
-        }
-    )
+    const [state, setState] = useState<Setting>(initialSettings || defaultSound)
 
     const onChangeEnabled = useCallback((enabled: boolean) => {
         setState((s) => ({...s, enabled}))

@@ -91,6 +91,7 @@ export enum UserSettingType {
     TicketViews = 'ticket-views',
     ViewsOrdering = 'views-ordering',
     CutomerViews = 'customer-views',
+    NotificationPreferences = 'notification-preferences',
 }
 
 export type UserSetting =
@@ -108,6 +109,11 @@ export type UserSetting =
           id: number
           type: UserSettingType.ViewsOrdering
           data: UserViewsOrderingSettingData
+      }
+    | {
+          id: number
+          type: UserSettingType.NotificationPreferences
+          data: UserNotificationPreferencesData
       }
 
 export type UserPreferences = {
@@ -130,4 +136,12 @@ export type UserTicketSettings = {
 export type UserViewsOrderingSettingData = {
     views: Record<string, {display_order: number}>
     view_sections: Record<string, {display_order: number}>
+}
+
+export type UserNotificationPreferencesData = {
+    notification_sound: {
+        enabled: boolean
+        sound: string
+        volume: number
+    }
 }
