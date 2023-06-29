@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 .ui.selectable.table tbody tr.no-hover:hover {
     background-color: transparent !important;
 }
@@ -49,10 +47,10 @@ pre {
     top: 4px;
     left: 4px;
     z-index: 5;
-    color: @classic-neutral-grey-0;
+    color: var(--neutral-grey-0);
 
     .material-icons {
-        color: @classic-feedback-error-2;
+        color: var(--feedback-error-2);
     }
 }
 
@@ -79,7 +77,7 @@ pre {
 .IfStatement,
 .ExpressionStatement {
     &.hovered:hover {
-        background: @classic-neutral-grey-0;
+        background: var(--neutral-grey-0);
         border-radius: 4px;
     }
 }
@@ -104,8 +102,8 @@ pre {
 
         &.show {
             & > .ControlStructureButton.dropdown-toggle {
-                color: @classic-neutral-grey-0 !important;
-                background: @classic-main-primary !important;
+                color: var(--neutral-grey-0) !important;
+                background: var(--main-primary) !important;
             }
         }
     }
@@ -135,22 +133,22 @@ pre {
 
 .LogicalOperator {
     .rule-badge-mixin;
-    background-color: @ultraLightOrange;
-    color: @classic-feedback-warning !important;
+    background-color: var(--ultraLightOrange);
+    color: var(--feedback-warning) !important;
 }
 
 .ControlStructureButton,
 .ControlStructureButton:hover,
 .ControlStructureButton:active {
     .rule-badge-mixin;
-    background-color: @ultraLightBlue !important;
-    color: @classic-main-primary-3 !important;
+    background-color: var(--ultraLightBlue) !important;
+    color: var(--main-primary-3) !important;
 }
 
 .OperatorDropdown .dropdown-toggle {
     .rule-badge-mixin;
-    background-color: @ultraLightBlue !important;
-    color: @navy !important;
+    background-color: var(--ultraLightBlue) !important;
+    color: var(--navy) !important;
     line-height: 20px !important;
 }
 
@@ -158,7 +156,7 @@ pre {
     top: 0;
     left: 0.5rem;
     text-transform: uppercase;
-    color: @navy;
+    color: var(--navy);
     font-weight: 600;
 }
 
@@ -167,9 +165,9 @@ pre {
     padding: 2px 8px;
     font-weight: normal;
     text-transform: none;
-    background-color: @ultraLightBlue;
+    background-color: var(--ultraLightBlue);
     line-height: 20px !important;
-    color: @classic-neutral-grey-6 !important;
+    color: var(--neutral-grey-6) !important;
 
     input {
         top: 0;
@@ -203,8 +201,8 @@ pre {
         .rule-badge-mixin;
         text-transform: none;
         font-weight: 500;
-        background-color: @ultraLightPurple;
-        color: @violet !important;
+        background-color: var(--ultraLightPurple);
+        color: var(--violet) !important;
     }
 
     .dropdown-toggle {
@@ -244,8 +242,8 @@ pre {
 
     .ActionSelect .dropdown-toggle {
         .rule-badge-mixin;
-        background-color: @classic-feedback-success-0;
-        color: @classic-feedback-success-3 !important;
+        background-color: var(--feedback-success-0);
+        color: var(--feedback-success-3) !important;
     }
 
     .card-action {
@@ -268,7 +266,7 @@ pre {
                 border: none;
                 text-transform: none;
                 font-weight: normal;
-                color: @violet !important;
+                color: var(--violet) !important;
 
                 &:focus {
                     box-shadow: none;
@@ -294,8 +292,8 @@ pre {
                 .rule-badge-mixin;
                 text-transform: none;
                 font-weight: 500;
-                background-color: @ultraLightPurple;
-                color: @violet !important;
+                background-color: var(--ultraLightPurple);
+                color: var(--violet) !important;
             }
 
             .dropdown-toggle {

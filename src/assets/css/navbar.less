@@ -1,5 +1,4 @@
 @import (reference) './typography';
-@import (reference) './new/colorTokens';
 
 :local {
     .category {
@@ -11,7 +10,7 @@
 
         .category-title {
             .caption-allcaps();
-            color: @classic-neutral-grey-0;
+            color: var(--neutral-grey-0);
             display: flex;
             height: 32px;
             line-height: 32px;
@@ -48,7 +47,7 @@
         vertical-align: middle;
         user-select: none;
         transition: @item-transition;
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
         height: 28px;
         line-height: 28px;
         padding: 0 20px;
@@ -65,16 +64,16 @@
         &:global.focused,
         &:global:hover {
             font-weight: 600;
-            color: @classic-neutral-grey-2;
+            color: var(--neutral-grey-2);
 
             :local .item-count {
                 font-weight: 600;
-                color: @classic-neutral-grey-2;
+                color: var(--neutral-grey-2);
             }
         }
 
         &:global.focused {
-            background-color: @classic-main-primary;
+            background-color: var(main-primary);
         }
     }
 

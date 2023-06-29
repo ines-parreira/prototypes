@@ -9,39 +9,102 @@
 }
 
 .btn-primary {
-    .button-variant(@classic-neutral-grey-0; @classic-main-primary; @classic-main-primary-3; @classic-main-primary-2; @classic-main-primary; @classic-main-primary-3; @classic-main-primary-4);
+    .button-variant(
+        var(--neutral-grey-0);
+        var(--main-primary);
+        var(--main-primary-3);
+        var(--main-primary-2);
+        var(--main-primary);
+        var(--main-primary-3);
+        var(--main-primary-4)
+    );
 }
 
 .btn-secondary {
-    .button-variant(@classic-neutral-grey-6; @classic-neutral-grey-2; @classic-neutral-grey-3; @classic-neutral-grey-2; @classic-neutral-grey-3; @classic-neutral-grey-2; @classic-neutral-grey-4);
+    .button-variant(
+        var(--neutral-grey-6);
+        var(--neutral-grey-2);
+        var(--neutral-grey-3);
+        var(--neutral-grey-2);
+        var(--neutral-grey-3);
+        var(--neutral-grey-2);
+        var(--neutral-grey-4)
+    );
 }
 
 .btn-success {
-    .button-variant(@classic-neutral-grey-0; @classic-feedback-success; @classic-feedback-success-3; @classic-feedback-success-2; @classic-feedback-success; @classic-feedback-success-3; @classic-feedback-success-4);
+    .button-variant(
+        var(--neutral-grey-0);
+        var(--feedback-success);
+        var(--feedback-success-3);
+        var(--feedback-success-2);
+        var(--feedback-success);
+        var(--feedback-success-3);
+        var(--feedback-success-4)
+    );
 }
 
 .btn-info {
-    .button-variant(@classic-neutral-grey-0; @classic-neutral-grey-6; @classic-neutral-grey-6; fade(@classic-neutral-grey-6, 80%); @classic-neutral-grey-6; darken(@classic-neutral-grey-6, 5%); darken(@classic-neutral-grey-6, 10%));
+    .button-variant(
+        var(--neutral-grey-0);
+        var(--neutral-grey-6);
+        var(--neutral-grey-6);
+        fade(@classic-neutral-grey-6, 80%);
+        var(--neutral-grey-6);
+        darken(@classic-neutral-grey-6, 5%); darken(@classic-neutral-grey-6, 10%)
+    );
 }
 
 .btn-warning {
-    .button-variant(@classic-neutral-grey-0; @classic-feedback-warning; @classic-feedback-warning-3;  @classic-feedback-warning-2; @classic-feedback-warning; @classic-feedback-warning-3; @classic-feedback-warning-4);
+    .button-variant(
+        var(--neutral-grey-0);
+        var(--feedback-warning);
+        var(--feedback-warning-3);
+        var(--feedback-warning-2);
+        var(--feedback-warning);
+        var(--feedback-warning-3);
+        var(--feedback-warning-4)
+    );
 }
 
 .btn-danger {
-    .button-variant(@classic-neutral-grey-0; @classic-feedback-error; @classic-feedback-error-3; @classic-feedback-error-2; @classic-feedback-error; @classic-feedback-error-3; @classic-feedback-error-4);
+    .button-variant(
+        var(--neutral-grey-0);
+        var(--feedback-error);
+        var(--feedback-error-3);
+        var(--feedback-error-2);
+        var(--feedback-error);
+        var(--feedback-error-3);
+        var(--feedback-error-4)
+    );
 }
 
 .btn-light {
-    .button-variant(@classic-neutral-grey-6; @classic-neutral-grey-0; @classic-neutral-grey-3; @classic-neutral-grey-0; @classic-neutral-grey-3; @classic-neutral-grey-0; @classic-neutral-grey-3);
+    .button-variant(
+        var(--neutral-grey-6);
+        var(--neutral-grey-0);
+        var(--neutral-grey-3);
+        var(--neutral-grey-0);
+        var(--neutral-grey-3);
+        var(--neutral-grey-0);
+        var(--neutral-grey-3)
+    );
 
     &:hover {
-        background: @classic-neutral-grey-0 !important;
+        background: var(--neutral-grey-0) !important;
     }
 }
 
 .btn-clue {
-    .button-variant(@classic-neutral-grey-0; @purple; @purple; @purple; @purple; @purple; @purple);
+    .button-variant(
+        var(--neutral-grey-0);
+        var(--purple);
+        var(--purple);
+        var(--purple);
+        var(--purple);
+        var(--purple);
+        var(--purple)
+    );
 }
 
 .btn-transparent {
@@ -52,27 +115,27 @@
 
 // btn outline
 .btn-outline-primary {
-    .button-outline-variant(@classic-main-primary);
+    .button-outline-variant(var(--main-primary));
 }
 
 .btn-outline-secondary {
-    .button-outline-variant(@classic-neutral-grey-1);
+    .button-outline-variant(var(--neutral-grey-1));
 }
 
 .btn-outline-success {
-    .button-outline-variant(@classic-feedback-success);
+    .button-outline-variant(var(--feedback-success));
 }
 
 .btn-outline-info {
-    .button-outline-variant(@classic-neutral-grey-6);
+    .button-outline-variant(var(--neutral-grey-6));
 }
 
 .btn-outline-warning {
-    .button-outline-variant(@yellow);
+    .button-outline-variant(var(--yellow));
 }
 
 .btn-outline-danger {
-    .button-outline-variant(@classic-feedback-error);
+    .button-outline-variant(var(--feedback-error));
 }
 
 // badge
@@ -108,47 +171,47 @@
 
 // text
 .text-primary {
-    color: @classic-main-primary !important;
+    color: var(--main-primary) !important;
 }
 
 .text-secondary {
-    color: @classic-neutral-grey-4 !important;
+    color: var(--neutral-grey-4) !important;
 }
 
 .text-success {
-    color: @classic-feedback-success !important;
+    color: var(--feedback-success) !important;
 }
 
 .text-danger {
-    color: @classic-feedback-error !important;
+    color: var(--feedback-error) !important;
 }
 
 .text-warning {
-    color: @yellow !important;
+    color: var(--yellow) !important;
 }
 
 .text-info {
-    color: @classic-neutral-grey-6 !important;
+    color: var(--neutral-grey-6) !important;
 }
 
 .text-muted {
-    color: @classic-neutral-grey-4 !important;
+    color: var(--neutral-grey-4) !important;
 }
 
 .text-purple {
-    color: @purple;
+    color: var(--purple);
 }
 
 // lighter color of grey text (lighter than text-muted)
 .text-faded {
-    color: @classic-neutral-grey-4 !important;
+    color: var(--neutral-grey-4) !important;
 
     a {
-        color: @classic-main-primary-2;
+        color: var(--main-primary-2);
     }
 
     kbd {
-        background-color: @classic-neutral-grey-4 !important;
+        background-color: var(--neutral-grey-4) !important;
     }
 }
 
@@ -165,7 +228,7 @@
 }
 
 .close {
-    color: @classic-neutral-grey-6;
+    color: var(--neutral-grey-6);
     font-weight: normal;
 }
 
@@ -176,12 +239,12 @@
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
-    color: @classic-neutral-grey-3;
+    color: var(--neutral-grey-3);
     content: '>';
 }
 
 // card
 .card {
-    border-color: @classic-neutral-grey-3;
+    border-color: var(--neutral-grey-3);
     border-radius: 4px;
 }

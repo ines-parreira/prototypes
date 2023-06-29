@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 .rich-content-wrapper {
     figure {
         margin: 0 !important;
@@ -14,7 +12,7 @@
 .rich-textarea-wrapper {
     .rich-content-wrapper;
 
-    background: @modern-neutral-grey-0;
+    background: var(--neutral-grey-0);
     border: 1px solid fade(black, 15%);
     border-radius: 3px;
     position: relative;
@@ -92,7 +90,7 @@
 .textarea-toolbar {
     position: relative;
     z-index: 2;
-    background-color: @classic-neutral-grey-2;
+    background-color: var(--neutral-grey-2);
     padding: 0.6rem 0.5rem;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
@@ -122,13 +120,13 @@
     }
 
     &.badge-variable-type-shopify {
-        background-color: @TEMP_shopifyBadgeBG;
-        color: @TEMP_shopifyBadgeColor;
+        background-color: var(--TEMP_shopifyBadgeBG);
+        color: var(--TEMP_shopifyBadgeColor);
     }
 
     &.badge-variable-type-bigcommerce {
-        background-color: @bigcommerceLightPurple;
-        color: @bigcommercePurple;
+        background-color: var(--bigcommerceLightPurple);
+        color: var(--bigcommercePurple);
     }
 
     &.badge-variable-type-recharge {
