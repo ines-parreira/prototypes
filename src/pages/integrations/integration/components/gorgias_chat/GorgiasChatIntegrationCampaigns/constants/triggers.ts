@@ -5,7 +5,7 @@ import {CountryOperators} from '../types/enums/CountryOperators.enum'
 import {CurrentProductTagsOperators} from '../types/enums/CurrentProductTagsOperators.enum'
 import {CurrentUrlOperators} from '../types/enums/CurrentUrlOperators.enum'
 import {ExitIntentOperators} from '../types/enums/ExitIntentOperators.enum'
-// import {OrderedProductsOperators} from '../types/enums/OrderedProductsOperators.enum'
+import {OrderedProductsOperators} from '../types/enums/OrderedProductsOperators.enum'
 import {OrdersCountOperators} from '../types/enums/OrdersCountOperators.enum'
 import {ProductTagsOperators} from '../types/enums/ProductTagsOperators.enum'
 import {SessionTimeOperators} from '../types/enums/SessionTimeOperators.enum'
@@ -155,20 +155,20 @@ export const TRIGGER_LIST = [
             shopify_history: true,
         },
     },
-    // {
-    //     key: CampaignTriggerKey.OrderedProducts,
-    //     label: 'Products purchased',
-    //     defaults: {
-    //         value: '',
-    //         operator: OrderedProductsOperators.Contains,
-    //     },
-    //     requirements: {
-    //         revenue: true,
-    //         shopify: true,
-    //         headless: false,
-    //         shopify_history: true,
-    //     },
-    // },
+    {
+        key: CampaignTriggerKey.OrderedProducts,
+        label: 'Products purchased',
+        defaults: {
+            value: [],
+            operator: OrderedProductsOperators.ContainsAny,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
+        },
+    },
     {
         key: CampaignTriggerKey.CustomerTags,
         label: 'Shopify customer tags',

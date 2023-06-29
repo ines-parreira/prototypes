@@ -18,6 +18,10 @@ import {
     OrderedProductsOperators,
     isOrderedProductsOperators,
 } from '../../types/enums/OrderedProductsOperators.enum'
+import {
+    PurchasedProductValue,
+    isPurchasedProductValue,
+} from '../../types/CampaignValue'
 
 import css from './style.less'
 
@@ -52,6 +56,12 @@ export const OrderedProductsTriggers = ({
 
     const handleChangeValue = (value: Option[]) => {
         setInnerValue(value)
+        onUpdateTrigger(id, {
+            value: value.map((v) => ({
+                productId: v.value,
+                productTitle: v.label,
+            })),
+        })
     }
 
     const handleChangeSelectFilter = _debounce((nextFilter: string) => {
@@ -72,6 +82,21 @@ export const OrderedProductsTriggers = ({
     useEffect(() => {
         if (trigger.operator) {
             setInnerOperator(trigger.operator as OrderedProductsOperators)
+        }
+
+        const isValidValue =
+            Array.isArray(trigger.value) &&
+            trigger.value.every((item) => isPurchasedProductValue(item))
+
+        if (isValidValue) {
+            const transformedValue = (
+                trigger.value as PurchasedProductValue[]
+            ).map((item) => ({
+                value: item.productId,
+                label: item.productTitle,
+            }))
+
+            setInnerValue(transformedValue)
         }
     }, [trigger.operator, trigger.value])
 
