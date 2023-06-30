@@ -93,12 +93,15 @@ describe('<SoundSetting />', () => {
 
     it('should call `onChangeSound` when the sound is changed', () => {
         const onChangeSound = jest.fn()
-        const {getByRole} = render(
+        const {getByRole, getByText} = render(
             <SoundSetting {...defaultProps} onChangeSound={onChangeSound} />
         )
 
-        const el = getByRole('combobox')
-        userEvent.selectOptions(el, 'beepboop')
+        const select = getByRole('listbox')
+        userEvent.click(select)
+
+        const option = getByText('Beep-boop')
+        userEvent.click(option)
 
         expect(onChangeSound).toHaveBeenCalledWith('beepboop')
     })

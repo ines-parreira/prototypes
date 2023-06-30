@@ -1,6 +1,20 @@
-import React, {ChangeEvent, ReactNode, useCallback} from 'react'
+import cn from 'classnames'
+import React, {
+    ChangeEvent,
+    ReactNode,
+    useCallback,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 
 import Button from 'pages/common/components/button/Button'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {notificationSounds} from 'services'
 import {sounds, SoundValue} from 'services/NotificationSounds'
@@ -30,12 +44,9 @@ export default function SoundSetting({
     onChangeSound,
     onChangeVolume,
 }: Props) {
-    const handleChangeSound = useCallback(
-        (e: ChangeEvent<HTMLSelectElement>) => {
-            onChangeSound(e.target.value as SoundValue)
-        },
-        [onChangeSound]
-    )
+    const [isOpen, setIsOpen] = useState(false)
+    const targetRef = useRef<HTMLDivElement>(null)
+    const floatingRef = useRef<HTMLDivElement>(null)
 
     const handleChangeVolume = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +59,11 @@ export default function SoundSetting({
         notificationSounds.play(sound, volume)
     }, [sound, volume])
 
+    const selectedSound = useMemo(
+        () => sounds.find((s) => s.value === sound),
+        [sound]
+    )
+
     return (
         <div className={className}>
             <div className={css.header}>
@@ -59,17 +75,45 @@ export default function SoundSetting({
                     {title}
                 </ToggleInput>
 
-                <select
-                    disabled={!enabled}
-                    value={sound}
-                    onChange={handleChangeSound}
-                >
-                    {sounds.map((sound) => (
-                        <option key={sound.value} value={sound.value}>
-                            {sound.label}
-                        </option>
-                    ))}
-                </select>
+                <div className={css.soundSelect}>
+                    <SelectInputBox
+                        isDisabled={!enabled}
+                        floating={floatingRef}
+                        label={selectedSound?.label}
+                        prefix={
+                            <i className={cn('material-icons', css.soundIcon)}>
+                                volume_up
+                            </i>
+                        }
+                        onToggle={setIsOpen}
+                        ref={targetRef}
+                    >
+                        <SelectInputBoxContext.Consumer>
+                            {(context) => (
+                                <Dropdown
+                                    isOpen={isOpen}
+                                    onToggle={() => context!.onBlur()}
+                                    ref={floatingRef}
+                                    target={targetRef}
+                                    value={sound}
+                                >
+                                    <DropdownBody>
+                                        {sounds.map((sound) => (
+                                            <DropdownItem
+                                                onClick={() =>
+                                                    onChangeSound(sound.value)
+                                                }
+                                                key={sound.value}
+                                                option={sound}
+                                                shouldCloseOnSelect
+                                            />
+                                        ))}
+                                    </DropdownBody>
+                                </Dropdown>
+                            )}
+                        </SelectInputBoxContext.Consumer>
+                    </SelectInputBox>
+                </div>
             </div>
             <div className={css.volume}>
                 <input
