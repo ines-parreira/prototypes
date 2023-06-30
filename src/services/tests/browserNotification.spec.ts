@@ -12,7 +12,9 @@ jest.mock('init', () => ({
 }))
 
 jest.mock('utils/launchDarkly', () => ({
-    getLDClient: jest.fn(),
+    getLDClient: jest.fn(() => ({
+        on: jest.fn(),
+    })),
 }))
 
 jest.mock('services', () => ({
@@ -39,6 +41,7 @@ describe('browserNotification', () => {
         const waitForInitialization = jest.fn().mockResolvedValue(undefined)
 
         getLDClientMock.mockReturnValue({
+            on: jest.fn(),
             variation,
             waitForInitialization,
         })

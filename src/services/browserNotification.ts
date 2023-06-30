@@ -20,21 +20,30 @@ const sound = new Audio(require('assets/audio/classic.mp3'))
 sound.load()
 
 export class BrowserNotification {
+    isNotificationSoundsEnabled: boolean
     ldClient: LDClient
 
     constructor() {
+        this.isNotificationSoundsEnabled = false
+
         this.ldClient = getLDClient()
+        if (this.ldClient != null) {
+            this.ldClient.on(
+                `change:${FeatureFlagKey.NotificationSounds}`,
+                this.updateIsNotificationSoundsEnabled
+            )
+        }
+    }
+
+    updateIsNotificationSoundsEnabled = (variation: boolean) => {
+        this.isNotificationSoundsEnabled = variation
     }
 
     playSound = _throttle(
         async () => {
             await this.ldClient.waitForInitialization()
 
-            const isNotificationSoundsEnabled = this.ldClient.variation(
-                FeatureFlagKey.NotificationSounds
-            )
-
-            if (!isNotificationSoundsEnabled) {
+            if (!this.isNotificationSoundsEnabled) {
                 sound.play().catch(_noop)
                 return
             }
