@@ -47,7 +47,7 @@ import css from './Navbar.less'
 const unreadCountChangedEvent = 'widget:publication:unread_count:changed'
 
 const MIN_WIDTH = 200
-const MAX_WIDTH = 350
+const MAX_WIDTH = 355
 
 type NavLinkProps = {
     to: string
@@ -276,15 +276,11 @@ export class Navbar extends Component<Props, State> {
     stopResizing = () => {
         const {navbarWidth} = this.state
         if (this.state.isResizing) {
-            const newWidth =
-                navbarWidth < MIN_WIDTH
-                    ? MIN_WIDTH
-                    : navbarWidth > MAX_WIDTH
-                    ? MAX_WIDTH
-                    : navbarWidth
-
             tryLocalStorage(() =>
-                window.localStorage.setItem('navbar-width', newWidth.toString())
+                window.localStorage.setItem(
+                    'navbar-width',
+                    navbarWidth.toString()
+                )
             )
             this.setState({isResizing: false})
         }
@@ -299,7 +295,14 @@ export class Navbar extends Component<Props, State> {
             navbarWidth = event.clientX
         }
         if (this.state.isResizing) {
-            this.setState({navbarWidth})
+            const newWidth =
+                navbarWidth < MIN_WIDTH
+                    ? MIN_WIDTH
+                    : navbarWidth > MAX_WIDTH
+                    ? MAX_WIDTH
+                    : navbarWidth
+
+            this.setState({navbarWidth: newWidth})
         }
     }
 
