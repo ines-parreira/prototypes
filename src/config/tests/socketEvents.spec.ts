@@ -58,6 +58,8 @@ import {mergeCustomerExternalData} from '../../state/ticket/actions'
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
 
+jest.mock('services/browserNotification', () => ({newMessage: jest.fn()}))
+
 jest.spyOn(browserNotification, 'newMessage')
 jest.mock('../../state/chats/actions')
 jest.mock('../../state/views/actions')

@@ -1,201 +1,206 @@
 import PushJS from 'push.js'
 
-import browserNotification from '../browserNotification'
+import {getLDClient} from 'utils/launchDarkly'
+import {flushPromises} from 'utils/testing'
 
-describe('services', () => {
-    describe('browserNotification', () => {
-        beforeEach(() => {
-            jest.clearAllMocks()
-            PushJS.clear()
-            browserNotification.playSound.cancel()
+import {BrowserNotification} from '../browserNotification'
+
+jest.mock('init', () => ({
+    store: {
+        getState: jest.fn(),
+    },
+}))
+
+jest.mock('utils/launchDarkly', () => ({
+    getLDClient: jest.fn(),
+}))
+
+jest.mock('services', () => ({
+    notificationSounds: {
+        play: jest.fn(),
+    },
+}))
+
+const getLDClientMock = getLDClient as jest.Mock
+
+describe('browserNotification', () => {
+    let spy: ReturnType<typeof jest.spyOn>
+    let variation: jest.Mock
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+        PushJS.clear()
+
+        spy = jest
+            .spyOn(global.HTMLMediaElement.prototype, 'play')
+            .mockResolvedValue(undefined)
+
+        variation = jest.fn().mockReturnValue(false)
+        const waitForInitialization = jest.fn().mockResolvedValue(undefined)
+
+        getLDClientMock.mockReturnValue({
+            variation,
+            waitForInitialization,
+        })
+    })
+
+    describe('newMessage()', () => {
+        it('should not play the sound notification', () => {
+            const browserNotification = new BrowserNotification()
+            browserNotification.newMessage({
+                title: 'title',
+                body: 'body',
+                ticketId: 12,
+                playSoundNotification: false,
+            })
+            expect(spy).toHaveBeenCalledTimes(0)
         })
 
-        describe('newMessage()', () => {
-            it('should not play the sound notification', () => {
-                const spy = jest.spyOn(
-                    global.HTMLMediaElement.prototype,
-                    'play'
-                )
+        it.each([true, null, undefined])(
+            'should play the default sound notification',
+            async (playSoundNotification) => {
+                const browserNotification = new BrowserNotification()
                 browserNotification.newMessage({
                     title: 'title',
                     body: 'body',
                     ticketId: 12,
-                    playSoundNotification: false,
+                    playSoundNotification: playSoundNotification,
                 })
-                expect(spy).toHaveBeenCalledTimes(0)
+
+                await flushPromises()
+
+                expect(spy).toHaveBeenCalledWith()
+            }
+        )
+
+        it('should require interaction', () => {
+            const browserNotification = new BrowserNotification()
+            browserNotification.newMessage({
+                requireInteraction: true,
             })
 
-            it.each([true, null, undefined])(
-                'should play the sound notification',
-                (playSoundNotification) => {
-                    const spy = jest.spyOn(
-                        global.HTMLMediaElement.prototype,
-                        'play'
-                    )
-                    browserNotification.newMessage({
-                        title: 'title',
-                        body: 'body',
-                        ticketId: 12,
-                        playSoundNotification: playSoundNotification,
-                    })
-                    expect(spy).toHaveBeenCalled()
-                }
-            )
-
-            it('should require interaction', () => {
-                browserNotification.newMessage({
-                    requireInteraction: true,
-                })
-
-                expect(
-                    (PushJS as unknown as {getAll: () => any[]}).getAll()
-                ).toMatchSnapshot()
-            })
-
-            it('should create a browser notification with default values (empty)', () => {
-                const spy = jest.spyOn(
-                    global.HTMLMediaElement.prototype,
-                    'play'
-                )
-                browserNotification.newMessage()
-                expect(
-                    (PushJS as unknown as {getAll: () => any[]}).getAll()
-                ).toMatchSnapshot()
-                expect(spy).toHaveBeenCalled()
-            })
-
-            it('should create a browser notification with default values (null values)', () => {
-                const spy = jest.spyOn(
-                    global.HTMLMediaElement.prototype,
-                    'play'
-                )
-                browserNotification.newMessage({
-                    title: null,
-                    body: null,
-                    ticketId: null,
-                })
-                expect(
-                    (PushJS as unknown as {getAll: () => any[]}).getAll()
-                ).toMatchSnapshot()
-                expect(spy).toHaveBeenCalled()
-            })
-
-            it('should create a browser notification with default values (empty values)', () => {
-                const spy = jest.spyOn(
-                    global.HTMLMediaElement.prototype,
-                    'play'
-                )
-                browserNotification.newMessage({
-                    title: '',
-                    body: '',
-                })
-                expect(
-                    (PushJS as unknown as {getAll: () => any[]}).getAll()
-                ).toMatchSnapshot()
-                expect(spy).toHaveBeenCalled()
-            })
-
-            it('should create a browser notification with default values (invalid values)', () => {
-                const spy = jest.spyOn(
-                    global.HTMLMediaElement.prototype,
-                    'play'
-                )
-                browserNotification.newMessage({
-                    title: 1234,
-                    body: 1234,
-                })
-                expect(
-                    (PushJS as unknown as {getAll: () => any[]}).getAll()
-                ).toMatchSnapshot()
-                expect(spy).toHaveBeenCalled()
-            })
-
-            it('should create a browser notification', () => {
-                const spy = jest.spyOn(
-                    global.HTMLMediaElement.prototype,
-                    'play'
-                )
-                browserNotification.newMessage({
-                    title: 'title',
-                    body: 'body',
-                    ticketId: 12,
-                })
-                expect(
-                    (PushJS as unknown as {getAll: () => any[]}).getAll()
-                ).toMatchSnapshot()
-                expect(spy).toHaveBeenCalled()
-            })
-
-            it('should not throw unhandled promise rejection when the audio playing fails', (done) => {
-                const spy = jest.spyOn(
-                    global.HTMLMediaElement.prototype,
-                    'play'
-                )
-
-                spy.mockImplementationOnce(() => Promise.reject())
-
-                browserNotification.newMessage({
-                    title: 'title',
-                    body: 'body',
-                    ticketId: 12,
-                })
-
-                setImmediate(() => {
-                    expect(
-                        (PushJS as unknown as {getAll: () => any[]}).getAll()
-                    ).toMatchSnapshot()
-                    done()
-                })
-                expect(spy).toHaveBeenCalled()
-            })
-
-            it('should display several notifications but play sound once', () => {
-                const spy = jest.spyOn(
-                    global.HTMLMediaElement.prototype,
-                    'play'
-                )
-
-                browserNotification.newMessage({
-                    title: 'title',
-                    body: 'body',
-                    ticketId: 12,
-                })
-                browserNotification.newMessage({
-                    title: 'title',
-                    body: 'body',
-                    ticketId: 123,
-                })
-
-                expect(
-                    (PushJS as unknown as {getAll: () => any[]}).getAll()
-                ).toMatchSnapshot()
-                expect(spy).toHaveBeenCalledTimes(1)
-            })
+            expect(
+                (PushJS as unknown as {getAll: () => any[]}).getAll()
+            ).toMatchSnapshot()
         })
 
-        describe('newMessageThrottled()', () => {
-            it('should display a single notification when called several times', () => {
-                const spy = jest.spyOn(
-                    global.HTMLMediaElement.prototype,
-                    'play'
-                )
+        it('should create a browser notification with default values (empty)', async () => {
+            const browserNotification = new BrowserNotification()
+            browserNotification.newMessage()
 
-                browserNotification.newMessageThrottled({
-                    title: 'title',
-                    body: 'body',
-                    ticketId: 12,
-                })
-                browserNotification.newMessageThrottled({
-                    title: 'title',
-                    body: 'body',
-                    ticketId: 123,
-                })
+            await flushPromises()
 
-                expect(
-                    (PushJS as unknown as {getAll: () => any[]}).getAll()
-                ).toMatchSnapshot()
-                expect(spy).toHaveBeenCalledTimes(1)
+            expect(
+                (PushJS as unknown as {getAll: () => any[]}).getAll()
+            ).toMatchSnapshot()
+
+            expect(spy).toHaveBeenCalledWith()
+        })
+
+        it('should create a browser notification with default values (null values)', async () => {
+            const browserNotification = new BrowserNotification()
+            browserNotification.newMessage({
+                title: null,
+                body: null,
+                ticketId: null,
             })
+
+            await flushPromises()
+
+            expect(
+                (PushJS as unknown as {getAll: () => any[]}).getAll()
+            ).toMatchSnapshot()
+            expect(spy).toHaveBeenCalledWith()
+        })
+
+        it('should create a browser notification with default values (empty values)', async () => {
+            const browserNotification = new BrowserNotification()
+            browserNotification.newMessage({
+                title: '',
+                body: '',
+            })
+
+            await flushPromises()
+
+            expect(
+                (PushJS as unknown as {getAll: () => any[]}).getAll()
+            ).toMatchSnapshot()
+            expect(spy).toHaveBeenCalledWith()
+        })
+
+        it('should create a browser notification with default values (invalid values)', async () => {
+            const browserNotification = new BrowserNotification()
+            browserNotification.newMessage({
+                title: 1234,
+                body: 1234,
+            })
+
+            await flushPromises()
+
+            expect(
+                (PushJS as unknown as {getAll: () => any[]}).getAll()
+            ).toMatchSnapshot()
+            expect(spy).toHaveBeenCalledWith()
+        })
+
+        it('should create a browser notification', async () => {
+            const browserNotification = new BrowserNotification()
+            browserNotification.newMessage({
+                title: 'title',
+                body: 'body',
+                ticketId: 12,
+            })
+
+            await flushPromises()
+
+            expect(
+                (PushJS as unknown as {getAll: () => any[]}).getAll()
+            ).toMatchSnapshot()
+            expect(spy).toHaveBeenCalledWith()
+        })
+
+        it('should display several notifications but play sound once', async () => {
+            const browserNotification = new BrowserNotification()
+            browserNotification.newMessage({
+                title: 'title',
+                body: 'body',
+                ticketId: 12,
+            })
+            browserNotification.newMessage({
+                title: 'title',
+                body: 'body',
+                ticketId: 123,
+            })
+
+            await flushPromises()
+
+            expect(
+                (PushJS as unknown as {getAll: () => any[]}).getAll()
+            ).toMatchSnapshot()
+            expect(spy).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('newMessageThrottled()', () => {
+        it('should display a single notification when called several times', async () => {
+            const browserNotification = new BrowserNotification()
+            browserNotification.newMessageThrottled({
+                title: 'title',
+                body: 'body',
+                ticketId: 12,
+            })
+            browserNotification.newMessageThrottled({
+                title: 'title',
+                body: 'body',
+                ticketId: 123,
+            })
+
+            await flushPromises()
+
+            expect(
+                (PushJS as unknown as {getAll: () => any[]}).getAll()
+            ).toMatchSnapshot()
+            expect(spy).toHaveBeenCalledTimes(1)
         })
     })
 })

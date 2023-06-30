@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom'
+import './mockAudioContext'
 import {TextEncoder, TextDecoder} from 'util'
 import {setImmediate} from 'timers'
 import React from 'react'

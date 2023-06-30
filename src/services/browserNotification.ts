@@ -1,10 +1,17 @@
 import notification, {PushNotification} from 'push.js'
+import {LDClient} from 'launchdarkly-js-client-sdk'
 import _throttle from 'lodash/throttle'
 import _isString from 'lodash/isString'
 import _noop from 'lodash/noop'
 
-import {assetsUrl} from 'utils'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {store} from 'init'
 import history from 'pages/history'
+import {notificationSounds} from 'services'
+import {defaultSound} from 'services/NotificationSounds'
+import {getNotificationSettings} from 'state/currentUser/selectors'
+import {assetsUrl} from 'utils'
+import {getLDClient} from 'utils/launchDarkly'
 
 const icon = assetsUrl('/img/icons/logo.png')
 
@@ -12,10 +19,37 @@ const icon = assetsUrl('/img/icons/logo.png')
 const sound = new Audio(require('assets/audio/classic.mp3'))
 sound.load()
 
-class BrowserNotification {
+export class BrowserNotification {
+    ldClient: LDClient
+
+    constructor() {
+        this.ldClient = getLDClient()
+    }
+
     playSound = _throttle(
-        () => {
-            sound.play().catch(_noop)
+        async () => {
+            await this.ldClient.waitForInitialization()
+
+            const isNotificationSoundsEnabled = this.ldClient.variation(
+                FeatureFlagKey.NotificationSounds
+            )
+
+            if (!isNotificationSoundsEnabled) {
+                sound.play().catch(_noop)
+                return
+            }
+
+            const notificationSettings = getNotificationSettings(
+                store.getState()
+            )
+
+            const settings = notificationSettings
+                ? notificationSettings.data.notification_sound
+                : defaultSound
+
+            if (!settings.enabled) return
+
+            notificationSounds.play(settings.sound, settings.volume)
         },
         10000,
         {trailing: false}
@@ -39,7 +73,7 @@ class BrowserNotification {
             playSoundNotification === undefined ||
             !!playSoundNotification
         ) {
-            this.playSound()
+            void this.playSound()
         }
 
         void notification.create(

@@ -22,6 +22,12 @@ export const sounds = [
 
 export type SoundValue = typeof sounds[number]['value']
 
+export const defaultSound = {
+    enabled: true,
+    sound: 'default',
+    volume: 5,
+} as const
+
 export default class NotificationSounds {
     private audioCtx: AudioContext
     private gainNode: GainNode

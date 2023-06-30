@@ -3,14 +3,21 @@ import {renderHook} from '@testing-library/react-hooks'
 import {UserSettingType} from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {defaultSound} from 'services/NotificationSounds'
 import {submitSetting} from 'state/currentUser/actions'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import useNotificationSettings from '../useNotificationSettings'
-import {defaultSound} from '../useSoundSetting'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('services/NotificationSounds', () => ({
+    defaultSound: {
+        enabled: true,
+        sound: 'default',
+        volume: 5,
+    },
+}))
 jest.mock('state/currentUser/actions', () => ({
     submitSetting: jest.fn(() => 'submit-setting'),
 }))
@@ -18,14 +25,6 @@ jest.mock('store/middlewares/segmentTracker', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         NotificationSettingsUpdated: 'notification-settings-updated',
-    },
-}))
-
-jest.mock('../useSoundSetting', () => ({
-    defaultSound: {
-        enabled: true,
-        sound: 'default',
-        volume: 5,
     },
 }))
 

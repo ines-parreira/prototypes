@@ -1,3 +1,5 @@
+import {SoundValue} from 'services/NotificationSounds'
+
 export type AgentRoleMeta = {
     description: string
     label: string
@@ -141,7 +143,7 @@ export type UserViewsOrderingSettingData = {
 export type UserNotificationPreferencesData = {
     notification_sound: {
         enabled: boolean
-        sound: string
+        sound: SoundValue
         volume: number
     }
 }

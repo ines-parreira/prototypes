@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`services browserNotification newMessage() should create a browser notification 1`] = `
+exports[`browserNotification newMessage() should create a browser notification 1`] = `
 [
   {
     "body": "body",
@@ -13,7 +13,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 ]
 `;
 
-exports[`services browserNotification newMessage() should create a browser notification with default values (empty values) 1`] = `
+exports[`browserNotification newMessage() should create a browser notification with default values (empty values) 1`] = `
 [
   {
     "body": "You received an answer",
@@ -26,7 +26,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 ]
 `;
 
-exports[`services browserNotification newMessage() should create a browser notification with default values (empty) 1`] = `
+exports[`browserNotification newMessage() should create a browser notification with default values (empty) 1`] = `
 [
   {
     "body": "You received an answer",
@@ -39,7 +39,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 ]
 `;
 
-exports[`services browserNotification newMessage() should create a browser notification with default values (invalid values) 1`] = `
+exports[`browserNotification newMessage() should create a browser notification with default values (invalid values) 1`] = `
 [
   {
     "body": "You received an answer",
@@ -52,7 +52,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 ]
 `;
 
-exports[`services browserNotification newMessage() should create a browser notification with default values (null values) 1`] = `
+exports[`browserNotification newMessage() should create a browser notification with default values (null values) 1`] = `
 [
   {
     "body": "You received an answer",
@@ -65,7 +65,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 ]
 `;
 
-exports[`services browserNotification newMessage() should display several notifications but play sound once 1`] = `
+exports[`browserNotification newMessage() should display several notifications but play sound once 1`] = `
 [
   {
     "body": "body",
@@ -86,20 +86,7 @@ exports[`services browserNotification newMessage() should display several notifi
 ]
 `;
 
-exports[`services browserNotification newMessage() should not throw unhandled promise rejection when the audio playing fails 1`] = `
-[
-  {
-    "body": "body",
-    "icon": "/assets/img/icons/logo.png",
-    "onClick": [Function],
-    "requireInteraction": false,
-    "timeout": 5000,
-    "title": "title",
-  },
-]
-`;
-
-exports[`services browserNotification newMessage() should require interaction 1`] = `
+exports[`browserNotification newMessage() should require interaction 1`] = `
 [
   {
     "body": "You received an answer",
@@ -112,7 +99,7 @@ exports[`services browserNotification newMessage() should require interaction 1`
 ]
 `;
 
-exports[`services browserNotification newMessageThrottled() should display a single notification when called several times 1`] = `
+exports[`browserNotification newMessageThrottled() should display a single notification when called several times 1`] = `
 [
   {
     "body": "body",
