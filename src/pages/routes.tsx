@@ -123,6 +123,11 @@ import CreditShopifyBillingIntegration from './tasks/detail/CreditShopifyBilling
 import EditTicketField from './settings/ticketFields/EditTicketField'
 import DeprecatedRoute from './common/components/DeprecatedRoute'
 import {RevenueAddonApiClientProvider} from './settings/revenue/hooks/useRevenueAddonApi'
+import {
+    BundlesView,
+    BundleInstallView,
+    BundleDetailView,
+} from './settings/revenue/components/BundlesView'
 import {ClickTrackingSettingsView} from './settings/revenue/components/ClickTrackingSettingsView'
 import OrderManagementViewContainer from './automation/orderManagement/OrderManagementViewContainer'
 import ReturnOrderFlowViewContainer from './automation/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
@@ -1368,6 +1373,42 @@ export function RevenueSettingsRoutes({match: {path}}: RouteComponentProps) {
                     render={appRender({
                         content: memoizedWithUserRoleRequired(
                             ClickTrackingSettingsView as any,
+                            ADMIN_ROLE,
+                            PageSection.Users
+                        ),
+                        navbar: SettingsNavbar,
+                    })}
+                />
+                <Route
+                    path={`${path}/bundles`}
+                    exact
+                    render={appRender({
+                        content: memoizedWithUserRoleRequired(
+                            BundlesView as any,
+                            ADMIN_ROLE,
+                            PageSection.Users
+                        ),
+                        navbar: SettingsNavbar,
+                    })}
+                />
+                <Route
+                    path={`${path}/bundles/new`}
+                    exact
+                    render={appRender({
+                        content: memoizedWithUserRoleRequired(
+                            BundleInstallView as any,
+                            ADMIN_ROLE,
+                            PageSection.Users
+                        ),
+                        navbar: SettingsNavbar,
+                    })}
+                />
+                <Route
+                    path={`${path}/bundles/:bundleId`}
+                    exact
+                    render={appRender({
+                        content: memoizedWithUserRoleRequired(
+                            BundleDetailView as any,
                             ADMIN_ROLE,
                             PageSection.Users
                         ),

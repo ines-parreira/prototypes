@@ -6,17 +6,305 @@
         "version": "0.1.0"
     },
     "paths": {
-        "/attribution/health-check": {
+        "/assistant/health-check": {
             "get": {
                 "tags": ["healthcheck"],
                 "summary": "Health Check",
-                "operationId": "health_check_attribution_health_check_get",
+                "operationId": "health_check_assistant_health_check_get",
                 "responses": {
                     "200": {
                         "description": "Successful Response",
                         "content": {"application/json": {"schema": {}}}
                     }
                 }
+            }
+        },
+        "/assistant/": {
+            "get": {
+                "tags": ["healthcheck"],
+                "summary": "Health Check",
+                "operationId": "health_check_assistant__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {"application/json": {"schema": {}}}
+                    }
+                }
+            }
+        },
+        "/assistant/evaluations": {
+            "post": {
+                "tags": ["evaluations"],
+                "summary": "Evaluate Campaign Rules",
+                "operationId": "evaluate_campaign_rules",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EvaluationRequestSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EvaluationResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bundle/health-check": {
+            "get": {
+                "tags": ["healthcheck"],
+                "summary": "Health Check",
+                "operationId": "health_check_bundle_health_check_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {"application/json": {"schema": {}}}
+                    }
+                }
+            }
+        },
+        "/bundle/installations/manage": {
+            "put": {
+                "tags": ["installations"],
+                "summary": "Service Installation Status Update",
+                "operationId": "service_installation_status_update_bundle_installations_manage_put",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JWTTokenSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InstallationSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["installations"],
+                "summary": "Service Installation Get Or Create",
+                "operationId": "service_installation_get_or_create_bundle_installations_manage_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JWTTokenSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InstallationSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bundle/installations/manage/retrieve": {
+            "post": {
+                "tags": ["installations"],
+                "summary": "Service Retrieve Installation",
+                "operationId": "service_retrieve_installation_bundle_installations_manage_retrieve_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JWTTokenSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InstallationSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bundle/installations": {
+            "get": {
+                "tags": ["installations"],
+                "summary": "Installation List",
+                "operationId": "list_bundle_installation",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Response List Bundle Installation",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/InstallationSchema"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"HTTPBearer": []}]
+            }
+        },
+        "/bundle/installations/{id}": {
+            "get": {
+                "tags": ["installations"],
+                "summary": "Retrieve",
+                "operationId": "get_bundle_installation",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {"title": "Id", "type": "string"},
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InstallationSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"HTTPBearer": []}]
+            },
+            "patch": {
+                "tags": ["installations"],
+                "summary": "Update",
+                "operationId": "update_bundle_installation",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {"title": "Id", "type": "string"},
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InstallationUpdateConfigSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InstallationSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"HTTPBearer": []}]
             }
         },
         "/click-tracking/health-check": {
@@ -252,7 +540,11 @@
                     },
                     {
                         "required": false,
-                        "schema": {"title": "User-Agent", "type": "string"},
+                        "schema": {
+                            "title": "User-Agent",
+                            "type": "string",
+                            "default": ""
+                        },
                         "name": "user-agent",
                         "in": "header"
                     }
@@ -448,6 +740,19 @@
     },
     "components": {
         "schemas": {
+            "CampaignSchema": {
+                "title": "CampaignSchema",
+                "required": ["id", "rules"],
+                "type": "object",
+                "properties": {
+                    "id": {"title": "Id", "type": "string"},
+                    "rules": {
+                        "title": "Rules",
+                        "type": "array",
+                        "items": {"$ref": "#/components/schemas/RuleSchema"}
+                    }
+                }
+            },
             "CustomDomainOperationSchema": {
                 "title": "CustomDomainOperationSchema",
                 "required": ["hostname"],
@@ -455,7 +760,7 @@
                 "properties": {
                     "hostname": {
                         "title": "Hostname",
-                        "pattern": "^((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\\.(xn--)?([a-z0-9\\-]{1,61}|[a-z0-9-]{1,30}\\.[a-z]{2,})$",
+                        "pattern": "^(((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\\.){1,}([a-z]{2,})$",
                         "type": "string"
                     }
                 }
@@ -467,6 +772,69 @@
                 "properties": {
                     "hostname": {"title": "Hostname", "type": "string"},
                     "status": {"title": "Status", "type": "string"}
+                }
+            },
+            "EvaluatedCampaignSchema": {
+                "title": "EvaluatedCampaignSchema",
+                "required": ["id", "rules"],
+                "type": "object",
+                "properties": {
+                    "id": {"title": "Id", "type": "string"},
+                    "rules": {
+                        "title": "Rules",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EvaluatedRuleSchema"
+                        }
+                    }
+                }
+            },
+            "EvaluatedRuleSchema": {
+                "title": "EvaluatedRuleSchema",
+                "required": ["key", "operator", "value", "matches"],
+                "type": "object",
+                "properties": {
+                    "key": {"$ref": "#/components/schemas/RuleType"},
+                    "operator": {"$ref": "#/components/schemas/RuleOperator"},
+                    "value": {"title": "Value", "type": "string"},
+                    "matches": {"title": "Matches", "type": "boolean"}
+                }
+            },
+            "EvaluationRequestSchema": {
+                "title": "EvaluationRequestSchema",
+                "required": [
+                    "guest_id",
+                    "account_id",
+                    "revenue_addon_id",
+                    "campaigns"
+                ],
+                "type": "object",
+                "properties": {
+                    "guest_id": {"title": "Guest Id", "type": "string"},
+                    "account_id": {"title": "Account Id", "type": "integer"},
+                    "revenue_addon_id": {
+                        "title": "Revenue Addon Id",
+                        "type": "string"
+                    },
+                    "campaigns": {
+                        "title": "Campaigns",
+                        "type": "array",
+                        "items": {"$ref": "#/components/schemas/CampaignSchema"}
+                    }
+                }
+            },
+            "EvaluationResponseSchema": {
+                "title": "EvaluationResponseSchema",
+                "required": ["campaigns"],
+                "type": "object",
+                "properties": {
+                    "campaigns": {
+                        "title": "Campaigns",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EvaluatedCampaignSchema"
+                        }
+                    }
                 }
             },
             "HTTPValidationError": {
@@ -482,11 +850,96 @@
                     }
                 }
             },
+            "InstallationSchema": {
+                "title": "InstallationSchema",
+                "required": [
+                    "id",
+                    "account_id",
+                    "shop_integration_id",
+                    "status",
+                    "config",
+                    "created_datetime"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {"title": "Id", "type": "string"},
+                    "account_id": {"title": "Account Id", "type": "integer"},
+                    "shop_integration_id": {
+                        "title": "Shop Integration Id",
+                        "type": "integer"
+                    },
+                    "status": {"$ref": "#/components/schemas/StatusEnum"},
+                    "config": {"title": "Config", "type": "object"},
+                    "created_datetime": {
+                        "title": "Created Datetime",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deactivated_datetime": {
+                        "title": "Deactivated Datetime",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "bundle_url": {"title": "Bundle Url", "type": "string"}
+                }
+            },
+            "InstallationUpdateConfigSchema": {
+                "title": "InstallationUpdateConfigSchema",
+                "required": ["config"],
+                "type": "object",
+                "properties": {"config": {"title": "Config", "type": "object"}}
+            },
             "JWTTokenSchema": {
                 "title": "JWTTokenSchema",
                 "required": ["token"],
                 "type": "object",
                 "properties": {"token": {"title": "Token", "type": "string"}}
+            },
+            "RuleOperator": {
+                "title": "RuleOperator",
+                "enum": [
+                    "eq",
+                    "neq",
+                    "gt",
+                    "gte",
+                    "lt",
+                    "lte",
+                    "in",
+                    "notIn",
+                    "containsAll",
+                    "containsAny",
+                    "notContains"
+                ],
+                "type": "string",
+                "description": "An enumeration."
+            },
+            "RuleSchema": {
+                "title": "RuleSchema",
+                "required": ["key", "operator", "value"],
+                "type": "object",
+                "properties": {
+                    "key": {"$ref": "#/components/schemas/RuleType"},
+                    "operator": {"$ref": "#/components/schemas/RuleOperator"},
+                    "value": {"title": "Value", "type": "string"}
+                }
+            },
+            "RuleType": {
+                "title": "RuleType",
+                "enum": [
+                    "orders_count",
+                    "amount_spent",
+                    "ordered_products",
+                    "customer_tags",
+                    "country_code"
+                ],
+                "type": "string",
+                "description": "An enumeration."
+            },
+            "StatusEnum": {
+                "title": "StatusEnum",
+                "enum": ["draft", "installed", "uninstalled"],
+                "type": "string",
+                "description": "An enumeration."
             },
             "URLClickSchema": {
                 "title": "URLClickSchema",
@@ -538,6 +991,7 @@
                     },
                     "alias": {"title": "Alias", "type": "string"},
                     "short_url": {"title": "Short Url", "type": "string"},
+                    "channel": {"title": "Channel", "type": "string"},
                     "custom_domain": {
                         "$ref": "#/components/schemas/CustomDomainSchema"
                     }
@@ -576,6 +1030,7 @@
                     },
                     "alias": {"title": "Alias", "type": "string"},
                     "short_url": {"title": "Short Url", "type": "string"},
+                    "channel": {"title": "Channel", "type": "string"},
                     "custom_domain": {
                         "$ref": "#/components/schemas/CustomDomainSchema"
                     },
