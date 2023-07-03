@@ -1,57 +1,19 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 
-import BlankState from '../components/BlankState'
+import BlankState from '../BlankState'
 
-describe('BlankState component', () => {
-    it('default with undefined / null props', () => {
-        const component = shallow(
-            <BlankState message={undefined} totalClosedTickets={null} />
-        )
-        expect(component.find('.blank-state-message')).toIncludeText(
-            'Enjoy your day!'
-        )
+describe('<BlankState />', () => {
+    it('should default with a message', () => {
+        const {getByText} = render(<BlankState />)
+        expect(getByText(/Enjoy your day/i)).toBeInTheDocument()
     })
 
-    it('custom message', () => {
-        const component = shallow(
-            <BlankState
-                message={<div>Custom message</div>}
-                totalClosedTickets={null}
-            />
+    it('should display the provided message', () => {
+        const message = 'Custom message'
+        const {getByText} = render(
+            <BlankState message={<div>{message}</div>} />
         )
-        expect(component).toContainReact(
-            <div className="blank-state">
-                <div>Custom message</div>
-            </div>
-        )
-    })
-
-    it('more than 10 tickets closed', () => {
-        const component = shallow(
-            <BlankState message={undefined} totalClosedTickets={11} />
-        )
-
-        expect(component.find('.blank-state-message')).toIncludeText(
-            'No more tickets here!'
-        )
-    })
-
-    it('more than 100 tickets closed', () => {
-        const component = shallow(
-            <BlankState message={undefined} totalClosedTickets={101} />
-        )
-
-        expect(component.find('.blank-state-message')).toIncludeText('Done!')
-    })
-
-    it('more than 500 tickets closed', () => {
-        const component = shallow(
-            <BlankState message={undefined} totalClosedTickets={501} />
-        )
-
-        expect(component.find('.blank-state-message')).toIncludeText(
-            'All good!'
-        )
+        expect(getByText(message)).toBeInTheDocument()
     })
 })

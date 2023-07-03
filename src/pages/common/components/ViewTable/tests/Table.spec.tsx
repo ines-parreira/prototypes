@@ -11,7 +11,7 @@ import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {RootState, StoreDispatch} from 'state/types'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import {mockSearchRank} from 'fixtures/searchRank'
-import BlankState from 'pages/common/components/BlankState/BlankStateContainer'
+import BlankState from 'pages/common/components/BlankState/BlankState'
 import Row from 'pages/common/components/ViewTable/Table/Row'
 import {ViewNavDirection} from 'state/views/types'
 
@@ -51,7 +51,7 @@ jest.mock(
 )
 jest.mock('../Table/HeaderCell', () => () => <td>HeaderCell</td>)
 jest.mock(
-    '../../BlankState/BlankStateContainer',
+    '../../BlankState/BlankState',
     () =>
         ({message}: ComponentProps<typeof BlankState>) =>
             (

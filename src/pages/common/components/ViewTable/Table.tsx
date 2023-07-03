@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {usePrevious} from 'react-use'
 
-import BlankState from 'pages/common/components/BlankState/BlankStateContainer'
+import BlankState from 'pages/common/components/BlankState/BlankState'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
@@ -238,6 +238,7 @@ const TableContainer = ({
                                 <br />
                                 {!isSearch ? (
                                     <a
+                                        className={css.link}
                                         onClick={() => {
                                             resetView(config.get('name'))
                                             void fetchViewItems()
