@@ -1,6 +1,6 @@
-import React, {useEffect, useMemo, useState} from 'react'
-import {useLocalStorage} from 'react-use'
-import {useParams} from 'react-router-dom'
+import React, {useMemo, useState} from 'react'
+import {useEffectOnce, useLocalStorage} from 'react-use'
+import {useRouteMatch} from 'react-router-dom'
 
 import useStoreIntegrations from 'pages/automation/common/hooks/useStoreIntegrations'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
@@ -31,8 +31,16 @@ const AutomationNavbarAddOnView = () => {
         setIsAutomationSubscriptionModal,
     ] = useState(false)
 
-    const {shopType = IntegrationType.Shopify, shopName} =
-        useParams<{shopType?: string; shopName: string}>()
+    const match = useRouteMatch<{shopType?: string; shopName: string}>({
+        path: [
+            '/app/automation/:shopType/:shopName/flows',
+            '/app/automation/:shopType/:shopName/quick-responses',
+            '/app/automation/:shopType/:shopName/order-management',
+            '/app/automation/:shopType/:shopName/article-recommendation',
+            '/app/automation/:shopType/:shopName/connected-channels',
+        ],
+        exact: false,
+    })
     const storeIntegrations = useStoreIntegrations()
     const sortedStoreIntegrations = useMemo(
         () => [...storeIntegrations].sort((a, b) => compare(a.name, b.name)),
@@ -50,11 +58,12 @@ const AutomationNavbarAddOnView = () => {
         initialCollapsedSections
     )
 
-    useEffect(() => {
-        if (!collapsedSections) {
+    useEffectOnce(() => {
+        if (!collapsedSections || !match) {
             return
         }
 
+        const {shopType = IntegrationType.Shopify, shopName} = match.params
         const key = `${shopType}:${shopName}`
 
         const newCollapsedSections = [...collapsedSections]
@@ -65,8 +74,7 @@ const AutomationNavbarAddOnView = () => {
 
             setCollapsedSections(newCollapsedSections)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [shopType, shopName])
+    })
 
     const handleToggle = (key: SectionKey) => {
         if (!collapsedSections) {
