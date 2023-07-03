@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import ReactDOM from 'react-dom'
 import {Container} from 'reactstrap'
 
@@ -28,6 +28,7 @@ export const HelpCenterEditModal = ({
     transitionDurationMs = 300,
     containerZIndices = [5, -1],
 }: Props): JSX.Element => {
+    const ref = useRef<HTMLDivElement>(null)
     const {isFullscreenEditModal, editModal} = useEditionManager()
     const [zIndexOpen, zIndexClosed] = containerZIndices
     const [containerZIndex, setContainerZIndex] = useState(
@@ -43,6 +44,10 @@ export const HelpCenterEditModal = ({
 
     useEffect(() => {
         setContainerZIndex(editModal.isOpened ? zIndexOpen : zIndexClosed)
+        if (ref.current) {
+            // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert
+            ref.current.inert = !editModal.isOpened
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editModal.isOpened])
 
@@ -73,6 +78,7 @@ export const HelpCenterEditModal = ({
                 onClick={onBackdropClick}
             />
             <div
+                ref={ref}
                 style={{
                     transitionDuration: `${transitionDurationMs}ms`,
                 }}

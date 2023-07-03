@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import {Container} from 'reactstrap'
@@ -63,6 +63,7 @@ const Drawer = ({
     disableBackdropOpacity,
     className,
 }: Props): JSX.Element => {
+    const ref = useRef<HTMLDivElement>(null)
     const [zIndexOpen, zIndexClosed] = containerZIndices
     const [containerZIndex, setContainerZIndex] = useState(
         open ? zIndexOpen : zIndexClosed
@@ -75,6 +76,10 @@ const Drawer = ({
 
     useEffect(() => {
         setContainerZIndex(open ? zIndexOpen : zIndexClosed)
+        if (ref.current) {
+            // @ts-ignore https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert
+            ref.current.inert = !open
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open])
 
@@ -101,6 +106,7 @@ const Drawer = ({
                 onClick={onBackdropClick}
             />
             <div
+                ref={ref}
                 data-testid={name}
                 style={{
                     transitionDuration: `${transitionDurationMs}ms`,
