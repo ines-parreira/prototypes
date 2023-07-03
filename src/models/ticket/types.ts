@@ -14,6 +14,7 @@ import {MacroActionName} from 'models/macroAction/types'
 import {Tag} from 'models/tag/types'
 import {Team} from 'models/team/types'
 
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {Event} from '../event/types'
 
 export type TicketSearchOptions = ApiPaginationParams &
@@ -68,6 +69,14 @@ type InternalTicketEvent = Pick<
     Event,
     'id' | 'type' | 'data' | 'created_datetime'
 > & {user: Record<string, unknown> | null}
+
+export type PhoneTicketEvent = Pick<
+    Event,
+    'id' | 'data' | 'created_datetime'
+> & {
+    user: Record<string, unknown> | null
+    type: PhoneIntegrationEvent
+}
 
 export type TicketAssignee = {
     id: number
@@ -132,9 +141,11 @@ export type TicketMessageIntent = {
     rejected: boolean | null
 }
 
-export type TicketEvent = Event & {
-    isEvent: true
-}
+export type TicketEvent =
+    | PhoneTicketEvent
+    | (Event & {
+          isEvent: true
+      })
 
 export type TicketSatisfactionSurvey = Omit<TicketMessage, 'isMessage'> & {
     isSatisfactionSurvey: true

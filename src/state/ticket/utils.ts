@@ -21,7 +21,7 @@ import * as ticketConfig from 'config/ticket'
 import {PHONE_EVENTS} from 'constants/event'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {MacroActionName} from 'models/macroAction/types'
-import {TicketMessage} from 'models/ticket/types'
+import {TicketEvent, TicketMessage} from 'models/ticket/types'
 import {renderTemplate} from 'pages/common/utils/template'
 import {
     getPersonLabelFromSource,
@@ -182,11 +182,15 @@ export function getLastSameSourceTypeMessage(
  */
 export function getSourceTypeOfResponse(
     messages: List<any> | any[],
-    via: TicketVia
+    via: TicketVia,
+    events: List<any> | any[]
 ) {
     const immutableMessages: List<any> = isImmutable(messages)
         ? (messages as List<any>)
         : toImmutable(messages)
+    const jsEvents = (
+        isImmutable(events) ? (events as List<any>).toJS() : events
+    ) as TicketEvent[]
     const ticketId = immutableMessages.getIn([0, 'ticket_id'])
     if (ticketId) {
         const cachedSourceType = responseUtils.getSourceTypeCache(ticketId)
@@ -194,7 +198,11 @@ export function getSourceTypeOfResponse(
             return cachedSourceType
         }
     }
-    return ticketConfig.responseSourceType(immutableMessages.toJS(), via)
+    return ticketConfig.responseSourceType(
+        immutableMessages.toJS(),
+        via,
+        jsEvents
+    )
 }
 
 /**

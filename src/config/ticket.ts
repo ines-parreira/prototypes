@@ -1,14 +1,21 @@
 import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketStatus,
     TicketVia,
 } from '../business/types/ticket'
-import {TicketMessage} from '../models/ticket/types'
-import {compare, getLastMessage, toImmutable} from '../utils'
+import {TicketEvent, TicketMessage} from '../models/ticket/types'
+import {
+    compare,
+    getLastEvent,
+    getLastMessage,
+    isLastItemInTicketAnEvent,
+    toImmutable,
+} from '../utils'
 import {isForwardedMessage} from '../state/ticket/utils'
 
 import {
@@ -369,9 +376,20 @@ export function sourceTypeToChannel(
  */
 export function responseSourceType(
     messages: Array<TicketMessage>,
-    via: TicketVia
+    via: TicketVia,
+    events: Array<TicketEvent>
 ): TicketMessageSourceType {
     const lastMessage = lastNonSystemTypeMessage(messages)
+    const lastEvent = getLastEvent(events)
+
+    if (lastEvent && isLastItemInTicketAnEvent(lastMessage, lastEvent)) {
+        if (
+            lastEvent.type === PhoneIntegrationEvent.MissedPhoneCall ||
+            lastEvent.type === PhoneIntegrationEvent.VoicemailRecording
+        ) {
+            return TicketMessageSourceType.Phone
+        }
+    }
 
     // some messages don't have sources - failed imports, api, etc..
     if (!lastMessage || !lastMessage.get('source')) {
@@ -435,10 +453,7 @@ export function responseSourceType(
         return TicketMessageSourceType.WhatsAppMessage
     }
 
-    if (
-        lastSourceType === TicketMessageSourceType.Twilio ||
-        via === TicketVia.Twilio
-    ) {
+    if (lastSourceType === TicketMessageSourceType.Twilio) {
         return TicketMessageSourceType.InternalNote
     }
 

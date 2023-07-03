@@ -2350,6 +2350,7 @@ exports[`actions new message restoreNewMessageDraft should inject draft data to 
 exports[`actions new message sendTicketMessage should submit new message 1`] = `
 [
   {
+    "events": Immutable.List [],
     "message": {
       "actions": undefined,
       "attachments": [],

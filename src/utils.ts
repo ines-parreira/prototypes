@@ -27,6 +27,7 @@ import {
 import {Route} from 'react-router-dom'
 import URLSafeBase64 from 'urlsafe-base64'
 
+import {TicketEvent} from 'models/ticket/types'
 import {TicketChannel} from './business/types/ticket'
 import {humanize} from './business/format'
 import {ACTION_TEMPLATES} from './config'
@@ -220,6 +221,29 @@ export function getLastMessage(
     return _filter(messages, options).sort((a, b) =>
         compare(b.created_datetime, a.created_datetime)
     )[0]
+}
+
+export function getLastEvent(events: Array<TicketEvent>): Maybe<TicketEvent> {
+    if (!events || !events.length) {
+        return
+    }
+
+    return events.sort((a, b) =>
+        compare(b.created_datetime, a.created_datetime)
+    )[0]
+}
+
+export function isLastItemInTicketAnEvent(
+    lastMessage: Maybe<Map<any, any>>,
+    lastEvent: Maybe<TicketEvent>
+): boolean {
+    if (!lastEvent) {
+        return false
+    }
+    if (!lastMessage) {
+        return true
+    }
+    return lastEvent.created_datetime > lastMessage.get('created_datetime')
 }
 
 export function resolvePropertyName(name = ''): string {

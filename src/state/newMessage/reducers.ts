@@ -259,6 +259,7 @@ export default function reducer(
         case types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
             const messages = fromJS(action.messages) as List<any>
             const via = action.ticketVia
+            const events = action.events ?? []
             // clear the reply cache
             deleteReplyCache(action.ticketId as unknown as string)
 
@@ -274,7 +275,7 @@ export default function reducer(
                 return newState
             }
 
-            const sourceType = getSourceTypeOfResponse(messages, via!)
+            const sourceType = getSourceTypeOfResponse(messages, via!, events)
             return resetContentState(state).set(
                 'newMessage',
                 makeNewMessage(
@@ -295,10 +296,11 @@ export default function reducer(
             const {ticket} = action
             const via = ticket?.get('via')
             const messages = ticket?.get('messages') || fromJS([])
+            const events = ticket?.get('events') || fromJS([])
 
             const messageType = state.getIn(['newMessage', 'source', 'type'])
             const sourceType =
-                messageType || getSourceTypeOfResponse(messages, via)
+                messageType || getSourceTypeOfResponse(messages, via, events)
 
             const newMessage = makeNewMessage(
                 getChannelFromSourceType(
@@ -324,6 +326,7 @@ export default function reducer(
             const messages = fromJS(
                 (action.resp as {messages: unknown[]}).messages
             )
+            const events = fromJS((action.resp as {events: unknown[]}).events)
 
             const newState = resetContentState(state)
                 .mergeDeep({
@@ -341,16 +344,20 @@ export default function reducer(
 
             return newState.set(
                 'newMessage',
-                makeNewMessage(channel, getSourceTypeOfResponse(messages, via))
+                makeNewMessage(
+                    channel,
+                    getSourceTypeOfResponse(messages, via, events)
+                )
             )
         }
 
         case types.NEW_MESSAGE_FETCH_TICKET_SUCCESS: {
-            const {messages, via} = action.resp as {
+            const {messages, via, events} = action.resp as {
                 messages: unknown[]
                 via: TicketVia
+                events: unknown[]
             }
-            const sourceType = getSourceTypeOfResponse(messages, via)
+            const sourceType = getSourceTypeOfResponse(messages, via, events)
 
             return resetContentState(state).set(
                 'newMessage',

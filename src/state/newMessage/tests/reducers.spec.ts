@@ -203,6 +203,7 @@ describe('new message reducer', () => {
                             TicketMessageSourceType.Email
                         ),
                     ],
+                    events: [],
                 },
                 resetMessage: true,
             })
@@ -294,6 +295,7 @@ describe('new message reducer', () => {
                         },
                     },
                 ],
+                events: [],
             }
             const newState = reducer(
                 initialState,

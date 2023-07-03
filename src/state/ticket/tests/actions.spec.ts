@@ -529,7 +529,7 @@ describe('ticket actions', () => {
         it('existing ticket', () => {
             mockServer
                 .onGet(endpointMatchers.ticket1)
-                .reply(200, {id: 1, messages: []})
+                .reply(200, {id: 1, messages: [], events: []})
             store = mockStore({
                 newMessage: newMessageState,
                 ticket: initialState.set('id', 1),
@@ -544,6 +544,7 @@ describe('ticket actions', () => {
             mockServer.onGet(endpointMatchers.ticket1).reply(200, {
                 id: 1,
                 messages: [{source: {type: 'instagram-comment'}}],
+                events: [],
             })
             store = mockStore({
                 newMessage: newMessageState,
@@ -559,6 +560,7 @@ describe('ticket actions', () => {
             mockServer.onGet(endpointMatchers.ticket1).reply(200, {
                 id: 1,
                 messages: [{source: {type: 'instagram-comment'}}],
+                events: [],
             })
             store = mockStore({
                 newMessage: newMessageState.mergeDeep({
@@ -587,7 +589,7 @@ describe('ticket actions', () => {
         it('should send ticket-viewed event when ticket is unread', () => {
             mockServer
                 .onGet(endpointMatchers.ticket1)
-                .reply(200, {id: 1, messages: [], is_unread: true})
+                .reply(200, {id: 1, messages: [], is_unread: true, events: []})
             store = mockStore({
                 newMessage: newMessageState,
                 ticket: initialState.set('id', 1),
@@ -605,7 +607,7 @@ describe('ticket actions', () => {
         it('should not send ticket-viewed event when ticket is read', () => {
             mockServer
                 .onGet(endpointMatchers.ticket1)
-                .reply(200, {id: 1, messages: [], is_unread: false})
+                .reply(200, {id: 1, messages: [], is_unread: false, events: []})
             store = mockStore({
                 newMessage: newMessageState,
                 ticket: initialState.set('id', 1),
@@ -621,10 +623,10 @@ describe('ticket actions', () => {
         it('should fetch the ticket because the user is currently on it and reopen the ticket', (done) => {
             mockServer
                 .onGet(endpointMatchers.ticket1)
-                .reply(200, {id: 1, messages: []})
+                .reply(200, {id: 1, messages: [], events: []})
             mockServer
                 .onPut(endpointMatchers.ticket1)
-                .reply(200, {id: 1, messages: []})
+                .reply(200, {id: 1, messages: [], events: []})
             const json = {
                 ticket_id: '1',
                 event: {
@@ -671,7 +673,7 @@ describe('ticket actions', () => {
         it('should fetch the ticket because the user is currently on it', () => {
             mockServer
                 .onGet(endpointMatchers.ticket1)
-                .reply(200, {id: 1, messages: []})
+                .reply(200, {id: 1, messages: [], events: []})
 
             return store
                 .dispatch(actions.handleMessageActionError('1'))
@@ -681,7 +683,7 @@ describe('ticket actions', () => {
         it('should not fetch the ticket because the user is not currently on it', () => {
             mockServer
                 .onGet(endpointMatchers.ticket2)
-                .reply(200, {id: 2, messages: []})
+                .reply(200, {id: 2, messages: [], events: []})
 
             return store
                 .dispatch(actions.handleMessageActionError('2'))
@@ -790,7 +792,7 @@ describe('ticket actions', () => {
         })
 
         it('should fetch next ticket and go to this ticket', (done) => {
-            const ticket = {id: 2, customerId: 1, messages: []}
+            const ticket = {id: 2, customerId: 1, messages: [], events: []}
             mockServer.onPut('/api/views/1/tickets/1/next').reply(200, ticket)
             store = mockStore({
                 ticket: initialState,
@@ -816,6 +818,7 @@ describe('ticket actions', () => {
                     id: 2,
                     customerId: 1,
                     messages: [{source: {type: 'instagram-comment'}}],
+                    events: [],
                 }
                 mockServer
                     .onPut('/api/views/1/tickets/1/next')
@@ -840,7 +843,7 @@ describe('ticket actions', () => {
         it('should fetch next ticket and wait for promise to be resolved to go to this ticket', (done) => {
             mockServer
                 .onPut('/api/views/1/tickets/1/next')
-                .reply(200, {id: 2, messages: []})
+                .reply(200, {id: 2, messages: [], events: []})
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}}),
@@ -864,6 +867,7 @@ describe('ticket actions', () => {
                 customerId: 1,
                 messages: [],
                 is_unread: true,
+                events: [],
             })
             store = mockStore({
                 ticket: initialState,
@@ -884,6 +888,7 @@ describe('ticket actions', () => {
                 customerId: 1,
                 messages: [],
                 is_unread: false,
+                events: [],
             })
             store = mockStore({
                 ticket: initialState,
@@ -941,7 +946,7 @@ describe('ticket actions', () => {
         })
 
         it('should fetch previous ticket and go to this ticket', (done) => {
-            const ticket = {id: 1, customerId: 1, messages: []}
+            const ticket = {id: 1, customerId: 1, messages: [], events: []}
             mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, ticket)
             store = mockStore({
                 ticket: initialState,
@@ -967,6 +972,7 @@ describe('ticket actions', () => {
                     id: 1,
                     customerId: 1,
                     messages: [{source: {type: 'instagram-comment'}}],
+                    events: [],
                 }
                 mockServer
                     .onPut('/api/views/1/tickets/2/prev')
@@ -993,7 +999,7 @@ describe('ticket actions', () => {
         it('should fetch previous ticket and wait for promise to be resolved to go to this ticket', (done) => {
             mockServer
                 .onPut('/api/views/1/tickets/2/prev')
-                .reply(200, {id: 1, messages: []})
+                .reply(200, {id: 1, messages: [], events: []})
             store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}}),
@@ -1019,6 +1025,7 @@ describe('ticket actions', () => {
                 customerId: 1,
                 messages: [],
                 is_unread: true,
+                events: [],
             })
             store = mockStore({
                 ticket: initialState,
@@ -1039,6 +1046,7 @@ describe('ticket actions', () => {
                 customerId: 1,
                 messages: [],
                 is_unread: false,
+                events: [],
             })
             store = mockStore({
                 ticket: initialState,

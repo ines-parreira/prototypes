@@ -1197,6 +1197,7 @@ export function prepareTicketMessage({
                 )(state),
                 ticketId: ticket.get('id'),
                 ticketVia: ticket.get('via'),
+                events: ticket.get('events'),
             })
 
             onMessageSent(dispatch)
@@ -1273,6 +1274,7 @@ export function sendTicketMessage(
                                 ) => List<any>
                             )(state)
                             const via = ticketSelectors.getVia(state)
+                            const events = ticketSelectors.getEvents(state)
 
                             dispatch({
                                 type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS,
@@ -1284,7 +1286,8 @@ export function sendTicketMessage(
                             const sourceTypeOfResponse =
                                 getSourceTypeOfResponse(
                                     messages.push(resp),
-                                    via
+                                    via,
+                                    events
                                 )
                             if (
                                 [
