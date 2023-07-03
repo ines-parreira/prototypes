@@ -51,6 +51,7 @@ type Props = {
     onChangeFilters: (filters: MacrosProperties) => void
     onChangeMacrosActive: (isActive?: boolean) => void
     onChangeQuery: (query: string) => void
+    hideMacroSearch?: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -467,6 +468,7 @@ export class TicketReplyArea extends Component<Props, State> {
             query,
             onChangeFilters,
             onChangeQuery,
+            hideMacroSearch,
         } = this.props
 
         const immutableMacros = fromJS(macros)
@@ -484,18 +486,20 @@ export class TicketReplyArea extends Component<Props, State> {
                     [css.macrosVisible]: isMacrosActive,
                 })}
             >
-                <TicketMacrosSearch
-                    setFocus={(input) => (this.macroInput = input)}
-                    filters={filters}
-                    macrosVisible={isMacrosActive}
-                    showMacros={this.showMacros}
-                    handleSearchKeyDown={this.handleSearchKeyDown}
-                    requireCustomerSelection={requireCustomerSelection}
-                    query={query}
-                    onChangeFilters={onChangeFilters}
-                    onChangeQuery={onChangeQuery}
-                    onClearMacro={this.hideMacrosAndFocusEditor}
-                />
+                {!hideMacroSearch && (
+                    <TicketMacrosSearch
+                        setFocus={(input) => (this.macroInput = input)}
+                        filters={filters}
+                        macrosVisible={isMacrosActive}
+                        showMacros={this.showMacros}
+                        handleSearchKeyDown={this.handleSearchKeyDown}
+                        requireCustomerSelection={requireCustomerSelection}
+                        query={query}
+                        onChangeFilters={onChangeFilters}
+                        onChangeQuery={onChangeQuery}
+                        onClearMacro={this.hideMacrosAndFocusEditor}
+                    />
+                )}
                 <div className={css.content}>
                     {requireCustomerSelection ? (
                         <div

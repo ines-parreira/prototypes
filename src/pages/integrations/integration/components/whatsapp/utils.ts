@@ -1,4 +1,5 @@
 import slackMessageParser, {Node, NodeType} from 'slack-message-parser'
+import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 
 export const WHATSAPP_VARIABLE_REGEX = /(\{\{\d\}\})/
 
@@ -52,4 +53,11 @@ export const whatsAppMessageTemplateToHtml = (templateString: string) =>
 
 export const normalizeLocale = (locale: string): string => {
     return locale.replace('_', '-').toLowerCase()
+}
+
+export const getTemplateLanguageOptions = (
+    templates: WhatsAppMessageTemplate[]
+) => {
+    const languages = templates.map((template) => template.language)
+    return Array.from(new Set(languages))
 }

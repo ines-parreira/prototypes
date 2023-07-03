@@ -6,9 +6,11 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import {setNewMessageActions} from 'state/newMessage/actions'
 import useAppSelector from 'hooks/useAppSelector'
-import {getNewMessageActions} from 'state/newMessage/selectors'
+import {
+    getNewMessageActions,
+    getNewMessageExternalTemplateAction,
+} from 'state/newMessage/selectors'
 import {mergeActionsJS} from 'state/ticket/utils'
-import {MacroActionName} from 'models/macroAction/types'
 import WhatsAppMessageTemplateBody from './WhatsAppMessageTemplateBody'
 
 import css from './WhatsAppMessageTemplateMessage.less'
@@ -26,10 +28,10 @@ export default function WhatsAppMessageTemplateMessage({
 
     const dispatch = useAppDispatch()
     const newMessageActions = useAppSelector(getNewMessageActions)
-
-    const externalTemplateAction = newMessageActions.find(
-        (action) => action.name === MacroActionName.ApplyExternalTemplate
+    const externalTemplateAction = useAppSelector(
+        getNewMessageExternalTemplateAction
     )
+
     const externalTemplateActionArguments = externalTemplateAction?.arguments
 
     /* TODO create WhatsAppMessageTemplateEditor and WhatsAppTemplateMessagePreview */

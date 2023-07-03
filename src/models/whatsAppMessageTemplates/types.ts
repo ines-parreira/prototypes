@@ -96,6 +96,7 @@ export type ListWhatsAppMessageTemplatesParams = {
     waba_id?: string
     is_supported?: boolean
     status?: WhatsAppMessageTemplateStatus
+    search?: string
 }
 
 export type ApplyExternalTemplateActionArguments = {

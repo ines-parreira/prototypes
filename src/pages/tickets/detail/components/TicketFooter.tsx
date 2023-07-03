@@ -8,6 +8,7 @@ import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFil
 import {getTicket} from 'state/ticket/selectors'
 import {editorFocused} from 'state/ui/editor/actions'
 
+import {WhatsAppEditorProvider} from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext'
 import {SubmitArgs} from '../TicketDetailContainer'
 import TypingActivity from './TypingActivity'
 
@@ -43,13 +44,15 @@ export default function TicketFooter({context}: Props) {
     return (
         <div className={cn({'mt-3': !isExistingTicket})}>
             <TypingActivity isTyping={isShopperTyping} name={shopperName} />
-            <Editor
-                initialMacroFilters={initialMacroFilters}
-                submit={submit}
-                ticket={ticket}
-                onBlur={handleBlur}
-                onFocus={handleFocus}
-            />
+            <WhatsAppEditorProvider>
+                <Editor
+                    initialMacroFilters={initialMacroFilters}
+                    submit={submit}
+                    ticket={ticket}
+                    onBlur={handleBlur}
+                    onFocus={handleFocus}
+                />
+            </WhatsAppEditorProvider>
         </div>
     )
 }

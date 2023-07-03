@@ -4,6 +4,9 @@ import {MacrosProperties} from 'models/macro/types'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import useAppSelector from 'hooks/useAppSelector'
 import {getMacroParametersOptions} from 'state/macro/selectors'
+import TemplateTypeFilterDropdown, {
+    TemplateTypeFilterOption,
+} from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
 
 type Props = {
     selectedProperties: MacrosProperties
@@ -18,6 +21,9 @@ const MacroFilters = ({selectedProperties, onChange, size}: Props) => {
 
     return (
         <div className="d-flex">
+            <TemplateTypeFilterDropdown
+                value={TemplateTypeFilterOption.Macros}
+            />
             <SelectFilter
                 plural="languages"
                 singular="language"

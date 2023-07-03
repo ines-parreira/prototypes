@@ -1,0 +1,31 @@
+@import '~css/new/layout.less';
+@import '~css/new/colorTokens.less';
+
+:local {
+    .container {
+        display: flex;
+        padding: @layout-spacing-xs @layout-spacing-s @layout-spacing-xs
+            @layout-spacing-xs;
+        align-items: center;
+        justify-content: space-between;
+        align-self: stretch;
+        border-bottom: 1px solid @classic-neutral-grey-3;
+    }
+
+    .input,
+    .input:focus {
+        border: none;
+        box-shadow: none !important;
+    }
+
+    .closeButton {
+        cursor: pointer;
+        font-size: 20px;
+        color: @classic-neutral-grey-4;
+    }
+
+    .filters {
+        display: flex;
+        align-items: center;
+    }
+}

@@ -70,6 +70,14 @@ export const getNewMessageActions = createSelector(
         ).toJS() as MacroAction[]
 )
 
+export const getNewMessageExternalTemplateAction = createSelector(
+    getNewMessageActions,
+    (actions) =>
+        actions.find(
+            (action) => action.name === MacroActionName.ApplyExternalTemplate
+        )
+)
+
 export const hasValidExternalTemplate = createSelector(
     getNewMessage,
     getNewMessageActions,

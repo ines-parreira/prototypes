@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import React from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {MacrosProperties} from 'models/macro/types'
 import {Ticket} from 'models/ticket/types'
 import ReplyMessageChannel from 'pages/tickets/detail/components/ReplyArea/ReplyMessageChannel'
@@ -9,13 +8,9 @@ import TicketSubmitButtons from 'pages/tickets/detail/components/ReplyArea/Ticke
 import TicketReplyArea from 'pages/tickets/detail/components/ReplyArea/TicketReplyArea'
 import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
 import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-import useAppSelector from 'hooks/useAppSelector'
-import {getNewMessageChannel} from 'state/newMessage/selectors'
-import {TicketChannel} from 'business/types/ticket'
 import WhatsAppMessageTemplateReplyArea from 'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea'
 
+import {useWhatsAppEditor} from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext'
 import useForm from './hooks/useForm'
 import useMacros from './hooks/useMacros'
 import useMacrosSearch from './hooks/useMacrosSearch'
@@ -36,6 +31,11 @@ export default function Editor({
     submit,
     ticket,
 }: Props) {
+    const {
+        showWhatsAppTemplateEditor,
+        whatsAppMessageTemplatesEnabled,
+        isFreeFormWhatsAppMessage,
+    } = useWhatsAppEditor()
     const {formRef, onSubmit, setTicketStatus} = useForm(submit)
     const {
         hasShown,
@@ -46,8 +46,6 @@ export default function Editor({
         onChangeFilters,
         onChangeQuery,
     } = useMacros({initialFilters: initialMacroFilters})
-    const whatsAppMessageTemplatesEnabled =
-        useFlags()[FeatureFlagKey.WhatsAppMessageTemplates]
 
     const {initialLoaded, loadMacros, macros, nextCursor} = useMacrosSearch({
         filters,
@@ -55,13 +53,10 @@ export default function Editor({
         ticket,
     })
 
-    const channel = useAppSelector(getNewMessageChannel)
     const isNewTicket = !ticket.id
 
-    const showWhatsAppTemplateEditor =
-        whatsAppMessageTemplatesEnabled &&
-        isNewTicket &&
-        channel === TicketChannel.WhatsApp
+    const showFreeFormEditor =
+        !showWhatsAppTemplateEditor || isFreeFormWhatsAppMessage
 
     return (
         <div
@@ -76,14 +71,20 @@ export default function Editor({
                     }
                 />
                 <ReplyForm>
-                    {showWhatsAppTemplateEditor ? (
-                        <WhatsAppMessageTemplateReplyArea />
-                    ) : (
+                    {showWhatsAppTemplateEditor && (
+                        <WhatsAppMessageTemplateReplyArea
+                            isNewTicket={isNewTicket}
+                        />
+                    )}
+
+                    {showFreeFormEditor && (
                         <TicketReplyArea
                             hasShownMacros={hasShown}
                             filters={filters}
                             initialMacrosLoaded={initialLoaded}
-                            isMacrosActive={isActive}
+                            isMacrosActive={
+                                isActive && !showWhatsAppTemplateEditor
+                            }
                             loadMacros={loadMacros}
                             macros={macros}
                             nextCursor={nextCursor}
@@ -91,6 +92,7 @@ export default function Editor({
                             onChangeFilters={onChangeFilters}
                             onChangeMacrosActive={onChangeActive}
                             onChangeQuery={onChangeQuery}
+                            hideMacroSearch={showWhatsAppTemplateEditor}
                         />
                     )}
                     <TicketSubmitButtons setTicketStatus={setTicketStatus} />
