@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     Link,
     NavLink,
@@ -35,6 +35,11 @@ import useAppSelector from 'hooks/useAppSelector'
 import {changeContactFormId} from 'state/ui/contactForm'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {TicketChannel} from 'business/types/ticket'
+import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
+import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
+import css from './ContactFormSettingsView.less'
 
 const navLinks = {
     Preferences: CONTACT_FORM_PREFERENCES_PATH,
@@ -48,6 +53,9 @@ const ContactFormSettingsView = (): JSX.Element => {
     const {fetchContactFormById, isReady} = useContactFormApi()
     const {id: contactFormId, isValid: isIdValid} = useContactFormIdParam()
     const contactForm = useAppSelector(getCurrentContactForm)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const [isAutomationModalOpened, setIsAutomationModalOpened] =
+        useState(false)
 
     useEffect(() => {
         if (!isIdValid) return history.push(CONTACT_FORM_BASE_PATH)
@@ -119,15 +127,72 @@ const ContactFormSettingsView = (): JSX.Element => {
                     </Breadcrumb>
                 }
             >
-                <Button
-                    aria-label="contact form preview"
-                    intent="secondary"
-                    onClick={onPreview}
-                >
-                    <ButtonIconLabel icon="open_in_new">
-                        Preview
-                    </ButtonIconLabel>
-                </Button>
+                <div className={css.header}>
+                    {hasAutomationAddOn ? (
+                        contactForm.shop_name ? (
+                            <Button
+                                fillStyle="ghost"
+                                intent="primary"
+                                onClick={() => {
+                                    history.push(
+                                        `/app/automation/shopify/${
+                                            contactForm.shop_name as string
+                                        }/connected-channels?type=${
+                                            TicketChannel.ContactForm
+                                        }&id=${contactForm.id}`
+                                    )
+                                }}
+                            >
+                                <ButtonIconLabel icon="auto_awesome">
+                                    Edit automation settings
+                                </ButtonIconLabel>
+                            </Button>
+                        ) : (
+                            <Button
+                                fillStyle="ghost"
+                                intent="primary"
+                                onClick={() => {
+                                    history.push(
+                                        `/app/settings/contact-form/${contactForm.id}/preferences`
+                                    )
+                                }}
+                            >
+                                <ButtonIconLabel
+                                    icon="warning"
+                                    className={css.connectStoreWarning}
+                                >
+                                    Connect store to enable automation
+                                </ButtonIconLabel>
+                            </Button>
+                        )
+                    ) : (
+                        <>
+                            <AutomationSubscriptionButton
+                                fillStyle="ghost"
+                                label="Get Automation Add-on Features"
+                                onClick={() => {
+                                    setIsAutomationModalOpened(true)
+                                }}
+                            />
+                            <AutomationSubscriptionModal
+                                confirmLabel="Confirm"
+                                isOpen={isAutomationModalOpened}
+                                onClose={() =>
+                                    setIsAutomationModalOpened(false)
+                                }
+                            />
+                        </>
+                    )}
+                    <Button
+                        aria-label="contact form preview"
+                        intent="secondary"
+                        onClick={onPreview}
+                    >
+                        <ButtonIconLabel icon="open_in_new">
+                            Preview
+                        </ButtonIconLabel>
+                    </Button>
+                </div>
             </PageHeader>
             <SecondaryNavbar>
                 {Object.entries(navLinks).map(([name, to]) => (
