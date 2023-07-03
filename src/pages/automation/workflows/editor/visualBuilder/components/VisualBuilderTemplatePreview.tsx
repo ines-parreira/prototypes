@@ -19,6 +19,10 @@ import {
     createWorkflowEditorContextForPreview,
 } from 'pages/automation/workflows/hooks/useWorkflowEditor'
 import useAutoLayout from 'pages/automation/workflows/hooks/useAutoLayout'
+import {
+    WorkflowChannelSupportContext,
+    createWorkflowChannelSupportContextForPreview,
+} from 'pages/automation/workflows/hooks/useWorkflowChannelSupport'
 
 import TriggerButtonNode from '../nodes/TriggerButtonNode'
 import AutomatedMessageNode from '../nodes/AutomatedMessageNode'
@@ -109,11 +113,17 @@ function withProviders<T extends {visualBuilderGraph: VisualBuilderGraph}>(
     return (props: PropsWithChildren<T>) => {
         const workflowEditorContextValue =
             createWorkflowEditorContextForPreview(props.visualBuilderGraph)
+        const workflowChannelSupportContextValue =
+            createWorkflowChannelSupportContextForPreview()
         return (
             <WorkflowEditorContext.Provider value={workflowEditorContextValue}>
-                <ReactFlowProvider>
-                    <Component {...props} />
-                </ReactFlowProvider>
+                <WorkflowChannelSupportContext.Provider
+                    value={workflowChannelSupportContextValue}
+                >
+                    <ReactFlowProvider>
+                        <Component {...props} />
+                    </ReactFlowProvider>
+                </WorkflowChannelSupportContext.Provider>
             </WorkflowEditorContext.Provider>
         )
     }

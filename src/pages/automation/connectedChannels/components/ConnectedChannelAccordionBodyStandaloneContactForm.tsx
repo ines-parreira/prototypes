@@ -3,6 +3,8 @@ import React, {useMemo} from 'react'
 import {ContactFormAutomationSettings} from 'models/contactForm/types'
 import {SelfServiceStandaloneContactFormChannel} from 'pages/automation/common/hooks/useSelfServiceStandaloneContactFormChannels'
 import useContactFormsAutomationSettings from 'pages/automation/common/hooks/useContactFormsAutomationSettings'
+import {TicketChannel} from 'business/types/ticket'
+
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
 import ConnectedChannelWorkflowsFeature from './ConnectedChannelWorkflowsFeature'
@@ -44,6 +46,7 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
 
     return (
         <ConnectedChannelWorkflowsFeature
+            channelType={TicketChannel.ContactForm}
             channelId={`contact-form-${channel.value.id}`}
             entrypoints={workflowsEntrypoints}
             maxActiveWorkflows={MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}

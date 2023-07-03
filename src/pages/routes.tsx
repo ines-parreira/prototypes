@@ -1130,15 +1130,25 @@ function AutomationContent() {
                 )}
             />
             <Route
-                path={`${path}/:shopType/:shopName/flows/new`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    WorkflowEditorViewContainer,
-                    AGENT_ROLE
-                )}
-            />
+                path={[
+                    `${path}/:shopType/:shopName/flows/edit/:editWorkflowId`,
+                ]}
+            >
+                <SelfServiceHelpCentersProvider>
+                    <SelfServiceContactFormsProvider>
+                        <Route
+                            path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
+                            exact
+                            component={memoizedWithUserRoleRequired(
+                                WorkflowEditorViewContainer,
+                                AGENT_ROLE
+                            )}
+                        />
+                    </SelfServiceContactFormsProvider>
+                </SelfServiceHelpCentersProvider>
+            </Route>
             <Route
-                path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
+                path={`${path}/:shopType/:shopName/flows/new`}
                 exact
                 component={memoizedWithUserRoleRequired(
                     WorkflowEditorViewContainer,

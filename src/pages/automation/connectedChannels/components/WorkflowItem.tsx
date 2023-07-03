@@ -18,7 +18,7 @@ type Props = {
     isToggleable: boolean
     index: number
     onToggle: (index: number, isEnabled: boolean) => void
-    limitTooltipMessage: ReactNode
+    tooltipMessage: ReactNode
 }
 
 const WorkflowItem = ({
@@ -31,7 +31,7 @@ const WorkflowItem = ({
     isToggleable,
     index,
     onToggle,
-    limitTooltipMessage,
+    tooltipMessage,
 }: Props) => {
     const toggleInputId = `workflow-item-${useId()}`
 
@@ -73,7 +73,7 @@ const WorkflowItem = ({
                     trigger={['hover']}
                     autohide={false}
                 >
-                    {limitTooltipMessage}
+                    {tooltipMessage}
                 </Tooltip>
             )}
         </div>

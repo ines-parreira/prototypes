@@ -20,6 +20,9 @@ import useWorkflowConfigurations from 'pages/automation/common/hooks/useWorkflow
 import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
 
+import useWorkflowChannelSupport, {
+    WorkflowChannelSupportContext,
+} from '../workflows/hooks/useWorkflowChannelSupport'
 import ConnectedChannelAccordionItem from './components/ConnectedChannelAccordionItem'
 import ConnectedChannelsPreview from './ConnectedChannelsPreview'
 import ConnectedChannelsViewContext, {
@@ -45,6 +48,10 @@ const ConnectedChannelsView = () => {
     )
     const {isFetchPending: isWorkflowsFetchPending, workflowConfigurations} =
         useWorkflowConfigurations()
+    const workflowChannelSupportContext = useWorkflowChannelSupport(
+        shopType,
+        shopName
+    )
     const [expandedChannelIndex, setExpandedChannelIndex] = useState(() => {
         if (!defaultExpandedChannelType || !defaultExpandedChannelId) {
             return 0
@@ -147,28 +154,32 @@ const ConnectedChannelsView = () => {
                         <ConnectedChannelsViewContext.Provider
                             value={connectedChannelsViewContext}
                         >
-                            <Accordion
-                                expandedItem={expandedChannelIndex.toString()}
-                                onChange={handleExpandedChannelChange}
+                            <WorkflowChannelSupportContext.Provider
+                                value={workflowChannelSupportContext}
                             >
-                                {channels.map((channel, index) => {
-                                    if (
-                                        channel.type ===
-                                            TicketChannel.ContactForm &&
-                                        !displayContactForms
-                                    ) {
-                                        return null
-                                    }
+                                <Accordion
+                                    expandedItem={expandedChannelIndex.toString()}
+                                    onChange={handleExpandedChannelChange}
+                                >
+                                    {channels.map((channel, index) => {
+                                        if (
+                                            channel.type ===
+                                                TicketChannel.ContactForm &&
+                                            !displayContactForms
+                                        ) {
+                                            return null
+                                        }
 
-                                    return (
-                                        <ConnectedChannelAccordionItem
-                                            key={index}
-                                            index={index}
-                                            channel={channel}
-                                        />
-                                    )
-                                })}
-                            </Accordion>
+                                        return (
+                                            <ConnectedChannelAccordionItem
+                                                key={index}
+                                                index={index}
+                                                channel={channel}
+                                            />
+                                        )
+                                    })}
+                                </Accordion>
+                            </WorkflowChannelSupportContext.Provider>
                         </ConnectedChannelsViewContext.Provider>
                     </div>
                 )}

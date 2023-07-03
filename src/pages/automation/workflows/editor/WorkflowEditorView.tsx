@@ -23,6 +23,9 @@ import {
     useWorkflowEditorContext,
     withWorkflowEditorContext,
 } from '../hooks/useWorkflowEditor'
+import useWorkflowChannelSupport, {
+    WorkflowChannelSupportContext,
+} from '../hooks/useWorkflowChannelSupport'
 import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 
@@ -68,6 +71,10 @@ function WorkflowEditorViewWrapped({
             },
             [notifyMerchant]
         )
+    )
+    const workflowChannelSupportContext = useWorkflowChannelSupport(
+        shopType,
+        shopName
     )
 
     // flags
@@ -159,93 +166,102 @@ function WorkflowEditorViewWrapped({
     })
 
     return (
-        <div className={css.page}>
-            <PageHeader
-                className={css.pageHeader}
-                title={
-                    <div className={css.headerLeft}>
-                        <TextInput
-                            ref={inputRef}
-                            className={css.headerLeftInput}
-                            isRequired
-                            onChange={(name) => {
-                                workflowEditorContext.dispatch({
-                                    type: 'SET_NAME',
-                                    name,
-                                })
-                            }}
-                            placeholder={
-                                !isNewWorkflow &&
-                                workflowEditorContext.isFetchPending
-                                    ? '...'
-                                    : 'Add flow name'
-                            }
-                            value={
-                                workflowEditorContext.visualBuilderGraph.name
-                            }
-                            isDisabled={isFetchPending || isSavePending}
-                            hasError={lastSaveAttempt && workflowNameisErrored}
-                            onKeyDown={(event) => {
-                                if (event.key === 'Enter') {
-                                    inputRef.current?.blur()
+        <WorkflowChannelSupportContext.Provider
+            value={workflowChannelSupportContext}
+        >
+            <div className={css.page}>
+                <PageHeader
+                    className={css.pageHeader}
+                    title={
+                        <div className={css.headerLeft}>
+                            <TextInput
+                                ref={inputRef}
+                                className={css.headerLeftInput}
+                                isRequired
+                                onChange={(name) => {
+                                    workflowEditorContext.dispatch({
+                                        type: 'SET_NAME',
+                                        name,
+                                    })
+                                }}
+                                placeholder={
+                                    !isNewWorkflow &&
+                                    workflowEditorContext.isFetchPending
+                                        ? '...'
+                                        : 'Add flow name'
                                 }
-                            }}
-                        />
-                        <span className={css.headerLeftdescription}>
-                            Flow name will not be visible to customers
-                        </span>
+                                value={
+                                    workflowEditorContext.visualBuilderGraph
+                                        .name
+                                }
+                                isDisabled={isFetchPending || isSavePending}
+                                hasError={
+                                    lastSaveAttempt && workflowNameisErrored
+                                }
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter') {
+                                        inputRef.current?.blur()
+                                    }
+                                }}
+                            />
+                            <span className={css.headerLeftdescription}>
+                                Flow name will not be visible to customers
+                            </span>
+                        </div>
+                    }
+                >
+                    <div className={css.headerRight}>
+                        {isNewWorkflow ? (
+                            <>
+                                <Button
+                                    onClick={handleCancel}
+                                    isLoading={isFetchPending}
+                                    intent="secondary"
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    onClick={handleSave}
+                                    isLoading={isFetchPending || isSavePending}
+                                    isDisabled={!isDirty}
+                                >
+                                    Create flow
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <ButtonWithConfirmation
+                                    confirmationButtonLabel="Discard Changes"
+                                    confirmationTitle="Discard changes?"
+                                    confirmationText="Your changes will be lost and this action cannot be undone"
+                                    isDisabled={
+                                        !isDirty ||
+                                        isFetchPending ||
+                                        isSavePending
+                                    }
+                                    onClick={handleDiscard}
+                                >
+                                    Discard Changes
+                                </ButtonWithConfirmation>
+                                <Button
+                                    onClick={handleSave}
+                                    isLoading={isFetchPending || isSavePending}
+                                >
+                                    Save & Close
+                                </Button>
+                            </>
+                        )}
                     </div>
-                }
-            >
-                <div className={css.headerRight}>
-                    {isNewWorkflow ? (
-                        <>
-                            <Button
-                                onClick={handleCancel}
-                                isLoading={isFetchPending}
-                                intent="secondary"
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                onClick={handleSave}
-                                isLoading={isFetchPending || isSavePending}
-                                isDisabled={!isDirty}
-                            >
-                                Create flow
-                            </Button>
-                        </>
-                    ) : (
-                        <>
-                            <ButtonWithConfirmation
-                                confirmationButtonLabel="Discard Changes"
-                                confirmationTitle="Discard changes?"
-                                confirmationText="Your changes will be lost and this action cannot be undone"
-                                isDisabled={
-                                    !isDirty || isFetchPending || isSavePending
-                                }
-                                onClick={handleDiscard}
-                            >
-                                Discard Changes
-                            </ButtonWithConfirmation>
-                            <Button
-                                onClick={handleSave}
-                                isLoading={isFetchPending || isSavePending}
-                            >
-                                Save & Close
-                            </Button>
-                        </>
-                    )}
-                </div>
-            </PageHeader>
-            <Container className={css.pageContainer} fluid>
-                <WorkflowVisualBuilder lastSaveAttempt={lastSaveAttempt} />
-            </Container>
-            <UnsavedChangesPrompt
-                onSave={handleSave}
-                when={isDirty && !isSavePending}
-            />
-        </div>
+                </PageHeader>
+                <Container className={css.pageContainer} fluid>
+                    <WorkflowVisualBuilder lastSaveAttempt={lastSaveAttempt} />
+                </Container>
+                <UnsavedChangesPrompt
+                    onSave={handleSave}
+                    when={isDirty && !isSavePending}
+                />
+            </div>
+        </WorkflowChannelSupportContext.Provider>
     )
 }
 

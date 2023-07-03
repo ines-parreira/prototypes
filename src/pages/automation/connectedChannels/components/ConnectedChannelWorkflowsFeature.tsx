@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom'
 
 import Label from 'pages/common/forms/Label/Label'
 import Button from 'pages/common/components/button/Button'
+import {useWorkflowChannelSupportContext} from 'pages/automation/workflows/hooks/useWorkflowChannelSupport'
+import {SelfServiceChannelType} from 'pages/automation/common/hooks/useSelfServiceChannels'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import WorkflowItem from './WorkflowItem'
@@ -17,6 +19,7 @@ type Entrypoint = {
 }
 
 type Props = {
+    channelType: SelfServiceChannelType
     channelId: string
     entrypoints: Entrypoint[]
     limitTooltipMessage: ReactNode
@@ -25,6 +28,7 @@ type Props = {
 }
 
 const ConnectedChannelWorkflowsFeature = ({
+    channelType,
     channelId,
     entrypoints: entrypointsProp,
     onChange,
@@ -36,6 +40,7 @@ const ConnectedChannelWorkflowsFeature = ({
         workflowsEntrypoints: allEntrypoints,
         workflowsUrl,
     } = useConnectedChannelsViewContext()
+    const {getUnsupportedStepsNames} = useWorkflowChannelSupportContext()
 
     const configurationsById = useMemo(
         () => _keyBy(configurations, 'id'),
@@ -114,21 +119,37 @@ const ConnectedChannelWorkflowsFeature = ({
                     </Link>
                 )}
             </div>
-            {dirtyEntrypoints.map((entrypoint, index) => (
-                <WorkflowItem
-                    key={entrypoint.workflow_id}
-                    dndType={`workflows-${channelId}`}
-                    onMove={handleMove}
-                    onDrop={handleDrop}
-                    onCancel={handleCancel}
-                    name={configurationsById[entrypoint.workflow_id].name}
-                    isEnabled={entrypoint.enabled}
-                    isToggleable={entrypoint.enabled || !isLimitReached}
-                    index={index}
-                    onToggle={handleToggle}
-                    limitTooltipMessage={limitTooltipMessage}
-                />
-            ))}
+            {dirtyEntrypoints.map((entrypoint, index) => {
+                const unsupportedStepsNames = getUnsupportedStepsNames(
+                    channelType,
+                    configurationsById[entrypoint.workflow_id]
+                )
+                const tooltipMessage =
+                    unsupportedStepsNames.length > 0
+                        ? `This flow contains steps that this channel doesn't support: ${unsupportedStepsNames.join(
+                              ', '
+                          )}`
+                        : limitTooltipMessage
+                return (
+                    <WorkflowItem
+                        key={entrypoint.workflow_id}
+                        dndType={`workflows-${channelId}`}
+                        onMove={handleMove}
+                        onDrop={handleDrop}
+                        onCancel={handleCancel}
+                        name={configurationsById[entrypoint.workflow_id].name}
+                        isEnabled={entrypoint.enabled}
+                        isToggleable={
+                            entrypoint.enabled ||
+                            (!isLimitReached &&
+                                !(unsupportedStepsNames.length > 0))
+                        }
+                        index={index}
+                        onToggle={handleToggle}
+                        tooltipMessage={tooltipMessage}
+                    />
+                )
+            })}
         </div>
     )
 }

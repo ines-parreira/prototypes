@@ -1,23 +1,44 @@
-import React, {useRef, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {NodeProps} from 'reactflow'
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {produce, Draft} from 'immer'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
-import {VisualBuilderGraph} from 'pages/automation/workflows/models/visualBuilderGraph.types'
-
+import {
+    VisualBuilderGraph,
+    VisualBuilderNode,
+} from 'pages/automation/workflows/models/visualBuilderGraph.types'
 import {
     colorByVisualBuilderNodeType,
     materialIconByVisualBuilderNodeType,
 } from 'pages/automation/workflows/constants'
+import {
+    useWorkflowChannelSupportContext,
+    getChannelName,
+} from 'pages/automation/workflows/hooks/useWorkflowChannelSupport'
+import Tooltip from 'pages/common/components/Tooltip'
+import {VisualBuilderGraphAction} from 'pages/automation/workflows/hooks/useVisualBuilderGraphReducer'
 
 import EdgeIconButton from './EdgeIconButton'
 import css from './EdgeBlock.less'
+
+type MenuItem = {
+    label: string
+    type: NonNullable<VisualBuilderNode['type']>
+    description: string
+    icon: string
+    style: {
+        color: string
+        backgroundColor: string
+    }
+    onClick: () => void
+    hidden?: boolean
+    disabledText?: string
+}
 
 function getIncomingChoiceLabel(
     visualBuilderGraph: VisualBuilderGraph,
@@ -40,71 +61,160 @@ function getIncomingChoiceLabel(
     return choiceLabel
 }
 
-export default function EdgeBlock({node}: {node: NodeProps}) {
-    const edgeRef = useRef<HTMLDivElement>(null)
-    const [isNodeMenuDropdownOpen, setIsNodeMenuDropdownOpen] = useState(false)
-    const {dispatch, visualBuilderGraph} = useWorkflowEditorContext()
-    const incomingChoiceLabel = getIncomingChoiceLabel(
-        visualBuilderGraph,
-        node.id
-    )
-    const shouldShowCollectSteps: boolean | undefined =
-        useFlags()[FeatureFlagKey.FlowsCollectSteps]
-
-    const menuItems = [
+function useMenuItems(
+    nodeId: string,
+    dispatch: React.Dispatch<VisualBuilderGraphAction>
+) {
+    const [menuItems, setMenuItems] = useState<MenuItem[]>([
         {
             label: 'Multiple choice',
+            type: 'multiple_choices',
             description: 'Display up to 6 options',
             icon: materialIconByVisualBuilderNodeType.multiple_choices,
             style: colorByVisualBuilderNodeType.multiple_choices,
             onClick: () => {
                 dispatch({
                     type: 'INSERT_MULTIPLE_CHOICES_NODE',
-                    beforeNodeId: node.id,
+                    beforeNodeId: nodeId,
                 })
             },
         },
-        ...(shouldShowCollectSteps
-            ? [
-                  {
-                      label: 'Collect text reply',
-                      description: 'Allow up to 5,000 characters',
-                      icon: materialIconByVisualBuilderNodeType.text_reply,
-                      style: colorByVisualBuilderNodeType.text_reply,
-                      onClick: () => {
-                          dispatch({
-                              type: 'INSERT_TEXT_REPLY_NODE',
-                              beforeNodeId: node.id,
-                          })
-                      },
-                  },
-                  {
-                      label: 'Collect file upload',
-                      description: 'Allow up to 5 files',
-                      icon: materialIconByVisualBuilderNodeType.file_upload,
-                      style: colorByVisualBuilderNodeType.file_upload,
-                      onClick: () => {
-                          dispatch({
-                              type: 'INSERT_FILE_UPLOAD_NODE',
-                              beforeNodeId: node.id,
-                          })
-                      },
-                  },
-              ]
-            : []),
+        {
+            label: 'Collect text reply',
+            description: 'Allow up to 5,000 characters',
+            type: 'text_reply',
+            icon: materialIconByVisualBuilderNodeType.text_reply,
+            style: colorByVisualBuilderNodeType.text_reply,
+            hidden: true,
+            onClick: () => {
+                dispatch({
+                    type: 'INSERT_TEXT_REPLY_NODE',
+                    beforeNodeId: nodeId,
+                })
+            },
+        },
+        {
+            label: 'Collect file upload',
+            description: 'Allow up to 5 files',
+            type: 'file_upload',
+            icon: materialIconByVisualBuilderNodeType.file_upload,
+            style: colorByVisualBuilderNodeType.file_upload,
+            hidden: true,
+            onClick: () => {
+                dispatch({
+                    type: 'INSERT_FILE_UPLOAD_NODE',
+                    beforeNodeId: nodeId,
+                })
+            },
+        },
         {
             label: 'Message',
             description: 'Display short text',
+            type: 'automated_message',
             icon: materialIconByVisualBuilderNodeType.automated_message,
             style: colorByVisualBuilderNodeType.automated_message,
             onClick: () => {
                 dispatch({
                     type: 'INSERT_AUTOMATED_MESSAGE_NODE',
-                    beforeNodeId: node.id,
+                    beforeNodeId: nodeId,
                 })
             },
         },
-    ]
+    ])
+    const updateMenuItems = useCallback(
+        (immerProducer: (draft: Draft<MenuItem>) => void) => {
+            setMenuItems((menuItems) =>
+                menuItems.map((item) => produce(item, immerProducer))
+            )
+        },
+        [setMenuItems]
+    )
+    return {
+        menuItems,
+        updateMenuItems,
+    }
+}
+
+function useMenuItemsForConnectedChannels(
+    nodeId: string,
+    dispatch: React.Dispatch<VisualBuilderGraphAction>,
+    configurationId: string
+) {
+    const {menuItems, updateMenuItems} = useMenuItems(nodeId, dispatch)
+    const {
+        isStepUnsupportedInAllChannels,
+        getUnsupportedConnectedChannels,
+        getUnsupportedChannels,
+    } = useWorkflowChannelSupportContext()
+    useEffect(() => {
+        if (!isStepUnsupportedInAllChannels('text_reply')) {
+            updateMenuItems((draft) => {
+                if (
+                    draft.type === 'text_reply' ||
+                    draft.type === 'file_upload'
+                ) {
+                    draft.hidden = false
+                }
+            })
+        }
+    }, [isStepUnsupportedInAllChannels, updateMenuItems])
+    useEffect(() => {
+        async function f() {
+            const unsupportedConnectedChannels =
+                await getUnsupportedConnectedChannels(
+                    configurationId,
+                    'text_reply'
+                )
+            const unsupportedChannels = getUnsupportedChannels('text_reply')
+            const shopperInputDisabledText =
+                unsupportedConnectedChannels.length > 0
+                    ? `You can't use this step because this flow is enabled in ${unsupportedConnectedChannels
+                          .map(getChannelName)
+                          .join(
+                              ' and '
+                          )}. This step is currently not supported for ${unsupportedChannels
+                          .map(getChannelName)
+                          .join(' and ')}.`
+                    : ''
+            if (shopperInputDisabledText) {
+                updateMenuItems((draft) => {
+                    if (
+                        draft.type === 'text_reply' ||
+                        draft.type === 'file_upload'
+                    ) {
+                        draft.disabledText = shopperInputDisabledText
+                    }
+                })
+            }
+        }
+        void f()
+    }, [
+        getUnsupportedChannels,
+        getUnsupportedConnectedChannels,
+        updateMenuItems,
+        configurationId,
+    ])
+    return menuItems
+}
+
+export default function EdgeBlock({node}: {node: NodeProps}) {
+    const edgeRef = useRef<HTMLDivElement>(null)
+    const [floatingRef, setFloatingRef] = useState<HTMLElement | null>(null)
+    const onFloatingRefChange = useCallback((node: HTMLElement | null) => {
+        setFloatingRef(node)
+    }, [])
+    const [isNodeMenuDropdownOpen, setIsNodeMenuDropdownOpen] = useState(false)
+    const {dispatch, visualBuilderGraph, configuration} =
+        useWorkflowEditorContext()
+    const incomingChoiceLabel = getIncomingChoiceLabel(
+        visualBuilderGraph,
+        node.id
+    )
+    const menuItems = useMenuItemsForConnectedChannels(
+        node.id,
+        dispatch,
+        configuration.id
+    )
 
     return (
         <div
@@ -117,7 +227,7 @@ export default function EdgeBlock({node}: {node: NodeProps}) {
             }}
         >
             {incomingChoiceLabel === '' && (
-                <Badge className={css.edgeLabel}>Reply button</Badge>
+                <Badge className={css.edgeLabel}>Option</Badge>
             )}
             {incomingChoiceLabel && (
                 <Badge type={ColorType.Blue} className={css.edgeLabel}>
@@ -132,6 +242,7 @@ export default function EdgeBlock({node}: {node: NodeProps}) {
                 }}
             />
             <Dropdown
+                ref={onFloatingRefChange}
                 isOpen={isNodeMenuDropdownOpen}
                 onToggle={setIsNodeMenuDropdownOpen}
                 target={edgeRef}
@@ -139,32 +250,66 @@ export default function EdgeBlock({node}: {node: NodeProps}) {
                 className={css.menuContainer}
             >
                 <DropdownBody>
-                    {menuItems.map(
-                        ({label, description, icon, style, onClick}) => (
-                            <DropdownItem
-                                key={label}
-                                option={{
-                                    label,
-                                    value: label,
-                                }}
-                                onClick={onClick}
-                                shouldCloseOnSelect
-                                className={css.menuItemContainer}
-                            >
-                                <div className={css.menuIcon} style={style}>
-                                    <i className={classNames('material-icons')}>
-                                        {icon}
-                                    </i>
-                                </div>
-                                <div>
-                                    {label}
-                                    <div className={css.menuItemDescription}>
-                                        {description}
+                    {menuItems
+                        .filter((item) => !item.hidden)
+                        .map(
+                            ({
+                                type,
+                                label,
+                                description,
+                                icon,
+                                style,
+                                disabledText,
+                                onClick,
+                            }) => (
+                                <DropdownItem
+                                    id={`dropdown-item-${type}`}
+                                    key={label}
+                                    option={{
+                                        label,
+                                        value: label,
+                                    }}
+                                    onClick={onClick}
+                                    shouldCloseOnSelect
+                                    className={classNames(
+                                        css.menuItemContainer,
+                                        {
+                                            [css.disabled]: disabledText,
+                                        }
+                                    )}
+                                >
+                                    <div className={css.menuIcon} style={style}>
+                                        <i
+                                            className={classNames(
+                                                'material-icons'
+                                            )}
+                                        >
+                                            {icon}
+                                        </i>
                                     </div>
-                                </div>
-                            </DropdownItem>
-                        )
-                    )}
+                                    <div>
+                                        {label}
+                                        <div
+                                            className={css.menuItemDescription}
+                                        >
+                                            {description}
+                                        </div>
+                                    </div>
+                                    {disabledText &&
+                                        floatingRef?.parentElement && (
+                                            <Tooltip
+                                                placement="top-start"
+                                                target={`dropdown-item-${type}`}
+                                                container={
+                                                    floatingRef.parentElement
+                                                }
+                                            >
+                                                {disabledText}
+                                            </Tooltip>
+                                        )}
+                                </DropdownItem>
+                            )
+                        )}
                 </DropdownBody>
             </Dropdown>
         </div>

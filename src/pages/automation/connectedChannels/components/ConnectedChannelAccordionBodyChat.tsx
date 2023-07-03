@@ -7,6 +7,7 @@ import useApplicationsAutomationSettings from 'pages/automation/common/hooks/use
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {TicketChannel} from 'business/types/ticket'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
@@ -93,6 +94,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
     return (
         <>
             <ConnectedChannelWorkflowsFeature
+                channelType={TicketChannel.Chat}
                 channelId={`chat-${applicationId}`}
                 entrypoints={workflows.entrypoints || []}
                 maxActiveWorkflows={maxActiveWorkflows}

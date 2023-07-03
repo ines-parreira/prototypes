@@ -13,6 +13,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {TicketChannel} from 'business/types/ticket'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from '../../common/components/constants'
@@ -102,6 +103,7 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
         <>
             {helpCenterAndContactFormFlowsEnabled && (
                 <ConnectedChannelWorkflowsFeature
+                    channelType={TicketChannel.HelpCenter}
                     channelId={`contact-form-${channel.value.id}`}
                     maxActiveWorkflows={MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS}
                     entrypoints={workflowsEntrypoints}

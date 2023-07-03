@@ -82,7 +82,11 @@ export type WorkflowConfiguration = {
 export type WorkflowConfigurationShallow = Omit<
     WorkflowConfiguration,
     'steps' | 'transitions'
->
+> & {
+    steps: Array<{
+        kind: WorkflowStep['kind']
+    }>
+}
 
 export type WorkflowTemplate = {
     slug: string
