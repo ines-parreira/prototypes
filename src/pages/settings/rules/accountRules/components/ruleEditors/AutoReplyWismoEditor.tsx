@@ -1,7 +1,13 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
+import {Link} from 'react-router-dom'
+
+import {useEffectOnce} from 'react-use'
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
+import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import {AutoReplyWismoSettings} from 'state/rules/types'
 import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
@@ -10,6 +16,7 @@ import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
 
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
 
@@ -19,8 +26,39 @@ export const AutoReplyWismoEditor = ({
     settings,
     onChange,
 }: ManagedRuleDetailProps<AutoReplyWismoSettings>) => {
+    const dispatch = useAppDispatch()
+
+    const selfServiceConfigurations = useAppSelector(
+        getSelfServiceConfigurations
+    )
+
     const integrations = useAppSelector(
         getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
+    )
+
+    useEffectOnce(() => {
+        if (selfServiceConfigurations.length === 0) {
+            void (async () => {
+                try {
+                    const configResponse =
+                        await fetchSelfServiceConfigurations()
+                    void dispatch(
+                        selfServiceConfigurationsFetched(configResponse.data)
+                    )
+                } catch (error) {}
+            })()
+        }
+    })
+
+    const configurationWithoutUnfulffiledMessage = useMemo(
+        () =>
+            selfServiceConfigurations.find(
+                (configuration) =>
+                    !configuration.deactivated_datetime &&
+                    configuration.track_order_policy.enabled &&
+                    !configuration.track_order_policy.unfulfilled_message?.text
+            ),
+        [selfServiceConfigurations]
     )
 
     const handleBlocklist = (block_list: string[]) => {
@@ -57,6 +95,17 @@ export const AutoReplyWismoEditor = ({
                     3 orders, and auto-closes the ticket. If customers reply,
                     the ticket will reopen so you never miss a response.
                 </p>
+                {configurationWithoutUnfulffiledMessage && (
+                    <Alert type={AlertType.Warning} icon={true}>
+                        Add a response for customers tracking unfulfilled orders{' '}
+                        <Link
+                            to={`/app/automation/shopify/${configurationWithoutUnfulffiledMessage.shop_name}/order-management/track`}
+                        >
+                            here
+                        </Link>
+                        .
+                    </Alert>
+                )}
                 <div className={css.listWrapper}>
                     <h4>Exclusion email list</h4>
                     <p>

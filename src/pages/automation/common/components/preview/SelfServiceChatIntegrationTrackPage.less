@@ -80,7 +80,7 @@
         display: flex;
         flex-direction: column;
         padding: 0 @layout-spacing-s;
-        gap: @layout-spacing-xxs;
+        gap: @layout-spacing-s;
         margin-top: @layout-spacing-m;
     }
 
@@ -141,7 +141,7 @@
     .timelineItemContent {
         display: flex;
         flex-direction: column;
-        padding: 0 0 @layout-spacing-m;
+        padding: 0 0 @layout-spacing-xs;
         gap: 12px;
     }
 
@@ -191,12 +191,19 @@
     }
 
     .shippingCarrier {
-        display: flex;
-        gap: @layout-spacing-s;
+        padding-block: @layout-spacing-xxs @layout-spacing-xs;
+        padding-inline: @layout-spacing-s;
     }
 
     .shippingCarrierLogo {
         border-radius: 4px;
+        margin-right: @layout-spacing-s;
+        float: left;
+    }
+
+    .shippingCarrierCopyIcon {
+        font-size: 1.2em;
+        transform: scaleX(-1) rotate(180deg);
     }
 
     .shippingCarrierContent {
@@ -210,6 +217,8 @@
     }
 
     .shippingCarrierSubtitle {
+        display: flex;
+        justify-content: space-between;
         color: @classic-neutral-grey-5;
     }
 

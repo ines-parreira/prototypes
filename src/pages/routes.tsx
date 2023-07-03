@@ -126,6 +126,7 @@ import {RevenueAddonApiClientProvider} from './settings/revenue/hooks/useRevenue
 import {ClickTrackingSettingsView} from './settings/revenue/components/ClickTrackingSettingsView'
 import OrderManagementViewContainer from './automation/orderManagement/OrderManagementViewContainer'
 import ReturnOrderFlowViewContainer from './automation/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
+import TrackOrderFlowViewContainer from './automation/orderManagement/trackOrder/TrackOrderFlowViewContainer'
 import CancelOrderFlowViewContainer from './automation/orderManagement/cancelOrder/CancelOrderFlowViewContainer'
 import ReportOrderIssueFlowViewContainer from './automation/orderManagement/reportOrderIssue/ReportOrderIssueFlowViewContainer'
 import CreateReportOrderIssueFlowScenarioViewContainer from './automation/orderManagement/reportOrderIssue/CreateReportOrderIssueFlowScenarioViewContainer'
@@ -1150,6 +1151,7 @@ function AutomationContent() {
                     `${path}/shopify/:shopName/order-management/return`,
                     `${path}/shopify/:shopName/order-management/cancel`,
                     `${path}/shopify/:shopName/order-management/cancel`,
+                    `${path}/shopify/:shopName/order-management/track`,
                     `${path}/shopify/:shopName/order-management/report-issue`,
                     `${path}/shopify/:shopName/order-management/report-issue/new`,
                     `${path}/shopify/:shopName/order-management/report-issue/:scenarioIndex`,
@@ -1204,6 +1206,14 @@ function AutomationContent() {
                                 exact
                                 component={memoizedWithUserRoleRequired(
                                     EditReportOrderIssueFlowScenarioViewContainer,
+                                    AGENT_ROLE
+                                )}
+                            />
+                            <Route
+                                path={`${path}/shopify/:shopName/order-management/track`}
+                                exact
+                                component={memoizedWithUserRoleRequired(
+                                    TrackOrderFlowViewContainer,
                                     AGENT_ROLE
                                 )}
                             />

@@ -7,6 +7,7 @@ import HelpCenterPreview from 'pages/settings/helpCenter/components/HelpCenterPr
 import SelfServiceHelpCenterHomePage from './SelfServiceHelpCenterHomePage'
 import SelfServiceHelpCenterOrdersPage from './SelfServiceHelpCenterOrdersPage'
 import SelfServiceHelpCenterTrackPage from './SelfServiceHelpCenterTrackPage'
+import SelfServiceHelpCenterTrackUnfulfillResponsePage from './SelfServiceHelpCenterTrackUnfulfillResponsePage'
 import SelfServiceHelpCenterRequestSentPage from './SelfServiceHelpCenterRequestSentPage'
 import SelfServiceHelpCenterReturnPortalPage from './SelfServiceHelpCenterReturnPortalPage'
 import SelfServiceHelpCenterReportIssueReasonsPage from './SelfServiceHelpCenterReportIssueReasonsPage'
@@ -32,6 +33,14 @@ const SelfServiceHelpCenterPreview = (props: Props) => {
                 </Route>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.TRACK} exact>
                     <SelfServiceHelpCenterTrackPage {...props} />
+                </Route>
+                <Route
+                    path={SELF_SERVICE_PREVIEW_ROUTES.TRACK_UNFULFILLED_MESSAGE}
+                    exact
+                >
+                    <SelfServiceHelpCenterTrackUnfulfillResponsePage
+                        {...props}
+                    />
                 </Route>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.RETURN} exact>
                     <SelfServiceHelpCenterRequestSentPage {...props} />

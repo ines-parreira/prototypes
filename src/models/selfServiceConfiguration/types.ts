@@ -48,6 +48,11 @@ export type SelfServiceConfigurationReturnOrderPolicy =
         action?: ReturnAction | null
     }
 
+export type SelfServiceConfigurationTrackOrderPolicy =
+    SelfServiceConfigurationPolicy & {
+        unfulfilled_message?: ResponseMessageContent
+    }
+
 export type SelfServiceConfigurationCancelOrderPolicy =
     SelfServiceConfigurationFilterPolicy & {
         action?: {
@@ -141,7 +146,7 @@ export type SelfServiceConfiguration = {
     updated_datetime: string
     deactivated_datetime: Maybe<string>
     report_issue_policy: SelfServiceConfigurationReportIssuePolicy
-    track_order_policy: SelfServiceConfigurationPolicy
+    track_order_policy: SelfServiceConfigurationTrackOrderPolicy
     cancel_order_policy: SelfServiceConfigurationCancelOrderPolicy
     return_order_policy: SelfServiceConfigurationReturnOrderPolicy
     quick_response_policies: QuickResponsePolicy[]

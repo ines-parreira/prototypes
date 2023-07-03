@@ -30,7 +30,7 @@ const useTrackPagePreview = () => {
                 break
             case PreviewStep.SCROLL:
                 timeout.current = window.setTimeout(() => {
-                    history.push(SELF_SERVICE_PREVIEW_ROUTES.HOME)
+                    history.push(SELF_SERVICE_PREVIEW_ROUTES.ORDERS)
                 }, 2500)
         }
 

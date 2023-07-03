@@ -1,9 +1,7 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import {useHistory, useLocation, useParams} from 'react-router-dom'
 import {createMemoryHistory} from 'history'
 
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
@@ -11,12 +9,12 @@ import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automati
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {IntegrationType} from 'models/integration/constants'
 import {PolicyKey} from 'models/selfServiceConfiguration/types'
-import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automation/common/components/preview/constants'
 import {TicketChannel} from 'business/types/ticket'
 import {SelfServiceChatChannel} from 'pages/automation/common/hooks/useSelfServiceChatChannels'
 import useApplicationsAutomationSettings from 'pages/automation/common/hooks/useApplicationsAutomationSettings'
 import AutomationView from 'pages/automation/common/components/AutomationView'
 import AutomationViewContent from 'pages/automation/common/components/AutomationViewContent'
+import EmptyResponseMessageContentError from 'pages/automation/common/components/EmptyResponseMessageContentError'
 
 import OrderManagementFlowItem from './components/OrderManagementFlowItem'
 import OrderManagementPreview from './OrderManagementPreview'
@@ -79,23 +77,6 @@ const OrderManagementView = () => {
 
     const [hoveredOrderManagementFlow, setHoveredOrderManagementFlow] =
         useState<PolicyKey>()
-    const [isTrackOrderPreviewPlaying, setIsTrackOrderPreviewPlaying] =
-        useState(false)
-
-    useEffect(() => {
-        const unregister = previewHistory.listen((location) => {
-            if (location.pathname === SELF_SERVICE_PREVIEW_ROUTES.HOME) {
-                setIsTrackOrderPreviewPlaying(false)
-            } else {
-                setIsTrackOrderPreviewPlaying(true)
-            }
-        })
-
-        return () => {
-            setIsTrackOrderPreviewPlaying(false)
-            unregister()
-        }
-    }, [previewHistory])
 
     const handleOrderManagementFlowUpdate = (
         flow: PolicyKey,
@@ -108,9 +89,18 @@ const OrderManagementView = () => {
     const handleFlowItemMouseLeave = () => {
         setHoveredOrderManagementFlow(undefined)
     }
-    const handleTrackOrderPreviewClick = () => {
-        previewHistory.push(SELF_SERVICE_PREVIEW_ROUTES.ORDERS)
-    }
+
+    const shouldDisplayTrackOrderAlert = useMemo(() => {
+        if (
+            !hasAutomationAddOn ||
+            !selfServiceConfiguration?.track_order_policy.enabled ||
+            selfServiceConfiguration?.track_order_policy.unfulfilled_message
+                ?.text
+        )
+            return false
+
+        return true
+    }, [selfServiceConfiguration, hasAutomationAddOn])
 
     const isLoading =
         !selfServiceConfiguration ||
@@ -136,33 +126,22 @@ const OrderManagementView = () => {
                             isEnabled
                         )
                     }}
-                    action={
-                        <Button
-                            fillStyle="ghost"
-                            onClick={handleTrackOrderPreviewClick}
-                            isDisabled={
-                                !selfServiceConfiguration?.track_order_policy
-                                    .enabled
-                            }
-                        >
-                            <ButtonIconLabel
-                                icon={
-                                    isTrackOrderPreviewPlaying
-                                        ? 'motion_photos_on'
-                                        : 'play_circle_filled'
-                                }
-                                iconClassName={
-                                    isTrackOrderPreviewPlaying ? 'md-spin' : ''
-                                }
-                            >
-                                Preview
-                            </ButtonIconLabel>
-                        </Button>
-                    }
                     onMouseEnter={() => {
                         setHoveredOrderManagementFlow('track_order_policy')
                     }}
                     onMouseLeave={handleFlowItemMouseLeave}
+                    alert={
+                        shouldDisplayTrackOrderAlert && (
+                            <EmptyResponseMessageContentError />
+                        )
+                    }
+                    {...(!hasAutomationAddOn
+                        ? {action: <AutomationSubscriptionAction />}
+                        : {
+                              onClick: () => {
+                                  history.push(`${pathname}/track`)
+                              },
+                          })}
                 />
                 <OrderManagementFlowItem
                     isEnabled={

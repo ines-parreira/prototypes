@@ -9,6 +9,7 @@ import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
 import SelfServiceChatIntegrationHomePage from './SelfServiceChatIntegrationHomePage'
 import SelfServiceChatIntegrationQuickResponsePage from './SelfServiceChatIntegrationQuickResponsePage'
 import SelfServiceChatIntegrationTrackPage from './SelfServiceChatIntegrationTrackPage'
+import SelfServiceChatIntegrationTrackUnfulfillResponsePage from './SelfServiceChatIntegrationTrackUnfulfillResponsePage'
 import SelfServiceChatIntegrationOrdersPage from './SelfServiceChatIntegrationOrdersPage'
 import SelfServiceChatIntegrationCancelPage from './SelfServiceChatIntegrationCancelPage'
 import SelfServiceChatIntegrationReturnPage from './SelfServiceChatIntegrationReturnPage'
@@ -102,6 +103,14 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 </Route>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.TRACK} exact>
                     <SelfServiceChatIntegrationTrackPage {...props} />
+                </Route>
+                <Route
+                    path={SELF_SERVICE_PREVIEW_ROUTES.TRACK_UNFULFILLED_MESSAGE}
+                    exact
+                >
+                    <SelfServiceChatIntegrationTrackUnfulfillResponsePage
+                        {...props}
+                    />
                 </Route>
                 <Route path={SELF_SERVICE_PREVIEW_ROUTES.RETURN} exact>
                     <SelfServiceChatIntegrationReturnPage {...props} />

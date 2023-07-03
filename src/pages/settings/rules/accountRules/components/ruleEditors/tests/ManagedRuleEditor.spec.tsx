@@ -42,6 +42,7 @@ describe('<ManagedRuleEditor/>', () => {
                     emptyRuleRecipeFixture,
             },
             helpCenter: helpCenterInitialState,
+            selfServiceConfigurations: {},
         },
         billing: fromJS(billingState),
         currentAccount: fromJS(account),

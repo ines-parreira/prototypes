@@ -1,15 +1,15 @@
 @import (reference) '~css/new/layout.less';
-@import (reference) '~css/new/colorTokens.less';
 @import (reference) '~css/typography.less';
+@import (reference) '~css/new/colorTokens.less';
 @import (reference) '~css/new/util.less';
 
 :local {
     .container {
-        background-color: @modern-neutral-grey-0;
-        color: @modern-neutral-grey-6;
-        flex: 1;
+        .body-regular();
+        padding: @layout-spacing-m 0;
         overflow: auto;
         pointer-events: initial;
+        color: @classic-neutral-grey-6;
 
         :global {
             animation: fadeIn 0.3s ease-in;
@@ -19,38 +19,48 @@
     .header {
         display: flex;
         align-items: center;
-        padding: @layout-spacing-m;
-        gap: @layout-spacing-xs;
-        border-bottom: 1px dashed @modern-neutral-grey-3;
+        gap: @layout-spacing-s;
+        padding: 0 @layout-spacing-s;
     }
 
-    .orderNumber {
+    .thumbnail {
+        border-radius: 2px;
+    }
+
+    .titleContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+        flex: 1;
+    }
+
+    .separator {
+        border-top: 1px solid @classic-neutral-grey-3;
+        margin: @layout-spacing-m 0;
+    }
+
+    .title {
         .heading-section-semibold();
     }
 
-    .orderDate {
-        .heading-subsection-regular();
-        color: @modern-neutral-grey-4;
+    .description {
+        color: @classic-neutral-grey-5;
     }
 
-    .etaWithTimelineContainer {
-        display: flex;
-        flex-direction: column;
-        padding: @layout-spacing-m;
-        gap: @layout-spacing-m;
+    .descriptionSeeItems {
+        color: @classic-main-primary;
     }
 
     .etaContainer {
         display: flex;
         flex-direction: column;
+        padding: 0 @layout-spacing-s @layout-spacing-xs;
         gap: @layout-spacing-xs;
     }
 
     .etaCaption {
-        .body-medium();
-        color: @modern-neutral-grey-4;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
+        .caption-allcaps();
+        color: @classic-neutral-grey-4;
     }
 
     .eta {
@@ -60,7 +70,7 @@
     }
 
     .etaIcon {
-        color: @modern-neutral-grey-5;
+        color: @classic-neutral-grey-4;
         margin-left: @layout-spacing-xs;
         font-size: 16px;
         width: 16px;
@@ -69,7 +79,9 @@
     .timelineContainer {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-xxs;
+        padding: 0 @layout-spacing-s;
+        gap: @layout-spacing-s;
+        margin-top: @layout-spacing-m;
     }
 
     .timelineItems {
@@ -94,20 +106,20 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        margin: @layout-spacing-xs 6px 6px;
-        background-color: @modern-main-primary;
+        margin: 6px;
+        background-color: @classic-main-primary;
         z-index: 1;
 
         &.isCurrent {
             width: 16px;
             height: 16px;
-            margin: 6px 2px 2px;
-            border: 3px solid @modern-neutral-grey-0;
+            margin: 4px 2px 2px;
+            border: 3px solid @classic-neutral-grey-0;
             box-shadow: 0 2px 4px rgba(22, 22, 22, 0.16);
         }
 
         &.isUpcoming {
-            background-color: @modern-neutral-grey-3;
+            background-color: @classic-neutral-grey-3;
         }
     }
 
@@ -115,73 +127,74 @@
         width: 1px;
         position: absolute;
         height: 100%;
-        margin-top: @layout-spacing-xs;
+        margin-top: 6px;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: @modern-neutral-grey-3;
+        background-color: @classic-neutral-grey-3;
 
         &.isCompleted {
-            background-color: @modern-main-primary;
+            background-color: @classic-main-primary;
         }
     }
 
     .timelineItemContent {
         display: flex;
         flex-direction: column;
-        padding: 0 0 @layout-spacing-m;
+        padding: 0 0 @layout-spacing-xs;
         gap: 12px;
     }
 
     .timelineItemStatus {
-        .heading-subsection-semibold();
+        .body-semibold();
 
         &.isCurrent {
-            .heading-section-semibold();
+            .heading-subsection-semibold();
         }
 
         &.isUpcoming {
-            color: @modern-neutral-grey-4;
+            color: @classic-neutral-grey-4;
         }
     }
 
     .timelineItemTimestamp {
-        .body-regular();
-        color: @modern-neutral-grey-4;
-        margin-top: @layout-spacing-xs;
+        .caption-regular();
+        color: @classic-neutral-grey-4;
+        margin-top: @layout-spacing-xxs;
     }
 
     .timelineItemDescription {
-        .heading-subsection-regular();
-        color: @modern-neutral-grey-5;
+        color: @classic-neutral-grey-5;
+        width: 100%;
+        word-break: break-word;
     }
 
     .timelineLastUpdated {
-        .body-regular();
-        color: @modern-neutral-grey-4;
-    }
-
-    .separator {
-        border-top: 1px solid @modern-neutral-grey-3;
+        .caption-regular();
+        color: @classic-neutral-grey-4;
     }
 
     .shippingContainer {
-        .heading-subsection-regular();
         display: flex;
         flex-direction: column;
-        padding: @layout-spacing-m;
-        gap: @layout-spacing-m;
+        padding: 0 @layout-spacing-s;
+        gap: @layout-spacing-s;
     }
 
     .shippingHeader {
-        .heading-section-semibold();
+        .heading-subsection-semibold();
     }
 
     .shippingAddressContainer {
         display: flex;
         flex-direction: column;
-        color: @modern-neutral-grey-5;
+        color: @classic-neutral-grey-5;
         gap: @layout-spacing-xxs;
+    }
+
+    .shippingCarrier {
+        padding-block: @layout-spacing-xxs @layout-spacing-xs;
+        padding-inline: @layout-spacing-s;
     }
 
     .shippingCarrierLogo {
@@ -191,12 +204,14 @@
     }
 
     .shippingCarrierCopyIcon {
+        font-size: 1.2em;
         transform: scaleX(-1) rotate(180deg);
     }
 
     .shippingCarrierContent {
         display: flex;
         flex-direction: column;
+        gap: @layout-spacing-xxs;
     }
 
     .shippingCarrierTitle {
@@ -204,58 +219,12 @@
     }
 
     .shippingCarrierSubtitle {
-        color: @modern-neutral-grey-5;
         display: flex;
-        gap: @layout-spacing-xs;
+        justify-content: space-between;
+        color: @classic-neutral-grey-5;
     }
 
     .shippingCarrierTrackingNumber {
-        color: @modern-main-primary;
-    }
-
-    .fulfillmentContainer {
-        display: flex;
-        flex-direction: column;
-        padding: @layout-spacing-m;
-        gap: @layout-spacing-m;
-    }
-
-    .fulfillmentTitle {
-        .heading-section-semibold();
-    }
-
-    .lineItems {
-        display: flex;
-        flex-direction: column;
-        gap: @layout-spacing-s;
-    }
-
-    .lineItem {
-        display: flex;
-        gap: @layout-spacing-s;
-    }
-
-    .lineItemThumbnail {
-        border-radius: 2px;
-    }
-
-    .lineItemDescription {
-        display: flex;
-        flex-direction: column;
-        padding: @layout-spacing-xxs 0;
-        gap: @layout-spacing-xxs;
-    }
-
-    .lineItemName {
-        .heading-subsection-semibold();
-    }
-
-    .lineItemPrice {
-        color: @modern-neutral-grey-5;
-        margin-right: @layout-spacing-xs;
-    }
-
-    .lineItemQuantity {
-        color: @modern-neutral-grey-4;
+        color: @classic-main-primary;
     }
 }

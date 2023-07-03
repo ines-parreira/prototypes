@@ -15,6 +15,7 @@ type Props = {
     onClick?: () => void
     onMouseEnter?: () => void
     onMouseLeave?: () => void
+    alert?: ReactNode
 }
 
 const DEFAULT_ACTION = (
@@ -33,6 +34,7 @@ const OrderManagementFlowItem = ({
     onClick,
     onMouseEnter,
     onMouseLeave,
+    alert,
 }: Props) => {
     const handleChange = (
         nextValue: boolean,
@@ -61,6 +63,7 @@ const OrderManagementFlowItem = ({
                 <div className={css.title}>{title}</div>
                 <div className={css.description}>{description}</div>
             </div>
+            <div className={css.alert}>{alert}</div>
             <div className={css.action}>{action}</div>
         </div>
     )
