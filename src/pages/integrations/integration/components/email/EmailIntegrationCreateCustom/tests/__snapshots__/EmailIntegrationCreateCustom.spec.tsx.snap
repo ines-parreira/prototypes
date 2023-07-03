@@ -97,8 +97,8 @@ exports[`<EmailIntegrationCreateCustom/> render() should render 1`] = `
         </div>
         <div>
           <button
+            aria-disabled="true"
             class="wrapper fill primary medium isDisabled"
-            disabled=""
             type="submit"
           >
             Connect this email account
@@ -207,8 +207,8 @@ exports[`<EmailIntegrationCreateCustom/> render() should render update 1`] = `
         </div>
         <div>
           <button
+            aria-disabled="true"
             class="wrapper btn-loading fill primary medium isDisabled"
-            disabled=""
             type="submit"
           >
             Connect this email account

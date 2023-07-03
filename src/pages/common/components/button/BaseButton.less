@@ -76,9 +76,9 @@
             margin-top: -1px;
         }
 
-        &.isDisabled {
+        // overriding Bootstrap styles
+        &.isDisabled:not(:disabled) {
             cursor: not-allowed;
-            pointer-events: none;
         }
     }
 

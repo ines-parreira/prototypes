@@ -20,6 +20,7 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
       class="controls group vertical"
     >
       <button
+        aria-disabled="false"
         class="wrapper button wrapper small fill secondary small top isAuxiliaryButton"
         type="button"
       >
@@ -30,6 +31,7 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
         </i>
       </button>
       <button
+        aria-disabled="false"
         class="wrapper button wrapper small fill secondary small bottom isAuxiliaryButton"
         type="button"
       >
@@ -50,6 +52,7 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
       class=""
     >
       <button
+        aria-disabled="false"
         class="wrapper button fill secondary medium right isAuxiliaryButton"
         type="button"
       >

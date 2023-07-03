@@ -11,6 +11,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
       class="group horizontal"
     >
       <button
+        aria-disabled="false"
         aria-label="Monthly interval"
         class="wrapper fill primary medium left"
         type="button"
@@ -18,6 +19,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         Monthly
       </button>
       <button
+        aria-disabled="false"
         aria-label="Yearly interval"
         class="wrapper fill secondary medium right"
         type="button"
@@ -378,9 +380,9 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
           </div>
         </div>
         <button
+          aria-disabled="true"
           aria-label="Current Plan"
           class="wrapper footerButton ghost primary medium isDisabled"
-          disabled=""
           type="button"
         >
           Current Plan
@@ -730,6 +732,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
           </div>
         </div>
         <button
+          aria-disabled="false"
           aria-label="Upgrade to Pro Plan"
           class="wrapper footerButton ghost primary medium"
           type="button"
@@ -1081,6 +1084,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
           </div>
         </div>
         <button
+          aria-disabled="false"
           aria-label="Upgrade to Advanced Plan"
           class="wrapper footerButton ghost primary medium"
           type="button"
@@ -1365,6 +1369,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
           </div>
         </div>
         <button
+          aria-disabled="false"
           aria-label="Contact us"
           class="wrapper footerButton ghost primary medium"
           type="button"
@@ -1392,9 +1397,9 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
 
 exports[`<BillingPlansComparison /> should display disabled link to modal for current plan with automation add-on 2`] = `
 <button
+  aria-disabled="true"
   aria-label="Current Plan"
   class="wrapper footerButton ghost primary medium isDisabled"
-  disabled=""
   type="button"
 >
   Current Plan
@@ -1423,6 +1428,7 @@ exports[`<BillingPlansComparison /> should render a custom plan 1`] = `
       class="group horizontal"
     >
       <button
+        aria-disabled="false"
         aria-label="Monthly interval"
         class="wrapper fill primary medium left"
         type="button"
@@ -1430,6 +1436,7 @@ exports[`<BillingPlansComparison /> should render a custom plan 1`] = `
         Monthly
       </button>
       <button
+        aria-disabled="false"
         aria-label="Yearly interval"
         class="wrapper fill secondary medium right"
         type="button"
@@ -1791,9 +1798,9 @@ exports[`<BillingPlansComparison /> should render a custom plan 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="true"
           aria-label="Current Plan"
           class="wrapper footerButton ghost primary medium isDisabled"
-          disabled=""
           type="button"
         >
           Current Plan
@@ -1828,6 +1835,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
       class="group horizontal"
     >
       <button
+        aria-disabled="false"
         aria-label="Monthly interval"
         class="wrapper fill primary medium left"
         type="button"
@@ -1835,6 +1843,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         Monthly
       </button>
       <button
+        aria-disabled="false"
         aria-label="Yearly interval"
         class="wrapper fill secondary medium right"
         type="button"
@@ -2213,9 +2222,9 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="true"
           aria-label="Current Plan"
           class="wrapper footerButton ghost primary medium isDisabled"
-          disabled=""
           type="button"
         >
           Current Plan
@@ -2563,6 +2572,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="false"
           aria-label="Upgrade to Basic Plan"
           class="wrapper footerButton ghost primary medium"
           type="button"
@@ -2913,6 +2923,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="false"
           aria-label="Upgrade to Pro Plan"
           class="wrapper footerButton ghost primary medium"
           type="button"
@@ -3263,6 +3274,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="false"
           aria-label="Upgrade to Advanced Plan"
           class="wrapper footerButton ghost primary medium"
           type="button"
@@ -3547,6 +3559,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="false"
           aria-label="Contact us"
           class="wrapper footerButton ghost primary medium"
           type="button"
@@ -3583,6 +3596,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
       class="group horizontal"
     >
       <button
+        aria-disabled="false"
         aria-label="Monthly interval"
         class="wrapper fill primary medium left"
         type="button"
@@ -3590,6 +3604,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         Monthly
       </button>
       <button
+        aria-disabled="false"
         aria-label="Yearly interval"
         class="wrapper fill secondary medium right"
         type="button"
@@ -3942,6 +3957,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="false"
           aria-label="Downgrade to Basic Plan"
           class="wrapper footerButton ghost primary medium"
           type="button"
@@ -4299,9 +4315,9 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="true"
           aria-label="Current Plan"
           class="wrapper footerButton ghost primary medium isDisabled"
-          disabled=""
           type="button"
         >
           Current Plan
@@ -4650,6 +4666,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="false"
           aria-label="Upgrade to Advanced Plan"
           class="wrapper footerButton ghost primary medium"
           type="button"
@@ -4934,6 +4951,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="false"
           aria-label="Contact us"
           class="wrapper footerButton ghost primary medium"
           type="button"
@@ -4970,6 +4988,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
       class="group horizontal"
     >
       <button
+        aria-disabled="false"
         aria-label="Monthly interval"
         class="wrapper fill primary medium left"
         type="button"
@@ -4977,6 +4996,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         Monthly
       </button>
       <button
+        aria-disabled="false"
         aria-label="Yearly interval"
         class="wrapper fill secondary medium right"
         type="button"
@@ -5336,9 +5356,9 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
           </div>
         </div>
         <button
+          aria-disabled="true"
           aria-label="Current Plan"
           class="wrapper footerButton ghost primary medium isDisabled"
-          disabled=""
           type="button"
         >
           <svg
@@ -5716,9 +5736,9 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
           </div>
         </div>
         <button
+          aria-disabled="true"
           aria-label="Upgrade to Pro Plan"
           class="wrapper footerButton ghost primary medium isDisabled"
-          disabled=""
           type="button"
         >
           <svg
@@ -6096,9 +6116,9 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
           </div>
         </div>
         <button
+          aria-disabled="true"
           aria-label="Upgrade to Advanced Plan"
           class="wrapper footerButton ghost primary medium isDisabled"
-          disabled=""
           type="button"
         >
           <svg
@@ -6410,9 +6430,9 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
           </div>
         </div>
         <button
+          aria-disabled="true"
           aria-label="Contact us"
           class="wrapper footerButton ghost primary medium isDisabled"
-          disabled=""
           type="button"
         >
           <svg

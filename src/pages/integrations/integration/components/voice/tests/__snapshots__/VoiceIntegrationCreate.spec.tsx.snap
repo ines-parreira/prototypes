@@ -276,8 +276,8 @@ exports[`<VoiceIntegrationCreate/> render() should prefill the title field using
           </div>
         </div>
         <button
+          aria-disabled="true"
           class="wrapper mt-4 mb-4 fill primary medium isDisabled"
-          disabled=""
           type="submit"
         >
           <svg
@@ -593,6 +593,7 @@ exports[`<VoiceIntegrationCreate/> render() should render 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="false"
           class="wrapper mt-4 mb-4 fill primary medium"
           type="submit"
         >
@@ -880,8 +881,8 @@ exports[`<VoiceIntegrationCreate/> render() should submit a valid payload with t
           </div>
         </div>
         <button
+          aria-disabled="true"
           class="wrapper mt-4 mb-4 fill primary medium isDisabled"
-          disabled=""
           type="submit"
         >
           <svg

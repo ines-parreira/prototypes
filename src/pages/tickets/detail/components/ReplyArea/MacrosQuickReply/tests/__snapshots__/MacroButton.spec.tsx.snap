@@ -38,6 +38,7 @@ exports[`<MacroButton /> should render the button 1`] = `
   class="buttonWrapper"
 >
   <button
+    aria-disabled="false"
     class="wrapper button fill secondary small"
     id="macro-quick-reply-1"
     type="button"

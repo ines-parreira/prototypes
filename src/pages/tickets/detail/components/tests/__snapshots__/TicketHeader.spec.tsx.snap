@@ -146,6 +146,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
           id="change-status-button"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill secondary medium"
             type="button"
           >
@@ -718,6 +719,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
           id="change-status-button"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill secondary medium"
             type="button"
           >
@@ -1072,6 +1074,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
           id="change-status-button"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill secondary medium"
             type="button"
           >

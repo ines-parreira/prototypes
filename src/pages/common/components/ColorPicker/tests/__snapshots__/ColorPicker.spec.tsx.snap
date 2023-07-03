@@ -8,6 +8,7 @@ exports[`<ColorPicker /> should display popup on button click with default color
     class="wrapper"
   >
     <button
+      aria-disabled="false"
       class="wrapper button fill secondary medium"
       id="color-picker-4"
       type="button"
@@ -168,6 +169,7 @@ exports[`<ColorPicker /> should render with background color matching defaultVal
   class="wrapper"
 >
   <button
+    aria-disabled="false"
     class="wrapper button fill secondary medium"
     id="color-picker-3"
     type="button"
@@ -191,6 +193,7 @@ exports[`<ColorPicker /> should render with background color matching value 1`] 
   class="wrapper"
 >
   <button
+    aria-disabled="false"
     class="wrapper button fill secondary medium"
     id="color-picker-2"
     type="button"
@@ -214,6 +217,7 @@ exports[`<ColorPicker /> should render with minimal props 1`] = `
   class="wrapper"
 >
   <button
+    aria-disabled="false"
     class="wrapper button fill secondary medium"
     id="color-picker-1"
     type="button"

@@ -78,8 +78,8 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
     class="align-middle smallest actions"
   >
     <button
+      aria-disabled="true"
       class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium isDisabled"
-      disabled=""
       title="Duplicate rule"
       type="button"
     >
@@ -90,6 +90,7 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
       </i>
     </button>
     <button
+      aria-disabled="false"
       class="wrapper actionButton mr-1 wrapper ghost ghost destructive medium"
       id="delete-rule-1"
       title="Delete rule"
@@ -183,6 +184,7 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
     class="align-middle smallest actions"
   >
     <button
+      aria-disabled="false"
       class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium"
       title="Duplicate rule"
       type="button"
@@ -194,6 +196,7 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
       </i>
     </button>
     <button
+      aria-disabled="false"
       class="wrapper actionButton mr-1 wrapper ghost ghost destructive medium"
       id="delete-rule-1"
       title="Delete rule"
@@ -297,8 +300,8 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
     class="align-middle smallest actions"
   >
     <button
+      aria-disabled="true"
       class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium isDisabled"
-      disabled=""
       title="Duplicate rule"
       type="button"
     >
@@ -309,6 +312,7 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
       </i>
     </button>
     <button
+      aria-disabled="false"
       class="wrapper actionButton mr-1 wrapper ghost ghost destructive medium"
       id="delete-rule-1"
       title="Delete rule"

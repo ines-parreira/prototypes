@@ -96,9 +96,10 @@ describe('<RuleCreationModalContent />', () => {
         fireEvent.focus(getByText(/Channel/))
         fireEvent.click(screen.getByText('Tag'))
 
-        expect(
-            (getByText(/^Create Rule$/) as HTMLButtonElement).disabled
-        ).toBeTruthy()
+        expect(getByText(/^Create Rule$/) as HTMLButtonElement).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
     })
 
     it('should call onClose when clicking on "Create rule later"', () => {

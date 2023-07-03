@@ -97,6 +97,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
                   class="controls group vertical"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small top"
                     type="button"
                   >
@@ -107,6 +108,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
                     </i>
                   </button>
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small bottom"
                     type="button"
                   >
@@ -280,6 +282,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
                 class="controls group vertical"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper button wrapper small fill secondary small top"
                   type="button"
                 >
@@ -290,8 +293,8 @@ exports[`<OrderFooter/> render() should render 1`] = `
                   </i>
                 </button>
                 <button
+                  aria-disabled="true"
                   class="wrapper button wrapper small fill secondary small bottom isDisabled"
-                  disabled=""
                   type="button"
                 >
                   <i
@@ -443,6 +446,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
                   class="controls group vertical"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small top"
                     type="button"
                   >
@@ -453,6 +457,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
                     </i>
                   </button>
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small bottom"
                     type="button"
                   >
@@ -607,6 +612,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
                 class="controls group vertical"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper button wrapper small fill secondary small top"
                   type="button"
                 >
@@ -617,8 +623,8 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
                   </i>
                 </button>
                 <button
+                  aria-disabled="true"
                   class="wrapper button wrapper small fill secondary small bottom isDisabled"
-                  disabled=""
                   type="button"
                 >
                   <i

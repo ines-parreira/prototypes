@@ -97,7 +97,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             const {getByText} = helpers
             const saveButton = getByText('Save changes')
 
-            expect(saveButton).toBeDisabled()
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
 
             if (isBoolean(selector.newValue)) {
                 fireEvent.click(selector.selector(helpers))
@@ -107,7 +107,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 })
             }
 
-            expect(saveButton.hasAttribute('disabled')).toBeFalsy()
+            expect(saveButton).toHaveAttribute('aria-disabled', 'false')
 
             if (isBoolean(selector.newValue)) {
                 fireEvent.click(selector.selector(helpers))
@@ -117,7 +117,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 })
             }
 
-            expect(saveButton.hasAttribute('disabled')).toBeTruthy()
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
         }
     )
 
@@ -152,7 +152,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             const {getByText} = helpers
             const saveButton = getByText('Save changes')
 
-            expect(saveButton.hasAttribute('disabled')).toBeTruthy()
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
 
             if (isBoolean(selector.newValue)) {
                 fireEvent.click(selector.selector(helpers))
@@ -162,7 +162,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 })
             }
 
-            expect(saveButton.hasAttribute('disabled')).toBeFalsy()
+            expect(saveButton).toHaveAttribute('aria-disabled', 'false')
 
             if (isBoolean(selector.newValue)) {
                 fireEvent.click(selector.selector(helpers))
@@ -172,7 +172,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 })
             }
 
-            expect(saveButton.hasAttribute('disabled')).toBeTruthy()
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
         }
     )
 
@@ -195,7 +195,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         })
         const saveButton = getByText('Save changes')
 
-        expect(saveButton.hasAttribute('disabled')).toBeTruthy()
+        expect(saveButton).toHaveAttribute('aria-disabled', 'true')
 
         if (isBoolean('Some New Name')) {
             fireEvent.click(displayNameInput)
@@ -205,7 +205,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             })
         }
 
-        expect(saveButton.hasAttribute('disabled')).toBeFalsy()
+        expect(saveButton).toHaveAttribute('aria-disabled', 'false')
 
         if (isBoolean('Some New Name')) {
             fireEvent.click(displayNameInput)
@@ -215,7 +215,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             })
         }
 
-        expect(saveButton.hasAttribute('disabled')).toBeTruthy()
+        expect(saveButton).toHaveAttribute('aria-disabled', 'true')
     })
 
     it.each([
@@ -251,17 +251,17 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             const {getByText} = helpers
             const saveButton = getByText('Save changes')
 
-            expect(saveButton).toBeDisabled()
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
 
             fireEvent.change(selector.selector(helpers), {
                 target: {value: selector.newValue},
             })
-            expect(saveButton).not.toBeDisabled()
+            expect(saveButton).not.toHaveAttribute('aria-disabled', 'true')
 
             fireEvent.change(selector.selector(helpers), {
                 target: {value: selector.finalValue},
             })
-            expect(saveButton).toBeDisabled()
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
         }
     )
 

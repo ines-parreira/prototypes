@@ -153,7 +153,7 @@ describe('<HelpCenterAppearanceView />', () => {
         }) as HTMLButtonElement
 
         // Initial state is disabled
-        expect(saveBtn.disabled).toBeTruthy()
+        expect(saveBtn).toHaveAttribute('aria-disabled', 'true')
 
         // Change one setting and expect the button to become active
         fireEvent.click(
@@ -161,7 +161,7 @@ describe('<HelpCenterAppearanceView />', () => {
                 selector: '[role="radio"]',
             })
         )
-        expect(saveBtn.disabled).toBeFalsy()
+        expect(saveBtn).toHaveAttribute('aria-disabled', 'false')
 
         // Change back the setting and expect the initial state
         fireEvent.click(
@@ -169,7 +169,7 @@ describe('<HelpCenterAppearanceView />', () => {
                 selector: '[role="radio"]',
             })
         )
-        expect(saveBtn.disabled).toBeTruthy()
+        expect(saveBtn).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('restores the default state when "Cancel" is clicked', () => {
@@ -192,10 +192,10 @@ describe('<HelpCenterAppearanceView />', () => {
                 selector: '[role="radio"]',
             })
         )
-        expect(saveBtn.disabled).toBeFalsy()
+        expect(saveBtn).toHaveAttribute('aria-disabled', 'false')
 
         fireEvent.click(cancelBtn)
-        expect(saveBtn.disabled).toBeTruthy()
+        expect(saveBtn).toHaveAttribute('aria-disabled', 'true')
     })
 
     it.each(['brand_logo_url', 'favicon_url', 'brand_logo_light_url'])(

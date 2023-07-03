@@ -78,10 +78,8 @@ describe('<RequestApp />', () => {
         fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
 
         expect(
-            screen
-                .getByRole('button', {name: 'Submit Request'})
-                .hasAttribute('disabled')
-        ).toBeTruthy()
+            screen.getByRole('button', {name: 'Submit Request'})
+        ).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('should have the Submit Request button enabled with description', () => {
@@ -96,10 +94,8 @@ describe('<RequestApp />', () => {
         })
 
         expect(
-            screen
-                .getByRole('button', {name: 'Submit Request'})
-                .hasAttribute('disabled')
-        ).toBeFalsy()
+            screen.getByRole('button', {name: 'Submit Request'})
+        ).toHaveAttribute('aria-disabled', 'false')
     })
 
     it('should send the request on Submit Request Click', async () => {

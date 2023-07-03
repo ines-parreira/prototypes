@@ -185,6 +185,7 @@ exports[`<DropdownField /> should display display results when searching 1`] = `
           class="wrapper modalFooter"
         >
           <button
+            aria-disabled="false"
             class="wrapper clearButton ghost primary medium"
             type="button"
           >
@@ -414,6 +415,7 @@ exports[`<DropdownField /> should render the dropdown component correctly 1`] = 
           class="wrapper modalFooter"
         >
           <button
+            aria-disabled="false"
             class="wrapper clearButton ghost primary medium"
             type="button"
           >

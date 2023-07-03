@@ -165,6 +165,7 @@ exports[`AppErrorRow should hide permissions if there are more than 5 1`] = `
     </div>
   </div>
   <button
+    aria-disabled="false"
     class="wrapper mt-2 ghost primary medium"
     type="button"
   >

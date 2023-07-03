@@ -14,6 +14,7 @@ exports[`<ConnectToShopSection /> renders in disabled state while fetching data 
       A store connection is required to use Automation Add-on features in Help Center. Currently only available for Shopify stores.
     </p>
     <button
+      aria-disabled="false"
       class="wrapper fill secondary medium"
       type="button"
     >

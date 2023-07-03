@@ -13,6 +13,7 @@ exports[`<PhoneNumberInput/> should render 1`] = `
     class="wrapper group horizontal"
   >
     <button
+      aria-disabled="false"
       class="wrapper button fill secondary medium left isAuxiliaryButton"
       type="button"
     >

@@ -110,6 +110,7 @@ exports[`ContactFormPublish Code snippet should provide correct manual embed ins
           &lt;script...&gt;&lt;/script&gt;&lt;div&gt;&lt;/div&gt;
         </code>
         <button
+          aria-disabled="false"
           class="wrapper fill secondary small"
           type="button"
         >

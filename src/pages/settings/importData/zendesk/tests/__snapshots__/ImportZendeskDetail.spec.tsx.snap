@@ -120,6 +120,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
             Import summary
              
             <button
+              aria-disabled="false"
               class="wrapper learnButton fill secondary medium"
               id="learn-button"
               type="button"
@@ -205,6 +206,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         </div>
       </div>
       <button
+        aria-disabled="false"
         class="wrapper fill primary medium"
         type="button"
       >
@@ -385,6 +387,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
               </div>
             </div>
             <button
+              aria-disabled="false"
               class="wrapper mb-4 fill primary medium"
               type="submit"
             >
@@ -403,6 +406,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
             Import summary
              
             <button
+              aria-disabled="false"
               class="wrapper learnButton fill secondary medium"
               id="learn-button"
               type="button"
@@ -610,6 +614,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
             Import summary
              
             <button
+              aria-disabled="false"
               class="wrapper learnButton fill secondary medium"
               id="learn-button"
               type="button"
@@ -717,6 +722,7 @@ exports[`<ImportZendeskDetail/> rendering should display the popover 1`] = `
       href="https://docs.gorgias.com/migrating-helpdesks/switching-from-zendesk"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill secondary small"
         type="button"
       >

@@ -86,14 +86,15 @@ exports[`<LineItemRow/> should render 1`] = `
         class="quantityButtonsContainer input-group-append"
       >
         <button
+          aria-disabled="true"
           class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
-          disabled=""
           tabindex="0"
           type="button"
         >
           ▲
         </button>
         <button
+          aria-disabled="false"
           class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
           tabindex="0"
           type="button"
@@ -198,14 +199,15 @@ exports[`<LineItemRow/> should render for multi-currency order 1`] = `
         class="quantityButtonsContainer input-group-append"
       >
         <button
+          aria-disabled="true"
           class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
-          disabled=""
           tabindex="0"
           type="button"
         >
           ▲
         </button>
         <button
+          aria-disabled="false"
           class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
           tabindex="0"
           type="button"
@@ -319,14 +321,15 @@ exports[`<LineItemRow/> should render with discounted price 1`] = `
         class="quantityButtonsContainer input-group-append"
       >
         <button
+          aria-disabled="true"
           class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
-          disabled=""
           tabindex="0"
           type="button"
         >
           ▲
         </button>
         <button
+          aria-disabled="false"
           class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
           tabindex="0"
           type="button"
@@ -440,6 +443,7 @@ exports[`<LineItemRow/> should render with the zero quantity 1`] = `
         class="quantityButtonsContainer input-group-append"
       >
         <button
+          aria-disabled="false"
           class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium"
           tabindex="0"
           type="button"
@@ -447,8 +451,8 @@ exports[`<LineItemRow/> should render with the zero quantity 1`] = `
           ▲
         </button>
         <button
+          aria-disabled="true"
           class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium isDisabled"
-          disabled=""
           tabindex="0"
           type="button"
         >

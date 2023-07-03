@@ -179,6 +179,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                     class="cellContent"
                   >
                     <button
+                      aria-disabled="false"
                       class="wrapper mr-1 wrapper ghost ghost secondary medium"
                       title="Duplicate Help Center"
                       type="button"
@@ -190,6 +191,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                       </i>
                     </button>
                     <button
+                      aria-disabled="false"
                       class="wrapper mr-1 wrapper ghost ghost destructive medium"
                       id="delete-button-1"
                       title="Delete Help Center"
@@ -294,6 +296,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                     class="cellContent"
                   >
                     <button
+                      aria-disabled="false"
                       class="wrapper mr-1 wrapper ghost ghost secondary medium"
                       title="Duplicate Help Center"
                       type="button"
@@ -305,6 +308,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                       </i>
                     </button>
                     <button
+                      aria-disabled="false"
                       class="wrapper mr-1 wrapper ghost ghost destructive medium"
                       id="delete-button-2"
                       title="Delete Help Center"
@@ -409,6 +413,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                     class="cellContent"
                   >
                     <button
+                      aria-disabled="false"
                       class="wrapper mr-1 wrapper ghost ghost secondary medium"
                       title="Duplicate Help Center"
                       type="button"
@@ -420,6 +425,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                       </i>
                     </button>
                     <button
+                      aria-disabled="false"
                       class="wrapper mr-1 wrapper ghost ghost destructive medium"
                       id="delete-button-3"
                       title="Delete Help Center"
@@ -523,6 +529,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                     class="cellContent"
                   >
                     <button
+                      aria-disabled="false"
                       class="wrapper mr-1 wrapper ghost ghost secondary medium"
                       title="Duplicate Help Center"
                       type="button"
@@ -534,6 +541,7 @@ exports[`<ManageHelpCenters /> should render the component 1`] = `
                       </i>
                     </button>
                     <button
+                      aria-disabled="false"
                       class="wrapper mr-1 wrapper ghost ghost destructive medium"
                       id="delete-button-4"
                       title="Delete Help Center"

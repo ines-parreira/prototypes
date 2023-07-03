@@ -17,6 +17,7 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
         tabindex="10"
       />
       <button
+        aria-disabled="false"
         class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
@@ -35,6 +36,7 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
         class="m-3"
       >
         <button
+          aria-disabled="false"
           class="wrapper fill secondary medium"
           type="button"
         >
@@ -121,6 +123,7 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
         tabindex="10"
       />
       <button
+        aria-disabled="false"
         class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
@@ -160,6 +163,7 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
             'We have found someone similar to the customer of this ticket. If it is the same person, merge them together to get a unified view of this customer.
           </p>
           <button
+            aria-disabled="false"
             class="wrapper mr-2 fill primary medium"
             type="button"
           >
@@ -210,6 +214,7 @@ exports[`<Infobar/> should render customer context 1`] = `
         tabindex="10"
       />
       <button
+        aria-disabled="false"
         class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
@@ -255,6 +260,7 @@ exports[`<Infobar/> should render loading state because the customer is being fe
         tabindex="10"
       />
       <button
+        aria-disabled="false"
         class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
@@ -304,6 +310,7 @@ exports[`<Infobar/> should render loading state because the search is in progres
         tabindex="10"
       />
       <button
+        aria-disabled="false"
         class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
@@ -353,6 +360,7 @@ exports[`<Infobar/> should render search results 1`] = `
         tabindex="10"
       />
       <button
+        aria-disabled="false"
         class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
@@ -371,6 +379,7 @@ exports[`<Infobar/> should render search results 1`] = `
         class="m-3"
       >
         <button
+          aria-disabled="false"
           class="wrapper fill secondary medium"
           type="button"
         >
@@ -424,8 +433,8 @@ exports[`<Infobar/> should render selected customer 1`] = `
           tabindex="10"
         />
         <button
+          aria-disabled="true"
           class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium isDisabled"
-          disabled=""
           id="toggle-widgets-edition-button"
           type="button"
         >
@@ -443,6 +452,7 @@ exports[`<Infobar/> should render selected customer 1`] = `
           class="m-3"
         >
           <button
+            aria-disabled="false"
             class="wrapper selectionBackButton fill secondary medium"
             type="button"
           >
@@ -461,6 +471,7 @@ exports[`<Infobar/> should render selected customer 1`] = `
             class="float-right d-none d-md-block"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >
@@ -503,6 +514,7 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
         tabindex="10"
       />
       <button
+        aria-disabled="false"
         class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
@@ -521,6 +533,7 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
         class="m-3"
       >
         <button
+          aria-disabled="false"
           class="wrapper fill secondary medium"
           type="button"
         >
@@ -574,6 +587,7 @@ exports[`<Infobar/> should render ticket context 1`] = `
         tabindex="10"
       />
       <button
+        aria-disabled="false"
         class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
@@ -619,8 +633,8 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
         tabindex="10"
       />
       <button
+        aria-disabled="true"
         class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium isDisabled"
-        disabled=""
         id="toggle-widgets-edition-button"
         type="button"
       >
@@ -648,15 +662,15 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
       class="footer"
     >
       <button
+        aria-disabled="true"
         class="wrapper mr-2 fill primary medium isDisabled"
-        disabled=""
         type="button"
       >
         Save changes
       </button>
       <button
+        aria-disabled="true"
         class="wrapper fill secondary medium isDisabled"
-        disabled=""
         type="button"
       >
         Cancel

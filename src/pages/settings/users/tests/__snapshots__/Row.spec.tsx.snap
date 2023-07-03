@@ -59,6 +59,7 @@ exports[`<Row /> should render 1`] = `
       class="delete"
     >
       <button
+        aria-disabled="false"
         class="wrapper wrapper ghost ghost destructive medium"
         id="delete-agent-1"
         type="button"
@@ -133,6 +134,7 @@ exports[`<Row /> should render 2FA information when enabled 1`] = `
       class="delete"
     >
       <button
+        aria-disabled="false"
         class="wrapper wrapper ghost ghost destructive medium"
         id="delete-agent-1"
         type="button"
@@ -207,6 +209,7 @@ exports[`<Row /> should render 2FA information when enabled and agent has 2FA di
       class="delete"
     >
       <button
+        aria-disabled="false"
         class="wrapper wrapper ghost ghost destructive medium"
         id="delete-agent-1"
         type="button"
@@ -276,6 +279,7 @@ exports[`<Row /> should render a user without a name 1`] = `
       class="delete"
     >
       <button
+        aria-disabled="false"
         class="wrapper wrapper ghost ghost destructive medium"
         id="delete-agent-1"
         type="button"

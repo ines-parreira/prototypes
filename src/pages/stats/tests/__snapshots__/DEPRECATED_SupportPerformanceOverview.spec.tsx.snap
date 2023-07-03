@@ -21,6 +21,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
             Performance overview
           </span>
           <button
+            aria-disabled="false"
             class="wrapper wrapper ml-3 fill secondary medium"
             type="button"
           >
@@ -848,6 +849,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
             </div>
             <div>
               <button
+                aria-disabled="false"
                 class="wrapper fill secondary medium"
                 type="button"
               >

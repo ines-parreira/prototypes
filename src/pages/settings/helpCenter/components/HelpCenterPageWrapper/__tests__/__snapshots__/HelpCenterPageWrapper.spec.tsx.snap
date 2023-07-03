@@ -44,6 +44,7 @@ exports[`<HelpCenterPageWrapper /> should render the component 1`] = `
                 to="[object Object]"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper ghost primary medium"
                   type="button"
                 >
@@ -62,6 +63,7 @@ exports[`<HelpCenterPageWrapper /> should render the component 1`] = `
             </div>
           </div>
           <button
+            aria-disabled="false"
             aria-label="help center preview"
             class="wrapper fill secondary medium"
             type="button"

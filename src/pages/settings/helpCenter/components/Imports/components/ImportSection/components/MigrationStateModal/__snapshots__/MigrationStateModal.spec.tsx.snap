@@ -362,6 +362,7 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
             class="actions"
           >
             <button
+              aria-disabled="false"
               class="wrapper actionsButton fill primary medium"
               type="button"
             >
@@ -373,6 +374,7 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
               Retry
             </button>
             <button
+              aria-disabled="false"
               class="wrapper actionsButton fill secondary medium"
               type="button"
             >
@@ -482,6 +484,7 @@ exports[`<MigrationStateModal /> snapshots Connected 1`] = `
             class="mb-4"
           />
           <button
+            aria-disabled="false"
             class="wrapper w-100 fill primary medium"
             type="button"
           >
@@ -800,6 +803,7 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
             class="mb-4"
           />
           <button
+            aria-disabled="true"
             class="wrapper w-100 fill primary medium isDisabled"
             disabled=""
             type="button"
@@ -1024,6 +1028,7 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
             class="mb-4"
           />
           <button
+            aria-disabled="true"
             class="wrapper w-100 fill primary medium isDisabled"
             disabled=""
             type="button"
@@ -1162,8 +1167,8 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
             class="mb-4"
           />
           <button
+            aria-disabled="true"
             class="wrapper w-100 fill primary medium isDisabled"
-            disabled=""
             type="button"
           >
             <svg
@@ -1483,6 +1488,7 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
               class="optionRow"
             >
               <button
+                aria-disabled="false"
                 class="wrapper optionButton fill primary medium"
                 type="button"
               >
@@ -1503,6 +1509,7 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
               class="optionRow"
             >
               <button
+                aria-disabled="false"
                 class="wrapper optionButton fill destructive medium"
                 type="button"
               >
@@ -1521,6 +1528,7 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
             </div>
           </div>
           <button
+            aria-disabled="false"
             class="wrapper w-100 fill secondary medium"
             type="button"
           >
@@ -1714,6 +1722,7 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
             class="mb-4"
           />
           <button
+            aria-disabled="false"
             class="wrapper w-100 fill primary medium"
             type="button"
           >

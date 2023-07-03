@@ -92,11 +92,10 @@ describe('<Button/>', () => {
                 url: 'www.someurl.com',
             },
         })
-        expect(
-            screen
-                .getByRole('button', {name: props.label})
-                .hasAttribute('disabled')
-        ).toBeTruthy()
+        expect(screen.getByRole('button', {name: props.label})).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
     })
 
     it('should have correctly templated action’s payload', () => {
@@ -142,11 +141,10 @@ describe('<Button/>', () => {
                 url: `www.someurl${currentListIndex}${integrationId}${appId}.com`,
             },
         })
-        expect(
-            screen
-                .getByRole('button', {name: props.label})
-                .hasAttribute('disabled')
-        ).toBeTruthy()
+        expect(screen.getByRole('button', {name: props.label})).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
     })
 
     it('should call openEditor with the right params', () => {
@@ -205,10 +203,8 @@ describe('<Button/>', () => {
         store.dispatch({type: DUMB_ACTION_TYPE})
         await waitFor(() =>
             expect(
-                screen
-                    .getByRole('button', {name: props.label})
-                    .hasAttribute('disabled')
-            ).toBeFalsy()
+                screen.getByRole('button', {name: props.label})
+            ).toHaveAttribute('aria-disabled', 'false')
         )
     })
 })

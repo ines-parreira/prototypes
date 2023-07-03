@@ -122,14 +122,15 @@ exports[`<DropdownCSVImport/> should render when open 1`] = `
                 Learn more
               </a>
               <button
+                aria-disabled="false"
                 class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="true"
                 class="wrapper fill primary medium isDisabled"
-                disabled=""
                 type="button"
               >
                 Import File

@@ -2546,6 +2546,7 @@ exports[`RichField should render default content state 1`] = `
                                   size="small"
                                 >
                                   <button
+                                    aria-disabled={false}
                                     className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-13"
                                     onClick={[Function]}
@@ -2646,6 +2647,7 @@ exports[`RichField should render default content state 1`] = `
                                   size="small"
                                 >
                                   <button
+                                    aria-disabled={false}
                                     className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-14"
                                     onClick={[Function]}
@@ -2746,6 +2748,7 @@ exports[`RichField should render default content state 1`] = `
                                   size="small"
                                 >
                                   <button
+                                    aria-disabled={false}
                                     className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-15"
                                     onClick={[Function]}
@@ -2909,6 +2912,7 @@ exports[`RichField should render default content state 1`] = `
                                           size="small"
                                         >
                                           <button
+                                            aria-disabled={false}
                                             className="wrapper button wrapper small fill secondary small"
                                             id="toolbar-button-16"
                                             onClick={[Function]}
@@ -3031,6 +3035,7 @@ exports[`RichField should render default content state 1`] = `
                                       size="small"
                                     >
                                       <button
+                                        aria-disabled={false}
                                         className="wrapper button wrapper small fill secondary small"
                                         id="toolbar-button-17"
                                         onClick={[Function]}
@@ -3153,6 +3158,7 @@ exports[`RichField should render default content state 1`] = `
                                       size="small"
                                     >
                                       <button
+                                        aria-disabled={false}
                                         className="wrapper button wrapper small fill secondary small"
                                         id="toolbar-button-18"
                                         onClick={[Function]}
@@ -8487,6 +8493,7 @@ exports[`RichField should render immutable variable 1`] = `
                                   size="small"
                                 >
                                   <button
+                                    aria-disabled={false}
                                     className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-1"
                                     onClick={[Function]}
@@ -8587,6 +8594,7 @@ exports[`RichField should render immutable variable 1`] = `
                                   size="small"
                                 >
                                   <button
+                                    aria-disabled={false}
                                     className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-2"
                                     onClick={[Function]}
@@ -8687,6 +8695,7 @@ exports[`RichField should render immutable variable 1`] = `
                                   size="small"
                                 >
                                   <button
+                                    aria-disabled={false}
                                     className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-3"
                                     onClick={[Function]}
@@ -8850,6 +8859,7 @@ exports[`RichField should render immutable variable 1`] = `
                                           size="small"
                                         >
                                           <button
+                                            aria-disabled={false}
                                             className="wrapper button wrapper small fill secondary small"
                                             id="toolbar-button-4"
                                             onClick={[Function]}
@@ -8972,6 +8982,7 @@ exports[`RichField should render immutable variable 1`] = `
                                       size="small"
                                     >
                                       <button
+                                        aria-disabled={false}
                                         className="wrapper button wrapper small fill secondary small"
                                         id="toolbar-button-5"
                                         onClick={[Function]}
@@ -9094,6 +9105,7 @@ exports[`RichField should render immutable variable 1`] = `
                                       size="small"
                                     >
                                       <button
+                                        aria-disabled={false}
                                         className="wrapper button wrapper small fill secondary small"
                                         id="toolbar-button-6"
                                         onClick={[Function]}
@@ -11666,6 +11678,7 @@ exports[`RichField should render mutable variable 1`] = `
                                   size="small"
                                 >
                                   <button
+                                    aria-disabled={false}
                                     className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-7"
                                     onClick={[Function]}
@@ -11766,6 +11779,7 @@ exports[`RichField should render mutable variable 1`] = `
                                   size="small"
                                 >
                                   <button
+                                    aria-disabled={false}
                                     className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-8"
                                     onClick={[Function]}
@@ -11866,6 +11880,7 @@ exports[`RichField should render mutable variable 1`] = `
                                   size="small"
                                 >
                                   <button
+                                    aria-disabled={false}
                                     className="wrapper button wrapper small fill secondary small"
                                     id="toolbar-button-9"
                                     onClick={[Function]}
@@ -12029,6 +12044,7 @@ exports[`RichField should render mutable variable 1`] = `
                                           size="small"
                                         >
                                           <button
+                                            aria-disabled={false}
                                             className="wrapper button wrapper small fill secondary small"
                                             id="toolbar-button-10"
                                             onClick={[Function]}
@@ -12151,6 +12167,7 @@ exports[`RichField should render mutable variable 1`] = `
                                       size="small"
                                     >
                                       <button
+                                        aria-disabled={false}
                                         className="wrapper button wrapper small fill secondary small"
                                         id="toolbar-button-11"
                                         onClick={[Function]}
@@ -12273,6 +12290,7 @@ exports[`RichField should render mutable variable 1`] = `
                                       size="small"
                                     >
                                       <button
+                                        aria-disabled={false}
                                         className="wrapper button wrapper small fill secondary small"
                                         id="toolbar-button-12"
                                         onClick={[Function]}

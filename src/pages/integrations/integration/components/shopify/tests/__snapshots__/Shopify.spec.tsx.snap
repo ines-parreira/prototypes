@@ -257,6 +257,7 @@ exports[`<Shopify/> Detail should render a detail view 1`] = `
             target="_blank"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
@@ -497,12 +498,14 @@ exports[`<Shopify/> Integration should render 1`] = `
           </div>
           <div>
             <button
+              aria-disabled="false"
               class="wrapper mr-2 fill primary medium"
               type="submit"
             >
               Update Connection
             </button>
             <button
+              aria-disabled="false"
               class="wrapper float-right fill destructive medium"
               id="integration-deletion-confirm-button"
               type="button"
@@ -609,6 +612,7 @@ exports[`<Shopify/> List should render 1`] = `
       target="_blank"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill primary medium"
         type="button"
       >

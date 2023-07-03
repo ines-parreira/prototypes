@@ -6,6 +6,7 @@ exports[`<AddVideo/> should not render when the popover is closed 1`] = `
     class="popoverWrapper"
   >
     <button
+      aria-disabled="false"
       class="wrapper button wrapper small fill secondary small"
       id="toolbar-button-1"
       type="button"
@@ -29,6 +30,7 @@ exports[`<AddVideo/> should render the popover when the button is clicked 1`] = 
     class="popoverWrapper"
   >
     <button
+      aria-disabled="false"
       class="wrapper button wrapper small fill secondary small"
       id="toolbar-button-2"
       type="button"
@@ -68,13 +70,14 @@ exports[`<AddVideo/> should render the popover when the button is clicked 1`] = 
           class="buttons"
         >
           <button
+            aria-disabled="true"
             class="wrapper fill primary medium isDisabled"
-            disabled=""
             type="button"
           >
             Insert Video
           </button>
           <button
+            aria-disabled="false"
             class="wrapper ml-2 fill secondary medium"
             type="button"
           >

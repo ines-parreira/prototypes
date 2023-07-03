@@ -524,6 +524,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                               className="copy mr-4"
                             >
                               <button
+                                aria-disabled={false}
                                 className="wrapper copy mr-4 fill primary medium"
                                 data-clipboard-target="#code-snippet"
                                 id="copy-code-snippet"

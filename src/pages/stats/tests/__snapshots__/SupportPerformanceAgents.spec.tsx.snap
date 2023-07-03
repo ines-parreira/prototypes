@@ -18,6 +18,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
           Agents
         </span>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
@@ -693,6 +694,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
           </div>
           <div>
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >

@@ -79,12 +79,14 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
               class="modalFooter modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper fill destructive medium"
                 type="button"
               >
@@ -161,12 +163,14 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
               class="modalFooter modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper fill destructive medium"
                 type="button"
               >
@@ -271,14 +275,15 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
               class="modalFooter modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="true"
                 class="wrapper fill destructive medium isDisabled"
-                disabled=""
                 type="button"
               >
                 Foo action button text
@@ -354,12 +359,14 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 2`] = `
               class="modalFooter modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper fill destructive medium"
                 type="button"
               >
@@ -456,14 +463,15 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
               class="modalFooter modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="true"
                 class="wrapper fill destructive medium isDisabled"
-                disabled=""
                 type="button"
               >
                 Foo action button text
@@ -559,12 +567,14 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
               class="modalFooter modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper fill destructive medium"
                 type="button"
               >

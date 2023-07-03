@@ -43,6 +43,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
       data-candu-id="email-integration-create-form"
     >
       <button
+        aria-disabled="false"
         class="wrapper mb-2 connectButton gmailButton fill primary medium"
         type="submit"
       >
@@ -65,6 +66,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
         OR
       </div>
       <button
+        aria-disabled="false"
         class="wrapper mb-2 connectButton outlookButton fill secondary medium"
         type="submit"
       >
@@ -90,6 +92,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
         to="/app/settings/channels/email/new/custom"
       >
         <button
+          aria-disabled="false"
           class="wrapper mb-2 connectButton fill secondary medium"
           type="submit"
         >

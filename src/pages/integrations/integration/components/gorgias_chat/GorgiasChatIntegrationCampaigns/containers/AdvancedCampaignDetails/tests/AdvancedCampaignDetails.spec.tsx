@@ -165,9 +165,10 @@ describe('<AdvancedCampaignDetails />', () => {
             // ========
             // Assert empty form
             // ========
-            expect(
-                screen.getByText('Create & activate').hasAttribute('disabled')
-            ).toBeTruthy()
+            expect(screen.getByText('Create & activate')).toHaveAttribute(
+                'aria-disabled',
+                'true'
+            )
 
             // ========
             // Assert missing campaign name but with message
@@ -191,9 +192,10 @@ describe('<AdvancedCampaignDetails />', () => {
                 </Provider>
             )
 
-            expect(
-                screen.getByText('Create & activate').hasAttribute('disabled')
-            ).toBeTruthy()
+            expect(screen.getByText('Create & activate')).toHaveAttribute(
+                'aria-disabled',
+                'true'
+            )
 
             // ========
             // Assert missing campaign message but with name
@@ -220,9 +222,10 @@ describe('<AdvancedCampaignDetails />', () => {
                 </Provider>
             )
 
-            expect(
-                screen.getByText('Create & activate').hasAttribute('disabled')
-            ).toBeTruthy()
+            expect(screen.getByText('Create & activate')).toHaveAttribute(
+                'aria-disabled',
+                'true'
+            )
         })
 
         it('does not show the "Delete" button', () => {
@@ -635,9 +638,10 @@ describe('<AdvancedCampaignDetails />', () => {
         })
 
         it('shows and enables the "Save Changes" button', () => {
-            expect(
-                screen.getByText('Save Changes').hasAttribute('disabled')
-            ).toBeFalsy()
+            expect(screen.getByText('Save Changes')).toHaveAttribute(
+                'aria-disabled',
+                'false'
+            )
         })
 
         it('disables the "Save" button if the form is not valid', () => {
@@ -647,9 +651,10 @@ describe('<AdvancedCampaignDetails />', () => {
                 )
             })
 
-            expect(
-                screen.getByText('Save Changes').hasAttribute('disabled')
-            ).toBeTruthy()
+            expect(screen.getByText('Save Changes')).toHaveAttribute(
+                'aria-disabled',
+                'true'
+            )
         })
     })
 

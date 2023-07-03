@@ -204,6 +204,7 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
                   class="controls group vertical"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small top"
                     type="button"
                   >
@@ -214,6 +215,7 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
                     </i>
                   </button>
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small bottom"
                     type="button"
                   >
@@ -245,6 +247,7 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
               class="numberCol centered"
             >
               <button
+                aria-disabled="false"
                 class="wrapper wrapper ghost ghost destructive medium"
                 tabindex="0"
                 type="button"
@@ -342,6 +345,7 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
                   class="controls group vertical"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small top"
                     type="button"
                   >
@@ -352,6 +356,7 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
                     </i>
                   </button>
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small bottom"
                     type="button"
                   >
@@ -383,6 +388,7 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
               class="numberCol centered"
             >
               <button
+                aria-disabled="false"
                 class="wrapper wrapper ghost ghost destructive medium"
                 tabindex="0"
                 type="button"
@@ -684,6 +690,7 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
                   class="controls group vertical"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small top"
                     type="button"
                   >
@@ -694,6 +701,7 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
                     </i>
                   </button>
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small bottom"
                     type="button"
                   >
@@ -725,6 +733,7 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
               class="numberCol centered"
             >
               <button
+                aria-disabled="false"
                 class="wrapper wrapper ghost ghost destructive medium"
                 tabindex="0"
                 type="button"
@@ -822,6 +831,7 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
                   class="controls group vertical"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small top"
                     type="button"
                   >
@@ -832,6 +842,7 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
                     </i>
                   </button>
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small bottom"
                     type="button"
                   >
@@ -863,6 +874,7 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
               class="numberCol centered"
             >
               <button
+                aria-disabled="false"
                 class="wrapper wrapper ghost ghost destructive medium"
                 tabindex="0"
                 type="button"

@@ -166,6 +166,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                 Reconnect
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper float-right fill destructive medium"
                 id="confirm-4"
                 type="button"

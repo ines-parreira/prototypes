@@ -383,6 +383,7 @@ exports[`<SpotlightModal/> should render with tickets tab as default 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="false"
           class="wrapper ghost secondary small"
           type="button"
         >
@@ -524,6 +525,7 @@ exports[`<SpotlightModal/> should reset search after closing and end previous se
           </div>
         </div>
         <button
+          aria-disabled="false"
           class="wrapper ghost secondary small"
           type="button"
         >
@@ -665,6 +667,7 @@ exports[`<SpotlightModal/> should set customers tab on click 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="false"
           class="wrapper ghost secondary small"
           type="button"
         >
@@ -790,6 +793,7 @@ exports[`<SpotlightModal/> should show SpotlightLoader component while results a
           </div>
         </div>
         <button
+          aria-disabled="false"
           class="wrapper ghost secondary small"
           type="button"
         >
@@ -931,6 +935,7 @@ exports[`<SpotlightModal/> should show SpotlightNoResults component when no resu
           </div>
         </div>
         <button
+          aria-disabled="false"
           class="wrapper ghost secondary small"
           type="button"
         >

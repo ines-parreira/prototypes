@@ -2,8 +2,8 @@
 
 exports[`<ModalContinueButton /> render() should render the Continue button as loading 1`] = `
 <button
+  aria-disabled="true"
   class="wrapper fill primary medium isDisabled"
-  disabled=""
   type="button"
 >
   <svg
@@ -41,8 +41,8 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
 
 exports[`<ModalContinueButton /> render() should render the Continue button as loading 2`] = `
 <button
+  aria-disabled="true"
   class="wrapper fill primary medium isDisabled"
-  disabled=""
   type="button"
 >
   <svg
@@ -80,8 +80,8 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
 
 exports[`<ModalContinueButton /> render() should render the Continue button as loading 3`] = `
 <button
+  aria-disabled="true"
   class="wrapper full-width fill primary medium isDisabled"
-  disabled=""
   type="button"
 >
   <svg
@@ -123,8 +123,8 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
 
 exports[`<ModalContinueButton /> render() should render the Continue button disabled because of error 1`] = `
 <button
+  aria-disabled="true"
   class="wrapper fill primary medium isDisabled"
-  disabled=""
   type="button"
 >
   Continue
@@ -133,8 +133,8 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
 
 exports[`<ModalContinueButton /> render() should render the Continue button disabled because of error 2`] = `
 <button
+  aria-disabled="true"
   class="wrapper fill primary medium isDisabled"
-  disabled=""
   type="button"
 >
   Continue
@@ -143,8 +143,8 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
 
 exports[`<ModalContinueButton /> render() should render the Continue button disabled because of error 3`] = `
 <button
+  aria-disabled="true"
   class="wrapper full-width fill primary medium isDisabled"
-  disabled=""
   type="button"
 >
   <span
@@ -157,6 +157,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
 
 exports[`<ModalContinueButton /> render() should render the appropriate Continue button based on current step 1`] = `
 <button
+  aria-disabled="false"
   class="wrapper fill primary medium"
   type="button"
 >
@@ -166,6 +167,7 @@ exports[`<ModalContinueButton /> render() should render the appropriate Continue
 
 exports[`<ModalContinueButton /> render() should render the appropriate Continue button based on current step 2`] = `
 <button
+  aria-disabled="false"
   class="wrapper fill primary medium"
   type="button"
 >
@@ -175,6 +177,7 @@ exports[`<ModalContinueButton /> render() should render the appropriate Continue
 
 exports[`<ModalContinueButton /> render() should render the appropriate Continue button based on current step 3`] = `
 <button
+  aria-disabled="false"
   class="wrapper full-width fill primary medium"
   type="button"
 >

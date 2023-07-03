@@ -44,6 +44,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 to="[object Object]"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper ghost primary medium"
                   type="button"
                 >
@@ -62,6 +63,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             </div>
           </div>
           <button
+            aria-disabled="false"
             aria-label="help center preview"
             class="wrapper fill secondary medium"
             type="button"
@@ -147,6 +149,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         class="createFirst"
       >
         <button
+          aria-disabled="false"
           class="wrapper createButton fill primary medium"
           type="button"
         >
@@ -158,6 +161,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
           Article
         </button>
         <button
+          aria-disabled="false"
           class="wrapper createButton fill secondary medium"
           type="button"
         >
@@ -179,6 +183,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
           You can import CSV files with articles from another Help Center.
         </p>
         <button
+          aria-disabled="false"
           class="wrapper fill secondary medium"
           type="button"
         >
@@ -219,6 +224,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               class="header-actions"
             >
               <button
+                aria-disabled="false"
                 aria-label="preview category"
                 class="wrapper wrapper ghost medium ghost secondary medium"
                 type="button"
@@ -230,6 +236,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 </i>
               </button>
               <button
+                aria-disabled="false"
                 aria-label="copy url"
                 class="wrapper wrapper ghost medium ghost secondary medium"
                 type="button"
@@ -241,6 +248,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 </i>
               </button>
               <button
+                aria-disabled="false"
                 aria-label="close edit modal"
                 class="wrapper wrapper ghost medium ghost secondary medium"
                 data-testid="close-drawer"
@@ -570,6 +578,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 Slug
               </label>
               <button
+                aria-disabled="false"
                 class="wrapper ghost primary small"
                 type="button"
               >
@@ -777,9 +786,9 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
           class="footer"
         >
           <button
+            aria-disabled="true"
             class="wrapper fill primary medium isDisabled"
             data-testid="button-save"
-            disabled=""
             type="button"
           >
             Save

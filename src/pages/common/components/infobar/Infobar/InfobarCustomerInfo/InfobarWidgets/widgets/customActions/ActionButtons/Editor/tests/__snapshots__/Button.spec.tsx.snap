@@ -2,6 +2,7 @@
 
 exports[`<Button/> should render with correct label 1`] = `
 <button
+  aria-disabled="false"
   class="wrapper fill secondary small"
   type="button"
 >

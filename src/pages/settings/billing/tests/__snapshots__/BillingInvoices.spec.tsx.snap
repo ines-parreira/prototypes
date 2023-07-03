@@ -206,6 +206,7 @@ exports[`BillingInvoices component should display invoices, without PDF download
                     intent="secondary"
                   >
                     <button
+                      aria-disabled={false}
                       className="wrapper fill secondary medium"
                       type="button"
                     >

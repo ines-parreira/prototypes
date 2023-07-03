@@ -131,6 +131,7 @@ exports[`<EmailDomainVerification/> render() should render a delete button to ac
     />
   </table>
   <button
+    aria-disabled="false"
     class="wrapper fill destructive medium"
     id="confirm-1"
     type="button"
@@ -539,6 +540,7 @@ exports[`<EmailDomainVerification/> render() should render the page when there i
     </div>
   </div>
   <button
+    aria-disabled="false"
     class="wrapper fill primary medium"
     color="primary"
     type="submit"
@@ -617,6 +619,7 @@ exports[`<EmailDomainVerification/> render() should render the page when there i
     </div>
   </div>
   <button
+    aria-disabled="false"
     class="wrapper fill primary medium"
     color="primary"
     type="submit"
@@ -723,6 +726,7 @@ exports[`<EmailDomainVerification/> render() should render the page with an opti
     </div>
   </div>
   <button
+    aria-disabled="false"
     class="wrapper fill primary medium"
     color="primary"
     type="submit"
@@ -829,6 +833,7 @@ exports[`<EmailDomainVerification/> render() should render the page with an opti
     </div>
   </div>
   <button
+    aria-disabled="false"
     class="wrapper fill primary medium"
     color="primary"
     type="submit"

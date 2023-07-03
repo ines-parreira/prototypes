@@ -38,6 +38,7 @@ exports[`<TicketListContainer /> should display with default props 1`] = `
           href="/app/ticket/new"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill primary medium"
             type="button"
           >
@@ -91,6 +92,7 @@ exports[`<TicketListContainer /> should render SearchRankProvider on search url 
             href="/app/ticket/new"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
@@ -141,6 +143,7 @@ HTMLCollection [
             class="wrapper"
           >
             <button
+              aria-disabled="false"
               class="wrapper mainAction medium fill primary medium"
               color="primary"
               type="button"
@@ -148,6 +151,7 @@ HTMLCollection [
               Create ticket
             </button>
             <button
+              aria-disabled="false"
               class="wrapper toggle medium wrapper fill medium fill primary medium"
               type="button"
             >

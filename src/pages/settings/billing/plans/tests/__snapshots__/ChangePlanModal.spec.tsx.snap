@@ -65,12 +65,14 @@ exports[`<ChangePlanModal /> should display only compared plan when there is no 
               class="footer modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >
@@ -276,12 +278,14 @@ exports[`<ChangePlanModal /> should render 1`] = `
               class="footer modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >
@@ -488,12 +492,14 @@ exports[`<ChangePlanModal /> should render a discount when discounted prices 1`]
               class="footer modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >
@@ -694,12 +700,14 @@ exports[`<ChangePlanModal /> should render the automation plan features for the 
               class="footer modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >

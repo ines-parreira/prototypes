@@ -152,16 +152,12 @@ describe('<ShopifyIntegration/>', () => {
             )
 
             expect(
-                screen
-                    .getByRole('button', {name: 'Update Connection'})
-                    .hasAttribute('disabled')
-            ).toBeTruthy()
+                screen.getByRole('button', {name: 'Update Connection'})
+            ).toHaveAttribute('aria-disabled', 'true')
             fireEvent.click(screen.getByRole('checkbox'))
             expect(
-                screen
-                    .getByRole('button', {name: 'Update Connection'})
-                    .hasAttribute('disabled')
-            ).toBeFalsy()
+                screen.getByRole('button', {name: 'Update Connection'})
+            ).toHaveAttribute('aria-disabled', 'false')
             fireEvent.click(
                 screen.getByRole('button', {name: 'Update Connection'})
             )

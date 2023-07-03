@@ -6,12 +6,14 @@ exports[`<ActionButtons/> should render the action buttons if isEditing is set t
     class="actionButtons group horizontal"
   >
     <button
+      aria-disabled="false"
       class="wrapper actionButton fill secondary small left"
       type="button"
     >
       I am in snapshots
     </button>
     <button
+      aria-disabled="false"
       class="wrapper actionButton fill secondary small right"
       type="button"
     >
@@ -29,6 +31,7 @@ exports[`<ActionButtons/> should render the editor if isEditing is set to true  
     class="editRow"
   >
     <button
+      aria-disabled="false"
       class="wrapper fill secondary small"
       type="button"
     >
@@ -53,6 +56,7 @@ exports[`<ActionButtons/> should render the editor if isEditing is set to true  
     class="editRow"
   >
     <button
+      aria-disabled="false"
       class="wrapper fill secondary small"
       type="button"
     >

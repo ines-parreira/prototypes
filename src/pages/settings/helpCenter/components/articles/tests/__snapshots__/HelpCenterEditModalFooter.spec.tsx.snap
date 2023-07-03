@@ -16,6 +16,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
           class="group horizontal"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill primary medium left"
             color="primary"
             type="button"
@@ -28,6 +29,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
             class=""
           >
             <button
+              aria-disabled="false"
               class="wrapper wrapper fill primary medium right"
               type="button"
             >
@@ -65,6 +67,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
         </div>
       </div>
       <button
+        aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
@@ -124,6 +127,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
         1752
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton fill secondary medium"
         type="button"
       >

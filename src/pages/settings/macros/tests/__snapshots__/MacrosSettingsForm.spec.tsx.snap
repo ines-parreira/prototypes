@@ -639,8 +639,8 @@ Sincerely,
                     isLoading={false}
                   >
                     <button
+                      aria-disabled={false}
                       className="wrapper mr-2 fill primary medium"
-                      disabled={false}
                       type="submit"
                     >
                       Update macro
@@ -659,8 +659,8 @@ Sincerely,
                     isLoading={false}
                   >
                     <button
+                      aria-disabled={false}
                       className="wrapper fill secondary medium"
-                      disabled={false}
                       onClick={[Function]}
                       type="button"
                     >

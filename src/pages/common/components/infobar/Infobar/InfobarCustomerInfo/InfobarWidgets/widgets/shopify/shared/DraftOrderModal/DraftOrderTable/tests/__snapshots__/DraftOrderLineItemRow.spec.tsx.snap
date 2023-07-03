@@ -106,6 +106,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1
         class="controls group vertical"
       >
         <button
+          aria-disabled="false"
           class="wrapper button wrapper small fill secondary small top"
           type="button"
         >
@@ -116,8 +117,8 @@ exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1
           </i>
         </button>
         <button
+          aria-disabled="true"
           class="wrapper button wrapper small fill secondary small bottom isDisabled"
-          disabled=""
           type="button"
         >
           <i
@@ -143,6 +144,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1
         </span>
       </strong>
       <button
+        aria-disabled="false"
         class="wrapper wrapper ghost ghost destructive medium"
         tabindex="0"
         type="button"
@@ -255,6 +257,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] 
         class="controls group vertical"
       >
         <button
+          aria-disabled="false"
           class="wrapper button wrapper small fill secondary small top"
           type="button"
         >
@@ -265,8 +268,8 @@ exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] 
           </i>
         </button>
         <button
+          aria-disabled="true"
           class="wrapper button wrapper small fill secondary small bottom isDisabled"
-          disabled=""
           type="button"
         >
           <i
@@ -292,6 +295,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] 
         </span>
       </strong>
       <button
+        aria-disabled="false"
         class="wrapper wrapper ghost ghost destructive medium"
         tabindex="0"
         type="button"
@@ -404,6 +408,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with product stock quan
         class="controls group vertical"
       >
         <button
+          aria-disabled="false"
           class="wrapper button wrapper small fill secondary small top"
           type="button"
         >
@@ -414,8 +419,8 @@ exports[`<DraftOrderLineItemRow/> render() should render with product stock quan
           </i>
         </button>
         <button
+          aria-disabled="true"
           class="wrapper button wrapper small fill secondary small bottom isDisabled"
-          disabled=""
           type="button"
         >
           <i
@@ -543,6 +548,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without product image 1
         class="controls group vertical"
       >
         <button
+          aria-disabled="false"
           class="wrapper button wrapper small fill secondary small top"
           type="button"
         >
@@ -553,8 +559,8 @@ exports[`<DraftOrderLineItemRow/> render() should render without product image 1
           </i>
         </button>
         <button
+          aria-disabled="true"
           class="wrapper button wrapper small fill secondary small bottom isDisabled"
-          disabled=""
           type="button"
         >
           <i
@@ -580,6 +586,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without product image 1
         </span>
       </strong>
       <button
+        aria-disabled="false"
         class="wrapper wrapper ghost ghost destructive medium"
         tabindex="0"
         type="button"
@@ -692,6 +699,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without product stock q
         class="controls group vertical"
       >
         <button
+          aria-disabled="false"
           class="wrapper button wrapper small fill secondary small top"
           type="button"
         >
@@ -702,8 +710,8 @@ exports[`<DraftOrderLineItemRow/> render() should render without product stock q
           </i>
         </button>
         <button
+          aria-disabled="true"
           class="wrapper button wrapper small fill secondary small bottom isDisabled"
-          disabled=""
           type="button"
         >
           <i
@@ -830,6 +838,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without quantity and wi
         class="controls group vertical"
       >
         <button
+          aria-disabled="false"
           class="wrapper button wrapper small fill secondary small top"
           type="button"
         >
@@ -840,8 +849,8 @@ exports[`<DraftOrderLineItemRow/> render() should render without quantity and wi
           </i>
         </button>
         <button
+          aria-disabled="true"
           class="wrapper button wrapper small fill secondary small bottom isDisabled"
-          disabled=""
           type="button"
         >
           <i

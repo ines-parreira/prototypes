@@ -189,6 +189,7 @@ exports[`<AddTicketField/> should render 1`] = `
               info
             </span>
             <button
+              aria-disabled="false"
               class="wrapper import ghost primary small"
               type="button"
             >
@@ -246,14 +247,15 @@ exports[`<AddTicketField/> should render 1`] = `
             class="leftGroup"
           >
             <button
+              aria-disabled="true"
               class="wrapper fill primary medium isDisabled"
               data-testid="save-button"
-              disabled=""
               type="button"
             >
               Save Changes
             </button>
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >

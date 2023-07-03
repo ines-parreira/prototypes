@@ -17,6 +17,7 @@ exports[`PeriodStatsFilter should merge stats filters on period change 1`] = `
 exports[`PeriodStatsFilter should render period stats filter 1`] = `
 <div>
   <button
+    aria-disabled="false"
     class="wrapper fill secondary medium"
     type="button"
   >

@@ -149,6 +149,7 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
                   class="controls group vertical"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small top"
                     type="button"
                   >
@@ -159,8 +160,8 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
                     </i>
                   </button>
                   <button
+                    aria-disabled="true"
                     class="wrapper button wrapper small fill secondary small bottom isDisabled"
-                    disabled=""
                     type="button"
                   >
                     <i
@@ -186,6 +187,7 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
                   </span>
                 </strong>
                 <button
+                  aria-disabled="false"
                   class="wrapper wrapper ghost ghost destructive medium"
                   tabindex="0"
                   type="button"
@@ -295,6 +297,7 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
                   class="controls group vertical"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small top"
                     type="button"
                   >
@@ -305,6 +308,7 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
                     </i>
                   </button>
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small bottom"
                     type="button"
                   >
@@ -331,6 +335,7 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
                   </span>
                 </strong>
                 <button
+                  aria-disabled="false"
                   class="wrapper wrapper ghost ghost destructive medium"
                   tabindex="0"
                   type="button"
@@ -630,6 +635,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                   class="controls group vertical"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small top"
                     type="button"
                   >
@@ -640,8 +646,8 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                     </i>
                   </button>
                   <button
+                    aria-disabled="true"
                     class="wrapper button wrapper small fill secondary small bottom isDisabled"
-                    disabled=""
                     type="button"
                   >
                     <i
@@ -667,6 +673,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                   </span>
                 </strong>
                 <button
+                  aria-disabled="false"
                   class="wrapper wrapper ghost ghost destructive medium"
                   tabindex="0"
                   type="button"
@@ -776,6 +783,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                   class="controls group vertical"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small top"
                     type="button"
                   >
@@ -786,6 +794,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                     </i>
                   </button>
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small bottom"
                     type="button"
                   >
@@ -812,6 +821,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                   </span>
                 </strong>
                 <button
+                  aria-disabled="false"
                   class="wrapper wrapper ghost ghost destructive medium"
                   tabindex="0"
                   type="button"
@@ -1029,6 +1039,7 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                   class="controls group vertical"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small top"
                     type="button"
                   >
@@ -1039,8 +1050,8 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                     </i>
                   </button>
                   <button
+                    aria-disabled="true"
                     class="wrapper button wrapper small fill secondary small bottom isDisabled"
-                    disabled=""
                     type="button"
                   >
                     <i
@@ -1066,6 +1077,7 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                   </span>
                 </strong>
                 <button
+                  aria-disabled="false"
                   class="wrapper wrapper ghost ghost destructive medium"
                   tabindex="0"
                   type="button"
@@ -1175,6 +1187,7 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                   class="controls group vertical"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small top"
                     type="button"
                   >
@@ -1185,6 +1198,7 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                     </i>
                   </button>
                   <button
+                    aria-disabled="false"
                     class="wrapper button wrapper small fill secondary small bottom"
                     type="button"
                   >
@@ -1211,6 +1225,7 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                   </span>
                 </strong>
                 <button
+                  aria-disabled="false"
                   class="wrapper wrapper ghost ghost destructive medium"
                   tabindex="0"
                   type="button"

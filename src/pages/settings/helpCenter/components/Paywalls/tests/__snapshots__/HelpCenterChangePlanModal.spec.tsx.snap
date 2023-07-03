@@ -135,12 +135,14 @@ exports[`HelpCenterChangePlanModal should render the automation plan card when c
               class="footer modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >

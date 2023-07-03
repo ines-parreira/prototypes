@@ -189,6 +189,7 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
         </div>
         <div>
           <button
+            aria-disabled="false"
             class="wrapper fill secondary medium"
             type="button"
           >
@@ -422,6 +423,7 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
         </div>
         <div>
           <button
+            aria-disabled="false"
             class="wrapper fill secondary medium"
             type="button"
           >
@@ -655,6 +657,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
         </div>
         <div>
           <button
+            aria-disabled="false"
             class="wrapper fill secondary medium"
             type="button"
           >
@@ -903,8 +906,8 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
         class="group horizontal"
       >
         <button
+          aria-disabled="true"
           class="wrapper wrapper fill secondary medium left isDisabled"
-          disabled=""
           id="prev-btn"
           type="button"
         >
@@ -915,6 +918,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
           </i>
         </button>
         <button
+          aria-disabled="false"
           class="wrapper wrapper fill secondary medium right"
           id="next-btn"
           type="button"

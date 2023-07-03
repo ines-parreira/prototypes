@@ -25,6 +25,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
       info
     </span>
     <button
+      aria-disabled="false"
       class="wrapper import ghost primary small"
       type="button"
     >
@@ -60,6 +61,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-1-remove"
         type="button"
@@ -101,6 +103,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-2-remove"
         type="button"
@@ -142,6 +145,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-3-remove"
         type="button"
@@ -183,6 +187,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-4-remove"
         type="button"
@@ -224,6 +229,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-5-remove"
         type="button"
@@ -265,6 +271,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-6-remove"
         type="button"
@@ -306,6 +313,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-7-remove"
         type="button"
@@ -347,6 +355,7 @@ exports[`<DropdownInput/> should render correctly 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-8-remove"
         type="button"
@@ -430,6 +439,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
       info
     </span>
     <button
+      aria-disabled="false"
       class="wrapper import ghost primary small"
       type="button"
     >
@@ -465,6 +475,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-1-remove"
         type="button"
@@ -511,6 +522,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-2-remove"
         type="button"
@@ -552,6 +564,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-3-remove"
         type="button"
@@ -598,6 +611,7 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-4-remove"
         type="button"
@@ -681,6 +695,7 @@ exports[`<DropdownInput/> should show an error for too much nesting 1`] = `
       info
     </span>
     <button
+      aria-disabled="false"
       class="wrapper import ghost primary small"
       type="button"
     >
@@ -716,6 +731,7 @@ exports[`<DropdownInput/> should show an error for too much nesting 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-1-remove"
         type="button"
@@ -757,6 +773,7 @@ exports[`<DropdownInput/> should show an error for too much nesting 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-2-remove"
         type="button"
@@ -798,6 +815,7 @@ exports[`<DropdownInput/> should show an error for too much nesting 1`] = `
         />
       </div>
       <button
+        aria-disabled="false"
         class="wrapper deleteButton wrapper ghost ghost destructive medium"
         data-testid="dropdown-choice-3-remove"
         type="button"

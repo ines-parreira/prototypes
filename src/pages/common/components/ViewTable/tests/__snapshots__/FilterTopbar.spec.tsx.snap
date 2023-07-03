@@ -162,12 +162,14 @@ exports[`<FilterTopbar /> render should not render delete button when creating n
         class="footer"
       >
         <button
+          aria-disabled="false"
           class="wrapper fill primary medium"
           type="submit"
         >
           Create view
         </button>
         <button
+          aria-disabled="false"
           class="wrapper ml-2 fill secondary medium"
           type="submit"
         >
@@ -350,6 +352,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
       class="cardActions"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill secondary medium"
         title="Export all view tickets"
         type="button"
@@ -530,6 +533,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
             class="group horizontal"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium left"
               id="confirm-1"
               type="button"
@@ -537,6 +541,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
               Update View
             </button>
             <button
+              aria-disabled="false"
               class="wrapper wrapper fill primary medium right"
               type="button"
             >
@@ -575,6 +580,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="false"
           class="wrapper ml-2 fill secondary medium"
           type="submit"
         >
@@ -587,6 +593,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
         </span>
       </div>
       <button
+        aria-disabled="false"
         class="wrapper fill destructive medium"
         id="delete-view"
         type="button"

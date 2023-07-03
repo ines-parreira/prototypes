@@ -551,8 +551,8 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                 isLoading={false}
                               >
                                 <button
+                                  aria-disabled={false}
                                   className="wrapper fill primary medium"
-                                  disabled={false}
                                   type="submit"
                                 >
                                   Save Changes
@@ -1534,8 +1534,8 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                 isLoading={false}
                               >
                                 <button
+                                  aria-disabled={false}
                                   className="wrapper fill primary medium"
-                                  disabled={false}
                                   type="submit"
                                 >
                                   Save Changes

@@ -36,6 +36,7 @@ exports[`InfobarWidgets component should have the proper color set 1`] = `
       id="card-wrapper-6"
     >
       <button
+        aria-disabled="false"
         class="wrapper ghost primary small"
         type="button"
       >
@@ -51,6 +52,7 @@ exports[`InfobarWidgets component should have the proper color set 1`] = `
         </span>
       </button>
       <button
+        aria-disabled="false"
         class="wrapper ghost destructive small"
         type="button"
       >

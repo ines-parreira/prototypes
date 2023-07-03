@@ -18,6 +18,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
           Macros
         </span>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
@@ -658,6 +659,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
           </div>
           <div>
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >

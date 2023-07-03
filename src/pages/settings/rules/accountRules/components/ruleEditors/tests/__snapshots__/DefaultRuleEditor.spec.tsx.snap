@@ -249,6 +249,7 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
   >
     <div>
       <button
+        aria-disabled="false"
         class="wrapper fill primary medium"
         form="rule-form"
         id="rule-item-save"
@@ -257,6 +258,7 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
         Update rule
       </button>
       <button
+        aria-disabled="false"
         class="wrapper ml-3 fill secondary medium"
         id="rule-item-duplicate"
         type="submit"
@@ -266,6 +268,7 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
     </div>
     <div>
       <button
+        aria-disabled="false"
         class="wrapper fill destructive medium"
         id="rule-item-delete"
         type="button"

@@ -10,8 +10,8 @@ exports[`<AutomationSubscriptionModal /> should display image 1`] = `
 
 exports[`<AutomationSubscriptionModal /> should display loader 1`] = `
 <button
+  aria-disabled="true"
   class="wrapper fill primary medium isDisabled"
-  disabled=""
   type="button"
 >
   <svg
@@ -140,12 +140,14 @@ exports[`<AutomationSubscriptionModal /> should render for customers already wit
               class="footer footerUnsubscribe modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper fill destructive medium"
                 type="button"
               >
                 Cancel subscription
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper fill secondary medium"
                 type="button"
               >
@@ -345,6 +347,7 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
               class="footer modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper fill secondary medium"
                 type="button"
               >
@@ -352,6 +355,7 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
               </button>
               <div>
                 <button
+                  aria-disabled="false"
                   class="wrapper fill primary medium"
                   type="button"
                 >

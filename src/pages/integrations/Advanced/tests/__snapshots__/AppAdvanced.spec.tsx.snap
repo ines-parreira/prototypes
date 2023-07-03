@@ -128,6 +128,7 @@ exports[`AppAdvanced should render 1`] = `
             Test error
           </b>
           <button
+            aria-disabled="false"
             class="wrapper wrapper ghost ghost secondary medium"
             title="More details"
             type="button"
@@ -191,6 +192,7 @@ exports[`AppAdvanced should render 1`] = `
             Test error 3
           </b>
           <button
+            aria-disabled="false"
             class="wrapper wrapper ghost ghost secondary medium"
             title="More details"
             type="button"

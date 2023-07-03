@@ -54,6 +54,7 @@ exports[`<AutomationCard /> should render 1`] = `
           class="d-flex align-items-center upgradeLink"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill secondary medium"
             type="button"
           >
@@ -113,6 +114,7 @@ exports[`<AutomationCard /> should render for customers already with full add-on
       class="footer"
     >
       <button
+        aria-disabled="false"
         class="wrapper button fill secondary medium"
         type="button"
       >
@@ -192,6 +194,7 @@ exports[`<AutomationCard /> should render for customers already with legacy add-
           class="d-flex align-items-center upgradeLink"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill secondary medium"
             type="button"
           >
@@ -258,6 +261,7 @@ exports[`<AutomationCard /> should render for trialing customers 1`] = `
           class="d-flex align-items-center upgradeLink"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill secondary medium"
             type="button"
           >

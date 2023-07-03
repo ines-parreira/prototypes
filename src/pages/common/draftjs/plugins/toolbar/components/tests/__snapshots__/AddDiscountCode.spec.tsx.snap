@@ -6,6 +6,7 @@ exports[`<AddDiscountCode/> should not render when the popover is closed 1`] = `
     class="popoverWrapper"
   >
     <button
+      aria-disabled="false"
       class="wrapper button wrapper small fill secondary small"
       id="toolbar-button-1"
       type="button"
@@ -29,6 +30,7 @@ exports[`<AddDiscountCode/> should render the discount picker when the popover i
     class="popoverWrapper"
   >
     <button
+      aria-disabled="false"
       class="wrapper button wrapper small fill secondary small"
       id="toolbar-button-2"
       type="button"
@@ -67,6 +69,7 @@ exports[`<AddDiscountCode/> should render the discount picker when the popover i
             class="backContainer"
           >
             <button
+              aria-disabled="false"
               class="wrapper mr-2 fill primary small"
               tabindex="-1"
               type="button"
@@ -127,6 +130,7 @@ exports[`<AddDiscountCode/> should render the store picker because of multiple i
     class="popoverWrapper"
   >
     <button
+      aria-disabled="false"
       class="wrapper button wrapper small fill secondary small"
       id="toolbar-button-3"
       type="button"

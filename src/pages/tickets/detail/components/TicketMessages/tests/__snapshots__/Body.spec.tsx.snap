@@ -73,6 +73,7 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
                     class="buttons group vertical"
                   >
                     <button
+                      aria-disabled="false"
                       class="wrapper fill secondary medium top"
                       role="link"
                       type="button"
@@ -80,13 +81,14 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
                       View details
                     </button>
                     <button
+                      aria-disabled="true"
                       class="wrapper fill primary medium middle isDisabled"
-                      disabled=""
                       type="button"
                     >
                       Share
                     </button>
                     <button
+                      aria-disabled="false"
                       class="wrapper fill secondary medium bottom"
                       role="link"
                       type="button"

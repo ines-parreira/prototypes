@@ -6,12 +6,14 @@ exports[`<ButtonsGroup/> should render with correct label and without a dropdown
     class="actionButtons group horizontal"
   >
     <button
+      aria-disabled="false"
       class="wrapper actionButton fill secondary small left"
       type="button"
     >
       renders
     </button>
     <button
+      aria-disabled="false"
       class="wrapper actionButton fill secondary small right"
       type="button"
     >

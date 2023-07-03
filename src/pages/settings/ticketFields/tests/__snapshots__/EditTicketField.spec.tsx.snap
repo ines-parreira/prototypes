@@ -221,6 +221,7 @@ exports[`<EditTicketField/> should render 2`] = `
             class="leftGroup"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               data-testid="save-button"
               type="button"
@@ -228,6 +229,7 @@ exports[`<EditTicketField/> should render 2`] = `
               Save Changes
             </button>
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >
@@ -238,6 +240,7 @@ exports[`<EditTicketField/> should render 2`] = `
             class="rightGroup"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >

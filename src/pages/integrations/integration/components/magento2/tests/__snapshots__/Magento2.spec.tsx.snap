@@ -204,6 +204,7 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
             to="/app/settings/integrations/magento2/new"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
@@ -422,13 +423,14 @@ exports[`<Magento2/> Integration should render 1`] = `
           </span>
           <div>
             <button
+              aria-disabled="true"
               class="wrapper mr-2 fill primary medium isDisabled"
-              disabled=""
               type="submit"
             >
               Update Connection
             </button>
             <button
+              aria-disabled="false"
               class="wrapper float-right fill destructive medium"
               id="delete-integration"
               type="button"
@@ -533,6 +535,7 @@ exports[`<Magento2/> List should render 1`] = `
       to="/app/settings/integrations/magento2/new"
     >
       <button
+        aria-disabled="false"
         class="wrapper actionButton fill primary medium"
         type="button"
       >
@@ -730,8 +733,8 @@ exports[`<Magento2/> New should render 1`] = `
           </span>
           <div>
             <button
+              aria-disabled="true"
               class="wrapper mr-2 fill primary medium isDisabled"
-              disabled=""
               type="submit"
             >
               Connect App

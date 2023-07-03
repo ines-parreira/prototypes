@@ -168,6 +168,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
       class="leftGroup"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill primary medium"
         data-testid="save-button"
         type="button"
@@ -175,6 +176,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
         Save Changes
       </button>
       <button
+        aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
@@ -185,6 +187,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
       class="rightGroup"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
@@ -361,6 +364,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
         info
       </span>
       <button
+        aria-disabled="false"
         class="wrapper import ghost primary small"
         type="button"
       >
@@ -396,6 +400,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
           />
         </div>
         <button
+          aria-disabled="false"
           class="wrapper deleteButton wrapper ghost ghost destructive medium"
           data-testid="dropdown-choice-11-remove"
           type="button"
@@ -437,6 +442,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
           />
         </div>
         <button
+          aria-disabled="false"
           class="wrapper deleteButton wrapper ghost ghost destructive medium"
           data-testid="dropdown-choice-12-remove"
           type="button"
@@ -478,6 +484,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
           />
         </div>
         <button
+          aria-disabled="false"
           class="wrapper deleteButton wrapper ghost ghost destructive medium"
           data-testid="dropdown-choice-13-remove"
           type="button"
@@ -541,6 +548,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
       class="leftGroup"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill primary medium"
         data-testid="save-button"
         type="button"
@@ -548,6 +556,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
         Save Changes
       </button>
       <button
+        aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
@@ -558,6 +567,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
       class="rightGroup"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
@@ -715,6 +725,7 @@ exports[`<FieldForm/> should render correctly 3`] = `
       class="leftGroup"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill primary medium"
         data-testid="save-button"
         type="button"
@@ -722,6 +733,7 @@ exports[`<FieldForm/> should render correctly 3`] = `
         Save Changes
       </button>
       <button
+        aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
@@ -732,6 +744,7 @@ exports[`<FieldForm/> should render correctly 3`] = `
       class="rightGroup"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
@@ -889,6 +902,7 @@ exports[`<FieldForm/> should render correctly 4`] = `
       class="leftGroup"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill primary medium"
         data-testid="save-button"
         type="button"
@@ -896,6 +910,7 @@ exports[`<FieldForm/> should render correctly 4`] = `
         Save Changes
       </button>
       <button
+        aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
@@ -906,6 +921,7 @@ exports[`<FieldForm/> should render correctly 4`] = `
       class="rightGroup"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
@@ -1084,6 +1100,7 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
       class="leftGroup"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill primary medium"
         data-testid="save-button"
         type="button"
@@ -1091,6 +1108,7 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
         Save Changes
       </button>
       <button
+        aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
@@ -1101,6 +1119,7 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
       class="rightGroup"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >

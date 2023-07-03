@@ -148,6 +148,7 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
                   class="childWrapper"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper fill secondary medium"
                     type="button"
                   >
@@ -158,8 +159,8 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
                   class="childWrapper"
                 >
                   <button
+                    aria-disabled="true"
                     class="wrapper fill primary medium isDisabled"
-                    disabled=""
                     type="submit"
                   >
                     Create team

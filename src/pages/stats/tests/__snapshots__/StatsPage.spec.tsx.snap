@@ -18,6 +18,7 @@ exports[`StatsPage should render the title, children and filters 1`] = `
           Foo
         </span>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >

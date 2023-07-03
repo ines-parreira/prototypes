@@ -88,6 +88,7 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
                     class="d-flex align-items-center upgradeLink"
                   >
                     <button
+                      aria-disabled="false"
                       class="wrapper fill primary medium"
                       type="button"
                     >
@@ -203,6 +204,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
                     class="d-flex align-items-center upgradeLink"
                   >
                     <button
+                      aria-disabled="false"
                       class="wrapper fill primary medium"
                       type="button"
                     >
@@ -317,6 +319,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
                     class="d-flex align-items-center upgradeLink"
                   >
                     <button
+                      aria-disabled="false"
                       class="wrapper fill primary medium"
                       type="button"
                     >
@@ -432,6 +435,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
                     class="d-flex align-items-center upgradeLink"
                   >
                     <button
+                      aria-disabled="false"
                       class="wrapper fill primary medium"
                       type="button"
                     >
@@ -546,6 +550,7 @@ exports[`HelpCenterPaywall should render the component correctly for when the pl
                     class="d-flex align-items-center upgradeLink"
                   >
                     <button
+                      aria-disabled="false"
                       class="wrapper fill primary medium"
                       type="button"
                     >

@@ -68,8 +68,8 @@ exports[`<PhoneContactInfoSection /> should render the component 1`] = `
       </div>
     </div>
     <button
+      aria-disabled="true"
       class="wrapper addPhoneNumberButton fill secondary medium isDisabled"
-      disabled=""
       type="button"
     >
       <i

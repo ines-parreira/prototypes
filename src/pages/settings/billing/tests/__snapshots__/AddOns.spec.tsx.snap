@@ -70,6 +70,7 @@ exports[`<AddOns /> should render the add ons for pay-as-you-go subscribers as i
               class="d-flex align-items-center upgradeLink"
             >
               <button
+                aria-disabled="false"
                 class="wrapper fill secondary medium"
                 type="button"
               >

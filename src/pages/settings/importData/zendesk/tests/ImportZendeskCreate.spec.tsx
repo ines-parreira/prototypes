@@ -35,12 +35,8 @@ describe('<ImportZendeskCreate/>', () => {
         it('without any errors and disabled creation button', () => {
             const {getByText} = renderComponent(defaultProps)
             expect(
-                (
-                    getByText('Start import').closest(
-                        'button'
-                    ) as HTMLButtonElement
-                ).disabled
-            ).toEqual(true)
+                getByText('Start import').closest('button') as HTMLButtonElement
+            ).toHaveAttribute('aria-disabled', 'true')
         })
 
         it('with error because domain already exists', () => {
@@ -51,12 +47,8 @@ describe('<ImportZendeskCreate/>', () => {
 
             expect(getByText('This domain was already imported.')).toBeDefined()
             expect(
-                (
-                    getByText('Start import').closest(
-                        'button'
-                    ) as HTMLButtonElement
-                ).disabled
-            ).toEqual(true)
+                getByText('Start import').closest('button') as HTMLButtonElement
+            ).toHaveAttribute('aria-disabled', 'true')
         })
 
         it('submit the form to create integration', () => {
@@ -85,12 +77,8 @@ describe('<ImportZendeskCreate/>', () => {
             })
 
             expect(
-                (
-                    getByText('Start import').closest(
-                        'button'
-                    ) as HTMLButtonElement
-                ).disabled
-            ).toEqual(false)
+                getByText('Start import').closest('button') as HTMLButtonElement
+            ).toHaveAttribute('aria-disabled', 'false')
 
             fireEvent.click(getByText('Start import'))
             expect(mockedCreateIntegration).toBeCalledWith(

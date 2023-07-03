@@ -401,7 +401,7 @@ describe('<FilterTopbar />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText('Update View'))
+        fireEvent.click(getByText(/Update view/i))
 
         await waitFor(() => {
             fireEvent.click(getByText('Confirm'))
@@ -445,11 +445,11 @@ describe('<FilterTopbar />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText('Create view'))
+        fireEvent.click(getByText(/Create view/i))
         await waitFor(() => {
             expect(
-                (getByText('Create view') as HTMLButtonElement).disabled
-            ).toBe(false)
+                getByText(/Create view/i) as HTMLButtonElement
+            ).toHaveAttribute('aria-disabled', 'false')
         })
 
         expect(viewCreatedMock).not.toHaveBeenCalled()
@@ -467,21 +467,21 @@ describe('<FilterTopbar />', () => {
         const toggle = getByText('arrow_drop_down')
 
         expect(
-            getByText('Save as new view')
+            getByText(/Save as new view/i)
                 .closest('.dropdown-menu')!
                 .getAttribute('aria-hidden')
         ).toBe('true')
 
         fireEvent.click(toggle)
         expect(
-            getByText('Save as new view')
+            getByText(/Save as new view/i)
                 .closest('.dropdown-menu')!
                 .getAttribute('aria-hidden')
         ).toBe('false')
 
         fireEvent.click(toggle)
         expect(
-            getByText('Save as new view')
+            getByText(/Save as new view/i)
                 .closest('.dropdown-menu')!
                 .getAttribute('aria-hidden')
         ).toBe('true')
@@ -496,9 +496,9 @@ describe('<FilterTopbar />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText('Update View'))
+        fireEvent.click(getByText(/Update view/i))
         await waitFor(() => {
-            expect(getByText('Confirm')).toBeTruthy()
+            expect(getByText(/Confirm/i)).toBeTruthy()
         })
 
         rerender(
@@ -526,7 +526,7 @@ describe('<FilterTopbar />', () => {
             </Provider>
         )
         await waitFor(() => {
-            expect(queryByText('Confirm')).toBeNull()
+            expect(queryByText(/Confirm/i)).toBeNull()
         })
     })
 
@@ -543,13 +543,13 @@ describe('<FilterTopbar />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText('Update View'))
+        fireEvent.click(getByText(/Update view/i))
         await waitFor(() => {
-            expect(getByText('Confirm')).toBeTruthy()
+            expect(getByText(/Confirm/i)).toBeTruthy()
         })
-        fireEvent.click(getByText('Cancel'))
+        fireEvent.click(getByText(/Cancel/i))
         await waitFor(() => {
-            expect(queryByText('Confirm')).toBeNull()
+            expect(queryByText(/Confirm/i)).toBeNull()
         })
     })
 
@@ -585,7 +585,7 @@ describe('<FilterTopbar />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText('Update View'))
+        fireEvent.click(getByText(/Update view/i))
         expect(
             getByText(/No changes have been made/i).classList.contains(
                 'visible'
@@ -611,15 +611,13 @@ describe('<FilterTopbar />', () => {
         )
 
         expect(
-            (getByTitle('Export all view tickets') as HTMLButtonElement)
-                .disabled
-        ).toBe(false)
+            getByTitle('Export all view tickets') as HTMLButtonElement
+        ).toHaveAttribute('aria-disabled', 'false')
 
         fireEvent.click(getByTitle('Export all view tickets'))
         expect(
-            (getByTitle('Export all view tickets') as HTMLButtonElement)
-                .disabled
-        ).toBe(true)
+            getByTitle('Export all view tickets') as HTMLButtonElement
+        ).toHaveAttribute('aria-disabled', 'true')
 
         expect(createJobMock).toHaveBeenCalledWith(
             createViewWithFilters(ticketChannelEqualsEmailFilter),
@@ -628,9 +626,8 @@ describe('<FilterTopbar />', () => {
         )
         await waitFor(() => {
             expect(
-                (getByTitle('Export all view tickets') as HTMLButtonElement)
-                    .disabled
-            ).toBe(false)
+                getByTitle('Export all view tickets') as HTMLButtonElement
+            ).toHaveAttribute('aria-disabled', 'false')
         })
     })
 })

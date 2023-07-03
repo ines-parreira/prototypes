@@ -48,6 +48,7 @@ exports[`<RulesList/> should render the rules list 1`] = `
             to="/app/automation/rules/library"
           >
             <button
+              aria-disabled="false"
               class="wrapper float-right fill primary medium"
               type="button"
             >

@@ -88,6 +88,7 @@ exports[`UsageAndPlansView should render 1`] = `
                 /
               </div>
               <button
+                aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >
@@ -146,6 +147,7 @@ exports[`UsageAndPlansView should render 1`] = `
                 /
               </div>
               <button
+                aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >
@@ -204,6 +206,7 @@ exports[`UsageAndPlansView should render 1`] = `
                 /
               </div>
               <button
+                aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >
@@ -262,6 +265,7 @@ exports[`UsageAndPlansView should render 1`] = `
                 /
               </div>
               <button
+                aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >

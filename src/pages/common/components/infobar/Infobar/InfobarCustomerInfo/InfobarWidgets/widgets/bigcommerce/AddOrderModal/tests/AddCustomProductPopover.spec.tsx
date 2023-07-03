@@ -21,7 +21,10 @@ describe('AddCustomProductPopover', () => {
 
         userEvent.click(screen.getByRole('button', {name: 'Add Item'}))
         expect(onAddCustomProductMock).toHaveBeenCalledTimes(0)
-        expect(screen.getByRole('button', {name: 'Add Item'})).toBeDisabled()
+        expect(screen.getByRole('button', {name: 'Add Item'})).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
     })
 
     it('adds custom product when clicking the `Add Item` button', async () => {

@@ -128,6 +128,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
                     /
                   </div>
                   <button
+                    aria-disabled="false"
                     class="wrapper fill primary medium"
                     type="button"
                   >
@@ -186,6 +187,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
                     /
                   </div>
                   <button
+                    aria-disabled="false"
                     class="wrapper fill primary medium"
                     type="button"
                   >
@@ -244,6 +246,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
                     /
                   </div>
                   <button
+                    aria-disabled="false"
                     class="wrapper fill primary medium"
                     type="button"
                   >
@@ -302,6 +305,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
                     /
                   </div>
                   <button
+                    aria-disabled="false"
                     class="wrapper fill primary medium"
                     type="button"
                   >

@@ -129,6 +129,7 @@ exports[`<ContactFormStartView /> \`About\` section should display description 1
               to="/app/settings/contact-form/new"
             >
               <button
+                aria-disabled="false"
                 class="wrapper full-width fill primary medium"
                 type="button"
               >
@@ -233,6 +234,7 @@ exports[`<ContactFormStartView /> \`Forms\` section should render ManageContactF
         You have no contact forms at the moment.
       </p>
       <button
+        aria-disabled="false"
         aria-label="create-form-bottom"
         class="wrapper fill primary medium"
         type="button"

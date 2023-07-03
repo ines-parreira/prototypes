@@ -3,6 +3,7 @@
 exports[`<ActionButton /> matches default snapshot 1`] = `
 <div>
   <button
+    aria-disabled="false"
     class="wrapper ghost primary medium"
     id="action-button-1"
     type="button"

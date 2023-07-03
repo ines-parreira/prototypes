@@ -14,6 +14,7 @@ exports[`<PhoneNumberListContainer /> render() should render Candu selector with
     </h1>
     <div>
       <button
+        aria-disabled="false"
         class="wrapper fill primary medium"
         type="button"
       >
@@ -53,6 +54,7 @@ exports[`<PhoneNumberListContainer /> render() should render with a number 1`] =
     </h1>
     <div>
       <button
+        aria-disabled="false"
         class="wrapper fill primary medium"
         type="button"
       >

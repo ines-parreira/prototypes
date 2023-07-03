@@ -302,8 +302,8 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
         >
           <div>
             <button
+              aria-disabled="true"
               class="wrapper fill primary medium isDisabled"
-              disabled=""
               form="rule-form"
               id="rule-item-save"
               type="button"
@@ -311,8 +311,8 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
               Update rule
             </button>
             <button
+              aria-disabled="true"
               class="wrapper ml-3 fill secondary medium isDisabled"
-              disabled=""
               id="rule-item-duplicate"
               type="submit"
             >
@@ -321,6 +321,7 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
           </div>
           <div>
             <button
+              aria-disabled="false"
               class="wrapper fill destructive medium"
               id="rule-item-delete"
               type="button"
@@ -644,8 +645,8 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
         >
           <div>
             <button
+              aria-disabled="true"
               class="wrapper fill primary medium isDisabled"
-              disabled=""
               form="rule-form"
               id="rule-item-save"
               type="button"
@@ -653,8 +654,8 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
               Update rule
             </button>
             <button
+              aria-disabled="true"
               class="wrapper ml-3 fill secondary medium isDisabled"
-              disabled=""
               id="rule-item-duplicate"
               type="submit"
             >
@@ -663,6 +664,7 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
           </div>
           <div>
             <button
+              aria-disabled="false"
               class="wrapper fill destructive medium"
               id="rule-item-delete"
               type="button"
@@ -972,8 +974,8 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
         >
           <div>
             <button
+              aria-disabled="true"
               class="wrapper fill primary medium isDisabled"
-              disabled=""
               form="rule-form"
               id="rule-item-save"
               type="button"
@@ -1001,6 +1003,7 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
             to="/app/automation/rules/library"
           >
             <button
+              aria-disabled="false"
               class="wrapper cardButton fill primary medium"
               type="button"
             >

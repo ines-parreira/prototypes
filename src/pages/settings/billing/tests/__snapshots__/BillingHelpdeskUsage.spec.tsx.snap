@@ -129,6 +129,7 @@ exports[`<BillingHelpdeskUsage /> should display price 1`] = `
         </strong>
       </div>
       <button
+        aria-disabled="false"
         class="wrapper action fill primary medium"
         type="button"
       >
@@ -257,6 +258,7 @@ exports[`<BillingHelpdeskUsage /> should load with empty props 1`] = `
         </strong>
       </div>
       <button
+        aria-disabled="false"
         class="wrapper action fill primary medium"
         type="button"
       >

@@ -354,7 +354,7 @@ describe('<LineItemRow/>', () => {
         )
 
         expect(screen.getByRole('textbox')).toBeDisabled()
-        expect(screen.getByText('▼')).toBeDisabled()
-        expect(screen.getByText('▲')).toBeDisabled()
+        expect(screen.getByText('▼')).toHaveAttribute('aria-disabled', 'true')
+        expect(screen.getByText('▲')).toHaveAttribute('aria-disabled', 'true')
     })
 })

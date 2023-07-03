@@ -77,6 +77,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
             id="rule-suggestion-install-button"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill secondary small"
               type="button"
             >
@@ -84,6 +85,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
             </button>
           </div>
           <button
+            aria-disabled="false"
             class="wrapper fill primary small"
             type="button"
           >
@@ -173,6 +175,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
         class="expandButton"
       >
         <button
+          aria-disabled="false"
           class="wrapper ghost secondary medium"
           type="button"
         >
@@ -266,6 +269,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
             id="rule-suggestion-install-button"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill secondary small"
               type="button"
             >
@@ -273,6 +277,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
             </button>
           </div>
           <button
+            aria-disabled="false"
             class="wrapper fill primary small"
             type="button"
           >

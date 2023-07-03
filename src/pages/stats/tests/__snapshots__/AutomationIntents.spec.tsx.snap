@@ -18,6 +18,7 @@ exports[`AutomationIntents should render the filters and stats when stats filter
           Intents
         </span>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
@@ -268,6 +269,7 @@ exports[`AutomationIntents should render the filters and stats when stats filter
           </div>
           <div>
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >

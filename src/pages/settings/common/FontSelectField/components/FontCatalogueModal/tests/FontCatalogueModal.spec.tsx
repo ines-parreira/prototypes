@@ -342,10 +342,10 @@ describe('<FontCatalogueModal />', () => {
         const submitButton = screen.getByText<HTMLButtonElement>(
             'Save Selected Fonts'
         )
-        expect(submitButton.disabled).toBe(true)
+        expect(submitButton).toHaveAttribute('aria-disabled', 'true')
 
         fireEvent.click(screen.getByText('Adriana'))
-        expect(submitButton.disabled).toBe(false)
+        expect(submitButton).toHaveAttribute('aria-disabled', 'false')
 
         const selectedFontsContainer = (
             screen.getByText('Selected Fonts').closest('div') as HTMLElement
@@ -355,7 +355,7 @@ describe('<FontCatalogueModal />', () => {
             .closest('div') as HTMLDivElement
 
         fireEvent.click(within(fontInSelectedList).getByText('close'))
-        expect(submitButton.disabled).toBe(true)
+        expect(submitButton).toHaveAttribute('aria-disabled', 'true')
 
         fireEvent.click(screen.getByText('Adriana'))
         fireEvent.click(submitButton)

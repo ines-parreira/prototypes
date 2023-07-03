@@ -104,6 +104,7 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
           </span>
           <div>
             <button
+              aria-disabled="false"
               class="wrapper float-right fill destructive medium"
               id="integration-deletion-confirm-button"
               type="button"

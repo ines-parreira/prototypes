@@ -17,6 +17,7 @@ exports[`<List /> should render 1`] = `
         to="/app/settings/users/add/"
       >
         <button
+          aria-disabled="false"
           class="wrapper fill primary medium"
           type="button"
         >
@@ -176,6 +177,7 @@ exports[`<List /> should render 1`] = `
             class="delete"
           >
             <button
+              aria-disabled="false"
               class="wrapper wrapper ghost ghost destructive medium"
               id="delete-agent-1"
               type="button"
@@ -247,6 +249,7 @@ exports[`<List /> should render 1`] = `
             class="delete"
           >
             <button
+              aria-disabled="false"
               class="wrapper wrapper ghost ghost destructive medium"
               id="delete-agent-2"
               type="button"

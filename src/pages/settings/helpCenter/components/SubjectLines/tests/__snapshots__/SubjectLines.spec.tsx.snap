@@ -134,6 +134,7 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
       class="footer"
     >
       <button
+        aria-disabled="false"
         class="wrapper button fill secondary medium"
         type="button"
       >
@@ -174,6 +175,7 @@ exports[`<SubjectLines /> should render the component with no subject lines and 
       class="footer"
     >
       <button
+        aria-disabled="false"
         class="wrapper button fill secondary medium"
         type="button"
       >

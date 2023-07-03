@@ -26,6 +26,7 @@ exports[`<RuleLibrary/> render should filter cards for the library 1`] = `
           class="d-flex align-items-center upgradeLink"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill primary medium"
             type="button"
           >
@@ -141,6 +142,7 @@ exports[`<RuleLibrary/> render should render cards for the library 1`] = `
           class="d-flex align-items-center upgradeLink"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill primary medium"
             type="button"
           >

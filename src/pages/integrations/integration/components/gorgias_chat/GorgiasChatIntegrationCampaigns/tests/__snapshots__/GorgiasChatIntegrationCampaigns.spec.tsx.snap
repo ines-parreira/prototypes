@@ -60,6 +60,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the delete b
               to="[object Object]"
             >
               <button
+                aria-disabled="false"
                 class="wrapper ghost primary medium"
                 type="button"
               >
@@ -82,6 +83,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the delete b
           to="/app/settings/channels/gorgias_chat/118/campaigns/new"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill primary medium"
             type="button"
           >
@@ -188,6 +190,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the delete b
             class="smallest align-middle"
           >
             <button
+              aria-disabled="false"
               class="wrapper mr-1 wrapper ghost ghost secondary medium"
               data-testid="duplicate-icon-button"
               title="Duplicate campaign"
@@ -200,6 +203,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the delete b
               </i>
             </button>
             <button
+              aria-disabled="false"
               class="wrapper mr-1 wrapper ghost ghost destructive medium"
               data-testid="delete-icon-button"
               id="delete-campaign-156a4d-fg68h40-sd6f4"
@@ -257,6 +261,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the delete b
             class="smallest align-middle"
           >
             <button
+              aria-disabled="false"
               class="wrapper mr-1 wrapper ghost ghost secondary medium"
               data-testid="duplicate-icon-button"
               title="Duplicate campaign"
@@ -269,6 +274,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the delete b
               </i>
             </button>
             <button
+              aria-disabled="false"
               class="wrapper mr-1 wrapper ghost ghost destructive medium"
               data-testid="delete-icon-button"
               id="delete-campaign-not-so-good-campaign-d8f9-fds486-sf78"
@@ -331,6 +337,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the duplicat
               to="[object Object]"
             >
               <button
+                aria-disabled="false"
                 class="wrapper ghost primary medium"
                 type="button"
               >
@@ -353,6 +360,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the duplicat
           to="/app/settings/channels/gorgias_chat/118/campaigns/new"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill primary medium"
             type="button"
           >
@@ -459,6 +467,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the duplicat
             class="smallest align-middle"
           >
             <button
+              aria-disabled="false"
               class="wrapper mr-1 wrapper ghost ghost secondary medium"
               data-testid="duplicate-icon-button"
               title="Duplicate campaign"
@@ -471,6 +480,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the duplicat
               </i>
             </button>
             <button
+              aria-disabled="false"
               class="wrapper mr-1 wrapper ghost ghost destructive medium"
               data-testid="delete-icon-button"
               id="delete-campaign-156a4d-fg68h40-sd6f4"
@@ -528,6 +538,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the duplicat
             class="smallest align-middle"
           >
             <button
+              aria-disabled="false"
               class="wrapper mr-1 wrapper ghost ghost secondary medium"
               data-testid="duplicate-icon-button"
               title="Duplicate campaign"
@@ -540,6 +551,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the duplicat
               </i>
             </button>
             <button
+              aria-disabled="false"
               class="wrapper mr-1 wrapper ghost ghost destructive medium"
               data-testid="delete-icon-button"
               id="delete-campaign-not-so-good-campaign-d8f9-fds486-sf78"
@@ -602,6 +614,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
               to="[object Object]"
             >
               <button
+                aria-disabled="false"
                 class="wrapper ghost primary medium"
                 type="button"
               >
@@ -624,6 +637,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
           to="/app/settings/channels/gorgias_chat/118/campaigns/new"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill primary medium"
             type="button"
           >
@@ -731,6 +745,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
               to="[object Object]"
             >
               <button
+                aria-disabled="false"
                 class="wrapper ghost primary medium"
                 type="button"
               >
@@ -753,6 +768,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
           to="/app/settings/channels/gorgias_chat/118/campaigns/new"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill primary medium"
             type="button"
           >
@@ -859,6 +875,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
             class="smallest align-middle"
           >
             <button
+              aria-disabled="false"
               class="wrapper mr-1 wrapper ghost ghost secondary medium"
               data-testid="duplicate-icon-button"
               title="Duplicate campaign"
@@ -871,6 +888,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
               </i>
             </button>
             <button
+              aria-disabled="false"
               class="wrapper mr-1 wrapper ghost ghost destructive medium"
               data-testid="delete-icon-button"
               id="delete-campaign-156a4d-fg68h40-sd6f4"
@@ -928,6 +946,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
             class="smallest align-middle"
           >
             <button
+              aria-disabled="false"
               class="wrapper mr-1 wrapper ghost ghost secondary medium"
               data-testid="duplicate-icon-button"
               title="Duplicate campaign"
@@ -940,6 +959,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
               </i>
             </button>
             <button
+              aria-disabled="false"
               class="wrapper mr-1 wrapper ghost ghost destructive medium"
               data-testid="delete-icon-button"
               id="delete-campaign-not-so-good-campaign-d8f9-fds486-sf78"

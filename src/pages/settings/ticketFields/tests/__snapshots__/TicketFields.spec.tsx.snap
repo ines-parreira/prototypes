@@ -48,6 +48,7 @@ exports[`<TicketFields/> should render active ticket fields 1`] = `
             to="/app/settings/ticket-fields/add"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
@@ -139,6 +140,7 @@ exports[`<TicketFields/> should render archived ticket fields 1`] = `
             to="/app/settings/ticket-fields/add"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
@@ -225,6 +227,7 @@ exports[`<TicketFields/> should render get started 1`] = `
       to="/app/settings/ticket-fields/add"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill primary medium"
         type="button"
       >
@@ -283,6 +286,7 @@ exports[`<TicketFields/> should render no active ticket fields 1`] = `
             to="/app/settings/ticket-fields/add"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
@@ -380,6 +384,7 @@ exports[`<TicketFields/> should render no archived ticket fields 1`] = `
             to="/app/settings/ticket-fields/add"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
@@ -477,6 +482,7 @@ exports[`<TicketFields/> should render no results found 1`] = `
             to="/app/settings/ticket-fields/add"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >

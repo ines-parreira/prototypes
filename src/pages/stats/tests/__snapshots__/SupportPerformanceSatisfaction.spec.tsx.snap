@@ -18,6 +18,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
           Satisfaction
         </span>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
@@ -542,6 +543,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
           </div>
           <div>
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >

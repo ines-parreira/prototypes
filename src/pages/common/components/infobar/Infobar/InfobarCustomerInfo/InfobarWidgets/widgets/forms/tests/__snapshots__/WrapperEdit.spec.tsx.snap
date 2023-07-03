@@ -50,6 +50,7 @@ exports[`<WrapperEdit/> should render 1`] = `
             class="wrapper"
           >
             <button
+              aria-disabled="false"
               class="wrapper button fill secondary medium"
               id="color-picker-2"
               type="button"

@@ -36,6 +36,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           Automation Add-on
         </span>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
@@ -124,6 +125,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           </div>
           <div>
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >
@@ -1429,6 +1431,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           Automation Add-on
         </span>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
@@ -1517,6 +1520,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           </div>
           <div>
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >
@@ -1977,6 +1981,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               Enable and display up to 6 custom Quick Response Flows to provide customers with automated responses to common questions.
             </div>
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
@@ -2031,6 +2036,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               Enable Article Recommendation to automatically recommend relevant help center articles to customers.
             </div>
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
@@ -2085,6 +2091,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               Monitor order issues with the report issue flow
             </div>
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
@@ -2131,6 +2138,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               Enable and customize these flows in Order Management Flows.
             </div>
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >

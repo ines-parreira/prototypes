@@ -181,6 +181,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="quantityButtonsContainer input-group-append"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium"
                   tabindex="0"
                   type="button"
@@ -188,8 +189,8 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                   ▲
                 </button>
                 <button
+                  aria-disabled="true"
                   class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium isDisabled"
-                  disabled=""
                   tabindex="0"
                   type="button"
                 >
@@ -299,6 +300,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="quantityButtonsContainer input-group-append"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium"
                   tabindex="0"
                   type="button"
@@ -306,8 +308,8 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                   ▲
                 </button>
                 <button
+                  aria-disabled="true"
                   class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium isDisabled"
-                  disabled=""
                   tabindex="0"
                   type="button"
                 >
@@ -429,6 +431,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                       class="controls group vertical"
                     >
                       <button
+                        aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small top"
                         type="button"
                       >
@@ -439,8 +442,8 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                         </i>
                       </button>
                       <button
+                        aria-disabled="true"
                         class="wrapper button wrapper small fill secondary small bottom isDisabled"
-                        disabled=""
                         type="button"
                       >
                         <i
@@ -716,6 +719,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                       class="controls group vertical"
                     >
                       <button
+                        aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small top"
                         type="button"
                       >
@@ -726,8 +730,8 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                         </i>
                       </button>
                       <button
+                        aria-disabled="true"
                         class="wrapper button wrapper small fill secondary small bottom isDisabled"
-                        disabled=""
                         type="button"
                       >
                         <i

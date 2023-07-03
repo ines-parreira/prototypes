@@ -52,6 +52,7 @@ exports[`<EmojiSelect/> .render() show emoji picker on icon click 1`] = `
               />
             </div>
             <button
+              aria-disabled="false"
               class="wrapper clearButton ghost primary medium"
               type="button"
             >

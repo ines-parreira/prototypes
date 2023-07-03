@@ -135,6 +135,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
     </label>
     <div>
       <button
+        aria-disabled="false"
         class="wrapper wrapper fill secondary medium"
         type="button"
       >
@@ -156,6 +157,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
     </label>
     <div>
       <button
+        aria-disabled="false"
         class="wrapper wrapper fill secondary medium"
         type="button"
       >

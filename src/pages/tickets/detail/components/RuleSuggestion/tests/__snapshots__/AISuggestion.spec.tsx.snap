@@ -60,6 +60,7 @@ exports[`AISuggestion should display AISuggestion 1`] = `
           class="buttons"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill primary small"
             type="button"
           >

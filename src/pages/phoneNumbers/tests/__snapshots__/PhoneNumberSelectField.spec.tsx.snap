@@ -531,6 +531,7 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                 class="childWrapper"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper fill primary medium"
                   type="button"
                 >

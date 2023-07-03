@@ -19,12 +19,14 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       For an added layer of security, enable Two-Factor Authentication for your Gorgias login.
     </div>
     <button
+      aria-disabled="false"
       class="wrapper mr-2 fill secondary medium"
       type="button"
     >
       Update 2FA
     </button>
     <button
+      aria-disabled="false"
       class="wrapper fill destructive medium"
       type="button"
     >
@@ -61,6 +63,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       For an added layer of security, enable Two-Factor Authentication for your Gorgias login.
     </div>
     <button
+      aria-disabled="false"
       class="wrapper mr-2 fill primary medium"
       type="button"
     >
@@ -97,12 +100,14 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       For an added layer of security, enable Two-Factor Authentication for your Gorgias login.
     </div>
     <button
+      aria-disabled="false"
       class="wrapper mr-2 fill secondary medium"
       type="button"
     >
       Update 2FA
     </button>
     <button
+      aria-disabled="false"
       class="wrapper fill destructive medium"
       type="button"
     >
@@ -131,6 +136,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       For an added layer of security, enable Two-Factor Authentication for your Gorgias login.
     </div>
     <button
+      aria-disabled="false"
       class="wrapper mr-2 fill primary medium"
       type="button"
     >

@@ -44,6 +44,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 to="[object Object]"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper ghost primary medium"
                   type="button"
                 >
@@ -135,6 +136,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             </div>
           </div>
           <button
+            aria-disabled="false"
             aria-label="help center preview"
             class="wrapper fill secondary medium"
             type="button"
@@ -281,6 +283,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
               id="help-header"
             >
               <button
+                aria-disabled="false"
                 class="wrapper add-link fill secondary medium"
                 type="button"
               >
@@ -380,6 +383,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
               id="help-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper add-link fill secondary medium"
                 type="button"
               >
@@ -547,13 +551,14 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
           class="form-group"
         >
           <button
+            aria-disabled="true"
             class="wrapper mr-2 fill primary medium isDisabled"
-            disabled=""
             type="button"
           >
             Save Changes
           </button>
           <button
+            aria-disabled="false"
             class="wrapper fill secondary medium"
             type="button"
           >

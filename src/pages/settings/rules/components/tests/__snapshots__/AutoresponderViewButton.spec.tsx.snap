@@ -2,6 +2,7 @@
 
 exports[`<AutoresponderViewButton/> should render correctly 1`] = `
 <button
+  aria-disabled="false"
   class="wrapper fill secondary medium"
   type="button"
 >

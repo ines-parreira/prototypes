@@ -177,14 +177,15 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="quantityButtonsContainer input-group-append"
               >
                 <button
+                  aria-disabled="true"
                   class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
-                  disabled=""
                   tabindex="0"
                   type="button"
                 >
                   ▲
                 </button>
                 <button
+                  aria-disabled="false"
                   class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
                   tabindex="0"
                   type="button"
@@ -295,14 +296,15 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="quantityButtonsContainer input-group-append"
               >
                 <button
+                  aria-disabled="true"
                   class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
-                  disabled=""
                   tabindex="0"
                   type="button"
                 >
                   ▲
                 </button>
                 <button
+                  aria-disabled="false"
                   class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
                   tabindex="0"
                   type="button"
@@ -425,6 +427,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                       class="controls group vertical"
                     >
                       <button
+                        aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small top"
                         type="button"
                       >
@@ -435,8 +438,8 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                         </i>
                       </button>
                       <button
+                        aria-disabled="true"
                         class="wrapper button wrapper small fill secondary small bottom isDisabled"
-                        disabled=""
                         type="button"
                       >
                         <i
@@ -726,6 +729,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
                       class="controls group vertical"
                     >
                       <button
+                        aria-disabled="false"
                         class="wrapper button wrapper small fill secondary small top"
                         type="button"
                       >
@@ -736,8 +740,8 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
                         </i>
                       </button>
                       <button
+                        aria-disabled="true"
                         class="wrapper button wrapper small fill secondary small bottom isDisabled"
-                        disabled=""
                         type="button"
                       >
                         <i

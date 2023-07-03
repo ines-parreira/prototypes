@@ -44,6 +44,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 to="[object Object]"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper ghost primary medium"
                   type="button"
                 >
@@ -62,6 +63,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             </div>
           </div>
           <button
+            aria-disabled="false"
             aria-label="help center preview"
             class="wrapper fill secondary medium"
             type="button"
@@ -390,6 +392,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                   </div>
                 </div>
                 <button
+                  aria-disabled="false"
                   class="wrapper uploadButton fill secondary medium"
                   type="button"
                 >
@@ -514,6 +517,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                   class="wrapper"
                 >
                   <button
+                    aria-disabled="false"
                     class="wrapper button fill secondary medium"
                     id="color-picker-4"
                     type="button"
@@ -976,13 +980,14 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             class="form-group"
           >
             <button
+              aria-disabled="true"
               class="wrapper mr-2 fill primary medium isDisabled"
-              disabled=""
               type="button"
             >
               Save Changes
             </button>
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >

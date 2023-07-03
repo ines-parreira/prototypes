@@ -871,6 +871,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
             </div>
             <div>
               <button
+                aria-disabled="false"
                 class="wrapper ghost secondary medium"
                 type="button"
               >
@@ -896,6 +897,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
               </button>
             </div>
             <button
+              aria-disabled="false"
               class="wrapper ghost secondary medium"
               title="Download Performance Overview Data"
               type="button"
@@ -933,6 +935,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
               Customer experience
             </div>
             <button
+              aria-disabled="false"
               class="wrapper ghost primary medium"
               type="button"
             >

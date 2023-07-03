@@ -5,10 +5,12 @@ exports[`<DropdownButton /> should render a button with dropdown 1`] = `
   class="wrapper"
 >
   <button
+    aria-disabled="false"
     class="wrapper mainAction fill primary medium"
     type="button"
   />
   <button
+    aria-disabled="false"
     class="wrapper toggle wrapper fill primary medium"
     type="button"
   >

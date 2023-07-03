@@ -45,9 +45,15 @@ const Button = forwardRef<HTMLButtonElement, Props>(function (
                 <button
                     {...other}
                     {...elementAttributes}
-                    disabled={safeIsDisabled || isLoading}
+                    aria-disabled={safeIsDisabled || isLoading || false}
                     ref={ref}
                     type={type}
+                    {...(safeIsDisabled
+                        ? {
+                              onClick: (event) => event.preventDefault(),
+                              onSubmit: (event) => event.preventDefault(),
+                          }
+                        : {})}
                 >
                     {isLoading && <ButtonSpinner />}
                     {children}

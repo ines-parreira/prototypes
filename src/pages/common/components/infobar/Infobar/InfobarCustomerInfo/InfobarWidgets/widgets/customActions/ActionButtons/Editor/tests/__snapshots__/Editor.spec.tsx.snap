@@ -102,6 +102,7 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
       class="editRow"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill secondary small"
         type="button"
       >
@@ -126,6 +127,7 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
       class="editRow"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill secondary small"
         type="button"
       >
@@ -148,6 +150,7 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
     </li>
   </ul>
   <button
+    aria-disabled="false"
     class="wrapper addButton fill secondary small"
     type="button"
   >

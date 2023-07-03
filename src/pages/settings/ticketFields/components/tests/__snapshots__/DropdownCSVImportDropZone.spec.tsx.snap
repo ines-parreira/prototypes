@@ -21,6 +21,7 @@ exports[`<DropdownCSVImportDropZone/> should render with a file 1`] = `
       </div>
       <div>
         <button
+          aria-disabled="false"
           class="wrapper fill secondary small"
           type="button"
         >

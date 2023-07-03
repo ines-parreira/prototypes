@@ -34,6 +34,7 @@ exports[`<AddOnCard /> should render the add-on card for a subscriber 1`] = `
       class="footer"
     >
       <button
+        aria-disabled="false"
         class="wrapper button fill secondary medium"
         type="button"
       >

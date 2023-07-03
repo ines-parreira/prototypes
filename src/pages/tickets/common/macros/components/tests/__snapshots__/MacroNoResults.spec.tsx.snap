@@ -10,6 +10,7 @@ exports[`<MacroNoResults /> should display no macros available without search qu
     </span>
   </p>
   <button
+    aria-disabled="false"
     class="wrapper fill primary medium"
     type="button"
   >
@@ -37,6 +38,7 @@ exports[`<MacroNoResults /> should display no macros found with search query 1`]
     </span>
   </p>
   <button
+    aria-disabled="false"
     class="wrapper fill primary medium"
     type="button"
   >

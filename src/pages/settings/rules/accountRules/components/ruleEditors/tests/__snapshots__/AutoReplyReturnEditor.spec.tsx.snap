@@ -409,6 +409,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               class="actions"
             >
               <button
+                aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
                 id="toolbar-button-3"
                 type="button"
@@ -420,6 +421,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 </i>
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
                 id="toolbar-button-4"
                 type="button"
@@ -431,6 +433,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 </i>
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
                 id="toolbar-button-5"
                 type="button"
@@ -445,6 +448,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 class="popoverWrapper"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper button wrapper small fill secondary small"
                   id="toolbar-button-6"
                   type="button"
@@ -463,6 +467,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 class="popoverWrapper"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper button wrapper small fill secondary small"
                   id="toolbar-button-7"
                   type="button"
@@ -481,6 +486,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 class="popoverWrapper"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper button wrapper small fill secondary small"
                   id="toolbar-button-8"
                   type="button"
@@ -809,6 +815,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
               class="actions"
             >
               <button
+                aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
                 id="toolbar-button-9"
                 type="button"
@@ -820,6 +827,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 </i>
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
                 id="toolbar-button-10"
                 type="button"
@@ -831,6 +839,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 </i>
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper button wrapper small fill secondary small"
                 id="toolbar-button-11"
                 type="button"
@@ -845,6 +854,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 class="popoverWrapper"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper button wrapper small fill secondary small"
                   id="toolbar-button-12"
                   type="button"
@@ -863,6 +873,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 class="popoverWrapper"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper button wrapper small fill secondary small"
                   id="toolbar-button-13"
                   type="button"
@@ -881,6 +892,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
                 class="popoverWrapper"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper button wrapper small fill secondary small"
                   id="toolbar-button-14"
                   type="button"

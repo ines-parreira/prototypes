@@ -83,6 +83,7 @@ exports[`<OrderLineItemRow/> render() should render 1`] = `
       </div>
       <span>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ghost ghost destructive medium"
           id="tooltip-0"
           tabindex="0"
@@ -197,6 +198,7 @@ exports[`<OrderLineItemRow/> render() should render with modifiers visible 1`] =
       </div>
       <span>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ghost ghost destructive medium"
           id="tooltip-0"
           tabindex="0"
@@ -304,6 +306,7 @@ exports[`<OrderLineItemRow/> render() should render with the default image 1`] =
       </div>
       <span>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ghost ghost destructive medium"
           id="tooltip-0"
           tabindex="0"
@@ -411,6 +414,7 @@ exports[`<OrderLineItemRow/> render() should render without quantity and without
       </div>
       <span>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ghost ghost destructive medium"
           id="tooltip-0"
           tabindex="0"

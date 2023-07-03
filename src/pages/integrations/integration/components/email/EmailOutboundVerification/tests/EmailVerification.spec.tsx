@@ -149,10 +149,8 @@ describe('EmailVerification', () => {
 
                 expect(status).toBeFalsy()
                 expect(
-                    screen
-                        .getByText(/verify single sender/i)
-                        .hasAttribute('disabled')
-                ).toBeTruthy()
+                    screen.getByText(/verify single sender/i)
+                ).toHaveAttribute('aria-disabled', 'true')
             }
         )
     })

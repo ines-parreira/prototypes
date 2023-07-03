@@ -5,8 +5,8 @@ exports[`<PrivateReplyButton/> render should render a disabled button 1`] = `
   id="private-reply-button-1"
 >
   <button
+    aria-disabled="true"
     class="wrapper container disabled fill primary medium isDisabled"
-    disabled=""
     href="#"
     type="submit"
   >
@@ -25,8 +25,8 @@ exports[`<PrivateReplyButton/> render should render a disabled button 2`] = `
   id="private-reply-button-1"
 >
   <button
+    aria-disabled="true"
     class="wrapper container disabled fill primary medium isDisabled"
-    disabled=""
     href="#"
     type="submit"
   >
@@ -45,6 +45,7 @@ exports[`<PrivateReplyButton/> render should render the button 1`] = `
   id="private-reply-button-1"
 >
   <button
+    aria-disabled="false"
     class="wrapper container fill primary medium"
     href="#"
     type="submit"

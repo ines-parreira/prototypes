@@ -54,6 +54,7 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
         className="mr-2 mb-2 float-left"
       >
         <button
+          aria-disabled={false}
           className="wrapper mr-2 mb-2 float-left fill primary medium"
           onClick={[Function]}
           type="button"
@@ -72,6 +73,7 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
         intent="secondary"
       >
         <button
+          aria-disabled={false}
           className="wrapper mr-2 mb-2 fill secondary medium"
           onClick={[Function]}
           type="button"

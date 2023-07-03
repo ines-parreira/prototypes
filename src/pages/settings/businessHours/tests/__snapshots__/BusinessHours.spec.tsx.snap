@@ -1187,6 +1187,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                 intent="secondary"
                               >
                                 <button
+                                  aria-disabled={false}
                                   className="wrapper fill secondary medium"
                                   onClick={[Function]}
                                   type="button"
@@ -1305,8 +1306,8 @@ exports[`BusinessHours component should render values from state 1`] = `
                       isLoading={false}
                     >
                       <button
+                        aria-disabled={false}
                         className="wrapper fill primary medium"
-                        disabled={false}
                         type="submit"
                       >
                         Save changes

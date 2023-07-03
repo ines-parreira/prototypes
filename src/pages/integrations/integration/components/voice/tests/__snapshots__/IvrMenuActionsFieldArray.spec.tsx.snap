@@ -100,6 +100,7 @@ exports[`<IvrMenuActionsFieldArray /> should render 1`] = `
         class="smallColumn pl-0 col"
       >
         <button
+          aria-disabled="false"
           class="wrapper wrapper ghost ghost destructive medium"
           type="button"
         >
@@ -113,6 +114,7 @@ exports[`<IvrMenuActionsFieldArray /> should render 1`] = `
     </div>
   </div>
   <button
+    aria-disabled="false"
     class="wrapper fill secondary medium"
     type="button"
   >

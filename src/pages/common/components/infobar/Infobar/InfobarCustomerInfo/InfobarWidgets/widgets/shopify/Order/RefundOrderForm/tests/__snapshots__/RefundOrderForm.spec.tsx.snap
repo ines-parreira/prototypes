@@ -442,6 +442,7 @@ exports[`<RefundOrderForm/> render() should render with zero quantity 1`] = `
               class="quantityButtonsContainer input-group-append"
             >
               <button
+                aria-disabled="false"
                 class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium"
                 tabindex="0"
                 type="button"
@@ -449,8 +450,8 @@ exports[`<RefundOrderForm/> render() should render with zero quantity 1`] = `
                 ▲
               </button>
               <button
+                aria-disabled="true"
                 class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium isDisabled"
-                disabled=""
                 tabindex="0"
                 type="button"
               >
@@ -572,6 +573,7 @@ exports[`<RefundOrderForm/> render() should render with zero quantity 1`] = `
                     class="controls group vertical"
                   >
                     <button
+                      aria-disabled="false"
                       class="wrapper button wrapper small fill secondary small top"
                       type="button"
                     >
@@ -582,6 +584,7 @@ exports[`<RefundOrderForm/> render() should render with zero quantity 1`] = `
                       </i>
                     </button>
                     <button
+                      aria-disabled="false"
                       class="wrapper button wrapper small fill secondary small bottom"
                       type="button"
                     >

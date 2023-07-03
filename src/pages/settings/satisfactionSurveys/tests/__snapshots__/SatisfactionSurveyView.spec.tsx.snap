@@ -655,6 +655,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   intent="secondary"
                                                 >
                                                   <button
+                                                    aria-disabled={false}
                                                     className="wrapper ghost secondary medium"
                                                     type="button"
                                                   >
@@ -811,6 +812,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   intent="secondary"
                                                 >
                                                   <button
+                                                    aria-disabled={false}
                                                     className="wrapper ghost secondary medium"
                                                     type="button"
                                                   >
@@ -952,6 +954,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                   intent="secondary"
                                 >
                                   <button
+                                    aria-disabled={false}
                                     className="wrapper ghost secondary medium"
                                     onClick={[Function]}
                                     type="button"
@@ -3251,6 +3254,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               size="small"
                                                             >
                                                               <button
+                                                                aria-disabled={false}
                                                                 className="wrapper button wrapper small fill secondary small"
                                                                 id="toolbar-button-3"
                                                                 onClick={[Function]}
@@ -3322,6 +3326,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   popperClassName="tooltip show"
                                                                   target={
                                                                     <button
+                                                                      aria-disabled="false"
                                                                       class="wrapper button wrapper small fill secondary small"
                                                                       id="toolbar-button-3"
                                                                       type="button"
@@ -3401,6 +3406,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               size="small"
                                                             >
                                                               <button
+                                                                aria-disabled={false}
                                                                 className="wrapper button wrapper small fill secondary small"
                                                                 id="toolbar-button-4"
                                                                 onClick={[Function]}
@@ -3472,6 +3478,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   popperClassName="tooltip show"
                                                                   target={
                                                                     <button
+                                                                      aria-disabled="false"
                                                                       class="wrapper button wrapper small fill secondary small"
                                                                       id="toolbar-button-4"
                                                                       type="button"
@@ -3551,6 +3558,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               size="small"
                                                             >
                                                               <button
+                                                                aria-disabled={false}
                                                                 className="wrapper button wrapper small fill secondary small"
                                                                 id="toolbar-button-5"
                                                                 onClick={[Function]}
@@ -3622,6 +3630,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   popperClassName="tooltip show"
                                                                   target={
                                                                     <button
+                                                                      aria-disabled="false"
                                                                       class="wrapper button wrapper small fill secondary small"
                                                                       id="toolbar-button-5"
                                                                       type="button"
@@ -3764,6 +3773,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       size="small"
                                                                     >
                                                                       <button
+                                                                        aria-disabled={false}
                                                                         className="wrapper button wrapper small fill secondary small"
                                                                         id="toolbar-button-6"
                                                                         onClick={[Function]}
@@ -3886,6 +3896,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   size="small"
                                                                 >
                                                                   <button
+                                                                    aria-disabled={false}
                                                                     className="wrapper button wrapper small fill secondary small"
                                                                     id="toolbar-button-7"
                                                                     onClick={[Function]}
@@ -3957,6 +3968,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       popperClassName="tooltip show"
                                                                       target={
                                                                         <button
+                                                                          aria-disabled="false"
                                                                           class="wrapper button wrapper small fill secondary small"
                                                                           id="toolbar-button-7"
                                                                           type="button"
@@ -4058,6 +4070,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   size="small"
                                                                 >
                                                                   <button
+                                                                    aria-disabled={false}
                                                                     className="wrapper button wrapper small fill secondary small"
                                                                     id="toolbar-button-8"
                                                                     onClick={[Function]}
@@ -4129,6 +4142,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       popperClassName="tooltip show"
                                                                       target={
                                                                         <button
+                                                                          aria-disabled="false"
                                                                           class="wrapper button wrapper small fill secondary small"
                                                                           id="toolbar-button-8"
                                                                           type="button"
@@ -4202,8 +4216,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                         isLoading={false}
                       >
                         <button
+                          aria-disabled={false}
                           className="wrapper fill primary medium"
-                          disabled={false}
                           type="submit"
                         >
                           Save

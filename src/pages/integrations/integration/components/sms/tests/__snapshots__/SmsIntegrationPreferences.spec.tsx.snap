@@ -115,12 +115,14 @@ exports[`<SmsIntegrationPreferences/> render() should render 1`] = `
           class="mt-5"
         >
           <button
+            aria-disabled="false"
             class="wrapper fill primary medium"
             type="submit"
           >
             Save changes
           </button>
           <button
+            aria-disabled="false"
             class="wrapper float-right fill destructive medium"
             id="delete-integration"
             type="button"
@@ -258,8 +260,8 @@ exports[`<SmsIntegrationPreferences/> render() should submit a valid payload wit
           class="mt-5"
         >
           <button
+            aria-disabled="true"
             class="wrapper fill primary medium isDisabled"
-            disabled=""
             type="submit"
           >
             <svg
@@ -294,6 +296,7 @@ exports[`<SmsIntegrationPreferences/> render() should submit a valid payload wit
             Save changes
           </button>
           <button
+            aria-disabled="false"
             class="wrapper float-right fill destructive medium"
             id="delete-integration"
             type="button"

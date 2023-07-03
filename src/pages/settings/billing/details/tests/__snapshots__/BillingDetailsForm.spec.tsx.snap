@@ -857,8 +857,8 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                             isLoading={false}
                           >
                             <button
+                              aria-disabled={false}
                               className="wrapper submitButton fill primary medium"
-                              disabled={false}
                               type="submit"
                             >
                               Update Address
@@ -1576,8 +1576,8 @@ exports[`BillingDetailsForm component should display the form with billing conta
                             isLoading={false}
                           >
                             <button
+                              aria-disabled={false}
                               className="wrapper submitButton fill primary medium"
-                              disabled={false}
                               type="submit"
                             >
                               Update Address

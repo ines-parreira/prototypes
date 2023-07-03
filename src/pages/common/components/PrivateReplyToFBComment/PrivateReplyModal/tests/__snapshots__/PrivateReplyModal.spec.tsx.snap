@@ -66,16 +66,16 @@ exports[`<PrivateReplyModal/> should render the modal 1`] = `
               class="modalFooter modal-footer"
             >
               <button
+                aria-disabled="true"
                 class="wrapper submit send fill primary medium isDisabled"
-                disabled=""
                 id="private-reply-submit"
                 type="button"
               >
                 Send
               </button>
               <button
+                aria-disabled="true"
                 class="wrapper submit sendAndClose fill secondary medium isDisabled"
-                disabled=""
                 id="send-private-reply-and-close-button"
                 type="button"
               >

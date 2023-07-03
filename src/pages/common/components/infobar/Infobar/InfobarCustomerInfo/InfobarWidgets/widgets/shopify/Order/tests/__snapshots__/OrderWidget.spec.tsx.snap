@@ -39,6 +39,7 @@ exports[`<TitleWrapper/> render() should render copy button if not editing 1`] =
       class="copyButton"
     >
       <button
+        aria-disabled="false"
         class="wrapper iconButton wrapper ghost small ghost primary small"
         type="button"
       >

@@ -458,8 +458,8 @@ exports[`UsageAndPlansView should render 1`] = `
               class="button"
             >
               <button
+                aria-disabled="true"
                 class="wrapper button fill primary medium isDisabled"
-                disabled=""
                 id="update-subscription"
                 type="button"
               >

@@ -333,6 +333,7 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
       </div>
     </div>
     <button
+      aria-disabled="false"
       aria-label="Switch to Basic Plan"
       class="wrapper footerButton ghost primary medium"
       type="button"
@@ -689,9 +690,9 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
       </div>
     </div>
     <button
+      aria-disabled="true"
       aria-label="Current Plan"
       class="wrapper footerButton ghost primary medium isDisabled"
-      disabled=""
       type="button"
     >
       Current Plan
@@ -1040,9 +1041,9 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
       </div>
     </div>
     <button
+      aria-disabled="true"
       aria-label="Current Plan"
       class="wrapper footerButton ghost primary medium isDisabled"
-      disabled=""
       type="button"
     >
       Current Plan
@@ -1392,9 +1393,9 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
       </div>
     </div>
     <button
+      aria-disabled="true"
       aria-label="Current Plan"
       class="wrapper footerButton ghost primary medium isDisabled"
-      disabled=""
       type="button"
     >
       Current Plan
@@ -1744,9 +1745,9 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
       </div>
     </div>
     <button
+      aria-disabled="true"
       aria-label="Current Plan"
       class="wrapper footerButton ghost primary medium isDisabled"
-      disabled=""
       type="button"
     >
       Current Plan
@@ -2088,9 +2089,9 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
       </div>
     </div>
     <button
+      aria-disabled="true"
       aria-label="Switch to Basic Plan"
       class="wrapper footerButton ghost primary medium isDisabled"
-      disabled=""
       type="button"
     >
       <svg
@@ -2466,6 +2467,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
           </div>
         </div>
         <button
+          aria-disabled="false"
           aria-label="Downgrade to Basic Plan"
           class="wrapper footerButton ghost primary medium"
           type="button"
@@ -3250,12 +3252,14 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
               class="footer modal-footer"
             >
               <button
+                aria-disabled="false"
                 class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
+                aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >

@@ -392,6 +392,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -427,6 +428,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -537,6 +539,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -547,6 +550,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -594,6 +598,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -604,6 +609,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -621,13 +627,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               </div>
               <div>
                 <button
+                  aria-disabled="true"
                   class="wrapper fill primary medium isDisabled"
-                  disabled=""
                   type="submit"
                 >
                   Add new chat
                 </button>
                 <button
+                  aria-disabled="false"
                   class="wrapper cancelButton fill secondary medium"
                   type="button"
                 >
@@ -1190,6 +1197,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -1225,6 +1233,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -1392,6 +1401,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -1402,6 +1412,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -1449,6 +1460,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -1459,6 +1471,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -1476,8 +1489,8 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               </div>
               <div>
                 <button
+                  aria-disabled="true"
                   class="wrapper fill primary medium isDisabled"
-                  disabled=""
                   type="submit"
                 >
                   <svg
@@ -2068,6 +2081,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -2103,6 +2117,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -2270,6 +2285,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -2280,6 +2296,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -2327,6 +2344,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -2337,6 +2355,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -2354,6 +2373,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               </div>
               <div>
                 <button
+                  aria-disabled="false"
                   class="wrapper fill primary medium"
                   type="submit"
                 >
@@ -2916,6 +2936,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -2951,6 +2972,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -3126,6 +3148,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -3136,6 +3159,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -3183,6 +3207,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -3193,6 +3218,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -3210,6 +3236,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
               </div>
               <div>
                 <button
+                  aria-disabled="false"
                   class="wrapper fill primary medium"
                   type="submit"
                 >
@@ -3772,6 +3799,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -3807,6 +3835,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -3974,6 +4003,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -3984,6 +4014,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -4031,6 +4062,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -4041,6 +4073,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -4058,6 +4091,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
               </div>
               <div>
                 <button
+                  aria-disabled="false"
                   class="wrapper fill primary medium"
                   type="submit"
                 >
@@ -4620,6 +4654,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -4655,6 +4690,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -4836,6 +4872,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -4846,6 +4883,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -4893,6 +4931,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -4903,6 +4942,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -4920,6 +4960,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
               </div>
               <div>
                 <button
+                  aria-disabled="false"
                   class="wrapper fill primary medium"
                   type="submit"
                 >
@@ -5557,6 +5598,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -5592,6 +5634,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -5702,6 +5745,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -5712,6 +5756,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -5759,6 +5804,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -5769,6 +5815,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -5786,12 +5833,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
               </div>
               <div>
                 <button
+                  aria-disabled="false"
                   class="wrapper fill primary medium"
                   type="submit"
                 >
                   Add new chat
                 </button>
                 <button
+                  aria-disabled="false"
                   class="wrapper cancelButton fill secondary medium"
                   type="button"
                 >
@@ -6317,6 +6366,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -6352,6 +6402,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -6673,6 +6724,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -6683,6 +6735,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -6730,6 +6783,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -6740,6 +6794,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -6757,6 +6812,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
               </div>
               <div>
                 <button
+                  aria-disabled="false"
                   class="wrapper fill primary medium"
                   type="submit"
                 >
@@ -7445,6 +7501,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -7480,6 +7537,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -7590,6 +7648,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -7600,6 +7659,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -7647,6 +7707,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -7657,6 +7718,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -7674,13 +7736,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
               </div>
               <div>
                 <button
+                  aria-disabled="true"
                   class="wrapper fill primary medium isDisabled"
-                  disabled=""
                   type="submit"
                 >
                   Add new chat
                 </button>
                 <button
+                  aria-disabled="false"
                   class="wrapper cancelButton fill secondary medium"
                   type="button"
                 >
@@ -8243,6 +8306,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -8278,6 +8342,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="wrapper"
                       >
                         <button
+                          aria-disabled="false"
                           class="wrapper button fill secondary medium"
                           id="color-picker-42"
                           type="button"
@@ -8445,6 +8510,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -8455,6 +8521,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -8502,6 +8569,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           class="controls group vertical"
                         >
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small top"
                             type="button"
                           >
@@ -8512,6 +8580,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             </i>
                           </button>
                           <button
+                            aria-disabled="false"
                             class="wrapper button wrapper small fill secondary small bottom"
                             type="button"
                           >
@@ -8529,6 +8598,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
               </div>
               <div>
                 <button
+                  aria-disabled="false"
                   class="wrapper fill primary medium"
                   type="submit"
                 >

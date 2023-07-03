@@ -6,6 +6,7 @@ exports[`<TitleWrapper/> should match snapshot 1`] = `
     class="container group horizontal"
   >
     <button
+      aria-disabled="false"
       class="wrapper actionButton fill secondary small"
       id="action-button-1"
       type="button"

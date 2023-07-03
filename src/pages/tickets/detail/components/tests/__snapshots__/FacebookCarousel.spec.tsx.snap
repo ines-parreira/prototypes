@@ -295,6 +295,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                                   intent="secondary"
                                 >
                                   <button
+                                    aria-disabled={false}
                                     className="wrapper fill secondary medium top"
                                     onClick={[Function]}
                                     role="link"
@@ -312,8 +313,10 @@ exports[`FacebookCarousel component render generic template 1`] = `
                                   isDisabled={true}
                                 >
                                   <button
+                                    aria-disabled={true}
                                     className="wrapper fill primary medium middle isDisabled"
-                                    disabled={true}
+                                    onClick={[Function]}
+                                    onSubmit={[Function]}
                                     type="button"
                                   >
                                     Share
@@ -330,6 +333,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                                   intent="secondary"
                                 >
                                   <button
+                                    aria-disabled={false}
                                     className="wrapper fill secondary medium bottom"
                                     onClick={[Function]}
                                     role="link"

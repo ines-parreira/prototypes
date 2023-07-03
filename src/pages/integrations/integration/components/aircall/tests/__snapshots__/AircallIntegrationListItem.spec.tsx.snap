@@ -49,6 +49,7 @@ exports[`<AircallIntegrationListItem/> render() should render the aircall integr
       class="align-middle"
     >
       <button
+        aria-disabled="false"
         class="wrapper float-right fill destructive medium"
         id="delete-button-7"
         type="button"

@@ -190,8 +190,8 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
           </div>
         </div>
         <button
+          aria-disabled="true"
           class="wrapper mt-4 mb-4 fill primary medium isDisabled"
-          disabled=""
           type="submit"
         >
           <svg
@@ -421,6 +421,7 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
           </div>
         </div>
         <button
+          aria-disabled="false"
           class="wrapper mt-4 mb-4 fill primary medium"
           type="submit"
         >
@@ -622,8 +623,8 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
           </div>
         </div>
         <button
+          aria-disabled="true"
           class="wrapper mt-4 mb-4 fill primary medium isDisabled"
-          disabled=""
           type="submit"
         >
           <svg

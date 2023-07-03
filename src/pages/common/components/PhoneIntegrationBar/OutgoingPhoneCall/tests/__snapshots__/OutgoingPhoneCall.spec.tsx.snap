@@ -36,6 +36,7 @@ exports[`<OutgoingPhoneCall/> should render 1`] = `
       )
     </span>
     <button
+      aria-disabled="false"
       class="wrapper end fill secondary medium"
       data-testid="end-call-button"
       type="button"

@@ -2,6 +2,7 @@
 
 exports[`<SpotlightSearchButton /> should render a search button 1`] = `
 <button
+  aria-disabled="false"
   class="wrapper button ghost primary medium"
   id="spotlight-button-1"
   type="button"

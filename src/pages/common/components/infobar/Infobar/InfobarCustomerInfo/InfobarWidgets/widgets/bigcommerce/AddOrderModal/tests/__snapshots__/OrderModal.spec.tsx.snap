@@ -225,8 +225,8 @@ exports[`OrderModal should render Create Order 1`] = `
                       </div>
                     </div>
                     <button
+                      aria-disabled="true"
                       class="wrapper ml-2 wrapper fill secondary medium isDisabled"
-                      disabled=""
                       id="bigcommerce-add-custom-product-btn"
                       type="button"
                     >
@@ -291,8 +291,8 @@ exports[`OrderModal should render Create Order 1`] = `
                       </div>
                     </div>
                     <button
+                      aria-disabled="true"
                       class="wrapper ml-2 wrapper fill secondary medium isDisabled"
-                      disabled=""
                       type="button"
                     >
                       <i
@@ -377,6 +377,7 @@ exports[`OrderModal should render Create Order 1`] = `
                 class="actions"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper fill secondary medium"
                   tabindex="0"
                   type="button"
@@ -384,8 +385,8 @@ exports[`OrderModal should render Create Order 1`] = `
                   Cancel
                 </button>
                 <button
+                  aria-disabled="true"
                   class="wrapper fill primary medium isDisabled"
-                  disabled=""
                   tabindex="0"
                   type="button"
                 >
@@ -511,6 +512,7 @@ exports[`OrderModal should render Create Order 1`] = `
                 class="wrapper group horizontal"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper button fill secondary medium left isAuxiliaryButton"
                   type="button"
                 >
@@ -754,6 +756,7 @@ exports[`OrderModal should render Create Order 1`] = `
             class="actions"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               tabindex="0"
               type="button"
@@ -761,6 +764,7 @@ exports[`OrderModal should render Create Order 1`] = `
               Cancel
             </button>
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               tabindex="0"
               type="button"
@@ -1016,8 +1020,8 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                       </div>
                     </div>
                     <button
+                      aria-disabled="true"
                       class="wrapper ml-2 wrapper fill secondary medium isDisabled"
-                      disabled=""
                       id="bigcommerce-add-custom-product-btn"
                       type="button"
                     >
@@ -1082,8 +1086,8 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                       </div>
                     </div>
                     <button
+                      aria-disabled="true"
                       class="wrapper ml-2 wrapper fill secondary medium isDisabled"
-                      disabled=""
                       type="button"
                     >
                       <i
@@ -1171,6 +1175,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                 class="actions"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper fill secondary medium"
                   tabindex="0"
                   type="button"
@@ -1178,8 +1183,8 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                   Cancel
                 </button>
                 <button
+                  aria-disabled="true"
                   class="wrapper fill primary medium isDisabled"
-                  disabled=""
                   tabindex="0"
                   type="button"
                 >
@@ -1305,6 +1310,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
                 class="wrapper group horizontal"
               >
                 <button
+                  aria-disabled="false"
                   class="wrapper button fill secondary medium left isAuxiliaryButton"
                   type="button"
                 >
@@ -1548,6 +1554,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
             class="actions"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               tabindex="0"
               type="button"
@@ -1555,6 +1562,7 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               Cancel
             </button>
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               tabindex="0"
               type="button"

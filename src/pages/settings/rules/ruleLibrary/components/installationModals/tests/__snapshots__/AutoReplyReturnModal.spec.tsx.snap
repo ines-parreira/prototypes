@@ -138,6 +138,7 @@ exports[`<AutoReplyReturnModal/> should render the instalation modal when automa
                 It looks like you'd like to return your order. Access our return portal below to start a return.
               </p>
               <button
+                aria-disabled="false"
                 class="wrapper button fill primary medium"
                 type="button"
               >
@@ -301,6 +302,7 @@ exports[`<AutoReplyReturnModal/> should render the instalation modal when automa
                 It looks like you'd like to return your order. Access our return portal below to start a return.
               </p>
               <button
+                aria-disabled="false"
                 class="wrapper button fill primary medium"
                 type="button"
               >

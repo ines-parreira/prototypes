@@ -107,6 +107,7 @@ exports[`<RuleCreationModalContent /> should render 1`] = `
         class="childWrapper"
       >
         <button
+          aria-disabled="false"
           class="wrapper fill secondary medium"
           type="button"
         >
@@ -117,6 +118,7 @@ exports[`<RuleCreationModalContent /> should render 1`] = `
         class="childWrapper"
       >
         <button
+          aria-disabled="false"
           class="wrapper fill primary medium"
           type="submit"
         >

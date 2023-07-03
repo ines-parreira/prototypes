@@ -27,6 +27,7 @@ exports[`<DiscountCodeResults /> should render no results 1`] = `
         class="backContainer"
       >
         <button
+          aria-disabled="false"
           class="wrapper mr-2 fill primary small"
           tabindex="-1"
           type="button"
@@ -43,6 +44,7 @@ exports[`<DiscountCodeResults /> should render no results 1`] = `
           </span>
         </button>
         <button
+          aria-disabled="false"
           class="wrapper mr-2 fill primary small"
           tabindex="-1"
           type="button"
@@ -121,6 +123,7 @@ exports[`<DiscountCodeResults /> should render the component 1`] = `
       class="backContainer"
     >
       <button
+        aria-disabled="false"
         class="wrapper mr-2 fill primary small"
         tabindex="-1"
         type="button"
@@ -137,6 +140,7 @@ exports[`<DiscountCodeResults /> should render the component 1`] = `
         </span>
       </button>
       <button
+        aria-disabled="false"
         class="wrapper mr-2 fill primary small"
         tabindex="-1"
         type="button"
@@ -215,6 +219,7 @@ exports[`<DiscountCodeResults /> should render the discount codes 1`] = `
         class="backContainer"
       >
         <button
+          aria-disabled="false"
           class="wrapper mr-2 fill primary small"
           tabindex="-1"
           type="button"
@@ -231,6 +236,7 @@ exports[`<DiscountCodeResults /> should render the discount codes 1`] = `
           </span>
         </button>
         <button
+          aria-disabled="false"
           class="wrapper mr-2 fill primary small"
           tabindex="-1"
           type="button"

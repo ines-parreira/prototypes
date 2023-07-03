@@ -18,6 +18,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
           Revenue
         </span>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
@@ -611,6 +612,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
           </div>
           <div>
             <button
+              aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >

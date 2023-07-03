@@ -68,6 +68,7 @@ exports[`FacebookIntegrationLoginButton component should render a reconnect butt
             intent="primary"
           >
             <button
+              aria-disabled={false}
               className="wrapper facebookButton primary fill primary medium"
               onClick={[Function]}
               type="submit"

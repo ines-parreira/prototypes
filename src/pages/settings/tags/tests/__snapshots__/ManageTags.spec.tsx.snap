@@ -45,6 +45,7 @@ exports[`ManageTags component should render a loader while fetching data 1`] = `
             </div>
           </div>
           <button
+            aria-disabled="false"
             class="wrapper fill primary medium"
             id="create-tag-button"
             type="button"

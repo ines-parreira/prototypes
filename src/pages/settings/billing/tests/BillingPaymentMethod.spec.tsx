@@ -50,7 +50,10 @@ describe('BillingPaymentMethod', () => {
 
             await waitFor(() => getByRole('button'))
 
-            expect(getByRole('button').closest('button')?.disabled).toBe(true)
+            expect(getByRole('button').closest('button')).toHaveAttribute(
+                'aria-disabled',
+                'true'
+            )
             expect(container.firstChild).toMatchSnapshot()
         })
 
@@ -101,7 +104,10 @@ describe('BillingPaymentMethod', () => {
 
             await waitFor(() => getByRole('button'))
 
-            expect(getByRole('button').closest('button')?.disabled).toBe(true)
+            expect(getByRole('button').closest('button')).toHaveAttribute(
+                'aria-disabled',
+                'true'
+            )
             expect(container.firstChild).toMatchSnapshot()
         })
 

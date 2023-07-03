@@ -15,6 +15,7 @@ exports[`<RuleItemButtons /> rendering should handle deleting state 1`] = `
 
 exports[`<RuleItemButtons /> rendering should handle disabled duplicate 1`] = `
 <button
+  aria-disabled="false"
   class="wrapper fill primary medium"
   form="rule-form"
   id="rule-item-save"
@@ -26,8 +27,8 @@ exports[`<RuleItemButtons /> rendering should handle disabled duplicate 1`] = `
 
 exports[`<RuleItemButtons /> rendering should handle disabled duplicate 2`] = `
 <button
+  aria-disabled="true"
   class="wrapper ml-3 fill secondary medium isDisabled"
-  disabled=""
   id="rule-item-duplicate"
   type="submit"
 >
@@ -37,8 +38,8 @@ exports[`<RuleItemButtons /> rendering should handle disabled duplicate 2`] = `
 
 exports[`<RuleItemButtons /> rendering should handle disabled submit 1`] = `
 <button
+  aria-disabled="true"
   class="wrapper fill primary medium isDisabled"
-  disabled=""
   form="rule-form"
   id="rule-item-save"
   type="button"
@@ -49,6 +50,7 @@ exports[`<RuleItemButtons /> rendering should handle disabled submit 1`] = `
 
 exports[`<RuleItemButtons /> rendering should handle disabled submit 2`] = `
 <button
+  aria-disabled="false"
   class="wrapper ml-3 fill secondary medium"
   id="rule-item-duplicate"
   type="submit"
@@ -63,6 +65,7 @@ exports[`<RuleItemButtons /> rendering should render the default buttons for cre
 >
   <div>
     <button
+      aria-disabled="false"
       class="wrapper fill primary medium"
       form="rule-form"
       id="rule-item-save"
@@ -80,6 +83,7 @@ exports[`<RuleItemButtons /> rendering should render the default buttons for upd
 >
   <div>
     <button
+      aria-disabled="false"
       class="wrapper fill primary medium"
       form="rule-form"
       id="rule-item-save"
@@ -88,6 +92,7 @@ exports[`<RuleItemButtons /> rendering should render the default buttons for upd
       Update rule
     </button>
     <button
+      aria-disabled="false"
       class="wrapper ml-3 fill secondary medium"
       id="rule-item-duplicate"
       type="submit"
@@ -97,6 +102,7 @@ exports[`<RuleItemButtons /> rendering should render the default buttons for upd
   </div>
   <div>
     <button
+      aria-disabled="false"
       class="wrapper fill destructive medium"
       id="rule-item-delete"
       type="button"

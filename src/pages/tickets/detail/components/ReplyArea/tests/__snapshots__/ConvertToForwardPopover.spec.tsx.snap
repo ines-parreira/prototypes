@@ -32,12 +32,14 @@ exports[`<ConvertToForwardPopover/> should render popover 1`] = `
               This thread has been converted to email.
             </p>
             <button
+              aria-disabled="false"
               class="wrapper button mr-2 fill primary medium"
               type="button"
             >
               Understood
             </button>
             <button
+              aria-disabled="false"
               class="wrapper button fill secondary medium"
               type="button"
             >

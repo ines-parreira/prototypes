@@ -6,6 +6,7 @@ exports[`<CantScanQRCode /> render() should render the component with extra hidd
     class="cantScanQrCodeContainer"
   >
     <button
+      aria-disabled="false"
       class="wrapper ghost primary medium"
       type="button"
     >
@@ -21,6 +22,7 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
     class="cantScanQrCodeContainer"
   >
     <button
+      aria-disabled="false"
       class="wrapper ghost primary medium"
       type="button"
     >
@@ -62,6 +64,7 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
           </div>
         </div>
         <button
+          aria-disabled="false"
           class="wrapper copy-authenticator-field fill secondary medium right isAuxiliaryButton"
           data-clipboard-target="#authenticatorField0"
           type="button"
@@ -106,6 +109,7 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
           </div>
         </div>
         <button
+          aria-disabled="false"
           class="wrapper copy-authenticator-field fill secondary medium right isAuxiliaryButton"
           data-clipboard-target="#authenticatorField1"
           type="button"
@@ -150,6 +154,7 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
           </div>
         </div>
         <button
+          aria-disabled="false"
           class="wrapper copy-authenticator-field fill secondary medium right isAuxiliaryButton"
           data-clipboard-target="#authenticatorField2"
           type="button"

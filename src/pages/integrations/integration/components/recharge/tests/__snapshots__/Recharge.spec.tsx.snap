@@ -175,6 +175,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
             to="/app/settings/integrations/recharge/new"
           >
             <button
+              aria-disabled="false"
               class="wrapper fill primary medium"
               type="button"
             >
@@ -332,6 +333,7 @@ exports[`<Recharge/> Integration should render 1`] = `
         </span>
         <div>
           <button
+            aria-disabled="false"
             class="wrapper float-right fill destructive medium"
             id="confirm-button-delete"
             type="button"
@@ -411,6 +413,7 @@ exports[`<Recharge/> Integration should render shopify integrations list 1`] = `
             Select an existing Shopify integration
           </label>
           <button
+            aria-disabled="false"
             class="wrapper installButton mb-2 fill secondary medium"
             type="button"
           >
@@ -511,6 +514,7 @@ exports[`<Recharge/> List should render 1`] = `
       to="/app/settings/integrations/recharge/new"
     >
       <button
+        aria-disabled="false"
         class="wrapper fill primary medium"
         type="button"
       >

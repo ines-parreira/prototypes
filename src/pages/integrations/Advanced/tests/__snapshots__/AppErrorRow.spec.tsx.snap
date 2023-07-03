@@ -17,6 +17,7 @@ exports[`AppErrorRow should render 1`] = `
           Test error
         </b>
         <button
+          aria-disabled="false"
           class="wrapper wrapper ghost ghost secondary medium"
           title="More details"
           type="button"

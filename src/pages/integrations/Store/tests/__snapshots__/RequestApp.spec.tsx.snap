@@ -15,6 +15,7 @@ exports[`<RequestApp /> should render correctly 1`] = `
     If we're missing an app, let us know!
   </p>
   <button
+    aria-disabled="false"
     class="wrapper fill primary medium"
     type="button"
   >

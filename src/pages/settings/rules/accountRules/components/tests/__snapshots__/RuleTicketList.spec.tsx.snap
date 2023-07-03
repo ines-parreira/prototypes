@@ -215,8 +215,8 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
     class="navigation group horizontal"
   >
     <button
+      aria-disabled="true"
       class="wrapper wrapper fill secondary medium left isDisabled"
-      disabled=""
       id="prev-btn"
       type="button"
     >
@@ -227,6 +227,7 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
       </i>
     </button>
     <button
+      aria-disabled="false"
       class="wrapper wrapper fill secondary medium right"
       id="next-btn"
       type="button"

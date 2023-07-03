@@ -108,6 +108,7 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
     class="actionButtonsContainer mb16"
   >
     <button
+      aria-disabled="false"
       class="wrapper actionButton mr8 fill secondary medium"
       type="button"
     >
@@ -129,6 +130,7 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
       target="_blank"
     >
       <button
+        aria-disabled="false"
         class="wrapper actionButton fill secondary medium"
         type="button"
       >
@@ -145,6 +147,7 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
       </button>
     </a>
     <button
+      aria-disabled="false"
       class="wrapper actionButton fill secondary medium"
       data-clipboard-text="abcdefgh01
 abcdefgh02
@@ -292,6 +295,7 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
     class="actionButtonsContainer mb16"
   >
     <button
+      aria-disabled="false"
       class="wrapper actionButton mr8 fill secondary medium"
       type="button"
     >
@@ -313,6 +317,7 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
       target="_blank"
     >
       <button
+        aria-disabled="false"
         class="wrapper actionButton fill secondary medium"
         type="button"
       >
@@ -329,6 +334,7 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
       </button>
     </a>
     <button
+      aria-disabled="false"
       class="wrapper actionButton fill secondary medium"
       data-clipboard-text="abcdefgh01
 abcdefgh02

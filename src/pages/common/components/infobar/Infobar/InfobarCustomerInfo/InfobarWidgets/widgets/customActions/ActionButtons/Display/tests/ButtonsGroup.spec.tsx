@@ -189,10 +189,8 @@ describe('<ButtonsGroup/>', () => {
             },
         })
         expect(
-            screen
-                .getByRole('button', {name: buttonEditLabel})
-                .hasAttribute('disabled')
-        ).toBeTruthy()
+            screen.getByRole('button', {name: buttonEditLabel})
+        ).toHaveAttribute('aria-disabled', 'true')
     })
 
     it.each([

@@ -65,6 +65,7 @@ exports[`<Row /> should render 1`] = `
       class="delete"
     >
       <button
+        aria-disabled="false"
         class="wrapper wrapper ghost ghost destructive medium"
         type="button"
       >
