@@ -15,7 +15,7 @@ import {initialState as categoriesState} from 'state/entities/helpCenter/categor
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {HelpCenterTranslationProvider} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
-import {ContactForm, UpdateContactForm} from 'models/helpCenter/types'
+import {UpdateSubjectLinesProps} from 'models/contactForm/types'
 import SubjectLines from '../SubjectLines'
 
 jest.mock('lodash/uniqueId', () => {
@@ -77,17 +77,17 @@ const DefaultProviders: FC = ({children}) => (
 )
 
 const subjectLines = {
-    'en-US': {
-        allow_other: true,
-        options: ['Option 1', 'Option 2', 'Option 3'],
-    },
+    allow_other: true,
+    options: ['Option 1', 'Option 2', 'Option 3'],
 }
 
 const setIsDirty = jest.fn()
 
 const renderComponent = (
-    subjectLines: ContactForm['subject_lines'],
-    updateContactForm: React.Dispatch<React.SetStateAction<UpdateContactForm>>
+    subjectLines: UpdateSubjectLinesProps,
+    updateContactForm: React.Dispatch<
+        React.SetStateAction<UpdateSubjectLinesProps>
+    >
 ) =>
     renderWithRouter(
         <DefaultProviders>
@@ -97,8 +97,7 @@ const renderComponent = (
                     description="Here is a default list of subject lines. If there is no subject added, user can freely type any subject."
                     subjectLines={subjectLines}
                     setIsDirty={setIsDirty}
-                    currentLocale="en-US"
-                    updateContactForm={updateContactForm}
+                    updateSubjectLines={updateContactForm}
                 />
             </DndProvider>
         </DefaultProviders>
@@ -117,10 +116,8 @@ describe('<SubjectLines />', () => {
     it('should render the component with no subject lines and hide the "Other" toggle', () => {
         const {container} = renderComponent(
             {
-                'en-US': {
-                    allow_other: true,
-                    options: [],
-                },
+                allow_other: true,
+                options: [],
             },
             jest.fn
         )

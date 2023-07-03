@@ -149,9 +149,9 @@ describe('useHelpCenterTranslation', () => {
 
             await flushPromises()
 
-            expect(current.contactForm.subject_lines).toEqual({
-                [contactForm.default_locale]: contactForm.subject_lines,
-            })
+            expect(current.contactForm.subject_lines).toEqual(
+                contactForm.subject_lines
+            )
 
             expect(current.contactForm.card_enabled).toEqual(
                 !contactForm.deactivated_datetime
@@ -182,10 +182,8 @@ describe('useHelpCenterTranslation', () => {
                     ...result.current.contactForm,
                     card_enabled: false,
                     subject_lines: {
-                        [helpCenter.default_locale]: {
-                            options: ['XXX'],
-                            allow_other: false,
-                        },
+                        options: ['XXX'],
+                        allow_other: false,
                     },
                 })
 

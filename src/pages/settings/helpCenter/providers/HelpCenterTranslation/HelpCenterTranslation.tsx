@@ -11,7 +11,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     EmailIntegration,
-    UpdateContactForm,
     ContactInfoDto,
     HelpCenter,
     HelpCenterTranslation,
@@ -27,7 +26,7 @@ import {getContactFormById} from 'state/entities/contactForm/contactForms'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import {Paths} from 'rest_api/help_center_api/client.generated'
-import {ContactForm} from 'models/contactForm/types'
+import {ContactForm, UpdateSubjectLinesProps} from 'models/contactForm/types'
 import {getGenericMessageFromError} from '../../utils'
 
 export type HelpCenterTranslationState = {
@@ -41,11 +40,16 @@ type Props = {
     helpCenter: HelpCenter
 }
 
+type ContactFormState = {
+    subject_lines?: UpdateSubjectLinesProps | null
+    card_enabled?: boolean
+}
+
 type HelpCenterTranslationContext = {
     translation: HelpCenterTranslationState
-    contactForm: UpdateContactForm
+    contactForm: ContactFormState
     updateTranslation: (payload: Partial<HelpCenterTranslationState>) => void
-    updateContactForm: React.Dispatch<React.SetStateAction<UpdateContactForm>>
+    updateContactForm: React.Dispatch<React.SetStateAction<ContactFormState>>
     updateHelpCenter: () => Promise<void>
     reset: () => void
     isDirty: boolean
@@ -75,12 +79,6 @@ const defaultTranslation: HelpCenterTranslationState = {
     },
 }
 
-const defaultEmailIntegration: UpdateContactForm = {
-    helpdesk_integration_email: null,
-    helpdesk_integration_id: null,
-    card_enabled: true,
-}
-
 const TranslationContext = createContext<HelpCenterTranslationContext | null>(
     null
 )
@@ -96,9 +94,10 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [translation, setTranslation] =
         useState<HelpCenterTranslationState>(defaultTranslation)
-    const [contactForm, setContactForm] = useState<UpdateContactForm>(
-        defaultEmailIntegration
-    )
+    const [contactForm, setContactForm] = useState<ContactFormState>({
+        card_enabled: false,
+        subject_lines: null,
+    })
     const [emailIntegration, setEmailIntegration] = useState<EmailIntegration>({
         id: null,
         email: null,
@@ -119,13 +118,9 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
 
         // Check if the subject lines are not empty
         if (contactForm.subject_lines) {
-            const subjectLineObjects = Object.values(contactForm.subject_lines)
-
             if (
-                subjectLineObjects.some((subjectLineObject) =>
-                    subjectLineObject.options.some(
-                        (option) => option.trim() === ''
-                    )
+                contactForm.subject_lines.options.some(
+                    (option) => option.trim() === ''
                 )
             ) {
                 void dispatch(
@@ -165,15 +160,10 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
 
             if (translation.contactFormId) {
                 const updates: Paths.UpdateContactForm.RequestBody = {}
-                if (
-                    contactForm.subject_lines &&
-                    contactForm.subject_lines[viewLanguage]
-                ) {
+                if (contactForm.subject_lines) {
                     updates.subject_lines = {
-                        options:
-                            contactForm.subject_lines[viewLanguage].options,
-                        allow_other:
-                            contactForm.subject_lines[viewLanguage].allow_other,
+                        options: contactForm.subject_lines.options,
+                        allow_other: contactForm.subject_lines.allow_other,
                     }
                 }
 
@@ -233,8 +223,11 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
     )
 
     const handleOnUpdateContactForm = useCallback(
-        (payload: React.SetStateAction<UpdateContactForm>) => {
-            setContactForm(payload)
+        (payload: React.SetStateAction<ContactFormState>) => {
+            setContactForm((draft) => ({
+                ...draft,
+                ...payload,
+            }))
             setIsDirty(true)
         },
         []
@@ -296,18 +289,9 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
     )
 
     const resetContactForm = useCallback((contactForm: ContactForm) => {
-        setContactForm((draftSettings) => {
-            const subject_lines =
-                (contactForm?.subject_lines && {
-                    [contactForm.default_locale]: contactForm.subject_lines,
-                }) ??
-                undefined
-
-            return {
-                ...draftSettings,
-                ...(subject_lines && {subject_lines}),
-                card_enabled: !contactForm.deactivated_datetime,
-            }
+        setContactForm({
+            subject_lines: contactForm.subject_lines,
+            card_enabled: !contactForm.deactivated_datetime,
         })
     }, [])
 

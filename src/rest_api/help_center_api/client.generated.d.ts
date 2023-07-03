@@ -1413,14 +1413,6 @@ declare namespace Components {
       hotswap_session_token: string | null;
       source: "manual" | "automation";
       gaid: string | null;
-      contact_form: {
-        card_enabled: boolean;
-        helpdesk_integration_email: string | null;
-        helpdesk_integration_id: number | null;
-        subject_lines: {
-          [name: string]: SubjectLineDto;
-        };
-      } | null;
       email_integration: {
         /**
          * Identifier
@@ -1439,14 +1431,6 @@ declare namespace Components {
       automation_settings_id: number | null;
       translations?: HelpCenterTranslationDto[];
       redirects?: RedirectDto[];
-    }
-    export interface HelpCenterContactFormDto {
-      card_enabled: boolean;
-      helpdesk_integration_email: string | null;
-      helpdesk_integration_id: number | null;
-      subject_lines: {
-        [name: string]: SubjectLineDto;
-      };
     }
     export interface HelpCenterDto {
       /**
@@ -1483,14 +1467,6 @@ declare namespace Components {
       hotswap_session_token: string | null;
       source: "manual" | "automation";
       gaid: string | null;
-      contact_form: {
-        card_enabled: boolean;
-        helpdesk_integration_email: string | null;
-        helpdesk_integration_id: number | null;
-        subject_lines: {
-          [name: string]: SubjectLineDto;
-        };
-      } | null;
       email_integration: {
         /**
          * Identifier
@@ -3229,15 +3205,6 @@ declare namespace Paths {
       shop_name: Parameters.ShopName;
     }
   }
-  namespace SendContactForm {
-    namespace Parameters {
-      export type HelpCenterId = number;
-    }
-    export interface PathParameters {
-      help_center_id: Parameters.HelpCenterId;
-    }
-    export type RequestBody = Components.Schemas.ContactFormSubmissionDto;
-  }
   namespace SetArticlesPositionsInCategory {
     namespace Parameters {
       export type CategoryId = number;
@@ -3548,14 +3515,6 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateHelpCenter.Responses.$201>
   /**
-   * sendContactForm - Send a contact form
-   */
-  'sendContactForm'(
-    parameters?: Parameters<Paths.SendContactForm.PathParameters> | null,
-    data?: Paths.SendContactForm.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
    * getAccountInfo - Get account information for a help center
    * 
    * When both subdomain and custom_domain are provided, the subdomain will be used to search the help center
@@ -3775,96 +3734,6 @@ export interface OperationMethods {
   'deleteRedirect'(
     parameters?: Parameters<Paths.DeleteRedirect.PathParameters & Paths.DeleteRedirect.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
-   * checkContactFormNameExists - Check that a contact form with the provided name exists
-   */
-  'checkContactFormNameExists'(
-    parameters?: Parameters<Paths.CheckContactFormNameExists.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
-   * listContactForms - List the contact forms
-   */
-  'listContactForms'(
-    parameters?: Parameters<Paths.ListContactForms.QueryParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.ListContactForms.Responses.$200>
-  /**
-   * createContactForm - Create a Contact Form
-   */
-  'createContactForm'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.CreateContactForm.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateContactForm.Responses.$201>
-  /**
-   * getContactForm - Retrieve a Contact form
-   */
-  'getContactForm'(
-    parameters?: Parameters<Paths.GetContactForm.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetContactForm.Responses.$200>
-  /**
-   * updateContactForm - Update a Contact Form
-   */
-  'updateContactForm'(
-    parameters?: Parameters<Paths.UpdateContactForm.PathParameters> | null,
-    data?: Paths.UpdateContactForm.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateContactForm.Responses.$200>
-  /**
-   * deleteContactForm - Delete a Contact Form
-   */
-  'deleteContactForm'(
-    parameters?: Parameters<Paths.DeleteContactForm.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
-   * getContactFormByUid - Retrieve a Contact form by uid
-   */
-  'getContactFormByUid'(
-    parameters?: Parameters<Paths.GetContactFormByUid.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetContactFormByUid.Responses.$200>
-  /**
-   * submitContactFormByUid - Submit a Contact Form by uid
-   */
-  'submitContactFormByUid'(
-    parameters?: Parameters<Paths.SubmitContactFormByUid.PathParameters> | null,
-    data?: Paths.SubmitContactFormByUid.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
-   * getContactFormAutomationSettings - Get a Contact Form automation settings
-   */
-  'getContactFormAutomationSettings'(
-    parameters?: Parameters<Paths.GetContactFormAutomationSettings.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetContactFormAutomationSettings.Responses.$200>
-  /**
-   * upsertContactFormAutomationSettings - Update a Contact Form automation settings
-   */
-  'upsertContactFormAutomationSettings'(
-    parameters?: Parameters<Paths.UpsertContactFormAutomationSettings.PathParameters> | null,
-    data?: Paths.UpsertContactFormAutomationSettings.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpsertContactFormAutomationSettings.Responses.$200>
-  /**
-   * updateEmailIntegration - Update the contact form email integration values
-   * 
-   * This will update all the contact forms that are using the "deactivated_integration_id" for the contact form feature. If a "fallback_integration" is provided, those contact forms will use this new integration for the contact form feature. Else, the contact form feature will be disabled.
-   */
-  'updateEmailIntegration'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.UpdateEmailIntegration.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
@@ -4173,6 +4042,96 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetAttachmentUploadPolicy.Responses.$201>
   /**
+   * checkContactFormNameExists - Check that a contact form with the provided name exists
+   */
+  'checkContactFormNameExists'(
+    parameters?: Parameters<Paths.CheckContactFormNameExists.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * listContactForms - List the contact forms
+   */
+  'listContactForms'(
+    parameters?: Parameters<Paths.ListContactForms.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListContactForms.Responses.$200>
+  /**
+   * createContactForm - Create a Contact Form
+   */
+  'createContactForm'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.CreateContactForm.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateContactForm.Responses.$201>
+  /**
+   * getContactForm - Retrieve a Contact form
+   */
+  'getContactForm'(
+    parameters?: Parameters<Paths.GetContactForm.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetContactForm.Responses.$200>
+  /**
+   * updateContactForm - Update a Contact Form
+   */
+  'updateContactForm'(
+    parameters?: Parameters<Paths.UpdateContactForm.PathParameters> | null,
+    data?: Paths.UpdateContactForm.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpdateContactForm.Responses.$200>
+  /**
+   * deleteContactForm - Delete a Contact Form
+   */
+  'deleteContactForm'(
+    parameters?: Parameters<Paths.DeleteContactForm.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * getContactFormByUid - Retrieve a Contact form by uid
+   */
+  'getContactFormByUid'(
+    parameters?: Parameters<Paths.GetContactFormByUid.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetContactFormByUid.Responses.$200>
+  /**
+   * submitContactFormByUid - Submit a Contact Form by uid
+   */
+  'submitContactFormByUid'(
+    parameters?: Parameters<Paths.SubmitContactFormByUid.PathParameters> | null,
+    data?: Paths.SubmitContactFormByUid.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * getContactFormAutomationSettings - Get a Contact Form automation settings
+   */
+  'getContactFormAutomationSettings'(
+    parameters?: Parameters<Paths.GetContactFormAutomationSettings.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetContactFormAutomationSettings.Responses.$200>
+  /**
+   * upsertContactFormAutomationSettings - Update a Contact Form automation settings
+   */
+  'upsertContactFormAutomationSettings'(
+    parameters?: Parameters<Paths.UpsertContactFormAutomationSettings.PathParameters> | null,
+    data?: Paths.UpsertContactFormAutomationSettings.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.UpsertContactFormAutomationSettings.Responses.$200>
+  /**
+   * updateEmailIntegration - Update the contact form email integration values
+   * 
+   * This will update all the contact forms that are using the "deactivated_integration_id" for the contact form feature. If a "fallback_integration" is provided, those contact forms will use this new integration for the contact form feature. Else, the contact form feature will be disabled.
+   */
+  'updateEmailIntegration'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.UpdateEmailIntegration.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
    * listNavigationLinks - List navigation links
    */
   'listNavigationLinks'(
@@ -4323,16 +4282,6 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListHelpCenters.Responses.$200>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/submit-contact-form']: {
-    /**
-     * sendContactForm - Send a contact form
-     */
-    'post'(
-      parameters?: Parameters<Paths.SendContactForm.PathParameters> | null,
-      data?: Paths.SendContactForm.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/account']: {
     /**
@@ -4589,110 +4538,6 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteRedirect.PathParameters & Paths.DeleteRedirect.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/contact-forms/name/{input_name}']: {
-    /**
-     * checkContactFormNameExists - Check that a contact form with the provided name exists
-     */
-    'head'(
-      parameters?: Parameters<Paths.CheckContactFormNameExists.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/contact-forms']: {
-    /**
-     * createContactForm - Create a Contact Form
-     */
-    'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.CreateContactForm.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateContactForm.Responses.$201>
-    /**
-     * listContactForms - List the contact forms
-     */
-    'get'(
-      parameters?: Parameters<Paths.ListContactForms.QueryParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.ListContactForms.Responses.$200>
-  }
-  ['/api/help-center/contact-forms/{id}']: {
-    /**
-     * getContactForm - Retrieve a Contact form
-     */
-    'get'(
-      parameters?: Parameters<Paths.GetContactForm.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetContactForm.Responses.$200>
-    /**
-     * updateContactForm - Update a Contact Form
-     */
-    'put'(
-      parameters?: Parameters<Paths.UpdateContactForm.PathParameters> | null,
-      data?: Paths.UpdateContactForm.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateContactForm.Responses.$200>
-    /**
-     * deleteContactForm - Delete a Contact Form
-     */
-    'delete'(
-      parameters?: Parameters<Paths.DeleteContactForm.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/contact-forms/uid/{uid}']: {
-    /**
-     * getContactFormByUid - Retrieve a Contact form by uid
-     */
-    'get'(
-      parameters?: Parameters<Paths.GetContactFormByUid.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetContactFormByUid.Responses.$200>
-  }
-  ['/api/help-center/contact-forms/uid/{uid}/submit']: {
-    /**
-     * submitContactFormByUid - Submit a Contact Form by uid
-     */
-    'post'(
-      parameters?: Parameters<Paths.SubmitContactFormByUid.PathParameters> | null,
-      data?: Paths.SubmitContactFormByUid.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/contact-forms/{id}/automation-settings']: {
-    /**
-     * getContactFormAutomationSettings - Get a Contact Form automation settings
-     */
-    'get'(
-      parameters?: Parameters<Paths.GetContactFormAutomationSettings.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetContactFormAutomationSettings.Responses.$200>
-    /**
-     * upsertContactFormAutomationSettings - Update a Contact Form automation settings
-     */
-    'put'(
-      parameters?: Parameters<Paths.UpsertContactFormAutomationSettings.PathParameters> | null,
-      data?: Paths.UpsertContactFormAutomationSettings.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpsertContactFormAutomationSettings.Responses.$200>
-  }
-  ['/api/help-center/contact-forms/update-email-integration']: {
-    /**
-     * updateEmailIntegration - Update the contact form email integration values
-     * 
-     * This will update all the contact forms that are using the "deactivated_integration_id" for the contact form feature. If a "fallback_integration" is provided, those contact forms will use this new integration for the contact form feature. Else, the contact form feature will be disabled.
-     */
-    'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.UpdateEmailIntegration.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
@@ -5038,6 +4883,110 @@ export interface PathsDictionary {
       data?: Paths.GetAttachmentUploadPolicy.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetAttachmentUploadPolicy.Responses.$201>
+  }
+  ['/api/help-center/contact-forms/name/{input_name}']: {
+    /**
+     * checkContactFormNameExists - Check that a contact form with the provided name exists
+     */
+    'head'(
+      parameters?: Parameters<Paths.CheckContactFormNameExists.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/contact-forms']: {
+    /**
+     * createContactForm - Create a Contact Form
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.CreateContactForm.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateContactForm.Responses.$201>
+    /**
+     * listContactForms - List the contact forms
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListContactForms.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListContactForms.Responses.$200>
+  }
+  ['/api/help-center/contact-forms/{id}']: {
+    /**
+     * getContactForm - Retrieve a Contact form
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetContactForm.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetContactForm.Responses.$200>
+    /**
+     * updateContactForm - Update a Contact Form
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpdateContactForm.PathParameters> | null,
+      data?: Paths.UpdateContactForm.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpdateContactForm.Responses.$200>
+    /**
+     * deleteContactForm - Delete a Contact Form
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteContactForm.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/contact-forms/uid/{uid}']: {
+    /**
+     * getContactFormByUid - Retrieve a Contact form by uid
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetContactFormByUid.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetContactFormByUid.Responses.$200>
+  }
+  ['/api/help-center/contact-forms/uid/{uid}/submit']: {
+    /**
+     * submitContactFormByUid - Submit a Contact Form by uid
+     */
+    'post'(
+      parameters?: Parameters<Paths.SubmitContactFormByUid.PathParameters> | null,
+      data?: Paths.SubmitContactFormByUid.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/contact-forms/{id}/automation-settings']: {
+    /**
+     * getContactFormAutomationSettings - Get a Contact Form automation settings
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetContactFormAutomationSettings.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetContactFormAutomationSettings.Responses.$200>
+    /**
+     * upsertContactFormAutomationSettings - Update a Contact Form automation settings
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpsertContactFormAutomationSettings.PathParameters> | null,
+      data?: Paths.UpsertContactFormAutomationSettings.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.UpsertContactFormAutomationSettings.Responses.$200>
+  }
+  ['/api/help-center/contact-forms/update-email-integration']: {
+    /**
+     * updateEmailIntegration - Update the contact form email integration values
+     * 
+     * This will update all the contact forms that are using the "deactivated_integration_id" for the contact form feature. If a "fallback_integration" is provided, those contact forms will use this new integration for the contact form feature. Else, the contact form feature will be disabled.
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.UpdateEmailIntegration.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/navigation-links']: {
     /**

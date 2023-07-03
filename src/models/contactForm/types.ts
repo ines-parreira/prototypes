@@ -15,6 +15,11 @@ export type ContactFormAutomationSettings =
 
 export type ContactForm = Components.Schemas.ContactFormDto
 
+export type UpdateSubjectLinesProps = {
+    options: string[]
+    allow_other: boolean
+}
+
 export type CreateContactFormDto = Components.Schemas.CreateContactFormDto
 
 export type UpdateContactFormDto = Components.Schemas.UpdateContactFormDto

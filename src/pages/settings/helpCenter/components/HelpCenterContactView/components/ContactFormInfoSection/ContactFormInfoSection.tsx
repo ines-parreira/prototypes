@@ -14,12 +14,8 @@ import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {
-    CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY,
-    HELP_CENTER_DEFAULT_LOCALE,
-} from 'pages/settings/helpCenter/constants'
+import {CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY} from 'pages/settings/helpCenter/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {getViewLanguage} from 'state/ui/helpCenter'
 import Tooltip from 'pages/common/components/Tooltip'
 import {
     isBaseEmailAddress,
@@ -53,9 +49,6 @@ const ContactFormInfoSection = () => {
     const emailIntegrations = integrations.filter(isGenericEmailIntegration)
 
     const {description} = contactInfo.email
-
-    const viewLanguage =
-        useAppSelector(getViewLanguage) ?? HELP_CENTER_DEFAULT_LOCALE
 
     const isSubjectLinesAvailable =
         useFlags()[FeatureFlagKey.HelpCenterSubjectLines]
@@ -169,10 +162,7 @@ const ContactFormInfoSection = () => {
                     <ToggleInput
                         isToggled={!!contactForm.card_enabled}
                         onClick={(value) => {
-                            updateContactForm((prevContactForm) => ({
-                                ...prevContactForm,
-                                card_enabled: value,
-                            }))
+                            updateContactForm({card_enabled: value})
                             setIsDirty(true)
                         }}
                         isDisabled={!emailIntegration.email}
@@ -213,8 +203,9 @@ const ContactFormInfoSection = () => {
                             title="Edit the subject of the contact form"
                             description="Here is a default list of subject lines. If there is no subject added, user can freely type any subject."
                             subjectLines={contactForm.subject_lines}
-                            currentLocale={viewLanguage}
-                            updateContactForm={updateContactForm}
+                            updateSubjectLines={(subjectLines) => {
+                                updateContactForm({subject_lines: subjectLines})
+                            }}
                             setIsDirty={setIsDirty}
                         />
                     )}

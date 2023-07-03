@@ -14,8 +14,6 @@ export type CreateHelpCenterDto = Omit<
 export type UpdateHelpCenterDto = Components.Schemas.UpdateHelpCenterDto
 export type CreateHelpCenterTranslationDto =
     Components.Schemas.CreateHelpCenterTranslationDto
-export type UpdateHelpCenterTranslationDto =
-    Components.Schemas.UpdateHelpCenterTranslationDto
 
 export type HelpCentersListPage = Components.Schemas.HelpCentersListPageDto
 export type HelpCenterTranslation = Components.Schemas.HelpCenterTranslationDto
@@ -30,15 +28,7 @@ export type HelpCenter = Omit<
     translations?: HelpCenterTranslation[]
 }
 
-export type ContactForm = Components.Schemas.HelpCenterContactFormDto
-export type UpdateContactForm =
-    Components.Schemas.UpdateHelpCenterContactFormDto
-
 // CONTACT INFO
-
-export type ContactInfo = Components.Schemas.ContactInfo
-export type EmailContactInfo = Components.Schemas.EmailContactInfo
-export type PhoneContactInfo = Components.Schemas.PhoneContactInfo
 
 export type ContactInfoDto = Components.Schemas.ContactInfoDto
 export type ChatContactInfoDto = Components.Schemas.ChatContactInfoDto

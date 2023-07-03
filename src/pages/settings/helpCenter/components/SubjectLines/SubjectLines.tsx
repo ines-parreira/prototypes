@@ -1,12 +1,8 @@
 import React, {useCallback, useEffect, useState, useRef} from 'react'
 import _uniqueId from 'lodash/uniqueId'
-import {
-    ContactForm,
-    LocaleCode,
-    UpdateContactForm,
-} from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
+import {UpdateSubjectLinesProps} from 'models/contactForm/types'
 import SubjectLine, {SubjectLineProps} from '../SubjectLine/SubjectLine'
 
 import {
@@ -20,76 +16,57 @@ import css from './SubjectLines.less'
 type SubjectLinesProps = {
     title: string
     description: string
-    subjectLines: ContactForm['subject_lines']
-    currentLocale: LocaleCode
-    updateContactForm: React.Dispatch<React.SetStateAction<UpdateContactForm>>
-    setIsDirty: React.Dispatch<React.SetStateAction<boolean>>
+    subjectLines: UpdateSubjectLinesProps | null
+    updateSubjectLines: (props: UpdateSubjectLinesProps) => void
+    setIsDirty: (isDirty: boolean) => void
 }
 
 const SubjectLines = ({
     title,
     description,
-    currentLocale,
     subjectLines,
-    updateContactForm,
+    updateSubjectLines,
     setIsDirty,
 }: SubjectLinesProps) => {
     const [subjectLinesWithId, setSubjectLinesWithId] = useState<
         {id: string; value: string}[]
     >([])
     const [subjectLinesExpanded, setSubjectLinesExpanded] = useState(false)
-    const lastSubjectLineRef = useRef<
-        null | UpdateContactForm['subject_lines']
-    >(null)
+    const lastSubjectLineRef = useRef<null | UpdateSubjectLinesProps>(null)
 
     // Initialize the subject lines with unique ids just when the locale/ref changes
     useEffect(() => {
         if (
             // We need this check to avoid loosing focus when the user is typing
             subjectLines !== lastSubjectLineRef.current &&
-            subjectLines[currentLocale]
+            subjectLines
         ) {
             setSubjectLinesWithId(
-                subjectLines[currentLocale].options.map((option) => ({
+                subjectLines.options.map((option) => ({
                     id: _uniqueId('subject-line-'),
                     value: option,
                 }))
             )
 
             lastSubjectLineRef.current = {
-                ...subjectLines,
-                [currentLocale]: {
-                    allow_other:
-                        subjectLines?.[currentLocale]?.allow_other ?? true,
-                    options: subjectLines?.[currentLocale]?.options ?? [],
-                },
+                allow_other: subjectLines?.allow_other ?? true,
+                options: subjectLines?.options ?? [],
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentLocale, subjectLines])
+    }, [subjectLines])
 
     const updateSubjectLinesWithId = useCallback(
         (subjectLinesWithIds: {id: string; value: string}[]) => {
             setSubjectLinesWithId(subjectLinesWithIds)
 
-            updateContactForm((prevContactForm) => {
-                lastSubjectLineRef.current = {
-                    ...prevContactForm.subject_lines,
-                    [currentLocale]: {
-                        allow_other:
-                            prevContactForm.subject_lines?.[currentLocale]
-                                ?.allow_other ?? true,
-                        options: subjectLinesWithIds.map(({value}) => value),
-                    },
-                }
+            lastSubjectLineRef.current = {
+                allow_other: subjectLines?.allow_other ?? true,
+                options: subjectLinesWithIds.map(({value}) => value),
+            }
 
-                return {
-                    ...prevContactForm,
-                    subject_lines: lastSubjectLineRef.current,
-                }
-            })
+            updateSubjectLines(lastSubjectLineRef.current)
         },
-        [currentLocale, updateContactForm]
+        [subjectLines, updateSubjectLines]
     )
 
     const handleOnChange = (newValue: string, id: string) => {
@@ -145,21 +122,10 @@ const SubjectLines = ({
     }
 
     const handleOnToggleCheckbox = (value: boolean) => {
-        const newSubjectLines: UpdateContactForm['subject_lines'] = {
-            ...subjectLines,
-            [currentLocale]: {
-                options: subjectLines[currentLocale]?.options || [],
-                allow_other: value,
-            },
-        }
-
-        updateContactForm((prevContactForm) => ({
-            ...prevContactForm,
-            subject_lines: {
-                ...prevContactForm.subject_lines,
-                ...newSubjectLines,
-            },
-        }))
+        updateSubjectLines({
+            options: subjectLines?.options || [],
+            allow_other: value,
+        })
         setIsDirty(true)
     }
 
@@ -169,7 +135,7 @@ const SubjectLines = ({
             <div className={css.description}>{description}</div>
             {subjectLinesWithId.length > 0 && (
                 <CheckBox
-                    isChecked={subjectLines[currentLocale]?.allow_other}
+                    isChecked={subjectLines?.allow_other}
                     onChange={handleOnToggleCheckbox}
                     className={css.checkbox}
                 >

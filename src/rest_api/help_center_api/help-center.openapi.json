@@ -279,33 +279,6 @@
                 "tags": ["help-centers"]
             }
         },
-        "/api/help-center/help-centers/{help_center_id}/submit-contact-form": {
-            "post": {
-                "operationId": "sendContactForm",
-                "summary": "Send a contact form",
-                "deprecated": true,
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ContactFormSubmissionDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {"204": {"description": ""}},
-                "tags": ["help-centers"]
-            }
-        },
         "/api/help-center/help-centers/account": {
             "get": {
                 "operationId": "getAccountInfo",
@@ -1098,296 +1071,6 @@
                 ],
                 "responses": {"200": {"description": ""}},
                 "tags": ["redirects"]
-            }
-        },
-        "/api/help-center/contact-forms/name/{input_name}": {
-            "head": {
-                "operationId": "checkContactFormNameExists",
-                "summary": "Check that a contact form with the provided name exists",
-                "parameters": [
-                    {
-                        "name": "input_name",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "string"}
-                    }
-                ],
-                "responses": {"204": {"description": ""}},
-                "tags": ["contact-forms"]
-            }
-        },
-        "/api/help-center/contact-forms": {
-            "post": {
-                "operationId": "createContactForm",
-                "summary": "Create a Contact Form",
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateContactFormDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ContactFormDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["contact-forms"]
-            },
-            "get": {
-                "operationId": "listContactForms",
-                "summary": "List the contact forms",
-                "parameters": [
-                    {
-                        "name": "per_page",
-                        "required": false,
-                        "in": "query",
-                        "description": "The number of resources to retrieve per request. E.g: 20",
-                        "schema": {}
-                    },
-                    {
-                        "name": "page",
-                        "required": false,
-                        "in": "query",
-                        "description": "The index of the page to retrieve. E.g: 3",
-                        "schema": {}
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ContactFormsListPageDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["contact-forms"]
-            }
-        },
-        "/api/help-center/contact-forms/{id}": {
-            "get": {
-                "operationId": "getContactForm",
-                "summary": "Retrieve a Contact form",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ContactFormDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["contact-forms"]
-            },
-            "put": {
-                "operationId": "updateContactForm",
-                "summary": "Update a Contact Form",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateContactFormDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ContactFormDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["contact-forms"]
-            },
-            "delete": {
-                "operationId": "deleteContactForm",
-                "summary": "Delete a Contact Form",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "responses": {"204": {"description": ""}},
-                "tags": ["contact-forms"]
-            }
-        },
-        "/api/help-center/contact-forms/uid/{uid}": {
-            "get": {
-                "operationId": "getContactFormByUid",
-                "summary": "Retrieve a Contact form by uid",
-                "parameters": [
-                    {
-                        "name": "uid",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "string"}
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ContactFormDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["contact-forms"]
-            }
-        },
-        "/api/help-center/contact-forms/uid/{uid}/submit": {
-            "post": {
-                "operationId": "submitContactFormByUid",
-                "summary": "Submit a Contact Form by uid",
-                "parameters": [
-                    {
-                        "name": "uid",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "string"}
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ContactFormSubmissionDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {"204": {"description": ""}},
-                "tags": ["contact-forms"]
-            }
-        },
-        "/api/help-center/contact-forms/{id}/automation-settings": {
-            "get": {
-                "operationId": "getContactFormAutomationSettings",
-                "summary": "Get a Contact Form automation settings",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/AutomationSettingsDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["contact-forms"]
-            },
-            "put": {
-                "operationId": "upsertContactFormAutomationSettings",
-                "summary": "Update a Contact Form automation settings",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpsertAutomationSettingsDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/AutomationSettingsDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["contact-forms"]
-            }
-        },
-        "/api/help-center/contact-forms/update-email-integration": {
-            "post": {
-                "operationId": "updateEmailIntegration",
-                "summary": "Update the contact form email integration values",
-                "description": "This will update all the contact forms that are using the \"deactivated_integration_id\" for the contact form feature. If a \"fallback_integration\" is provided, those contact forms will use this new integration for the contact form feature. Else, the contact form feature will be disabled.",
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateEmailIntegrationDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {"204": {"description": ""}},
-                "tags": ["contact-forms"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/categories": {
@@ -2909,6 +2592,296 @@
                 "tags": ["attachments"]
             }
         },
+        "/api/help-center/contact-forms/name/{input_name}": {
+            "head": {
+                "operationId": "checkContactFormNameExists",
+                "summary": "Check that a contact form with the provided name exists",
+                "parameters": [
+                    {
+                        "name": "input_name",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {"204": {"description": ""}},
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms": {
+            "post": {
+                "operationId": "createContactForm",
+                "summary": "Create a Contact Form",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateContactFormDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            },
+            "get": {
+                "operationId": "listContactForms",
+                "summary": "List the contact forms",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormsListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms/{id}": {
+            "get": {
+                "operationId": "getContactForm",
+                "summary": "Retrieve a Contact form",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            },
+            "put": {
+                "operationId": "updateContactForm",
+                "summary": "Update a Contact Form",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateContactFormDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            },
+            "delete": {
+                "operationId": "deleteContactForm",
+                "summary": "Delete a Contact Form",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"204": {"description": ""}},
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms/uid/{uid}": {
+            "get": {
+                "operationId": "getContactFormByUid",
+                "summary": "Retrieve a Contact form by uid",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactFormDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms/uid/{uid}/submit": {
+            "post": {
+                "operationId": "submitContactFormByUid",
+                "summary": "Submit a Contact Form by uid",
+                "parameters": [
+                    {
+                        "name": "uid",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContactFormSubmissionDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"204": {"description": ""}},
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms/{id}/automation-settings": {
+            "get": {
+                "operationId": "getContactFormAutomationSettings",
+                "summary": "Get a Contact Form automation settings",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AutomationSettingsDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            },
+            "put": {
+                "operationId": "upsertContactFormAutomationSettings",
+                "summary": "Update a Contact Form automation settings",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpsertAutomationSettingsDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AutomationSettingsDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["contact-forms"]
+            }
+        },
+        "/api/help-center/contact-forms/update-email-integration": {
+            "post": {
+                "operationId": "updateEmailIntegration",
+                "summary": "Update the contact form email integration values",
+                "description": "This will update all the contact forms that are using the \"deactivated_integration_id\" for the contact form feature. If a \"fallback_integration\" is provided, those contact forms will use this new integration for the contact form feature. Else, the contact form feature will be disabled.",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateEmailIntegrationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"204": {"description": ""}},
+                "tags": ["contact-forms"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/navigation-links": {
             "post": {
                 "operationId": "createNavigationLink",
@@ -3634,7 +3607,8 @@
                     "name": {
                         "type": "string",
                         "example": "My Help Center",
-                        "minLength": 2
+                        "minLength": 2,
+                        "maxLength": 50
                     },
                     "subdomain": {
                         "type": "string",
@@ -3691,6 +3665,7 @@
                     },
                     "contact_form": {
                         "description": "Contains the integration email and id which will be used to create tickets from the contact form.",
+                        "deprecated": true,
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/UpdateHelpCenterContactFormDto"
@@ -3717,32 +3692,6 @@
                     "account_id": {"type": "number"}
                 },
                 "required": ["name", "default_locale"]
-            },
-            "HelpCenterContactFormDto": {
-                "type": "object",
-                "properties": {
-                    "card_enabled": {"type": "boolean"},
-                    "helpdesk_integration_email": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "helpdesk_integration_id": {
-                        "type": "number",
-                        "nullable": true
-                    },
-                    "subject_lines": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "$ref": "#/components/schemas/SubjectLineDto"
-                        }
-                    }
-                },
-                "required": [
-                    "card_enabled",
-                    "helpdesk_integration_email",
-                    "helpdesk_integration_id",
-                    "subject_lines"
-                ]
             },
             "HelpCenterDto": {
                 "type": "object",
@@ -3848,14 +3797,6 @@
                         "enum": ["manual", "automation"]
                     },
                     "gaid": {"type": "string", "nullable": true},
-                    "contact_form": {
-                        "nullable": true,
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/HelpCenterContactFormDto"
-                            }
-                        ]
-                    },
                     "email_integration": {
                         "nullable": true,
                         "allOf": [
@@ -3891,86 +3832,8 @@
                     "hotswap_session_token",
                     "source",
                     "gaid",
-                    "contact_form",
                     "email_integration",
                     "automation_settings_id"
-                ]
-            },
-            "ContactFormAttachmentDto": {
-                "type": "object",
-                "properties": {
-                    "filename": {
-                        "type": "string",
-                        "description": "The filename of the attachment",
-                        "example": "image.png"
-                    },
-                    "size": {
-                        "type": "number",
-                        "description": "The size of the attachment in bytes",
-                        "example": 123456,
-                        "minimum": 1
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "The url of the attachment",
-                        "example": "https://example.com/image.png"
-                    }
-                },
-                "required": ["filename", "size", "url"]
-            },
-            "ContactFormSubmissionDto": {
-                "type": "object",
-                "properties": {
-                    "full_name": {
-                        "type": "string",
-                        "description": "The full name of the user",
-                        "minLength": 1,
-                        "maxLength": 255
-                    },
-                    "email": {
-                        "type": "string",
-                        "description": "The email of the user",
-                        "example": "test@test.com",
-                        "minLength": 3,
-                        "maxLength": 320
-                    },
-                    "subject": {
-                        "type": "string",
-                        "description": "The subject of the message",
-                        "example": "Feedback",
-                        "minLength": 1,
-                        "maxLength": 1000
-                    },
-                    "message": {
-                        "type": "string",
-                        "description": "The message of the user",
-                        "minLength": 1,
-                        "maxLength": 10000
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "The url of the page where the form was submitted",
-                        "example": "https://contact.gorgias.help/forms/abcde12345"
-                    },
-                    "is_embedded": {
-                        "type": "boolean",
-                        "description": "Whether the form was embedded or not",
-                        "example": true
-                    },
-                    "attachments": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ContactFormAttachmentDto"
-                        }
-                    }
-                },
-                "required": [
-                    "full_name",
-                    "email",
-                    "subject",
-                    "message",
-                    "url",
-                    "is_embedded"
                 ]
             },
             "AccountInfoDto": {
@@ -4347,14 +4210,6 @@
                         "enum": ["manual", "automation"]
                     },
                     "gaid": {"type": "string", "nullable": true},
-                    "contact_form": {
-                        "nullable": true,
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/HelpCenterContactFormDto"
-                            }
-                        ]
-                    },
                     "email_integration": {
                         "nullable": true,
                         "allOf": [
@@ -4401,7 +4256,6 @@
                     "hotswap_session_token",
                     "source",
                     "gaid",
-                    "contact_form",
                     "email_integration",
                     "automation_settings_id"
                 ]
@@ -4430,7 +4284,8 @@
                     "name": {
                         "type": "string",
                         "example": "My Help Center",
-                        "minLength": 2
+                        "minLength": 2,
+                        "maxLength": 50
                     },
                     "subdomain": {
                         "type": "string",
@@ -4487,6 +4342,7 @@
                     },
                     "contact_form": {
                         "description": "Contains the integration email and id which will be used to create tickets from the contact form.",
+                        "deprecated": true,
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/UpdateHelpCenterContactFormDto"
@@ -4908,311 +4764,6 @@
                     "to": {"type": "string"}
                 },
                 "required": ["from", "to"]
-            },
-            "CreateSubjectLinesDto": {
-                "type": "object",
-                "properties": {
-                    "options": {
-                        "description": "List of options that will be displayed to the user in the subject line's select dropdown\nEach option can be from 2 to 50 character long\nMax 15 options",
-                        "type": "array",
-                        "items": {
-                            "type": "string",
-                            "maxLength": 50,
-                            "minLength": 2
-                        }
-                    },
-                    "allow_other": {
-                        "type": "boolean",
-                        "description": "If true, the \"Other\" subject line option will be made available"
-                    }
-                },
-                "required": ["options", "allow_other"]
-            },
-            "CreateContactFormDto": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "Name of the Contact Form",
-                        "example": "My Contact Form",
-                        "minLength": 2,
-                        "maxLength": 255
-                    },
-                    "default_locale": {
-                        "description": "Contact Form default locale",
-                        "example": "en-US",
-                        "enum": [
-                            "en-US",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
-                            "cs-CZ",
-                            "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE"
-                        ],
-                        "type": "string"
-                    },
-                    "email_integration": {
-                        "description": "Email integration used to receive this contact form inquiries",
-                        "example": {"id": 1, "email": "jonh@example.com"},
-                        "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
-                        ]
-                    },
-                    "subject_lines": {
-                        "nullable": true,
-                        "description": "Custom subject lines",
-                        "example": {
-                            "options": [
-                                "Order status",
-                                "Feedback",
-                                "Report an issue",
-                                "Product questions",
-                                "Request refund or discount"
-                            ],
-                            "allow_other": true
-                        },
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/CreateSubjectLinesDto"
-                            }
-                        ]
-                    },
-                    "shop_name": {"type": "string", "nullable": true}
-                },
-                "required": ["name", "default_locale", "email_integration"]
-            },
-            "SubjectLinesDto": {
-                "type": "object",
-                "properties": {
-                    "options": {
-                        "description": "List of options that will be displayed to the user in the subject line's select dropdown\nEach option can be from 2 to 50 character long\nMax 15 options",
-                        "type": "array",
-                        "items": {"type": "string"}
-                    },
-                    "allow_other": {
-                        "type": "boolean",
-                        "description": "If true, the \"Other\" subject line option will be made available"
-                    }
-                },
-                "required": ["options", "allow_other"]
-            },
-            "ContactFormDto": {
-                "type": "object",
-                "properties": {
-                    "created_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "description": "Creation date"
-                    },
-                    "updated_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "description": "Update date"
-                    },
-                    "deleted_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": true,
-                        "description": "Deletion date"
-                    },
-                    "id": {
-                        "type": "number",
-                        "description": "Identifier",
-                        "example": 1
-                    },
-                    "account_id": {
-                        "type": "number",
-                        "description": "Helpdesk account id",
-                        "example": 1
-                    },
-                    "help_center_id": {
-                        "type": "number",
-                        "nullable": true,
-                        "description": "Help center id",
-                        "example": null
-                    },
-                    "name": {
-                        "type": "string",
-                        "description": "Name of the contact form instance",
-                        "example": "My Contact Form"
-                    },
-                    "uid": {
-                        "type": "string",
-                        "description": "Unique alphanumerical identifier",
-                        "example": "g46hsfy6"
-                    },
-                    "default_locale": {
-                        "description": "Default supported locale",
-                        "example": "en-US",
-                        "enum": [
-                            "en-US",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
-                            "cs-CZ",
-                            "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE"
-                        ],
-                        "type": "string"
-                    },
-                    "source": {
-                        "description": "Source of the creation of the contact form",
-                        "example": "manual",
-                        "enum": ["manual", "help_center", "migration"],
-                        "type": "string"
-                    },
-                    "subject_lines": {
-                        "nullable": true,
-                        "description": "Custom subject lines",
-                        "example": {
-                            "options": [
-                                "Order status",
-                                "Feedback",
-                                "Report an issue",
-                                "Product questions",
-                                "Request refund or discount"
-                            ],
-                            "allow_other": true
-                        },
-                        "allOf": [
-                            {"$ref": "#/components/schemas/SubjectLinesDto"}
-                        ]
-                    },
-                    "email_integration": {
-                        "nullable": true,
-                        "description": "Email integration details used to create Helpdesk tickets",
-                        "example": {"id": 1, "email": "jonh@example.com"},
-                        "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
-                        ]
-                    },
-                    "code_snippet_template": {
-                        "type": "string",
-                        "description": "Code snippet template to use to embed this contact form"
-                    },
-                    "url_template": {
-                        "type": "string",
-                        "description": "Url template to use to construct the shareable Contact form link"
-                    },
-                    "shop_name": {"type": "string", "nullable": true},
-                    "deactivated_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": true,
-                        "description": "Deactivation date"
-                    },
-                    "automation_settings_id": {
-                        "type": "number",
-                        "nullable": true,
-                        "description": "Automation settings id in contact form",
-                        "example": 2
-                    }
-                },
-                "required": [
-                    "created_datetime",
-                    "updated_datetime",
-                    "id",
-                    "account_id",
-                    "help_center_id",
-                    "name",
-                    "uid",
-                    "default_locale",
-                    "source",
-                    "subject_lines",
-                    "email_integration",
-                    "code_snippet_template",
-                    "url_template",
-                    "shop_name",
-                    "deactivated_datetime",
-                    "automation_settings_id"
-                ]
-            },
-            "ContactFormsListPageDto": {
-                "type": "object",
-                "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
-                    "object": {
-                        "type": "string",
-                        "default": "list",
-                        "enum": ["list"]
-                    },
-                    "data": {
-                        "type": "array",
-                        "items": {"$ref": "#/components/schemas/ContactFormDto"}
-                    }
-                },
-                "required": ["meta", "object", "data"]
-            },
-            "UpdateContactFormDto": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "Name of the Contact Form",
-                        "example": "My Contact Form",
-                        "minLength": 2,
-                        "maxLength": 255
-                    },
-                    "default_locale": {
-                        "description": "Contact Form default locale",
-                        "example": "en-US",
-                        "enum": [
-                            "en-US",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
-                            "cs-CZ",
-                            "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE"
-                        ],
-                        "type": "string"
-                    },
-                    "email_integration": {
-                        "description": "Email integration used to receive this contact form inquiries",
-                        "example": {"id": 1, "email": "jonh@example.com"},
-                        "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
-                        ]
-                    },
-                    "subject_lines": {
-                        "nullable": true,
-                        "description": "Custom subject lines",
-                        "example": {
-                            "options": [
-                                "Order status",
-                                "Feedback",
-                                "Report an issue",
-                                "Product questions",
-                                "Request refund or discount"
-                            ],
-                            "allow_other": true
-                        },
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/CreateSubjectLinesDto"
-                            }
-                        ]
-                    },
-                    "shop_name": {"type": "string", "nullable": true},
-                    "deactivated_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": true
-                    }
-                }
             },
             "CreateCategoryTranslationSeoMetaDto": {
                 "type": "object",
@@ -6656,6 +6207,388 @@
                     }
                 },
                 "required": ["file", "channel"]
+            },
+            "CreateSubjectLinesDto": {
+                "type": "object",
+                "properties": {
+                    "options": {
+                        "description": "List of options that will be displayed to the user in the subject line's select dropdown\nEach option can be from 2 to 50 character long\nMax 15 options",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 50,
+                            "minLength": 2
+                        }
+                    },
+                    "allow_other": {
+                        "type": "boolean",
+                        "description": "If true, the \"Other\" subject line option will be made available"
+                    }
+                },
+                "required": ["options", "allow_other"]
+            },
+            "CreateContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the Contact Form",
+                        "example": "My Contact Form",
+                        "minLength": 2,
+                        "maxLength": 255
+                    },
+                    "default_locale": {
+                        "description": "Contact Form default locale",
+                        "example": "en-US",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "email_integration": {
+                        "description": "Email integration used to receive this contact form inquiries",
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
+                    },
+                    "subject_lines": {
+                        "nullable": true,
+                        "description": "Custom subject lines",
+                        "example": {
+                            "options": [
+                                "Order status",
+                                "Feedback",
+                                "Report an issue",
+                                "Product questions",
+                                "Request refund or discount"
+                            ],
+                            "allow_other": true
+                        },
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateSubjectLinesDto"
+                            }
+                        ]
+                    },
+                    "shop_name": {"type": "string", "nullable": true}
+                },
+                "required": ["name", "default_locale", "email_integration"]
+            },
+            "SubjectLinesDto": {
+                "type": "object",
+                "properties": {
+                    "options": {
+                        "description": "List of options that will be displayed to the user in the subject line's select dropdown\nEach option can be from 2 to 50 character long\nMax 15 options",
+                        "type": "array",
+                        "items": {"type": "string"}
+                    },
+                    "allow_other": {
+                        "type": "boolean",
+                        "description": "If true, the \"Other\" subject line option will be made available"
+                    }
+                },
+                "required": ["options", "allow_other"]
+            },
+            "ContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "Creation date"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "description": "Update date"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Deletion date"
+                    },
+                    "id": {
+                        "type": "number",
+                        "description": "Identifier",
+                        "example": 1
+                    },
+                    "account_id": {
+                        "type": "number",
+                        "description": "Helpdesk account id",
+                        "example": 1
+                    },
+                    "help_center_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Help center id",
+                        "example": null
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the contact form instance",
+                        "example": "My Contact Form"
+                    },
+                    "uid": {
+                        "type": "string",
+                        "description": "Unique alphanumerical identifier",
+                        "example": "g46hsfy6"
+                    },
+                    "default_locale": {
+                        "description": "Default supported locale",
+                        "example": "en-US",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "source": {
+                        "description": "Source of the creation of the contact form",
+                        "example": "manual",
+                        "enum": ["manual", "help_center", "migration"],
+                        "type": "string"
+                    },
+                    "subject_lines": {
+                        "nullable": true,
+                        "description": "Custom subject lines",
+                        "example": {
+                            "options": [
+                                "Order status",
+                                "Feedback",
+                                "Report an issue",
+                                "Product questions",
+                                "Request refund or discount"
+                            ],
+                            "allow_other": true
+                        },
+                        "allOf": [
+                            {"$ref": "#/components/schemas/SubjectLinesDto"}
+                        ]
+                    },
+                    "email_integration": {
+                        "nullable": true,
+                        "description": "Email integration details used to create Helpdesk tickets",
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
+                    },
+                    "code_snippet_template": {
+                        "type": "string",
+                        "description": "Code snippet template to use to embed this contact form"
+                    },
+                    "url_template": {
+                        "type": "string",
+                        "description": "Url template to use to construct the shareable Contact form link"
+                    },
+                    "shop_name": {"type": "string", "nullable": true},
+                    "deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Deactivation date"
+                    },
+                    "automation_settings_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Automation settings id in contact form",
+                        "example": 2
+                    }
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "id",
+                    "account_id",
+                    "help_center_id",
+                    "name",
+                    "uid",
+                    "default_locale",
+                    "source",
+                    "subject_lines",
+                    "email_integration",
+                    "code_snippet_template",
+                    "url_template",
+                    "shop_name",
+                    "deactivated_datetime",
+                    "automation_settings_id"
+                ]
+            },
+            "ContactFormsListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {"$ref": "#/components/schemas/ContactFormDto"}
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "UpdateContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the Contact Form",
+                        "example": "My Contact Form",
+                        "minLength": 2,
+                        "maxLength": 255
+                    },
+                    "default_locale": {
+                        "description": "Contact Form default locale",
+                        "example": "en-US",
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "email_integration": {
+                        "description": "Email integration used to receive this contact form inquiries",
+                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "allOf": [
+                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                        ]
+                    },
+                    "subject_lines": {
+                        "nullable": true,
+                        "description": "Custom subject lines",
+                        "example": {
+                            "options": [
+                                "Order status",
+                                "Feedback",
+                                "Report an issue",
+                                "Product questions",
+                                "Request refund or discount"
+                            ],
+                            "allow_other": true
+                        },
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CreateSubjectLinesDto"
+                            }
+                        ]
+                    },
+                    "shop_name": {"type": "string", "nullable": true},
+                    "deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    }
+                }
+            },
+            "ContactFormAttachmentDto": {
+                "type": "object",
+                "properties": {
+                    "filename": {
+                        "type": "string",
+                        "description": "The filename of the attachment",
+                        "example": "image.png"
+                    },
+                    "size": {
+                        "type": "number",
+                        "description": "The size of the attachment in bytes",
+                        "example": 123456,
+                        "minimum": 1
+                    },
+                    "url": {
+                        "type": "string",
+                        "description": "The url of the attachment",
+                        "example": "https://example.com/image.png"
+                    }
+                },
+                "required": ["filename", "size", "url"]
+            },
+            "ContactFormSubmissionDto": {
+                "type": "object",
+                "properties": {
+                    "full_name": {
+                        "type": "string",
+                        "description": "The full name of the user",
+                        "minLength": 1,
+                        "maxLength": 255
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "The email of the user",
+                        "example": "test@test.com",
+                        "minLength": 3,
+                        "maxLength": 320
+                    },
+                    "subject": {
+                        "type": "string",
+                        "description": "The subject of the message",
+                        "example": "Feedback",
+                        "minLength": 1,
+                        "maxLength": 50
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "The message of the user",
+                        "minLength": 1,
+                        "maxLength": 10000
+                    },
+                    "url": {
+                        "type": "string",
+                        "description": "The url of the page where the form was submitted",
+                        "example": "https://contact.gorgias.help/forms/abcde12345"
+                    },
+                    "is_embedded": {
+                        "type": "boolean",
+                        "description": "Whether the form was embedded or not",
+                        "example": true
+                    },
+                    "attachments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ContactFormAttachmentDto"
+                        }
+                    }
+                },
+                "required": [
+                    "full_name",
+                    "email",
+                    "subject",
+                    "message",
+                    "url",
+                    "is_embedded"
+                ]
             },
             "NavigationLinkMeta": {
                 "type": "object",
