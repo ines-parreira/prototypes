@@ -1,5 +1,6 @@
 import React from 'react'
 
+import cssNavbar from 'assets/css/navbar.less'
 import {getIconFromType} from 'state/integrations/helpers'
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
@@ -54,15 +55,26 @@ const AutomationNavbarAddOnSectionBlock = ({
                     <NavbarLink
                         to={`/app/automation/${shopType}/${shopName}/flows`}
                         isNested
+                        title="Flow builder"
                     >
-                        Flow builder
-                        <Badge type={ColorType.Blue}>BETA</Badge>
+                        <span className={cssNavbar['item-name']}>
+                            Flow builder
+                        </span>
+                        <Badge
+                            type={ColorType.Blue}
+                            className={cssNavbar.badge}
+                        >
+                            BETA
+                        </Badge>
                     </NavbarLink>
                     <NavbarLink
                         to={`/app/automation/${shopType}/${shopName}/quick-responses`}
                         isNested
+                        title="Quick response flows"
                     >
-                        Quick response flows
+                        <span className={cssNavbar['item-name']}>
+                            Quick response flows
+                        </span>
                     </NavbarLink>
                 </>
             ) : (
@@ -72,9 +84,12 @@ const AutomationNavbarAddOnSectionBlock = ({
                         onSubscribeToAutomationAddOnClick={
                             onSubscribeToAutomationAddOnClick
                         }
+                        title="Flow builder"
                         isNested
                     >
-                        Flow builder
+                        <span className={cssNavbar['item-name']}>
+                            Flow builder
+                        </span>
                     </AutomationNavbarAddOnPaywallNavbarLink>
                     <AutomationNavbarAddOnPaywallNavbarLink
                         to="/app/automation/quick-responses"
@@ -83,7 +98,9 @@ const AutomationNavbarAddOnSectionBlock = ({
                         }
                         isNested
                     >
-                        Quick response flows
+                        <span className={cssNavbar['item-name']}>
+                            Quick response flows
+                        </span>
                     </AutomationNavbarAddOnPaywallNavbarLink>
                 </>
             )}
@@ -92,8 +109,11 @@ const AutomationNavbarAddOnSectionBlock = ({
                     <NavbarLink
                         to={`/app/automation/shopify/${shopName}/order-management`}
                         isNested
+                        title="Order management flows"
                     >
-                        Order management flows
+                        <span className={cssNavbar['item-name']}>
+                            Order management flows
+                        </span>
                     </NavbarLink>
                 </>
             )}
@@ -101,8 +121,11 @@ const AutomationNavbarAddOnSectionBlock = ({
                 <NavbarLink
                     to={`/app/automation/${shopType}/${shopName}/article-recommendation`}
                     isNested
+                    title="Article recommendation"
                 >
-                    Article recommendation
+                    <span className={cssNavbar['item-name']}>
+                        Article recommendation
+                    </span>
                 </NavbarLink>
             ) : (
                 <AutomationNavbarAddOnPaywallNavbarLink
@@ -111,15 +134,21 @@ const AutomationNavbarAddOnSectionBlock = ({
                         onSubscribeToAutomationAddOnClick
                     }
                     isNested
+                    title="Article recommendation"
                 >
-                    Article recommendation
+                    <span className={cssNavbar['item-name']}>
+                        Article recommendation
+                    </span>
                 </AutomationNavbarAddOnPaywallNavbarLink>
             )}
             <NavbarLink
                 to={`/app/automation/${shopType}/${shopName}/connected-channels`}
                 isNested
+                title="Connected channels"
             >
-                Connected channels
+                <span className={cssNavbar['item-name']}>
+                    Connected channels
+                </span>
             </NavbarLink>
         </NavbarSectionBlock>
     )

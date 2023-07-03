@@ -63,7 +63,12 @@ export default function StatsNavbarView() {
                     >
                         Overview
                         {hasAnalyticsBeta && (
-                            <Badge type={ColorType.Blue}>new</Badge>
+                            <Badge
+                                type={ColorType.Blue}
+                                className={cssNavbar.badge}
+                            >
+                                new
+                            </Badge>
                         )}
                     </NavbarLink>
 
@@ -179,7 +184,12 @@ export default function StatsNavbarView() {
                         to="/app/stats/revenue/campaigns"
                     >
                         Campaigns
-                        <Badge type={ColorType.Blue}>BETA</Badge>
+                        <Badge
+                            type={ColorType.Blue}
+                            className={cssNavbar.badge}
+                        >
+                            BETA
+                        </Badge>
                     </NavbarLink>
                 </NavbarBlock>
             )}

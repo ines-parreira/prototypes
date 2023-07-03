@@ -6,7 +6,7 @@ import css from 'assets/css/navbar.less'
 
 export type NavbarLinkProps = Pick<
     NavLinkProps,
-    'to' | 'exact' | 'children'
+    'to' | 'exact' | 'children' | 'title'
 > & {
     isNested?: boolean
     className?: string

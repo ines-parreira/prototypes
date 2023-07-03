@@ -1,6 +1,10 @@
 import crypto from 'crypto'
 
-import {SyntheticEvent} from 'react'
+import {
+    SyntheticEvent,
+    MouseEvent as MouseEventReact,
+    TouchEvent as TouchEventReact,
+} from 'react'
 import {EditorState, Modifier} from 'draft-js'
 import escodegen from 'escodegen'
 import esprima from 'esprima'
@@ -1225,7 +1229,7 @@ export function generateTicketMessagesId(index: number) {
 }
 
 export function isTouchEvent(
-    event: MouseEvent | TouchEvent
-): event is TouchEvent {
+    event: MouseEvent | TouchEvent | MouseEventReact | TouchEventReact
+): event is TouchEvent | TouchEventReact {
     return 'touches' in event
 }

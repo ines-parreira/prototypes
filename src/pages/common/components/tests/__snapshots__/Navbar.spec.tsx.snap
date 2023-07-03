@@ -151,6 +151,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
   </div>
   <div
     class="sidebar-resizer"
+    style="left: 235px;"
   />
 </div>
 `;
@@ -306,6 +307,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
   </div>
   <div
     class="sidebar-resizer"
+    style="left: 235px;"
   />
 </div>
 `;
@@ -478,6 +480,7 @@ exports[`<Navbar /> should render the spotlight search if enabled 1`] = `
   </div>
   <div
     class="sidebar-resizer"
+    style="left: 235px;"
   />
 </div>
 `;
@@ -633,6 +636,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
   </div>
   <div
     class="sidebar-resizer"
+    style="left: 235px;"
   />
 </div>
 `;

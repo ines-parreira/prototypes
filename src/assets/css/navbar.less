@@ -52,6 +52,10 @@
         line-height: 28px;
         padding: 0 20px;
 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
         &.isDragged {
             opacity: 0.3;
         }
@@ -73,11 +77,15 @@
         }
 
         &:global.focused {
-            background-color: var(main-primary);
+            background-color: var(--main-primary);
         }
     }
 
     .menu {
         white-space: nowrap;
+    }
+
+    .badge {
+        margin-left: 10px;
     }
 }

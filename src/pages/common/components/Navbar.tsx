@@ -1,4 +1,11 @@
-import React, {Component, ComponentProps, createRef, ReactNode} from 'react'
+import React, {
+    Component,
+    ComponentProps,
+    createRef,
+    ReactNode,
+    MouseEvent as MouseEventReact,
+    TouchEvent as TouchEventReact,
+} from 'react'
 import PropTypes from 'prop-types'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
@@ -47,7 +54,7 @@ import css from './Navbar.less'
 const unreadCountChangedEvent = 'widget:publication:unread_count:changed'
 
 const MIN_WIDTH = 200
-const MAX_WIDTH = 355
+const MAX_WIDTH = 350
 
 type NavLinkProps = {
     to: string
@@ -269,13 +276,17 @@ export class Navbar extends Component<Props, State> {
         return submitSetting(newPreferences.toJS(), false)
     }
 
-    startResizing = () => {
+    startResizing = (event: MouseEventReact | TouchEventReact) => {
+        // disable resizing width for right-click event
+        if (!isTouchEvent(event) && event.button === 2) {
+            return
+        }
         this.setState({isResizing: true})
     }
 
     stopResizing = () => {
-        const {navbarWidth} = this.state
-        if (this.state.isResizing) {
+        const {isResizing, navbarWidth} = this.state
+        if (isResizing) {
             tryLocalStorage(() =>
                 window.localStorage.setItem(
                     'navbar-width',
@@ -900,6 +911,7 @@ export class Navbar extends Component<Props, State> {
                     className={classnames(css['sidebar-resizer'], {
                         [css.isTouched]: this.state.isResizing,
                     })}
+                    style={{left: `${this.state.navbarWidth - 3}px`}}
                     onMouseDown={this.startResizing}
                     onTouchMove={this.startResizing}
                 />

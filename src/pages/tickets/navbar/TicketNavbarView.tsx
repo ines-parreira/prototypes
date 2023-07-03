@@ -116,7 +116,6 @@ export function TicketNavbarViewContainer({
                         >
                             <span
                                 className={classnames(
-                                    css.viewName,
                                     navbarCss['item-name'],
                                     'flex-grow'
                                 )}
