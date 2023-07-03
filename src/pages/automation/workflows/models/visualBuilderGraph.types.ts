@@ -34,6 +34,12 @@ export type MultipleChoicesNodeType = Node<
     'multiple_choices'
 >
 
+export function isMultipleChoicesNodeType(
+    node: VisualBuilderNode
+): node is MultipleChoicesNodeType {
+    return node.type === 'multiple_choices'
+}
+
 export type AutomatedMessageNodeType = Node<
     {
         wfConfigurationRef: {

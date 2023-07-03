@@ -36,16 +36,16 @@ function FileUploadNode(node: NodeProps<FileUploadNodeType['data']>) {
                     className={css.sourceHandle}
                 />
                 <div className={css.nodeContainer}>
+                    <VisualBuilderActionTag nodeType="file_upload">
+                        Collect file upload
+                    </VisualBuilderActionTag>
                     <Label className={css.nodeTitle}>
                         {content.text.length > 0 ? (
                             content.text
                         ) : (
-                            <span className={css.clickToAdd}>Click to add</span>
+                            <span className={css.clickToAdd}>Message</span>
                         )}
                     </Label>
-                    <VisualBuilderActionTag nodeType="file_upload">
-                        Collect file upload
-                    </VisualBuilderActionTag>
                     <NodeDeleteIcon node={node} />
                 </div>
                 <Handle

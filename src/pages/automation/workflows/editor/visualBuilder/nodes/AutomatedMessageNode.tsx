@@ -38,16 +38,16 @@ function AutomatedMessageNode(
                     className={css.sourceHandle}
                 />
                 <div className={css.nodeContainer}>
+                    <VisualBuilderActionTag nodeType="automated_message">
+                        Automated answer
+                    </VisualBuilderActionTag>
                     <Label className={css.nodeTitle}>
                         {content.text.length > 0 ? (
                             content.text
                         ) : (
-                            <span className={css.clickToAdd}>Prompt</span>
+                            <span className={css.clickToAdd}>Message</span>
                         )}
                     </Label>
-                    <VisualBuilderActionTag nodeType="automated_message">
-                        Message
-                    </VisualBuilderActionTag>
                     <NodeDeleteIcon node={node} />
                 </div>
                 <Handle

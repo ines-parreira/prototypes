@@ -35,6 +35,9 @@ function MultipleChoicesNode(node: NodeProps<MultipleChoicesNodeType['data']>) {
                     className={css.sourceHandle}
                 />
                 <div className={css.nodeContainer}>
+                    <VisualBuilderActionTag nodeType="multiple_choices">
+                        Multiple choice
+                    </VisualBuilderActionTag>
                     <Label className={css.nodeTitle}>
                         {content.text.length > 0 ? (
                             content.text
@@ -42,9 +45,6 @@ function MultipleChoicesNode(node: NodeProps<MultipleChoicesNodeType['data']>) {
                             <span className={css.clickToAdd}>Question</span>
                         )}
                     </Label>
-                    <VisualBuilderActionTag nodeType="multiple_choices">
-                        Multiple choice
-                    </VisualBuilderActionTag>
                     <NodeDeleteIcon node={node} />
                 </div>
                 <Handle

@@ -41,7 +41,7 @@ export default function TextReplyEditor({
             )}
             <div className={css.formField}>
                 <Label className={css.label} isRequired={true}>
-                    Prompt
+                    Message
                 </Label>
                 <MessageContentFormField
                     content={nodeInEdition.data.content}

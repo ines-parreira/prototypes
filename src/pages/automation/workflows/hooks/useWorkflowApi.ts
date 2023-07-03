@@ -135,7 +135,6 @@ export const workflowConfigurationFactory = (
     accountId: number,
     workflowId: string
 ): WorkflowConfiguration => {
-    const initial_step_id = ulid()
     const workflowCallStepId = ulid()
     return {
         id: workflowId,
@@ -143,19 +142,12 @@ export const workflowConfigurationFactory = (
         account_id: accountId,
         is_draft: false,
         name: '',
-        initial_step_id,
+        initial_step_id: workflowCallStepId,
         entrypoint: {
             label: '',
             label_tkey: ulid(),
         },
         steps: [
-            {
-                id: initial_step_id,
-                kind: 'messages',
-                settings: {
-                    messages: [{content: {html: '', text: ''}}],
-                },
-            },
             {
                 id: workflowCallStepId,
                 kind: 'workflow_call',
@@ -164,12 +156,6 @@ export const workflowConfigurationFactory = (
                 },
             },
         ],
-        transitions: [
-            {
-                id: ulid(),
-                from_step_id: initial_step_id,
-                to_step_id: workflowCallStepId,
-            },
-        ],
+        transitions: [],
     }
 }

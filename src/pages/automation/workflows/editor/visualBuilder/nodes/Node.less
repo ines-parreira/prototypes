@@ -8,11 +8,12 @@
         line-height: 20px;
         background: @classic-neutral-grey-0;
         border: 1px solid @classic-neutral-grey-3;
-        width: 274px;
-        height: 104px;
-        padding: 14px 16px;
+        width: 280px;
+        height: 96px;
+        padding: 12px 16px;
         border-radius: @layout-spacing-xxs;
         cursor: pointer !important;
+        color: var(--classic-neutral-grey-6);
 
         &:hover {
             box-shadow: 4px 4px 16px rgba(22, 22, 22, 0.1);
@@ -33,20 +34,28 @@
     }
 
     .endNode {
-        height: 104px;
+        height: 74px;
         display: flex;
         flex-direction: column;
-        gap: 6px;
-        padding: 12px 12px;
+        gap: 8px;
+        padding: 12px 16px;
         color: @classic-neutral-grey-5;
         cursor: grab !important;
         &:hover {
             box-shadow: none;
         }
+        .nodeTitle {
+            cursor: grab;
+        }
     }
 
     .endTooltipIcon {
         cursor: help;
+    }
+
+    .iconContainer {
+        border-radius: 4px;
+        padding: 4px 4px;
     }
 
     .nodeContainer {
@@ -58,7 +67,6 @@
     }
 
     .nodeTitle {
-        width: 95%;
         .body-semibold();
         text-overflow: ellipsis;
         overflow: hidden;

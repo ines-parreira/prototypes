@@ -80,6 +80,7 @@ export default function ReplyButtonList({
                     onDrop={handleDrop}
                     onCancel={handleCancel}
                     label={label}
+                    placeholder={`Option ${index + 1}`}
                     onChangeLabel={(nextLabel) => {
                         onChangeChoiceLabel(event_id, nextLabel)
                     }}
@@ -99,7 +100,7 @@ export default function ReplyButtonList({
                     onClick={() => onAddChoice()}
                     isDisabled={choicesDirty.length >= 6}
                 >
-                    Add Reply Button
+                    Add option
                 </Button>
             </div>
         </div>

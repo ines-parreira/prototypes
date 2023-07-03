@@ -11,7 +11,9 @@ import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWork
 import {
     VisualBuilderGraph,
     VisualBuilderNode,
+    isMultipleChoicesNodeType,
 } from 'pages/automation/workflows/models/visualBuilderGraph.types'
+
 import {
     colorByVisualBuilderNodeType,
     materialIconByVisualBuilderNodeType,
@@ -52,13 +54,23 @@ function getIncomingChoiceLabel(
     const previousNode = previousNodeId
         ? visualBuilderGraph.nodes.find(({id}) => id === previousNodeId)
         : undefined
-    const choiceLabel =
+    const choiceIndex =
         previousNode?.type === 'multiple_choices' && choiceEventId != null
-            ? previousNode.data.choices.find(
+            ? previousNode.data.choices.findIndex(
                   ({event_id}) => event_id === choiceEventId
-              )?.label
-            : undefined
-    return choiceLabel
+              )
+            : -1
+    if (
+        choiceIndex >= 0 &&
+        previousNode &&
+        isMultipleChoicesNodeType(previousNode)
+    ) {
+        return (
+            previousNode.data.choices[choiceIndex].label ||
+            `Option ${choiceIndex + 1}`
+        )
+    }
+    return undefined
 }
 
 function useMenuItems(
@@ -108,7 +120,7 @@ function useMenuItems(
             },
         },
         {
-            label: 'Message',
+            label: 'Automated answer',
             description: 'Display short text',
             type: 'automated_message',
             icon: materialIconByVisualBuilderNodeType.automated_message,
@@ -226,9 +238,6 @@ export default function EdgeBlock({node}: {node: NodeProps}) {
                 top: incomingChoiceLabel != null ? -48 : -46,
             }}
         >
-            {incomingChoiceLabel === '' && (
-                <Badge className={css.edgeLabel}>Option</Badge>
-            )}
             {incomingChoiceLabel && (
                 <Badge type={ColorType.Blue} className={css.edgeLabel}>
                     {incomingChoiceLabel}

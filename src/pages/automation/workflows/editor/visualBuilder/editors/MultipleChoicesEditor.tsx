@@ -39,7 +39,7 @@ export default function MultipleChoicesEditor({
                 />
             </div>
             <div className={css.formField}>
-                <Label className={css.label}>Reply buttons</Label>
+                <Label className={css.label}>Options</Label>
                 <ReplyButtonList
                     nodeId={nodeInEdition.id}
                     choices={choices}

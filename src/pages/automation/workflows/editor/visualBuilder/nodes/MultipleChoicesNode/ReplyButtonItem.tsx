@@ -20,6 +20,7 @@ type ReplyButtonItemProps = {
     onDeleteChoiceConfirmation: (index: number) => void
     onDeleteChoiceCancel: (index: number) => void
     disabledTooltip?: React.ReactNode
+    placeholder?: string
 }
 
 const choiceTextLimit = 50
@@ -35,6 +36,7 @@ export default function ReplyButtonItem({
     onDeleteChoiceConfirmation,
     onDeleteChoiceCancel,
     disabledTooltip,
+    placeholder,
 }: ReplyButtonItemProps) {
     const dndType = 'workflow-multiple-choices-reply-button'
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
@@ -68,6 +70,7 @@ export default function ReplyButtonItem({
                 onChange={setTextInputValue}
                 className={css.textInput}
                 maxLength={choiceTextLimit}
+                placeholder={placeholder}
             />
             <ConfirmationPopover
                 placement="top"

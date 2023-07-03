@@ -4,6 +4,7 @@ import {Handle, Position, NodeProps} from 'reactflow'
 import _isEqual from 'lodash/isEqual'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {useWorkflowEditorContext} from 'pages/automation/workflows/hooks/useWorkflowEditor'
+import Label from 'pages/common/forms/Label/Label'
 
 import {TriggerButtonNodeType} from '../../../models/visualBuilderGraph.types'
 import css from './Node.less'
@@ -33,12 +34,7 @@ function TriggerButtonNode(node: NodeProps<TriggerButtonNodeType['data']>) {
                     <div className={'w-100'}>
                         <Badge type={ColorType.Light}>start flow</Badge>
                     </div>
-                    <div
-                        className={classNames(css.nodeTitle, {
-                            [css.nodeContentErrored]:
-                                shouldShowErrors && isErrored,
-                        })}
-                    >
+                    <Label className={css.nodeTitle}>
                         {label.length > 0 ? (
                             node.data.label
                         ) : (
@@ -46,7 +42,7 @@ function TriggerButtonNode(node: NodeProps<TriggerButtonNodeType['data']>) {
                                 Trigger button
                             </span>
                         )}
-                    </div>
+                    </Label>
                 </div>
                 <Handle
                     type="source"

@@ -36,16 +36,16 @@ function TextReplyNode(node: NodeProps<TextReplyNodeType['data']>) {
                     className={css.sourceHandle}
                 />
                 <div className={css.nodeContainer}>
+                    <VisualBuilderActionTag nodeType="text_reply">
+                        Collect text reply
+                    </VisualBuilderActionTag>
                     <Label className={css.nodeTitle}>
                         {content.text.length > 0 ? (
                             content.text
                         ) : (
-                            <span className={css.clickToAdd}>Click to add</span>
+                            <span className={css.clickToAdd}>Message</span>
                         )}
                     </Label>
-                    <VisualBuilderActionTag nodeType="text_reply">
-                        Collect text reply
-                    </VisualBuilderActionTag>
                     <NodeDeleteIcon node={node} />
                 </div>
                 <Handle

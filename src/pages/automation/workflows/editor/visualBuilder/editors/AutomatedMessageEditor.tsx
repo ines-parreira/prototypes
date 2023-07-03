@@ -24,10 +24,10 @@ export default function AutomatedMessageEditor({
 
     return (
         <div className={css.container}>
-            <Label className={css.title}>Message</Label>
+            <Label className={css.title}>Automated answer</Label>
             <div className={css.formField}>
                 <Label className={css.label} isRequired={true}>
-                    Prompt
+                    Message
                 </Label>
                 <MessageContentFormField
                     content={nodeInEdition.data.content}
