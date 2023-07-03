@@ -46,10 +46,10 @@ import {
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {
     ReportingFilterOperator,
-    TicketStateDimension,
-    TicketStateMeasure,
-    TicketStateMember,
-    TicketStateSegment,
+    TicketDimension,
+    TicketMeasure,
+    TicketMember,
+    TicketSegment,
 } from 'models/reporting/types'
 import {usePostReporting} from 'models/reporting/queries'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
@@ -73,7 +73,7 @@ import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {
     periodToReportingGranularity,
     statsFiltersToReportingFilters,
-    TicketStateStatsFiltersMembers,
+    TicketStatsFiltersMembers,
 } from 'utils/reporting'
 import {
     SHORT_FORMAT,
@@ -198,30 +198,30 @@ export default function SupportPerformanceOverview() {
 
     const workloadPerChannel = usePostReporting<
         {
-            [TicketStateMeasure.TicketCount]: string
-            [TicketStateDimension.Channel]: TicketChannel
+            [TicketMeasure.TicketCount]: string
+            [TicketDimension.FirstMessageChannel]: TicketChannel
         }[],
         OneDimensionalDataItem[]
     >(
         [
             {
-                measures: [TicketStateMeasure.TicketCount],
-                order: [[TicketStateMeasure.TicketCount, 'desc']],
-                dimensions: [TicketStateDimension.Channel],
-                segments: [TicketStateSegment.WorkloadTickets],
+                measures: [TicketMeasure.TicketCount],
+                order: [[TicketMeasure.TicketCount, 'desc']],
+                dimensions: [TicketDimension.FirstMessageChannel],
+                segments: [TicketSegment.WorkloadTickets],
                 filters: [
                     {
-                        member: TicketStateMember.IsSpam,
+                        member: TicketMember.IsSpam,
                         operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: TicketStateMember.IsTrashed,
+                        member: TicketMember.IsTrashed,
                         operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     ...statsFiltersToReportingFilters(
-                        TicketStateStatsFiltersMembers,
+                        TicketStatsFiltersMembers,
                         requestStatsFilters
                     ),
                 ],
@@ -231,9 +231,9 @@ export default function SupportPerformanceOverview() {
             select: (data) => {
                 return data.data.data.map((item) => ({
                     label: TICKET_CHANNEL_NAMES[
-                        item[TicketStateDimension.Channel]
+                        item[TicketDimension.FirstMessageChannel]
                     ],
-                    value: parseFloat(item[TicketStateMeasure.TicketCount]),
+                    value: parseFloat(item[TicketMeasure.TicketCount]),
                 }))
             },
         }
@@ -241,30 +241,30 @@ export default function SupportPerformanceOverview() {
 
     const workloadPerChannelPrevious = usePostReporting<
         {
-            [TicketStateMeasure.TicketCount]: string
-            [TicketStateDimension.Channel]: TicketChannel
+            [TicketMeasure.TicketCount]: string
+            [TicketDimension.FirstMessageChannel]: TicketChannel
         }[],
         OneDimensionalDataItem[]
     >(
         [
             {
-                measures: [TicketStateMeasure.TicketCount],
-                order: [[TicketStateMeasure.TicketCount, 'desc']],
-                dimensions: [TicketStateDimension.Channel],
-                segments: [TicketStateSegment.WorkloadTickets],
+                measures: [TicketMeasure.TicketCount],
+                order: [[TicketMeasure.TicketCount, 'desc']],
+                dimensions: [TicketDimension.FirstMessageChannel],
+                segments: [TicketSegment.WorkloadTickets],
                 filters: [
                     {
-                        member: TicketStateMember.IsSpam,
+                        member: TicketMember.IsSpam,
                         operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     {
-                        member: TicketStateMember.IsTrashed,
+                        member: TicketMember.IsTrashed,
                         operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
                     ...statsFiltersToReportingFilters(
-                        TicketStateStatsFiltersMembers,
+                        TicketStatsFiltersMembers,
                         {
                             ...requestStatsFilters,
                             period: getPreviousPeriod(
@@ -279,9 +279,9 @@ export default function SupportPerformanceOverview() {
             select: (data) => {
                 return data.data.data.map((item) => ({
                     label: TICKET_CHANNEL_NAMES[
-                        item[TicketStateDimension.Channel]
+                        item[TicketDimension.FirstMessageChannel]
                     ],
-                    value: parseFloat(item[TicketStateMeasure.TicketCount]),
+                    value: parseFloat(item[TicketMeasure.TicketCount]),
                 }))
             },
         }

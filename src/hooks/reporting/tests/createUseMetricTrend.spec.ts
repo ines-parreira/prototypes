@@ -1,7 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
 
 import {statsFilters} from 'fixtures/stats'
-import {ReportingQuery, TicketStateMeasure} from 'models/reporting/types'
+import {ReportingQuery, TicketMeasure} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
 
 import createUseMetricTrend from '../createUseMetricTrend'
@@ -12,7 +12,7 @@ const useMetricTrendMock = assumeMock(useMetricTrend)
 
 describe('createUseMetricTrend', () => {
     const defaultReportingQuery: ReportingQuery = {
-        measures: [TicketStateMeasure.FirstResponseTime],
+        measures: [TicketMeasure.FirstResponseTime],
         dimensions: [],
         filters: [],
     }

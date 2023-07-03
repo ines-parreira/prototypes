@@ -64,7 +64,7 @@ export enum TicketChannel {
     InstagramComment = 'instagram-comment',
     InstagramDirectMessage = 'instagram-direct-message',
     InstagramMention = 'instagram-mention',
-    InternalNoteChannel = 'internal-note',
+    InternalNote = 'internal-note',
     Phone = 'phone',
     Sms = 'sms',
     Twitter = 'twitter',

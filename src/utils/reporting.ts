@@ -1,13 +1,12 @@
 import moment, {Moment} from 'moment'
 
 import {
-    MessageStateMember,
-    OpenTicketStateMember,
+    HelpdeskMessageMember,
     ReportingFilter,
     ReportingFilterMember,
     ReportingFilterOperator,
     ReportingGranularity,
-    TicketStateMember,
+    TicketMember,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
@@ -20,28 +19,20 @@ type StatsFiltersMembers = Record<
 > &
     Partial<Record<keyof Omit<StatsFilters, 'period'>, ReportingFilterMember>>
 
-export const TicketStateStatsFiltersMembers: StatsFiltersMembers = {
-    periodStart: TicketStateMember.PeriodStart,
-    periodEnd: TicketStateMember.PeriodEnd,
-    channels: TicketStateMember.Channel,
-    integrations: TicketStateMember.Integration,
-    agents: TicketStateMember.AssigneeUserId,
+export const TicketStatsFiltersMembers: StatsFiltersMembers = {
+    periodStart: TicketMember.PeriodStart,
+    periodEnd: TicketMember.PeriodEnd,
+    channels: TicketMember.FirstMessageChannel,
+    integrations: TicketMember.Integration,
+    agents: TicketMember.AssigneeUserId,
 }
 
-export const OpenTicketStateStatsFiltersMembers: StatsFiltersMembers = {
-    periodStart: OpenTicketStateMember.PeriodStart,
-    periodEnd: OpenTicketStateMember.PeriodEnd,
-    channels: OpenTicketStateMember.Channel,
-    integrations: OpenTicketStateMember.Integration,
-    agents: OpenTicketStateMember.AssigneeUserId,
-}
-
-export const MessageStateStatsFiltersMembers: StatsFiltersMembers = {
-    periodStart: MessageStateMember.PeriodStart,
-    periodEnd: MessageStateMember.PeriodEnd,
-    channels: MessageStateMember.Channel,
-    integrations: MessageStateMember.Integration,
-    agents: MessageStateMember.SenderId,
+export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
+    periodStart: HelpdeskMessageMember.PeriodStart,
+    periodEnd: HelpdeskMessageMember.PeriodEnd,
+    channels: TicketMember.FirstMessageChannel,
+    integrations: TicketMember.Integration,
+    agents: TicketMember.AssigneeUserId,
 }
 
 export const statsFiltersToReportingFilters = (
@@ -61,7 +52,7 @@ export const statsFiltersToReportingFilters = (
             values: [formatReportingQueryDate(period.end_datetime)],
         },
     ]
-    if (integrations?.length) {
+    if (integrations?.length && members.integrations) {
         filters.push({
             member: members.integrations,
             operator: ReportingFilterOperator.Equals,
@@ -70,14 +61,14 @@ export const statsFiltersToReportingFilters = (
             ),
         })
     }
-    if (channels?.length) {
+    if (channels?.length && members.channels) {
         filters.push({
             member: members.channels,
             operator: ReportingFilterOperator.Equals,
             values: channels,
         })
     }
-    if (agents?.length) {
+    if (agents?.length && members.agents) {
         filters.push({
             member: members.agents,
             operator: ReportingFilterOperator.Equals,

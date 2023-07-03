@@ -8,97 +8,85 @@ import {
     OrderConversionMeasure,
 } from 'pages/stats/revenue/clients/constants'
 
-export enum TicketStateMeasure {
-    SurveyScore = 'TicketState.surveyScore',
-    FirstResponseTime = 'TicketState.firstResponseTime',
-    ResolutionTime = 'TicketState.resolutionTime',
-    MessagesAverage = 'TicketState.messagesAverage',
-    TicketCount = 'TicketState.ticketCount',
+export enum TicketMeasure {
+    SurveyScore = 'TicketSatisfactionSurvey.surveyScore',
+    FirstResponseTime = 'TicketMessages.firstResponseTime',
+    ResolutionTime = 'TicketMessages.resolutionTime',
+    MessagesAverage = 'TicketMessages.messagesAverage',
+    TicketCount = 'Ticket.ticketCount',
 }
 
-export enum TicketStateDimension {
-    CreatedDatetime = 'TicketState.createdDatetime',
-    ClosedDatetime = 'TicketState.closedDatetime',
-    Channel = 'TicketState.channel',
+export enum TicketDimension {
+    CreatedDatetime = 'Ticket.createdDatetime',
+    ClosedDatetime = 'Ticket.closedDatetime',
+    FirstMessageChannel = 'TicketMessages.firstMessageChannel',
 }
 
-export enum TicketStateSegment {
-    SurveyScored = 'TicketState.surveyScored',
-    ConversationStarted = 'TicketState.conversationStarted',
-    ClosedTickets = 'TicketState.closedTickets',
-    WorkloadTickets = 'TicketState.workloadTickets',
+export enum TicketSegment {
+    SurveyScored = 'TicketSatisfactionSurvey.surveyScored',
+    ConversationStarted = 'TicketMessages.conversationStarted',
+    ClosedTickets = 'Ticket.closedTickets',
+    WorkloadTickets = 'Ticket.workloadTickets',
 }
 
-export enum TicketStateMember {
-    PeriodStart = 'TicketState.periodStart',
-    PeriodEnd = 'TicketState.periodEnd',
-    Channel = 'TicketState.channel',
-    CreatedDatetime = 'TicketState.createdDatetime',
-    Integration = 'TicketState.integration',
-    AssigneeUserId = 'TicketState.assigneeUserId',
-    IsTrashed = 'TicketState.isTrashed',
-    IsSpam = 'TicketState.isSpam',
-    FirstHelpdeskMessageDatetime = 'TicketState.firstHelpdeskMessageDatetime',
-    FirstHelpdeskMessageUserId = 'TicketState.firstHelpdeskMessageUserId',
+export enum TicketMember {
+    PeriodStart = 'Ticket.periodStart',
+    PeriodEnd = 'Ticket.periodEnd',
+    FirstMessageChannel = 'TicketMessages.firstMessageChannel',
+    CreatedDatetime = 'Ticket.createdDatetime',
+    Integration = 'TicketMessages.integration',
+    AssigneeUserId = 'Ticket.assigneeUserId',
+    IsTrashed = 'Ticket.isTrashed',
+    IsSpam = 'Ticket.isSpam',
+    Status = 'Ticket.status',
+    FirstHelpdeskMessageDatetime = 'TicketMessages.firstHelpdeskMessageDatetime',
+    FirstHelpdeskMessageUserId = 'TicketMessages.firstHelpdeskMessageUserId',
 }
 
-export enum OpenTicketStateMeasure {
-    TicketCount = 'OpenTicketState.ticketCount',
+export enum HelpdeskMessageMeasure {
+    TicketCount = 'HelpdeskMessage.ticketCount',
+    MessageCount = 'HelpdeskMessage.messageCount',
 }
 
-export enum OpenTicketStateMember {
-    PeriodStart = 'OpenTicketState.periodStart',
-    PeriodEnd = 'OpenTicketState.periodEnd',
-    Channel = 'OpenTicketState.channel',
-    Integration = 'OpenTicketState.integration',
-    AssigneeUserId = 'OpenTicketState.assigneeUserId',
-    IsTrashed = 'OpenTicketState.isTrashed',
-    IsSpam = 'OpenTicketState.isSpam',
+export enum HelpdeskMessageDimension {
+    TicketId = 'HelpdeskMessage.ticketId',
+    PeriodStart = 'HelpdeskMessage.periodStart',
+    PeriodEnd = 'HelpdeskMessage.periodEnd',
+    SentDatetime = 'HelpdeskMessage.sentDatetime',
+    AccountId = 'HelpdeskMessage.accountId',
+    SenderId = 'HelpdeskMessage.senderId',
+}
+export enum HelpdeskMessageMember {
+    SentDatetime = 'HelpdeskMessage.sentDatetime',
+    AccountId = 'HelpdeskMessage.accountId',
+    PeriodStart = 'HelpdeskMessage.periodStart',
+    PeriodEnd = 'HelpdeskMessage.periodEnd',
+    Channel = 'HelpdeskMessage.channel',
 }
 
-export enum MessageStateMeasure {
-    TicketCount = 'MessageState.ticketCount',
-    MessageCount = 'MessageState.messageCount',
-}
-
-export enum MessageStateMember {
-    PeriodStart = 'MessageState.periodStart',
-    PeriodEnd = 'MessageState.periodEnd',
-    Channel = 'MessageState.channel',
-    Integration = 'MessageState.integration',
-    SenderId = 'MessageState.senderId',
-    SentDatetime = 'MessageState.sentDatetime',
-    IsOnTrashedTicket = 'MessageState.isOnTrashedTicket',
-    IsOnSpamTicket = 'MessageState.isOnSpamTicket',
-}
-
-export enum MessageStateDimension {
-    CreatedDatetime = 'MessageState.createdDatetime',
-    PeriodStart = 'MessageState.periodStart',
-    SentDatetime = 'MessageState.sentDatetime',
+export enum TicketMessagesDimension {
+    PeriodStart = 'TicketMessages.periodStart',
+    PeriodEnd = 'TicketMessages.periodEnd',
 }
 
 export type ReportingMeasure =
-    | TicketStateMeasure
-    | OpenTicketStateMeasure
-    | MessageStateMeasure
+    | TicketMeasure
     | EventsMeasure
     | OrderConversionMeasure
     | CampaignOrderEventsMeasure
+    | HelpdeskMessageMeasure
 
 export type ReportingDimension =
-    | TicketStateDimension
-    | MessageStateDimension
+    | TicketDimension
     | EventsDimension
     | OrderConversionDimension
     | CampaignOrderEventsDimension
+    | HelpdeskMessageDimension
+    | TicketMessagesDimension
 
-export type ReportingSegment = TicketStateSegment | EventsSegment
+export type ReportingSegment = TicketSegment | EventsSegment
 
-export type ReportingFilterMember =
-    | TicketStateMember
-    | OpenTicketStateMember
-    | MessageStateMember
+export type ReportingFilterMember = TicketMember | HelpdeskMessageMember
 
 export enum ReportingFilterOperator {
     Equals = 'equals',
@@ -126,11 +114,9 @@ export enum ReportingFilterOperator {
 }
 
 export type ReportingFilter = {
-    or?: string
-    and?: string
-    member?: ReportingFilterMember
-    operator?: ReportingFilterOperator
-    values?: string[]
+    member: ReportingFilterMember
+    operator: ReportingFilterOperator
+    values: string[]
 }
 
 export enum ReportingGranularity {

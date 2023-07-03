@@ -25,7 +25,9 @@ export default function useTimeSeries(query: TimeSeriesQuery) {
         TimeSeriesDataItem[][]
     >([query], {
         select: (res) => {
-            const dateTimeToValuesMap = res.data.data.reduce((acc, item) => {
+            const dateTimeToValuesMap = res.data.data.reduce<
+                Partial<Record<string, number[]>>
+            >((acc, item) => {
                 const key = formatReportingQueryDate(item[dimension]!)
                 const values = measures.map((measure) =>
                     parseFloat(item[measure] || '0')
@@ -34,7 +36,7 @@ export default function useTimeSeries(query: TimeSeriesQuery) {
                     ...acc,
                     [key]: values,
                 }
-            }, {} as Partial<Record<string, number[]>>)
+            }, {})
             const dateTimes = getPeriodDateTimes(dateRange, granularity)
             return measures.map((_, index) => {
                 return dateTimes.map((dateTime) => {

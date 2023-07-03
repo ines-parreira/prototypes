@@ -2,7 +2,6 @@ import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {TicketMessageSourceTypes} from 'business/ticket'
 import {MacroActionName} from 'models/macroAction/types'
 import {ACTION_TEMPLATES} from 'config'
 import {TicketMessageSourceType} from 'business/types/ticket'
@@ -30,7 +29,7 @@ describe('<TicketReply/>', () => {
                     answerable: false,
                     reason: 'You cannot respond.',
                 },
-                [TicketMessageSourceTypes.FACEBOOK_MESSENGER]: {
+                [TicketMessageSourceType.FacebookMessenger]: {
                     answerable: true,
                 },
             },

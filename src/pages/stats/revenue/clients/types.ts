@@ -2,7 +2,9 @@ import {TicketChannel} from 'business/types/ticket'
 import {ReportingGranularity} from 'models/reporting/types'
 
 export type CubeFilter = {
-    [key: string]: any
+    member: any
+    operator: any
+    values: string[]
 }
 
 export type CubeMetric = {

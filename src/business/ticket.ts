@@ -112,59 +112,9 @@ export function canAddAttachments(
 }
 
 //$TsFixMe legacy constant for flow usage, use enum at src/business/types/ticket.ts instead
-export const TicketMessageSourceTypes = Object.freeze({
-    AIRCALL: 'aircall',
-    API: 'api',
-    CHAT: 'chat',
-    EMAIL: 'email',
-    EMAIL_FORWARD: 'email-forward',
-    FACEBOOK_COMMENT: 'facebook-comment',
-    FACEBOOK_REVIEW_COMMENT: 'facebook-review-comment',
-    FACEBOOK_MESSAGE: 'facebook-message',
-    FACEBOOK_MESSENGER: 'facebook-messenger',
-    FACEBOOK_POST: 'facebook-post',
-    FACEBOOK_MENTION_POST: 'facebook-mention-post',
-    FACEBOOK_MENTION_COMMENT: 'facebook-mention-comment',
-    FACEBOOK_REVIEW: 'facebook-review',
-    INSTAGRAM_AD_COMMENT: 'instagram-ad-comment',
-    INSTAGRAM_AD_MEDIA: 'instagram-ad-media',
-    INSTAGRAM_COMMENT: 'instagram-comment',
-    INSTAGRAM_MEDIA: 'instagram-media',
-    INSTAGRAM_MENTION_MEDIA: 'instagram-mention-media',
-    INSTAGRAM_MENTION_COMMENT: 'instagram-mention-comment',
-    INSTAGRAM_DIRECT_MESSAGE: 'instagram-direct-message',
-    INTERNAL_NOTE: 'internal-note',
-    OTTSPOTT_CALL: 'ottspott-call',
-    PHONE: 'phone',
-    SYSTEM_MESSAGE: 'system-message',
-    TWITTER_TWEET: 'twitter-tweet',
-    TWITTER_QUOTED_TWEET: 'twitter-quoted-tweet',
-    TWITTER_MENTION_TWEET: 'twitter-mention-tweet',
-})
-
-//$TsFixMe legacy constant for flow usage, use enum at src/business/types/ticket.ts instead
 export const TicketStatuses = Object.freeze({
     OPEN: 'open',
     CLOSED: 'closed',
-})
-
-//$TsFixMe legacy constant for flow usage, use enum at src/business/types/ticket.ts instead
-export const TicketChannels = Object.freeze({
-    AIRCALL: 'aircall',
-    API: 'api',
-    CHAT: 'chat',
-    EMAIL: 'email',
-    FACEBOOK: 'facebook',
-    FACEBOOK_MENTION: 'facebook-mention',
-    FACEBOOK_RECOMMENDATIONS_CHANNEL: 'facebook-recommendations',
-    FACEBOOK_MESSENGER: 'facebook-messenger',
-    INSTAGRAM_AD_COMMENT: 'instagram-ad-comment',
-    INSTAGRAM_COMMENT: 'instagram-comment',
-    INSTAGRAM_MENTION: 'instagram-mention',
-    INSTAGRAM_DIRECT_MESSAGE: 'instagram-direct-message',
-    PHONE: 'phone',
-    SMS: 'sms',
-    TWITTER: 'twitter',
 })
 
 //$TsFixMe legacy constant for flow usage, use enum at src/business/types/ticket.ts instead

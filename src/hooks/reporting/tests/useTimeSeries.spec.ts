@@ -5,8 +5,8 @@ import {usePostReporting} from 'models/reporting/queries'
 import {
     ReportingResponse,
     ReportingGranularity,
-    TicketStateDimension,
-    TicketStateMeasure,
+    TicketDimension,
+    TicketMeasure,
 } from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
 import useTimeSeries, {TimeSeriesQuery} from '../useTimeSeries'
@@ -16,37 +16,34 @@ const usePostReportingMock = assumeMock(usePostReporting)
 
 describe('useTimeSeries', () => {
     const defaultTimeDimension = {
-        dimension: TicketStateDimension.CreatedDatetime,
+        dimension: TicketDimension.CreatedDatetime,
         granularity: ReportingGranularity.Hour,
         dateRange: ['2022-01-02T00:00:00.000', '2022-01-02T05:00:00.000'],
     }
     const defaultQuery: TimeSeriesQuery = {
-        measures: [
-            TicketStateMeasure.FirstResponseTime,
-            TicketStateMeasure.SurveyScore,
-        ],
+        measures: [TicketMeasure.FirstResponseTime, TicketMeasure.SurveyScore],
         dimensions: [],
         filters: [],
         timeDimensions: [defaultTimeDimension],
     }
     const defaultData = [
         {
-            [TicketStateDimension.CreatedDatetime]: '2022-01-02T00:00:00',
-            [TicketStateMeasure.FirstResponseTime]: '65',
-            [TicketStateMeasure.SurveyScore]: '3.4',
+            [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
+            [TicketMeasure.FirstResponseTime]: '65',
+            [TicketMeasure.SurveyScore]: '3.4',
         },
         {
-            [TicketStateDimension.CreatedDatetime]: '2022-01-02T01:00:00',
-            [TicketStateMeasure.FirstResponseTime]: '32',
+            [TicketDimension.CreatedDatetime]: '2022-01-02T01:00:00',
+            [TicketMeasure.FirstResponseTime]: '32',
         },
         {
-            [TicketStateDimension.CreatedDatetime]: '2022-01-02T02:00:00',
-            [TicketStateMeasure.SurveyScore]: '4.1',
+            [TicketDimension.CreatedDatetime]: '2022-01-02T02:00:00',
+            [TicketMeasure.SurveyScore]: '4.1',
         },
         {
-            [TicketStateDimension.CreatedDatetime]: '2022-01-02T04:00:00',
-            [TicketStateMeasure.FirstResponseTime]: '139',
-            [TicketStateMeasure.SurveyScore]: '1.2',
+            [TicketDimension.CreatedDatetime]: '2022-01-02T04:00:00',
+            [TicketMeasure.FirstResponseTime]: '139',
+            [TicketMeasure.SurveyScore]: '1.2',
         },
     ]
     const defaultResult = {
@@ -90,7 +87,7 @@ describe('useTimeSeries', () => {
         renderHook(() =>
             useTimeSeries({
                 ...defaultQuery,
-                measures: [TicketStateMeasure.FirstResponseTime],
+                measures: [TicketMeasure.FirstResponseTime],
                 timeDimensions: [
                     {
                         ...defaultTimeDimension,
@@ -111,9 +108,9 @@ describe('useTimeSeries', () => {
                     ...defaultResult,
                     data: [
                         {
-                            [TicketStateDimension.CreatedDatetime]:
+                            [TicketDimension.CreatedDatetime]:
                                 '2023-04-17T00:00:00.000',
-                            [TicketStateMeasure.FirstResponseTime]: 3,
+                            [TicketMeasure.FirstResponseTime]: 3,
                         },
                     ],
                 },

@@ -1,33 +1,48 @@
+import {TicketMessageSourceType} from 'business/types/ticket'
 import {
-    MessageStateMeasure,
-    MessageStateMember,
-    OpenTicketStateMeasure,
-    OpenTicketStateMember,
+    HelpdeskMessageMeasure,
+    HelpdeskMessageMember,
     ReportingFilter,
     ReportingFilterOperator,
-    TicketStateMeasure,
-    TicketStateMember,
-    TicketStateSegment,
+    TicketMeasure,
+    TicketMember,
+    TicketSegment,
 } from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
 import {
-    MessageStateStatsFiltersMembers,
-    OpenTicketStateStatsFiltersMembers,
     statsFiltersToReportingFilters,
-    TicketStateStatsFiltersMembers,
+    TicketStatsFiltersMembers,
+    HelpdeskMessagesStatsFiltersMembers,
 } from 'utils/reporting'
 
 import createUseMetricTrend from './createUseMetricTrend'
 
+export const NotSpamNorTrashedTicketsFilter = [
+    {
+        member: TicketMember.IsTrashed,
+        operator: ReportingFilterOperator.Equals,
+        values: ['0'],
+    },
+    {
+        member: TicketMember.IsSpam,
+        operator: ReportingFilterOperator.Equals,
+        values: ['0'],
+    },
+]
+
 export const useCustomerSatisfactionTrend = createUseMetricTrend(
     (filters, timezone) => ({
-        measures: [TicketStateMeasure.SurveyScore],
+        measures: [TicketMeasure.SurveyScore],
         dimensions: [],
         timezone,
-        segments: [TicketStateSegment.SurveyScored],
-        filters: statsFiltersToReportingFilters(
-            TicketStateStatsFiltersMembers,
-            filters
-        ),
+        segments: [TicketSegment.SurveyScored],
+        filters: [
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(
+                TicketStatsFiltersMembers,
+                filters
+            ),
+        ],
     })
 )
 
@@ -35,18 +50,9 @@ export const useFirstResponseTimeTrend = createUseMetricTrend(
     (filters, timezone) => {
         const {agents, ...statFiltersWithoutAgents} = filters
         const commonFilters: ReportingFilter[] = [
+            ...NotSpamNorTrashedTicketsFilter,
             {
-                member: TicketStateMember.IsTrashed,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-            {
-                member: TicketStateMember.IsSpam,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-            {
-                member: TicketStateMember.FirstHelpdeskMessageDatetime,
+                member: TicketMember.FirstHelpdeskMessageDatetime,
                 operator: ReportingFilterOperator.InDateRange,
                 values: [
                     filters.period.start_datetime,
@@ -56,21 +62,21 @@ export const useFirstResponseTimeTrend = createUseMetricTrend(
         ]
         if (agents?.length) {
             commonFilters.push({
-                member: TicketStateMember.FirstHelpdeskMessageUserId,
+                member: TicketMember.FirstHelpdeskMessageUserId,
                 operator: ReportingFilterOperator.Equals,
                 values: agents.map((agent) => agent.toString()),
             })
         }
 
         return {
-            measures: [TicketStateMeasure.FirstResponseTime],
+            measures: [TicketMeasure.FirstResponseTime],
             dimensions: [],
             timezone,
-            segments: [TicketStateSegment.ConversationStarted],
+            segments: [TicketSegment.ConversationStarted],
             filters: [
                 ...commonFilters,
                 ...statsFiltersToReportingFilters(
-                    TicketStateStatsFiltersMembers,
+                    TicketStatsFiltersMembers,
                     statFiltersWithoutAgents
                 ),
             ],
@@ -80,59 +86,60 @@ export const useFirstResponseTimeTrend = createUseMetricTrend(
 
 export const useMessagesPerTicketTrend = createUseMetricTrend(
     (filters, timezone) => ({
-        measures: [TicketStateMeasure.MessagesAverage],
+        measures: [TicketMeasure.MessagesAverage],
         dimensions: [],
         timezone,
         segments: [
-            TicketStateSegment.ClosedTickets,
-            TicketStateSegment.ConversationStarted,
+            TicketSegment.ClosedTickets,
+            TicketSegment.ConversationStarted,
         ],
-        filters: statsFiltersToReportingFilters(
-            TicketStateStatsFiltersMembers,
-            filters
-        ),
+        filters: [
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(
+                TicketStatsFiltersMembers,
+                filters
+            ),
+        ],
     })
 )
 
 export const useResolutionTimeTrend = createUseMetricTrend(
     (filters, timezone) => ({
-        measures: [TicketStateMeasure.ResolutionTime],
+        measures: [TicketMeasure.ResolutionTime],
         dimensions: [],
         timezone,
         segments: [
-            TicketStateSegment.ClosedTickets,
-            TicketStateSegment.ConversationStarted,
+            TicketSegment.ClosedTickets,
+            TicketSegment.ConversationStarted,
         ],
-        filters: statsFiltersToReportingFilters(
-            TicketStateStatsFiltersMembers,
-            filters
-        ),
+        filters: [
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(
+                TicketStatsFiltersMembers,
+                filters
+            ),
+        ],
     })
 )
 
 export const useOpenTicketsTrend = createUseMetricTrend(
     (filters, timezone) => ({
-        measures: [OpenTicketStateMeasure.TicketCount],
+        measures: [TicketMeasure.TicketCount],
         dimensions: [],
         timezone,
         filters: [
+            ...NotSpamNorTrashedTicketsFilter,
             {
-                member: OpenTicketStateMember.IsTrashed,
+                member: TicketMember.Status,
                 operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-            {
-                member: OpenTicketStateMember.IsSpam,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
+                values: ['open'],
             },
             ...statsFiltersToReportingFilters(
-                OpenTicketStateStatsFiltersMembers,
+                TicketStatsFiltersMembers,
                 filters
             ).filter(
                 (filter) =>
-                    filter.member !==
-                    OpenTicketStateStatsFiltersMembers.periodStart
+                    filter.member !== TicketStatsFiltersMembers.periodStart
             ),
         ],
     })
@@ -140,23 +147,14 @@ export const useOpenTicketsTrend = createUseMetricTrend(
 
 export const useClosedTicketsTrend = createUseMetricTrend(
     (filters, timezone) => ({
-        measures: [TicketStateMeasure.TicketCount],
+        measures: [TicketMeasure.TicketCount],
         dimensions: [],
         timezone,
-        segments: [TicketStateSegment.ClosedTickets],
+        segments: [TicketSegment.ClosedTickets],
         filters: [
-            {
-                member: TicketStateMember.IsTrashed,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-            {
-                member: TicketStateMember.IsSpam,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
+            ...NotSpamNorTrashedTicketsFilter,
             ...statsFiltersToReportingFilters(
-                TicketStateStatsFiltersMembers,
+                TicketStatsFiltersMembers,
                 filters
             ),
         ],
@@ -165,91 +163,93 @@ export const useClosedTicketsTrend = createUseMetricTrend(
 
 export const useTicketsCreatedTrend = createUseMetricTrend(
     (filters, timezone) => ({
-        measures: [TicketStateMeasure.TicketCount],
+        measures: [TicketMeasure.TicketCount],
         dimensions: [],
         timezone,
         filters: [
             {
-                member: TicketStateMember.CreatedDatetime,
+                member: TicketMember.CreatedDatetime,
                 operator: ReportingFilterOperator.InDateRange,
                 values: [
                     filters.period.start_datetime,
                     filters.period.end_datetime,
                 ],
             },
-            {
-                member: TicketStateMember.IsTrashed,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-            {
-                member: TicketStateMember.IsSpam,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
+            ...NotSpamNorTrashedTicketsFilter,
             ...statsFiltersToReportingFilters(
-                TicketStateStatsFiltersMembers,
+                TicketStatsFiltersMembers,
                 filters
             ),
         ],
     })
 )
+
+export const getTicketsRepliedQueryFactory = (
+    filters: StatsFilters,
+    timezone: string
+) => ({
+    measures: [HelpdeskMessageMeasure.TicketCount],
+    dimensions: [],
+    timezone,
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        {
+            member: HelpdeskMessageMember.SentDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: [
+                filters.period.start_datetime,
+                filters.period.end_datetime,
+            ],
+        },
+        {
+            member: TicketMember.PeriodEnd,
+            operator: ReportingFilterOperator.BeforeDate,
+            values: [filters.period.end_datetime],
+        },
+        {
+            member: TicketMember.FirstMessageChannel,
+            operator: ReportingFilterOperator.NotEquals,
+            values: [TicketMessageSourceType.InternalNote],
+        },
+        ...statsFiltersToReportingFilters(
+            HelpdeskMessagesStatsFiltersMembers,
+            filters
+        ),
+    ],
+})
 
 export const useTicketsRepliedTrend = createUseMetricTrend(
-    (filters, timezone) => ({
-        measures: [MessageStateMeasure.TicketCount],
-        dimensions: [],
-        timezone,
-        filters: [
-            ...statsFiltersToReportingFilters(
-                MessageStateStatsFiltersMembers,
-                filters
-            ),
-            {
-                member: MessageStateMember.SentDatetime,
-                operator: ReportingFilterOperator.InDateRange,
-                values: [
-                    filters.period.start_datetime,
-                    filters.period.end_datetime,
-                ],
-            },
-            {
-                member: MessageStateMember.IsOnTrashedTicket,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-            {
-                member: MessageStateMember.IsOnSpamTicket,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-            {
-                member: MessageStateMember.Channel,
-                operator: ReportingFilterOperator.NotEquals,
-                values: ['internal-note'],
-            },
-        ],
-    })
+    getTicketsRepliedQueryFactory
 )
 
+export const getMessagesSentQueryFactory = (
+    filters: StatsFilters,
+    timezone: string
+) => ({
+    measures: [HelpdeskMessageMeasure.MessageCount],
+    dimensions: [],
+    timezone,
+    filters: [
+        {
+            member: TicketMember.PeriodEnd,
+            operator: ReportingFilterOperator.BeforeDate,
+            values: [filters.period.end_datetime],
+        },
+        {
+            member: HelpdeskMessageMember.SentDatetime,
+            operator: ReportingFilterOperator.InDateRange,
+            values: [
+                filters.period.start_datetime,
+                filters.period.end_datetime,
+            ],
+        },
+        ...statsFiltersToReportingFilters(
+            HelpdeskMessagesStatsFiltersMembers,
+            filters
+        ),
+    ],
+})
+
 export const useMessagesSentTrend = createUseMetricTrend(
-    (filters, timezone) => ({
-        measures: [MessageStateMeasure.MessageCount],
-        dimensions: [],
-        timezone,
-        filters: [
-            ...statsFiltersToReportingFilters(
-                MessageStateStatsFiltersMembers,
-                filters
-            ),
-            {
-                member: MessageStateMember.SentDatetime,
-                operator: ReportingFilterOperator.InDateRange,
-                values: [
-                    filters.period.start_datetime,
-                    filters.period.end_datetime,
-                ],
-            },
-        ],
-    })
+    getMessagesSentQueryFactory
 )

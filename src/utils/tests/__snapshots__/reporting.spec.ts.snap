@@ -3,28 +3,28 @@
 exports[`reporting utils statsFiltersToReportingFilters should convert StatsFilters to an array of ReportingFilter 1`] = `
 [
   {
-    "member": "TicketState.periodStart",
+    "member": "Ticket.periodStart",
     "operator": "afterDate",
     "values": [
       "2021-05-29T00:00:00.000",
     ],
   },
   {
-    "member": "TicketState.periodEnd",
+    "member": "Ticket.periodEnd",
     "operator": "beforeDate",
     "values": [
       "2021-06-04T23:59:59.000",
     ],
   },
   {
-    "member": "TicketState.integration",
+    "member": "TicketMessages.integration",
     "operator": "equals",
     "values": [
       "1",
     ],
   },
   {
-    "member": "TicketState.channel",
+    "member": "TicketMessages.firstMessageChannel",
     "operator": "equals",
     "values": [
       "email",
@@ -32,7 +32,7 @@ exports[`reporting utils statsFiltersToReportingFilters should convert StatsFilt
     ],
   },
   {
-    "member": "TicketState.assigneeUserId",
+    "member": "Ticket.assigneeUserId",
     "operator": "equals",
     "values": [
       "2",

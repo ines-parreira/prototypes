@@ -1,15 +1,24 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {TicketChannel} from 'business/types/ticket'
-import {StatsFilters} from 'models/stat/types'
+import moment from 'moment'
 import {
+    HelpdeskMessageMeasure,
+    HelpdeskMessageMember,
+    ReportingFilterOperator,
+    TicketMember,
+} from 'models/reporting/types'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {StatsFilters} from 'models/stat/types'
+import {formatReportingQueryDate} from 'utils/reporting'
+import {
+    getMessagesSentQueryFactory,
+    getTicketsRepliedQueryFactory,
+    NotSpamNorTrashedTicketsFilter,
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
     useFirstResponseTimeTrend,
     useMessagesPerTicketTrend,
-    useMessagesSentTrend,
     useResolutionTimeTrend,
     useTicketsCreatedTrend,
-    useTicketsRepliedTrend,
 } from '../metricTrends'
 import {MetricTrend} from '../useMetricTrend'
 
@@ -35,8 +44,6 @@ describe('metric trends', () => {
         ['useResolutionTimeTrend', useResolutionTimeTrend],
         ['useClosedTicketsTrend', useClosedTicketsTrend],
         ['useTicketsCreatedTrend', useTicketsCreatedTrend],
-        ['useTicketsRepliedTrend', useTicketsRepliedTrend],
-        ['useMessagesSentTrend', useMessagesSentTrend],
     ])('%s', (testName, useTrendFn) => {
         it('should create reporting filters', () => {
             const {result} = renderHook(() =>
@@ -55,6 +62,90 @@ describe('metric trends', () => {
                 )
             )
             expect(result.current).toMatchSnapshot()
+        })
+    })
+
+    const periodStart = formatReportingQueryDate(moment())
+    const periodEnd = formatReportingQueryDate(moment())
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: periodEnd,
+            start_datetime: periodStart,
+        },
+    }
+    const timezone = 'someTimeZone'
+
+    describe('getTicketsRepliedQuery', () => {
+        it('should build a query', () => {
+            const query = getTicketsRepliedQueryFactory(statsFilters, timezone)
+
+            expect(query).toEqual({
+                dimensions: [],
+                measures: [HelpdeskMessageMeasure.TicketCount],
+                filters: [
+                    ...NotSpamNorTrashedTicketsFilter,
+                    {
+                        member: HelpdeskMessageMember.SentDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: TicketMember.FirstMessageChannel,
+                        operator: ReportingFilterOperator.NotEquals,
+                        values: [TicketMessageSourceType.InternalNote],
+                    },
+                    {
+                        member: HelpdeskMessageMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: HelpdeskMessageMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ],
+                timezone,
+            })
+        })
+    })
+
+    describe('getMessagesSentQuery', () => {
+        it('should create a query', () => {
+            const query = getMessagesSentQueryFactory(statsFilters, timezone)
+
+            expect(query).toEqual({
+                measures: [HelpdeskMessageMeasure.MessageCount],
+                dimensions: [],
+                filters: [
+                    {
+                        member: TicketMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: HelpdeskMessageMember.SentDatetime,
+                        operator: ReportingFilterOperator.InDateRange,
+                        values: [periodStart, periodEnd],
+                    },
+                    {
+                        member: HelpdeskMessageMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: HelpdeskMessageMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ],
+                timezone,
+            })
         })
     })
 })

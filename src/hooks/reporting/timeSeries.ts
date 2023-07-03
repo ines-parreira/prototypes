@@ -1,20 +1,21 @@
+import {TicketMessageSourceType} from 'business/types/ticket'
 import {
-    MessageStateDimension,
-    MessageStateMeasure,
-    MessageStateMember,
+    HelpdeskMessageDimension,
+    HelpdeskMessageMeasure,
+    HelpdeskMessageMember,
     ReportingFilterOperator,
     ReportingGranularity,
-    TicketStateDimension,
-    TicketStateMeasure,
-    TicketStateMember,
-    TicketStateSegment,
+    TicketDimension,
+    TicketMeasure,
+    TicketMember,
+    TicketSegment,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     formatReportingQueryDate,
-    MessageStateStatsFiltersMembers,
+    HelpdeskMessagesStatsFiltersMembers,
     statsFiltersToReportingFilters,
-    TicketStateStatsFiltersMembers,
+    TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
 import useTimeSeries from './useTimeSeries'
@@ -25,11 +26,11 @@ export function useTicketsCreatedTimeSeries(
     granularity: ReportingGranularity
 ) {
     return useTimeSeries({
-        measures: [TicketStateMeasure.TicketCount],
+        measures: [TicketMeasure.TicketCount],
         dimensions: [],
         timeDimensions: [
             {
-                dimension: TicketStateDimension.CreatedDatetime,
+                dimension: TicketDimension.CreatedDatetime,
                 granularity,
                 dateRange: [
                     formatReportingQueryDate(filters.period.start_datetime),
@@ -38,19 +39,19 @@ export function useTicketsCreatedTimeSeries(
             },
         ],
         timezone,
-        order: [[TicketStateDimension.CreatedDatetime, 'asc']],
+        order: [[TicketDimension.CreatedDatetime, 'asc']],
         filters: [
             ...statsFiltersToReportingFilters(
-                TicketStateStatsFiltersMembers,
+                TicketStatsFiltersMembers,
                 filters
             ),
             {
-                member: TicketStateMember.IsTrashed,
+                member: TicketMember.IsTrashed,
                 operator: ReportingFilterOperator.Equals,
                 values: ['0'],
             },
             {
-                member: TicketStateMember.IsSpam,
+                member: TicketMember.IsSpam,
                 operator: ReportingFilterOperator.Equals,
                 values: ['0'],
             },
@@ -64,10 +65,10 @@ export function useTicketsClosedTimeSeries(
     granularity: ReportingGranularity
 ) {
     return useTimeSeries({
-        measures: [TicketStateMeasure.TicketCount],
+        measures: [TicketMeasure.TicketCount],
         timeDimensions: [
             {
-                dimension: TicketStateDimension.ClosedDatetime,
+                dimension: TicketDimension.ClosedDatetime,
                 granularity,
                 dateRange: [
                     formatReportingQueryDate(filters.period.start_datetime),
@@ -77,20 +78,20 @@ export function useTicketsClosedTimeSeries(
         ],
         timezone,
         dimensions: [],
-        order: [[TicketStateDimension.ClosedDatetime, 'asc']],
-        segments: [TicketStateSegment.ClosedTickets],
+        order: [[TicketDimension.ClosedDatetime, 'asc']],
+        segments: [TicketSegment.ClosedTickets],
         filters: [
             ...statsFiltersToReportingFilters(
-                TicketStateStatsFiltersMembers,
+                TicketStatsFiltersMembers,
                 filters
             ),
             {
-                member: TicketStateMember.IsTrashed,
+                member: TicketMember.IsTrashed,
                 operator: ReportingFilterOperator.Equals,
                 values: ['0'],
             },
             {
-                member: TicketStateMember.IsSpam,
+                member: TicketMember.IsSpam,
                 operator: ReportingFilterOperator.Equals,
                 values: ['0'],
             },
@@ -104,10 +105,11 @@ export function useTicketsRepliedTimeSeries(
     granularity: ReportingGranularity
 ) {
     return useTimeSeries({
-        measures: [MessageStateMeasure.TicketCount],
+        measures: [HelpdeskMessageMeasure.TicketCount],
+        dimensions: [],
         timeDimensions: [
             {
-                dimension: MessageStateDimension.SentDatetime,
+                dimension: HelpdeskMessageDimension.SentDatetime,
                 granularity,
                 dateRange: [
                     formatReportingQueryDate(filters.period.start_datetime),
@@ -116,26 +118,30 @@ export function useTicketsRepliedTimeSeries(
             },
         ],
         timezone,
-        dimensions: [],
         filters: [
             ...statsFiltersToReportingFilters(
-                MessageStateStatsFiltersMembers,
+                HelpdeskMessagesStatsFiltersMembers,
                 filters
             ),
             {
-                member: MessageStateMember.IsOnTrashedTicket,
+                member: TicketMember.IsSpam,
                 operator: ReportingFilterOperator.Equals,
                 values: ['0'],
             },
             {
-                member: MessageStateMember.IsOnSpamTicket,
+                member: TicketMember.IsTrashed,
                 operator: ReportingFilterOperator.Equals,
                 values: ['0'],
             },
             {
-                member: MessageStateMember.Channel,
+                member: TicketMember.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: [filters.period.end_datetime],
+            },
+            {
+                member: HelpdeskMessageMember.Channel,
                 operator: ReportingFilterOperator.NotEquals,
-                values: ['internal-note'],
+                values: [TicketMessageSourceType.InternalNote],
             },
         ],
     })
@@ -147,10 +153,11 @@ export function useMessagesSentTimeSeries(
     granularity: ReportingGranularity
 ) {
     return useTimeSeries({
-        measures: [MessageStateMeasure.MessageCount],
+        measures: [HelpdeskMessageMeasure.MessageCount],
+        dimensions: [],
         timeDimensions: [
             {
-                dimension: MessageStateDimension.SentDatetime,
+                dimension: HelpdeskMessageDimension.SentDatetime,
                 granularity,
                 dateRange: [
                     formatReportingQueryDate(filters.period.start_datetime),
@@ -159,11 +166,16 @@ export function useMessagesSentTimeSeries(
             },
         ],
         timezone,
-        dimensions: [],
-        order: [[MessageStateDimension.PeriodStart, 'asc']],
-        filters: statsFiltersToReportingFilters(
-            MessageStateStatsFiltersMembers,
-            filters
-        ),
+        filters: [
+            ...statsFiltersToReportingFilters(
+                HelpdeskMessagesStatsFiltersMembers,
+                filters
+            ),
+            {
+                member: TicketMember.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: [filters.period.end_datetime],
+            },
+        ],
     })
 }

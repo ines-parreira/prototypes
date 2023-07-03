@@ -5,42 +5,42 @@ exports[`metric trends useClosedTicketsTrend should create reporting filters 1`]
   "dimensions": [],
   "filters": [
     {
-      "member": "TicketState.isTrashed",
+      "member": "Ticket.isTrashed",
       "operator": "equals",
       "values": [
         "0",
       ],
     },
     {
-      "member": "TicketState.isSpam",
+      "member": "Ticket.isSpam",
       "operator": "equals",
       "values": [
         "0",
       ],
     },
     {
-      "member": "TicketState.periodStart",
+      "member": "Ticket.periodStart",
       "operator": "afterDate",
       "values": [
         "2021-05-29T00:00:00.000",
       ],
     },
     {
-      "member": "TicketState.periodEnd",
+      "member": "Ticket.periodEnd",
       "operator": "beforeDate",
       "values": [
         "2021-06-04T23:59:59.000",
       ],
     },
     {
-      "member": "TicketState.integration",
+      "member": "TicketMessages.integration",
       "operator": "equals",
       "values": [
         "1",
       ],
     },
     {
-      "member": "TicketState.channel",
+      "member": "TicketMessages.firstMessageChannel",
       "operator": "equals",
       "values": [
         "email",
@@ -48,7 +48,7 @@ exports[`metric trends useClosedTicketsTrend should create reporting filters 1`]
       ],
     },
     {
-      "member": "TicketState.assigneeUserId",
+      "member": "Ticket.assigneeUserId",
       "operator": "equals",
       "values": [
         "2",
@@ -56,10 +56,10 @@ exports[`metric trends useClosedTicketsTrend should create reporting filters 1`]
     },
   ],
   "measures": [
-    "TicketState.ticketCount",
+    "Ticket.ticketCount",
   ],
   "segments": [
-    "TicketState.closedTickets",
+    "Ticket.closedTickets",
   ],
   "timezone": "UTC",
 }
@@ -70,28 +70,42 @@ exports[`metric trends useCustomerSatisfactionTrend should create reporting filt
   "dimensions": [],
   "filters": [
     {
-      "member": "TicketState.periodStart",
+      "member": "Ticket.isTrashed",
+      "operator": "equals",
+      "values": [
+        "0",
+      ],
+    },
+    {
+      "member": "Ticket.isSpam",
+      "operator": "equals",
+      "values": [
+        "0",
+      ],
+    },
+    {
+      "member": "Ticket.periodStart",
       "operator": "afterDate",
       "values": [
         "2021-05-29T00:00:00.000",
       ],
     },
     {
-      "member": "TicketState.periodEnd",
+      "member": "Ticket.periodEnd",
       "operator": "beforeDate",
       "values": [
         "2021-06-04T23:59:59.000",
       ],
     },
     {
-      "member": "TicketState.integration",
+      "member": "TicketMessages.integration",
       "operator": "equals",
       "values": [
         "1",
       ],
     },
     {
-      "member": "TicketState.channel",
+      "member": "TicketMessages.firstMessageChannel",
       "operator": "equals",
       "values": [
         "email",
@@ -99,7 +113,7 @@ exports[`metric trends useCustomerSatisfactionTrend should create reporting filt
       ],
     },
     {
-      "member": "TicketState.assigneeUserId",
+      "member": "Ticket.assigneeUserId",
       "operator": "equals",
       "values": [
         "2",
@@ -107,10 +121,10 @@ exports[`metric trends useCustomerSatisfactionTrend should create reporting filt
     },
   ],
   "measures": [
-    "TicketState.surveyScore",
+    "TicketSatisfactionSurvey.surveyScore",
   ],
   "segments": [
-    "TicketState.surveyScored",
+    "TicketSatisfactionSurvey.surveyScored",
   ],
   "timezone": "UTC",
 }
@@ -121,21 +135,21 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
   "dimensions": [],
   "filters": [
     {
-      "member": "TicketState.isTrashed",
+      "member": "Ticket.isTrashed",
       "operator": "equals",
       "values": [
         "0",
       ],
     },
     {
-      "member": "TicketState.isSpam",
+      "member": "Ticket.isSpam",
       "operator": "equals",
       "values": [
         "0",
       ],
     },
     {
-      "member": "TicketState.firstHelpdeskMessageDatetime",
+      "member": "TicketMessages.firstHelpdeskMessageDatetime",
       "operator": "inDateRange",
       "values": [
         "2021-05-29T00:00:00+02:00",
@@ -143,35 +157,35 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
       ],
     },
     {
-      "member": "TicketState.firstHelpdeskMessageUserId",
+      "member": "TicketMessages.firstHelpdeskMessageUserId",
       "operator": "equals",
       "values": [
         "2",
       ],
     },
     {
-      "member": "TicketState.periodStart",
+      "member": "Ticket.periodStart",
       "operator": "afterDate",
       "values": [
         "2021-05-29T00:00:00.000",
       ],
     },
     {
-      "member": "TicketState.periodEnd",
+      "member": "Ticket.periodEnd",
       "operator": "beforeDate",
       "values": [
         "2021-06-04T23:59:59.000",
       ],
     },
     {
-      "member": "TicketState.integration",
+      "member": "TicketMessages.integration",
       "operator": "equals",
       "values": [
         "1",
       ],
     },
     {
-      "member": "TicketState.channel",
+      "member": "TicketMessages.firstMessageChannel",
       "operator": "equals",
       "values": [
         "email",
@@ -180,10 +194,10 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
     },
   ],
   "measures": [
-    "TicketState.firstResponseTime",
+    "TicketMessages.firstResponseTime",
   ],
   "segments": [
-    "TicketState.conversationStarted",
+    "TicketMessages.conversationStarted",
   ],
   "timezone": "UTC",
 }
@@ -194,28 +208,42 @@ exports[`metric trends useMessagesPerTicketTrend should create reporting filters
   "dimensions": [],
   "filters": [
     {
-      "member": "TicketState.periodStart",
+      "member": "Ticket.isTrashed",
+      "operator": "equals",
+      "values": [
+        "0",
+      ],
+    },
+    {
+      "member": "Ticket.isSpam",
+      "operator": "equals",
+      "values": [
+        "0",
+      ],
+    },
+    {
+      "member": "Ticket.periodStart",
       "operator": "afterDate",
       "values": [
         "2021-05-29T00:00:00.000",
       ],
     },
     {
-      "member": "TicketState.periodEnd",
+      "member": "Ticket.periodEnd",
       "operator": "beforeDate",
       "values": [
         "2021-06-04T23:59:59.000",
       ],
     },
     {
-      "member": "TicketState.integration",
+      "member": "TicketMessages.integration",
       "operator": "equals",
       "values": [
         "1",
       ],
     },
     {
-      "member": "TicketState.channel",
+      "member": "TicketMessages.firstMessageChannel",
       "operator": "equals",
       "values": [
         "email",
@@ -223,7 +251,7 @@ exports[`metric trends useMessagesPerTicketTrend should create reporting filters
       ],
     },
     {
-      "member": "TicketState.assigneeUserId",
+      "member": "Ticket.assigneeUserId",
       "operator": "equals",
       "values": [
         "2",
@@ -231,67 +259,11 @@ exports[`metric trends useMessagesPerTicketTrend should create reporting filters
     },
   ],
   "measures": [
-    "TicketState.messagesAverage",
+    "TicketMessages.messagesAverage",
   ],
   "segments": [
-    "TicketState.closedTickets",
-    "TicketState.conversationStarted",
-  ],
-  "timezone": "UTC",
-}
-`;
-
-exports[`metric trends useMessagesSentTrend should create reporting filters 1`] = `
-{
-  "dimensions": [],
-  "filters": [
-    {
-      "member": "MessageState.periodStart",
-      "operator": "afterDate",
-      "values": [
-        "2021-05-29T00:00:00.000",
-      ],
-    },
-    {
-      "member": "MessageState.periodEnd",
-      "operator": "beforeDate",
-      "values": [
-        "2021-06-04T23:59:59.000",
-      ],
-    },
-    {
-      "member": "MessageState.integration",
-      "operator": "equals",
-      "values": [
-        "1",
-      ],
-    },
-    {
-      "member": "MessageState.channel",
-      "operator": "equals",
-      "values": [
-        "email",
-        "chat",
-      ],
-    },
-    {
-      "member": "MessageState.senderId",
-      "operator": "equals",
-      "values": [
-        "2",
-      ],
-    },
-    {
-      "member": "MessageState.sentDatetime",
-      "operator": "inDateRange",
-      "values": [
-        "2021-05-29T00:00:00+02:00",
-        "2021-06-04T23:59:59+02:00",
-      ],
-    },
-  ],
-  "measures": [
-    "MessageState.messageCount",
+    "Ticket.closedTickets",
+    "TicketMessages.conversationStarted",
   ],
   "timezone": "UTC",
 }
@@ -302,28 +274,42 @@ exports[`metric trends useResolutionTimeTrend should create reporting filters 1`
   "dimensions": [],
   "filters": [
     {
-      "member": "TicketState.periodStart",
+      "member": "Ticket.isTrashed",
+      "operator": "equals",
+      "values": [
+        "0",
+      ],
+    },
+    {
+      "member": "Ticket.isSpam",
+      "operator": "equals",
+      "values": [
+        "0",
+      ],
+    },
+    {
+      "member": "Ticket.periodStart",
       "operator": "afterDate",
       "values": [
         "2021-05-29T00:00:00.000",
       ],
     },
     {
-      "member": "TicketState.periodEnd",
+      "member": "Ticket.periodEnd",
       "operator": "beforeDate",
       "values": [
         "2021-06-04T23:59:59.000",
       ],
     },
     {
-      "member": "TicketState.integration",
+      "member": "TicketMessages.integration",
       "operator": "equals",
       "values": [
         "1",
       ],
     },
     {
-      "member": "TicketState.channel",
+      "member": "TicketMessages.firstMessageChannel",
       "operator": "equals",
       "values": [
         "email",
@@ -331,7 +317,7 @@ exports[`metric trends useResolutionTimeTrend should create reporting filters 1`
       ],
     },
     {
-      "member": "TicketState.assigneeUserId",
+      "member": "Ticket.assigneeUserId",
       "operator": "equals",
       "values": [
         "2",
@@ -339,11 +325,11 @@ exports[`metric trends useResolutionTimeTrend should create reporting filters 1`
     },
   ],
   "measures": [
-    "TicketState.resolutionTime",
+    "TicketMessages.resolutionTime",
   ],
   "segments": [
-    "TicketState.closedTickets",
-    "TicketState.conversationStarted",
+    "Ticket.closedTickets",
+    "TicketMessages.conversationStarted",
   ],
   "timezone": "UTC",
 }
@@ -354,7 +340,7 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
   "dimensions": [],
   "filters": [
     {
-      "member": "TicketState.createdDatetime",
+      "member": "Ticket.createdDatetime",
       "operator": "inDateRange",
       "values": [
         "2021-05-29T00:00:00+02:00",
@@ -362,42 +348,42 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
       ],
     },
     {
-      "member": "TicketState.isTrashed",
+      "member": "Ticket.isTrashed",
       "operator": "equals",
       "values": [
         "0",
       ],
     },
     {
-      "member": "TicketState.isSpam",
+      "member": "Ticket.isSpam",
       "operator": "equals",
       "values": [
         "0",
       ],
     },
     {
-      "member": "TicketState.periodStart",
+      "member": "Ticket.periodStart",
       "operator": "afterDate",
       "values": [
         "2021-05-29T00:00:00.000",
       ],
     },
     {
-      "member": "TicketState.periodEnd",
+      "member": "Ticket.periodEnd",
       "operator": "beforeDate",
       "values": [
         "2021-06-04T23:59:59.000",
       ],
     },
     {
-      "member": "TicketState.integration",
+      "member": "TicketMessages.integration",
       "operator": "equals",
       "values": [
         "1",
       ],
     },
     {
-      "member": "TicketState.channel",
+      "member": "TicketMessages.firstMessageChannel",
       "operator": "equals",
       "values": [
         "email",
@@ -405,7 +391,7 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
       ],
     },
     {
-      "member": "TicketState.assigneeUserId",
+      "member": "Ticket.assigneeUserId",
       "operator": "equals",
       "values": [
         "2",
@@ -413,84 +399,7 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
     },
   ],
   "measures": [
-    "TicketState.ticketCount",
-  ],
-  "timezone": "UTC",
-}
-`;
-
-exports[`metric trends useTicketsRepliedTrend should create reporting filters 1`] = `
-{
-  "dimensions": [],
-  "filters": [
-    {
-      "member": "MessageState.periodStart",
-      "operator": "afterDate",
-      "values": [
-        "2021-05-29T00:00:00.000",
-      ],
-    },
-    {
-      "member": "MessageState.periodEnd",
-      "operator": "beforeDate",
-      "values": [
-        "2021-06-04T23:59:59.000",
-      ],
-    },
-    {
-      "member": "MessageState.integration",
-      "operator": "equals",
-      "values": [
-        "1",
-      ],
-    },
-    {
-      "member": "MessageState.channel",
-      "operator": "equals",
-      "values": [
-        "email",
-        "chat",
-      ],
-    },
-    {
-      "member": "MessageState.senderId",
-      "operator": "equals",
-      "values": [
-        "2",
-      ],
-    },
-    {
-      "member": "MessageState.sentDatetime",
-      "operator": "inDateRange",
-      "values": [
-        "2021-05-29T00:00:00+02:00",
-        "2021-06-04T23:59:59+02:00",
-      ],
-    },
-    {
-      "member": "MessageState.isOnTrashedTicket",
-      "operator": "equals",
-      "values": [
-        "0",
-      ],
-    },
-    {
-      "member": "MessageState.isOnSpamTicket",
-      "operator": "equals",
-      "values": [
-        "0",
-      ],
-    },
-    {
-      "member": "MessageState.channel",
-      "operator": "notEquals",
-      "values": [
-        "internal-note",
-      ],
-    },
-  ],
-  "measures": [
-    "MessageState.ticketCount",
+    "Ticket.ticketCount",
   ],
   "timezone": "UTC",
 }
