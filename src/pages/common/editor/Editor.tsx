@@ -31,11 +31,8 @@ export default function Editor({
     submit,
     ticket,
 }: Props) {
-    const {
-        showWhatsAppTemplateEditor,
-        whatsAppMessageTemplatesEnabled,
-        isFreeFormWhatsAppMessage,
-    } = useWhatsAppEditor()
+    const {showWhatsAppTemplateEditor, whatsAppMessageTemplatesEnabled} =
+        useWhatsAppEditor()
     const {formRef, onSubmit, setTicketStatus} = useForm(submit)
     const {
         hasShown,
@@ -53,11 +50,6 @@ export default function Editor({
         ticket,
     })
 
-    const isNewTicket = !ticket.id
-
-    const showFreeFormEditor =
-        !showWhatsAppTemplateEditor || isFreeFormWhatsAppMessage
-
     return (
         <div
             className={cn('d-print-none', css.container)}
@@ -72,19 +64,15 @@ export default function Editor({
                 />
                 <ReplyForm>
                     {showWhatsAppTemplateEditor && (
-                        <WhatsAppMessageTemplateReplyArea
-                            isNewTicket={isNewTicket}
-                        />
+                        <WhatsAppMessageTemplateReplyArea />
                     )}
 
-                    {showFreeFormEditor && (
+                    {!showWhatsAppTemplateEditor && (
                         <TicketReplyArea
                             hasShownMacros={hasShown}
                             filters={filters}
                             initialMacrosLoaded={initialLoaded}
-                            isMacrosActive={
-                                isActive && !showWhatsAppTemplateEditor
-                            }
+                            isMacrosActive={isActive}
                             loadMacros={loadMacros}
                             macros={macros}
                             nextCursor={nextCursor}
@@ -92,7 +80,6 @@ export default function Editor({
                             onChangeFilters={onChangeFilters}
                             onChangeMacrosActive={onChangeActive}
                             onChangeQuery={onChangeQuery}
-                            hideMacroSearch={showWhatsAppTemplateEditor}
                         />
                     )}
                     <TicketSubmitButtons setTicketStatus={setTicketStatus} />

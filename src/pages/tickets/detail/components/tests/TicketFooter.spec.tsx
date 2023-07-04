@@ -20,6 +20,14 @@ jest.mock('pages/common/editor/Editor', () => jest.fn(() => <p>Editor</p>))
 jest.mock('pages/common/editor/hooks/useInitialMacroFilters', () => jest.fn())
 jest.mock('state/ui/editor/actions', () => ({editorFocused: jest.fn()}))
 jest.mock('../TypingActivity', () => jest.fn(() => <p>TypingActivity</p>))
+jest.mock(
+    'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext',
+    () => ({
+        WhatsAppEditorProvider: jest.fn(({children}: any) => (
+            <div>{children}</div>
+        )),
+    })
+)
 
 const mockEditor = Editor as jest.Mock
 const mockEditorFocused = editorFocused as unknown as jest.Mock

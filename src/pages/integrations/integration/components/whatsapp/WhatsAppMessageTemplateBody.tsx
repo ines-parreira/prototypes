@@ -21,9 +21,9 @@ export default function WhatsAppMessageTemplateBody({
 
     return (
         <div className={css.messageBody}>
-            {lines.map((rawLine, sentenceIndex) => (
+            {lines.map((rawLine, lineIndex) => (
                 <WhatsAppMessageTemplateLine
-                    key={sentenceIndex}
+                    key={lineIndex}
                     line={rawLine}
                     isPreview={isPreview}
                     value={value}

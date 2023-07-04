@@ -1,5 +1,6 @@
 import slackMessageParser, {Node, NodeType} from 'slack-message-parser'
 import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
+import {MacroActionName} from 'models/macroAction/types'
 
 export const WHATSAPP_VARIABLE_REGEX = /(\{\{\d\}\})/
 
@@ -61,3 +62,27 @@ export const getTemplateLanguageOptions = (
     const languages = templates.map((template) => template.language)
     return Array.from(new Set(languages))
 }
+
+export const createApplyExternalTemplateAction = (
+    template: WhatsAppMessageTemplate
+) => ({
+    name: MacroActionName.ApplyExternalTemplate,
+    type: 'system',
+    title: 'Apply External Template',
+    arguments: {
+        provider: 'whatsapp',
+        template_id: template.id,
+        template: template,
+        body: Array(
+            countDistinctVariables(template.components.body.value)
+        ).fill({type: 'text', value: ''}),
+        ...(template.components.header?.type === 'text' &&
+            template.components.header?.value && {
+                header: Array(
+                    countDistinctVariables(
+                        template.components.header.value ?? ''
+                    )
+                ).fill({type: 'text', value: ''}),
+            }),
+    },
+})

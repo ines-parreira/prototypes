@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import classNames from 'classnames'
+import {useDebounce} from 'react-use'
 import TextInput from 'pages/common/forms/input/TextInput'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TemplateTypeFilterDropdown, {
@@ -9,54 +10,62 @@ import {useWhatsAppEditor} from './WhatsAppEditorContext'
 
 import css from './WhatsAppMessageTemplateSearch.less'
 
+const SEARCH_DEBOUNCE_DELAY = 350
+
 export type WhatsAppMessageTemplateSearchFilters = {
     language: string[]
     name: string
 }
 
-type Props = {
-    placeholder: string
-    isCollapsible?: boolean
-    languages: string[]
-    onChange: (filters: WhatsAppMessageTemplateSearchFilters) => void
-    value: WhatsAppMessageTemplateSearchFilters
-    displayTemplateTypeFilter?: boolean
-}
-
-export default function WhatsAppMessageTemplateSearch({
-    placeholder,
-    isCollapsible,
-    onChange,
-    value,
-    displayTemplateTypeFilter = true,
-}: Props) {
+export default function WhatsAppMessageTemplateSearch() {
     const [isFocused, setIsFocused] = useState(false)
+    const [filters, setFilters] =
+        useState<WhatsAppMessageTemplateSearchFilters>({
+            language: [],
+            name: '',
+        })
 
     const {
-        isTemplateListCollapsed: isCollapsed,
-        setIsTemplateListCollapsed: setIsCollapsed,
+        isTemplateListVisible,
+        setIsTemplateListVisible,
+        isNewTicket,
+        setSearchFilter,
+        selectedTemplate,
     } = useWhatsAppEditor()
+
+    useDebounce(
+        () => {
+            setSearchFilter(filters)
+        },
+        SEARCH_DEBOUNCE_DELAY,
+        [filters]
+    )
 
     const handleInputFocus = () => {
         setIsFocused(true)
-        setIsCollapsed(false)
+        setIsTemplateListVisible(true)
     }
+
+    const isCollapsible = !!selectedTemplate
 
     return (
         <div className={css.container}>
             <TextInput
                 tabIndex={3}
-                placeholder={placeholder}
-                onChange={(newName) => onChange({...value, name: newName})}
-                // onKeyDown={handleSearchKeyDown}
+                placeholder={
+                    isNewTicket
+                        ? 'Search WhatsApp templates by name'
+                        : 'Search macros or WhatsApp templates by name'
+                }
+                onChange={(newName) => setFilters({...filters, name: newName})}
                 onFocus={handleInputFocus}
                 className={css.input}
                 prefix={<IconInput className={css.searchIcon} icon="search" />}
-                value={value.name}
+                value={filters.name}
             />
-            {(isFocused || !isCollapsed) && (
+            {(isFocused || isTemplateListVisible) && (
                 <div className={css.filters}>
-                    {displayTemplateTypeFilter && (
+                    {!isNewTicket && (
                         <TemplateTypeFilterDropdown
                             value={TemplateTypeFilterOption.Templates}
                         />
@@ -66,9 +75,13 @@ export default function WhatsAppMessageTemplateSearch({
             {isCollapsible && (
                 <i
                     className={classNames('material-icons', css.closeButton)}
-                    onClick={() => setIsCollapsed(!isCollapsed)}
+                    onClick={() =>
+                        setIsTemplateListVisible(!isTemplateListVisible)
+                    }
                 >
-                    {isCollapsed ? 'keyboard_arrow_down' : 'keyboard_arrow_up'}
+                    {isTemplateListVisible
+                        ? 'keyboard_arrow_up'
+                        : 'keyboard_arrow_down'}
                 </i>
             )}
         </div>

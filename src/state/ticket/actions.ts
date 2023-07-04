@@ -745,7 +745,7 @@ export const applyMacro =
         return Promise.resolve()
     }
 
-export const clearAppliedMacro = (ticketId: number) => ({
+export const clearAppliedMacro = (ticketId: number | string) => ({
     type: types.CLEAR_APPLIED_MACRO,
     ticketId,
 })
