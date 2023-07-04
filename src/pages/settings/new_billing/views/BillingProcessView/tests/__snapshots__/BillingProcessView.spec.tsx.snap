@@ -26,7 +26,7 @@ exports[`UsageAndPlansView should render 1`] = `
           Monthly
         </span>
         <a
-          href="#"
+          href="/app/settings/new-billing/payment/frequency"
         >
           Update
         </a>
@@ -48,7 +48,8 @@ exports[`UsageAndPlansView should render 1`] = `
           </h2>
           <a
             class="link"
-            href="/"
+            href="https://www.gorgias.com/pricing"
+            rel="noreferrer noopener"
             target="_blank"
           >
             See Plans Details

@@ -1,0 +1,229 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UsageAndPlansView should render 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="backLink"
+    >
+      <i
+        class="material-icons"
+      >
+        arrow_back
+      </i>
+      Back
+    </div>
+    <div
+      class="alert info closable"
+    >
+      <div
+        class="iconContainer"
+      >
+        <img
+          alt="icon"
+          src="test-file-stub"
+        />
+      </div>
+      <div
+        class="content"
+      >
+        <span
+          class="label"
+        >
+          Changing your billing frequency will apply on all your subscribed products
+        </span>
+      </div>
+      <div
+        aria-label="Close Icon"
+        class="close"
+      >
+        <img
+          alt="close-icon"
+          class="closeIcon"
+          src="test-file-stub"
+        />
+      </div>
+    </div>
+    <div
+      class="cards"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="header"
+        >
+          <h2
+            class="title"
+          >
+            Billing frequency
+          </h2>
+          <a
+            class="link"
+            href="https://www.gorgias.com/pricing"
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            See Plans Details
+            <i
+              class="material-icons"
+            >
+              open_in_new
+            </i>
+          </a>
+        </div>
+        <div
+          class="body"
+        >
+          <div
+            class="container"
+          >
+            <div
+              aria-checked="true"
+              aria-label="Monthly"
+              class="wrapper selected"
+              role="radio"
+              tabindex="0"
+            >
+              <div>
+                <label
+                  class="label label"
+                  for="month"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    id="month"
+                    tabindex="-1"
+                    type="radio"
+                  />
+                  Monthly
+                </label>
+              </div>
+            </div>
+            <div
+              aria-checked="false"
+              aria-label="Yearly"
+              class="wrapper"
+              role="radio"
+              tabindex="0"
+            >
+              <div>
+                <label
+                  class="label label"
+                  for="year"
+                >
+                  <input
+                    class="input"
+                    id="year"
+                    tabindex="-1"
+                    type="radio"
+                  />
+                  Yearly
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="container"
+      >
+        <div
+          class="header"
+        >
+          <h2
+            class="title"
+          >
+            Summary
+          </h2>
+        </div>
+        <div
+          class="body"
+        >
+          <div
+            class="summary"
+          >
+            <div
+              class="summaryHeader"
+            >
+              <div>
+                PRODUCT
+              </div>
+              <div>
+                PRICE
+              </div>
+            </div>
+            <div
+              class="container"
+            >
+              <div
+                class="total"
+              >
+                <div
+                  class="totalTitle"
+                >
+                  Total
+                </div>
+                <div
+                  class="totalPrice"
+                >
+                  <span>
+                    $0
+                  </span>
+                  /
+                  month
+                </div>
+              </div>
+              <div
+                class="disclaimer"
+              >
+                Prices do not include
+                 
+                <a
+                  href="https://www.gorgias.com/pricing/billing-sales-tax"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Sales tax
+                </a>
+              </div>
+            </div>
+          </div>
+          <div
+            class="container loader"
+          >
+            <div
+              class="inner"
+              style="min-height: auto;"
+            >
+              <i
+                class="icon-custom icon-circle-o-notch md-spin"
+                style="font-size: 40px;"
+              />
+            </div>
+          </div>
+          <div
+            class="container disabled"
+          >
+            <div
+              class="button"
+            >
+              <button
+                class="wrapper button fill primary medium isDisabled"
+                disabled=""
+                id="update-subscription"
+                type="button"
+              >
+                Update Subscription
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

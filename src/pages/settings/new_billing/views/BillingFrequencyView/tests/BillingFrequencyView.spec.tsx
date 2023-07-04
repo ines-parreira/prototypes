@@ -11,7 +11,7 @@ import {
     products,
 } from 'fixtures/productPrices'
 import {renderWithRouter} from 'utils/testing'
-import BillingProcessView from '../BillingProcessView'
+import BillingFrequencyView from '../BillingFrequencyView'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -44,7 +44,7 @@ describe('UsageAndPlansView', () => {
     it('should render', () => {
         const {container} = renderWithRouter(
             <Provider store={store}>
-                <BillingProcessView
+                <BillingFrequencyView
                     billingErrorNotification={{
                         message: `We couldn't update your subscription. Please try again.`,
                         buttons: [
@@ -61,8 +61,6 @@ describe('UsageAndPlansView', () => {
                     }}
                     contactBilling={jest.fn()}
                     dispatchBillingError={jest.fn()}
-                    setDefaultMessage={jest.fn()}
-                    setIsModalOpen={jest.fn()}
                 />
             </Provider>
         )

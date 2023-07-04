@@ -1,0 +1,38 @@
+@import '~css/new/mixins';
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .cards {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        justify-content: space-between;
+        align-items: start;
+
+        @media @xlarge-desktops {
+            flex-direction: row;
+        }
+    }
+
+    .summary {
+        padding: 8px 16px 24px;
+        border-bottom: 1px solid @classic-neutral-grey-3;
+    }
+
+    .summaryHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: @classic-neutral-grey-5;
+        font-weight: 600;
+        font-size: 11px;
+        line-height: 14px;
+        padding: 0px 8px 8px;
+    }
+}

@@ -70,7 +70,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
               Yearly
             </span>
             <a
-              href="#"
+              to="/app/settings/new-billing/payment/frequency"
             >
               Update
             </a>

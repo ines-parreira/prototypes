@@ -70,6 +70,7 @@ const ContactSupportModal = ({
                 })
             )
         } finally {
+            setMessage('')
             handleOnClose()
         }
     }
@@ -89,6 +90,7 @@ const ContactSupportModal = ({
                         value={message}
                         autoRowHeight={true}
                         placeholder="Write your message here"
+                        className={css.textArea}
                     />
                 </div>
             </ModalBody>

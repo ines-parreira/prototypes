@@ -9,6 +9,7 @@ import {
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 
 import {formatAmount} from '../../utils/formatAmount'
+import {BILLING_SALES_TAX_URL} from '../../constants'
 import css from './SummaryTotal.less'
 
 export type SummaryTotalProps = {
@@ -17,6 +18,7 @@ export type SummaryTotalProps = {
     prices?: (HelpdeskPrice | AutomationPrice | SMSOrVoicePrice)[]
     interval?: PlanInterval
     currency: string
+    isFrequencyChanged?: boolean
 }
 
 const SummaryTotal = ({
@@ -24,6 +26,7 @@ const SummaryTotal = ({
     totalProductAmount,
     interval = PlanInterval.Month,
     currency,
+    isFrequencyChanged = false,
 }: SummaryTotalProps) => {
     // Get the total amount of the selected plans
     const amountSelectedPlans = useMemo(() => {
@@ -47,7 +50,7 @@ const SummaryTotal = ({
             <div className={css.total}>
                 <div className={css.totalTitle}>Total</div>
                 <div className={css.totalPrice}>
-                    {oldPrice && (
+                    {oldPrice && !isFrequencyChanged && (
                         <div className={css.oldPrice} data-testid="oldPrice">
                             {formatAmount(oldPrice / 100, currency)}
                         </div>
@@ -61,7 +64,7 @@ const SummaryTotal = ({
             <div className={css.disclaimer}>
                 Prices do not include{' '}
                 <a
-                    href="https://www.gorgias.com/pricing/billing-sales-tax"
+                    href={BILLING_SALES_TAX_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                 >

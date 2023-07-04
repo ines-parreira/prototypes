@@ -1,0 +1,127 @@
+import React from 'react'
+import {render, fireEvent} from '@testing-library/react'
+import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import {RootState, StoreDispatch} from 'state/types'
+import {createStripeCardToken} from 'utils/stripe'
+
+import {
+    HELPDESK_PRODUCT_ID,
+    basicMonthlyHelpdeskPrice,
+    products,
+} from 'fixtures/productPrices'
+import {renderWithRouter} from 'utils/testing'
+import CardView from '../CardView'
+
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+
+jest.mock('state/billing/actions', () => ({
+    fetchCreditCard: jest.fn(),
+}))
+jest.mock('state/notifications/actions', () => ({
+    notify: jest.fn(),
+}))
+jest.mock('utils/stripe', () => ({
+    createStripeCardToken: jest.fn().mockResolvedValue({id: 'stripeTokenId'}),
+}))
+jest.mock('services/gorgiasApi', () => jest.fn())
+jest.mock('store/middlewares/segmentTracker', () => {
+    const segmentTracker: Record<string, unknown> = jest.requireActual(
+        'store/middlewares/segmentTracker'
+    )
+
+    return {
+        ...segmentTracker,
+        logEvent: jest.fn(),
+    }
+})
+
+Object.defineProperty(window, 'Stripe', {
+    value: {
+        card: {
+            validateCardNumber: jest.fn(),
+            validateExpiry: jest.fn(),
+            validateCVC: jest.fn(),
+        },
+    },
+    writable: true,
+})
+
+jest.mock('utils', () => {
+    const utils: Record<string, unknown> = jest.requireActual('utils')
+    return {
+        ...utils,
+        loadScript: jest.fn(),
+    }
+})
+
+const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
+
+const store = mockedStore({
+    billing: fromJS({
+        invoices: [],
+        products,
+        currentAccount: fromJS({
+            current_subscription: {
+                products: {
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                },
+            },
+        }),
+        creditCard: fromJS({}),
+    }),
+})
+
+describe('CardView', () => {
+    it('renders the component', () => {
+        const {getByText} = renderWithRouter(
+            <Provider store={store}>
+                <CardView />
+            </Provider>
+        )
+
+        expect(getByText('Payment method')).toBeInTheDocument()
+        expect(getByText('Name on the card')).toBeInTheDocument()
+    })
+
+    it('handles form submission', () => {
+        // Mock dependencies and state
+        const mockDispatch = jest.fn()
+        const mockCreditCard = {
+            brand: 'Visa',
+            // Add other properties as needed
+        }
+        jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+        jest.mock('state/billing/selectors', () => ({
+            creditCard: jest.fn(() => mockCreditCard),
+        }))
+
+        const {getByTestId, getByText} = render(
+            <Provider store={store}>
+                <CardView />
+            </Provider>
+        )
+
+        // Fill form fields
+        const nameInput = getByTestId('name')
+        const numberInput = getByTestId('number')
+        const expDateInput = getByTestId('expDate')
+        const cvcInput = getByTestId('cvc')
+        fireEvent.change(nameInput, {target: {value: 'John Doe'}})
+        fireEvent.change(numberInput, {target: {value: '1234567890123456'}})
+        fireEvent.change(expDateInput, {target: {value: '12/24'}})
+        fireEvent.change(cvcInput, {target: {value: '123'}})
+
+        fireEvent.submit(getByText('Add payment method'))
+
+        expect(createStripeCardToken).toHaveBeenCalledWith({
+            name: 'John Doe',
+            number: '1234 5678 9012 3456',
+            exp_month: 12,
+            exp_year: 24,
+            cvc: '123',
+        })
+    })
+})

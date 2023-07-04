@@ -19,7 +19,7 @@ describe('<Card />', () => {
         )
         // expect header to have link with text
         expect(screen.getByText('See Plans Details')).toHaveAttribute(
-            'to',
+            'href',
             'https://gorgias.com'
         )
     })

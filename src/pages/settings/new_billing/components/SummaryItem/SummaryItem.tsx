@@ -19,6 +19,7 @@ export type SummaryItemProps = {
     product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
     prices?: (HelpdeskPrice | AutomationPrice | SMSOrVoicePrice)[]
     selectedPlans: SelectedPlans
+    isFrequencyChanged?: boolean
 }
 
 const SummaryItem = ({
@@ -27,6 +28,7 @@ const SummaryItem = ({
     product,
     prices = [],
     selectedPlans,
+    isFrequencyChanged = false,
 }: SummaryItemProps) => {
     const selectedPlan = selectedPlans[type]
 
@@ -77,7 +79,7 @@ const SummaryItem = ({
                 </div>
             </div>
             <div className={css.price}>
-                {oldPrice && (
+                {oldPrice && !isFrequencyChanged && (
                     <div data-testid="oldPrice" className={css.oldPrice}>
                         {formatAmount(oldPrice, currency)}
                     </div>

@@ -18,13 +18,15 @@ import {BILLING_PAYMENT_CARD_PATH} from '../../constants'
 import css from './SummaryPaymentSection.less'
 
 export type SummaryPaymentSectionProps = {
-    setIsPaymentEnabled: React.Dispatch<React.SetStateAction<boolean>>
+    setIsPaymentEnabled?: React.Dispatch<React.SetStateAction<boolean>>
     isCreditCardFetched: boolean
+    isPaymentInformationView?: boolean
 }
 
 const SummaryPaymentSection = ({
     setIsPaymentEnabled,
     isCreditCardFetched,
+    isPaymentInformationView,
 }: SummaryPaymentSectionProps) => {
     const dispatch = useAppDispatch()
 
@@ -59,7 +61,7 @@ const SummaryPaymentSection = ({
             }
 
             if (card.isEmpty()) {
-                setIsPaymentEnabled(false)
+                setIsPaymentEnabled?.(false)
                 void dispatch(
                     notify({
                         message: 'No payment method registered on your account',
@@ -67,9 +69,11 @@ const SummaryPaymentSection = ({
                         style: NotificationStyle.Banner,
                         showIcon: true,
                         allowHTML: true,
-                        actionHTML: `<Link to={${BILLING_PAYMENT_CARD_PATH}}>
+                        actionHTML: (
+                            <Link to={BILLING_PAYMENT_CARD_PATH}>
                                 Add a payment method
-                            </Link>`,
+                            </Link>
+                        ),
                         id: 'no-payment-method',
                     })
                 )
@@ -77,7 +81,7 @@ const SummaryPaymentSection = ({
                 const brand: string = card.get('brand')
                 const last4: string = card.get('last4')
 
-                setIsPaymentEnabled(false)
+                setIsPaymentEnabled?.(false)
                 void dispatch(
                     notify({
                         message: `${brand} ending with ${last4} is expired`,
@@ -94,11 +98,11 @@ const SummaryPaymentSection = ({
                     })
                 )
             } else {
-                setIsPaymentEnabled(true)
+                setIsPaymentEnabled?.(true)
             }
         } else if (payment === 'shopify') {
             if (shopifyBillingStatus === ShopifyBillingStatus.Canceled) {
-                setIsPaymentEnabled(false)
+                setIsPaymentEnabled?.(false)
                 void dispatch(
                     notify({
                         message: 'Payment with Shopify is canceled',
@@ -115,7 +119,7 @@ const SummaryPaymentSection = ({
                     })
                 )
             } else if (shopifyBillingStatus === ShopifyBillingStatus.Inactive) {
-                setIsPaymentEnabled(false)
+                setIsPaymentEnabled?.(false)
                 void dispatch(
                     notify({
                         message: 'Payment with Shopify is inactive',
@@ -132,7 +136,7 @@ const SummaryPaymentSection = ({
                     })
                 )
             } else {
-                setIsPaymentEnabled(true)
+                setIsPaymentEnabled?.(true)
             }
         }
     }, [
@@ -151,7 +155,10 @@ const SummaryPaymentSection = ({
             case ShopifyBillingStatus.Active:
                 return (
                     <div
-                        className={css.container}
+                        className={classNames(css.container, {
+                            [css.paymentInformationView]:
+                                isPaymentInformationView,
+                        })}
                         data-testid="activeShopifyPayment"
                     >
                         <div className={css.method}>
@@ -171,7 +178,10 @@ const SummaryPaymentSection = ({
             case ShopifyBillingStatus.Canceled:
                 return (
                     <div
-                        className={css.container}
+                        className={classNames(css.container, {
+                            [css.paymentInformationView]:
+                                isPaymentInformationView,
+                        })}
                         data-testid="canceledShopifyPayment"
                     >
                         <div className={css.method}>
@@ -195,7 +205,10 @@ const SummaryPaymentSection = ({
             default:
                 return (
                     <div
-                        className={css.container}
+                        className={classNames(css.container, {
+                            [css.paymentInformationView]:
+                                isPaymentInformationView,
+                        })}
                         data-testid="inactiveShopifyPayment"
                     >
                         <div className={css.method}>
@@ -215,13 +228,18 @@ const SummaryPaymentSection = ({
                     </div>
                 )
         }
-    }, [shopifyBillingStatus])
+    }, [isPaymentInformationView, shopifyBillingStatus])
 
     const renderStripe = useMemo(() => {
         // Customer uses Stripe billing
         if (card.isEmpty()) {
             return (
-                <div className={css.container} data-testid="noPaymentMethod">
+                <div
+                    className={classNames(css.container, {
+                        [css.paymentInformationView]: isPaymentInformationView,
+                    })}
+                    data-testid="noPaymentMethod"
+                >
                     <div className={css.method}>
                         <i
                             className={classNames(
@@ -242,7 +260,11 @@ const SummaryPaymentSection = ({
 
         if (cardIsExpired) {
             return (
-                <div className={css.container}>
+                <div
+                    className={classNames(css.container, {
+                        [css.paymentInformationView]: isPaymentInformationView,
+                    })}
+                >
                     <div className={css.method} data-testid="cardIsExpired">
                         <i
                             className={classNames(
@@ -261,8 +283,12 @@ const SummaryPaymentSection = ({
         }
 
         return (
-            <div className={css.container} data-testid="validCreditCard">
-                <div className={css.method}>
+            <div
+                className={classNames(css.container, {
+                    [css.paymentInformationView]: isPaymentInformationView,
+                })}
+            >
+                <div className={css.method} data-testid="validCreditCard">
                     <i className={classNames('material-icons', css.cardIcon)}>
                         credit_card
                     </i>
@@ -272,7 +298,7 @@ const SummaryPaymentSection = ({
                 <Link to={BILLING_PAYMENT_CARD_PATH}>Change Card</Link>
             </div>
         )
-    }, [card, cardIsExpired])
+    }, [card, cardIsExpired, isPaymentInformationView])
 
     if (!isCreditCardFetched && payment === 'stripe') {
         return <Loader minHeight="auto" className={css.loader} />

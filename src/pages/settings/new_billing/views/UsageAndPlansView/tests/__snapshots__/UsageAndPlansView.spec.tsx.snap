@@ -30,7 +30,7 @@ exports[`UsageAndPlansView should render 1`] = `
           Yearly
         </span>
         <a
-          href="#"
+          to="/app/settings/new-billing/payment/frequency"
         >
           Update
         </a>

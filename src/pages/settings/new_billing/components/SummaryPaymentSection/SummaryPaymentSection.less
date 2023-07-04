@@ -8,6 +8,12 @@
         gap: 32px;
         padding: 16px;
         border-bottom: 1px solid @classic-neutral-grey-3;
+
+        &.paymentInformationView {
+            border: 0px solid @classic-neutral-grey-3;
+            padding: 0px;
+            width: 100%;
+        }
     }
 
     .loader {
@@ -44,6 +50,18 @@
 
         &:hover {
             color: @classic-main-primary-4;
+        }
+    }
+
+    .paymentInformationView {
+        font-size: 16px;
+
+        i {
+            display: none;
+        }
+
+        a {
+            font-size: 14px;
         }
     }
 }

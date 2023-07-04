@@ -82,3 +82,10 @@ export type BillingState = {
     products: BillingProducts
     invoices: Invoice[]
 }
+
+export enum TicketPurpose {
+    ENTERPRISE = 'enterprise',
+    YEARLY_TO_MONTHLY = 'yearlyToMonthly',
+    ERROR = 'error',
+    CONTACT_US = 'contactUs',
+}

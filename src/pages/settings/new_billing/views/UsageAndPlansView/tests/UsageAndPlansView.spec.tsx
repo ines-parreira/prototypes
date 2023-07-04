@@ -18,7 +18,7 @@ describe('UsageAndPlansView', () => {
     it('should render', () => {
         const {container} = render(
             <Provider store={store}>
-                <UsageAndPlansView />
+                <UsageAndPlansView setIsModalOpen={jest.fn()} />
             </Provider>
         )
 
