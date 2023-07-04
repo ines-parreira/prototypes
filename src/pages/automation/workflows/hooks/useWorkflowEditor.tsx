@@ -226,6 +226,7 @@ function validate(conf: WorkflowConfiguration): Maybe<string> {
     else if (conf.name.length > 100)
         return 'Flow name must be less than 100 characters'
     if (
+        conf.entrypoint?.label.trim().length === 0 ||
         conf.steps.find(
             (s) =>
                 s.kind === 'messages' &&
@@ -238,6 +239,8 @@ function validate(conf: WorkflowConfiguration): Maybe<string> {
         )
     )
         return 'Complete or delete incomplete steps in order to save'
+    if (conf.steps.length === 1)
+        return 'You must add at least one step after the trigger button in order to save'
 }
 
 export function createWorkflowEditorContextForPreview(

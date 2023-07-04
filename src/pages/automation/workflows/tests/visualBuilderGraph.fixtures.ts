@@ -109,7 +109,8 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             type: 'end',
             data: {
                 wfConfigurationRef: {
-                    wfConfigurationWorkflowCallStepId: 'workflowCall1',
+                    wfConfigurationWorkflowCallOrHandoverStepId:
+                        'workflowCall1',
                 },
                 withWasThisHelpfulPrompt: true,
             },
@@ -120,7 +121,8 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             type: 'end',
             data: {
                 wfConfigurationRef: {
-                    wfConfigurationWorkflowCallStepId: 'workflowCall2',
+                    wfConfigurationWorkflowCallOrHandoverStepId:
+                        'workflowCall2',
                 },
                 withWasThisHelpfulPrompt: true,
             },
@@ -131,7 +133,8 @@ export const visualBuilderGraphSimpleChoicesFixture: VisualBuilderGraph = {
             type: 'end',
             data: {
                 wfConfigurationRef: {
-                    wfConfigurationWorkflowCallStepId: 'workflowCall3',
+                    wfConfigurationWorkflowCallOrHandoverStepId:
+                        'workflowCall3',
                 },
                 withWasThisHelpfulPrompt: true,
             },

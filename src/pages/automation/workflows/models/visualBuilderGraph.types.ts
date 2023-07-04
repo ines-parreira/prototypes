@@ -81,9 +81,12 @@ export type FileUploadNodeType = Node<
 export type EndNodeType = Node<
     {
         wfConfigurationRef: {
-            wfConfigurationWorkflowCallStepId: string
+            wfConfigurationWorkflowCallOrHandoverStepId: string
         }
         withWasThisHelpfulPrompt: boolean
+        ticketTags?: string[] | null
+        ticketAssigneeUserId?: number | null
+        ticketAssigneeTeamId?: number | null
         shouldShowErrors?: boolean | null
         isGreyedOut?: boolean | null
     },

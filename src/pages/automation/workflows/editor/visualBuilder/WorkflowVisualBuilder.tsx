@@ -122,9 +122,7 @@ export function WorkflowVisualBuilderWrapped({
                 nodesConnectable={false}
                 zoomOnDoubleClick={false}
                 onNodeClick={(_e, node) => {
-                    if (node.type !== 'end') {
-                        setVisualBuilderNodeIdEditing(node.id)
-                    }
+                    setVisualBuilderNodeIdEditing(node.id)
                 }}
                 elementsSelectable={false}
                 nodesFocusable={false}

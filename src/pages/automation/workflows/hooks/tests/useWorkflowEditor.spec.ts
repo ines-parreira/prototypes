@@ -57,9 +57,37 @@ describe('useWorkflowEditor', () => {
                     account_id: 1,
                     is_draft: false,
                     name: 'remote name',
-                    initial_step_id: '',
-                    steps: [],
-                    transitions: [],
+                    initial_step_id: 'messages1',
+                    entrypoint: {
+                        label: 'entrypoint',
+                    },
+                    steps: [
+                        {
+                            id: 'messages1',
+                            kind: 'messages',
+                            settings: {
+                                messages: [
+                                    {
+                                        content: {
+                                            text: 'Hello',
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                        {
+                            id: 'handover1',
+                            kind: 'handover',
+                            settings: {},
+                        },
+                    ],
+                    transitions: [
+                        {
+                            id: 'messages1-handover1',
+                            from_step_id: 'messages1',
+                            to_step_id: 'handover1',
+                        },
+                    ],
                 } as WorkflowConfiguration),
         })
         const {result, waitForNextUpdate, rerender} = renderHook(() =>

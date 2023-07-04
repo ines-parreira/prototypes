@@ -7,6 +7,7 @@ import {
     WorkflowConfiguration,
     WorkflowStepAttachmentsInput,
     WorkflowStepChoices,
+    WorkflowStepHandover,
     WorkflowStepMessages,
     WorkflowStepTextInput,
     WorkflowStepWorkflowCall,
@@ -245,10 +246,13 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     to_step_id: choicesStepId,
                 })
                 stepIdByNodeId[node.id] = choicesStepId
-            } else if (node.type === 'end') {
+            } else if (
+                node.type === 'end' &&
+                node.data.withWasThisHelpfulPrompt
+            ) {
                 const workflowCallStepId =
                     node.data.wfConfigurationRef
-                        .wfConfigurationWorkflowCallStepId
+                        .wfConfigurationWorkflowCallOrHandoverStepId
                 const workflowCallStep: WorkflowStepWorkflowCall = {
                     id: workflowCallStepId,
                     kind: 'workflow_call',
@@ -262,6 +266,31 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         id: ulid(),
                         from_step_id: stepIdByNodeId[previousNode.id],
                         to_step_id: workflowCallStepId,
+                        event: incomingEdge?.data?.event,
+                    })
+                }
+            } else if (
+                node.type === 'end' &&
+                !node.data.withWasThisHelpfulPrompt
+            ) {
+                const handoverStepId =
+                    node.data.wfConfigurationRef
+                        .wfConfigurationWorkflowCallOrHandoverStepId
+                const workflowCallStep: WorkflowStepHandover = {
+                    id: handoverStepId,
+                    kind: 'handover',
+                    settings: {
+                        ticket_tags: node.data.ticketTags,
+                        ticket_assignee_user_id: node.data.ticketAssigneeUserId,
+                        ticket_assignee_team_id: node.data.ticketAssigneeTeamId,
+                    },
+                }
+                c.steps.push(workflowCallStep)
+                if (previousNode && stepIdByNodeId[previousNode.id]) {
+                    c.transitions.push({
+                        id: ulid(),
+                        from_step_id: stepIdByNodeId[previousNode.id],
+                        to_step_id: handoverStepId,
                         event: incomingEdge?.data?.event,
                     })
                 }

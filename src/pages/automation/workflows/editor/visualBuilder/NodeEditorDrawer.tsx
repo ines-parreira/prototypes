@@ -11,6 +11,7 @@ import MultipleChoicesEditor from './editors/MultipleChoicesEditor'
 import AutomatedMessageEditor from './editors/AutomatedMessageEditor'
 import TextReplyEditor from './editors/TextReplyEditor'
 import FileUploadEditor from './editors/FileUploadEditor'
+import EndNodeEditor from './editors/EndNodeEditor'
 
 type NodeEditorDrawerProps = {
     nodeInEdition: VisualBuilderNode | null
@@ -51,7 +52,8 @@ export default function NodeEditorDrawer({
         <Drawer
             className={classNames(css.drawer, {
                 [css.drawerWide]:
-                    memoizedNodeInEdition?.type !== 'trigger_button',
+                    memoizedNodeInEdition?.type !== 'trigger_button' &&
+                    memoizedNodeInEdition?.type !== 'end',
             })}
             name="visual-builder-node-edition"
             open={!!nodeInEdition}
@@ -99,6 +101,9 @@ export default function NodeEditorDrawer({
                 )}
                 {memoizedNodeInEdition?.type === 'file_upload' && (
                     <FileUploadEditor nodeInEdition={memoizedNodeInEdition} />
+                )}
+                {memoizedNodeInEdition?.type === 'end' && (
+                    <EndNodeEditor nodeInEdition={memoizedNodeInEdition} />
                 )}
             </Drawer.Content>
         </Drawer>

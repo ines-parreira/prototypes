@@ -47,12 +47,23 @@ export type WorkflowStepWorkflowCall = {
     }
 }
 
+export type WorkflowStepHandover = {
+    id: string
+    kind: 'handover'
+    settings: {
+        ticket_tags?: string[] | null
+        ticket_assignee_user_id?: number | null
+        ticket_assignee_team_id?: number | null
+    }
+}
+
 export type WorkflowStep =
     | WorkflowStepMessages
     | WorkflowStepTextInput
     | WorkflowStepAttachmentsInput
     | WorkflowStepChoices
     | WorkflowStepWorkflowCall
+    | WorkflowStepHandover
 
 export type WorkflowTransition = {
     id: string

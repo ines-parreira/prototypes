@@ -34,11 +34,17 @@
     .formField {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
+        gap: @layout-spacing-xs;
     }
 
     .helperText {
         .caption-regular();
         color: var(--neutral-grey-5);
+    }
+
+    .assignee :global(.dropdown-toggle) {
+        height: 2.4em;
+        display: inline-flex;
+        align-items: center;
     }
 }

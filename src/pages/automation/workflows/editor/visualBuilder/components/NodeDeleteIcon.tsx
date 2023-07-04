@@ -23,10 +23,7 @@ export default function NodeDeleteIcon({
     const childrenNodes = visualBuilderGraph.nodes.filter((n) =>
         childrenNodeIds.includes(n.id)
     )
-    const isChildEndNode =
-        childrenNodes.filter((n) => n.type === 'end').length === 1
-    const hasMultipleDeleteChoices =
-        childrenNodes.length === 1 && !isChildEndNode
+    const hasMultipleDeleteChoices = childrenNodes.length === 1
     return (
         <ConfirmationPopover
             placement="top"

@@ -36,6 +36,13 @@ type WorkflowChannelSupportContext = {
         workflowId: string,
         nodeType: NonNullable<VisualBuilderNode['type']>
     ) => Promise<SelfServiceChannelType[]>
+    getSupportedChannels: (
+        type: VisualBuilderNode['type']
+    ) => (
+        | TicketChannel.Chat
+        | TicketChannel.ContactForm
+        | TicketChannel.HelpCenter
+    )[]
     getUnsupportedChannels: (
         type: VisualBuilderNode['type']
     ) => (
@@ -216,6 +223,18 @@ export default function useWorkflowChannelSupport(
         [getChannelTypesWhereWorkflowIsEnabled, shopperInputSupportedChannels]
     )
 
+    const getSupportedChannels = useCallback(
+        (nodeType: VisualBuilderNode['type']) => {
+            if (nodeType === 'text_reply' || nodeType === 'file_upload') {
+                return allChannels.filter((c) =>
+                    shopperInputSupportedChannels.has(c)
+                )
+            }
+            return []
+        },
+        [shopperInputSupportedChannels]
+    )
+
     const getUnsupportedChannels = useCallback(
         (nodeType: VisualBuilderNode['type']) => {
             if (nodeType === 'text_reply' || nodeType === 'file_upload') {
@@ -261,12 +280,14 @@ export default function useWorkflowChannelSupport(
         () => ({
             isStepUnsupportedInAllChannels,
             getUnsupportedConnectedChannels,
+            getSupportedChannels,
             getUnsupportedChannels,
             getUnsupportedStepsNames,
         }),
         [
             isStepUnsupportedInAllChannels,
             getUnsupportedConnectedChannels,
+            getSupportedChannels,
             getUnsupportedChannels,
             getUnsupportedStepsNames,
         ]
@@ -277,6 +298,7 @@ export function createWorkflowChannelSupportContextForPreview(): WorkflowChannel
     return {
         isStepUnsupportedInAllChannels: () => false,
         getUnsupportedConnectedChannels: () => Promise.resolve([]),
+        getSupportedChannels: () => [],
         getUnsupportedChannels: () => [],
         getUnsupportedStepsNames: () => [],
     }

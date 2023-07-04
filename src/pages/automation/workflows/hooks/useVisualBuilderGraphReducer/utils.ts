@@ -147,7 +147,7 @@ export const buildEndNode: () => EndNodeType = () => ({
     type: 'end',
     data: {
         wfConfigurationRef: {
-            wfConfigurationWorkflowCallStepId: ulid(),
+            wfConfigurationWorkflowCallOrHandoverStepId: ulid(),
         },
         withWasThisHelpfulPrompt: true,
     },

@@ -169,9 +169,25 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 type: 'end',
                 data: {
                     wfConfigurationRef: {
-                        wfConfigurationWorkflowCallStepId: step.id,
+                        wfConfigurationWorkflowCallOrHandoverStepId: step.id,
                     },
                     withWasThisHelpfulPrompt: true,
+                },
+            }
+            nodeIdByStepId[step.id] = n.id
+            nodes.push(n)
+        } else if (step.kind === 'handover') {
+            const n: EndNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'end',
+                data: {
+                    wfConfigurationRef: {
+                        wfConfigurationWorkflowCallOrHandoverStepId: step.id,
+                    },
+                    withWasThisHelpfulPrompt: false,
+                    ticketTags: step.settings.ticket_tags,
+                    ticketAssigneeUserId: step.settings.ticket_assignee_user_id,
+                    ticketAssigneeTeamId: step.settings.ticket_assignee_team_id,
                 },
             }
             nodeIdByStepId[step.id] = n.id

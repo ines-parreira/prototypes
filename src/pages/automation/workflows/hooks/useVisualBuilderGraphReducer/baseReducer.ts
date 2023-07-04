@@ -5,6 +5,7 @@ import {buildEdgeCommonProperties} from 'pages/automation/workflows/models/visua
 
 import {
     AutomatedMessageNodeType,
+    EndNodeType,
     FileUploadNodeType,
     TextReplyNodeType,
     TriggerButtonNodeType,
@@ -48,6 +49,17 @@ export type VisualBuilderBaseAction =
           type: 'SET_FILE_UPLOAD_CONTENT'
           fileUploadNodeId: string
           content: MessageContent
+      }
+    | {
+          type: 'SET_END_NODE_SETTINGS'
+          endNodeId: string
+          settings: Pick<
+              EndNodeType['data'],
+              | 'withWasThisHelpfulPrompt'
+              | 'ticketTags'
+              | 'ticketAssigneeUserId'
+              | 'ticketAssigneeTeamId'
+          >
       }
     | {
           type: 'INSERT_AUTOMATED_MESSAGE_NODE'
@@ -135,6 +147,25 @@ export function baseReducer(
                     node.data.content.html = html
                     node.data.content.text = text
                     node.data.content.attachments = attachments
+                }
+            })
+        case 'SET_END_NODE_SETTINGS':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is EndNodeType => n.id === action.endNodeId
+                )
+                if (node) {
+                    const {
+                        withWasThisHelpfulPrompt,
+                        ticketAssigneeTeamId,
+                        ticketAssigneeUserId,
+                        ticketTags,
+                    } = action.settings
+                    node.data.withWasThisHelpfulPrompt =
+                        withWasThisHelpfulPrompt
+                    node.data.ticketAssigneeTeamId = ticketAssigneeTeamId
+                    node.data.ticketAssigneeUserId = ticketAssigneeUserId
+                    node.data.ticketTags = ticketTags
                 }
             })
         case 'INSERT_AUTOMATED_MESSAGE_NODE':

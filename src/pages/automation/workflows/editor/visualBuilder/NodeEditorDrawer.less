@@ -1,6 +1,7 @@
-@import '~css/new/layout.less';
+@import (reference) '~css/new/layout.less';
+@import (reference) '~css/new/mixins';
 
-@drawer-width: 26vw;
+@drawer-width: 450px;
 @drawer-wide-width: 612px;
 
 :local {
@@ -14,10 +15,20 @@
         &:global.opened {
             transform: translateX(-@drawer-wide-width) !important;
         }
+        @media @mobiles {
+            width: 100% !important;
+            right: -100% !important;
+            &:global.opened {
+                transform: translateX(-100%) !important;
+            }
+        }
     }
 
     .drawerWide {
         width: @drawer-wide-width !important;
+        @media @mobiles {
+            width: 100% !important;
+        }
     }
 
     .header {

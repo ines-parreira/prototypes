@@ -152,7 +152,8 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                     type: 'end',
                     data: {
                         wfConfigurationRef: {
-                            wfConfigurationWorkflowCallStepId: 'workflowCall1',
+                            wfConfigurationWorkflowCallOrHandoverStepId:
+                                'workflowCall1',
                         },
                         withWasThisHelpfulPrompt: true,
                     },
@@ -175,7 +176,8 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                     type: 'end',
                     data: {
                         wfConfigurationRef: {
-                            wfConfigurationWorkflowCallStepId: 'workflowCall2',
+                            wfConfigurationWorkflowCallOrHandoverStepId:
+                                'workflowCall2',
                         },
                         withWasThisHelpfulPrompt: true,
                     },
