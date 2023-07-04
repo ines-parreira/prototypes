@@ -50,11 +50,7 @@ export default function NodeEditorDrawer({
 
     return (
         <Drawer
-            className={classNames(css.drawer, {
-                [css.drawerWide]:
-                    memoizedNodeInEdition?.type !== 'trigger_button' &&
-                    memoizedNodeInEdition?.type !== 'end',
-            })}
+            className={classNames(css.drawer)}
             name="visual-builder-node-edition"
             open={!!nodeInEdition}
             fullscreen={false}

@@ -1,19 +1,18 @@
 @import (reference) '~css/new/layout.less';
 @import (reference) '~css/new/mixins';
 
-@drawer-width: 450px;
-@drawer-wide-width: 612px;
+@drawer-width: 612px;
 
 :local {
     .drawer {
         width: @drawer-width !important;
-        right: -@drawer-wide-width !important;
+        right: -@drawer-width !important;
         grid-template-areas:
             'header'
             'main' !important;
         grid-template-rows: 64px auto !important;
         &:global.opened {
-            transform: translateX(-@drawer-wide-width) !important;
+            transform: translateX(-@drawer-width) !important;
         }
         @media @mobiles {
             width: 100% !important;
@@ -21,13 +20,6 @@
             &:global.opened {
                 transform: translateX(-100%) !important;
             }
-        }
-    }
-
-    .drawerWide {
-        width: @drawer-wide-width !important;
-        @media @mobiles {
-            width: 100% !important;
         }
     }
 
