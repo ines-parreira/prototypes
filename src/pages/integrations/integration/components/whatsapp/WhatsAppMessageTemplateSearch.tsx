@@ -5,6 +5,7 @@ import IconInput from 'pages/common/forms/input/IconInput'
 import TemplateTypeFilterDropdown, {
     TemplateTypeFilterOption,
 } from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
+import {useWhatsAppEditor} from './WhatsAppEditorContext'
 
 import css from './WhatsAppMessageTemplateSearch.less'
 
@@ -16,8 +17,6 @@ export type WhatsAppMessageTemplateSearchFilters = {
 type Props = {
     placeholder: string
     isCollapsible?: boolean
-    isCollapsed: boolean
-    setIsCollapsed: (visible: boolean) => void
     languages: string[]
     onChange: (filters: WhatsAppMessageTemplateSearchFilters) => void
     value: WhatsAppMessageTemplateSearchFilters
@@ -27,13 +26,21 @@ type Props = {
 export default function WhatsAppMessageTemplateSearch({
     placeholder,
     isCollapsible,
-    isCollapsed,
-    setIsCollapsed,
     onChange,
     value,
     displayTemplateTypeFilter = true,
 }: Props) {
     const [isFocused, setIsFocused] = useState(false)
+
+    const {
+        isTemplateListCollapsed: isCollapsed,
+        setIsTemplateListCollapsed: setIsCollapsed,
+    } = useWhatsAppEditor()
+
+    const handleInputFocus = () => {
+        setIsFocused(true)
+        setIsCollapsed(false)
+    }
 
     return (
         <div className={css.container}>
@@ -42,7 +49,7 @@ export default function WhatsAppMessageTemplateSearch({
                 placeholder={placeholder}
                 onChange={(newName) => onChange({...value, name: newName})}
                 // onKeyDown={handleSearchKeyDown}
-                onFocus={() => setIsFocused(true)}
+                onFocus={handleInputFocus}
                 className={css.input}
                 prefix={<IconInput className={css.searchIcon} icon="search" />}
                 value={value.name}

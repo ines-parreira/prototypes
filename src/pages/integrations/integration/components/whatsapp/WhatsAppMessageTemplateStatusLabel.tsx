@@ -7,9 +7,9 @@ type Props = {
 }
 
 export default function WhatsAppMessageTemplateStatusLabel({status}: Props) {
-    const {intent, label} = templateStatusToStatusProps[status]
+    const {intent, label} = templateStatusToStatusProps[status] ?? {}
 
-    return <Status intent={intent} label={label} />
+    return <Status intent={intent} label={label ?? status} />
 }
 
 const templateStatusToStatusProps = {

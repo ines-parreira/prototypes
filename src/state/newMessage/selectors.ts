@@ -12,7 +12,6 @@ import {RootState} from 'state/types'
 import {isImmutable, createImmutableSelector} from 'utils'
 
 import {MacroAction, MacroActionName} from 'models/macroAction/types'
-import {ApplyExternalTemplateActionArguments} from 'models/whatsAppMessageTemplates/types'
 import {NewMessageState, ReceiverProperty} from './types'
 
 export const getReceiversProperties = () => Object.values(ReceiverProperty)
@@ -90,11 +89,16 @@ export const hasValidExternalTemplate = createSelector(
 
         if (!isWhatsAppChannel || !externalTemplateAction) return false
 
-        const hasIncompleteVariables = !!(
-            externalTemplateAction?.arguments as ApplyExternalTemplateActionArguments
-        ).body.find((argument) => !argument.value)
+        const hasIncompleteBodyVariables =
+            !!externalTemplateAction?.arguments.body?.find(
+                (argument) => !argument.value
+            )
+        const hasIncompleteHeaderVariables =
+            !!externalTemplateAction?.arguments.header?.find(
+                (argument) => !argument.value
+            )
 
-        return !hasIncompleteVariables
+        return !hasIncompleteBodyVariables && !hasIncompleteHeaderVariables
     }
 )
 

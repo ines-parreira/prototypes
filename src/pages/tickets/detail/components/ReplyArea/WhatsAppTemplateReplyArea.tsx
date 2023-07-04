@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import {useEffectOnce} from 'react-use'
 import WhatsAppMessageTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -75,6 +76,12 @@ export default function WhatsAppMessageTemplateReplyArea({isNewTicket}: Props) {
 
     const dispatch = useAppDispatch()
 
+    useEffectOnce(() => {
+        if (!isNewTicket && !isTemplateListCollapsed) {
+            setIsTemplateListCollapsed(true)
+        }
+    })
+
     const handleTemplateClick = (template: WhatsAppMessageTemplate) => {
         const newActions = mergeActionsJS(currentActions, [
             {
@@ -88,6 +95,14 @@ export default function WhatsAppMessageTemplateReplyArea({isNewTicket}: Props) {
                     body: Array(
                         countDistinctVariables(template.components.body.value)
                     ).fill({type: 'text', value: ''}),
+                    ...(template.components.header?.type === 'text' &&
+                        template.components.header?.value && {
+                            header: Array(
+                                countDistinctVariables(
+                                    template.components.header.value ?? ''
+                                )
+                            ).fill({type: 'text', value: ''}),
+                        }),
                 },
             },
         ])
@@ -106,8 +121,6 @@ export default function WhatsAppMessageTemplateReplyArea({isNewTicket}: Props) {
                 }
                 displayTemplateTypeFilter={!isNewTicket}
                 isCollapsible={!isNewTicket}
-                isCollapsed={isTemplateListCollapsed}
-                setIsCollapsed={setIsTemplateListCollapsed}
                 languages={languageFilterOptions}
                 value={searchValue}
                 onChange={setSearchValue}

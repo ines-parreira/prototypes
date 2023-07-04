@@ -14,6 +14,7 @@ import {mergeActionsJS} from 'state/ticket/utils'
 import WhatsAppMessageTemplateBody from './WhatsAppMessageTemplateBody'
 
 import css from './WhatsAppMessageTemplateMessage.less'
+import WhatsAppMessageTemplateHeader from './WhatsAppMessageTemplateHeader'
 
 type Props = {
     template: WhatsAppMessageTemplate
@@ -24,7 +25,7 @@ export default function WhatsAppMessageTemplateMessage({
     template,
     isPreview = true,
 }: Props) {
-    const footer = template.components.footer?.value
+    const {footer, header} = template.components
 
     const dispatch = useAppDispatch()
     const newMessageActions = useAppSelector(getNewMessageActions)
@@ -36,10 +37,7 @@ export default function WhatsAppMessageTemplateMessage({
 
     /* TODO create WhatsAppMessageTemplateEditor and WhatsAppTemplateMessagePreview */
     const handleTemplateValuesChange = (
-        actionArguments: Omit<
-            ApplyExternalTemplateActionArguments,
-            'provider' | 'template_id'
-        >
+        actionArguments: Partial<ApplyExternalTemplateActionArguments>
     ) => {
         const newActions = mergeActionsJS(newMessageActions, [
             {
@@ -57,6 +55,26 @@ export default function WhatsAppMessageTemplateMessage({
 
     return (
         <div data-testid="template-message" className={css.container}>
+            {header && (
+                <WhatsAppMessageTemplateHeader
+                    isPreview={isPreview}
+                    template={template}
+                    value={
+                        externalTemplateActionArguments?.header?.map(
+                            (argumentValue) => argumentValue.value
+                        ) ?? []
+                    }
+                    onChange={(value) => {
+                        handleTemplateValuesChange({
+                            ...externalTemplateActionArguments,
+                            header: value.map((headerValue) => ({
+                                type: 'text',
+                                value: headerValue,
+                            })),
+                        })
+                    }}
+                />
+            )}
             <WhatsAppMessageTemplateBody
                 template={template}
                 isPreview={isPreview}
@@ -75,7 +93,7 @@ export default function WhatsAppMessageTemplateMessage({
                     ) ?? []
                 }
             />
-            {footer && <div className={css.footer}>{footer}</div>}
+            {footer && <div className={css.footer}>{footer.value}</div>}
         </div>
     )
 }

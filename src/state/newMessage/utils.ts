@@ -97,7 +97,7 @@ export const replaceWhatsAppTemplateVariables = (
 
 export const transformExternalTemplatePart = (
     text: string,
-    args: {
+    args?: {
         type: string
         value: string
     }[]
@@ -105,7 +105,9 @@ export const transformExternalTemplatePart = (
     const lines = text.split('\n')
 
     const newLines = lines.map((line) => {
-        const newText = replaceWhatsAppTemplateVariables(line, args)
+        const newText = args?.length
+            ? replaceWhatsAppTemplateVariables(line, args)
+            : line
         return whatsAppMessageTemplateToHtml(newText)
     })
 
@@ -141,6 +143,19 @@ export function upsertNewMessageAction(
     return newMessage
 }
 
+const replaceVariablesAndConvert = (
+    text: string,
+    args?: {
+        type: string
+        value: string
+    }[]
+): {body_html: string; body_text: string} => ({
+    body_html: transformExternalTemplatePart(text, args),
+    body_text: args?.length
+        ? replaceWhatsAppTemplateVariables(text, args)
+        : text,
+})
+
 export const applyExternalTemplateAction = (
     newMessage: NewMessage
 ): NewMessage => {
@@ -154,17 +169,36 @@ export const applyExternalTemplateAction = (
         return newMessage
     }
 
-    const {template, body: bodyArgs} = action.arguments
-    const {body: templateBody} = template.components
+    const {template, body: bodyArgs, header: headerArgs} = action.arguments
+    const {
+        body: templateBody,
+        header: templateHeader,
+        footer,
+    } = template.components
 
-    const body_html = transformExternalTemplatePart(
+    const convertedBody = replaceVariablesAndConvert(
         templateBody.value,
         bodyArgs
     )
-    const body_text = replaceWhatsAppTemplateVariables(
-        templateBody.value,
-        bodyArgs
-    )
+    const convertedHeader = templateHeader?.value
+        ? replaceVariablesAndConvert(templateHeader.value, headerArgs)
+        : null
+
+    const headerHtml = convertedHeader
+        ? `<header>${convertedHeader.body_html}</header><br/>`
+        : ''
+    const footerHtml = footer?.value
+        ? `<br/><footer>${whatsAppMessageTemplateToHtml(footer.value)}</footer>`
+        : ''
+
+    const body_html = `<section>${headerHtml}<div>${convertedBody.body_html}</div>${footerHtml}</section>`
+    const body_text = [
+        convertedHeader?.body_text,
+        convertedBody.body_text,
+        footer?.value,
+    ]
+        .filter(Boolean)
+        .join('\n')
 
     const message = upsertNewMessageAction(
         newMessage,

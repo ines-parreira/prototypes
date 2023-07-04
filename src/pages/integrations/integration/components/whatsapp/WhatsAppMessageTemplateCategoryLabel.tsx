@@ -9,22 +9,22 @@ type Props = {
 export default function WhatsAppMessageTemplateCategoryLabel({
     category,
 }: Props) {
-    const {color, label} = templateCategoryToBadgeProps[category]
+    const {type, label} = templateCategoryToBadgeProps[category] ?? {}
 
-    return <Badge color={color}>{label}</Badge>
+    return <Badge type={type}>{label ?? category}</Badge>
 }
 
 const templateCategoryToBadgeProps = {
     [WhatsAppMessageTemplateCategory.Utility]: {
-        color: ColorType.Blue,
-        label: 'Order Update',
+        type: ColorType.Blue,
+        label: 'Utility',
     },
     [WhatsAppMessageTemplateCategory.Marketing]: {
-        color: ColorType.Light,
+        type: ColorType.Light,
         label: 'Marketing',
     },
     [WhatsAppMessageTemplateCategory.Authentication]: {
-        color: ColorType.Grey,
+        type: ColorType.Grey,
         label: 'Authentication',
     },
 }
