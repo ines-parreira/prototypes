@@ -91,7 +91,7 @@ describe('<SoundSetting />', () => {
         expect(onChangeEnabled).toHaveBeenCalledWith(false)
     })
 
-    it('should call `onChangeSound` when the sound is changed', () => {
+    it('should play the sound and call `onChangeSound` when the sound is changed', () => {
         const onChangeSound = jest.fn()
         const {getByRole, getByText} = render(
             <SoundSetting {...defaultProps} onChangeSound={onChangeSound} />
@@ -103,18 +103,22 @@ describe('<SoundSetting />', () => {
         const option = getByText('Beep-boop')
         userEvent.click(option)
 
+        expect(notificationSounds.play).toHaveBeenCalledWith('beepboop', 5)
         expect(onChangeSound).toHaveBeenCalledWith('beepboop')
     })
 
-    it('should call `onChangeVolume` when the volume is changed', () => {
+    it('should play the sound at the selected volume and call `onChangeVolume` when the volume is changed', () => {
         const onChangeVolume = jest.fn()
         const {getByRole} = render(
             <SoundSetting {...defaultProps} onChangeVolume={onChangeVolume} />
         )
 
         const el = getByRole('slider')
+        fireEvent.mouseDown(el)
         fireEvent.change(el, {target: {value: '8'}})
+        fireEvent.mouseUp(document.body)
 
+        expect(notificationSounds.play).toHaveBeenCalledWith('default', 8)
         expect(onChangeVolume).toHaveBeenCalledWith(8)
     })
 

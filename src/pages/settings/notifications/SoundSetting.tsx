@@ -8,6 +8,7 @@ import React, {
     useState,
 } from 'react'
 
+import useMouseRelease from 'hooks/useMouseRelease'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -45,12 +46,29 @@ export default function SoundSetting({
     onChangeVolume,
 }: Props) {
     const [isOpen, setIsOpen] = useState(false)
+    const volumeRef = useRef<number>(volume)
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
 
+    const handleMouseUp = useCallback(() => {
+        notificationSounds.play(sound, volumeRef.current)
+    }, [sound])
+
+    const onMouseDown = useMouseRelease(handleMouseUp)
+
+    const handleChangeSound = useCallback(
+        (sound: SoundValue) => {
+            notificationSounds.play(sound, volume)
+            onChangeSound(sound)
+        },
+        [onChangeSound, volume]
+    )
+
     const handleChangeVolume = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
-            onChangeVolume(parseInt(e.target.value, 10))
+            const volume = parseInt(e.target.value, 10)
+            volumeRef.current = volume
+            onChangeVolume(volume)
         },
         [onChangeVolume]
     )
@@ -101,7 +119,9 @@ export default function SoundSetting({
                                         {sounds.map((sound) => (
                                             <DropdownItem
                                                 onClick={() =>
-                                                    onChangeSound(sound.value)
+                                                    handleChangeSound(
+                                                        sound.value
+                                                    )
                                                 }
                                                 key={sound.value}
                                                 option={sound}
@@ -124,6 +144,7 @@ export default function SoundSetting({
                     min={1}
                     value={volume}
                     onChange={handleChangeVolume}
+                    onMouseDown={onMouseDown}
                 />
                 <Button
                     fillStyle="ghost"
