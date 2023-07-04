@@ -1,4 +1,3 @@
-@import (reference) '~css/new/colorTokens.less';
 @import (reference) '~css/typography.less';
 
 :local {
@@ -11,10 +10,10 @@
         box-sizing: border-box;
         height: 20px;
         min-width: 20px;
-        background: @classic-neutral-grey-2;
-        border: 1px solid @classic-neutral-grey-3;
+        background: var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-3);
         border-radius: 100px;
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
         cursor: pointer;
 
         &:not(.isDisabled):hover {
@@ -22,13 +21,13 @@
         }
 
         &:not(.isDisabled):active {
-            border: 1px solid @classic-neutral-grey-4;
+            border: 1px solid var(--neutral-grey-4);
             box-shadow: 0 1px 2px rgba(22, 22, 22, 0.16);
         }
 
         &.isDisabled {
-            background: @classic-neutral-grey-1;
-            color: @classic-neutral-grey-3;
+            background: var(--neutral-grey-1);
+            color: var(--neutral-grey-3);
             cursor: not-allowed;
         }
     }

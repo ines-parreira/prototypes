@@ -23,9 +23,9 @@
         pointer-events: initial;
         display: flex;
         flex-direction: column;
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         padding: @layout-spacing-m 10px 0 10px;
-        background-color: @classic-neutral-grey-2;
+        background-color: var(--neutral-grey-2);
     }
 
     .title {
@@ -34,7 +34,7 @@
     }
 
     .orderContainer {
-        background-color: @classic-neutral-grey-0;
+        background-color: var(--neutral-grey-0);
         box-shadow: 0 1px 4px rgba(22, 22, 22, 0.24);
         border-radius: 4px;
     }
@@ -45,7 +45,7 @@
         align-items: center;
         padding: 10px @layout-spacing-xs;
         gap: @layout-spacing-xxs;
-        border-bottom: 1px dashed @classic-neutral-grey-3;
+        border-bottom: 1px dashed var(--neutral-grey-3);
     }
 
     .orderDetails {
@@ -65,13 +65,13 @@
     }
 
     .orderTotalPrice {
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
         margin-left: auto;
     }
 
     .collapseIcon {
         padding: 0 9px;
-        color: @classic-neutral-grey-3;
+        color: var(--neutral-grey-3);
     }
 
     .fulfillment {
@@ -94,12 +94,12 @@
 
     .flowButton {
         &.isHovered {
-            border-color: @classic-neutral-grey-3;
+            border-color: var(--neutral-grey-3);
             box-shadow: 0 1px 2px fade(@modern-neutral-grey-6, 16%);
         }
 
         &.isActive {
-            border-color: @classic-neutral-grey-4;
+            border-color: var(--neutral-grey-4);
             box-shadow: inset 0 1px 2px fade(@modern-neutral-grey-6, 16%);
         }
     }
@@ -131,7 +131,7 @@
     }
 
     .lineItemPrice {
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
         margin-right: @layout-spacing-xxs;
     }
 

@@ -1,5 +1,4 @@
 @import (reference) '~css/new/layout.less';
-@import (reference) '~css/new/colorTokens.less';
 
 :local {
     .container {
@@ -12,7 +11,7 @@
 
     .icon {
         font-size: 16px;
-        color: @classic-feedback-warning;
+        color: var(--feedback-warning);
     }
 
     .message {
@@ -20,6 +19,6 @@
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
     }
 }
