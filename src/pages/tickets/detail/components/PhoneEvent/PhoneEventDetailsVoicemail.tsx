@@ -19,8 +19,19 @@ export default function PhoneEventDetailsVoicemail({
     const recordingDuration = formatDuration(
         eventData.getIn(['call', 'recording_duration'], 0)
     )
-    const recordingURL = eventData.getIn(['call', 'recording_url']) as string
-    const fullRecordingURL = recordingURL ? `${recordingURL}.mp3` : null
+    const twilioRecordingURL = eventData.getIn([
+        'call',
+        'recording_url',
+    ]) as string
+    const gorgiasRecordingURL = eventData.getIn([
+        'call',
+        'gorgias_recording_url',
+    ]) as string
+    const fullRecordingURL = gorgiasRecordingURL
+        ? gorgiasRecordingURL
+        : twilioRecordingURL
+        ? `${twilioRecordingURL}.mp3`
+        : null
     const deletedBy = eventData.get('deleted_by') as string
 
     const integrationID = eventData.getIn(['integration', 'id']) as string
