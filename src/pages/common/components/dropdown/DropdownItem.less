@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local {
     .item {
         display: flex;
@@ -8,7 +6,7 @@
         width: 100%;
         min-height: 36px;
         text-align: left;
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         cursor: pointer;
         background: none;
         border: none;
@@ -17,11 +15,11 @@
         transition: background-color 0.2s linear;
 
         &:hover {
-            background: @classic-neutral-grey-1;
+            background: var(--neutral-grey-1);
         }
 
         &:focus {
-            background: @classic-neutral-grey-2;
+            background: var(--neutral-grey-2);
             outline: none;
         }
     }
@@ -32,6 +30,6 @@
 
     .icon {
         margin-left: auto;
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 }

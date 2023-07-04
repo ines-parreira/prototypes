@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import '~css/new/util';
 @import (reference) '~css/typography';
 
@@ -11,13 +10,13 @@
     :global(.card-footer) {
         padding-left: 28px;
         padding-right: 28px;
-        background-color: @classic-neutral-grey-2;
+        background-color: var(--neutral-grey-2);
     }
 
     :global(.card-footer) {
         border-width: 1px 0;
         border-style: solid;
-        border-color: @classic-neutral-grey-3;
+        border-color: var(--neutral-grey-3);
     }
 
     .cardActions {
@@ -30,7 +29,7 @@
     }
 
     .subtitle {
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         font-weight: 600;
         font-size: 11px;
         letter-spacing: 0.6px;
@@ -44,7 +43,7 @@
     .updateViewFeedback {
         .caption-regular();
         align-items: center;
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
         margin-left: 12px;
         opacity: 0;
         transition: all 0.2s linear;

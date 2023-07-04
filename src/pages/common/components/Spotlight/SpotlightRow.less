@@ -1,5 +1,4 @@
 @import '~css/typography';
-@import '~css/new/colorTokens';
 
 :local {
     .container {
@@ -12,7 +11,7 @@
 
         &.selected {
             color: unset;
-            background-color: @classic-neutral-grey-1;
+            background-color: var(--neutral-grey-1);
         }
 
         &.shrinkInfo {
@@ -31,7 +30,7 @@
 
     .title {
         .heading-subsection-semibold();
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -42,12 +41,12 @@
         height: 1px;
         flex-shrink: 0;
         margin: 0 8px;
-        background-color: @classic-neutral-grey-4;
+        background-color: var(--neutral-grey-4);
     }
 
     .info {
         .caption-regular();
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
         overflow: hidden;
         flex-shrink: 0;
 

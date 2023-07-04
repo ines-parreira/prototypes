@@ -1,4 +1,3 @@
-@import (reference) '~css/new/colorTokens';
 @import (reference) '~css/typography.less';
 
 :local {
@@ -14,12 +13,12 @@
     .spotlightModalContent {
         max-height: 452px;
         .caption-semibold();
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 
     .tabNavigator {
-        background-color: @classic-neutral-grey-0;
-        border-bottom: 1px solid @classic-neutral-grey-3;
+        background-color: var(--neutral-grey-0);
+        border-bottom: 1px solid var(--neutral-grey-3);
         padding: 0 8px;
         flex-shrink: 0;
     }
@@ -33,7 +32,7 @@
     .textInput {
         height: 100%;
         border: none;
-        border-bottom: 1px solid @classic-neutral-grey-3 !important;
+        border-bottom: 1px solid var(--neutral-grey-3) !important;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
         box-shadow: none !important;
@@ -83,8 +82,8 @@
         display: flex;
         justify-content: space-between;
         padding: 8px 16px;
-        background-color: @classic-neutral-grey-0;
-        border-top: 1px solid @classic-neutral-grey-3;
+        background-color: var(--neutral-grey-0);
+        border-top: 1px solid var(--neutral-grey-3);
 
         &.cleanSearchFooter {
             border-top: none;

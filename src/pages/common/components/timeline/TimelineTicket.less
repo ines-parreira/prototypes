@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import '~css/new/mixins';
 
 .clip-text-mixin() {
@@ -11,15 +10,15 @@
 
 :local .component {
     min-height: 80px;
-    background-color: @classic-neutral-grey-0;
-    border-color: @classic-neutral-grey-3;
+    background-color: var(--neutral-grey-0);
+    border-color: var(--neutral-grey-3);
     box-shadow: 0px 2px 4px fade(black, 16%);
     transition: 0.1s ease-out;
     cursor: pointer;
 
     &,
     &:hover {
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 
     &:hover {
@@ -32,7 +31,7 @@
 
     &:active,
     &.current {
-        background-color: @classic-neutral-grey-2;
+        background-color: var(--neutral-grey-2);
     }
 
     &:not(:last-child) {
@@ -69,7 +68,7 @@
                 }
 
                 &.unassignedLabel {
-                    color: @classic-feedback-warning;
+                    color: var(--feedback-warning);
 
                     :last-child {
                         margin-left: 4px;
@@ -99,7 +98,7 @@
 
             .subject,
             .excerpt {
-                color: @classic-neutral-grey-6;
+                color: var(--neutral-grey-6);
                 margin: 0;
                 .clip-text-mixin;
             }

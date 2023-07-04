@@ -5,7 +5,7 @@
         font-weight: 600;
 
         .upgradeButton {
-            color: @classic-main-secondary;
+            color: var(--main-secondary);
             border-color: fade(@classic-main-secondary, 50%);
 
             &.sm {
@@ -16,9 +16,9 @@
 
             &:hover,
             &:not(:disabled):active {
-                color: @classic-neutral-grey-0;
-                background-color: @classic-main-secondary !important;
-                border-color: @classic-main-secondary !important;
+                color: var(--neutral-grey-0);
+                background-color: var(--main-secondary) !important;
+                border-color: var(--main-secondary) !important;
             }
 
             &:focus:not(:disabled):active {
@@ -41,22 +41,22 @@
             }
 
             &.invertedColors {
-                background-color: @classic-main-secondary;
-                border-color: @classic-main-secondary;
-                color: @classic-neutral-grey-0;
+                background-color: var(--main-secondary);
+                border-color: var(--main-secondary);
+                color: var(--neutral-grey-0);
 
                 .upgradeIcon {
                     filter: brightness(0) invert(1);
                 }
 
                 &:hover {
-                    background-color: @classic-neutral-grey-0 !important;
+                    background-color: var(--neutral-grey-0) !important;
                     border-color: fade(@classic-main-secondary, 50%) !important;
-                    color: @classic-main-secondary;
+                    color: var(--main-secondary);
 
                     .upgradeIcon {
                         filter: none;
-                        fill: @classic-main-secondary;
+                        fill: var(--main-secondary);
                     }
                 }
             }
@@ -64,7 +64,7 @@
 
         &:hover {
             .upgradeButton {
-                color: @classic-neutral-grey-0;
+                color: var(--neutral-grey-0);
 
                 .upgradeIcon {
                     filter: brightness(0) invert(1);

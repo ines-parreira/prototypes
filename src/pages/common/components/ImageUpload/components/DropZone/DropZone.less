@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local {
     .wrapper {
         display: flex;
@@ -7,10 +5,10 @@
         column-gap: 16px;
     }
     .container {
-        border: 2px dashed @classic-neutral-grey-3;
+        border: 2px dashed var(--neutral-grey-3);
         border-radius: 10px;
 
-        background-color: @classic-neutral-grey-2;
+        background-color: var(--neutral-grey-2);
 
         box-sizing: border-box;
 
@@ -42,13 +40,13 @@
         }
 
         &.accepted {
-            border-color: @classic-feedback-success;
-            background-color: @classic-feedback-success-0;
+            border-color: var(--feedback-success);
+            background-color: var(--feedback-success-0);
         }
 
         &.rejected {
-            border-color: @classic-feedback-error;
-            background-color: @classic-feedback-error-0;
+            border-color: var(--feedback-error);
+            background-color: var(--feedback-error-0);
         }
     }
 

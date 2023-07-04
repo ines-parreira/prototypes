@@ -1,4 +1,3 @@
-@import '~css/new/colors';
 @import '~css/typography';
 
 :local {
@@ -6,7 +5,7 @@
         .caption-allcaps();
         align-items: center;
         border-radius: 100px;
-        color: @classic-neutral-grey-0;
+        color: var(--neutral-grey-0);
         display: inline-flex;
         padding: 2px 8px;
         text-align: center;
@@ -15,26 +14,26 @@
             margin-left: 8px;
         }
 
-        --background-purple: @purple;
-        --background-classic: @classic-main-primary;
-        --background-error: @classic-feedback-error;
-        --background-modern: @modern-main-primary-4;
-        --background-success: @classic-feedback-success;
-        --background-warning: @classic-feedback-warning;
-        --background-grey: @classic-neutral-grey-4;
-        --background-dark-grey: @classic-neutral-grey-5;
-        --background-indigo: @indigo;
-        --background-dark: @modern-neutral-grey-6;
-        --background-light: @classic-neutral-grey-1;
-        --background-light-success: @classic-accessory-green-bg;
-        --background-light-warning: @classic-accessory-orange-bg;
-        --background-light-error: @classic-accessory-red-bg;
-        --background-blue: @classic-accessory-blue-bg;
-        --text-light: @classic-neutral-grey-6;
-        --text-blue: @classic-main-primary-4;
-        --text-light-success: @classic-accessory-green-text;
-        --text-light-warning: @classic-accessory-brown-text;
-        --text-light-error: @dark-feedback-error-0;
+        --background-purple: var(--purple);
+        --background-classic: var(--main-primary);
+        --background-error: var(--feedback-error);
+        --background-modern: var(--main-primary-4);
+        --background-success: var(--feedback-success);
+        --background-warning: var(--feedback-warning);
+        --background-grey: var(--neutral-grey-4);
+        --background-dark-grey: var(--neutral-grey-5);
+        --background-indigo: var(--indigo);
+        --background-dark: var(--neutral-grey-6);
+        --background-light: var(--neutral-grey-1);
+        --background-light-success: var(--accessory-green-bg);
+        --background-light-warning: var(--accessory-orange-bg);
+        --background-light-error: var(--accessory-red-bg);
+        --background-blue: var(--accessory-blue-bg);
+        --text-light: var(--neutral-grey-6);
+        --text-blue: var(--main-primary-4);
+        --text-light-success: var(--accessory-green-text);
+        --text-light-warning: var(--accessory-brown-text);
+        --text-light-error: var(--feedback-error-0);
 
         background-color: var(--background-grey);
     }

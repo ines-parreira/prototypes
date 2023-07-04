@@ -1,4 +1,3 @@
-@import (reference) '~css/new/colorTokens';
 @import (reference) '~css/typography';
 
 :local {
@@ -9,8 +8,8 @@
         width: 207px;
         height: 148px;
         padding: 8px;
-        background: @classic-neutral-grey-1;
-        border: solid 1px @classic-neutral-grey-3;
+        background: var(--neutral-grey-1);
+        border: solid 1px var(--neutral-grey-3);
         border-radius: 4px;
         cursor: pointer;
         gap: 8px;
@@ -21,7 +20,7 @@
 
             .screenshot {
                 height: 100%;
-                background: @classic-main-primary-3;
+                background: var(--main-primary-3);
                 overflow: hidden;
                 position: relative;
 
@@ -39,7 +38,7 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                background: @classic-main-primary-3;
+                background: var(--main-primary-3);
                 width: 40px;
                 height: 40px;
                 border-radius: 50%;
@@ -55,7 +54,7 @@
 
         .title {
             .caption-semibold();
-            color: @classic-main-primary;
+            color: var(--main-primary);
         }
     }
 

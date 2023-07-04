@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import '~css/new/mixins';
 
 :local {
@@ -9,27 +8,27 @@
         border: 1px solid;
         border-radius: 4px;
         padding: 16px 24px;
-        background-color: @classic-neutral-grey-0;
+        background-color: var(--neutral-grey-0);
         min-height: 54px;
 
         &.info {
-            border: 1px solid @classic-main-primary;
+            border: 1px solid var(--main-primary);
         }
 
         &.success {
-            border: 1px solid @classic-feedback-success;
+            border: 1px solid var(--feedback-success);
         }
 
         &.warning {
-            border: 1px solid @classic-feedback-warning;
+            border: 1px solid var(--feedback-warning);
         }
 
         &.error {
-            border: 1px solid @classic-feedback-error;
+            border: 1px solid var(--feedback-error);
         }
 
         &.loading {
-            border: 1px solid @classic-neutral-grey-4;
+            border: 1px solid var(--neutral-grey-4);
         }
 
         &.closable {
@@ -56,7 +55,7 @@
     }
 
     .label {
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         line-height: 20px;
         letter-spacing: -0.01em;
         width: 100%;

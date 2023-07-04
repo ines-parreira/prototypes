@@ -1,5 +1,4 @@
 @import '~css/new/layout';
-@import '~css/new/colorTokens';
 
 :local {
     .wrapper {
@@ -13,20 +12,20 @@
         border-radius: 50px;
         padding: 6px 17px;
         font-weight: 500;
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
         line-height: 20px;
         letter-spacing: -0.01em;
 
         &.activeStep {
-            color: @classic-main-primary-3;
-            background: @classic-main-primary-0;
+            color: var(--main-primary-3);
+            background: var(--main-primary-0);
         }
 
         &.previousStep {
-            color: @classic-neutral-grey-6;
+            color: var(--neutral-grey-6);
 
             .index {
-                color: @classic-main-primary-3;
+                color: var(--main-primary-3);
             }
         }
     }
@@ -38,11 +37,11 @@
     .line {
         flex-grow: 1;
         height: 1px;
-        background: @classic-neutral-grey-3;
+        background: var(--neutral-grey-3);
         margin: 0 @layout-spacing-xs;
     }
 
     .checkIcon {
-        color: @classic-main-primary-3;
+        color: var(--main-primary-3);
     }
 }

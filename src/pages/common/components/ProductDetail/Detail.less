@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 @import '~css/new/mixins';
 
 :local {
@@ -6,7 +6,7 @@
         display: flex;
         align-items: flex-start;
         padding: 1.7rem; // ~24px
-        background-color: @classic-neutral-grey-1;
+        background-color: var(--neutral-grey-1);
     }
     .heroImage {
         max-height: 5.7rem; // ~80px
@@ -16,8 +16,8 @@
         margin-right: 1.7rem; // ~24px
         padding: 1.143rem; // ~16px
         font-size: 3.714rem !important; // ~52px
-        color: @classic-neutral-grey-0;
-        background-color: @classic-main-primary;
+        color: var(--neutral-grey-0);
+        background-color: var(--main-primary);
         border-radius: 4px;
     }
     .heroHeading {

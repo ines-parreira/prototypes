@@ -10,7 +10,7 @@
 
         :global(.page-header) {
             width: 100%;
-            background: @classic-neutral-grey-0;
+            background: var(--neutral-grey-0);
             z-index: 1;
             flex-shrink: 0;
         }
@@ -86,14 +86,14 @@
                     .contentTitle {
                         margin: 20px 0 8px;
                         font-weight: 600;
-                        color: @classic-neutral-grey-6;
+                        color: var(--neutral-grey-6);
                         @media @mobiles {
                             font-size: 20px;
                         }
                     }
 
                     .description {
-                        color: @classic-neutral-grey-5;
+                        color: var(--neutral-grey-5);
                         font-size: 16px;
                         @media @mobiles {
                             font-size: 14px;
@@ -101,7 +101,7 @@
                     }
 
                     .upgradeChevron {
-                        color: @classic-neutral-grey-4;
+                        color: var(--neutral-grey-4);
                         margin: 0 8px;
                     }
 
@@ -109,7 +109,7 @@
                         margin-top: 40px;
 
                         .testimonialText {
-                            color: @classic-neutral-grey-5;
+                            color: var(--neutral-grey-5);
                             font-size: 14px;
                             font-style: italic;
                             letter-spacing: -0.01em;
@@ -135,12 +135,12 @@
                             .authorDetails {
                                 margin-bottom: 0;
                                 font-size: 12px;
-                                color: @classic-neutral-grey-5;
+                                color: var(--neutral-grey-5);
                                 line-height: 16px;
 
                                 a {
                                     display: inline-block;
-                                    color: @classic-main-primary;
+                                    color: var(--main-primary);
                                     transition: color 200ms;
                                     &:hover {
                                         color: darken(
@@ -208,11 +208,11 @@
     .shadow-variant(@i + 1);
 }
 
-@defaultPaywallCircleColor: @classic-neutral-grey-1;
-@basicPaywallCircleColor: @classic-main-primary-0;
-@proPaywallCircleColor: @classic-main-primary-0;
-@advancedPaywallCircleColor: @classic-feedback-success-0;
-@enterprisePaywallCircleColor: @classic-feedback-warning-0;
+@defaultPaywallCircleColor: var(--neutral-grey-1);
+@basicPaywallCircleColor: var(--main-primary-0);
+@proPaywallCircleColor: var(--main-primary-0);
+@advancedPaywallCircleColor: var(--feedback-success-0);
+@enterprisePaywallCircleColor: var(--feedback-warning-0);
 
 .circle-variant(@i:1) when (@i <= length(@paywall-type)) {
     @variantValue: extract(@paywall-type, @i);

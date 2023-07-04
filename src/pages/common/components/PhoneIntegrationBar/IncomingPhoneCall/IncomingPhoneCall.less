@@ -1,9 +1,7 @@
-@import '~css/new/colorTokens';
-
 :local {
     .container {
-        background-color: @classic-feedback-success-4;
-        color: @classic-neutral-grey-0;
+        background-color: var(--feedback-success-4);
+        color: var(--neutral-grey-0);
         display: flex;
         position: relative;
         cursor: pointer;
@@ -30,14 +28,14 @@
             .accept {
                 margin-left: auto;
                 margin-right: 1rem;
-                color: @classic-feedback-success-4 !important;
+                color: var(--feedback-success-4) !important;
                 font-size: 14px;
                 line-height: 17px;
                 padding: 7px 12px;
             }
 
             .decline {
-                color: @classic-feedback-error !important;
+                color: var(--feedback-error) !important;
                 font-size: 14px;
                 line-height: 17px;
                 padding: 7px 12px;

@@ -1,8 +1,6 @@
-@import '~css/new/colorTokens';
-
 :local {
     .container {
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
 
         font-size: 14px;
         line-height: 20px;
@@ -21,7 +19,7 @@
     }
 
     .highlight {
-        color: @classic-main-primary;
+        color: var(--main-primary);
         font-weight: 600;
 
         &.clickable {
@@ -32,7 +30,7 @@
     .removeHighlight {
         margin-left: auto;
 
-        color: @classic-feedback-error;
+        color: var(--feedback-error);
         font-weight: 600;
         cursor: pointer;
     }

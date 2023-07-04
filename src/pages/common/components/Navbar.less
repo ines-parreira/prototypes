@@ -79,7 +79,7 @@
         display: flex;
         flex-direction: column;
         width: inherit;
-        background: @classic-neutral-grey-6;
+        background: var(--neutral-grey-6);
         min-width: 200px;
         max-width: 350px;
     }
@@ -101,7 +101,7 @@
         border-width: 0 0 1px;
         border-radius: 0;
 
-        color: @classic-neutral-grey-0;
+        color: var(--neutral-grey-0);
         .heading-subsection-semibold();
 
         > div {
@@ -127,7 +127,7 @@
     }
 
     .dropdown-toggle-dropup {
-        background: @classic-neutral-grey-6;
+        background: var(--neutral-grey-6);
         border-width: 1px 0 0;
         padding-top: 12px;
         padding-bottom: 12px;
@@ -163,18 +163,18 @@
         display: flex;
         padding: 8px 16px;
         align-items: center;
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         font-weight: normal;
         outline: none;
 
         &:global.current {
-            color: @classic-neutral-grey-6;
+            color: var(--neutral-grey-6);
             font-weight: 600;
         }
 
         &:global:hover {
-            background-color: @classic-neutral-grey-2;
-            color: @classic-neutral-grey-6;
+            background-color: var(--neutral-grey-2);
+            color: var(--neutral-grey-6);
         }
     }
 
@@ -195,15 +195,15 @@
     }
 
     .menu-item {
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
 
         &:hover {
-            color: @classic-neutral-grey-6;
+            color: var(--neutral-grey-6);
         }
     }
 
     .separator {
-        border-top: 1px solid @classic-neutral-grey-3;
+        border-top: 1px solid var(--neutral-grey-3);
         margin: 4px 0 0 0;
     }
 
@@ -216,7 +216,7 @@
     }
 
     .sub-menu-chevron {
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
         vertical-align: -14% !important;
     }
 
@@ -235,11 +235,11 @@
         transition: background-color 0.2s linear;
 
         &:hover {
-            background: @classic-neutral-grey-1;
+            background: var(--neutral-grey-1);
         }
 
         &:focus {
-            background: @classic-neutral-grey-2;
+            background: var(--neutral-grey-2);
         }
 
         &.availabilityToggle {

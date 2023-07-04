@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens.less';
-
 :local {
     .container {
         display: flex;
@@ -17,7 +15,7 @@
         }
 
         &.isDisabled {
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
         }
     }
 
@@ -26,7 +24,7 @@
         flex-grow: 0;
         padding: 20px 20px 20px 4px;
         margin-left: 12px;
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
 
         &:not(.isDisabled) {
             cursor: pointer;

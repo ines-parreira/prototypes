@@ -1,5 +1,4 @@
 @import (reference) '~css/new/layout.less';
-@import (reference) '~css/new/colorTokens.less';
 
 :local {
     .container {
@@ -7,7 +6,7 @@
         flex-direction: column;
         padding: @layout-spacing-s;
         gap: @layout-spacing-s;
-        background-color: @classic-neutral-grey-2;
+        background-color: var(--neutral-grey-2);
         border-radius: 4px;
         align-items: flex-start;
     }
@@ -19,6 +18,6 @@
         font-size: 12px;
         line-height: 20px;
         letter-spacing: -0.02em;
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
     }
 }

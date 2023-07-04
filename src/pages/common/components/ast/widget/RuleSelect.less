@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local {
     .wrapper {
         display: inline-block;
@@ -20,16 +18,16 @@
     }
 
     .label {
-        color: @classic-main-primary-3 !important;
+        color: var(--main-primary-3) !important;
         font-weight: 500;
 
         .btn-group.show & {
-            color: @classic-neutral-grey-0 !important;
+            color: var(--neutral-grey-0) !important;
         }
     }
 
     .options {
-        background: @classic-neutral-grey-0;
+        background: var(--neutral-grey-0);
         overflow-y: auto;
         max-height: 400px;
         max-width: 350px;
