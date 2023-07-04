@@ -1,10 +1,9 @@
-@import '~css/new/colorTokens';
 @import (reference) '~css/typography';
 
 :local {
     .actionButton {
         .body-medium();
-        color: @classic-main-primary;
+        color: var(--main-primary);
         cursor: pointer;
 
         border: 0;
@@ -12,12 +11,12 @@
         padding: 0;
 
         &.isDisabled {
-            color: @classic-neutral-grey-3;
+            color: var(--neutral-grey-3);
             cursor: default;
         }
 
         &.hasError {
-            color: @classic-feedback-error;
+            color: var(--feedback-error);
         }
     }
 
@@ -34,11 +33,11 @@
 
     .radioLabelCaption {
         .body-regular();
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
     }
 
     .selectShippingAddress {
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
         text-align: center;
         font-weight: 500;
     }
@@ -61,14 +60,14 @@
     }
 
     .descriptionExtraInfo {
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
         margin-bottom: 0;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
 
         &.isDisabled {
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
         }
     }
 
@@ -80,11 +79,11 @@
         align-items: center;
 
         &.descriptionValueDisabled {
-            color: @classic-neutral-grey-3;
+            color: var(--neutral-grey-3);
         }
 
         &.descriptionValueZero {
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
         }
     }
 
@@ -96,7 +95,7 @@
         padding-top: 0.5rem;
         margin-bottom: 0.5rem;
 
-        border-top: 1px solid @classic-neutral-grey-3;
+        border-top: 1px solid var(--neutral-grey-3);
     }
 
     .totalPriceContainer {

@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .mention,
@@ -13,7 +13,7 @@
 
         &:hover,
         &:focus {
-            background: @ultraLightBlue;
+            background: var(--ultraLightBlue);
 
             /* reset for :focus */
             outline: 0;
@@ -29,8 +29,8 @@
         padding: 9px 4px;
         min-width: 220px;
         max-width: 440px;
-        background: @classic-neutral-grey-0;
-        border: 1px solid @classic-neutral-grey-3;
+        background: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-3);
         border-radius: 2px;
         box-shadow: 0 2px 3px 0 fade(@classic-neutral-grey-6, 20%);
         transform: scale(0.8);
@@ -54,7 +54,7 @@
     }
 
     .mentionSuggestionsEntryFocused {
-        background-color: @ultraLightBlue;
+        background-color: var(--ultraLightBlue);
     }
 
     .mentionSuggestionsEntryText {

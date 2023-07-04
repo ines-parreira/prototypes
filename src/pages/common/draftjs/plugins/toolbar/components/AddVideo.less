@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import (reference) '~css/typography';
 
 :local {
@@ -16,13 +15,13 @@
 
         .input {
             &.hasError {
-                border-color: @classic-feedback-error;
+                border-color: var(--feedback-error);
             }
         }
 
         .unsupportedWarning {
             .caption-regular();
-            color: @classic-feedback-error;
+            color: var(--feedback-error);
             margin-top: 4px;
         }
     }

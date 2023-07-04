@@ -1,14 +1,12 @@
-@import '~css/new/colors';
-
 :local {
     .formFooter {
-        background-color: @classic-neutral-grey-1;
+        background-color: var(--neutral-grey-1);
     }
 
     .required {
         &::after {
             content: ' *';
-            color: @classic-feedback-error;
+            color: var(--feedback-error);
         }
     }
 

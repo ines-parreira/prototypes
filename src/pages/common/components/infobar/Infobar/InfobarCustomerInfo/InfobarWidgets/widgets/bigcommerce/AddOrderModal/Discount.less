@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import (reference) '~css/typography';
 
 :local {
@@ -9,7 +8,7 @@
 
     .amountPrefix {
         .body-regular();
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 
     .discountContainer {
@@ -18,6 +17,6 @@
 
     .errorMessage {
         .caption-regular();
-        color: @classic-feedback-error;
+        color: var(--feedback-error);
     }
 }

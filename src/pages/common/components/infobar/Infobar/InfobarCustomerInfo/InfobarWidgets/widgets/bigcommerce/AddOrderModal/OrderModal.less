@@ -1,5 +1,4 @@
 @import '~css/new/layout.less';
-@import '~css/new/colorTokens';
 @import (reference) '~css/typography';
 
 :local {
@@ -10,7 +9,7 @@
     }
 
     .formFooter {
-        background-color: @classic-neutral-grey-1;
+        background-color: var(--neutral-grey-1);
     }
 
     .formBody {
@@ -24,11 +23,11 @@
 
     .caption {
         .caption-regular();
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
         margin: 0.25rem 0 1rem;
 
         &.hasError {
-            color: @classic-feedback-error;
+            color: var(--feedback-error);
         }
     }
 
@@ -36,7 +35,7 @@
         margin-bottom: 0.5rem;
 
         &.hasError {
-            color: @classic-feedback-error;
+            color: var(--feedback-error);
         }
     }
 
@@ -51,12 +50,12 @@
     }
 
     .searchbarInfo {
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
         font-size: 14px;
         margin-top: 5px;
 
         &.hasError {
-            color: @classic-feedback-error;
+            color: var(--feedback-error);
         }
     }
 
@@ -75,7 +74,7 @@
         width: 100%;
         top: 0;
         left: 0;
-        background: @classic-neutral-grey-0;
+        background: var(--neutral-grey-0);
         opacity: 0.5;
     }
 

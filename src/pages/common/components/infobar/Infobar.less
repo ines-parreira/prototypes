@@ -1,11 +1,11 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local .component {
     position: relative;
     display: flex;
     flex-direction: column;
-    background-color: @classic-neutral-grey-0;
-    border-left: 1px solid @classic-neutral-grey-3;
+    background-color: var(--neutral-grey-0);
+    border-left: 1px solid var(--neutral-grey-3);
 
     .selectionBackButton {
         display: inline-block;
@@ -13,7 +13,7 @@
 
     .suggestedCustomer {
         margin: 1.5rem;
-        background-color: @classic-neutral-grey-2;
+        background-color: var(--neutral-grey-2);
         border-radius: 3px;
         padding: 16px;
     }
@@ -31,8 +31,8 @@
 
     .customerInfo {
         padding: 1rem;
-        background: @classic-neutral-grey-0;
-        border-right: 1px solid @classic-neutral-grey-3;
+        background: var(--neutral-grey-0);
+        border-right: 1px solid var(--neutral-grey-3);
     }
 
     .customerProfile {
@@ -44,7 +44,7 @@
 
     .displayName {
         margin: 0;
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         font-weight: 600;
         font-size: 17px;
     }
@@ -66,13 +66,13 @@
     }
 
     .cardTitle {
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         font-size: 17px;
         font-weight: 500;
     }
 
     .subtitle {
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         font-weight: 500;
     }
 
@@ -82,8 +82,8 @@
 
     .footer {
         padding: 0.78em;
-        background-color: @classic-neutral-grey-1;
-        border-top: 1px solid @classic-neutral-grey-3;
+        background-color: var(--neutral-grey-1);
+        border-top: 1px solid var(--neutral-grey-3);
         box-shadow: 1px 0 6px fade(@classic-neutral-grey-6, 10%);
     }
 
@@ -98,15 +98,15 @@
         content: ' ';
         display: block;
         width: 100%;
-        border-bottom: 1px solid @classic-neutral-grey-3;
+        border-bottom: 1px solid var(--neutral-grey-3);
         white-space: pre;
         margin: 8px 0;
     }
 
     .infobarSearchWrapper {
         padding: 12px;
-        background: @classic-neutral-grey-0;
-        border-bottom: 1px solid @classic-neutral-grey-3;
+        background: var(--neutral-grey-0);
+        border-bottom: 1px solid var(--neutral-grey-3);
     }
 }
 
@@ -150,6 +150,6 @@
         transform: translate(-50%, -50%);
     }
     .error {
-        color: @classic-feedback-error;
+        color: var(--feedback-error);
     }
 }

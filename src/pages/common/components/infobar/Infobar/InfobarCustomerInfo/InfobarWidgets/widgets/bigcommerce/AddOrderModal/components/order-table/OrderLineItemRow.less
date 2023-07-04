@@ -1,4 +1,3 @@
-@import '~css/new/colors';
 @import '~css/new/layout';
 @import (reference) '~css/typography';
 
@@ -50,7 +49,7 @@
     }
 
     .errorRow {
-        color: @modern-feedback-error;
+        color: var(--feedback-error);
         width: 450px;
         font-weight: normal;
     }
@@ -60,7 +59,7 @@
         text-align: right;
 
         & .striked {
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
             text-decoration: line-through;
         }
     }
@@ -74,7 +73,7 @@
     }
 
     .times {
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
         font-size: 14px;
         line-height: 133%;
         align-self: center;
@@ -102,13 +101,13 @@
 
         li {
             .body-regular();
-            color: @classic-neutral-grey-5;
+            color: var(--neutral-grey-5);
         }
     }
 
     .modifierButton {
         .body-medium();
-        color: @classic-main-primary;
+        color: var(--main-primary);
         cursor: pointer;
         text-align: left;
 

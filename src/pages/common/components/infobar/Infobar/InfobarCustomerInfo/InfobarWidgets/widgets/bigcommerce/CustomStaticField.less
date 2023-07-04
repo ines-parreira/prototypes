@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local {
     .widgetField {
         position: relative;
@@ -12,7 +10,7 @@
 
     .widgetFieldLabel {
         padding-right: 8px;
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
     }
 
     .widgetFieldValue {
@@ -36,7 +34,7 @@
 
     .disabled {
         cursor: not-allowed;
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 
     .noBold {
@@ -61,7 +59,7 @@
         }
         &.widgetField {
             &:hover {
-                border: 1px dashed @classic-neutral-grey-4;
+                border: 1px dashed var(--neutral-grey-4);
                 .widgetFieldTools {
                     display: flex;
                 }

@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 
 :local {
     .container {
@@ -7,11 +7,11 @@
         height: 18px;
         &:global(.primary) {
             background: fade(@classic-main-primary, 10%);
-            color: @yotpoBlue;
+            color: var(--yotpoBlue);
         }
         &:global(.secondary) {
             background-color: fade(@classic-neutral-grey-4, 10%);
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
         }
     }
     .children {
