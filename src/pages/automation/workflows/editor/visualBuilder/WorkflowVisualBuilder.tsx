@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, useEffect, useState} from 'react'
+import React, {PropsWithChildren, useEffect} from 'react'
 import {
     ReactFlow,
     Background,
@@ -7,9 +7,9 @@ import {
     ReactFlowProvider,
     useNodesState,
     useEdgesState,
-    Node,
     useReactFlow,
 } from 'reactflow'
+import _keyBy from 'lodash/keyBy'
 
 import Loader from 'pages/common/components/Loader/Loader'
 import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
@@ -61,7 +61,6 @@ export function WorkflowVisualBuilderWrapped({
     const [edges, setEdges, onEdgesChange] = useEdgesState(
         visualBuilderGraph.edges
     )
-    const [nodeEditorDrawerOpen, setNodeEditorDrawerOpen] = useState(false)
     const visualBuilderNodeEditing = visualBuilderNodeIdEditing
         ? (nodes.find(
               (n) => n.id === visualBuilderNodeIdEditing
@@ -69,13 +68,7 @@ export function WorkflowVisualBuilderWrapped({
         : null
 
     useEffect(() => {
-        const existingNodes = getNodes().reduce(
-            (acc, n) => ({
-                ...acc,
-                [n.id]: n,
-            }),
-            {} as Record<string, Node>
-        )
+        const existingNodes = _keyBy(getNodes(), 'id')
         setNodes(
             visualBuilderGraph.nodes.map((n) => ({
                 ...n,
@@ -87,6 +80,23 @@ export function WorkflowVisualBuilderWrapped({
         )
         setEdges(visualBuilderGraph.edges)
     }, [visualBuilderGraph, setNodes, setEdges, getNodes, lastSaveAttempt])
+    useEffect(() => {
+        if (!visualBuilderNodeIdEditing) {
+            return
+        }
+        const existingNodes = _keyBy(getNodes(), 'id')
+        const addedNode = visualBuilderGraph.nodes.find(
+            (node) => !(node.id in existingNodes)
+        )
+        if (addedNode && addedNode.type !== 'end') {
+            setVisualBuilderNodeIdEditing(addedNode.id)
+        }
+    }, [
+        visualBuilderGraph.nodes,
+        getNodes,
+        visualBuilderNodeIdEditing,
+        setVisualBuilderNodeIdEditing,
+    ])
 
     if (isFetchPending) return <Loader />
 
@@ -114,7 +124,6 @@ export function WorkflowVisualBuilderWrapped({
                 onNodeClick={(_e, node) => {
                     if (node.type !== 'end') {
                         setVisualBuilderNodeIdEditing(node.id)
-                        setNodeEditorDrawerOpen(true)
                     }
                 }}
                 elementsSelectable={false}
@@ -133,13 +142,9 @@ export function WorkflowVisualBuilderWrapped({
                 <Background />
             </ReactFlow>
             <NodeEditorDrawer
-                open={nodeEditorDrawerOpen}
                 nodeInEdition={visualBuilderNodeEditing}
                 onClose={() => {
-                    setNodeEditorDrawerOpen(false)
-                    setTimeout(() => {
-                        setVisualBuilderNodeIdEditing(null)
-                    }, 300)
+                    setVisualBuilderNodeIdEditing(null)
                 }}
             />
         </>

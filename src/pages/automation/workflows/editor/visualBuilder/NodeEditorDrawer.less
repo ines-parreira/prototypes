@@ -6,22 +6,18 @@
 :local {
     .drawer {
         width: @drawer-width !important;
-        right: -@drawer-width !important;
+        right: -@drawer-wide-width !important;
         grid-template-areas:
             'header'
             'main' !important;
         grid-template-rows: 64px auto !important;
         &:global.opened {
-            transform: translateX(-@drawer-width) !important;
+            transform: translateX(-@drawer-wide-width) !important;
         }
     }
 
     .drawerWide {
         width: @drawer-wide-width !important;
-        right: -@drawer-wide-width !important;
-        &:global.opened {
-            transform: translateX(-@drawer-wide-width) !important;
-        }
     }
 
     .header {

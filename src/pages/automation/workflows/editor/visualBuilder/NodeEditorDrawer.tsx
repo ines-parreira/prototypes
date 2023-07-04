@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useEffect, useRef} from 'react'
+import {useKey, usePrevious} from 'react-use'
 import classNames from 'classnames'
 import {Drawer} from 'pages/common/components/Drawer'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -13,29 +14,51 @@ import FileUploadEditor from './editors/FileUploadEditor'
 
 type NodeEditorDrawerProps = {
     nodeInEdition: VisualBuilderNode | null
-    open: boolean
     onClose: () => void
 }
 
 // allow to edit trigger button, automated message and reply button in a right-side panel
 export default function NodeEditorDrawer({
     nodeInEdition,
-    open,
     onClose,
 }: NodeEditorDrawerProps) {
+    const memoizedNodeInEditionRef = useRef(nodeInEdition)
+    const prevNodeInEdition = usePrevious(nodeInEdition)
+
+    if (nodeInEdition) {
+        memoizedNodeInEditionRef.current = nodeInEdition
+    }
+
+    useEffect(() => {
+        if (prevNodeInEdition && !nodeInEdition) {
+            onClose()
+        }
+    }, [prevNodeInEdition, nodeInEdition, onClose])
+    useKey(
+        'Escape',
+        () => {
+            if (nodeInEdition) {
+                onClose()
+            }
+        },
+        undefined,
+        [nodeInEdition, onClose]
+    )
+
+    const memoizedNodeInEdition = memoizedNodeInEditionRef.current
+
     return (
         <Drawer
             className={classNames(css.drawer, {
-                [css.drawerWide]: nodeInEdition?.type !== 'trigger_button',
+                [css.drawerWide]:
+                    memoizedNodeInEdition?.type !== 'trigger_button',
             })}
             name="visual-builder-node-edition"
-            open={open}
+            open={!!nodeInEdition}
             fullscreen={false}
             isLoading={false}
             portalRootId="app-root"
-            onBackdropClick={() => onClose()}
             transitionDurationMs={300}
-            disableBackdropOpacity
         >
             <Drawer.Header className={css.header}>
                 <div className={css.headerTop}>
@@ -54,26 +77,28 @@ export default function NodeEditorDrawer({
                 </div>
             </Drawer.Header>
             <Drawer.Content>
-                {nodeInEdition?.type === 'trigger_button' && (
+                {memoizedNodeInEdition?.type === 'trigger_button' && (
                     <TriggerButtonEditor
-                        nodeInEdition={nodeInEdition}
+                        nodeInEdition={memoizedNodeInEdition}
                         onClose={onClose}
                     />
                 )}
-                {nodeInEdition?.type === 'automated_message' && (
-                    <AutomatedMessageEditor nodeInEdition={nodeInEdition} />
+                {memoizedNodeInEdition?.type === 'automated_message' && (
+                    <AutomatedMessageEditor
+                        nodeInEdition={memoizedNodeInEdition}
+                    />
                 )}
-                {nodeInEdition?.type === 'multiple_choices' && (
+                {memoizedNodeInEdition?.type === 'multiple_choices' && (
                     <MultipleChoicesEditor
-                        nodeInEdition={nodeInEdition}
+                        nodeInEdition={memoizedNodeInEdition}
                         onClose={onClose}
                     />
                 )}
-                {nodeInEdition?.type === 'text_reply' && (
-                    <TextReplyEditor nodeInEdition={nodeInEdition} />
+                {memoizedNodeInEdition?.type === 'text_reply' && (
+                    <TextReplyEditor nodeInEdition={memoizedNodeInEdition} />
                 )}
-                {nodeInEdition?.type === 'file_upload' && (
-                    <FileUploadEditor nodeInEdition={nodeInEdition} />
+                {memoizedNodeInEdition?.type === 'file_upload' && (
+                    <FileUploadEditor nodeInEdition={memoizedNodeInEdition} />
                 )}
             </Drawer.Content>
         </Drawer>

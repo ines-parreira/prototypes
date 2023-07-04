@@ -9,6 +9,7 @@ describe('<Drawer/>', () => {
         name: 'test',
         fullscreen: false,
         isLoading: false,
+        onBackdropClick: jest.fn(),
     }
 
     beforeEach(() => {

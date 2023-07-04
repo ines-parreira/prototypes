@@ -207,6 +207,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
       <div
         class="drawer drawer"
         data-testid="category-edit"
+        inert=""
         style="transition-duration: 300ms;"
       >
         <header

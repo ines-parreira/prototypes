@@ -11,6 +11,14 @@
         overflow: hidden;
         transition-property: z-index;
 
+        &.allowClickThrough {
+            pointer-events: none;
+
+            .drawer {
+                pointer-events: auto;
+            }
+        }
+
         .drawer {
             width: 50vw;
             background-color: var(--neutral-grey-2);
