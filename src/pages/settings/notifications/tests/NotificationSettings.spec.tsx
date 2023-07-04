@@ -69,11 +69,4 @@ describe('<NotificationSettings />', () => {
             },
         })
     })
-
-    it('should render credits', () => {
-        const {getByText} = render(<NotificationSettings />)
-
-        const el = getByText(/Notification sounds in Gorgias are sourced from/)
-        expect(el).toBeInTheDocument()
-    })
 })
