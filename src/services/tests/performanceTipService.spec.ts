@@ -1,3 +1,4 @@
+import {formatDuration} from 'pages/stats/common/utils'
 import {
     MetricsBaselinesJSON,
     gradeLabels,
@@ -74,7 +75,7 @@ describe('PerformanceTipService', () => {
             expectedTip: buildPerformanceTip(
                 lowerIsBetterMetric,
                 TipQualifier.LightSuccess,
-                MetricsBaselinesJSON[lowerIsBetterMetric][plan][3]
+                MetricsBaselinesJSON[lowerIsBetterMetric][plan][2]
             ),
         },
         {
@@ -83,7 +84,7 @@ describe('PerformanceTipService', () => {
             expectedTip: buildPerformanceTip(
                 lowerIsBetterMetric,
                 TipQualifier.Success,
-                MetricsBaselinesJSON[lowerIsBetterMetric][plan][3]
+                MetricsBaselinesJSON[lowerIsBetterMetric][plan][2]
             ),
         },
     ]
@@ -121,7 +122,7 @@ describe('PerformanceTipService', () => {
             expectedTip: buildPerformanceTip(
                 higherIsBetterMetric,
                 TipQualifier.LightSuccess,
-                MetricsBaselinesJSON[higherIsBetterMetric][plan][3]
+                MetricsBaselinesJSON[higherIsBetterMetric][plan][2]
             ),
         },
         {
@@ -130,7 +131,7 @@ describe('PerformanceTipService', () => {
             expectedTip: buildPerformanceTip(
                 higherIsBetterMetric,
                 TipQualifier.Success,
-                MetricsBaselinesJSON[higherIsBetterMetric][plan][3]
+                MetricsBaselinesJSON[higherIsBetterMetric][plan][2]
             ),
         },
     ]
@@ -141,7 +142,7 @@ describe('PerformanceTipService', () => {
             expectedTip: buildPerformanceTip(
                 MetricName.FirstResponseTime,
                 TipQualifier.LightSuccess,
-                MetricsBaselinesJSON[MetricName.FirstResponseTime][plan][3]
+                MetricsBaselinesJSON[MetricName.FirstResponseTime][plan][2]
             ),
         },
         {
@@ -159,6 +160,26 @@ describe('PerformanceTipService', () => {
         'should return $expectedTip.type for metric($metric) of value($value)',
         ({metric, value, expectedTip}) => {
             expect(getPerformanceTip(metric, value, plan)).toEqual(expectedTip)
+        }
+    )
+
+    test.each([
+        {
+            metric: MetricName.ResolutionTime,
+            averageValue:
+                MetricsBaselinesJSON[MetricName.ResolutionTime][plan][2],
+        },
+        {
+            metric: MetricName.FirstResponseTime,
+            averageValue:
+                MetricsBaselinesJSON[MetricName.FirstResponseTime][plan][2],
+        },
+    ])(
+        'should render time related metrics ($metric) in human readable form',
+        ({metric, averageValue}) => {
+            const tip = getPerformanceTip(metric, averageValue, plan)
+
+            expect(tip.hint).toMatch(new RegExp(formatDuration(averageValue)))
         }
     )
 })

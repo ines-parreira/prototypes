@@ -29,7 +29,9 @@ export default function MetricTip({
         <div className={classnames(css.wrapper, className, css[type])}>
             <div className={classnames('body-semibold', css.title)}>
                 {title}
-                {hint && <IconTooltip>{hint}</IconTooltip>}
+                {hint && (
+                    <IconTooltip placement={'top-start'}>{hint}</IconTooltip>
+                )}
             </div>
             {children}
         </div>

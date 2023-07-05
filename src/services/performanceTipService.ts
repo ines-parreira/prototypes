@@ -1,4 +1,5 @@
 import _findLastIndex from 'lodash/findLastIndex'
+import {formatDuration} from 'pages/stats/common/utils'
 import {PlanName} from 'utils/paywalls'
 
 type MetricBaseline = [number, number, number, number]
@@ -102,7 +103,7 @@ export const tips: Record<MetricName, Record<TipQualifier, string>> = {
         [TipQualifier.LightSuccess]:
             'Use our Automation Add-on to its full potential to reduce your FRT.',
         [TipQualifier.Success]:
-            'Low FRT is often correlated to a lower CSAT - make sure yours doesn’t drop.',
+            'High FRT is often correlated to a lower CSAT - make sure yours doesn’t drop.',
     },
     [MetricName.ResolutionTime]: {
         [TipQualifier.Error]:
@@ -120,15 +121,15 @@ export const tips: Record<MetricName, Record<TipQualifier, string>> = {
 
 export const hintTemplates: Record<TipQualifier, string> = {
     [TipQualifier.Error]:
-        'About 90% of our merchants your size are with a {METRIC} of {TARGET}.',
+        'You’re underperforming compared to merchants your size. Hit {TARGET} to be on par with them..',
     [TipQualifier.LightError]:
-        'You’re underperforming compared to merchants your size. Make sure to hit {TARGET} {METRIC} to be on par with them.',
+        'You’re underperforming compared to merchants your size. Hit {TARGET} to be on par with them.',
     [TipQualifier.Neutral]:
-        'You’re on par with other merchants your size. Hit 123 to start outperforming them.',
+        'You’re on par with other merchants your size. Hit {TARGET} to start outperforming them.',
     [TipQualifier.LightSuccess]:
-        'You’re amongst our top performer merchants your size. Reach a {METRIC} of {TARGET} to be amongst the top 10%!',
+        'You’re among our top performer merchants your size. Reach a {METRIC} of {TARGET} to be among the top 10%!',
     [TipQualifier.Success]:
-        'You’re amongst the top 10% of merchants your size with a {METRIC} of {TARGET}',
+        'You’re amongst the top 10% of merchants your size. Keep up the good work!',
 }
 
 export const gradeLabels = {
@@ -160,7 +161,7 @@ const higherIsBetterGrade = (
     const gradeIndex = _findLastIndex(baselines, (item) => value > item) + 1
     return {
         grade: grades[gradeIndex],
-        nextGradeTarget: baselines[Math.min(gradeIndex, baselines.length - 1)],
+        nextGradeTarget: baselines[Math.min(gradeIndex, baselines.length - 2)],
     }
 }
 
@@ -172,7 +173,7 @@ const lowerIsBetterGrade = (
 
     return {
         grade: grades[gradeIndex],
-        nextGradeTarget: baselines[Math.min(gradeIndex, baselines.length - 1)],
+        nextGradeTarget: baselines[Math.min(gradeIndex, baselines.length - 2)],
     }
 }
 
@@ -194,9 +195,18 @@ export const renderHint = (
     metric: MetricName,
     targetValue: number
 ) => {
-    return template
-        .replace('{METRIC}', metric)
-        .replace('{TARGET}', String(targetValue))
+    let value
+    switch (metric) {
+        case MetricName.FirstResponseTime:
+        case MetricName.ResolutionTime:
+            value = formatDuration(targetValue)
+            break
+        default:
+            value = String(targetValue)
+            break
+    }
+
+    return template.replace('{METRIC}', metric).replace('{TARGET}', value)
 }
 
 export const getPerformanceTip = (
