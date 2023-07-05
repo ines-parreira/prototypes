@@ -162,7 +162,6 @@ export const TicketDetailContainer = ({
         }
 
         return () => {
-            window.onbeforeunload = null
             const customerId = ticket.getIn(['customer', 'id'])
 
             // leaving ticket and request customer from socket io
