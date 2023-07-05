@@ -43,7 +43,14 @@ export class BrowserNotification {
         async () => {
             await this.ldClient.waitForInitialization()
 
-            if (!this.isNotificationSoundsEnabled) {
+            const isNotificationSoundsEnabled = this.ldClient.variation(
+                FeatureFlagKey.NotificationSounds
+            )
+
+            if (
+                !this.isNotificationSoundsEnabled &&
+                !isNotificationSoundsEnabled
+            ) {
                 sound.play().catch(_noop)
                 return
             }
