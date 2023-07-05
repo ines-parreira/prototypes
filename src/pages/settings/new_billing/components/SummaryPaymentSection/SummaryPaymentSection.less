@@ -1,4 +1,4 @@
-@import '~css/new/colorTokens';
+@import (reference) '~css/new/colorTokens';
 
 :local {
     .container {
@@ -40,6 +40,10 @@
         display: flex;
         align-items: center;
         gap: 8px;
+
+        &.smallFont {
+            font-size: 14px;
+        }
     }
 
     .change {
@@ -62,6 +66,7 @@
 
         a {
             font-size: 14px;
+            white-space: nowrap;
         }
     }
 }

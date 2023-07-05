@@ -14,35 +14,6 @@ exports[`<AutomationSubscriptionModal /> should display loader 1`] = `
   class="wrapper fill primary medium isDisabled"
   type="button"
 >
-  <svg
-    class="spinner gloom spinner medium"
-    preserveAspectRatio="xMidYMid meet"
-    role="status"
-    viewBox="0 0 20 20"
-    width="100%"
-  >
-    <circle
-      class="dot"
-      cx="10"
-      cy="10"
-      fill="none"
-      r="6"
-      stroke-width="2"
-    />
-    <circle
-      class="circle"
-      cx="10"
-      cy="10"
-      fill="none"
-      r="6"
-      stroke-width="2"
-    />
-    <span
-      class="sr-only"
-    >
-      Loading...
-    </span>
-  </svg>
   I am sure
 </button>
 `;
@@ -72,7 +43,7 @@ exports[`<AutomationSubscriptionModal /> should render for customers already wit
         tabindex="-1"
       >
         <div
-          class="modal-dialog modal modal-dialog-centered"
+          class="modal-dialog modal wide modal-dialog-centered"
           role="document"
         >
           <div
@@ -103,35 +74,230 @@ exports[`<AutomationSubscriptionModal /> should render for customers already wit
               data-candu-id="cancel-automation-addon-modal-body"
             >
               <div
-                class="description"
+                class="container"
+                data-testid="automationModalDescription"
               >
                 <div
-                  class="flex"
+                  class="card"
                 >
-                  <div>
-                    Your current subscription started on
-                     
-                    <b>
-                      Aug 23
-                    </b>
-                    .
-                    <br />
-                    <br />
-                    The change in your subscription will take effect at the end of your billing cycle. If you cancel, you will lose access to Automation Add-on as soon as the change is effective.
+                  <div
+                    class="alert info alert"
+                  >
+                    <div
+                      class="iconContainer"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        auto_awesome
+                      </i>
+                    </div>
+                    <div
+                      class="content"
+                    >
+                      <span
+                        class="label"
+                      >
+                        Unlock these features by subscribing to
+                         
+                        <strong>
+                          Automation
+                        </strong>
+                      </span>
+                    </div>
                   </div>
                   <div
-                    class="amountWrapper amount"
+                    class="features"
                   >
-                    <span
-                      class="amount"
+                    <div
+                      class="feature"
                     >
-                      <b>
+                      <i
+                        class="material-icons"
+                      >
+                        contact_support
+                      </i>
+                      <div>
+                        Automate FAQs and product recommendations
+                      </div>
+                    </div>
+                    <div
+                      class="feature"
+                    >
+                      <i
+                        class="material-icons-outlined"
+                      >
+                        assignment_return
+                      </i>
+                      <div>
+                        Automate order tracking and return/cancellation requests
+                      </div>
+                    </div>
+                    <div
+                      class="feature"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        insights
+                      </i>
+                      <div>
+                        Measure automation performance with a powerful dashboard
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="card"
+                >
+                  <div
+                    class="cardHeader"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Select a plan
+                    </div>
+                    <a
+                      href="https://gorgias.com"
+                      rel="noreferrer noopener"
+                      target="_blank"
+                    >
+                      See Plans Details
+                    </a>
+                  </div>
+                  <div
+                    class="selectedPlan"
+                  >
+                    <div
+                      class="selector"
+                    >
+                      <div>
+                        <div
+                          class="dropdown"
+                        >
+                          <div
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class=""
+                            data-toggle="dropdown"
+                          >
+                            <div
+                              class="select dropdown-toggle selectFullWidth"
+                            >
+                              <span
+                                class="label"
+                                style="min-width: 10px; opacity: 1;"
+                              >
+                                30
+                              </span>
+                              <input
+                                autocomplete="chrome-off"
+                                class="input"
+                                id="priceSelect"
+                                style="min-width: 10px;"
+                                type="text"
+                                value=""
+                              />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </div>
+                          </div>
+                          <div
+                            aria-hidden="true"
+                            class="options optionsFullWidth dropdown-menu"
+                            role="menu"
+                            tabindex="-1"
+                          >
+                            
+                            <button
+                              class="option option--focused dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                30
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                190
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                530
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                530+
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="counter"
+                      >
+                        <div>
+                          automated interactions
+                          /
+                          month
+                        </div>
+                        <i
+                          class="material-icons"
+                          id="priceSelectInfo"
+                        >
+                          info_outlined
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="planPrice"
+                    >
+                      <strong>
                         $30
-                      </b>
-                       
-                      / 
-                      month
-                    </span>
+                        /
+                        month
+                      </strong>
+                    </div>
+                  </div>
+                  <div
+                    class="payment"
+                  >
+                    <div
+                      class="container loader"
+                    >
+                      <div
+                        class="inner"
+                        style="min-height: auto;"
+                      >
+                        <i
+                          class="icon-custom icon-circle-o-notch md-spin"
+                          style="font-size: 40px;"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -184,7 +350,7 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
         tabindex="-1"
       >
         <div
-          class="modal-dialog modal modal-dialog-centered"
+          class="modal-dialog modal wide modal-dialog-centered"
           role="document"
         >
           <div
@@ -196,7 +362,7 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
               <h5
                 class="modal-title"
               >
-                Subscribe to the Automation Add-on
+                Subscribe to Automation
               </h5>
               <button
                 aria-label="Close"
@@ -215,131 +381,231 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
               data-candu-id="manage-automation-addon-modal-body"
             >
               <div
-                class="description"
+                class="container"
+                data-testid="automationModalDescription"
               >
                 <div
-                  class="badge"
+                  class="card"
                 >
-                  <i
-                    class="icon material-icons"
+                  <div
+                    class="alert info alert"
                   >
-                    auto_awesome
-                  </i>
-                  <span>
-                    Access these features and more with the Automation Add-on!
-                  </span>
-                </div>
-                <div
-                  class="flex"
-                >
-                  <div>
-                    Add advanced automation features and automate up to 20% of all interactions.
-                    <br />
-                    <a
-                      href="https://app.livestorm.co/gorgias-1/automaton-add-on-workshop?utm_source=candu&utm_medium=in_product&utm_campaign=homepage_addon"
-                      rel="noopener noreferrer"
-                      target="_blank"
+                    <div
+                      class="iconContainer"
                     >
-                      Learn more.
-                    </a>
+                      <i
+                        class="material-icons icon"
+                      >
+                        auto_awesome
+                      </i>
+                    </div>
+                    <div
+                      class="content"
+                    >
+                      <span
+                        class="label"
+                      >
+                        Unlock these features by subscribing to
+                         
+                        <strong>
+                          Automation
+                        </strong>
+                      </span>
+                    </div>
                   </div>
                   <div
-                    class="amountWrapper amount"
+                    class="features"
                   >
-                    <span
-                      class="amount"
+                    <div
+                      class="feature"
                     >
-                      <b>
-                        $30
-                      </b>
-                       
-                      / 
-                      month
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="features"
-                >
-                  <li
-                    class="d-flex align-items-center"
-                  >
-                    <span
-                      class="featureIcon mr-3"
+                      <i
+                        class="material-icons"
+                      >
+                        contact_support
+                      </i>
+                      <div>
+                        Automate FAQs and product recommendations
+                      </div>
+                    </div>
+                    <div
+                      class="feature"
                     >
                       <i
                         class="material-icons-outlined"
                       >
-                        slow_motion_video
+                        assignment_return
                       </i>
-                    </span>
-                    <span>
-                      Provide customers with automated answers to common questions with 
-                      <b>
-                        quick response flows
-                      </b>
-                    </span>
-                  </li>
-                  <li
-                    class="d-flex align-items-center"
-                  >
-                    <span
-                      class="featureIcon mr-3"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        low_priority
-                      </i>
-                    </span>
-                    <span>
-                      Allow customers to manage their orders with
-                       
-                      <b>
-                        order management flows
-                      </b>
-                    </span>
-                  </li>
-                  <li
-                    class="d-flex align-items-center"
-                  >
-                    <span
-                      class="featureIcon mr-3"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        article
-                      </i>
-                    </span>
-                    <span>
-                      Automatically answer customer questions with help center
-                       
-                      <b>
-                        article recommendation
-                      </b>
-                    </span>
-                  </li>
-                  <li
-                    class="d-flex align-items-center"
-                  >
-                    <span
-                      class="featureIcon mr-3"
+                      <div>
+                        Automate order tracking and return/cancellation requests
+                      </div>
+                    </div>
+                    <div
+                      class="feature"
                     >
                       <i
                         class="material-icons"
                       >
                         insights
                       </i>
-                    </span>
-                    <span>
-                      Track customer interactions and your automation rate with
-                       
-                      <b>
-                        advanced statistics
-                      </b>
-                    </span>
-                  </li>
+                      <div>
+                        Measure automation performance with a powerful dashboard
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="card"
+                >
+                  <div
+                    class="cardHeader"
+                  >
+                    <div
+                      class="title"
+                    >
+                      Select a plan
+                    </div>
+                    <a
+                      href="https://gorgias.com"
+                      rel="noreferrer noopener"
+                      target="_blank"
+                    >
+                      See Plans Details
+                    </a>
+                  </div>
+                  <div
+                    class="selectedPlan"
+                  >
+                    <div
+                      class="selector"
+                    >
+                      <div>
+                        <div
+                          class="dropdown"
+                        >
+                          <div
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class=""
+                            data-toggle="dropdown"
+                          >
+                            <div
+                              class="select dropdown-toggle selectFullWidth"
+                            >
+                              <span
+                                class="label"
+                                style="min-width: 10px; opacity: 1;"
+                              >
+                                30
+                              </span>
+                              <input
+                                autocomplete="chrome-off"
+                                class="input"
+                                id="priceSelect"
+                                style="min-width: 10px;"
+                                type="text"
+                                value=""
+                              />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </div>
+                          </div>
+                          <div
+                            aria-hidden="true"
+                            class="options optionsFullWidth dropdown-menu"
+                            role="menu"
+                            tabindex="-1"
+                          >
+                            
+                            <button
+                              class="option option--focused dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                30
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                190
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                530
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                530+
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="counter"
+                      >
+                        <div>
+                          automated interactions
+                          /
+                          month
+                        </div>
+                        <i
+                          class="material-icons"
+                          id="priceSelectInfo"
+                        >
+                          info_outlined
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="planPrice"
+                    >
+                      <strong>
+                        $30
+                        /
+                        month
+                      </strong>
+                    </div>
+                  </div>
+                  <div
+                    class="payment"
+                  >
+                    <div
+                      class="container loader"
+                    >
+                      <div
+                        class="inner"
+                        style="min-height: auto;"
+                      >
+                        <i
+                          class="icon-custom icon-circle-o-notch md-spin"
+                          style="font-size: 40px;"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -355,8 +621,8 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
               </button>
               <div>
                 <button
-                  aria-disabled="false"
-                  class="wrapper fill primary medium"
+                  aria-disabled="true"
+                  class="wrapper fill primary medium isDisabled"
                   type="button"
                 >
                   I am sure

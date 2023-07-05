@@ -28,7 +28,11 @@ import {
 import {getActiveIntegrations} from 'state/integrations/selectors'
 import {RootState} from '../types'
 
-import {BillingImmutableState, BillingState} from './types'
+import {
+    BillingImmutableState,
+    BillingState,
+    CurrentProductsUsages,
+} from './types'
 
 export const DEPRECATED_getBillingState = (
     state: RootState
@@ -353,6 +357,11 @@ export const paymentMethod = createSelector(
 export const getCurrentUsage = createSelector(
     DEPRECATED_getBillingState,
     (billing) => (billing.get('currentUsage') as Map<any, any>) || fromJS({})
+)
+
+export const getCurrentProductsUsage = createSelector(
+    DEPRECATED_getBillingState,
+    (billing) => billing.get('currentProductsUsage') as CurrentProductsUsages
 )
 
 export const makeGetIsAllowedToChangePrice = createSelector(

@@ -1,6 +1,6 @@
 import {Map} from 'immutable'
 
-import {Product} from 'models/billing/types'
+import {Product, ProductType} from 'models/billing/types'
 
 export type BillingContactImmutable = Map<any, any>
 
@@ -16,6 +16,25 @@ export type CurrentUsage = {
     extra_tickets: number
     messages: number
     tickets: number
+}
+
+export type CurrentUsagePerProduct = {
+    data: {
+        extra_tickets_cost_in_cents: number
+        num_extra_tickets: number
+        num_tickets: number
+    }
+    meta: {
+        subscription_start_datetime: string
+        subscription_end_datetime: string
+    }
+}
+
+export type CurrentProductsUsages = {
+    [ProductType.Helpdesk]: CurrentUsagePerProduct | null
+    [ProductType.Automation]: CurrentUsagePerProduct | null
+    [ProductType.Voice]: CurrentUsagePerProduct | null
+    [ProductType.SMS]: CurrentUsagePerProduct | null
 }
 
 enum PaymentType {

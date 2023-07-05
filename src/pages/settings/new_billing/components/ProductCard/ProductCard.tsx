@@ -15,6 +15,7 @@ import {
     getCheapestProductPrices,
     getCurrentHelpdeskInterval,
 } from 'state/billing/selectors'
+import {CurrentUsagePerProduct} from 'state/billing/types'
 
 import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge/Badge'
@@ -24,12 +25,37 @@ import css from './ProductCard.less'
 export type ProductCardProps = {
     type: ProductType
     product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
+    usage?: CurrentUsagePerProduct | null
 }
 
-const ProductCard = ({type, product}: ProductCardProps) => {
+const ProductCard = ({type, product, usage}: ProductCardProps) => {
     const cheapestPrices = useAppSelector(getCheapestProductPrices)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const history = useHistory()
+
+    const {className, canduOverageStatus} = useMemo(() => {
+        if (
+            !usage ||
+            usage.data.num_tickets < 0.8 * (product?.num_quota_tickets || 0)
+        ) {
+            return {
+                className: '',
+                canduOverageStatus: 'info',
+            }
+        }
+
+        if (usage.data.num_tickets < (product?.num_quota_tickets || 0)) {
+            return {
+                className: css.warning,
+                canduOverageStatus: 'warning',
+            }
+        }
+
+        return {
+            className: css.danger,
+            canduOverageStatus: 'danger',
+        }
+    }, [usage, product])
 
     const {isActive, price, currency, planName} = useMemo(() => {
         if (!product) {
@@ -100,10 +126,13 @@ const ProductCard = ({type, product}: ProductCardProps) => {
     const counter = useMemo(
         () => (
             <div className={classNames(css.counter)}>
-                <>
-                    290 of {formatNumTickets(product?.num_quota_tickets || 0)}{' '}
+                <div className={className}>
+                    {usage
+                        ? usage.data.num_tickets + usage.data.num_extra_tickets
+                        : 0}{' '}
+                    of {formatNumTickets(product?.num_quota_tickets || 0)}{' '}
                     {PRODUCT_INFO[type].counter} used
-                </>
+                </div>
                 <i className="material-icons" id={`info_${type}`}>
                     info_outlined
                 </i>
@@ -125,7 +154,7 @@ const ProductCard = ({type, product}: ProductCardProps) => {
             </div>
         ),
 
-        [product, type]
+        [product, type, usage, className]
     )
 
     return (
@@ -147,7 +176,9 @@ const ProductCard = ({type, product}: ProductCardProps) => {
                 <div>{currentStatus}</div>
             </div>
             <div className={css.body}>
-                <div data-candu-id={`billing-${type}-description`}></div>
+                <div
+                    data-candu-id={`billing-${type}-description-${canduOverageStatus}`}
+                ></div>
             </div>
             <div className={css.footer}>
                 <div>{isActive ? updateContainer : subscribeContainer}</div>

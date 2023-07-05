@@ -1,11 +1,7 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 import classNames from 'classnames'
-import moment from 'moment'
 
 import Button from 'pages/common/components/button/Button'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentUsage} from 'state/billing/selectors'
-import {DATE_FORMAT} from '../../constants'
 
 import css from './SummaryFooter.less'
 
@@ -14,7 +10,10 @@ export type SummaryFooterProps = {
     anyProductChanged: boolean
     anyNewProductSelected: boolean
     anyDowngradedPlanSelected: boolean
-    handleSubscribe: () => void
+    handleSubscribe?: () => void
+    periodEnd: string
+    hideSubscribeButton?: boolean
+    handleConfirmTerms?: (termsChecked: boolean) => void
 }
 
 const SummaryFooter = ({
@@ -23,17 +22,11 @@ const SummaryFooter = ({
     anyNewProductSelected,
     anyDowngradedPlanSelected,
     handleSubscribe,
+    periodEnd,
+    hideSubscribeButton = false,
+    handleConfirmTerms,
 }: SummaryFooterProps) => {
-    const currentUsage = useAppSelector(getCurrentUsage)
     const [isTermsChecked, setIsTermsChecked] = React.useState(false)
-
-    const periodEnd = useMemo(
-        () =>
-            moment(currentUsage.getIn(['meta', 'end_datetime'])).format(
-                DATE_FORMAT
-            ),
-        [currentUsage]
-    )
 
     return (
         <div
@@ -58,9 +51,10 @@ const SummaryFooter = ({
                                 id="terms"
                                 disabled={!isPaymentEnabled}
                                 checked={isTermsChecked}
-                                onChange={() =>
+                                onChange={() => {
                                     setIsTermsChecked(!isTermsChecked)
-                                }
+                                    handleConfirmTerms?.(!isTermsChecked)
+                                }}
                             />
                             <label
                                 htmlFor="terms"
@@ -107,20 +101,22 @@ const SummaryFooter = ({
                     )}
                 </>
             )}
-            <div className={css.button}>
-                <Button
-                    isDisabled={
-                        !isPaymentEnabled ||
-                        (!isTermsChecked && anyNewProductSelected) ||
-                        !anyProductChanged
-                    }
-                    className={css.button}
-                    id="update-subscription"
-                    onClick={handleSubscribe}
-                >
-                    Update Subscription
-                </Button>
-            </div>
+            {!hideSubscribeButton && (
+                <div className={css.button}>
+                    <Button
+                        isDisabled={
+                            !isPaymentEnabled ||
+                            (!isTermsChecked && anyNewProductSelected) ||
+                            !anyProductChanged
+                        }
+                        className={css.button}
+                        id="update-subscription"
+                        onClick={handleSubscribe}
+                    >
+                        Update Subscription
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }

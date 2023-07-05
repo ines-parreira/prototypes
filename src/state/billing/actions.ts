@@ -13,6 +13,7 @@ import {
     Invoice,
     PaymentMethod,
     BillingContact,
+    CurrentProductsUsages,
 } from './types'
 
 /**
@@ -30,7 +31,7 @@ export const updateInvoiceInList = (
 export function fetchCurrentUsage() {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
-            .get<CurrentUsage>('/api/billing/current-usage/')
+            .get<CurrentUsage>('/api/billing/current-usage')
             .then((json) => json?.data)
             .then(
                 (resp) => {
@@ -42,6 +43,29 @@ export function fetchCurrentUsage() {
                 (error) => {
                     return dispatch({
                         type: constants.FETCH_CURRENT_USAGE_ERROR,
+                        error,
+                        reason: 'Unable to get current usage information.',
+                    })
+                }
+            )
+    }
+}
+
+export function fetchCurrentProductsUsage() {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+        return client
+            .get<CurrentProductsUsages>('/billing/products-usages')
+            .then((json) => json?.data)
+            .then(
+                (resp) => {
+                    return dispatch({
+                        type: constants.FETCH_CURRENT_PRODUCTS_USAGE_SUCCESS,
+                        resp,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: constants.FETCH_CURRENT_PRODUCTS_USAGE_ERROR,
                         error,
                         reason: 'Unable to get current usage information.',
                     })

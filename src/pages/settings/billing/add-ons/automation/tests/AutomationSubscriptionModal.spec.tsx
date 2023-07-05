@@ -4,37 +4,42 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import LD from 'launchdarkly-react-client-sdk'
 
 import {UserRole} from 'config/types/user'
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {RootState, StoreDispatch} from 'state/types'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import AutomationSubscriptionModal from '../AutomationSubscriptionModal'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const defaultState: Partial<RootState> = {
+    currentUser: fromJS({
+        role: {name: UserRole.Admin},
+    }),
+    currentAccount: fromJS({
+        ...account,
+        current_subscription: {
+            ...account.current_subscription,
+            status: 'active',
+        },
+    }),
+    billing: fromJS(billingState),
+}
 
+const minProps: ComponentProps<typeof AutomationSubscriptionModal> = {
+    confirmLabel: 'I am sure',
+    isOpen: false,
+    onClose: jest.fn(),
+}
 describe('<AutomationSubscriptionModal />', () => {
-    const defaultState: Partial<RootState> = {
-        currentUser: fromJS({
-            role: {name: UserRole.Admin},
-        }),
-        currentAccount: fromJS({
-            ...account,
-            current_subscription: {
-                ...account.current_subscription,
-                status: 'active',
-            },
-        }),
-        billing: fromJS(billingState),
-    }
-
-    const minProps: ComponentProps<typeof AutomationSubscriptionModal> = {
-        confirmLabel: 'I am sure',
-        isOpen: false,
-        onClose: jest.fn(),
-    }
-
+    beforeEach(() => {
+        jest.spyOn(LD, 'useFlags').mockReturnValue({
+            [FeatureFlagKey.NewBillingInterface]: true,
+        })
+    })
     it('should not render the modal', () => {
         const {baseElement} = render(
             <Provider store={mockStore(defaultState)}>
@@ -100,5 +105,15 @@ describe('<AutomationSubscriptionModal />', () => {
         )
         const img = await findByAltText(/features/)
         expect(img).toMatchSnapshot()
+    })
+
+    it('should display the new modal description component', () => {
+        const {getByTestId} = render(
+            <Provider store={mockStore(defaultState)}>
+                <AutomationSubscriptionModal {...minProps} isOpen />
+            </Provider>
+        )
+
+        expect(getByTestId('automationModalDescription')).toBeInTheDocument()
     })
 })

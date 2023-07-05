@@ -14,7 +14,24 @@ import BillingStartView from '../BillingStartView'
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
 const store = mockedStore({
-    billing: fromJS({invoices: [], products}),
+    billing: fromJS({invoices: [], products, currentProductsUsage: {}}),
+})
+
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+
+// Mock action creators
+jest.mock('state/billing/actions', () => {
+    const actions: Record<string, unknown> = jest.requireActual(
+        'state/billing/actions'
+    )
+    return {
+        ...actions,
+        fetchCurrentProductsUsage: () =>
+            jest.fn().mockResolvedValue({
+                type: 'FETCH_CURRENT_PRODUCTS_USAGE_SUCCESS',
+            }),
+    }
 })
 
 const WrappedBillingStartView = () => (

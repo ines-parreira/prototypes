@@ -50,17 +50,9 @@ exports[`billing actions fetch credit card 1`] = `
 exports[`billing actions fetch current usage 1`] = `
 [
   {
-    "resp": {
-      "data": {
-        "cost": 12.35,
-        "ticket": 12323,
-      },
-      "meta": {
-        "endDate": "2016-12-13T18:30:19+00:00",
-        "startDate": "2016-11-13T18:30:19+00:00",
-      },
-    },
-    "type": "FETCH_CURRENT_USAGE_SUCCESS",
+    "error": [Error: Request failed with status code 404],
+    "reason": "Unable to get current usage information.",
+    "type": "FETCH_CURRENT_USAGE_ERROR",
   },
 ]
 `;

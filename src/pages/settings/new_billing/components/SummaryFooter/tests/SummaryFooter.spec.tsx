@@ -35,6 +35,7 @@ describe('SummaryFooter', () => {
         anyNewProductSelected: true,
         anyDowngradedPlanSelected: true,
         handleSubscribe: mockHandleSubscribe,
+        periodEnd: '2020-12-31',
     }
 
     it('disables the container when isPaymentEnabled is false', () => {

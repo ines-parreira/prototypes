@@ -9,6 +9,7 @@ import {
     ProductType,
     SMSOrVoicePrice,
 } from 'models/billing/types'
+import {CurrentProductsUsages} from 'state/billing/types'
 
 export const basicHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
     [AccountFeature.Api1stPartyRateLimit]: {
@@ -417,7 +418,7 @@ export const advancedYearlyHelpdeskPrice: HelpdeskPrice = {
 export const basicMonthlyAutomationPrice: AutomationPrice = {
     amount: 3000,
     extra_ticket_cost: 0.2,
-    num_quota_tickets: null,
+    num_quota_tickets: 30,
     automation_addon_discount: 0,
     automation_addon_included: true,
     base_price_id: 'price_1LJBjWI9qXomtXqSPZn8LqlD',
@@ -435,7 +436,7 @@ export const basicMonthlyAutomationPrice: AutomationPrice = {
 export const basicYearlyAutomationPrice: AutomationPrice = {
     amount: 30000,
     extra_ticket_cost: 0.2,
-    num_quota_tickets: null,
+    num_quota_tickets: 360,
     automation_addon_discount: 0,
     automation_addon_included: true,
     base_price_id: 'price_1LJBjYI9qXomtXqSLEjOrpmV',
@@ -452,7 +453,7 @@ export const basicYearlyAutomationPrice: AutomationPrice = {
 
 export const proMonthlyAutomationPrice: AutomationPrice = {
     extra_ticket_cost: 0.18,
-    num_quota_tickets: null,
+    num_quota_tickets: 190,
     amount: 18000,
     automation_addon_discount: 0,
     automation_addon_included: true,
@@ -470,7 +471,7 @@ export const proMonthlyAutomationPrice: AutomationPrice = {
 
 export const proYearlyAutomationPrice: AutomationPrice = {
     extra_ticket_cost: 0.18,
-    num_quota_tickets: null,
+    num_quota_tickets: 2280,
     amount: 180000,
     automation_addon_discount: 0,
     automation_addon_included: true,
@@ -488,7 +489,7 @@ export const proYearlyAutomationPrice: AutomationPrice = {
 
 export const advancedMonthlyAutomationPrice: AutomationPrice = {
     extra_ticket_cost: 0.18,
-    num_quota_tickets: null,
+    num_quota_tickets: 530,
     amount: 45000,
     automation_addon_discount: 0,
     automation_addon_included: true,
@@ -506,7 +507,7 @@ export const advancedMonthlyAutomationPrice: AutomationPrice = {
 
 export const advancedYearlyAutomationPrice: AutomationPrice = {
     extra_ticket_cost: 0.18,
-    num_quota_tickets: null,
+    num_quota_tickets: 6360,
     amount: 450000,
     automation_addon_discount: 0,
     automation_addon_included: true,
@@ -796,3 +797,30 @@ export const smsProduct: Product<SMSOrVoicePrice> = {
 export const products: Product<
     HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
 >[] = [helpdeskProduct, automationProduct, smsProduct, voiceProduct]
+
+export const currentProductsUsage: CurrentProductsUsages = {
+    helpdesk: {
+        data: {
+            extra_tickets_cost_in_cents: 0,
+            num_tickets: 2,
+            num_extra_tickets: 0,
+        },
+        meta: {
+            subscription_start_datetime: '2017-08-22T00:46:32+00:00',
+            subscription_end_datetime: '2017-09-05T00:46:32+00:00',
+        },
+    },
+    automation: {
+        data: {
+            extra_tickets_cost_in_cents: 0,
+            num_tickets: 2,
+            num_extra_tickets: 0,
+        },
+        meta: {
+            subscription_start_datetime: '2017-08-22T00:46:32+00:00',
+            subscription_end_datetime: '2017-09-05T00:46:32+00:00',
+        },
+    },
+    voice: null,
+    sms: null,
+}

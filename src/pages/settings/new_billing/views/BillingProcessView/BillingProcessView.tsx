@@ -42,6 +42,7 @@ type BillingProcessViewProps = {
     setDefaultMessage: React.Dispatch<React.SetStateAction<string>>
     dispatchBillingError: () => void
     billingErrorNotification: Notification
+    periodEnd: string
 }
 
 export type SelectedPlans = {
@@ -69,6 +70,7 @@ const BillingProcessView = ({
     setDefaultMessage,
     dispatchBillingError,
     billingErrorNotification,
+    periodEnd,
 }: BillingProcessViewProps) => {
     const dispatch = useAppDispatch()
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false)
@@ -285,6 +287,7 @@ const BillingProcessView = ({
                                 !!anyDowngradedPlanSelected
                             }
                             handleSubscribe={handleSubscribe}
+                            periodEnd={periodEnd}
                         />
                     </Card>
                 )}

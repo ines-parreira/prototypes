@@ -300,24 +300,24 @@ export const useBillingPlans = ({
         const notifications: Notification[] = []
 
         // handle subscribe for Helpdesk plan
-        if (
-            selectedPlans[ProductType.Helpdesk].isSelected &&
-            selectedPlans[ProductType.Helpdesk].plan?.price_id !==
+        if (selectedPlans[ProductType.Helpdesk].isSelected) {
+            if (
+                selectedPlans[ProductType.Helpdesk].plan?.price_id !==
                 helpdeskProduct?.price_id
-        ) {
-            // Set the notification
-            const notification = setHelpdeskNotification({
-                oldProduct: helpdeskProduct,
-                newProduct: selectedPlans[ProductType.Helpdesk].plan,
-                periodEnd,
-                onClick: () => {
-                    history.push('/app/settings')
-                },
-            })
+            ) {
+                // Set the notification
+                const notification = setHelpdeskNotification({
+                    oldProduct: helpdeskProduct,
+                    newProduct: selectedPlans[ProductType.Helpdesk].plan,
+                    periodEnd,
+                    onClick: () => {
+                        history.push('/app/settings')
+                    },
+                })
 
-            // Add the notification
-            notifications.push(notification)
-
+                // Add the notification
+                notifications.push(notification)
+            }
             // Add the plan to be handled automatically
             plansToBeUpdatedAutomatically.push(
                 selectedPlans[ProductType.Helpdesk].plan?.price_id ?? ''
@@ -325,23 +325,24 @@ export const useBillingPlans = ({
         }
 
         // handle subscribe for Automation plan
-        if (
-            selectedPlans[ProductType.Automation].isSelected &&
-            selectedPlans[ProductType.Automation].plan?.price_id !==
+        if (selectedPlans[ProductType.Automation].isSelected) {
+            if (
+                selectedPlans[ProductType.Automation].plan?.price_id !==
                 automationProduct?.price_id
-        ) {
-            const notification = setAutomationNotification({
-                oldProduct: automationProduct,
-                newProduct: selectedPlans[ProductType.Automation].plan,
-                periodEnd,
-                onClick: () => {
-                    history.push('/app/settings')
-                },
-                interval,
-            })
+            ) {
+                const notification = setAutomationNotification({
+                    oldProduct: automationProduct,
+                    newProduct: selectedPlans[ProductType.Automation].plan,
+                    periodEnd,
+                    onClick: () => {
+                        history.push('/app/settings')
+                    },
+                    interval,
+                })
 
-            // Add the notification
-            notifications.push(notification)
+                // Add the notification
+                notifications.push(notification)
+            }
 
             // Add the plan to be handled automatically
             plansToBeUpdatedAutomatically.push(

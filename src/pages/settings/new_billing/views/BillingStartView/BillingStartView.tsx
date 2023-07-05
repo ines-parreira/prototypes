@@ -1,7 +1,8 @@
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Container} from 'reactstrap'
 import {NavLink, Route, Switch} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -12,10 +13,15 @@ import {
     isTrialing,
 } from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
-import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
+import {
+    getCurrentHelpdeskProduct,
+    getCurrentProductsUsage,
+} from 'state/billing/selectors'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
+import {fetchCurrentProductsUsage} from 'state/billing/actions'
+import Loader from 'pages/common/components/Loader/Loader'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
@@ -25,6 +31,7 @@ import {
     BILLING_PAYMENT_PATH,
     BILLING_PROCESS_PATH,
     BILLING_SUPPORT_EMAIL,
+    DATE_FORMAT,
     ZAPIER_BILLING_HOOK,
 } from '../../constants'
 import UsageAndPlansView from '../UsageAndPlansView'
@@ -38,12 +45,16 @@ import CardView from '../CardView/CardView'
 import css from './BillingStartView.less'
 
 const BillingStartView = () => {
-    const hasAccessToNewBilling: boolean | undefined =
-        useFlags()[FeatureFlagKey.NewBillingInterface]
-
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
+    const currentUsage = useAppSelector(getCurrentProductsUsage)
+    const isTrialingSubscription = useAppSelector(isTrialing)
+    const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
+
+    const hasAccessToNewBilling: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewBillingInterface]
+
     const from: string = currentUser.get('email')
     const domain: string = currentAccount.get('domain')
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -52,8 +63,15 @@ const BillingStartView = () => {
     const [ticketPurpose, setTicketPurpose] = useState<TicketPurpose>(
         TicketPurpose.CONTACT_US
     )
-    const isTrialingSubscription = useAppSelector(isTrialing)
-    const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
+    const [isUsageFetched, setIsUsageFetched] = useState(false)
+    const periodEnd = useMemo(
+        () =>
+            moment(
+                currentUsage?.helpdesk?.meta.subscription_end_datetime ||
+                    new Date()
+            ).format(DATE_FORMAT),
+        [currentUsage]
+    )
 
     const contactBilling = useCallback(
         (ticketPurpose: TicketPurpose) => {
@@ -121,6 +139,19 @@ const BillingStartView = () => {
         [helpdeskProduct?.name, isTrialingSubscription, ticketPurpose]
     )
 
+    useEffect(() => {
+        const fetchUsage = async () => {
+            await dispatch(fetchCurrentProductsUsage())
+            setIsUsageFetched(true)
+        }
+
+        if (!currentUsage) {
+            void fetchUsage()
+        } else {
+            setIsUsageFetched(true)
+        }
+    }, [currentUsage, dispatch])
+
     if (!hasAccessToNewBilling) {
         return null
     }
@@ -150,41 +181,57 @@ const BillingStartView = () => {
                 </NavLink>
             </SecondaryNavbar>
             <Container fluid className={css.mainContainer}>
-                <Switch>
-                    <Route exact path={BILLING_BASE_PATH}>
-                        <UsageAndPlansView setIsModalOpen={setIsModalOpen} />
-                    </Route>
-                    <Route exact path={BILLING_PAYMENT_PATH}>
-                        <PaymentInformationView
-                            setIsModalOpen={setIsModalOpen}
-                        />
-                    </Route>
-                    <Route exact path={BILLING_PAYMENTS_HISTORY_PATH}>
-                        <PaymentsHistoryView />
-                    </Route>
-                    <Route path={`${BILLING_PROCESS_PATH}/:selectedProduct`}>
-                        <BillingProcessView
-                            setIsModalOpen={setIsModalOpen}
-                            contactBilling={contactBilling}
-                            setDefaultMessage={setDefaultMessage}
-                            dispatchBillingError={dispatchBillingError}
-                            billingErrorNotification={billingErrorNotification}
-                        />
-                    </Route>
-                    <Route exact path={BILLING_INFORMATION_PATH}>
-                        <BillingInformationView />
-                    </Route>
-                    <Route exact path={BILLING_PAYMENT_FREQUENCY_PATH}>
-                        <BillingFrequencyView
-                            contactBilling={contactBilling}
-                            dispatchBillingError={dispatchBillingError}
-                            billingErrorNotification={billingErrorNotification}
-                        />
-                    </Route>
-                    <Route exact path={BILLING_PAYMENT_CARD_PATH}>
-                        <CardView />
-                    </Route>
-                </Switch>
+                {isUsageFetched ? (
+                    <Switch>
+                        <Route exact path={BILLING_BASE_PATH}>
+                            <UsageAndPlansView
+                                setIsModalOpen={setIsModalOpen}
+                                periodEnd={periodEnd}
+                                currentUsage={currentUsage}
+                            />
+                        </Route>
+                        <Route exact path={BILLING_PAYMENT_PATH}>
+                            <PaymentInformationView
+                                setIsModalOpen={setIsModalOpen}
+                            />
+                        </Route>
+                        <Route exact path={BILLING_PAYMENTS_HISTORY_PATH}>
+                            <PaymentsHistoryView />
+                        </Route>
+                        <Route
+                            path={`${BILLING_PROCESS_PATH}/:selectedProduct`}
+                        >
+                            <BillingProcessView
+                                setIsModalOpen={setIsModalOpen}
+                                contactBilling={contactBilling}
+                                setDefaultMessage={setDefaultMessage}
+                                dispatchBillingError={dispatchBillingError}
+                                billingErrorNotification={
+                                    billingErrorNotification
+                                }
+                                periodEnd={periodEnd}
+                            />
+                        </Route>
+                        <Route exact path={BILLING_INFORMATION_PATH}>
+                            <BillingInformationView />
+                        </Route>
+                        <Route exact path={BILLING_PAYMENT_FREQUENCY_PATH}>
+                            <BillingFrequencyView
+                                contactBilling={contactBilling}
+                                dispatchBillingError={dispatchBillingError}
+                                billingErrorNotification={
+                                    billingErrorNotification
+                                }
+                                periodEnd={periodEnd}
+                            />
+                        </Route>
+                        <Route exact path={BILLING_PAYMENT_CARD_PATH}>
+                            <CardView />
+                        </Route>
+                    </Switch>
+                ) : (
+                    <Loader />
+                )}
             </Container>
             <ContactSupportModal
                 isOpen={isModalOpen}

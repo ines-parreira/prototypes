@@ -1,0 +1,101 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        display: flex;
+        gap: 40px;
+        padding: 24px;
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    .icon {
+        color: @dark-main-secondary-0;
+    }
+
+    .alert {
+        border-color: @dark-main-secondary-0 !important;
+    }
+
+    .features {
+        padding-top: 24px;
+        display: flex;
+        gap: 12px;
+        flex-direction: column;
+    }
+
+    .feature {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        i {
+            border-radius: 25px;
+            background-color: @classic-neutral-grey-2;
+            padding: 10px;
+            color: @dark-main-secondary-0;
+            font-size: 20px;
+        }
+    }
+
+    .cardHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 12px;
+    }
+
+    .title {
+        font-size: 16px;
+        font-weight: 600;
+        color: @classic-neutral-grey-6;
+    }
+
+    .selectedPlan {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
+
+    .selector {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .counter {
+        color: @classic-neutral-grey-4;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+    }
+
+    .payment {
+        margin-top: 12px;
+        padding: 20px 16px;
+        border: 1px solid @classic-feedback-warning;
+        border-radius: 4px;
+        display: none;
+
+        &.show {
+            display: block;
+        }
+    }
+
+    .enterprisePrice {
+        color: @classic-neutral-grey-5;
+        font-weight: 600;
+    }
+
+    .enterpriseDescription {
+        padding: 12px 16px;
+        background-color: @classic-neutral-grey-2;
+    }
+
+    .starterDescription {
+        padding-top: 12px;
+        font-size: 12px;
+    }
+}

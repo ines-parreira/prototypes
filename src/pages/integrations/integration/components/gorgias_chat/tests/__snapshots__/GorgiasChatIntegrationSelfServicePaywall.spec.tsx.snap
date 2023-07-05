@@ -111,7 +111,7 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
         <h5
           class="modal-title"
         >
-          Subscribe to the Automation Add-on
+          Subscribe to Automation
         </h5>
         <button
           aria-label="Close"
@@ -270,8 +270,8 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
         </button>
         <div>
           <button
-            aria-disabled="false"
-            class="wrapper fill primary medium"
+            aria-disabled="true"
+            class="wrapper fill primary medium isDisabled"
             type="button"
           >
             Confirm

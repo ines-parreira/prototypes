@@ -858,7 +858,7 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
           Immutable.Map {
             "automation_addon_included": true,
             "interval": "month",
-            "num_quota_tickets": null,
+            "num_quota_tickets": 30,
             "automation_addon_discount": 0,
             "product_id": "prod_LsHD5xmSqoFBBs",
             "name": "Basic",
@@ -894,7 +894,7 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
           Immutable.Map {
             "automation_addon_included": true,
             "interval": "year",
-            "num_quota_tickets": null,
+            "num_quota_tickets": 360,
             "automation_addon_discount": 0,
             "product_id": "prod_LsHD5xmSqoFBBs",
             "name": "Basic",
@@ -930,7 +930,7 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
           Immutable.Map {
             "automation_addon_included": true,
             "interval": "month",
-            "num_quota_tickets": null,
+            "num_quota_tickets": 190,
             "automation_addon_discount": 0,
             "product_id": "prod_LsHD5xmSqoFBBs",
             "name": "Pro",
@@ -966,7 +966,7 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
           Immutable.Map {
             "automation_addon_included": true,
             "interval": "year",
-            "num_quota_tickets": null,
+            "num_quota_tickets": 2280,
             "automation_addon_discount": 0,
             "product_id": "prod_LsHD5xmSqoFBBs",
             "name": "Pro",
@@ -1002,7 +1002,7 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
           Immutable.Map {
             "automation_addon_included": true,
             "interval": "month",
-            "num_quota_tickets": null,
+            "num_quota_tickets": 530,
             "automation_addon_discount": 0,
             "product_id": "prod_LsHD5xmSqoFBBs",
             "name": "Advanced",
@@ -1038,7 +1038,7 @@ exports[`init toInitialStoreState() should return the expected store state 1`] =
           Immutable.Map {
             "automation_addon_included": true,
             "interval": "year",
-            "num_quota_tickets": null,
+            "num_quota_tickets": 6360,
             "automation_addon_discount": 0,
             "product_id": "prod_LsHD5xmSqoFBBs",
             "name": "Advanced",

@@ -12,10 +12,10 @@ import {
     getCurrentHelpdeskInterval,
     getCurrentHelpdeskProduct,
     getCurrentSMSProduct,
-    getCurrentUsage,
     getCurrentVoiceProduct,
 } from 'state/billing/selectors'
 import {ProductType} from 'models/billing/types'
+import {CurrentProductsUsages} from 'state/billing/types'
 import {
     BILLING_PAYMENT_FREQUENCY_PATH,
     BILLING_PAYMENT_PATH,
@@ -28,11 +28,16 @@ import css from './UsageAndPlansView.less'
 
 type UsageAndPlansViewProps = {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+    periodEnd: string
+    currentUsage: CurrentProductsUsages | null
 }
 
-const UsageAndPlansView = ({setIsModalOpen}: UsageAndPlansViewProps) => {
+const UsageAndPlansView = ({
+    setIsModalOpen,
+    periodEnd,
+    currentUsage,
+}: UsageAndPlansViewProps) => {
     const currentSubscription = useAppSelector(getCurrentSubscription)
-    const currentUsage = useAppSelector(getCurrentUsage)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const voiceProduct = useAppSelector(getCurrentVoiceProduct)
     const smsProduct = useAppSelector(getCurrentSMSProduct)
@@ -45,14 +50,6 @@ const UsageAndPlansView = ({setIsModalOpen}: UsageAndPlansViewProps) => {
     const hasSubscription = useMemo(
         () => !currentSubscription.isEmpty(),
         [currentSubscription]
-    )
-
-    const periodEnd = useMemo(
-        () =>
-            moment(currentUsage.getIn(['meta', 'end_datetime'])).format(
-                DATE_FORMAT
-            ),
-        [currentUsage]
     )
 
     const trialPeriodStart = useMemo(
@@ -110,13 +107,23 @@ const UsageAndPlansView = ({setIsModalOpen}: UsageAndPlansViewProps) => {
                 <ProductCard
                     type={ProductType.Helpdesk}
                     product={helpdeskProduct}
+                    usage={currentUsage?.helpdesk}
                 />
                 <ProductCard
                     type={ProductType.Automation}
                     product={automationProduct}
+                    usage={currentUsage?.automation}
                 />
-                <ProductCard type={ProductType.Voice} product={voiceProduct} />
-                <ProductCard type={ProductType.SMS} product={smsProduct} />
+                <ProductCard
+                    type={ProductType.Voice}
+                    product={voiceProduct}
+                    usage={currentUsage?.voice}
+                />
+                <ProductCard
+                    type={ProductType.SMS}
+                    product={smsProduct}
+                    usage={currentUsage?.sms}
+                />
             </div>
             <div className={css.unsubscribe}>
                 If you have any questions or if you want to unsubscribe, please{' '}

@@ -1,14 +1,18 @@
-import React, {ElementType, useRef} from 'react'
+import React, {ElementType, useMemo, useRef, useState} from 'react'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 import {useAsyncFn} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {hasRole} from 'utils'
 import {UserRole} from 'config/types/user'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
+    getAutomationProduct,
+    getCurrentHelpdeskInterval,
     getCurrentHelpdeskProduct,
+    getCurrentProducts,
     getHasAutomationAddOn,
 } from 'state/billing/selectors'
 import {updateSubscription} from 'state/currentAccount/actions'
@@ -19,6 +23,14 @@ import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'
 import useAppSelector from 'hooks/useAppSelector'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {isStarterTierPrice} from 'models/billing/utils'
+import {
+    ENTERPRISE_PRICE_ID,
+    ZAPIER_BILLING_HOOK,
+} from 'pages/settings/new_billing/constants'
+import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
+import AutomationPlanSubscriptionDescription from './AutomationPlanSubscriptionDescription'
 import AutomationSubscriptionDescription from './AutomationSubscriptionDescription'
 import css from './AutomationSubscriptionModal.less'
 
@@ -35,11 +47,13 @@ type Props = {
 type FooterProps = {
     onConfirm: () => void
     isUpdating: boolean
+    isDisabled?: boolean
 }
 
 const DefaultFooter = ({
     confirmLabel,
     isUpdating,
+    isDisabled,
     onClose,
     onConfirm,
 }: Pick<Props, 'confirmLabel' | 'onClose'> & FooterProps) => {
@@ -56,7 +70,7 @@ const DefaultFooter = ({
                 <Button
                     isLoading={isUpdating}
                     onClick={onConfirm}
-                    isDisabled={!userIsAdmin}
+                    isDisabled={!userIsAdmin || isDisabled}
                 >
                     {confirmLabel}
                 </Button>
@@ -84,6 +98,17 @@ const AutomationSubscriptionModal = ({
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
 
+    const currentProducts = useAppSelector(getCurrentProducts)
+
+    const currentPriceIds: string[] = currentProducts
+        ? [
+              currentProducts.helpdesk?.price_id,
+              currentProducts.automation?.price_id || '',
+              currentProducts.voice?.price_id || '',
+              currentProducts.sms?.price_id || '',
+          ].filter(Boolean)
+        : []
+
     const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
         useAsyncFn(async (prices: string[]) => {
             try {
@@ -98,75 +123,145 @@ const AutomationSubscriptionModal = ({
                 )
             }
         }, [])
-
     const header = headerDescription
         ? headerDescription
         : hasAutomationAddOn
         ? 'Manage Automation Add-on'
-        : 'Subscribe to the Automation Add-on'
+        : 'Subscribe to Automation'
 
     const onConfirm = () => {
-        helpdeskPrice?.addons &&
-            handleSubscriptionUpdate([
-                helpdeskPrice.price_id,
-                helpdeskPrice.addons[0],
-            ]).then(() => onSubscribe && onSubscribe())
+        if (hasAccessToNewBilling) {
+            selectedPrice?.price_id &&
+                handleSubscriptionUpdate([
+                    ...currentPriceIds,
+                    selectedPrice.price_id,
+                ]).then(() => onSubscribe && onSubscribe())
+        } else {
+            helpdeskPrice?.addons &&
+                handleSubscriptionUpdate([
+                    helpdeskPrice.price_id,
+                    helpdeskPrice.addons[0],
+                ]).then(() => onSubscribe && onSubscribe())
+        }
     }
 
     const handleUnsubscribeClick = () => {
         helpdeskPrice && void handleSubscriptionUpdate([helpdeskPrice.price_id])
     }
 
+    const isStarterPlan = isStarterTierPrice(helpdeskPrice)
+
+    const hasAccessToNewBilling: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewBillingInterface]
+    const interval = useAppSelector(getCurrentHelpdeskInterval)
+    const automationPrices = useAppSelector(getAutomationProduct)?.prices
+    const [selectedPrice, setSelectedPrice] = useState(automationPrices?.[0])
+    const [isSubscriptionEnabled, setIsSubscriptionEnabled] = useState(false)
+    const [showContactSupportModal, setShowContactSupportModal] =
+        useState(false)
+
+    const isEnterprisePlan = useMemo(
+        () => selectedPrice?.price_id === ENTERPRISE_PRICE_ID,
+        [selectedPrice]
+    )
+
+    const onConfirmEnterprise = () => {
+        setShowContactSupportModal(true)
+        onClose()
+    }
+
+    const onCloseEnterprise = () => {
+        setShowContactSupportModal(false)
+    }
+
     return (
-        <Modal
-            isOpen={isOpen}
-            toggle={onClose}
-            className={css.modal}
-            fade={fade}
-            centered
-        >
-            <ModalHeader toggle={onClose}>{header}</ModalHeader>
-            <ModalBody
-                className={css.modalBody}
-                data-candu-id={
-                    hasAutomationAddOn
-                        ? 'cancel-automation-addon-modal-body'
-                        : 'manage-automation-addon-modal-body'
-                }
+        <>
+            <Modal
+                isOpen={isOpen}
+                toggle={onClose}
+                className={classnames(css.modal, {
+                    [css.wide]: hasAccessToNewBilling,
+                })}
+                fade={fade}
+                centered
             >
-                <AutomationSubscriptionDescription />
-                {!!image && (
-                    <img
-                        alt="automation features"
-                        src={image}
-                        className={css.image}
+                <ModalHeader toggle={onClose}>{header}</ModalHeader>
+                <ModalBody
+                    className={css.modalBody}
+                    data-candu-id={
+                        hasAutomationAddOn
+                            ? 'cancel-automation-addon-modal-body'
+                            : 'manage-automation-addon-modal-body'
+                    }
+                >
+                    {!hasAccessToNewBilling ? (
+                        <AutomationSubscriptionDescription />
+                    ) : (
+                        <AutomationPlanSubscriptionDescription
+                            isStarterPlan={isStarterPlan}
+                            isEnterprisePlan={isEnterprisePlan}
+                            automationPrices={automationPrices}
+                            interval={interval}
+                            selectedPrice={selectedPrice}
+                            setSelectedPrice={setSelectedPrice}
+                            setIsSubscriptionEnabled={setIsSubscriptionEnabled}
+                        />
+                    )}
+                    {!!image && (
+                        <img
+                            alt="automation features"
+                            src={image}
+                            className={css.image}
+                        />
+                    )}
+                </ModalBody>
+                {hasAutomationAddOn ? (
+                    <ModalFooter
+                        className={classnames(
+                            css.footer,
+                            css.footerUnsubscribe
+                        )}
+                    >
+                        <Button
+                            intent="destructive"
+                            onClick={handleUnsubscribeClick}
+                            isLoading={isSubscriptionUpdating}
+                        >
+                            Cancel subscription
+                        </Button>
+                        <Button intent="secondary" onClick={onClose}>
+                            OK
+                        </Button>
+                    </ModalFooter>
+                ) : isEnterprisePlan ? (
+                    <Footer
+                        confirmLabel="Contact Us"
+                        isUpdating={isSubscriptionUpdating}
+                        onClose={onClose}
+                        onConfirm={onConfirmEnterprise}
+                    />
+                ) : (
+                    <Footer
+                        confirmLabel={confirmLabel}
+                        isUpdating={isSubscriptionUpdating}
+                        isDisabled={!isSubscriptionEnabled}
+                        onClose={onClose}
+                        onConfirm={onConfirm}
                     />
                 )}
-            </ModalBody>
-            {hasAutomationAddOn ? (
-                <ModalFooter
-                    className={classnames(css.footer, css.footerUnsubscribe)}
-                >
-                    <Button
-                        intent="destructive"
-                        onClick={handleUnsubscribeClick}
-                        isLoading={isSubscriptionUpdating}
-                    >
-                        Cancel subscription
-                    </Button>
-                    <Button intent="secondary" onClick={onClose}>
-                        OK
-                    </Button>
-                </ModalFooter>
-            ) : (
-                <Footer
-                    confirmLabel={confirmLabel}
-                    isUpdating={isSubscriptionUpdating}
-                    onClose={onClose}
-                    onConfirm={onConfirm}
+            </Modal>
+            {isEnterprisePlan && (
+                <ContactSupportModal
+                    isOpen={showContactSupportModal}
+                    handleOnClose={onCloseEnterprise}
+                    domain="acme"
+                    from="irinel@gorgias.com"
+                    to="acme@gorgias.com"
+                    subject="Enterprise Plan"
+                    zapierHook={ZAPIER_BILLING_HOOK}
                 />
             )}
-        </Modal>
+        </>
     )
 }
 

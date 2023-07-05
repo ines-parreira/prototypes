@@ -190,6 +190,7 @@ exports[`UsageAndPlansView should render 1`] = `
                     </div>
                     <i
                       class="material-icons"
+                      id="priceSelectInfo"
                     >
                       info_outlined
                     </i>

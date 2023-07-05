@@ -11,6 +11,7 @@ import {
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {isStarterTierPrice} from 'models/billing/utils'
+import Tooltip from 'pages/common/components/Tooltip'
 import {ENTERPRISE_PRICE_ID, INTERVAL, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
@@ -182,7 +183,15 @@ const ProductPlanSelection = ({
                             <div>
                                 {PRODUCT_INFO[type].counter}/{interval}
                             </div>
-                            <i className="material-icons">info_outlined</i>
+                            <i id="priceSelectInfo" className="material-icons">
+                                info_outlined
+                            </i>
+                            <Tooltip
+                                placement="top-start"
+                                target="priceSelectInfo"
+                            >
+                                {PRODUCT_INFO.automation.tooltip}
+                            </Tooltip>
                         </div>
                         <div className={css.productName}>
                             {selectedPlans[type].plan?.name}

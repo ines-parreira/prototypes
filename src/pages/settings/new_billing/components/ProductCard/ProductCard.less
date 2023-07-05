@@ -1,4 +1,4 @@
-@import '~css/new/colorTokens';
+@import (reference) '~css/new/colorTokens';
 
 :local {
     .container {
@@ -72,5 +72,13 @@
             text-decoration: underline !important;
             padding-left: 4px;
         }
+    }
+
+    .danger {
+        color: @classic-feedback-error;
+    }
+
+    .warning {
+        color: @classic-feedback-warning;
     }
 }

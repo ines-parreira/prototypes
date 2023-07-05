@@ -59,6 +59,7 @@ describe('UsageAndPlansView', () => {
                         status: NotificationStatus.Error,
                         id: 'billing-error',
                     }}
+                    periodEnd="2021-01-01"
                     contactBilling={jest.fn()}
                     dispatchBillingError={jest.fn()}
                 />

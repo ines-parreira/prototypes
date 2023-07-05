@@ -26,12 +26,14 @@ type BillingFrequencyViewProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
     dispatchBillingError: () => void
     billingErrorNotification: Notification
+    periodEnd: string
 }
 
 const BillingFrequencyView = ({
     contactBilling,
     billingErrorNotification,
     dispatchBillingError,
+    periodEnd,
 }: BillingFrequencyViewProps) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -218,6 +220,7 @@ const BillingFrequencyView = ({
                         anyNewProductSelected={false}
                         anyDowngradedPlanSelected={false}
                         handleSubscribe={handleSubscribe}
+                        periodEnd={periodEnd}
                     />
                 </Card>
             </div>

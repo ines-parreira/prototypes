@@ -21,12 +21,14 @@ export type SummaryPaymentSectionProps = {
     setIsPaymentEnabled?: React.Dispatch<React.SetStateAction<boolean>>
     isCreditCardFetched: boolean
     isPaymentInformationView?: boolean
+    hasSmallFont?: boolean
 }
 
 const SummaryPaymentSection = ({
     setIsPaymentEnabled,
     isCreditCardFetched,
     isPaymentInformationView,
+    hasSmallFont,
 }: SummaryPaymentSectionProps) => {
     const dispatch = useAppDispatch()
 
@@ -161,7 +163,11 @@ const SummaryPaymentSection = ({
                         })}
                         data-testid="activeShopifyPayment"
                     >
-                        <div className={css.method}>
+                        <div
+                            className={classNames(css.method, {
+                                [css.smallFont]: hasSmallFont,
+                            })}
+                        >
                             <i
                                 className={classNames(
                                     'material-icons',
@@ -184,7 +190,11 @@ const SummaryPaymentSection = ({
                         })}
                         data-testid="canceledShopifyPayment"
                     >
-                        <div className={css.method}>
+                        <div
+                            className={classNames(css.method, {
+                                [css.smallFont]: hasSmallFont,
+                            })}
+                        >
                             <i
                                 className={classNames(
                                     'material-icons',
@@ -211,7 +221,11 @@ const SummaryPaymentSection = ({
                         })}
                         data-testid="inactiveShopifyPayment"
                     >
-                        <div className={css.method}>
+                        <div
+                            className={classNames(css.method, {
+                                [css.smallFont]: hasSmallFont,
+                            })}
+                        >
                             <i
                                 className={classNames(
                                     'material-icons',
@@ -228,7 +242,7 @@ const SummaryPaymentSection = ({
                     </div>
                 )
         }
-    }, [isPaymentInformationView, shopifyBillingStatus])
+    }, [isPaymentInformationView, shopifyBillingStatus, hasSmallFont])
 
     const renderStripe = useMemo(() => {
         // Customer uses Stripe billing
@@ -240,7 +254,11 @@ const SummaryPaymentSection = ({
                     })}
                     data-testid="noPaymentMethod"
                 >
-                    <div className={css.method}>
+                    <div
+                        className={classNames(css.method, {
+                            [css.smallFont]: hasSmallFont,
+                        })}
+                    >
                         <i
                             className={classNames(
                                 'material-icons',
@@ -265,7 +283,12 @@ const SummaryPaymentSection = ({
                         [css.paymentInformationView]: isPaymentInformationView,
                     })}
                 >
-                    <div className={css.method} data-testid="cardIsExpired">
+                    <div
+                        className={classNames(css.method, {
+                            [css.smallFont]: hasSmallFont,
+                        })}
+                        data-testid="cardIsExpired"
+                    >
                         <i
                             className={classNames(
                                 'material-icons',
@@ -288,7 +311,12 @@ const SummaryPaymentSection = ({
                     [css.paymentInformationView]: isPaymentInformationView,
                 })}
             >
-                <div className={css.method} data-testid="validCreditCard">
+                <div
+                    className={classNames(css.method, {
+                        [css.smallFont]: hasSmallFont,
+                    })}
+                    data-testid="validCreditCard"
+                >
                     <i className={classNames('material-icons', css.cardIcon)}>
                         credit_card
                     </i>
@@ -298,7 +326,7 @@ const SummaryPaymentSection = ({
                 <Link to={BILLING_PAYMENT_CARD_PATH}>Change Card</Link>
             </div>
         )
-    }, [card, cardIsExpired, isPaymentInformationView])
+    }, [card, cardIsExpired, isPaymentInformationView, hasSmallFont])
 
     if (!isCreditCardFetched && payment === 'stripe') {
         return <Loader minHeight="auto" className={css.loader} />

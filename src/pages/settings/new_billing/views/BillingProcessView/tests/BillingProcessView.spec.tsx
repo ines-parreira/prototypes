@@ -63,6 +63,7 @@ describe('UsageAndPlansView', () => {
                     dispatchBillingError={jest.fn()}
                     setDefaultMessage={jest.fn()}
                     setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
                 />
             </Provider>
         )

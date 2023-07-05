@@ -38,7 +38,7 @@ exports[`ProductCard should render a Helpdesk ProductCard component 1`] = `
       class="body"
     >
       <div
-        data-candu-id="billing-helpdesk-description"
+        data-candu-id="billing-helpdesk-description-info"
       />
     </div>
     <div
@@ -56,11 +56,17 @@ exports[`ProductCard should render a Helpdesk ProductCard component 1`] = `
       <div
         class="counter"
       >
-        290 of 
-        300
-         
-        tickets
-         used
+        <div
+          class=""
+        >
+          0
+           
+          of 
+          300
+           
+          tickets
+           used
+        </div>
         <i
           class="material-icons"
           id="info_helpdesk"

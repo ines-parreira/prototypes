@@ -109,7 +109,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
               class="body"
             >
               <div
-                data-candu-id="billing-helpdesk-description"
+                data-candu-id="billing-helpdesk-description-info"
               />
             </div>
             <div
@@ -168,7 +168,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
               class="body"
             >
               <div
-                data-candu-id="billing-automation-description"
+                data-candu-id="billing-automation-description-info"
               />
             </div>
             <div
@@ -227,7 +227,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
               class="body"
             >
               <div
-                data-candu-id="billing-voice-description"
+                data-candu-id="billing-voice-description-info"
               />
             </div>
             <div
@@ -286,7 +286,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
               class="body"
             >
               <div
-                data-candu-id="billing-sms-description"
+                data-candu-id="billing-sms-description-info"
               />
             </div>
             <div
