@@ -14,7 +14,7 @@ import FileUploadEditor from './editors/FileUploadEditor'
 import EndNodeEditor from './editors/EndNodeEditor'
 
 type NodeEditorDrawerProps = {
-    nodeInEdition: VisualBuilderNode | null
+    nodeInEdition?: VisualBuilderNode | null
     onClose: () => void
 }
 

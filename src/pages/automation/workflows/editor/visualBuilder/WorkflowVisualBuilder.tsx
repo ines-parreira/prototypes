@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, useEffect} from 'react'
+import React, {PropsWithChildren, useCallback, useEffect} from 'react'
 import {
     ReactFlow,
     Background,
@@ -62,9 +62,9 @@ export function WorkflowVisualBuilderWrapped({
         visualBuilderGraph.edges
     )
     const visualBuilderNodeEditing = visualBuilderNodeIdEditing
-        ? (nodes.find(
+        ? visualBuilderGraph.nodes.find(
               (n) => n.id === visualBuilderNodeIdEditing
-          ) as VisualBuilderNode)
+          )
         : null
 
     useEffect(() => {
@@ -97,6 +97,10 @@ export function WorkflowVisualBuilderWrapped({
         visualBuilderNodeIdEditing,
         setVisualBuilderNodeIdEditing,
     ])
+
+    const onDrawerEditorClose = useCallback(() => {
+        setVisualBuilderNodeIdEditing(null)
+    }, [setVisualBuilderNodeIdEditing])
 
     if (isFetchPending) return <Loader />
 
@@ -141,9 +145,7 @@ export function WorkflowVisualBuilderWrapped({
             </ReactFlow>
             <NodeEditorDrawer
                 nodeInEdition={visualBuilderNodeEditing}
-                onClose={() => {
-                    setVisualBuilderNodeIdEditing(null)
-                }}
+                onClose={onDrawerEditorClose}
             />
         </>
     )

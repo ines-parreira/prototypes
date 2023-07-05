@@ -42,13 +42,13 @@ export default function TriggerButtonEditor({
                 ref={inputRef}
                 isRequired
                 maxLength={textLimit}
-                onChange={(nextValue) => {
+                onChange={(inputValue) =>
                     dispatch({
                         type: 'SET_TRIGGER_BUTTON_LABEL',
                         triggerButtonNodeId: nodeInEdition.id,
-                        label: nextValue,
+                        label: inputValue,
                     })
-                }}
+                }
                 value={nodeInEdition.data.label ?? ''}
                 isDisabled={isFetchPending || isSavePending}
             />
