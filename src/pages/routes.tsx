@@ -10,6 +10,7 @@ import {
 import _memoize from 'lodash/memoize'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import DEPRECATED_SupportPerformanceAgents from 'pages/stats/DEPRECATED_SupportPerformanceAgents'
 import {assetsUrl} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {PageSection} from 'config/pages'
@@ -458,6 +459,8 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
     )
     const hasAnalyticsBeta: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
+    const hasAnalyticsNewAgentPerformance: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsNewAgentPerformance]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -560,10 +563,22 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                     exact
                     path={`${path}/support-performance-agents`}
                     render={appRender({
-                        content: SupportPerformanceAgents,
+                        content: hasAnalyticsNewAgentPerformance
+                            ? SupportPerformanceAgents
+                            : DEPRECATED_SupportPerformanceAgents,
                         navbar: StatsNavbarContainer,
                     })}
                 />
+                {hasAnalyticsNewAgentPerformance && (
+                    <Route
+                        exact
+                        path={`${path}/support-performance-agents-legacy`}
+                        render={appRender({
+                            content: DEPRECATED_SupportPerformanceAgents,
+                            navbar: StatsNavbarContainer,
+                        })}
+                    />
+                )}
                 <Route
                     exact
                     path={`${path}/satisfaction`}

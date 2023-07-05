@@ -21,6 +21,9 @@ const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
 export default function StatsNavbarView() {
     const hasAnalyticsBeta: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
+    const hasAnalyticsNewAgentPerformance: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsNewAgentPerformance]
+
     const [
         isAutomationSubscriptionModalOpen,
         setIsAutomationSubscriptionModal,
@@ -102,6 +105,9 @@ export default function StatsNavbarView() {
                         to="/app/stats/support-performance-agents"
                     >
                         Agents
+                        {hasAnalyticsNewAgentPerformance && (
+                            <Badge type={ColorType.Blue}>new</Badge>
+                        )}
                     </NavbarLink>
                     <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}

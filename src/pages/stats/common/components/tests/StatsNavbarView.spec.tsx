@@ -59,6 +59,23 @@ describe('StatsNavbarView', () => {
         expect(screen.getByText('Busiest times of days')).toBeInTheDocument()
     })
 
+    describe('New Agents Performance', () => {
+        it('should render the link to new agents page when having flag enabled', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AnalyticsNewAgentPerformance]: true,
+            }))
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <StatsNavbarView />
+                </Provider>
+            )
+
+            expect(
+                screen.getByRole('link', {name: /Agents(.*)new/})
+            ).toHaveAttribute('href', '/app/stats/support-performance-agents')
+        })
+    })
+
     it('should render the link to the Revenue Campaign when having access to the beta', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.RevenueBetaTesters]: true,

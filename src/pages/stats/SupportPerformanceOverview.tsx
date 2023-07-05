@@ -95,7 +95,7 @@ import {OneDimensionalDataItem} from './types'
 
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 const DEFAULT_TIMEZONE = 'UTC'
-const LEARN_MORE_URL =
+export const LEARN_MORE_URL =
     'https://docs.gorgias.com/en-US/226700-5b26beb8fd254af181bd50281c5bbde6'
 
 function getBadgeTooltipForPreviousPeriod(statsFilters: StatsFilters) {
