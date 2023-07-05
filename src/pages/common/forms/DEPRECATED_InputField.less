@@ -1,11 +1,9 @@
-@import '~css/new/colorTokens';
-
 :local {
     .required {
         label {
             &::after {
                 content: ' *';
-                color: @classic-feedback-error;
+                color: var(--feedback-error);
             }
         }
     }
@@ -19,7 +17,7 @@
             margin-left: 4px;
             margin-top: 4px;
             line-height: 16px;
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
         }
     }
 
@@ -41,7 +39,7 @@
             }
             .suffix {
                 margin-left: 4px;
-                color: @classic-neutral-grey-4;
+                color: var(--neutral-grey-4);
             }
         }
     }
@@ -73,7 +71,7 @@
     }
 
     span.inputGroupText {
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         font-weight: 500;
     }
 }

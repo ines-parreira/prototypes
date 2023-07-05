@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import '~css/new/layout';
 
 :local {
@@ -15,16 +14,16 @@
 
     .icon {
         &.pending {
-            color: @classic-feedback-warning;
+            color: var(--feedback-warning);
         }
 
         &.failed,
         &.unverified {
-            color: @classic-feedback-error;
+            color: var(--feedback-error);
         }
 
         &.success {
-            color: @classic-feedback-success;
+            color: var(--feedback-success);
         }
     }
 }

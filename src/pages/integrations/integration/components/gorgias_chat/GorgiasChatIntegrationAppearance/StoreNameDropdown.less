@@ -8,29 +8,29 @@
     }
     .wrapper > .dropdown > button {
         width: 100%;
-        background-color: @classic-neutral-grey-0;
+        background-color: var(--neutral-grey-0);
         display: flex;
         align-items: center;
         justify-content: space-between;
         font-weight: 400;
         &:hover {
             box-shadow: none;
-            background-color: @classic-neutral-grey-0;
+            background-color: var(--neutral-grey-0);
         }
         &:focus,
         &:active {
-            background-color: @classic-neutral-grey-0 !important;
+            background-color: var(--neutral-grey-0) !important;
             box-shadow: 0 0 0 0.2rem fade(@classic-main-primary, 0.1) !important;
-            border: 1px solid @classic-main-primary-1 !important;
+            border: 1px solid var(--main-primary-1) !important;
             border-radius: 3px !important;
         }
         &::after {
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
         }
     }
 
     .hasError {
-        border: 1px solid @classic-feedback-error;
+        border: 1px solid var(--feedback-error);
     }
 
     .dropdownMenu {
@@ -45,23 +45,23 @@
         font-weight: 600;
     }
     .dropdownValue {
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         display: flex;
         align-items: center;
     }
     .dropdownPlaceholder {
         display: flex;
         align-items: center;
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
     .dropdownInfo {
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
         font-size: 12px;
         font-weight: 400;
         margin-left: auto;
     }
     .dropdownDisconnectedInfo {
-        color: @classic-feedback-warning;
+        color: var(--feedback-warning);
         margin-left: 9.65px;
     }
     .dropdownLogo {

@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local {
     .halfWidth {
         width: calc(~'50% - 10px');
@@ -14,11 +12,11 @@
     .required {
         &::after {
             content: ' *';
-            color: @classic-feedback-error;
+            color: var(--feedback-error);
         }
     }
 
     .isDisabled {
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 }

@@ -208,11 +208,11 @@
     .shadow-variant(@i + 1);
 }
 
-@defaultPaywallCircleColor: var(--neutral-grey-1);
-@basicPaywallCircleColor: var(--main-primary-0);
-@proPaywallCircleColor: var(--main-primary-0);
-@advancedPaywallCircleColor: var(--feedback-success-0);
-@enterprisePaywallCircleColor: var(--feedback-warning-0);
+@defaultPaywallCircleColor: @classic-neutral-grey-1;
+@basicPaywallCircleColor: @classic-main-primary-0;
+@proPaywallCircleColor: @classic-main-primary-0;
+@advancedPaywallCircleColor: @classic-feedback-success-0;
+@enterprisePaywallCircleColor: @classic-feedback-warning-0;
 
 .circle-variant(@i:1) when (@i <= length(@paywall-type)) {
     @variantValue: extract(@paywall-type, @i);

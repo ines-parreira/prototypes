@@ -1,5 +1,4 @@
 @import '~css/new/layout.less';
-@import '~css/new/colorTokens.less';
 @import (reference) '~css/typography.less';
 @import (reference) '~css/new/util.less';
 
@@ -23,7 +22,7 @@
         display: flex;
         flex-direction: column;
         padding: 20px 16px @layout-spacing-xxs;
-        background-color: @classic-neutral-grey-2;
+        background-color: var(--neutral-grey-2);
         margin: -16px;
     }
 
@@ -31,8 +30,8 @@
         box-shadow: 0 2px 4px rgba(22, 22, 22, 0.16);
         border-radius: 4px;
         padding: @layout-spacing-xs;
-        background-color: @classic-neutral-grey-0;
-        color: @classic-neutral-grey-6;
+        background-color: var(--neutral-grey-0);
+        color: var(--neutral-grey-6);
         display: flex;
         flex-direction: column;
         margin: 0 0 @layout-spacing-s;
@@ -46,7 +45,7 @@
         padding: @layout-spacing-xs;
 
         &.isHighlighted {
-            background-color: @classic-neutral-grey-2;
+            background-color: var(--neutral-grey-2);
         }
     }
 
@@ -59,12 +58,12 @@
         border-radius: 4px;
 
         &.isHighlighted {
-            background-color: @classic-neutral-grey-2;
+            background-color: var(--neutral-grey-2);
         }
     }
 
     .chevronRightIcon {
         font-size: 20px;
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 }

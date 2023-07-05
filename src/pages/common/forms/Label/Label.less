@@ -1,9 +1,8 @@
-@import '~css/new/colors';
 @import (reference) '~css/typography';
 
 :local {
     .abbr[title] {
-        color: @classic-feedback-error;
+        color: var(--feedback-error);
         margin-left: 4px;
         text-decoration: none;
     }
@@ -17,7 +16,7 @@
 
         &.isDisabled {
             cursor: not-allowed;
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
         }
     }
 }

@@ -1,4 +1,3 @@
-@import '~css/new/colors';
 @import (reference) '~css/typography';
 
 :local {
@@ -19,12 +18,12 @@
 
     .disabledLabel {
         .slider {
-            background-color: @classic-neutral-grey-3;
+            background-color: var(--neutral-grey-3);
             cursor: not-allowed;
         }
 
         .input:checked + .slider {
-            background-color: @classic-neutral-grey-3;
+            background-color: var(--neutral-grey-3);
         }
     }
 
@@ -60,7 +59,7 @@
         height: 0;
 
         &:checked + .slider {
-            background-color: @classic-main-primary;
+            background-color: var(--main-primary);
 
             &::before {
                 transform: translateX(26px);
@@ -76,7 +75,7 @@
     .slider {
         cursor: pointer;
         border-radius: 3px;
-        background-color: @classic-neutral-grey-4;
+        background-color: var(--neutral-grey-4);
         transition: 0.4s;
         width: 42px;
         height: 20px;
@@ -92,7 +91,7 @@
             left: 2px;
             bottom: 2px;
             border-radius: 2px;
-            background-color: @classic-neutral-grey-0;
+            background-color: var(--neutral-grey-0);
             transition: 0.4s;
         }
 
@@ -102,7 +101,7 @@
             font-size: 11px;
             left: 16px;
             bottom: 3px;
-            color: @classic-neutral-grey-0;
+            color: var(--neutral-grey-0);
             transition: 0.4s;
         }
     }

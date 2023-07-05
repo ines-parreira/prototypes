@@ -1,5 +1,4 @@
 @import '~css/new/layout.less';
-@import '~css/new/colorTokens.less';
 
 :local {
     .container {
@@ -13,13 +12,13 @@
         width: 100%;
         height: 1px;
         position: absolute;
-        background-color: @classic-neutral-grey-3;
+        background-color: var(--neutral-grey-3);
         z-index: -1;
     }
 
     .stepContainer {
         padding: 0 @layout-spacing-xs;
-        background-color: @classic-neutral-grey-0;
+        background-color: var(--neutral-grey-0);
 
         &:nth-child(2) {
             padding-left: 0;
@@ -39,8 +38,8 @@
         font-weight: 500;
 
         &.active {
-            background-color: @classic-main-primary-0;
-            color: @classic-main-primary-3;
+            background-color: var(--main-primary-0);
+            color: var(--main-primary-3);
         }
 
         .number {

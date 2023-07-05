@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local {
     .container {
         display: flex;
@@ -33,7 +31,7 @@
 
         .title {
             font-weight: 500;
-            color: @classic-neutral-grey-6;
+            color: var(--neutral-grey-6);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -41,7 +39,7 @@
 
         .subtitle {
             font-weight: normal;
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -54,14 +52,14 @@
         font-weight: normal;
         font-size: 13px;
         line-height: 16px;
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
 
         &.grey {
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
         }
 
         &.disabled {
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
         }
     }
 }

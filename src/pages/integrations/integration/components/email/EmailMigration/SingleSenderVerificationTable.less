@@ -1,5 +1,4 @@
 @import '~css/new/layout.less';
-@import '~css/new/colorTokens.less';
 
 :local {
     .tableWrapper {
@@ -24,7 +23,7 @@
         padding-right: @layout-spacing-m;
 
         &.error {
-            color: @classic-feedback-error;
+            color: var(--feedback-error);
             font-weight: 600;
         }
     }

@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local .option {
     &:hover,
     &.option--focused {
@@ -7,13 +5,13 @@
     }
 }
 :local .optionDeprecated {
-    color: @classic-feedback-warning-4 !important;
+    color: var(--feedback-warning-4) !important;
     &.option--focused {
-        background: @classic-feedback-warning-0 !important;
+        background: var(--feedback-warning-0) !important;
 
         &:active {
             outline: none;
-            background: @classic-feedback-warning-2 !important;
+            background: var(--feedback-warning-2) !important;
         }
     }
 }
