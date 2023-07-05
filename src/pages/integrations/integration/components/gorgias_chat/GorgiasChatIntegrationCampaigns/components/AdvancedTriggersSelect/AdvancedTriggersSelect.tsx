@@ -1,15 +1,18 @@
-import React, {useRef, useState} from 'react'
+import React, {useMemo, useRef, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
 
 import {useAvailableTriggerList} from '../../hooks/useAvailableTriggerList'
 import {useIsHeadlessShopifyStore} from '../../hooks/useIsHeadlessShopifyStore'
 import {useCanAddShopifyHistoryTriggers} from '../../hooks/useCanAddShopifyHistoryTriggers'
 
 import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
+
+import css from './AdvancedTriggersSelect.less'
 
 type Props = {
     isRevenueBetaTester?: boolean
@@ -39,6 +42,15 @@ export const AdvancedTriggersSelect = ({
         areShopifyHistoryTriggersEnabled,
     })
 
+    const optionsGrouped = useMemo(() => {
+        return options.reduce((acc, option) => {
+            if (option.group) {
+                acc[option.group] = [...(acc[option.group] || []), option]
+            }
+            return acc
+        }, {} as Record<string, typeof options>)
+    }, [options])
+
     return (
         <>
             <Button
@@ -59,16 +71,28 @@ export const AdvancedTriggersSelect = ({
             </Button>
             <Dropdown isOpen={isOpen} onToggle={setIsOpen} target={buttonRef}>
                 <DropdownBody>
-                    {options.map((option) => (
-                        <DropdownItem
-                            key={option.key}
-                            option={{
-                                label: option.label,
-                                value: option.key,
-                            }}
-                            onClick={handleClickItem}
-                        />
-                    ))}
+                    {Object.entries(optionsGrouped).map(
+                        ([key, group], index) => (
+                            <DropdownSection
+                                className={
+                                    index === 0 ? css.firstSection : undefined
+                                }
+                                title={key}
+                                key={key}
+                            >
+                                {group.map((option) => (
+                                    <DropdownItem
+                                        key={option.key}
+                                        option={{
+                                            label: option.label,
+                                            value: option.key,
+                                        }}
+                                        onClick={handleClickItem}
+                                    />
+                                ))}
+                            </DropdownSection>
+                        )
+                    )}
                 </DropdownBody>
             </Dropdown>
         </>

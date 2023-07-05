@@ -26,152 +26,13 @@ export const BETA_TRIGGERS = [
 ]
 
 export const TRIGGER_LIST = [
-    {
-        key: CampaignTriggerKey.BusinessHours,
-        label: 'Business hours',
-        defaults: {
-            value: true,
-            operator: BusinessHoursOperators.DuringHours,
-        },
-        requirements: {
-            revenue: true,
-        },
-    },
-    {
-        key: CampaignTriggerKey.CurrentUrl,
-        label: 'Current URL',
-        defaults: {
-            value: '/',
-            operator: CurrentUrlOperators.Equal,
-        },
-        requirements: {},
-    },
-    {
-        key: CampaignTriggerKey.TimeSpentOnPage,
-        label: 'Time spent on page',
-        defaults: {
-            value: 0,
-            operator: TimeSpentOnPageOperators.GreaterThan,
-        },
-        requirements: {},
-    },
-    {
-        key: CampaignTriggerKey.VisitCount,
-        label: 'Number of visits',
-        defaults: {
-            value: 0,
-            operator: VisitCountOperators.GreaterThan,
-        },
-        requirements: {
-            revenue: true,
-        },
-    },
-    {
-        key: CampaignTriggerKey.SessionTime,
-        label: 'Time spent per visit',
-        defaults: {
-            value: 0,
-            operator: SessionTimeOperators.GreaterThan,
-        },
-        requirements: {
-            revenue: true,
-        },
-    },
-    {
-        key: CampaignTriggerKey.ExitIntent,
-        label: 'Exit intent',
-        defaults: {
-            value: 'true',
-            operator: ExitIntentOperators.Equal,
-        },
-        requirements: {
-            revenue: true,
-        },
-    },
-    {
-        key: CampaignTriggerKey.CartValue,
-        label: 'Amount added to cart',
-        defaults: {
-            value: 0,
-            operator: CartValueOperators.GreaterThan,
-        },
-        requirements: {
-            revenue: true,
-            shopify: true,
-            headless: false,
-        },
-    },
-    {
-        key: CampaignTriggerKey.ProductTags,
-        label: 'Product tags added to cart',
-        defaults: {
-            value: '',
-            operator: ProductTagsOperators.Contains,
-        },
-        requirements: {
-            revenue: true,
-            shopify: true,
-            headless: false,
-        },
-    },
-    {
-        key: CampaignTriggerKey.CurrentProductTags,
-        label: 'Currently visited product',
-        defaults: {
-            value: '',
-            operator: CurrentProductTagsOperators.Contains,
-        },
-        requirements: {
-            revenue: true,
-            shopify: true,
-            headless: false,
-        },
-    },
-    {
-        key: CampaignTriggerKey.OrdersCount,
-        label: 'Number of orders placed',
-        defaults: {
-            value: '',
-            operator: OrdersCountOperators.Equal,
-        },
-        requirements: {
-            revenue: true,
-            shopify: true,
-            headless: false,
-            shopify_history: true,
-        },
-    },
-    {
-        key: CampaignTriggerKey.AmountSpent,
-        label: 'Total spent',
-        defaults: {
-            value: '',
-            operator: OrdersCountOperators.Equal,
-        },
-        requirements: {
-            revenue: true,
-            shopify: true,
-            headless: false,
-            shopify_history: true,
-        },
-    },
-    {
-        key: CampaignTriggerKey.OrderedProducts,
-        label: 'Products purchased',
-        defaults: {
-            value: [],
-            operator: OrderedProductsOperators.ContainsAny,
-        },
-        requirements: {
-            revenue: true,
-            shopify: true,
-            headless: false,
-            shopify_history: true,
-        },
-    },
+    // --------------------
+    // Customer
+    // --------------------
     {
         key: CampaignTriggerKey.CustomerTags,
         label: 'Shopify customer tags',
+        group: 'Customer',
         defaults: {
             value: '',
             operator: ShopifyTagsOperators.ContainsAny,
@@ -186,6 +47,7 @@ export const TRIGGER_LIST = [
     {
         key: CampaignTriggerKey.CountryCode,
         label: 'Customer country',
+        group: 'Customer',
         defaults: {
             value: '',
             operator: CountryOperators.In,
@@ -195,6 +57,170 @@ export const TRIGGER_LIST = [
             shopify: true,
             headless: false,
             shopify_history: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.OrdersCount,
+        label: 'Number of orders placed',
+        group: 'Customer',
+        defaults: {
+            value: '',
+            operator: OrdersCountOperators.Equal,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.AmountSpent,
+        label: 'Total spent',
+        group: 'Customer',
+        defaults: {
+            value: '',
+            operator: OrdersCountOperators.Equal,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.OrderedProducts,
+        label: 'Products purchased',
+        group: 'Customer',
+        defaults: {
+            value: [],
+            operator: OrderedProductsOperators.ContainsAny,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+            shopify_history: true,
+        },
+    },
+    // --------------------
+    // Behavior
+    // --------------------
+    {
+        key: CampaignTriggerKey.CurrentUrl,
+        label: 'Current URL',
+        group: 'Behavior',
+        defaults: {
+            value: '/',
+            operator: CurrentUrlOperators.Equal,
+        },
+        requirements: {},
+    },
+    {
+        key: CampaignTriggerKey.TimeSpentOnPage,
+        label: 'Time spent on page',
+        group: 'Behavior',
+        defaults: {
+            value: 0,
+            operator: TimeSpentOnPageOperators.GreaterThan,
+        },
+        requirements: {},
+    },
+    {
+        key: CampaignTriggerKey.CurrentProductTags,
+        label: 'Currently visited product',
+        group: 'Behavior',
+        defaults: {
+            value: '',
+            operator: CurrentProductTagsOperators.Contains,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+        },
+    },
+    {
+        key: CampaignTriggerKey.VisitCount,
+        label: 'Number of visits',
+        group: 'Behavior',
+        defaults: {
+            value: 0,
+            operator: VisitCountOperators.GreaterThan,
+        },
+        requirements: {
+            revenue: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.SessionTime,
+        label: 'Time spent per visit',
+        group: 'Behavior',
+        defaults: {
+            value: 0,
+            operator: SessionTimeOperators.GreaterThan,
+        },
+        requirements: {
+            revenue: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.ExitIntent,
+        label: 'Exit intent',
+        group: 'Behavior',
+        defaults: {
+            value: 'true',
+            operator: ExitIntentOperators.Equal,
+        },
+        requirements: {
+            revenue: true,
+        },
+    },
+    // --------------------
+    // Cart
+    // --------------------
+    {
+        key: CampaignTriggerKey.ProductTags,
+        label: 'Product tags added to cart',
+        group: 'Cart',
+        defaults: {
+            value: '',
+            operator: ProductTagsOperators.Contains,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+        },
+    },
+    {
+        key: CampaignTriggerKey.CartValue,
+        label: 'Amount added to cart',
+        group: 'Cart',
+        defaults: {
+            value: 0,
+            operator: CartValueOperators.GreaterThan,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+        },
+    },
+    // --------------------
+    // Other
+    // --------------------
+    {
+        key: CampaignTriggerKey.BusinessHours,
+        label: 'Business hours',
+        group: 'Other',
+        defaults: {
+            value: true,
+            operator: BusinessHoursOperators.DuringHours,
+        },
+        requirements: {
+            revenue: true,
         },
     },
 ]

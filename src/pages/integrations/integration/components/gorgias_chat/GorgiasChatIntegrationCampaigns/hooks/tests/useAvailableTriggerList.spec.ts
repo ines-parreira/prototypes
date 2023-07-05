@@ -22,12 +22,14 @@ describe('useAvailableTriggerList()', () => {
                 {
                     key: CampaignTriggerKey.CurrentUrl,
                     label: 'Current URL',
+                    group: 'Behavior',
                     defaults: {value: '/', operator: 'eq'},
                     requirements: {},
                 },
                 {
                     key: CampaignTriggerKey.TimeSpentOnPage,
                     label: 'Time spent on page',
+                    group: 'Behavior',
                     defaults: {value: 0, operator: 'gt'},
                     requirements: {},
                 },
@@ -48,12 +50,14 @@ describe('useAvailableTriggerList()', () => {
                 {
                     key: CampaignTriggerKey.CurrentUrl,
                     label: 'Current URL',
+                    group: 'Behavior',
                     defaults: {value: '/', operator: 'eq'},
                     requirements: {},
                 },
                 {
                     key: CampaignTriggerKey.TimeSpentOnPage,
                     label: 'Time spent on page',
+                    group: 'Behavior',
                     defaults: {value: 0, operator: 'gt'},
                     requirements: {},
                 },
@@ -72,26 +76,23 @@ describe('useAvailableTriggerList()', () => {
 
             expect(result.current).toStrictEqual([
                 {
-                    key: CampaignTriggerKey.BusinessHours,
-                    label: 'Business hours',
-                    defaults: {value: true, operator: 'during'},
-                    requirements: {revenue: true},
-                },
-                {
                     key: CampaignTriggerKey.CurrentUrl,
                     label: 'Current URL',
+                    group: 'Behavior',
                     defaults: {value: '/', operator: 'eq'},
                     requirements: {},
                 },
                 {
                     key: CampaignTriggerKey.TimeSpentOnPage,
                     label: 'Time spent on page',
+                    group: 'Behavior',
                     defaults: {value: 0, operator: 'gt'},
                     requirements: {},
                 },
                 {
                     key: CampaignTriggerKey.VisitCount,
                     label: 'Number of visits',
+                    group: 'Behavior',
                     defaults: {value: 0, operator: 'gt'},
                     requirements: {
                         revenue: true,
@@ -100,6 +101,7 @@ describe('useAvailableTriggerList()', () => {
                 {
                     key: CampaignTriggerKey.SessionTime,
                     label: 'Time spent per visit',
+                    group: 'Behavior',
                     defaults: {
                         value: 0,
                         operator: SessionTimeOperators.GreaterThan,
@@ -111,6 +113,7 @@ describe('useAvailableTriggerList()', () => {
                 {
                     key: CampaignTriggerKey.ExitIntent,
                     label: 'Exit intent',
+                    group: 'Behavior',
                     defaults: {
                         value: 'true',
                         operator: ExitIntentOperators.Equal,
@@ -118,6 +121,13 @@ describe('useAvailableTriggerList()', () => {
                     requirements: {
                         revenue: true,
                     },
+                },
+                {
+                    key: CampaignTriggerKey.BusinessHours,
+                    label: 'Business hours',
+                    group: 'Other',
+                    defaults: {value: true, operator: 'during'},
+                    requirements: {revenue: true},
                 },
             ])
         })
