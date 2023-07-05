@@ -1,11 +1,15 @@
 import React, {ReactNode, useMemo, useRef, useState} from 'react'
 import _keyBy from 'lodash/keyBy'
 import _isEqual from 'lodash/isEqual'
+import _uniq from 'lodash/uniq'
 import {Link} from 'react-router-dom'
 
 import Label from 'pages/common/forms/Label/Label'
 import Button from 'pages/common/components/button/Button'
-import {useWorkflowChannelSupportContext} from 'pages/automation/workflows/hooks/useWorkflowChannelSupport'
+import {
+    getChannelName,
+    useWorkflowChannelSupportContext,
+} from 'pages/automation/workflows/hooks/useWorkflowChannelSupport'
 import {SelfServiceChannelType} from 'pages/automation/common/hooks/useSelfServiceChannels'
 
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
@@ -40,7 +44,8 @@ const ConnectedChannelWorkflowsFeature = ({
         workflowsEntrypoints: allEntrypoints,
         workflowsUrl,
     } = useConnectedChannelsViewContext()
-    const {getUnsupportedStepsNames} = useWorkflowChannelSupportContext()
+    const {getUnsupportedNodeTypes, getSupportedChannels} =
+        useWorkflowChannelSupportContext()
 
     const configurationsById = useMemo(
         () => _keyBy(configurations, 'id'),
@@ -120,15 +125,25 @@ const ConnectedChannelWorkflowsFeature = ({
                 )}
             </div>
             {dirtyEntrypoints.map((entrypoint, index) => {
-                const unsupportedStepsNames = getUnsupportedStepsNames(
+                const unsupportedNodeTypes = getUnsupportedNodeTypes(
                     channelType,
                     configurationsById[entrypoint.workflow_id]
                 )
+                const onlySupportedChannels = _uniq(
+                    unsupportedNodeTypes.reduce(
+                        (acc, nodeType) => [
+                            ...acc,
+                            ...getSupportedChannels(nodeType),
+                        ],
+                        [] as SelfServiceChannelType[]
+                    )
+                )
+
                 const tooltipMessage =
-                    unsupportedStepsNames.length > 0
-                        ? `This flow contains steps that this channel doesn't support: ${unsupportedStepsNames.join(
-                              ', '
-                          )}`
+                    onlySupportedChannels.length > 0
+                        ? `This flow contains actions currently only supported in ${onlySupportedChannels
+                              .map(getChannelName)
+                              .join(' and ')}.`
                         : limitTooltipMessage
                 return (
                     <WorkflowItem
@@ -142,7 +157,7 @@ const ConnectedChannelWorkflowsFeature = ({
                         isToggleable={
                             entrypoint.enabled ||
                             (!isLimitReached &&
-                                !(unsupportedStepsNames.length > 0))
+                                !(onlySupportedChannels.length > 0))
                         }
                         index={index}
                         onToggle={handleToggle}

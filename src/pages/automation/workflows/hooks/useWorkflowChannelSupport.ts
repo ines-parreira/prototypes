@@ -50,10 +50,10 @@ type WorkflowChannelSupportContext = {
         | TicketChannel.ContactForm
         | TicketChannel.HelpCenter
     )[]
-    getUnsupportedStepsNames: (
+    getUnsupportedNodeTypes: (
         channelType: SelfServiceChannelType,
         workflow: Workflow
-    ) => string[]
+    ) => Array<NonNullable<VisualBuilderNode['type']>>
 }
 
 export const WorkflowChannelSupportContext = createContext<
@@ -247,8 +247,11 @@ export default function useWorkflowChannelSupport(
         [shopperInputSupportedChannels]
     )
 
-    const getUnsupportedStepsNames = useCallback(
-        (channelType: SelfServiceChannelType, workflow: Workflow) => {
+    const getUnsupportedNodeTypes = useCallback(
+        (
+            channelType: SelfServiceChannelType,
+            workflow: Workflow
+        ): Array<NonNullable<VisualBuilderNode['type']>> => {
             if (
                 workflow.steps.find(
                     (s) =>
@@ -257,7 +260,7 @@ export default function useWorkflowChannelSupport(
                 )
             ) {
                 if (!shopperInputSupportedChannels.has(channelType)) {
-                    return ['collect text reply', 'collect file upload']
+                    return ['text_reply', 'file_upload']
                 }
             }
             return []
@@ -282,14 +285,14 @@ export default function useWorkflowChannelSupport(
             getUnsupportedConnectedChannels,
             getSupportedChannels,
             getUnsupportedChannels,
-            getUnsupportedStepsNames,
+            getUnsupportedNodeTypes,
         }),
         [
             isStepUnsupportedInAllChannels,
             getUnsupportedConnectedChannels,
             getSupportedChannels,
             getUnsupportedChannels,
-            getUnsupportedStepsNames,
+            getUnsupportedNodeTypes,
         ]
     )
 }
@@ -300,7 +303,7 @@ export function createWorkflowChannelSupportContextForPreview(): WorkflowChannel
         getUnsupportedConnectedChannels: () => Promise.resolve([]),
         getSupportedChannels: () => [],
         getUnsupportedChannels: () => [],
-        getUnsupportedStepsNames: () => [],
+        getUnsupportedNodeTypes: () => [],
     }
 }
 

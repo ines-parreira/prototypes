@@ -156,7 +156,7 @@ function useMenuItemsForConnectedChannels(
     const {
         isStepUnsupportedInAllChannels,
         getUnsupportedConnectedChannels,
-        getUnsupportedChannels,
+        getSupportedChannels,
     } = useWorkflowChannelSupportContext()
     useEffect(() => {
         if (!isStepUnsupportedInAllChannels('text_reply')) {
@@ -177,16 +177,13 @@ function useMenuItemsForConnectedChannels(
                     configurationId,
                     'text_reply'
                 )
-            const unsupportedChannels = getUnsupportedChannels('text_reply')
+            const supportedChannels = getSupportedChannels('text_reply')
             const shopperInputDisabledText =
                 unsupportedConnectedChannels.length > 0
-                    ? `You can't use this step because this flow is enabled in ${unsupportedConnectedChannels
+                    ? ` This step is currently only supported in ${supportedChannels
                           .map(getChannelName)
-                          .join(
-                              ' and '
-                          )}. This step is currently not supported for ${unsupportedChannels
-                          .map(getChannelName)
-                          .join(' and ')}.`
+                          .join('and')}.
+                    Disable the flow in other channels to use this step.`
                     : ''
             if (shopperInputDisabledText) {
                 updateMenuItems((draft) => {
@@ -201,7 +198,7 @@ function useMenuItemsForConnectedChannels(
         }
         void f()
     }, [
-        getUnsupportedChannels,
+        getSupportedChannels,
         getUnsupportedConnectedChannels,
         updateMenuItems,
         configurationId,
