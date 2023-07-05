@@ -37,23 +37,29 @@ export type CurrentProductsUsages = {
     [ProductType.SMS]: CurrentUsagePerProduct | null
 }
 
-enum PaymentType {
+export enum PaymentType {
     Stripe = 'stripe',
+    Shopify = 'shopify',
 }
 
-enum PaymentIntentStatus {
+export enum PaymentIntentStatus {
     RequiresSource = 'requires_source',
+    RequiresConfirmation = 'requires_source_action',
+    Succeeded = 'succeeded',
 }
 
 export type Invoice = {
     amount_due: number
     attempted: boolean
-    date: Date
-    description: string
+    date: number
+    description: string | null
     id: string
     invoice_pdf: string
     metadata: {
         payment_service: PaymentType
+        extra_tickets?: string
+        extra_usage?: string
+        gorgias_release?: string
     }
     paid: boolean
     payment_confirmation_url: Maybe<string>

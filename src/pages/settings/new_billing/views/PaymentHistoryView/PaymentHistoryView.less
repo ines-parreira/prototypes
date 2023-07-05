@@ -1,0 +1,70 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        color: @classic-neutral-grey-6;
+    }
+
+    .header {
+        margin-bottom: 16px;
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+
+        i {
+            margin-right: 4px;
+        }
+    }
+
+    .description {
+        margin-top: 4px;
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+
+    .invoicesTable {
+        td {
+            padding: 26px 0;
+        }
+    }
+
+    .statusPaid {
+        background-color: @classic-feedback-success-0;
+        color: @classic-feedback-success-3;
+    }
+
+    .statusUnpaid {
+        background-color: @classic-feedback-error-0;
+        color: @classic-feedback-error-3;
+    }
+
+    .invoiceDate {
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .invoiceDescription {
+        color: @classic-neutral-grey-5;
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+        column-gap: 12px;
+        justify-content: flex-end;
+    }
+
+    .downloadLink {
+        padding: 0px 8px;
+    }
+}
