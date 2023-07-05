@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import React, {FormEvent, useCallback} from 'react'
+import React, {FormEvent, useCallback, useMemo} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -12,12 +12,22 @@ export default function NotificationSettings() {
     const {initialNotificationSound, save} = useNotificationSettings()
     const notificationSound = useSoundSetting(initialNotificationSound)
 
+    const canSave = useMemo(
+        () =>
+            initialNotificationSound.enabled !== notificationSound.enabled ||
+            initialNotificationSound.sound !== notificationSound.sound ||
+            initialNotificationSound.volume !== notificationSound.volume,
+        [initialNotificationSound, notificationSound]
+    )
+
     const handleSubmit = useCallback(
         (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault()
+            if (!canSave) return
+
             void save({notificationSound})
         },
-        [notificationSound, save]
+        [canSave, notificationSound, save]
     )
 
     return (
@@ -33,7 +43,7 @@ export default function NotificationSettings() {
                     description="Customize your notification sound and volume with our on/off setting, keeping you in control of your audio alerts."
                     title="Message notifications"
                 />
-                <Button intent="primary" type="submit">
+                <Button isDisabled={!canSave} intent="primary" type="submit">
                     Save settings
                 </Button>
             </form>
