@@ -7,24 +7,20 @@ export const templateAlertContent = {
         type: AlertType.Warning,
         message:
             'This template received recurring negative feedback from customers and is not usable for up to 6h.',
-        learnMore: 'TODO',
     },
     [WhatsAppMessageTemplateStatus.Disabled]: {
         type: AlertType.Warning,
         message:
             'This template received recurring negative feedback from customers. Re-edit and appeal the decision.',
-        learnMore: 'TODO',
     },
     [WhatsAppMessageTemplateStatus.Rejected]: {
         type: AlertType.Warning,
         message:
             'This template violates WhatsApp policies and cannot be used. Re-submit or appeal the decision.',
-        learnMore: 'TODO',
     },
     [WhatsAppMessageTemplateStatus.Unsupported]: {
         type: AlertType.Info,
         message: 'This template contains content not yet supported by Gorgias.',
-        learnMore: 'TODO',
     },
 }
 

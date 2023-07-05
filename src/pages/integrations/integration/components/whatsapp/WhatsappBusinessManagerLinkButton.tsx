@@ -9,7 +9,7 @@ export default function WhatsappBusinessManagerLinkButton() {
             onClick={() =>
                 window
                     .open(
-                        'https://business.facebook.com/wa/manage/phone-numbers/',
+                        'https://business.facebook.com/wa/manage/message-templates/',
                         '_blank'
                     )!
                     .focus()

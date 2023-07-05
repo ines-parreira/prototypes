@@ -61,7 +61,9 @@ export default function WhatsAppMessageTemplateDetailsDrawer({
                         onClose={() => setIsAlertVisible(false)}
                         customActions={
                             <a
-                                href={alertContent.learnMore}
+                                href={
+                                    'https://developers.facebook.com/docs/whatsapp/message-templates/guidelines/'
+                                }
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -104,7 +106,11 @@ export default function WhatsAppMessageTemplateDetailsDrawer({
                 <Label>Message</Label>
                 <p className={css.messageDescription}>
                     Template content can be managed in your{' '}
-                    <a href="TODO" target="_blank" rel="noreferrer noopener">
+                    <a
+                        href="https://business.facebook.com/wa/manage/message-templates/"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                    >
                         WhatsApp Business Manager
                     </a>
                     .
