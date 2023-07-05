@@ -3358,9 +3358,6 @@ declare namespace Paths {
       export type $200 = Components.Schemas.ContactFormDto;
     }
   }
-  namespace UpdateContactFormIntegration {
-    export type RequestBody = Components.Schemas.UpdateEmailIntegrationDto;
-  }
   namespace UpdateEmailIntegration {
     export type RequestBody = Components.Schemas.UpdateEmailIntegrationDto;
   }
@@ -3562,16 +3559,6 @@ export interface OperationMethods {
   'deleteAccountHelpCenters'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.DeleteAccountHelpCenters.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
-  /**
-   * updateContactFormIntegration - Update the help centers contact form integration values
-   * 
-   * This will update all the help centers that are using the "deactivated_integration_id" for the contact form feature. If a "fallback_integration" is provided, those help centers will use this new integration for the contact form feature. Else, the contact form feature will be disabled.
-   */
-  'updateContactFormIntegration'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.UpdateContactFormIntegration.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
@@ -4338,18 +4325,6 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.DeleteAccountHelpCenters.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/help-centers/update-contact-form-integration']: {
-    /**
-     * updateContactFormIntegration - Update the help centers contact form integration values
-     * 
-     * This will update all the help centers that are using the "deactivated_integration_id" for the contact form feature. If a "fallback_integration" is provided, those help centers will use this new integration for the contact form feature. Else, the contact form feature will be disabled.
-     */
-    'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.UpdateContactFormIntegration.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }

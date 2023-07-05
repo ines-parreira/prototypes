@@ -431,27 +431,6 @@
                 "tags": ["help-centers"]
             }
         },
-        "/api/help-center/help-centers/update-contact-form-integration": {
-            "post": {
-                "operationId": "updateContactFormIntegration",
-                "summary": "Update the help centers contact form integration values",
-                "deprecated": true,
-                "description": "This will update all the help centers that are using the \"deactivated_integration_id\" for the contact form feature. If a \"fallback_integration\" is provided, those help centers will use this new integration for the contact form feature. Else, the contact form feature will be disabled.",
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateEmailIntegrationDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {"204": {"description": ""}},
-                "tags": ["help-centers"]
-            }
-        },
         "/api/help-center/help-centers/shop-name/{shop_name}/purge-cache": {
             "post": {
                 "operationId": "purgeCache",
@@ -4386,44 +4365,6 @@
                 },
                 "required": ["account_id"]
             },
-            "FallbackEmailIntegrationDto": {
-                "type": "object",
-                "properties": {
-                    "id": {"type": "number", "example": 12345},
-                    "email": {
-                        "type": "string",
-                        "example": "acme-support@gorgias.xyz"
-                    }
-                },
-                "required": ["id", "email"]
-            },
-            "UpdateEmailIntegrationDto": {
-                "type": "object",
-                "properties": {
-                    "account_id": {
-                        "type": "number",
-                        "description": "The account id whose help centers should be deleted",
-                        "example": 1
-                    },
-                    "deactivated_integration_id": {
-                        "type": "number",
-                        "description": "The target email integration id",
-                        "example": 2
-                    },
-                    "fallback_integration": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/FallbackEmailIntegrationDto"
-                            }
-                        ]
-                    }
-                },
-                "required": [
-                    "account_id",
-                    "deactivated_integration_id",
-                    "fallback_integration"
-                ]
-            },
             "WorkflowVo": {
                 "type": "object",
                 "properties": {
@@ -6588,6 +6529,44 @@
                     "message",
                     "url",
                     "is_embedded"
+                ]
+            },
+            "FallbackEmailIntegrationDto": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "number", "example": 12345},
+                    "email": {
+                        "type": "string",
+                        "example": "acme-support@gorgias.xyz"
+                    }
+                },
+                "required": ["id", "email"]
+            },
+            "UpdateEmailIntegrationDto": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "number",
+                        "description": "The account id whose help centers should be deleted",
+                        "example": 1
+                    },
+                    "deactivated_integration_id": {
+                        "type": "number",
+                        "description": "The target email integration id",
+                        "example": 2
+                    },
+                    "fallback_integration": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FallbackEmailIntegrationDto"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "account_id",
+                    "deactivated_integration_id",
+                    "fallback_integration"
                 ]
             },
             "NavigationLinkMeta": {
