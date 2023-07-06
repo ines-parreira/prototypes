@@ -9,6 +9,7 @@ import {UseQueryResult} from '@tanstack/react-query'
 import {FeatureFlagKey} from 'config/featureFlags'
 import * as PerformanceTipHook from 'hooks/reporting/usePerformanceTips'
 import {TipQualifier} from 'services/performanceTipService'
+import {tags} from 'fixtures/tag'
 
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
@@ -102,6 +103,7 @@ describe('<SupportPerformanceOverview />', () => {
         agents: [agents[0].id],
         tags: [1],
     }
+    const tag = tags[0]
     const defaultState = {
         currentAccount: fromJS(account),
         integrations: fromJS(integrationsState),
@@ -114,6 +116,11 @@ describe('<SupportPerformanceOverview />', () => {
         teams: fromJS({
             all: teams,
         }),
+        entities: {
+            tags: {
+                [tag.id]: tag,
+            },
+        },
     } as RootState
 
     const defaultMetricTrend: MetricTrend = {
@@ -208,6 +215,7 @@ describe('<SupportPerformanceOverview />', () => {
         })
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AnalyticsPerformanceTips]: true,
+            [FeatureFlagKey.AnalyticsFilterByTags]: true,
         }))
     })
 
@@ -267,6 +275,7 @@ describe('<SupportPerformanceOverview />', () => {
         beforeEach(() => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
                 [FeatureFlagKey.AnalyticsPerformanceTips]: true,
+                [FeatureFlagKey.AnalyticsFilterByTags]: true,
             }))
         })
 

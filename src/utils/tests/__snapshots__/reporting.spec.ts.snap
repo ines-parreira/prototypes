@@ -38,5 +38,13 @@ exports[`reporting utils statsFiltersToReportingFilters should convert StatsFilt
       "2",
     ],
   },
+  {
+    "member": "TicketTags.tags",
+    "operator": "contains",
+    "values": [
+      "1",
+      "2",
+    ],
+  },
 ]
 `;

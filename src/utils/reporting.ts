@@ -1,5 +1,4 @@
 import moment, {Moment} from 'moment'
-
 import {
     HelpdeskMessageMember,
     ReportingFilter,
@@ -25,6 +24,7 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     channels: TicketMember.FirstMessageChannel,
     integrations: TicketMember.Integration,
     agents: TicketMember.AssigneeUserId,
+    tags: TicketMember.Tags,
 }
 
 export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
@@ -33,13 +33,14 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     channels: TicketMember.FirstMessageChannel,
     integrations: TicketMember.Integration,
     agents: TicketMember.AssigneeUserId,
+    tags: TicketMember.Tags,
 }
 
 export const statsFiltersToReportingFilters = (
     members: StatsFiltersMembers,
     statsFilters: StatsFilters
 ): ReportingFilter[] => {
-    const {period, integrations, channels, agents} = statsFilters
+    const {period, integrations, channels, agents, tags} = statsFilters
     const filters: ReportingFilter[] = [
         {
             member: members.periodStart,
@@ -73,6 +74,13 @@ export const statsFiltersToReportingFilters = (
             member: members.agents,
             operator: ReportingFilterOperator.Equals,
             values: agents.map((agent) => agent.toString()),
+        })
+    }
+    if (tags?.length && members.tags) {
+        filters.push({
+            member: members.tags,
+            operator: ReportingFilterOperator.Contains,
+            values: tags.map((tag) => tag.toString()),
         })
     }
     return filters

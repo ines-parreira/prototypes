@@ -92,6 +92,7 @@ import ChartCard from './ChartCard'
 import GaugeChart from './GaugeChart'
 import LineChart from './LineChart'
 import {OneDimensionalDataItem} from './types'
+import TagsStatsFilter from './TagsStatsFilter'
 
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
 const DEFAULT_TIMEZONE = 'UTC'
@@ -113,6 +114,8 @@ export default function SupportPerformanceOverview() {
     const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
     const hasPerformanceTips: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsPerformanceTips]
+    const hasFilterByTags: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsFilterByTags]
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
         currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
     )
@@ -126,16 +129,20 @@ export default function SupportPerformanceOverview() {
     )
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
-        const {channels, agents, period} = statsFilters
+        const {channels, agents, period, tags} = statsFilters
         return {
             channels,
             agents,
             period,
             integrations: integrationsStatsFilter,
+            tags,
         }
     }, [integrationsStatsFilter, statsFilters])
 
     const requestStatsFilters = useCleanStatsFilters(pageStatsFilters)
+    if (!hasFilterByTags) {
+        delete requestStatsFilters['tags']
+    }
 
     const customerSatisfactionTrend = useCustomerSatisfactionTrend(
         requestStatsFilters,
@@ -364,6 +371,12 @@ export default function SupportPerformanceOverview() {
                             isMultiple
                             variant="ghost"
                         />
+                        {hasFilterByTags && (
+                            <TagsStatsFilter
+                                value={pageStatsFilters.tags}
+                                variant={'ghost'}
+                            />
+                        )}
                         <ChannelsStatsFilter
                             value={pageStatsFilters.channels}
                             channels={Object.values(TicketChannel)}

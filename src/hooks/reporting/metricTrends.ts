@@ -10,9 +10,9 @@ import {
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
+    HelpdeskMessagesStatsFiltersMembers,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
-    HelpdeskMessagesStatsFiltersMembers,
 } from 'utils/reporting'
 
 import createUseMetricTrend from './createUseMetricTrend'

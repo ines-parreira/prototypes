@@ -54,6 +54,14 @@ exports[`metric trends useClosedTicketsTrend should create reporting filters 1`]
         "2",
       ],
     },
+    {
+      "member": "TicketTags.tags",
+      "operator": "contains",
+      "values": [
+        "1",
+        "2",
+      ],
+    },
   ],
   "measures": [
     "Ticket.ticketCount",
@@ -116,6 +124,14 @@ exports[`metric trends useCustomerSatisfactionTrend should create reporting filt
       "member": "Ticket.assigneeUserId",
       "operator": "equals",
       "values": [
+        "2",
+      ],
+    },
+    {
+      "member": "TicketTags.tags",
+      "operator": "contains",
+      "values": [
+        "1",
         "2",
       ],
     },
@@ -192,6 +208,14 @@ exports[`metric trends useFirstResponseTimeTrend should create reporting filters
         "chat",
       ],
     },
+    {
+      "member": "TicketTags.tags",
+      "operator": "contains",
+      "values": [
+        "1",
+        "2",
+      ],
+    },
   ],
   "measures": [
     "TicketMessages.firstResponseTime",
@@ -254,6 +278,14 @@ exports[`metric trends useMessagesPerTicketTrend should create reporting filters
       "member": "Ticket.assigneeUserId",
       "operator": "equals",
       "values": [
+        "2",
+      ],
+    },
+    {
+      "member": "TicketTags.tags",
+      "operator": "contains",
+      "values": [
+        "1",
         "2",
       ],
     },
@@ -320,6 +352,14 @@ exports[`metric trends useResolutionTimeTrend should create reporting filters 1`
       "member": "Ticket.assigneeUserId",
       "operator": "equals",
       "values": [
+        "2",
+      ],
+    },
+    {
+      "member": "TicketTags.tags",
+      "operator": "contains",
+      "values": [
+        "1",
         "2",
       ],
     },
@@ -394,6 +434,14 @@ exports[`metric trends useTicketsCreatedTrend should create reporting filters 1`
       "member": "Ticket.assigneeUserId",
       "operator": "equals",
       "values": [
+        "2",
+      ],
+    },
+    {
+      "member": "TicketTags.tags",
+      "operator": "contains",
+      "values": [
+        "1",
         "2",
       ],
     },

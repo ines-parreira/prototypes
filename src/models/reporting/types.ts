@@ -41,6 +41,7 @@ export enum TicketMember {
     Status = 'Ticket.status',
     FirstHelpdeskMessageDatetime = 'TicketMessages.firstHelpdeskMessageDatetime',
     FirstHelpdeskMessageUserId = 'TicketMessages.firstHelpdeskMessageUserId',
+    Tags = 'TicketTags.tags',
 }
 
 export enum HelpdeskMessageMeasure {

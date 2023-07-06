@@ -42,6 +42,14 @@ exports[`time series useTicketsClosedTimeSeries should create reporting filters 
         ],
       },
       {
+        "member": "TicketTags.tags",
+        "operator": "contains",
+        "values": [
+          "1",
+          "2",
+        ],
+      },
+      {
         "member": "Ticket.isTrashed",
         "operator": "equals",
         "values": [
@@ -121,6 +129,14 @@ exports[`time series useTicketsCreatedTimeSeries should create reporting filters
         "member": "Ticket.assigneeUserId",
         "operator": "equals",
         "values": [
+          "2",
+        ],
+      },
+      {
+        "member": "TicketTags.tags",
+        "operator": "contains",
+        "values": [
+          "1",
           "2",
         ],
       },
