@@ -19,7 +19,6 @@ export const BUSINESS_MANAGEMENT = 'business_management'
 export const PAGES_SHOW_LIST = 'pages_show_list'
 export const READ_PAGE_MAILBOXES = 'read_page_mailboxes'
 export const PAGES_MESSAGING = 'pages_messaging'
-export const PAGES_MESSAGING_SUBSCRIPTIONS = 'pages_messaging_subscriptions'
 export const INSTAGRAM_BASIC = 'instagram_basic'
 export const INSTAGRAM_MANAGE_COMMENTS = 'instagram_manage_comments'
 export const ADS_READ = 'ads_read'
@@ -32,7 +31,6 @@ export const PERMISSIONS_PER_INTEGRATION_META_SETTING = {
         PAGES_MESSAGING,
         PAGES_MANAGE_METADATA,
         PAGES_SHOW_LIST,
-        PAGES_MESSAGING_SUBSCRIPTIONS,
         READ_PAGE_MAILBOXES,
     ],
     posts_enabled: [
