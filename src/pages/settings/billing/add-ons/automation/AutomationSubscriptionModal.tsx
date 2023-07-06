@@ -245,11 +245,19 @@ const AutomationSubscriptionModal = ({
                         onClose={onClose}
                         onConfirm={onConfirmEnterprise}
                     />
-                ) : (
+                ) : hasAccessToNewBilling ? (
                     <Footer
                         confirmLabel={confirmLabel}
                         isUpdating={isSubscriptionUpdating}
                         isDisabled={!isSubscriptionEnabled}
+                        onClose={onClose}
+                        onConfirm={onConfirm}
+                    />
+                ) : (
+                    <Footer
+                        confirmLabel={confirmLabel}
+                        isUpdating={isSubscriptionUpdating}
+                        isDisabled={false}
                         onClose={onClose}
                         onConfirm={onConfirm}
                     />

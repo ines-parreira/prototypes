@@ -270,8 +270,8 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
         </button>
         <div>
           <button
-            aria-disabled="true"
-            class="wrapper fill primary medium isDisabled"
+            aria-disabled="false"
+            class="wrapper fill primary medium"
             type="button"
           >
             Confirm
