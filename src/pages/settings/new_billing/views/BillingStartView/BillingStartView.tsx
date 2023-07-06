@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Container} from 'reactstrap'
-import {NavLink, Route, Switch} from 'react-router-dom'
+import {Link, NavLink, Route, Switch} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -17,7 +17,11 @@ import {
     getCurrentHelpdeskProduct,
     getCurrentProductsUsage,
 } from 'state/billing/selectors'
-import {Notification, NotificationStatus} from 'state/notifications/types'
+import {
+    Notification,
+    NotificationStatus,
+    NotificationStyle,
+} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {fetchCurrentProductsUsage} from 'state/billing/actions'
@@ -58,7 +62,9 @@ const BillingStartView = () => {
     const from: string = currentUser.get('email')
     const domain: string = currentAccount.get('domain')
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [subject, setSubject] = useState('')
+    const [subject, setSubject] = useState(
+        `New Billing support request - ${domain}`
+    )
     const [defaultMessage, setDefaultMessage] = useState('')
     const [ticketPurpose, setTicketPurpose] = useState<TicketPurpose>(
         TicketPurpose.CONTACT_US
@@ -72,6 +78,8 @@ const BillingStartView = () => {
             ).format(DATE_FORMAT),
         [currentUsage]
     )
+    const [voiceBanner, setVoiceBanner] = useState('')
+    const [smsBanner, setSMSBanner] = useState('')
 
     const contactBilling = useCallback(
         (ticketPurpose: TicketPurpose) => {
@@ -120,20 +128,19 @@ const BillingStartView = () => {
                         `Request:`,
                         message,
                     ].join('\n')
-                case TicketPurpose.CONTACT_US:
-                    return [
-                        `Billing request: General request from Billing page`,
-                        `Request:`,
-                        message,
-                    ].join('\n')
                 case TicketPurpose.ERROR:
                     return [
                         `Billing request: Billing error`,
                         `Request:`,
                         message,
                     ].join('\n')
+                case TicketPurpose.CONTACT_US:
                 default:
-                    return message
+                    return [
+                        `Billing request: General request from Billing page`,
+                        `Request:`,
+                        message,
+                    ].join('\n')
             }
         },
         [helpdeskProduct?.name, isTrialingSubscription, ticketPurpose]
@@ -149,6 +156,57 @@ const BillingStartView = () => {
             void fetchUsage()
         } else {
             setIsUsageFetched(true)
+        }
+    }, [currentUsage, dispatch])
+
+    useEffect(() => {
+        if (currentUsage?.voice) {
+            const subscriptionStartDate = moment(
+                currentUsage.voice.meta.subscription_start_datetime
+            )
+            const now = moment()
+            const isSubscriptionNew =
+                now.diff(subscriptionStartDate, 'hours') < 24
+
+            if (isSubscriptionNew) {
+                setVoiceBanner('Get started with your Voice plan')
+                void dispatch(
+                    notify({
+                        message: `Your Voice subscription has been activated!`,
+                        style: NotificationStyle.Banner,
+                        status: NotificationStatus.Success,
+                        actionHTML: (
+                            <Link to="/app/settings/channels/phone">
+                                Set Up Voice
+                            </Link>
+                        ),
+                    })
+                )
+            }
+        }
+        if (currentUsage?.sms) {
+            const subscriptionStartDate = moment(
+                currentUsage.sms.meta.subscription_start_datetime
+            )
+            const now = moment()
+            const isSubscriptionNew =
+                now.diff(subscriptionStartDate, 'hours') < 24
+
+            if (isSubscriptionNew) {
+                setSMSBanner('Get started with your SMS plan')
+                void dispatch(
+                    notify({
+                        message: `Your SMS subscription has been activated!`,
+                        style: NotificationStyle.Banner,
+                        status: NotificationStatus.Success,
+                        actionHTML: (
+                            <Link to="/app/settings/channels/sms">
+                                Set Up SMS
+                            </Link>
+                        ),
+                    })
+                )
+            }
         }
     }, [currentUsage, dispatch])
 
@@ -188,6 +246,8 @@ const BillingStartView = () => {
                                 setIsModalOpen={setIsModalOpen}
                                 periodEnd={periodEnd}
                                 currentUsage={currentUsage}
+                                voiceBanner={voiceBanner}
+                                smsBanner={smsBanner}
                             />
                         </Route>
                         <Route exact path={BILLING_PAYMENT_PATH}>

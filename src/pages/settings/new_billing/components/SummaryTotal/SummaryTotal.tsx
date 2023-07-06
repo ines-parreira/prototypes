@@ -50,7 +50,7 @@ const SummaryTotal = ({
             <div className={css.total}>
                 <div className={css.totalTitle}>Total</div>
                 <div className={css.totalPrice}>
-                    {oldPrice && !isFrequencyChanged && (
+                    {!!oldPrice && !isFrequencyChanged && (
                         <div className={css.oldPrice} data-testid="oldPrice">
                             {formatAmount(oldPrice / 100, currency)}
                         </div>

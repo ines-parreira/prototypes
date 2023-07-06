@@ -10,7 +10,7 @@ import {
 } from 'models/billing/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
-import {isStarterTierPrice} from 'models/billing/utils'
+import {isStarterTierPrice, isTrialVoiceOrSMSPrice} from 'models/billing/utils'
 import Tooltip from 'pages/common/components/Tooltip'
 import {ENTERPRISE_PRICE_ID, INTERVAL, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge'
@@ -31,7 +31,7 @@ export type ProductPlanSelectionProps = {
 const ProductPlanSelection = ({
     type,
     product,
-    interval,
+    interval = PlanInterval.Month,
     prices = [],
     selectedPlans,
     setSelectedPlans,
@@ -39,42 +39,47 @@ const ProductPlanSelection = ({
 }: ProductPlanSelectionProps) => {
     const isActive = useMemo(() => !!product, [product])
 
-    const isStarterHelpdeskPlanDisabled = useCallback(() => {
-        const isStarterPlan = isStarterTierPrice(
-            selectedPlans[ProductType.Helpdesk].plan
-        )
+    const selectedPlan = selectedPlans[type].plan
 
-        const isYearlyInterval = interval === INTERVAL.Year
+    const isStarterHelpdeskPlanDisabled = useCallback(
+        (price) => {
+            const isStarterPlan = isStarterTierPrice(price)
 
-        const selectedProductsCount = Object.values(selectedPlans).filter(
-            (plan) => plan.isSelected
-        ).length
+            const isYearlyInterval = interval === INTERVAL.Year
 
-        const tooltipText = isYearlyInterval
-            ? 'Switch to monthly billing to downgrade to a Starter plan.'
-            : selectedProductsCount > 1
-            ? 'To downgrade Helpdesk to a Starter plan, please cancel any other active subscriptions.'
-            : undefined
+            const selectedProductsCount = Object.values(selectedPlans).filter(
+                (plan) => plan.isSelected
+            ).length
 
-        if (isStarterPlan) {
-            return {
-                isDisabled: isYearlyInterval || selectedProductsCount > 1,
-                tooltipText: tooltipText,
+            const tooltipText = isYearlyInterval
+                ? 'Switch to monthly billing to downgrade to a Starter plan.'
+                : selectedProductsCount > 1
+                ? 'To downgrade Helpdesk to a Starter plan, please cancel any other active subscriptions.'
+                : undefined
+
+            if (isStarterPlan) {
+                return {
+                    isDisabled: isYearlyInterval || selectedProductsCount > 1,
+                    tooltipText: tooltipText,
+                }
             }
-        }
-        return {
-            isDisabled: false,
-            tooltipText: undefined,
-        }
-    }, [interval, selectedPlans])
+            return {
+                isDisabled: false,
+                tooltipText: undefined,
+            }
+        },
+        [interval, selectedPlans]
+    )
 
     const options = useMemo(
         () => [
             ...prices.map((price) => ({
                 value: price.price_id ?? '',
-                label: formatNumTickets(price.num_quota_tickets ?? 0),
-                isDisabled: isStarterHelpdeskPlanDisabled().isDisabled,
-                tooltipText: isStarterHelpdeskPlanDisabled().tooltipText,
+                label: isTrialVoiceOrSMSPrice(price, type)
+                    ? 'Trial'
+                    : formatNumTickets(price.num_quota_tickets ?? 0),
+                isDisabled: isStarterHelpdeskPlanDisabled(price).isDisabled,
+                tooltipText: isStarterHelpdeskPlanDisabled(price).tooltipText,
             })),
             {
                 value: ENTERPRISE_PRICE_ID,
@@ -83,7 +88,7 @@ const ProductPlanSelection = ({
                 )}+`,
             },
         ],
-        [isStarterHelpdeskPlanDisabled, prices]
+        [isStarterHelpdeskPlanDisabled, prices, type]
     )
 
     const handleClose = useCallback(() => {
@@ -101,10 +106,12 @@ const ProductPlanSelection = ({
             return
         }
 
+        const initialPlan = prices.find((price) => price.num_quota_tickets)
+
         setSelectedPlans((prev) => ({
             ...prev,
             [type]: {
-                plan: prices[0],
+                plan: initialPlan,
                 isSelected: true,
             },
         }))
@@ -173,33 +180,61 @@ const ProductPlanSelection = ({
                             options={options}
                             id="priceSelect"
                             placeholder="Select a plan"
-                            value={selectedPlans[type].plan?.price_id}
+                            value={selectedPlan?.price_id}
                             fullWidth
                             onChange={handleSelectProductPlan}
                             data-testid="priceSelect"
                             showSelectedOption
+                            dropdownMenuClassName={css.select}
                         />
                         <div className={css.counter}>
                             <div>
-                                {PRODUCT_INFO[type].counter}/{interval}
+                                {selectedPlan &&
+                                isTrialVoiceOrSMSPrice(selectedPlan, type) ? (
+                                    <>
+                                        <strong>
+                                            $
+                                            {(
+                                                selectedPlan?.extra_ticket_cost ??
+                                                0
+                                            ).toFixed(2)}
+                                        </strong>{' '}
+                                        {PRODUCT_INFO[type].perTicket}
+                                    </>
+                                ) : (
+                                    `${PRODUCT_INFO[type].counter}/${interval}`
+                                )}
                             </div>
-                            <i id="priceSelectInfo" className="material-icons">
+                            <i
+                                id={`priceSelectInfo_${type}`}
+                                className="material-icons"
+                            >
                                 info_outlined
                             </i>
                             <Tooltip
                                 placement="top-start"
-                                target="priceSelectInfo"
+                                target={`priceSelectInfo_${type}`}
+                                className={css.tooltip}
+                                autohide={false}
                             >
-                                {PRODUCT_INFO.automation.tooltip}
+                                {PRODUCT_INFO[type].tooltip}
+                                <a
+                                    href={PRODUCT_INFO[type].tooltipLink}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Learn more
+                                </a>
                             </Tooltip>
                         </div>
-                        <div className={css.productName}>
-                            {selectedPlans[type].plan?.name}
-                        </div>
+                        {type === ProductType.Helpdesk && (
+                            <div className={css.productName}>
+                                {selectedPlan?.name}
+                            </div>
+                        )}
                     </div>
                     {isActive &&
-                        product?.price_id !==
-                            selectedPlans[type].plan?.price_id && (
+                        product?.price_id !== selectedPlan?.price_id && (
                             <div className={css.oldPrice}>
                                 {`${product?.num_quota_tickets || 0} ${
                                     PRODUCT_INFO[type].counter

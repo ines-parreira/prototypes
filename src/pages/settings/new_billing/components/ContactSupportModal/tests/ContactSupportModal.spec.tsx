@@ -81,7 +81,7 @@ describe('ContactSupportModal', () => {
 
         await waitFor(() => {
             expect(notify).toHaveBeenCalledWith({
-                message: `Your request has been submitted. We'll get back to you by email at ${props.from}`,
+                message: `Your request has been submitted. We'll get back to you by email at ${props.from} within 24 business hours`,
                 status: 'success',
                 dismissAfter: 5000,
                 showDismissButton: true,

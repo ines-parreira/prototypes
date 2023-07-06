@@ -56,7 +56,7 @@ const ContactSupportModal = ({
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
-                    message: `Your request has been submitted. We'll get back to you by email at ${from}`,
+                    message: `Your request has been submitted. We'll get back to you by email at ${from} within 24 business hours`,
                     dismissAfter: 5000,
                     showDismissButton: true,
                 })

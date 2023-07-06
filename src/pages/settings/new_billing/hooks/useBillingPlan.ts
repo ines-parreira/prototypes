@@ -29,6 +29,7 @@ import {
 import {updateSubscriptionsForPlans} from 'state/currentAccount/actions'
 import {isStarterTierPrice} from 'models/billing/utils'
 import {
+    BILLING_BASE_PATH,
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
     ENTERPRISE_PRICE_ID,
@@ -96,17 +97,13 @@ export const useBillingPlans = ({
     // Voice
     const voiceProduct = useAppSelector(getCurrentVoiceProduct)
     const voicePrices = useAppSelector(getVoiceProduct)?.prices.filter(
-        (price) =>
-            price.num_quota_tickets &&
-            (filterByInterval ? price.interval === interval : true)
+        (price) => (filterByInterval ? price.interval === interval : true)
     )
 
     // SMS
     const smsProduct = useAppSelector(getCurrentSMSProduct)
-    const smsPrices = useAppSelector(getSMSProduct)?.prices.filter(
-        (price) =>
-            price.num_quota_tickets &&
-            (filterByInterval ? price.interval === interval : true)
+    const smsPrices = useAppSelector(getSMSProduct)?.prices.filter((price) =>
+        filterByInterval ? price.interval === interval : true
     )
 
     // Selected plans
@@ -268,7 +265,7 @@ export const useBillingPlans = ({
                     notify({
                         message: `We're reviewing your <strong>${productsNames}</strong> plan${
                             plansToBeHandledManually.length > 1 ? 's' : ''
-                        } request and will contact you at <b>${from}</b>`,
+                        } request and will contact you at <b>${from}</b> within 24 business hours`,
                         actionHTML: `<span class="d-inline-flex align-items-baseline"><span class="text-primary">Contact Billing</span></span>`,
                         onClick: () => contactBilling(TicketPurpose.CONTACT_US),
                         allowHTML: true,
@@ -280,6 +277,7 @@ export const useBillingPlans = ({
                         id: 'billing-voice-sms-request',
                     })
                 )
+                history.push(BILLING_BASE_PATH)
             } catch (error) {
                 dispatchBillingError()
             }
@@ -293,6 +291,7 @@ export const useBillingPlans = ({
         selectedPlans,
         smsProduct?.internal_id,
         voiceProduct?.internal_id,
+        history,
     ])
 
     const handleHelpdeskAndAutomationPlansChange = useCallback(async () => {
@@ -362,6 +361,7 @@ export const useBillingPlans = ({
                         billingErrorNotification
                     )
                 )
+                history.push(BILLING_BASE_PATH)
             } catch (error) {
                 dispatchBillingError()
             }

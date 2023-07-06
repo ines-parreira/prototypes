@@ -13,6 +13,7 @@ import {fetchCreditCard} from 'state/billing/actions'
 import Button from 'pages/common/components/button/Button'
 import {Notification} from 'state/notifications/types'
 import {TicketPurpose} from 'state/billing/types'
+import Alert from 'pages/common/components/Alert/Alert'
 import Card from '../../components/Card'
 import BackLink from '../../components/BackLink'
 import ProductPlanSelection from '../../components/ProductPlanSelection'
@@ -108,6 +109,14 @@ const BillingProcessView = ({
 
     const isIntervalMonthly = interval === INTERVAL.Month
 
+    const voiceOrSMSChanged =
+        (selectedPlans[ProductType.Voice].isSelected &&
+            voiceProduct?.price_id !==
+                selectedPlans[ProductType.Voice].plan?.price_id) ||
+        (selectedPlans[ProductType.SMS].isSelected &&
+            smsProduct?.price_id !==
+                selectedPlans[ProductType.SMS].plan?.price_id)
+
     // fetch card
     useEffect(() => {
         const fetchCard = async () => {
@@ -163,6 +172,12 @@ const BillingProcessView = ({
                     <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>Update</Link>
                 </div>
             </div>
+            {voiceOrSMSChanged && (
+                <Alert className={css.alert} icon>
+                    Your account will be reviewed by our team before activating
+                    your subscription
+                </Alert>
+            )}
             <div className={css.cards}>
                 <Card
                     title={'Select Plans'}

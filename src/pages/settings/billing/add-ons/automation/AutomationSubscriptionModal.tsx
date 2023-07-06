@@ -26,10 +26,12 @@ import useAppSelector from 'hooks/useAppSelector'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {isStarterTierPrice} from 'models/billing/utils'
 import {
+    BILLING_SUPPORT_EMAIL,
     ENTERPRISE_PRICE_ID,
     ZAPIER_BILLING_HOOK,
 } from 'pages/settings/new_billing/constants'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import AutomationPlanSubscriptionDescription from './AutomationPlanSubscriptionDescription'
 import AutomationSubscriptionDescription from './AutomationSubscriptionDescription'
 import css from './AutomationSubscriptionModal.less'
@@ -97,6 +99,11 @@ const AutomationSubscriptionModal = ({
     const dispatch = useAppDispatch()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const currentUser = useAppSelector(getCurrentUser)
+
+    const from: string = currentUser.get('email')
+    const domain: string = currentAccount.get('domain')
 
     const currentProducts = useAppSelector(getCurrentProducts)
 
@@ -104,8 +111,6 @@ const AutomationSubscriptionModal = ({
         ? [
               currentProducts.helpdesk?.price_id,
               currentProducts.automation?.price_id || '',
-              currentProducts.voice?.price_id || '',
-              currentProducts.sms?.price_id || '',
           ].filter(Boolean)
         : []
 
@@ -254,10 +259,10 @@ const AutomationSubscriptionModal = ({
                 <ContactSupportModal
                     isOpen={showContactSupportModal}
                     handleOnClose={onCloseEnterprise}
-                    domain="acme"
-                    from="irinel@gorgias.com"
-                    to="acme@gorgias.com"
-                    subject="Enterprise Plan"
+                    domain={domain}
+                    from={from}
+                    to={BILLING_SUPPORT_EMAIL}
+                    subject={`New Enterprise plan request - ${domain}}`}
                     zapierHook={ZAPIER_BILLING_HOOK}
                 />
             )}

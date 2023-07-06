@@ -17,6 +17,7 @@ import {
 } from 'state/billing/selectors'
 import {CurrentUsagePerProduct} from 'state/billing/types'
 
+import Alert from 'pages/common/components/Alert/Alert'
 import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge/Badge'
 import {formatAmount, formatNumTickets} from '../../utils/formatAmount'
@@ -26,9 +27,10 @@ export type ProductCardProps = {
     type: ProductType
     product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice
     usage?: CurrentUsagePerProduct | null
+    banner?: string
 }
 
-const ProductCard = ({type, product, usage}: ProductCardProps) => {
+const ProductCard = ({type, product, usage, banner = ''}: ProductCardProps) => {
     const cheapestPrices = useAppSelector(getCheapestProductPrices)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const history = useHistory()
@@ -127,10 +129,8 @@ const ProductCard = ({type, product, usage}: ProductCardProps) => {
         () => (
             <div className={classNames(css.counter)}>
                 <div className={className}>
-                    {usage
-                        ? usage.data.num_tickets + usage.data.num_extra_tickets
-                        : 0}{' '}
-                    of {formatNumTickets(product?.num_quota_tickets || 0)}{' '}
+                    {usage ? usage.data.num_tickets : 0} of{' '}
+                    {formatNumTickets(product?.num_quota_tickets || 0)}{' '}
                     {PRODUCT_INFO[type].counter} used
                 </div>
                 <i className="material-icons" id={`info_${type}`}>
@@ -178,7 +178,20 @@ const ProductCard = ({type, product, usage}: ProductCardProps) => {
             <div className={css.body}>
                 <div
                     data-candu-id={`billing-${type}-description-${canduOverageStatus}`}
-                ></div>
+                >
+                    {banner && (
+                        <Alert
+                            icon
+                            customActions={
+                                <a href={PRODUCT_INFO[type].bannerLink}>
+                                    Set up {PRODUCT_INFO[type].title}
+                                </a>
+                            }
+                        >
+                            {banner}
+                        </Alert>
+                    )}
+                </div>
             </div>
             <div className={css.footer}>
                 <div>{isActive ? updateContainer : subscribeContainer}</div>

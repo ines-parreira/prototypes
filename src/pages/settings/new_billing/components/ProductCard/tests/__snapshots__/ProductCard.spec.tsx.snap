@@ -60,8 +60,8 @@ exports[`ProductCard should render a Helpdesk ProductCard component 1`] = `
           class=""
         >
           0
+           of
            
-          of 
           300
            
           tickets

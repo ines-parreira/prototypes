@@ -132,7 +132,7 @@ exports[`UsageAndPlansView should render 1`] = `
                       </div>
                       <div
                         aria-hidden="true"
-                        class="options optionsFullWidth dropdown-menu"
+                        class="options select optionsFullWidth dropdown-menu"
                         role="menu"
                         tabindex="-1"
                       >
@@ -184,13 +184,11 @@ exports[`UsageAndPlansView should render 1`] = `
                     class="counter"
                   >
                     <div>
-                      tickets
-                      /
-                      month
+                      tickets/month
                     </div>
                     <i
                       class="material-icons"
-                      id="priceSelectInfo"
+                      id="priceSelectInfo_helpdesk"
                     >
                       info_outlined
                     </i>
@@ -339,7 +337,11 @@ exports[`UsageAndPlansView should render 1`] = `
                   class="description"
                 >
                   Basic - 
-                  300 tickets/month
+                  300
+                   
+                  tickets
+                  /
+                  month
                 </div>
               </div>
               <div
@@ -366,7 +368,6 @@ exports[`UsageAndPlansView should render 1`] = `
                 <div
                   class="totalPrice"
                 >
-                  0
                   <span>
                     $60
                   </span>

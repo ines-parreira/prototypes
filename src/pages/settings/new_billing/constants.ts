@@ -25,32 +25,40 @@ export const PRODUCT_INFO = {
         title: 'Helpdesk',
         icon: 'desktop_mac',
         counter: 'tickets',
+        perTicket: 'per ticket',
         tooltip: 'Tickets that have a response from an agent or a rule.',
         tooltipLink: BILLABLE_TICKETS_URL,
+        bannerLink: '/app/settings',
     },
     [ProductType.Automation]: {
         title: 'Automation',
         icon: 'auto_awesome',
         counter: 'automated interactions',
+        perTicket: 'per automated interaction',
         tooltip:
             'An interaction is automated when your customer solves their request without human intervention using a feature from our automation add-on.',
         tooltipLink: BILLABLE_TICKETS_URL,
+        bannerLink: '/app/automation',
     },
     [ProductType.Voice]: {
         title: 'Voice',
         icon: 'phone',
         counter: 'voice tickets',
+        perTicket: 'per voice ticket',
         tooltip:
             'Tickets where at least one phone call takes place between your customer and your team.',
         tooltipLink: BILLABLE_TICKETS_URL,
+        bannerLink: '/app/settings/channels/phone',
     },
     [ProductType.SMS]: {
         title: 'SMS',
         icon: 'textsms',
         counter: 'SMS tickets',
+        perTicket: 'per SMS ticket',
         tooltip:
             'Tickets where at least one SMS message has been sent from an agent or a rule.',
         tooltipLink: BILLABLE_TICKETS_URL,
+        bannerLink: '/app/settings/channels/sms',
     },
 }
 

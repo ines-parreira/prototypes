@@ -7,6 +7,7 @@ import {
     ProductType,
     SMSOrVoicePrice,
 } from 'models/billing/types'
+import {isTrialVoiceOrSMSPrice} from 'models/billing/utils'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {PRODUCT_INFO} from '../../constants'
 import {formatAmount} from '../../utils/formatAmount'
@@ -74,17 +75,37 @@ const SummaryItem = ({
             <div className={css.details}>
                 <div className={css.title}>{PRODUCT_INFO[type].title}</div>
                 <div className={css.description}>
-                    {name ? `${name} - ` : ''}
-                    {`${tickets} ${PRODUCT_INFO[type].counter}/${interval}`}
+                    {type === ProductType.Helpdesk && name ? `${name} - ` : ''}
+                    {selectedPlan.plan &&
+                    isTrialVoiceOrSMSPrice(selectedPlan.plan, type) ? (
+                        <>
+                            $
+                            {(selectedPlan.plan.extra_ticket_cost ?? 0).toFixed(
+                                2
+                            )}{' '}
+                            {PRODUCT_INFO[type].perTicket}
+                        </>
+                    ) : (
+                        <>
+                            {tickets} {PRODUCT_INFO[type].counter}/{interval}
+                        </>
+                    )}
                 </div>
             </div>
             <div className={css.price}>
-                {oldPrice && !isFrequencyChanged && (
+                {!!oldPrice && !isFrequencyChanged && (
                     <div data-testid="oldPrice" className={css.oldPrice}>
                         {formatAmount(oldPrice, currency)}
                     </div>
                 )}
-                <span>{formatAmount(price, currency)}</span>/{interval}
+                {selectedPlan.plan &&
+                isTrialVoiceOrSMSPrice(selectedPlan.plan, type) ? (
+                    <div>Trial</div>
+                ) : (
+                    <>
+                        <span>{formatAmount(price, currency)}</span>/{interval}
+                    </>
+                )}
             </div>
         </div>
     )

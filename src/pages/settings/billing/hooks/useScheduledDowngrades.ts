@@ -19,8 +19,12 @@ export default function useScheduledDowngrades() {
     const [state, doFetch] = useAsyncFn(async () => {
         const sub = await fetchSubscription()
 
-        const downgrades: ScheduledDowngrade[] = (sub.downgrades || []).map(
-            (downgrade) => {
+        const downgrades: ScheduledDowngrade[] = (sub.downgrades || [])
+            .filter((downgrade) => {
+                const fromPrice = pricesMap[downgrade.current_price_id]
+                return !!fromPrice
+            })
+            .map((downgrade) => {
                 const fromPrice = pricesMap[downgrade.current_price_id]
                 return {
                     datetime: sub.current_billing_cycle_end_datetime,
@@ -32,8 +36,7 @@ export default function useScheduledDowngrades() {
                         ? pricesMap[downgrade.scheduled_price_id]
                         : null,
                 }
-            }
-        )
+            })
 
         return downgrades
     }, [pricesMap, products])

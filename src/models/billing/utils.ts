@@ -5,6 +5,7 @@ import {
     AutomationPrice,
     HelpdeskPrice,
     PlanInterval,
+    ProductType,
     SMSOrVoicePrice,
 } from 'models/billing/types'
 
@@ -41,6 +42,16 @@ export function isStarterTierPrice(
     price: HelpdeskPrice | undefined
 ): price is HelpdeskPrice {
     return !!price?.internal_id.startsWith('starter-')
+}
+
+export function isTrialVoiceOrSMSPrice(
+    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice,
+    type: ProductType
+) {
+    return (
+        price.num_quota_tickets === 0 &&
+        (type === ProductType.Voice || type === ProductType.SMS)
+    )
 }
 
 export function getFormattedAmount(amountInCents: number) {

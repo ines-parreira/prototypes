@@ -123,7 +123,7 @@ const PaymentsHistoryView = () => {
                             <th>Amount</th>
                             <th>Description</th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th className={css.actionsHeader}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>

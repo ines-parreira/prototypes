@@ -16,6 +16,7 @@ import {
 } from 'state/billing/selectors'
 import {ProductType} from 'models/billing/types'
 import {CurrentProductsUsages} from 'state/billing/types'
+import BillingScheduledDowngrades from 'pages/settings/billing/BillingScheduledDowngrades'
 import {
     BILLING_PAYMENT_FREQUENCY_PATH,
     BILLING_PAYMENT_PATH,
@@ -30,12 +31,16 @@ type UsageAndPlansViewProps = {
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
     periodEnd: string
     currentUsage: CurrentProductsUsages | null
+    voiceBanner?: string
+    smsBanner?: string
 }
 
 const UsageAndPlansView = ({
     setIsModalOpen,
     periodEnd,
     currentUsage,
+    smsBanner,
+    voiceBanner,
 }: UsageAndPlansViewProps) => {
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
@@ -103,6 +108,7 @@ const UsageAndPlansView = ({
                     <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>Update</Link>
                 </div>
             </div>
+            <BillingScheduledDowngrades />
             <div className={css.productsGridContainer}>
                 <ProductCard
                     type={ProductType.Helpdesk}
@@ -118,11 +124,13 @@ const UsageAndPlansView = ({
                     type={ProductType.Voice}
                     product={voiceProduct}
                     usage={currentUsage?.voice}
+                    banner={voiceBanner}
                 />
                 <ProductCard
                     type={ProductType.SMS}
                     product={smsProduct}
                     usage={currentUsage?.sms}
+                    banner={smsBanner}
                 />
             </div>
             <div className={css.unsubscribe}>
