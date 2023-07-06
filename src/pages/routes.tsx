@@ -10,7 +10,6 @@ import {
 import _memoize from 'lodash/memoize'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import DEPRECATED_SupportPerformanceAgents from 'pages/stats/DEPRECATED_SupportPerformanceAgents'
 import {assetsUrl} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {PageSection} from 'config/pages'
@@ -111,6 +110,7 @@ import SupportPerformanceSatisfaction from './stats/SupportPerformanceSatisfacti
 import SupportPerformanceRevenue from './stats/SupportPerformanceRevenue'
 import RevenueCampaignsStats from './stats/revenue/pages/CampaignsStats'
 import SupportPerformanceOverview from './stats/SupportPerformanceOverview'
+import DEPRECATED_SupportPerformanceAgents from './stats/DEPRECATED_SupportPerformanceAgents'
 import DEPRECATED_SupportPerformanceOverview from './stats/DEPRECATED_SupportPerformanceOverview'
 import SupportPerformanceBusiestTimesOfDays from './stats/SupportPerformanceBusiestTimesOfDays'
 import LiveOverview from './stats/LiveOverview'
