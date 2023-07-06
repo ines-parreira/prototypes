@@ -6,6 +6,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import InputField from 'pages/common/forms/input/InputField'
 import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
 
+import {isTriggerValueNonNegative} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/utils/isTriggerValueNonNegative'
 import {AMOUNT_SPENT_OPERATORS} from '../../constants/operators'
 
 import {useIntegrationContext} from '../../containers/IntegrationProvider'
@@ -43,6 +44,7 @@ export const AmountSpentTrigger = ({
 
     const handleChangeValue = (value: string) => {
         if (!isAllowedToEdit) return
+        if (value !== '' && !isTriggerValueNonNegative(value)) return
 
         setInnerValue(value)
     }
@@ -89,6 +91,7 @@ export const AmountSpentTrigger = ({
                     prefix={currencySymbol}
                     value={innerValue}
                     type="number"
+                    min={0}
                     onChange={handleChangeValue}
                     onBlur={handleBlurValue}
                 />

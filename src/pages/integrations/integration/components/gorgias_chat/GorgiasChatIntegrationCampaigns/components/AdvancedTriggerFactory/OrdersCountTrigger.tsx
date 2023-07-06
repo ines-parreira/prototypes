@@ -5,6 +5,7 @@ import {Value} from 'pages/common/forms/SelectField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import InputField from 'pages/common/forms/input/InputField'
 
+import {isTriggerValueNonNegative} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/utils/isTriggerValueNonNegative'
 import {ORDERS_COUNT_OPERATORS} from '../../constants/operators'
 
 import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
@@ -39,6 +40,7 @@ export const OrdersCountTrigger = ({
 
     const handleChangeValue = (value: string) => {
         if (!isAllowedToEdit) return
+        if (value !== '' && !isTriggerValueNonNegative(value)) return
 
         setInnerValue(value)
     }
@@ -79,6 +81,7 @@ export const OrdersCountTrigger = ({
                     className={css.fullWidth}
                     value={innerValue}
                     type="number"
+                    min={0}
                     onChange={handleChangeValue}
                     onBlur={handleBlurValue}
                 />
