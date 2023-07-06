@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local {
     .wrapper {
         display: flex;
@@ -7,7 +5,7 @@
 
         .actionName {
             text-transform: uppercase;
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
             font-weight: bold;
             font-size: 11px;
             margin-bottom: 4px;
@@ -38,7 +36,7 @@
         &:not(:last-child) {
             margin-bottom: 8px;
             padding-bottom: 16px;
-            border-bottom: 1px solid @classic-neutral-grey-3;
+            border-bottom: 1px solid var(--neutral-grey-3);
         }
     }
 }

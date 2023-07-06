@@ -26,12 +26,12 @@
     .item {
         position: relative;
         padding: 0.25em 24px 0.25em 0.76em;
-        background: @classic-neutral-grey-2;
+        background: var(--neutral-grey-2);
         margin: 0 4px 2px 0;
         cursor: pointer;
         outline: none !important; // prevent outline from focus
 
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         font-weight: 600;
         font-size: 12px;
         white-space: nowrap;
@@ -60,9 +60,9 @@
         width: 100%;
         border-radius: 3px;
         overflow: hidden;
-        background: @classic-neutral-grey-0;
+        background: var(--neutral-grey-0);
         box-shadow: 0 2px 3px fade(@classic-neutral-grey-6, 20%);
-        border: 1px solid @classic-neutral-grey-3;
+        border: 1px solid var(--neutral-grey-3);
         padding: 8px;
 
         text-overflow: ellipsis;
@@ -75,20 +75,20 @@
             padding: 8px 8px;
             cursor: pointer;
 
-            color: @classic-neutral-grey-6;
+            color: var(--neutral-grey-6);
             font-weight: 500;
             white-space: nowrap;
 
             &.suggestion--focused {
-                background-color: @classic-neutral-grey-1;
+                background-color: var(--neutral-grey-1);
 
-                color: @classic-neutral-grey-6;
+                color: var(--neutral-grey-6);
             }
         }
     }
 
     .emptySuggestions {
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
         font-size: 14px;
         padding: 8px;
     }

@@ -1,5 +1,3 @@
-@import '~css/new/colorTokens';
-
 :local {
     .hourlyTable {
         table-layout: fixed;
@@ -9,7 +7,7 @@
             position: relative;
             background-clip: padding-box;
             padding: 5px 0 5px 0;
-            border: 1px solid @classic-neutral-grey-3;
+            border: 1px solid var(--neutral-grey-3);
             text-align: center;
 
             &:first-child {
@@ -24,18 +22,18 @@
             font-weight: 600;
             overflow: hidden;
             text-overflow: ellipsis;
-            background-color: @classic-neutral-grey-3;
-            color: @classic-neutral-grey-6;
+            background-color: var(--neutral-grey-3);
+            color: var(--neutral-grey-6);
         }
 
         td {
             vertical-align: middle;
-            color: @classic-neutral-grey-6;
+            color: var(--neutral-grey-6);
             font-size: 13px;
             font-weight: 500;
 
             &:first-child {
-                color: @classic-neutral-grey-5;
+                color: var(--neutral-grey-5);
                 font-weight: 600;
             }
 
@@ -48,8 +46,8 @@
                         135deg,
                         fade(black, 0),
                         fade(black, 0) 2px,
-                        @classic-feedback-error-2 2px,
-                        @classic-feedback-error-2 4px
+                        var(--feedback-error-2) 2px,
+                        var(--feedback-error-2) 4px
                     )
                     fixed;
             }

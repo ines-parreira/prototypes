@@ -1,4 +1,4 @@
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 @import '~css/new/layout';
 @import (reference) '~css/typography';
 
@@ -14,14 +14,14 @@
             outline: none;
         }
         &::placeholder {
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
             font-weight: normal;
         }
     }
 
     .stealth {
         .body-semibold();
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -32,12 +32,12 @@
     }
 
     .valid {
-        border: 1px solid @classic-main-primary;
+        border: 1px solid var(--main-primary);
         box-shadow: 0 0 0 2px fadeout(@classic-main-primary, 80%);
     }
 
     .invalid {
-        border: 1px solid @classic-feedback-error;
+        border: 1px solid var(--feedback-error);
     }
 
     .large {

@@ -1,4 +1,3 @@
-@import (reference) '~css/new/colorTokens';
 @import (reference) '../../../../helpCenter.less';
 
 .mixin-level-loop (@i) when (@i < @maxCategoryTreeDepth) {
@@ -10,7 +9,7 @@
 
 :local {
     .drag-handler {
-        color: @classic-neutral-grey-3;
+        color: var(--neutral-grey-3);
         font-size: 22px;
     }
 
@@ -28,7 +27,7 @@
 
     .row {
         &:hover {
-            background-color: @classic-neutral-grey-1;
+            background-color: var(--neutral-grey-1);
 
             .actions {
                 opacity: 1;

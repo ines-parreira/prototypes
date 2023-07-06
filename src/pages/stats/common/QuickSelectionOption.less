@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import '~css/typography';
 
 :local .component {
@@ -10,17 +9,17 @@
 
     .badge {
         .caption-allcaps();
-        background-color: @classic-neutral-grey-4;
+        background-color: var(--neutral-grey-4);
         border: none;
         border-radius: 15px;
-        color: @classic-neutral-grey-0;
+        color: var(--neutral-grey-0);
         margin-left: auto;
         padding: 2px 9px;
     }
 
     .badge--unselect {
-        background-color: @classic-main-primary;
-        color: @classic-neutral-grey-1;
+        background-color: var(--main-primary);
+        color: var(--neutral-grey-1);
     }
 
     .checkbox {

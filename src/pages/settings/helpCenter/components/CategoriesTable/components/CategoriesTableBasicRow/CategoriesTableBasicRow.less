@@ -1,9 +1,7 @@
-@import (reference) '~css/new/colorTokens';
-
 :local {
     .caret {
         margin-right: 16px;
-        color: @classic-neutral-grey-4;
+        color: var(--neutral-grey-4);
         font-size: 22px;
     }
 
@@ -20,11 +18,11 @@
     }
 
     .row {
-        background-color: @classic-neutral-grey-0;
+        background-color: var(--neutral-grey-0);
         height: 67px;
 
         &:hover {
-            background-color: @classic-neutral-grey-1;
+            background-color: var(--neutral-grey-1);
 
             .actions {
                 opacity: 1;
@@ -34,7 +32,7 @@
 
     .parent-cell {
         > div {
-            background: @classic-neutral-grey-2;
+            background: var(--neutral-grey-2);
             padding: 0;
             margin: -1px 0;
 
@@ -56,7 +54,7 @@
     }
 
     .cell {
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
         font-weight: 400;
         font-style: italic;
         font-size: 14px;
@@ -74,11 +72,11 @@
 
         .count {
             padding: 2px 9px;
-            border: 1px solid @classic-neutral-grey-3;
+            border: 1px solid var(--neutral-grey-3);
             margin-left: 8px;
-            background: @classic-neutral-grey-2;
+            background: var(--neutral-grey-2);
 
-            color: @classic-neutral-grey-5;
+            color: var(--neutral-grey-5);
             font-weight: 600;
             font-size: 12px;
             line-height: 16px;

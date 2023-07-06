@@ -1,5 +1,3 @@
-@import '~css/new/colors';
-
 :local .container {
     display: flex;
     align-items: center;
@@ -8,8 +6,8 @@
     .whenBtn {
         margin-right: 0.25rem;
         border-radius: 15px;
-        background-color: @ultraLightBlue;
-        color: @classic-main-primary-3;
+        background-color: var(--ultraLightBlue);
+        color: var(--main-primary-3);
         border: none;
         font-weight: 600;
         padding: 3px 8px;
@@ -31,7 +29,7 @@
     .whenEvents :global(.badge.badge-secondary) {
         margin: 0 0.25rem !important;
         text-transform: uppercase;
-        background-color: @ultraLightBlue !important;
+        background-color: var(--ultraLightBlue) !important;
     }
 
     .whenEvents :global(.badge.badge-secondary),
@@ -43,7 +41,7 @@
         font-size: 12px !important;
         padding: 5px 8px;
 
-        color: @classic-main-primary-3 !important;
+        color: var(--main-primary-3) !important;
 
         &::after {
             margin-left: 3px !important;

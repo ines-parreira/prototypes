@@ -15,12 +15,12 @@
     }
 
     &:hover {
-        background: @classic-neutral-grey-1;
+        background: var(--neutral-grey-1);
     }
 
     &.internal {
-        background: @internalYellow;
-        box-shadow: inset 5px 0 0 0 @classic-feedback-warning;
+        background: var(--internalYellow);
+        box-shadow: inset 5px 0 0 0 var(--feedback-warning);
 
         &:hover {
             background: darken(@internalYellow, 1%);
@@ -80,10 +80,10 @@
 
 @keyframes highlight-ticket {
     from {
-        background-color: @highlightYellow;
+        background-color: var(--highlightYellow);
     }
     to {
-        background-color: @classic-neutral-grey-0;
+        background-color: var(--neutral-grey-0);
     }
 }
 
@@ -148,5 +148,5 @@
 /* Mentioned agent's name text
  */
 .gorgias-mention {
-    color: @classic-neutral-grey-4;
+    color: var(--neutral-grey-4);
 }

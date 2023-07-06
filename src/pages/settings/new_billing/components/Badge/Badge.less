@@ -1,5 +1,3 @@
-@import (reference) '~css/new/colorTokens';
-
 :local {
     .badge {
         border-radius: 100px;
@@ -11,23 +9,23 @@
         letter-spacing: 0.05em;
 
         &.success {
-            background-color: @classic-accessory-green-bg;
-            color: @classic-accessory-green-text;
+            background-color: var(--accessory-green-bg);
+            color: var(--accessory-green-text);
         }
 
         &.warning {
-            background-color: @classic-accessory-orange-bg;
-            color: @dark-feedback-warning;
+            background-color: var(--accessory-orange-bg);
+            color: var(--feedback-warning);
         }
 
         &.error {
-            background-color: @classic-accessory-red-bg;
-            color: @dark-feedback-error;
+            background-color: var(--accessory-red-bg);
+            color: var(--feedback-error);
         }
 
         &.info {
-            background-color: @classic-neutral-grey-1;
-            color: @classic-neutral-grey-5;
+            background-color: var(--neutral-grey-1);
+            color: var(--neutral-grey-5);
         }
     }
 }

@@ -16,7 +16,7 @@
     }
 
     .listHeader {
-        border-bottom: 1px solid @classic-neutral-grey-3;
+        border-bottom: 1px solid var(--neutral-grey-3);
         display: flex;
     }
 
@@ -39,7 +39,7 @@
 :local .card {
     position: relative;
 
-    color: @classic-neutral-grey-6;
+    color: var(--neutral-grey-6);
     font-size: 13px;
     transition: all 0.12s ease-out;
 
@@ -51,7 +51,7 @@
     &:hover {
         top: -1px;
         box-shadow: 0 2px 3px fade(@classic-neutral-grey-6, 20%);
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
     }
 
     i {
@@ -62,8 +62,8 @@
         margin-right: 20px;
         padding: 2px 5px;
         border-radius: 20px;
-        border: 1px solid @classic-neutral-grey-3;
-        color: @classic-neutral-grey-4;
+        border: 1px solid var(--neutral-grey-3);
+        color: var(--neutral-grey-4);
 
         i {
             line-height: 1.2;

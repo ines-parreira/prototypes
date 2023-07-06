@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import '~css/new/mixins';
 
 :local .component {
@@ -6,7 +5,7 @@
     flex-direction: column;
     height: 100%;
 
-    color: @classic-neutral-grey-6;
+    color: var(--neutral-grey-6);
     font-size: 13px;
     font-weight: 500;
 
@@ -21,8 +20,8 @@
         cursor: pointer;
 
         &.active {
-            background-color: @classic-neutral-grey-0;
-            color: @classic-main-primary;
+            background-color: var(--neutral-grey-0);
+            color: var(--main-primary);
         }
 
         &.disabled {

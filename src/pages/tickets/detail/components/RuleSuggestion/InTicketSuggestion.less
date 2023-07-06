@@ -1,14 +1,13 @@
-@import '~css/new/colorTokens';
 @import '~css/new/mixins';
 
 :local .container {
     background: rgba(154, 200, 255, 0.3);
-    color: @classic-neutral-grey-6;
+    color: var(--neutral-grey-6);
     display: grid;
     padding: 12px 24px 8px calc(~'2em - 5px');
     margin: 0;
     overflow-y: hidden;
-    border-left: 5px solid @classic-main-primary;
+    border-left: 5px solid var(--main-primary);
     grid-template-columns: 56px 1fr;
     position: relative;
     z-index: 0;
@@ -20,7 +19,7 @@
 
     .avatar {
         img {
-            background-color: @classic-main-primary;
+            background-color: var(--main-primary);
             padding: 9px 8.55px 8px 8.55px;
         }
     }
@@ -43,7 +42,7 @@
 
             button {
                 pointer-events: auto;
-                color: @classic-main-primary;
+                color: var(--main-primary);
             }
         }
     }

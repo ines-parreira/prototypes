@@ -1,32 +1,31 @@
-@import '~css/new/colorTokens';
 @import '~css/new/layout';
 
 &:local {
     .wrapper {
-        background: @classic-neutral-grey-2;
+        background: var(--neutral-grey-2);
         border-radius: 4px;
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
         margin-top: @layout-spacing-xs;
         padding: @layout-spacing-s;
 
         &.success {
-            background: @classic-main-primary-4;
-            color: @classic-main-primary-0;
+            background: var(--main-primary-4);
+            color: var(--main-primary-0);
         }
 
         &.light-success {
-            background: @classic-main-primary-0;
-            color: @classic-main-primary-4;
+            background: var(--main-primary-0);
+            color: var(--main-primary-4);
         }
 
         &.light-error {
-            background: @dark-feedback-error-4;
-            color: @modern-feedback-error-4;
+            background: var(--feedback-error-4);
+            color: var(--feedback-error-4);
         }
 
         &.error {
-            background: @dark-feedback-error-0;
-            color: @dark-feedback-error-4;
+            background: var(--feedback-error-0);
+            color: var(--feedback-error-4);
         }
     }
 

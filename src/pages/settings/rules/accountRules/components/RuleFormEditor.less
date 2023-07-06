@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import '~css/new/mixins';
 
 :local {
@@ -19,7 +18,7 @@
     .card {
         letter-spacing: -0.01em;
         padding: 18px;
-        border: 1px solid @classic-neutral-grey-3;
+        border: 1px solid var(--neutral-grey-3);
         border-radius: 4px;
 
         // ADD TOKEN FIRST. DO NOT MERGE.
@@ -37,15 +36,15 @@
     }
 
     .navbar {
-        background-color: @classic-neutral-grey-2;
-        border-bottom: 1px solid @classic-neutral-grey-3;
+        background-color: var(--neutral-grey-2);
+        border-bottom: 1px solid var(--neutral-grey-3);
         height: 52px;
         justify-content: normal;
         padding: 0 16px;
     }
 
     .item {
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
         font-weight: 500;
         line-height: 20px;
         margin: 0 16px;
@@ -53,13 +52,13 @@
         cursor: pointer;
 
         &:hover {
-            color: @classic-neutral-grey-6;
+            color: var(--neutral-grey-6);
         }
     }
 
     .active {
-        border-bottom: 2px solid @classic-main-primary;
-        color: @classic-neutral-grey-6;
+        border-bottom: 2px solid var(--main-primary);
+        color: var(--neutral-grey-6);
         padding: 16px 0 14px 0;
     }
 }

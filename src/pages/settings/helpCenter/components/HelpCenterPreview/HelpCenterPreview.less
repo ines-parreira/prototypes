@@ -1,9 +1,8 @@
-@import '~css/new/colorTokens';
 @import (reference) '~css/typography.less';
 
 :local {
     .container {
-        background: @modern-neutral-grey-1;
+        background: var(--neutral-grey-1);
         overflow: hidden;
         border-radius: 5px;
         width: 384px;
@@ -40,11 +39,11 @@
 
     .titleBar {
         .heading-section-semibold();
-        color: @modern-neutral-grey-6;
+        color: var(--neutral-grey-6);
         padding: 24px 16px;
         height: 72px;
         text-align: center;
-        background: @classic-neutral-grey-0;
+        background: var(--neutral-grey-0);
         margin-bottom: 11px;
     }
 }

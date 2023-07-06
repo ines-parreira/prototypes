@@ -1,4 +1,4 @@
-@import (reference) '~css/new/colorTokens';
+@import '~css/new/colorTokens';
 
 :local {
     .input {
@@ -9,14 +9,14 @@
 
         &.error {
             input {
-                border-color: @classic-feedback-error;
+                border-color: var(--feedback-error);
                 box-shadow: 0 0 0 0.2rem fade(@classic-feedback-error, 10%);
             }
         }
     }
 
     .error {
-        color: @classic-feedback-error;
+        color: var(--feedback-error);
 
         i {
             margin-right: 4px;

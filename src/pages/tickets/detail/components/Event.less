@@ -1,4 +1,3 @@
-@import '~css/new/colorTokens';
 @import '~css/new/mixins';
 
 :local .component {
@@ -20,7 +19,7 @@
         left: 0;
         top: 0;
         height: 100%;
-        border-left: 1px solid @classic-neutral-grey-3;
+        border-left: 1px solid var(--neutral-grey-3);
     }
 
     &.last::before {
@@ -53,21 +52,21 @@
                 margin-left: -27px;
                 margin-right: 28px;
                 border-radius: 50%;
-                background-color: @classic-neutral-grey-6;
+                background-color: var(--neutral-grey-6);
 
                 font-size: 14px;
-                color: @classic-neutral-grey-0;
+                color: var(--neutral-grey-0);
 
                 &.success {
-                    background-color: @classic-feedback-success;
+                    background-color: var(--feedback-success);
                 }
 
                 &.danger {
-                    background-color: @classic-feedback-error;
+                    background-color: var(--feedback-error);
                 }
 
                 &.warning {
-                    background-color: @classic-feedback-warning;
+                    background-color: var(--feedback-warning);
                 }
             }
 
@@ -84,7 +83,7 @@
                 margin-right: 28px;
 
                 font-size: 14px;
-                color: @classic-neutral-grey-0;
+                color: var(--neutral-grey-0);
             }
 
             .actionName {
@@ -127,14 +126,14 @@
             }
 
             .failureReasonWarning {
-                color: @classic-feedback-warning;
+                color: var(--feedback-warning);
                 font-weight: bold;
                 margin-left: 3px;
                 margin-right: 3px;
             }
 
             .failureReasonError {
-                color: @classic-feedback-error;
+                color: var(--feedback-error);
                 font-weight: bold;
                 margin-left: 3px;
                 margin-right: 3px;

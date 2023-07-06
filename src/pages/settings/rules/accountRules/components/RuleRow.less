@@ -1,8 +1,6 @@
-@import '~css/new/colorTokens';
-
 :local {
     .row {
-        border-bottom: 1px solid @classic-neutral-grey-3;
+        border-bottom: 1px solid var(--neutral-grey-3);
 
         .middleColumn {
             cursor: pointer;
@@ -14,7 +12,7 @@
         }
 
         &:hover {
-            background: @classic-neutral-grey-1 !important;
+            background: var(--neutral-grey-1) !important;
         }
 
         cursor: pointer;
@@ -32,7 +30,7 @@
         left: 52px;
     }
     .error {
-        color: @classic-feedback-error;
+        color: var(--feedback-error);
         line-height: 14px;
     }
 
@@ -44,7 +42,7 @@
             .material-icons-outlined {
                 transition: 0.2s all;
                 opacity: 0.3;
-                color: @classic-neutral-grey-6;
+                color: var(--neutral-grey-6);
             }
 
             &:hover .material-icons {
@@ -69,6 +67,6 @@
         overflow: hidden;
     }
     .popoverBody {
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
     }
 }

@@ -1,5 +1,4 @@
 @import '~css/new/mixins';
-@import '~css/new/colorTokens';
 @import (reference) '~css/typography.less';
 
 :local {
@@ -63,7 +62,7 @@
         display: flex;
         align-items: center;
         .caption-regular();
-        color: @classic-neutral-grey-5;
+        color: var(--neutral-grey-5);
 
         :global(.material-icons) {
             font-size: 14px;
