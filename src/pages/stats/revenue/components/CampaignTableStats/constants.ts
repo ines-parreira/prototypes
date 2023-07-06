@@ -15,13 +15,6 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
             'Sum of revenue from all potential revenue sources for a campaign: tickets converted, products recommended bought, links visited followed by an order, discount codes applied',
     },
     {
-        key: CampaignTableKeys.Traffic,
-        title: 'Traffic',
-        format: CampaignTableValueFormat.Number,
-        tooltip:
-            'How often the chat was displayed during the time the campaign was live on your shop',
-    },
-    {
         key: CampaignTableKeys.Impressions,
         title: 'Impressions',
         format: CampaignTableValueFormat.Number,
