@@ -12,6 +12,7 @@ import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import {useListWhatsAppMessageTemplates} from 'models/whatsAppMessageTemplates/queries'
 import Tooltip from 'pages/common/components/Tooltip'
 import {getLanguageDisplayName} from 'utils'
+import useOrderBy from 'hooks/useOrderBy'
 import WhatsAppMessageTemplateStatusLabel from './WhatsAppMessageTemplateStatusLabel'
 import WhatsAppMessageTemplateCategoryLabel from './WhatsAppMessageTemplateCategoryLabel'
 import {whatsAppFlagCodes} from './constants'
@@ -29,9 +30,14 @@ export default function WhatsAppMessageTemplatesList({phoneNumberId}: Props) {
     const [currentTemplate, setCurrentTemplate] =
         useState<WhatsAppMessageTemplate>()
     const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
+
+    const {orderDirection, orderBy, orderParam, toggleOrderBy} = useOrderBy<
+        'name' | 'language' | 'status' | 'category'
+    >('status')
+
     const request = useListWhatsAppMessageTemplates({
         waba_id: phoneNumber?.whatsapp_phone_number?.waba_id,
-        order_by: 'status:asc',
+        ...(orderParam && {order_by: orderParam}),
     })
 
     return (
@@ -49,10 +55,30 @@ export default function WhatsAppMessageTemplatesList({phoneNumberId}: Props) {
             </div>
             <TableWrapper className={css.tableWrapper}>
                 <TableHead>
-                    <HeaderCellProperty title="Template name" />
-                    <HeaderCellProperty title="Category" />
-                    <HeaderCellProperty title="Status" />
-                    <HeaderCellProperty title="Language" />
+                    <HeaderCellProperty
+                        title="Template name"
+                        direction={orderDirection}
+                        isOrderedBy={orderBy === 'name'}
+                        onClick={() => toggleOrderBy('name')}
+                    />
+                    <HeaderCellProperty
+                        title="Category"
+                        direction={orderDirection}
+                        isOrderedBy={orderBy === 'category'}
+                        onClick={() => toggleOrderBy('category')}
+                    />
+                    <HeaderCellProperty
+                        title="Status"
+                        direction={orderDirection}
+                        isOrderedBy={orderBy === 'status'}
+                        onClick={() => toggleOrderBy('status')}
+                    />
+                    <HeaderCellProperty
+                        title="Language"
+                        direction={orderDirection}
+                        isOrderedBy={orderBy === 'language'}
+                        onClick={() => toggleOrderBy('language')}
+                    />
                 </TableHead>
                 <TableBody>
                     {request.data?.data.map((template) => (
