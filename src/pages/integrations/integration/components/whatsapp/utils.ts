@@ -56,13 +56,6 @@ export const normalizeLocale = (locale: string): string => {
     return locale.replace('_', '-').toLowerCase()
 }
 
-export const getTemplateLanguageOptions = (
-    templates: WhatsAppMessageTemplate[]
-) => {
-    const languages = templates.map((template) => template.language)
-    return Array.from(new Set(languages))
-}
-
 export const createApplyExternalTemplateAction = (
     template: WhatsAppMessageTemplate
 ) => ({

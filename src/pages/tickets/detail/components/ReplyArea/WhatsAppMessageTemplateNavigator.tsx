@@ -1,29 +1,50 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import classNames from 'classnames'
 import {ReactCountryFlag} from 'react-country-flag'
-import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
+import {
+    WhatsAppMessageTemplate,
+    WhatsAppMessageTemplateStatus,
+} from 'models/whatsAppMessageTemplates/types'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import WhatsAppMessageTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
 import {whatsAppFlagCodes} from 'pages/integrations/integration/components/whatsapp/constants'
 import {useListWhatsAppMessageTemplates} from 'models/whatsAppMessageTemplates/queries'
 import Loader from 'pages/common/components/Loader/Loader'
+import useAppSelector from 'hooks/useAppSelector'
+import {SourceAddress} from 'models/ticket/types'
+import {getNewPhoneNumberByNumber} from 'state/entities/phoneNumbers/selectors'
+import {makeGetNewMessageSourceProperty} from 'state/newMessage/selectors'
+import {useWhatsAppEditor} from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext'
 
 import css from './WhatsAppMessageTemplateNavigator.less'
 
-type Props = {
-    onItemClick: (template: WhatsAppMessageTemplate) => void
-    templates: WhatsAppMessageTemplate[]
-    isLoading?: boolean
-}
-
-export default function WhatsAppMessageTemplateNavigator({
-    onItemClick,
-    templates,
-    isLoading,
-}: Props) {
+export default function WhatsAppMessageTemplateNavigator() {
     const [currentTemplate, setCurrentTemplate] =
-        useState<WhatsAppMessageTemplate>(templates[0])
-    const {refetch} = useListWhatsAppMessageTemplates()
+        useState<WhatsAppMessageTemplate>()
+
+    const fromPhoneNumber = useAppSelector(makeGetNewMessageSourceProperty)(
+        'from'
+    )?.toJS?.() as SourceAddress
+    const phoneNumber = useAppSelector(
+        getNewPhoneNumberByNumber(fromPhoneNumber?.address)
+    )
+
+    const {searchFilter, selectNewTemplate} = useWhatsAppEditor()
+    const {data, isLoading, refetch} = useListWhatsAppMessageTemplates({
+        is_supported: true,
+        waba_id: phoneNumber?.whatsapp_phone_number?.waba_id,
+        status: WhatsAppMessageTemplateStatus.Approved,
+        language: searchFilter.language,
+        search: searchFilter.name,
+    })
+
+    const templates = data?.data ?? []
+
+    useEffect(() => {
+        if (data?.data.length) {
+            setCurrentTemplate(data?.data[0])
+        }
+    }, [data?.data])
 
     // TODO check if template can ever be disabled
     const isDisabled = false
@@ -68,7 +89,7 @@ export default function WhatsAppMessageTemplateNavigator({
                         onClick={() => {
                             if (isDisabled) return
 
-                            onItemClick(template)
+                            selectNewTemplate(template)
                         }}
                         onMouseEnter={() => setCurrentTemplate(template)}
                     >

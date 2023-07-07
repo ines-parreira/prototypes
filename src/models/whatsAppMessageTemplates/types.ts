@@ -87,6 +87,7 @@ export type ListWhatsAppMessageTemplatesParams = {
     is_supported?: boolean
     status?: WhatsAppMessageTemplateStatus
     search?: string
+    language?: string[]
 }
 
 export type ApplyExternalTemplateActionArguments = {

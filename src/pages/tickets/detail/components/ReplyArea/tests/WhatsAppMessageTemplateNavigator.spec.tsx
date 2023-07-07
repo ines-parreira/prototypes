@@ -3,19 +3,37 @@ import {Provider} from 'react-redux'
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 import {mockStore, renderWithRQProvider} from 'utils/testing'
-import {whatsAppMessageTemplates} from 'fixtures/whatsAppMessageTemplates'
+import {whatsAppMessageTemplates as mockWhatsAppMessageTemplates} from 'fixtures/whatsAppMessageTemplates'
 import WhatsAppMessageTemplateNavigator from '../WhatsAppMessageTemplateNavigator'
 
-describe('WhatsAppMessageTemplateNavigator', () => {
-    const onItemClick = jest.fn()
+jest.mock('models/whatsAppMessageTemplates/queries', () => ({
+    useListWhatsAppMessageTemplates: jest.fn(() => ({
+        data: {
+            data: mockWhatsAppMessageTemplates,
+        },
+    })),
+}))
 
+const mockSelectNewTemplate = jest.fn()
+
+jest.mock(
+    'pages/integrations/integration/components/whatsapp/WhatsAppEditorContext',
+    () => ({
+        useWhatsAppEditor: jest.fn(() => ({
+            searchFilter: {
+                language: [],
+                name: '',
+            },
+            selectNewTemplate: mockSelectNewTemplate,
+        })),
+    })
+)
+
+describe('WhatsAppMessageTemplateNavigator', () => {
     const renderComponent = () =>
         renderWithRQProvider(
             <Provider store={mockStore({} as any)}>
-                <WhatsAppMessageTemplateNavigator
-                    templates={whatsAppMessageTemplates}
-                    onItemClick={onItemClick}
-                />
+                <WhatsAppMessageTemplateNavigator />
             </Provider>
         )
 
@@ -39,6 +57,8 @@ describe('WhatsAppMessageTemplateNavigator', () => {
     it('should trigger onClick when clicking on a template', () => {
         renderComponent()
         fireEvent.click(screen.getByText('rejected_template_sample'))
-        expect(onItemClick).toHaveBeenCalledWith(whatsAppMessageTemplates[1])
+        expect(mockSelectNewTemplate).toHaveBeenCalledWith(
+            mockWhatsAppMessageTemplates[1]
+        )
     })
 })

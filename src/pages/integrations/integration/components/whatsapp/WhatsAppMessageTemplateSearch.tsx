@@ -6,6 +6,7 @@ import IconInput from 'pages/common/forms/input/IconInput'
 import TemplateTypeFilterDropdown, {
     TemplateTypeFilterOption,
 } from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
+import TemplateLanguageFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateLanguageFilterDropdown'
 import {useWhatsAppEditor} from './WhatsAppEditorContext'
 
 import css from './WhatsAppMessageTemplateSearch.less'
@@ -70,6 +71,12 @@ export default function WhatsAppMessageTemplateSearch() {
                             value={TemplateTypeFilterOption.Templates}
                         />
                     )}
+                    <TemplateLanguageFilterDropdown
+                        value={filters.language}
+                        onChange={(newLanguage) =>
+                            setFilters({...filters, language: newLanguage})
+                        }
+                    />
                 </div>
             )}
             {isCollapsible && (
