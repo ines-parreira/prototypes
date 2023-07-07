@@ -159,7 +159,7 @@ exports[`<AutomationSubscriptionModal /> should render for customers already wit
                       Select a plan
                     </div>
                     <a
-                      href="https://gorgias.com"
+                      href="https://www.gorgias.com/pricing"
                       rel="noreferrer noopener"
                       target="_blank"
                     >
@@ -466,7 +466,7 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
                       Select a plan
                     </div>
                     <a
-                      href="https://gorgias.com"
+                      href="https://www.gorgias.com/pricing"
                       rel="noreferrer noopener"
                       target="_blank"
                     >

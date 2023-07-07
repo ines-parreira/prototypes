@@ -23,7 +23,7 @@ exports[`UsageAndPlansView should render 1`] = `
       >
         <span>
           Billed 
-          Monthly
+          monthly
         </span>
         <a
           href="/app/settings/new-billing/payment/frequency"

@@ -1,9 +1,33 @@
 import React from 'react'
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
+import {RootState, StoreDispatch} from 'state/types'
 import client from 'models/api/resources'
 import * as actions from 'state/notifications/actions'
+import {
+    HELPDESK_PRODUCT_ID,
+    basicMonthlyHelpdeskPrice,
+    products,
+} from 'fixtures/productPrices'
 import ContactSupportModal from '../ContactSupportModal'
+
+const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
+
+const store = mockedStore({
+    billing: fromJS({
+        currentAccount: fromJS({
+            current_subscription: {
+                products: {
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                },
+            },
+        }),
+        products,
+    }),
+})
 
 const mockedServer = new MockAdapter(client)
 
@@ -34,7 +58,11 @@ describe('ContactSupportModal', () => {
             from: 'user@example.com',
         }
 
-        render(<ContactSupportModal {...props} />)
+        render(
+            <Provider store={store}>
+                <ContactSupportModal {...props} />
+            </Provider>
+        )
 
         expect(screen.getByText('Contact us')).toBeInTheDocument()
         expect(
@@ -67,7 +95,11 @@ describe('ContactSupportModal', () => {
             from: 'user@example.com',
         }
 
-        render(<ContactSupportModal {...props} />)
+        render(
+            <Provider store={store}>
+                <ContactSupportModal {...props} />
+            </Provider>
+        )
 
         const messageInput = screen.getByPlaceholderText(
             'Write your message here'
@@ -104,9 +136,16 @@ describe('ContactSupportModal', () => {
             zapierHook: 'https://example.com',
             to: 'support@example.com',
             from: 'user@example.com',
+            freeTrial: false,
+            helpdeskPlan: 'Advanced',
+            account: 'acme',
         }
 
-        render(<ContactSupportModal {...props} />)
+        render(
+            <Provider store={store}>
+                <ContactSupportModal {...props} />
+            </Provider>
+        )
 
         const messageInput = screen.getByPlaceholderText(
             'Write your message here'

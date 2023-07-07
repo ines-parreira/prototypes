@@ -54,6 +54,13 @@ export function isTrialVoiceOrSMSPrice(
     )
 }
 
+export function isAAOLegacyPrice(
+    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice,
+    type: ProductType
+) {
+    return price.num_quota_tickets === null && type === ProductType.Automation
+}
+
 export function getFormattedAmount(amountInCents: number) {
     return amountInCents / 100
 }

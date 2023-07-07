@@ -14,6 +14,7 @@ import {
     getCurrentHelpdeskProduct,
     getCurrentProducts,
     getHasAutomationAddOn,
+    getHelpdeskPrices,
 } from 'state/billing/selectors'
 import {updateSubscription} from 'state/currentAccount/actions'
 import {notify} from 'state/notifications/actions'
@@ -99,6 +100,10 @@ const AutomationSubscriptionModal = ({
     const dispatch = useAppDispatch()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
+    const helpdeskPriceIds = useAppSelector(getHelpdeskPrices).map(
+        (price) => price.price_id
+    )
+
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
 
@@ -159,8 +164,19 @@ const AutomationSubscriptionModal = ({
     const hasAccessToNewBilling: boolean | undefined =
         useFlags()[FeatureFlagKey.NewBillingInterface]
     const interval = useAppSelector(getCurrentHelpdeskInterval)
-    const automationPrices = useAppSelector(getAutomationProduct)?.prices
-    const [selectedPrice, setSelectedPrice] = useState(automationPrices?.[0])
+
+    const automationPrices = useAppSelector(
+        getAutomationProduct
+    )?.prices.filter((price) => price.num_quota_tickets)
+    const helpdeskOptionIndex = Math.max(
+        helpdeskPriceIds.indexOf(helpdeskPrice?.price_id || ''),
+        0
+    )
+    const aaoPreselectedOption = Math.min(5, helpdeskOptionIndex)
+    const [selectedPrice, setSelectedPrice] = useState(
+        automationPrices?.[aaoPreselectedOption]
+    )
+
     const [isSubscriptionEnabled, setIsSubscriptionEnabled] = useState(false)
     const [showContactSupportModal, setShowContactSupportModal] =
         useState(false)

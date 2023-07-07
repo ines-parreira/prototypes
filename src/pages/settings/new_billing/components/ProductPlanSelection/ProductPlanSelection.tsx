@@ -10,7 +10,11 @@ import {
 } from 'models/billing/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
-import {isStarterTierPrice, isTrialVoiceOrSMSPrice} from 'models/billing/utils'
+import {
+    isStarterTierPrice,
+    isTrialVoiceOrSMSPrice,
+    isAAOLegacyPrice,
+} from 'models/billing/utils'
 import Tooltip from 'pages/common/components/Tooltip'
 import {ENTERPRISE_PRICE_ID, INTERVAL, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge'
@@ -26,6 +30,7 @@ export type ProductPlanSelectionProps = {
     selectedPlans: SelectedPlans
     setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
     isStarterHelpdeskPlanSelected?: boolean
+    isTrialing?: boolean
 }
 
 const ProductPlanSelection = ({
@@ -36,8 +41,14 @@ const ProductPlanSelection = ({
     selectedPlans,
     setSelectedPlans,
     isStarterHelpdeskPlanSelected,
+    isTrialing = false,
 }: ProductPlanSelectionProps) => {
-    const isActive = useMemo(() => !!product, [product])
+    const isActive = useMemo(() => {
+        if (!product) return false
+        if (isTrialing) return false
+
+        return true
+    }, [product, isTrialing])
 
     const selectedPlan = selectedPlans[type].plan
 
@@ -71,16 +82,66 @@ const ProductPlanSelection = ({
         [interval, selectedPlans]
     )
 
+    const getLabel = useCallback(
+        (price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice) => {
+            if (isTrialVoiceOrSMSPrice(price, type)) {
+                return 'Trial'
+            }
+
+            if (isAAOLegacyPrice(price, type)) {
+                return 'Legacy'
+            }
+
+            return formatNumTickets(price.num_quota_tickets ?? 0)
+        },
+        [type]
+    )
+
+    const getCounterText = useMemo(() => {
+        if (selectedPlan && isTrialVoiceOrSMSPrice(selectedPlan, type)) {
+            return (
+                <>
+                    <strong>
+                        ${(selectedPlan?.extra_ticket_cost ?? 0).toFixed(2)}
+                    </strong>{' '}
+                    {PRODUCT_INFO[type].perTicket}
+                </>
+            )
+        }
+        if (selectedPlan && isAAOLegacyPrice(selectedPlan, type)) {
+            return (
+                <>
+                    <strong>
+                        ${(selectedPlan?.amount / 100 ?? 0).toFixed(2)}
+                    </strong>
+                    /{interval}
+                </>
+            )
+        }
+        return `${PRODUCT_INFO[type].counter}/${interval}`
+    }, [interval, selectedPlan, type])
+
     const options = useMemo(
         () => [
-            ...prices.map((price) => ({
-                value: price.price_id ?? '',
-                label: isTrialVoiceOrSMSPrice(price, type)
-                    ? 'Trial'
-                    : formatNumTickets(price.num_quota_tickets ?? 0),
-                isDisabled: isStarterHelpdeskPlanDisabled(price).isDisabled,
-                tooltipText: isStarterHelpdeskPlanDisabled(price).tooltipText,
-            })),
+            ...prices
+                .filter((price) => {
+                    if (
+                        (type === ProductType.Voice ||
+                            type === ProductType.SMS) &&
+                        !!product
+                    ) {
+                        return !!price.num_quota_tickets
+                    }
+
+                    return true
+                })
+                .map((price) => ({
+                    value: price.price_id ?? '',
+                    label: getLabel(price),
+                    isDisabled: isStarterHelpdeskPlanDisabled(price).isDisabled,
+                    tooltipText:
+                        isStarterHelpdeskPlanDisabled(price).tooltipText,
+                })),
             {
                 value: ENTERPRISE_PRICE_ID,
                 label: `${formatNumTickets(
@@ -88,7 +149,7 @@ const ProductPlanSelection = ({
                 )}+`,
             },
         ],
-        [isStarterHelpdeskPlanDisabled, prices, type]
+        [getLabel, isStarterHelpdeskPlanDisabled, prices, product, type]
     )
 
     const handleClose = useCallback(() => {
@@ -188,23 +249,7 @@ const ProductPlanSelection = ({
                             dropdownMenuClassName={css.select}
                         />
                         <div className={css.counter}>
-                            <div>
-                                {selectedPlan &&
-                                isTrialVoiceOrSMSPrice(selectedPlan, type) ? (
-                                    <>
-                                        <strong>
-                                            $
-                                            {(
-                                                selectedPlan?.extra_ticket_cost ??
-                                                0
-                                            ).toFixed(2)}
-                                        </strong>{' '}
-                                        {PRODUCT_INFO[type].perTicket}
-                                    </>
-                                ) : (
-                                    `${PRODUCT_INFO[type].counter}/${interval}`
-                                )}
-                            </div>
+                            <div>{getCounterText}</div>
                             <i
                                 id={`priceSelectInfo_${type}`}
                                 className="material-icons"

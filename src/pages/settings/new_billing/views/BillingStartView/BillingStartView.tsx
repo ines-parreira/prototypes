@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Container} from 'reactstrap'
-import {Link, NavLink, Route, Switch} from 'react-router-dom'
+import {NavLink, Route, Switch, useHistory} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -50,6 +50,7 @@ import css from './BillingStartView.less'
 
 const BillingStartView = () => {
     const dispatch = useAppDispatch()
+    const history = useHistory()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
     const currentUsage = useAppSelector(getCurrentProductsUsage)
@@ -104,7 +105,7 @@ const BillingStartView = () => {
             noAutoDismiss: true,
             showDismissButton: true,
             status: NotificationStatus.Error,
-            id: 'billing-error',
+            id: 'billing-error-notification',
         }),
         [contactBilling]
     )
@@ -176,9 +177,13 @@ const BillingStartView = () => {
                         style: NotificationStyle.Banner,
                         status: NotificationStatus.Success,
                         actionHTML: (
-                            <Link to="/app/settings/channels/phone">
+                            <a
+                                href="https://docs.gorgias.com/en-US/set-up-voice-81798"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
                                 Set Up Voice
-                            </Link>
+                            </a>
                         ),
                     })
                 )
@@ -200,9 +205,13 @@ const BillingStartView = () => {
                         style: NotificationStyle.Banner,
                         status: NotificationStatus.Success,
                         actionHTML: (
-                            <Link to="/app/settings/channels/sms">
+                            <a
+                                href="https://docs.gorgias.com/en-US/set-up-sms-81919"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
                                 Set Up SMS
-                            </Link>
+                            </a>
                         ),
                     })
                 )
@@ -266,6 +275,7 @@ const BillingStartView = () => {
                                 contactBilling={contactBilling}
                                 setDefaultMessage={setDefaultMessage}
                                 dispatchBillingError={dispatchBillingError}
+                                isTrialing={isTrialingSubscription}
                                 billingErrorNotification={
                                     billingErrorNotification
                                 }
@@ -295,7 +305,10 @@ const BillingStartView = () => {
             </Container>
             <ContactSupportModal
                 isOpen={isModalOpen}
-                handleOnClose={() => setIsModalOpen(false)}
+                handleOnClose={() => {
+                    setIsModalOpen(false)
+                    history.push(BILLING_BASE_PATH)
+                }}
                 subject={subject}
                 from={from}
                 domain={domain}

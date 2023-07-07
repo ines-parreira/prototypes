@@ -19,6 +19,13 @@ jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 jest.mock('state/billing/actions', () => ({
     fetchCreditCard: jest.fn(),
+    updateCreditCard: jest.fn(),
+    fetchContact: () =>
+        jest.fn().mockResolvedValue({type: 'FETCH_CONTACT_SUCCESS'}),
+    updateContact: () =>
+        jest.fn().mockResolvedValue({
+            type: 'UPDATE_BILLING_CONTACT_SUCCESS',
+        }),
 }))
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(),
@@ -70,7 +77,27 @@ const store = mockedStore({
                 },
             },
         }),
-        creditCard: fromJS({}),
+        contact: {
+            email: 'hello@example.com',
+            shipping: {
+                address: {
+                    line1: '123 Main St',
+                    line2: 'Apt 1',
+                    city: 'New York',
+                    state: 'NY',
+                    postal_code: '10001',
+                    country: 'US',
+                },
+                phone: '1234567890',
+                name: 'John Doe',
+            },
+        },
+        creditCard: fromJS({
+            brand: 'Visa',
+            last4: '4242',
+            exp_month: 12,
+            exp_year: 2022,
+        }),
     }),
 })
 
@@ -114,7 +141,7 @@ describe('CardView', () => {
         fireEvent.change(expDateInput, {target: {value: '12/24'}})
         fireEvent.change(cvcInput, {target: {value: '123'}})
 
-        fireEvent.submit(getByText('Add payment method'))
+        fireEvent.submit(getByText('Update card'))
 
         expect(createStripeCardToken).toHaveBeenCalledWith({
             name: 'John Doe',

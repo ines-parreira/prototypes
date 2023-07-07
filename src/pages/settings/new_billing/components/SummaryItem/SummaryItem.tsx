@@ -7,7 +7,7 @@ import {
     ProductType,
     SMSOrVoicePrice,
 } from 'models/billing/types'
-import {isTrialVoiceOrSMSPrice} from 'models/billing/utils'
+import {isAAOLegacyPrice, isTrialVoiceOrSMSPrice} from 'models/billing/utils'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {PRODUCT_INFO} from '../../constants'
 import {formatAmount} from '../../utils/formatAmount'
@@ -66,6 +66,25 @@ const SummaryItem = ({
         return priceObject.amount / 100
     }, [prices, product, selectedPlan])
 
+    const description = useMemo(() => {
+        if (
+            selectedPlan.plan &&
+            isTrialVoiceOrSMSPrice(selectedPlan.plan, type)
+        ) {
+            return <div>Trial</div>
+        }
+
+        if (selectedPlan.plan && isAAOLegacyPrice(selectedPlan.plan, type)) {
+            return <>Legacy</>
+        }
+
+        return (
+            <>
+                {tickets} {PRODUCT_INFO[type].counter}/{interval}
+            </>
+        )
+    }, [interval, selectedPlan.plan, tickets, type])
+
     if (!selectedPlan.isSelected) {
         return null
     }
@@ -76,20 +95,7 @@ const SummaryItem = ({
                 <div className={css.title}>{PRODUCT_INFO[type].title}</div>
                 <div className={css.description}>
                     {type === ProductType.Helpdesk && name ? `${name} - ` : ''}
-                    {selectedPlan.plan &&
-                    isTrialVoiceOrSMSPrice(selectedPlan.plan, type) ? (
-                        <>
-                            $
-                            {(selectedPlan.plan.extra_ticket_cost ?? 0).toFixed(
-                                2
-                            )}{' '}
-                            {PRODUCT_INFO[type].perTicket}
-                        </>
-                    ) : (
-                        <>
-                            {tickets} {PRODUCT_INFO[type].counter}/{interval}
-                        </>
-                    )}
+                    {description}
                 </div>
             </div>
             <div className={css.price}>
@@ -100,7 +106,15 @@ const SummaryItem = ({
                 )}
                 {selectedPlan.plan &&
                 isTrialVoiceOrSMSPrice(selectedPlan.plan, type) ? (
-                    <div>Trial</div>
+                    <>
+                        <b>
+                            $
+                            {(selectedPlan.plan.extra_ticket_cost ?? 0).toFixed(
+                                2
+                            )}
+                        </b>{' '}
+                        {PRODUCT_INFO[type].perTicket}
+                    </>
                 ) : (
                     <>
                         <span>{formatAmount(price, currency)}</span>/{interval}

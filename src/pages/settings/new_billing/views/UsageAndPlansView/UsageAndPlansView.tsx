@@ -1,8 +1,9 @@
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import React, {useEffect, useMemo} from 'react'
+import {Link, useHistory} from 'react-router-dom'
 import moment from 'moment'
 import classNames from 'classnames'
 import {
+    getCurrentAccountMeta,
     getCurrentSubscription,
     isTrialing,
 } from 'state/currentAccount/selectors'
@@ -17,11 +18,17 @@ import {
 import {ProductType} from 'models/billing/types'
 import {CurrentProductsUsages} from 'state/billing/types'
 import BillingScheduledDowngrades from 'pages/settings/billing/BillingScheduledDowngrades'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {
+    BILLING_PAYMENT_CARD_PATH,
     BILLING_PAYMENT_FREQUENCY_PATH,
     BILLING_PAYMENT_PATH,
+    BILLING_PROCESS_PATH,
     DATE_FORMAT,
     INTERVAL,
+    PRODUCT_INFO,
 } from '../../constants'
 import ProductCard from '../../components/ProductCard'
 
@@ -42,6 +49,8 @@ const UsageAndPlansView = ({
     smsBanner,
     voiceBanner,
 }: UsageAndPlansViewProps) => {
+    const dispatch = useAppDispatch()
+    const history = useHistory()
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const voiceProduct = useAppSelector(getCurrentVoiceProduct)
@@ -52,26 +61,94 @@ const UsageAndPlansView = ({
     const isIntervalMonthly = interval === INTERVAL.Month
 
     const isTrialingSubscription = useAppSelector(isTrialing)
+    const trialingStart = moment(
+        currentSubscription.get('trial_start_datetime')
+    )
+    const trialingEnd = moment(currentSubscription.get('trial_end_datetime'))
+    const trialPeriodStart = useMemo(
+        () => trialingStart.format(DATE_FORMAT),
+        [trialingStart]
+    )
+
+    const trialPeriodEnd = useMemo(
+        () => trialingEnd.format(DATE_FORMAT),
+        [trialingEnd]
+    )
+
     const hasSubscription = useMemo(
         () => !currentSubscription.isEmpty(),
         [currentSubscription]
     )
 
-    const trialPeriodStart = useMemo(
-        () =>
-            moment(currentSubscription.get('trial_start_datetime')).format(
-                DATE_FORMAT
-            ),
-        [currentSubscription]
-    )
+    // in the last 3 days of the trial show banner
+    const showTrialBanner = useMemo(() => {
+        const now = moment()
+        const diff = trialingEnd.diff(now, 'days')
+        return diff <= 3 && diff >= 0
+    }, [trialingEnd])
 
-    const trialPeriodEnd = useMemo(
-        () =>
-            moment(currentSubscription.get('trial_end_datetime')).format(
-                DATE_FORMAT
-            ),
-        [currentSubscription]
-    )
+    const currentAccount = useAppSelector(getCurrentAccountMeta)
+    const hasCreditCard = currentAccount.get('hasCreditCard')
+
+    useEffect(() => {
+        if (isTrialingSubscription) {
+            if (hasCreditCard) {
+                const plan = helpdeskProduct?.name || ''
+                const subscriptionStartDate = moment(trialPeriodEnd)
+                    .add(1, 'day')
+                    .format(DATE_FORMAT)
+
+                const otherPlans = [
+                    !!automationProduct &&
+                        PRODUCT_INFO[ProductType.Automation].title,
+                    !!voiceProduct && PRODUCT_INFO[ProductType.Voice].title,
+                    !!smsProduct && PRODUCT_INFO[ProductType.SMS].title,
+                ]
+                    .filter(Boolean)
+                    .join(', ')
+
+                const CTA = (
+                    <Link to={`${BILLING_PROCESS_PATH}/helpdesk`}>
+                        Review Subscription
+                    </Link>
+                )
+
+                void dispatch(
+                    notify({
+                        message: `Your subscription to the ${plan} plan ${
+                            otherPlans.length > 0 ? `with ${otherPlans}` : ''
+                        } starts on <b>${subscriptionStartDate}</b>.`,
+                        allowHTML: true,
+                        actionHTML: CTA,
+                        status: NotificationStatus.Warning,
+                        style: NotificationStyle.Banner,
+                        id: 'trial-start-subscription',
+                    })
+                )
+            } else if (showTrialBanner) {
+                void dispatch(
+                    notify({
+                        message: `Your free trial is ending on ${trialPeriodEnd}. Please <a href="${BILLING_PAYMENT_CARD_PATH}">add a payment method</a> to continue using Gorgias.`,
+                        allowHTML: true,
+                        status: NotificationStatus.Warning,
+                        style: NotificationStyle.Banner,
+                        id: 'trial-start-subscription',
+                    })
+                )
+            }
+        }
+    }, [
+        automationProduct,
+        dispatch,
+        hasCreditCard,
+        helpdeskProduct?.name,
+        history,
+        isTrialingSubscription,
+        showTrialBanner,
+        smsProduct,
+        trialPeriodEnd,
+        voiceProduct,
+    ])
 
     return (
         <div className={css.container}>
@@ -103,7 +180,7 @@ const UsageAndPlansView = ({
                 </div>
                 <div className={css.generalInfoItem}>
                     <span>
-                        Billed {isIntervalMonthly ? <>Monthly</> : <>Yearly</>}
+                        Billed {isIntervalMonthly ? <>monthly</> : <>yearly</>}
                     </span>
                     <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>Update</Link>
                 </div>

@@ -43,6 +43,7 @@ type BillingProcessViewProps = {
     setDefaultMessage: React.Dispatch<React.SetStateAction<string>>
     dispatchBillingError: () => void
     billingErrorNotification: Notification
+    isTrialing: boolean
     periodEnd: string
 }
 
@@ -71,6 +72,7 @@ const BillingProcessView = ({
     setDefaultMessage,
     dispatchBillingError,
     billingErrorNotification,
+    isTrialing,
     periodEnd,
 }: BillingProcessViewProps) => {
     const dispatch = useAppDispatch()
@@ -160,6 +162,18 @@ const BillingProcessView = ({
         return message
     }, [selectedPlans, interval])
 
+    const voiceOrSMSText = useMemo(() => {
+        if (
+            selectedPlans[ProductType.Voice].isSelected &&
+            selectedPlans[ProductType.SMS].isSelected
+        ) {
+            return 'Voice & SMS'
+        } else if (selectedPlans[ProductType.SMS].isSelected) {
+            return 'SMS'
+        }
+        return 'Voice'
+    }, [selectedPlans])
+
     return (
         <div className={css.container}>
             <div className={css.header}>
@@ -167,15 +181,15 @@ const BillingProcessView = ({
 
                 <div className={css.generalInfoItem}>
                     <span>
-                        Billed {isIntervalMonthly ? 'Monthly' : 'Yearly'}
+                        Billed {isIntervalMonthly ? 'monthly' : 'yearly'}
                     </span>
                     <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>Update</Link>
                 </div>
             </div>
             {voiceOrSMSChanged && (
                 <Alert className={css.alert} icon>
-                    Your account will be reviewed by our team before activating
-                    your subscription
+                    Your {voiceOrSMSText} subscription will have to be reviewed
+                    by our team before you can start using it
                 </Alert>
             )}
             <div className={css.cards}>
@@ -205,6 +219,7 @@ const BillingProcessView = ({
                             isStarterHelpdeskPlanSelected={
                                 isStarterHelpdeskPlanSelected
                             }
+                            isTrialing={isTrialing}
                         />
                         <ProductPlanSelection
                             type={ProductType.Voice}
@@ -216,6 +231,7 @@ const BillingProcessView = ({
                             isStarterHelpdeskPlanSelected={
                                 isStarterHelpdeskPlanSelected
                             }
+                            isTrialing={isTrialing}
                         />
                         <ProductPlanSelection
                             type={ProductType.SMS}
@@ -227,6 +243,7 @@ const BillingProcessView = ({
                             isStarterHelpdeskPlanSelected={
                                 isStarterHelpdeskPlanSelected
                             }
+                            isTrialing={isTrialing}
                         />
                     </div>
                 </Card>

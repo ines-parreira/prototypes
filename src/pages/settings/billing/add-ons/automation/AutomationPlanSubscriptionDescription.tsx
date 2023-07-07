@@ -9,6 +9,7 @@ import {
 } from 'pages/settings/new_billing/utils/formatAmount'
 import {
     ENTERPRISE_PRICE_ID,
+    PRICING_DETAILS_URL,
     PRODUCT_INFO,
 } from 'pages/settings/new_billing/constants'
 import {Value} from 'pages/common/forms/SelectField/types'
@@ -144,7 +145,7 @@ const AutomationPlanSubscriptionDescription = ({
                 <div className={css.cardHeader}>
                     <div className={css.title}>Select a plan</div>
                     <a
-                        href="https://gorgias.com"
+                        href={PRICING_DETAILS_URL}
                         target="_blank"
                         rel="noreferrer noopener"
                     >

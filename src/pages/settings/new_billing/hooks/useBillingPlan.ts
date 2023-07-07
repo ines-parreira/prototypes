@@ -16,7 +16,10 @@ import {
 } from 'state/billing/selectors'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {objKeys} from 'utils'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {
+    getCurrentAccountState,
+    isTrialing,
+} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
@@ -65,6 +68,7 @@ export const useBillingPlans = ({
     const currentUser = useAppSelector(getCurrentUser)
     const from: string = currentUser.get('email')
     const currentUsage = useAppSelector(getCurrentUsage)
+    const isFreeTrial = useAppSelector(isTrialing)
 
     const periodEnd = useMemo(
         () =>
@@ -84,6 +88,14 @@ export const useBillingPlans = ({
             price.num_quota_tickets &&
             (filterByInterval ? price.interval === interval : true)
     )
+    const helpdeskPriceIds = useMemo(
+        () => helpdeskPrices.map((price) => price.price_id),
+        [helpdeskPrices]
+    )
+    const helpdeskCurrentPriceIdIndex = useMemo(
+        () => helpdeskPriceIds.indexOf(helpdeskProduct?.price_id ?? ''),
+        [helpdeskPriceIds, helpdeskProduct]
+    )
 
     // Automation
     const automationProduct = useAppSelector(getCurrentAutomationProduct)
@@ -92,6 +104,14 @@ export const useBillingPlans = ({
     )?.prices.filter(
         (price) =>
             price && (filterByInterval ? price.interval === interval : true)
+    )
+    const automationHasLegacyPrice = useMemo(
+        () => automationPrices?.some((price) => !price.num_quota_tickets),
+        [automationPrices]
+    )
+    const automationIndex = Math.min(
+        5,
+        helpdeskCurrentPriceIdIndex + (automationHasLegacyPrice ? 1 : 0)
     )
 
     // Voice
@@ -114,7 +134,7 @@ export const useBillingPlans = ({
                 !!helpdeskProduct || selectedProduct === ProductType.Helpdesk,
         },
         [ProductType.Automation]: {
-            plan: automationProduct || automationPrices?.[0],
+            plan: automationProduct || automationPrices?.[automationIndex],
             isSelected:
                 !!automationProduct ||
                 selectedProduct === ProductType.Automation,
@@ -147,12 +167,21 @@ export const useBillingPlans = ({
             (automationProduct?.price_id !==
                 selectedPlans[ProductType.Automation].plan?.price_id &&
                 selectedPlans[ProductType.Automation].isSelected) ||
+            (automationProduct?.price_id ===
+                selectedPlans[ProductType.Automation].plan?.price_id &&
+                !selectedPlans[ProductType.Automation].isSelected) ||
             (voiceProduct?.price_id !==
                 selectedPlans[ProductType.Voice].plan?.price_id &&
                 selectedPlans[ProductType.Voice].isSelected) ||
+            (voiceProduct?.price_id ===
+                selectedPlans[ProductType.Voice].plan?.price_id &&
+                !selectedPlans[ProductType.Voice].isSelected) ||
             (smsProduct?.price_id !==
                 selectedPlans[ProductType.SMS].plan?.price_id &&
-                selectedPlans[ProductType.SMS].isSelected),
+                selectedPlans[ProductType.SMS].isSelected) ||
+            (smsProduct?.price_id ===
+                selectedPlans[ProductType.SMS].plan?.price_id &&
+                !selectedPlans[ProductType.SMS].isSelected),
         [
             helpdeskProduct,
             automationProduct,
@@ -260,6 +289,9 @@ export const useBillingPlans = ({
                     from,
                     zapierHook: ZAPIER_BILLING_HOOK,
                     to: BILLING_SUPPORT_EMAIL,
+                    account: domain,
+                    freeTrial: isFreeTrial,
+                    helpdeskPlan: helpdeskProduct?.name ?? '',
                 })
                 void dispatch(
                     notify({
@@ -292,6 +324,8 @@ export const useBillingPlans = ({
         smsProduct?.internal_id,
         voiceProduct?.internal_id,
         history,
+        isFreeTrial,
+        helpdeskProduct?.name,
     ])
 
     const handleHelpdeskAndAutomationPlansChange = useCallback(async () => {
@@ -351,6 +385,18 @@ export const useBillingPlans = ({
 
         // update subscription for Helpdesk and Automation plans
         if (plansToBeUpdatedAutomatically.length > 0) {
+            // Automation has been removed while in free trial
+            if (notifications.length === 0) {
+                notifications.push({
+                    message:
+                        'You have removed Automation from your subscription',
+                    status: NotificationStatus.Success,
+                    style: NotificationStyle.Alert,
+                    showIcon: true,
+                    showDismissButton: true,
+                    noAutoDismiss: true,
+                })
+            }
             try {
                 await dispatch(
                     updateSubscriptionsForPlans(

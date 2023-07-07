@@ -129,7 +129,7 @@ const ProductCard = ({type, product, usage, banner = ''}: ProductCardProps) => {
         () => (
             <div className={classNames(css.counter)}>
                 <div className={className}>
-                    {usage ? usage.data.num_tickets : 0} of{' '}
+                    {usage ? formatNumTickets(usage.data.num_tickets) : 0} of{' '}
                     {formatNumTickets(product?.num_quota_tickets || 0)}{' '}
                     {PRODUCT_INFO[type].counter} used
                 </div>
@@ -183,7 +183,11 @@ const ProductCard = ({type, product, usage, banner = ''}: ProductCardProps) => {
                         <Alert
                             icon
                             customActions={
-                                <a href={PRODUCT_INFO[type].bannerLink}>
+                                <a
+                                    href={PRODUCT_INFO[type].bannerLink}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     Set up {PRODUCT_INFO[type].title}
                                 </a>
                             }

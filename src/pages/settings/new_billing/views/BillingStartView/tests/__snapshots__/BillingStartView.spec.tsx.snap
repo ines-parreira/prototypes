@@ -67,7 +67,7 @@ exports[`BillingStartView should render a BillingStartView component and load th
           >
             <span>
               Billed 
-              Yearly
+              yearly
             </span>
             <a
               to="/app/settings/new-billing/payment/frequency"

@@ -10,6 +10,9 @@ import TextArea from 'pages/common/forms/TextArea'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {isTrialing} from 'state/currentAccount/selectors'
+import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 import {sendSupportTicket} from '../../utils/sendSupportTicket'
 import css from './ContactSupportModal.less'
 
@@ -32,11 +35,14 @@ const ContactSupportModal = ({
     defaultMessage = '',
     subject,
     zapierHook,
+    domain,
     to,
     from,
 }: ContactSupportModalProps) => {
     const dispatch = useAppDispatch()
     const [message, setMessage] = useState(defaultMessage)
+    const isFreeTrial = useAppSelector(isTrialing)
+    const helpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
 
     useEffect(() => {
         setMessage(defaultMessage)
@@ -51,6 +57,9 @@ const ContactSupportModal = ({
                 message: messageToSend,
                 from,
                 to,
+                account: domain,
+                freeTrial: isFreeTrial,
+                helpdeskPlan: helpdeskPlan?.name ?? '',
             })
 
             void dispatch(

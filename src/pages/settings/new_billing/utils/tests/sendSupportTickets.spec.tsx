@@ -13,13 +13,16 @@ describe('sendSupportTicket', () => {
             message: 'Test Message',
             from: 'test@example.com',
             to: 'support@example.com',
+            helpdeskPlan: 'acme',
+            freeTrial: false,
+            account: 'acme',
         }
 
         await sendSupportTicket(props)
 
         expect(client.get).toHaveBeenCalledTimes(1)
         expect(client.get).toHaveBeenCalledWith(
-            'https://example.com/zapierHook?message=Test%20Message&from=test%40example.com&to=support%40example.com&subject=Test%20Subject',
+            'https://example.com/zapierHook?message=Test%20Message&from=test%40example.com&to=support%40example.com&subject=Test%20Subject&helpdeskPlan=acme&freeTrial=false&account=acme',
             {
                 transformRequest: expect.any(Function),
             }

@@ -6,6 +6,9 @@ export type Props = {
     message: string
     from: string
     to: string
+    helpdeskPlan: string
+    freeTrial: boolean
+    account: string
 }
 export const sendSupportTicket = ({
     zapierHook,
@@ -13,13 +16,22 @@ export const sendSupportTicket = ({
     message,
     from,
     to,
+    helpdeskPlan,
+    freeTrial,
+    account,
 }: Props) => {
     return client.get(
         `${zapierHook}?message=${encodeURIComponent(
             message
         )}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(
             to
-        )}&subject=${encodeURIComponent(subject)}`,
+        )}&subject=${encodeURIComponent(
+            subject
+        )}&helpdeskPlan=${encodeURIComponent(
+            helpdeskPlan
+        )}&freeTrial=${encodeURIComponent(
+            freeTrial
+        )}&account=${encodeURIComponent(account)}`,
         {
             transformRequest: (
                 data: Record<string, unknown>,

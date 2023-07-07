@@ -48,7 +48,7 @@ export const PRODUCT_INFO = {
         tooltip:
             'Tickets where at least one phone call takes place between your customer and your team.',
         tooltipLink: BILLABLE_TICKETS_URL,
-        bannerLink: '/app/settings/channels/phone',
+        bannerLink: 'https://docs.gorgias.com/en-US/set-up-voice-81798',
     },
     [ProductType.SMS]: {
         title: 'SMS',
@@ -58,7 +58,7 @@ export const PRODUCT_INFO = {
         tooltip:
             'Tickets where at least one SMS message has been sent from an agent or a rule.',
         tooltipLink: BILLABLE_TICKETS_URL,
-        bannerLink: '/app/settings/channels/sms',
+        bannerLink: 'https://docs.gorgias.com/en-US/set-up-sms-81919',
     },
 }
 

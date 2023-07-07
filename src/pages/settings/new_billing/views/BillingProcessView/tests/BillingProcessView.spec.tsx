@@ -64,6 +64,7 @@ describe('UsageAndPlansView', () => {
                     setDefaultMessage={jest.fn()}
                     setIsModalOpen={jest.fn()}
                     periodEnd="2021-01-01"
+                    isTrialing={false}
                 />
             </Provider>
         )

@@ -1,19 +1,25 @@
 import {useEffect, useMemo, useState} from 'react'
 import {fromJS} from 'immutable'
 import {useHistory} from 'react-router-dom'
+import {AnyAction} from 'redux'
 import useAppSelector from 'hooks/useAppSelector'
-import {CreditCard} from 'state/billing/types'
+import {BillingContact, CreditCard} from 'state/billing/types'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {creditCard} from 'state/billing/selectors'
-import {fetchCreditCard} from 'state/billing/actions'
+import {creditCard, getContact} from 'state/billing/selectors'
+import {
+    fetchContact,
+    fetchCreditCard,
+    updateContact,
+} from 'state/billing/actions'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import GorgiasApi from 'services/gorgiasApi'
 import {createStripeCardToken} from 'utils/stripe'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {loadScript} from 'utils'
+import {UPDATE_BILLING_CONTACT_ERROR} from 'state/billing/constants'
 
 interface ErrorResponse {
     response?: {
@@ -51,6 +57,7 @@ export const useCreditCard = () => {
     })
 
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
+    const [isContactFetched, setIsContactFetched] = useState(true)
     const [isStripeLoaded, setIsStripeLoaded] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -66,6 +73,13 @@ export const useCreditCard = () => {
         [fields, errors]
     )
 
+    const initialBillingContact = useAppSelector(
+        getContact
+    )?.toJS() as BillingContact
+    const [billingContact, setBillingContact] = useState<BillingContact>(
+        initialBillingContact
+    )
+
     // fetch card
     useEffect(() => {
         const fetchCard = async () => {
@@ -77,6 +91,24 @@ export const useCreditCard = () => {
 
         void fetchCard()
     }, [card, dispatch])
+
+    // Fetch billing contact
+    useEffect(() => {
+        const getBillingShippingContact = async () => {
+            if (!initialBillingContact) {
+                await fetchContact()(dispatch)
+            }
+            setIsContactFetched(true)
+        }
+        void getBillingShippingContact()
+    }, [dispatch, initialBillingContact])
+
+    // Set initial values for billing contact
+    useEffect(() => {
+        if (initialBillingContact && !billingContact) {
+            setBillingContact(initialBillingContact)
+        }
+    }, [initialBillingContact, billingContact])
 
     useEffect(() => {
         // load Stripe.js cause we need it to create token for credit card
@@ -159,6 +191,14 @@ export const useCreditCard = () => {
                 fromJS({token: creditCardToken.id})
             )
 
+            const response = (await updateContact(fromJS(billingContact))(
+                dispatch
+            )) as AnyAction
+
+            if (response.type === UPDATE_BILLING_CONTACT_ERROR) {
+                return
+            }
+
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
@@ -200,10 +240,14 @@ export const useCreditCard = () => {
         fields,
         errors,
         isStripeLoaded,
+        isCreditCardFetched,
+        isContactFetched,
         isDisabled,
         isUpdating,
         isSubmitting,
         handleSubmit,
         updateField,
+        billingContact,
+        setBillingContact,
     }
 }

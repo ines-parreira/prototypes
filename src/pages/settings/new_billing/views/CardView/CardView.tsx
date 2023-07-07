@@ -6,6 +6,8 @@ import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import BackLink from '../../components/BackLink/BackLink'
 import {useCreditCard} from '../../hooks/useCreditCard'
+import AddressForm from '../../components/AddressForm/AddressForm'
+import {emailError} from '../../utils/validations'
 import css from './CardView.less'
 import {
     creditCardCVCNormalizer,
@@ -23,6 +25,10 @@ const CardView = () => {
         isUpdating,
         handleSubmit,
         updateField,
+        billingContact,
+        setBillingContact,
+        isCreditCardFetched,
+        isContactFetched,
     } = useCreditCard()
 
     const currentMonth = new Date().getMonth() + 1
@@ -34,7 +40,14 @@ const CardView = () => {
         .toString()
         .substring(2, 4)}`
 
-    if (!isStripeLoaded) {
+    const isBillingContactValid =
+        emailError(billingContact?.email) === undefined &&
+        !!billingContact?.shipping.address.line1 &&
+        !!billingContact?.shipping.address.city &&
+        !!billingContact?.shipping.address.country &&
+        !!billingContact?.shipping.address.postal_code
+
+    if (!isStripeLoaded || !isCreditCardFetched || !isContactFetched) {
         return <Loader />
     }
 
@@ -120,10 +133,18 @@ const CardView = () => {
                         payment methods, and be <b>refunded within 7 days.</b>
                     </span>
                 </div>
+                {!isUpdating && (
+                    <AddressForm
+                        billingContact={billingContact}
+                        setBillingContact={setBillingContact}
+                    />
+                )}
                 <Button
                     type="submit"
                     isLoading={isSubmitting}
-                    isDisabled={isDisabled}
+                    isDisabled={
+                        isDisabled || (!isUpdating && !isBillingContactValid)
+                    }
                     className={css.submitButton}
                 >
                     {isUpdating ? 'Update card' : 'Add payment method'}
