@@ -2,25 +2,35 @@ import {CountryCode} from 'libphonenumber-js'
 import {WhatsAppMessageTemplateStatus} from 'models/whatsAppMessageTemplates/types'
 import {AlertType} from 'pages/common/components/Alert/Alert'
 
-export const templateAlertContent = {
+export const templateAlertContent: Partial<
+    Record<
+        WhatsAppMessageTemplateStatus,
+        {type: AlertType; message: string; tooltip: string}
+    >
+> = {
     [WhatsAppMessageTemplateStatus.Paused]: {
         type: AlertType.Warning,
         message:
             'This template received recurring negative feedback from customers and is not usable for up to 6h.',
+        tooltip:
+            'Received recurring negative feedback. Not usable for up to 6h.',
     },
     [WhatsAppMessageTemplateStatus.Disabled]: {
         type: AlertType.Warning,
         message:
             'This template received recurring negative feedback from customers. Re-edit and appeal the decision.',
+        tooltip: 'Receiving recurring negative feedback. Re-edit and appeal.',
     },
     [WhatsAppMessageTemplateStatus.Rejected]: {
         type: AlertType.Warning,
         message:
             'This template violates WhatsApp policies and cannot be used. Re-submit or appeal the decision.',
+        tooltip: 'Violates WhatsApp policies. Re-submit or appeal.',
     },
     [WhatsAppMessageTemplateStatus.Unsupported]: {
         type: AlertType.Info,
         message: 'This template contains content not yet supported by Gorgias.',
+        tooltip: 'Contains content not supported by Gorgias.',
     },
 }
 

@@ -10,10 +10,13 @@ import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import {useListWhatsAppMessageTemplates} from 'models/whatsAppMessageTemplates/queries'
+import Tooltip from 'pages/common/components/Tooltip'
+import {getLanguageDisplayName} from 'utils'
 import WhatsAppMessageTemplateStatusLabel from './WhatsAppMessageTemplateStatusLabel'
 import WhatsAppMessageTemplateCategoryLabel from './WhatsAppMessageTemplateCategoryLabel'
 import {whatsAppFlagCodes} from './constants'
 import WhatsAppMessageTemplateDetailsDrawer from './WhatsAppMessageTemplateDetailsDrawer'
+import {normalizeLocale} from './utils'
 
 import css from './WhatsAppMessageTemplatesList.less'
 
@@ -71,6 +74,7 @@ export default function WhatsAppMessageTemplatesList({phoneNumberId}: Props) {
                             <BodyCell>
                                 <WhatsAppMessageTemplateStatusLabel
                                     status={template.status}
+                                    showTooltip
                                 />
                             </BodyCell>
                             <BodyCell>
@@ -79,7 +83,16 @@ export default function WhatsAppMessageTemplatesList({phoneNumberId}: Props) {
                                         whatsAppFlagCodes[template.language]
                                     }
                                     withRoundFlag
+                                    id={`template-language-country-flag-${template.id}`}
                                 />
+                                <Tooltip
+                                    target={`template-language-country-flag-${template.id}`}
+                                    placement="top"
+                                >
+                                    {getLanguageDisplayName(
+                                        normalizeLocale(template.language)
+                                    )}
+                                </Tooltip>
                             </BodyCell>
                         </TableBodyRow>
                     ))}

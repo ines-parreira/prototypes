@@ -13,10 +13,11 @@ type Props = {
     intent: StatusIntent
     label: string
     className?: string
+    id?: string
 }
 
 export default function Status(props: Props) {
-    const {intent, label, className} = props
+    const {intent, label, className, id} = props
 
     return (
         <div
@@ -25,6 +26,7 @@ export default function Status(props: Props) {
                 css.statusLabel,
                 'd-flex align-items-center flex-wrap'
             )}
+            id={id}
         >
             <div className={classNames(css.statusDot, css[intent])} />
             <div>{label}</div>

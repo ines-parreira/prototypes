@@ -9,11 +9,19 @@ import css from './CountryFlag.less'
 type Props = {
     countryCode: Maybe<CountryCode>
     withRoundFlag?: boolean
+    id?: string
 }
 
-export function CountryFlag({countryCode, withRoundFlag}: Props): JSX.Element {
+export function CountryFlag({
+    countryCode,
+    withRoundFlag,
+    id,
+}: Props): JSX.Element {
     return (
-        <div className={classnames(css.wrapper, {[css.round]: withRoundFlag})}>
+        <div
+            className={classnames(css.wrapper, {[css.round]: withRoundFlag})}
+            id={id}
+        >
             {countryCode && <ReactCountryFlag countryCode={countryCode} />}
         </div>
     )

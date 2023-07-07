@@ -28,10 +28,7 @@ export default function WhatsAppMessageTemplateDetailsDrawer({
 }: Props) {
     const [isAlertVisible, setIsAlertVisible] = useState(true)
 
-    const alertContent =
-        templateAlertContent[
-            template.status as keyof typeof templateAlertContent
-        ]
+    const alertContent = templateAlertContent[template.status]
 
     return (
         <Drawer
