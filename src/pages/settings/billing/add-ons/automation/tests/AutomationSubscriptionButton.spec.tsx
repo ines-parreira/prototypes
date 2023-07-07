@@ -1,4 +1,5 @@
 import React, {ComponentProps} from 'react'
+import LD from 'launchdarkly-react-client-sdk'
 import {render} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
@@ -7,6 +8,7 @@ import {Provider} from 'react-redux'
 import _cloneDeep from 'lodash/cloneDeep'
 
 import {RootState, StoreDispatch} from 'state/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
 import {
@@ -47,6 +49,9 @@ describe('AutomationSubscriptionButton', () => {
     })
 
     it('should pass the props to the upgrade button', () => {
+        jest.spyOn(LD, 'useFlags').mockReturnValue({
+            [FeatureFlagKey.NewBillingInterface]: true,
+        })
         render(
             <Provider store={mockStore(defaultState)}>
                 <AutomationSubscriptionButton {...minProps} />
@@ -59,6 +64,9 @@ describe('AutomationSubscriptionButton', () => {
         const productsWithStarterPrice = _cloneDeep(products)
         products[0].prices.push(starterHelpdeskPrice)
 
+        jest.spyOn(LD, 'useFlags').mockReturnValue({
+            [FeatureFlagKey.NewBillingInterface]: false,
+        })
         render(
             <Provider
                 store={mockStore({

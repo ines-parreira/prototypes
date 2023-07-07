@@ -1,4 +1,5 @@
 import React, {ComponentProps, useMemo} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -6,6 +7,7 @@ import {
     getCurrentHelpdeskAddons,
 } from 'state/billing/selectors'
 import {PlanName} from 'utils/paywalls'
+import {FeatureFlagKey} from 'config/featureFlags'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 
 export default function AutomationSubscriptionButton({
@@ -17,9 +19,12 @@ export default function AutomationSubscriptionButton({
 }: ComponentProps<typeof UpgradeButton>) {
     const addons = useAppSelector(getCurrentHelpdeskAddons)
     const automationPrices = useAppSelector(getAutomationPricesMap)
-    const automationAddOnAvailable = !!addons?.some(
-        (priceId) => !!automationPrices[priceId]
-    )
+    const hasAccessToNewBilling: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewBillingInterface]
+
+    const automationAddOnAvailable = hasAccessToNewBilling
+        ? true
+        : !!addons?.some((priceId) => !!automationPrices[priceId])
     const automationAddOnState = useMemo<typeof state>(() => {
         return !automationAddOnAvailable
             ? {

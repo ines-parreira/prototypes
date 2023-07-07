@@ -101,17 +101,22 @@ export const useBillingPlans = ({
     const automationProduct = useAppSelector(getCurrentAutomationProduct)
     const automationPrices = useAppSelector(
         getAutomationProduct
-    )?.prices.filter(
-        (price) =>
-            price && (filterByInterval ? price.interval === interval : true)
-    )
+    )?.prices.filter((price) => {
+        const isCurrentPriceLegacy =
+            automationProduct && !automationProduct.num_quota_tickets
+        return (
+            price &&
+            (filterByInterval ? price.interval === interval : true) &&
+            (isCurrentPriceLegacy ? true : !!price.num_quota_tickets)
+        )
+    })
     const automationHasLegacyPrice = useMemo(
         () => automationPrices?.some((price) => !price.num_quota_tickets),
         [automationPrices]
     )
-    const automationIndex = Math.min(
+    const automationInitialIndex = Math.min(
         5,
-        helpdeskCurrentPriceIdIndex + (automationHasLegacyPrice ? 1 : 0)
+        helpdeskCurrentPriceIdIndex - (automationHasLegacyPrice ? 0 : 1)
     )
 
     // Voice
@@ -134,7 +139,8 @@ export const useBillingPlans = ({
                 !!helpdeskProduct || selectedProduct === ProductType.Helpdesk,
         },
         [ProductType.Automation]: {
-            plan: automationProduct || automationPrices?.[automationIndex],
+            plan:
+                automationProduct || automationPrices?.[automationInitialIndex],
             isSelected:
                 !!automationProduct ||
                 selectedProduct === ProductType.Automation,
@@ -442,6 +448,7 @@ export const useBillingPlans = ({
         helpdeskPrices,
         automationProduct,
         automationPrices,
+        automationInitialIndex,
         voiceProduct,
         voicePrices,
         smsProduct,

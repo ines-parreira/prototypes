@@ -89,6 +89,7 @@ const BillingProcessView = ({
         helpdeskPrices,
         automationProduct,
         automationPrices,
+        automationInitialIndex,
         smsProduct,
         smsPrices,
         voiceProduct,
@@ -220,6 +221,7 @@ const BillingProcessView = ({
                                 isStarterHelpdeskPlanSelected
                             }
                             isTrialing={isTrialing}
+                            initialIndex={automationInitialIndex}
                         />
                         <ProductPlanSelection
                             type={ProductType.Voice}

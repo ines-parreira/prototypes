@@ -31,6 +31,7 @@ export type ProductPlanSelectionProps = {
     setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
     isStarterHelpdeskPlanSelected?: boolean
     isTrialing?: boolean
+    initialIndex?: number
 }
 
 const ProductPlanSelection = ({
@@ -42,6 +43,7 @@ const ProductPlanSelection = ({
     setSelectedPlans,
     isStarterHelpdeskPlanSelected,
     isTrialing = false,
+    initialIndex = -1,
 }: ProductPlanSelectionProps) => {
     const isActive = useMemo(() => {
         if (!product) return false
@@ -167,7 +169,10 @@ const ProductPlanSelection = ({
             return
         }
 
-        const initialPlan = prices.find((price) => price.num_quota_tickets)
+        const initialPlan =
+            initialIndex === -1
+                ? prices.find((price) => price.num_quota_tickets)
+                : prices[initialIndex]
 
         setSelectedPlans((prev) => ({
             ...prev,
@@ -176,7 +181,13 @@ const ProductPlanSelection = ({
                 isSelected: true,
             },
         }))
-    }, [prices, setSelectedPlans, type, isStarterHelpdeskPlanSelected])
+    }, [
+        prices,
+        setSelectedPlans,
+        type,
+        isStarterHelpdeskPlanSelected,
+        initialIndex,
+    ])
 
     const handleSelectProductPlan = (price_id: Value) => {
         const plan = prices.find((price) => price.price_id === price_id)
