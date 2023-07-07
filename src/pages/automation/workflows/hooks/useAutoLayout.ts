@@ -6,11 +6,6 @@ import {shallow} from 'zustand/shallow'
 import {walkVisualBuilderGraph} from '../models/visualBuilderGraph.model'
 import {useWorkflowEditorContext} from './useWorkflowEditor'
 
-const nodesInitializedSelector = (state: ReactFlowState) =>
-    Array.from(state.nodeInternals.values()).every(
-        (node) => node.width && node.height
-    )
-
 function useCanNodesFitInView(minZoomTreshold: number) {
     const {width, height} = useStore(({width, height}) => {
         return {width, height}
@@ -132,17 +127,16 @@ function useLayoutHash() {
 }
 
 function useAutoLayout() {
-    const nodesInitialized = useStore(nodesInitializedSelector)
     const {getNodes, getEdges, setNodes} = useReactFlow()
     const {autoFitView} = useAutoFitView()
     const previousNodes = useRef<Node[]>([])
     const layoutHash = useLayoutHash()
 
     useEffect(() => {
-        // only run the layout if there are nodes and they have been initialized with their dimensions
+        // only run the layout if there are nodes
         const edges = getEdges()
         const nodes = getNodes()
-        if (!layoutHash || nodes.length === 0 || !nodesInitialized) {
+        if (!layoutHash || nodes.length === 0) {
             return
         }
 
@@ -196,14 +190,7 @@ function useAutoLayout() {
         autoFitView(nextNodes, newNodes)
 
         previousNodes.current = getNodes()
-    }, [
-        nodesInitialized,
-        getNodes,
-        getEdges,
-        setNodes,
-        autoFitView,
-        layoutHash,
-    ])
+    }, [getNodes, getEdges, setNodes, autoFitView, layoutHash])
     return {minZoom: minZoomTresholds.lowerBound, maxZoom: 1}
 }
 
