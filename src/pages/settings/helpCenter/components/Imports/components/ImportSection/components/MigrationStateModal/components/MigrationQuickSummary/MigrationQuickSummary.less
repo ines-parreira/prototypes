@@ -1,10 +1,9 @@
-@import '~css/new/colorTokens';
 @import '~css/typography';
 
 :local {
     .wrapper {
         .caption-regular();
-        color: @classic-neutral-grey-6;
+        color: var(--neutral-grey-6);
     }
     .title {
         font-weight: bold;
@@ -17,7 +16,7 @@
         gap: 16px;
 
         &:not(:first-child) {
-            border-top: 1px solid @classic-neutral-grey-3;
+            border-top: 1px solid var(--neutral-grey-3);
         }
 
         i {

@@ -1,6 +1,5 @@
 @import (reference) '~css/new/layout.less';
 @import (reference) '~css/typography.less';
-@import (reference) '~css/new/colorTokens.less';
 
 :local {
     .container {
@@ -10,8 +9,8 @@
         align-items: center;
         padding: @layout-spacing-m;
         gap: @layout-spacing-m;
-        background: @modern-neutral-grey-0;
-        color: @modern-neutral-grey-5;
+        background: var(--neutral-grey-0);
+        color: var(--neutral-grey-5);
         text-align: center;
         overflow: auto;
         pointer-events: initial;
@@ -32,6 +31,6 @@
         padding: 6px 16px;
         background: rgba(0, 117, 255, 0.08);
         border-radius: 4px;
-        color: @modern-main-primary;
+        color: var(--main-primary);
     }
 }

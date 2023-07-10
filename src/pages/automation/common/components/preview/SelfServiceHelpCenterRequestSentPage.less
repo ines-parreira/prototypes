@@ -1,12 +1,11 @@
 @import (reference) '~css/new/layout.less';
-@import (reference) '~css/new/colorTokens.less';
 @import (reference) '~css/typography.less';
 @import (reference) '~css/new/typographyTokens.less';
 
 :local {
     .container {
-        background-color: @modern-neutral-grey-0;
-        color: @modern-neutral-grey-6;
+        background-color: var(--neutral-grey-0);
+        color: var(--neutral-grey-6);
         overflow: auto;
         pointer-events: initial;
     }
@@ -19,11 +18,11 @@
         margin: 0 @layout-spacing-m;
         padding: @layout-spacing-m 0;
         gap: @layout-spacing-m;
-        border-bottom: 1px dashed @modern-neutral-grey-3;
+        border-bottom: 1px dashed var(--neutral-grey-3);
     }
 
     .checkCircleIcon {
-        color: @modern-feedback-success;
+        color: var(--feedback-success);
         font-size: 40px;
     }
 
@@ -43,14 +42,14 @@
 
     .automatedResponse {
         .heading-subsection-regular();
-        color: @modern-neutral-grey-5;
+        color: var(--neutral-grey-5);
         text-align: center;
         overflow-wrap: anywhere;
     }
 
     .description {
         .heading-subsection-regular();
-        color: @modern-neutral-grey-5;
+        color: var(--neutral-grey-5);
     }
 
     .summaryContainer {
@@ -85,7 +84,7 @@
         display: flex;
         flex-direction: column;
         gap: @layout-spacing-xxs;
-        color: @modern-neutral-grey-5;
+        color: var(--neutral-grey-5);
     }
 
     .issueReported {
@@ -103,7 +102,7 @@
         display: flex;
         flex-direction: column;
         gap: @layout-spacing-xxs;
-        color: @modern-neutral-grey-5;
+        color: var(--neutral-grey-5);
     }
 
     .fulfillmentLineItems {

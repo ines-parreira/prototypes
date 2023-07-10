@@ -1,5 +1,5 @@
 @import '~css/navbar';
-@import '~css/new/colors';
+@import '~css/new/colorTokens';
 @import '~css/new/mixins';
 @import (reference) '~css/typography';
 
@@ -44,7 +44,7 @@
                 top: 0px;
                 bottom: 0px;
                 width: 3px;
-                background-color: @classic-main-primary-1;
+                background-color: var(--main-primary-1);
                 opacity: 1;
                 transition-property: opacity;
                 transition-duration: 0.25s;
@@ -114,7 +114,7 @@
 
         &:hover {
             background-color: darken(@classic-neutral-grey-6, 4%);
-            color: @classic-neutral-grey-0;
+            color: var(--neutral-grey-0);
         }
 
         &:active {

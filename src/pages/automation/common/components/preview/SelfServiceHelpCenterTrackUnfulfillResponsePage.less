@@ -1,12 +1,11 @@
 @import (reference) '~css/new/layout.less';
-@import (reference) '~css/new/colorTokens.less';
 @import (reference) '~css/typography.less';
 @import (reference) '~css/new/util.less';
 
 :local {
     .container {
-        background-color: @modern-neutral-grey-0;
-        color: @modern-neutral-grey-6;
+        background-color: var(--neutral-grey-0);
+        color: var(--neutral-grey-6);
         flex: 1;
         overflow: auto;
         pointer-events: initial;
@@ -21,7 +20,7 @@
         align-items: center;
         padding: @layout-spacing-m;
         gap: @layout-spacing-xs;
-        border-bottom: 1px dashed @modern-neutral-grey-3;
+        border-bottom: 1px dashed var(--neutral-grey-3);
     }
 
     .orderNumber {
@@ -30,7 +29,7 @@
 
     .orderDate {
         .heading-subsection-regular();
-        color: @modern-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 
     .etaWithTimelineContainer {
@@ -48,7 +47,7 @@
 
     .etaCaption {
         .body-medium();
-        color: @modern-neutral-grey-4;
+        color: var(--neutral-grey-4);
         text-transform: uppercase;
         letter-spacing: 0.8px;
     }
@@ -60,7 +59,7 @@
     }
 
     .etaIcon {
-        color: @modern-neutral-grey-5;
+        color: var(--neutral-grey-5);
         margin-left: @layout-spacing-xs;
         font-size: 16px;
         width: 16px;
@@ -95,19 +94,19 @@
         height: 8px;
         border-radius: 50%;
         margin: @layout-spacing-xs 6px 6px;
-        background-color: @modern-main-primary;
+        background-color: var(--main-primary);
         z-index: 1;
 
         &.isCurrent {
             width: 16px;
             height: 16px;
             margin: 6px 2px 2px;
-            border: 3px solid @modern-neutral-grey-0;
+            border: 3px solid var(--neutral-grey-0);
             box-shadow: 0 2px 4px rgba(22, 22, 22, 0.16);
         }
 
         &.isUpcoming {
-            background-color: @modern-neutral-grey-3;
+            background-color: var(--neutral-grey-3);
         }
     }
 
@@ -119,10 +118,10 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: @modern-neutral-grey-3;
+        background-color: var(--neutral-grey-3);
 
         &.isCompleted {
-            background-color: @modern-main-primary;
+            background-color: var(--main-primary);
         }
     }
 
@@ -141,28 +140,28 @@
         }
 
         &.isUpcoming {
-            color: @modern-neutral-grey-4;
+            color: var(--neutral-grey-4);
         }
     }
 
     .timelineItemTimestamp {
         .body-regular();
-        color: @modern-neutral-grey-4;
+        color: var(--neutral-grey-4);
         margin-top: @layout-spacing-xs;
     }
 
     .timelineItemDescription {
         .heading-subsection-regular();
-        color: @modern-neutral-grey-5;
+        color: var(--neutral-grey-5);
     }
 
     .timelineLastUpdated {
         .body-regular();
-        color: @modern-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 
     .separator {
-        border-top: 1px solid @modern-neutral-grey-3;
+        border-top: 1px solid var(--neutral-grey-3);
     }
 
     .shippingContainer {
@@ -180,7 +179,7 @@
     .shippingAddressContainer {
         display: flex;
         flex-direction: column;
-        color: @modern-neutral-grey-5;
+        color: var(--neutral-grey-5);
         gap: @layout-spacing-xxs;
     }
 
@@ -204,13 +203,13 @@
     }
 
     .shippingCarrierSubtitle {
-        color: @modern-neutral-grey-5;
+        color: var(--neutral-grey-5);
         display: flex;
         gap: @layout-spacing-xs;
     }
 
     .shippingCarrierTrackingNumber {
-        color: @modern-main-primary;
+        color: var(--main-primary);
     }
 
     .fulfillmentContainer {
@@ -251,11 +250,11 @@
     }
 
     .lineItemPrice {
-        color: @modern-neutral-grey-5;
+        color: var(--neutral-grey-5);
         margin-right: @layout-spacing-xs;
     }
 
     .lineItemQuantity {
-        color: @modern-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 }

@@ -1,12 +1,11 @@
 @import (reference) '~css/new/layout.less';
-@import (reference) '~css/new/colorTokens.less';
 @import (reference) '~css/typography.less';
 @import (reference) '~css/new/util.less';
 
 :local {
     .container {
-        background-color: @modern-neutral-grey-0;
-        color: @modern-neutral-grey-6;
+        background-color: var(--neutral-grey-0);
+        color: var(--neutral-grey-6);
 
         &:not(.isInitialEntry) {
             :global {
@@ -20,7 +19,7 @@
         flex-direction: column;
         padding: @layout-spacing-m @layout-spacing-s;
         gap: @layout-spacing-xs;
-        border-bottom: 1px solid @modern-neutral-grey-3;
+        border-bottom: 1px solid var(--neutral-grey-3);
     }
 
     .orderNumber {
@@ -29,7 +28,7 @@
 
     .orderDate {
         .heading-subsection-regular();
-        color: @modern-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 
     .summaryLabel {
@@ -43,7 +42,7 @@
         align-items: flex-start;
         padding: @layout-spacing-m @layout-spacing-s;
         gap: @layout-spacing-m;
-        border-bottom: 1px solid @modern-neutral-grey-3;
+        border-bottom: 1px solid var(--neutral-grey-3);
     }
 
     .fulfillmentStatus {
@@ -109,11 +108,11 @@
     }
 
     .lineItemPrice {
-        color: @modern-neutral-grey-5;
+        color: var(--neutral-grey-5);
         margin-right: @layout-spacing-xs;
     }
 
     .lineItemQuantity {
-        color: @modern-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 }

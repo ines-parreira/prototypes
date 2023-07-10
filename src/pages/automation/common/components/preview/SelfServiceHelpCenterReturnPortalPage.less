@@ -1,11 +1,10 @@
 @import (reference) '~css/new/layout.less';
-@import (reference) '~css/new/colorTokens.less';
 @import (reference) '~css/typography.less';
 
 :local {
     .container {
-        background-color: @modern-neutral-grey-0;
-        color: @modern-neutral-grey-6;
+        background-color: var(--neutral-grey-0);
+        color: var(--neutral-grey-6);
         overflow: auto;
         pointer-events: initial;
     }
@@ -15,7 +14,7 @@
         flex-direction: column;
         padding: @layout-spacing-m @layout-spacing-s;
         gap: @layout-spacing-xs;
-        border-bottom: 1px solid @modern-neutral-grey-3;
+        border-bottom: 1px solid var(--neutral-grey-3);
     }
 
     .orderNumber {
@@ -24,7 +23,7 @@
 
     .orderDate {
         .heading-subsection-regular();
-        color: @modern-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 
     .returnPortal {

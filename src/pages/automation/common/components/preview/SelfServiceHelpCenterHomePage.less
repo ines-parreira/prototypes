@@ -1,12 +1,11 @@
 @import (reference) '~css/new/layout.less';
-@import (reference) '~css/new/colorTokens.less';
 @import (reference) '~css/typography.less';
 @import (reference) '~css/new/util.less';
 
 :local {
     .orderManagementContainer {
-        background-color: @modern-neutral-grey-0;
-        color: @modern-neutral-grey-6;
+        background-color: var(--neutral-grey-0);
+        color: var(--neutral-grey-6);
         flex: 1;
 
         &:not(.isInitialEntry) {
@@ -19,7 +18,7 @@
     .orderManagementTitle {
         .heading-page-semibold();
         padding: @layout-spacing-m;
-        border-bottom: 1px solid @modern-neutral-grey-3;
+        border-bottom: 1px solid var(--neutral-grey-3);
     }
 
     .orderManagementItemsContainer {
@@ -34,13 +33,13 @@
         display: flex;
         align-items: center;
         column-gap: @layout-spacing-s;
-        border: 1px solid @modern-neutral-grey-3;
+        border: 1px solid var(--neutral-grey-3);
         border-radius: 8px;
         padding: @layout-spacing-s;
         text-transform: capitalize;
 
         &.isHighlighted {
-            border-color: @modern-main-primary;
+            border-color: var(--main-primary);
         }
     }
 
@@ -49,7 +48,7 @@
         display: flex;
         align-items: center;
         column-gap: @layout-spacing-s;
-        border: 1px solid @modern-neutral-grey-3;
+        border: 1px solid var(--neutral-grey-3);
         border-radius: 8px;
         padding: @layout-spacing-m @layout-spacing-s;
         text-transform: capitalize;
@@ -61,12 +60,12 @@
 
     .flowChevron {
         font-size: 24px;
-        color: @modern-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 
     .container {
-        background-color: @modern-neutral-grey-1;
-        color: @modern-neutral-grey-6;
+        background-color: var(--neutral-grey-1);
+        color: var(--neutral-grey-6);
         flex: 1;
         overflow: auto;
         pointer-events: initial;
@@ -87,9 +86,9 @@
         gap: @layout-spacing-xs;
         filter: drop-shadow(0px 2px 4px rgba(22, 22, 22, 0.16));
         border-radius: 4px;
-        background-color: @modern-neutral-grey-0;
-        border: 1px solid @modern-neutral-grey-3;
-        color: @modern-neutral-grey-4;
+        background-color: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-3);
+        color: var(--neutral-grey-4);
     }
 
     .searchBarIcon {
@@ -131,7 +130,7 @@
         flex-direction: column;
         padding: @layout-spacing-m;
         gap: @layout-spacing-xxs;
-        background-color: @modern-neutral-grey-0;
+        background-color: var(--neutral-grey-0);
     }
 
     .articleTitle {
@@ -144,7 +143,7 @@
         font-weight: 400;
         font-size: 16px;
         line-height: 24px;
-        color: @modern-neutral-grey-5;
+        color: var(--neutral-grey-5);
     }
 
     .footer {
@@ -155,7 +154,7 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: @modern-neutral-grey-4;
+        color: var(--neutral-grey-4);
         gap: @layout-spacing-xs;
     }
 }

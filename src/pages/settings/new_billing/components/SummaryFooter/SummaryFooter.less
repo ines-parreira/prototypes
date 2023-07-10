@@ -1,17 +1,15 @@
-@import (reference) '~css/new/colorTokens';
-
 :local {
     .container {
         padding: 16px;
-        background-color: @classic-neutral-grey-2;
+        background-color: var(--neutral-grey-2);
         font-size: 12px;
         line-height: 16px;
 
         &.disabled {
-            color: @classic-neutral-grey-4;
+            color: var(--neutral-grey-4);
 
             a {
-                color: @classic-neutral-grey-4 !important;
+                color: var(--neutral-grey-4) !important;
             }
         }
     }
@@ -39,7 +37,7 @@
 
     .termsLabel {
         a {
-            color: @classic-neutral-grey-6;
+            color: var(--neutral-grey-6);
             text-decoration: underline !important;
         }
     }

@@ -1,12 +1,11 @@
 @import (reference) '~css/new/layout.less';
-@import (reference) '~css/new/colorTokens.less';
 @import (reference) '~css/typography.less';
 @import (reference) '~css/new/util.less';
 
 :local {
     .contactFormContainer {
-        background-color: @modern-neutral-grey-0;
-        color: @modern-neutral-grey-6;
+        background-color: var(--neutral-grey-0);
+        color: var(--neutral-grey-6);
         flex: 1;
 
         &:not(.isInitialEntry) {
@@ -28,7 +27,7 @@
         display: flex;
         align-items: center;
         column-gap: @layout-spacing-s;
-        border: 1px solid @modern-neutral-grey-3;
+        border: 1px solid var(--neutral-grey-3);
         border-radius: 8px;
         padding: @layout-spacing-m @layout-spacing-s;
         text-transform: capitalize;
@@ -40,6 +39,6 @@
 
     .flowChevron {
         font-size: 24px;
-        color: @modern-neutral-grey-4;
+        color: var(--neutral-grey-4);
     }
 }
