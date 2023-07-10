@@ -2,9 +2,10 @@ import {renderHook} from '@testing-library/react-hooks/dom'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {usePerformanceTips} from 'hooks/reporting/usePerformanceTips'
 import useAppSelector from 'hooks/useAppSelector'
+import {usePerformanceTips} from 'hooks/reporting/usePerformanceTips'
 import * as tipProvider from 'services/performanceTipService'
+import {MetricName} from 'services/reporting/constants'
 import {RootState, StoreDispatch} from 'state/types'
 import {PlanName} from 'utils/paywalls'
 import {assumeMock} from 'utils/testing'
@@ -18,7 +19,7 @@ jest.mock('services/performanceTipService')
 describe('usePerformanceTips', () => {
     const defaultState = {} as RootState
     const plan = PlanName.Advanced
-    const lowerIsBetterMetric = tipProvider.MetricName.MessagesPerTicket
+    const lowerIsBetterMetric = MetricName.MessagesPerTicket
     const value = 5
 
     beforeEach(() => {

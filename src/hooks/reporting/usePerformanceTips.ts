@@ -1,9 +1,6 @@
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    MetricName,
-    Tip,
-    getPerformanceTip,
-} from 'services/performanceTipService'
+import {Tip, getPerformanceTip} from 'services/performanceTipService'
+import {MetricName} from 'services/reporting/constants'
 import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
 

@@ -12,3 +12,17 @@ export const WORKLOAD_BY_CHANNEL_LABEL = 'workload by channel'
 export const NOT_AVAILABLE_LABEL = 'N/A'
 export const DATE_TIME_FORMAT = 'YYYY-MM-DD'
 export const EMPTY_LABEL = ' '
+
+export enum MetricName {
+    CustomerSatisfaction = 'customerSatisfaction',
+    FirstResponseTime = 'firstResponseTime',
+    ResolutionTime = 'resolutionTime',
+    MessagesPerTicket = 'messagesPerTicket',
+}
+
+export const MetricNameToLabelMap: Record<MetricName, string> = {
+    [MetricName.CustomerSatisfaction]: CUSTOMER_SATISFACTION_LABEL,
+    [MetricName.FirstResponseTime]: FIRST_RESPONSE_TIME_LABEL,
+    [MetricName.ResolutionTime]: RESOLUTION_TIME_LABEL,
+    [MetricName.MessagesPerTicket]: MESSAGES_PER_TICKET_LABEL,
+}

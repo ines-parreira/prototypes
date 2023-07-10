@@ -1,17 +1,11 @@
 import _findLastIndex from 'lodash/findLastIndex'
 import {formatDuration} from 'pages/stats/common/utils'
+import {MetricName, MetricNameToLabelMap} from 'services/reporting/constants'
 import {PlanName} from 'utils/paywalls'
 
 type MetricBaseline = [number, number, number, number]
 
 type MetricBaselinePerPlan = Record<PlanName, MetricBaseline>
-
-export enum MetricName {
-    CustomerSatisfaction = 'customerSatisfaction',
-    FirstResponseTime = 'firstResponseTime',
-    ResolutionTime = 'resolutionTime',
-    MessagesPerTicket = 'messagesPerTicket',
-}
 
 export const MetricsBaselinesJSON: Record<MetricName, MetricBaselinePerPlan> = {
     messagesPerTicket: {
@@ -121,7 +115,7 @@ export const tips: Record<MetricName, Record<TipQualifier, string>> = {
 
 export const hintTemplates: Record<TipQualifier, string> = {
     [TipQualifier.Error]:
-        'You’re underperforming compared to merchants your size. Hit {TARGET} to be on par with them..',
+        'You’re underperforming compared to merchants your size. Hit {TARGET} to be on par with them.',
     [TipQualifier.LightError]:
         'You’re underperforming compared to merchants your size. Hit {TARGET} to be on par with them.',
     [TipQualifier.Neutral]:
@@ -129,7 +123,7 @@ export const hintTemplates: Record<TipQualifier, string> = {
     [TipQualifier.LightSuccess]:
         'You’re among our top performer merchants your size. Reach a {METRIC} of {TARGET} to be among the top 10%!',
     [TipQualifier.Success]:
-        'You’re amongst the top 10% of merchants your size. Keep up the good work!',
+        'You’re among the top 10% of merchants your size. Keep up the good work!',
 }
 
 export const gradeLabels = {
@@ -154,27 +148,22 @@ export const tipNotAvailable = {
     type: TipQualifier.Neutral,
 }
 
-const higherIsBetterGrade = (
-    baselines: [number, number, number, number],
-    value: number
-) => {
-    const gradeIndex = _findLastIndex(baselines, (item) => value > item) + 1
+function getGrade(gradeIndex: number, baselines: MetricBaseline) {
     return {
         grade: grades[gradeIndex],
-        nextGradeTarget: baselines[Math.min(gradeIndex, baselines.length - 2)],
+        nextGradeTarget:
+            baselines[Math.min(Math.max(gradeIndex, 1), baselines.length - 1)],
     }
 }
 
-const lowerIsBetterGrade = (
-    baselines: [number, number, number, number],
-    value: number
-) => {
-    const gradeIndex = _findLastIndex(baselines, (item) => value < item) + 1
+const higherIsBetterGrade = (baselines: MetricBaseline, value: number) => {
+    const gradeIndex = _findLastIndex(baselines, (item) => value > item) + 1
+    return getGrade(gradeIndex, baselines)
+}
 
-    return {
-        grade: grades[gradeIndex],
-        nextGradeTarget: baselines[Math.min(gradeIndex, baselines.length - 2)],
-    }
+const lowerIsBetterGrade = (baselines: MetricBaseline, value: number) => {
+    const gradeIndex = _findLastIndex(baselines, (item) => value < item) + 1
+    return getGrade(gradeIndex, baselines)
 }
 
 const getMetricGrader = (metric: MetricName) => {
@@ -199,14 +188,16 @@ export const renderHint = (
     switch (metric) {
         case MetricName.FirstResponseTime:
         case MetricName.ResolutionTime:
-            value = formatDuration(targetValue)
+            value = formatDuration(targetValue, 2)
             break
         default:
             value = String(targetValue)
             break
     }
 
-    return template.replace('{METRIC}', metric).replace('{TARGET}', value)
+    return template
+        .replace('{METRIC}', MetricNameToLabelMap[metric])
+        .replace('{TARGET}', value)
 }
 
 export const getPerformanceTip = (

@@ -7,7 +7,6 @@ import moment from 'moment/moment'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getPreviousPeriod} from 'hooks/reporting/createUseMetricTrend'
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
-import {MetricName} from 'services/performanceTipService'
 import {PerformanceTip} from 'pages/stats/PerformanceTip'
 
 import {TicketChannel} from 'business/types/ticket'
@@ -59,6 +58,7 @@ import {
     FIRST_RESPONSE_TIME_LABEL,
     MESSAGES_PER_TICKET_LABEL,
     MESSAGES_SENT_LABEL,
+    MetricName,
     OPEN_TICKETS_LABEL,
     RESOLUTION_TIME_LABEL,
     TICKETS_CLOSED_LABEL,

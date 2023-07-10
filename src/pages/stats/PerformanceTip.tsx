@@ -3,7 +3,8 @@ import sanitizeHtml from 'sanitize-html'
 import {usePerformanceTips} from 'hooks/reporting/usePerformanceTips'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import MetricTip from 'pages/stats/MetricTip'
-import {MetricName} from 'services/performanceTipService'
+
+import {MetricName} from 'services/reporting/constants'
 
 export const PerformanceTip = ({
     metric,

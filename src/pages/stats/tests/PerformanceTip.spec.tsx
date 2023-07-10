@@ -1,8 +1,9 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {MetricName, TipQualifier} from 'services/performanceTipService'
+import {TipQualifier} from 'services/performanceTipService'
 import {PerformanceTip} from 'pages/stats/PerformanceTip'
 import * as PerformanceTipHook from 'hooks/reporting/usePerformanceTips'
+import {MetricName} from 'services/reporting/constants'
 
 jest.mock('hooks/reporting/usePerformanceTips')
 
