@@ -28,6 +28,7 @@ import {getFinalCancelOrderPayload} from 'business/shopify/order'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import Loader from 'pages/common/components/Loader/Loader'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import {aggregateMaximumRefundableByGateway} from 'business/shopify/refund'
 import {InfobarModalProps} from '../../../types'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
 
@@ -65,6 +66,8 @@ export const CancelOrderModalContainer = ({
 }: Props) => {
     const {integrationId} = useContext(IntegrationContext)
     const previousIsOpen = usePrevious(isOpen)
+    const hasMultipleGateways =
+        aggregateMaximumRefundableByGateway(refund).keySeq().count() > 1
 
     const integration = useMemo(
         () =>
@@ -202,7 +205,7 @@ export const CancelOrderModalContainer = ({
                     <Button
                         color="primary"
                         type="submit"
-                        disabled={loading}
+                        disabled={loading || hasMultipleGateways}
                         tabIndex={0}
                         className={classnames(css.focusable, 'ml-auto')}
                     >

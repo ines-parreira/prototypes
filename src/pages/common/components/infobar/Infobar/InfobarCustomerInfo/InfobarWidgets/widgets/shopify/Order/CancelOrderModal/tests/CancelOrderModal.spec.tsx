@@ -16,6 +16,7 @@ import {
 } from 'fixtures/shopify'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import {TransactionKind} from 'constants/integrations/types/shopify'
 import {CancelOrderModalContainer} from '../CancelOrderModal'
 
 jest.mock('pages/common/utils/labels', () => ({
@@ -315,5 +316,38 @@ describe('<CancelOrderContainer />', () => {
         expect(minProps.onCancel).toHaveBeenCalledWith('header')
         expect(minProps.onClose).toHaveBeenCalled()
         expect(minProps.onReset).toHaveBeenCalled()
+    })
+
+    it('should disable the Cancel Order button if the order have multiple gateway', () => {
+        const payload = fromJS(shopifyCancelOrderPayloadFixture())
+        const fixture = shopifySuggestedRefundFixture()
+        const refund = fromJS({
+            ...fixture,
+            transactions: [
+                ...fixture.transactions,
+                {
+                    order_id: 1894175539223,
+                    kind: TransactionKind.SuggestedRefund,
+                    gateway: 'bogus',
+                    parent_id: 2521452118039,
+                    amount: '1.20',
+                    currency: 'USD',
+                    maximum_refundable: '1.20',
+                },
+            ],
+        })
+
+        const {getByText} = render(
+            <IntegrationContext.Provider value={integrationContextValue}>
+                <CancelOrderModalContainer
+                    {...minProps}
+                    lineItems={lineItems}
+                    payload={payload}
+                    refund={refund}
+                />
+            </IntegrationContext.Provider>
+        )
+        const button = getByText('Cancel order')
+        expect(button).toBeDisabled()
     })
 })

@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
+import {initialState as cancelInitialState} from 'state/infobarActions/shopify/cancelOrder/reducers'
 import {IntegrationType} from 'models/integration/constants'
 
 import {EditionContext} from 'providers/infobar/EditionContext'
@@ -159,7 +160,7 @@ describe('<AfterTitle/>', () => {
                             createOrder: initialState,
                             editOrder: initialState,
                             refundOrder: initialState,
-                            cancelOrder: initialState,
+                            cancelOrder: cancelInitialState,
                         },
                     },
                 })
