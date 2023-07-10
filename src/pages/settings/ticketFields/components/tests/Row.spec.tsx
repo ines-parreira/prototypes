@@ -23,8 +23,8 @@ jest.mock('models/customField/resources')
 const queryClient = createTestQueryClient()
 
 describe('<Row />', () => {
-    beforeEach(async () => {
-        await queryClient.invalidateQueries()
+    beforeEach(() => {
+        queryClient.clear()
     })
 
     it.each([true, false])(

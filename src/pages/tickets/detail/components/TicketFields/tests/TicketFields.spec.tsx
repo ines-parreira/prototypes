@@ -50,9 +50,9 @@ describe('<TicketFields />', () => {
 
     const store = mockStore(defaultState)
 
-    beforeEach(async () => {
+    beforeEach(() => {
         mockedServer.reset()
-        await queryClient.invalidateQueries()
+        queryClient.clear()
     })
 
     it('should not render if there is no custom field definition', () => {

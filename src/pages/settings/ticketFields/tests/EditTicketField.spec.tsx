@@ -17,9 +17,9 @@ const mockedServer = new MockAdapter(client)
 const queryClient = createTestQueryClient()
 
 describe('<EditTicketField/>', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
         mockedServer.reset()
-        await queryClient.invalidateQueries()
+        queryClient.clear()
     })
 
     it('should render', async () => {

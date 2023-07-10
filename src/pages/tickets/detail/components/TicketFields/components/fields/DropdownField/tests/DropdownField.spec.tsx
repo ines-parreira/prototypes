@@ -51,11 +51,11 @@ describe('<DropdownField />', () => {
 
     let store = mockStore(defaultState)
 
-    beforeEach(async () => {
+    beforeEach(() => {
         store = mockStore(defaultState)
         store.dispatch = jest.fn()
         mockedServer.reset()
-        await queryClient.invalidateQueries()
+        queryClient.clear()
     })
 
     it('should render the dropdown component correctly', () => {

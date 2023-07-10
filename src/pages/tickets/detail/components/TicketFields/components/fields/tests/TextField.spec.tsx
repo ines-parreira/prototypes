@@ -45,12 +45,12 @@ describe('<TextField />', () => {
 
     let store = mockStore(defaultState)
 
-    beforeEach(async () => {
+    beforeEach(() => {
         jest.clearAllMocks()
         store = mockStore(defaultState)
         store.dispatch = jest.fn()
         mockedServer.reset()
-        await queryClient.invalidateQueries()
+        queryClient.clear()
     })
 
     it('should render the text field component correctly', () => {

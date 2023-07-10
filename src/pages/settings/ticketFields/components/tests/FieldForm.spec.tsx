@@ -26,8 +26,8 @@ const mockStore = configureMockStore([thunk])()
 const queryClient = createTestQueryClient()
 
 describe('<FieldForm/>', () => {
-    beforeEach(async () => {
-        await queryClient.invalidateQueries()
+    beforeEach(() => {
+        queryClient.clear()
     })
 
     it.each(ticketFieldDefinitions)(

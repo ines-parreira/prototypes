@@ -32,9 +32,9 @@ const mockedServer = new MockAdapter(client)
 const queryClient = createTestQueryClient()
 
 describe('<TicketFields/>', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
         mockedServer.reset()
-        await queryClient.invalidateQueries()
+        queryClient.clear()
     })
 
     it('should render get started', async () => {

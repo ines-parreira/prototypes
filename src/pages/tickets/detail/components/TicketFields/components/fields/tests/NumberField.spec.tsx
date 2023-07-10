@@ -45,12 +45,12 @@ describe('<NumberField />', () => {
 
     let store = mockStore(defaultState)
 
-    beforeEach(async () => {
+    beforeEach(() => {
         jest.clearAllMocks()
         store = mockStore(defaultState)
         store.dispatch = jest.fn()
         mockedServer.reset()
-        await queryClient.invalidateQueries()
+        queryClient.clear()
     })
 
     it.each([999, undefined, 0, 2.3e-34])(

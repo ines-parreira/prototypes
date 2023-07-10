@@ -173,8 +173,8 @@ const route = {
 }
 
 describe('<ChatApplication />', () => {
-    beforeEach(async () => {
-        await queryClient.invalidateQueries()
+    beforeEach(() => {
+        queryClient.clear()
         jest.resetAllMocks()
         ;(useHelpCenterTranslation as jest.Mock).mockReturnValue({
             translation: {

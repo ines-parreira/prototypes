@@ -23,9 +23,9 @@ const queryClient = createTestQueryClient()
 jest.mock('pages/history')
 
 describe('<EditFieldForm/>', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
         mockedServer.reset()
-        await queryClient.invalidateQueries()
+        queryClient.clear()
     })
 
     it('should render correctly', () => {

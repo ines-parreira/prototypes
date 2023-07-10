@@ -29,9 +29,9 @@ const mockedServer = new MockAdapter(client)
 const queryClient = createTestQueryClient()
 
 describe('queries.spec.tsx', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
         mockedServer.reset()
-        await queryClient.invalidateQueries()
+        queryClient.clear()
     })
 
     describe('useGetCustomFieldDefinitions', () => {
