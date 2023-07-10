@@ -140,7 +140,8 @@ export class HeaderContainer extends React.Component<Props, State> {
     }
 
     render() {
-        const {activeView, config, isUpdate, isSearch, viewButtons} = this.props
+        const {activeView, config, isUpdate, isSearch, viewButtons, type} =
+            this.props
 
         const isEditMode = activeView.get('editMode')
         const emoji = activeView.getIn(['decoration', 'emoji'])
@@ -220,13 +221,12 @@ export class HeaderContainer extends React.Component<Props, State> {
                                 })()
                             ) : (
                                 <div
-                                    id="settings-view-button"
-                                    className={classnames(
-                                        css.title,
-                                        'mr-2 h-100 cursor-pointer'
-                                    )}
+                                    className={classnames(css.title, {
+                                        [css.editable]: type !== 'customer',
+                                    })}
                                     color="transparent"
                                     onClick={() =>
+                                        type !== 'customer' &&
                                         this.props.setViewEditMode(activeView)
                                     }
                                 >
@@ -237,9 +237,11 @@ export class HeaderContainer extends React.Component<Props, State> {
                                             'emoji',
                                         ])}
                                     />
-                                    <i className="material-icons">
-                                        keyboard_arrow_down
-                                    </i>
+                                    {type !== 'customer' && (
+                                        <i className="material-icons">
+                                            keyboard_arrow_down
+                                        </i>
+                                    )}
                                 </div>
                             )}
                         </div>

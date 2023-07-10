@@ -427,21 +427,11 @@ export const views = fromJS([
             },
             {
                 name: ViewField.Created,
-                title: 'Created',
+                title: 'Creation date',
                 path: 'created_datetime',
                 filter: {
                     sort: {
                         created_datetime: 'desc',
-                    },
-                },
-            },
-            {
-                name: ViewField.Updated,
-                title: 'Updated',
-                path: 'updated_datetime',
-                filter: {
-                    sort: {
-                        updated_datetime: 'desc',
                     },
                 },
             },

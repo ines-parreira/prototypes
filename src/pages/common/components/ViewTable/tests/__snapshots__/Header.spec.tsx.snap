@@ -2,46 +2,56 @@
 
 exports[`ViewTable::Header default view displays 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="d-flex flex-grow"
+    class="d-flex flex-grow"
   >
     <div
-      className="flex-grow mr-2 titleWrapper"
+      class="flex-grow mr-2 titleWrapper"
     >
       <div
-        className="title mr-2 h-100 cursor-pointer"
+        class="title editable"
         color="transparent"
-        id="settings-view-button"
-        onClick={[Function]}
       >
-        <Memo(ViewName)
-          viewName="New & Open Tickets"
-        />
+        <span>
+          New & Open Tickets
+        </span>
         <i
-          className="material-icons"
+          class="material-icons"
         >
           keyboard_arrow_down
         </i>
       </div>
     </div>
     <div
-      className="d-flex"
+      class="d-flex"
     >
-      <Search
-        autoFocus={false}
-        bindKey={true}
-        className="headerSearch mr-2"
-        disabled={false}
-        forcedQuery=""
-        location="7"
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Search tickets..."
-        searchDebounceTime={0}
-        style={{}}
-      />
+      <div
+        class="component headerSearch mr-2"
+      >
+        <div
+          class="wrapper input"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-7"
+            name="input-text-7"
+            placeholder="Search tickets..."
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -49,46 +59,56 @@ exports[`ViewTable::Header default view displays 1`] = `
 
 exports[`ViewTable::Header default view get search query from active view 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="d-flex flex-grow"
+    class="d-flex flex-grow"
   >
     <div
-      className="flex-grow mr-2 titleWrapper"
+      class="flex-grow mr-2 titleWrapper"
     >
       <div
-        className="title mr-2 h-100 cursor-pointer"
+        class="title editable"
         color="transparent"
-        id="settings-view-button"
-        onClick={[Function]}
       >
-        <Memo(ViewName)
-          viewName="New & Open Tickets"
-        />
+        <span>
+          New & Open Tickets
+        </span>
         <i
-          className="material-icons"
+          class="material-icons"
         >
           keyboard_arrow_down
         </i>
       </div>
     </div>
     <div
-      className="d-flex"
+      class="d-flex"
     >
-      <Search
-        autoFocus={false}
-        bindKey={true}
-        className="headerSearch mr-2"
-        disabled={false}
-        forcedQuery="term1"
-        location="7"
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Search tickets..."
-        searchDebounceTime={0}
-        style={{}}
-      />
+      <div
+        class="component headerSearch mr-2"
+      >
+        <div
+          class="wrapper input"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-11"
+            name="input-text-11"
+            placeholder="Search tickets..."
+            type="text"
+            value="term1"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -96,36 +116,42 @@ exports[`ViewTable::Header default view get search query from active view 1`] = 
 
 exports[`ViewTable::Header emoji picker .render() should not render emoji if decoration is not an object 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="d-flex flex-grow"
+    class="d-flex flex-grow"
   >
     <div
-      className="flex-grow mr-2 titleWrapper"
+      class="flex-grow mr-2 titleWrapper"
     >
       <div
-        className="titleWrapper"
+        class="titleWrapper"
       >
-        <EditableTitle
-          className="title withEmojiPicker"
-          disabled={false}
-          forceEditMode={true}
-          placeholder="View name"
-          select={false}
-          title="New & Open Tickets"
-          update={[Function]}
-        />
-        <EmojiSelect
-          className="emojiPicker"
-          emoji={null}
-          onEmojiClear={[Function]}
-          onEmojiSelect={[Function]}
-        />
+        <div
+          class="wrapper component edit-mode"
+        >
+          <input
+            class="input title withEmojiPicker input edit-mode"
+            id="input-text-14"
+            name="input-text-14"
+            placeholder="View name"
+            tabindex="1"
+            type="text"
+            value="New & Open Tickets"
+          />
+        </div>
+        <div
+          class="picker emojiPicker"
+        >
+          <span
+            class="material-icons empty icon"
+          >
+            insert_emoticon
+          </span>
+        </div>
         <img
           alt="close-icon"
-          className="closeEditIcon"
-          onClick={[Function]}
+          class="closeEditIcon"
           src="test-file-stub"
         />
       </div>
@@ -136,36 +162,42 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
 
 exports[`ViewTable::Header emoji picker .render() should not render emoji if decoration.emoji is not a string 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="d-flex flex-grow"
+    class="d-flex flex-grow"
   >
     <div
-      className="flex-grow mr-2 titleWrapper"
+      class="flex-grow mr-2 titleWrapper"
     >
       <div
-        className="titleWrapper"
+        class="titleWrapper"
       >
-        <EditableTitle
-          className="title withEmojiPicker"
-          disabled={false}
-          forceEditMode={true}
-          placeholder="View name"
-          select={false}
-          title="New & Open Tickets"
-          update={[Function]}
-        />
-        <EmojiSelect
-          className="emojiPicker"
-          emoji={null}
-          onEmojiClear={[Function]}
-          onEmojiSelect={[Function]}
-        />
+        <div
+          class="wrapper component edit-mode"
+        >
+          <input
+            class="input title withEmojiPicker input edit-mode"
+            id="input-text-15"
+            name="input-text-15"
+            placeholder="View name"
+            tabindex="1"
+            type="text"
+            value="New & Open Tickets"
+          />
+        </div>
+        <div
+          class="picker emojiPicker"
+        >
+          <span
+            class="material-icons empty icon"
+          >
+            insert_emoticon
+          </span>
+        </div>
         <img
           alt="close-icon"
-          className="closeEditIcon"
-          onClick={[Function]}
+          class="closeEditIcon"
           src="test-file-stub"
         />
       </div>
@@ -176,36 +208,42 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
 
 exports[`ViewTable::Header emoji picker .render() should render emoji if decoration.emoji is a string 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="d-flex flex-grow"
+    class="d-flex flex-grow"
   >
     <div
-      className="flex-grow mr-2 titleWrapper"
+      class="flex-grow mr-2 titleWrapper"
     >
       <div
-        className="titleWrapper"
+        class="titleWrapper"
       >
-        <EditableTitle
-          className="title withEmojiPicker"
-          disabled={false}
-          forceEditMode={true}
-          placeholder="View name"
-          select={false}
-          title="New & Open Tickets"
-          update={[Function]}
-        />
-        <EmojiSelect
-          className="emojiPicker"
-          emoji="foo"
-          onEmojiClear={[Function]}
-          onEmojiSelect={[Function]}
-        />
+        <div
+          class="wrapper component edit-mode"
+        >
+          <input
+            class="input title withEmojiPicker input edit-mode"
+            id="input-text-13"
+            name="input-text-13"
+            placeholder="View name"
+            tabindex="1"
+            type="text"
+            value="New & Open Tickets"
+          />
+        </div>
+        <div
+          class="picker emojiPicker"
+        >
+          <span
+            class="icon"
+          >
+            foo
+          </span>
+        </div>
         <img
           alt="close-icon"
-          className="closeEditIcon"
-          onClick={[Function]}
+          class="closeEditIcon"
           src="test-file-stub"
         />
       </div>
@@ -214,46 +252,353 @@ exports[`ViewTable::Header emoji picker .render() should render emoji if decorat
 </div>
 `;
 
+exports[`ViewTable::Header emoji picker emoji select should not override existing decoration object properties 1`] = `
+[
+  Immutable.Map {
+    "search": null,
+    "order_by": "updated",
+    "deactivated_datetime": null,
+    "name": "New & Open Tickets",
+    "slug": "new-&-open-tickets",
+    "uri": "/api/views/7/",
+    "editMode": true,
+    "decoration": Immutable.Map {
+      "foo": "bar",
+      "emoji": "👍",
+    },
+    "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+    "visibility": "public",
+    "section_id": null,
+    "group_by": null,
+    "fields": Immutable.List [
+      "details",
+      "tags",
+      "customer",
+      "created",
+    ],
+    "type": "ticket-list",
+    "id": 7,
+    "filters": "neq(ticket.status, "closed")",
+    "order_dir": "desc",
+    "filters_ast": Immutable.Map {
+      "sourceType": "script",
+      "loc": Immutable.Map {
+        "start": Immutable.Map {
+          "column": 0,
+          "line": 1,
+        },
+        "end": Immutable.Map {
+          "column": 28,
+          "line": 1,
+        },
+      },
+      "type": "Program",
+      "body": Immutable.List [
+        Immutable.Map {
+          "loc": Immutable.Map {
+            "start": Immutable.Map {
+              "column": 0,
+              "line": 1,
+            },
+            "end": Immutable.Map {
+              "column": 28,
+              "line": 1,
+            },
+          },
+          "type": "ExpressionStatement",
+          "expression": Immutable.Map {
+            "arguments": Immutable.List [
+              Immutable.Map {
+                "object": Immutable.Map {
+                  "type": "Identifier",
+                  "loc": Immutable.Map {
+                    "start": Immutable.Map {
+                      "column": 4,
+                      "line": 1,
+                    },
+                    "end": Immutable.Map {
+                      "column": 10,
+                      "line": 1,
+                    },
+                  },
+                  "name": "ticket",
+                },
+                "property": Immutable.Map {
+                  "type": "Identifier",
+                  "loc": Immutable.Map {
+                    "start": Immutable.Map {
+                      "column": 11,
+                      "line": 1,
+                    },
+                    "end": Immutable.Map {
+                      "column": 17,
+                      "line": 1,
+                    },
+                  },
+                  "name": "status",
+                },
+                "loc": Immutable.Map {
+                  "start": Immutable.Map {
+                    "column": 4,
+                    "line": 1,
+                  },
+                  "end": Immutable.Map {
+                    "column": 17,
+                    "line": 1,
+                  },
+                },
+                "type": "MemberExpression",
+                "computed": false,
+              },
+              Immutable.Map {
+                "value": "closed",
+                "loc": Immutable.Map {
+                  "start": Immutable.Map {
+                    "column": 19,
+                    "line": 1,
+                  },
+                  "end": Immutable.Map {
+                    "column": 27,
+                    "line": 1,
+                  },
+                },
+                "type": "Literal",
+                "raw": ""closed"",
+              },
+            ],
+            "callee": Immutable.Map {
+              "type": "Identifier",
+              "loc": Immutable.Map {
+                "start": Immutable.Map {
+                  "column": 0,
+                  "line": 1,
+                },
+                "end": Immutable.Map {
+                  "column": 3,
+                  "line": 1,
+                },
+              },
+              "name": "neq",
+            },
+            "loc": Immutable.Map {
+              "start": Immutable.Map {
+                "column": 0,
+                "line": 1,
+              },
+              "end": Immutable.Map {
+                "column": 28,
+                "line": 1,
+              },
+            },
+            "type": "CallExpression",
+          },
+        },
+      ],
+    },
+    "category": null,
+  },
+]
+`;
+
+exports[`ViewTable::Header emoji picker emoji select should update decoration.emoji on emoji select 1`] = `
+[
+  Immutable.Map {
+    "search": null,
+    "order_by": "updated",
+    "deactivated_datetime": null,
+    "name": "New & Open Tickets",
+    "slug": "new-&-open-tickets",
+    "uri": "/api/views/7/",
+    "editMode": true,
+    "decoration": Immutable.Map {
+      "emoji": "👍",
+    },
+    "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+    "visibility": "public",
+    "section_id": null,
+    "group_by": null,
+    "fields": Immutable.List [
+      "details",
+      "tags",
+      "customer",
+      "created",
+    ],
+    "type": "ticket-list",
+    "id": 7,
+    "filters": "neq(ticket.status, "closed")",
+    "order_dir": "desc",
+    "filters_ast": Immutable.Map {
+      "sourceType": "script",
+      "loc": Immutable.Map {
+        "start": Immutable.Map {
+          "column": 0,
+          "line": 1,
+        },
+        "end": Immutable.Map {
+          "column": 28,
+          "line": 1,
+        },
+      },
+      "type": "Program",
+      "body": Immutable.List [
+        Immutable.Map {
+          "loc": Immutable.Map {
+            "start": Immutable.Map {
+              "column": 0,
+              "line": 1,
+            },
+            "end": Immutable.Map {
+              "column": 28,
+              "line": 1,
+            },
+          },
+          "type": "ExpressionStatement",
+          "expression": Immutable.Map {
+            "arguments": Immutable.List [
+              Immutable.Map {
+                "object": Immutable.Map {
+                  "type": "Identifier",
+                  "loc": Immutable.Map {
+                    "start": Immutable.Map {
+                      "column": 4,
+                      "line": 1,
+                    },
+                    "end": Immutable.Map {
+                      "column": 10,
+                      "line": 1,
+                    },
+                  },
+                  "name": "ticket",
+                },
+                "property": Immutable.Map {
+                  "type": "Identifier",
+                  "loc": Immutable.Map {
+                    "start": Immutable.Map {
+                      "column": 11,
+                      "line": 1,
+                    },
+                    "end": Immutable.Map {
+                      "column": 17,
+                      "line": 1,
+                    },
+                  },
+                  "name": "status",
+                },
+                "loc": Immutable.Map {
+                  "start": Immutable.Map {
+                    "column": 4,
+                    "line": 1,
+                  },
+                  "end": Immutable.Map {
+                    "column": 17,
+                    "line": 1,
+                  },
+                },
+                "type": "MemberExpression",
+                "computed": false,
+              },
+              Immutable.Map {
+                "value": "closed",
+                "loc": Immutable.Map {
+                  "start": Immutable.Map {
+                    "column": 19,
+                    "line": 1,
+                  },
+                  "end": Immutable.Map {
+                    "column": 27,
+                    "line": 1,
+                  },
+                },
+                "type": "Literal",
+                "raw": ""closed"",
+              },
+            ],
+            "callee": Immutable.Map {
+              "type": "Identifier",
+              "loc": Immutable.Map {
+                "start": Immutable.Map {
+                  "column": 0,
+                  "line": 1,
+                },
+                "end": Immutable.Map {
+                  "column": 3,
+                  "line": 1,
+                },
+              },
+              "name": "neq",
+            },
+            "loc": Immutable.Map {
+              "start": Immutable.Map {
+                "column": 0,
+                "line": 1,
+              },
+              "end": Immutable.Map {
+                "column": 28,
+                "line": 1,
+              },
+            },
+            "type": "CallExpression",
+          },
+        },
+      ],
+    },
+    "category": null,
+  },
+]
+`;
+
 exports[`ViewTable::Header empty view 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="d-flex flex-grow"
+    class="d-flex flex-grow"
   >
     <div
-      className="flex-grow mr-2 titleWrapper"
+      class="flex-grow mr-2 titleWrapper"
     >
       <div
-        className="title mr-2 h-100 cursor-pointer"
+        class="title editable"
         color="transparent"
-        id="settings-view-button"
-        onClick={[Function]}
       >
-        <Memo(ViewName) />
+        <span>
+          
+        </span>
         <i
-          className="material-icons"
+          class="material-icons"
         >
           keyboard_arrow_down
         </i>
       </div>
     </div>
     <div
-      className="d-flex"
+      class="d-flex"
     >
-      <Search
-        autoFocus={false}
-        bindKey={true}
-        className="headerSearch mr-2"
-        disabled={false}
-        forcedQuery=""
-        location="undefined"
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Search tickets..."
-        searchDebounceTime={0}
-        style={{}}
-      />
+      <div
+        class="component headerSearch mr-2"
+      >
+        <div
+          class="wrapper input"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-1"
+            name="input-text-1"
+            placeholder="Search tickets..."
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -261,46 +606,49 @@ exports[`ViewTable::Header empty view 1`] = `
 
 exports[`ViewTable::Header search view 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="d-flex flex-grow"
+    class="d-flex flex-grow"
   >
     <div
-      className="d-flex flex-grow"
+      class="d-flex flex-grow"
     >
-      <Search
-        autoFocus={true}
-        bindKey={true}
-        className="headerSearch mr-2 isSearching flex-grow"
-        disabled={false}
-        forcedQuery="term1"
-        location="7(s)"
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Search tickets..."
-        searchDebounceTime={0}
-        style={{}}
-      />
-      <Link
+      <div
+        class="component headerSearch mr-2 isSearching flex-grow"
+      >
+        <div
+          class="wrapper isFocused input"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-2"
+            name="input-text-2"
+            placeholder="Search tickets..."
+            type="text"
+            value="term1"
+          />
+        </div>
+      </div>
+      <a
         to="/app/tickets"
       >
         <i
-          className="closeIcon material-icons d-none d-md-inline-block"
+          class="closeIcon material-icons d-none d-md-inline-block"
           id="leave-search-mode"
         >
           close
         </i>
-        <Tooltip
-          placement="top"
-          target="leave-search-mode"
-        >
-          <b>
-            Esc
-          </b>
-           Leave search mode
-        </Tooltip>
-      </Link>
+      </a>
     </div>
   </div>
 </div>
@@ -308,30 +656,30 @@ exports[`ViewTable::Header search view 1`] = `
 
 exports[`ViewTable::Header should not render unfocused search input when spotlight is enabled 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="d-flex flex-grow"
+    class="d-flex flex-grow"
   >
     <div
-      className="flex-grow mr-2 titleWrapper"
+      class="flex-grow mr-2 titleWrapper"
     >
       <div
-        className="title mr-2 h-100 cursor-pointer"
+        class="title editable"
         color="transparent"
-        id="settings-view-button"
-        onClick={[Function]}
       >
-        <Memo(ViewName) />
+        <span>
+          
+        </span>
         <i
-          className="material-icons"
+          class="material-icons"
         >
           keyboard_arrow_down
         </i>
       </div>
     </div>
     <div
-      className="d-flex"
+      class="d-flex"
     />
   </div>
 </div>
@@ -339,45 +687,49 @@ exports[`ViewTable::Header should not render unfocused search input when spotlig
 
 exports[`ViewTable::Header should render search with search term location when spotlight is enabled 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="d-flex flex-grow"
+    class="d-flex flex-grow"
   >
     <div
-      className="d-flex flex-grow"
+      class="d-flex flex-grow"
     >
-      <Search
-        autoFocus={true}
-        bindKey={true}
-        className="headerSearch mr-2 isSearching flex-grow"
-        disabled={false}
-        forcedQuery="term1"
-        location="term1"
-        onKeyDown={[Function]}
-        placeholder="Search tickets..."
-        searchDebounceTime={0}
-        style={{}}
-      />
-      <Link
+      <div
+        class="component headerSearch mr-2 isSearching flex-grow"
+      >
+        <div
+          class="wrapper isFocused input"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-3"
+            name="input-text-3"
+            placeholder="Search tickets..."
+            type="text"
+            value="term1"
+          />
+        </div>
+      </div>
+      <a
         to="/app/tickets"
       >
         <i
-          className="closeIcon material-icons d-none d-md-inline-block"
+          class="closeIcon material-icons d-none d-md-inline-block"
           id="leave-search-mode"
         >
           close
         </i>
-        <Tooltip
-          placement="top"
-          target="leave-search-mode"
-        >
-          <b>
-            Esc
-          </b>
-           Leave search mode
-        </Tooltip>
-      </Link>
+      </a>
     </div>
   </div>
 </div>
@@ -385,36 +737,42 @@ exports[`ViewTable::Header should render search with search term location when s
 
 exports[`ViewTable::Header should render when view is in edit mode 1`] = `
 <div
-  className="component"
+  class="component"
 >
   <div
-    className="d-flex flex-grow"
+    class="d-flex flex-grow"
   >
     <div
-      className="flex-grow mr-2 titleWrapper"
+      class="flex-grow mr-2 titleWrapper"
     >
       <div
-        className="titleWrapper"
+        class="titleWrapper"
       >
-        <EditableTitle
-          className="title withEmojiPicker"
-          disabled={false}
-          forceEditMode={true}
-          placeholder="View name"
-          select={false}
-          title="New & Open Tickets"
-          update={[Function]}
-        />
-        <EmojiSelect
-          className="emojiPicker"
-          emoji={null}
-          onEmojiClear={[Function]}
-          onEmojiSelect={[Function]}
-        />
+        <div
+          class="wrapper component edit-mode"
+        >
+          <input
+            class="input title withEmojiPicker input edit-mode"
+            id="input-text-4"
+            name="input-text-4"
+            placeholder="View name"
+            tabindex="1"
+            type="text"
+            value="New & Open Tickets"
+          />
+        </div>
+        <div
+          class="picker emojiPicker"
+        >
+          <span
+            class="material-icons empty icon"
+          >
+            insert_emoticon
+          </span>
+        </div>
         <img
           alt="close-icon"
-          className="closeEditIcon"
-          onClick={[Function]}
+          class="closeEditIcon"
           src="test-file-stub"
         />
       </div>

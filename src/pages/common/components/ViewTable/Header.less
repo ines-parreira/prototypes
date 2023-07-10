@@ -1,3 +1,5 @@
+@import '~css/typography';
+
 :local .component {
     .titleWrapper {
         position: relative;
@@ -6,16 +8,18 @@
     }
 
     .title {
+        .heading-section-semibold();
         margin-left: -4px;
         padding: 0 8px;
         color: var(--neutral-grey-6);
-        font-size: 20px;
-        font-weight: 500;
         vertical-align: top;
-        height: 34px;
 
         &.withEmojiPicker {
             padding-left: 37px;
+        }
+
+        &.editable {
+            cursor: pointer;
         }
     }
 

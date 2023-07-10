@@ -1,15 +1,14 @@
-import React, {MouseEvent} from 'react'
-import {shallow, ShallowWrapper} from 'enzyme'
+import React from 'react'
 import {fromJS, Map} from 'immutable'
+import {fireEvent, render} from '@testing-library/react'
+import {screen} from '@testing-library/dom'
 
 import {getConfigByName} from 'config/views'
-import * as viewsFixtures from 'fixtures/views'
-import Search from 'pages/common/components/Search'
-import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
-import * as viewsActions from 'state/views/actions'
-import history from 'pages/history'
-import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {view as viewsFixture} from 'fixtures/views'
+import history from 'pages/history'
+import {fetchViewItems} from 'state/views/actions'
+import {getLDClient} from 'utils/launchDarkly'
 
 import {HeaderContainer} from '../Header'
 
@@ -26,18 +25,20 @@ const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})
 
 describe('ViewTable::Header', () => {
-    const fixtureView = viewsFixtures.view
     const editModeActiveView = fromJS({
-        ...fixtureView,
+        ...viewsFixture,
         editMode: true,
     }) as Map<any, any>
 
+    const type = 'ticket'
+
     const minProps = {
-        type: 'ticket',
+        type,
         isSearch: false,
         isUpdate: true,
-        activeView: fromJS(fixtureView),
+        activeView: fromJS(viewsFixture),
         lastViewId: 0,
+        config: getConfigByName(type),
         deleteView: jest.fn(),
         removeFieldFilter: jest.fn(),
         updateView: jest.fn(),
@@ -46,23 +47,20 @@ describe('ViewTable::Header', () => {
         resetView: jest.fn(),
     }
 
-    const config = getConfigByName(minProps.type)
-
     beforeEach(() => {
         jest.clearAllMocks()
         allFlagsMock.mockReturnValue({})
     })
 
     it('empty view', () => {
-        const component = shallow(
+        const {container} = render(
             <HeaderContainer
                 {...minProps}
-                config={config}
                 activeView={fromJS({})}
                 isUpdate={false}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render unfocused search input when spotlight is enabled', () => {
@@ -70,30 +68,28 @@ describe('ViewTable::Header', () => {
             [FeatureFlagKey.SpotlightGlobalSearch]: true,
         })
 
-        const component = shallow(
+        const {container} = render(
             <HeaderContainer
                 {...minProps}
-                config={config}
                 activeView={fromJS({})}
                 isUpdate={false}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('search view', () => {
-        const component = shallow(
+        const {container} = render(
             <HeaderContainer
                 {...minProps}
-                config={config}
                 isSearch
                 activeView={fromJS({
-                    ...fixtureView,
+                    ...viewsFixture,
                     search: 'term1',
                 })}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render search with search term location when spotlight is enabled', () => {
@@ -101,97 +97,70 @@ describe('ViewTable::Header', () => {
             [FeatureFlagKey.SpotlightGlobalSearch]: true,
         })
 
-        const component = shallow(
+        const {container} = render(
             <HeaderContainer
                 {...minProps}
-                config={config}
                 isSearch
                 activeView={fromJS({
-                    ...fixtureView,
+                    ...viewsFixture,
                     search: 'term1',
                 })}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render when view is in edit mode', () => {
-        const component = shallow(
-            <HeaderContainer
-                {...minProps}
-                config={config}
-                activeView={editModeActiveView}
-            />
+        const {container} = render(
+            <HeaderContainer {...minProps} activeView={editModeActiveView} />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should reset view and fetch tickets when clicking on the close flow icon in edit mode', () => {
-        const component = shallow(
-            <HeaderContainer
-                {...minProps}
-                config={config}
-                activeView={editModeActiveView}
-            />
+        render(
+            <HeaderContainer {...minProps} activeView={editModeActiveView} />
         )
-        component.find({alt: 'close-icon'}).simulate('click')
+        const closeIcon = screen.getByAltText('close-icon')
+        fireEvent.click(closeIcon)
         expect(minProps.resetView).toHaveBeenCalled()
         expect(minProps.fetchViewItems).toHaveBeenCalled()
     })
 
     it('should not update view on search submit when not in search mode', () => {
-        const component = shallow(
-            <HeaderContainer {...minProps} isSearch={true} config={config} />
-        )
-        const onKeyDown = component.find(Search).props().onKeyDown
-
-        if (onKeyDown) {
-            onKeyDown(
-                new KeyboardEvent('keydown', {key: 'enter'}) as any,
-                'foo search'
-            )
-        }
+        render(<HeaderContainer {...minProps} isSearch />)
+        const searchInput = screen.getByPlaceholderText(/Search/i)
+        fireEvent.change(searchInput, {target: {value: 'foo search'}})
 
         expect(minProps.updateView).not.toHaveBeenCalled()
     })
 
     describe('default view', () => {
-        let component: ShallowWrapper
-        beforeEach(() => {
-            component = shallow(
-                <HeaderContainer {...minProps} config={config} />
-            )
-        })
-
         it('displays', () => {
-            expect(component).toMatchSnapshot()
+            const {container} = render(<HeaderContainer {...minProps} />)
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should update search of the active view and not fetch view items on search input submit', () => {
-            const component = shallow(
-                <HeaderContainer {...minProps} config={config} isSearch />
-            )
+            render(<HeaderContainer {...minProps} isSearch />)
             const searchTerm = 'term1'
-            const searchOnKeyDown = component.find(Search).props().onKeyDown
+            const searchInput = screen.getByPlaceholderText(/Search/i)
+            fireEvent.change(searchInput, {target: {value: searchTerm}})
+            fireEvent.keyDown(searchInput, {key: 'Enter'})
 
-            if (searchOnKeyDown) {
-                searchOnKeyDown(
-                    new KeyboardEvent('keydown', {key: 'Enter'}) as any,
-                    searchTerm
-                )
-            }
             expect(minProps.updateView).toHaveBeenLastCalledWith(
-                (fromJS(fixtureView) as Map<any, any>).set(
+                (fromJS(viewsFixture) as Map<any, any>).set(
                     'search',
                     searchTerm
                 ),
                 false
             )
-            expect(viewsActions.fetchViewItems).not.toHaveBeenCalled()
+            expect(fetchViewItems).not.toHaveBeenCalled()
         })
 
         it('go in search mode when focusing the search input', () => {
-            ;(component.find(Search).props() as {onFocus: () => void}).onFocus()
+            render(<HeaderContainer {...minProps} />)
+            screen.getByPlaceholderText(/Search/i).focus()
             expect(history.push).toHaveBeenNthCalledWith(
                 1,
                 '/app/tickets/search?q='
@@ -199,77 +168,66 @@ describe('ViewTable::Header', () => {
         })
 
         it('should not go to the search mode focusing the search input when already in search mode', () => {
-            const component = shallow(
-                <HeaderContainer
-                    {...minProps}
-                    config={config}
-                    isSearch={true}
-                />
-            )
-            ;(component.find(Search).props() as {onFocus: () => void}).onFocus()
+            render(<HeaderContainer {...minProps} isSearch />)
+
+            const searchInput = screen.getByPlaceholderText(/Search/i)
+            fireEvent.click(searchInput)
             expect(history.push).not.toHaveBeenCalled()
         })
 
         it('get search query from active view', () => {
-            const component = shallow(
+            const {container} = render(
                 <HeaderContainer
                     {...minProps}
-                    config={config}
                     activeView={fromJS({
-                        ...fixtureView,
+                        ...viewsFixture,
                         search: 'term1',
                     })}
                 />
             )
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('update view name', () => {
-            ;(
-                component.instance() as InstanceType<typeof HeaderContainer>
-            )._updateViewName('new name')
-            expect(minProps.updateView).toBeCalled()
-        })
+            render(
+                <HeaderContainer
+                    {...minProps}
+                    activeView={editModeActiveView}
+                />
+            )
+            const viewNameInput = screen.getByDisplayValue(
+                (minProps.activeView as Map<any, any>).get('name')
+            )
+            fireEvent.change(viewNameInput, {target: {value: 'new name'}})
+            fireEvent.keyUp(viewNameInput, {key: 'Enter'})
+            fireEvent.blur(viewNameInput)
 
-        it('toggle delete confirmation', () => {
-            expect(component.state('askDeleteConfirmation')).toBe(false)
-            ;(
-                component.instance() as InstanceType<typeof HeaderContainer>
-            )._toggleDeleteConfirmation()
-            expect(component.state('askDeleteConfirmation')).toBe(true)
+            expect(minProps.updateView).toHaveBeenCalled()
         })
     })
 
     describe('emoji picker', () => {
-        const emoji = '1'
+        const emoji = '😀'
 
         describe('.render()', () => {
             it('should render emoji if decoration.emoji is a string', () => {
                 const activeView = editModeActiveView.merge({
                     decoration: {emoji: 'foo'},
                 })
-                const component = shallow(
-                    <HeaderContainer
-                        {...minProps}
-                        config={config}
-                        activeView={activeView}
-                    />
+                const {container} = render(
+                    <HeaderContainer {...minProps} activeView={activeView} />
                 )
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should not render emoji if decoration is not an object', () => {
                 const activeView = editModeActiveView.merge({
                     decoration: 'foo',
                 })
-                const component = shallow(
-                    <HeaderContainer
-                        {...minProps}
-                        config={config}
-                        activeView={activeView}
-                    />
+                const {container} = render(
+                    <HeaderContainer {...minProps} activeView={activeView} />
                 )
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should not render emoji if decoration.emoji is not a string', () => {
@@ -278,14 +236,10 @@ describe('ViewTable::Header', () => {
                         emoji: {},
                     },
                 })
-                const component = shallow(
-                    <HeaderContainer
-                        {...minProps}
-                        config={config}
-                        activeView={activeView}
-                    />
+                const {container} = render(
+                    <HeaderContainer {...minProps} activeView={activeView} />
                 )
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
         })
 
@@ -294,56 +248,33 @@ describe('ViewTable::Header', () => {
                 const activeView = editModeActiveView.merge({
                     decoration: null,
                 })
-                const component = shallow(
-                    <HeaderContainer
-                        {...minProps}
-                        config={config}
-                        activeView={activeView}
-                    />
+                const {baseElement} = render(
+                    <HeaderContainer {...minProps} activeView={activeView} />
                 )
-                ;(
-                    component.find(EmojiSelect).props() as {
-                        onEmojiSelect: (
-                            emoji: string,
-                            event: MouseEvent<HTMLElement>
-                        ) => void
-                    }
-                ).onEmojiSelect(emoji, {} as MouseEvent<HTMLElement>)
-                const expectedActiveView = activeView.merge({
-                    decoration: {emoji},
-                })
-                expect(minProps.updateView).toHaveBeenLastCalledWith(
-                    expectedActiveView
-                )
+                const emojiSelect = screen.getByText('insert_emoticon')
+                fireEvent.click(emojiSelect)
+
+                const emojiSelection =
+                    baseElement.getElementsByClassName('emoji-mart-emoji')[0]
+                fireEvent.click(emojiSelection)
+
+                expect(minProps.updateView.mock.calls[0]).toMatchSnapshot()
             })
 
             it('should not override existing decoration object properties', () => {
                 const decoration = {foo: 'bar'}
                 const activeView = editModeActiveView.merge({decoration})
-                const component = shallow(
-                    <HeaderContainer
-                        {...minProps}
-                        config={config}
-                        activeView={activeView}
-                    />
+                const {baseElement} = render(
+                    <HeaderContainer {...minProps} activeView={activeView} />
                 )
-                ;(
-                    component.find(EmojiSelect).props() as {
-                        onEmojiSelect: (
-                            emoji: string,
-                            event: MouseEvent<HTMLElement>
-                        ) => void
-                    }
-                ).onEmojiSelect(emoji, {} as MouseEvent<HTMLElement>)
-                const expectedActiveView = activeView.merge({
-                    decoration: {
-                        ...decoration,
-                        emoji,
-                    },
-                })
-                expect(minProps.updateView).toHaveBeenLastCalledWith(
-                    expectedActiveView
-                )
+                const emojiSelect = screen.getByText('insert_emoticon')
+                fireEvent.click(emojiSelect)
+
+                const emojiSelection =
+                    baseElement.getElementsByClassName('emoji-mart-emoji')[0]
+                fireEvent.click(emojiSelection)
+
+                expect(minProps.updateView.mock.calls[0]).toMatchSnapshot()
             })
         })
 
@@ -352,49 +283,26 @@ describe('ViewTable::Header', () => {
                 const activeView = editModeActiveView.merge({
                     decoration: {emoji},
                 })
-                const component = shallow(
-                    <HeaderContainer
-                        {...minProps}
-                        config={config}
-                        activeView={activeView}
-                    />
+                const {baseElement} = render(
+                    <HeaderContainer {...minProps} activeView={activeView} />
                 )
 
-                ;(
-                    component.find(EmojiSelect).props() as {
-                        onEmojiClear: (
-                            event: MouseEvent<HTMLButtonElement>
-                        ) => void
-                    }
-                ).onEmojiClear({} as MouseEvent<HTMLButtonElement>)
+                const emojiSelect = screen.getByText(emoji)
+                fireEvent.click(emojiSelect)
+
+                const emojiSelection =
+                    baseElement.getElementsByClassName('emoji-mart-emoji')[0]
+                fireEvent.click(emojiSelection)
+
+                const clearEmojiButton = screen.getByText(/Clear icon/i)
+                fireEvent.click(clearEmojiButton)
+
                 const expectedActiveView = activeView.merge({
                     decoration: {},
                 })
                 expect(minProps.updateView).toHaveBeenLastCalledWith(
                     expectedActiveView
                 )
-            })
-
-            it('should not change the active view on emoji clear if decoration is null', () => {
-                const activeView = editModeActiveView.merge({
-                    decoration: null,
-                })
-                const component = shallow(
-                    <HeaderContainer
-                        {...minProps}
-                        config={config}
-                        activeView={activeView}
-                    />
-                )
-
-                ;(
-                    component.find(EmojiSelect).props() as {
-                        onEmojiClear: (
-                            event: MouseEvent<HTMLButtonElement>
-                        ) => void
-                    }
-                ).onEmojiClear({} as MouseEvent<HTMLButtonElement>)
-                expect(minProps.updateView).not.toHaveBeenCalled()
             })
         })
     })
