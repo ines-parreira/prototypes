@@ -14,10 +14,14 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import PageHeader from 'pages/common/components/PageHeader'
 import Alert from 'pages/common/components/Alert/Alert'
+import Button from 'pages/common/components/button/Button'
+import logoShopify from 'assets/img/integrations/shopify.svg'
+import logoYotpo from 'assets/img/integrations/yotpo.png'
+import logoRecharge from 'assets/img/integrations/recharge.svg'
 
-import CardsWrapper from './CardsWrapper'
-import Card from './Card'
-import Loader from './Loader'
+import CardsWrapper from '../CardsWrapper'
+import Card from '../Card'
+import Loader from '../Loader'
 import css from './Mine.less'
 
 type Item = IntegrationListItem | AppListItem
@@ -76,8 +80,8 @@ export default function Mine() {
                         icon
                         onClose={() => setAlertDiscarded(true)}
                     >
-                        Please note, that apps that you manually connected
-                        outside of Gorgias will not appear on this list.
+                        Please note that apps manually connected outside Gorgias
+                        will not appear on this list.
                     </Alert>
                 )}
                 <CardsWrapper>
@@ -85,17 +89,37 @@ export default function Mine() {
                         <Card key={item.title} item={item} />
                     ))}
                 </CardsWrapper>
-                {!isLoading && connectedItems.length === 0 && (
-                    <p className={css.noApps}>
-                        You have no app connected yet. You might want to take a
-                        look at{' '}
+                {!isLoading && !connectedItems.length && (
+                    <div className={css.noApps}>
+                        <div className={css.magicBox}>
+                            <img
+                                src={logoRecharge}
+                                alt="Recharge logo"
+                                className={css.left}
+                            />
+                            <img
+                                src={logoShopify}
+                                alt="Shopify logo"
+                                className={css.center}
+                            />
+                            <img
+                                src={logoYotpo}
+                                alt="Yotpo logo"
+                                className={css.right}
+                            />
+                        </div>
+                        <h2>You don’t have any apps installed</h2>
+                        <p>
+                            Discover 100+ powerful apps and integrations to
+                            maximize your helpdesk and empower your customer
+                            service.
+                        </p>
                         <Link to="/app/settings/integrations">
-                            all the available apps
+                            <Button>Explore App Store</Button>
                         </Link>
-                        ?
-                    </p>
+                    </div>
                 )}
-                {isLoading && <Loader />}
+                {isLoading && <Loader empty={!installedIntegrations.length} />}
             </div>
         </main>
     )

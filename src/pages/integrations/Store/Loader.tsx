@@ -4,11 +4,11 @@ import Spinner from 'pages/common/components/Spinner/Spinner'
 
 import css from './Loader.less'
 
-export default function Loader() {
+export default function Loader({empty}: {empty?: boolean}) {
     return (
         <p className={`${css.spinnerWrapper}`}>
             <Spinner className={css.spinner} color="gloom" />
-            Loading more Apps
+            Loading {empty ? '' : 'more'} Apps
         </p>
     )
 }

@@ -11,7 +11,7 @@ import {dummyAppListData as appData} from 'fixtures/apps'
 import client from 'models/api/resources'
 
 import Mine, {LOCAL_STORAGE_KEY} from '../Mine'
-import {CARD_LINK_TEST_ID} from '../Card'
+import {CARD_LINK_TEST_ID} from '../../Card'
 
 const mockStore = configureMockStore([thunk])
 
@@ -79,7 +79,7 @@ describe('<Mine />', () => {
         await waitFor(() => {
             expect(screen.queryByText(/Loading/)).toBe(null)
         })
-        expect(screen.getByText(/no app connected/))
+        expect(screen.getByText('You don’t have any apps installed'))
         expect(screen.queryAllByTestId(CARD_LINK_TEST_ID).length).toBe(0)
     })
 
