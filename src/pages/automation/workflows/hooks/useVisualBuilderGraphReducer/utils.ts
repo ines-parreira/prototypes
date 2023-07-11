@@ -82,7 +82,9 @@ export const buildAutomatedMessageNode: () => AutomatedMessageNodeType =
             },
             content: {
                 html: '',
+                html_tkey: ulid(),
                 text: '',
+                text_tkey: ulid(),
             },
         },
     })
@@ -97,7 +99,9 @@ export const buildTextReplyNode: () => TextReplyNodeType = () => ({
         },
         content: {
             html: '',
+            html_tkey: ulid(),
             text: '',
+            text_tkey: ulid(),
         },
     },
 })
@@ -112,7 +116,9 @@ export const buildFileUploadNode: () => FileUploadNodeType = () => ({
         },
         content: {
             html: '',
+            html_tkey: ulid(),
             text: '',
+            text_tkey: ulid(),
         },
     },
 })
@@ -127,16 +133,20 @@ export const buildMultipleChoicesNode: () => MultipleChoicesNodeType = () => ({
         },
         content: {
             html: '',
+            html_tkey: ulid(),
             text: '',
+            text_tkey: ulid(),
         },
         choices: [
             {
                 event_id: ulid(),
                 label: '',
+                label_tkey: ulid(),
             },
             {
                 event_id: ulid(),
                 label: '',
+                label_tkey: ulid(),
             },
         ],
     },

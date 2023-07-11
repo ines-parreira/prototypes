@@ -90,7 +90,9 @@ export const WORKFLOW_TEMPLATES: Record<
                         {
                             content: {
                                 html: text,
+                                html_tkey: ulid(),
                                 text,
+                                text_tkey: ulid(),
                             },
                         },
                     ],
@@ -145,10 +147,12 @@ export const WORKFLOW_TEMPLATES: Record<
                         {
                             event_id: eventWhereId,
                             label: 'Light cushion',
+                            label_tkey: ulid(),
                         },
                         {
                             event_id: eventWhatId,
                             label: 'Medium cushion',
+                            label_tkey: ulid(),
                         },
                     ]),
                     genMessagesStep(
@@ -160,14 +164,27 @@ export const WORKFLOW_TEMPLATES: Record<
                         'What kinds of activities will you be doing?'
                     ),
                     genChoicesStep(stepWhereChoicesId, [
-                        {event_id: eventOutdoorsId, label: 'Outdoors'},
-                        {event_id: eventIndoorsId, label: 'Indoors'},
+                        {
+                            event_id: eventOutdoorsId,
+                            label: 'Outdoors',
+                            label_tkey: ulid(),
+                        },
+                        {
+                            event_id: eventIndoorsId,
+                            label: 'Indoors',
+                            label_tkey: ulid(),
+                        },
                     ]),
                     genChoicesStep(stepWhatChoicesId, [
-                        {event_id: eventRunningId, label: 'Running'},
+                        {
+                            event_id: eventRunningId,
+                            label: 'Running',
+                            label_tkey: ulid(),
+                        },
                         {
                             event_id: eventCrossTrainingId,
                             label: 'Cross-training',
+                            label_tkey: ulid(),
                         },
                     ]),
                     genMessagesStep(

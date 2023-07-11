@@ -1,3 +1,4 @@
+import {ulid} from 'ulidx'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
@@ -14,6 +15,7 @@ import {
     VisualBuilderNode,
 } from './visualBuilderGraph.types'
 import {
+    MessageContent,
     WorkflowConfiguration,
     WorkflowStep,
     WorkflowTransition,
@@ -54,6 +56,27 @@ export function walkWorkflowConfigurationGraph(
     }
 }
 
+function injectTkeysInContentIfNotExist(content: MessageContent) {
+    const {html_tkey, text_tkey, ...rest} = content
+    return {
+        html_tkey: html_tkey || ulid(),
+        text_tkey: text_tkey || ulid(),
+        ...rest,
+    }
+}
+
+function injectTkeysInChoicesIfNotExist(
+    choices: MultipleChoicesNodeType['data']['choices']
+) {
+    return choices.map((c) => {
+        const {label_tkey, ...rest} = c
+        return {
+            label_tkey: label_tkey || ulid(),
+            ...rest,
+        }
+    })
+}
+
 export function transformWorkflowConfigurationIntoVisualBuilderGraph(
     c: WorkflowConfiguration
 ): VisualBuilderGraph {
@@ -62,7 +85,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
         type: 'trigger_button',
         data: {
             label: c.entrypoint?.label ?? '',
-            label_tkey: c.entrypoint?.label_tkey ?? '',
+            label_tkey: c.entrypoint?.label_tkey ?? ulid(),
         },
     }
     const nodes: VisualBuilderNode[] = [triggerButtonNode]
@@ -80,13 +103,12 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 ...buildNodeCommonProperties(),
                 type: 'multiple_choices',
                 data: {
-                    content: {
-                        html: step.settings.messages[0].content.html,
-                        text: step.settings.messages[0].content.text,
-                        attachments:
-                            step.settings.messages[0].content.attachments,
-                    },
-                    choices: nextSteps[0].settings.choices,
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.messages[0].content
+                    ),
+                    choices: injectTkeysInChoicesIfNotExist(
+                        nextSteps[0].settings.choices
+                    ),
                     wfConfigurationRef: {
                         wfConfigurationChoicesStepId: nextSteps[0].id,
                         wfConfigurationMessagesStepId: step.id,
@@ -105,12 +127,9 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 ...buildNodeCommonProperties(),
                 type: 'text_reply',
                 data: {
-                    content: {
-                        html: step.settings.messages[0].content.html,
-                        text: step.settings.messages[0].content.text,
-                        attachments:
-                            step.settings.messages[0].content.attachments,
-                    },
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.messages[0].content
+                    ),
                     wfConfigurationRef: {
                         wfConfigurationMessagesStepId: step.id,
                         wfConfigurationTextInputStepId: nextSteps[0].id,
@@ -129,12 +148,9 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 ...buildNodeCommonProperties(),
                 type: 'file_upload',
                 data: {
-                    content: {
-                        html: step.settings.messages[0].content.html,
-                        text: step.settings.messages[0].content.text,
-                        attachments:
-                            step.settings.messages[0].content.attachments,
-                    },
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.messages[0].content
+                    ),
                     wfConfigurationRef: {
                         wfConfigurationMessagesStepId: step.id,
                         wfConfigurationAttachmentsInputStepId: nextSteps[0].id,
@@ -149,12 +165,9 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 ...buildNodeCommonProperties(),
                 type: 'automated_message',
                 data: {
-                    content: {
-                        html: step.settings.messages[0].content.html,
-                        text: step.settings.messages[0].content.text,
-                        attachments:
-                            step.settings.messages[0].content.attachments,
-                    },
+                    content: injectTkeysInContentIfNotExist(
+                        step.settings.messages[0].content
+                    ),
                     wfConfigurationRef: {
                         wfConfigurationMessagesStepId: step.id,
                     },

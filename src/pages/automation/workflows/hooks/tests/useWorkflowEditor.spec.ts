@@ -60,6 +60,7 @@ describe('useWorkflowEditor', () => {
                     initial_step_id: 'messages1',
                     entrypoint: {
                         label: 'entrypoint',
+                        label_tkey: 'entrypoint',
                     },
                     steps: [
                         {
@@ -70,6 +71,9 @@ describe('useWorkflowEditor', () => {
                                     {
                                         content: {
                                             text: 'Hello',
+                                            html: '<p>Hello</p>',
+                                            text_tkey: 'Hello',
+                                            html_tkey: '<p>Hello</p>',
                                         },
                                     },
                                 ],

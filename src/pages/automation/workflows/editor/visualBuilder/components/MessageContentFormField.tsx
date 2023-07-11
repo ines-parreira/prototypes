@@ -46,9 +46,12 @@ export default function MessageContentFormField({
 
         if (convertToHTML(currentContent) === content.html) return
         if (text.length > textLimit) return
+        const {html_tkey, text_tkey} = content
         handleUpdateContent({
             html: convertToHTML(currentContent),
+            html_tkey,
             text: text,
+            text_tkey,
             attachments: content.attachments,
         })
     }

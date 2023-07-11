@@ -18,7 +18,12 @@ const genStepMessages = (
     settings: {
         messages: [
             {
-                content,
+                content: {
+                    html: content.html,
+                    text: content.text,
+                    html_tkey: content.html,
+                    text_tkey: content.text,
+                },
             },
         ],
     },
@@ -31,7 +36,10 @@ const genStepChoices = (
     id,
     kind: 'choices',
     settings: {
-        choices,
+        choices: choices.map((choice) => ({
+            ...choice,
+            label_tkey: choice.label,
+        })),
     },
 })
 
@@ -113,63 +121,63 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 expect.objectContaining({
                     id: expect.any(String),
                     type: 'multiple_choices',
-                    data: {
-                        content: {
+                    data: expect.objectContaining({
+                        content: expect.objectContaining({
                             html: 'html',
                             text: 'text',
-                        },
-                        choices: [
-                            {
+                        }),
+                        choices: expect.arrayContaining([
+                            expect.objectContaining({
                                 label: 'choice1',
                                 event_id: 'eventId1',
-                            },
-                            {
+                            }),
+                            expect.objectContaining({
                                 label: 'choice2',
                                 event_id: 'eventId2',
-                            },
-                        ],
+                            }),
+                        ]),
                         wfConfigurationRef: {
                             wfConfigurationMessagesStepId: 'messages1',
                             wfConfigurationChoicesStepId: 'choices1',
                         },
-                    },
+                    }),
                 }),
                 expect.objectContaining({
                     id: expect.any(String),
                     type: 'automated_message',
-                    data: {
-                        content: {
+                    data: expect.objectContaining({
+                        content: expect.objectContaining({
                             html: 'html',
                             text: 'text',
-                        },
+                        }),
                         wfConfigurationRef: {
                             wfConfigurationMessagesStepId: 'messages2',
                         },
-                    },
+                    }),
                 }),
                 expect.objectContaining({
                     id: expect.any(String),
                     type: 'end',
-                    data: {
+                    data: expect.objectContaining({
                         wfConfigurationRef: {
                             wfConfigurationWorkflowCallOrHandoverStepId:
                                 'workflowCall1',
                         },
                         withWasThisHelpfulPrompt: true,
-                    },
+                    }),
                 }),
                 expect.objectContaining({
                     id: expect.any(String),
                     type: 'automated_message',
-                    data: {
-                        content: {
+                    data: expect.objectContaining({
+                        content: expect.objectContaining({
                             html: 'html',
                             text: 'text',
-                        },
+                        }),
                         wfConfigurationRef: {
                             wfConfigurationMessagesStepId: 'messages3',
                         },
-                    },
+                    }),
                 }),
                 expect.objectContaining({
                     id: expect.any(String),

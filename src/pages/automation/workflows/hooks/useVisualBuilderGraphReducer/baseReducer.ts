@@ -114,11 +114,8 @@ export function baseReducer(
                         n.id === action.automatedMessageNodeId &&
                         n.type === 'automated_message'
                 )
-                const {html, text, attachments} = action.content
                 if (node) {
-                    node.data.content.html = html
-                    node.data.content.text = text
-                    node.data.content.attachments = attachments
+                    node.data.content = action.content
                 }
             })
         case 'SET_TEXT_REPLY_CONTENT':
@@ -128,11 +125,8 @@ export function baseReducer(
                         n.id === action.textReplyNodeId &&
                         n.type === 'text_reply'
                 )
-                const {html, text, attachments} = action.content
                 if (node) {
-                    node.data.content.html = html
-                    node.data.content.text = text
-                    node.data.content.attachments = attachments
+                    node.data.content = action.content
                 }
             })
         case 'SET_FILE_UPLOAD_CONTENT':
@@ -142,11 +136,8 @@ export function baseReducer(
                         n.id === action.fileUploadNodeId &&
                         n.type === 'file_upload'
                 )
-                const {html, text, attachments} = action.content
                 if (node) {
-                    node.data.content.html = html
-                    node.data.content.text = text
-                    node.data.content.attachments = attachments
+                    node.data.content = action.content
                 }
             })
         case 'SET_END_NODE_SETTINGS':

@@ -85,11 +85,8 @@ export function choicesReducer(
                         n.id === action.multipleChoicesNodeId &&
                         n.type === 'multiple_choices'
                 )
-                const {html, text, attachments} = action.content
                 if (node) {
-                    node.data.content.html = html
-                    node.data.content.text = text
-                    node.data.content.attachments = attachments
+                    node.data.content = action.content
                 }
             })
         case 'INSERT_MULTIPLE_CHOICES_NODE':
@@ -123,6 +120,7 @@ export function choicesReducer(
                 const eventId = ulid()
                 node.data.choices.push({
                     event_id: eventId,
+                    label_tkey: ulid(),
                     label: '',
                 })
                 draft.nodes.push(buildEndNode())
@@ -146,18 +144,20 @@ export function choicesReducer(
                         n.type === 'multiple_choices'
                 )
                 if (!node) return
-                const labelByEventId = node.data.choices.reduce(
-                    (acc, {event_id, label}) => ({
-                        ...acc,
-                        [event_id]: label,
-                    }),
-                    {} as Record<string, string>
+                const choiceByEventId = node.data.choices.reduce(
+                    (acc, choice) => {
+                        const {event_id} = choice
+                        return {...acc, [event_id]: choice}
+                    },
+                    {} as Record<
+                        string,
+                        MultipleChoicesNodeType['data']['choices'][number]
+                    >
                 )
-                node.data.choices = action.orderedEventIds.map((eventId) => ({
-                    event_id: eventId,
-                    label: labelByEventId[eventId],
-                }))
-                // reorder edges for the nodes to be ordered in the visual builder
+                node.data.choices = action.orderedEventIds.map(
+                    (eventId) => choiceByEventId[eventId]
+                )
+                // reorder edges so that the nodes are ordered in the visual builder
                 const outgoingEdgesSorted = graph.edges
                     .filter((e) => e.source === action.multipleChoicesNodeId)
                     .sort(

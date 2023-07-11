@@ -35,6 +35,7 @@ export type WorkflowStepChoices = {
         choices: Array<{
             event_id: string
             label: string
+            label_tkey?: string
         }>
     }
 }

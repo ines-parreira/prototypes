@@ -97,11 +97,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     settings: {
                         messages: [
                             {
-                                content: {
-                                    html: node.data.content.html,
-                                    text: node.data.content.text,
-                                    attachments: node.data.content.attachments,
-                                },
+                                content: node.data.content,
                             },
                         ],
                     },
@@ -129,11 +125,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     settings: {
                         messages: [
                             {
-                                content: {
-                                    html: node.data.content.html,
-                                    text: node.data.content.text,
-                                    attachments: node.data.content.attachments,
-                                },
+                                content: node.data.content,
                             },
                         ],
                     },
@@ -171,11 +163,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     settings: {
                         messages: [
                             {
-                                content: {
-                                    html: node.data.content.html,
-                                    text: node.data.content.text,
-                                    attachments: node.data.content.attachments,
-                                },
+                                content: node.data.content,
                             },
                         ],
                     },
@@ -210,11 +198,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     settings: {
                         messages: [
                             {
-                                content: {
-                                    html: node.data.content.html,
-                                    text: node.data.content.text,
-                                    attachments: node.data.content.attachments,
-                                },
+                                content: node.data.content,
                             },
                         ],
                     },
